@@ -221,7 +221,7 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
         this.section_list = [...this.data.sections];
         this.cluster_list = [...this.data.cluster_names];
         this.office_list = [...this.data.offices];
-        this.budget_owner_list = [...this.data.budget_owner];
+        // TODO this.budget_owner_list = [...this.data.budget_owner];
       }
     } else {
       if (get(state, 'commonData.unicefUsersData.length')) {

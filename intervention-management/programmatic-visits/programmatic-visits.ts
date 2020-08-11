@@ -7,18 +7,18 @@ import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {repeatableDataSetsStyles} from '../../common/styles/repeatable-data-sets-styles';
 import isEmpty from 'lodash-es/isEmpty';
-import {fireEvent} from '../../../../../utils/fire-custom-event';
 import {layoutCenterJustified, layoutVertical} from '../../common/styles/flex-layout-styles';
 import {AnyObject} from '../../common/models/globals.types';
-import {PlannedVisits, PlannedVisitsPermissions} from './programmaticVisits.models';
+import {PlannedVisitsPermissions} from './programmaticVisits.models';
 import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown';
 import {PaperInputElement} from '@polymer/paper-input/paper-input';
 import {selectPlannedVisits, selectPlannedVisitsPermissions} from './programmaticVisits.selectors';
-import {Permission, PlannedVisit, PlannedBudget} from '../../common/models/intervention.types';
+import {Permission, PlannedVisit} from '../../common/models/intervention.types';
 import {selectInterventionDates} from '../../intervention-timing/intervention-dates/interventionDates.selectors';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {patchIntervention} from '../../common/actions';
 import RepeatableDataSetsMixin from '../../common/mixins/repeatable-data-sets-mixin';
+import {fireEvent} from '../../utils/fire-custom-event';
 
 /**
  * @customElement

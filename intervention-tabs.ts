@@ -46,6 +46,17 @@ export class InterventionTabs extends LitElement {
     // language=HTML
     return html`
       <style>
+        :host {
+          --ecp-content_-_padding: 8px 24px 16px 24px;
+          --ecp-header-title: {
+            padding: 0 24px 0 0;
+            text-align: left;
+            font-size: 18px;
+            font-weight: 500;
+          }
+          --ecp-header-title_-_text-align: left;
+        }
+
         ${sharedStyles} etools-status {
           justify-content: center;
         }

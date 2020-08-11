@@ -37,6 +37,7 @@ export class PdAmendments extends connect(getStore())(LitElement) {
           -moz-box-sizing: border-box;
           box-sizing: border-box;
           --ecp-content-padding: 0;
+          --ecp-content_-_padding: 0;
           margin-bottom: 24px;
         }
         .attachment {

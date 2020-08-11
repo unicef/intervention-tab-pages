@@ -35,7 +35,7 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
       return html`<style>
           ${sharedStyles}
         </style>
-        <etools-loading loading-text="Loading..." active></etools-loading>`;
+        <etools-loading loading-text="Loading..."></etools-loading>`;
     }
     // language=HTML
     return html`
@@ -53,7 +53,7 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Gender, Equity & Sustainability">
-        <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
+        <etools-loading loading-text="Loading..."></etools-loading>
 
         <div slot="panel-btns">
           <paper-icon-button
