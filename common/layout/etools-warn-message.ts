@@ -11,7 +11,7 @@ export class WarnMessage {
 /**
  * @customElement
  */
-@customElement('etools-warn-message')
+@customElement('etools-warn-message-lit')
 export class EtoolsWarnMessage extends LitElement {
   render() {
     // language=HTML

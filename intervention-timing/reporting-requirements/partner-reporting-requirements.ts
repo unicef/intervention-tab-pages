@@ -49,6 +49,7 @@ class PartnerReportingRequirements extends connect(getStore())(PolymerElement) {
 
         etools-content-panel {
           --ecp-content-padding: 0;
+          --ecp-content_-_padding: 0;
         }
 
         /* ------------------------------- */

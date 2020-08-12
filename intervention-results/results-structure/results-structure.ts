@@ -35,6 +35,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
       css`
         etools-content-panel {
           --ecp-content-padding: 0;
+          --ecp-content_-_padding: 0;
         }
         iron-icon[icon='create'] {
           margin-left: 50px;

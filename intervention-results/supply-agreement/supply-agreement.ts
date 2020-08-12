@@ -62,6 +62,7 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
           display: block;
           margin-bottom: 24px;
           --ecp-content-padding: 0;
+          --ecp-content_-_padding: 0;
         }
         .mr-40 {
           margin-right: 40px;

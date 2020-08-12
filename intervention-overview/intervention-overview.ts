@@ -181,14 +181,14 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
           <label class="paper-label">Partner HACT Risk Rating</label>
           <br />
           <div class="content">
-            ${this.interventionPartner.rating || 'N\\A'}
+            ${this.interventionPartner?.rating || 'N\\A'}
           </div>
         </div>
         <div class="col col-4 block">
           <label class="paper-label">Partner PSEA Risk Rating</label>
           <br />
           <div class="content">
-            ${this.interventionPartner.sea_risk_rating_name || 'N\\A'}
+            ${this.interventionPartner?.sea_risk_rating_name || 'N\\A'}
           </div>
         </div>
        </div>
