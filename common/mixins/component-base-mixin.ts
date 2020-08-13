@@ -1,6 +1,7 @@
 import {LitElement, property, html} from 'lit-element';
 import {Constructor, AnyObject} from '../models/globals.types';
 import cloneDeep from 'lodash-es/cloneDeep';
+import {areEqual} from '../../utils/utils';
 
 function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class ComponentBaseClass extends baseClass {
@@ -81,7 +82,11 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
       if (!detail.selectedItem) {
         return;
       }
-      this.data[key] = detail.selectedItem?.id;
+      const newValue = detail.selectedItem?.id;
+      if (areEqual(this.data[key], newValue)) {
+        return;
+      }
+      this.data[key] = newValue;
       this.requestUpdate();
     }
 
@@ -89,11 +94,29 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
       if (!detail.selectedItems) {
         return;
       }
-      this.data[key] = detail.selectedItems.map((i: any) => i[optionValue]);
+      const newValues = detail.selectedItems.map((i: any) => i[optionValue]);
+      /**
+       * Event though requestUpdate checks hasChanged method,
+       * it seems that it still re-renders even if the item hasn't really changed
+       * Remove this line and render will be called infinitely
+       */
+      if (areEqual(this.data[key], newValues)) {
+        return;
+      }
+
+      this.data[key] = newValues;
+
+      /** Necessary because LitElement remembers the values used for last render
+       *  and resetting the form on cancel won't work otherwise
+       */
       this.requestUpdate();
     }
 
     valueChanged(detail: any, key: string) {
+      if (areEqual(this.data[key], detail.value)) {
+        return;
+      }
+
       this.data[key] = detail.value;
       this.requestUpdate();
     }
