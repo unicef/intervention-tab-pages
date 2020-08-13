@@ -18,6 +18,7 @@ import {validateRequiredFields} from '../../utils/validation-helper';
 import {isJsonStrMatch} from '../../utils/utils';
 import {patchIntervention} from '../../common/actions';
 import cloneDeep from 'lodash-es/cloneDeep';
+import '../../common/components/comments-wrapper';
 
 /**
  * @customElement
@@ -52,17 +53,19 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
         </div>
 
         <div class="row-padding-v">
-          <paper-input
-            id="title"
-            label="Title"
-            always-float-label
-            placeholder="—"
-            .value="${this.data.title}"
-            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'title')}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.title)}"
-            ?required="${this.permissions.required.title}"
-          >
-          </paper-input>
+          <comments-wrapper>
+            <paper-input
+              id="title"
+              label="Title"
+              always-float-label
+              placeholder="—"
+              .value="${this.data.title}"
+              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'title')}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.title)}"
+              ?required="${this.permissions.required.title}"
+            >
+            </paper-input>
+          </comments-wrapper>
         </div>
 
         <div class="row-padding-v">
