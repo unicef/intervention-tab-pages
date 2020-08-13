@@ -2,6 +2,7 @@ import {LitElement, customElement, html} from 'lit-element';
 import './programmatic-visits/programmatic-visits';
 import './amendments/pd-amendments';
 import './fund-reservations/fund-reservations';
+import './financial/financial-component';
 
 /**
  * @customElement
@@ -15,6 +16,7 @@ export class InterventionManagement extends LitElement {
 
       <programmatic-visits></programmatic-visits>
       <pd-amendments></pd-amendments>
+      <financial-component></financial-component>
       <fund-reservations></fund-reservations>
     `;
   }

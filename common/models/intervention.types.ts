@@ -183,6 +183,10 @@ export class InterventionPermissionsFields {
 
   // attachments
   attachments = false;
+
+  // financial component
+  cash_transfer_modalities = false;
+  hq_support_cost = false;
 }
 
 export interface Permission<T> {
@@ -238,6 +242,9 @@ export class Intervention {
   permissions?: Permission<InterventionPermissionsFields>;
   humanitarian_flag?: boolean;
   partner_id?: string;
+  // @lajos: for financial component
+  cash_transfer_modalities = '';
+  hq_support_cost = '';
 }
 
 export class InterventionAmendment {
