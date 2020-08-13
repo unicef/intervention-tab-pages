@@ -1,4 +1,4 @@
-import {LitElement, html, property, customElement} from 'lit-element';
+import {customElement, html, LitElement, property} from 'lit-element';
 import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-content-panel';
 import '@unicef-polymer/etools-data-table';
@@ -6,7 +6,6 @@ import '@unicef-polymer/etools-table/etools-table';
 import {EtoolsTableChildRow, EtoolsTableColumn, EtoolsTableColumnType} from '@unicef-polymer/etools-table/etools-table';
 import '@unicef-polymer/etools-currency-amount-input';
 import './activity-dialog';
-// import {ActivityDialog} from './activity-dialog';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
@@ -24,31 +23,8 @@ import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {Permission} from '../../common/models/intervention.types';
 import {ProgrammeManagementActivityPermissions} from './effectiveEfficientProgrammeMgmt.models';
 import {AnyObject} from '../../common/models/globals.types';
-
-const getProgrammeData = () => {
-  const arr = [
-    {
-      title: 'Standard activity',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In iaculis metus et neque viverra ',
-      unicef_cash: 3685,
-      partner_contribution: 54789
-    },
-    {
-      title: 'Standard activity',
-      description:
-        'There are many variations of passages available, but the majority have suffered alteration in some form',
-      unicef_cash: 125,
-      partner_contribution: 751
-    },
-    {
-      title: 'Standard activity',
-      description: 'It is a long established fact that a reader will be distracted by the readable content',
-      unicef_cash: 652,
-      partner_contribution: 441
-    }
-  ];
-  return arr;
-};
+import cloneDeep from 'lodash-es/cloneDeep';
+import {ActivityDialog} from './activity-dialog';
 
 /**
  * @customElement
@@ -85,12 +61,16 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
 
         <div slot="panel-btns">
           Total: ${this.total_amount}
+          <paper-icon-button ?hidden="${!this.canEditActivity}" icon="add">
+          </paper-icon-button>
         </div>
 
         <etools-table
-          .items="${this.data}"
+          .items="${this.formattedData}"
           .columns="${this.columns}"
           .extraCSS="${sharedStyles}"
+          .showEdit=${this.canEditActivity}
+          @edit-item="${this.editItem}"
           .getChildRowTemplateMethod="${this.getChildRowTemplate.bind(this)}"
         >
         </etools-table>
@@ -98,11 +78,16 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
     `;
   }
 
+  private formattedData;
+
   @property({type: Boolean})
   showLoading = false;
 
+  @property({type: Boolean})
+  canEditActivity = true;
+
   @property({type: Object})
-  data: AnyObject[] = [];
+  data: AnyObject = {};
 
   @property({type: Array})
   columns: EtoolsTableColumn[] = [
@@ -131,7 +116,7 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
     }
   ];
   //  the dialog is commented until further specifications
-  // private activityDialog!: ActivityDialog;
+  private activityDialog!: ActivityDialog;
 
   @property({type: Number})
   total_amount = 0;
@@ -151,32 +136,58 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
       return;
     }
 
-    const newActivities = selectProgrammeManagement(state);
-    if (!isJsonStrMatch(this.originalData, newActivities)) {
-      this.data = [newActivities];
-      this.originalData = newActivities;
-    }
+    this.data = selectProgrammeManagement(state);
+    this.originalData = cloneDeep(this.data);
 
     const newPermissions = selectProgrammeManagementActivityPermissions(state);
     if (!isJsonStrMatch(this.permissions, newPermissions)) {
       this.permissions = newPermissions;
     }
 
-    this.data = getProgrammeData();
+    this.formattedData = this.formatData(this.data);
   }
 
-  // private openActivityDialog() {
-  //   this.createDialog();
-  //   this.activityDialog.permissions = this.permissions;
-  //   (this.activityDialog as ActivityDialog).openDialog();
-  // }
+  formatData = (data) => {
+    return [
+      {
+        title: 'Standard activity 1',
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In iaculis metus et neque viverra ',
+        unicef_cash: Number(data.act1_unicef),
+        partner_contribution: Number(data.act1_partner)
+      },
+      {
+        title: 'Standard activity 2',
+        description:
+          'There are many variations of passages available, but the majority have suffered alteration in some form',
+        unicef_cash: data.act2_unicef,
+        partner_contribution: data.act2_partner
+      },
+      {
+        title: 'Standard activity 3',
+        description: 'It is a long established fact that a reader will be distracted by the readable content',
+        unicef_cash: data.act3_unicef,
+        partner_contribution: data.act3_partner
+      }
+    ];
+  };
 
-  // createDialog() {
-  //   this.activityDialog = document.createElement('activity-dialog') as ActivityDialog;
-  //   this.activityDialog.setAttribute('id', 'activityDialog');
-  //   this.activityDialog.toastEventSource = this;
-  //   document.querySelector('body')!.appendChild(this.activityDialog);
-  // }
+  editItem(e: CustomEvent) {
+    this.openActivityDialog(e.detail);
+  }
+
+  private openActivityDialog(activity) {
+    this.createDialog();
+    this.activityDialog.permissions = this.permissions;
+    this.activityDialog.activity = activity;
+    (this.activityDialog as ActivityDialog).openDialog();
+  }
+
+  createDialog() {
+    this.activityDialog = document.createElement('activity-dialog') as ActivityDialog;
+    this.activityDialog.setAttribute('id', 'activityDialog');
+    this.activityDialog.toastEventSource = this;
+    document.querySelector('body')!.appendChild(this.activityDialog);
+  }
 
   getChildRowTemplate(item: any): EtoolsTableChildRow {
     const childRow = {} as EtoolsTableChildRow;

@@ -8,6 +8,9 @@ import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {ProgrammeManagementActivityPermissions} from './effectiveEfficientProgrammeMgmt.models';
+import {AnyObject} from '../../common/models/globals.types';
+import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {patchIntervention} from '../../common/actions';
 
 /**
  * @customElement
@@ -22,7 +25,8 @@ export class ActivityDialog extends connect(getStore())(ComponentBaseMixin(LitEl
     // language=HTML
     return html`
       <style>
-        [hidden] {
+        ${sharedStyles}
+        *[hidden] {
           display: none !important;
         }
 
@@ -41,21 +45,42 @@ export class ActivityDialog extends connect(getStore())(ComponentBaseMixin(LitEl
         dialog-title="Add activity"
         ?opened="${this.dialogOpened}"
         @close="${() => this.closeDialog()}"
+        @confirm-btn-clicked="${this.onSaveClick}"
       >
         <div class="row-padding-v">
-          <paper-input id="title" label="Title" always-float-label placeholder="—"> </paper-input>
+          <paper-input
+            readonly
+            id="title"
+            label="Title"
+            always-float-label
+            placeholder="—"
+            .value="${this.activity.title}"
+          >
+          </paper-input>
         </div>
 
         <div class="row-padding-v">
-          <paper-textarea id="description" label="Description" always-float-label placeholder="—"></paper-textarea>
+          <paper-textarea
+            id="description"
+            label="Description"
+            readonly
+            always-float-label
+            placeholder="—"
+            .value="${this.activity.description}"
+          ></paper-textarea>
         </div>
 
         <div class="layout-horizontal">
           <div class="col col-6">
-            <etools-currency-amount-input id="unicefCash" label="UNICEF cash"> </etools-currency-amount-input>
+            <etools-currency-amount-input id="unicefCash" label="UNICEF cash" .value="${this.activity.unicef_cash}">
+            </etools-currency-amount-input>
           </div>
           <div class="col col-6">
-            <etools-currency-amount-input id="partnerContribution" label="Partner contribution">
+            <etools-currency-amount-input
+              id="partnerContribution"
+              label="Partner contribution"
+              .value="${this.activity.partner_contribution}"
+            >
             </etools-currency-amount-input>
           </div>
         </div>
@@ -67,6 +92,12 @@ export class ActivityDialog extends connect(getStore())(ComponentBaseMixin(LitEl
 
   @property({type: Boolean, reflect: true})
   dialogOpened = false;
+
+  @property({type: Object})
+  activity: AnyObject = {};
+
+  @property({type: Object})
+  toastEventSource!: LitElement;
 
   @property({type: Object})
   get permissions() {
@@ -91,6 +122,18 @@ export class ActivityDialog extends connect(getStore())(ComponentBaseMixin(LitEl
 
   public openDialog() {
     this.dialogOpened = true;
+  }
+
+  onSaveClick() {
+    // if (!this.validate()) {
+    //   return;
+    // }
+    getStore()
+      .dispatch(patchIntervention(this.data))
+      .then(() => {
+        this.editMode = false;
+      });
+    // /api/pmp/v3/interventions/<intervention_pk>/budget/
   }
 
   public closeDialog() {
