@@ -10,18 +10,18 @@ export class BudgetSummary extends ModelsBase {
   }
   // budget currency
   currency = '';
-  // budget hq rate..not found....
-  hq_rate = '';
-  // prgm effectivenes...not found
-  prgm_effectiveness = '';
   // total cso contribution... did not found CSO would this be
   partner_contribution_local = '';
   // total unicef contrib, assumed bellow
   unicef_cash_local = '';
-  // total supply partner_contribution_local + unicef_cash_local
-  // % partner contrib... calculated based on total supply?
+  // @lajos: total supply will come from backend
+  total_supply = '';
+
+  // @lajos: partner percentage will come from backend
+  partner_percentage = '';
   // total cash amt
   total_cash = '';
   // bellow will be updated when all data available
-  total_amt = '';
+  in_kind_amount = '';
+  hq_support_cost = '';
 }
