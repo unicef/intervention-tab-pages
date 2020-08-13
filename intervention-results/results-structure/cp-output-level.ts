@@ -36,8 +36,8 @@ export class CpOutputLevel extends LitElement {
   @property() interventionId!: number;
   @property() resultLink!: ExpectedResult;
   @property({type: Boolean, reflect: true, attribute: 'show-cpo-level'}) showCPOLevel = false;
-  @property({type: Boolean}) showIndicators: boolean = true;
-  @property({type: Boolean}) showActivities: boolean = true;
+  @property({type: Boolean}) showIndicators = true;
+  @property({type: Boolean}) showActivities = true;
 
   protected render(): TemplateResult {
     return html`
