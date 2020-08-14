@@ -84,15 +84,15 @@ export class BudgetSummaryEl extends connect(getStore())(LitElement) {
           </div>
           <div class="col col-1">
             <span>
-              <label class="input-label" ?empty="${!this.hq_support_cost}">
-                ${this.hq_support_cost} %
+              <label class="input-label" ?empty="${!this.budgetSummary.hq_support_cost}">
+                ${this.budgetSummary.hq_support_cost} %
               </label>
             </span>
           </div>
           <div class="col col-2">
             <span>
-              <label class="input-label" ?empty="${!this.prgm_effectiveness}">
-                ${this.prgm_effectiveness} %
+              <label class="input-label" ?empty="${!this.budgetSummary.prgm_effectiveness}">
+                ${this.budgetSummary.prgm_effectiveness} %
               </label>
             </span>
           </div>
@@ -146,12 +146,6 @@ export class BudgetSummaryEl extends connect(getStore())(LitElement) {
   @property({type: Object})
   budgetSummary!: BudgetSummary;
 
-  @property({type: String})
-  hq_support_cost!: string;
-
-  @property({type: String})
-  prgm_effectiveness!: string;
-
   connectedCallback() {
     super.connectedCallback();
   }
@@ -162,8 +156,6 @@ export class BudgetSummaryEl extends connect(getStore())(LitElement) {
     }
     if (state.interventions.current) {
       this.budgetSummary = selectBudgetSummary(state);
-      this.hq_support_cost = state.interventions.current.hq_support_cost;
-      this.prgm_effectiveness = state.interventions.current.prgm_effectiveness;
     }
   }
 }
