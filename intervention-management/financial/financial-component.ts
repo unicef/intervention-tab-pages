@@ -43,6 +43,13 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
         }
         paper-slider {
           width: 100%;
+          margin-left: -10px;
+          margin-top: -5px;
+        }
+        paper-checkbox[disabled] {
+          --paper-checkbox-checked-color: black;
+          --paper-checkbox-unchecked-color: black;
+          --paper-checkbox-label-color: black;
         }
       </style>
       <etools-content-panel show-expand-btn panel-title="Financial">
@@ -60,7 +67,7 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
             <label class="paper-label">Cash Transfer modality(ies)</label>
           </div>
         </div>
-        <div class="layout-horizontal row-padding-v">
+        <div class="layout-horizontal">
           <div class="col col-3">
             <paper-checkbox
               ?checked="${this.checkCashTransferModality('Direct Cash Transfer')}"
@@ -94,17 +101,17 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
             <label class="paper-label">Headquarters contribution (automatic 7% for INGO)</label>
           </div>
         </div>
-        <div class="layout-horizontal row-padding-v">
-          <div class="col col-4">
+        <div class="layout-horizontal">
+          <div class="col col-3">
             <paper-slider
-              .value="${this.hq_support_cost}"
+              .value="${this.data.hq_support_cost}"
               width="100%;"
               max="7"
               step="0.1"
               ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.hq_support_cost)}"
               @value-changed="${(e: CustomEvent) => this.updateSlider(e)}"
             ></paper-slider>
-            ${this.hq_support_cost}
+            ${this.data.hq_support_cost}
           </div>
         </div>
         <div class="layout-horizontal row-padding-v">
@@ -112,9 +119,9 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
             <label class="paper-label">Document currency</label>
           </div>
         </div>
-        <div class="layout-horizontal row-padding-v">
+        <div class="layout-horizontal">
           <div class="col col-3">
-            ${this.currency}
+            ${this.data.currency}
           </div>
         </div>
         <div
@@ -156,17 +163,6 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
   @property({type: Boolean})
   showLoading = false;
 
-  @property({type: String})
-  _hq_support_cost!: string;
-
-  set hq_support_cost(val) {
-    this._hq_support_cost = val;
-  }
-
-  get hq_support_cost() {
-    return this._hq_support_cost;
-  }
-
   connectedCallback() {
     super.connectedCallback();
   }
@@ -176,17 +172,11 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
       return;
     }
     if (state.interventions.current) {
+      // temporary fix untill we have data from abckend
+      state.interventions.current.hq_support_cost = 0;
       this.data = selectFinancialComponent(state);
       this.permissions = selectFinancialComponentPermissions(state);
-      this.currency = state.interventions.current.planned_budget.currency;
       this.setCanEditFinancialData(this.permissions.edit);
-      this.originalData = cloneDeep(this.data);
-      if (this.data.hq_support_cost) {
-        this._hq_support_cost = this.data.hq_support_cost;
-      } else {
-        this._hq_support_cost = '0';
-        this.data.hq_support_cost = '0';
-      }
       this.originalData = cloneDeep(this.data);
     }
   }
@@ -217,16 +207,13 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
   cancel() {
     this.editMode = false;
     this.data = cloneDeep(this.originalData);
-    this._hq_support_cost = this.data.hq_support_cost;
-    // this is temporary until we find a better fix for it
-    this.requestUpdate();
   }
 
   updateSlider(e: CustomEvent) {
     if (!e.detail) {
       return;
     }
-    this._hq_support_cost = e.detail.value;
+    this.data = {...this.data, hq_support_cost: e.detail.value} as FinancialComponentData;
   }
 
   updateData(value: any, checkbox: string) {
