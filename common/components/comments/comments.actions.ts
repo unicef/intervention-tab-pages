@@ -1,8 +1,8 @@
-import {_sendRequest} from '../../utils/request-helper';
-import {getEndpoint} from '../../utils/endpoint-helper';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {GenericObject} from '../models/globals.types';
-import {InterventionComment} from '../types/types';
+import {_sendRequest} from '../../../utils/request-helper';
+import {getEndpoint} from '../../../utils/endpoint-helper';
+import {interventionEndpoints} from '../../../utils/intervention-endpoints';
+import {GenericObject} from '../../models/globals.types';
+import {InterventionComment} from '../../types/types';
 
 export const SET_COMMENTS = 'SET_COMMENTS';
 export const ADD_COMMENT = 'ADD_COMMENT';

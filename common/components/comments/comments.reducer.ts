@@ -1,7 +1,7 @@
 import {Reducer} from 'redux';
-import {RootAction} from '../../../../../../redux/store';
-import {GenericObject} from '../models/globals.types';
-import {InterventionComment} from '../types/types';
+import {RootAction} from '../../../../../../../redux/store';
+import {GenericObject} from '../../models/globals.types';
+import {InterventionComment} from '../../types/types';
 import {ADD_COMMENT, SET_COMMENTS, UPDATE_COMMENT} from './comments.actions';
 
 type CommentsCollection = GenericObject<InterventionComment[]>;

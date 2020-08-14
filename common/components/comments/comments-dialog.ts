@@ -1,17 +1,17 @@
 import {customElement, LitElement, html, TemplateResult, property, CSSResultArray, css, query} from 'lit-element';
-import {fireEvent} from '../../utils/fire-custom-event';
+import {fireEvent} from '../../../utils/fire-custom-event';
 import '@unicef-polymer/etools-dialog';
 import '@polymer/paper-input/paper-textarea';
 import './comment';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getEndpoint} from '../../utils/endpoint-helper';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {getEndpoint} from '../../../utils/endpoint-helper';
+import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {connect} from 'pwa-helpers/connect-mixin';
-import {getStore} from '../../utils/redux-store-access';
+import {getStore} from '../../../utils/redux-store-access';
 import {addComment, updateComment} from './comments.actions';
-import {InterventionComment} from '../types/types';
+import {InterventionComment} from '../../types/types';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
-import {GenericObject} from '../models/globals.types';
+import {GenericObject} from '../../models/globals.types';
 
 @customElement('comments-dialog')
 export class CommentsDialog extends connect(getStore())(LitElement) {

@@ -38,12 +38,6 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
     return [buttonsStyles, gridLayoutStylesLit];
   }
   render() {
-    if (!this.data) {
-      return html`<style>
-          ${sharedStyles}
-        </style>
-        <etools-loading loading-text="Loading..." active></etools-loading>`;
-    }
     // language=HTML
     return html`
       <style>
@@ -65,7 +59,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
             <paper-input
               class="w100"
               label="Partner Organization"
-              .value="${this.data.partner}"
+              .value="${this.data?.partner}"
               required
               readonly
               always-float-label
@@ -77,7 +71,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
               id="agreements"
               label="Agreements"
               .options="${this.partnerAgreements}"
-              .selected="${this.data.agreement}"
+              .selected="${this.data?.agreement}"
               option-value="id"
               option-label="agreement_number_status"
               trigger-value-change-event
@@ -94,7 +88,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
             <paper-input
               class="w100"
               label="Partner Vendor Number"
-              .value="${this.data.partner_vendor}"
+              .value="${this.data?.partner_vendor}"
               required
               readonly
               always-float-label
@@ -112,7 +106,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
           <div class="col col-7 layout-vertical">
             <etools-dropdown-multi
               label="Partner Focal Points"
-              .selectedValues="${cloneDeep(this.data.partner_focal_points)}"
+              .selectedValues="${cloneDeep(this.data?.partner_focal_points)}"
               .options="${this.partnerStaffMembers}"
               option-label="name"
               option-value="id"
@@ -125,7 +119,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
             ${this.isReadonly(this.editMode, this.permissions.edit.partner_focal_points)
               ? html`<label for="focalPointsDetails" class="paper-label">Partner Focal Points</label>
                   <div id="focalPointsDetails">
-                    ${this.renderReadonlyPartnerFocalPoints(this.partnerStaffMembers, this.data.partner_focal_points!)}
+                    ${this.renderReadonlyPartnerFocalPoints(this.partnerStaffMembers, this.data?.partner_focal_points!)}
                   </div>`
               : html``}
           </div>
