@@ -33,7 +33,7 @@ export const getFileNameFromURL = (url: string) => {
  * [1] should equal ['1']
  * {any: 1} should equal {any: '1'}
  */
-export const areEqual = (obj1: any, obj2: any): string => {
+export const areEqual = (obj1: any, obj2: any): boolean => {
   if (typeof obj1 === 'number' || typeof obj2 === 'number') {
     return String(obj1) === String(obj2);
   }
