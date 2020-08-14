@@ -1,8 +1,7 @@
 import {ModelsBase} from '../../common/models/models.base';
 import {InterventionPermissionsFields, Intervention} from '../../common/models/intervention.types';
-import {AnyObject} from '../../common/models/globals.types';
 
-export class Document extends ModelsBase {
+export class ReviewData extends ModelsBase {
   constructor(intervention: Intervention) {
     super();
     this.setObjProperties(intervention);
@@ -15,7 +14,7 @@ export class Document extends ModelsBase {
   submitted_to_prc = false;
   review_date_prc = '';
   // @lajos bellow is a class
-  frs_details: AnyObject[] = [];
+  frs_details = [];
   signed_pd_attachment = '';
   status = '';
   partner_authorized_officer_signatory = '';
@@ -26,7 +25,7 @@ export class Document extends ModelsBase {
   days_from_review_to_signed = '';
 }
 
-export class DocumentPermission extends ModelsBase {
+export class ReviewDataPermission extends ModelsBase {
   constructor(permissions: InterventionPermissionsFields) {
     super();
     this.setObjProperties(permissions);

@@ -25,12 +25,9 @@ import {isJsonStrMatch} from '../../utils/utils';
 
 import {Permission} from '../../common/models/intervention.types';
 import {MinimalUser} from '../../common/models/globals.types';
-import {DocumentPermission, Document} from './managementDocument.model';
+import {ReviewDataPermission, ReviewData} from './managementDocument.model';
 // @lajos: NEED TO BE INVESTIGATED...AT THIS LINE COMPONENT IMPORT FAILED
-import {
-  selectManagementDocumentInterventionPermissions,
-  selectManagementDocumentIntervention
-} from './managementDocument.selectors';
+// import './managementDocument.selectors';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {isEmpty, cloneDeep} from 'lodash-es';
@@ -42,7 +39,7 @@ import {MinimalAgreement} from '../../common/models/agreement.types';
  * @appliesMixin MissingDropdownOptionsMixin
  * @appliesMixin UploadsMixin
  */
-@customElement('intervention-review-and-sign')
+@customElement('review-and-sign')
 export class InterventionReviewAndSign extends connect(getStore())(
   ComponentBaseMixin(MissingDropdownOptionsMixin(UploadMixin(LitElement)))
 ) {
@@ -300,13 +297,13 @@ export class InterventionReviewAndSign extends connect(getStore())(
   }
 
   @property({type: Object})
-  originalData!: Document;
+  originalData!: ReviewData;
 
   @property({type: Object})
-  data!: Document;
+  data!: ReviewData;
 
   @property({type: Object})
-  permissions!: Permission<DocumentPermission>;
+  permissions!: Permission<ReviewDataPermission>;
 
   @property({type: Array})
   signedByUnicefUsers!: MinimalUser[];
@@ -330,9 +327,12 @@ export class InterventionReviewAndSign extends connect(getStore())(
     if (!isJsonStrMatch(this.signedByUnicefUsers, state.commonData!.unicefUsersData)) {
       this.signedByUnicefUsers = cloneDeep(state.commonData!.unicefUsersData);
     }
+    // review it
+    this.signedByUnicefUsers = cloneDeep(state.commonData!.unicefUsersData);
     if (state.interventions.current) {
-      this.data = selectManagementDocumentIntervention(state);
-      this.permissions = selectManagementDocumentInterventionPermissions(state);
+      // @LAJOS: REVIEW THIS THING...
+      this.data = state.interventions.current;
+      this.permissions = state.interventions.current.permissions;
       if (this.data.submitted_to_prc) {
         this._lockSubmitToPrc = true;
       } else {
