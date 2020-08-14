@@ -102,7 +102,8 @@ export class ActivityTimeframes extends connect(getStore())(LitElement) {
       .flat();
 
     // map activities to time frames
-    const mappedActivities: GenericObject<InterventionActivity[]> = this.intervention.quarters.reduce(
+    const quarters: InterventionQuarter[] = this.intervention.quarters || [];
+    const mappedActivities: GenericObject<InterventionActivity[]> = quarters.reduce(
       (data: GenericObject<InterventionActivity[]>, quarter: InterventionQuarter) => ({
         ...data,
         [quarter.name]: []
