@@ -36,7 +36,7 @@ export const getFileNameFromURL = (url: string) => {
  */
 export const areEqual = (obj1: any, obj2: any): boolean => {
   if (typeof obj1 === 'number' || typeof obj2 === 'number') {
-    return obj1.toString() === obj2.toString();
+    return String(obj1) === String(obj2);
   }
   if (typeof obj1 === 'string') {
     return obj1 === obj2;
