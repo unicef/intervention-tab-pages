@@ -27,7 +27,7 @@ export class CommentsWrapper extends LitElement {
           border: 2px solid green;
         }
         .red-border {
-          border: 2px solid green;
+          border: 2px solid red;
         }
       `
     ];

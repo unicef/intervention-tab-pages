@@ -38,7 +38,6 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
     return [buttonsStyles, gridLayoutStylesLit];
   }
   render() {
-    console.log(' re-render');
     // language=HTML
     return html`
       <style>
