@@ -19,6 +19,7 @@ import './cp-output-level';
 import './pd-indicators';
 import './pd-activities';
 import './modals/pd-output-dialog';
+import '../../common/comments-components/comments-dialog';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {openDialog} from '../../utils/dialog';
 
@@ -184,6 +185,23 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
         </div>
       </etools-content-panel>
     `;
+  }
+
+  connectedCallback(): void {
+    super.connectedCallback();
+    // TODO: Remove test code for comments dialog
+    // getStore()
+    //   .dispatch(getComments(9))
+    //   .then(() => {
+    //     openDialog({
+    //       dialog: 'comments-dialog',
+    //       dialogData: {
+    //         interventionId: 9,
+    //         relatedTo: 'test',
+    //         relatedToDescription: 'Test Data'
+    //       }
+    //     });
+    //   });
   }
 
   stateChanged(state: any) {
