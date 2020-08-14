@@ -1,7 +1,7 @@
 import {LitElement, html, TemplateResult, CSSResultArray, customElement, property} from 'lit-element';
 import '@polymer/iron-icons';
-import {fireEvent} from '../../utils/fire-custom-event';
-import {InterventionComment} from '../types/types';
+import {fireEvent} from '../../../utils/fire-custom-event';
+import {InterventionComment} from '../../types/types';
 import {CommentStyles} from './comment.styles';
 declare const moment: any;
 

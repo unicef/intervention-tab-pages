@@ -19,7 +19,7 @@ import './cp-output-level';
 import './pd-indicators';
 import './pd-activities';
 import './modals/pd-output-dialog';
-import '../../common/comments-components/comments-dialog';
+import '../../common/components/comments/comments-dialog';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {openDialog} from '../../utils/dialog';
 
