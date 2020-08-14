@@ -157,9 +157,11 @@ function RepeatableDataSetsMixin<T extends Constructor<LitElement>>(baseClass: T
      * itemValueName - the name of property to compare selValue against
      */
     public isAlreadySelected(selValue: any, selIndex: any, itemValueName: any) {
-      const duplicateItems = this.dataItems.filter((item, index) => {
-        return parseInt(item[itemValueName]) === parseInt(selValue) && parseInt(String(index)) !== parseInt(selIndex);
-      });
+      const duplicateItems =
+        this.dataItems &&
+        this.dataItems.filter((item, index) => {
+          return parseInt(item[itemValueName]) === parseInt(selValue) && parseInt(String(index)) !== parseInt(selIndex);
+        });
       return duplicateItems && duplicateItems.length;
     }
 
