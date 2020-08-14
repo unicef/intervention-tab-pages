@@ -1,6 +1,5 @@
 import isArray from 'lodash-es/isArray';
 import isObject from 'lodash-es/isObject';
-import isEqual from 'lodash-es/isEqual';
 
 export const isJsonStrMatch = (a: any, b: any) => {
   return JSON.stringify(a) === JSON.stringify(b);
@@ -34,7 +33,7 @@ export const getFileNameFromURL = (url: string) => {
  * [1] should equal ['1']
  * {any: 1} should equal {any: '1'}
  */
-export const areEqual = (obj1: any, obj2: any): boolean => {
+export const areEqual = (obj1: any, obj2: any): string => {
   if (typeof obj1 === 'number' || typeof obj2 === 'number') {
     return String(obj1) === String(obj2);
   }

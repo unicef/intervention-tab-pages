@@ -26,6 +26,9 @@ function RepeatableDataSetsMixin<T extends Constructor<LitElement>>(baseClass: T
     @property({type: Array})
     dataItems!: any[];
 
+    @property({type: Boolean})
+    editMode!: boolean;
+
     private _deleteDialog!: EtoolsDialog;
     private elToDeleteIndex!: number;
 
