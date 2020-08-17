@@ -332,7 +332,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
       return false;
     }
     const plannedVisit = this.data[index];
-    const plannedVisitId = parseInt(plannedVisit.id, 10);
+    const plannedVisitId = Number(plannedVisit.id);
     return this._isDraft() || !(plannedVisitId && isNaN(plannedVisitId) === false && plannedVisitId > 0);
   }
 

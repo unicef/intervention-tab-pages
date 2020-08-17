@@ -1,6 +1,5 @@
 import isArray from 'lodash-es/isArray';
 import isObject from 'lodash-es/isObject';
-import isEqual from 'lodash-es/isEqual';
 
 export const isJsonStrMatch = (a: any, b: any) => {
   return JSON.stringify(a) === JSON.stringify(b);
