@@ -1,5 +1,7 @@
 import isArray from 'lodash-es/isArray';
 import isObject from 'lodash-es/isObject';
+import {AnyObject} from '../common/models/globals.types';
+import isEmpty from 'lodash-es/isEmpty';
 
 export const isJsonStrMatch = (a: any, b: any) => {
   return JSON.stringify(a) === JSON.stringify(b);
@@ -49,4 +51,18 @@ export const areEqual = (obj1: any, obj2: any): boolean => {
     return keys1.length === keys2.length && keys1.every((key: string) => areEqual(obj1[key], obj2[key]));
   }
   return true;
+};
+
+// TODO: Can this be optimized to cover cases when allOptions is a super long list?
+export const filterByIds = <T>(allOptions: T[], givenIds: string[]): T[] => {
+  if (isEmpty(allOptions) || isEmpty(givenIds)) {
+    return [];
+  }
+
+  const intGivenIds = givenIds.map((id: string) => Number(id));
+  const options = allOptions.filter((opt: any) => {
+    return intGivenIds.indexOf(Number(opt.id)) > -1;
+  });
+
+  return options;
 };

@@ -2,10 +2,15 @@ import {LitElement, html, TemplateResult, CSSResultArray, css, customElement, pr
 import {ResultStructureStyles} from './results-structure.styles';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import '@polymer/iron-icons';
-import {Indicator} from '../../common/models/intervention.types';
+import {Indicator, Intervention} from '../../common/models/intervention.types';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
-import {Disaggregation, DisaggregationValue, LocationObject, Section} from '../../common/models/globals.types';
+import {Disaggregation, DisaggregationValue, LocationObject, Section, User} from '../../common/models/globals.types';
+import {openDialog} from '../../utils/dialog';
+import './modals/indicator-dialog/indicator-dialog';
+import get from 'lodash-es/get';
+import {isJsonStrMatch} from '../../../../../utils/utils';
+import {filterByIds} from '../../utils/utils';
 
 @customElement('pd-indicators')
 export class PdIndicators extends connect(getStore())(LitElement) {
@@ -29,6 +34,20 @@ export class PdIndicators extends connect(getStore())(LitElement) {
   @property() private locations: LocationObject[] = [];
   @property() private sections: Section[] = [];
   @property() private disaggregations: Disaggregation[] = [];
+  @property() pdOutputId!: string;
+
+  /** On create/edit indicator only sections already saved on the intervention can be selected */
+  set interventionSections(ids: string[]) {
+    this.indicatorSectionOptions = filterByIds<Section>(this.sections, ids);
+  }
+  set interventionLocations(ids: string[]) {
+    this.indicatorLocationOptions = filterByIds<LocationObject>(this.locations, ids);
+  }
+
+  private indicatorSectionOptions!: Section[];
+  private indicatorLocationOptions!: LocationObject[];
+
+  private currentUser!: User;
 
   protected render(): TemplateResult {
     // language=HTML
@@ -56,7 +75,7 @@ export class PdIndicators extends connect(getStore())(LitElement) {
       <div class="row-h align-items-center header">
         <div class="heading flex-auto">
           PD Indicators
-          <iron-icon icon="add-box"></iron-icon>
+          <iron-icon icon="add-box" @click="${() => this.openIndicatorDialog()}"></iron-icon>
         </div>
         <div class="heading number-data flex-none">Baseline</div>
         <div class="heading number-data flex-none">Target</div>
@@ -133,6 +152,33 @@ export class PdIndicators extends connect(getStore())(LitElement) {
     this.sections = (state.commonData && state.commonData.sections) || [];
     this.locations = (state.commonData && state.commonData.locations) || [];
     this.disaggregations = (state.commonData && state.commonData.disaggregations) || [];
+    this.currentUser = get(state, 'user.data');
+    /**
+     * Computing here to avoid recomputation on every open indicator dialog
+     */
+    this.computeAvailableOptionsForIndicators(get(state, 'interventions.current'));
+  }
+
+  computeAvailableOptionsForIndicators(intervention: Intervention) {
+    if (!isJsonStrMatch(this.interventionLocations, intervention.flat_locations)) {
+      this.interventionLocations = intervention.flat_locations;
+    }
+    if (!isJsonStrMatch(this.interventionSections, intervention.sections)) {
+      this.interventionSections = intervention.sections;
+    }
+  }
+
+  openIndicatorDialog(indicator?: Indicator) {
+    openDialog({
+      dialog: 'indicator-dialog',
+      dialogData: {
+        indicator: indicator,
+        sectionOptions: this.indicatorSectionOptions,
+        locationOptions: this.indicatorLocationOptions,
+        llResultId: this.pdOutputId,
+        currentUser: this.currentUser
+      }
+    });
   }
 
   getLocationName(id: string | number): string {

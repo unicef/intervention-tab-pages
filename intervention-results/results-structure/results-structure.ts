@@ -159,6 +159,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
                       <pd-indicators
                         ?hidden="${!this.showIndicators}"
                         .indicators="${pdOutput.applied_indicators}"
+                        .pdOutputId="${pdOutput.id}"
                       ></pd-indicators>
                       <pd-activities
                         .activities="${pdOutput.activities}"

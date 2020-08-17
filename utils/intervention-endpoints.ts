@@ -29,6 +29,8 @@ export interface EtoolsEndpoints {
   comments: EtoolsEndpoint;
   resolveComment: EtoolsEndpoint;
   deleteComment: EtoolsEndpoint;
+  createIndicator: EtoolsEndpoint;
+  getEditDeleteIndicator: EtoolsEndpoint;
 }
 
 export const interventionEndpoints: EtoolsEndpoints = {
@@ -102,5 +104,11 @@ export const interventionEndpoints: EtoolsEndpoints = {
   },
   deleteComment: {
     template: '/api/comments/v1/partners/intervention/<%=interventionId%>/<%=commentId%>/delete/'
+  },
+  createIndicator: {
+    template: '/api/v2/interventions/lower-results/<%=id%>/indicators/'
+  },
+  getEditDeleteIndicator: {
+    template: '/api/v2/interventions/applied-indicators/<%=id%>/'
   }
 };

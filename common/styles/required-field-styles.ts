@@ -1,14 +1,12 @@
 import {html, htmlLiteral} from '@polymer/polymer/lib/utils/html-tag.js';
 import '@polymer/iron-flex-layout/iron-flex-layout.js';
-// @lajos TO BE CHECKED
-// import {BASE_URL} from '../../../../../../config/config';
-// original bellow line:
-// const baseUrlData: ReadonlyArray<string> = [BASE_URL];
-const baseUrlData: ReadonlyArray<string> = ['localhost:8082/epd'];
+import {ROOT_PATH} from '../config';
+
+const baseUrlData: ReadonlyArray<string> = [ROOT_PATH];
 const baseUrl = htmlLiteral(baseUrlData as TemplateStringsArray);
 
 // language=HTML
-export const requiredFieldStarredStyles = html` <style>
+export const requiredFieldStarredStylesPolymer = html` <style>
   :host > * {
     --required-star-style: {
       background: url(${baseUrl}'/images/required.svg') no-repeat 99% 20%/8px;
