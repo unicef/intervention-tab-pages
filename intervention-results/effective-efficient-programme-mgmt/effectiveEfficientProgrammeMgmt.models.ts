@@ -8,12 +8,12 @@ export class ProgrammeManagement extends ModelsBase {
   }
   created = '';
   modified = '';
-  act1_unicef = 0;
-  act1_partner = 0;
-  act2_unicef = 0;
-  act2_partner = 0;
-  act3_unicef = 0;
-  act3_partner = 0;
+  act1_unicef = 1;
+  act1_partner = 2;
+  act2_unicef = 3;
+  act2_partner = 4;
+  act3_unicef = 5;
+  act3_partner = 6;
   intervention = '';
   total_amount: number | null = null;
 }
@@ -23,10 +23,5 @@ export class ProgrammeManagementActivityPermissions extends ModelsBase {
     super();
     this.setObjProperties(permissions);
   }
-  act1_unicef = true;
-  act1_partner = true;
-  act2_unicef = false;
-  act2_partner = false;
-  act3_unicef = false;
-  act3_partner = true;
+  programme_management_activity = true;
 }

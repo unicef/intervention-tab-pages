@@ -10,7 +10,10 @@ import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {ProgrammeManagementActivityPermissions} from './effectiveEfficientProgrammeMgmt.models';
 import {AnyObject} from '../../common/models/globals.types';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {patchIntervention} from '../../common/actions';
+import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {getEndpoint} from '../../utils/endpoint-helper';
+import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {fireEvent} from '../../utils/fire-custom-event';
 
 /**
  * @customElement
@@ -25,8 +28,7 @@ export class ActivityDialog extends connect(getStore())(ComponentBaseMixin(LitEl
     // language=HTML
     return html`
       <style>
-        ${sharedStyles}
-        *[hidden] {
+        ${sharedStyles} *[hidden] {
           display: none !important;
         }
 
@@ -42,10 +44,10 @@ export class ActivityDialog extends connect(getStore())(ComponentBaseMixin(LitEl
       <etools-dialog
         id="activityDialog"
         size="md"
-        dialog-title="Add activity"
+        dialog-title="Edit activity"
         ?opened="${this.dialogOpened}"
         @close="${() => this.closeDialog()}"
-        @confirm-btn-clicked="${this.onSaveClick}"
+        @confirm-btn-clicked="${() => this.onSaveClick()}"
       >
         <div class="row-padding-v">
           <paper-input
@@ -67,6 +69,7 @@ export class ActivityDialog extends connect(getStore())(ComponentBaseMixin(LitEl
             always-float-label
             placeholder="—"
             .value="${this.activity.description}"
+            ?readonly="${this.isReadonly(this.editMode, this._permissionObj.edit.programme_management_activity)}"
           ></paper-textarea>
         </div>
 
@@ -80,6 +83,7 @@ export class ActivityDialog extends connect(getStore())(ComponentBaseMixin(LitEl
               id="partnerContribution"
               label="Partner contribution"
               .value="${this.activity.partner_contribution}"
+              ?readonly="${this.isReadonly(this.editMode, this._permissionObj.edit.programme_management_activity)}"
             >
             </etools-currency-amount-input>
           </div>
@@ -125,15 +129,20 @@ export class ActivityDialog extends connect(getStore())(ComponentBaseMixin(LitEl
   }
 
   onSaveClick() {
-    // if (!this.validate()) {
-    //   return;
-    // }
-    getStore()
-      .dispatch(patchIntervention(this.data))
+    const endpoint: EtoolsRequestEndpoint = getEndpoint(interventionEndpoints.interventionBudgetUpdate, {
+      activity_budget: this.activity
+    });
+    sendRequest({
+      endpoint,
+      method: 'PATCH',
+      body: this.activity
+    })
       .then(() => {
-        this.editMode = false;
+        fireEvent(this, 'dialog-closed', {confirmed: true});
+      })
+      .catch(() => {
+        fireEvent(this, 'toast', {text: 'Can not save activity budget!'});
       });
-    // /api/pmp/v3/interventions/<intervention_pk>/budget/
   }
 
   public closeDialog() {

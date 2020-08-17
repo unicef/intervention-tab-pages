@@ -26,6 +26,16 @@ import {AnyObject} from '../../common/models/globals.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {ActivityDialog} from './activity-dialog';
 
+const customStyles = html`
+  <style>
+    .row-actions {
+      width: 10%;
+    }
+    .right-a {
+      text-align: right;
+    }
+  </style>
+`;
 /**
  * @customElement
  */
@@ -61,14 +71,12 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
 
         <div slot="panel-btns">
           Total: ${this.total_amount}
-          <paper-icon-button ?hidden="${!this.canEditActivity}" icon="add">
-          </paper-icon-button>
         </div>
 
         <etools-table
           .items="${this.formattedData}"
           .columns="${this.columns}"
-          .extraCSS="${sharedStyles}"
+          .extraCSS="${this.getTableStyle()}"
           .showEdit=${this.canEditActivity}
           @edit-item="${this.editItem}"
           .getChildRowTemplateMethod="${this.getChildRowTemplate.bind(this)}"
@@ -109,6 +117,7 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
     {
       label: 'Total',
       name: 'total',
+      cssClass: 'right-a',
       type: EtoolsTableColumnType.Custom,
       customMethod: (item: any) => {
         return item ? item.unicef_cash + item.partner_contribution : '0';
@@ -152,8 +161,8 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
       {
         title: 'Standard activity 1',
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In iaculis metus et neque viverra ',
-        unicef_cash: Number(data.act1_unicef),
-        partner_contribution: Number(data.act1_partner)
+        unicef_cash: String(data.act1_unicef),
+        partner_contribution: String(data.act1_partner)
       },
       {
         title: 'Standard activity 2',
@@ -170,6 +179,13 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
       }
     ];
   };
+
+  getTableStyle() {
+    return html`<style>
+        ${sharedStyles}
+      </style>
+      ${customStyles}`;
+  }
 
   editItem(e: CustomEvent) {
     this.openActivityDialog(e.detail);
