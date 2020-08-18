@@ -1,4 +1,3 @@
-/* eslint-disable lit/no-legacy-template-syntax */
 import {LitElement, customElement, html, property, query} from 'lit-element';
 import '@polymer/iron-pages/iron-pages.js';
 import '@polymer/iron-icons/iron-icons.js';
@@ -22,9 +21,10 @@ import {getStore} from '../../../../utils/redux-store-access';
 import {IndicatorDialogData} from './types';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {userIsPme} from '../../../../common/user-permissions';
+import ComponentBaseMixin from '../../../../common/mixins/component-base-mixin';
 
 @customElement('indicator-dialog')
-export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin(LitElement)) {
+export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin(ComponentBaseMixin(LitElement))) {
   render() {
     return html`
       ${gridLayoutStylesLit}
@@ -83,9 +83,9 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
         <etools-tabs
           id="indicatorTabs"
           tabs="${this.indicatorDataTabs}"
-          active-tab="${this.activeTab}"
+          .activeTab="${this.activeTab}"
           border-bottom
-          on-iron-select="_centerDialog"
+          @iron-select="${this.tabChanged}"
         ></etools-tabs>
 
         <iron-pages
@@ -100,7 +100,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
                 <etools-dropdown
                   id="sectionDropdw"
                   label="Section"
-                  selected="${this.indicator?.section}"
+                  .selected="${this.data?.section}"
                   placeholder="&#8212;"
                   options="${this.sectionOptions}"
                   option-label="name"
@@ -110,49 +110,56 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
                   error-message="Please select section(s)"
                   disable-on-focus-handling
                   fit-into="etools-dialog"
+                  trigger-value-change-event
+                  @etools-selected-item-changed="${({detail}: CustomEvent) =>
+                    this.selectedItemChanged(detail, 'section')}"
                 >
                 </etools-dropdown>
               </div>
             </div>
             <div class="row-h">
               <paper-toggle-button
-                disabled$="${this._clusterToggleIsDisabled(this.indicator)}"
-                checked="${this.isCluster}"
+                ?disabled="${this._clusterToggleIsDisabled(this.data)}"
+                ?checked="${this.isCluster}"
+                @iron-change="${this.isClusterChange}"
               ></paper-toggle-button>
               Cluster Indicator
             </div>
             <div class="indicator-content">
-              <template is="dom-if" if="${!this.isCluster}">
-                <non-cluster-indicator
-                  id="nonClusterIndicatorEl"
-                  indicator="${this.indicator}"
-                  location-options="${this.locationOptions}"
-                  intervention-status="${this.interventionStatus}"
-                ></non-cluster-indicator>
-              </template>
-              <template is="dom-if" if="${this.isCluster}">
-                <cluster-indicator
-                  id="clusterIndicatorEl"
-                  indicator="${this.indicator}"
-                  prp-disaggregations="${this.prpDisaggregations}"
-                  location-options="${this.locationOptions}"
-                ></cluster-indicator>
-              </template>
+              ${!this.isCluster
+                ? html` <non-cluster-indicator
+                    id="nonClusterIndicatorEl"
+                    .indicator="${this.data}"
+                    .locationOptions="${this.locationOptions}"
+                    .interventionStatus="${this.interventionStatus}"
+                  ></non-cluster-indicator>`
+                : html``}
+              ${this.isCluster
+                ? html` <cluster-indicator
+                    id="clusterIndicatorEl"
+                    .indicator="${this.data}"
+                    prp-disaggregations="${this.prpDisaggregations}"
+                    .locationOptions="${this.locationOptions}"
+                  ></cluster-indicator>`
+                : html``}
             </div>
           </div>
           <div class="row-padding" name="disaggregations">
-            <div hidden$="${this._hideAddDisaggreations(this.isCluster, this.currentUser)}" class="createDisaggreg">
+            <div ?hidden="${this._hideAddDisaggreations(this.isCluster, this.currentUser)}" class="createDisaggreg">
               If disaggregation groups that you need are not pre-defined yet, you can create them
               <a href="/pmp/settings" target="_blank">here</a>.
             </div>
-            <template is="dom-if" if="${!this.isCluster}" restamp>
-              <indicator-dissaggregations data-items="${this.disaggregations}" on-add-new-disaggreg="_updateScroll">
-              </indicator-dissaggregations>
-            </template>
-            <template is="dom-if" if="${this.isCluster}" restamp>
-              <cluster-indicator-disaggregations disaggregations="${this.prpDisaggregations}">
-              </cluster-indicator-disaggregations>
-            </template>
+            ${!this.isCluster
+              ? html` <indicator-dissaggregations
+                  data-items="${this.disaggregations}"
+                  @add-new-disaggreg="${this._updateScroll}"
+                >
+                </indicator-dissaggregations>`
+              : html``}
+            ${this.isCluster
+              ? html` <cluster-indicator-disaggregations .disaggregations="${this.prpDisaggregations}">
+                </cluster-indicator-disaggregations>`
+              : html``}
           </div>
         </iron-pages>
       </etools-dialog>
@@ -160,7 +167,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   }
 
   @property({type: Object})
-  indicator: Indicator | null = null;
+  data: Indicator | null = null; // This is the indicator
 
   @property({type: Object})
   actionParams!: AnyObject;
@@ -211,8 +218,8 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   private prpServerOn!: boolean;
 
   set dialogData(data: IndicatorDialogData) {
-    this.indicator = data.indicator ? data.indicator : new Indicator();
-    this.setTitle(this.indicator);
+    this.data = data.indicator ? data.indicator : new Indicator();
+    this.setTitle(this.data);
     this.sectionOptions = data.sectionOptions;
     this.locationOptions = data.locationOptions;
     this.llResultId = data.llResultId;
@@ -221,10 +228,22 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
     this.interventionStatus = getStore().getState().interventions.current.status;
 
     this.preselectSectionAndLocation();
-    this.isCluster = !!this.indicator.cluster_indicator_id;
+    this.isCluster = !!this.data.cluster_indicator_id;
     if (!this.isCluster) {
-      this.disaggregations = this._convertToArrayOfObj(this.indicator.disaggregation);
+      this.disaggregations = this._convertToArrayOfObj(this.data.disaggregation);
     }
+  }
+
+  tabChanged(e: CustomEvent) {
+    const newTabName: string = e.detail.item.getAttribute('name');
+    if (newTabName === this.activeTab) {
+      return;
+    }
+    this.activeTab = newTabName;
+  }
+
+  isClusterChange() {
+    this.isCluster = !this.isCluster;
   }
 
   // setIndicatorData(data: any, actionParams: any, interventionStatus: string) {
@@ -300,10 +319,10 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
 
   preselectSectionAndLocation() {
     if (this.sectionOptions && this.sectionOptions.length === 1) {
-      this.indicator!.section = this.sectionOptions[0].id;
+      this.data!.section = this.sectionOptions[0].id;
     }
     if (this.locationOptions && this.locationOptions.length === 1) {
-      this.indicator!.locations = [this.locationOptions[0].id];
+      this.data!.locations = [this.locationOptions[0].id];
     }
   }
 
