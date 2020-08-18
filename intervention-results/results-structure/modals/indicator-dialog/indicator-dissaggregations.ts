@@ -1,36 +1,32 @@
-import {PolymerElement, html} from '@polymer/polymer';
 import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/paper-input/paper-input.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 
-import RepeatableDataSetsMixin from '../../../../../../mixins/repeatable-data-sets-mixin';
-import {DomRepeatEvent} from '../../../../../../../typings/globals.types';
-import {Disaggregation} from '../../../../../../../typings/intervention.types';
-import {fireEvent} from '../../../../../../utils/fire-custom-event';
-import {connect} from 'pwa-helpers/connect-mixin';
-import {store, RootState} from '../../../../../../../store';
-import {gridLayoutStyles} from '../../../../../../styles/grid-layout-styles';
-import {SharedStyles} from '../../../../../../styles/shared-styles';
-import {repeatableDataSetsStyles} from '../../../../../../styles/repeatable-data-sets-styles';
-import {buttonsStyles} from '../../../../../../styles/buttons-styles';
-import {property} from '@polymer/decorators';
 import {PaperInputElement} from '@polymer/paper-input/paper-input.js';
 import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown.js';
-import {flaggedSortedDisaggregs} from '../../../../../../../reducers/common-data';
+import {LitElement, html, property} from 'lit-element';
+import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
+import RepeatableDataSetsMixin from '../../../../common/mixins/repeatable-data-sets-mixin';
+import {Disaggregation} from '../../../../common/models/globals.types';
+import {flaggedSortedDisaggregs} from '../../redux/selectors';
+import {getStore} from '../../../../utils/redux-store-access';
+import {repeatableDataSetsStyles} from '../../../../common/styles/repeatable-data-sets-styles';
+import {buttonsStyles} from '../../../../common/styles/button-styles';
+import {fireEvent} from '../../../../utils/fire-custom-event';
+import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 
 /**
- * @polymer
  * @customElement
  * @applies MixinRepeatableDataSets
  */
-class IndicatorDisaggregations extends connect(store)(RepeatableDataSetsMixin(PolymerElement)) {
+class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement) {
   render() {
     return html`
-      ${gridLayoutStyles} ${SharedStyles} ${repeatableDataSetsStyles} ${buttonsStyles}
+      ${gridLayoutStylesLit} ${repeatableDataSetsStyles} ${buttonsStyles}
       <style>
-        [hidden] {
+        ${sharedStyles} [hidden] {
           display: none !important;
         }
 
@@ -46,15 +42,15 @@ class IndicatorDisaggregations extends connect(store)(RepeatableDataSetsMixin(Po
           width: 100%;
         }
       </style>
-      <div hidden$="[[_isEmptyList(dataItems, dataItems.length)]]">
-        <template is="dom-repeat" items="{{dataItems}}">
-          <div class="row-h item-container no-h-margin">
+      <div ?hidden="${this._isEmptyList(this.dataItems, this.dataItems.length)}">
+        ${this.dataItems.map(
+          (item: any, index: number) => html` <div class="row-h item-container no-h-margin">
             <div class="item-actions-container">
               <div class="actions">
                 <paper-icon-button
                   class="action delete"
-                  on-tap="_openDeleteConfirmation"
-                  data-args$="[[index]]"
+                  @tap="${this._openDeleteConfirmation}"
+                  data-args="${index}"
                   icon="cancel"
                 ></paper-icon-button>
               </div>
@@ -63,14 +59,15 @@ class IndicatorDisaggregations extends connect(store)(RepeatableDataSetsMixin(Po
               <div class="row-h">
                 <div class="col col-4">
                   <etools-dropdown
-                    id="disaggregate_by_[[index]]"
+                    id="disaggregate_by_${index}}"
                     label="Disaggregate By"
-                    options="{{preDefinedDisaggregtions}}"
-                    selected="{{item.disaggregId}}"
+                    .options="${this.preDefinedDisaggregtions}"
+                    .selected="${item.disaggregId}"
                     option-value="id"
                     option-label="name"
                     trigger-value-change-event
-                    on-etools-selected-item-changed="_onDisaggregationSelected"
+                    @etools-selected-item-changed="${(event: CustomEvent) =>
+                      this._onDisaggregationSelected(event, index)}"
                     disable-on-focus-handling
                     fit-into="etools-dialog"
                   >
@@ -78,7 +75,7 @@ class IndicatorDisaggregations extends connect(store)(RepeatableDataSetsMixin(Po
                 </div>
                 <div class="col col-8">
                   <paper-input
-                    id="disaggregationGroups_[[index]]"
+                    id="disaggregationGroups_${index}"
                     readonly
                     label="Disaggregation Groups"
                     placeholder="&#8212;"
@@ -86,19 +83,19 @@ class IndicatorDisaggregations extends connect(store)(RepeatableDataSetsMixin(Po
                 </div>
               </div>
             </div>
-          </div>
-        </template>
+          </div>`
+        )}
       </div>
 
-      <div class="row-padding-v" hidden$="[[!_isEmptyList(dataItems, dataItems.length)]]">
+      <div class="row-padding-v" ?hidden="${!this._isEmptyList(this.dataItems, this.dataItems.length)}">
         <p>There are no disaggregations added.</p>
       </div>
 
       <div class="row-padding-v">
         <paper-button
           class="secondary-btn"
-          on-tap="_addNewDisaggregation"
-          hidden$="[[_maxDisaggregations(dataItems.length)]]"
+          @tap="_addNewDisaggregation"
+          ?hidden="${this._maxDisaggregations(this.dataItems.length)}"
           title="Add Disaggregation"
           >ADD DISAGGREGATION
         </paper-button>
@@ -109,16 +106,11 @@ class IndicatorDisaggregations extends connect(store)(RepeatableDataSetsMixin(Po
   @property({type: Array})
   preDefinedDisaggregtions!: Disaggregation[];
 
-  stateChanged(state: RootState) {
-    if (state.commonData!.disaggregations) {
-      this.preDefinedDisaggregtions = flaggedSortedDisaggregs(state);
-    }
-  }
-
-  ready() {
-    super.ready();
+  connectedCallback() {
+    super.connectedCallback();
     this.dataSetModel = {disaggregId: null};
     this.editMode = true;
+    this.preDefinedDisaggregtions = flaggedSortedDisaggregs(getStore().getState().commonData.disaggregations);
   }
 
   _isEmptyList(disaggregations: Disaggregation[], disaggregLength: number) {
@@ -134,21 +126,14 @@ class IndicatorDisaggregations extends connect(store)(RepeatableDataSetsMixin(Po
     fireEvent(this, 'add-new-disaggreg');
   }
 
-  _onDisaggregationSelected(event: DomRepeatEvent) {
+  _onDisaggregationSelected(event: CustomEvent, index: number) {
     const selectedDisagreg = event.detail.selectedItem;
     if (!selectedDisagreg) {
       return;
     }
 
-    const splitElId = (event.target as EtoolsDropdownEl).id.split('_');
-    const index = parseInt(splitElId[splitElId.length - 1]);
-
     if (this.isAlreadySelected(selectedDisagreg.id, index, 'disaggregId')) {
-      if (event.model.item.disaggregId === null) {
-        // an extra reset
-        event.model.set('item.disaggregId', 0);
-      }
-      event.model.set('item.disaggregId', null);
+      this.shadowRoot!.querySelector<EtoolsDropdownEl>('#disaggregate_by_' + index)!.selected = null;
       this._clearDisagregGroups(index);
       fireEvent(this, 'show-toast', {
         error: {response: 'Disaggregation already selected'}
