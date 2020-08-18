@@ -91,10 +91,10 @@ export class InterventionReviewAndSign extends connect(getStore())(
             <datepicker-lite
               id="submissionDateField"
               label="Document Submission Date"
-              value="${this.data.submission_date}"
-              readonly="?${!this.permissions.edit.submission_date}"
+              .value="${this.data.submission_date}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.submission_date)}"
               selected-date-display-format="D MMM YYYY"
-              required="?${this.permissions.required.submission_date}"
+              ?required="${this.permissions.required.submission_date}"
               max-date="${this.getCurrentDate()}"
               max-date-error-msg="Date can not be in the future"
               error-message="Document Submission Date is required"
@@ -107,13 +107,13 @@ export class InterventionReviewAndSign extends connect(getStore())(
             <paper-input-container>
               <div slot="input" class="paper-input-input">
                 <paper-checkbox
-                  checked="${this.data.submitted_to_prc}"
+                  ?checked="${this.data.submitted_to_prc}"
                   ?disabled="${this._isSubmittedToPrcCheckReadonly(
                     this.permissions.edit.prc_review_attachment,
                     this._lockSubmitToPrc
                   )}"
                   ?hidden="${!this._isNotSSFA(this.data.document_type)}"
-                  @checked-changed="${({detail}: CustomEvent) => this.logSomething(detail, 'technical_guidance')}"
+                  @checked-changed="${({detail}: CustomEvent) => this.updatePrc(detail)}"
                 >
                   Submitted to PRC?
                 </paper-checkbox>
@@ -122,16 +122,16 @@ export class InterventionReviewAndSign extends connect(getStore())(
           </div>
         </div>
         ${
-          this._showSubmittedToPrcFields(this.data.submitted_to_prc)
-            ? html` <div class="layout-horizontal row-padding-v row-second-bg">
+          this.data.submitted_to_prc
+            ? html`<div class="layout-horizontal row-padding-v row-second-bg">
                 <div class="col col-3">
                   <!-- Submission Date to PRC -->
                   <datepicker-lite
                     id="submissionDatePrcField"
                     label="Submission Date to PRC"
-                    value="${this.data.submission_date_prc}"
-                    readonly="?${!this.permissions.edit.submission_date_prc}"
-                    required="?${this.data.prc_review_attachment}"
+                    .value="${this.data.submission_date_prc}"
+                    ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.submission_date_prc)}"
+                    ?required="${this.data.prc_review_attachment}"
                     selected-date-display-format="D MMM YYYY"
                     auto-validate
                   >
@@ -142,9 +142,9 @@ export class InterventionReviewAndSign extends connect(getStore())(
                   <datepicker-lite
                     id="reviewDatePrcField"
                     label="Review Date by PRC"
-                    value="${this.data.review_date_prc}"
-                    readonly="?${!this.permissions.edit.review_date_prc}"
-                    required="?${this.data.prc_review_attachment}"
+                    .value="${this.data.review_date_prc}"
+                    ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.review_date_prc)}"
+                    ?required="${this.data.prc_review_attachment}"
                     selected-date-display-format="D MMM YYYY"
                     auto-validate
                   >
@@ -159,7 +159,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
                     file-url="${this.data.prc_review_attachment}"
                     upload-endpoint="${this.uploadEndpoint}"
                     @upload-finished="_prcRevDocUploadFinished"
-                    ?readonly="${!this.permissions.edit.prc_review_attachment}"
+                    ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.prc_review_attachment)}"
                     show-delete-btn="${this.showPrcReviewDeleteBtn(this.data.status)}"
                     @delete-file="${this._prcRevDocDelete}"
                     @upload-started="${this._onUploadStarted}"
@@ -179,7 +179,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
               placeholder="&#8212;"
               .options="${this.getCleanEsmmOptions(this.agreementAuthorizedOfficers)}"
               .selected="${this.data.partner_authorized_officer_signatory}"
-              ?readonly="${this.permissions.edit.partner_authorized_officer_signatory}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.partner_authorized_officer_signatory)}"
               ?required="${this.permissions.required.partner_authorized_officer_signatory}"
               auto-validate
               error-message="Please select Partner Authorized Officer"
@@ -192,8 +192,8 @@ export class InterventionReviewAndSign extends connect(getStore())(
               id="signedByPartnerDateField"
               label="Signed by Partner Date"
               .value="${this.data.signed_by_partner_date}"
-              readonly="${!this.permissions.edit.signed_by_partner_date}"
               ?required="${this.permissions.required.signed_by_partner_date}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.signed_by_partner_date)}"
               auto-validate
               error-message="Date is required"
               max-date-error-msg="Date can not be in the future"
@@ -218,8 +218,8 @@ export class InterventionReviewAndSign extends connect(getStore())(
               id="signedByUnicefDateField"
               label="Signed by UNICEF Date"
               value="${this.data.signed_by_unicef_date}"
-              readonly="${!this.permissions.edit.signed_by_unicef_date}"
-              required="?${this.permissions.required.signed_by_unicef_date}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.signed_by_unicef_date)}"
+              ?required="${this.permissions.required.signed_by_unicef_date}"
               auto-validate
               error-message="Date is required"
               max-date-error-msg="Date can not be in the future"
@@ -240,8 +240,8 @@ export class InterventionReviewAndSign extends connect(getStore())(
               .options="${this.getCleanEsmmOptions(this.signedByUnicefUsers)}"
               option-value="id"
               option-label="name"
-              selected="${this.data.unicef_signatory}"
-              readonly="?${!this.permissions.edit.unicef_signatory}"
+              .selected="${this.data.unicef_signatory}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.unicef_signatory)}"
               auto-validate
               error-message="Please select UNICEF user"
             >
@@ -261,8 +261,8 @@ export class InterventionReviewAndSign extends connect(getStore())(
               show-delete-btn="${this.showSignedPDDeleteBtn(this.data.status)}"
               @delete-file="${this._signedPDDocDelete}"
               auto-validate
-              readonly="?${!this.permissions.edit.signed_pd_attachment}"
-              required="?${this.permissions.required.signed_pd_attachment}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.signed_pd_attachment)}"
+              ?required="${this.permissions.required.signed_pd_attachment}"
               error-message="Please select Signed PD/SSFA document"
               @upload-started="${this._onUploadStarted}"
               @change-unsaved-file="${this._onChangeUnsavedFile}"
@@ -274,7 +274,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
               ? html`<div class="col col-3">
                     <paper-input
                       label="Days from Submission to Signed"
-                      value="${this.data.days_from_submission_to_signed}"
+                      .value="${this.data.days_from_submission_to_signed}"
                       placeholder="&#8212;"
                       readonly
                     >
@@ -283,7 +283,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
                   <div class="col col-3">
                     <paper-input
                       label="Days from Review to Signed"
-                      value="${this.data.days_from_review_to_signed}"
+                      .value="${this.data.days_from_review_to_signed}"
                       placeholder="&#8212;"
                       readonly
                     >
@@ -579,9 +579,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
     return new Date();
   }
 
-  logSomething(detail: any, key: string) {
-    console.log('whatever');
-    console.log('detail', detail);
-    console.log('key', key);
+  updatePrc(detail: any) {
+    this.data = {...this.data, submitted_to_prc: detail.value} as ReviewData;
   }
 }
