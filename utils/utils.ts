@@ -53,7 +53,7 @@ export const areEqual = (obj1: any, obj2: any): boolean => {
   return true;
 };
 
-// TODO: Can this be optimized to cover cases when allOptions is a super long list?
+// TODO: Can this be optimized for cases when allOptions is a super long list?
 export const filterByIds = <T>(allOptions: T[], givenIds: string[]): T[] => {
   if (isEmpty(allOptions) || isEmpty(givenIds)) {
     return [];
@@ -61,7 +61,7 @@ export const filterByIds = <T>(allOptions: T[], givenIds: string[]): T[] => {
 
   const intGivenIds = givenIds.map((id: string) => Number(id));
   const options = allOptions.filter((opt: any) => {
-    return intGivenIds.indexOf(Number(opt.id)) > -1;
+    return intGivenIds.includes(Number(opt.id));
   });
 
   return options;

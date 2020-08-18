@@ -1,14 +1,13 @@
 // import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin';
 
-import {EtoolsTab} from '../../../../../common/models/globals.types';
-import {property} from 'lit-element';
-import {IndicatorDialog} from '../indicator-dialog';
+import {EtoolsTab, Constructor} from '../../../../../common/models/globals.types';
+import {property, LitElement} from 'lit-element';
 
 /**
  * @polymer
  * @mixinFunction
  */
-function IndicatorDialogTabsMixin<T extends IndicatorDialog>(baseClass: T) {
+function IndicatorDialogTabsMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class IndicatorDialogTabsClass extends baseClass {
     @property({type: Array})
     indicatorDataTabs: EtoolsTab[] = [

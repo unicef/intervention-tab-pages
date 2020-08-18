@@ -11,9 +11,11 @@ import './modals/indicator-dialog/indicator-dialog';
 import get from 'lodash-es/get';
 import {isJsonStrMatch} from '../../../../../utils/utils';
 import {filterByIds} from '../../utils/utils';
+import EnvironmentFlagsMixin from '../../common/mixins/environment-flags-mixin';
+import {IndicatorDialogData} from './modals/indicator-dialog/types';
 
 @customElement('pd-indicators')
-export class PdIndicators extends connect(getStore())(LitElement) {
+export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitElement)) {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
@@ -169,14 +171,14 @@ export class PdIndicators extends connect(getStore())(LitElement) {
   }
 
   openIndicatorDialog(indicator?: Indicator) {
-    openDialog({
+    openDialog<IndicatorDialogData>({
       dialog: 'indicator-dialog',
       dialogData: {
-        indicator: indicator,
+        indicator: indicator ? indicator : null,
         sectionOptions: this.indicatorSectionOptions,
         locationOptions: this.indicatorLocationOptions,
         llResultId: this.pdOutputId,
-        currentUser: this.currentUser
+        prpServerOn: this.prpServerIsOn()!
       }
     });
   }

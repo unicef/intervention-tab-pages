@@ -1,14 +1,31 @@
 /* eslint-disable lit/no-legacy-template-syntax */
-import {LitElement, customElement, html, property} from 'lit-element';
+import {LitElement, customElement, html, property, query} from 'lit-element';
+import '@polymer/iron-pages/iron-pages.js';
+import '@polymer/iron-icons/iron-icons.js';
+import '@polymer/paper-input/paper-input.js';
+import '@polymer/paper-tabs/paper-tab.js';
+import '@polymer/paper-tabs/paper-tabs.js';
+import '@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
+import '@polymer/paper-item/paper-item.js';
+import '@polymer/paper-toggle-button/paper-toggle-button.js';
+import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
+import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
-import {AnyObject, Section, User} from '../../../../common/models/globals.types';
+import {AnyObject, Section, User, LocationObject} from '../../../../common/models/globals.types';
 import {Indicator} from '../../../../common/models/intervention.types';
 import {isEmptyObject} from '../../../../utils/utils';
 import EtoolsDialog from '@unicef-polymer/etools-dialog';
+import SaveIndicatorMixin from './mixins/save-indicator-mixin';
+import IndicatorDialogTabsMixin from './mixins/indicator-dialog-tabs-mixin';
+import {fireEvent} from '../../../../utils/fire-custom-event';
+import {getStore} from '../../../../utils/redux-store-access';
+import {IndicatorDialogData} from './types';
+
 
 @customElement('indicator-dialog')
-export class IndicatorDialog extends LitElement {
+export class IndicatorDialog extends IndicatorDialogTabsMixin(
+  SaveIndicatorMixin(LitElement)) {
   render() {
     return html`
       ${gridLayoutStylesLit}
@@ -55,18 +72,18 @@ export class IndicatorDialog extends LitElement {
         id="indicatorDialog"
         size="lg"
         dialog-title="Indicator"
-        on-close="_cleanUp"
         no-padding
-        on-confirm-btn-clicked="_validateAndSaveIndicator"
+        @close="${this.onClose}"
+        @confirm-btn-clicked="${this._validateAndSaveIndicator}"
         ok-btn-text="Save"
         keep-dialog-open
-        disable-confirm-btn="[[disableConfirmBtn]]"
-        spinner-text="[[spinnerText]]"
+        .disableConfirmBtn="${this.disableConfirmBtn}"
+        spinner-text="${this.spinnerText}"
       >
         <etools-tabs
           id="indicatorTabs"
-          tabs="[[indicatorDataTabs]]"
-          active-tab="{{activeTab}}"
+          tabs="${this.indicatorDataTabs}"
+          active-tab="${this.activeTab}"
           border-bottom
           on-iron-select="_centerDialog"
         ></etools-tabs>
@@ -78,9 +95,9 @@ export class IndicatorDialog extends LitElement {
                 <etools-dropdown
                   id="sectionDropdw"
                   label="Section"
-                  selected="{{indicator.section}}"
+                  selected="${this.indicator.section}"
                   placeholder="&#8212;"
-                  options="[[sectionOptions]]"
+                  options="${this.sectionOptions}"
                   option-label="name"
                   option-value="id"
                   required
@@ -94,41 +111,41 @@ export class IndicatorDialog extends LitElement {
             </div>
             <div class="row-h">
               <paper-toggle-button
-                disabled$="[[_clusterToggleIsDisabled(indicator)]]"
-                checked="{{isCluster}}"
+                disabled$="${this._clusterToggleIsDisabled(this.indicator)}"
+                checked="${this.isCluster}"
               ></paper-toggle-button>
               Cluster Indicator
             </div>
             <div class="indicator-content">
-              <template is="dom-if" if="[[!isCluster]]">
+              <template is="dom-if" if="${!this.isCluster}">
                 <non-cluster-indicator
                   id="nonClusterIndicatorEl"
-                  indicator="{{indicator}}"
-                  location-options="[[locationOptions]]"
-                  intervention-status="[[interventionStatus]]"
+                  indicator="${this.indicator}"
+                  location-options="${this.locationOptions}"
+                  intervention-status="${this.interventionStatus}"
                 ></non-cluster-indicator>
               </template>
-              <template is="dom-if" if="[[isCluster]]">
+              <template is="dom-if" if="${this.isCluster}">
                 <cluster-indicator
                   id="clusterIndicatorEl"
-                  indicator="{{indicator}}"
-                  prp-disaggregations="{{prpDisaggregations}}"
-                  location-options="[[locationOptions]]"
+                  indicator="${this.indicator}"
+                  prp-disaggregations="${this.prpDisaggregations}"
+                  location-options="${this.locationOptions}"
                 ></cluster-indicator>
               </template>
             </div>
           </div>
           <div class="row-padding" name="disaggregations">
-            <div hidden$="[[_hideAddDisaggreations(isCluster, currentUser)]]" class="createDisaggreg">
+            <div hidden$="${this._hideAddDisaggreations(this.isCluster, this.currentUser)}" class="createDisaggreg">
               If disaggregation groups that you need are not pre-defined yet, you can create them
               <a href="/pmp/settings" target="_blank">here</a>.
             </div>
-            <template is="dom-if" if="[[!isCluster]]" restamp>
-              <indicator-dissaggregations data-items="{{disaggregations}}" on-add-new-disaggreg="_updateScroll">
+            <template is="dom-if" if="${!this.isCluster}" restamp>
+              <indicator-dissaggregations data-items="${this.disaggregations}" on-add-new-disaggreg="_updateScroll">
               </indicator-dissaggregations>
             </template>
-            <template is="dom-if" if="[[isCluster]]" restamp>
-              <cluster-indicator-disaggregations disaggregations="[[prpDisaggregations]]">
+            <template is="dom-if" if="${this.isCluster}" restamp>
+              <cluster-indicator-disaggregations disaggregations="${this.prpDisaggregations}">
               </cluster-indicator-disaggregations>
             </template>
           </div>
@@ -139,7 +156,7 @@ export class IndicatorDialog extends LitElement {
 
 
   @property({type: Object})
-  indicator!: Indicator;
+  indicator: Indicator | null = null;
 
   @property({type: Object})
   actionParams!: AnyObject;
@@ -160,7 +177,7 @@ export class IndicatorDialog extends LitElement {
   sectionOptions!: Section[];
 
   @property({type: Array})
-  locationOptions!: Location[];
+  locationOptions!: LocationObject[];
 
   @property({type: Boolean})
   isCluster = false;
@@ -180,9 +197,23 @@ export class IndicatorDialog extends LitElement {
   @property({type: Object})
   currentUser!: User;
 
+  @query('etools-dialog')
+  indicatorDialog!: EtoolsDialog;
 
-  ready() {
-    super.ready();
+  private llResultId!: string; /**aka pdOutputId */
+  private prpServerOn!: boolean;
+
+  set dialogData(data: IndicatorDialogData) {
+    this.indicator = data.indicator;
+    this.sectionOptions = data.sectionOptions;
+    this.locationOptions = data.locationOptions;
+    this.currentUser = getStore().getState().user.data;
+    this.llResultId = data.llResultId;
+    this.prpServerOn = data.prpServerOn;
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
     this._initIndicatorDialogListeners();
   }
 
@@ -192,7 +223,7 @@ export class IndicatorDialog extends LitElement {
   }
 
   _updateScroll() {
-    (this.$.indicatorDialog as EtoolsDialog).scrollDown();
+    this.indicatorDialog.scrollDown();
   }
 
   _initIndicatorDialogListeners() {
@@ -210,22 +241,25 @@ export class IndicatorDialog extends LitElement {
     this.removeEventListener('stop-spinner', this._stopSpinner as any);
     this.removeEventListener('show-toast', this._showToast as any);
   }
+  onClose() {
+    fireEvent(this, 'dialog-closed', {confirmed: false});
+  }
 
   _clusterToggleIsDisabled(indicator: any) {
     if (indicator && indicator.id) {
       return true;
     }
-    return !this.prpServerIsOn();
+    return !this.prpServerOn;
   }
 
   openIndicatorDialog() {
     this.updateActiveTab('details');
     this.disableConfirmBtn = false;
-    (this.$.indicatorDialog as EtoolsDialog).opened = true;
+    this.indicatorDialog.opened = true;
   }
 
   setTitle(title: string) {
-    (this.$.indicatorDialog as EtoolsDialog).dialogTitle = title;
+    this.indicatorDialog.dialogTitle = title;
   }
 
   setIndicatorData(data: any, actionParams: any, interventionStatus: string) {
@@ -271,17 +305,11 @@ export class IndicatorDialog extends LitElement {
     });
   }
 
-  _cleanUp() {
-    this._stopSpinner();
-    this.disableConfirmBtn = false;
-    // Anything else?
-  }
-
   _stopSpinner(e?: CustomEvent) {
     if (e) {
       e.stopImmediatePropagation();
     }
-    (this.$.indicatorDialog as EtoolsDialog).stopSpinner();
+    this.indicatorDialog.stopSpinner();
     this.spinnerText = 'Saving...';
   }
 
@@ -290,7 +318,7 @@ export class IndicatorDialog extends LitElement {
       e.stopImmediatePropagation();
       this.set('spinnerText', e.detail.spinnerText);
     }
-    (this.$.indicatorDialog as EtoolsDialog).startSpinner();
+    this.indicatorDialog.startSpinner();
   }
 
   _showToast(e: CustomEvent) {
@@ -329,7 +357,7 @@ export class IndicatorDialog extends LitElement {
   }
 
   _centerDialog() {
-    (this.$.indicatorDialog as EtoolsDialog).notifyResize();
+    this.indicatorDialog.notifyResize();
   }
 
   _computeOptions(optionsIds: string[], allOptions: AnyObject[]) {

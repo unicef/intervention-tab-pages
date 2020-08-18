@@ -5,12 +5,12 @@ import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
 import {LitElement} from 'lit-element';
 import {getEndpoint} from '../../../../../utils/endpoint-helper';
-import {IndicatorDialog} from '../indicator-dialog';
+import {Constructor} from '../../../../../common/models/globals.types';
 
 /**
  * @mixinFunction
  */
-function SaveIndicatorMixin<T extends IndicatorDialog>(baseClass: T) {
+function SaveIndicatorMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class SaveIndicatorClass extends baseClass {
     // @ts-ignore
     private nonClusterIndicatorCreateModel = {
