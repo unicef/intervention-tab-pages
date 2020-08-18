@@ -261,7 +261,7 @@ export class FundReservationsDisplay extends EtoolsCurrency(FrNumbersConsistency
     `;
   }
 
-  _intervention!: Intervention | null = null;
+  _intervention: Intervention | null = null;
 
   set intervention(intervention: Intervention | null) {
     this._intervention = intervention;

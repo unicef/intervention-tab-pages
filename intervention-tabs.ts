@@ -42,6 +42,9 @@ export class InterventionTabs extends LitElement {
   }
 
   render() {
+    if (!this.intervention) {
+      return html``;
+    }
     // main template
     // language=HTML
     return html`

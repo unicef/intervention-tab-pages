@@ -109,6 +109,7 @@ export class PlannedVisit {
   programmatic_q3 = '0';
   programmatic_q4 = '0';
   programmatic: any;
+  [key: string]: any;
 }
 
 export class InterventionSupplyItem {
@@ -238,6 +239,8 @@ export class Intervention {
   permissions?: Permission<InterventionPermissionsFields>;
   humanitarian_flag?: boolean;
   partner_id?: string;
+  hq_support_cost?: string;
+  prgm_effectiveness?: string;
 }
 
 export class InterventionAmendment {
@@ -291,4 +294,25 @@ export interface ResultIndicator {
   sector_total: null | number;
   total: null | number;
   unit: null | number;
+}
+
+export class ListItemIntervention {
+  start = '';
+  end = '';
+  frs_earliest_start_date: string | null = '';
+  frs_latest_end_date: string | null = '';
+  partner_name?: string = '';
+  cp_outputs: number[] = [];
+  unicef_budget = 0;
+  cso_contribution = 0;
+  country_programme?: number;
+  title?: string = '';
+  status = '';
+  number?: string = '';
+  offices: [] = [];
+  sections: number[] = [];
+  section_names: string[] | null = null;
+  document_type?: string = '';
+  unicef_focal_points: [] = [];
+  [key: string]: any;
 }
