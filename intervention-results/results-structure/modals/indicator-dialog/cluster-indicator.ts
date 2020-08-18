@@ -21,7 +21,7 @@ import {PaperInputElement} from '@polymer/paper-input/paper-input';
  * @appliesMixin EndpointsMixin
  */
 class ClusterIndicator extends connect(store)(IndicatorsCommonMixin(EndpointsMixin(PolymerElement))) {
-  static get template() {
+  render() {
     return html`
       ${gridLayoutStyles} ${SharedStyles} ${requiredFieldStarredStyles}
       <style>

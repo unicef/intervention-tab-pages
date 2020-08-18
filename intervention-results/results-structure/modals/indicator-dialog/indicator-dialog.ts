@@ -121,7 +121,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
               <paper-toggle-button
                 ?disabled="${this._clusterToggleIsDisabled(this.data)}"
                 ?checked="${this.isCluster}"
-                @iron-change="${this.isClusterChange}"
+                @iron-change="${this.isClusterChanged}"
               ></paper-toggle-button>
               Cluster Indicator
             </div>
@@ -242,7 +242,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
     this.activeTab = newTabName;
   }
 
-  isClusterChange() {
+  isClusterChanged() {
     this.isCluster = !this.isCluster;
   }
 

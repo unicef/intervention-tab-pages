@@ -11,14 +11,14 @@ import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../../../common/styles/button-styles';
 import {Indicator} from '../../../../common/models/intervention.types';
+import {PaperCheckboxElement} from '@polymer/paper-checkbox/paper-checkbox.js';
 
 /**
- * @polymer
  * @customElement
  * @appliesMixin IndicatorsCommonMixin
  */
 class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
-  static get template() {
+  render() {
     return html`
       ${gridLayoutStylesLit} ${buttonsStyles}
       <style>
@@ -71,7 +71,12 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         <div class="layout-vertical">
           <label class="paper-label">Type </label>
           <div class="radioGroup">
-            <paper-radio-group .selected="{{indicator.indicator.unit}}">
+            <paper-radio-group
+              .selected="${this.indicator?.indicator?.unit}"
+              @selected-changed="${({detail}: CustomEvent) => {
+                this.indicator!.indicator!.unit = detail.value;
+              }}"
+            >
               <paper-radio-button ?disabled="${this.readonly}" class="no-left-padding" name="number"
                 >Quantity / Scale
               </paper-radio-button>
@@ -82,11 +87,18 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         <div class="layout-vertical" ?hidden="${this._unitIsNumeric(this.indicator.indicator.unit)}">
           <label class="paper-label">Display Type </label>
           <div class="radioGroup">
-            <paper-radio-group selected="{{indicator.indicator.display_type}}">
-              <paper-radio-button disabled="${this.readonly}" class="no-left-padding" name="percentage"
+            <paper-radio-group
+              .selected="{{indicator.indicator.display_type}}"
+              @selected-changed="${({detail}: CustomEvent) => {
+                this.indicator.indicator.display_type = detail.value;
+              }}"
+            >
+              <paper-radio-button ?disabled="${this.readonly}" class="no-left-padding" name="percentage"
                 >Percentage
               </paper-radio-button>
-              <paper-radio-button disabled="${this.readonly}" name="ratio">Ratio</paper-radio-button>
+              <paper-radio-button ?disabled="${this.readonly}" name="ratio">
+                Ratio
+              </paper-radio-button>
             </paper-radio-group>
           </div>
         </div>
@@ -96,11 +108,11 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           id="titleEl"
           required
           label="Indicator"
-          value="{{indicator.indicator.title}}"
+          .value="{{indicator.indicator.title}}"
           placeholder="&#8212;"
           error-message="Please add a title"
           auto-validate
-          readonly$="${this.readonly}"
+          ?readonly="${this.readonly}"
         >
         </paper-input>
       </div>
@@ -111,8 +123,11 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           <paper-input
             id="numeratorLbl"
             label="Numerator Label"
-            value="{{indicator.numerator_label}}"
+            .value="${this.indicator.numerator_label}"
             placeholder="&#8212;"
+            @value-changed="${({detail}: CustomEvent) => {
+              this.indicator.numerator_label = detail.value;
+            }}"
           >
           </paper-input>
         </div>
@@ -120,151 +135,182 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           <paper-input
             id="denomitorLbl"
             label="Denominator Label"
-            value="{{indicator.denominator_label}}"
+            .value="${this.indicator.denominator_label}"
             placeholder="&#8212;"
+            @value-changed="${({detail}: CustomEvent) => {
+              this.indicator.denominator_label = detail.value;
+            }}"
           >
           </paper-input>
         </div>
       </div>
       <div class="row-h flex-c">
-        <template
-          is="dom-if"
-          if="${!this._isRatioType(this.indicator.indicator.unit, this.indicator.indicator.display_type)}"
-        >
-          <div class="col col-3">
-            <template is="dom-if" if="${this._unitIsNumeric(this.indicator.indicator.unit)}">
-              <paper-input
-                id="baselineNumeric"
-                label="Baseline"
-                value="{{indicator.baseline.v}}"
-                allowed-pattern="[0-9.,]"
-                pattern="${this.numberPattern}"
-                auto-validate
-                error-message="Invalid number"
-                placeholder="&#8212;"
-                disabled="${this.baselineIsUnknown}"
-              >
-              </paper-input>
-            </template>
-            <template is="dom-if" if="${!this._unitIsNumeric(indicator.indicator.unit)}">
-              <paper-input
-                id="baselineNonNumeric"
-                label="Baseline"
-                value="{{indicator.baseline.v}}"
-                allowed-pattern="[0-9]"
-                pattern="${this.digitsPattern}"
-                auto-validate
-                error-message="Invalid number"
-                placeholder="&#8212;"
-                disabled="${this.baselineIsUnknown}"
-              >
-              </paper-input>
-            </template>
-          </div>
-          <div class="col col-3">
-            <paper-input
-              label="Target"
-              id="targetElForNumericUnit"
-              value="{{indicator.target.v}}"
-              placeholder="&#8212;"
-              allowed-pattern="[0-9.,]"
-              required
-              pattern="${this.numberPattern}"
-              auto-validate
-              error-message="Please add a valid target"
-              ?hidden="${!this._unitIsNumeric(this.indicator.indicator.unit)}"
-            >
-            </paper-input>
-            <paper-input
-              label="Target"
-              id="targetElForNonNumericUnit"
-              value="{{indicator.target.v}}"
-              placeholder="&#8212;"
-              allowed-pattern="[0-9]"
-              required
-              pattern="${this.digitsPattern}"
-              auto-validate
-              error-message="Please add a valid target"
-              ?hidden="${this._unitIsNumeric(this.indicator.indicator.unit)}"
-            >
-            </paper-input>
-          </div>
-        </template>
-        <template
-          is="dom-if"
-          if="${this._isRatioType(this.indicator.indicator.unit, indicator.indicator.display_type)}"
-        >
-          <div class="col-3 layout-horizontal">
-            <paper-input
-              id="baselineNumerator"
-              label="Baseline"
-              value="{{indicator.baseline.v}}"
-              allowed-pattern="[0-9]"
-              pattern="${this.digitsNotStartingWith0Pattern}"
-              auto-validate
-              error-message="Invalid"
-              placeholder="Numerator"
-              disabled="${this.baselineIsUnknown}"
-            >
-            </paper-input>
-            <div class="layout-horizontal bottom-aligned dash-separator">/</div>
-            <paper-input
-              id="baselineDenominator"
-              value="{{indicator.baseline.d}}"
-              allowed-pattern="[0-9]"
-              pattern="${this.digitsNotStartingWith0Pattern}"
-              auto-validate
-              error-message="Invalid"
-              placeholder="Denominator"
-              disabled="${this.baselineIsUnknown}"
-            >
-            </paper-input>
-          </div>
-          <div class="col col-3">
-            <paper-input
-              label="Target"
-              id="targetNumerator"
-              value="{{indicator.target.v}}"
-              allowed-pattern="[0-9]"
-              pattern="${this.digitsNotStartingWith0Pattern}"
-              auto-validate
-              required
-              auto-validate
-              error-message="Invalid"
-              placeholder="Numerator"
-            >
-            </paper-input>
-            <div class="layout-horizontal bottom-aligned dash-separator">/</div>
-            <paper-input
-              id="targetDenominator"
-              value="{{indicator.target.d}}"
-              required
-              allowed-pattern="[0-9]"
-              pattern="${this.digitsNotStartingWith0Pattern}"
-              auto-validate
-              error-message="Empty or < 1"
-              placeholder="Denominator"
-              readonly$="${this.isReadonlyDenominator(interventionStatus, indicator.id)}"
-            >
-            </paper-input>
-          </div>
-        </template>
+        ${!this._isRatioType(this.indicator.indicator.unit, this.indicator.indicator.display_type)
+          ? html` <div class="col col-3">
+                ${this._unitIsNumeric(this.indicator.indicator.unit)
+                  ? html` <paper-input
+                      id="baselineNumeric"
+                      label="Baseline"
+                      .value="${this.indicator.baseline.v}"
+                      allowed-pattern="[0-9.,]"
+                      .pattern="${this.numberPattern}"
+                      auto-validate
+                      error-message="Invalid number"
+                      placeholder="&#8212;"
+                      ?disabled="${this.baselineIsUnknown}"
+                      @value-changed="${({detail}: CustomEvent) => {
+                        this.indicator.baseline.v = detail.value;
+                      }}"
+                    >
+                    </paper-input>`
+                  : html``}
+                ${!this._unitIsNumeric(this.indicator.indicator.unit)
+                  ? html` <paper-input
+                      id="baselineNonNumeric"
+                      label="Baseline"
+                      .value="${this.indicator.baseline.v}"
+                      allowed-pattern="[0-9]"
+                      .pattern="${this.digitsPattern}"
+                      auto-validate
+                      error-message="Invalid number"
+                      placeholder="&#8212;"
+                      ?disabled="${this.baselineIsUnknown}"
+                      @value-changed="${({detail}: CustomEvent) => {
+                        this.indicator.baseline.v = detail.value;
+                      }}"
+                    >
+                    </paper-input>`
+                  : html``}
+              </div>
+              <div class="col col-3">
+                <paper-input
+                  label="Target"
+                  id="targetElForNumericUnit"
+                  .value="${this.indicator.target.v}"
+                  placeholder="&#8212;"
+                  allowed-pattern="[0-9.,]"
+                  required
+                  .pattern="${this.numberPattern}"
+                  auto-validate
+                  error-message="Please add a valid target"
+                  @value-changed="${({detail}: CustomEvent) => {
+                    this.indicator.target.v = detail.value;
+                  }}"
+                  ?hidden="${!this._unitIsNumeric(this.indicator.indicator.unit)}"
+                >
+                </paper-input>
+                <paper-input
+                  label="Target"
+                  id="targetElForNonNumericUnit"
+                  .value="${this.indicator.target.v}"
+                  placeholder="&#8212;"
+                  allowed-pattern="[0-9]"
+                  required
+                  .pattern="${this.digitsPattern}"
+                  auto-validate
+                  error-message="Please add a valid target"
+                  ?hidden="${this._unitIsNumeric(this.indicator.indicator.unit)}"
+                  @value-changed="${({detail}: CustomEvent) => {
+                    this.indicator.target.v = detail.value;
+                  }}"
+                >
+                </paper-input>
+              </div>`
+          : html``}
+        ${this._isRatioType(this.indicator.indicator.unit, indicator.indicator.display_type)
+          ? html` <div class="col-3 layout-horizontal">
+                <paper-input
+                  id="baselineNumerator"
+                  label="Baseline"
+                  .value="${this.indicator.baseline.v}"
+                  allowed-pattern="[0-9]"
+                  .pattern="${this.digitsNotStartingWith0Pattern}"
+                  auto-validate
+                  error-message="Invalid"
+                  placeholder="Numerator"
+                  ?disabled="${this.baselineIsUnknown}"
+                  @value-changed="${({detail}: CustomEvent) => {
+                    this.indicator.baseline.v = detail.value;
+                  }}"
+                >
+                </paper-input>
+                <div class="layout-horizontal bottom-aligned dash-separator">/</div>
+                <paper-input
+                  id="baselineDenominator"
+                  .value="${this.indicator.baseline.d}"
+                  allowed-pattern="[0-9]"
+                  .pattern="${this.digitsNotStartingWith0Pattern}"
+                  auto-validate
+                  error-message="Invalid"
+                  placeholder="Denominator"
+                  ?disabled="${this.baselineIsUnknown}"
+                  @value-changed="${({detail}: CustomEvent) => {
+                    this.indicator.baseline.d = detail.value;
+                  }}"
+                >
+                </paper-input>
+              </div>
+              <div class="col col-3">
+                <paper-input
+                  label="Target"
+                  id="targetNumerator"
+                  .value="${this.indicator.target.v}"
+                  allowed-pattern="[0-9]"
+                  .pattern="${this.digitsNotStartingWith0Pattern}"
+                  auto-validate
+                  required
+                  error-message="Invalid"
+                  placeholder="Numerator"
+                  @value-changed="${({detail}: CustomEvent) => {
+                    this.indicator.target.v = detail.value;
+                  }}"
+                >
+                </paper-input>
+                <div class="layout-horizontal bottom-aligned dash-separator">/</div>
+                <paper-input
+                  id="targetDenominator"
+                  .value="${this.indicator.target.d}"
+                  required
+                  allowed-pattern="[0-9]"
+                  .pattern="${this.digitsNotStartingWith0Pattern}"
+                  auto-validate
+                  error-message="Empty or < 1"
+                  placeholder="Denominator"
+                  ?readonly="${this.isReadonlyDenominator(this.interventionStatus, this.indicator.id)}"
+                  @value-changed="${({detail}: CustomEvent) => {
+                    this.indicator.target.d = detail.value;
+                  }}"
+                >
+                </paper-input>
+              </div>`
+          : html``}
         <div class="col col-6">
-          <paper-toggle-button checked="{{indicator.is_high_frequency}}">
+          <paper-toggle-button
+            ?checked="${this.indicator.is_high_frequency}"
+            @iron-change="${this.isHighFrequencyChanged}"
+          >
             High Frequency Humanitarian Indicator
           </paper-toggle-button>
         </div>
       </div>
       <div class="unknown">
-        <paper-checkbox checked="{{baselineIsUnknown}}">Unknown</paper-checkbox>
+        <paper-checkbox
+          ?checked="${this.baselineIsUnknown}"
+          @checked-changed="${({target}: CustomEvent) =>
+            this.baselineIsUnknownChanged(Boolean((target as PaperCheckboxElement).checked))}"
+          >Unknown</paper-checkbox
+        >
       </div>
       <!-- Baseline & Target -->
       <div class="row-h flex-c">
         <paper-textarea
           label="Means of Verification"
           type="text"
-          value="{{indicator.means_of_verification}}"
+          .value="${this.indicator.means_of_verification}"
           placeholder="&#8212;"
+          @value-changed="${({detail}: CustomEvent) => {
+            this.indicator.means_of_verification = detail.value;
+          }}"
         >
         </paper-textarea>
       </div>
@@ -273,8 +319,8 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           id="locationsDropdw"
           label="Locations"
           placeholder="&#8212;"
-          selected-values="{{indicator.locations}}"
-          options="${this.locationOptions}"
+          .selectedValues="${this.indicator.locations}"
+          .options="${this.locationOptions}"
           option-label="name"
           option-value="id"
           required
@@ -282,6 +328,11 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           error-message="Please select locations"
           disable-on-focus-handling
           fit-into="etools-dialog"
+          trigger-value-change-event
+          @etools-selected-items-changed="${({detail}: CustomEvent) => {
+            const newIds = detail.selectedItems.map((i: any) => i.id);
+            this.indicator.locations = newIds;
+          }}"
         >
         </etools-dropdown-multi>
         <paper-button class="secondary-btn add-locations" @click="_addAllLocations" title="Add all locations">
@@ -291,10 +342,10 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
     `;
   }
 
-  @property({type: Object, observer: '_indicatorChanged'})
+  @property({type: Object}) // observer: '_indicatorChanged'
   indicator!: Indicator;
 
-  @property({type: Boolean, observer: '_readonlyChanged'})
+  @property({type: Boolean}) // observer: '_readonlyChanged'
   readonly = false;
 
   @property({type: Array})
@@ -306,13 +357,21 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
   @property({type: String})
   interventionStatus!: string;
 
-  static get observers() {
-    return [
-      '_baselineChanged(indicator.baseline.v, indicator.indicator.unit)',
-      '_targetChanged(indicator.target.v, indicator.indicator.unit)',
-      '_baselineUnknownChanged(baselineIsUnknown)',
-      '_typeChanged(indicator.indicator.display_type, indicator.indicator.unit)'
-    ];
+  // static get observers() {
+  //   return [
+  //     '_baselineChanged(indicator.baseline.v, indicator.indicator.unit)',
+  //     '_targetChanged(indicator.target.v, indicator.indicator.unit)',
+  //     '_baselineUnknownChanged(baselineIsUnknown)',
+  //     '_typeChanged(indicator.indicator.display_type, indicator.indicator.unit)'
+  //   ];
+  // }
+
+  private isHighFrequencyChanged() {
+    this.indicator.is_high_frequency = !this.indicator.is_high_frequency;
+  }
+
+  private baselineIsUnknownChanged(checked: boolean) {
+    this.baselineIsUnknown = checked;
   }
 
   _unitIsNumeric(unit: string) {

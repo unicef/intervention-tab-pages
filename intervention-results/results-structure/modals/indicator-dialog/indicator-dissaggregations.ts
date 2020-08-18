@@ -26,7 +26,7 @@ import {flaggedSortedDisaggregs} from '../../../../../../../reducers/common-data
  * @applies MixinRepeatableDataSets
  */
 class IndicatorDisaggregations extends connect(store)(RepeatableDataSetsMixin(PolymerElement)) {
-  static get template() {
+  render() {
     return html`
       ${gridLayoutStyles} ${SharedStyles} ${repeatableDataSetsStyles} ${buttonsStyles}
       <style>
