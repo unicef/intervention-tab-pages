@@ -18,9 +18,12 @@ import {PaperCheckboxElement} from '@polymer/paper-checkbox/paper-checkbox.js';
  * @appliesMixin IndicatorsCommonMixin
  */
 class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
+  static get styles() {
+    return [gridLayoutStylesLit, buttonsStyles];
+  }
+
   render() {
     return html`
-      ${gridLayoutStylesLit} ${buttonsStyles}
       <style>
         ${sharedStyles} *[hidden] {
           display: none !important;
@@ -224,7 +227,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                 </paper-input>
               </div>`
           : html``}
-        ${this._isRatioType(this.indicator.indicator.unit, indicator.indicator.display_type)
+        ${this._isRatioType(this.indicator.indicator.unit, this.indicator.indicator.display_type)
           ? html` <div class="col-3 layout-horizontal">
                 <paper-input
                   id="baselineNumerator"

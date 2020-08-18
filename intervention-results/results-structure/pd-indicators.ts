@@ -5,7 +5,7 @@ import '@polymer/iron-icons';
 import {Indicator, Intervention} from '../../common/models/intervention.types';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
-import {Disaggregation, DisaggregationValue, LocationObject, Section, User} from '../../common/models/globals.types';
+import {Disaggregation, DisaggregationValue, LocationObject, Section} from '../../common/models/globals.types';
 import {openDialog} from '../../utils/dialog';
 import './modals/indicator-dialog/indicator-dialog';
 import get from 'lodash-es/get';

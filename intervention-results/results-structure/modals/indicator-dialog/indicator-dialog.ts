@@ -22,12 +22,20 @@ import {IndicatorDialogData} from './types';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {userIsPme} from '../../../../common/user-permissions';
 import ComponentBaseMixin from '../../../../common/mixins/component-base-mixin';
+import {PaperCheckboxElement} from '@polymer/paper-checkbox';
+import './indicator-dissaggregations';
+import './non-cluster-indicator';
 
 @customElement('indicator-dialog')
 export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin(ComponentBaseMixin(LitElement))) {
+  static get styles() {
+    return [gridLayoutStylesLit];
+  }
   render() {
+    if (!this.data) {
+      return html``;
+    }
     return html`
-      ${gridLayoutStylesLit}
       <style>
         ${sharedStyles} [hidden] {
           display: none !important;
@@ -90,7 +98,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
 
         <iron-pages
           id="indicatorPages"
-          selected="${this.activeTab}"
+          .selected="${this.activeTab}"
           attr-for-selected="name"
           fallback-selection="details"
         >
@@ -102,7 +110,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
                   label="Section"
                   .selected="${this.data?.section}"
                   placeholder="&#8212;"
-                  options="${this.sectionOptions}"
+                  .options="${this.sectionOptions}"
                   option-label="name"
                   option-value="id"
                   required
@@ -121,7 +129,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
               <paper-toggle-button
                 ?disabled="${this._clusterToggleIsDisabled(this.data)}"
                 ?checked="${this.isCluster}"
-                @iron-change="${this.isClusterChanged}"
+                @iron-change="${(e: CustomEvent) => this.isClusterChanged(e)}"
               ></paper-toggle-button>
               Cluster Indicator
             </div>
@@ -218,10 +226,10 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   private prpServerOn!: boolean;
 
   set dialogData(data: IndicatorDialogData) {
-    this.data = data.indicator ? data.indicator : new Indicator();
-    this.setTitle(this.data);
     this.sectionOptions = data.sectionOptions;
     this.locationOptions = data.locationOptions;
+    this.data = data.indicator ? data.indicator : new Indicator();
+    this.setTitle(this.data);
     this.llResultId = data.llResultId;
     this.prpServerOn = data.prpServerOn;
     this.currentUser = getStore().getState().user.data;
@@ -242,8 +250,12 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
     this.activeTab = newTabName;
   }
 
-  isClusterChanged() {
-    this.isCluster = !this.isCluster;
+  isClusterChanged(e: CustomEvent) {
+    const chk = e.target as PaperCheckboxElement;
+    if (chk.checked === undefined || chk.checked === null) {
+      return;
+    }
+    this.isCluster = chk.checked;
   }
 
   // setIndicatorData(data: any, actionParams: any, interventionStatus: string) {

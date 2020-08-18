@@ -22,9 +22,13 @@ import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
  * @applies MixinRepeatableDataSets
  */
 class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement) {
+  static get styles() {
+    return [gridLayoutStylesLit, buttonsStyles];
+  }
+
   render() {
     return html`
-      ${gridLayoutStylesLit} ${repeatableDataSetsStyles} ${buttonsStyles}
+      ${repeatableDataSetsStyles}
       <style>
         ${sharedStyles} [hidden] {
           display: none !important;
@@ -110,7 +114,7 @@ class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement) {
     super.connectedCallback();
     this.dataSetModel = {disaggregId: null};
     this.editMode = true;
-    this.preDefinedDisaggregtions = flaggedSortedDisaggregs(getStore().getState().commonData.disaggregations);
+    this.preDefinedDisaggregtions = flaggedSortedDisaggregs(getStore().getState());
   }
 
   _isEmptyList(disaggregations: Disaggregation[], disaggregLength: number) {
