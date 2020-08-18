@@ -32,6 +32,7 @@ import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {isEmpty, cloneDeep} from 'lodash-es';
 import {MinimalAgreement} from '../../common/models/agreement.types';
+import {buttonsStyles} from '../../common/styles/button-styles';
 
 /**
  * @customElement
@@ -44,7 +45,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
   ComponentBaseMixin(MissingDropdownOptionsMixin(UploadMixin(LitElement)))
 ) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [gridLayoutStylesLit, buttonsStyles];
   }
   render() {
     if (!this.data) {
@@ -60,9 +61,6 @@ export class InterventionReviewAndSign extends connect(getStore())(
           width: 100%;
           display: block;
           margin-bottom: 24px;
-        }
-        datepicker-lite[required] {
-          --paper-input-container-label-floating_-_max-width: 175%;
         }
         paper-input-container{
           margin-left: 0px;
@@ -83,8 +81,20 @@ export class InterventionReviewAndSign extends connect(getStore())(
             color: var(--primary-text-color);
             opacity: 1;
           }
+        }
+        --paper-input-container_-_width: 999px!important;
+        datepicker-lite[required] {
+          --paper-input-container-label-floating_-_max-width: 175%;
+          --paper-input-container_-_width: 666px!important;
+          --paper-input-container-label {
+            min-width: 100%;
+          }
+        }
       </style>
       <etools-content-panel class="content-section" panel-title="Signatures & Dates">
+        <div slot="panel-btns">
+          ${this.renderEditBtn(this.editMode, true)}
+        </div>
         <div class="layout-horizontal row-padding-v">
           <div class="col col-3">
             <!-- Document Submission Date -->
@@ -292,6 +302,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
               : html``
           }
         </div>
+        ${this.renderActions(this.editMode, true)}
       </etools-content-panel>
     `;
   }
@@ -332,7 +343,28 @@ export class InterventionReviewAndSign extends connect(getStore())(
     if (state.interventions.current) {
       // @LAJOS: REVIEW THIS THING...
       this.data = state.interventions.current;
+      console.log('intervention', this.data);
+      console.log(this.data.signed_by_unicef_date);
       this.permissions = state.interventions.current.permissions;
+      this.permissions.edit.submission_date = true;
+      this.permissions.edit.prc_review_attachment = true;
+      this.permissions.edit.submission_date_prc = true;
+      this.permissions.edit.review_date_prc = true;
+      this.permissions.edit.partner_authorized_officer_signatory = true;
+      this.permissions.edit.signed_by_partner_date = true;
+      this.permissions.edit.signed_by_unicef_date = true;
+      this.permissions.edit.unicef_signatory = true;
+      this.permissions.edit.signed_pd_attachment = true;
+
+      this.permissions.required.submission_date = true;
+      this.permissions.required.prc_review_attachment = true;
+      this.permissions.required.submission_date_prc = true;
+      this.permissions.required.review_date_prc = true;
+      this.permissions.required.partner_authorized_officer_signatory = true;
+      this.permissions.required.signed_by_partner_date = true;
+      this.permissions.required.signed_by_unicef_date = true;
+      this.permissions.required.unicef_signatory = true;
+      this.permissions.required.signed_pd_attachment = true;
       if (this.data.submitted_to_prc) {
         this._lockSubmitToPrc = true;
       } else {
