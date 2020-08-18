@@ -14,18 +14,17 @@ import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
 import {AnyObject, Section, User, LocationObject} from '../../../../common/models/globals.types';
 import {Indicator} from '../../../../common/models/intervention.types';
-import {isEmptyObject} from '../../../../utils/utils';
 import EtoolsDialog from '@unicef-polymer/etools-dialog';
 import SaveIndicatorMixin from './mixins/save-indicator-mixin';
 import IndicatorDialogTabsMixin from './mixins/indicator-dialog-tabs-mixin';
 import {fireEvent} from '../../../../utils/fire-custom-event';
 import {getStore} from '../../../../utils/redux-store-access';
 import {IndicatorDialogData} from './types';
-
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {userIsPme} from '../../../../common/user-permissions';
 
 @customElement('indicator-dialog')
-export class IndicatorDialog extends IndicatorDialogTabsMixin(
-  SaveIndicatorMixin(LitElement)) {
+export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin(LitElement)) {
   render() {
     return html`
       ${gridLayoutStylesLit}
@@ -73,6 +72,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(
         size="lg"
         dialog-title="Indicator"
         no-padding
+        ?opened="${this.dialogOpened}"
         @close="${this.onClose}"
         @confirm-btn-clicked="${this._validateAndSaveIndicator}"
         ok-btn-text="Save"
@@ -88,14 +88,19 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(
           on-iron-select="_centerDialog"
         ></etools-tabs>
 
-        <iron-pages id="indicatorPages" selected="${this.activeTab}" attr-for-selected="name" fallback-selection="details">
+        <iron-pages
+          id="indicatorPages"
+          selected="${this.activeTab}"
+          attr-for-selected="name"
+          fallback-selection="details"
+        >
           <div name="details">
             <div class="row-h flex-c">
               <div class="col col-4">
                 <etools-dropdown
                   id="sectionDropdw"
                   label="Section"
-                  selected="${this.indicator.section}"
+                  selected="${this.indicator?.section}"
                   placeholder="&#8212;"
                   options="${this.sectionOptions}"
                   option-label="name"
@@ -154,7 +159,6 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(
     `;
   }
 
-
   @property({type: Object})
   indicator: Indicator | null = null;
 
@@ -197,20 +201,51 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(
   @property({type: Object})
   currentUser!: User;
 
+  @property({type: Boolean})
+  dialogOpened = true;
+
   @query('etools-dialog')
   indicatorDialog!: EtoolsDialog;
 
-  private llResultId!: string; /**aka pdOutputId */
+  private llResultId!: string; /** aka pdOutputId */
   private prpServerOn!: boolean;
 
   set dialogData(data: IndicatorDialogData) {
-    this.indicator = data.indicator;
+    this.indicator = data.indicator ? data.indicator : new Indicator();
+    this.setTitle(this.indicator);
     this.sectionOptions = data.sectionOptions;
     this.locationOptions = data.locationOptions;
-    this.currentUser = getStore().getState().user.data;
     this.llResultId = data.llResultId;
     this.prpServerOn = data.prpServerOn;
+    this.currentUser = getStore().getState().user.data;
+    this.interventionStatus = getStore().getState().interventions.current.status;
+
+    this.preselectSectionAndLocation();
+    this.isCluster = !!this.indicator.cluster_indicator_id;
+    if (!this.isCluster) {
+      this.disaggregations = this._convertToArrayOfObj(this.indicator.disaggregation);
+    }
   }
+
+  // setIndicatorData(data: any, actionParams: any, interventionStatus: string) {
+  //   // this.set('actionParams', actionParams);
+  //   // this.set('interventionStatus', interventionStatus);
+
+  //   //if (!data) {
+  //     // new indicator
+  //    // this.isCluster = false;
+  //     //this.set('indicator', new Indicator());
+  //    // this.set('disaggregations', []);
+  //    // this.preselectSectionAndLocation();
+  //   //  return;
+  //   //}
+
+  //  // this.isCluster = !!data.cluster_indicator_id;
+  //  // this.set('indicator', data);
+  //   // if (!this.isCluster) {
+  //   //   this.set('disaggregations', this._convertToArrayOfObj(this.indicator.disaggregation));
+  //   // }
+  // }
 
   connectedCallback() {
     super.connectedCallback();
@@ -252,46 +287,26 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(
     return !this.prpServerOn;
   }
 
-  openIndicatorDialog() {
-    this.updateActiveTab('details');
-    this.disableConfirmBtn = false;
-    this.indicatorDialog.opened = true;
-  }
+  // openIndicatorDialog() {
+  //   this.updateActiveTab('details');
+  //   this.disableConfirmBtn = false;
+  //   this.indicatorDialog.opened = true;
+  // }
 
-  setTitle(title: string) {
+  setTitle(indicator: Indicator) {
+    const title = indicator && indicator.id ? 'Edit Indicator' : 'Add Indicator';
     this.indicatorDialog.dialogTitle = title;
-  }
-
-  setIndicatorData(data: any, actionParams: any, interventionStatus: string) {
-    this.set('actionParams', actionParams);
-    this.set('interventionStatus', interventionStatus);
-
-    if (!data) {
-      // new indicator
-      this.isCluster = false;
-      this.set('indicator', new Indicator());
-      this.set('disaggregations', []);
-      this.preselectSectionAndLocation();
-      return;
-    }
-
-    this.isCluster = !!data.cluster_indicator_id;
-    this.set('indicator', data);
-    if (!this.isCluster) {
-      this.set('disaggregations', this._convertToArrayOfObj(this.indicator.disaggregation));
-    }
   }
 
   preselectSectionAndLocation() {
     if (this.sectionOptions && this.sectionOptions.length === 1) {
-      this.set('indicator.section', this.sectionOptions[0].id);
+      this.indicator!.section = this.sectionOptions[0].id;
     }
     if (this.locationOptions && this.locationOptions.length === 1) {
-      this.set('indicator.locations', [this.locationOptions[0].id]);
+      this.indicator!.locations = [this.locationOptions[0].id];
     }
   }
 
-  // For dom-repeat to work ok
   _convertToArrayOfObj(disaggregations: any) {
     if (!disaggregations) {
       return [];
@@ -316,7 +331,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(
   _startSpinner(e: CustomEvent) {
     if (e) {
       e.stopImmediatePropagation();
-      this.set('spinnerText', e.detail.spinnerText);
+      this.spinnerText = e.detail.spinnerText;
     }
     this.indicatorDialog.startSpinner();
   }
@@ -346,36 +361,35 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(
     sectionDropdown.resetInvalidState();
   }
 
-  resetFieldValues() {
-    this.indicator = new Indicator();
-    this.disaggregations = [];
-    this.prpDisaggregations = [];
-    const clusterIndicEl = this.shadowRoot!.querySelector('#clusterIndicatorEl') as ClusterIndicatorEl;
-    if (this.isCluster && clusterIndicEl) {
-      clusterIndicEl.resetFieldValues();
-    }
-  }
+  // resetFieldValues() {
+  //   this.indicator = new Indicator();
+  //   this.disaggregations = [];
+  //   this.prpDisaggregations = [];
+  //   const clusterIndicEl = this.shadowRoot!.querySelector('#clusterIndicatorEl') as ClusterIndicatorEl;
+  //   if (this.isCluster && clusterIndicEl) {
+  //     clusterIndicEl.resetFieldValues();
+  //   }
+  // }
 
   _centerDialog() {
     this.indicatorDialog.notifyResize();
   }
 
-  _computeOptions(optionsIds: string[], allOptions: AnyObject[]) {
-    if (isEmptyObject(optionsIds) || isEmptyObject(allOptions)) {
-      return [];
-    }
+  // _computeOptions(optionsIds: string[], allOptions: AnyObject[]) {
+  //   if (isEmptyObject(optionsIds) || isEmptyObject(allOptions)) {
+  //     return [];
+  //   }
 
-    const ids = optionsIds.map((id) => Number(id));
+  //   const ids = optionsIds.map((id) => Number(id));
 
-    let options = allOptions.filter((opt: any) => {
-      return ids.indexOf(Number(opt.id)) > -1;
-    });
+  //   let options = allOptions.filter((opt: any) => {
+  //     return ids.indexOf(Number(opt.id)) > -1;
+  //   });
 
-    return options;
-  }
+  //   return options;
+  // }
 
   _hideAddDisaggreations(isCluster: boolean, currentUser: User) {
     return isCluster || !userIsPme(currentUser);
   }
-}
 }

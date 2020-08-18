@@ -34,11 +34,11 @@ export class Indicator {
   is_active = true;
   is_high_frequency = false;
   indicator: IndicatorIndicator | null = new IndicatorIndicator();
-  section: number | null = null;
+  section: string | null = null;
   baseline: {v?: string | number; d?: string | number} = {};
   target: {v?: string | number; d: string | number} = {d: '1'};
   means_of_verification: string | null = null;
-  locations: number[] = [];
+  locations: string[] = [];
   disaggregation: string[] = [];
 
   cluster_name: string | null = null;

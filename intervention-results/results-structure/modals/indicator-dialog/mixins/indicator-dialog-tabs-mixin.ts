@@ -37,7 +37,8 @@ function IndicatorDialogTabsMixin<T extends Constructor<LitElement>>(baseClass: 
      * Update disaggegations tab counter
      */
     _updateDisaggregationsNrInTabLabel(disaggregationsCount: number) {
-      return this.set(['indicatorDataTabs', 1, 'counter'], disaggregationsCount);
+      this.indicatorDataTabs[1].counter = disaggregationsCount;
+      this.requestUpdate();
     }
 
     _setDisaggregationsCount1(disaggregs: [], prpDisaggregs: []) {

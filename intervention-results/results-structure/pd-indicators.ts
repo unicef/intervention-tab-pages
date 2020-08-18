@@ -49,8 +49,6 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
   private indicatorSectionOptions!: Section[];
   private indicatorLocationOptions!: LocationObject[];
 
-  private currentUser!: User;
-
   protected render(): TemplateResult {
     // language=HTML
     return html`
@@ -154,7 +152,6 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
     this.sections = (state.commonData && state.commonData.sections) || [];
     this.locations = (state.commonData && state.commonData.locations) || [];
     this.disaggregations = (state.commonData && state.commonData.disaggregations) || [];
-    this.currentUser = get(state, 'user.data');
     /**
      * Computing here to avoid recomputation on every open indicator dialog
      */
