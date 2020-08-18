@@ -1,6 +1,7 @@
 import {logWarn} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {LitElement, property} from 'lit-element';
 import {Constructor} from '../../../../../common/models/globals.types';
+import {Indicator} from '../../../../../common/models/intervention.types';
 
 /**
  * @polymer
@@ -17,31 +18,32 @@ function IndicatorsCommonMixin<T extends Constructor<LitElement>>(baseClass: T) 
     @property({type: String})
     digitsPattern = '^\\d+';
 
-    _baselineChanged(baselineV: string) {
-      // @ts-ignore
+    @property({type: Object})
+    indicator!: Indicator;
+
+    _baselineChanged(baselineV?: string | number) {
       if (!this.indicator || this._isEmptyExcept0(baselineV)) {
         return;
       }
-      // @ts-ignore
+
       if (this._displayTypeIsPercentage(this.indicator)) {
         const val = this._getValidPercentageValue(baselineV);
-        this.set('indicator.baseline.v', val);
+
+        this.indicator.baseline.v = val;
       }
     }
 
-    _targetChanged(targetV: string) {
-      // @ts-ignore
+    _targetChanged(targetV?: string | number) {
       if (!this.indicator || this._isEmptyExcept0(targetV)) {
         return;
       }
-      // @ts-ignore
       if (this._displayTypeIsPercentage(this.indicator)) {
         const val = this._getValidPercentageValue(targetV);
-        this.set('indicator.target.v', val);
+        this.indicator.target.v = val;
       }
     }
 
-    _isEmptyExcept0(value: string) {
+    _isEmptyExcept0(value?: string | number) {
       return value === null || value === undefined || value === '';
     }
 

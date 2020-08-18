@@ -75,6 +75,9 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
               .selected="${this.indicator?.indicator?.unit}"
               @selected-changed="${({detail}: CustomEvent) => {
                 this.indicator!.indicator!.unit = detail.value;
+                this._baselineChanged(this.indicator.baseline.v);
+                this._targetChanged(this.indicator.target.v);
+                this._typeChanged();
               }}"
             >
               <paper-radio-button ?disabled="${this.readonly}" class="no-left-padding" name="number"
@@ -88,9 +91,10 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           <label class="paper-label">Display Type </label>
           <div class="radioGroup">
             <paper-radio-group
-              .selected="{{indicator.indicator.display_type}}"
+              .selected="${this.indicator.indicator.display_type}"
               @selected-changed="${({detail}: CustomEvent) => {
                 this.indicator.indicator.display_type = detail.value;
+                this._typeChanged();
               }}"
             >
               <paper-radio-button ?disabled="${this.readonly}" class="no-left-padding" name="percentage"
@@ -177,6 +181,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                       ?disabled="${this.baselineIsUnknown}"
                       @value-changed="${({detail}: CustomEvent) => {
                         this.indicator.baseline.v = detail.value;
+                        this._baselineChanged(this.indicator.baseline.v);
                       }}"
                     >
                     </paper-input>`
@@ -195,6 +200,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                   error-message="Please add a valid target"
                   @value-changed="${({detail}: CustomEvent) => {
                     this.indicator.target.v = detail.value;
+                    this._targetChanged(this.indicator.target.v);
                   }}"
                   ?hidden="${!this._unitIsNumeric(this.indicator.indicator.unit)}"
                 >
@@ -212,6 +218,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                   ?hidden="${this._unitIsNumeric(this.indicator.indicator.unit)}"
                   @value-changed="${({detail}: CustomEvent) => {
                     this.indicator.target.v = detail.value;
+                    this._targetChanged(this.indicator.target.v);
                   }}"
                 >
                 </paper-input>
@@ -231,6 +238,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                   ?disabled="${this.baselineIsUnknown}"
                   @value-changed="${({detail}: CustomEvent) => {
                     this.indicator.baseline.v = detail.value;
+                    this._baselineChanged(this.indicator.baseline.v);
                   }}"
                 >
                 </paper-input>
@@ -263,6 +271,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                   placeholder="Numerator"
                   @value-changed="${({detail}: CustomEvent) => {
                     this.indicator.target.v = detail.value;
+                    this._targetChanged(this.indicator.target.v);
                   }}"
                 >
                 </paper-input>
@@ -342,8 +351,17 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
     `;
   }
 
-  @property({type: Object}) // observer: '_indicatorChanged'
-  indicator!: Indicator;
+  private _indicator!: Indicator;
+
+  @property({type: Object})
+  get indicator() {
+    return this._indicator;
+  }
+
+  set indicator(indicator: Indicator) {
+    this._indicator = indicator;
+    this._indicatorChanged(this._indicator);
+  }
 
   @property({type: Boolean}) // observer: '_readonlyChanged'
   readonly = false;
@@ -372,6 +390,9 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
 
   private baselineIsUnknownChanged(checked: boolean) {
     this.baselineIsUnknown = checked;
+    if (this.baselineIsUnknown) {
+      this.indicator.baseline = {v: null, d: 1};
+    }
   }
 
   _unitIsNumeric(unit: string) {
@@ -398,17 +419,18 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
     return false;
   }
 
+  // TODO
   _readonlyChanged(newVal: boolean, oldVal: boolean) {
     if (newVal !== oldVal) {
       this.updateStyles();
     }
   }
 
-  _baselineUnknownChanged(isUnknown: boolean) {
-    if (isUnknown) {
-      this.set('indicator.baseline', {v: null, d: 1});
-    }
-  }
+  // _baselineUnknownChanged(isUnknown: boolean) {
+  //   if (isUnknown) {
+  //     this.set('indicator.baseline', {v: null, d: 1});
+  //   }
+  // }
 
   _typeChanged() {
     this.resetValidations();
@@ -427,7 +449,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
 
       let i;
       for (i = 0; i < elemIds.length; i++) {
-        const elem = this.shadowRoot!.querySelector('#' + elemIds[i]) as PolymerElement & {invalid: boolean};
+        const elem = this.shadowRoot!.querySelector('#' + elemIds[i]) as HTMLElement & {invalid: boolean};
         if (elem) {
           elem.invalid = false;
         }
