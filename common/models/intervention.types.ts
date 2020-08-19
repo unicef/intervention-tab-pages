@@ -239,6 +239,9 @@ export class Intervention {
   permissions?: Permission<InterventionPermissionsFields>;
   humanitarian_flag?: boolean;
   partner_id?: string;
+  available_actions: string[] = [];
+  hq_support_cost?: string;
+  prgm_effectiveness?: string;
 }
 
 export class InterventionAmendment {

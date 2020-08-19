@@ -5,12 +5,13 @@ import './common/layout/page-content-header/intervention-page-content-header';
 import './common/layout/etools-tabs';
 // eslint-disable-next-line max-len
 import './common/layout/status/etools-status';
+import './intervention-actions/intervention-actions';
 
 import {customElement, LitElement, html, property, css} from 'lit-element';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {setStore, getStore} from './utils/redux-store-access';
-import {currentPage, currentSubpage} from './common/selectors';
+import {selectAvailableActions, currentPage, currentSubpage} from './common/selectors';
 import {elevationStyles} from './common/styles/elevation-styles';
 import {AnyObject, RouteDetails} from './common/models/globals.types';
 import {getIntervention} from './common/actions';
@@ -84,8 +85,10 @@ export class InterventionTabs extends LitElement {
         </div>
 
         <div slot="title-row-actions" class="content-header-actions">
-          <paper-button raised>Action 1</paper-button>
-          <paper-button raised>Action 2</paper-button>
+          <intervention-actions
+            .interventionId="${this.intervention.id}"
+            .actions="${this.availableActions}"
+          ></intervention-actions>
         </div>
 
         <etools-tabs-lit
@@ -152,6 +155,9 @@ export class InterventionTabs extends LitElement {
   @property({type: Boolean})
   commentMode = false;
 
+  @property()
+  availableActions: string[] = [];
+
   _storeUnsubscribe!: () => void;
   _store!: AnyObject;
 
@@ -202,6 +208,7 @@ export class InterventionTabs extends LitElement {
           getStore().dispatch(getIntervention(currentInterventionId));
         }
       }
+      this.availableActions = selectAvailableActions(state);
     }
   }
 
