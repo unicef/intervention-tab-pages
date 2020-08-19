@@ -9,8 +9,6 @@ import {validateRequiredFields, resetRequiredFields} from '../../utils/validatio
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {InterventionComment} from '../../common/types/types';
-import {updateComment} from '../../common/components/comments/comments.actions';
 import {fireEvent} from '../../utils/fire-custom-event';
 import get from 'lodash-es/get';
 
@@ -129,24 +127,36 @@ export class SupplyAgreementDialog extends connect(getStore())(LitElement) {
   }
 
   onSaveClick() {
-    if (this.validate()) {
-      // TODO save
+    if (!this.validate()) {
+      return;
     }
-    // console.log(this.supplyItem);
-    //   sendRequest({
-    //     endpoint: getEndpoint(interventionEndpoints.supplyAgreementAdd, {interventionId: this.interventionId, commentId: id}),
-    //     method: 'POST'
-    //   })
-    //     .then((updatedComment: InterventionComment) => {
-    //       this.resolvingCollection.delete(id);
-    //       this.comments[index] = updatedComment;
-    //       getStore().dispatch(updateComment(this.relatedTo, updatedComment, this.interventionId));
-    //       this.requestUpdate();
-    //     })
-    //     .catch(() => {
-    //       this.resolvingCollection.delete(id);
-    //       fireEvent(this, 'toast', {text: 'Can not resolve comment. Try again'});
-    //       this.requestUpdate();
-    //     });
+    if (this.isNewRecord) {
+      sendRequest({
+        endpoint: getEndpoint(interventionEndpoints.supplyAgreementAdd, {interventionId: this.currentInterventionId}),
+        method: 'POST',
+        body: {supply_item: this.supplyItem}
+      })
+        .then((response: any) => {
+          console.log(response);
+        })
+        .catch(() => {
+          fireEvent(this, 'toast', {text: 'An error occurred. Try again'});
+        });
+    } else {
+      sendRequest({
+        endpoint: getEndpoint(interventionEndpoints.supplyAgreementEdit, {
+          interventionId: this.currentInterventionId,
+          supplyId: this.supplyItem.id
+        }),
+        method: 'PATCH',
+        body: {supply_item: this.supplyItem}
+      })
+        .then((response: any) => {
+          console.log(response);
+        })
+        .catch(() => {
+          fireEvent(this, 'toast', {text: 'An error occurred. Try again'});
+        });
+    }
   }
 }

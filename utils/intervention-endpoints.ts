@@ -25,7 +25,7 @@ export interface EtoolsEndpoints {
   pdActivityDetails: EtoolsEndpoint;
   pdActivities: EtoolsEndpoint;
   supplyAgreementAdd: EtoolsEndpoint;
-  supplyAgreementEdit
+  supplyAgreementEdit: EtoolsEndpoint;
   attachmentsUpload: EtoolsEndpoint;
   interventionAmendmentAdd: EtoolsEndpoint;
   frNumbersDetails: EtoolsEndpoint;
