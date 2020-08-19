@@ -177,8 +177,8 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   @property({type: Object})
   data: Indicator | null = null; // This is the indicator
 
-  @property({type: Object})
-  actionParams!: AnyObject;
+  // @property({type: Object})
+  // actionParams!: AnyObject;
 
   @property({type: Array})
   disaggregations: [] = [];
@@ -189,8 +189,8 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   @property({type: Array})
   sections!: AnyObject[];
 
-  @property({type: Array})
-  sectionOptionsIds!: [];
+  // @property({type: Array})
+  // sectionOptionsIds!: [];
 
   @property({type: Array})
   sectionOptions!: Section[];
@@ -229,17 +229,19 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
     this.sectionOptions = data.sectionOptions;
     this.locationOptions = data.locationOptions;
     this.data = data.indicator ? data.indicator : new Indicator();
-    this.setTitle(this.data);
     this.llResultId = data.llResultId;
     this.prpServerOn = data.prpServerOn;
     this.currentUser = getStore().getState().user.data;
     this.interventionStatus = getStore().getState().interventions.current.status;
 
-    this.preselectSectionAndLocation();
+    if (!this.data.id) {
+      this.preselectSectionAndLocation();
+    }
     this.isCluster = !!this.data.cluster_indicator_id;
     if (!this.isCluster) {
       this.disaggregations = this._convertToArrayOfObj(this.data.disaggregation);
     }
+    this.setTitle(this.data);
   }
 
   tabChanged(e: CustomEvent) {

@@ -81,6 +81,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                 this._baselineChanged(this.indicator.baseline.v);
                 this._targetChanged(this.indicator.target.v);
                 this._typeChanged();
+                this.requestUpdate();
               }}"
             >
               <paper-radio-button ?disabled="${this.readonly}" class="no-left-padding" name="number"
@@ -98,6 +99,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
               @selected-changed="${({detail}: CustomEvent) => {
                 this.indicator.indicator.display_type = detail.value;
                 this._typeChanged();
+                this.requestUpdate();
               }}"
             >
               <paper-radio-button ?disabled="${this.readonly}" class="no-left-padding" name="percentage"
@@ -347,7 +349,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           }}"
         >
         </etools-dropdown-multi>
-        <paper-button class="secondary-btn add-locations" @click="_addAllLocations" title="Add all locations">
+        <paper-button class="secondary-btn add-locations" @click="${this._addAllLocations}" title="Add all locations">
           Add all
         </paper-button>
       </div>
@@ -387,8 +389,12 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
   //   ];
   // }
 
-  private isHighFrequencyChanged() {
-    this.indicator.is_high_frequency = !this.indicator.is_high_frequency;
+  private isHighFrequencyChanged(e: CustomEvent) {
+    const chk = e.target as PaperCheckboxElement;
+    if (chk.checked === undefined || chk.checked === null) {
+      return;
+    }
+    this.indicator.is_high_frequency = chk.checked;
   }
 
   private baselineIsUnknownChanged(checked: boolean) {
@@ -489,7 +495,8 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
 
   _addAllLocations() {
     const locationIDs = this.locationOptions.map((x: any) => x.id);
-    this.set('indicator.locations', locationIDs);
+    this.indicator.locations = locationIDs;
+    this.requestUpdate();
   }
 }
 

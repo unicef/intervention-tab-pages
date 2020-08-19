@@ -13,6 +13,7 @@ import {isJsonStrMatch} from '../../../../../utils/utils';
 import {filterByIds} from '../../utils/utils';
 import EnvironmentFlagsMixin from '../../common/mixins/environment-flags-mixin';
 import {IndicatorDialogData} from './modals/indicator-dialog/types';
+import cloneDeep from 'lodash-es/cloneDeep';
 
 @customElement('pd-indicators')
 export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitElement)) {
@@ -156,6 +157,7 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
      * Computing here to avoid recomputation on every open indicator dialog
      */
     this.computeAvailableOptionsForIndicators(get(state, 'interventions.current'));
+    this.envFlagsStateChanged(state);
   }
 
   computeAvailableOptionsForIndicators(intervention: Intervention) {
@@ -171,7 +173,7 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
     openDialog<IndicatorDialogData>({
       dialog: 'indicator-dialog',
       dialogData: {
-        indicator: indicator ? indicator : null,
+        indicator: indicator ? cloneDeep(indicator) : null,
         sectionOptions: this.indicatorSectionOptions,
         locationOptions: this.indicatorLocationOptions,
         llResultId: this.pdOutputId,
@@ -199,7 +201,7 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
       : html``;
   }
 
-  getSectionAndCluster(sectionId: number | null, clusterName: string | null): string {
+  getSectionAndCluster(sectionId: string | null, clusterName: string | null): string {
     const section: Section | null =
       (sectionId && this.sections.find(({id}: Section) => String(id) === String(sectionId))) || null;
     return (

@@ -30,6 +30,7 @@ function IndicatorsCommonMixin<T extends Constructor<LitElement>>(baseClass: T) 
         const val = this._getValidPercentageValue(baselineV);
 
         this.indicator.baseline.v = val;
+        this.requestUpdate();
       }
     }
 
@@ -40,6 +41,7 @@ function IndicatorsCommonMixin<T extends Constructor<LitElement>>(baseClass: T) 
       if (this._displayTypeIsPercentage(this.indicator)) {
         const val = this._getValidPercentageValue(targetV);
         this.indicator.target.v = val;
+        this.requestUpdate();
       }
     }
 
