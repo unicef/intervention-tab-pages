@@ -6,6 +6,13 @@ import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {InterventionSupplyItem} from '../../common/models/intervention.types';
 import {validateRequiredFields, resetRequiredFields} from '../../utils/validation-helper';
+import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {getEndpoint} from '../../utils/endpoint-helper';
+import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {InterventionComment} from '../../common/types/types';
+import {updateComment} from '../../common/components/comments/comments.actions';
+import {fireEvent} from '../../utils/fire-custom-event';
+import get from 'lodash-es/get';
 
 /**
  * @customElement
@@ -94,8 +101,11 @@ export class SupplyAgreementDialog extends connect(getStore())(LitElement) {
   @property({type: String})
   confirmBtnTxt = '';
 
+  private currentInterventionId = '';
+
   stateChanged(_state: any) {
     // NOT sure we need this, will see..
+    this.currentInterventionId = get(_state, 'app.routeDetails.params.interventionId');
   }
 
   connectedCallback() {
@@ -122,5 +132,21 @@ export class SupplyAgreementDialog extends connect(getStore())(LitElement) {
     if (this.validate()) {
       // TODO save
     }
+    // console.log(this.supplyItem);
+    //   sendRequest({
+    //     endpoint: getEndpoint(interventionEndpoints.supplyAgreementAdd, {interventionId: this.interventionId, commentId: id}),
+    //     method: 'POST'
+    //   })
+    //     .then((updatedComment: InterventionComment) => {
+    //       this.resolvingCollection.delete(id);
+    //       this.comments[index] = updatedComment;
+    //       getStore().dispatch(updateComment(this.relatedTo, updatedComment, this.interventionId));
+    //       this.requestUpdate();
+    //     })
+    //     .catch(() => {
+    //       this.resolvingCollection.delete(id);
+    //       fireEvent(this, 'toast', {text: 'Can not resolve comment. Try again'});
+    //       this.requestUpdate();
+    //     });
   }
 }

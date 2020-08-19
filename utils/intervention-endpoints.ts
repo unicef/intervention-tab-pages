@@ -24,6 +24,8 @@ export interface EtoolsEndpoints {
   createPd: EtoolsEndpoint;
   pdActivityDetails: EtoolsEndpoint;
   pdActivities: EtoolsEndpoint;
+  supplyAgreementAdd: EtoolsEndpoint;
+  supplyAgreementEdit
   attachmentsUpload: EtoolsEndpoint;
   interventionAmendmentAdd: EtoolsEndpoint;
   frNumbersDetails: EtoolsEndpoint;
@@ -88,6 +90,12 @@ export const interventionEndpoints: EtoolsEndpoints = {
   },
   pdActivityDetails: {
     template: '/api/pmp/v3/interventions/<%=interventionId%>/pd-outputs/<%=pdOutputId%>/activities/<%=activityId%>/'
+  },
+  supplyAgreementAdd: {
+    template: '/api/pmp/v3/interventions/<%=interventionId%>/supply/'
+  },
+  supplyAgreementEdit: {
+    template: '/api/pmp/v3/interventions/<%=interventionId%>/supply/<%=supplyId%>/'
   },
   attachmentsUpload: {
     url: '/api/v2/attachments/upload/'
