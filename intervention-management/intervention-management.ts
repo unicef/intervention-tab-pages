@@ -5,6 +5,7 @@ import './fund-reservations/fund-reservations';
 import './review-and-sign/review-and-sign';
 import './financial/financial-component';
 import './risks/risks';
+import './final-review/final-review';
 
 /**
  * @customElement
@@ -21,6 +22,7 @@ export class InterventionManagement extends LitElement {
       <pd-amendments></pd-amendments>
       <financial-component></financial-component>
       <fund-reservations></fund-reservations>
+      <final-review></final-review>
     `;
   }
 }
