@@ -1,31 +1,25 @@
-import {PolymerElement, html} from '@polymer/polymer';
 import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi.js';
 import IndicatorsCommonMixin from './mixins/indicators-common-mixin';
-import EndpointsMixin from '../../../../../../endpoints/endpoints-mixin';
-import {fireEvent} from '../../../../../../utils/fire-custom-event';
-import {gridLayoutStyles} from '../../../../../../styles/grid-layout-styles';
-import {requiredFieldStarredStyles} from '../../../../../../styles/required-field-styles';
-import {SharedStyles} from '../../../../../../styles/shared-styles';
-import {RootState, store} from '../../../../../../../store';
-import {connect} from 'pwa-helpers/connect-mixin';
-import {property} from '@polymer/decorators';
-import {GenericObject} from '../../../../../../../typings/globals.types';
-import {Indicator} from '../../../../../../../typings/intervention.types';
 import {PaperInputElement} from '@polymer/paper-input/paper-input';
+import {html, LitElement, property, customElement} from 'lit-element';
+import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
+import {Indicator} from '../../../../common/models/intervention.types';
+import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
+import {fireEvent} from '../../../../utils/fire-custom-event';
+import {AnyObject} from '../../../../common/models/globals.types';
 
 /**
- * @polymer
  * @customElement
  * @appliesMixin IndicatorsCommonMixin
- * @appliesMixin EndpointsMixin
  */
-class ClusterIndicator extends connect(store)(IndicatorsCommonMixin(EndpointsMixin(PolymerElement))) {
+@customElement('cluster-indicator')
+class ClusterIndicator extends IndicatorsCommonMixin(LitElement) {
   render() {
     return html`
-      ${gridLayoutStyles} ${SharedStyles} ${requiredFieldStarredStyles}
+      ${gridLayoutStylesLit}
       <style>
-        :host {
+        ${sharedStyles} :host {
           display: block;
         }
 
@@ -38,95 +32,116 @@ class ClusterIndicator extends connect(store)(IndicatorsCommonMixin(EndpointsMix
           margin-bottom: 10px;
         }
       </style>
-      <template is="dom-if" if="[[!isNewIndicator]]">
-        <div class="row-h flex-c">
-          <div class="col col-6">
-            <div class="layout-vertical">
-              <label class="paper-label">Response Plan</label>
-              <label class="input-label" empty$="[[!indicator.response_plan_name]]"
-                >[[indicator.response_plan_name]]</label
+      ${!this.isNewIndicator
+        ? html`
+            <div class="row-h flex-c">
+              <div class="col col-6">
+                <div class="layout-vertical">
+                  <label class="paper-label">Response Plan</label>
+                  <label class="input-label" empty="${!this.indicator.response_plan_name}"
+                    >${this.indicator.response_plan_name}</label
+                  >
+                </div>
+              </div>
+              <div class="col col-6">
+                <div class="layout-vertical">
+                  <label class="paper-label">Cluster</label>
+                  <label class="input-label" empty="${!this.indicator.cluster_name}"
+                    >${this.indicator.cluster_name}}</label
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="row-h flex-c">
+              <div class="layout-vertical">
+                <label class="paper-label">Indicator</label>
+                <label class="input-label" empty="${!this.indicator.cluster_indicator_title}"
+                  >${this.indicator.cluster_indicator_title}</label
+                >
+              </div>
+            </div>
+          `
+        : html``}
+      ${this.isNewIndicator
+        ? html`
+            <div class="row-h flex-c">
+              <div class="col col-6">
+                <etools-dropdown
+                  id="responsePlanDropdw"
+                  label="Response Plan"
+                  placeholder="&#8212;"
+                  .selected="${this.responsePlanId}"
+                  .options="${this.responsePlans}"
+                  option-label="title"
+                  option-value="id"
+                  error-message="Please select Response Plan"
+                  disable-on-focus-handling
+                  fit-into="etools-dialog"
+                  trigger-value-change-event
+                  @etools-selected-item-changed="${({detail}: CustomEvent) => {
+                    this.responsePlanId = detail.selectedItem.id;
+                    this.responsePlan = detail.selectedItem;
+                  }}"
+                >
+                </etools-dropdown>
+              </div>
+              <div class="col col-6">
+                <etools-dropdown
+                  id="clusterDropdw"
+                  label="Cluster"
+                  placeholder="&#8212;"
+                  .selected="${this.clusterId}"
+                  .options="${this.clusters}"
+                  option-label="title"
+                  option-value="id"
+                  error-message="Please select Cluster"
+                  disable-on-focus-handling
+                  fit-into="etools-dialog"
+                  trigger-value-change-event
+                  @etools-selected-item-changed="${({detail}: CustomEvent) => {
+                    this.clusterId = detail.selectedItem.id;
+                    this.cluster = detail.selectedItem;
+                  }}"
+                >
+                </etools-dropdown>
+              </div>
+            </div>
+            <div class="row-h flex-c">
+              <etools-dropdown
+                id="clusterIndicatorDropdw"
+                label="Indicator"
+                placeholder="&#8212;"
+                .selected="${this.indicator.cluster_indicator_id}"
+                .options="${this.prpClusterIndicators}"
+                option-label="title"
+                option-value="id"
+                required
+                auto-validate
+                error-message="Please select Indicator"
+                disable-on-focus-handling
+                fit-into="etools-dialog"
+                trigger-value-change-event
+                @etools-selected-item-changed="${({detail}: CustomEvent) => {
+                  this.indicator.cluster_indicator_id = detail.selectedItem.id;
+                  this.prpClusterIndicator = detail.selectedItem;
+                  this._selectedPrpClusterIndicatorChanged(this.prpClusterIndicator);
+                }}"
               >
+              </etools-dropdown>
             </div>
-          </div>
-          <div class="col col-6">
-            <div class="layout-vertical">
-              <label class="paper-label">Cluster</label>
-              <label class="input-label" empty$="[[!indicator.cluster_name]]">[[indicator.cluster_name]]</label>
-            </div>
-          </div>
-        </div>
-        <div class="row-h flex-c">
-          <div class="layout-vertical">
-            <label class="paper-label">Indicator</label>
-            <label class="input-label" empty$="[[!indicator.cluster_indicator_title]]"
-              >[[indicator.cluster_indicator_title]]</label
-            >
-          </div>
-        </div>
-      </template>
+          `
+        : html``}
 
-      <template is="dom-if" if="[[isNewIndicator]]">
-        <div class="row-h flex-c">
-          <div class="col col-6">
-            <etools-dropdown
-              id$="responsePlanDropdw"
-              label="Response Plan"
-              placeholder="&#8212;"
-              selected-item="{{responsePlan}}"
-              selected="{{responsePlanId}}"
-              options="[[responsePlans]]"
-              option-label="title"
-              option-value="id"
-              error-message="Please select Response Plan"
-              disable-on-focus-handling
-              fit-into="etools-dialog"
-            >
-            </etools-dropdown>
-          </div>
-          <div class="col col-6">
-            <etools-dropdown
-              id$="clusterDropdw"
-              label="Cluster"
-              placeholder="&#8212;"
-              selected="{{clusterId}}"
-              selected-item="{{cluster}}"
-              options="[[clusters]]"
-              option-label="title"
-              option-value="id"
-              error-message="Please select Cluster"
-              disable-on-focus-handling
-              fit-into="etools-dialog"
-            >
-            </etools-dropdown>
-          </div>
-        </div>
-        <div class="row-h flex-c">
-          <etools-dropdown
-            id="clusterIndicatorDropdw"
-            label="Indicator"
-            placeholder="&#8212;"
-            selected="{{indicator.cluster_indicator_id}}"
-            selected-item="{{prpClusterIndicator}}"
-            options="[[prpClusterIndicators]]"
-            option-label="title"
-            option-value="id"
-            required
-            auto-validate
-            error-message="Please select Indicator"
-            disable-on-focus-handling
-            fit-into="etools-dialog"
-          >
-          </etools-dropdown>
-        </div>
-      </template>
-
-      <div class="row-h flex-c" hidden$="[[_typeMatches(prpClusterIndicator, 'number')]]">
+      <div class="row-h flex-c" ?hidden="${this._typeMatches(this.prpClusterIndicator, 'number')}">
         <div class="col col-4">
           <paper-input
             id="numeratorLbl"
             label="Numerator Label"
-            value="{{indicator.numerator_label}}"
+            .value="${this.indicator.numerator_label}"
             placeholder="&#8212;"
+            @value-changed="${({detail}: CustomEvent) => {
+              this.indicator.numerator_label = detail.value;
+            }}"
           >
           </paper-input>
         </div>
@@ -134,106 +149,129 @@ class ClusterIndicator extends connect(store)(IndicatorsCommonMixin(EndpointsMix
           <paper-input
             id="denomitorLbl"
             label="Denominator Label"
-            value="{{indicator.denominator_label}}"
+            .value="${this.indicator.denominator_label}"
             placeholder="&#8212;"
+            @value-changed="${({detail}: CustomEvent) => {
+              this.indicator.denominator_label = detail.value;
+            }}"
           >
           </paper-input>
         </div>
       </div>
 
-      <template is="dom-if" if="[[_typeMatches(prpClusterIndicator, 'ratio')]]">
-        <div class="row-h flex-c">
-          <div class="col-4 layout-horizontal">
-            <paper-input
-              id="baselineNumerator"
-              label="Baseline"
-              value="{{indicator.baseline.v}}"
-              placeholder="Numerator"
-              allowed-pattern="[0-9]"
-              pattern="[[digitsNotStartingWith0Pattern]]"
-              auto-validate
-              error-message="Invalid"
-            >
-            </paper-input>
-            <div class="layout-horizontal bottom-aligned dash-separator">/</div>
-            <paper-input
-              id="baselineDenominator"
-              value="{{indicator.baseline.d}}"
-              placeholder="Denominator"
-              allowed-pattern="[0-9]"
-              pattern="[[digitsNotStartingWith0Pattern]]"
-              auto-validate
-              error-message="Invalid"
-            >
-            </paper-input>
-          </div>
-          <div class="col col-4">
-            <paper-input
-              id="targetNumerator"
-              label="Target"
-              value="{{indicator.target.v}}"
-              placeholder="Numerator"
-              allowed-pattern="[0-9]"
-              pattern="[[digitsNotStartingWith0Pattern]]"
-              auto-validate
-              required
-              auto-validate
-              error-message="Invalid"
-            >
-            </paper-input>
-            <div class="layout-horizontal bottom-aligned dash-separator">/</div>
-            <paper-input
-              id="targetDenominator"
-              placeholder="Denominator"
-              value="{{indicator.target.d}}"
-              readonly
-              allowed-pattern="[0-9]"
-              pattern="[[digitsNotStartingWith0Pattern]]"
-              required
-              auto-validate
-              error-message="Invalid"
-            >
-            </paper-input>
-          </div>
-        </div>
-      </template>
-
-      <template is="dom-if" if="[[!_typeMatches(prpClusterIndicator, 'ratio')]]">
-        <div class="row-h flex-c">
-          <div class="col col-4">
-            <paper-input
-              id="baselineEl"
-              label="Baseline"
-              placeholder="&#8212;"
-              value="{{indicator.baseline.v}}"
-              allowed-pattern="[0-9.,]"
-              pattern="[[numberPattern]]"
-              auto-validate
-              error-message="Invalid number"
-            >
-            </paper-input>
-          </div>
-          <div class="col col-4">
-            <paper-input
-              id="targetEl"
-              label="Target"
-              placeholder="&#8212;"
-              value="{{indicator.target.v}}"
-              required
-              allowed-pattern="[0-9.,]"
-              pattern="[[numberPattern]]"
-              auto-validate
-              error-message="Please add a valid target"
-            >
-            </paper-input>
-          </div>
-        </div>
-      </template>
+      ${this._typeMatches(this.prpClusterIndicator, 'ratio')
+        ? html` <div class="row-h flex-c">
+            <div class="col-4 layout-horizontal">
+              <paper-input
+                id="baselineNumerator"
+                label="Baseline"
+                .value="${this.indicator.baseline.v}"
+                placeholder="Numerator"
+                allowed-pattern="[0-9]"
+                .pattern="${this.digitsNotStartingWith0Pattern}"
+                auto-validate
+                error-message="Invalid"
+                @value-changed="${({detail}: CustomEvent) => {
+                  this.indicator.baseline.v = detail.value;
+                }}"
+              >
+              </paper-input>
+              <div class="layout-horizontal bottom-aligned dash-separator">/</div>
+              <paper-input
+                id="baselineDenominator"
+                .value="${this.indicator.baseline.d}"
+                placeholder="Denominator"
+                allowed-pattern="[0-9]"
+                .pattern="${this.digitsNotStartingWith0Pattern}"
+                auto-validate
+                error-message="Invalid"
+                @value-changed="${({detail}: CustomEvent) => {
+                  this.indicator.baseline.d = detail.value;
+                }}"
+              >
+              </paper-input>
+            </div>
+            <div class="col col-4">
+              <paper-input
+                id="targetNumerator"
+                label="Target"
+                .value="${this.indicator.target.v}"
+                placeholder="Numerator"
+                allowed-pattern="[0-9]"
+                .pattern="${this.digitsNotStartingWith0Pattern}"
+                auto-validate
+                required
+                error-message="Invalid"
+                @value-changed="${({detail}: CustomEvent) => {
+                  this.indicator.target.v = detail.value;
+                  this._targetChanged(this.indicator.target.v);
+                }}"
+              >
+              </paper-input>
+              <div class="layout-horizontal bottom-aligned dash-separator">/</div>
+              <paper-input
+                id="targetDenominator"
+                placeholder="Denominator"
+                .value="${this.indicator.target.d}"
+                readonly
+                allowed-pattern="[0-9]"
+                .pattern="${this.digitsNotStartingWith0Pattern}"
+                required
+                auto-validate
+                error-message="Invalid"
+                @value-changed="${({detail}: CustomEvent) => {
+                  this.indicator.target.d = detail.value;
+                }}"
+              >
+              </paper-input>
+            </div>
+          </div>`
+        : html``}
+      ${!this._typeMatches(this.prpClusterIndicator, 'ratio')
+        ? html`
+            <div class="row-h flex-c">
+              <div class="col col-4">
+                <paper-input
+                  id="baselineEl"
+                  label="Baseline"
+                  placeholder="&#8212;"
+                  .value="${this.indicator.baseline.v}}"
+                  allowed-pattern="[0-9.,]"
+                  .pattern="${this.numberPattern}"
+                  auto-validate
+                  error-message="Invalid number"
+                  @value-changed="${({detail}: CustomEvent) => {
+                    this.indicator.baseline.v = detail.value;
+                    this._baselineChanged(this.indicator.baseline.v);
+                  }}"
+                >
+                </paper-input>
+              </div>
+              <div class="col col-4">
+                <paper-input
+                  id="targetEl"
+                  label="Target"
+                  placeholder="&#8212;"
+                  .value="${this.indicator.target.v}"
+                  required
+                  allowed-pattern="[0-9.,]"
+                  .pattern="${this.numberPattern}"
+                  auto-validate
+                  error-message="Please add a valid target"
+                  @value-changed="${({detail}: CustomEvent) => {
+                    this.indicator.target.v = detail.value;
+                  }}"
+                >
+                </paper-input>
+              </div>
+            </div>
+          `
+        : html``}
       <div class="row-h flex-c">
         <div class="layout-vertical">
           <label class="paper-label">Means of Verification</label>
-          <label class="input-label" empty$="[[!prpClusterIndicator.means_of_verification]]">
-            [[prpClusterIndicator.means_of_verification]]
+          <label class="input-label" empty="${!this.prpClusterIndicator.means_of_verification}">
+            ${this.prpClusterIndicator.means_of_verification}
           </label>
         </div>
       </div>
@@ -242,8 +280,8 @@ class ClusterIndicator extends connect(store)(IndicatorsCommonMixin(EndpointsMix
           id="locationsDropdw"
           label="Locations"
           placeholder="&#8212;"
-          selected-values="{{indicator.locations}}"
-          options="[[locationOptions]]"
+          .selectedValues="${this.indicator.locations}"
+          .options="${this.locationOptions}"
           option-label="name"
           option-value="id"
           required
@@ -251,14 +289,27 @@ class ClusterIndicator extends connect(store)(IndicatorsCommonMixin(EndpointsMix
           error-message="Please select locations"
           disable-on-focus-handling
           fit-into="etools-dialog"
+          trigger-value-change-event
+          @etools-selected-items-changed="${({detail}: CustomEvent) => {
+            const newIds = detail.selectedItems.map((i: any) => i.id);
+            this.indicator.locations = newIds;
+          }}"
         >
         </etools-dropdown-multi>
       </div>
     `;
   }
 
-  @property({type: Object, observer: 'indicatorChanged'})
-  indicator!: Indicator;
+  private _indicator!: Indicator;
+  @property({type: Object})
+  get indicator() {
+    return this._indicator;
+  }
+
+  set indicator(indic: Indicator) {
+    this._indicator = indic;
+    this.indicatorChanged(indic);
+  }
 
   @property({type: Boolean})
   isNewIndicator!: boolean;
@@ -275,44 +326,61 @@ class ClusterIndicator extends connect(store)(IndicatorsCommonMixin(EndpointsMix
   @property({type: String})
   responsePlanId!: string | undefined;
 
-  @property({type: String, observer: '_clusterChanged'})
-  cluster!: string;
+  private _cluster!: AnyObject;
+  @property({type: Object})
+  get cluster() {
+    return this._cluster;
+  }
+
+  set cluster(cluster: AnyObject) {
+    this._cluster = cluster;
+    this._clusterChanged(cluster);
+  }
 
   @property({type: Array})
   prpClusterIndicators!: [];
 
-  @property({type: Object, observer: '_responsePlanChanged'})
-  responsePlan!: GenericObject;
+  private _responsePlan!: AnyObject;
+  @property({type: Object})
+  get responsePlan() {
+    return this._responsePlan;
+  }
+
+  set responsePlan(rp: AnyObject) {
+    this._responsePlan = rp;
+    this._responsePlanChanged(rp);
+  }
 
   @property({type: Array})
-  responsePlans!: GenericObject[];
+  responsePlans!: AnyObject[];
 
-  @property({type: Object, observer: '_selectedPrpClusterIndicatorChanged'})
-  prpClusterIndicator!: GenericObject;
+  @property({type: Object})
+  prpClusterIndicator!: AnyObject;
 
-  @property({type: Array, notify: true})
+  @property({type: Array})
   prpDisaggregations!: [];
 
-  static get observers() {
-    return ['_baselineChanged(indicator.baseline.v)', '_targetChanged(indicator.target.v)'];
-  }
+  // static get observers() {
+  //   return ['_baselineChanged(indicator.baseline.v)', '_targetChanged(indicator.target.v)'];
+  // }
 
-  stateChanged(state: RootState) {
-    this.endStateChanged(state);
-  }
+  // stateChanged(state: any) {
+  //   this.endStateChanged(state);
+  // }
 
   connectedCallback() {
     super.connectedCallback();
 
-    this.fireRequest('getResponsePlans', {})
-      .then((response: any) => {
-        this.responsePlans = response;
-      })
-      .catch((error: any) => {
-        fireEvent(this, 'show-toast', {
-          error: {response: error.message || error.response}
-        });
-      });
+    // TODO
+    // this.fireRequest('getResponsePlans', {})
+    //   .then((response: any) => {
+    //     this.responsePlans = response;
+    //   })
+    //   .catch((error: any) => {
+    //     fireEvent(this, 'show-toast', {
+    //       error: {response: error.message || error.response}
+    //     });
+    //   });
 
     this.resetValidations();
   }
@@ -322,9 +390,9 @@ class ClusterIndicator extends connect(store)(IndicatorsCommonMixin(EndpointsMix
       return;
     }
     if (!indicator || !indicator.id) {
-      this.set('isNewIndicator', true);
+      this.isNewIndicator = true;
     } else {
-      this.set('isNewIndicator', false);
+      this.isNewIndicator = false;
       if (indicator.cluster_indicator_id) {
         this._getPrpClusterIndicator(indicator.cluster_indicator_id);
       }
@@ -333,17 +401,18 @@ class ClusterIndicator extends connect(store)(IndicatorsCommonMixin(EndpointsMix
 
   _getPrpClusterIndicator(clusterIndicId: string) {
     fireEvent(this, 'start-spinner', {spinnerText: 'Loading...'});
-    this.fireRequest('getPrpClusterIndicator', {id: clusterIndicId})
-      .then((response: any) => {
-        this.prpClusterIndicator = response;
-        fireEvent(this, 'stop-spinner');
-      })
-      .catch((error: any) => {
-        fireEvent(this, 'stop-spinner');
-        fireEvent(this, 'show-toast', {
-          error: {response: error.message || error.response}
-        });
-      });
+    // TODO
+    // this.fireRequest('getPrpClusterIndicator', {id: clusterIndicId})
+    //   .then((response: any) => {
+    //     this.prpClusterIndicator = response;
+    //     fireEvent(this, 'stop-spinner');
+    //   })
+    //   .catch((error: any) => {
+    //     fireEvent(this, 'stop-spinner');
+    //     fireEvent(this, 'show-toast', {
+    //       error: {response: error.message || error.response}
+    //     });
+    //   });
   }
 
   _responsePlanChanged(responsePlan: any) {
@@ -368,7 +437,7 @@ class ClusterIndicator extends connect(store)(IndicatorsCommonMixin(EndpointsMix
 
   _clusterChanged(cluster: any) {
     this.prpClusterIndicators = [];
-    this.set('indicator.cluster_indicator_id', undefined);
+    this.indicator.cluster_indicator_id = null;
 
     if (!cluster) {
       return;
@@ -406,7 +475,7 @@ class ClusterIndicator extends connect(store)(IndicatorsCommonMixin(EndpointsMix
 
   _selectedPrpClusterIndicatorChanged(prpClusterIndic: any) {
     if (!prpClusterIndic) {
-      this.set('prpDisaggregations', []);
+      this.prpDisaggregations = [];
       if (this.indicator) {
         this.indicator.baseline = {};
         this.indicator.target = {d: '1'};
@@ -414,8 +483,9 @@ class ClusterIndicator extends connect(store)(IndicatorsCommonMixin(EndpointsMix
       return;
     }
 
-    this.set('indicator.cluster_indicator_title', prpClusterIndic.title);
-    this.set('prpDisaggregations', prpClusterIndic.disaggregations);
+    this.indicator.cluster_indicator_title = prpClusterIndic.title;
+    this.prpDisaggregations = prpClusterIndic.disaggregations;
+    fireEvent(this, 'update-tab-counter', {count: this.prpClusterIndicators.length});
 
     if (prpClusterIndic.blueprint.display_type === 'number') {
       this._resetDenominator(1);
@@ -474,7 +544,7 @@ class ClusterIndicator extends connect(store)(IndicatorsCommonMixin(EndpointsMix
   }
 
   _resetInvalid(elSelector: string) {
-    const elem = this.shadowRoot!.querySelector(elSelector) as PolymerElement & {invalid: boolean};
+    const elem = this.shadowRoot!.querySelector(elSelector) as LitElement & {invalid: boolean};
     if (elem) {
       elem.invalid = false;
     }
@@ -493,6 +563,4 @@ class ClusterIndicator extends connect(store)(IndicatorsCommonMixin(EndpointsMix
     return prpIndic.blueprint.display_type === type;
   }
 }
-
-window.customElements.define('cluster-indicator', ClusterIndicator);
 export {ClusterIndicator as ClusterIndicatorEl};

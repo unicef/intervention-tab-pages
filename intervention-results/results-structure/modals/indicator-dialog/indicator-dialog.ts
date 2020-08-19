@@ -23,8 +23,11 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
 import {userIsPme} from '../../../../common/user-permissions';
 import ComponentBaseMixin from '../../../../common/mixins/component-base-mixin';
 import {PaperCheckboxElement} from '@polymer/paper-checkbox';
+import '../../../../common/layout/etools-tabs';
 import './indicator-dissaggregations';
 import './non-cluster-indicator';
+import './cluster-indicator';
+import './cluster-indicator-disaggregations';
 
 @customElement('indicator-dialog')
 export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin(ComponentBaseMixin(LitElement))) {
@@ -88,13 +91,13 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
         .disableConfirmBtn="${this.disableConfirmBtn}"
         spinner-text="${this.spinnerText}"
       >
-        <etools-tabs
+        <etools-tabs-lit
           id="indicatorTabs"
-          tabs="${this.indicatorDataTabs}"
+          .tabs="${this.indicatorDataTabs}"
           .activeTab="${this.activeTab}"
           border-bottom
           @iron-select="${this.tabChanged}"
-        ></etools-tabs>
+        ></etools-tabs-lit>
 
         <iron-pages
           id="indicatorPages"
@@ -146,7 +149,6 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
                 ? html` <cluster-indicator
                     id="clusterIndicatorEl"
                     .indicator="${this.data}"
-                    prp-disaggregations="${this.prpDisaggregations}"
                     .locationOptions="${this.locationOptions}"
                   ></cluster-indicator>`
                 : html``}
@@ -159,13 +161,13 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
             </div>
             ${!this.isCluster
               ? html` <indicator-dissaggregations
-                  data-items="${this.disaggregations}"
+                  .dataItems="${this.disaggregations}"
                   @add-new-disaggreg="${this._updateScroll}"
                 >
                 </indicator-dissaggregations>`
               : html``}
             ${this.isCluster
-              ? html` <cluster-indicator-disaggregations .disaggregations="${this.prpDisaggregations}">
+              ? html` <cluster-indicator-disaggregations">
                 </cluster-indicator-disaggregations>`
               : html``}
           </div>

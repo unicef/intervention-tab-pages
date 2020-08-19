@@ -6,7 +6,7 @@ import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 
 import {PaperInputElement} from '@polymer/paper-input/paper-input.js';
 import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown.js';
-import {LitElement, html, property} from 'lit-element';
+import {LitElement, html, property, customElement} from 'lit-element';
 import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
 import RepeatableDataSetsMixin from '../../../../common/mixins/repeatable-data-sets-mixin';
 import {Disaggregation} from '../../../../common/models/globals.types';
@@ -21,6 +21,7 @@ import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
  * @customElement
  * @applies MixinRepeatableDataSets
  */
+@customElement('indicator-dissaggregations')
 class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
@@ -98,7 +99,7 @@ class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement) {
       <div class="row-padding-v">
         <paper-button
           class="secondary-btn"
-          @tap="_addNewDisaggregation"
+          @tap="${this._addNewDisaggregation}"
           ?hidden="${this._maxDisaggregations(this.dataItems.length)}"
           title="Add Disaggregation"
           >ADD DISAGGREGATION
@@ -159,5 +160,3 @@ class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement) {
     return this.shadowRoot!.querySelector('#disaggregationGroups_' + index) as PaperInputElement;
   }
 }
-
-window.customElements.define('indicator-dissaggregations', IndicatorDisaggregations);

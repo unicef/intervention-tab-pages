@@ -6,7 +6,7 @@ import '@polymer/paper-checkbox/paper-checkbox.js';
 import '@polymer/paper-toggle-button/paper-toggle-button.js';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi.js';
 import IndicatorsCommonMixin from './mixins/indicators-common-mixin';
-import {LitElement, html, property} from 'lit-element';
+import {LitElement, html, property, customElement} from 'lit-element';
 import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../../../common/styles/button-styles';
@@ -17,6 +17,7 @@ import {PaperCheckboxElement} from '@polymer/paper-checkbox/paper-checkbox.js';
  * @customElement
  * @appliesMixin IndicatorsCommonMixin
  */
+@customElement('non-cluster-indicator')
 class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
@@ -500,5 +501,4 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
   }
 }
 
-window.customElements.define('non-cluster-indicator', NonClusterIndicator);
 export {NonClusterIndicator as NonClusterIndicatorEl};
