@@ -25,6 +25,7 @@ import {isJsonStrMatch} from '../../utils/utils';
 
 import {Permission} from '../../common/models/intervention.types';
 import {MinimalUser} from '../../common/models/globals.types';
+import {selectReviewData, selectReviewDataPermissions} from './managementDocument.selectors';
 import {ReviewDataPermission, ReviewData} from './managementDocument.model';
 // @lajos: NEED TO BE INVESTIGATED...AT THIS LINE COMPONENT IMPORT FAILED
 // import './managementDocument.selectors';
@@ -90,10 +91,13 @@ export class InterventionReviewAndSign extends connect(getStore())(
             min-width: 100%;
           }
         }
+        .content-wrapper {
+          padding: 0;
+        }
       </style>
       <etools-content-panel class="content-section" panel-title="Signatures & Dates">
         <div slot="panel-btns">
-          ${this.renderEditBtn(this.editMode, true)}
+          ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
         </div>
         <div class="layout-horizontal row-padding-v">
           <div class="col col-3">
@@ -342,29 +346,9 @@ export class InterventionReviewAndSign extends connect(getStore())(
     this.signedByUnicefUsers = cloneDeep(state.commonData!.unicefUsersData);
     if (state.interventions.current) {
       // @LAJOS: REVIEW THIS THING...
-      this.data = state.interventions.current;
-      console.log('intervention', this.data);
-      console.log(this.data.signed_by_unicef_date);
-      this.permissions = state.interventions.current.permissions;
-      this.permissions.edit.submission_date = true;
-      this.permissions.edit.prc_review_attachment = true;
-      this.permissions.edit.submission_date_prc = true;
-      this.permissions.edit.review_date_prc = true;
-      this.permissions.edit.partner_authorized_officer_signatory = true;
-      this.permissions.edit.signed_by_partner_date = true;
-      this.permissions.edit.signed_by_unicef_date = true;
-      this.permissions.edit.unicef_signatory = true;
-      this.permissions.edit.signed_pd_attachment = true;
-
-      this.permissions.required.submission_date = true;
-      this.permissions.required.prc_review_attachment = true;
-      this.permissions.required.submission_date_prc = true;
-      this.permissions.required.review_date_prc = true;
-      this.permissions.required.partner_authorized_officer_signatory = true;
-      this.permissions.required.signed_by_partner_date = true;
-      this.permissions.required.signed_by_unicef_date = true;
-      this.permissions.required.unicef_signatory = true;
-      this.permissions.required.signed_pd_attachment = true;
+      this.data = selectReviewData(state);
+      this.originalData = cloneDeep(this.data);
+      this.permissions = selectReviewDataPermissions(state);
       if (this.data.submitted_to_prc) {
         this._lockSubmitToPrc = true;
       } else {
@@ -396,79 +380,24 @@ export class InterventionReviewAndSign extends connect(getStore())(
 
   connectedCallback() {
     super.connectedCallback();
-    /**
-     * Disable loading message for review and sign tab elements load,
-     * triggered by parent element on stamp or by tap event on tabs
-     */
-    fireEvent(this, 'global-loading', {
-      active: false,
-      loadingSource: 'interv-page'
-    });
     // @lajos: review this, not sure we will use it anymore
     this.setDropdownMissingOptionsAjaxDetails(this.shadowRoot?.querySelector('#signedByUnicef'), 'unicefUsers', {
       dropdown: true
     });
-    fireEvent(this, 'tab-content-attached');
   }
-
-  // IMPORTANT: commented functions are because we currently do not modifiy the data...only display it
-
-  // _resetFieldsAndValidations(submittedToPrc: boolean) {
-  //   if (submittedToPrc) {
-  //     /** wait for components to be stamped */
-  //     setTimeout(() => {
-  //       this._resetPrcFieldsValidations();
-  //     });
-  //   } else {
-  //     if (this.intervention.prc_review_attachment) {
-  //       getStore().dispatch({type: DECREASE_UNSAVED_UPLOADS});
-  //     }
-  //     this._resetPrcFields();
-  //   }
-  // }
 
   _resetPrcFieldsValidations() {
     (this.shadowRoot!.querySelector('#submissionDatePrcField')! as DatePickerLite).invalid = false;
     (this.shadowRoot!.querySelector('#reviewDatePrcField')! as DatePickerLite).invalid = false;
   }
 
-  // _updateStyles() {
-  //   // @lajos chek whatabout this function
-  //   this.updateStyles();
-  // }
-
   _isDraft(status: string) {
     return status === CONSTANTS.STATUSES.Draft.toLowerCase() || status === '';
   }
 
-  // _interventionChanged(intervention: Intervention) {
-  //   // check if submitted to PRC was already saved
-  //   if (intervention && intervention.id && intervention.submitted_to_prc) {
-  //     this._lockSubmitToPrc = true;
-  //   } else {
-  //     this._lockSubmitToPrc = false;
-  //   }
-  //   if (!intervention.prc_review_attachment) {
-  //     // @lajos: review declaration of bellow... originally did not have null as definition
-  //     this.intervention.prc_review_attachment = undefined;
-  //   }
-  // }
-
   _hideDeleteBtn(status: string, fileUrl: string) {
     return this._isDraft(status) && fileUrl;
   }
-
-  // _agreementChanged(agreement: MinimalAgreement) {
-  //   if (agreement && typeof agreement === 'object' && Object.keys(agreement).length > 0) {
-  //     const authorizedOfficerData = agreement.authorized_officers!.map((officer) => {
-  //       return {
-  //         value: typeof officer.id === 'string' ? parseInt(officer.id, 10) : officer.id,
-  //         label: officer.first_name + ' ' + officer.last_name
-  //       };
-  //     });
-  //     this.agreementAuthorizedOfficers = authorizedOfficerData;
-  //   }
-  // }
 
   validate() {
     let valid = true;
@@ -531,43 +460,6 @@ export class InterventionReviewAndSign extends connect(getStore())(
     this.data.prc_review_attachment = '';
   }
 
-  // update FR Number on intervention
-  // _handleFrsUpdate(e: CustomEvent) {
-  //   e.stopImmediatePropagation();
-  //   try {
-  //     this.intervention.frs_details = e.detail.frsDetails;
-  //     const frIds = e.detail.frsDetails.frs.map((fr: Fr) => fr.id);
-  //     this.intervention = {...this.intervention, frs: frIds};
-  //   } catch (err) {
-  //     logError('[_handleFrsUpdate] An error occurred during FR Numbers update', null, err);
-  //   }
-  // }
-
-  // /**
-  //  * If a signed document is selected then all fields required
-  //  * for the intervention to move in signed status are required; only for draft status.
-  //  */
-  // _signedPdDocHasChanged(signedDocument: any) {
-  //   if (typeof signedDocument === 'undefined') {
-  //     return;
-  //   }
-  //   // this functionality is available only after pd is saved and in draft status
-  //   if (this.intervention && this.intervention.status === CONSTANTS.STATUSES.Draft.toLowerCase()) {
-  //     setTimeout(() => {
-  //       // delay micro task execution; set to make sure _signedDocChangedForDraft will run on page load
-  //       if (signedDocument) {
-  //         // new document uploaded or file url provided
-  //         fireEvent(this, 'signed-doc-change-for-draft', {docSelected: true});
-  //       } else {
-  //         // there is no signedDocument
-  //         fireEvent(this, 'signed-doc-change-for-draft', {
-  //           docSelected: false
-  //         });
-  //       }
-  //     }, 0);
-  //   }
-  // }
-
   _signedPDUploadFinished(e: CustomEvent) {
     getStore().dispatch({type: CONSTANTS.DECREASE_UPLOADS_IN_PROGRESS});
     if (e.detail.success) {
@@ -582,15 +474,6 @@ export class InterventionReviewAndSign extends connect(getStore())(
     this.data.signed_pd_attachment = '';
     getStore().dispatch({type: CONSTANTS.DECREASE_UNSAVED_UPLOADS});
   }
-
-  // _prcRevDocUploadFinished(e: CustomEvent) {
-  //   getStore().dispatch({type: DECREASE_UPLOADS_IN_PROGRESS});
-  //   if (e.detail.success) {
-  //     const response = e.detail.success;
-  //     this.intervention.prc_review_attachment = response.id;
-  //     getStore().dispatch({type: INCREASE_UNSAVED_UPLOADS});
-  //   }
-  // }
 
   _prcRevDocDelete(_e: CustomEvent) {
     // @lajos this initially was set to undefined

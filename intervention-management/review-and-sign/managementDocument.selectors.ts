@@ -1,7 +1,7 @@
 import {createSelector} from 'reselect';
 import {Intervention, Permission, InterventionPermissionsFields} from '../../common/models/intervention.types';
-import {ReviewData, ReviewDataPermission} from './ManagementDocument.model';
 import {currentIntervention, currentInterventionPermissions} from '../../common/selectors';
+import {ReviewData, ReviewDataPermission} from './managementDocument.model';
 
 export const selectReviewData = createSelector(currentIntervention, (intervention: Intervention) => {
   return new ReviewData(intervention);
