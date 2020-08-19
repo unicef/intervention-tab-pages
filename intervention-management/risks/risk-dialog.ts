@@ -24,8 +24,7 @@ export class RiskDialog extends connect(getStore())(ComponentBaseMixin(LitElemen
   render() {
     return html`
       <style>
-        ${sharedStyles}
-        paper-textarea {
+        ${sharedStyles} paper-textarea {
           flex: auto;
           --paper-input-container-input: {
             display: block;
@@ -118,8 +117,8 @@ export class RiskDialog extends connect(getStore())(ComponentBaseMixin(LitElemen
   }
 
   _resetFields() {
-    this.data = {...{}};
-    this.currentRisk = {...{}};
+    this.data = {};
+    this.currentRisk = {};
   }
 
   public handleDialogClose() {
