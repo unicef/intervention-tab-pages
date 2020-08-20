@@ -257,6 +257,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
       return;
     }
     this.activeTab = newTabName;
+    this._centerDialog();
   }
 
   isClusterChanged(e: CustomEvent) {
@@ -335,7 +336,9 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
 
   setTitle(indicator: Indicator) {
     const title = indicator && indicator.id ? 'Edit Indicator' : 'Add Indicator';
-    this.indicatorDialog.dialogTitle = title;
+    setTimeout(() => {
+      this.indicatorDialog.dialogTitle = title;
+    });
   }
 
   preselectSectionAndLocation() {

@@ -228,7 +228,7 @@ function SaveIndicatorMixin<T extends Constructor<LitElement>>(baseClass: T) {
     }
 
     _prepareDisaggregationIds(): number[] {
-      const disaggregations = this.getDisaggregations();
+      let disaggregations = this.getDisaggregations();
       if (!disaggregations || !disaggregations.length) {
         return [];
       }
