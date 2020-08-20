@@ -14,7 +14,6 @@ import DatePickerLite from '@unicef-polymer/etools-date-time/datepicker-lite';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import MissingDropdownOptionsMixin from '../../common/mixins/missing-dropdown-options-mixin';
 import UploadMixin from '../../common/mixins/uploads-mixin';
-import {fireEvent} from '../../../../../utils/fire-custom-event';
 import CONSTANTS from '../../common/constants';
 import {sectionContentStylesPolymer} from '../../common/styles/content-section-styles-polymer';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
@@ -27,13 +26,13 @@ import {Permission} from '../../common/models/intervention.types';
 import {MinimalUser} from '../../common/models/globals.types';
 import {selectReviewData, selectReviewDataPermissions} from './managementDocument.selectors';
 import {ReviewDataPermission, ReviewData} from './managementDocument.model';
-// @lajos: NEED TO BE INVESTIGATED...AT THIS LINE COMPONENT IMPORT FAILED
-// import './managementDocument.selectors';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {isEmpty, cloneDeep} from 'lodash-es';
 import {MinimalAgreement} from '../../common/models/agreement.types';
 import {buttonsStyles} from '../../common/styles/button-styles';
+import {patchIntervention} from '../../common/actions';
+import {formatDate} from '../../utils/date-utils';
 
 /**
  * @customElement
@@ -66,7 +65,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
         paper-input-container{
           margin-left: 0px;
         }
-        paper-input {
+        paper-input#other {
           width: 100%;
         }
         paper-checkbox {
@@ -83,12 +82,10 @@ export class InterventionReviewAndSign extends connect(getStore())(
             opacity: 1;
           }
         }
-        --paper-input-container_-_width: 999px!important;
         datepicker-lite[required] {
           --paper-input-container-label-floating_-_max-width: 175%;
-          --paper-input-container_-_width: 666px!important;
           --paper-input-container-label {
-            min-width: 100%;
+            min-width: 666px;;
           }
         }
         .content-wrapper {
@@ -110,11 +107,14 @@ export class InterventionReviewAndSign extends connect(getStore())(
               selected-date-display-format="D MMM YYYY"
               ?required="${this.permissions.required.submission_date}"
               max-date="${this.getCurrentDate()}"
+              fire-date-has-changed
+              @date-has-changed="${(e: CustomEvent) =>
+                this.valueChanged({value: formatDate(e.detail.date, 'YYYY-MM-DD')}, 'submission_date')}"
               max-date-error-msg="Date can not be in the future"
               error-message="Document Submission Date is required"
               auto-validate
             >
-            </datepicker-lite>
+
           </div>
           <div class="col col-5 styled">
             <!-- Submitted to PRC? -->
@@ -146,6 +146,9 @@ export class InterventionReviewAndSign extends connect(getStore())(
                     .value="${this.data.submission_date_prc}"
                     ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.submission_date_prc)}"
                     ?required="${this.data.prc_review_attachment}"
+                    fire-date-has-changed
+                    @date-has-changed="${(e: CustomEvent) =>
+                      this.valueChanged({value: formatDate(e.detail.date, 'YYYY-MM-DD')}, 'submission_date_prc')}"
                     selected-date-display-format="D MMM YYYY"
                     auto-validate
                   >
@@ -159,6 +162,9 @@ export class InterventionReviewAndSign extends connect(getStore())(
                     .value="${this.data.review_date_prc}"
                     ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.review_date_prc)}"
                     ?required="${this.data.prc_review_attachment}"
+                    fire-date-has-changed
+                    @date-has-changed="${(e: CustomEvent) =>
+                      this.valueChanged({value: formatDate(e.detail.date, 'YYYY-MM-DD')}, 'review_date_prc')}"
                     selected-date-display-format="D MMM YYYY"
                     auto-validate
                   >
@@ -170,11 +176,11 @@ export class InterventionReviewAndSign extends connect(getStore())(
                     id="reviewDocUpload"
                     label="PRC Review Document"
                     accept=".doc,.docx,.pdf,.jpg,.png"
-                    file-url="${this.data.prc_review_attachment}"
-                    upload-endpoint="${this.uploadEndpoint}"
+                    .fileUrl="${this.data.prc_review_attachment}"
+                    .uploadEndpoint="${this.uploadEndpoint}"
                     @upload-finished="_prcRevDocUploadFinished"
                     ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.prc_review_attachment)}"
-                    show-delete-btn="${this.showPrcReviewDeleteBtn(this.data.status)}"
+                    showDeleteBtn="${this.showPrcReviewDeleteBtn(this.data.status)}"
                     @delete-file="${this._prcRevDocDelete}"
                     @upload-started="${this._onUploadStarted}"
                     @change-unsaved-file="${this._onChangeUnsavedFile}"
@@ -208,6 +214,9 @@ export class InterventionReviewAndSign extends connect(getStore())(
               .value="${this.data.signed_by_partner_date}"
               ?required="${this.permissions.required.signed_by_partner_date}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.signed_by_partner_date)}"
+              fire-date-has-changed
+              @date-has-changed="${(e: CustomEvent) =>
+                this.valueChanged({value: formatDate(e.detail.date, 'YYYY-MM-DD')}, 'signed_by_partner_date')}"
               auto-validate
               error-message="Date is required"
               max-date-error-msg="Date can not be in the future"
@@ -231,9 +240,12 @@ export class InterventionReviewAndSign extends connect(getStore())(
             <datepicker-lite
               id="signedByUnicefDateField"
               label="Signed by UNICEF Date"
-              value="${this.data.signed_by_unicef_date}"
+              .value="${this.data.signed_by_unicef_date}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.signed_by_unicef_date)}"
               ?required="${this.permissions.required.signed_by_unicef_date}"
+              fire-date-has-changed
+              @date-has-changed="${(e: CustomEvent) =>
+                this.valueChanged({value: formatDate(e.detail.date, 'YYYY-MM-DD')}, 'signed_by_unicef_date')}"
               auto-validate
               error-message="Date is required"
               max-date-error-msg="Date can not be in the future"
@@ -269,10 +281,10 @@ export class InterventionReviewAndSign extends connect(getStore())(
               id="signedIntervFile"
               label="Signed PD/SSFA"
               accept=".doc,.docx,.pdf,.jpg,.png"
-              file-url="${this.data.signed_pd_attachment}"
-              upload-endpoint="${this.uploadEndpoint}"
+              .fileUrl="${this.data.signed_pd_attachment}"
+              .uploadEndpoint="${this.uploadEndpoint}"
               @upload-finished="${this._signedPDUploadFinished}"
-              show-delete-btn="${this.showSignedPDDeleteBtn(this.data.status)}"
+              showDeleteBtn="${this.showSignedPDDeleteBtn(this.data.status)}"
               @delete-file="${this._signedPDDocDelete}"
               auto-validate
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.signed_pd_attachment)}"
@@ -306,7 +318,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
               : html``
           }
         </div>
-        ${this.renderActions(this.editMode, true)}
+        ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
       </etools-content-panel>
     `;
   }
@@ -345,7 +357,6 @@ export class InterventionReviewAndSign extends connect(getStore())(
     // review it
     this.signedByUnicefUsers = cloneDeep(state.commonData!.unicefUsersData);
     if (state.interventions.current) {
-      // @LAJOS: REVIEW THIS THING...
       this.data = selectReviewData(state);
       this.originalData = cloneDeep(this.data);
       this.permissions = selectReviewDataPermissions(state);
@@ -354,11 +365,11 @@ export class InterventionReviewAndSign extends connect(getStore())(
       } else {
         this._lockSubmitToPrc = false;
       }
-    }
-    const agreements = state.agreements.list;
-    if (!isEmpty(agreements) && !isEmpty(state.data.current)) {
-      const agreementData = this.filterAgreementsById(agreements, this.data.agreement);
-      this.agreementAuthorizedOfficers = this.getAuthorizedOfficersList(agreementData);
+      const agreements = state.agreements.list;
+      if (!isEmpty(agreements)) {
+        const agreementData = this.filterAgreementsById(agreements, this.data.agreement);
+        this.agreementAuthorizedOfficers = this.getAuthorizedOfficersList(agreementData);
+      }
     }
   }
 
@@ -496,5 +507,30 @@ export class InterventionReviewAndSign extends connect(getStore())(
 
   updatePrc(detail: any) {
     this.data = {...this.data, submitted_to_prc: detail.value} as ReviewData;
+  }
+
+  save() {
+    if (!this.validate()) {
+      return;
+    }
+
+    getStore()
+      .dispatch(patchIntervention(this.data))
+      .then(() => {
+        this.editMode = false;
+      });
+  }
+
+  updateDate(detail: any, component: string) {
+    console.log(detail);
+    console.log(component);
+  }
+
+  fileUploadUrl(file: string) {
+    if (!file) {
+      return;
+    } else {
+      return file;
+    }
   }
 }
