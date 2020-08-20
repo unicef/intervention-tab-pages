@@ -26,42 +26,58 @@ function IndicatorDialogTabsMixin<T extends Constructor<LitElement>>(baseClass: 
     @property({type: String})
     activeTab = 'details';
 
-    static get observers() {// TODO
-      return [
-        '_setDisaggregationsCount1(disaggregations, prpDisaggregations, isCluster)',
-        '_setDisaggregationsCount2(disaggregations.length, prpDisaggregations.length)'
-      ];
+    // static get observers() {
+    //   // TODO
+    //   return [
+    //     '_setDisaggregationsCount1(disaggregations, prpDisaggregations, isCluster)',
+    //     '_setDisaggregationsCount2(disaggregations.length, prpDisaggregations.length)'
+    //   ];
+    // }
+
+    connectedCallback() {
+      super.connectedCallback();
+      this.addEventListener('update-tab-counter', this.updateTabCount as any);
     }
 
-    /**
-     * Update disaggegations tab counter
-     */
-    _updateDisaggregationsNrInTabLabel(disaggregationsCount: number) {
-      this.indicatorDataTabs[1].counter = disaggregationsCount;
+    disconnectedCallback() {
+      super.disconnectedCallback();
+      this.removeEventListener('update-tab-counter', this.updateTabCount as any);
+    }
+
+    updateTabCount(event: CustomEvent) {
+      this.indicatorDataTabs[1].counter = event.detail.count;
       this.requestUpdate();
     }
 
-    _setDisaggregationsCount1(disaggregs: [], prpDisaggregs: []) {
-      // @ts-ignore
-      if (!this.indicator || !disaggregs || !prpDisaggregs) {
-        this._updateDisaggregationsNrInTabLabel(0);
-        return;
-      }
-      this._setDisaggregationsCount2(disaggregs.length, prpDisaggregs.length);
-    }
+    // /**
+    //  * Update disaggegations tab counter
+    //  */
+    // _updateDisaggregationsNrInTabLabel(disaggregationsCount: number) {
+    //   this.indicatorDataTabs[1].counter = disaggregationsCount;
+    //   this.requestUpdate();
+    // }
 
-    _setDisaggregationsCount2(disaggregsLength: number, prpDisaggregsLength: number) {
-      if (typeof disaggregsLength === 'undefined' || typeof prpDisaggregsLength === 'undefined') {
-        return;
-      }
-      // @ts-ignore
-      const disaggregationsNr = this.isCluster ? prpDisaggregsLength : disaggregsLength;
-      this._updateDisaggregationsNrInTabLabel(disaggregationsNr);
-    }
+    // _setDisaggregationsCount1(disaggregs: [], prpDisaggregs: []) {
+    //   // @ts-ignore
+    //   if (!this.indicator || !disaggregs || !prpDisaggregs) {
+    //     this._updateDisaggregationsNrInTabLabel(0);
+    //     return;
+    //   }
+    //   this._setDisaggregationsCount2(disaggregs.length, prpDisaggregs.length);
+    // }
 
-    updateActiveTab(tab: string) {
-      this.set('activeTab', tab);
-    }
+    // _setDisaggregationsCount2(disaggregsLength: number, prpDisaggregsLength: number) {
+    //   if (typeof disaggregsLength === 'undefined' || typeof prpDisaggregsLength === 'undefined') {
+    //     return;
+    //   }
+    //   // @ts-ignore
+    //   const disaggregationsNr = this.isCluster ? prpDisaggregsLength : disaggregsLength;
+    //   this._updateDisaggregationsNrInTabLabel(disaggregationsNr);
+    // }
+
+    // updateActiveTab(tab: string) {
+    //   this.activeTab = tab;
+    // }
   }
   return IndicatorDialogTabsClass;
 }

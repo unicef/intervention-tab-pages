@@ -11,7 +11,7 @@ import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
-import {AnyObject, Section, User, LocationObject} from '../../../../common/models/globals.types';
+import {AnyObject, Section, User, LocationObject, Disaggregation} from '../../../../common/models/globals.types';
 import {Indicator} from '../../../../common/models/intervention.types';
 import EtoolsDialog from '@unicef-polymer/etools-dialog';
 import SaveIndicatorMixin from './mixins/save-indicator-mixin';
@@ -182,8 +182,15 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   // @property({type: Object})
   // actionParams!: AnyObject;
 
+  private _disaggregations: {disaggregId: string}[] = [];
   @property({type: Array})
-  disaggregations: [] = [];
+  get disaggregations() {
+    return this._disaggregations;
+  }
+  set disaggregations(newVal: []) {
+    this._disaggregations = newVal;
+    fireEvent(this, 'update-tab-counter', {count: this._disaggregations.length});
+  }
 
   @property({type: Array})
   prpDisaggregations: [] = [];

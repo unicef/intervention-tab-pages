@@ -22,7 +22,7 @@ import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
  * @applies MixinRepeatableDataSets
  */
 @customElement('indicator-dissaggregations')
-class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement) {
+export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
