@@ -15,9 +15,11 @@ import {AnyObject} from '../../../../common/models/globals.types';
  */
 @customElement('cluster-indicator')
 class ClusterIndicator extends IndicatorsCommonMixin(LitElement) {
+  static get styles() {
+    return [gridLayoutStylesLit];
+  }
   render() {
     return html`
-      ${gridLayoutStylesLit}
       <style>
         ${sharedStyles} :host {
           display: block;
@@ -300,7 +302,7 @@ class ClusterIndicator extends IndicatorsCommonMixin(LitElement) {
     `;
   }
 
-  private _indicator!: Indicator;
+  private _indicator: Indicator = {};
   @property({type: Object})
   get indicator() {
     return this._indicator;
@@ -382,7 +384,7 @@ class ClusterIndicator extends IndicatorsCommonMixin(LitElement) {
     //     });
     //   });
 
-    this.resetValidations();
+    // this.resetValidations();
   }
 
   indicatorChanged(indicator: any) {

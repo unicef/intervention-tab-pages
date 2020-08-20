@@ -9,6 +9,10 @@ import {Disaggregation, AnyObject} from '../../../../common/models/globals.types
  */
 @customElement('cluster-indicator-disaggregations')
 export class ClusterIndicatorDisaggregations extends LitElement {
+  static get styles() {
+    return [gridLayoutStylesLit, buttonsStyles];
+  }
+
   render() {
     return html`
       <style>
@@ -26,7 +30,6 @@ export class ClusterIndicatorDisaggregations extends LitElement {
           width: 100%;
         }
       </style>
-      ${gridLayoutStylesLit} ${buttonsStyles}
       <div ?hidden="${!this.disaggregations.length}">
         ${this.disaggregations.map(
           (item: Disaggregation) => html`

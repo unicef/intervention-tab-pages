@@ -54,7 +54,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
               <div class="actions">
                 <paper-icon-button
                   class="action delete"
-                  @tap="${this._openDeleteConfirmation}"
+                  @tap="${(e: CustomEvent) => this._openDeleteConfirmation(e, index)}"
                   data-args="${index}"
                   icon="cancel"
                 ></paper-icon-button>
@@ -64,7 +64,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
               <div class="row-h">
                 <div class="col col-4">
                   <etools-dropdown
-                    id="disaggregate_by_${index}}"
+                    id="disaggregate_by_${index}"
                     label="Disaggregate By"
                     .options="${this.preDefinedDisaggregtions}"
                     .selected="${item.disaggregId}"
@@ -137,15 +137,18 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
       return;
     }
 
+    this.dataItems[index].disaggregId = selectedDisagreg.id;
     if (this.isAlreadySelected(selectedDisagreg.id, index, 'disaggregId')) {
       this.shadowRoot!.querySelector<EtoolsDropdownEl>('#disaggregate_by_' + index)!.selected = null;
       this._clearDisagregGroups(index);
       fireEvent(this, 'show-toast', {
         error: {response: 'Disaggregation already selected'}
       });
-      return;
+      this.dataItems[index].disaggregId = null;
+    } else {
+      this._displayDisaggregationGroups(selectedDisagreg, index);
     }
-    this._displayDisaggregationGroups(selectedDisagreg, index);
+    this.requestUpdate();
   }
 
   _displayDisaggregationGroups(selectedDisagreg: Disaggregation, index: number) {
