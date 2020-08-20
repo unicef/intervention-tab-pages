@@ -517,17 +517,4 @@ export class InterventionReviewAndSign extends connect(getStore())(
         this.editMode = false;
       });
   }
-
-  updateDate(detail: any, component: string) {
-    console.log(detail);
-    console.log(component);
-  }
-
-  fileUploadUrl(file: string) {
-    if (!file) {
-      return;
-    } else {
-      return file;
-    }
-  }
 }
