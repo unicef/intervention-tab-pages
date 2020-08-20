@@ -123,6 +123,9 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           error-message="Please add a title"
           auto-validate
           ?readonly="${this.readonly}"
+          @value-changed="${({detail}: CustomEvent) => {
+            this.indicator.indicator.title = detail.value;
+          }}"
         >
         </paper-input>
       </div>
@@ -155,9 +158,9 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         </div>
       </div>
       <div class="row-h flex-c">
-        ${!this._isRatioType(this.indicator.indicator.unit, this.indicator.indicator.display_type)
+        ${!this._isRatioType(this.indicator!.indicator!.unit, this.indicator!.indicator!.display_type)
           ? html` <div class="col col-3">
-                ${this._unitIsNumeric(this.indicator.indicator.unit)
+                ${this._unitIsNumeric(this.indicator!.indicator!.unit)
                   ? html` <paper-input
                       id="baselineNumeric"
                       label="Baseline"
@@ -174,7 +177,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                     >
                     </paper-input>`
                   : html``}
-                ${!this._unitIsNumeric(this.indicator.indicator.unit)
+                ${!this._unitIsNumeric(this.indicator!.indicator!.unit)
                   ? html` <paper-input
                       id="baselineNonNumeric"
                       label="Baseline"
@@ -208,7 +211,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                     this.indicator.target.v = detail.value;
                     this._targetChanged(this.indicator.target.v);
                   }}"
-                  ?hidden="${!this._unitIsNumeric(this.indicator.indicator.unit)}"
+                  ?hidden="${!this._unitIsNumeric(this.indicator!.indicator!.unit)}"
                 >
                 </paper-input>
                 <paper-input
@@ -221,7 +224,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                   .pattern="${this.digitsPattern}"
                   auto-validate
                   error-message="Please add a valid target"
-                  ?hidden="${this._unitIsNumeric(this.indicator.indicator.unit)}"
+                  ?hidden="${this._unitIsNumeric(this.indicator!.indicator!.unit)}"
                   @value-changed="${({detail}: CustomEvent) => {
                     this.indicator.target.v = detail.value;
                     this._targetChanged(this.indicator.target.v);
@@ -230,7 +233,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                 </paper-input>
               </div>`
           : html``}
-        ${this._isRatioType(this.indicator.indicator.unit, this.indicator.indicator.display_type)
+        ${this._isRatioType(this.indicator!.indicator!.unit, this.indicator!.indicator!.display_type)
           ? html` <div class="col-3 layout-horizontal">
                 <paper-input
                   id="baselineNumerator"
@@ -357,7 +360,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
     `;
   }
 
-  private _indicator!: Indicator;
+  private _indicator = new Indicator();
 
   @property({type: Object})
   get indicator() {
@@ -422,7 +425,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
     }
   }
 
-  isReadonlyDenominator(interventionStatus: string, indicId: string) {
+  isReadonlyDenominator(interventionStatus: string, indicId: string | null) {
     if (interventionStatus && interventionStatus.toLowerCase() === 'active') {
       return indicId ? true : false;
     }
@@ -479,7 +482,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
       : ['targetElForNonNumericUnit', 'baselineNonNumeric'];
   }
 
-  _isRatioType() {
+  _isRatioType(_unit: string, _displayType: string) {
     if (!this.indicator) {
       return false;
     }

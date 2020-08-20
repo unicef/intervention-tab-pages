@@ -11,7 +11,7 @@ import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
-import {AnyObject, Section, User, LocationObject, Disaggregation} from '../../../../common/models/globals.types';
+import {AnyObject, Section, User, LocationObject} from '../../../../common/models/globals.types';
 import {Indicator} from '../../../../common/models/intervention.types';
 import EtoolsDialog from '@unicef-polymer/etools-dialog';
 import SaveIndicatorMixin from './mixins/save-indicator-mixin';
@@ -161,15 +161,13 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
             </div>
             ${!this.isCluster
               ? html` <indicator-dissaggregations
+                  id="indicatorDisaggregations"
                   .dataItems="${this.disaggregations}"
                   @add-new-disaggreg="${this._updateScroll}"
                 >
                 </indicator-dissaggregations>`
               : html``}
-            ${this.isCluster
-              ? html` <cluster-indicator-disaggregations">
-                </cluster-indicator-disaggregations>`
-              : html``}
+            ${this.isCluster ? html` <cluster-indicator-disaggregations> </cluster-indicator-disaggregations>` : html``}
           </div>
         </iron-pages>
       </etools-dialog>
@@ -177,7 +175,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   }
 
   @property({type: Object})
-  data: Indicator | null = null; // This is the indicator
+  data: Indicator = new Indicator(); // This is the indicator
 
   // @property({type: Object})
   // actionParams!: AnyObject;
@@ -187,7 +185,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   get disaggregations() {
     return this._disaggregations;
   }
-  set disaggregations(newVal: []) {
+  set disaggregations(newVal: {disaggregId: string}[]) {
     this._disaggregations = newVal;
     fireEvent(this, 'update-tab-counter', {count: this._disaggregations.length});
   }
@@ -231,7 +229,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   @query('etools-dialog')
   indicatorDialog!: EtoolsDialog;
 
-  private llResultId!: string; /** aka pdOutputId */
+  protected llResultId!: string; /** aka pdOutputId */
   private prpServerOn!: boolean;
 
   set dialogData(data: IndicatorDialogData) {
@@ -370,7 +368,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
     this.spinnerText = 'Saving...';
   }
 
-  _startSpinner(e: CustomEvent) {
+  _startSpinner(e?: CustomEvent) {
     if (e) {
       e.stopImmediatePropagation();
       this.spinnerText = e.detail.spinnerText;

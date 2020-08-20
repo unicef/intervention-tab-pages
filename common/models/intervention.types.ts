@@ -30,7 +30,7 @@ export class IndicatorIndicator {
 
 export class Indicator {
   // Indicator
-  id: number | null = null;
+  id: string | null = null;
   is_active = true;
   is_high_frequency = false;
   indicator: IndicatorIndicator | null = new IndicatorIndicator();

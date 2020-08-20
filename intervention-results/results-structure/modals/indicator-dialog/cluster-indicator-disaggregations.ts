@@ -58,7 +58,7 @@ export class ClusterIndicatorDisaggregations extends LitElement {
   }
 
   @property({type: Array})
-  disaggregations!: [];
+  disaggregations: [] = [];
 
   _noDisaggregations(disaggregations: any, disaggregLength: number) {
     return !disaggregations || !disaggregLength;

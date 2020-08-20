@@ -49,7 +49,7 @@ class ClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                 <div class="layout-vertical">
                   <label class="paper-label">Cluster</label>
                   <label class="input-label" empty="${!this.indicator.cluster_name}"
-                    >${this.indicator.cluster_name}}</label
+                    >${this.indicator.cluster_name}</label
                   >
                 </div>
               </div>
@@ -237,7 +237,7 @@ class ClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                   id="baselineEl"
                   label="Baseline"
                   placeholder="&#8212;"
-                  .value="${this.indicator.baseline.v}}"
+                  .value="${this.indicator.baseline.v}"
                   allowed-pattern="[0-9.,]"
                   .pattern="${this.numberPattern}"
                   auto-validate
@@ -340,7 +340,7 @@ class ClusterIndicator extends IndicatorsCommonMixin(LitElement) {
   }
 
   @property({type: Array})
-  prpClusterIndicators!: [];
+  prpClusterIndicators: [] = [];
 
   private _responsePlan!: AnyObject;
   @property({type: Object})
@@ -357,7 +357,7 @@ class ClusterIndicator extends IndicatorsCommonMixin(LitElement) {
   responsePlans!: AnyObject[];
 
   @property({type: Object})
-  prpClusterIndicator!: AnyObject;
+  prpClusterIndicator: AnyObject = {};
 
   @property({type: Array})
   prpDisaggregations!: [];

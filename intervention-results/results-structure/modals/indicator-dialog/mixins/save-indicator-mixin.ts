@@ -6,12 +6,20 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
 import {LitElement} from 'lit-element';
 import {getEndpoint} from '../../../../../utils/endpoint-helper';
 import {Constructor} from '../../../../../common/models/globals.types';
+import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown';
+import {interventionEndpoints} from '../../../../../utils/intervention-endpoints';
+import {NonClusterIndicatorEl} from '../non-cluster-indicator';
+import {ClusterIndicatorEl} from '../cluster-indicator';
+import {IndicatorDisaggregations} from '../indicator-dissaggregations';
+import {getStore} from '../../../../../utils/redux-store-access';
+import {updateCurrentIntervention, getIntervention} from '../../../../../common/actions';
 
 /**
  * @mixinFunction
  */
 function SaveIndicatorMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class SaveIndicatorClass extends baseClass {
+    [x: string]: any;
     // @ts-ignore
     private nonClusterIndicatorCreateModel = {
       indicator: {
@@ -105,13 +113,11 @@ function SaveIndicatorMixin<T extends Constructor<LitElement>>(baseClass: T) {
       const endpoint = getEndpoint(this._getEndpointName(), {
         id: this._getIdForEndpoint()
       });
-      const method = this.indicator.id ? 'PATCH' : 'POST';
-      const body = this._getIndicatorBody();
 
       sendRequest({
         endpoint: endpoint,
-        method: method,
-        body: body
+        method: this.data!.id ? 'PATCH' : 'POST',
+        body: this._getIndicatorBody()
       })
         .then((resp: any) => {
           this._handleSaveIndicatorResponse(resp);
@@ -123,39 +129,39 @@ function SaveIndicatorMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
     validate() {
       let valid = true;
-      const sectionSelected = (this.shadowRoot!.querySelector('#sectionDropdw')! as LitElement & {
-        validate(): boolean;
-      }).validate();
-      if (this.isCluster) {
-        valid =
-          (this.shadowRoot!.querySelector('#clusterIndicatorEl')! as LitElement & {
-            validate(): boolean;
-          }).validate() && sectionSelected;
-      } else {
-        valid =
-          (this.shadowRoot!.querySelector('#nonClusterIndicatorEl')! as LitElement & {
-            validate(): boolean;
-          }).validate() && sectionSelected;
-      }
+      const sectionSelected = this.shadowRoot!.querySelector<EtoolsDropdownEl>('#sectionDropdw')!.validate();
+      valid = this.getIndicatorElement(this.isCluster)!.validate() && sectionSelected;
       return valid;
     }
 
+    getElementId(isCluster: boolean) {
+      return isCluster ? '#clusterIndicatorEl' : '#nonClusterIndicatorEl';
+    }
+
+    getIndicatorElement(isCluster: boolean): NonClusterIndicatorEl | ClusterIndicatorEl {
+      return this.shadowRoot!.querySelector<any>(this.getElementId(isCluster));
+    }
+
     _getIdForEndpoint() {
-      return this.indicator.id ? this.indicator.id : this.llResultId;
+      return this.data.id ? this.data.id : this.llResultId;
     }
 
     _getEndpointName() {
-      return this.indicator.id ? 'getEditDeleteIndicator' : 'createIndicator';
+      return this.data.id ? interventionEndpoints.getEditDeleteIndicator : interventionEndpoints.createIndicator;
     }
 
     _handleSaveIndicatorResponse(response: any) {
       this._stopSpinner();
 
-      fireEvent(this, 'indicator-dialog-close', {
-        indicatorData: response,
-        actionParams: this.actionParams
-      });
-      (this.$.indicatorDialog as IndicatorDialogEl).opened = false;
+      // fireEvent(this, 'indicator-dialog-close', {
+      //   indicatorData: response,
+      //   actionParams: this.actionParams
+      // });
+
+      // TODO
+      // getStore().dispatch(updateCurrentIntervention(response.relatedIntervention));
+      getStore().dispatch(getIntervention());
+      this.indicatorDialog.opened = false;
     }
 
     _handleSaveIndicatorError(error: any) {
@@ -168,8 +174,8 @@ function SaveIndicatorMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
     _getIndicatorBody() {
       const body = this._getIndicatorModelForSave();
-
-      Object.assign(body, pick(this.indicator, keys(body)));
+      const indicatorData = this.collectIndicatorData();
+      Object.assign(body, pick(indicatorData, keys(body)));
 
       this._prepareBaselineAndTarget(body);
 
@@ -184,6 +190,10 @@ function SaveIndicatorMixin<T extends Constructor<LitElement>>(baseClass: T) {
         body.indicator.display_type = 'number';
       }
       return body;
+    }
+
+    collectIndicatorData() {
+      return {...this.data, ...this.getIndicatorElement(this.isCluster).indicator};
     }
 
     _prepareBaselineAndTarget(indicator: any) {
@@ -218,13 +228,14 @@ function SaveIndicatorMixin<T extends Constructor<LitElement>>(baseClass: T) {
     }
 
     _prepareDisaggregationIds(): number[] {
-      if (!this.disaggregations || !this.disaggregations.length) {
+      const disaggregations = this.getDisaggregations();
+      if (!disaggregations || !disaggregations.length) {
         return [];
       }
       // @ts-ignore *Defined in component
-      this.disaggregations = this.disaggregations.filter(this._notEmptyDisaggregs);
+      disaggregations = disaggregations.filter(this._notEmptyDisaggregs);
 
-      return this.disaggregations.map(function (item: {disaggregId: number}) {
+      return disaggregations.map(function (item: {disaggregId: number}) {
         return item.disaggregId;
       });
     }
@@ -235,8 +246,12 @@ function SaveIndicatorMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
     _getIndicatorModelForSave() {
       let modelName = this.isCluster ? 'clusterIndicator' : 'nonClusterIndicator';
-      modelName += this.indicator.id ? 'EditModel' : 'CreateModel';
+      modelName += this.data.id ? 'EditModel' : 'CreateModel';
       return JSON.parse(JSON.stringify(this[modelName]));
+    }
+
+    getDisaggregations() {
+      return this.shadowRoot?.querySelector<IndicatorDisaggregations>('#indicatorDisaggregations')?.dataItems;
     }
   }
   return SaveIndicatorClass;
