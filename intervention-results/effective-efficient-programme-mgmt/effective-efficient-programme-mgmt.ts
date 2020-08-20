@@ -124,7 +124,7 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
       }
     }
   ];
-  //  the dialog is commented until further specifications
+
   private activityDialog!: ActivityDialog;
 
   @property({type: Number})
