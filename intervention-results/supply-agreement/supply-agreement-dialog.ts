@@ -4,7 +4,7 @@ import {buttonsStyles} from '../../common/styles/button-styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
-import {InterventionSupplyItem} from '../../common/models/intervention.types';
+import {CpOutput, InterventionSupplyItem} from '../../common/models/intervention.types';
 import {validateRequiredFields, resetRequiredFields} from '../../utils/validation-helper';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {getEndpoint} from '../../utils/endpoint-helper';
@@ -77,6 +77,20 @@ export class SupplyAgreementDialog extends connect(getStore())(LitElement) {
           </paper-input>
         </div>
       </div>
+      
+      <div class="layout-horizontal">
+        <div class="col col-8">
+          <etools-dropdown
+            class="cp-out"
+            label="CP Output"
+            placeholder="&#8212;"
+            .options="${this.cpOutputs}"
+            option-label="cp_output_name"
+            option-value="cp_output"
+          >
+          </etools-dropdown>
+        </div>
+      </div>
       </etools-dialog>
     `;
   }
@@ -100,10 +114,12 @@ export class SupplyAgreementDialog extends connect(getStore())(LitElement) {
   confirmBtnTxt = '';
 
   private currentInterventionId = '';
+  private cpOutputs: CpOutput[] = [];
 
   stateChanged(_state: any) {
     // NOT sure we need this, will see..
     this.currentInterventionId = get(_state, 'app.routeDetails.params.interventionId');
+    this.cpOutputs = _state.interventions.current.result_links || [];
   }
 
   connectedCallback() {
@@ -149,7 +165,7 @@ export class SupplyAgreementDialog extends connect(getStore())(LitElement) {
           supplyId: this.supplyItem.id
         }),
         method: 'PATCH',
-        body: {supply_item: this.supplyItem}
+        body: {supply_item: this.supplyItem, cp_outputs: this.cpOutputs}
       })
         .then((response: any) => {
           console.log(response);
