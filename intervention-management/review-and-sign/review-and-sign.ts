@@ -65,7 +65,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
         paper-input-container{
           margin-left: 0px;
         }
-        paper-input#other {
+        paper-input {
           width: 100%;
         }
         paper-checkbox {
@@ -82,11 +82,8 @@ export class InterventionReviewAndSign extends connect(getStore())(
             opacity: 1;
           }
         }
-        datepicker-lite[required] {
-          --paper-input-container-label-floating_-_max-width: 175%;
-          --paper-input-container-label {
-            min-width: 666px;;
-          }
+        datepicker-lite {
+          min-width: 100%;
         }
         .content-wrapper {
           padding: 0;
