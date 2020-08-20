@@ -134,7 +134,7 @@ export class RiskDialog extends connect(getStore())(ComponentBaseMixin(LitElemen
     this._saveRisk(this.data);
   }
 
-  _saveRisk(data) {
+  _saveRisk(data: any) {
     console.log(data);
   }
 }

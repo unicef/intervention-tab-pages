@@ -10,11 +10,11 @@ import {buttonsStyles} from '../../common/styles/button-styles';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {Risk, RiskPermissions} from './risk.models';
-import {Permission} from '../../common/models/intervention.types';
+import {Intervention, Permission} from '../../common/models/intervention.types';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
 import sample from 'lodash-es/sample';
-import {selectRiskPermissions, selectRisks} from './risk.selectors';
+import {selectRiskPermissions} from './risk.selectors';
 import './risk-dialog';
 import {RiskDialog} from './risk-dialog';
 import {EtoolsTableColumn, EtoolsTableColumnType} from '@unicef-polymer/etools-table/etools-table';
@@ -43,7 +43,8 @@ const getRiskItems = () => {
     {id: '6', risk_type: 'Safety & security'}
   ];
   while (i < 10) {
-    const riskItem = new Risk();
+    const riskItem = new Risk({} as Intervention);
+    // @ts-ignore
     riskItem.risk_type = sample(riskTypes);
     riskItem.mitigation_measures = `Mittigation measure ${i}`;
     arr.push(riskItem);
