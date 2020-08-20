@@ -3,6 +3,7 @@ import './programmatic-visits/programmatic-visits';
 import './amendments/pd-amendments';
 import './fund-reservations/fund-reservations';
 import './financial/financial-component';
+import './risks/risks';
 
 /**
  * @customElement
@@ -14,6 +15,7 @@ export class InterventionManagement extends LitElement {
     return html`
       <style></style>
 
+      <risks-element></risks-element>
       <programmatic-visits></programmatic-visits>
       <pd-amendments></pd-amendments>
       <financial-component></financial-component>

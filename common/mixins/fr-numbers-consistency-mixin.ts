@@ -1,6 +1,6 @@
 import {LitElement, property} from 'lit-element';
 import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
-import {Fr, FrsDetails, Intervention} from '../models/intervention.types';
+import {Fr, FrsDetails, Intervention, ListItemIntervention} from '../models/intervention.types';
 import {Constructor} from '../models/globals.types';
 
 function FrNumbersConsistencyMixin<T extends Constructor<LitElement>>(baseClass: T) {
@@ -192,7 +192,7 @@ function FrNumbersConsistencyMixin<T extends Constructor<LitElement>>(baseClass:
       );
     }
 
-    frsConsistencyWarningIsActive(active: boolean) {
+    frsConsistencyWarningIsActive(active: boolean | string) {
       return !!active;
     }
 
@@ -203,6 +203,7 @@ function FrNumbersConsistencyMixin<T extends Constructor<LitElement>>(baseClass:
         case 'interventionDetails':
           return !intervention || !intervention.frs_details || intervention.frs_details.frs.length === 0;
         case 'interventionsList':
+          // @ts-ignore
           return !intervention.frs_earliest_start_date || !intervention.frs_latest_end_date;
         default:
           return true;

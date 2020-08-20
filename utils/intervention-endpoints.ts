@@ -7,6 +7,7 @@ export interface EtoolsEndpoint {
 }
 export interface EtoolsEndpoints {
   intervention: EtoolsEndpoint;
+  interventionAction: EtoolsEndpoint;
   partnerStaffMembers: EtoolsEndpoint;
   partnerAgreements: EtoolsEndpoint;
   specialReportingRequirements: EtoolsEndpoint;
@@ -26,11 +27,17 @@ export interface EtoolsEndpoints {
   attachmentsUpload: EtoolsEndpoint;
   interventionAmendmentAdd: EtoolsEndpoint;
   frNumbersDetails: EtoolsEndpoint;
+  comments: EtoolsEndpoint;
+  resolveComment: EtoolsEndpoint;
+  deleteComment: EtoolsEndpoint;
 }
 
 export const interventionEndpoints: EtoolsEndpoints = {
   intervention: {
     template: '/api/pmp/v3/interventions/<%=interventionId%>/'
+  },
+  interventionAction: {
+    template: '/api/pmp/v3/interventions/<%=interventionId%>/<%=action%>'
   },
   partnerStaffMembers: {
     template: '/api/v2/partners/<%=id%>/staff-members/'
@@ -90,5 +97,14 @@ export const interventionEndpoints: EtoolsEndpoints = {
   },
   frNumbersDetails: {
     url: '/api/v2/funds/frs'
+  },
+  comments: {
+    template: '/api/comments/v1/partners/intervention/<%=interventionId%>/'
+  },
+  resolveComment: {
+    template: '/api/comments/v1/partners/intervention/<%=interventionId%>/<%=commentId%>/resolve/'
+  },
+  deleteComment: {
+    template: '/api/comments/v1/partners/intervention/<%=interventionId%>/<%=commentId%>/delete/'
   }
 };
