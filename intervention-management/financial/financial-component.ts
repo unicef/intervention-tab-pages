@@ -32,6 +32,12 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
   }
   render() {
     // language=HTML
+    if (!this.data) {
+      return html`<style>
+          ${sharedStyles}
+        </style>
+        <etools-loading loading-text="Loading..." active></etools-loading>`;
+    }
     return html`
       <style>
         ${sharedStyles} :host {
@@ -53,14 +59,8 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
         }
       </style>
       <etools-content-panel show-expand-btn panel-title="Financial">
-        <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
         <div slot="panel-btns">
-          <paper-icon-button
-            ?hidden="${this.hideEditIcon(this.editMode, this.canEditFinancialComponent)}"
-            @tap="${this.allowEdit}"
-            icon="create"
-          >
-          </paper-icon-button>
+          ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
         </div>
         <div class="layout-horizontal row-padding-v">
           <div class="w100">
@@ -124,17 +124,7 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
             ${this.data.currency}
           </div>
         </div>
-        <div
-          class="layout-horizontal right-align row-padding-v"
-          ?hidden="${this.hideActionButtons(this.editMode, this.canEditFinancialComponent)}"
-        >
-          <paper-button class="default" @tap="${this.cancel}">
-            Cancel
-          </paper-button>
-          <paper-button class="primary" @tap="${this.save()}">
-            Save
-          </paper-button>
-        </div>
+        ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
       </etools-content-panel>
     `;
   }
@@ -172,17 +162,13 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
       return;
     }
     if (state.interventions.current) {
-      // temporary fix untill we have data from abckend
+      // temporary fix untill we have data from backend
       state.interventions.current.hq_support_cost = 0;
       this.data = selectFinancialComponent(state);
       this.permissions = selectFinancialComponentPermissions(state);
-      this.setCanEditFinancialData(this.permissions.edit);
+      this.set_canEditAtLeastOneField(this.permissions.edit);
       this.originalData = cloneDeep(this.data);
     }
-  }
-
-  setCanEditFinancialData(editPermissions: FinancialComponentPermissions) {
-    this.canEditFinancialComponent = editPermissions.cash_transfer_modalities || editPermissions.hq_support_cost;
   }
 
   validate() {
@@ -198,15 +184,6 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
       return true;
     }
     return false;
-  }
-
-  allowEdit() {
-    this.editMode = true;
-  }
-
-  cancel() {
-    this.editMode = false;
-    this.data = cloneDeep(this.originalData);
   }
 
   updateSlider(e: CustomEvent) {
