@@ -75,7 +75,8 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
     }
 
     renderNameEmailPhone(item: any) {
-      return html`${item.first_name} ${item.last_name} (${item.email}, ${item.phone})`;
+      return html`${item.first_name} ${item.last_name} (${item.email ? item.email : '—'} ,
+      ${item.phone ? item.phone : '—'})`;
     }
 
     selectedItemChanged(detail: any, key: string) {
