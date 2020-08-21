@@ -173,6 +173,7 @@ export class InterventionPermissionsFields {
   unicef_signatory = false;
   signed_by_unicef_date = false;
   signed_pd_attachment = false;
+  submitted_to_prc = false;
 
   // review & sign - Amendments
   amendments = false;
