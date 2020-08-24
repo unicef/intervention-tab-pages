@@ -208,7 +208,7 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
     }
     fireEvent(this, 'global-loading', {
       active: true,
-      loadingSource: 'intervention-actions'
+      loadingSource: 'gender-equity-ratings'
     });
     getStore()
       .dispatch(patchIntervention(this.data))
@@ -221,7 +221,7 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
       .finally(() => {
         fireEvent(this, 'global-loading', {
           active: false,
-          loadingSource: 'intervention-actions'
+          loadingSource: 'gender-equity-ratings'
         });
       });
   }
