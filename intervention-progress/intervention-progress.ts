@@ -25,7 +25,6 @@ import {sectionContentStylesPolymer} from '../common/styles/content-section-styl
 import {sharedStylesPolymer} from '../common/styles/shared-styles-polymer';
 import {gridLayoutStylesPolymer} from '../common/styles/grid-layout-styles-polymer';
 
-// import {listFilterStyles} from '../../../../styles/list-filter-styles.js';
 import {isEmptyObject} from '../utils/utils';
 import {fireEvent} from '../utils/fire-custom-event';
 import {GenericObject, AnyObject} from '../common/models/globals.types';
@@ -61,12 +60,11 @@ declare const moment: any;
 class InterventionProgress extends connect(getStore())(
   EndpointsMixin(UtilsMixin(CommonMixin(EtoolsCurrency(PolymerElement))))
 ) {
-  // ${listFilterStyles}
   static get template() {
     return html`
-      ${sectionContentStylesPolymer} ${sharedStylesPolymer()} ${gridLayoutStylesPolymer()} ${pmpCustomIcons}
+      ${gridLayoutStylesPolymer()} ${sharedStylesPolymer()} ${sectionContentStylesPolymer} ${pmpCustomIcons}
       ${frWarningsStyles}
-      <style include="data-table-styles">
+      <style include="data-table-styles paper-material-styles">
         #progress-summary etools-progress-bar {
           margin-top: 16px;
         }
@@ -157,6 +155,11 @@ class InterventionProgress extends connect(getStore())(
 
         etools-info-tooltip etools-form-element-wrapper {
           width: 100% !important;
+        }
+
+        div[elevation] {
+          padding: 15px 20px;
+          background-color: var(--primary-background-color);
         }
       </style>
 
