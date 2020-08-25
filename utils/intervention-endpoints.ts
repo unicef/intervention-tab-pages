@@ -4,6 +4,7 @@ export interface EtoolsEndpoint {
   exp?: any;
   cachingKey?: string;
   cacheTableName?: string;
+  token?: string;
 }
 export interface EtoolsEndpoints {
   intervention: EtoolsEndpoint;
@@ -30,6 +31,8 @@ export interface EtoolsEndpoints {
   comments: EtoolsEndpoint;
   resolveComment: EtoolsEndpoint;
   deleteComment: EtoolsEndpoint;
+  cpOutputRamIndicators: EtoolsEndpoint;
+  interventionProgress: EtoolsEndpoint;
 }
 
 export const interventionEndpoints: EtoolsEndpoints = {
@@ -106,5 +109,12 @@ export const interventionEndpoints: EtoolsEndpoints = {
   },
   deleteComment: {
     template: '/api/comments/v1/partners/intervention/<%=interventionId%>/<%=commentId%>/delete/'
+  },
+  cpOutputRamIndicators: {
+    template: '/api/v2/interventions/<%=intervention_id%>/output_cp_indicators/<%=cp_output_id%>/'
+  },
+  interventionProgress: {
+    template: '/api/unicef/<%=countryId%>/programme-document/<%=pdId%>/progress/?external=1',
+    token: 'prp'
   }
 };
