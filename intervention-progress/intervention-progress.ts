@@ -29,8 +29,7 @@ import {gridLayoutStylesPolymer} from '../common/styles/grid-layout-styles-polym
 // import {listFilterStyles} from '../../../../styles/list-filter-styles.js';
 import {isEmptyObject} from '../utils/utils';
 import {fireEvent} from '../utils/fire-custom-event';
-import {EtoolsUserModel} from '../../../../user/user-model';
-import {GenericObject} from '../common/models/globals.types';
+import {GenericObject, AnyObject} from '../common/models/globals.types';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../utils/redux-store-access';
 
@@ -333,9 +332,6 @@ class InterventionProgress extends connect(getStore())(
   @property({type: Object})
   prpCountries!: GenericObject<any>[];
 
-  @property({type: Object})
-  currentUser!: EtoolsUserModel;
-
   static get observers() {
     return [
       // `prpCountries` and `currentUser` are defined in endpoint mixin
@@ -365,15 +361,6 @@ class InterventionProgress extends connect(getStore())(
     fireEvent(this, 'tab-content-attached');
   }
 
-  endStateChanged(state: any) {
-    if (!isJsonStrMatch(state.commonData!.PRPCountryData, this.prpCountries)) {
-      this.prpCountries = [...state.commonData!.PRPCountryData];
-    }
-    if (state.user && !isJsonStrMatch(state.user.data, this.currentUser)) {
-      this.currentUser = JSON.parse(JSON.stringify(state.user.data));
-    }
-  }
-
   multipleCurrenciesWereUsed(disbursementOrPercent: string, progress: GenericObject<any> | null) {
     if (!progress || disbursementOrPercent === undefined) {
       return false; // hide icon until request data is received
@@ -381,7 +368,7 @@ class InterventionProgress extends connect(getStore())(
     return Number(disbursementOrPercent) === -1 || disbursementOrPercent === 'N/A';
   }
 
-  _requestProgressData(id: string, prpCountries: any, currentUser: EtoolsUserModel) {
+  _requestProgressData(id: string, prpCountries: any, currentUser: AnyObject) {
     debugger;
     if (!id || isEmptyObject(prpCountries) || isEmptyObject(currentUser)) {
       return;
