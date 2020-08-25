@@ -94,14 +94,6 @@ class EtoolsFormElementWrapper extends PolymerElement {
   @property({type: Boolean})
   noPlaceholder = false;
 
-  connectedCallback() {
-    super.connectedCallback();
-    // const appShell = document.querySelector('app-shell');
-    // if (appShell && appShell.classList.contains('ie')) {
-    //   this.classList.add('ie');
-    // }
-  }
-
   _requiredChanged(req: any) {
     if (typeof req === 'undefined') {
       return;

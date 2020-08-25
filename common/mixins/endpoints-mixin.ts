@@ -1,10 +1,11 @@
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {isJsonStrMatch} from '../../../utils/utils';
+import {isJsonStrMatch} from '../../utils/utils';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging.js';
 import {PolymerElement} from '@polymer/polymer';
 import {property} from '@polymer/decorators';
-import {Constructor, User, AnyObject} from '../../../common/models/globals.types';
-import {interventionEndpoints, EtoolsEndpoint} from '../../../utils/intervention-endpoints';
+import {Constructor, User, AnyObject} from '../../common/models/globals.types';
+import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {tokenEndpointsHost, tokenStorageKeys, getTokenEndpoints} from '../../config/config';
 
 /**
  * @polymer
@@ -17,57 +18,6 @@ function EndpointsMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
 
     @property({type: Object})
     currentUser!: User;
-
-    tokenStorageKeys = {
-      prp: 'etoolsPrpToken'
-    };
-
-    getTokenEndpoints = {
-      prp: 'prpToken'
-    };
-
-    PROD_DOMAIN = 'etools.unicef.org';
-    STAGING_DOMAIN = 'etools-staging.unicef.org';
-    DEV_DOMAIN = 'etools-dev.unicef.org';
-    DEMO_DOMAIN = 'etools-demo.unicef.org';
-    LOCAL_DOMAIN = 'localhost:8082';
-
-    public _checkEnvironment() {
-      const location = window.location.href;
-      if (location.indexOf(this.STAGING_DOMAIN) > -1) {
-        return 'STAGING';
-      }
-      if (location.indexOf(this.DEMO_DOMAIN) > -1) {
-        return 'DEMO';
-      }
-      if (location.indexOf(this.DEV_DOMAIN) > -1) {
-        return 'DEVELOPMENT';
-      }
-      if (location.indexOf(this.LOCAL_DOMAIN) > -1) {
-        return 'LOCAL';
-      }
-      return null;
-    }
-
-    public tokenEndpointsHost(host: string) {
-      if (host === 'prp') {
-        switch (this._checkEnvironment()) {
-          case 'LOCAL':
-            return 'http://127.0.0.1:8081';
-          case 'DEVELOPMENT':
-            return 'https://dev.partnerreportingportal.org';
-          case 'DEMO':
-            return 'https://demo.partnerreportingportal.org';
-          case 'STAGING':
-            return 'https://staging.partnerreportingportal.org';
-          case null:
-            return 'https://www.partnerreportingportal.org';
-          default:
-            return 'https://dev.partnerreportingportal.org';
-        }
-      }
-      return null;
-    }
 
     public endStateChanged(state: any) {
       if (!isJsonStrMatch(state.commonData!.PRPCountryData, this.prpCountries)) {
@@ -105,7 +55,7 @@ function EndpointsMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
     public getEndpoint(endpointName: string, data?: AnyObject) {
       const endpoint = JSON.parse(JSON.stringify((interventionEndpoints as any)[endpointName]));
       const authorizationTokenMustBeAdded = this.authorizationTokenMustBeAdded(endpoint);
-      const baseSite = authorizationTokenMustBeAdded ? this.tokenEndpointsHost(endpoint.token) : window.location.origin;
+      const baseSite = authorizationTokenMustBeAdded ? tokenEndpointsHost(endpoint.token) : window.location.origin;
 
       if (this._hasUrlTemplate(endpoint)) {
         if (data && authorizationTokenMustBeAdded && this._urlTemplateHasCountryId(endpoint.template!)) {
@@ -139,10 +89,8 @@ function EndpointsMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
       return tmpl;
     }
 
-    protected _hasUrlTemplate(endpoint: EtoolsEndpoint) {
-      return (
-        endpoint && Object.prototype.hasOwnProperty.call(endpoint, 'template') && (endpoint as any).template !== ''
-      );
+    protected _hasUrlTemplate(endpoint: AnyObject) {
+      return endpoint && endpoint.template;
     }
 
     protected _getDeferrer() {
@@ -155,16 +103,16 @@ function EndpointsMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
       return defer;
     }
 
-    public authorizationTokenMustBeAdded(endpoint: EtoolsEndpoint): boolean {
-      return endpoint && endpoint.token && endpoint.token.length > 0;
+    public authorizationTokenMustBeAdded(endpoint: AnyObject): boolean {
+      return endpoint && endpoint.token;
     }
 
     public getCurrentToken(tokenKey: string) {
-      return localStorage.getItem((this.tokenStorageKeys as any)[tokenKey]);
+      return localStorage.getItem((tokenStorageKeys as AnyObject)[tokenKey]);
     }
 
     public storeToken(tokenKey: string, tokenBase64Encoded: string) {
-      localStorage.setItem((this.tokenStorageKeys as any)[tokenKey], tokenBase64Encoded);
+      localStorage.setItem((tokenStorageKeys as AnyObject)[tokenKey], tokenBase64Encoded);
     }
 
     public decodeBase64Token(encodedToken: string) {
@@ -195,7 +143,7 @@ function EndpointsMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
     }
 
     public getTokenEndpointName(tokenKey: string) {
-      return (this.getTokenEndpoints as any)[tokenKey];
+      return (getTokenEndpoints as AnyObject)[tokenKey];
     }
 
     public addTokenToRequestOptions(endpointName: string, data: AnyObject) {

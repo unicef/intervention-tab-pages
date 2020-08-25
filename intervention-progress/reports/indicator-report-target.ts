@@ -1,5 +1,5 @@
 import '@polymer/iron-flex-layout/iron-flex-layout.js';
-import UtilsMixin from '../../intervention-timing/reporting-requirements/mixins/utils-mixin';
+import UtilsMixin from '../../common/mixins/utils-mixin';
 import {PolymerElement, html} from '@polymer/polymer';
 import {property} from '@polymer/decorators';
 import {GenericObject} from '../../common/models/globals.types';

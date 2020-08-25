@@ -17,9 +17,9 @@ import './layout/etools-ram-indicators';
 import './reports/report-status';
 import './reports/indicator-report-target';
 
-import CommonMixin from '../intervention-timing/reporting-requirements/mixins/common-mixin';
-import UtilsMixin from '../intervention-timing/reporting-requirements/mixins/utils-mixin';
-import EndpointsMixin from '../intervention-timing/reporting-requirements/mixins/endpoints-mixin';
+import CommonMixin from '../common/mixins/common-mixin';
+import UtilsMixin from '../common/mixins/utils-mixin';
+import EndpointsMixin from '../common/mixins/endpoints-mixin';
 
 import {sectionContentStylesPolymer} from '../common/styles/content-section-styles-polymer';
 import {sharedStylesPolymer} from '../common/styles/shared-styles-polymer';
@@ -44,8 +44,6 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
 import {property} from '@polymer/decorators';
 import {pmpCustomIcons} from './styles/pmp-icons';
 import {frWarningsStyles} from './styles/fr-warnings-styles';
-// import {getEndpoint} from '../utils/endpoint-helper';
-// import {interventionEndpoints} from '../utils/intervention-endpoints';
 import get from 'lodash-es/get';
 declare const moment: any;
 
