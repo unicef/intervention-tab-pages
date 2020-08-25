@@ -85,7 +85,7 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
       ${this.indicators.map(
         (indicator: Indicator) => html`
           <etools-data-table-row>
-            <div slot="row-data" class="layout-horizontal">
+            <div slot="row-data" class="layout-horizontal editable-row">
               <!--    Indicator name    -->
               <div class="text flex-auto">
                 ${(indicator.indicator && indicator.indicator.title) || '-'}
@@ -99,6 +99,12 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
               <!--    Target    -->
               <div class="text number-data flex-none">
                 ${indicator.target.v || '-'}
+              </div>
+              <div class="hover-block">
+                <paper-icon-button
+                  icon="icons:create"
+                  @tap="${() => this.openIndicatorDialog(indicator)}"
+                ></paper-icon-button>
               </div>
             </div>
 
@@ -177,7 +183,8 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
         sectionOptions: this.indicatorSectionOptions,
         locationOptions: this.indicatorLocationOptions,
         llResultId: this.pdOutputId,
-        prpServerOn: this.prpServerIsOn()!
+        prpServerOn: this.prpServerIsOn()!,
+        toastEventSource: this
       }
     });
   }

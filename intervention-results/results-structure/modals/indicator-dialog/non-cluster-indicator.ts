@@ -12,6 +12,7 @@ import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-
 import {buttonsStyles} from '../../../../common/styles/button-styles';
 import {Indicator} from '../../../../common/models/intervention.types';
 import {PaperCheckboxElement} from '@polymer/paper-checkbox/paper-checkbox.js';
+import {layoutEnd, _layoutEnd} from '../../../../common/styles/flex-layout-styles';
 
 /**
  * @customElement
@@ -66,8 +67,9 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
 
         .add-locations {
           padding-right: 0;
-          @apply --layout-end;
-          padding-bottom: 12px;
+          ${_layoutEnd};
+          padding-bottom: 12px !important;
+          padding-left: 10px !important;
         }
       </style>
 
@@ -76,7 +78,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           <label class="paper-label">Type </label>
           <div class="radioGroup">
             <paper-radio-group
-              .selected="${this.indicator?.indicator?.unit}"
+              .selected="${this.indicator!.indicator!.unit}"
               @selected-changed="${({detail}: CustomEvent) => {
                 this.indicator!.indicator!.unit = detail.value;
                 this._baselineChanged(this.indicator.baseline.v);
@@ -92,13 +94,13 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
             </paper-radio-group>
           </div>
         </div>
-        <div class="layout-vertical" ?hidden="${this._unitIsNumeric(this.indicator.indicator.unit)}">
+        <div class="layout-vertical" ?hidden="${this._unitIsNumeric(this.indicator!.indicator!.unit)}">
           <label class="paper-label">Display Type </label>
           <div class="radioGroup">
             <paper-radio-group
-              .selected="${this.indicator.indicator.display_type}"
+              .selected="${this.indicator!.indicator!.display_type}"
               @selected-changed="${({detail}: CustomEvent) => {
-                this.indicator.indicator.display_type = detail.value;
+                this.indicator!.indicator!.display_type = detail.value;
                 this._typeChanged();
                 this.requestUpdate();
               }}"
@@ -118,20 +120,23 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           id="titleEl"
           required
           label="Indicator"
-          .value="{{indicator.indicator.title}}"
+          .value="${this.indicator!.indicator!.title}"
           placeholder="&#8212;"
           error-message="Please add a title"
           auto-validate
           ?readonly="${this.readonly}"
           @value-changed="${({detail}: CustomEvent) => {
-            this.indicator.indicator.title = detail.value;
+            if (detail.value === undefined) {
+              return;
+            }
+            this.indicator!.indicator!.title = detail.value;
           }}"
         >
         </paper-input>
       </div>
 
       <!-- Baseline & Target -->
-      <div class="row-h flex-c" ?hidden="${this._unitIsNumeric(this.indicator.indicator.unit)}">
+      <div class="row-h flex-c" ?hidden="${this._unitIsNumeric(this.indicator!.indicator!.unit)}">
         <div class="col col-3">
           <paper-input
             id="numeratorLbl"

@@ -209,7 +209,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   isCluster = false;
 
   @property({type: Object})
-  toastEventSource!: PolymerElement;
+  toastEventSource!: LitElement;
 
   @property({type: Boolean})
   disableConfirmBtn = false;
@@ -240,6 +240,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
     this.prpServerOn = data.prpServerOn;
     this.currentUser = getStore().getState().user.data;
     this.interventionStatus = getStore().getState().interventions.current.status;
+    this.toastEventSource = data.toastEventSource;
 
     if (!this.data.id) {
       this.preselectSectionAndLocation();
