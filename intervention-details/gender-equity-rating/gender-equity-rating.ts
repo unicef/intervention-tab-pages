@@ -19,6 +19,7 @@ import {AnyObject} from '../../common/models/globals.types';
 import {patchIntervention} from '../../common/actions';
 import {isJsonStrMatch} from '../../utils/utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {fireEvent} from '../../utils/fire-custom-event';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 
@@ -35,7 +36,7 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
       return html`<style>
           ${sharedStyles}
         </style>
-        <etools-loading loading-text="Loading..."></etools-loading>`;
+        <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`
@@ -53,8 +54,6 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Gender, Equity & Sustainability">
-        <etools-loading loading-text="Loading..."></etools-loading>
-
         <div slot="panel-btns">
           <paper-icon-button
             ?hidden="${this.hideEditIcon(this.editMode, this.canEditAtLeastOneField)}"
@@ -158,9 +157,6 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
   @property({type: Object})
   permissions!: Permission<GenderEquityRatingPermissions>;
 
-  @property({type: Boolean})
-  showLoading = false;
-
   @property({type: Array})
   ratings!: AnyObject[];
 
@@ -210,10 +206,23 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
     if (!this.validate()) {
       return;
     }
+    fireEvent(this, 'global-loading', {
+      active: true,
+      loadingSource: 'gender-equity-ratings'
+    });
     getStore()
       .dispatch(patchIntervention(this.data))
       .then(() => {
         this.editMode = false;
+      })
+      .catch((error: any) => {
+        console.log(error);
+      })
+      .finally(() => {
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: 'gender-equity-ratings'
+        });
       });
   }
 }

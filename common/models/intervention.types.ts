@@ -212,6 +212,7 @@ export class Intervention {
   submitted_to_prc = false;
   submission_date_prc?: string;
   review_date_prc?: string;
+  final_partnership_review?: ReviewAttachment;
   submission_date?: string;
   signed_by_unicef_date?: string;
   signed_by_partner_date?: string;
@@ -324,3 +325,13 @@ export class ListItemIntervention {
   unicef_focal_points: [] = [];
   [key: string]: any;
 }
+
+export type ReviewAttachment = {
+  active: boolean;
+  attachment: string;
+  attachment_document: string;
+  attachment_file: string;
+  created: string;
+  id: number;
+  intervention: number;
+};
