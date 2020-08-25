@@ -108,8 +108,7 @@ export class InterventionTabs extends LitElement {
         </intervention-management>
         <intervention-attachments ?hidden="${!this.isActiveTab(this.activeTab, 'attachments')}">
         </intervention-attachments>
-        <intervention-progress ?hidden="${!this.isActiveTab(this.activeTab, 'progress')}">
-        </intervention-progress>
+        <intervention-progress ?hidden="${!this.isActiveTab(this.activeTab, 'progress')}"></intervention-progress>
       </div>
     `;
   }
