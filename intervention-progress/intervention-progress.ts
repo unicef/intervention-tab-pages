@@ -337,7 +337,6 @@ class InterventionProgress extends connect(getStore())(
   }
 
   stateChanged(state: any) {
-    debugger;
     const currentInterventionId = get(state, 'app.routeDetails.params.interventionId');
     if (currentInterventionId) {
       this.interventionId = currentInterventionId;
@@ -366,7 +365,6 @@ class InterventionProgress extends connect(getStore())(
   }
 
   _requestProgressData(id: string, prpCountries: any, currentUser: AnyObject) {
-    debugger;
     if (!id || isEmptyObject(prpCountries) || isEmptyObject(currentUser)) {
       return;
     }
