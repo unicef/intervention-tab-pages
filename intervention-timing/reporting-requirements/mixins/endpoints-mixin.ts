@@ -4,7 +4,7 @@ import {logError} from '@unicef-polymer/etools-behaviors/etools-logging.js';
 import {PolymerElement} from '@polymer/polymer';
 import {property} from '@polymer/decorators';
 import {Constructor, User, AnyObject} from '../../../common/models/globals.types';
-import {EtoolsEndpoint} from '../../../utils/intervention-endpoints';
+import {interventionEndpoints, EtoolsEndpoint} from '../../../utils/intervention-endpoints';
 
 /**
  * @polymer
@@ -102,8 +102,8 @@ function EndpointsMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
       return template.indexOf('<%=countryId%>') > -1;
     }
 
-    public getEndpoint(endpoint: EtoolsEndpoint, data?: AnyObject) {
-      // const endpoint = JSON.parse(JSON.stringify((pmpEndpoints as any)[endpointName]));
+    public getEndpoint(endpointName: string, data?: AnyObject) {
+      const endpoint = JSON.parse(JSON.stringify((interventionEndpoints as any)[endpointName]));
       const authorizationTokenMustBeAdded = this.authorizationTokenMustBeAdded(endpoint);
       const baseSite = authorizationTokenMustBeAdded ? this.tokenEndpointsHost(endpoint.token) : window.location.origin;
 
@@ -156,7 +156,7 @@ function EndpointsMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
     }
 
     public authorizationTokenMustBeAdded(endpoint: EtoolsEndpoint): boolean {
-      return endpoint && 'token' in endpoint;
+      return endpoint && endpoint.token && endpoint.token.length > 0;
     }
 
     public getCurrentToken(tokenKey: string) {
@@ -198,7 +198,7 @@ function EndpointsMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
       return (this.getTokenEndpoints as any)[tokenKey];
     }
 
-    public addTokenToRequestOptions(endpointName: EtoolsEndpoint, data: AnyObject) {
+    public addTokenToRequestOptions(endpointName: string, data: AnyObject) {
       let options: any = {};
       try {
         options.endpoint = this.getEndpoint(endpointName, data);
@@ -256,7 +256,7 @@ function EndpointsMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
     }
 
     public fireRequest(
-      endpoint: EtoolsEndpoint,
+      endpoint: any,
       endpointTemplateData: AnyObject,
       requestAdditionalOptions?: AnyObject,
       activeReqKey?: string

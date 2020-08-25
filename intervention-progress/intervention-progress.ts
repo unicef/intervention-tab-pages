@@ -44,8 +44,8 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
 import {property} from '@polymer/decorators';
 import {pmpCustomIcons} from './styles/pmp-icons';
 import {frWarningsStyles} from './styles/fr-warnings-styles';
-import {getEndpoint} from '../utils/endpoint-helper';
-import {interventionEndpoints} from '../utils/intervention-endpoints';
+// import {getEndpoint} from '../utils/endpoint-helper';
+// import {interventionEndpoints} from '../utils/intervention-endpoints';
 import get from 'lodash-es/get';
 declare const moment: any;
 
@@ -378,7 +378,7 @@ class InterventionProgress extends connect(getStore())(
       loadingSource: 'pd-progress'
     });
 
-    this.fireRequest(getEndpoint(interventionEndpoints.interventionProgress), {pdId: id})
+    this.fireRequest('interventionProgress', {pdId: id})
       .then((response: any) => {
         this.set('progress', response);
         fireEvent(this, 'global-loading', {
