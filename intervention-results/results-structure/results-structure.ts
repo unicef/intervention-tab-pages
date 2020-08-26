@@ -19,6 +19,7 @@ import './cp-output-level';
 import './pd-indicators';
 import './pd-activities';
 import './modals/pd-output-dialog';
+import './modals/cp-output-dialog';
 import '../../common/components/comments/comments-dialog';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {openDialog} from '../../utils/dialog';
@@ -65,7 +66,9 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
     return this._resultLinks || [];
   }
   set resultLinks(data: ExpectedResult[]) {
-    this._resultLinks = data;
+    this._resultLinks = data.sort(
+      (linkA, linkB) => Number(Boolean(linkB.cp_output)) - Number(Boolean(linkA.cp_output))
+    );
   }
   @property() interventionId!: number | null;
   quarters: InterventionQuarter[] = [];
@@ -122,6 +125,11 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
           >
             Budget view
           </div>
+          <iron-icon
+            icon="add-box"
+            ?hidden="${!this.isUnicefUser}"
+            @click="${() => this.openCpOutputDialog()}"
+          ></iron-icon>
         </div>
         ${this.resultLinks.map(
           (result: ExpectedResult) => html`
@@ -132,6 +140,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
               .showIndicators="${this.showIndicators}"
               .showActivities="${this.showActivities}"
               @add-pd="${() => this.openPdOutputDialog({}, result.cp_output, result.cp_output_name)}"
+              @edit-indicators="${() => this.openCpOutputDialog(result)}"
             >
               ${result.ll_results.map(
                 (pdOutput: ResultLinkLowerResult) => html`
@@ -177,7 +186,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
         ${!this.resultLinks.length ? html` <div class="no-results">There are no results added.</div> ` : ''}
 
         <div
-          ?hidden="${false}"
+          ?hidden="${this.isUnicefUser}"
           class="add-pd white row-h align-items-center"
           @click="${() => this.openPdOutputDialog()}"
         >
@@ -209,6 +218,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
     this.interventionId = selectInterventionId(state);
     this.quarters = selectInterventionQuarters(state);
     this.cpOutputs = (state.commonData && state.commonData.cpOutputs) || [];
+    this.isUnicefUser = state.user?.data?.is_unicef_user;
   }
 
   updateTableView(indicators: boolean, activities: boolean): void {
@@ -229,6 +239,18 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
         pdOutput: pdOutput ? {...pdOutput, cp_output: cpOutput} : undefined,
         cpOutputs,
         hideCpOutputs: !this.isUnicefUser,
+        interventionId: this.interventionId
+      }
+    });
+  }
+
+  openCpOutputDialog(resultLink?: ExpectedResult): void {
+    const existedCpOutputs = new Set(this.resultLinks.map(({cp_output}: ExpectedResult) => cp_output));
+    openDialog({
+      dialog: 'cp-output-dialog',
+      dialogData: {
+        resultLink,
+        cpOutputs: this.cpOutputs.filter(({id}: CpOutput) => !existedCpOutputs.has(id)),
         interventionId: this.interventionId
       }
     });
