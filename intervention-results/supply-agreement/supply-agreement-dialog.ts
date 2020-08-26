@@ -4,6 +4,7 @@ import {buttonsStyles} from '../../common/styles/button-styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
+import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {CpOutput, InterventionSupplyItem} from '../../common/models/intervention.types';
 import {validateRequiredFields, resetRequiredFields} from '../../utils/validation-helper';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
@@ -17,7 +18,7 @@ import {AnyObject} from '../../../../../../types/globals';
  * @customElement
  */
 @customElement('supply-agreement-dialog')
-export class SupplyAgreementDialog extends connect(getStore())(LitElement) {
+export class SupplyAgreementDialog extends connect(getStore())(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -47,7 +48,8 @@ export class SupplyAgreementDialog extends connect(getStore())(LitElement) {
         <div class="col col-12">
           <paper-input
            class="w100"
-            value="${this.supplyItem.title}"
+            value="${this.originalData.title}"
+            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'title')}"
             label="Title"
             type="text"
             placeholder="Enter title"
@@ -59,7 +61,8 @@ export class SupplyAgreementDialog extends connect(getStore())(LitElement) {
         <div class="col col-4">
           </paper-input>
           <paper-input
-            value="${this.supplyItem.unit_number ? this.supplyItem.unit_number : ''}"
+            value="${this.originalData.unit_number ? this.originalData.unit_number : ''}"
+            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unit_number')}"
             label="Number of units"
             allowed-pattern="[0-9]"
             placeholder="Enter number of units"
@@ -69,7 +72,8 @@ export class SupplyAgreementDialog extends connect(getStore())(LitElement) {
         </div>
         <div class="col col-4">
           <paper-input
-            value="${this.supplyItem.unit_price ? this.supplyItem.unit_price : ''}"
+            value="${this.originalData.unit_price ? this.originalData.unit_price : ''}"
+            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unit_price')}"
             label="Price / Unit"
             allowed-pattern="[0-9]"
             placeholder="Enter price / unit"
@@ -88,6 +92,10 @@ export class SupplyAgreementDialog extends connect(getStore())(LitElement) {
             .options="${this.cpOutputs}"
             option-label="cp_output_name"
             option-value="cp_output"
+            trigger-value-change-event
+            @etools-selected-items-changed="${({detail}: CustomEvent) => {
+              this.selectedItemChanged(detail, 'cpOutputs');
+            }}"
           >
           </etools-dropdown>
         </div>
@@ -95,9 +103,6 @@ export class SupplyAgreementDialog extends connect(getStore())(LitElement) {
       </etools-dialog>
     `;
   }
-
-  @property({type: Object})
-  supplyItem!: InterventionSupplyItem;
 
   @property({type: Boolean, reflect: true})
   dialogOpened = false;
@@ -128,7 +133,8 @@ export class SupplyAgreementDialog extends connect(getStore())(LitElement) {
   }
 
   public openDialog() {
-    this.isNewRecord = !this.supplyItem.id;
+    this.isNewRecord = !this.originalData.id;
+    this.data = {...this.originalData};
     this.dialogTitle = this.isNewRecord ? 'Add  Supply Agreement' : 'Edit Supply Agreement';
     this.confirmBtnTxt = this.isNewRecord ? 'Add' : 'Save';
     resetRequiredFields(this);
@@ -147,21 +153,18 @@ export class SupplyAgreementDialog extends connect(getStore())(LitElement) {
     if (!this.validate()) {
       return;
     }
+
     const endPoint = this.isNewRecord
       ? getEndpoint(interventionEndpoints.supplyAgreementAdd, {interventionId: this.currentInterventionId})
       : getEndpoint(interventionEndpoints.supplyAgreementEdit, {
           interventionId: this.currentInterventionId,
-          supplyId: this.supplyItem.id
+          supplyId: this.data.id
         });
-    const body: AnyObject = {supply_item: this.supplyItem};
-    if (!this.isNewRecord) {
-      body.cp_outputs = this.cpOutputs;
-    }
 
     sendRequest({
       endpoint: endPoint,
       method: this.isNewRecord ? 'POST' : 'PATCH',
-      body: body
+      body: this.data
     })
       .then((response: any) => {
         console.log(response);

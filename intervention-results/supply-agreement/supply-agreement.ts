@@ -188,7 +188,7 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
 
   private openSupplyDialog(item: InterventionSupplyItem) {
     this.createDialog();
-    this.supplyItemDialog.supplyItem = item;
+    this.supplyItemDialog.originalData = item;
     this.supplyItemDialog.openDialog();
   }
 
