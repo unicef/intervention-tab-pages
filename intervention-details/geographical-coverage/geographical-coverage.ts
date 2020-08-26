@@ -20,6 +20,7 @@ import get from 'lodash-es/get';
 import {isJsonStrMatch} from '../../utils/utils';
 import {LocationObject} from '../../common/models/globals.types';
 import cloneDeep from 'lodash-es/cloneDeep';
+import {fireEvent} from '../../utils/fire-custom-event';
 
 /**
  * @customElement
@@ -171,10 +172,20 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
     if (!this.validate()) {
       return;
     }
+    fireEvent(this, 'global-loading', {
+      active: true,
+      loadingSource: 'geographical-coverage'
+    });
     getStore()
       .dispatch(patchIntervention(this.data))
       .then(() => {
         this.editMode = false;
+      })
+      .finally(() => {
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: 'geographical-coverage'
+        });
       });
   }
 }

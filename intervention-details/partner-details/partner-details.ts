@@ -28,6 +28,7 @@ import {isJsonStrMatch} from '../../utils/utils';
 import isEmpty from 'lodash-es/isEmpty';
 import {PartnerStaffMember} from '../../common/models/partner.types';
 import {MinimalAgreement} from '../../common/models/agreement.types';
+import {fireEvent} from '../../utils/fire-custom-event';
 
 /**
  * @customElement
@@ -76,7 +77,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
               option-label="agreement_number_status"
               trigger-value-change-event
               @etools-selected-item-changed="${({detail}: CustomEvent) => this.selectedAgreementChanged(detail)}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.agreement)}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.agreement)}"
               required
               auto-validate
             >
@@ -246,10 +247,20 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
     if (!this.validate()) {
       return;
     }
+    fireEvent(this, 'global-loading', {
+      active: true,
+      loadingSource: 'partner-details'
+    });
     getStore()
       .dispatch(patchIntervention(this.data))
       .then(() => {
         this.editMode = false;
+      })
+      .finally(() => {
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: 'partner-details'
+        });
       });
   }
 }
