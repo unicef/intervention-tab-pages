@@ -44,7 +44,7 @@ import {logError, logWarn} from '@unicef-polymer/etools-behaviors/etools-logging
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {property} from '@polymer/decorators';
 import {pmpCustomIcons} from './styles/pmp-icons';
-import {frWarningsStyles} from './styles/fr-warnings-styles';
+import {frWarningsStyles} from '../common/styles/fr-warnings-styles';
 import get from 'lodash-es/get';
 declare const moment: any;
 
