@@ -35,8 +35,8 @@ export class Indicator {
   is_high_frequency = false;
   indicator: IndicatorIndicator | null = new IndicatorIndicator();
   section: string | null = null;
-  baseline: {v?: string | number; d?: string | number} = {};
-  target: {v?: string | number; d: string | number} = {d: '1'};
+  baseline: {v?: string | number | null; d?: string | number} = {};
+  target: {v?: string | number | null; d: string | number} = {d: '1'};
   means_of_verification: string | null = null;
   locations: string[] = [];
   disaggregation: string[] = [];

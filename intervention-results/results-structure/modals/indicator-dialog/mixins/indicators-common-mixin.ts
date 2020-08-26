@@ -21,7 +21,7 @@ function IndicatorsCommonMixin<T extends Constructor<LitElement>>(baseClass: T) 
     @property({type: Object})
     indicator!: Indicator;
 
-    _baselineChanged(baselineV?: string | number) {
+    _baselineChanged(baselineV?: string | number | null) {
       if (!this.indicator || this._isEmptyExcept0(baselineV)) {
         return;
       }
@@ -34,7 +34,7 @@ function IndicatorsCommonMixin<T extends Constructor<LitElement>>(baseClass: T) 
       }
     }
 
-    _targetChanged(targetV?: string | number) {
+    _targetChanged(targetV?: string | number | null) {
       if (!this.indicator || this._isEmptyExcept0(targetV)) {
         return;
       }
@@ -45,7 +45,7 @@ function IndicatorsCommonMixin<T extends Constructor<LitElement>>(baseClass: T) 
       }
     }
 
-    _isEmptyExcept0(value?: string | number) {
+    _isEmptyExcept0(value?: string | number | null) {
       return value === null || value === undefined || value === '';
     }
 

@@ -410,6 +410,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
     this.baselineIsUnknown = checked;
     if (this.baselineIsUnknown) {
       this.indicator.baseline = {v: null, d: 1};
+      this.requestUpdate();
     }
   }
 
@@ -438,11 +439,11 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
   }
 
   // TODO
-  _readonlyChanged(newVal: boolean, oldVal: boolean) {
-    if (newVal !== oldVal) {
-      this.updateStyles();
-    }
-  }
+  // _readonlyChanged(newVal: boolean, oldVal: boolean) {
+  //   if (newVal !== oldVal) {
+  //     this.updateStyles();
+  //   }
+  // }
 
   // _baselineUnknownChanged(isUnknown: boolean) {
   //   if (isUnknown) {
