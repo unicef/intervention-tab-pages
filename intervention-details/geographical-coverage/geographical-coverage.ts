@@ -111,6 +111,7 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
     `;
   }
 
+  componentName = 'geographical-coverage';
   private locationsDialog!: GroupedLocationsDialog;
 
   @property({type: Array})

@@ -2,6 +2,7 @@ import {LitElement, property, html} from 'lit-element';
 import {Constructor, AnyObject} from '../models/globals.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {areEqual} from '../../utils/utils';
+import {fireEvent} from '../../utils/fire-custom-event';
 
 function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class ComponentBaseClass extends baseClass {
@@ -19,6 +20,8 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
     @property({type: Object})
     permissions!: any;
+
+    componentName!: string;
 
     set_canEditAtLeastOneField(editPermissions: AnyObject) {
       this.canEditAtLeastOneField = Object.keys(editPermissions).some((key: string) => editPermissions[key] === true);
@@ -49,8 +52,22 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
       this.editMode = false;
     }
 
+    // To be implemented in child component
+    saveData(): Promise<any> {
+      return Promise.reject('Not Implemented');
+    }
+
     save() {
-      throw new Error('Not implemented');
+      fireEvent(this, 'global-loading', {
+        active: true,
+        loadingSource: this.componentName
+      });
+      this.saveData().finally(() => {
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: this.componentName
+        });
+      });
     }
 
     renderActions(editMode: boolean, canEditAnyFields: boolean) {
