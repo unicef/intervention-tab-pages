@@ -146,9 +146,6 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
   @property({type: Object})
   permissions!: Permission<FinancialComponentPermissions>;
 
-  @property({type: Boolean})
-  showLoading = false;
-
   connectedCallback() {
     super.connectedCallback();
   }

@@ -43,7 +43,6 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Document Details">
-        <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
 
         <div slot="panel-btns">
           ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
@@ -118,9 +117,6 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
 
   @property({type: Object})
   originalData = {};
-
-  @property({type: Boolean})
-  showLoading = false;
 
   @property({type: Boolean})
   canEditDocumentDetails!: boolean;

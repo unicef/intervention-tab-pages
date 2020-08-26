@@ -44,7 +44,6 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Programme Document Dates">
-        <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
 
         <div slot="panel-btns">
           ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
@@ -107,9 +106,6 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
       </etools-content-panel>
     `;
   }
-
-  @property({type: Boolean})
-  showLoading = false;
 
   @property({type: Object})
   intervention!: Intervention;

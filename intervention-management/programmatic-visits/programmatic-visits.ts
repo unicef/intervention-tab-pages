@@ -75,7 +75,6 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Programmatic Visits">
-        <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
 
         <div slot="panel-btns">
           ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
@@ -108,9 +107,6 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
 
   @property({type: Object})
   originalData!: any;
-
-  @property({type: Boolean})
-  showLoading = false;
 
   @property({type: Array})
   years: AnyObject[] = [];

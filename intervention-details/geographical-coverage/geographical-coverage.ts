@@ -69,7 +69,6 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Geographical Coverage">
-        <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
 
         <div slot="panel-btns">
           ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
@@ -116,9 +115,6 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
 
   @property({type: Object})
   data!: {flat_locations: string[]};
-
-  @property({type: Boolean})
-  showLoading = false;
 
   @property({type: Object})
   permissions!: Permission<LocationsPermissions>;

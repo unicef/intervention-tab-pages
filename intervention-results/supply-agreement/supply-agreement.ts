@@ -72,7 +72,6 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
         }
       </style>
       <etools-content-panel panel-title="Supply Agreement">
-        <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
 
         <div slot="panel-btns">
           <span class="mr-40">
@@ -102,9 +101,6 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
 
   @property({type: Array})
   dataItems: AnyObject[] = [];
-
-  @property({type: Boolean})
-  showLoading = false;
 
   @property({type: Array})
   columns: EtoolsTableColumn[] = [
