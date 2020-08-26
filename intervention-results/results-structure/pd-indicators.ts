@@ -105,6 +105,10 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
                   icon="icons:create"
                   @tap="${() => this.openIndicatorDialog(indicator)}"
                 ></paper-icon-button>
+                <paper-icon-button
+                  icon="icons:block"
+                  @tap="${() => this.openIndicatorDialog(indicator)}"
+                ></paper-icon-button>
               </div>
             </div>
 
@@ -116,7 +120,7 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
                 <div class="details-text">
                   ${indicator.locations.length
                     ? indicator.locations.map(
-                        (location: number) => html`
+                        (location: string) => html`
                           <div class="details-list-item">${this.getLocationName(location)}</div>
                         `
                       )

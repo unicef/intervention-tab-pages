@@ -1,6 +1,5 @@
 import isArray from 'lodash-es/isArray';
 import isObject from 'lodash-es/isObject';
-import {AnyObject} from '../common/models/globals.types';
 import isEmpty from 'lodash-es/isEmpty';
 
 export const isJsonStrMatch = (a: any, b: any) => {

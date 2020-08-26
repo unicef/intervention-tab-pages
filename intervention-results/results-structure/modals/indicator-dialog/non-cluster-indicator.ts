@@ -12,7 +12,7 @@ import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-
 import {buttonsStyles} from '../../../../common/styles/button-styles';
 import {Indicator} from '../../../../common/models/intervention.types';
 import {PaperCheckboxElement} from '@polymer/paper-checkbox/paper-checkbox.js';
-import {layoutEnd, _layoutEnd} from '../../../../common/styles/flex-layout-styles';
+import {_layoutEnd} from '../../../../common/styles/flex-layout-styles';
 
 /**
  * @customElement

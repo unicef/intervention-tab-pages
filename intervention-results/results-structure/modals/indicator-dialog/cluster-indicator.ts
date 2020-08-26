@@ -302,7 +302,7 @@ class ClusterIndicator extends IndicatorsCommonMixin(LitElement) {
     `;
   }
 
-  private _indicator: Indicator = {};
+  private _indicator = {} as Indicator;
   @property({type: Object})
   get indicator() {
     return this._indicator;
@@ -401,7 +401,7 @@ class ClusterIndicator extends IndicatorsCommonMixin(LitElement) {
     }
   }
 
-  _getPrpClusterIndicator(clusterIndicId: string) {
+  _getPrpClusterIndicator(_clusterIndicId: string) {
     fireEvent(this, 'start-spinner', {spinnerText: 'Loading...'});
     // TODO
     // this.fireRequest('getPrpClusterIndicator', {id: clusterIndicId})
@@ -453,17 +453,18 @@ class ClusterIndicator extends IndicatorsCommonMixin(LitElement) {
       return;
     }
     fireEvent(this, 'start-spinner', {spinnerText: 'Loading...'});
-    this.fireRequest('getPrpClusterIndicators', {id: clusterId})
-      .then((response: any) => {
-        this.prpClusterIndicators = this._unnestIndicatorTitle(response.results);
-        fireEvent(this, 'stop-spinner');
-      })
-      .catch((error: any) => {
-        fireEvent(this, 'stop-spinner');
-        fireEvent(this, 'show-toast', {
-          error: {response: error.message || error.response}
-        });
-      });
+    // TODO
+    // this.fireRequest('getPrpClusterIndicators', {id: clusterId})
+    //   .then((response: any) => {
+    //     this.prpClusterIndicators = this._unnestIndicatorTitle(response.results);
+    //     fireEvent(this, 'stop-spinner');
+    //   })
+    //   .catch((error: any) => {
+    //     fireEvent(this, 'stop-spinner');
+    //     fireEvent(this, 'show-toast', {
+    //       error: {response: error.message || error.response}
+    //     });
+    //   });
   }
 
   /* ESM dropdown can't process a nested property as option-label

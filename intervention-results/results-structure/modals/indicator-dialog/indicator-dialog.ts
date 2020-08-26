@@ -384,26 +384,26 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
     parseRequestErrorsAndShowAsToastMsgs(e.detail.error, this.toastEventSource);
   }
 
-  resetValidationsAndStyle(isCluster: boolean | undefined, skipUndefinedCheck: boolean) {
-    if (typeof isCluster === 'undefined' && !skipUndefinedCheck) {
-      return;
-    }
-    let indicatorEl: ClusterIndicatorEl | NonClusterIndicatorEl;
-    if (this.isCluster) {
-      indicatorEl = this.shadowRoot!.querySelector('#clusterIndicatorEl') as ClusterIndicatorEl;
-      this.updateStyles({'--border-color': 'var(--ternary-color)'});
-    } else {
-      indicatorEl = (this.shadowRoot!.querySelector('#nonClusterIndicatorEl') as unknown) as NonClusterIndicatorEl;
-      this.updateStyles({'--border-color': 'var(--dark-divider-color)'});
-    }
-    if (indicatorEl) {
-      indicatorEl.resetValidations();
-      this.updateStyles();
-    }
+  // resetValidationsAndStyle(isCluster: boolean | undefined, skipUndefinedCheck: boolean) {
+  //   if (typeof isCluster === 'undefined' && !skipUndefinedCheck) {
+  //     return;
+  //   }
+  //   let indicatorEl: ClusterIndicatorEl | NonClusterIndicatorEl;
+  //   if (this.isCluster) {
+  //     indicatorEl = this.shadowRoot!.querySelector('#clusterIndicatorEl') as ClusterIndicatorEl;
+  //     this.updateStyles({'--border-color': 'var(--ternary-color)'});
+  //   } else {
+  //     indicatorEl = (this.shadowRoot!.querySelector('#nonClusterIndicatorEl') as unknown) as NonClusterIndicatorEl;
+  //     this.updateStyles({'--border-color': 'var(--dark-divider-color)'});
+  //   }
+  //   if (indicatorEl) {
+  //     indicatorEl.resetValidations();
+  //     this.updateStyles();
+  //   }
 
-    const sectionDropdown = this.shadowRoot!.querySelector('#sectionDropdw') as EtoolsDropdownEl;
-    sectionDropdown.resetInvalidState();
-  }
+  //   const sectionDropdown = this.shadowRoot!.querySelector('#sectionDropdw') as EtoolsDropdownEl;
+  //   sectionDropdown.resetInvalidState();
+  // }
 
   // resetFieldValues() {
   //   this.indicator = new Indicator();

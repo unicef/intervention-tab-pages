@@ -2,7 +2,7 @@ import {LitElement, html, property, customElement} from 'lit-element';
 import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../../../common/styles/button-styles';
-import {Disaggregation, AnyObject} from '../../../../common/models/globals.types';
+import {AnyObject} from '../../../../common/models/globals.types';
 
 /**
  * @customElement
@@ -32,7 +32,7 @@ export class ClusterIndicatorDisaggregations extends LitElement {
       </style>
       <div ?hidden="${!this.disaggregations.length}">
         ${this.disaggregations.map(
-          (item: Disaggregation) => html`
+          (item: any) => html`
             <div class="row-h ">
               <div class="col col-4">
                 <div class="layout-vertical">
