@@ -4,6 +4,7 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import {areEqual} from '../../utils/utils';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {validateRequiredFields} from '../../utils/validation-helper';
+import {formatDate} from '../../utils/date-utils';
 
 function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class ComponentBaseClass extends baseClass {
@@ -112,8 +113,20 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
       this.requestUpdate();
     }
 
+    dateHasChanged(detail: {date: Date}, key: string) {
+      if (detail.date === undefined) {
+        return;
+      }
+      const newValue = formatDate(detail.date, 'YYYY-MM-DD');
+      if (areEqual(this.data[key], newValue)) {
+        return;
+      }
+      this.data[key] = newValue;
+      this.requestUpdate();
+    }
+
     selectedItemsChanged(detail: any, key: string, optionValue = 'id') {
-      if (!detail.selectedItems) {
+      if (detail.selectedItems === undefined) {
         return;
       }
       const newValues = detail.selectedItems.map((i: any) => i[optionValue]);

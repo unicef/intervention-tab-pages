@@ -75,7 +75,6 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Programmatic Visits">
-
         <div slot="panel-btns">
           ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
         </div>
@@ -435,11 +434,6 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
 
   _getNoPVMsgPadding(itemsLength: number) {
     return !itemsLength && this.editMode ? 'no-top-padd' : '';
-  }
-
-  cancel() {
-    this.originalData = cloneDeep(this.originalData);
-    this.editMode = false;
   }
 
   saveData() {

@@ -68,6 +68,8 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
                 error-message="Please select start date"
                 auto-validate
                 selected-date-display-format="D MMM YYYY"
+                fire-date-has-changed
+                @date-has-changed="${({detail}: CustomEvent) => this.dateHasChanged(detail, 'start')}"
               >
               </datepicker-lite>
               <iron-icon icon="pmp-custom-icons:not-equal" slot="custom-icon"></iron-icon>
@@ -94,6 +96,8 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
                 error-message="Please select end date"
                 auto-validate
                 selected-date-display-format="D MMM YYYY"
+                fire-date-has-changed
+                @date-has-changed="${({detail}: CustomEvent) => this.dateHasChanged(detail, 'end')}"
               >
               </datepicker-lite>
               <iron-icon icon="pmp-custom-icons:not-equal" slot="custom-icon"></iron-icon>
