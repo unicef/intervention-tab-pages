@@ -27,7 +27,7 @@ export class InterventionPageContentHeader extends LitElement {
           ${layoutFlex}
 
           background-color: var(--primary-background-color);
-          padding: 0 24px;
+          padding: 0;
           min-height: 85px;
           border-bottom: 1px solid var(--dark-divider-color);
 
@@ -52,7 +52,7 @@ export class InterventionPageContentHeader extends LitElement {
 
         .title-row {
           ${layoutCenter}
-          margin: 30px 0 0;
+          margin: 15px 0 0;
           padding: 0 24px;
         }
 
