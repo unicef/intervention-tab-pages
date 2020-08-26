@@ -5,14 +5,14 @@ import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
-import {CpOutput, InterventionSupplyItem} from '../../common/models/intervention.types';
+import {CpOutput, Intervention} from '../../common/models/intervention.types';
 import {validateRequiredFields, resetRequiredFields} from '../../utils/validation-helper';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '../../utils/fire-custom-event';
 import get from 'lodash-es/get';
-import {AnyObject} from '../../../../../../types/globals';
+import {AnyObject} from '../../common/models/globals.types';
 
 /**
  * @customElement
@@ -92,9 +92,10 @@ export class SupplyAgreementDialog extends connect(getStore())(ComponentBaseMixi
             .options="${this.cpOutputs}"
             option-label="cp_output_name"
             option-value="cp_output"
+            .selected="${this.originalData.result}"
             trigger-value-change-event
-            @etools-selected-items-changed="${({detail}: CustomEvent) => {
-              this.selectedItemChanged(detail, 'cpOutputs');
+            @etools-selected-item-changed="${({detail}: CustomEvent) => {
+              this.selectedItemChanged(detail, 'result');
             }}"
           >
           </etools-dropdown>
@@ -119,24 +120,20 @@ export class SupplyAgreementDialog extends connect(getStore())(ComponentBaseMixi
   @property({type: String})
   confirmBtnTxt = '';
 
-  private currentInterventionId = '';
-  private cpOutputs: CpOutput[] = [];
+  @property({type: Object})
+  intervention!: Intervention;
 
-  stateChanged(_state: any) {
-    // NOT sure we need this, will see..
-    this.currentInterventionId = get(_state, 'app.routeDetails.params.interventionId');
-    this.cpOutputs = _state.interventions.current.result_links || [];
-  }
+  @property({type: Object})
+  callbackFunction!: any;
 
-  connectedCallback() {
-    super.connectedCallback();
-  }
+  private cpOutputs: AnyObject[] = [];
 
   public openDialog() {
     this.isNewRecord = !this.originalData.id;
     this.data = {...this.originalData};
     this.dialogTitle = this.isNewRecord ? 'Add  Supply Agreement' : 'Edit Supply Agreement';
     this.confirmBtnTxt = this.isNewRecord ? 'Add' : 'Save';
+    this.cpOutputs = this.intervention.result_links || [];
     resetRequiredFields(this);
     this.dialogOpened = true;
   }
@@ -155,9 +152,9 @@ export class SupplyAgreementDialog extends connect(getStore())(ComponentBaseMixi
     }
 
     const endPoint = this.isNewRecord
-      ? getEndpoint(interventionEndpoints.supplyAgreementAdd, {interventionId: this.currentInterventionId})
+      ? getEndpoint(interventionEndpoints.supplyAgreementAdd, {interventionId: this.intervention.id})
       : getEndpoint(interventionEndpoints.supplyAgreementEdit, {
-          interventionId: this.currentInterventionId,
+          interventionId: this.intervention.id,
           supplyId: this.data.id
         });
 
@@ -166,8 +163,11 @@ export class SupplyAgreementDialog extends connect(getStore())(ComponentBaseMixi
       method: this.isNewRecord ? 'POST' : 'PATCH',
       body: this.data
     })
-      .then((response: any) => {
-        console.log(response);
+      .then((_response: any) => {
+        if (this.callbackFunction){
+          this.callbackFunction();
+        }
+        this.closeDialog();
       })
       .catch(() => {
         fireEvent(this, 'toast', {text: 'An error occurred. Try again'});
