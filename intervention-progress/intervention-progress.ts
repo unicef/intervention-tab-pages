@@ -30,6 +30,7 @@ import {fireEvent} from '../utils/fire-custom-event';
 import {GenericObject, AnyObject} from '../common/models/globals.types';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../utils/redux-store-access';
+import {pageIsNotCurrentlyActive} from '../utils/common-methods';
 
 import {
   dateDiff,
@@ -338,6 +339,9 @@ class InterventionProgress extends connect(getStore())(
   }
 
   stateChanged(state: any) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'progress')) {
+      return;
+    }
     const currentInterventionId = get(state, 'app.routeDetails.params.interventionId');
     if (currentInterventionId) {
       this.interventionId = currentInterventionId;
