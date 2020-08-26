@@ -5,13 +5,12 @@ import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
-import {CpOutput, Intervention} from '../../common/models/intervention.types';
+import {Intervention} from '../../common/models/intervention.types';
 import {validateRequiredFields, resetRequiredFields} from '../../utils/validation-helper';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '../../utils/fire-custom-event';
-import get from 'lodash-es/get';
 import {AnyObject} from '../../common/models/globals.types';
 
 /**
@@ -95,7 +94,7 @@ export class SupplyAgreementDialog extends connect(getStore())(ComponentBaseMixi
             .selected="${this.originalData.result}"
             trigger-value-change-event
             @etools-selected-item-changed="${({detail}: CustomEvent) => {
-              this.selectedItemChanged(detail, 'result');
+              this.selectedItemChanged(detail, 'result', 'cp_output');
             }}"
           >
           </etools-dropdown>
@@ -129,11 +128,11 @@ export class SupplyAgreementDialog extends connect(getStore())(ComponentBaseMixi
   private cpOutputs: AnyObject[] = [];
 
   public openDialog() {
+    this.cpOutputs = this.intervention.result_links || [];
     this.isNewRecord = !this.originalData.id;
     this.data = {...this.originalData};
     this.dialogTitle = this.isNewRecord ? 'Add  Supply Agreement' : 'Edit Supply Agreement';
     this.confirmBtnTxt = this.isNewRecord ? 'Add' : 'Save';
-    this.cpOutputs = this.intervention.result_links || [];
     resetRequiredFields(this);
     this.dialogOpened = true;
   }

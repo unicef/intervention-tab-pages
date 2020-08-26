@@ -78,11 +78,11 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
       return html`${item.first_name} ${item.last_name} (${item.email}, ${item.phone})`;
     }
 
-    selectedItemChanged(detail: any, key: string) {
+    selectedItemChanged(detail: any, key: string, optionValue = 'id') {
       if (!detail.selectedItem) {
         return;
       }
-      const newValue = detail.selectedItem?.id;
+      const newValue = detail.selectedItem[optionValue];
       if (areEqual(this.data[key], newValue)) {
         return;
       }
