@@ -3,6 +3,7 @@ import {Constructor, AnyObject} from '../models/globals.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {areEqual} from '../../utils/utils';
 import {fireEvent} from '../../utils/fire-custom-event';
+import {validateRequiredFields} from '../../utils/validation-helper';
 
 function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class ComponentBaseClass extends baseClass {
@@ -20,8 +21,6 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
     @property({type: Object})
     permissions!: any;
-
-    componentName!: string;
 
     set_canEditAtLeastOneField(editPermissions: AnyObject) {
       this.canEditAtLeastOneField = Object.keys(editPermissions).some((key: string) => editPermissions[key] === true);
@@ -52,20 +51,25 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
       this.editMode = false;
     }
 
+    validate() {
+      return validateRequiredFields(this);
+    }
+
     // To be implemented in child component
     saveData(): Promise<any> {
       return Promise.reject('Not Implemented');
     }
 
     save() {
+      console.log(this.localName);
       fireEvent(this, 'global-loading', {
         active: true,
-        loadingSource: this.componentName
+        loadingSource: this.localName
       });
       this.saveData().finally(() => {
         fireEvent(this, 'global-loading', {
           active: false,
-          loadingSource: this.componentName
+          loadingSource: this.localName
         });
       });
     }

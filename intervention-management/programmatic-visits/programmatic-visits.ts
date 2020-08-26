@@ -446,11 +446,11 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
     this.editMode = false;
   }
 
-  save() {
+  saveData() {
     if (!this.validate()) {
-      return;
+      return Promise.resolve(false);
     }
-    getStore()
+    return getStore()
       .dispatch(patchIntervention(this.data))
       .then(() => {
         this.editMode = false;

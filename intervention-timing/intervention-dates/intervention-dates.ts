@@ -10,7 +10,6 @@ import {Intervention, Permission} from '../../common/models/intervention.types';
 import {ProgrammeDocDates, InterventionDatesPermissions} from './interventionDates.models';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {selectInterventionDates, selectInterventionDatesPermissions} from './interventionDates.selectors';
-import {validateRequiredFields} from '../../utils/validation-helper';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
@@ -144,16 +143,12 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
     this.set_canEditAtLeastOneField(this.permissions.edit);
   }
 
-  validate() {
-    return validateRequiredFields(this);
-  }
-
-  save() {
+  saveData() {
     if (!this.validate()) {
-      return;
+      return Promise.resolve(false);
     }
 
-    getStore()
+    return getStore()
       .dispatch(patchIntervention(this.data))
       .then(() => {
         this.editMode = false;

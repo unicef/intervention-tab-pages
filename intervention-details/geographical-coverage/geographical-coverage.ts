@@ -13,14 +13,12 @@ import {LocationsPermissions} from './geographicalCoverage.models';
 import {Permission} from '../../common/models/intervention.types';
 import {selectLocationsPermissions} from './geographicalCoverage.selectors';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
-import {validateRequiredFields} from '../../utils/validation-helper';
 import {patchIntervention} from '../../common/actions';
 import isEmpty from 'lodash-es/isEmpty';
 import get from 'lodash-es/get';
 import {isJsonStrMatch} from '../../utils/utils';
 import {LocationObject} from '../../common/models/globals.types';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {fireEvent} from '../../utils/fire-custom-event';
 
 /**
  * @customElement
@@ -111,7 +109,6 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
     `;
   }
 
-  componentName = 'geographical-coverage';
   private locationsDialog!: GroupedLocationsDialog;
 
   @property({type: Array})
@@ -165,28 +162,15 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
     return isEmpty(array);
   }
 
-  validate() {
-    return validateRequiredFields(this);
-  }
-
-  save() {
+  saveData() {
     if (!this.validate()) {
-      return;
+      return Promise.resolve(false);
     }
-    fireEvent(this, 'global-loading', {
-      active: true,
-      loadingSource: 'geographical-coverage'
-    });
-    getStore()
+
+    return getStore()
       .dispatch(patchIntervention(this.data))
       .then(() => {
         this.editMode = false;
-      })
-      .finally(() => {
-        fireEvent(this, 'global-loading', {
-          active: false,
-          loadingSource: 'geographical-coverage'
-        });
       });
   }
 }

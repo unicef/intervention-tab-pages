@@ -13,7 +13,6 @@ import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import cloneDeep from 'lodash-es/cloneDeep';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {Permission} from '../../common/models/intervention.types';
-import {validateRequiredFields} from '../../utils/validation-helper';
 import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
 import './financialComponent.models';
@@ -130,9 +129,6 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
   }
 
   @property({type: Boolean})
-  canEditFinancialComponent!: boolean;
-
-  @property({type: Boolean})
   canEditHQOriginal!: boolean;
 
   @property({type: Boolean})
@@ -161,18 +157,12 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
     if (!state.interventions.current) {
       return;
     }
-    if (state.interventions.current) {
-      // temporary fix untill we have data from backend
-      state.interventions.current.hq_support_cost = 0;
-      this.data = selectFinancialComponent(state);
-      this.permissions = selectFinancialComponentPermissions(state);
-      this.set_canEditAtLeastOneField(this.permissions.edit);
-      this.originalData = cloneDeep(this.data);
-    }
-  }
-
-  validate() {
-    return validateRequiredFields(this);
+    // temporary fix untill we have data from backend
+    state.interventions.current.hq_support_cost = 0;
+    this.data = selectFinancialComponent(state);
+    this.permissions = selectFinancialComponentPermissions(state);
+    this.set_canEditAtLeastOneField(this.permissions.edit);
+    this.originalData = cloneDeep(this.data);
   }
 
   // @lajos: this will have to be reviewd
@@ -202,11 +192,11 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
   }
 
   // this will be reviewed after all backend data is available
-  save() {
+  saveData() {
     if (!this.validate()) {
-      return;
+      return Promise.resolve(false);
     }
-    getStore()
+    return getStore()
       .dispatch(patchIntervention(this.data))
       .then(() => {
         this.editMode = false;

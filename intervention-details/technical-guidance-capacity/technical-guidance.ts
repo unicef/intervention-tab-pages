@@ -9,7 +9,6 @@ import {Permission} from '../../common/models/intervention.types';
 import {TechnicalDetails, TechnicalDetailsPermissions} from './technicalGuidance.models';
 import {selectTechnicalDetails, selectTechnicalDetailsPermissions} from './technicalGuidance.selectors';
 import {patchIntervention} from '../../common/actions';
-import {validateRequiredFields} from '../../utils/validation-helper';
 import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-loading/etools-loading';
 import cloneDeep from 'lodash-es/cloneDeep';
@@ -137,15 +136,11 @@ export class TechnicalGuidance extends connect(getStore())(ComponentBaseMixin(Li
     this.editMode = false;
   }
 
-  validate() {
-    return validateRequiredFields(this);
-  }
-
-  save() {
+  saveData() {
     if (!this.validate()) {
-      return;
+      return Promise.resolve(false);
     }
-    getStore()
+    return getStore()
       .dispatch(patchIntervention(this.data))
       .then(() => {
         this.editMode = false;
