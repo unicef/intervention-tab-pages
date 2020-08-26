@@ -11,6 +11,7 @@ import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '../../utils/fire-custom-event';
 import get from 'lodash-es/get';
+import {AnyObject} from '../../../../../../types/globals';
 
 /**
  * @customElement
@@ -77,7 +78,7 @@ export class SupplyAgreementDialog extends connect(getStore())(LitElement) {
           </paper-input>
         </div>
       </div>
-      
+
       <div class="layout-horizontal">
         <div class="col col-8">
           <etools-dropdown
@@ -146,33 +147,27 @@ export class SupplyAgreementDialog extends connect(getStore())(LitElement) {
     if (!this.validate()) {
       return;
     }
-    if (this.isNewRecord) {
-      sendRequest({
-        endpoint: getEndpoint(interventionEndpoints.supplyAgreementAdd, {interventionId: this.currentInterventionId}),
-        method: 'POST',
-        body: {supply_item: this.supplyItem}
-      })
-        .then((response: any) => {
-          console.log(response);
-        })
-        .catch(() => {
-          fireEvent(this, 'toast', {text: 'An error occurred. Try again'});
-        });
-    } else {
-      sendRequest({
-        endpoint: getEndpoint(interventionEndpoints.supplyAgreementEdit, {
+    const endPoint = this.isNewRecord
+      ? getEndpoint(interventionEndpoints.supplyAgreementAdd, {interventionId: this.currentInterventionId})
+      : getEndpoint(interventionEndpoints.supplyAgreementEdit, {
           interventionId: this.currentInterventionId,
           supplyId: this.supplyItem.id
-        }),
-        method: 'PATCH',
-        body: {supply_item: this.supplyItem, cp_outputs: this.cpOutputs}
-      })
-        .then((response: any) => {
-          console.log(response);
-        })
-        .catch(() => {
-          fireEvent(this, 'toast', {text: 'An error occurred. Try again'});
         });
+    const body: AnyObject = {supply_item: this.supplyItem};
+    if (!this.isNewRecord) {
+      body.cp_outputs = this.cpOutputs;
     }
+
+    sendRequest({
+      endpoint: endPoint,
+      method: this.isNewRecord ? 'POST' : 'PATCH',
+      body: body
+    })
+      .then((response: any) => {
+        console.log(response);
+      })
+      .catch(() => {
+        fireEvent(this, 'toast', {text: 'An error occurred. Try again'});
+      });
   }
 }
