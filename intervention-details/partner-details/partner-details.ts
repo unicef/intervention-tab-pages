@@ -114,10 +114,10 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
               trigger-value-change-event
               @etools-selected-items-changed="${({detail}: CustomEvent) =>
                 this.selectedItemsChanged(detail, 'partner_focal_points')}"
-              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.partner_focal_points)}"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.partner_focal_points)}"
             >
             </etools-dropdown-multi>
-            ${this.isReadonly(this.editMode, this.permissions.edit.partner_focal_points)
+            ${this.isReadonly(this.editMode, this.permissions>.edit.partner_focal_points)
               ? html`<label for="focalPointsDetails" class="paper-label">Partner Focal Points</label>
                   <div id="focalPointsDetails">
                     ${this.renderReadonlyPartnerFocalPoints(this.partnerStaffMembers, this.data?.partner_focal_points!)}
