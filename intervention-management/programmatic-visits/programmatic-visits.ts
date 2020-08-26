@@ -441,7 +441,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
       return Promise.resolve(false);
     }
     return getStore()
-      .dispatch(patchIntervention(this.data))
+      .dispatch(patchIntervention({planned_visits: this.data}))
       .then(() => {
         this.editMode = false;
       });
