@@ -151,6 +151,8 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
   @property({type: Array})
   partnerStaffMembers!: PartnerStaffMember[];
 
+  componentName = 'partner-details';
+
   connectedCallback() {
     super.connectedCallback();
   }
