@@ -48,5 +48,8 @@ export const areEqual = (obj1: any, obj2: any): boolean => {
     const keys2 = Object.keys(obj2);
     return keys1.length === keys2.length && keys1.every((key: string) => areEqual(obj1[key], obj2[key]));
   }
+  if (obj1 !== obj2) {
+    return false;
+  }
   return true;
 };
