@@ -160,6 +160,7 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
     if (get(state, 'interventions.current')) {
       const currentIntervention = get(state, 'interventions.current');
       this.intervention = cloneDeep(currentIntervention);
+      // TODO supply data will come on the intervention object, no need for the request below
       this.loadListData();
     }
   }

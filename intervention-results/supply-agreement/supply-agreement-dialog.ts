@@ -163,7 +163,9 @@ export class SupplyAgreementDialog extends connect(getStore())(ComponentBaseMixi
       body: this.data
     })
       .then((_response: any) => {
-        if (this.callbackFunction){
+        // TODO as response we will get intervention updates with supply and
+        // will need to dispatch here to update current intervention
+        if (this.callbackFunction) {
           this.callbackFunction();
         }
         this.closeDialog();
