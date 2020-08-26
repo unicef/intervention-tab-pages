@@ -9,14 +9,16 @@ import {GenericObject} from '../../../common/models/globals.types';
 import {getIntervention} from '../../../common/actions';
 import {fireEvent} from '../../../utils/fire-custom-event';
 
-@customElement('add-ram-indicators')
-export class AddRamIndicators extends LitElement {
+@customElement('cp-output-dialog')
+export class CpOutputDialog extends LitElement {
   @property() dialogOpened = true;
   @property() loadingInProcess = false;
 
   @property() indicators: ResultIndicator[] = [];
   @property() selectedIndicators: number[] = [];
+  @property() selectedCpOutput?: number;
   @property() errors: GenericObject<any> = {};
+  @property() cpOutputs: any[] = [];
 
   cpOutputId!: number;
   cpOutputName!: string;
@@ -27,13 +29,21 @@ export class AddRamIndicators extends LitElement {
     if (!data) {
       return;
     }
-    const {cpOutputId, cpOutputName, selectedIndicators, resultLinkId, interventionId}: any = data;
-    this.cpOutputId = cpOutputId;
-    this.cpOutputName = cpOutputName;
-    this.selectedIndicators = selectedIndicators || [];
-    this.resultLinkId = resultLinkId;
+    const {cpOutputs, resultLink, interventionId}: any = data;
+    if (resultLink) {
+      this.cpOutputId = resultLink.cp_output;
+      this.selectedCpOutput = resultLink.cp_output;
+      this.cpOutputName = resultLink.cp_output_name;
+      this.selectedIndicators = resultLink.ram_indicators || [];
+      this.resultLinkId = resultLink.id;
+    }
     this.interventionId = interventionId;
-    this.loadIndicators(cpOutputId);
+    this.cpOutputs = cpOutputs;
+    this.loadIndicators(this.cpOutputId);
+  }
+
+  get dialogTitle(): string {
+    return this.cpOutputName ? `Indicators for CP Output: ${this.cpOutputName}` : 'Add CP Output';
   }
 
   protected render(): TemplateResult {
@@ -56,7 +66,7 @@ export class AddRamIndicators extends LitElement {
         size="md"
         keep-dialog-open
         ?opened="${this.dialogOpened}"
-        dialog-title="Indicators for CP Output: ${this.cpOutputName} "
+        dialog-title="${this.dialogTitle} "
         @confirm-btn-clicked="${() => this.processRequest()}"
         @close="${this.onClose}"
         .okBtnText="Save"
@@ -64,6 +74,29 @@ export class AddRamIndicators extends LitElement {
       >
         <etools-loading ?active="${this.loadingInProcess}" loading-text="Loading..."></etools-loading>
         <div class="container layout vertical">
+          ${!this.cpOutputId
+            ? html`
+                <etools-dropdown
+                  class="validate-input flex-1"
+                  @etools-selected-item-changed="${({detail}: CustomEvent) =>
+                    this.onCpOutputSelected(detail.selectedItem && detail.selectedItem.id)}"
+                  ?trigger-value-change-event="${!this.loadingInProcess}"
+                  .selected="${this.selectedCpOutput}"
+                  label="CP Output"
+                  placeholder="Select CP Output"
+                  .options="${this.cpOutputs}"
+                  option-label="name"
+                  option-value="id"
+                  allow-outside-scroll
+                  dynamic-align
+                  required
+                  ?invalid="${this.errors.cp_output}"
+                  .errorMessage="${this.errors.cp_output && this.errors.cp_output[0]}"
+                  @focus="${() => this.resetFieldError('cp_output')}"
+                  @tap="${() => this.resetFieldError('cp_output')}"
+                ></etools-dropdown>
+              `
+            : html``}
           <etools-dropdown-multi
             class="validate-input disabled-as-readonly flex-1"
             @etools-selected-items-changed="${({detail}: CustomEvent) =>
@@ -78,9 +111,10 @@ export class AddRamIndicators extends LitElement {
             allow-outside-scroll
             dynamic-align
             ?invalid="${this.errors.ram_indicators}"
+            ?disabled="${!this.selectedCpOutput}"
             .errorMessage="${this.errors.ram_indicators && this.errors.ram_indicators[0]}"
-            @focus="${() => this.resetFieldError()}"
-            @tap="${() => this.resetFieldError()}"
+            @focus="${() => this.resetFieldError('ram_indicators')}"
+            @tap="${() => this.resetFieldError('ram_indicators')}"
           ></etools-dropdown-multi>
         </div>
       </etools-dialog>
@@ -91,16 +125,36 @@ export class AddRamIndicators extends LitElement {
     this.selectedIndicators = data.map(({id}: ResultIndicator) => id);
   }
 
-  resetFieldError() {
-    this.errors = {};
+  onCpOutputSelected(id: number) {
+    this.selectedCpOutput = id;
+    this.loadIndicators(id);
+  }
+
+  resetFieldError(field: string) {
+    delete this.errors[field];
+    this.performUpdate();
   }
 
   processRequest() {
+    if (!this.cpOutputId && !this.selectedCpOutput) {
+      this.errors.cp_output = ['Field is required'];
+      this.performUpdate();
+      return;
+    }
+
     this.loadingInProcess = true;
+    const endpoint = this.cpOutputId
+      ? getEndpoint(interventionEndpoints.resultLinkDetails, {result_link: this.resultLinkId})
+      : getEndpoint(interventionEndpoints.resultLinks, {id: this.interventionId});
+    const method = this.cpOutputId ? 'PATCH' : 'POST';
+    const body: GenericObject<any> = {ram_indicators: this.selectedIndicators};
+    if (!this.cpOutputId) {
+      body.cp_output = this.selectedCpOutput;
+    }
     sendRequest({
-      endpoint: getEndpoint(interventionEndpoints.resultLinkDetails, {result_link: this.resultLinkId}),
-      body: {ram_indicators: this.selectedIndicators},
-      method: 'PATCH'
+      endpoint,
+      body,
+      method
     })
       .then(() =>
         getStore()
@@ -122,6 +176,9 @@ export class AddRamIndicators extends LitElement {
   }
 
   private loadIndicators(cpOutputId: number): void {
+    if (!cpOutputId) {
+      return;
+    }
     this.loadingInProcess = true;
     sendRequest({
       endpoint: getEndpoint(interventionEndpoints.ramIndicators, {id: cpOutputId})

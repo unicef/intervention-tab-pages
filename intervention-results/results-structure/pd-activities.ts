@@ -109,7 +109,7 @@ export class PdActivities extends LitElement {
               <div class="details-container">
                 <div class="text details-heading">Time periods</div>
                 <div class="details-text">
-                  <b>${activity.time_frames.map(({name}: InterventionQuarter) => name).join(', ') || '-'}</b>
+                  <b>${(activity.time_frames || []).map(({name}: InterventionQuarter) => name).join(', ') || '-'}</b>
                 </div>
               </div>
 
