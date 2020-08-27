@@ -122,6 +122,7 @@ export class InterventionTabs extends LitElement {
         </intervention-management>
         <intervention-attachments ?hidden="${!this.isActiveTab(this.activeTab, 'attachments')}">
         </intervention-attachments>
+        <intervention-progress ?hidden="${!this.isActiveTab(this.activeTab, 'progress')}"></intervention-progress>
       </div>
     `;
   }
@@ -223,6 +224,11 @@ export class InterventionTabs extends LitElement {
         }
       }
       this.availableActions = selectAvailableActions(state);
+
+      // Progress tab visible only for unicef users
+      if (get(state, 'user.data.is_unicef_user') && !this.pageTabs.find((x) => x.tab === 'progress')) {
+        this.pageTabs.push({tab: 'progress', tabLabel: 'Progress', hidden: false});
+      }
     }
   }
 

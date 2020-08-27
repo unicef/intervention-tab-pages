@@ -2,7 +2,7 @@
 import {PolymerElement, html} from '@polymer/polymer';
 import uniq from 'lodash-es/uniq';
 import '@unicef-polymer/etools-data-table/etools-data-table';
-import CommonMixin from '../mixins/common-mixin';
+import CommonMixin from '../../../common/mixins/common-mixin';
 import {ResultLinkLowerResult, ExpectedResult} from '../../../common/models/intervention.types';
 import {gridLayoutStylesPolymer} from '../../../common/styles/grid-layout-styles-polymer';
 import {property} from '@polymer/decorators';
