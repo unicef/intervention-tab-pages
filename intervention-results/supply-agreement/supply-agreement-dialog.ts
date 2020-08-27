@@ -12,6 +12,7 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {AnyObject} from '../../common/models/globals.types';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {ExpectedResult} from '../../common/models/intervention.types';
 
 /**
  * @customElement
@@ -121,13 +122,10 @@ export class SupplyAgreementDialog extends connect(getStore())(ComponentBaseMixi
   @property({type: Number})
   interventionId!: number;
 
-  @property({type: Array})
-  result_links!: AnyObject[];
-
   @property({type: Object})
   callbackFunction!: any;
 
-  private cpOutputs: AnyObject[] = [];
+  private cpOutputs: ExpectedResult[] = [];
 
   set dialogData({data, interventionId, result_links, callbackFunction}: any) {
     this.cpOutputs = result_links || [];
