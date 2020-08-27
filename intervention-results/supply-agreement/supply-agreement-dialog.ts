@@ -125,7 +125,8 @@ export class SupplyAgreementDialog extends connect(getStore())(ComponentBaseMixi
   @property({type: Object})
   callbackFunction!: any;
 
-  private cpOutputs: ExpectedResult[] = [];
+  @property({type: Object})
+  cpOutputs: ExpectedResult[] = [];
 
   set dialogData({data, interventionId, result_links, callbackFunction}: any) {
     this.cpOutputs = result_links || [];
