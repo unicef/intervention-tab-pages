@@ -6,7 +6,15 @@ export class ProgrammeManagement extends ModelsBase {
     super();
     this.setObjProperties(intervention);
   }
-  activities = [];
+  created = '';
+  modified = '';
+  act1_unicef = 1;
+  act1_partner = 2;
+  act2_unicef = 3;
+  act2_partner = 4;
+  act3_unicef = 5;
+  act3_partner = 6;
+  intervention = '';
   total_amount: number | null = null;
 }
 
@@ -15,5 +23,5 @@ export class ProgrammeManagementActivityPermissions extends ModelsBase {
     super();
     this.setObjProperties(permissions);
   }
-  programme_management_activity = false;
+  programme_management_activity = true;
 }
