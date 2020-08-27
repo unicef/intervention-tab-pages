@@ -104,11 +104,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
 
   @property() loadingInProcess = false;
 
-  @property({type: Boolean, reflect: true})
-  dialogOpened = true;
-
-  @property({type: Object})
-  toastEventSource!: LitElement;
+  @property() dialogOpened = true;
 
   onSaveClick() {
     this.loadingInProcess = true;
@@ -117,7 +113,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         interventionId: this.interventionId
       }),
       method: 'PATCH',
-      body: {activity: this.data}
+      body: this.data
     })
       .then(() =>
         getStore()
