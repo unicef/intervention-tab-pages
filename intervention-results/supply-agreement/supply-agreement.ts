@@ -11,12 +11,12 @@ import {buttonsStyles} from '../../common/styles/button-styles';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {EtoolsTableColumn, EtoolsTableColumnType, EtoolsTableChildRow} from '@unicef-polymer/etools-table/etools-table';
 import './supply-agreement-dialog';
-import {SupplyAgreementDialog} from './supply-agreement-dialog';
 import {InterventionSupplyItem, Intervention} from '../../common/models/intervention.types';
 import {AnyObject} from '../../common/models/globals.types';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {openDialog} from '../../utils/dialog';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
 
@@ -88,8 +88,6 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
       </etools-content-panel>
     `;
   }
-
-  private supplyItemDialog!: SupplyAgreementDialog;
 
   @property({type: Array})
   dataItems: AnyObject[] = [];
@@ -196,18 +194,15 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
   }
 
   private openSupplyDialog(item: InterventionSupplyItem) {
-    this.createDialog();
-    this.supplyItemDialog.intervention = this.intervention;
-    this.supplyItemDialog.originalData = item;
     const callbackFunction = this.loadListData.bind(this);
-    this.supplyItemDialog.callbackFunction = callbackFunction;
-    this.supplyItemDialog.openDialog();
-  }
-
-  createDialog() {
-    if (!this.supplyItemDialog) {
-      this.supplyItemDialog = document.createElement('supply-agreement-dialog') as SupplyAgreementDialog;
-      document.querySelector('body')!.appendChild(this.supplyItemDialog);
-    }
+    openDialog({
+      dialog: 'supply-agreement-dialog',
+      dialogData: {
+        data: item,
+        interventionId: this.intervention.id,
+        result_links: this.intervention.result_links,
+        callbackFunction: callbackFunction
+      }
+    });
   }
 }
