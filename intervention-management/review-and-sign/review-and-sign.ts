@@ -506,12 +506,12 @@ export class InterventionReviewAndSign extends connect(getStore())(
     this.data = {...this.data, submitted_to_prc: detail.value} as ReviewData;
   }
 
-  save() {
+  saveData() {
     if (!this.validate()) {
-      return;
+      return Promise.resolve(false);
     }
 
-    getStore()
+    return getStore()
       .dispatch(patchIntervention(this.data))
       .then(() => {
         this.editMode = false;

@@ -10,16 +10,14 @@ import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {selectGenderEquityRating, selectGenderEquityRatingPermissions} from './genderEquityRating.selectors';
-import {GenderEquityRatingPermissions} from './genderEquityRating.models';
+import {GenderEquityRatingPermissions, GenderEquityRating} from './genderEquityRating.models';
 import {Permission} from '../../common/models/intervention.types';
-import {validateRequiredFields} from '../../utils/validation-helper';
 import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {AnyObject} from '../../common/models/globals.types';
 import {patchIntervention} from '../../common/actions';
 import {isJsonStrMatch} from '../../utils/utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
-import {fireEvent} from '../../utils/fire-custom-event';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 
@@ -139,16 +137,7 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
           </div>
         </div>
 
-        <div
-          class="layout-horizontal right-align row-padding-v"
-          ?hidden="${this.hideActionButtons(this.editMode, this.canEditAtLeastOneField)}"
-        >
-          <paper-button class="default" @tap="${this.cancel}">
-            Cancel
-          </paper-button>
-          <paper-button class="primary" @tap="${this.save}">
-            Save
-          </paper-button>
+          ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
         </div>
       </etools-content-panel>
     `;
@@ -159,6 +148,9 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
 
   @property({type: Array})
   ratings!: AnyObject[];
+
+  @property({type: Object})
+  data!: GenderEquityRating;
 
   stateChanged(state: any) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'details')) {
@@ -198,31 +190,18 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
     );
   }
 
-  validate() {
-    return validateRequiredFields(this);
-  }
-
-  save() {
+  saveData() {
     if (!this.validate()) {
-      return;
+      return Promise.resolve(false);
     }
-    fireEvent(this, 'global-loading', {
-      active: true,
-      loadingSource: 'gender-equity-ratings'
-    });
-    getStore()
+
+    return getStore()
       .dispatch(patchIntervention(this.data))
       .then(() => {
         this.editMode = false;
       })
       .catch((error: any) => {
         console.log(error);
-      })
-      .finally(() => {
-        fireEvent(this, 'global-loading', {
-          active: false,
-          loadingSource: 'gender-equity-ratings'
-        });
       });
   }
 }

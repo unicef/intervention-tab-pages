@@ -10,7 +10,6 @@ import {Intervention, Permission} from '../../common/models/intervention.types';
 import {ProgrammeDocDates, InterventionDatesPermissions} from './interventionDates.models';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {selectInterventionDates, selectInterventionDatesPermissions} from './interventionDates.selectors';
-import {validateRequiredFields} from '../../utils/validation-helper';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
@@ -45,7 +44,6 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Programme Document Dates">
-        <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
 
         <div slot="panel-btns">
           ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
@@ -70,6 +68,8 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
                 error-message="Please select start date"
                 auto-validate
                 selected-date-display-format="D MMM YYYY"
+                fire-date-has-changed
+                @date-has-changed="${({detail}: CustomEvent) => this.dateHasChanged(detail, 'start')}"
               >
               </datepicker-lite>
               <iron-icon icon="pmp-custom-icons:not-equal" slot="custom-icon"></iron-icon>
@@ -96,6 +96,8 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
                 error-message="Please select end date"
                 auto-validate
                 selected-date-display-format="D MMM YYYY"
+                fire-date-has-changed
+                @date-has-changed="${({detail}: CustomEvent) => this.dateHasChanged(detail, 'end')}"
               >
               </datepicker-lite>
               <iron-icon icon="pmp-custom-icons:not-equal" slot="custom-icon"></iron-icon>
@@ -108,9 +110,6 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
       </etools-content-panel>
     `;
   }
-
-  @property({type: Boolean})
-  showLoading = false;
 
   @property({type: Object})
   intervention!: Intervention;
@@ -144,16 +143,12 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
     this.set_canEditAtLeastOneField(this.permissions.edit);
   }
 
-  validate() {
-    return validateRequiredFields(this);
-  }
-
-  save() {
+  saveData() {
     if (!this.validate()) {
-      return;
+      return Promise.resolve(false);
     }
 
-    getStore()
+    return getStore()
       .dispatch(patchIntervention(this.data))
       .then(() => {
         this.editMode = false;

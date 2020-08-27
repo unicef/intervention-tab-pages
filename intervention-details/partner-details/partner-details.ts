@@ -17,7 +17,6 @@ import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {validateRequiredFields} from '../../utils/validation-helper';
 import {patchIntervention} from '../../common/actions';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {getEndpoint} from '../../utils/endpoint-helper';
@@ -28,7 +27,6 @@ import {isJsonStrMatch} from '../../utils/utils';
 import isEmpty from 'lodash-es/isEmpty';
 import {PartnerStaffMember} from '../../common/models/partner.types';
 import {MinimalAgreement} from '../../common/models/agreement.types';
-import {fireEvent} from '../../utils/fire-custom-event';
 
 /**
  * @customElement
@@ -49,7 +47,6 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Partner Details">
-        <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
 
         <div slot="panel-btns">
           ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
@@ -139,9 +136,6 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
 
   @property({type: Object})
   permissions!: Permission<PartnerDetailsPermissions>;
-
-  @property({type: Boolean})
-  showLoading = false;
 
   @property({type: Array})
   partnerAgreements!: MinimalAgreement[];
@@ -239,28 +233,15 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
     }
   }
 
-  validate() {
-    return validateRequiredFields(this);
-  }
-
-  save() {
+  saveData() {
     if (!this.validate()) {
-      return;
+      return Promise.resolve(false);
     }
-    fireEvent(this, 'global-loading', {
-      active: true,
-      loadingSource: 'partner-details'
-    });
-    getStore()
+
+    return getStore()
       .dispatch(patchIntervention(this.data))
       .then(() => {
         this.editMode = false;
-      })
-      .finally(() => {
-        fireEvent(this, 'global-loading', {
-          active: false,
-          loadingSource: 'partner-details'
-        });
       });
   }
 }

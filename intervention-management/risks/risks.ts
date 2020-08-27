@@ -81,7 +81,6 @@ export class RisksElement extends connect(getStore())(ComponentBaseMixin(LitElem
         }
       </style>
       <etools-content-panel show-expand-btn panel-title="Risks">
-        <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
         <div slot="panel-btns">
           <paper-button
             class="secondary-btn"
@@ -104,9 +103,6 @@ export class RisksElement extends connect(getStore())(ComponentBaseMixin(LitElem
   }
 
   private riskDialog!: RiskDialog;
-
-  @property({type: Boolean})
-  showLoading = false;
 
   @property({type: Object})
   data!: Risk[];
