@@ -55,7 +55,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
         .indicator-content {
           margin: 16px 24px;
           margin-bottom: 40px;
-          border: solid 1px var(--border-color);
+          border: solid 1px ${this.borderColor};
           overflow-x: hidden; /*To avoid horizontal scroll in IE11 */
         }
 
@@ -177,9 +177,6 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   @property({type: Object})
   data: Indicator = new Indicator(); // This is the indicator
 
-  // @property({type: Object})
-  // actionParams!: AnyObject;
-
   private _disaggregations: {disaggregId: string}[] = [];
   @property({type: Array})
   get disaggregations() {
@@ -195,9 +192,6 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
 
   @property({type: Array})
   sections!: AnyObject[];
-
-  // @property({type: Array})
-  // sectionOptionsIds!: [];
 
   @property({type: Array})
   sectionOptions!: Section[];
@@ -225,6 +219,9 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
 
   @query('etools-dialog')
   indicatorDialog!: EtoolsDialog;
+
+  @property({type: String})
+  borderColor = 'rgba(0, 0, 0, 0.40)';
 
   protected llResultId!: string; /** aka pdOutputId */
   private prpServerOn!: boolean;
@@ -264,27 +261,8 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
       return;
     }
     this.isCluster = chk.checked;
+    this.borderColor = this.isCluster ? 'green' : 'rgba(0, 0, 0, 0.40)';
   }
-
-  // setIndicatorData(data: any, actionParams: any, interventionStatus: string) {
-  //   // this.set('actionParams', actionParams);
-  //   // this.set('interventionStatus', interventionStatus);
-
-  //   //if (!data) {
-  //     // new indicator
-  //    // this.isCluster = false;
-  //     //this.set('indicator', new Indicator());
-  //    // this.set('disaggregations', []);
-  //    // this.preselectSectionAndLocation();
-  //   //  return;
-  //   //}
-
-  //  // this.isCluster = !!data.cluster_indicator_id;
-  //  // this.set('indicator', data);
-  //   // if (!this.isCluster) {
-  //   //   this.set('disaggregations', this._convertToArrayOfObj(this.indicator.disaggregation));
-  //   // }
-  // }
 
   connectedCallback() {
     super.connectedCallback();
@@ -325,12 +303,6 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
     }
     return !this.prpServerOn;
   }
-
-  // openIndicatorDialog() {
-  //   this.updateActiveTab('details');
-  //   this.disableConfirmBtn = false;
-  //   this.indicatorDialog.opened = true;
-  // }
 
   setTitle(indicator: Indicator) {
     const title = indicator && indicator.id ? 'Edit Indicator' : 'Add Indicator';
@@ -402,33 +374,9 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   //   sectionDropdown.resetInvalidState();
   // }
 
-  // resetFieldValues() {
-  //   this.indicator = new Indicator();
-  //   this.disaggregations = [];
-  //   this.prpDisaggregations = [];
-  //   const clusterIndicEl = this.shadowRoot!.querySelector('#clusterIndicatorEl') as ClusterIndicatorEl;
-  //   if (this.isCluster && clusterIndicEl) {
-  //     clusterIndicEl.resetFieldValues();
-  //   }
-  // }
-
   _centerDialog() {
     this.indicatorDialog.notifyResize();
   }
-
-  // _computeOptions(optionsIds: string[], allOptions: AnyObject[]) {
-  //   if (isEmptyObject(optionsIds) || isEmptyObject(allOptions)) {
-  //     return [];
-  //   }
-
-  //   const ids = optionsIds.map((id) => Number(id));
-
-  //   let options = allOptions.filter((opt: any) => {
-  //     return ids.indexOf(Number(opt.id)) > -1;
-  //   });
-
-  //   return options;
-  // }
 
   _hideAddDisaggreations(isCluster: boolean, currentUser: User) {
     return isCluster || !userIsPme(currentUser);

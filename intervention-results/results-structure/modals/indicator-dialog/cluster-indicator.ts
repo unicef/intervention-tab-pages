@@ -8,6 +8,7 @@ import {Indicator} from '../../../../common/models/intervention.types';
 import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 import {fireEvent} from '../../../../utils/fire-custom-event';
 import {AnyObject} from '../../../../common/models/globals.types';
+import isEmpty from 'lodash-es/isEmpty';
 
 /**
  * @customElement
@@ -40,16 +41,16 @@ class ClusterIndicator extends IndicatorsCommonMixin(LitElement) {
               <div class="col col-6">
                 <div class="layout-vertical">
                   <label class="paper-label">Response Plan</label>
-                  <label class="input-label" empty="${!this.indicator.response_plan_name}"
-                    >${this.indicator.response_plan_name}</label
+                  <label class="input-label" empty="${!this.indicator?.response_plan_name}"
+                    >${this.indicator?.response_plan_name}</label
                   >
                 </div>
               </div>
               <div class="col col-6">
                 <div class="layout-vertical">
                   <label class="paper-label">Cluster</label>
-                  <label class="input-label" empty="${!this.indicator.cluster_name}"
-                    >${this.indicator.cluster_name}</label
+                  <label class="input-label" empty="${!this.indicator?.cluster_name}"
+                    >${this.indicator?.cluster_name}</label
                   >
                 </div>
               </div>
@@ -57,8 +58,8 @@ class ClusterIndicator extends IndicatorsCommonMixin(LitElement) {
             <div class="row-h flex-c">
               <div class="layout-vertical">
                 <label class="paper-label">Indicator</label>
-                <label class="input-label" empty="${!this.indicator.cluster_indicator_title}"
-                  >${this.indicator.cluster_indicator_title}</label
+                <label class="input-label" empty="${!this.indicator?.cluster_indicator_title}"
+                  >${this.indicator?.cluster_indicator_title}</label
                 >
               </div>
             </div>
@@ -124,8 +125,8 @@ class ClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                 fit-into="etools-dialog"
                 trigger-value-change-event
                 @etools-selected-item-changed="${({detail}: CustomEvent) => {
-                  this.indicator.cluster_indicator_id = detail.selectedItem.id;
-                  this.prpClusterIndicator = detail.selectedItem;
+                  this.indicator.cluster_indicator_id = detail.selectedItem?.id;
+                  this.prpClusterIndicator = !detail.selectedItem ? {} : detail.selectedItem;
                   this._selectedPrpClusterIndicatorChanged(this.prpClusterIndicator);
                 }}"
               >
@@ -477,7 +478,7 @@ class ClusterIndicator extends IndicatorsCommonMixin(LitElement) {
   }
 
   _selectedPrpClusterIndicatorChanged(prpClusterIndic: any) {
-    if (!prpClusterIndic) {
+    if (!prpClusterIndic || isEmpty(prpClusterIndic)) {
       this.prpDisaggregations = [];
       if (this.indicator) {
         this.indicator.baseline = {};
