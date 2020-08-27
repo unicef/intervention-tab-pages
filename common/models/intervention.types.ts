@@ -123,6 +123,7 @@ export class InterventionSupplyItem {
   total_price: number | undefined = undefined;
   other_mentions = '';
   intervention = '';
+  // TODO delete
   outputs: string[] = [];
 }
 
