@@ -2,7 +2,7 @@
 import {PolymerElement, html} from '@polymer/polymer';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import '../../../common/layout/icons-actions';
-import CommonMixin from '../mixins/common-mixin';
+import CommonMixin from '../../../common/mixins/common-mixin';
 import {fireEvent} from '../../../utils/fire-custom-event';
 import ReportingReqPastDatesCheckMixin from '../mixins/reporting-req-past-dates-check';
 import {gridLayoutStylesPolymer} from '../../../common/styles/grid-layout-styles-polymer';

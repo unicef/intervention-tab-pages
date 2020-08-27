@@ -5,7 +5,7 @@ import '@unicef-polymer/etools-data-table/etools-data-table.js';
 import '../../../common/layout/icons-actions';
 import '../mixins/reporting-req-past-dates-check';
 import '../styles/reporting-requirements-lists-styles';
-import CommonMixin from '../mixins/common-mixin';
+import CommonMixin from '../../../common/mixins/common-mixin';
 import ReportingReqPastDatesCheckMixin from '../mixins/reporting-req-past-dates-check';
 import {gridLayoutStylesPolymer} from '../../../common/styles/grid-layout-styles-polymer';
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';

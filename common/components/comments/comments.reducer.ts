@@ -1,12 +1,11 @@
 import {Reducer} from 'redux';
-import {RootAction} from '../../../../../../../redux/store';
 import {GenericObject} from '../../models/globals.types';
 import {InterventionComment} from '../../types/types';
 import {ADD_COMMENT, SET_COMMENTS, UPDATE_COMMENT} from './comments.actions';
 
 type CommentsCollection = GenericObject<InterventionComment[]>;
 
-export const commentsData: Reducer<GenericObject<CommentsCollection>, RootAction> = (state = {}, action) => {
+export const commentsData: Reducer<GenericObject<CommentsCollection>, any> = (state = {}, action) => {
   switch (action.type) {
     case SET_COMMENTS:
       return {

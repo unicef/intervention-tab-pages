@@ -173,6 +173,7 @@ export class InterventionPermissionsFields {
   unicef_signatory = false;
   signed_by_unicef_date = false;
   signed_pd_attachment = false;
+  submitted_to_prc = false;
 
   // review & sign - Amendments
   amendments = false;
@@ -184,6 +185,10 @@ export class InterventionPermissionsFields {
 
   // attachments
   attachments = false;
+
+  // financial component
+  cash_transfer_modalities = false;
+  hq_support_cost = false;
 }
 
 export interface Permission<T> {
@@ -207,6 +212,7 @@ export class Intervention {
   submitted_to_prc = false;
   submission_date_prc?: string;
   review_date_prc?: string;
+  final_partnership_review?: ReviewAttachment;
   submission_date?: string;
   signed_by_unicef_date?: string;
   signed_by_partner_date?: string;
@@ -239,8 +245,10 @@ export class Intervention {
   permissions?: Permission<InterventionPermissionsFields>;
   humanitarian_flag?: boolean;
   partner_id?: string;
+  // @lajos: for financial component
+  cash_transfer_modalities = '';
+  hq_support_cost = '';
   available_actions: string[] = [];
-  hq_support_cost?: string;
   prgm_effectiveness?: string;
 }
 
@@ -317,3 +325,13 @@ export class ListItemIntervention {
   unicef_focal_points: [] = [];
   [key: string]: any;
 }
+
+export type ReviewAttachment = {
+  active: boolean;
+  attachment: string;
+  attachment_document: string;
+  attachment_file: string;
+  created: string;
+  id: number;
+  intervention: number;
+};
