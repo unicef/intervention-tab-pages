@@ -75,8 +75,6 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Programmatic Visits">
-        <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
-
         <div slot="panel-btns">
           ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
         </div>
@@ -108,9 +106,6 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
 
   @property({type: Object})
   originalData!: any;
-
-  @property({type: Boolean})
-  showLoading = false;
 
   @property({type: Array})
   years: AnyObject[] = [];
@@ -332,7 +327,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
       return false;
     }
     const plannedVisit = this.data[index];
-    const plannedVisitId = parseInt(plannedVisit.id, 10);
+    const plannedVisitId = Number(plannedVisit.id);
     return this._isDraft() || !(plannedVisitId && isNaN(plannedVisitId) === false && plannedVisitId > 0);
   }
 
@@ -441,17 +436,12 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
     return !itemsLength && this.editMode ? 'no-top-padd' : '';
   }
 
-  cancel() {
-    this.originalData = cloneDeep(this.originalData);
-    this.editMode = false;
-  }
-
-  save() {
+  saveData() {
     if (!this.validate()) {
-      return;
+      return Promise.resolve(false);
     }
-    getStore()
-      .dispatch(patchIntervention(this.data))
+    return getStore()
+      .dispatch(patchIntervention({planned_visits: this.data}))
       .then(() => {
         this.editMode = false;
       });

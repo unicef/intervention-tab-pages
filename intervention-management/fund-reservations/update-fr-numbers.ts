@@ -89,7 +89,7 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
                 <div class="actions">
                   <paper-icon-button
                     class="action delete"
-                    @tap="${() => this._openDeleteConfirmation(index)}"
+                    @tap="${(event: CustomEvent) => this._openDeleteConfirmation(event, index)}"
                     .data-args="${index}"
                     icon="cancel"
                     ?hidden="${!this._showDeleteFrBtn(this.interventionStatus, this.dataItems.length)}"

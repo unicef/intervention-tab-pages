@@ -2,6 +2,9 @@ import {LitElement, property, html} from 'lit-element';
 import {Constructor, AnyObject} from '../models/globals.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {areEqual} from '../../utils/utils';
+import {fireEvent} from '../../utils/fire-custom-event';
+import {validateRequiredFields} from '../../utils/validation-helper';
+import {formatDate} from '../../utils/date-utils';
 
 function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class ComponentBaseClass extends baseClass {
@@ -49,8 +52,27 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
       this.editMode = false;
     }
 
+    validate() {
+      return validateRequiredFields(this);
+    }
+
+    // To be implemented in child component
+    saveData(): Promise<any> {
+      return Promise.reject('Not Implemented');
+    }
+
     save() {
-      throw new Error('Not implemented');
+      console.log(this.localName);
+      fireEvent(this, 'global-loading', {
+        active: true,
+        loadingSource: this.localName
+      });
+      this.saveData().finally(() => {
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: this.localName
+        });
+      });
     }
 
     renderActions(editMode: boolean, canEditAnyFields: boolean) {
@@ -75,14 +97,27 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
     }
 
     renderNameEmailPhone(item: any) {
-      return html`${item.first_name} ${item.last_name} (${item.email}, ${item.phone})`;
+      return html`${item.first_name} ${item.last_name} (${item.email ? item.email : '—'} ,
+      ${item.phone ? item.phone : '—'})`;
     }
 
-    selectedItemChanged(detail: any, key: string) {
+    selectedItemChanged(detail: any, key: string, optionValue = 'id') {
       if (!detail.selectedItem) {
         return;
       }
-      const newValue = detail.selectedItem?.id;
+      const newValue = detail.selectedItem[optionValue];
+      if (areEqual(this.data[key], newValue)) {
+        return;
+      }
+      this.data[key] = newValue;
+      this.requestUpdate();
+    }
+
+    dateHasChanged(detail: {date: Date}, key: string) {
+      if (detail.date === undefined) {
+        return;
+      }
+      const newValue = formatDate(detail.date, 'YYYY-MM-DD');
       if (areEqual(this.data[key], newValue)) {
         return;
       }
@@ -91,7 +126,7 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
     }
 
     selectedItemsChanged(detail: any, key: string, optionValue = 'id') {
-      if (!detail.selectedItems) {
+      if (detail.selectedItems === undefined) {
         return;
       }
       const newValues = detail.selectedItems.map((i: any) => i[optionValue]);

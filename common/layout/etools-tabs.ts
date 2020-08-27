@@ -51,6 +51,8 @@ export class EtoolsTabs extends LitElement {
         paper-tab .tab-content {
           color: var(--secondary-text-color);
           text-transform: uppercase;
+          min-width: 120px;
+          text-align: center;
         }
 
         paper-tab.iron-selected .tab-content {

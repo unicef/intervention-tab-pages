@@ -77,64 +77,64 @@ export class BudgetSummaryEl extends connect(getStore())(LitElement) {
         <div class="layout-horizontal">
           <div class="col col-1">
             <span>
-              <label class="input-label" ?empty="${!this.budgetSummary?.currency}">
-                ${this.budgetSummary?.currency}
+              <label class="input-label" ?empty="${!this.budgetSummary.currency}">
+                ${this.budgetSummary.currency}
               </label>
             </span>
           </div>
           <div class="col col-1">
             <span>
-              <label class="input-label" ?empty="${!this.budgetSummary?.hq_rate}">
-                ${this.budgetSummary?.hq_rate} %
+              <label class="input-label" ?empty="${!this.budgetSummary.hq_support_cost}">
+                ${this.budgetSummary.hq_support_cost} %
               </label>
             </span>
           </div>
           <div class="col col-2">
             <span>
-              <label class="input-label" ?empty="${!this.budgetSummary?.prgm_effectiveness}">
-                ${this.budgetSummary?.prgm_effectiveness} %
+              <label class="input-label" ?empty="${!this.budgetSummary.prgm_effectiveness}">
+                ${this.budgetSummary.prgm_effectiveness} %
               </label>
             </span>
           </div>
           <div class="col col-1">
             <span>
-              <label class="input-label" ?empty="${!this.budgetSummary?.partner_contribution_local}">
-                ${this.budgetSummary?.partner_contribution_local}
+              <label class="input-label" ?empty="${!this.budgetSummary.partner_contribution_local}">
+                ${this.budgetSummary.partner_contribution_local}
               </label>
             </span>
           </div>
           <div class="col col-1">
             <span>
-              <label class="input-label" ?empty="${!this.budgetSummary?.unicef_cash_local}">
-                ${this.budgetSummary?.unicef_cash_local}
+              <label class="input-label" ?empty="${!this.budgetSummary.unicef_cash_local}">
+                ${this.budgetSummary.unicef_cash_local}
               </label>
             </span>
           </div>
           <div class="col col-1">
             <span>
-              <label class="input-label" ?empty="${this.totalSupply(this.budgetSummary)}">
-                ${this.totalSupply(this.budgetSummary)}
+              <label class="input-label" ?empty="${this.budgetSummary.total_supply}">
+                ${this.budgetSummary.total_supply}
               </label>
             </span>
           </div>
           <div class="col col-1">
             <span>
-              <label class="input-label" ?empty="${!this.budgetSummary?.total_cash}">
-                ${this.budgetSummary?.total_cash}
+              <label class="input-label" ?empty="${!this.budgetSummary.partner_percentage}">
+                ${this.budgetSummary.partner_percentage}
               </label>
             </span>
           </div>
           <div class="col col-1">
             <span>
-              <label class="input-label" ?empty="${!this.budgetSummary?.total_cash}">
-                ${this.budgetSummary?.total_cash}
+              <label class="input-label" ?empty="${!this.budgetSummary.total_cash}">
+                ${this.budgetSummary.total_cash}
               </label>
             </span>
           </div>
           <div class="col col-2">
             <span>
-              <label class="input-label" ?empty="${!this.budgetSummary?.total_amt}">
-                ${this.budgetSummary?.total_amt}
+              <label class="input-label" ?empty="${!this.budgetSummary.in_kind_amount}">
+                ${this.budgetSummary.in_kind_amount}
               </label>
             </span>
           </div>
@@ -157,9 +157,5 @@ export class BudgetSummaryEl extends connect(getStore())(LitElement) {
     if (state.interventions.current) {
       this.budgetSummary = selectBudgetSummary(state);
     }
-  }
-
-  public totalSupply(budget: BudgetSummary) {
-    return parseFloat(budget.unicef_cash_local) + parseFloat(budget.partner_contribution_local);
   }
 }

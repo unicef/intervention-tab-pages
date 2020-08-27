@@ -2,11 +2,9 @@
 import {PolymerElement, html} from '@polymer/polymer';
 import uniq from 'lodash-es/uniq';
 import '@unicef-polymer/etools-data-table/etools-data-table';
-import CommonMixin from '../mixins/common-mixin';
+import CommonMixin from '../../../common/mixins/common-mixin';
 import {ResultLinkLowerResult, ExpectedResult} from '../../../common/models/intervention.types';
 import {gridLayoutStylesPolymer} from '../../../common/styles/grid-layout-styles-polymer';
-import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {property} from '@polymer/decorators';
 import {isEmptyObject} from '../../../utils/utils';
 
@@ -88,22 +86,23 @@ class HumanitarianReportingReqCluster extends CommonMixin(PolymerElement) {
     }
     // @lajos TO BE CHECKED and refactored
     // NEED HELP HERE: see user-actions.ts
-    this.fireRequest(
-      'hrClusterReportingRequirements',
-      {},
-      {
-        method: 'POST',
-        body: {reportable_ids: clusterIndicIds}
-      }
-    )
-      .then((response: any) => {
-        this.set('reportingRequirements', response);
-      })
-      .catch((error: any) => {
-        logError('Failed to get hr cluster requirements from API!', 'humanitarian-reporting-req-cluster', error);
-        parseRequestErrorsAndShowAsToastMsgs(error, this);
-        this.reportingRequirements = [];
-      });
+    // BIG TODO
+    // this.fireRequest(
+    //   'hrClusterReportingRequirements',
+    //   {},
+    //   {
+    //     method: 'POST',
+    //     body: {reportable_ids: clusterIndicIds}
+    //   }
+    // )
+    //   .then((response: any) => {
+    //     this.set('reportingRequirements', response);
+    //   })
+    //   .catch((error: any) => {
+    //     logError('Failed to get hr cluster requirements from API!', 'humanitarian-reporting-req-cluster', error);
+    //     parseRequestErrorsAndShowAsToastMsgs(error, this);
+    //     this.reportingRequirements = [];
+    //   });
   }
 
   _getClusterIndicIds() {

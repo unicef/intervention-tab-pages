@@ -27,3 +27,14 @@ export type InterventionComment = {
   };
   users_related: [];
 };
+
+export interface IAttachment {
+  id: number;
+  filename: string;
+  file_type: number;
+  file: string | File | null;
+  hyperlink: string;
+  created: string;
+  modified: string;
+  uploaded_by: null;
+}

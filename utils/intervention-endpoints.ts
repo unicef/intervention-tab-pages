@@ -4,9 +4,11 @@ export interface EtoolsEndpoint {
   exp?: any;
   cachingKey?: string;
   cacheTableName?: string;
+  token?: string;
 }
 export interface EtoolsEndpoints {
   intervention: EtoolsEndpoint;
+  interventionAction: EtoolsEndpoint;
   partnerStaffMembers: EtoolsEndpoint;
   partnerAgreements: EtoolsEndpoint;
   specialReportingRequirements: EtoolsEndpoint;
@@ -24,17 +26,25 @@ export interface EtoolsEndpoints {
   pdActivityDetails: EtoolsEndpoint;
   pdActivities: EtoolsEndpoint;
   interventionBudgetUpdate: EtoolsEndpoint;
+  supplyAgreementAdd: EtoolsEndpoint;
+  supplyAgreementEdit: EtoolsEndpoint;
   attachmentsUpload: EtoolsEndpoint;
   interventionAmendmentAdd: EtoolsEndpoint;
   frNumbersDetails: EtoolsEndpoint;
   comments: EtoolsEndpoint;
   resolveComment: EtoolsEndpoint;
   deleteComment: EtoolsEndpoint;
+  cpOutputRamIndicators: EtoolsEndpoint;
+  interventionProgress: EtoolsEndpoint;
+  prpToken: EtoolsEndpoint;
 }
 
 export const interventionEndpoints: EtoolsEndpoints = {
   intervention: {
     template: '/api/pmp/v3/interventions/<%=interventionId%>/'
+  },
+  interventionAction: {
+    template: '/api/pmp/v3/interventions/<%=interventionId%>/<%=action%>'
   },
   partnerStaffMembers: {
     template: '/api/v2/partners/<%=id%>/staff-members/'
@@ -89,6 +99,12 @@ export const interventionEndpoints: EtoolsEndpoints = {
   pdActivityDetails: {
     template: '/api/pmp/v3/interventions/<%=interventionId%>/pd-outputs/<%=pdOutputId%>/activities/<%=activityId%>/'
   },
+  supplyAgreementAdd: {
+    template: '/api/pmp/v3/interventions/<%=interventionId%>/supply/'
+  },
+  supplyAgreementEdit: {
+    template: '/api/pmp/v3/interventions/<%=interventionId%>/supply/<%=supplyId%>/'
+  },
   attachmentsUpload: {
     url: '/api/v2/attachments/upload/'
   },
@@ -106,5 +122,15 @@ export const interventionEndpoints: EtoolsEndpoints = {
   },
   deleteComment: {
     template: '/api/comments/v1/partners/intervention/<%=interventionId%>/<%=commentId%>/delete/'
-  }
+  },
+  cpOutputRamIndicators: {
+    template: '/api/v2/interventions/<%=intervention_id%>/output_cp_indicators/<%=cp_output_id%>/'
+  },
+  interventionProgress: {
+    template: '/api/unicef/<%=countryId%>/programme-document/<%=pdId%>/progress/?external=1',
+    token: 'prp'
+  },
+  prpToken: {
+    url: '/api/jwt/get'
+  },
 };

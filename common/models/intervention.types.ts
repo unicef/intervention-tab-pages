@@ -109,6 +109,7 @@ export class PlannedVisit {
   programmatic_q3 = '0';
   programmatic_q4 = '0';
   programmatic: any;
+  [key: string]: any;
 }
 
 export class InterventionSupplyItem {
@@ -172,6 +173,7 @@ export class InterventionPermissionsFields {
   unicef_signatory = false;
   signed_by_unicef_date = false;
   signed_pd_attachment = false;
+  submitted_to_prc = false;
 
   // review & sign - Amendments
   amendments = false;
@@ -183,6 +185,10 @@ export class InterventionPermissionsFields {
 
   // attachments
   attachments = false;
+
+  // financial component
+  cash_transfer_modalities = false;
+  hq_support_cost = false;
 }
 
 export interface Permission<T> {
@@ -206,6 +212,7 @@ export class Intervention {
   submitted_to_prc = false;
   submission_date_prc?: string;
   review_date_prc?: string;
+  final_partnership_review?: ReviewAttachment;
   submission_date?: string;
   signed_by_unicef_date?: string;
   signed_by_partner_date?: string;
@@ -238,6 +245,11 @@ export class Intervention {
   permissions?: Permission<InterventionPermissionsFields>;
   humanitarian_flag?: boolean;
   partner_id?: string;
+  // @lajos: for financial component
+  cash_transfer_modalities = '';
+  hq_support_cost = '';
+  available_actions: string[] = [];
+  prgm_effectiveness?: string;
 }
 
 export class InterventionAmendment {
@@ -292,3 +304,34 @@ export interface ResultIndicator {
   total: null | number;
   unit: null | number;
 }
+
+export class ListItemIntervention {
+  start = '';
+  end = '';
+  frs_earliest_start_date: string | null = '';
+  frs_latest_end_date: string | null = '';
+  partner_name?: string = '';
+  cp_outputs: number[] = [];
+  unicef_budget = 0;
+  cso_contribution = 0;
+  country_programme?: number;
+  title?: string = '';
+  status = '';
+  number?: string = '';
+  offices: [] = [];
+  sections: number[] = [];
+  section_names: string[] | null = null;
+  document_type?: string = '';
+  unicef_focal_points: [] = [];
+  [key: string]: any;
+}
+
+export type ReviewAttachment = {
+  active: boolean;
+  attachment: string;
+  attachment_document: string;
+  attachment_file: string;
+  created: string;
+  id: number;
+  intervention: number;
+};

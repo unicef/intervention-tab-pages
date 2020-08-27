@@ -4,8 +4,7 @@ import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {ExpectedResult} from '../../common/models/intervention.types';
 import '@unicef-polymer/etools-data-table';
 import '@polymer/iron-icons';
-import {openDialog} from '../../utils/dialog';
-import './modals/add-ram-indicators';
+import './modals/cp-output-dialog';
 import {fireEvent} from '../../utils/fire-custom-event';
 
 @customElement('cp-output-level')
@@ -111,17 +110,9 @@ export class CpOutputLevel extends LitElement {
   }
 
   openPopup(): void {
-    openDialog({
-      dialog: 'add-ram-indicators',
-      dialogData: {
-        cpOutputId: this.resultLink.cp_output,
-        cpOutputName: this.resultLink.cp_output_name,
-        resultLinkId: this.resultLink.id,
-        selectedIndicators: this.resultLink.ram_indicators,
-        interventionId: this.interventionId
-      }
-    });
+    fireEvent(this, 'edit-indicators');
   }
+
   addPD(): void {
     fireEvent(this, 'add-pd');
   }
