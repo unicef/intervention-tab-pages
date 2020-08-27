@@ -1,6 +1,8 @@
 import isArray from 'lodash-es/isArray';
 import isObject from 'lodash-es/isObject';
 import isEmpty from 'lodash-es/isEmpty';
+import {formatDate} from './date-utils';
+
 
 export const isJsonStrMatch = (a: any, b: any) => {
   return JSON.stringify(a) === JSON.stringify(b);
@@ -35,6 +37,18 @@ export const getFileNameFromURL = (url: string) => {
  * {any: 1} should equal {any: '1'}
  */
 export const areEqual = (obj1: any, obj2: any): boolean => {
+  if ((!obj1 && obj2) || (obj1 && !obj2)) {
+    return false;
+  }
+
+  if (obj1 instanceof Date) {
+    return formatDate(obj1, 'YYYY-MM-DD') === _formatYYYY_MM_DD(obj2);
+  }
+
+  if (obj2 instanceof Date) {
+    return formatDate(obj2, 'YYYY-MM-DD') === _formatYYYY_MM_DD(obj1);
+  }
+
   if (typeof obj1 === 'number' || typeof obj2 === 'number') {
     return String(obj1) === String(obj2);
   }
@@ -48,6 +62,9 @@ export const areEqual = (obj1: any, obj2: any): boolean => {
     const keys1 = Object.keys(obj1);
     const keys2 = Object.keys(obj2);
     return keys1.length === keys2.length && keys1.every((key: string) => areEqual(obj1[key], obj2[key]));
+  }
+  if (obj1 !== obj2) {
+    return false;
   }
   return true;
 };
@@ -65,3 +82,11 @@ export const filterByIds = <T>(allOptions: T[], givenIds: string[]): T[] => {
 
   return options;
 };
+
+function _formatYYYY_MM_DD(obj2: string | Date) {
+  if (typeof obj2 === 'string') {
+    return obj2;
+  }
+  return formatDate(obj2, 'YYYY-MM-DD');
+}
+

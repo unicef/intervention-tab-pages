@@ -19,6 +19,12 @@ import {sharedStyles} from './common/styles/shared-styles-lit';
 import {isJsonStrMatch} from './utils/utils';
 import {pageContentHeaderSlottedStyles} from './common/layout/page-content-header/page-content-header-slotted-styles';
 
+const MOCKUP_STATUSES = [
+  ['draft', 'Draft'],
+  ['signed', 'Signed'],
+  ['active', 'Active'],
+  ['closed', 'Closed']
+];
 /**
  * @LitElement
  * @customElement
@@ -71,8 +77,10 @@ export class InterventionTabs extends LitElement {
           width: 100%;
           border-radius: 7%;
         }
+        div[slot='tabs'] {
+          width: 100%;
+        }
       </style>
-      <etools-status-lit></etools-status-lit>
 
       <intervention-page-content-header with-tabs-visible>
         <h1 slot="page-title">${this.intervention.number}</h1>
@@ -91,12 +99,18 @@ export class InterventionTabs extends LitElement {
           ></intervention-actions>
         </div>
 
-        <etools-tabs-lit
-          slot="tabs"
-          .tabs="${this.pageTabs}"
-          .activeTab="${this.activeTab}"
-          @iron-select="${this.handleTabChange}"
-        ></etools-tabs-lit>
+        <div slot="tabs">
+          <etools-status-lit
+            .statuses="${this.intervention.status_list || MOCKUP_STATUSES}"
+            .activeStatus="${this.intervention.status}"
+          ></etools-status-lit>
+
+          <etools-tabs-lit
+            .tabs="${this.pageTabs}"
+            .activeTab="${this.activeTab}"
+            @iron-select="${this.handleTabChange}"
+          ></etools-tabs-lit>
+        </div>
       </intervention-page-content-header>
 
       <div class="page-content">
@@ -108,6 +122,7 @@ export class InterventionTabs extends LitElement {
         </intervention-management>
         <intervention-attachments ?hidden="${!this.isActiveTab(this.activeTab, 'attachments')}">
         </intervention-attachments>
+        <intervention-progress ?hidden="${!this.isActiveTab(this.activeTab, 'progress')}"></intervention-progress>
       </div>
     `;
   }
@@ -209,6 +224,11 @@ export class InterventionTabs extends LitElement {
         }
       }
       this.availableActions = selectAvailableActions(state);
+
+      // Progress tab visible only for unicef users
+      if (get(state, 'user.data.is_unicef_user') && !this.pageTabs.find((x) => x.tab === 'progress')) {
+        this.pageTabs.push({tab: 'progress', tabLabel: 'Progress', hidden: false});
+      }
     }
   }
 

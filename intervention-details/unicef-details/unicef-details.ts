@@ -50,7 +50,6 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Unicef Details">
-        <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
 
         <div slot="panel-btns">
           <paper-icon-button
@@ -167,9 +166,6 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
 
   @property({type: Boolean})
   isUnicefUser = false;
-
-  @property({type: Boolean})
-  showLoading = false;
 
   @property({type: Array})
   users_list!: AnyObject[];
