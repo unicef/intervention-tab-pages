@@ -11,8 +11,7 @@ import get from 'lodash-es/get';
 import FrNumbersConsistencyMixin from '../../common/mixins/fr-numbers-consistency-mixin';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import {frWarningsStyles} from '../../common/styles/fr-warnings-styles';
-import {isEmptyObject} from '../../utils/utils';
-import {Fr, Intervention, FrsDetails} from '../../common/models/intervention.types';
+import {Intervention, FrsDetails} from '../../common/models/intervention.types';
 import {customIcons} from '../../common/styles/custom-icons';
 
 /**
@@ -201,7 +200,7 @@ export class BudgetSummaryEl extends connect(getStore())(FrNumbersConsistencyMix
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'results')) {
       return;
     }
-    if (state.interventions.current && this.intervention.frs_details) {
+    if (state.interventions.current) {
       this.budgetSummary = selectBudgetSummary(state);
       this.intervention = state.interventions.current;
       this.frsDetails = this.intervention.frs_details;
