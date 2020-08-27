@@ -68,7 +68,7 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
         <div slot="panel-btns">
           <span class="mr-40">
             <label class="label-input font-bold">TOTAL SUPPLY BUDGET: </label>
-            <label class="f-12 font-bold">LBP 54353</label>
+            <label class="f-12 font-bold">LBP 54353 (TODO)</label>
           </span>
           <paper-icon-button ?hidden="${!this.canEditSupply}" @tap="${() => this.addSupplyItem()}" icon="add">
           </paper-icon-button>

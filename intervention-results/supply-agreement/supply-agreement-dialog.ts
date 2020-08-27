@@ -12,6 +12,7 @@ import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {AnyObject} from '../../common/models/globals.types';
+import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 
 /**
  * @customElement
@@ -150,7 +151,7 @@ export class SupplyAgreementDialog extends connect(getStore())(ComponentBaseMixi
       return;
     }
 
-    const endPoint = this.isNewRecord
+    const endpoint = this.isNewRecord
       ? getEndpoint(interventionEndpoints.supplyAgreementAdd, {interventionId: this.intervention.id})
       : getEndpoint(interventionEndpoints.supplyAgreementEdit, {
           interventionId: this.intervention.id,
@@ -158,7 +159,7 @@ export class SupplyAgreementDialog extends connect(getStore())(ComponentBaseMixi
         });
 
     sendRequest({
-      endpoint: endPoint,
+      endpoint: endpoint,
       method: this.isNewRecord ? 'POST' : 'PATCH',
       body: this.data
     })
@@ -170,8 +171,8 @@ export class SupplyAgreementDialog extends connect(getStore())(ComponentBaseMixi
         }
         this.closeDialog();
       })
-      .catch(() => {
-        fireEvent(this, 'toast', {text: 'An error occurred. Try again'});
+      .catch((err: any) => {
+        fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
       });
   }
 }
