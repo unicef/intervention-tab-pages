@@ -18,6 +18,9 @@ import {patchIntervention} from '../../common/actions';
 import isEmpty from 'lodash-es/isEmpty';
 import get from 'lodash-es/get';
 import {isJsonStrMatch} from '../../utils/utils';
+import {LocationObject} from '../../common/models/globals.types';
+import cloneDeep from 'lodash-es/cloneDeep';
+import {fireEvent} from '../../utils/fire-custom-event';
 
 /**
  * @customElement
@@ -79,8 +82,8 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
             id="locations"
             label="Location(s)"
             placeholder="&#8212;"
-            .options="${this.data}"
-            .selectedValues="${this.originalData.flat_locations}"
+            .options="${this.allLocations}"
+            .selectedValues="${this.data.flat_locations}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.flat_locations)}"
             ?required="${this.permissions.required.flat_locations}"
             option-label="name"
@@ -95,7 +98,7 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
           <paper-button
             class="secondary-btn see-locations right-align"
             @tap="${this.openLocationsDialog}"
-            ?disabled="${this._isEmpty(this.originalData.flat_locations)}"
+            ?disabled="${this._isEmpty(this.data.flat_locations)}"
             title="See all locations"
           >
             <iron-icon icon="add"></iron-icon>
@@ -111,7 +114,10 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
   private locationsDialog!: GroupedLocationsDialog;
 
   @property({type: Array})
-  data!: any[];
+  allLocations!: LocationObject[];
+
+  @property({type: Object})
+  data!: {flat_locations: string[]};
 
   @property({type: Boolean})
   showLoading = false;
@@ -121,33 +127,29 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
 
   connectedCallback() {
     super.connectedCallback();
+    this.createDialog();
   }
 
   stateChanged(state: any) {
     if (!state.interventions.current) {
       return;
     }
-    if (!isJsonStrMatch(this.data, state.commonData!.locations)) {
-      this.data = [...state.commonData!.locations];
+    if (!isJsonStrMatch(this.allLocations, state.commonData!.locations)) {
+      this.allLocations = [...state.commonData!.locations];
     }
-    if (!isJsonStrMatch(get(this.originalData, 'flat_locations'), get(state, 'interventions.current.flat_locations'))) {
-      this.originalData = {flat_locations: get(state, 'interventions.current.flat_locations')};
-    }
+    this.data = {flat_locations: get(state, 'interventions.current.flat_locations')};
+    this.originalData = cloneDeep(this.data);
     this.sePermissions(state);
   }
 
   private sePermissions(state: any) {
-    const newPermissions = selectLocationsPermissions(state);
-    if (!isJsonStrMatch(this.permissions, newPermissions)) {
-      this.permissions = newPermissions;
-      this.set_canEditAtLeastOneField(this.permissions.edit);
-    }
+    this.permissions = selectLocationsPermissions(state);
+    this.set_canEditAtLeastOneField(this.permissions.edit);
   }
 
   private openLocationsDialog() {
-    this.createDialog();
     this.locationsDialog.adminLevel = null;
-    this.locationsDialog.interventionLocationIds = this.originalData.flat_locations;
+    this.locationsDialog.interventionLocationIds = this.data.flat_locations;
     (this.locationsDialog as GroupedLocationsDialog).openDialog();
   }
 
@@ -170,10 +172,20 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
     if (!this.validate()) {
       return;
     }
+    fireEvent(this, 'global-loading', {
+      active: true,
+      loadingSource: 'geographical-coverage'
+    });
     getStore()
       .dispatch(patchIntervention(this.data))
       .then(() => {
         this.editMode = false;
+      })
+      .finally(() => {
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: 'geographical-coverage'
+        });
       });
   }
 }
