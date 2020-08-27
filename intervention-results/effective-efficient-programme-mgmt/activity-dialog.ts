@@ -2,27 +2,22 @@ import {LitElement, html, property, customElement} from 'lit-element';
 import '@polymer/paper-input/paper-input';
 import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-currency-amount-input';
-import {connect} from 'pwa-helpers/connect-mixin';
-import {getStore} from '../../utils/redux-store-access';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
-import {ProgrammeManagementActivityPermissions} from './effectiveEfficientProgrammeMgmt.models';
-import {AnyObject} from '../../common/models/globals.types';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '../../utils/fire-custom-event';
-import {RootState} from '../../../../../../redux/store';
-import get from 'lodash-es/get';
-import {InterventionActivityItem} from '../../common/models/intervention.types';
+import {getStore} from '../../utils/redux-store-access';
+import {getIntervention} from '../../common/actions';
 
 /**
  * @customElement
  */
 @customElement('activity-dialog')
-export class ActivityDialog extends connect(getStore())(ComponentBaseMixin(LitElement)) {
+export class ActivityDialog extends ComponentBaseMixin(LitElement) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -51,18 +46,12 @@ export class ActivityDialog extends connect(getStore())(ComponentBaseMixin(LitEl
         dialog-title="Edit activity"
         ok-btn-text="Save"
         ?opened="${this.dialogOpened}"
-        @close="${() => this.closeDialog()}"
+        @close="${() => this.onClose()}"
         @confirm-btn-clicked="${this.onSaveClick}"
       >
+        <etools-loading ?active="${this.loadingInProcess}" loading-text="Loading..."></etools-loading>
         <div class="row-padding-v">
-          <paper-input
-            readonly
-            id="title"
-            label="Title"
-            always-float-label
-            placeholder="—"
-            .value="${this.activity.title}"
-          >
+          <paper-input readonly id="title" label="Title" always-float-label placeholder="—" .value="${this.data.title}">
           </paper-input>
         </div>
 
@@ -73,7 +62,7 @@ export class ActivityDialog extends connect(getStore())(ComponentBaseMixin(LitEl
             readonly
             always-float-label
             placeholder="—"
-            .value="${this.activity.description}"
+            .value="${this.data.description}"
           ></paper-textarea>
         </div>
 
@@ -82,8 +71,8 @@ export class ActivityDialog extends connect(getStore())(ComponentBaseMixin(LitEl
             <etools-currency-amount-input
               id="unicefCash"
               label="UNICEF cash"
-              .value="${this.activity.unicef_cash}"
-              @value-changed="${({detail}: CustomEvent) => this.updateField('unicef_cash', detail.value)}"
+              .value="${this.data.unicef_cash}"
+              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unicef_cash')}"
             >
             </etools-currency-amount-input>
           </div>
@@ -91,9 +80,8 @@ export class ActivityDialog extends connect(getStore())(ComponentBaseMixin(LitEl
             <etools-currency-amount-input
               id="partnerContribution"
               label="Partner contribution"
-              .value="${this.activity.partner_contribution}"
-              @value-changed="${({detail}: CustomEvent) => this.updateField('partner_contribution', detail.value)}"
-              ?readonly="${this.isReadonly(this.editMode, this._permissionObj.edit.programme_management_activity)}"
+              .value="${this.data.partner_contribution}"
+              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'partner_contribution')}"
             >
             </etools-currency-amount-input>
           </div>
@@ -102,76 +90,50 @@ export class ActivityDialog extends connect(getStore())(ComponentBaseMixin(LitEl
     `;
   }
 
-  private _permissionObj: any = {};
-  private interventionId: string = '';
+  set dialogData(data: any) {
+    if (!data) {
+      return;
+    }
+    const {activity, interventionId}: any = data;
+    this.originalData = activity;
+    this.data = {...this.originalData};
+    this.interventionId = interventionId;
+  }
+
+  private interventionId = '';
+
+  @property() loadingInProcess = false;
 
   @property({type: Boolean, reflect: true})
-  dialogOpened = false;
-
-  @property({type: Object})
-  activity: AnyObject = {};
+  dialogOpened = true;
 
   @property({type: Object})
   toastEventSource!: LitElement;
 
-  @property({type: Object})
-  get permissions() {
-    return this._permissionObj;
-  }
-
-  set permissions(permissions) {
-    this.permissionObjChanged(permissions);
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-  }
-
-  stateChanged(state: RootState) {
-    this.interventionId = get(state, 'app.routeDetails.params.interventionId');
-  }
-
-  permissionObjChanged(permissions: ProgrammeManagementActivityPermissions) {
-    if (!permissions) {
-      this._permissionObj = {};
-      return;
-    }
-    this._permissionObj = permissions;
-  }
-
-  public openDialog() {
-    this.dialogOpened = true;
-    this.editMode = true;
-  }
-
-  updateField(field: keyof AnyObject, value: any): void {
-    const original = field === 'name' ? this.activity[field] : parseFloat(this.activity[field] as string);
-    if (original === value) {
-      return;
-    }
-    this.activity[field] = String(value);
-    this.performUpdate();
-  }
-
   onSaveClick() {
+    this.loadingInProcess = true;
     sendRequest({
       endpoint: getEndpoint(interventionEndpoints.interventionBudgetUpdate, {
         interventionId: this.interventionId
       }),
       method: 'PATCH',
-      body: {activity: this.activity}
+      body: {activity: this.data}
     })
-      .then((response) => {
-        // console.log(response);
+      .then(() =>
+        getStore()
+          .dispatch(getIntervention(String(this.interventionId)))
+          .catch(() => Promise.resolve())
+      )
+      .then(() => {
         fireEvent(this, 'dialog-closed', {confirmed: true});
       })
       .catch(() => {
+        this.loadingInProcess = false;
         fireEvent(this, 'toast', {text: 'An error occurred. Try again.'});
       });
   }
 
-  public closeDialog() {
-    this.dialogOpened = false;
-    this.editMode = false;
+  onClose(): void {
+    fireEvent(this, 'dialog-closed', {confirmed: false});
   }
 }

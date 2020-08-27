@@ -15,6 +15,7 @@ import {elevationStyles} from '../../common/styles/elevation-styles';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
 import {isJsonStrMatch} from '../../utils/utils';
+import {openDialog} from '../../utils/dialog';
 import {
   selectProgrammeManagement,
   selectProgrammeManagementActivityPermissions
@@ -24,7 +25,6 @@ import {Permission} from '../../common/models/intervention.types';
 import {ProgrammeManagementActivityPermissions} from './effectiveEfficientProgrammeMgmt.models';
 import {AnyObject} from '../../common/models/globals.types';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {ActivityDialog} from './activity-dialog';
 
 const customStyles = html`
   <style>
@@ -69,15 +69,13 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
       <etools-content-panel panel-title="Effective and efficient programme management">
         <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
 
-        <div slot="panel-btns">
-          Total: ${this.total_amount}
-        </div>
+        <div slot="panel-btns">Total: ${this.total_amount}</div>
 
         <etools-table
           .items="${this.formattedData}"
           .columns="${this.columns}"
           .extraCSS="${this.getTableStyle()}"
-          .showEdit=${this.canEditActivity}
+          .showEdit=${this.canEdit}
           @edit-item="${this.editItem}"
           .getChildRowTemplateMethod="${this.getChildRowTemplate.bind(this)}"
         >
@@ -86,13 +84,14 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
     `;
   }
 
-  private formattedData;
+  @property({type: Array})
+  formattedData!: AnyObject[];
 
   @property({type: Boolean})
   showLoading = false;
 
   @property({type: Boolean})
-  canEditActivity = true;
+  canEdit = true;
 
   @property({type: Object})
   data: AnyObject = {};
@@ -125,13 +124,11 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
     }
   ];
 
-  private activityDialog!: ActivityDialog;
-
   @property({type: Number})
   total_amount = 0;
 
-  @property({type: Object})
-  permissions!: Permission<ProgrammeManagementActivityPermissions>;
+  @property({type: Number})
+  interventionId!: number;
 
   connectedCallback() {
     super.connectedCallback();
@@ -144,19 +141,19 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'results')) {
       return;
     }
-
+    this.interventionId = state.interventions.current.id;
     this.data = selectProgrammeManagement(state);
     this.originalData = cloneDeep(this.data);
 
     const newPermissions = selectProgrammeManagementActivityPermissions(state);
     if (!isJsonStrMatch(this.permissions, newPermissions)) {
-      this.permissions = newPermissions;
+      this.canEdit = newPermissions.edit.programme_management_activity;
     }
-
     this.formattedData = this.formatData(this.data);
   }
 
-  formatData = (data) => {
+  formatData(data: AnyObject) {
+    this.total_amount = data.total_amount;
     return [
       {
         title: 'Standard activity 1',
@@ -178,7 +175,7 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
         partner_contribution: data.act3_partner
       }
     ];
-  };
+  }
 
   getTableStyle() {
     return html`<style>
@@ -191,18 +188,14 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
     this.openActivityDialog(e.detail);
   }
 
-  private openActivityDialog(activity) {
-    this.createDialog();
-    this.activityDialog.permissions = this.permissions;
-    this.activityDialog.activity = activity;
-    (this.activityDialog as ActivityDialog).openDialog();
-  }
-
-  createDialog() {
-    this.activityDialog = document.createElement('activity-dialog') as ActivityDialog;
-    this.activityDialog.setAttribute('id', 'activityDialog');
-    this.activityDialog.toastEventSource = this;
-    document.querySelector('body')!.appendChild(this.activityDialog);
+  private openActivityDialog(activity: AnyObject) {
+    openDialog({
+      dialog: 'activity-dialog',
+      dialogData: {
+        activity: activity,
+        interventionId: this.interventionId
+      }
+    });
   }
 
   getChildRowTemplate(item: any): EtoolsTableChildRow {
