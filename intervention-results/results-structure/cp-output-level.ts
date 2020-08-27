@@ -20,7 +20,6 @@ export class CpOutputLevel extends LitElement {
         }
         :host([show-cpo-level]) {
           border-top: 1px solid var(--main-border-color);
-          margin: 0 7px;
         }
         :host(:first-child) {
           border-top: none;

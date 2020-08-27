@@ -4,7 +4,8 @@ import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {
   selectInterventionId,
   selectInterventionQuarters,
-  selectInterventionResultLinks
+  selectInterventionResultLinks,
+  selectResultLinksPermissions
 } from './results-structure.selectors';
 import {ResultStructureStyles} from './results-structure.styles';
 import {
@@ -59,6 +60,9 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
         .no-results {
           padding: 24px;
         }
+        .pdOtputMargin {
+          margin: 0 4px;
+        }
       `
     ];
   }
@@ -76,6 +80,8 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
   @property({type: Boolean}) isUnicefUser = true;
   @property({type: Boolean}) showIndicators = true;
   @property({type: Boolean}) showActivities = true;
+  @property({type: Object})
+  permissions!: {edit: {result_links?: boolean}; required: {result_links?: boolean}};
 
   private cpOutputs: CpOutput[] = [];
   @property() private _resultLinks: ExpectedResult[] | null = [];
@@ -144,7 +150,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
             >
               ${result.ll_results.map(
                 (pdOutput: ResultLinkLowerResult) => html`
-                  <etools-data-table-row>
+                  <etools-data-table-row class="pdOtputMargin">
                     <div slot="row-data" class="layout-horizontal align-items-center editable-row">
                       <div class="flex-1 flex-fix">
                         <div class="heading">Program Document output</div>
@@ -169,6 +175,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
                         ?hidden="${!this.showIndicators}"
                         .indicators="${pdOutput.applied_indicators}"
                         .pdOutputId="${pdOutput.id}"
+                        .editMode="${this.permissions.edit.result_links}"
                       ></pd-indicators>
                       <pd-activities
                         .activities="${pdOutput.activities}"
@@ -216,6 +223,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
 
   stateChanged(state: any) {
     this.resultLinks = selectInterventionResultLinks(state);
+    this.permissions = selectResultLinksPermissions(state);
     this.interventionId = selectInterventionId(state);
     this.quarters = selectInterventionQuarters(state);
     this.cpOutputs = (state.commonData && state.commonData.cpOutputs) || [];

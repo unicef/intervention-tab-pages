@@ -83,7 +83,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
         size="lg"
         dialog-title="Indicator"
         no-padding
-        ?opened="${this.dialogOpened}"
+        opened
         @close="${this.onClose}"
         @confirm-btn-clicked="${this._validateAndSaveIndicator}"
         ok-btn-text="Save"
@@ -222,9 +222,6 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
 
   @property({type: Object})
   currentUser!: User;
-
-  @property({type: Boolean})
-  dialogOpened = true;
 
   @query('etools-dialog')
   indicatorDialog!: EtoolsDialog;
