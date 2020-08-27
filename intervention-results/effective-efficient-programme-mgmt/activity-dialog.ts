@@ -95,8 +95,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
       return;
     }
     const {activity, interventionId}: any = data;
-    this.originalData = activity;
-    this.data = {...this.originalData};
+    this.data = activity;
     this.interventionId = interventionId;
   }
 
