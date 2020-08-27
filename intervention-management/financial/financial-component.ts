@@ -21,6 +21,9 @@ import './financialComponent.selectors';
 import {FinancialComponentData, FinancialComponentPermissions} from './financialComponent.selectors';
 import {selectFinancialComponentPermissions, selectFinancialComponent} from './financialComponent.models';
 import {patchIntervention} from '../../common/actions';
+import {LabelAndValue} from '../../common/models/globals.types';
+import {isJsonStrMatch} from '../../../../../utils/utils';
+import '@unicef-polymer/etools-dropdown/etools-dropdown';
 
 /**
  * @customElement
@@ -121,7 +124,21 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
         </div>
         <div class="layout-horizontal">
           <div class="col col-3">
-            ${this.data.currency}
+            <etools-dropdown
+              id="currencyDd"
+              slot="field"
+              placeholder="&#8212;"
+              .options="${this.currencies}"
+              .selected="${this.data.currency}"
+              ?readonly="${this._isCurrencyReadonly(
+                this.data.in_amendment,
+                this.editMode,
+                this.permissions.edit.planned_budget,
+                this.data.id
+              )}"
+              no-label-float
+            >
+            </etools-dropdown>
           </div>
         </div>
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
@@ -153,6 +170,9 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
   @property({type: Boolean})
   showLoading = false;
 
+  @property({type: Array})
+  currencies!: LabelAndValue[];
+
   connectedCallback() {
     super.connectedCallback();
   }
@@ -168,6 +188,9 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
       this.permissions = selectFinancialComponentPermissions(state);
       this.set_canEditAtLeastOneField(this.permissions.edit);
       this.originalData = cloneDeep(this.data);
+      if (!isJsonStrMatch(this.currencies, state.commonData!.currencies)) {
+        this.currencies = [...state.commonData!.currencies];
+      }
     }
   }
 
@@ -199,6 +222,25 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
     } else {
       this.data.cash_tranfer_modalities += ' ' + checkbox;
     }
+  }
+
+  _isReadonly(editMode: boolean, editablePlannedBudget: boolean, interventionId: number) {
+    if (!editMode) {
+      return true;
+    }
+    if (!interventionId) {
+      return false;
+    }
+    return !editablePlannedBudget;
+  }
+
+  _isCurrencyReadonly(
+    inAmendmentMode: boolean,
+    editMode: boolean,
+    editablePlannedBudget: boolean,
+    interventionId: number
+  ) {
+    return inAmendmentMode ? true : this._isReadonly(editMode, editablePlannedBudget, interventionId);
   }
 
   // this will be reviewed after all backend data is available

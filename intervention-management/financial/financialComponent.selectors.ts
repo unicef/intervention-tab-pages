@@ -10,6 +10,8 @@ export class FinancialComponentData extends ModelsBase {
   cash_tranfer_modalities = '';
   hq_support_cost = '';
   currency = '';
+  in_amendment = false;
+  id = 0;
 }
 
 export class FinancialComponentPermissions extends ModelsBase {
@@ -19,4 +21,5 @@ export class FinancialComponentPermissions extends ModelsBase {
   }
   cash_transfer_modalities = true;
   hq_support_cost = true;
+  planned_budget = true;
 }
