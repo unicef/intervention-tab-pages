@@ -23,7 +23,6 @@ import {patchIntervention} from '../../common/actions';
 import {LabelAndValue} from '../../common/models/globals.types';
 import {isJsonStrMatch} from '../../../../../utils/utils';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
-import {validateRequiredFields} from '../../utils/validation-helper';
 
 /**
  * @customElement
@@ -141,20 +140,11 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
     `;
   }
 
-  @property({type: Boolean})
-  canEditHQOriginal!: boolean;
-
-  @property({type: Boolean})
-  canEditCashTransferOriginal!: boolean;
-
   @property({type: Object})
   originalData!: FinancialComponentData;
 
   @property({type: Object})
   data!: FinancialComponentData;
-
-  @property({type: String})
-  currency!: string;
 
   @property({type: Object})
   permissions!: Permission<FinancialComponentPermissions>;
@@ -182,10 +172,6 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
     if (!isJsonStrMatch(this.currencies, state.commonData!.currencies)) {
       this.currencies = [...state.commonData!.currencies];
     }
-  }
-
-  validate() {
-    return validateRequiredFields(this);
   }
 
   checkCashTransferModality(value: string) {
