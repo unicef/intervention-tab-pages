@@ -130,12 +130,7 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
               placeholder="&#8212;"
               .options="${this.currencies}"
               .selected="${this.data.currency}"
-              ?readonly="${this._isCurrencyReadonly(
-                this.data.in_amendment,
-                this.editMode,
-                this.permissions.edit.planned_budget,
-                this.data.id
-              )}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_budget)}"
               no-label-float
             >
             </etools-dropdown>
@@ -181,16 +176,14 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
     if (!state.interventions.current) {
       return;
     }
-    if (state.interventions.current) {
-      // temporary fix untill we have data from backend
-      state.interventions.current.hq_support_cost = 0;
-      this.data = selectFinancialComponent(state);
-      this.permissions = selectFinancialComponentPermissions(state);
-      this.set_canEditAtLeastOneField(this.permissions.edit);
-      this.originalData = cloneDeep(this.data);
-      if (!isJsonStrMatch(this.currencies, state.commonData!.currencies)) {
-        this.currencies = [...state.commonData!.currencies];
-      }
+    // temporary fix untill we have data from backend
+    state.interventions.current.hq_support_cost = 0;
+    this.data = selectFinancialComponent(state);
+    this.permissions = selectFinancialComponentPermissions(state);
+    this.set_canEditAtLeastOneField(this.permissions.edit);
+    this.originalData = cloneDeep(this.data);
+    if (!isJsonStrMatch(this.currencies, state.commonData!.currencies)) {
+      this.currencies = [...state.commonData!.currencies];
     }
   }
 
@@ -198,7 +191,6 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
     return validateRequiredFields(this);
   }
 
-  // @lajos: this will have to be reviewd
   checkCashTransferModality(value: string) {
     if (!value) {
       return;
@@ -222,25 +214,6 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
     } else {
       this.data.cash_tranfer_modalities += ' ' + checkbox;
     }
-  }
-
-  _isReadonly(editMode: boolean, editablePlannedBudget: boolean, interventionId: number) {
-    if (!editMode) {
-      return true;
-    }
-    if (!interventionId) {
-      return false;
-    }
-    return !editablePlannedBudget;
-  }
-
-  _isCurrencyReadonly(
-    inAmendmentMode: boolean,
-    editMode: boolean,
-    editablePlannedBudget: boolean,
-    interventionId: number
-  ) {
-    return inAmendmentMode ? true : this._isReadonly(editMode, editablePlannedBudget, interventionId);
   }
 
   // this will be reviewed after all backend data is available
