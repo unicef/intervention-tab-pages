@@ -261,7 +261,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
       return;
     }
     this.isCluster = chk.checked;
-    this.borderColor = this.isCluster ? 'green' : 'rgba(0, 0, 0, 0.40)';
+    this.borderColor = this.isCluster ? 'green' : 'rgba(0, 0, 0, 0.40)'; // TODO - it doesn't work
   }
 
   connectedCallback() {
