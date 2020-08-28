@@ -357,6 +357,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
       this.data = selectReviewData(state);
       this.originalData = cloneDeep(this.data);
       this.permissions = selectReviewDataPermissions(state);
+      this.set_canEditAtLeastOneField(this.permissions.edit);
       if (this.data.submitted_to_prc) {
         this._lockSubmitToPrc = true;
       } else {
