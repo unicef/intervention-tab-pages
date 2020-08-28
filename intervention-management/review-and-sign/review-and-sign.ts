@@ -447,7 +447,11 @@ export class InterventionReviewAndSign extends connect(getStore())(
   }
 
   _isSubmittedToPrcCheckReadonly(isPrcDocEditable: boolean, lockSubmitToPrc: boolean) {
-    return !isPrcDocEditable || lockSubmitToPrc;
+    if (this.editMode) {
+      return !isPrcDocEditable || lockSubmitToPrc;
+    }
+    // if not in edit mdoe it is always disabled
+    return true;
   }
 
   _interventionDocTypeChanged(interventionDocumentType: string) {
