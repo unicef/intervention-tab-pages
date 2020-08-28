@@ -54,22 +54,28 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
           margin-left: -10px;
           margin-top: -5px;
         }
+
         paper-checkbox[disabled] {
           --paper-checkbox-checked-color: black;
           --paper-checkbox-unchecked-color: black;
           --paper-checkbox-label-color: black;
         }
+
+        .padd-top {
+          padding-top: 8px;
+        }
+
       </style>
       <etools-content-panel show-expand-btn panel-title="Financial">
         <div slot="panel-btns">
           ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
         </div>
-        <div class="layout-horizontal row-padding-v">
+        <div class="layout-horizontal padd-top">
           <div class="w100">
             <label class="paper-label">Cash Transfer modality(ies)</label>
           </div>
         </div>
-        <div class="layout-horizontal">
+        <div class="layout-horizontal row-padding-v">
           <div class="col col-3">
             <paper-checkbox
               ?checked="${this.checkCashTransferModality('Direct Cash Transfer')}"
