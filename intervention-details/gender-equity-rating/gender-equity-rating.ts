@@ -14,7 +14,7 @@ import {GenderEquityRatingPermissions, GenderEquityRating} from './genderEquityR
 import {Permission} from '../../common/models/intervention.types';
 import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
-import {AnyObject} from '../../common/models/globals.types';
+import {AnyObject, RootState} from '../../common/models/globals.types';
 import {patchIntervention} from '../../common/actions';
 import {isJsonStrMatch} from '../../utils/utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
@@ -152,7 +152,7 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
   @property({type: Object})
   data!: GenderEquityRating;
 
-  stateChanged(state: any) {
+  stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'details')) {
       return;
     }

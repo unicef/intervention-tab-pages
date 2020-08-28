@@ -21,7 +21,7 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {updateCurrentIntervention} from '../../common/actions';
 import {InterventionAmendment} from '../../common/models/intervention.types';
-import {LabelAndValue, AnyObject} from '../../common/models/globals.types';
+import {LabelAndValue, AnyObject, RootState} from '../../common/models/globals.types';
 import {isJsonStrMatch} from '../../utils/utils';
 import CONSTANTS from '../../common/constants';
 
@@ -180,7 +180,7 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
   @property({type: Array})
   warnMessages: string[] = [];
 
-  stateChanged(state: any) {
+  stateChanged(state: RootState) {
     if (
       state.commonData.interventionAmendmentTypes &&
       !isJsonStrMatch(this.amendmentTypes, state.commonData!.interventionAmendmentTypes)

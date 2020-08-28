@@ -27,7 +27,7 @@ import {gridLayoutStylesPolymer} from '../common/styles/grid-layout-styles-polym
 
 import {isEmptyObject} from '../utils/utils';
 import {fireEvent} from '../utils/fire-custom-event';
-import {GenericObject, AnyObject} from '../common/models/globals.types';
+import {GenericObject, AnyObject, RootState} from '../common/models/globals.types';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../utils/redux-store-access';
 import {pageIsNotCurrentlyActive} from '../utils/common-methods';
@@ -338,7 +338,7 @@ class InterventionProgress extends connect(getStore())(
     ];
   }
 
-  stateChanged(state: any) {
+  stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'progress')) {
       return;
     }

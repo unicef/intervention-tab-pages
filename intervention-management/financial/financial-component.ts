@@ -13,6 +13,7 @@ import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import cloneDeep from 'lodash-es/cloneDeep';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {Permission} from '../../common/models/intervention.types';
+import {RootState} from '../../common/models/globals.types';
 import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
 import './financialComponent.models';
@@ -58,9 +59,7 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
         }
       </style>
       <etools-content-panel show-expand-btn panel-title="Financial">
-        <div slot="panel-btns">
-          ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
-        </div>
+        <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
         <div class="layout-horizontal row-padding-v">
           <div class="w100">
             <label class="paper-label">Cash Transfer modality(ies)</label>
@@ -119,9 +118,7 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
           </div>
         </div>
         <div class="layout-horizontal">
-          <div class="col col-3">
-            ${this.data.currency}
-          </div>
+          <div class="col col-3">${this.data.currency}</div>
         </div>
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
       </etools-content-panel>
@@ -150,12 +147,12 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
     super.connectedCallback();
   }
 
-  stateChanged(state: any) {
+  stateChanged(state: RootState) {
     if (!state.interventions.current) {
       return;
     }
     // temporary fix untill we have data from backend
-    state.interventions.current.hq_support_cost = 0;
+    state.interventions.current.hq_support_cost = '0';
     this.data = selectFinancialComponent(state);
     this.permissions = selectFinancialComponentPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);

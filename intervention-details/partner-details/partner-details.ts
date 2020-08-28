@@ -27,6 +27,7 @@ import {isJsonStrMatch} from '../../utils/utils';
 import isEmpty from 'lodash-es/isEmpty';
 import {PartnerStaffMember} from '../../common/models/partner.types';
 import {MinimalAgreement} from '../../common/models/agreement.types';
+import {RootState} from '../../common/models/globals.types';
 
 /**
  * @customElement
@@ -47,10 +48,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Partner Details">
-
-        <div slot="panel-btns">
-          ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
-        </div>
+        <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="row-padding-v layout-horizontal">
           <div class="col col-7">
@@ -95,9 +93,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
           </div>
           <div class="col col-5 layout-vertical">
             <label for="agreementAuthOff" class="paper-label">Agreement Authorized Officers</label>
-            <div id="agreementAuthOff">
-              ${this.renderAgreementAuthorizedOfficers(this.agreementAuthorizedOfficers)}
-            </div>
+            <div id="agreementAuthOff">${this.renderAgreementAuthorizedOfficers(this.agreementAuthorizedOfficers)}</div>
           </div>
         </div>
         <div class="row-padding-v">
@@ -150,7 +146,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
     super.connectedCallback();
   }
 
-  async stateChanged(state: any) {
+  async stateChanged(state: RootState) {
     if (!state.interventions.current) {
       return;
     }

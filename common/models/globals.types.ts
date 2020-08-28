@@ -249,7 +249,7 @@ export interface UserState {
 
 export interface CommonDataState {
   unicefUsersData: [];
-  partners: [];
+  partners: AnyObject[];
   locations: LocationObject[];
   sections: Section[];
   disaggregations: Disaggregation[];

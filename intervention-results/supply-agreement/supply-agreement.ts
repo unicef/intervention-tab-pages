@@ -12,7 +12,7 @@ import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {EtoolsTableColumn, EtoolsTableColumnType, EtoolsTableChildRow} from '@unicef-polymer/etools-table/etools-table';
 import './supply-agreement-dialog';
 import {InterventionSupplyItem, Intervention} from '../../common/models/intervention.types';
-import {AnyObject} from '../../common/models/globals.types';
+import {AnyObject, RootState} from '../../common/models/globals.types';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
@@ -155,7 +155,7 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
       ${customStyles}`;
   }
 
-  stateChanged(state: any): void {
+  stateChanged(state: RootState): void {
     if (get(state, 'interventions.current')) {
       const currentIntervention = get(state, 'interventions.current');
       this.intervention = cloneDeep(currentIntervention);

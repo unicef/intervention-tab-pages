@@ -8,7 +8,7 @@ import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {repeatableDataSetsStyles} from '../../common/styles/repeatable-data-sets-styles';
 import isEmpty from 'lodash-es/isEmpty';
 import {layoutCenterJustified, layoutVertical} from '../../common/styles/flex-layout-styles';
-import {AnyObject} from '../../common/models/globals.types';
+import {AnyObject, RootState} from '../../common/models/globals.types';
 import {PlannedVisitsPermissions} from './programmaticVisits.models';
 import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown';
 import {PaperInputElement} from '@polymer/paper-input/paper-input';
@@ -124,7 +124,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
     this._createDeleteConfirmationDialog();
   }
 
-  stateChanged(state: any) {
+  stateChanged(state: RootState) {
     if (!state.interventions.current) {
       return;
     }

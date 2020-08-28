@@ -7,6 +7,7 @@ import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {Intervention, Permission} from '../../common/models/intervention.types';
+import {RootState} from '../../common/models/globals.types';
 import {ProgrammeDocDates, InterventionDatesPermissions} from './interventionDates.models';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {selectInterventionDates, selectInterventionDatesPermissions} from './interventionDates.selectors';
@@ -133,7 +134,7 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
     super.connectedCallback();
   }
 
-  stateChanged(state: any) {
+  stateChanged(state: RootState) {
     if (!state.interventions.current) {
       return;
     }

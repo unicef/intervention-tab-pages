@@ -12,6 +12,7 @@ import {addComment, updateComment} from './comments.actions';
 import {InterventionComment} from '../../types/types';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {GenericObject} from '../../models/globals.types';
+import {RootState} from '../../models/globals.types';
 
 @customElement('comments-dialog')
 export class CommentsDialog extends connect(getStore())(LitElement) {
@@ -122,11 +123,11 @@ export class CommentsDialog extends connect(getStore())(LitElement) {
     `;
   }
 
-  stateChanged(state: any): void {
+  stateChanged(state: RootState): void {
     if (this.currentUser) {
       return;
     }
-    const {user, first_name, last_name, middle_name, name} = state.user.data;
+    const {user, first_name, last_name, middle_name, name} = state.user.data!;
     // take fields to correspond the shape of user object inside comment object
     this.currentUser = {
       id: user,

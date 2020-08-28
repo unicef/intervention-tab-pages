@@ -23,7 +23,7 @@ import {connect} from 'pwa-helpers/connect-mixin';
 import {isJsonStrMatch} from '../../utils/utils';
 
 import {Permission} from '../../common/models/intervention.types';
-import {MinimalUser} from '../../common/models/globals.types';
+import {MinimalUser, RootState} from '../../common/models/globals.types';
 import {selectReviewData, selectReviewDataPermissions} from './managementDocument.selectors';
 import {ReviewDataPermission, ReviewData} from './managementDocument.model';
 import {getEndpoint} from '../../utils/endpoint-helper';
@@ -347,7 +347,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
   @property({type: String})
   uploadEndpoint: string = getEndpoint(interventionEndpoints.attachmentsUpload).url;
 
-  stateChanged(state: any) {
+  stateChanged(state: RootState) {
     if (!isJsonStrMatch(this.signedByUnicefUsers, state.commonData!.unicefUsersData)) {
       this.signedByUnicefUsers = cloneDeep(state.commonData!.unicefUsersData);
     }
@@ -364,7 +364,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
       }
       const agreements = state.agreements.list;
       if (!isEmpty(agreements)) {
-        const agreementData = this.filterAgreementsById(agreements, this.data.agreement);
+        const agreementData = this.filterAgreementsById(agreements!, this.data.agreement);
         this.agreementAuthorizedOfficers = this.getAuthorizedOfficersList(agreementData);
       }
     }

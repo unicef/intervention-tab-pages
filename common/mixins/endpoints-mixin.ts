@@ -20,6 +20,7 @@ function EndpointsMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
     currentUser!: User;
 
     public endStateChanged(state: any) {
+      // TODO need to clarify these properties
       if (!isJsonStrMatch(state.commonData!.PRPCountryData, this.prpCountries)) {
         this.prpCountries = [...state.commonData!.PRPCountryData];
       }
