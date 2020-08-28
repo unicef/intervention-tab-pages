@@ -158,20 +158,23 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
         title: 'Standard activity 1',
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In iaculis metus et neque viverra ',
         unicef_cash: String(data.act1_unicef),
-        partner_contribution: String(data.act1_partner)
+        partner_contribution: String(data.act1_partner),
+        index: 1
       },
       {
         title: 'Standard activity 2',
         description:
           'There are many variations of passages available, but the majority have suffered alteration in some form',
         unicef_cash: data.act2_unicef,
-        partner_contribution: data.act2_partner
+        partner_contribution: data.act2_partner,
+        index: 2
       },
       {
         title: 'Standard activity 3',
         description: 'It is a long established fact that a reader will be distracted by the readable content',
         unicef_cash: data.act3_unicef,
-        partner_contribution: data.act3_partner
+        partner_contribution: data.act3_partner,
+        index: 3
       }
     ];
   }

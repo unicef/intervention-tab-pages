@@ -46,12 +46,19 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         dialog-title="Edit activity"
         ok-btn-text="Save"
         ?opened="${this.dialogOpened}"
+        ?show-spinner="${this.loadingInProcess}"
         @close="${() => this.onClose()}"
         @confirm-btn-clicked="${this.onSaveClick}"
       >
-        <etools-loading ?active="${this.loadingInProcess}" loading-text="Loading..."></etools-loading>
         <div class="row-padding-v">
-          <paper-input readonly id="title" label="Title" always-float-label placeholder="—" .value="${this.data.title}">
+          <paper-input
+            readonly
+            id="title"
+            label="Title"
+            always-float-label
+            placeholder="—"
+            .value="${this.originalData.title}"
+          >
           </paper-input>
         </div>
 
@@ -62,7 +69,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
             readonly
             always-float-label
             placeholder="—"
-            .value="${this.data.description}"
+            .value="${this.originalData.description}"
           ></paper-textarea>
         </div>
 
@@ -71,8 +78,8 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
             <etools-currency-amount-input
               id="unicefCash"
               label="UNICEF cash"
-              .value="${this.data.unicef_cash}"
-              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unicef_cash')}"
+              .value="${this.originalData.unicef_cash}"
+              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, this.getPropertyName('unicef'))}"
             >
             </etools-currency-amount-input>
           </div>
@@ -80,8 +87,8 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
             <etools-currency-amount-input
               id="partnerContribution"
               label="Partner contribution"
-              .value="${this.data.partner_contribution}"
-              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'partner_contribution')}"
+              .value="${this.originalData.partner_contribution}"
+              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, this.getPropertyName('partner'))}"
             >
             </etools-currency-amount-input>
           </div>
@@ -95,7 +102,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
       return;
     }
     const {activity, interventionId}: any = data;
-    this.data = activity;
+    this.originalData = activity;
     this.interventionId = interventionId;
   }
 
@@ -130,5 +137,9 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
 
   onClose(): void {
     fireEvent(this, 'dialog-closed', {confirmed: false});
+  }
+
+  getPropertyName(sufix: string) {
+    return this.originalData ? `act${this.originalData.index}_${sufix}` : '';
   }
 }
