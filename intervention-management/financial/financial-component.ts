@@ -21,6 +21,9 @@ import './financialComponent.selectors';
 import {FinancialComponentData, FinancialComponentPermissions} from './financialComponent.selectors';
 import {selectFinancialComponentPermissions, selectFinancialComponent} from './financialComponent.models';
 import {patchIntervention} from '../../common/actions';
+import {LabelAndValue} from '../../common/models/globals.types';
+import {isJsonStrMatch} from '../../../../../utils/utils';
+import '@unicef-polymer/etools-dropdown/etools-dropdown';
 
 /**
  * @customElement
@@ -52,20 +55,27 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
           margin-left: -10px;
           margin-top: -5px;
         }
+
         paper-checkbox[disabled] {
           --paper-checkbox-checked-color: black;
           --paper-checkbox-unchecked-color: black;
           --paper-checkbox-label-color: black;
         }
+
+        .padd-top {
+          padding-top: 8px;
+        }
+
       </style>
       <etools-content-panel show-expand-btn panel-title="Financial">
+
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
-        <div class="layout-horizontal row-padding-v">
+        <div class="layout-horizontal padd-top">
           <div class="w100">
             <label class="paper-label">Cash Transfer modality(ies)</label>
           </div>
         </div>
-        <div class="layout-horizontal">
+        <div class="layout-horizontal row-padding-v">
           <div class="col col-3">
             <paper-checkbox
               ?checked="${this.checkCashTransferModality('Direct Cash Transfer')}"
@@ -118,18 +128,22 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
           </div>
         </div>
         <div class="layout-horizontal">
-          <div class="col col-3">${this.data.currency}</div>
+          <div class="col col-3">
+            <etools-dropdown
+              id="currencyDd"
+              placeholder="&#8212;"
+              .options="${this.currencies}"
+              .selected="${this.data.currency}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_budget)}"
+              no-label-float
+            >
+            </etools-dropdown>
+          </div>
         </div>
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
       </etools-content-panel>
     `;
   }
-
-  @property({type: Boolean})
-  canEditHQOriginal!: boolean;
-
-  @property({type: Boolean})
-  canEditCashTransferOriginal!: boolean;
 
   @property({type: Object})
   originalData!: FinancialComponentData;
@@ -137,11 +151,14 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
   @property({type: Object})
   data!: FinancialComponentData;
 
-  @property({type: String})
-  currency!: string;
-
   @property({type: Object})
   permissions!: Permission<FinancialComponentPermissions>;
+
+  @property({type: Boolean})
+  showLoading = false;
+
+  @property({type: Array})
+  currencies!: LabelAndValue[];
 
   connectedCallback() {
     super.connectedCallback();
@@ -157,9 +174,11 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
     this.permissions = selectFinancialComponentPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
     this.originalData = cloneDeep(this.data);
+    if (!isJsonStrMatch(this.currencies, state.commonData!.currencies)) {
+      this.currencies = [...state.commonData!.currencies];
+    }
   }
 
-  // @lajos: this will have to be reviewd
   checkCashTransferModality(value: string) {
     if (!value) {
       return;
