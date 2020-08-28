@@ -129,6 +129,7 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
   getChildRowTemplate(item: any): EtoolsTableChildRow {
     const childRow = {} as EtoolsTableChildRow;
     childRow.showExpanded = false;
+    // TODO display cp outputs using .result field and result_links
     childRow.rowHTML = html`
       <td></td>
       <td class="ptb-0">
