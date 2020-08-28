@@ -11,7 +11,7 @@ import {buttonsStyles} from '../../common/styles/button-styles';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {EtoolsTableColumn, EtoolsTableColumnType, EtoolsTableChildRow} from '@unicef-polymer/etools-table/etools-table';
 import './supply-agreement-dialog';
-import {InterventionSupplyItem, Intervention} from '../../common/models/intervention.types';
+import {InterventionSupplyItem, Intervention, ExpectedResult} from '../../common/models/intervention.types';
 import {AnyObject} from '../../common/models/globals.types';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {getEndpoint} from '../../utils/endpoint-helper';
@@ -129,13 +129,14 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
   getChildRowTemplate(item: any): EtoolsTableChildRow {
     const childRow = {} as EtoolsTableChildRow;
     childRow.showExpanded = false;
-    // TODO display cp outputs using .result field and result_links
+    const resultLink = this.intervention.result_links.find((result: ExpectedResult) => result.id === item.result);
+    const output = resultLink ? resultLink.cp_output_name : '';
     childRow.rowHTML = html`
       <td></td>
       <td class="ptb-0">
         <div class="child-row-inner-container">
           <label class="label-input">Cp Outputs</label><br />
-          ${item.outputs.map((output: string) => html`<label>${output}</label><br />`)}
+            <label>${output}</label><br />
         </div>
       </td>
       <td colspan="4" class="ptb-0">
