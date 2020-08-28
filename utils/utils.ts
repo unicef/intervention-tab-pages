@@ -1,6 +1,8 @@
 import isArray from 'lodash-es/isArray';
 import isObject from 'lodash-es/isObject';
+import isEmpty from 'lodash-es/isEmpty';
 import {formatDate} from './date-utils';
+
 
 export const isJsonStrMatch = (a: any, b: any) => {
   return JSON.stringify(a) === JSON.stringify(b);
@@ -67,9 +69,24 @@ export const areEqual = (obj1: any, obj2: any): boolean => {
   return true;
 };
 
+// TODO: Can this be optimized for cases when allOptions is a super long list?
+export const filterByIds = <T>(allOptions: T[], givenIds: string[]): T[] => {
+  if (isEmpty(allOptions) || isEmpty(givenIds)) {
+    return [];
+  }
+
+  const intGivenIds = givenIds.map((id: string) => Number(id));
+  const options = allOptions.filter((opt: any) => {
+    return intGivenIds.includes(Number(opt.id));
+  });
+
+  return options;
+};
+
 function _formatYYYY_MM_DD(obj2: string | Date) {
   if (typeof obj2 === 'string') {
     return obj2;
   }
   return formatDate(obj2, 'YYYY-MM-DD');
 }
+

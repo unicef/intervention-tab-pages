@@ -13,3 +13,11 @@ export const selectInterventionId = createSelector(currentIntervention, (interve
 export const selectInterventionQuarters = createSelector(currentIntervention, (intervention: Intervention) => {
   return (intervention && intervention.quarters) || [];
 });
+
+export const selectResultLinksPermissions = createSelector(currentIntervention, (intervention: Intervention) => {
+  const permissions = intervention && intervention.permissions;
+  return {
+    edit: {result_links: permissions?.edit.result_links},
+    required: {result_links: permissions?.required.result_links}
+  };
+});

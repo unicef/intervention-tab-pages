@@ -77,9 +77,12 @@ export const buttonsStylesContent = `
   }
 
   .secondary-btn {
-    --paper-button: {
-      @apply --basic-btn-style;
-    }
+    width: auto;
+    margin: 0;
+    color: var(--primary-color);
+    padding: 0 5px 0 0;
+    font-size: 14px;
+    font-weight: bold;
   }
 `;
 // language=HTML
