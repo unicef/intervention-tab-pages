@@ -192,6 +192,7 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
   }
 
   deleteSupplyItem(event: CustomEvent) {
+    // TODO
     console.log(event);
   }
 
