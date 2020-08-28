@@ -11,8 +11,7 @@ import {getStore} from '../../../utils/redux-store-access';
 import {addComment, updateComment} from './comments.actions';
 import {InterventionComment} from '../../types/types';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
-import {GenericObject} from '../../models/globals.types';
-import {RootState} from '../../models/globals.types';
+import {GenericObject, RootState} from '../../models/globals.types';
 
 @customElement('comments-dialog')
 export class CommentsDialog extends connect(getStore())(LitElement) {
