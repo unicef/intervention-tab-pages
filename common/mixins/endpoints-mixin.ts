@@ -3,7 +3,7 @@ import {isJsonStrMatch} from '../../utils/utils';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging.js';
 import {PolymerElement} from '@polymer/polymer';
 import {property} from '@polymer/decorators';
-import {Constructor, User, AnyObject} from '../../common/models/globals.types';
+import {Constructor, User, AnyObject, RootState} from '../../common/models/globals.types';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {tokenEndpointsHost, tokenStorageKeys, getTokenEndpoints} from '../../config/config';
 
@@ -19,13 +19,12 @@ function EndpointsMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
     @property({type: Object})
     currentUser!: User;
 
-    public endStateChanged(state: any) {
-      // TODO need to clarify these properties
-      if (!isJsonStrMatch(state.commonData!.PRPCountryData, this.prpCountries)) {
-        this.prpCountries = [...state.commonData!.PRPCountryData];
+    public endStateChanged(state: RootState) {
+      if (!isJsonStrMatch(state.commonData!.PRPCountryData!, this.prpCountries)) {
+        this.prpCountries = [...state.commonData!.PRPCountryData!];
       }
-      if (!isJsonStrMatch(state.commonData!.currentUser, this.currentUser)) {
-        this.currentUser = JSON.parse(JSON.stringify(state.commonData!.currentUser));
+      if (!isJsonStrMatch(state.user, this.currentUser)) {
+        this.currentUser = JSON.parse(JSON.stringify(state.user));
       }
     }
 

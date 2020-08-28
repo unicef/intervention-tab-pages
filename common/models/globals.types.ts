@@ -260,6 +260,8 @@ export interface CommonDataState {
   interventionAmendmentTypes: LabelAndValue[];
   offices: [];
   envFlags: EnvFlags | null;
+  // used on PMP
+  PRPCountryData?: AnyObject[];
 }
 
 export interface RootState {
