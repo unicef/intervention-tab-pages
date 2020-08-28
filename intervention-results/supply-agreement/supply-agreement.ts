@@ -11,28 +11,14 @@ import {buttonsStyles} from '../../common/styles/button-styles';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {EtoolsTableColumn, EtoolsTableColumnType, EtoolsTableChildRow} from '@unicef-polymer/etools-table/etools-table';
 import './supply-agreement-dialog';
-import {SupplyAgreementDialog} from './supply-agreement-dialog';
-import {InterventionSupplyItem} from '../../common/models/intervention.types';
+import {InterventionSupplyItem, Intervention} from '../../common/models/intervention.types';
 import {AnyObject} from '../../common/models/globals.types';
-
-const getSupplyItems = () => {
-  const arr = [];
-  let i = 0;
-  while (i < 10) {
-    const supplyItem = new InterventionSupplyItem();
-    supplyItem.id = i;
-    supplyItem.title = `Title ${i}`;
-    supplyItem.result = `CP Output ${i}`;
-    supplyItem.other_mentions = `Other mentions ${i}`;
-    supplyItem.unit_number = i;
-    supplyItem.unit_price = Math.floor(Math.random() * Math.floor(15));
-    supplyItem.total_price = supplyItem.unit_number * supplyItem.unit_price;
-    supplyItem.outputs = ['CP Output Health Related', 'CP Output Health Related', 'CP Output Health Related'];
-    arr.push(supplyItem);
-    i++;
-  }
-  return arr;
-};
+import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {getEndpoint} from '../../utils/endpoint-helper';
+import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {openDialog} from '../../utils/dialog';
+import get from 'lodash-es/get';
+import cloneDeep from 'lodash-es/cloneDeep';
 
 const customStyles = html`
   <style>
@@ -56,6 +42,12 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
     return [gridLayoutStylesLit, buttonsStyles];
   }
   render() {
+    if (!this.dataItems) {
+      return html`<style>
+          ${sharedStyles}
+        </style>
+        <etools-loading loading-text="Loading..." active></etools-loading>`;
+    }
     return html`
       <style>
         ${sharedStyles} :host {
@@ -72,12 +64,11 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
         }
       </style>
       <etools-content-panel panel-title="Supply Agreement">
-        <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
 
         <div slot="panel-btns">
           <span class="mr-40">
             <label class="label-input font-bold">TOTAL SUPPLY BUDGET: </label>
-            <label class="f-12 font-bold">LBP 54353</label>
+            <label class="f-12 font-bold">LBP 54353 (TODO)</label>
           </span>
           <paper-icon-button ?hidden="${!this.canEditSupply}" @tap="${() => this.addSupplyItem()}" icon="add">
           </paper-icon-button>
@@ -98,13 +89,11 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
     `;
   }
 
-  private supplyItemDialog!: SupplyAgreementDialog;
-
   @property({type: Array})
   dataItems: AnyObject[] = [];
 
-  @property({type: Boolean})
-  showLoading = false;
+  @property({type: Object})
+  intervention!: Intervention;
 
   @property({type: Array})
   columns: EtoolsTableColumn[] = [
@@ -137,10 +126,6 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
   @property({type: Boolean})
   canEditSupply = true;
 
-  stateChanged(_state: any) {
-    this.dataItems = getSupplyItems();
-  }
-
   getChildRowTemplate(item: any): EtoolsTableChildRow {
     const childRow = {} as EtoolsTableChildRow;
     childRow.showExpanded = false;
@@ -170,6 +155,28 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
       ${customStyles}`;
   }
 
+  stateChanged(state: any): void {
+    if (get(state, 'interventions.current')) {
+      const currentIntervention = get(state, 'interventions.current');
+      this.intervention = cloneDeep(currentIntervention);
+      // TODO supply data will come on the intervention object, no need for the request below
+      this.loadListData();
+    }
+  }
+
+  loadListData() {
+    sendRequest({
+      endpoint: getEndpoint(interventionEndpoints.supplyAgreementAdd, {interventionId: this.intervention.id})
+    })
+      .then((data: any) => {
+        this.dataItems = data;
+      })
+      .catch((err: any) => {
+        console.log(err);
+        this.dataItems = [];
+      });
+  }
+
   cancelSupply() {
     this.editMode = false;
   }
@@ -187,15 +194,15 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
   }
 
   private openSupplyDialog(item: InterventionSupplyItem) {
-    this.createDialog();
-    this.supplyItemDialog.supplyItem = item;
-    this.supplyItemDialog.openDialog();
-  }
-
-  createDialog() {
-    if (!this.supplyItemDialog) {
-      this.supplyItemDialog = document.createElement('supply-agreement-dialog') as SupplyAgreementDialog;
-      document.querySelector('body')!.appendChild(this.supplyItemDialog);
-    }
+    const callbackFunction = this.loadListData.bind(this);
+    openDialog({
+      dialog: 'supply-agreement-dialog',
+      dialogData: {
+        data: item,
+        interventionId: this.intervention.id,
+        result_links: this.intervention.result_links,
+        callbackFunction: callbackFunction
+      }
+    });
   }
 }

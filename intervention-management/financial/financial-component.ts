@@ -13,7 +13,6 @@ import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import cloneDeep from 'lodash-es/cloneDeep';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {Permission} from '../../common/models/intervention.types';
-import {validateRequiredFields} from '../../utils/validation-helper';
 import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
 import './financialComponent.models';
@@ -24,6 +23,7 @@ import {patchIntervention} from '../../common/actions';
 import {LabelAndValue} from '../../common/models/globals.types';
 import {isJsonStrMatch} from '../../../../../utils/utils';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
+import {validateRequiredFields} from '../../utils/validation-helper';
 
 /**
  * @customElement
@@ -142,9 +142,6 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
   }
 
   @property({type: Boolean})
-  canEditFinancialComponent!: boolean;
-
-  @property({type: Boolean})
   canEditHQOriginal!: boolean;
 
   @property({type: Boolean})
@@ -217,11 +214,11 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
   }
 
   // this will be reviewed after all backend data is available
-  save() {
+  saveData() {
     if (!this.validate()) {
-      return;
+      return Promise.resolve(false);
     }
-    getStore()
+    return getStore()
       .dispatch(patchIntervention(this.data))
       .then(() => {
         this.editMode = false;
