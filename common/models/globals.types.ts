@@ -1,4 +1,7 @@
 import {PolymerElement} from '@polymer/polymer';
+import {Intervention, CpOutput} from './intervention.types';
+import {MinimalAgreement} from './agreement.types';
+import {InterventionComment} from '../types/types';
 
 /*
  * The type Constructor<T> is an alias for the construct signature
@@ -88,6 +91,30 @@ export class User extends MinimalUser {
   country_override!: number;
   countries_available!: MinimalCountry[];
   groups!: UserGroup[];
+}
+
+export interface EtoolsUserModel {
+  countries_available: MinimalCountry[];
+  groups: UserGroup[];
+  country: AnyObject;
+  country_override: number;
+  email: string;
+  first_name: string;
+  guid: string;
+  is_active: string;
+  is_staff: string;
+  is_superuser: string;
+  job_title: string;
+  last_login: string;
+  last_name: string;
+  middle_name: string;
+  name: string;
+  office: string | null;
+  oic: any;
+  user: number;
+  username: string;
+  vendor_number: string | null;
+  [key: string]: any;
 }
 
 export interface UserGroup {
@@ -195,4 +222,51 @@ export interface RouteDetails {
   path: string;
   queryParams: RouteQueryParam | null;
   params: RouteParams | null;
+}
+
+export interface AppState {
+  routeDetails: RouteDetails;
+  drawerOpened: boolean;
+  toastNotification: {
+    active: boolean;
+    message: string;
+    showCloseBtn: boolean;
+  };
+}
+
+export interface InterventionsState {
+  current: Intervention | null;
+}
+
+export interface AgreementsState {
+  list: MinimalAgreement[] | null;
+}
+
+export interface UserState {
+  data: EtoolsUserModel | null;
+  permissions: AnyObject | null;
+}
+
+export interface CommonDataState {
+  unicefUsersData: [];
+  partners: [];
+  locations: LocationObject[];
+  sections: Section[];
+  disaggregations: Disaggregation[];
+  cpOutputs: CpOutput[];
+  locationTypes: [];
+  documentTypes: [];
+  genderEquityRatings: [];
+  interventionAmendmentTypes: LabelAndValue[];
+  offices: [];
+  envFlags: EnvFlags | null;
+}
+
+export interface RootState {
+  app: AppState;
+  interventions: InterventionsState;
+  agreements: AgreementsState;
+  user: UserState;
+  commonData: CommonDataState;
+  commentsData: GenericObject<InterventionComment[]>;
 }

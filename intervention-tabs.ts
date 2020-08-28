@@ -13,7 +13,7 @@ import get from 'lodash-es/get';
 import {setStore, getStore} from './utils/redux-store-access';
 import {selectAvailableActions, currentPage, currentSubpage} from './common/selectors';
 import {elevationStyles} from './common/styles/elevation-styles';
-import {AnyObject, RouteDetails} from './common/models/globals.types';
+import {AnyObject, RouteDetails, RootState} from './common/models/globals.types';
 import {getIntervention} from './common/actions';
 import {sharedStyles} from './common/styles/shared-styles-lit';
 import {isJsonStrMatch} from './utils/utils';
@@ -206,7 +206,7 @@ export class InterventionTabs extends LitElement {
     return tab === expectedTab;
   }
 
-  public stateChanged(state: any) {
+  public stateChanged(state: RootState) {
     if (currentPage(state) === 'interventions' && currentSubpage(state) !== 'list') {
       this.activeTab = currentSubpage(state) as string;
 
