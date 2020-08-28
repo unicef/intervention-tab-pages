@@ -94,13 +94,13 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
         size="md"
         keep-dialog-open
         ?opened="${this.dialogOpened}"
+        ?show-spinner="${this.loadingInProcess}"
         dialog-title="Activity Data"
         @confirm-btn-clicked="${() => this.processRequest()}"
         @close="${this.onClose}"
         .okBtnText="Save"
         no-padding
       >
-        <etools-loading ?active="${this.loadingInProcess}" loading-text="Loading..."></etools-loading>
         <div class="container layout vertical">
           <paper-input
             class="validate-input flex-1"
