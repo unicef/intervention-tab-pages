@@ -46,10 +46,10 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         dialog-title="Edit activity"
         ok-btn-text="Save"
         ?opened="${this.dialogOpened}"
+        ?show-spinner="${this.loadingInProcess}"
         @close="${() => this.onClose()}"
         @confirm-btn-clicked="${this.onSaveClick}"
       >
-        <etools-loading ?active="${this.loadingInProcess}" loading-text="Loading..."></etools-loading>
         <div class="row-padding-v">
           <paper-input readonly id="title" label="Title" always-float-label placeholder="—" .value="${this.data.title}">
           </paper-input>
