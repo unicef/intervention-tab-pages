@@ -200,6 +200,9 @@ export class InterventionReviewAndSign extends connect(getStore())(
               ?required="${this.permissions.required.partner_authorized_officer_signatory}"
               auto-validate
               error-message="Please select Partner Authorized Officer"
+              @etools-selected-item-changed="${({detail}: CustomEvent) =>
+                this.selectedItemChanged(detail, 'partner_authorized_officer_signatory', 'value')}"
+              trigger-value-change-event
             >
             </etools-dropdown>
           </div>
@@ -267,6 +270,9 @@ export class InterventionReviewAndSign extends connect(getStore())(
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.unicef_signatory)}"
               auto-validate
               error-message="Please select UNICEF user"
+              @etools-selected-item-changed="${({detail}: CustomEvent) =>
+                this.selectedItemChanged(detail, 'unicef_signatory')}"
+              trigger-value-change-event
             >
             </etools-dropdown>
           </div>
