@@ -125,7 +125,6 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
           <div class="col col-3">
             <etools-dropdown
               id="currencyDd"
-              slot="field"
               placeholder="&#8212;"
               .options="${this.currencies}"
               .selected="${this.data.currency}"

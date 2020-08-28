@@ -10,7 +10,6 @@ import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '../../utils/fire-custom-event';
-import {AnyObject} from '../../common/models/globals.types';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {ExpectedResult} from '../../common/models/intervention.types';
 
@@ -91,11 +90,11 @@ export class SupplyAgreementDialog extends connect(getStore())(ComponentBaseMixi
             placeholder="&#8212;"
             .options="${this.cpOutputs}"
             option-label="cp_output_name"
-            option-value="cp_output"
+            option-value="id"
             .selected="${this.data.result}"
             trigger-value-change-event
             @etools-selected-item-changed="${({detail}: CustomEvent) => {
-              this.selectedItemChanged(detail, 'result', 'cp_output');
+              this.selectedItemChanged(detail, 'result');
             }}"
           >
           </etools-dropdown>
