@@ -15,7 +15,6 @@ import {
 import {openDialog} from '../../utils/dialog';
 import './modals/indicator-dialog/indicator-dialog';
 import get from 'lodash-es/get';
-import {isJsonStrMatch} from '../../../../../utils/utils';
 import {filterByIds} from '../../utils/utils';
 import EnvironmentFlagsMixin from '../../common/mixins/environment-flags-mixin';
 import {IndicatorDialogData} from './modals/indicator-dialog/types';
@@ -26,8 +25,8 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {getIntervention} from '../../common/actions';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {fireEvent} from '../../utils/fire-custom-event'
-
+import {fireEvent} from '../../utils/fire-custom-event';
+import {isJsonStrMatch} from '../../utils/utils';
 
 @customElement('pd-indicators')
 export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitElement)) {
@@ -53,7 +52,7 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
   @property() private disaggregations: Disaggregation[] = [];
   @property() pdOutputId!: string;
   @property({type: Boolean})
-  editMode!: boolean;
+  readonly!: boolean;
 
   /** On create/edit indicator only sections already saved on the intervention can be selected */
   set interventionSections(ids: string[]) {
@@ -92,11 +91,7 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
       <div class="row-h align-items-center header">
         <div class="heading flex-auto">
           PD Indicators
-          <iron-icon
-            icon="add-box"
-            @click="${() => this.openIndicatorDialog()}"
-            ?hidden="${!this.editMode}"
-          ></iron-icon>
+          <iron-icon icon="add-box" @click="${() => this.openIndicatorDialog()}" ?hidden="${this.readonly}"></iron-icon>
         </div>
         <div class="heading number-data flex-none">Baseline</div>
         <div class="heading number-data flex-none">Target</div>
@@ -120,7 +115,7 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
               <div class="text number-data flex-none">
                 ${indicator.target.v || '-'}
               </div>
-              <div class="hover-block" ?hidden="${!this.editMode}">
+              <div class="hover-block" ?hidden="${this.readonly}">
                 <paper-icon-button
                   icon="icons:create"
                   ?hidden="${!indicator.is_active}"
