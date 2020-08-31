@@ -15,8 +15,7 @@ import {
 import {openDialog} from '../../utils/dialog';
 import './modals/indicator-dialog/indicator-dialog';
 import get from 'lodash-es/get';
-import {isJsonStrMatch} from '../../../../../utils/utils';
-import {filterByIds} from '../../utils/utils';
+import {filterByIds, isJsonStrMatch} from '../../utils/utils';
 import EnvironmentFlagsMixin from '../../common/mixins/environment-flags-mixin';
 import {IndicatorDialogData} from './modals/indicator-dialog/types';
 import cloneDeep from 'lodash-es/cloneDeep';
@@ -26,8 +25,7 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {getIntervention} from '../../common/actions';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {fireEvent} from '../../utils/fire-custom-event'
-
+import {fireEvent} from '../../utils/fire-custom-event';
 
 @customElement('pd-indicators')
 export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitElement)) {
