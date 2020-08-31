@@ -21,9 +21,7 @@ import {
   selectProgrammeManagementActivityPermissions
 } from './effectiveEfficientProgrammeMgmt.selectors';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
-import {Permission} from '../../common/models/intervention.types';
-import {ProgrammeManagementActivityPermissions} from './effectiveEfficientProgrammeMgmt.models';
-import {AnyObject} from '../../common/models/globals.types';
+import {AnyObject, RootState} from '../../common/models/globals.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 
 const customStyles = html`
@@ -133,14 +131,14 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
     super.connectedCallback();
   }
 
-  stateChanged(state: any) {
+  stateChanged(state: RootState) {
     if (!state.interventions.current) {
       return;
     }
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'results')) {
       return;
     }
-    this.interventionId = state.interventions.current.id;
+    this.interventionId = state.interventions.current.id!;
     this.data = selectProgrammeManagement(state);
     this.originalData = cloneDeep(this.data);
 

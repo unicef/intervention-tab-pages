@@ -17,7 +17,7 @@ import {patchIntervention} from '../../common/actions';
 import isEmpty from 'lodash-es/isEmpty';
 import get from 'lodash-es/get';
 import {isJsonStrMatch} from '../../utils/utils';
-import {LocationObject} from '../../common/models/globals.types';
+import {LocationObject, RootState} from '../../common/models/globals.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 
 /**
@@ -69,10 +69,7 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Geographical Coverage">
-
-        <div slot="panel-btns">
-          ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
-        </div>
+        <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="flex-c layout-horizontal row-padding-v">
           <etools-dropdown-multi
@@ -124,7 +121,7 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
     this.createDialog();
   }
 
-  stateChanged(state: any) {
+  stateChanged(state: RootState) {
     if (!state.interventions.current) {
       return;
     }

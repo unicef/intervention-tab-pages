@@ -16,6 +16,7 @@ import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {patchIntervention} from '../../common/actions';
 import cloneDeep from 'lodash-es/cloneDeep';
+import {RootState} from '../../common/models/globals.types';
 
 /**
  * @customElement
@@ -43,10 +44,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Document Details">
-
-        <div slot="panel-btns">
-          ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
-        </div>
+        <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="row-padding-v">
           <paper-input
@@ -125,7 +123,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
     super.connectedCallback();
   }
 
-  stateChanged(state: any) {
+  stateChanged(state: RootState) {
     if (!state.interventions.current) {
       return;
     }

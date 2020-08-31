@@ -7,6 +7,7 @@ import {selectBudgetSummary} from './budgetSummary.selectors';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {RootState} from '../../common/models/globals.types';
 import get from 'lodash-es/get';
 
 /**
@@ -150,7 +151,7 @@ export class BudgetSummaryEl extends connect(getStore())(LitElement) {
     super.connectedCallback();
   }
 
-  public stateChanged(state: any) {
+  public stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'results')) {
       return;
     }

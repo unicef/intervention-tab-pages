@@ -5,7 +5,13 @@ import '@polymer/iron-icons';
 import {Indicator, Intervention} from '../../common/models/intervention.types';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
-import {Disaggregation, DisaggregationValue, LocationObject, Section} from '../../common/models/globals.types';
+import {
+  Disaggregation,
+  DisaggregationValue,
+  LocationObject,
+  Section,
+  RootState
+} from '../../common/models/globals.types';
 import {openDialog} from '../../utils/dialog';
 import './modals/indicator-dialog/indicator-dialog';
 import get from 'lodash-es/get';
@@ -20,7 +26,8 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {getIntervention} from '../../common/actions';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {fireEvent} from '../../utils/fire-custom-event';
+import {fireEvent} from '../../utils/fire-custom-event'
+
 
 @customElement('pd-indicators')
 export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitElement)) {
@@ -174,7 +181,7 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
     `;
   }
 
-  stateChanged(state: any): void {
+  stateChanged(state: RootState): void {
     this.sections = (state.commonData && state.commonData.sections) || [];
     this.locations = (state.commonData && state.commonData.locations) || [];
     this.disaggregations = (state.commonData && state.commonData.disaggregations) || [];

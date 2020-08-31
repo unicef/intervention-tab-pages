@@ -22,6 +22,7 @@ import './pd-activities';
 import './modals/pd-output-dialog';
 import './modals/cp-output-dialog';
 import '../../common/components/comments/comments-dialog';
+import {RootState} from '../../common/models/globals.types';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {openDialog} from '../../utils/dialog';
 
@@ -221,7 +222,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
     //   });
   }
 
-  stateChanged(state: any) {
+  stateChanged(state: RootState) {
     this.resultLinks = selectInterventionResultLinks(state);
     this.permissions = selectResultLinksPermissions(state);
     this.interventionId = selectInterventionId(state);

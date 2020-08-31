@@ -23,7 +23,7 @@ import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {property} from '@polymer/decorators';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
-import {AnyObject} from '../../../common/models/globals.types.js';
+import {AnyObject, RootState} from '../../../common/models/globals.types.js';
 import {isEmptyObject} from '../../../utils/utils.js';
 import {getStore} from '../../../utils/redux-store-access.js';
 
@@ -155,7 +155,7 @@ class EditHruDialog extends connect(getStore())(PolymerElement) {
     return ['intervDataChanged(interventionStart, interventionId)'];
   }
 
-  stateChanged(_state: any) {
+  stateChanged(_state: RootState) {
     // @lajos in ammendment will be used!
     this.inAmendment = false;
     // original:

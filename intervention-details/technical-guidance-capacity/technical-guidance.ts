@@ -6,6 +6,7 @@ import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {Permission} from '../../common/models/intervention.types';
+import {RootState} from '../../common/models/globals.types';
 import {TechnicalDetails, TechnicalDetailsPermissions} from './technicalGuidance.models';
 import {selectTechnicalDetails, selectTechnicalDetailsPermissions} from './technicalGuidance.selectors';
 import {patchIntervention} from '../../common/actions';
@@ -39,9 +40,7 @@ export class TechnicalGuidance extends connect(getStore())(ComponentBaseMixin(Li
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Technical Guidance, Capacity Development, Miscellaneous">
-        <div slot="panel-btns">
-          ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
-        </div>
+        <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="row-padding-v">
           <paper-textarea
@@ -117,7 +116,7 @@ export class TechnicalGuidance extends connect(getStore())(ComponentBaseMixin(Li
     super.connectedCallback();
   }
 
-  stateChanged(state: any) {
+  stateChanged(state: RootState) {
     if (!state.interventions.current) {
       return;
     }
