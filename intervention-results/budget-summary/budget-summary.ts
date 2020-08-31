@@ -178,7 +178,6 @@ export class BudgetSummaryEl extends connect(getStore())(FrNumbersConsistencyMix
   @property({type: Object})
   budgetSummary!: BudgetSummary;
 
-  @property({type: Object})
   intervention!: Intervention;
 
   @property({type: String})
