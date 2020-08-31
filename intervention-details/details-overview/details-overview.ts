@@ -8,6 +8,7 @@ import {selectInterventionOverview} from './interventionOverview.selectors';
 import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {layoutFlex} from '../../common/styles/flex-layout-styles';
+import {RootState} from '../../common/models/globals.types';
 
 /**
  * @customElement
@@ -82,16 +83,12 @@ export class DetailsOverview extends connect(getStore())(LitElement) {
             </div>
             <div class="flex-1">
               <span>
-                <label class="input-label">
-                  ${this._getText(this.interventionOverview.contingency_pd)}
-                </label>
+                <label class="input-label"> ${this._getText(this.interventionOverview.contingency_pd)} </label>
               </span>
             </div>
             <div class="flex-1">
               <span>
-                <label class="input-label">
-                  ${this._getText(this.interventionOverview.humanitarian_flag)}
-                </label>
+                <label class="input-label"> ${this._getText(this.interventionOverview.humanitarian_flag)} </label>
               </span>
             </div>
           </div>
@@ -107,7 +104,7 @@ export class DetailsOverview extends connect(getStore())(LitElement) {
     super.connectedCallback();
   }
 
-  public stateChanged(state: any) {
+  public stateChanged(state: RootState) {
     if (state.interventions.current) {
       this.interventionOverview = selectInterventionOverview(state);
     }

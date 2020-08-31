@@ -19,4 +19,5 @@ export class FinancialComponentPermissions extends ModelsBase {
   }
   cash_transfer_modalities = true;
   hq_support_cost = true;
+  planned_budget = true;
 }

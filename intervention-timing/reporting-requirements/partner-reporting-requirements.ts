@@ -24,7 +24,7 @@ import {HumanitarianReportingReqUnicefEl} from './hr/humanitarian-reporting-req-
 import {QuarterlyReportingRequirementsEL} from './qpr/quarterly-reporting-requirements';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {AnyObject} from '../../common/models/globals.types';
+import {AnyObject, RootState} from '../../common/models/globals.types';
 import {ReportingRequirementsPermissions} from './reportingRequirementsPermissions.models';
 import {Permission} from '../../common/models/intervention.types';
 import {selectReportingRequirementsPermissions} from './reportingRequirementsPermissions.selectors';
@@ -216,7 +216,7 @@ class PartnerReportingRequirements extends connect(getStore())(PolymerElement) {
   @property({type: Object})
   intervention!: AnyObject;
 
-  stateChanged(state: any) {
+  stateChanged(state: RootState) {
     if (!get(state, 'interventions.current')) {
       return;
     }

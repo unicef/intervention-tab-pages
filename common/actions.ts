@@ -12,7 +12,10 @@ export const updateCurrentIntervention = (intervention: AnyObject) => {
   };
 };
 
-export const getIntervention = (interventionId: string) => (dispatch: any) => {
+export const getIntervention = (interventionId?: string) => (dispatch: any, getState: any) => {
+  if (!interventionId) {
+    interventionId = getState().app.routeDetails.params.interventionId;
+  }
   return _sendRequest({
     endpoint: getEndpoint(interventionEndpoints.intervention, {interventionId: interventionId})
   }).then((intervention: Intervention) => {
@@ -40,9 +43,6 @@ export const patchIntervention = (interventionChunck: any, interventionId?: stri
     body: interventionChunck,
     method: 'PATCH'
   }).then((intervention: Intervention) => {
-    dispatch({
-      type: 'UPDATE_CURRENT_INTERVENTION',
-      current: intervention
-    });
+    dispatch(updateCurrentIntervention(intervention));
   });
 };

@@ -14,10 +14,9 @@ import {DocumentDetailsPermissions, DocumentDetails} from './documentDetails.mod
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
-import {validateRequiredFields} from '../../utils/validation-helper';
-import {isJsonStrMatch} from '../../utils/utils';
 import {patchIntervention} from '../../common/actions';
 import cloneDeep from 'lodash-es/cloneDeep';
+import {RootState} from '../../common/models/globals.types';
 
 /**
  * @customElement
@@ -45,11 +44,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Document Details">
-        <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
-
-        <div slot="panel-btns">
-          ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
-        </div>
+        <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="row-padding-v">
           <paper-input
@@ -122,16 +117,13 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
   originalData = {};
 
   @property({type: Boolean})
-  showLoading = false;
-
-  @property({type: Boolean})
   canEditDocumentDetails!: boolean;
 
   connectedCallback() {
     super.connectedCallback();
   }
 
-  stateChanged(state: any) {
+  stateChanged(state: RootState) {
     if (!state.interventions.current) {
       return;
     }
@@ -141,22 +133,15 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
   }
 
   private sePermissions(state: any) {
-    const newPermissions = selectDocumentDetailsPermissions(state);
-    if (!isJsonStrMatch(this.permissions, newPermissions)) {
-      this.permissions = newPermissions;
-      this.set_canEditAtLeastOneField(this.permissions.edit);
-    }
+    this.permissions = selectDocumentDetailsPermissions(state);
+    this.set_canEditAtLeastOneField(this.permissions.edit);
   }
 
-  validate() {
-    return validateRequiredFields(this);
-  }
-
-  save() {
+  saveData() {
     if (!this.validate()) {
-      return;
+      return Promise.resolve(false);
     }
-    getStore()
+    return getStore()
       .dispatch(patchIntervention(this.data))
       .then(() => {
         this.editMode = false;

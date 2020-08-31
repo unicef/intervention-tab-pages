@@ -6,10 +6,10 @@ import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {Permission} from '../../common/models/intervention.types';
+import {RootState} from '../../common/models/globals.types';
 import {TechnicalDetails, TechnicalDetailsPermissions} from './technicalGuidance.models';
 import {selectTechnicalDetails, selectTechnicalDetailsPermissions} from './technicalGuidance.selectors';
 import {patchIntervention} from '../../common/actions';
-import {validateRequiredFields} from '../../utils/validation-helper';
 import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-loading/etools-loading';
 import cloneDeep from 'lodash-es/cloneDeep';
@@ -24,7 +24,7 @@ export class TechnicalGuidance extends connect(getStore())(ComponentBaseMixin(Li
   }
 
   render() {
-    if (!this.originalData) {
+    if (!this.data) {
       return html`<style>
           ${sharedStyles}
         </style>
@@ -40,11 +40,7 @@ export class TechnicalGuidance extends connect(getStore())(ComponentBaseMixin(Li
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Technical Guidance, Capacity Development, Miscellaneous">
-        <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
-
-        <div slot="panel-btns">
-          ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
-        </div>
+        <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="row-padding-v">
           <paper-textarea
@@ -52,7 +48,7 @@ export class TechnicalGuidance extends connect(getStore())(ComponentBaseMixin(Li
             label="Technical Guidance"
             always-float-label
             placeholder="—"
-            .value="${this.originalData.technical_guidance}"
+            .value="${this.data.technical_guidance}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.technical_guidance)}"
             ?required="${this.permissions.required.technical_guidance}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'technical_guidance')}"
@@ -67,7 +63,7 @@ export class TechnicalGuidance extends connect(getStore())(ComponentBaseMixin(Li
             type="text"
             always-float-label
             placeholder="—"
-            .value="${this.originalData.capacity_development}"
+            .value="${this.data.capacity_development}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.capacity_development)}"
             ?required="${this.permissions.required.capacity_development}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'capacity_development')}"
@@ -82,7 +78,7 @@ export class TechnicalGuidance extends connect(getStore())(ComponentBaseMixin(Li
             type="text"
             always-float-label
             placeholder="—"
-            .value="${this.originalData.other_partners_involved}"
+            .value="${this.data.other_partners_involved}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.other_partners_involved)}"
             ?required="${this.permissions.required.other_partners_involved}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'other_partners_involved')}"
@@ -97,7 +93,7 @@ export class TechnicalGuidance extends connect(getStore())(ComponentBaseMixin(Li
             type="text"
             always-float-label
             placeholder="—"
-            .value="${this.originalData.other_info}"
+            .value="${this.data.other_info}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.other_info)}"
             ?required="${this.permissions.required.other_info}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'other_info')}"
@@ -111,41 +107,30 @@ export class TechnicalGuidance extends connect(getStore())(ComponentBaseMixin(Li
   }
 
   @property({type: Object})
-  originalData!: TechnicalDetails;
+  data!: TechnicalDetails;
 
   @property({type: Object})
   permissions!: Permission<TechnicalDetailsPermissions>;
-
-  @property({type: Boolean})
-  showLoading = false;
 
   connectedCallback() {
     super.connectedCallback();
   }
 
-  stateChanged(state: any) {
+  stateChanged(state: RootState) {
     if (!state.interventions.current) {
       return;
     }
-    this.originalData = selectTechnicalDetails(state);
+    this.data = selectTechnicalDetails(state);
+    this.originalData = cloneDeep(this.data);
     this.permissions = selectTechnicalDetailsPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
   }
 
-  cancel() {
-    this.originalData = cloneDeep(this.originalData);
-    this.editMode = false;
-  }
-
-  validate() {
-    return validateRequiredFields(this);
-  }
-
-  save() {
+  saveData() {
     if (!this.validate()) {
-      return;
+      return Promise.resolve(false);
     }
-    getStore()
+    return getStore()
       .dispatch(patchIntervention(this.data))
       .then(() => {
         this.editMode = false;

@@ -51,6 +51,8 @@ export class EtoolsTabs extends LitElement {
         paper-tab .tab-content {
           color: var(--secondary-text-color);
           text-transform: uppercase;
+          min-width: 120px;
+          text-align: center;
         }
 
         paper-tab.iron-selected .tab-content {
@@ -80,7 +82,7 @@ export class EtoolsTabs extends LitElement {
     return html`
       <paper-tab name="${item.tab}" link ?hidden="${item.hidden}" ?disabled="${item.disabled}">
         <span class="tab-content">
-          ${item.tabLabel} ${item.showTabCounter ? html`(item.counter)` : ''}
+          ${item.tabLabel} ${item.showTabCounter ? html`(${item.counter})` : ''}
         </span>
       </paper-tab>
     `;

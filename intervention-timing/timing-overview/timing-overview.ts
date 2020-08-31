@@ -9,6 +9,7 @@ import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {layoutFlex} from '../../common/styles/flex-layout-styles';
 import {formatDateShortMonth} from '../../utils/date-utils';
+import {RootState} from '../../common/models/globals.types';
 
 /**
  * @customElement
@@ -103,9 +104,7 @@ export class TimingOverview extends connect(getStore())(LitElement) {
             </div>
             <div class="flex-1">
               <span>
-                <label class="input-label">
-                  -
-                </label>
+                <label class="input-label"> - </label>
               </span>
             </div>
             <div class="flex-1">
@@ -138,9 +137,7 @@ export class TimingOverview extends connect(getStore())(LitElement) {
             </div>
             <div class="flex-1">
               <span>
-                <label class="input-label">
-                  -
-                </label>
+                <label class="input-label"> - </label>
               </span>
             </div>
           </div>
@@ -156,7 +153,7 @@ export class TimingOverview extends connect(getStore())(LitElement) {
     super.connectedCallback();
   }
 
-  public stateChanged(state: any) {
+  public stateChanged(state: RootState) {
     if (state.interventions.current) {
       this.timingOverview = selectTimingOverview(state);
     }

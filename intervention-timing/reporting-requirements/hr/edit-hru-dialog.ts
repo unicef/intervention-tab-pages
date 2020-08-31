@@ -12,7 +12,7 @@ import CONSTANTS from '../../../common/constants';
 import {fireEvent} from '../../../utils/fire-custom-event';
 import {gridLayoutStylesPolymer} from '../../../common/styles/grid-layout-styles-polymer';
 import {buttonsStylesPolymer} from '../styles/buttons-styles-polymer';
-import {requiredFieldStarredStyles} from '../../../common/styles/required-field-styles';
+import {requiredFieldStarredStylesPolymer} from '../../../common/styles/required-field-styles';
 import {prepareDatepickerDate, convertDate} from '../../../utils/date-utils';
 // this was refactored
 // import EndpointsMixin from '../mixins/endpoints-mixin';
@@ -23,7 +23,7 @@ import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {property} from '@polymer/decorators';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
-import {AnyObject} from '../../../common/models/globals.types.js';
+import {AnyObject, RootState} from '../../../common/models/globals.types.js';
 import {isEmptyObject} from '../../../utils/utils.js';
 import {getStore} from '../../../utils/redux-store-access.js';
 
@@ -35,7 +35,7 @@ import {getStore} from '../../../utils/redux-store-access.js';
 class EditHruDialog extends connect(getStore())(PolymerElement) {
   static get template() {
     return html`
-      ${requiredFieldStarredStyles}${gridLayoutStylesPolymer()}${buttonsStylesPolymer()}
+      ${requiredFieldStarredStylesPolymer}${gridLayoutStylesPolymer()}${buttonsStylesPolymer()}
       <style include="data-table-styles">
         *[hidden] {
           display: none !important;
@@ -155,7 +155,7 @@ class EditHruDialog extends connect(getStore())(PolymerElement) {
     return ['intervDataChanged(interventionStart, interventionId)'];
   }
 
-  stateChanged(_state: any) {
+  stateChanged(_state: RootState) {
     // @lajos in ammendment will be used!
     this.inAmendment = false;
     // original:

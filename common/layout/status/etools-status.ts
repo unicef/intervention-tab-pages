@@ -3,15 +3,7 @@ import '@polymer/iron-icons/iron-icons';
 import {completedStatusIcon} from './status-icons';
 import {layoutHorizontal, layoutCenter} from '../../styles/flex-layout-styles';
 
-export interface EtoolsStatusItem {
-  status?: string;
-  label?: string;
-}
-
-export interface EtoolsStatusModel extends EtoolsStatusItem {
-  // some statuses may share the same position
-  statusOptions?: EtoolsStatusItem[];
-}
+export type EtoolsStatusItem = [string, string];
 
 /**
  * @LitElement
@@ -21,15 +13,22 @@ export interface EtoolsStatusModel extends EtoolsStatusItem {
 @customElement('etools-status-lit')
 export class EtoolsStatus extends LitElement {
   public render() {
+    const activeStatusIndex: number = this.activeStatus
+      ? this.statuses.findIndex(([status]: EtoolsStatusItem) => status === this.activeStatus)
+      : 0;
+
     // language=HTML
     return html`
       <style>
         :host {
           ${layoutHorizontal}
           ${layoutCenter}
-          border-bottom: 1px solid var(--dark-divider-color);
-          padding: 24px;
+          border-bottom: 1px solid var(--light-divider-color);
+          border-top: 1px solid var(--light-divider-color);
+          padding: 14px;
           background-color: var(--primary-background-color);
+          margin-top: 4px;
+          justify-content: center;
         }
 
         .status {
@@ -71,91 +70,26 @@ export class EtoolsStatus extends LitElement {
           fill: #ffffff;
         }
       </style>
-      ${this.filteredStatuses.map((item: any, index: number) => this.getStatusHtml(item, index))}
+      ${this.statuses.map((item: any, index: number) => this.getStatusHtml(item, index, activeStatusIndex))}
     `;
   }
 
   @property({type: String})
-  activeStatus = 'submitted-accepted';
+  activeStatus!: string;
 
-  @property({type: Number})
-  activeStatusIndex = 0;
-
-  // init with a default list of statuses (for testing)
   @property({type: Array})
-  statuses: EtoolsStatusModel[] = [
-    {
-      status: 'draft',
-      label: 'Draft'
-    },
-    {
-      status: 'submitted-accepted',
-      label: 'Submitted/Accepted'
-    },
-    {
-      statusOptions: [
-        // some statuses may share the same position
-        {
-          status: 'report-submitted',
-          label: 'Report submitted'
-        },
-        {
-          status: 'rejected',
-          label: 'Rejected'
-        }
-      ]
-    },
-    {
-      status: 'completed',
-      label: 'Completed'
-    }
-  ];
+  statuses: EtoolsStatusItem[] = [];
 
-  get filteredStatuses() {
-    return this.filterStatuses(this.statuses, this.activeStatus);
-  }
-
-  getStatusHtml(item: any, index: number) {
-    const completed = this.isCompleted(index, this.activeStatusIndex);
+  getStatusHtml(item: EtoolsStatusItem, index: number, activeStatusIndex: number) {
+    const completed = this.isCompleted(index, activeStatusIndex);
     return html`
-      <div class="status ${this.getStatusClasses(index, this.activeStatusIndex)}">
+      <div class="status ${this.getStatusClasses(index, activeStatusIndex)}">
         <span class="icon">
           ${completed ? html`${completedStatusIcon}` : html`${this.getBaseOneIndex(index)}`}
         </span>
-        <span class="label">${item.label}</span>
+        <span class="label">${item[1]}</span>
       </div>
     `;
-  }
-
-  /**
-   * Filter statuses list and prepare the ones that will be displayed
-   * @param statuses
-   * @param activeStatus
-   */
-  filterStatuses(statuses: EtoolsStatusModel[], activeStatus: string): EtoolsStatusItem[] {
-    let displayStatuses: EtoolsStatusItem[] = [];
-    if (statuses.length > 0) {
-      displayStatuses = statuses.map((s: EtoolsStatusModel, index: number) => {
-        if (s.statusOptions && s.statusOptions.length > 0) {
-          const aStatus: EtoolsStatusModel | undefined = s.statusOptions.find(
-            (st: EtoolsStatusModel) => st.status === activeStatus
-          );
-          // return the active status from a list of statuses that can share the same position
-          // if active status is not in this list, return first IEtoolsStatusItem
-          if (aStatus) {
-            // set active status index
-            this.activeStatusIndex = index;
-          }
-          return aStatus ? aStatus : s.statusOptions[0];
-        } else {
-          if (s.status === activeStatus) {
-            this.activeStatusIndex = index;
-          }
-          return s;
-        }
-      });
-    }
-    return displayStatuses;
   }
 
   /**

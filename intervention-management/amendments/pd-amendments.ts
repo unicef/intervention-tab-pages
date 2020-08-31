@@ -11,7 +11,7 @@ import './add-amendment-dialog';
 import {AddAmendmentDialog} from './add-amendment-dialog';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {AnyObject, LabelAndValue} from '../../common/models/globals.types';
+import {AnyObject, LabelAndValue, RootState} from '../../common/models/globals.types';
 import {prettyDate} from '../../utils/date-utils';
 import {getFileNameFromURL, isJsonStrMatch} from '../../utils/utils';
 import {selectAmendmentsPermissions} from './pd-amendments.selectors';
@@ -69,39 +69,21 @@ export class PdAmendments extends connect(getStore())(LitElement) {
         </div>
         <div class="p-relative" id="amendments-wrapper">
           <etools-data-table-header id="listHeader" no-collapse no-title ?hidden="${!this.amendments.length}">
-            <etools-data-table-column class="col-1">
-              Ref #
-            </etools-data-table-column>
-            <etools-data-table-column class="col-2">
-              Signed Date
-            </etools-data-table-column>
-            <etools-data-table-column class="col-3">
-              Amendment Types
-            </etools-data-table-column>
-            <etools-data-table-column class="col-2">
-              Signed Amendment
-            </etools-data-table-column>
-            <etools-data-table-column class="flex-c">
-              Internal / PRC Reviews
-            </etools-data-table-column>
-            <etools-data-table-column class="flex-c">
-              Other Info
-            </etools-data-table-column>
+            <etools-data-table-column class="col-1"> Ref # </etools-data-table-column>
+            <etools-data-table-column class="col-2"> Signed Date </etools-data-table-column>
+            <etools-data-table-column class="col-3"> Amendment Types </etools-data-table-column>
+            <etools-data-table-column class="col-2"> Signed Amendment </etools-data-table-column>
+            <etools-data-table-column class="flex-c"> Internal / PRC Reviews </etools-data-table-column>
+            <etools-data-table-column class="flex-c"> Other Info </etools-data-table-column>
           </etools-data-table-header>
 
           ${this.amendments.map(
             (item: AnyObject) => html`
               <etools-data-table-row no-collapse>
                 <div slot="row-data" class="layout-horizontal">
-                  <span class="col-data col-1">
-                    ${item.amendment_number}
-                  </span>
-                  <span class="col-data col-2">
-                    ${prettyDate(item.signed_date)}
-                  </span>
-                  <span class="col-data col-3">
-                    ${this._getReadonlyAmendmentTypes(item.types)}
-                  </span>
+                  <span class="col-data col-1"> ${item.amendment_number} </span>
+                  <span class="col-data col-2"> ${prettyDate(item.signed_date)} </span>
+                  <span class="col-data col-3"> ${this._getReadonlyAmendmentTypes(item.types)} </span>
                   <span class="col-data col-2">
                     <iron-icon icon="attachment" class="attachment"></iron-icon>
                     <span class="break-word file-label">
@@ -159,7 +141,7 @@ export class PdAmendments extends connect(getStore())(LitElement) {
   @property({type: Object})
   intervention!: AnyObject;
 
-  stateChanged(state: AnyObject) {
+  stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'management')) {
       return;
     }

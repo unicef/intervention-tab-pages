@@ -16,7 +16,7 @@ import './fund-reservations-display/fund-reservations-display';
 import './monitoring-visits-list/monitoring-visits-list';
 import {MinimalAgreement} from '../common/models/agreement.types';
 import {pageIsNotCurrentlyActive} from '../utils/common-methods';
-import {AnyObject} from '../common/models/globals.types';
+import {AnyObject, RootState} from '../common/models/globals.types';
 
 /**
  * @customElement
@@ -256,7 +256,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
   @property({type: Boolean})
   isUnicefUser = false;
 
-  stateChanged(state: any) {
+  stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'overview')) {
       return;
     }

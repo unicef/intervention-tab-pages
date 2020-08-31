@@ -69,10 +69,10 @@ export class CpOutputDialog extends LitElement {
         dialog-title="${this.dialogTitle} "
         @confirm-btn-clicked="${() => this.processRequest()}"
         @close="${this.onClose}"
+        ?show-spinner="${this.loadingInProcess}"
         .okBtnText="Save"
         no-padding
       >
-        <etools-loading ?active="${this.loadingInProcess}" loading-text="Loading..."></etools-loading>
         <div class="container layout vertical">
           ${!this.cpOutputId
             ? html`

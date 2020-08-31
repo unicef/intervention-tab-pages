@@ -6,7 +6,7 @@ import '@unicef-polymer/etools-data-table/etools-data-table';
 import {createDynamicDialog} from '@unicef-polymer/etools-dialog/dynamic-dialog';
 import '../../../common/layout/icons-actions';
 import './add-edit-special-rep-req';
-import CommonMixin from '../mixins/common-mixin';
+import CommonMixin from '../../../common/mixins/common-mixin';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
 import {gridLayoutStylesPolymer} from '../../../common/styles/grid-layout-styles-polymer';
 import {buttonsStylesPolymer} from '../styles/buttons-styles-polymer';

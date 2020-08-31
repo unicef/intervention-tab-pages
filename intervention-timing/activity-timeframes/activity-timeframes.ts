@@ -10,7 +10,7 @@ import {
   InterventionQuarter,
   ResultLinkLowerResult
 } from '../../common/models/intervention.types';
-import {GenericObject} from '../../common/models/globals.types';
+import {GenericObject, RootState} from '../../common/models/globals.types';
 import {ActivityTime, groupByYear, GroupedActivityTime, serializeTimeFrameData} from '../../utils/timeframes.helper';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {ActivityTimeframesStyles} from './activity-timeframes.styles';
@@ -71,7 +71,7 @@ export class ActivityTimeframes extends connect(getStore())(LitElement) {
     `;
   }
 
-  stateChanged(state: any): void {
+  stateChanged(state: RootState): void {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'timing')) {
       return;
     }

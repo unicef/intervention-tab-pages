@@ -1,5 +1,5 @@
 import {LitElement, property} from 'lit-element';
-import {Constructor} from '../models/globals.types';
+import {Constructor, AnyObject} from '../models/globals.types';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {createDynamicDialog, removeDialog} from '@unicef-polymer/etools-dialog/dynamic-dialog';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
@@ -28,6 +28,9 @@ function RepeatableDataSetsMixin<T extends Constructor<LitElement>>(baseClass: T
 
     @property({type: Boolean})
     editMode!: boolean;
+
+    @property({type: Object})
+    dataSetModel!: AnyObject | null;
 
     private _deleteDialog!: EtoolsDialog;
     private elToDeleteIndex!: number;
@@ -171,7 +174,46 @@ function RepeatableDataSetsMixin<T extends Constructor<LitElement>>(baseClass: T
     public _emptyList(listLength: number) {
       return listLength === 0;
     }
+
+    public _getItemModelObject(addNull: any) {
+      if (addNull) {
+        return null;
+      }
+      if (this.dataSetModel === null) {
+        const newObj: AnyObject = {};
+        if (this.dataItems.length > 0 && typeof this.dataItems[0] === 'object') {
+          Object.keys(this.dataItems[0]).forEach(function (property) {
+            newObj[property] = ''; // (this.model[0][property]) ? this.model[0][property] :
+          });
+        }
+
+        return newObj;
+      } else {
+        return JSON.parse(JSON.stringify(this.dataSetModel));
+      }
+    }
+
+    public _addElement(addNull?: boolean) {
+      if (!this.editMode) {
+        return;
+      }
+      this._makeSureDataItemsAreValid();
+
+      const newObj = this._getItemModelObject(addNull);
+      this.dataItems = [...this.dataItems, newObj];
+    }
+
+     /**
+     * Check is dataItems is Array, if not init with empty Array
+     */
+    public _makeSureDataItemsAreValid(dataItems?: any) {
+      const items = dataItems ? dataItems : this.dataItems;
+      if (!Array.isArray(items)) {
+        this.dataItems = [];
+      }
+    }
   }
+
   return RepeatableDataSetsClass;
 }
 

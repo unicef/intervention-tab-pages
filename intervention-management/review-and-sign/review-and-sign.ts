@@ -23,7 +23,7 @@ import {connect} from 'pwa-helpers/connect-mixin';
 import {isJsonStrMatch} from '../../utils/utils';
 
 import {Permission} from '../../common/models/intervention.types';
-import {MinimalUser} from '../../common/models/globals.types';
+import {MinimalUser, RootState} from '../../common/models/globals.types';
 import {selectReviewData, selectReviewDataPermissions} from './managementDocument.selectors';
 import {ReviewDataPermission, ReviewData} from './managementDocument.model';
 import {getEndpoint} from '../../utils/endpoint-helper';
@@ -200,6 +200,9 @@ export class InterventionReviewAndSign extends connect(getStore())(
               ?required="${this.permissions.required.partner_authorized_officer_signatory}"
               auto-validate
               error-message="Please select Partner Authorized Officer"
+              @etools-selected-item-changed="${({detail}: CustomEvent) =>
+                this.selectedItemChanged(detail, 'partner_authorized_officer_signatory', 'value')}"
+              trigger-value-change-event
             >
             </etools-dropdown>
           </div>
@@ -267,6 +270,9 @@ export class InterventionReviewAndSign extends connect(getStore())(
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.unicef_signatory)}"
               auto-validate
               error-message="Please select UNICEF user"
+              @etools-selected-item-changed="${({detail}: CustomEvent) =>
+                this.selectedItemChanged(detail, 'unicef_signatory')}"
+              trigger-value-change-event
             >
             </etools-dropdown>
           </div>
@@ -347,7 +353,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
   @property({type: String})
   uploadEndpoint: string = getEndpoint(interventionEndpoints.attachmentsUpload).url;
 
-  stateChanged(state: any) {
+  stateChanged(state: RootState) {
     if (!isJsonStrMatch(this.signedByUnicefUsers, state.commonData!.unicefUsersData)) {
       this.signedByUnicefUsers = cloneDeep(state.commonData!.unicefUsersData);
     }
@@ -357,6 +363,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
       this.data = selectReviewData(state);
       this.originalData = cloneDeep(this.data);
       this.permissions = selectReviewDataPermissions(state);
+      this.set_canEditAtLeastOneField(this.permissions.edit);
       if (this.data.submitted_to_prc) {
         this._lockSubmitToPrc = true;
       } else {
@@ -364,7 +371,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
       }
       const agreements = state.agreements.list;
       if (!isEmpty(agreements)) {
-        const agreementData = this.filterAgreementsById(agreements, this.data.agreement);
+        const agreementData = this.filterAgreementsById(agreements!, this.data.agreement);
         this.agreementAuthorizedOfficers = this.getAuthorizedOfficersList(agreementData);
       }
     }
@@ -447,7 +454,11 @@ export class InterventionReviewAndSign extends connect(getStore())(
   }
 
   _isSubmittedToPrcCheckReadonly(isPrcDocEditable: boolean, lockSubmitToPrc: boolean) {
-    return !isPrcDocEditable || lockSubmitToPrc;
+    if (this.editMode) {
+      return !isPrcDocEditable || lockSubmitToPrc;
+    }
+    // if not in edit mode it is always disabled
+    return true;
   }
 
   _interventionDocTypeChanged(interventionDocumentType: string) {
@@ -506,12 +517,12 @@ export class InterventionReviewAndSign extends connect(getStore())(
     this.data = {...this.data, submitted_to_prc: detail.value} as ReviewData;
   }
 
-  save() {
+  saveData() {
     if (!this.validate()) {
-      return;
+      return Promise.resolve(false);
     }
 
-    getStore()
+    return getStore()
       .dispatch(patchIntervention(this.data))
       .then(() => {
         this.editMode = false;

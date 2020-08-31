@@ -17,7 +17,7 @@ import {validateRequiredFields} from '../../utils/validation-helper';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
 import {patchIntervention} from '../../common/actions';
-import {AnyObject} from '../../common/models/globals.types';
+import {AnyObject, RootState} from '../../common/models/globals.types';
 import {isJsonStrMatch} from '../../utils/utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import cloneDeep from 'lodash-es/cloneDeep';
@@ -50,7 +50,6 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Unicef Details">
-        <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
 
         <div slot="panel-btns">
           <paper-icon-button
@@ -168,9 +167,6 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
   @property({type: Boolean})
   isUnicefUser = false;
 
-  @property({type: Boolean})
-  showLoading = false;
-
   @property({type: Array})
   users_list!: AnyObject[];
 
@@ -186,7 +182,7 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
   @property({type: Array})
   cluster_list!: AnyObject[];
 
-  stateChanged(state: any) {
+  stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'details')) {
       return;
     }

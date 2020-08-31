@@ -13,11 +13,12 @@ import {LocationsPermissions} from './geographicalCoverage.models';
 import {Permission} from '../../common/models/intervention.types';
 import {selectLocationsPermissions} from './geographicalCoverage.selectors';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
-import {validateRequiredFields} from '../../utils/validation-helper';
 import {patchIntervention} from '../../common/actions';
 import isEmpty from 'lodash-es/isEmpty';
 import get from 'lodash-es/get';
 import {isJsonStrMatch} from '../../utils/utils';
+import {LocationObject, RootState} from '../../common/models/globals.types';
+import cloneDeep from 'lodash-es/cloneDeep';
 
 /**
  * @customElement
@@ -68,19 +69,15 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Geographical Coverage">
-        <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
-
-        <div slot="panel-btns">
-          ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
-        </div>
+        <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="flex-c layout-horizontal row-padding-v">
           <etools-dropdown-multi
             id="locations"
             label="Location(s)"
             placeholder="&#8212;"
-            .options="${this.data}"
-            .selectedValues="${this.originalData.flat_locations}"
+            .options="${this.allLocations}"
+            .selectedValues="${this.data.flat_locations}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.flat_locations)}"
             ?required="${this.permissions.required.flat_locations}"
             option-label="name"
@@ -95,7 +92,7 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
           <paper-button
             class="secondary-btn see-locations right-align"
             @tap="${this.openLocationsDialog}"
-            ?disabled="${this._isEmpty(this.originalData.flat_locations)}"
+            ?disabled="${this._isEmpty(this.data.flat_locations)}"
             title="See all locations"
           >
             <iron-icon icon="add"></iron-icon>
@@ -111,43 +108,39 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
   private locationsDialog!: GroupedLocationsDialog;
 
   @property({type: Array})
-  data!: any[];
+  allLocations!: LocationObject[];
 
-  @property({type: Boolean})
-  showLoading = false;
+  @property({type: Object})
+  data!: {flat_locations: string[]};
 
   @property({type: Object})
   permissions!: Permission<LocationsPermissions>;
 
   connectedCallback() {
     super.connectedCallback();
+    this.createDialog();
   }
 
-  stateChanged(state: any) {
+  stateChanged(state: RootState) {
     if (!state.interventions.current) {
       return;
     }
-    if (!isJsonStrMatch(this.data, state.commonData!.locations)) {
-      this.data = [...state.commonData!.locations];
+    if (!isJsonStrMatch(this.allLocations, state.commonData!.locations)) {
+      this.allLocations = [...state.commonData!.locations];
     }
-    if (!isJsonStrMatch(get(this.originalData, 'flat_locations'), get(state, 'interventions.current.flat_locations'))) {
-      this.originalData = {flat_locations: get(state, 'interventions.current.flat_locations')};
-    }
+    this.data = {flat_locations: get(state, 'interventions.current.flat_locations')};
+    this.originalData = cloneDeep(this.data);
     this.sePermissions(state);
   }
 
   private sePermissions(state: any) {
-    const newPermissions = selectLocationsPermissions(state);
-    if (!isJsonStrMatch(this.permissions, newPermissions)) {
-      this.permissions = newPermissions;
-      this.set_canEditAtLeastOneField(this.permissions.edit);
-    }
+    this.permissions = selectLocationsPermissions(state);
+    this.set_canEditAtLeastOneField(this.permissions.edit);
   }
 
   private openLocationsDialog() {
-    this.createDialog();
     this.locationsDialog.adminLevel = null;
-    this.locationsDialog.interventionLocationIds = this.originalData.flat_locations;
+    this.locationsDialog.interventionLocationIds = this.data.flat_locations;
     (this.locationsDialog as GroupedLocationsDialog).openDialog();
   }
 
@@ -162,15 +155,12 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
     return isEmpty(array);
   }
 
-  validate() {
-    return validateRequiredFields(this);
-  }
-
-  save() {
+  saveData() {
     if (!this.validate()) {
-      return;
+      return Promise.resolve(false);
     }
-    getStore()
+
+    return getStore()
       .dispatch(patchIntervention(this.data))
       .then(() => {
         this.editMode = false;

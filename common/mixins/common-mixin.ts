@@ -1,8 +1,8 @@
 // import {dedupingMixin} from '@polymer/polymer/lib/utils/mixin';
 // @lajos bellow 2 imported from PMP
-import {prettyDate} from '../../../utils/date-utils';
+import {prettyDate} from '../../utils/date-utils';
 import {PolymerElement} from '@polymer/polymer';
-import {Constructor, AnyObject} from '../../../common/models/globals.types';
+import {Constructor, AnyObject} from '../models/globals.types';
 
 /**
  * @polymer

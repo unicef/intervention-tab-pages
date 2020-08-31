@@ -7,6 +7,7 @@ import {selectBudgetSummary} from './budgetSummary.selectors';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {RootState} from '../../common/models/globals.types';
 import get from 'lodash-es/get';
 import FrNumbersConsistencyMixin from '../../common/mixins/fr-numbers-consistency-mixin';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
@@ -190,11 +191,8 @@ export class BudgetSummaryEl extends connect(getStore())(FrNumbersConsistencyMix
     super.connectedCallback();
   }
 
-  public stateChanged(state: any) {
-    if (!state.interventions.current) {
-      return;
-    }
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'results')) {
+  public stateChanged(state: RootState) {    
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'results') || !state.interventions.current) {
       return;
     }
     this.budgetSummary = selectBudgetSummary(state);

@@ -30,15 +30,15 @@ export class IndicatorIndicator {
 
 export class Indicator {
   // Indicator
-  id: number | null = null;
+  id: string | null = null;
   is_active = true;
   is_high_frequency = false;
   indicator: IndicatorIndicator | null = new IndicatorIndicator();
-  section: number | null = null;
-  baseline: {v?: string | number; d?: string | number} = {};
-  target: {v?: string | number; d: string | number} = {d: '1'};
+  section: string | null = null;
+  baseline: {v?: string | number | null; d?: string | number} = {};
+  target: {v?: string | number | null; d: string | number} = {d: '1'};
   means_of_verification: string | null = null;
-  locations: number[] = [];
+  locations: string[] = [];
   disaggregation: string[] = [];
 
   cluster_name: string | null = null;
@@ -123,6 +123,7 @@ export class InterventionSupplyItem {
   total_price: number | undefined = undefined;
   other_mentions = '';
   intervention = '';
+  // TODO delete
   outputs: string[] = [];
 }
 

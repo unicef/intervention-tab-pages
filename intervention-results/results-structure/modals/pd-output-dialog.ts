@@ -65,13 +65,13 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
         size="md"
         keep-dialog-open
         ?opened="${this.dialogOpened}"
+        ?show-spinner="${this.loadingInProcess}"
         dialog-title="${this.isEditDialog ? 'Edit' : 'Add'} PD Output"
         @confirm-btn-clicked="${() => this.processRequest()}"
         @close="${this.onClose}"
         .okBtnText="Save"
         no-padding
       >
-        <etools-loading ?active="${this.loadingInProcess}" loading-text="Loading..."></etools-loading>
         <div class="unassociated-warning" ?hidden="${!this.unassociated || this.hideCpOutputs}">
           <iron-icon icon="warning"></iron-icon> Please associate PD with CP Output before moving forward
         </div>
