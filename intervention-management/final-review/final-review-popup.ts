@@ -42,13 +42,13 @@ export class FinalReviewPopup extends LitElement {
         size="md"
         keep-dialog-open
         ?opened="${this.dialogOpened}"
+        ?show-spinner="${this.savingInProcess}"
         dialog-title="Final Partnership Review Attachment"
         @confirm-btn-clicked="${() => this.processRequest()}"
         @close="${this.onClose}"
         .okBtnText="Save"
         no-padding
       >
-        <etools-loading ?active="${this.savingInProcess}"></etools-loading>
         <div class="container layout vertical">
           <div class="file-upload-container">
             <etools-upload

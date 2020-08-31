@@ -34,6 +34,8 @@ export interface EtoolsEndpoints {
   comments: EtoolsEndpoint;
   resolveComment: EtoolsEndpoint;
   deleteComment: EtoolsEndpoint;
+  createIndicator: EtoolsEndpoint;
+  getEditDeleteIndicator: EtoolsEndpoint;
   cpOutputRamIndicators: EtoolsEndpoint;
   interventionProgress: EtoolsEndpoint;
   prpToken: EtoolsEndpoint;
@@ -123,6 +125,12 @@ export const interventionEndpoints: EtoolsEndpoints = {
   deleteComment: {
     template: '/api/comments/v1/partners/intervention/<%=interventionId%>/<%=commentId%>/delete/'
   },
+  createIndicator: {
+    template: '/api/v2/interventions/lower-results/<%=id%>/indicators/'
+  },
+  getEditDeleteIndicator: {
+    template: '/api/v2/interventions/applied-indicators/<%=id%>/'
+  },
   cpOutputRamIndicators: {
     template: '/api/v2/interventions/<%=intervention_id%>/output_cp_indicators/<%=cp_output_id%>/'
   },
@@ -132,5 +140,5 @@ export const interventionEndpoints: EtoolsEndpoints = {
   },
   prpToken: {
     url: '/api/jwt/get'
-  },
+  }
 };

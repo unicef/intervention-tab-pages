@@ -12,7 +12,7 @@ import {buttonsStyles} from '../../common/styles/button-styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {formatDate} from '../../utils/date-utils';
-import {requiredFieldStarredStyles} from '../../common/styles/required-field-styles';
+import {requiredFieldStarredStylesPolymer} from '../../common/styles/required-field-styles';
 import {validateRequiredFields, resetRequiredFields} from '../../utils/validation-helper';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
@@ -35,7 +35,7 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
   }
   render() {
     return html`<style>
-        ${sharedStyles} ${requiredFieldStarredStyles}
+        ${sharedStyles} ${requiredFieldStarredStylesPolymer}
         paper-input#other {
           width: 100%;
         }

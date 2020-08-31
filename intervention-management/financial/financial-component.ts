@@ -22,8 +22,8 @@ import {FinancialComponentData, FinancialComponentPermissions} from './financial
 import {selectFinancialComponentPermissions, selectFinancialComponent} from './financialComponent.models';
 import {patchIntervention} from '../../common/actions';
 import {LabelAndValue} from '../../common/models/globals.types';
-import {isJsonStrMatch} from '../../../../../utils/utils';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
+import {isJsonStrMatch} from '../../utils/utils';
 
 /**
  * @customElement
