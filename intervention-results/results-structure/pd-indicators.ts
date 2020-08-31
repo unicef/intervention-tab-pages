@@ -35,11 +35,6 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
           display: block;
           background: var(--blue-background);
         }
-        .indicatorType {
-          font-weight: 600;
-          font-size: 16px;
-          margin-right: 4px;
-        }
       `
     ];
   }
