@@ -150,6 +150,8 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
                     id="clusterIndicatorEl"
                     .indicator="${this.data}"
                     .locationOptions="${this.locationOptions}"
+                    @prp-disaggregations-changed="${({detail}: CustomEvent) =>
+                      this.displayClusterDisaggregations(detail)}"
                   ></cluster-indicator>`
                 : html``}
             </div>
@@ -167,7 +169,10 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
                 >
                 </indicator-dissaggregations>`
               : html``}
-            ${this.isCluster ? html` <cluster-indicator-disaggregations> </cluster-indicator-disaggregations>` : html``}
+            ${this.isCluster
+              ? html` <cluster-indicator-disaggregations .disaggregations="${this.prpDisaggregations}">
+                </cluster-indicator-disaggregations>`
+              : html``}
           </div>
         </iron-pages>
       </etools-dialog>
@@ -253,6 +258,10 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
     }
     this.activeTab = newTabName;
     this._centerDialog();
+  }
+
+  displayClusterDisaggregations(detail: {prpDisaggregations: []}) {
+    this.prpDisaggregations = detail.prpDisaggregations;
   }
 
   isClusterChanged(e: CustomEvent) {
