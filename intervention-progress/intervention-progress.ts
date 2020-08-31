@@ -14,7 +14,7 @@ import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixin
 import './layout/etools-form-element-wrapper';
 import './layout/etools-progress-bar';
 import './layout/etools-ram-indicators';
-import './reports/report-status';
+import '../common/layout/status/report-status';
 import './reports/indicator-report-target';
 
 import CommonMixin from '../common/mixins/common-mixin';
