@@ -9,6 +9,11 @@ export class PdIndicator extends LitElement {
     :host {
       display: block;
     }
+    .indicatorType {
+      font-weight: 600;
+      font-size: 16px;
+      margin-right: 4px;
+    }
   `;
   @property() private disaggregations: Disaggregation[] = [];
   @property({type: Array}) indicator!: Indicator;
