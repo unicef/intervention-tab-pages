@@ -451,7 +451,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
     if (this.editMode) {
       return !isPrcDocEditable || lockSubmitToPrc;
     }
-    // if not in edit mdoe it is always disabled
+    // if not in edit mode it is always disabled
     return true;
   }
 
