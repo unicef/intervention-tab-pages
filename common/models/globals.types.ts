@@ -256,10 +256,11 @@ export interface CommonDataState {
   cpOutputs: CpOutput[];
   locationTypes: [];
   documentTypes: [];
-  genderEquityRatings: [];
+  genderEquityRatings: LabelAndValue[];
   interventionAmendmentTypes: LabelAndValue[];
   offices: [];
   envFlags: EnvFlags | null;
+  currencies: LabelAndValue[];
   // used on PMP
   PRPCountryData?: AnyObject[];
 }
