@@ -41,6 +41,11 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
           display: block;
           background: var(--blue-background);
         }
+        .indicatorType {
+          font-weight: 600;
+          font-size: 16px;
+          margin-right: 4px;
+        }
       `
     ];
   }
@@ -106,18 +111,15 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
             <div slot="row-data" class="layout-horizontal editable-row">
               <!--    Indicator name    -->
               <div class="text flex-auto">
+                ${this.getIndicatorDisplayType(indicator.indicator!.unit, indicator.indicator!.display_type)}
                 ${this.addInactivePrefix(indicator)} ${(indicator.indicator && indicator.indicator.title) || '-'}
               </div>
 
               <!--    Baseline    -->
-              <div class="text number-data flex-none">
-                ${indicator.baseline.v || '-'}
-              </div>
+              <div class="text number-data flex-none">${indicator.baseline.v || '-'}</div>
 
               <!--    Target    -->
-              <div class="text number-data flex-none">
-                ${indicator.target.v || '-'}
-              </div>
+              <div class="text number-data flex-none">${indicator.target.v || '-'}</div>
               <div class="hover-block" ?hidden="${!this.editMode}">
                 <paper-icon-button
                   icon="icons:create"
@@ -249,6 +251,28 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
       });
   }
 
+  // Both unit and displayType are used because of inconsitencies in the db.
+  getIndicatorDisplayType(unit: string, displayType: string) {
+    if (!unit) {
+      return '';
+    }
+    let typeChar = '';
+    switch (unit) {
+      case 'number':
+        typeChar = '#';
+        break;
+      case 'percentage':
+        if (displayType === 'percentage') {
+          typeChar = '%';
+        } else if (displayType === 'ratio') {
+          typeChar = '÷';
+        }
+        break;
+      default:
+        break;
+    }
+    return html`<span class="indicatorType">${typeChar} </span>`;
+  }
   getLocationName(id: string | number): string {
     const location: LocationObject | undefined = this.locations.find(
       (location: LocationObject) => location.id === String(id)
