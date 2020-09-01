@@ -12,7 +12,7 @@ export class PdIndicator extends LitElement {
       gridLayoutStylesLit,
       ResultStructureStyles,
       css`
-        :host {
+        etools-data-table-row {
           --blue-background: #b6d5f1;
           --blue-background-dark: #a4c4e1;
           display: block;
@@ -34,6 +34,7 @@ export class PdIndicator extends LitElement {
 
   render() {
     return html`
+      ${this.getIndicatorTypeStyle(this.indicator)}
       <etools-data-table-row>
         <div slot="row-data" class="layout-horizontal editable-row">
           <!--    Indicator name    -->
@@ -135,5 +136,22 @@ export class PdIndicator extends LitElement {
 
   private addInactivePrefix(indicator: any) {
     return !indicator || indicator.is_active ? '' : html`<strong>(inactive)</strong>`;
+  }
+
+  getIndicatorTypeStyle(indicator: any) {
+    let style = '';
+    if (indicator.cluster_indicator_id) {
+      style = `{--collapse-icon-bg-color: var(--ternary-color); --collapse-icon-bg-image: none}`;
+    } else {
+      let hfBgImg = 'none';
+      if (indicator.is_high_frequency) {
+        hfBgImg = `linear-gradient(135deg, #066ac7 12.50%, #0099ff 12.50%, #0099ff 50%, #066ac7 50%,
+          #066ac7 62.50%, #0099ff 62.50%, #0099ff 100%)`;
+      }
+      style = `{--collapse-icon-bg-color: var(--primary-color); --collapse-icon-bg-image: ${hfBgImg}}`;
+    }
+    return html`<style>
+      etools-data-table-row ${style}
+    </style>`;
   }
 }
