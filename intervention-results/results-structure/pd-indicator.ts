@@ -2,19 +2,30 @@ import {LitElement, html, customElement, css, property, TemplateResult} from 'li
 import {Disaggregation, DisaggregationValue} from '../../common/models/globals.types';
 import {Indicator} from '../../common/models/intervention.types';
 import {fireEvent} from '../../utils/fire-custom-event';
+import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
+import {ResultStructureStyles} from './results-structure.styles';
 
 @customElement('pd-indicator')
 export class PdIndicator extends LitElement {
-  static styles = css`
-    :host {
-      display: block;
-    }
-    .indicatorType {
-      font-weight: 600;
-      font-size: 16px;
-      margin-right: 4px;
-    }
-  `;
+  static get styles() {
+    return [
+      gridLayoutStylesLit,
+      ResultStructureStyles,
+      css`
+        :host {
+          --blue-background: #b6d5f1;
+          --blue-background-dark: #a4c4e1;
+          display: block;
+          background: var(--blue-background);
+        }
+        .indicatorType {
+          font-weight: 600;
+          font-size: 16px;
+          margin-right: 4px;
+        }
+      `
+    ];
+  }
   @property() private disaggregations: Disaggregation[] = [];
   @property({type: Array}) indicator!: Indicator;
   @property({type: Boolean}) readonly!: boolean;

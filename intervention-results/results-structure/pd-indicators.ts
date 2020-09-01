@@ -20,6 +20,7 @@ import {getIntervention} from '../../common/actions';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {openDialog} from '../../utils/dialog';
+import './pd-indicator';
 
 @customElement('pd-indicators')
 export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitElement)) {
