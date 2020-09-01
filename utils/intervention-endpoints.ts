@@ -39,6 +39,7 @@ export interface EtoolsEndpoints {
   cpOutputRamIndicators: EtoolsEndpoint;
   interventionProgress: EtoolsEndpoint;
   prpToken: EtoolsEndpoint;
+  reports: EtoolsEndpoint;
 }
 
 export const interventionEndpoints: EtoolsEndpoints = {
@@ -140,5 +141,9 @@ export const interventionEndpoints: EtoolsEndpoints = {
   },
   prpToken: {
     url: '/api/jwt/get'
+  },
+  reports: {
+    template: '/api/unicef/<%=countryId%>/progress-reports/',
+    token: 'prp'
   }
 };
