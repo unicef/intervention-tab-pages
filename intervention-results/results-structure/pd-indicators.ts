@@ -50,8 +50,8 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
   @property() private sections: Section[] = [];
   @property() private disaggregations: Disaggregation[] = [];
   @property() pdOutputId!: string;
-  @property({type: Boolean})
-  readonly!: boolean;
+  @property({type: Boolean}) readonly!: boolean;
+  @property({type: Boolean}) showInactiveIndicators!: boolean;
 
   /** On create/edit indicator only sections already saved on the intervention can be selected */
   set interventionSections(ids: string[]) {
@@ -96,72 +96,75 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
         <div class="heading number-data flex-none">Target</div>
       </div>
 
-      ${this.indicators.map(
-        (indicator: Indicator) => html`
-          <etools-data-table-row>
-            <div slot="row-data" class="layout-horizontal editable-row">
-              <!--    Indicator name    -->
-              <div class="text flex-auto">
-                ${this.addInactivePrefix(indicator)} ${(indicator.indicator && indicator.indicator.title) || '-'}
-              </div>
+      ${this.indicators.map((indicator: Indicator) =>
+        this._hideIndicator(indicator, this.showInactiveIndicators)
+          ? html``
+          : html`
+              <etools-data-table-row>
+                <div slot="row-data" class="layout-horizontal editable-row">
+                  <!--    Indicator name    -->
+                  <div class="text flex-auto">
+                    ${this.addInactivePrefix(indicator)} ${(indicator.indicator && indicator.indicator.title) || '-'}
+                  </div>
 
-              <!--    Baseline    -->
-              <div class="text number-data flex-none">
-                ${indicator.baseline.v || '-'}
-              </div>
+                  <!--    Baseline    -->
+                  <div class="text number-data flex-none">${indicator.baseline.v || '-'}</div>
 
-              <!--    Target    -->
-              <div class="text number-data flex-none">
-                ${indicator.target.v || '-'}
-              </div>
-              <div class="hover-block" ?hidden="${this.readonly}">
-                <paper-icon-button
-                  icon="icons:create"
-                  ?hidden="${!indicator.is_active}"
-                  @tap="${() => this.openIndicatorDialog(indicator)}"
-                ></paper-icon-button>
-                <paper-icon-button
-                  icon="icons:block"
-                  ?hidden="${!indicator.is_active}"
-                  @tap="${() => this.openDeactivationDialog(String(indicator.id))}"
-                ></paper-icon-button>
-              </div>
-            </div>
+                  <!--    Target    -->
+                  <div class="text number-data flex-none">${indicator.target.v || '-'}</div>
 
-            <!--    Indicator row collapsible Details    -->
-            <div slot="row-data-details" class="row-h">
-              <!--    Locations    -->
-              <div class="details-container">
-                <div class="text details-heading">Locations</div>
-                <div class="details-text">
-                  ${indicator.locations.length
-                    ? indicator.locations.map(
-                        (location: string) => html`
-                          <div class="details-list-item">${this.getLocationName(location)}</div>
-                        `
-                      )
-                    : '-'}
+                  <div class="hover-block" ?hidden="${this.readonly}">
+                    <paper-icon-button
+                      icon="icons:create"
+                      ?hidden="${!indicator.is_active}"
+                      @tap="${() => this.openIndicatorDialog(indicator)}"
+                    ></paper-icon-button>
+                    <paper-icon-button
+                      icon="icons:block"
+                      ?hidden="${!indicator.is_active}"
+                      @tap="${() => this.openDeactivationDialog(String(indicator.id))}"
+                    ></paper-icon-button>
+                  </div>
                 </div>
-              </div>
 
-              <!--    Section and Cluster    -->
-              <div class="details-container">
-                <div class="text details-heading">Section/Cluster</div>
-                <div class="details-text">${this.getSectionAndCluster(indicator.section, indicator.cluster_name)}</div>
-              </div>
+                <!--    Indicator row collapsible Details    -->
+                <div slot="row-data-details" class="row-h">
+                  <!--    Locations    -->
+                  <div class="details-container">
+                    <div class="text details-heading">Locations</div>
+                    <div class="details-text">
+                      ${indicator.locations.length
+                        ? indicator.locations.map(
+                            (location: string) => html`
+                              <div class="details-list-item">${this.getLocationName(location)}</div>
+                            `
+                          )
+                        : '-'}
+                    </div>
+                  </div>
 
-              <!--    Disagregations    -->
-              <div class="details-container">
-                <div class="text details-heading">Disagregation</div>
-                <div class="details-text">
-                  ${indicator.disaggregation.length
-                    ? indicator.disaggregation.map((disaggregation: string) => this.getDisaggregation(disaggregation))
-                    : '-'}
+                  <!--    Section and Cluster    -->
+                  <div class="details-container">
+                    <div class="text details-heading">Section/Cluster</div>
+                    <div class="details-text">
+                      ${this.getSectionAndCluster(indicator.section, indicator.cluster_name)}
+                    </div>
+                  </div>
+
+                  <!--    Disagregations    -->
+                  <div class="details-container">
+                    <div class="text details-heading">Disagregation</div>
+                    <div class="details-text">
+                      ${indicator.disaggregation.length
+                        ? indicator.disaggregation.map((disaggregation: string) =>
+                            this.getDisaggregation(disaggregation)
+                          )
+                        : '-'}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </etools-data-table-row>
-        `
+              </etools-data-table-row>
+            `
       )}
       ${!this.indicators.length
         ? html`
@@ -272,6 +275,13 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
         .filter((name: string | null) => Boolean(name))
         .join(' / ') || '-'
     );
+  }
+
+  _hideIndicator(indicator: any, showInactiveIndicators: boolean) {
+    if (!indicator.is_active) {
+      return !showInactiveIndicators;
+    }
+    return false;
   }
 
   private addInactivePrefix(indicator: any) {
