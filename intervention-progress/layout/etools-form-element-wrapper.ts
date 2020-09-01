@@ -1,9 +1,7 @@
-/* eslint-disable lit/no-legacy-template-syntax */
 import {PolymerElement, html} from '@polymer/polymer';
 import '@polymer/paper-input/paper-input-container';
 
 import {sharedStylesPolymer} from '../../common/styles/shared-styles-polymer';
-import {requiredFieldStarredStyles} from '../../common/styles/required-field-styles';
 import {property} from '@polymer/decorators';
 
 /**
@@ -13,7 +11,7 @@ import {property} from '@polymer/decorators';
 class EtoolsFormElementWrapper extends PolymerElement {
   static get template() {
     return html`
-      ${sharedStylesPolymer()} ${requiredFieldStarredStyles}
+      ${sharedStylesPolymer()}
       <style>
         :host {
           width: 100%;
