@@ -45,7 +45,7 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
   @property() private disaggregations: Disaggregation[] = [];
   @property() pdOutputId!: string;
   @property({type: Boolean})
-  editMode!: boolean;
+  readonly!: boolean;
 
   /** On create/edit indicator only sections already saved on the intervention can be selected */
   set interventionSections(ids: string[]) {
@@ -84,11 +84,7 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
       <div class="row-h align-items-center header">
         <div class="heading flex-auto">
           PD Indicators
-          <iron-icon
-            icon="add-box"
-            @click="${() => this.openIndicatorDialog()}"
-            ?hidden="${!this.editMode}"
-          ></iron-icon>
+          <iron-icon icon="add-box" @click="${() => this.openIndicatorDialog()}" ?hidden="${this.readonly}"></iron-icon>
         </div>
         <div class="heading number-data flex-none">Baseline</div>
         <div class="heading number-data flex-none">Target</div>

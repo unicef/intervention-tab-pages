@@ -150,6 +150,8 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
                     id="clusterIndicatorEl"
                     .indicator="${this.data}"
                     .locationOptions="${this.locationOptions}"
+                    @prp-disaggregations-changed="${({detail}: CustomEvent) =>
+                      this.displayClusterDisaggregations(detail)}"
                   ></cluster-indicator>`
                 : html``}
             </div>
@@ -167,7 +169,10 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
                 >
                 </indicator-dissaggregations>`
               : html``}
-            ${this.isCluster ? html` <cluster-indicator-disaggregations> </cluster-indicator-disaggregations>` : html``}
+            ${this.isCluster
+              ? html` <cluster-indicator-disaggregations .disaggregations="${this.prpDisaggregations}">
+                </cluster-indicator-disaggregations>`
+              : html``}
           </div>
         </iron-pages>
       </etools-dialog>
@@ -253,6 +258,10 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
     }
     this.activeTab = newTabName;
     this._centerDialog();
+  }
+
+  displayClusterDisaggregations(detail: {prpDisaggregations: []}) {
+    this.prpDisaggregations = detail.prpDisaggregations;
   }
 
   isClusterChanged(e: CustomEvent) {
@@ -352,27 +361,6 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   _showToast(e: CustomEvent) {
     parseRequestErrorsAndShowAsToastMsgs(e.detail.error, this.toastEventSource);
   }
-
-  // resetValidationsAndStyle(isCluster: boolean | undefined, skipUndefinedCheck: boolean) {
-  //   if (typeof isCluster === 'undefined' && !skipUndefinedCheck) {
-  //     return;
-  //   }
-  //   let indicatorEl: ClusterIndicatorEl | NonClusterIndicatorEl;
-  //   if (this.isCluster) {
-  //     indicatorEl = this.shadowRoot!.querySelector('#clusterIndicatorEl') as ClusterIndicatorEl;
-  //     this.updateStyles({'--border-color': 'var(--ternary-color)'});
-  //   } else {
-  //     indicatorEl = (this.shadowRoot!.querySelector('#nonClusterIndicatorEl') as unknown) as NonClusterIndicatorEl;
-  //     this.updateStyles({'--border-color': 'var(--dark-divider-color)'});
-  //   }
-  //   if (indicatorEl) {
-  //     indicatorEl.resetValidations();
-  //     this.updateStyles();
-  //   }
-
-  //   const sectionDropdown = this.shadowRoot!.querySelector('#sectionDropdw') as EtoolsDropdownEl;
-  //   sectionDropdown.resetInvalidState();
-  // }
 
   _centerDialog() {
     this.indicatorDialog.notifyResize();

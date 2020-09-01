@@ -27,7 +27,12 @@ export class PdActivities extends LitElement {
     ];
   }
 
-  @property({type: Array}) activities: InterventionActivity[] = [];
+  @property({type: Array})
+  activities: InterventionActivity[] = [];
+
+  @property({type: Boolean})
+  readonly!: boolean;
+
   interventionId!: number;
   pdOutputId!: number;
   quarters!: InterventionQuarter[];
@@ -59,7 +64,7 @@ export class PdActivities extends LitElement {
       <div class="row-h align-items-center header">
         <div class="heading flex-auto">
           PD Activities
-          <iron-icon icon="add-box" @click="${() => this.openDialog()}"></iron-icon>
+          <iron-icon icon="add-box" @click="${() => this.openDialog()}" ?hidden="${this.readonly}"></iron-icon>
         </div>
         <div class="heading number-data flex-none">CSO Cache</div>
         <div class="heading number-data flex-none">UNICEF Cache</div>
@@ -99,7 +104,11 @@ export class PdActivities extends LitElement {
               </div>
 
               <div class="hover-block">
-                <paper-icon-button icon="icons:create" @tap="${() => this.openDialog(activity)}"></paper-icon-button>
+                <paper-icon-button
+                  icon="icons:create"
+                  @tap="${() => this.openDialog(activity)}"
+                  ?hidden="${this.readonly}"
+                ></paper-icon-button>
               </div>
             </div>
 

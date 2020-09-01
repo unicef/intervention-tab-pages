@@ -134,7 +134,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
           </div>
           <iron-icon
             icon="add-box"
-            ?hidden="${!this.isUnicefUser}"
+            ?hidden="${!this.isUnicefUser || !this.permissions.edit.result_links}"
             @click="${() => this.openCpOutputDialog()}"
           ></iron-icon>
         </div>
@@ -166,6 +166,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
                       <div class="hover-block">
                         <paper-icon-button
                           icon="icons:create"
+                          ?hidden="${!this.permissions.edit.result_links}"
                           @tap="${() => this.openPdOutputDialog(pdOutput, result.cp_output, result.cp_output_name)}"
                         ></paper-icon-button>
                       </div>
@@ -176,7 +177,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
                         ?hidden="${!this.showIndicators}"
                         .indicators="${pdOutput.applied_indicators}"
                         .pdOutputId="${pdOutput.id}"
-                        .editMode="${this.permissions.edit.result_links}"
+                        .readonly="${!this.permissions.edit.result_links}"
                       ></pd-indicators>
                       <pd-activities
                         .activities="${pdOutput.activities}"
@@ -184,6 +185,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
                         .pdOutputId="${pdOutput.id}"
                         .quarters="${this.quarters}"
                         ?hidden="${!this.showActivities}"
+                        .readonly="${!this.permissions.edit.result_links}"
                       ></pd-activities>
                     </div>
                   </etools-data-table-row>

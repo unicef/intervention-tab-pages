@@ -360,13 +360,6 @@ class ClusterIndicator extends IndicatorsCommonMixin(LitElement) {
   @property({type: Object})
   prpClusterIndicator: AnyObject = {};
 
-  @property({type: Array})
-  prpDisaggregations!: [];
-
-  // static get observers() {
-  //   return ['_baselineChanged(indicator.baseline.v)', '_targetChanged(indicator.target.v)'];
-  // }
-
   // stateChanged(state: any) {
   //   this.endStateChanged(state);
   // }
@@ -479,7 +472,7 @@ class ClusterIndicator extends IndicatorsCommonMixin(LitElement) {
 
   _selectedPrpClusterIndicatorChanged(prpClusterIndic: any) {
     if (!prpClusterIndic || isEmpty(prpClusterIndic)) {
-      this.prpDisaggregations = [];
+      fireEvent(this, 'prp-disaggregations-changed', {prpDisaggregations: []});
       if (this.indicator) {
         this.indicator.baseline = {};
         this.indicator.target = {d: '1'};
@@ -488,7 +481,7 @@ class ClusterIndicator extends IndicatorsCommonMixin(LitElement) {
     }
 
     this.indicator.cluster_indicator_title = prpClusterIndic.title;
-    this.prpDisaggregations = prpClusterIndic.disaggregations;
+    fireEvent(this, 'prp-disaggregations-changed', {prpDisaggregations: prpClusterIndic.disaggregations});
     fireEvent(this, 'update-tab-counter', {count: this.prpClusterIndicators.length});
 
     if (prpClusterIndic.blueprint.display_type === 'number') {
