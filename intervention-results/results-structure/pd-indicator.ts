@@ -1,5 +1,5 @@
 import {LitElement, html, customElement, css, property, TemplateResult} from 'lit-element';
-import {Disaggregation, Section, DisaggregationValue} from '../../common/models/globals.types';
+import {Disaggregation, DisaggregationValue} from '../../common/models/globals.types';
 import {Indicator} from '../../common/models/intervention.types';
 import {fireEvent} from '../../utils/fire-custom-event';
 
@@ -113,14 +113,12 @@ export class PdIndicator extends LitElement {
   }
 
   getDisaggregation(disaggregationId: string | number): TemplateResult {
-    const disaggregation: Disaggregation | null =
+    const disaggreg: Disaggregation | null =
       this.disaggregations.find(({id}: Disaggregation) => String(id) === String(disaggregationId)) || null;
     const values: string =
-      (disaggregation &&
-        disaggregation.disaggregation_values.map(({value}: DisaggregationValue) => value).join(', ')) ||
-      '';
-    return disaggregation && values
-      ? html` <div class="details-list-item"><b>${disaggregation.name}</b>: ${values}</div> `
+      (disaggreg && disaggreg.disaggregation_values.map(({value}: DisaggregationValue) => value).join(', ')) || '';
+    return disaggreg && values
+      ? html` <div class="details-list-item"><b>${disaggreg.name}</b>: ${values}</div> `
       : html``;
   }
 
