@@ -97,7 +97,7 @@ export class BudgetSummaryEl extends connect(getStore())(FrNumbersConsistencyMix
                 ${this.budgetSummary.currency}
               </label>
               <iron-icon icon="pmp-custom-icons:not-equal" slot="custom-icon"></iron-icon>
-              <span slot="message">${this.getFrCurrencyTooltipMsg()}</span>
+              <span slot="message">${this.getFrsCurrencyTooltipMsg(this.frsDetails.currencies_match)}</span>
             </etools-info-tooltip>
             <span>
               <label class="input-label" ?empty="${!this.budgetSummary.currency}">
@@ -190,8 +190,11 @@ export class BudgetSummaryEl extends connect(getStore())(FrNumbersConsistencyMix
     super.connectedCallback();
   }
 
-  public stateChanged(state: RootState) {    
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'results') || !state.interventions.current) {
+  public stateChanged(state: RootState) {
+    if (
+      pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'results') ||
+      !state.interventions.current
+    ) {
       return;
     }
     this.budgetSummary = selectBudgetSummary(state);
