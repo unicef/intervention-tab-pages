@@ -153,7 +153,13 @@ export class PdIndicator extends LitElement {
         hfBgImg = `linear-gradient(135deg, #066ac7 12.50%, #0099ff 12.50%, #0099ff 50%, #066ac7 50%,
           #066ac7 62.50%, #0099ff 62.50%, #0099ff 100%)`;
       }
-      style = `{--collapse-icon-bg-color: var(--primary-color); --collapse-icon-bg-image: ${hfBgImg}}`;
+      style = `{--collapse-icon-bg-color: var(--primary-color); --collapse-icon-bg-image: ${hfBgImg};
+        --icon-wrapper: {
+          background-color: var(--collapse-icon-bg-color, var(--primary-color));
+          background-image: var(--collapse-icon-bg-image, none);
+          background-size: 5.66px 5.66px;
+        }
+      }`;
     }
     return html`<style>
       etools-data-table-row ${style}

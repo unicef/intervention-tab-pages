@@ -74,6 +74,11 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
             min-height: 55px;
             border: 1px solid var(--main-border-color) !important;
             border-bottom: none !important;
+            padding-top: 0px;
+            padding-bottom: 0px;
+          }
+          --icon-wrapper: {
+            background-color: transparent;
           }
         }
         .editable-row .hover-block {
