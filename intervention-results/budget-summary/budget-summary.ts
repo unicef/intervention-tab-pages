@@ -175,11 +175,10 @@ export class BudgetSummaryEl extends connect(getStore())(FrNumbersConsistencyMix
     `;
   }
 
-  @property({type: Object})
-  budgetSummary!: BudgetSummary;
+  intervention!: Intervention;
 
   @property({type: Object})
-  intervention!: Intervention;
+  budgetSummary!: BudgetSummary;
 
   @property({type: String})
   _frsConsistencyWarning = '';
