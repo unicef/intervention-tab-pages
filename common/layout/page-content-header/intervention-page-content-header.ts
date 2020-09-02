@@ -89,7 +89,7 @@ export class InterventionPageContentHeader extends LitElement {
         padding-left: 20px;
         }
         .vb {
-          border-left: 2px solid var(--light-divider-color);
+          /*border-left: 2px solid var(--light-divider-color);*/
           padding: 0 20px;
         }
         .title {

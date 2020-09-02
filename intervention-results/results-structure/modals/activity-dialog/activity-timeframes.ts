@@ -56,12 +56,10 @@ export class ActivityTimeFrames extends LitElement {
         }
         .frame-divider {
           height: 20px;
-          border-left: 1px solid #9e9e9e;
         }
         .year-divider {
           margin: 0 5px;
           height: 50px;
-          border-left: 1px solid #9e9e9e;
         }
       `
     ];
