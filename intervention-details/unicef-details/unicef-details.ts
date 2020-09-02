@@ -1,4 +1,4 @@
-import {LitElement, html, property, customElement} from 'lit-element';
+import {LitElement, html, property, customElement, TemplateResult} from 'lit-element';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
@@ -13,12 +13,11 @@ import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {selectPdUnicefDetails, selectPdUnicefDetailsPermissions} from './pdUnicefDetails.selectors';
 import {PdUnicefDetailsPermissions} from './pdUnicefDetails.models';
 import {Permission} from '../../common/models/intervention.types';
-import {validateRequiredFields} from '../../utils/validation-helper';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
 import {patchIntervention} from '../../common/actions';
-import {AnyObject, RootState} from '../../common/models/globals.types';
-import {isJsonStrMatch} from '../../utils/utils';
+import {AnyObject, RootState, User} from '../../common/models/globals.types';
+import {isJsonStrMatch, areEqual} from '../../utils/utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
@@ -134,17 +133,24 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
             <etools-dropdown
               id="budgetOwnerInput"
               label="Unicef Budget Owner"
-              .options="${this.budget_owner_list}"
+              .options="${this.users_list}"
               class="row-padding-v"
               option-label="name"
               option-value="id"
               .selected="${this.data.budget_owner}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.budget_owner)}"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.budget_owner)}"
               ?required="${this.permissions.required.budget_owner}"
               @etools-selected-item-changed="${({detail}: CustomEvent) =>
                 this.selectedItemChanged(detail, 'budget_owner')}"
               trigger-value-change-event>
             </etools-dropdown>
+
+            <div ?hidden="${!this.isReadonly(this.editMode, this.permissions.edit.budget_owner)}">
+              <label for="budgetOwnerInput" class="paper-label">Unicef Budget Owner</label>
+              <div id="budgetOwnerDetails">
+                ${this.renderReadonlyBudgetOwner(this.users_list, [this.originalData?.budget_owner!])}
+              </div>
+            </div>
           </div>
         </div>
 
@@ -169,9 +175,6 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
 
   @property({type: Array})
   users_list!: AnyObject[];
-
-  @property({type: Array})
-  budget_owner_list!: AnyObject[];
 
   @property({type: Array})
   office_list!: AnyObject[];
@@ -217,12 +220,10 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
         this.section_list = [...this.data.sections];
         this.cluster_list = [...this.data.cluster_names];
         this.office_list = [...this.data.offices];
-        // TODO this.budget_owner_list = [...this.data.budget_owner];
       }
     } else {
       if (get(state, 'commonData.unicefUsersData.length')) {
         this.users_list = [...state.commonData!.unicefUsersData];
-        this.budget_owner_list = this.users_list;
       }
       if (get(state, 'commonData.sections.length')) {
         this.section_list = [...state.commonData!.sections];
@@ -244,8 +245,18 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
     }
   }
 
-  validate() {
-    return validateRequiredFields(this);
+  /**
+   * Optimization to avoid multiple calls to filter through the long users array
+   */
+  previousBudgetOwnerIds: string[] = [];
+  previousBudgeOwnerDisplay: TemplateResult | TemplateResult[] = html``;
+  renderReadonlyBudgetOwner(users: AnyObject[], selectedIds: string[]) {
+    if (areEqual(this.previousBudgetOwnerIds, selectedIds)) {
+      return this.previousBudgeOwnerDisplay;
+    }
+    this.previousBudgetOwnerIds = selectedIds;
+    this.previousBudgeOwnerDisplay = this.renderReadonlyUserDetails(users, selectedIds);
+    return this.previousBudgeOwnerDisplay;
   }
 
   savePdDetails() {
