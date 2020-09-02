@@ -32,7 +32,6 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
       css`
         :host {
           --blue-background: #b6d5f1;
-          --blue-background-dark: #a4c4e1;
           display: block;
           background: var(--blue-background);
         }

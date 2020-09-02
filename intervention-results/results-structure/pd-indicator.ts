@@ -1,4 +1,5 @@
 import {LitElement, html, customElement, css, property, TemplateResult} from 'lit-element';
+import '@unicef-polymer/etools-data-table/etools-data-table';
 import {Disaggregation, DisaggregationValue} from '../../common/models/globals.types';
 import {Indicator} from '../../common/models/intervention.types';
 import {fireEvent} from '../../utils/fire-custom-event';
@@ -16,12 +17,16 @@ export class PdIndicator extends LitElement {
           --blue-background: #b6d5f1;
           --blue-background-dark: #a4c4e1;
           display: block;
-          background: var(--blue-background);
+          --list-row-wrapper_-_background-color: var(--blue-background);
         }
         .indicatorType {
           font-weight: 600;
           font-size: 16px;
           margin-right: 4px;
+        }
+        div[slot='row-data-details'] {
+          --blue-background-dark: #a4c4e1;
+          background: var(--blue-background-dark);
         }
       `
     ];
