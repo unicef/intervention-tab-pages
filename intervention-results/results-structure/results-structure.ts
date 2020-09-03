@@ -1,8 +1,11 @@
+/* eslint-disable lit/no-legacy-template-syntax */
 import {getStore} from '../../utils/redux-store-access';
 import {css, html, CSSResultArray, customElement, LitElement, property} from 'lit-element';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '../../common/styles/button-styles';
 import {
   selectInterventionId,
+  selectInterventionStatus,
   selectInterventionQuarters,
   selectInterventionResultLinks,
   selectResultLinksPermissions
@@ -16,15 +19,19 @@ import {
 } from '../../common/models/intervention.types';
 import '@unicef-polymer/etools-data-table';
 import '@unicef-polymer/etools-content-panel';
+import '@polymer/paper-toggle-button/paper-toggle-button';
 import './cp-output-level';
 import './pd-indicators';
 import './pd-activities';
 import './modals/pd-output-dialog';
 import './modals/cp-output-dialog';
 import '../../common/components/comments/comments-dialog';
+import {getEndpoint} from '../../utils/endpoint-helper';
 import {RootState} from '../../common/models/globals.types';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {openDialog} from '../../utils/dialog';
+import CONSTANTS from '../../common/constants';
+import {interventionEndpoints} from '../../utils/intervention-endpoints';
 
 /**
  * @customElement
@@ -36,6 +43,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
     return [
       gridLayoutStylesLit,
       ResultStructureStyles,
+      buttonsStyles,
       css`
         etools-content-panel {
           --ecp-content-padding: 0;
@@ -76,6 +84,8 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
     );
   }
   @property() interventionId!: number | null;
+  @property() interventionStatus!: string;
+
   quarters: InterventionQuarter[] = [];
 
   @property({type: Boolean}) isUnicefUser = true;
@@ -84,8 +94,12 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
   @property({type: Object})
   permissions!: {edit: {result_links?: boolean}; required: {result_links?: boolean}};
 
-  private cpOutputs: CpOutput[] = [];
   @property() private _resultLinks: ExpectedResult[] | null = [];
+  @property({type: String}) noOfPdOutputs: string | number = '0';
+  @property({type: Boolean}) thereAreInactiveIndicators = false;
+  @property({type: Boolean}) showInactiveIndicators = false;
+
+  private cpOutputs: CpOutput[] = [];
 
   render() {
     // language=HTML
@@ -107,10 +121,45 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
             border-bottom: 1px solid var(--main-border-color) !important;
           }
         }
+        .export-res-btn {
+          height: 28px;
+        }
+        .separator {
+          border-left: solid 1px var(--dark-divider-color);
+          height: 28px;
+          padding-right: 10px;
+          margin: 6px 0 6px 10px;
+        }
       </style>
 
-      <etools-content-panel panel-title="Results Structure">
+      <etools-content-panel panel-title="Results Structure (${this.noOfPdOutputs})">
         <div slot="panel-btns" class="layout-horizontal align-items-center">
+          <paper-button
+            title="Export results"
+            class="primary export-res-btn"
+            ?hidden="${!this.showExportResults(this.interventionStatus, this.resultLinks)}"
+            @tap="${this.exportExpectedResults}"
+          >
+            Export
+          </paper-button>
+          <div
+            class="separator"
+            ?hidden="${!this.showSeparator(
+              this.interventionStatus,
+              this.resultLinks,
+              this.permissions.edit.result_links
+            )}"
+          ></div>
+
+          <paper-toggle-button
+            id="showInactive"
+            ?hidden="${!this.thereAreInactiveIndicators}"
+            ?checked="${this.showInactiveIndicators}"
+            @iron-change=${this.inactiveChange}
+          >
+            Show Inactive
+          </paper-toggle-button>
+
           <div
             class="view-toggle-button layout-horizontal align-items-center"
             ?active="${this.showIndicators && !this.showActivities}"
@@ -178,6 +227,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
                         .indicators="${pdOutput.applied_indicators}"
                         .pdOutputId="${pdOutput.id}"
                         .readonly="${!this.permissions.edit.result_links}"
+                        .showInactiveIndicators="${this.showInactiveIndicators}"
                       ></pd-indicators>
                       <pd-activities
                         .activities="${pdOutput.activities}"
@@ -228,9 +278,11 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
     this.resultLinks = selectInterventionResultLinks(state);
     this.permissions = selectResultLinksPermissions(state);
     this.interventionId = selectInterventionId(state);
+    this.interventionStatus = selectInterventionStatus(state);
     this.quarters = selectInterventionQuarters(state);
     this.cpOutputs = (state.commonData && state.commonData.cpOutputs) || [];
     this.isUnicefUser = state.user?.data?.is_unicef_user;
+    this._updateNoOfPdOutputs();
   }
 
   updateTableView(indicators: boolean, activities: boolean): void {
@@ -266,5 +318,70 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
         interventionId: this.interventionId
       }
     });
+  }
+
+  _updateNoOfPdOutputs() {
+    if (!this.resultLinks) {
+      this.noOfPdOutputs = 0;
+      this.thereAreInactiveIndicators = false;
+      return;
+    }
+    this.noOfPdOutputs = this.resultLinks
+      .map((rl: ExpectedResult) => {
+        return rl.ll_results.length;
+      })
+      .reduce((a: number, b: number) => a + b, 0);
+
+    if (!this.noOfPdOutputs) {
+      this.thereAreInactiveIndicators = false;
+    } else {
+      this.thereAreInactiveIndicators = !!this._getNoOfInactiveIndicators();
+    }
+  }
+
+  _getNoOfInactiveIndicators() {
+    return this.resultLinks
+      .map((rl: ExpectedResult) => {
+        return rl.ll_results
+          .map((llr) => {
+            return llr.applied_indicators.filter((i) => !i.is_active).length;
+          })
+          .reduce((a: number, b: number) => a + b, 0);
+      })
+      .reduce((a: number, b: number) => a + b, 0);
+  }
+
+  showExportResults(status: string, resultLinks: ExpectedResult[]) {
+    return (
+      [
+        CONSTANTS.STATUSES.Draft.toLowerCase(),
+        CONSTANTS.STATUSES.Signed.toLowerCase(),
+        CONSTANTS.STATUSES.Active.toLowerCase()
+      ].indexOf(status) > -1 &&
+      resultLinks &&
+      resultLinks.length
+    );
+  }
+
+  showSeparator(status: string, resultLinks: ExpectedResult[], resultLinkPermission: boolean | undefined) {
+    return this.showExportResults(status, resultLinks) && resultLinkPermission;
+  }
+
+  exportExpectedResults() {
+    const endpoint = getEndpoint(interventionEndpoints.expectedResultsExport, {
+      intervention_id: this.interventionId
+    }).url;
+    window.open(endpoint, '_blank');
+  }
+
+  inactiveChange(e: CustomEvent): void {
+    if (!e.detail) {
+      return;
+    }
+    const element = e.currentTarget as HTMLInputElement;
+    if (this.showInactiveIndicators !== element.checked) {
+      this.showInactiveIndicators = element.checked;
+      this.requestUpdate();
+    }
   }
 }
