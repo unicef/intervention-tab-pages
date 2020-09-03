@@ -138,7 +138,7 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
               </div>
             </div>
           </div>
-          <div class="col col-4">
+          <div class="col col-8">
             <etools-dropdown
               id="budgetOwnerInput"
               label="Unicef Budget Owner"
