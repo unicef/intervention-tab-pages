@@ -122,12 +122,21 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
               option-label="name"
               option-value="id"
               .selectedValues="${this.data.unicef_focal_points}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.focal_points)}"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.focal_points)}"
               ?required="${this.permissions.required.focal_points}"
               @etools-selected-items-changed="${({detail}: CustomEvent) =>
                 this.selectedItemsChanged(detail, 'unicef_focal_points')}"
               trigger-value-change-event>
             </etools-dropdown-multi>
+            <div ?hidden="${!this.isReadonly(this.editMode, this.permissions.edit.focal_points)}">
+              <label for="focalPointInput" class="paper-label">Unicef Focal Points</label>
+              <div id="focalPointDetails">
+                ${this.renderReadonlyFocalPoints(
+                  this.users_list,
+                  this.originalData?.unicef_focal_points ? [this.originalData?.unicef_focal_points!] : []
+                )}
+              </div>
+            </div>
           </div>
           <div class="col col-4">
             <etools-dropdown
@@ -148,7 +157,10 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
             <div ?hidden="${!this.isReadonly(this.editMode, this.permissions.edit.budget_owner)}">
               <label for="budgetOwnerInput" class="paper-label">Unicef Budget Owner</label>
               <div id="budgetOwnerDetails">
-                ${this.renderReadonlyBudgetOwner(this.users_list, [this.originalData?.budget_owner!])}
+                ${this.renderReadonlyBudgetOwner(
+                  this.users_list,
+                  this.originalData?.budget_owner ? [this.originalData?.budget_owner!] : []
+                )}
               </div>
             </div>
           </div>
@@ -257,6 +269,20 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
     this.previousBudgetOwnerIds = selectedIds;
     this.previousBudgeOwnerDisplay = this.renderReadonlyUserDetails(users, selectedIds);
     return this.previousBudgeOwnerDisplay;
+  }
+
+  /**
+   * Optimization to avoid multiple calls to filter through the long users array
+   */
+  previousFocalPointsIds: string[] = [];
+  previousFocalPointsDisplay: TemplateResult | TemplateResult[] = html``;
+  renderReadonlyFocalPoints(users: AnyObject[], selectedIds: string[]) {
+    if (areEqual(this.previousFocalPointsIds, selectedIds)) {
+      return this.previousFocalPointsDisplay;
+    }
+    this.previousFocalPointsIds = selectedIds;
+    this.previousFocalPointsDisplay = this.renderReadonlyUserDetails(users, selectedIds);
+    return this.previousFocalPointsDisplay;
   }
 
   savePdDetails() {
