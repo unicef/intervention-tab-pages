@@ -148,19 +148,21 @@ export class PdIndicator extends LitElement {
   }
 
   getIndicatorTypeStyle(indicator: any) {
-    let styleVars = '--indicator-blue:#a4c4e1; --indicator-green:#c4d7c6;';
-    let hfBgImg = 'none';
+    let dynamicStyle = '';
+    let hfBgImg = '';
     if (indicator.cluster_indicator_id) {
       hfBgImg = `linear-gradient(135deg, #066ac7 12.50%, #c4d7c6 12.50%, #c4d7c6 50%, #066ac7 50%,
          #066ac7 62.50%, #c4d7c6 62.50%, #c4d7c6 100%)`;
-      styleVars += `--collapse-icon-bg-color: var(--indicator-green); --collapse-icon-bg-image: ${hfBgImg};`;
+      dynamicStyle = `--collapse-icon-bg-color: var(--indicator-green); --collapse-icon-bg-image: ${hfBgImg};`;
     } else if (indicator.is_high_frequency) {
       hfBgImg = `linear-gradient(135deg, #066ac7 12.50%, #a4c4e1 12.50%, #a4c4e1 50%, #066ac7 50%,
         #066ac7 62.50%, #a4c4e1 62.50%, #a4c4e1 100%)`;
-      styleVars += `--collapse-icon-bg-color: var(--indicator-blue); --collapse-icon-bg-image: ${hfBgImg};`;
+      dynamicStyle = `--collapse-icon-bg-color: var(--indicator-blue); --collapse-icon-bg-image: ${hfBgImg};`;
     }
 
-    const style = `{ ${styleVars}
+    const style = `{
+      --indicator-blue:#a4c4e1; --indicator-green:#c4d7c6;
+       ${dynamicStyle}
       --icon-wrapper: {
         background-color: var(--collapse-icon-bg-color, var(--indicator-blue));
         background-image: var(--collapse-icon-bg-image, none);
