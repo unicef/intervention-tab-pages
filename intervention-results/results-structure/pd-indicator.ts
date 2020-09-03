@@ -40,86 +40,74 @@ export class PdIndicator extends LitElement {
   @property({type: Boolean}) readonly!: boolean;
   @property({type: Array}) locationNames: string[] = [];
   @property({type: String}) sectionClusterNames = '';
-  @property({type: Boolean}) showInactiveIndicators!: boolean;
 
   render() {
-    return this._hideIndicator(this.indicator, this.showInactiveIndicators)
-      ? html``
-      : html`
-          ${this.getIndicatorTypeStyle(this.indicator)}
-          <etools-data-table-row>
-            <div slot="row-data" class="layout-horizontal align-items-center editable-row">
-              <!--    Indicator name    -->
-              <div class="text flex-auto">
-                ${this.getIndicatorDisplayType(this.indicator.indicator!.unit, this.indicator.indicator!.display_type)}
-                ${this.addInactivePrefix(this.indicator)}
-                ${(this.indicator.indicator && this.indicator.indicator.title) || '-'}
-              </div>
+    return html`
+      ${this.getIndicatorTypeStyle(this.indicator)}
+      <etools-data-table-row>
+        <div slot="row-data" class="layout-horizontal align-items-center editable-row">
+          <!--    Indicator name    -->
+          <div class="text flex-auto">
+            ${this.getIndicatorDisplayType(this.indicator.indicator!.unit, this.indicator.indicator!.display_type)}
+            ${this.addInactivePrefix(this.indicator)}
+            ${(this.indicator.indicator && this.indicator.indicator.title) || '-'}
+          </div>
 
-              <!--    Baseline    -->
-              <div class="text number-data flex-none">${this.indicator.baseline.v || '-'}</div>
+          <!--    Baseline    -->
+          <div class="text number-data flex-none">${this.indicator.baseline.v || '-'}</div>
 
-              <!--    Target    -->
-              <div class="text number-data flex-none">${this.indicator.target.v || '-'}</div>
-              <div class="hover-block" ?hidden="${this.readonly}">
-                <paper-icon-button
-                  icon="icons:create"
-                  ?hidden="${!this.indicator.is_active}"
-                  @tap="${() => this.openIndicatorDialog(this.indicator)}"
-                ></paper-icon-button>
-                <paper-icon-button
-                  icon="icons:block"
-                  ?hidden="${!this.indicator.is_active}"
-                  @tap="${() => this.openDeactivationDialog(String(this.indicator.id))}"
-                ></paper-icon-button>
-              </div>
+          <!--    Target    -->
+          <div class="text number-data flex-none">${this.indicator.target.v || '-'}</div>
+          <div class="hover-block" ?hidden="${this.readonly}">
+            <paper-icon-button
+              icon="icons:create"
+              ?hidden="${!this.indicator.is_active}"
+              @tap="${() => this.openIndicatorDialog(this.indicator)}"
+            ></paper-icon-button>
+            <paper-icon-button
+              icon="icons:block"
+              ?hidden="${!this.indicator.is_active}"
+              @tap="${() => this.openDeactivationDialog(String(this.indicator.id))}"
+            ></paper-icon-button>
+          </div>
+        </div>
+
+        <!--    Indicator row collapsible Details    -->
+        <div slot="row-data-details" class="row-h">
+          <!--    Locations    -->
+          <div class="details-container">
+            <div class="text details-heading">Locations</div>
+            <div class="details-text">
+              ${this.locationNames.length
+                ? this.locationNames.map((name: string) => html` <div class="details-list-item">${name}</div> `)
+                : '-'}
             </div>
+          </div>
 
-            <!--    Indicator row collapsible Details    -->
-            <div slot="row-data-details" class="row-h">
-              <!--    Locations    -->
-              <div class="details-container">
-                <div class="text details-heading">Locations</div>
-                <div class="details-text">
-                  ${this.locationNames.length
-                    ? this.locationNames.map((name: string) => html` <div class="details-list-item">${name}</div> `)
-                    : '-'}
-                </div>
-              </div>
+          <!--    Section and Cluster    -->
+          <div class="details-container">
+            <div class="text details-heading">Section/Cluster</div>
+            <div class="details-text">${this.sectionClusterNames}</div>
+          </div>
 
-              <!--    Section and Cluster    -->
-              <div class="details-container">
-                <div class="text details-heading">Section/Cluster</div>
-                <div class="details-text">${this.sectionClusterNames}</div>
-              </div>
-
-              <!--    Disagregations    -->
-              <div class="details-container">
-                <div class="text details-heading">Disagregation</div>
-                <div class="details-text">
-                  ${this.indicator.disaggregation.length
-                    ? this.indicator.disaggregation.map((disaggregation: string) =>
-                        this.getDisaggregation(disaggregation)
-                      )
-                    : '-'}
-                </div>
-              </div>
+          <!--    Disagregations    -->
+          <div class="details-container">
+            <div class="text details-heading">Disagregation</div>
+            <div class="details-text">
+              ${this.indicator.disaggregation.length
+                ? this.indicator.disaggregation.map((disaggregation: string) => this.getDisaggregation(disaggregation))
+                : '-'}
             </div>
-          </etools-data-table-row>
-        `;
+          </div>
+        </div>
+      </etools-data-table-row>
+    `;
   }
   openDeactivationDialog(indicatorId: string) {
     fireEvent(this, 'open-deactivate-confirmation', {indicatorId: indicatorId});
   }
   openIndicatorDialog(indicator: Indicator) {
     fireEvent(this, 'open-edit-indicator-dialog', {indicator: indicator});
-  }
-
-  _hideIndicator(indicator: any, showInactiveIndicators: boolean) {
-    if (!indicator.is_active) {
-      return !showInactiveIndicators;
-    }
-    return false;
   }
 
   // Both unit and displayType are used because of inconsitencies in the db.
