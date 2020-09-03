@@ -100,6 +100,7 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
             .disaggregations="${this.disaggregations}"
             .locationNames="${this.getLocationNames(indicator.locations)}"
             .sectionClusterNames="${this.getSectionAndCluster(indicator.section, indicator.cluster_name)}"
+            .showInactiveIndicators="${this.showInactiveIndicators}"
             @open-edit-indicator-dialog="${(e: CustomEvent) => this.openIndicatorDialog(e.detail.indicator)}"
             @open-deactivate-confirmation="${(e: CustomEvent) => this.openDeactivationDialog(e.detail.indicatorId)}"
           ></pd-indicator>
