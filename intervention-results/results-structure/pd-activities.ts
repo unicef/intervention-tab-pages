@@ -77,19 +77,13 @@ export class PdActivities extends LitElement {
           <etools-data-table-row>
             <div slot="row-data" class="layout-horizontal editable-row fixed-height">
               <!--    PD Activity name    -->
-              <div class="text flex-auto">
-                ${activity.name || '-'}
-              </div>
+              <div class="text flex-auto">${activity.name || '-'}</div>
 
               <!--    CSO Cache    -->
-              <div class="text number-data flex-none">
-                ${this.formatCurrency(activity.cso_cash || 0)}
-              </div>
+              <div class="text number-data flex-none">${this.formatCurrency(activity.cso_cash || 0)}</div>
 
               <!--    UNICEF Cache    -->
-              <div class="text number-data flex-none">
-                ${this.formatCurrency(activity.unicef_cash || 0)}
-              </div>
+              <div class="text number-data flex-none">${this.formatCurrency(activity.unicef_cash || 0)}</div>
 
               <!--    Total    -->
               <div class="text number-data flex-none">
