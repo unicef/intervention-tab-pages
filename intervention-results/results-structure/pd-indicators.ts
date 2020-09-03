@@ -74,8 +74,9 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
             min-height: 55px;
             border: 1px solid var(--main-border-color) !important;
             border-bottom: none !important;
-            padding-top: 0px;
+            align-items: stretch;
             padding-bottom: 0px;
+            padding-top: 0px;
           }
           --icon-wrapper: {
             background-color: transparent;

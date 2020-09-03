@@ -18,6 +18,7 @@ export class PdIndicator extends LitElement {
           --blue-background-dark: #a4c4e1;
           display: block;
           --list-row-wrapper_-_background-color: var(--blue-background);
+          --list-row-wrapper_-_align-items: stretch;
         }
         .indicatorType {
           font-weight: 600;
@@ -41,7 +42,7 @@ export class PdIndicator extends LitElement {
     return html`
       ${this.getIndicatorTypeStyle(this.indicator)}
       <etools-data-table-row>
-        <div slot="row-data" class="layout-horizontal editable-row">
+        <div slot="row-data" class="layout-horizontal align-items-center editable-row">
           <!--    Indicator name    -->
           <div class="text flex-auto">
             ${this.getIndicatorDisplayType(this.indicator.indicator!.unit, this.indicator.indicator!.display_type)}
@@ -144,23 +145,26 @@ export class PdIndicator extends LitElement {
   }
 
   getIndicatorTypeStyle(indicator: any) {
-    let style = '';
+    let styleVars = '';
     if (indicator.cluster_indicator_id) {
-      style = `{--collapse-icon-bg-color: var(--ternary-color); --collapse-icon-bg-image: none}`;
+      styleVars = `--collapse-icon-bg-color: var(--ternary-color); --collapse-icon-bg-image: none;`;
     } else {
       let hfBgImg = 'none';
       if (indicator.is_high_frequency) {
         hfBgImg = `linear-gradient(135deg, #066ac7 12.50%, #0099ff 12.50%, #0099ff 50%, #066ac7 50%,
           #066ac7 62.50%, #0099ff 62.50%, #0099ff 100%)`;
       }
-      style = `{--collapse-icon-bg-color: var(--primary-color); --collapse-icon-bg-image: ${hfBgImg};
-        --icon-wrapper: {
-          background-color: var(--collapse-icon-bg-color, var(--primary-color));
-          background-image: var(--collapse-icon-bg-image, none);
-          background-size: 5.66px 5.66px;
-        }
-      }`;
+      styleVars = `--collapse-icon-bg-color: var(--primary-color); --collapse-icon-bg-image: ${hfBgImg};`;
     }
+    const style = `{ ${styleVars}
+      --icon-wrapper: {
+        background-color: var(--collapse-icon-bg-color, var(--primary-color));
+        background-image: var(--collapse-icon-bg-image, none);
+        background-size: 5.66px 5.66px;
+        padding: 0px 0px;
+        margin-right: 16px;
+      }
+    }`;
     return html`<style>
       etools-data-table-row ${style}
     </style>`;
