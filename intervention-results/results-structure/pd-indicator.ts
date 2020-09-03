@@ -29,6 +29,9 @@ export class PdIndicator extends LitElement {
           --blue-background-dark: #a4c4e1;
           background: var(--blue-background-dark);
         }
+        .hover-block {
+          background-color: var(--blue-background) !important;
+        }
       `
     ];
   }
@@ -145,20 +148,21 @@ export class PdIndicator extends LitElement {
   }
 
   getIndicatorTypeStyle(indicator: any) {
-    let styleVars = '';
+    let styleVars = '--indicator-blue:#a4c4e1; --indicator-green:#c4d7c6;';
+    let hfBgImg = 'none';
     if (indicator.cluster_indicator_id) {
-      styleVars = `--collapse-icon-bg-color: var(--ternary-color); --collapse-icon-bg-image: none;`;
-    } else {
-      let hfBgImg = 'none';
-      if (indicator.is_high_frequency) {
-        hfBgImg = `linear-gradient(135deg, #066ac7 12.50%, #0099ff 12.50%, #0099ff 50%, #066ac7 50%,
-          #066ac7 62.50%, #0099ff 62.50%, #0099ff 100%)`;
-      }
-      styleVars = `--collapse-icon-bg-color: var(--primary-color); --collapse-icon-bg-image: ${hfBgImg};`;
+      hfBgImg = `linear-gradient(135deg, #066ac7 12.50%, #c4d7c6 12.50%, #c4d7c6 50%, #066ac7 50%,
+         #066ac7 62.50%, #c4d7c6 62.50%, #c4d7c6 100%)`;
+      styleVars += `--collapse-icon-bg-color: var(--indicator-green); --collapse-icon-bg-image: ${hfBgImg};`;
+    } else if (indicator.is_high_frequency) {
+      hfBgImg = `linear-gradient(135deg, #066ac7 12.50%, #a4c4e1 12.50%, #a4c4e1 50%, #066ac7 50%,
+        #066ac7 62.50%, #a4c4e1 62.50%, #a4c4e1 100%)`;
+      styleVars += `--collapse-icon-bg-color: var(--indicator-blue); --collapse-icon-bg-image: ${hfBgImg};`;
     }
+
     const style = `{ ${styleVars}
       --icon-wrapper: {
-        background-color: var(--collapse-icon-bg-color, var(--primary-color));
+        background-color: var(--collapse-icon-bg-color, var(--indicator-blue));
         background-image: var(--collapse-icon-bg-image, none);
         background-size: 5.66px 5.66px;
         padding: 0px 0px;
