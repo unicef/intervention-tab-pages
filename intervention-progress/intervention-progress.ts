@@ -44,7 +44,7 @@ import {logError, logWarn} from '@unicef-polymer/etools-behaviors/etools-logging
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {property} from '@polymer/decorators';
 import {pmpCustomIcons} from './styles/pmp-icons';
-import {frWarningsStyles} from '../common/styles/fr-warnings-styles';
+import {frWarningsStylesPolymer} from '../common/styles/fr-warnings-styles';
 import get from 'lodash-es/get';
 declare const moment: any;
 
@@ -62,7 +62,7 @@ class InterventionProgress extends connect(getStore())(
   static get template() {
     return html`
       ${gridLayoutStylesPolymer()} ${sharedStylesPolymer()} ${sectionContentStylesPolymer} ${pmpCustomIcons}
-      ${frWarningsStyles}
+      ${frWarningsStylesPolymer()}
       <style include="data-table-styles paper-material-styles">
         #progress-summary etools-progress-bar {
           margin-top: 16px;
