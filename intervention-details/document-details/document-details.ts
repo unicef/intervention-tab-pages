@@ -47,7 +47,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="row-padding-v">
-          <paper-input
+          <paper-textarea
             id="title"
             label="Title"
             always-float-label
@@ -57,7 +57,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.title)}"
             ?required="${this.permissions.required.title}"
           >
-          </paper-input>
+          </paper-textarea>
         </div>
 
         <div class="row-padding-v">

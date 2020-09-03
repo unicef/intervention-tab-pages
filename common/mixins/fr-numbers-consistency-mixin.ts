@@ -121,7 +121,7 @@ function FrNumbersConsistencyMixin<T extends Constructor<LitElement>>(baseClass:
       ) {
         return returnMsg ? this.getFrsTotalAmountInconsistencyMsg() : true;
       }
-      return false;
+      return '';
     }
 
     /**
