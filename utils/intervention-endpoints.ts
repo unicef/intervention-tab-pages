@@ -40,6 +40,7 @@ export interface EtoolsEndpoints {
   interventionProgress: EtoolsEndpoint;
   prpToken: EtoolsEndpoint;
   reports: EtoolsEndpoint;
+  expectedResultsExport: EtoolsEndpoint;
 }
 
 export const interventionEndpoints: EtoolsEndpoints = {
@@ -145,5 +146,8 @@ export const interventionEndpoints: EtoolsEndpoints = {
   reports: {
     template: '/api/unicef/<%=countryId%>/progress-reports/',
     token: 'prp'
+  },
+  expectedResultsExport: {
+    template: '/api/v2/reports/interventions/results/<%=intervention_id%>/?format=docx_table'
   }
 };

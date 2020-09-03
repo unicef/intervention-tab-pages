@@ -44,8 +44,8 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
   @property() private sections: Section[] = [];
   @property() private disaggregations: Disaggregation[] = [];
   @property() pdOutputId!: string;
-  @property({type: Boolean})
-  readonly!: boolean;
+  @property({type: Boolean}) readonly!: boolean;
+  @property({type: Boolean}) showInactiveIndicators!: boolean;
 
   /** On create/edit indicator only sections already saved on the intervention can be selected */
   set interventionSections(ids: string[]) {
@@ -78,9 +78,6 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
             padding-bottom: 0px;
             padding-top: 0px;
           }
-          --icon-wrapper: {
-            background-color: transparent;
-          }
         }
         .editable-row .hover-block {
           background-color: var(--blue-background) !important;
@@ -103,6 +100,7 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
             .disaggregations="${this.disaggregations}"
             .locationNames="${this.getLocationNames(indicator.locations)}"
             .sectionClusterNames="${this.getSectionAndCluster(indicator.section, indicator.cluster_name)}"
+            ?hidden="${this._hideIndicator(indicator, this.showInactiveIndicators)}"
             @open-edit-indicator-dialog="${(e: CustomEvent) => this.openIndicatorDialog(e.detail.indicator)}"
             @open-deactivate-confirmation="${(e: CustomEvent) => this.openDeactivationDialog(e.detail.indicatorId)}"
           ></pd-indicator>
@@ -207,5 +205,12 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
       locNames.push(`${l.name} [${l.p_code}]`);
     });
     return locNames;
+  }
+
+  _hideIndicator(indicator: any, showInactiveIndicators: boolean) {
+    if (!indicator.is_active) {
+      return !showInactiveIndicators;
+    }
+    return false;
   }
 }

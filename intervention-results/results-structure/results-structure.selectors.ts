@@ -10,6 +10,10 @@ export const selectInterventionId = createSelector(currentIntervention, (interve
   return (intervention && intervention.id) || null;
 });
 
+export const selectInterventionStatus = createSelector(currentIntervention, (intervention: Intervention) => {
+  return (intervention && intervention.status) || '';
+});
+
 export const selectInterventionQuarters = createSelector(currentIntervention, (intervention: Intervention) => {
   return (intervention && intervention.quarters) || [];
 });
