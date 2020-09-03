@@ -197,13 +197,6 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
     );
   }
 
-  _hideIndicator(indicator: any, showInactiveIndicators: boolean) {
-    if (!indicator.is_active) {
-      return !showInactiveIndicators;
-    }
-    return false;
-  }
-
   getLocationNames(ids: string[]): string[] {
     const locations = filterByIds<LocationObject>(this.locations, ids);
     const locNames: string[] = [];
