@@ -9,7 +9,7 @@ export class PartnerDetails extends ModelsBase {
   partner_id: number | null = null;
   partner = '';
   partner_vendor = '';
-  partner_focal_points: number[] = [];
+  partner_focal_points: string[] = [];
   agreement: number | null = null;
 }
 

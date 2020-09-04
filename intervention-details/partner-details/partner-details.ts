@@ -113,7 +113,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
             ${this.isReadonly(this.editMode, this.permissions?.edit.partner_focal_points)
               ? html`<label for="focalPointsDetails" class="paper-label">Partner Focal Points</label>
                   <div id="focalPointsDetails">
-                    ${this.renderReadonlyPartnerFocalPoints(this.partnerStaffMembers, this.data?.partner_focal_points!)}
+                    ${this.renderReadonlyUserDetails(this.partnerStaffMembers, this.data?.partner_focal_points!)}
                   </div>`
               : html``}
           </div>
@@ -206,25 +206,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
       return html`—`;
     } else {
       return authOfficers.map((authOfficer) => {
-        return html`<div class="w100">
-          ${this.renderNameEmailPhone(authOfficer)}
-        </div>`;
-      });
-    }
-  }
-
-  renderReadonlyPartnerFocalPoints(partnerStaffMembers: PartnerStaffMember[], partnerFocalPoints: number[]) {
-    if (isEmpty(partnerStaffMembers) || isEmpty(partnerFocalPoints)) {
-      return html`—`;
-    }
-    const focalPointDetails = partnerStaffMembers.filter((staff) => partnerFocalPoints.includes(staff.id!));
-    if (isEmpty(focalPointDetails)) {
-      return html``;
-    } else {
-      return focalPointDetails.map((focal: any) => {
-        return html`<div class="w100">
-          ${this.renderNameEmailPhone(focal)}
-        </div>`;
+        return html`<div class="w100">${this.renderNameEmailPhone(authOfficer)}</div>`;
       });
     }
   }
