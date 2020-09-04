@@ -23,6 +23,8 @@ import {updateCurrentIntervention} from '../../common/actions';
 import {InterventionAmendment} from '../../common/models/intervention.types';
 import {LabelAndValue, AnyObject, RootState} from '../../common/models/globals.types';
 import {isJsonStrMatch} from '../../utils/utils';
+import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import get from 'lodash-es/get';
 import CONSTANTS from '../../common/constants';
 
 /**
@@ -181,6 +183,10 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
   warnMessages: string[] = [];
 
   stateChanged(state: RootState) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'management')) {
+      return;
+    }
+
     if (
       state.commonData.interventionAmendmentTypes &&
       !isJsonStrMatch(this.amendmentTypes, state.commonData!.interventionAmendmentTypes)

@@ -15,6 +15,8 @@ import {buttonsStyles} from '../../common/styles/button-styles';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
 import {patchIntervention} from '../../common/actions';
+import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import get from 'lodash-es/get';
 
 /**
  * @customElement
@@ -45,10 +47,7 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Programme Document Dates">
-
-        <div slot="panel-btns">
-          ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
-        </div>
+        <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
         <div class="layout-horizontal row-padding-v">
           <div class="col col-3">
             <!-- Start date -->
@@ -135,6 +134,9 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
   }
 
   stateChanged(state: RootState) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'timing')) {
+      return;
+    }
     if (!state.interventions.current) {
       return;
     }

@@ -28,6 +28,7 @@ import {AnyObject, RootState} from '../../common/models/globals.types';
 import {ReportingRequirementsPermissions} from './reportingRequirementsPermissions.models';
 import {Permission} from '../../common/models/intervention.types';
 import {selectReportingRequirementsPermissions} from './reportingRequirementsPermissions.selectors';
+import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 
 /**
  * @polymer
@@ -217,6 +218,9 @@ class PartnerReportingRequirements extends connect(getStore())(PolymerElement) {
   intervention!: AnyObject;
 
   stateChanged(state: RootState) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'timing')) {
+      return;
+    }
     if (!get(state, 'interventions.current')) {
       return;
     }

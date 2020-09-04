@@ -24,6 +24,8 @@ import {patchIntervention} from '../../common/actions';
 import {LabelAndValue} from '../../common/models/globals.types';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import {isJsonStrMatch} from '../../utils/utils';
+import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import get from 'lodash-es/get';
 
 /**
  * @customElement
@@ -165,6 +167,10 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
   }
 
   stateChanged(state: RootState) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'management')) {
+      return;
+    }
+
     if (!state.interventions.current) {
       return;
     }
