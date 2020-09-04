@@ -12,6 +12,9 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {ExpectedResult} from '../../common/models/intervention.types';
+import '@unicef-polymer/etools-dialog/etools-dialog';
+import '@unicef-polymer/etools-dropdown/etools-dropdown';
+import '@polymer/paper-input/paper-input';
 
 /**
  * @customElement
