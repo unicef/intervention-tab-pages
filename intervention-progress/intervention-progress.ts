@@ -165,11 +165,11 @@ class InterventionProgress extends connect(getStore())(
       <div id="progress-summary" class="content-section paper-material" elevation="1">
         <div class="row-h">
           <div class="layout-vertical col-4">
-            <etools-form-element-wrapper
+            <etools-form-element-wrapper-2
               label="PD Duration"
               value="[[_getPdDuration(progress.start_date, progress.end_date)]]"
             >
-            </etools-form-element-wrapper>
+            </etools-form-element-wrapper-2>
             <etools-progress-bar value="[[pdProgress]]" no-decimals></etools-progress-bar>
           </div>
           <div class="layout-vertical col-5">
@@ -180,23 +180,23 @@ class InterventionProgress extends connect(getStore())(
                 icon-first
                 hide-tooltip="[[!multipleCurrenciesWereUsed(progress.disbursement, progress)]]"
               >
-                <etools-form-element-wrapper
+                <etools-form-element-wrapper-2
                   slot="field"
                   label="Cash Transfered"
                   value="[[progress.disbursement_currency]] [[displayCurrencyAmount(progress.disbursement, '0', 0)]]"
                 >
-                </etools-form-element-wrapper>
+                </etools-form-element-wrapper-2>
                 <iron-icon icon="pmp-custom-icons:not-equal" slot="custom-icon"></iron-icon>
                 <span slot="message">Disbursement amounts in multiple currencies.</span>
               </etools-info-tooltip>
 
-              <etools-form-element-wrapper
+              <etools-form-element-wrapper-2
                 class="col-6"
                 label="UNICEF Cash"
                 value="[[progress.unicef_budget_cash_currency]]
                         [[displayCurrencyAmount(progress.unicef_budget_cash, '0', 0)]]"
               >
-              </etools-form-element-wrapper>
+              </etools-form-element-wrapper-2>
             </div>
 
             <etools-progress-bar
@@ -220,13 +220,13 @@ class InterventionProgress extends connect(getStore())(
             </template>
           </div>
           <div class="col col-3">
-            <etools-form-element-wrapper
+            <etools-form-element-wrapper-2
               label="Overall PD/SSFA Rating by UNICEF"
               value="[[_getOverallPdStatusDate(latestAcceptedPr.review_date)]]"
               no-placeholder
             >
               <report-status status="[[latestAcceptedPr.review_overall_status]]" slot="prefix"></report-status>
-            </etools-form-element-wrapper>
+            </etools-form-element-wrapper-2>
           </div>
         </div>
       </div>
