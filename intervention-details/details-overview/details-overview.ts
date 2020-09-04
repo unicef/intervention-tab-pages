@@ -107,7 +107,7 @@ export class DetailsOverview extends connect(getStore())(LitElement) {
   }
 
   public stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'overview')) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'details')) {
       return;
     }
 
