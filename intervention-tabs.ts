@@ -57,14 +57,23 @@ export class InterventionTabs extends LitElement {
     return html`
       <style>
         :host {
+          /*--epc-header_-_border-bottom: 3px solid red;*/
+          /*--epc-header-border-bottom: 3px solid red;*/
+          
+          --ecp-header-title_-_text-align: left;
           --ecp-content_-_padding: 8px 24px 16px 24px;
+          --ecp-header-bg: #ffffff;
+          --epc-header-color: #000000;
+          
+          /*--ecp-content_-_border-top: 1px solid #000000;*/
+          /*--ecp-content-border-top: 1px solid #000000;*/
+          
           --ecp-header-title: {
             padding: 0 24px 0 0;
             text-align: left;
             font-size: 18px;
             font-weight: 500;
           }
-          --ecp-header-title_-_text-align: left;
         }
 
         ${sharedStyles} etools-status {
