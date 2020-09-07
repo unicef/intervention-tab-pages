@@ -19,6 +19,8 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import {patchIntervention} from '../../common/actions';
 import RepeatableDataSetsMixin from '../../common/mixins/repeatable-data-sets-mixin';
 import {fireEvent} from '../../utils/fire-custom-event';
+import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import get from 'lodash-es/get';
 
 /**
  * @customElement
@@ -125,6 +127,9 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
   }
 
   stateChanged(state: RootState) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'management')) {
+      return;
+    }
     if (!state.interventions.current) {
       return;
     }

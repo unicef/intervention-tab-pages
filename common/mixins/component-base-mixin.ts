@@ -1,10 +1,11 @@
 import {LitElement, property, html} from 'lit-element';
 import {Constructor, AnyObject} from '../models/globals.types';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {areEqual} from '../../utils/utils';
+import {areEqual, filterByIds} from '../../utils/utils';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {validateRequiredFields} from '../../utils/validation-helper';
 import {formatDate} from '../../utils/date-utils';
+import isEmpty from 'lodash-es/isEmpty';
 
 function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class ComponentBaseClass extends baseClass {
@@ -62,7 +63,6 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
     }
 
     save() {
-      console.log(this.localName);
       fireEvent(this, 'global-loading', {
         active: true,
         loadingSource: this.localName
@@ -80,12 +80,8 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
         ? html``
         : html`
             <div class="layout-horizontal right-align row-padding-v">
-              <paper-button class="default" @tap="${this.cancel}">
-                Cancel
-              </paper-button>
-              <paper-button class="primary" @tap="${this.save}">
-                Save
-              </paper-button>
+              <paper-button class="default" @tap="${this.cancel}"> Cancel </paper-button>
+              <paper-button class="primary" @tap="${this.save}"> Save </paper-button>
             </div>
           `;
     }
@@ -96,9 +92,20 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
         : html` <paper-icon-button @tap="${this.allowEdit}" icon="create"> </paper-icon-button> `;
     }
 
+    renderReadonlyUserDetails(users: AnyObject[], ids: string[]) {
+      const selsectedUsers = filterByIds(users, ids);
+      if (isEmpty(selsectedUsers)) {
+        return html``;
+      } else {
+        return selsectedUsers.map((u: any) => {
+          return html`<div class="w100">${this.renderNameEmailPhone(u)}</div>`;
+        });
+      }
+    }
+
     renderNameEmailPhone(item: any) {
-      return html`${item.first_name} ${item.last_name} (${item.email ? item.email : '—'} ,
-      ${item.phone ? item.phone : '—'})`;
+      return html`${item.first_name} ${item.last_name} (${item.email ? item.email : ''}
+      ${item.phone ? ', ' + item.phone : ''})`;
     }
 
     selectedItemChanged(detail: any, key: string, optionValue = 'id') {

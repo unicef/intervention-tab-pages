@@ -35,6 +35,7 @@ export class ActivityTimeframes extends connect(getStore())(LitElement) {
     const mappedActivities: GenericObject<InterventionActivity[]> = this.getActivities();
     return html`
       <etools-content-panel panel-title="Activity Timeframes">
+        ${!timeFrames.length ? html` <div class="align-items-baseline"><p>Activity Timeframes will be available after Start and End Date are selected and saved.</p></div> ` : ''}
         <div class="layout-vertical align-items-center">
           ${timeFrames.map(
             ([year, frames]: GroupedActivityTime, index: number) => html`

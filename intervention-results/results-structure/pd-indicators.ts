@@ -20,6 +20,7 @@ import {getIntervention} from '../../common/actions';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {openDialog} from '../../utils/dialog';
+import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import './pd-indicator';
 
 @customElement('pd-indicators')
@@ -119,6 +120,9 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
   }
 
   stateChanged(state: RootState): void {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'results')) {
+      return;
+    }
     this.sections = (state.commonData && state.commonData.sections) || [];
     this.locations = (state.commonData && state.commonData.locations) || [];
     this.disaggregations = (state.commonData && state.commonData.disaggregations) || [];

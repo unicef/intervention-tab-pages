@@ -2,7 +2,7 @@ import {ModelsBase} from '../../common/models/models.base';
 import {InterventionPermissionsFields, Intervention} from '../../common/models/intervention.types';
 
 export class Risk extends ModelsBase {
-   constructor(intervention: Intervention) {
+  constructor(intervention: Intervention) {
     super();
     this.setObjProperties(intervention);
   }

@@ -3,6 +3,7 @@ import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-table/etools-table';
 import '@unicef-polymer/etools-dropdown';
+import '@polymer/paper-icon-button/paper-icon-button';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
@@ -76,6 +77,8 @@ export class RisksElement extends connect(getStore())(ComponentBaseMixin(LitElem
         ${sharedStyles} :host {
           display: block;
           margin-bottom: 24px;
+          --ecp-content-padding: 0;
+          --ecp-content_-_padding: 0;
         }
         #mitigationMeasures {
           width: 100%;
@@ -83,20 +86,21 @@ export class RisksElement extends connect(getStore())(ComponentBaseMixin(LitElem
       </style>
       <etools-content-panel show-expand-btn panel-title="Risks">
         <div slot="panel-btns">
-          <paper-button
-            class="secondary-btn"
+          <paper-icon-button
             ?hidden="${!this.canEditAtLeastOneField}"
             @tap="${(e: CustomEvent) => this.openRiskDialog(e)}"
+            icon="add"
           >
-            <iron-icon icon="add"></iron-icon>
-          </paper-button>
+          </paper-icon-button>
         </div>
         <etools-table
           .columns="${this.columns}"
           .items="${this.data}"
           @edit-item="${(e: CustomEvent) => this.openRiskDialog(e)}"
+          @delete-item="${this.deleteRiskItem}"
           .extraCSS="${this.getTableStyle()}"
           .showEdit=${this.canEditAtLeastOneField}
+          .showDelete=${this.canEditAtLeastOneField}
         >
         </etools-table>
       </etools-content-panel>
@@ -182,5 +186,10 @@ export class RisksElement extends connect(getStore())(ComponentBaseMixin(LitElem
     if (this.riskDialog) {
       document.querySelector('body')!.removeChild(this.riskDialog);
     }
+  }
+
+  deleteRiskItem(event: CustomEvent) {
+    // TODO
+    console.log(event);
   }
 }

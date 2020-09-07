@@ -32,6 +32,8 @@ import {connect} from 'pwa-helpers/connect-mixin';
 import {openDialog} from '../../utils/dialog';
 import CONSTANTS from '../../common/constants';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import get from 'lodash-es/get';
 
 /**
  * @customElement
@@ -275,6 +277,9 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
   }
 
   stateChanged(state: RootState) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'results')) {
+      return;
+    }
     this.resultLinks = selectInterventionResultLinks(state);
     this.permissions = selectResultLinksPermissions(state);
     this.interventionId = selectInterventionId(state);
