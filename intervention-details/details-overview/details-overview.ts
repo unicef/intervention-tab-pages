@@ -9,6 +9,8 @@ import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {layoutFlex} from '../../common/styles/flex-layout-styles';
 import {RootState} from '../../common/models/globals.types';
+import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import get from 'lodash-es/get';
 
 /**
  * @customElement
@@ -105,6 +107,10 @@ export class DetailsOverview extends connect(getStore())(LitElement) {
   }
 
   public stateChanged(state: RootState) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'details')) {
+      return;
+    }
+
     if (state.interventions.current) {
       this.interventionOverview = selectInterventionOverview(state);
     }

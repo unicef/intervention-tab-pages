@@ -21,6 +21,8 @@ import {gridLayoutStylesPolymer} from '../common/styles/grid-layout-styles-polym
 import CommonMixin from '../common/mixins/common-mixin';
 import EndpointsMixin from '../common/mixins/endpoints-mixin';
 import PaginationMixin from '../common/mixins/pagination-mixin';
+import {pageIsNotCurrentlyActive} from '../utils/common-methods';
+import get from 'lodash-es/get';
 
 /**
  * @polymer
@@ -207,6 +209,9 @@ class InterventionReports extends connect(getStore())(PaginationMixin(CommonMixi
   }
 
   stateChanged(state: RootState) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'reports')) {
+      return;
+    }
     this.endStateChanged(state);
   }
 

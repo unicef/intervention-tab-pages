@@ -17,6 +17,8 @@ import {connect} from 'pwa-helpers/connect-mixin';
 import {patchIntervention} from '../../common/actions';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {RootState} from '../../common/models/globals.types';
+import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import get from 'lodash-es/get';
 
 /**
  * @customElement
@@ -124,6 +126,10 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
   }
 
   stateChanged(state: RootState) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'details')) {
+      return;
+    }
+
     if (!state.interventions.current) {
       return;
     }

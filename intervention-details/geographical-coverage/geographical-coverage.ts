@@ -14,11 +14,12 @@ import {Permission} from '../../common/models/intervention.types';
 import {selectLocationsPermissions} from './geographicalCoverage.selectors';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {patchIntervention} from '../../common/actions';
-import isEmpty from 'lodash-es/isEmpty';
-import get from 'lodash-es/get';
 import {isJsonStrMatch} from '../../utils/utils';
+import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {LocationObject, RootState} from '../../common/models/globals.types';
 import cloneDeep from 'lodash-es/cloneDeep';
+import isEmpty from 'lodash-es/isEmpty';
+import get from 'lodash-es/get';
 
 /**
  * @customElement
@@ -122,6 +123,9 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
   }
 
   stateChanged(state: RootState) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'details')) {
+      return;
+    }
     if (!state.interventions.current) {
       return;
     }

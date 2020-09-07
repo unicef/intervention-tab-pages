@@ -13,6 +13,8 @@ import {patchIntervention} from '../../common/actions';
 import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-loading/etools-loading';
 import cloneDeep from 'lodash-es/cloneDeep';
+import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import get from 'lodash-es/get';
 
 /**
  * @customElement
@@ -117,6 +119,10 @@ export class TechnicalGuidance extends connect(getStore())(ComponentBaseMixin(Li
   }
 
   stateChanged(state: RootState) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'details')) {
+      return;
+    }
+
     if (!state.interventions.current) {
       return;
     }
