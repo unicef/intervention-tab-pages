@@ -17,6 +17,7 @@ import './monitoring-visits-list/monitoring-visits-list';
 import {MinimalAgreement} from '../common/models/agreement.types';
 import {pageIsNotCurrentlyActive} from '../utils/common-methods';
 import {AnyObject, RootState} from '../common/models/globals.types';
+import {fireEvent} from '../utils/fire-custom-event';
 
 /**
  * @customElement
@@ -293,6 +294,15 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
     if (state.user && state.user.data) {
       this.isUnicefUser = state.user.data.is_unicef_user;
     }
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    // Disable loading message for tab load, triggered by parent element on stamp or by tap event on tabs
+    fireEvent(this, 'global-loading', {
+      active: false,
+      loadingSource: 'interv-page'
+    });
   }
 
   _parseCpOutputs(cpOutputsLength: number, resultsLength: number) {
