@@ -6,7 +6,7 @@ import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {Intervention, Permission} from '../../common/models/intervention.types';
+import {Permission} from '../../common/models/intervention.types';
 import {RootState} from '../../common/models/globals.types';
 import {ProgrammeDocDates, InterventionDatesPermissions} from './interventionDates.models';
 import cloneDeep from 'lodash-es/cloneDeep';
@@ -17,6 +17,8 @@ import {getStore} from '../../utils/redux-store-access';
 import {patchIntervention} from '../../common/actions';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
+import '@unicef-polymer/etools-upload/etools-upload';
+import {interventionEndpoints} from '../../utils/intervention-endpoints';
 
 /**
  * @customElement
@@ -105,14 +107,32 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
             </etools-info-tooltip>
           </div>
         </div>
+        <div
+          class="layout-horizontal row-padding-v"
+          ?hidden="${this.hideActivationLetter(this.data.status, this.data.contingency_pd)}"
+        >
+          <etools-upload
+            label="Activation Letter"
+            id="activationLetterUpload"
+            .fileUrl="${this.data.activation_letter_attachment}"
+            .uploadEndpoint="${this.uploadEndpoint}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.activation_letter_attachment)}"
+            @upload-finished="${(e: CustomEvent) => this.activationLetterUploadFinished(e)}"
+            .showDeleteBtn="${this.showActivationLetterDeleteBtn(
+              this.data.status,
+              this.permissions.edit.activation_letter_attachment,
+              this.editMode
+            )}"
+          >
+          </etools-upload>
+        </div>
 
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
       </etools-content-panel>
     `;
   }
-
-  @property({type: Object})
-  intervention!: Intervention;
+  @property({type: String})
+  uploadEndpoint = interventionEndpoints.attachmentsUpload.url!;
 
   @property({type: Object})
   originalData!: ProgrammeDocDates;
@@ -144,6 +164,30 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
     this.originalData = cloneDeep(this.data);
     this.permissions = selectInterventionDatesPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
+  }
+
+  private hideActivationLetter(interventionStatus: string, isContingencyPd: boolean) {
+    if (!isContingencyPd) {
+      return true;
+    }
+    return ['draft', 'development', ''].includes(interventionStatus);
+  }
+
+  private activationLetterUploadFinished(e: CustomEvent) {
+    if (e.detail.success) {
+      const response = e.detail.success;
+      this.data.activation_letter_attachment = response.id;
+      this.requestUpdate();
+    }
+  }
+
+  private showActivationLetterDeleteBtn(interventionStatus: string, permission: boolean, editMode: boolean) {
+    return (
+      !this.isReadonly(editMode, permission) &&
+      ['draft', 'development', ''].includes(interventionStatus) &&
+      permission &&
+      !this.originalData.activation_letter_attachment
+    );
   }
 
   saveData() {

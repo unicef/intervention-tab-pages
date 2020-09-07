@@ -8,6 +8,9 @@ export class ProgrammeDocDates extends ModelsBase {
   }
   start = '';
   end = '';
+  contingency_pd = false;
+  activation_letter_attachment = '';
+  status = ''; // intervention status
 }
 
 export class InterventionDatesPermissions extends ModelsBase {
@@ -17,4 +20,5 @@ export class InterventionDatesPermissions extends ModelsBase {
   }
   start = false;
   end = false;
+  activation_letter_attachment = false;
 }

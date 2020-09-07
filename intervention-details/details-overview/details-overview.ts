@@ -85,12 +85,12 @@ export class DetailsOverview extends connect(getStore())(LitElement) {
             </div>
             <div class="flex-1">
               <span>
-                <label class="input-label"> ${this._getText(this.interventionOverview.contingency_pd)} </label>
+                <label class="input-label"> ${this._getText(this.interventionOverview.humanitarian_flag)} </label>
               </span>
             </div>
             <div class="flex-1">
               <span>
-                <label class="input-label"> ${this._getText(this.interventionOverview.humanitarian_flag)} </label>
+                <label class="input-label"> ${this._getText(this.interventionOverview.contingency_pd)} </label>
               </span>
             </div>
           </div>
