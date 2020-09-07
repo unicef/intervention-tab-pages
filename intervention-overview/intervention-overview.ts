@@ -82,6 +82,16 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
           width: 140px;
           text-align: right;
         }
+        .unicef_cash_contribution {
+          width: 133px;
+        }
+        .unicef_supply_contribution {
+          width: 142px;
+        }
+        .unicef_totla_contribution {
+          width: 133px;
+        }
+        
       </style>
 
       <div class="page-content elevation" elevation="1" id="top-container">
@@ -143,6 +153,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
               <label class="paper-label">Unicef Cash Contribution</label>
               </br>
               <etools-currency-amount-input
+              class="unicef_cash_contribution"
               .value="${this.intervention.planned_budget.unicef_cash_local}"
               type="number"
               placeholder="&#8212;"
@@ -155,6 +166,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
             <label class="paper-label">Unicef Supply Contribution</label>
             </br>
             <etools-currency-amount-input
+              class="unicef_supply_contribution"
               .value="${this.intervention.planned_budget.in_kind_amount_local}"
               type="number"
               placeholder="&#8212;"
@@ -167,6 +179,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
             <label class="paper-label">Total Unicef Contribution</label>
             </br>
             <etools-currency-amount-input
+              class="unicef_totla_contribution"
               .value="${this._getTotalUnicef()}"
               type="number"
               placeholder="&#8212;"
