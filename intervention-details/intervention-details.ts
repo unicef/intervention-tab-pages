@@ -1,5 +1,5 @@
 import {LitElement, html} from 'lit-element';
-import './partner-details/partner-details';
+import './partner-details/partner-info';
 import './document-details/document-details';
 import './details-overview/details-overview';
 import './unicef-details/unicef-details';
