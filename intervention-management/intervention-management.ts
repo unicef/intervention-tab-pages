@@ -6,6 +6,7 @@ import './review-and-sign/review-and-sign';
 import './financial/financial-component';
 import './risks/risks';
 import './final-review/final-review';
+import {fireEvent} from '../utils/fire-custom-event';
 
 /**
  * @customElement
@@ -24,5 +25,13 @@ export class InterventionManagement extends LitElement {
       <fund-reservations></fund-reservations>
       <final-review></final-review>
     `;
+  }
+  connectedCallback() {
+    super.connectedCallback();
+    // Disable loading message for tab load, triggered by parent element on stamp or by tap event on tabs
+    fireEvent(this, 'global-loading', {
+      active: false,
+      loadingSource: 'interv-page'
+    });
   }
 }

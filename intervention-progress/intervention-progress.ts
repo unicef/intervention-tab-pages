@@ -351,10 +351,7 @@ class InterventionProgress extends connect(getStore())(
 
   connectedCallback() {
     super.connectedCallback();
-    /**
-     * Disable loading message for progress tab elements load,
-     * triggered by parent element on stamp or by tap event on tabs
-     */
+    // Disable loading message for tab load, triggered by parent element on stamp or by tap event on tabs
     fireEvent(this, 'global-loading', {
       active: false,
       loadingSource: 'interv-page'
