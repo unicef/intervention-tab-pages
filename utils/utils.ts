@@ -3,7 +3,6 @@ import isObject from 'lodash-es/isObject';
 import isEmpty from 'lodash-es/isEmpty';
 import {formatDate} from './date-utils';
 
-
 export const isJsonStrMatch = (a: any, b: any) => {
   return JSON.stringify(a) === JSON.stringify(b);
 };
@@ -89,4 +88,3 @@ function _formatYYYY_MM_DD(obj2: string | Date) {
   }
   return formatDate(obj2, 'YYYY-MM-DD');
 }
-
