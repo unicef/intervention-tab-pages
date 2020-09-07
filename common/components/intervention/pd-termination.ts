@@ -1,4 +1,4 @@
-import {LitElement, html, customElement} from 'lit-element';
+import {LitElement, html, customElement, property} from 'lit-element';
 import EnvironmentFlagsMixin from '../../../common/mixins/environment-flags-mixin';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 declare const moment: any;
@@ -11,7 +11,6 @@ import {sharedStyles} from '../../styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../styles/grid-layout-styles-lit';
 import {requiredFieldStarredStylesPolymer} from '../../styles/required-field-styles';
 import {fireEvent} from '../../../utils/fire-custom-event';
-import {property} from '@polymer/decorators';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../../utils/redux-store-access';
 
@@ -23,12 +22,12 @@ import {getStore} from '../../../utils/redux-store-access';
 @customElement('pd-termination')
 export class PdTermination extends connect(getStore())(EnvironmentFlagsMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit, sharedStyles, requiredFieldStarredStylesPolymer];
+    return [gridLayoutStylesLit];
   }
   render() {
     return html`
       <style>
-        :host {
+        ${sharedStyles}${requiredFieldStarredStylesPolymer}:host {
           /* host CSS */
         }
 
