@@ -27,7 +27,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
     return [gridLayoutStylesLit, elevationStyles];
   }
   render() {
-    if (!this.interventionCpOutputs || !this.intervention) {
+    if (!this.interventionCpOutputs || !this.intervention || !this.interventionAgreement) {
       return html`<etools-loading loading-text="Loading..." active></etools-loading>`;
     }
 
