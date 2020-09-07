@@ -18,6 +18,7 @@ import {getIntervention} from './common/actions';
 import {sharedStyles} from './common/styles/shared-styles-lit';
 import {isJsonStrMatch} from './utils/utils';
 import {pageContentHeaderSlottedStyles} from './common/layout/page-content-header/page-content-header-slotted-styles';
+import '@unicef-polymer/etools-loading/etools-loading';
 
 const MOCKUP_STATUSES = [
   ['draft', 'Draft'],
@@ -114,16 +115,30 @@ export class InterventionTabs extends LitElement {
       </intervention-page-content-header>
 
       <div class="page-content">
-        <intervention-details ?hidden="${!this.isActiveTab(this.activeTab, 'details')}"> </intervention-details>
-        <intervention-overview ?hidden="${!this.isActiveTab(this.activeTab, 'overview')}"> </intervention-overview>
-        <intervention-results ?hidden="${!this.isActiveTab(this.activeTab, 'results')}"> </intervention-results>
-        <intervention-timing ?hidden="${!this.isActiveTab(this.activeTab, 'timing')}"> </intervention-timing>
+        <intervention-details ?hidden="${!this.isActiveTab(this.activeTab, 'details')}">
+          <etools-loading loading-text="Loading..." active></etools-loading>
+        </intervention-details>
+        <intervention-overview ?hidden="${!this.isActiveTab(this.activeTab, 'overview')}">
+          <etools-loading loading-text="Loading..." active></etools-loading>
+        </intervention-overview>
+        <intervention-results ?hidden="${!this.isActiveTab(this.activeTab, 'results')}">
+          <etools-loading loading-text="Loading..." active></etools-loading>
+        </intervention-results>
+        <intervention-timing ?hidden="${!this.isActiveTab(this.activeTab, 'timing')}">
+          <etools-loading loading-text="Loading..." active></etools-loading>
+        </intervention-timing>
         <intervention-management ?hidden="${!this.isActiveTab(this.activeTab, 'management')}">
+          <etools-loading loading-text="Loading..." active></etools-loading>
         </intervention-management>
         <intervention-attachments ?hidden="${!this.isActiveTab(this.activeTab, 'attachments')}">
+          <etools-loading loading-text="Loading..." active></etools-loading>
         </intervention-attachments>
-        <intervention-reports ?hidden="${!this.isActiveTab(this.activeTab, 'reports')}"></intervention-reports>
-        <intervention-progress ?hidden="${!this.isActiveTab(this.activeTab, 'progress')}"></intervention-progress>
+        <intervention-reports ?hidden="${!this.isActiveTab(this.activeTab, 'reports')}">
+          <etools-loading loading-text="Loading..." active></etools-loading>
+        </intervention-reports>
+        <intervention-progress ?hidden="${!this.isActiveTab(this.activeTab, 'progress')}">
+          <etools-loading loading-text="Loading..." active></etools-loading>;</intervention-progress
+        >
       </div>
     `;
   }
