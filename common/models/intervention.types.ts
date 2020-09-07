@@ -335,4 +335,5 @@ export type ReviewAttachment = {
   created: string;
   id: number;
   intervention: number;
+  type: number;
 };
