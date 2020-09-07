@@ -27,10 +27,10 @@ export class AttachmentsList extends connect(getStore())(LitElement) {
 
   protected render(): TemplateResult {
     return html`
-      ${AttachmentsListStyles}
       <style>
         ${sharedStyles}
       </style>
+      ${AttachmentsListStyles}
 
       <etools-content-panel class="content-section" .panelTitle="Attachments (${this.attachments.length})">
         <div slot="panel-btns" class="layout-horizontal">
