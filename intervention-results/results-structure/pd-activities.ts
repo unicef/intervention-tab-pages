@@ -66,8 +66,8 @@ export class PdActivities extends LitElement {
           PD Activities
           <iron-icon icon="add-box" @click="${() => this.openDialog()}" ?hidden="${this.readonly}"></iron-icon>
         </div>
-        <div class="heading number-data flex-none">CSO Cache</div>
-        <div class="heading number-data flex-none">UNICEF Cache</div>
+        <div class="heading number-data flex-none">CSO Cash</div>
+        <div class="heading number-data flex-none">UNICEF Cash</div>
         <div class="heading number-data flex-none">Total</div>
         <div class="heading number-data flex-none">%Partner</div>
       </div>
@@ -79,10 +79,10 @@ export class PdActivities extends LitElement {
               <!--    PD Activity name    -->
               <div class="text flex-auto">${activity.name || '-'}</div>
 
-              <!--    CSO Cache    -->
+              <!--    CSO Cash    -->
               <div class="text number-data flex-none">${this.formatCurrency(activity.cso_cash || 0)}</div>
 
-              <!--    UNICEF Cache    -->
+              <!--    UNICEF Cash    -->
               <div class="text number-data flex-none">${this.formatCurrency(activity.unicef_cash || 0)}</div>
 
               <!--    Total    -->
