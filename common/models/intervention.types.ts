@@ -190,6 +190,9 @@ export class InterventionPermissionsFields {
   // financial component
   cash_transfer_modalities = false;
   hq_support_cost = false;
+
+  // Supply Agreement
+  supply_items = false;
 }
 
 export interface Permission<T> {
@@ -251,6 +254,7 @@ export class Intervention {
   hq_support_cost = '';
   available_actions: string[] = [];
   prgm_effectiveness?: string;
+  supply_items: [] = [];
 }
 
 export class InterventionAmendment {

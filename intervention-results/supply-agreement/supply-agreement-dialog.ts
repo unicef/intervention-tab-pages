@@ -12,6 +12,7 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {ExpectedResult} from '../../common/models/intervention.types';
+import {updateCurrentIntervention} from '../../common/actions';
 
 /**
  * @customElement
@@ -122,19 +123,13 @@ export class SupplyAgreementDialog extends connect(getStore())(ComponentBaseMixi
   interventionId!: number;
 
   @property({type: Object})
-  callbackFunction!: any;
-
-  @property({type: Object})
   cpOutputs: ExpectedResult[] = [];
 
-  set dialogData({data, interventionId, result_links, callbackFunction}: any) {
+  set dialogData({data, interventionId, result_links}: any) {
     this.cpOutputs = result_links || [];
     this.data = data;
-    this.isNewRecord = !this.data.id;
+    this.isNewRecord = !this.data.result;
     this.interventionId = interventionId;
-    // TODO callbackFunction it's used temporarily just to test list page updates
-    // will be removed when saving will work (see comments below)
-    this.callbackFunction = callbackFunction;
     this.dialogTitle = this.isNewRecord ? 'Add  Supply Agreement' : 'Edit Supply Agreement';
     this.confirmBtnTxt = this.isNewRecord ? 'Add' : 'Save';
   }
@@ -156,7 +151,7 @@ export class SupplyAgreementDialog extends connect(getStore())(ComponentBaseMixi
       ? getEndpoint(interventionEndpoints.supplyAgreementAdd, {interventionId: this.interventionId})
       : getEndpoint(interventionEndpoints.supplyAgreementEdit, {
           interventionId: this.interventionId,
-          supplyId: this.data.id
+          supplyId: this.data.result
         });
 
     sendRequest({
@@ -164,12 +159,8 @@ export class SupplyAgreementDialog extends connect(getStore())(ComponentBaseMixi
       method: this.isNewRecord ? 'POST' : 'PATCH',
       body: this.data
     })
-      .then((_response: any) => {
-        // TODO as response we will get intervention updates with supply and
-        // will need to dispatch here to update current intervention
-        if (this.callbackFunction) {
-          this.callbackFunction();
-        }
+      .then((response: any) => {
+        getStore().dispatch(updateCurrentIntervention(response.intervention));
         this.onClose();
       })
       .catch((err: any) => {
