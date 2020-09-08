@@ -82,14 +82,29 @@ export class EtoolsStatus extends LitElement {
 
   getStatusHtml(item: EtoolsStatusItem, index: number, activeStatusIndex: number) {
     const completed = this.isCompleted(index, activeStatusIndex);
-    return html`
-      <div class="status ${this.getStatusClasses(index, activeStatusIndex)}">
-        <span class="icon">
-          ${completed ? html`${completedStatusIcon}` : html`${this.getBaseOneIndex(index)}`}
-        </span>
-        <span class="label">${item[1]}</span>
-      </div>
-    `;
+    // if status is terminated..we do not show active
+    console.log(activeStatusIndex, index);
+    if (3 == activeStatusIndex && 2 == index) {
+      return html``;
+    } else {
+      if (3 != index) {
+        return html`
+          <div class="status ${this.getStatusClasses(index, activeStatusIndex)}">
+            <span class="icon">
+              ${completed ? html`${completedStatusIcon}` : html`${this.getBaseOneIndex(index)}`}
+            </span>
+            <span class="label">${item[1]}</span>
+          </div>
+        `;
+      } else {
+        return html`
+          <div class="status ${this.getStatusClasses(index, activeStatusIndex)}">
+            <iron-icon class="custom-icon" style="color: #ea4022" icon="report-problem"> </iron-icon>
+            <span class="label">${item[1]}</span>
+          </div>
+        `;
+      }
+    }
   }
 
   /**
@@ -107,7 +122,11 @@ export class EtoolsStatus extends LitElement {
   getStatusClasses(index: number, activeStatusIndex: number): string {
     const classes: string[] = [];
     if (index === activeStatusIndex) {
-      classes.push('active');
+      if (3 == index) {
+        classes.push('report-problem');
+      } else {
+        classes.push('active');
+      }
     }
     if (this.isCompleted(index, activeStatusIndex)) {
       classes.push('completed');

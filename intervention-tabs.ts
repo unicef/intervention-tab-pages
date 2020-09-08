@@ -23,6 +23,7 @@ const MOCKUP_STATUSES = [
   ['draft', 'Draft'],
   ['signed', 'Signed'],
   ['active', 'Active'],
+  ['terminated', 'Terminated'],
   ['closed', 'Closed']
 ];
 /**
