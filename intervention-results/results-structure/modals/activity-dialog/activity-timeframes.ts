@@ -63,6 +63,17 @@ export class ActivityTimeFrames extends LitElement {
           height: 50px;
           border-left: 1px solid #9e9e9e;
         }
+        label[required] {
+          font-size: 12px;
+          color: var(--secondary-text-color);
+          @apply --required-star-style;
+          background: url('./images/required.svg') no-repeat 66% 33%/5px;
+        }
+        label {
+          text-align: center;
+          width: 100%;
+          max-width: inherit;
+        }
       `
     ];
   }
@@ -76,7 +87,7 @@ export class ActivityTimeFrames extends LitElement {
 
   protected render(): TemplateResult {
     return html`
-      <div class="text">Activity Times (click to select/deselect)</div>
+      <label class="paper-label" required>Activity Times (click to select/deselect)</label>
       <div class="layout-horizontal center-align">
         ${this._timeFrames.map(
           ([year, frames]: any, index: number) => html`
@@ -109,5 +120,16 @@ export class ActivityTimeFrames extends LitElement {
     const timeFrames: ActivityTime[] = this._timeFrames.map((frame: [string, ActivityTime[]]) => frame[1]).flat();
     const converted: InterventionActivityTimeframe[] = convertActivityTimeToData(timeFrames);
     fireEvent(this, 'time-frames-changed', converted);
+  }
+
+  validate() {
+    const timeFrames: ActivityTime[] = this._timeFrames.map((frame: [string, ActivityTime[]]) => frame[1]).flat();
+    const converted: InterventionActivityTimeframe[] = convertActivityTimeToData(timeFrames);
+    // @ts-ignore
+    converted.map((item) => {
+      if (item.enabled) {
+        return true;
+      }
+    });
   }
 }
