@@ -21,11 +21,6 @@ export class ActivityTimeFrames extends LitElement {
           flex-direction: column;
           align-items: center;
         }
-        .text {
-          font-size: 12px;
-          line-height: 16px;
-          color: var(--secondary-text-color);
-        }
         .title {
           font-weight: 500;
           font-size: 16px;
@@ -125,11 +120,12 @@ export class ActivityTimeFrames extends LitElement {
   validate() {
     const timeFrames: ActivityTime[] = this._timeFrames.map((frame: [string, ActivityTime[]]) => frame[1]).flat();
     const converted: InterventionActivityTimeframe[] = convertActivityTimeToData(timeFrames);
-    // @ts-ignore
+    let valid = false;
     converted.map((item) => {
       if (item.enabled) {
-        return true;
+        valid = true;
       }
     });
+    return valid;
   }
 }
