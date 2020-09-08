@@ -41,6 +41,7 @@ export interface EtoolsEndpoints {
   prpToken: EtoolsEndpoint;
   reports: EtoolsEndpoint;
   expectedResultsExport: EtoolsEndpoint;
+  riskDelete: EtoolsEndpoint;
 }
 
 export const interventionEndpoints: EtoolsEndpoints = {
@@ -149,5 +150,8 @@ export const interventionEndpoints: EtoolsEndpoints = {
   },
   expectedResultsExport: {
     template: '/api/v2/reports/interventions/results/<%=intervention_id%>/?format=docx_table'
+  },
+  riskDelete: {
+    template: '/api/pmp/v3/interventions/<%=interventionId%>/risks/<%=riskId%>'
   }
 };

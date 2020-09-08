@@ -6,7 +6,8 @@ export class Risk extends ModelsBase {
     super();
     this.setObjProperties(intervention);
   }
-  risk_type = [];
+  id = '';
+  risk_type = '';
   mitigation_measures = '';
 }
 

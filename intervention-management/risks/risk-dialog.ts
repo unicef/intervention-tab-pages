@@ -2,22 +2,27 @@ import {LitElement, html, property, customElement} from 'lit-element';
 import '@unicef-polymer/etools-dialog/etools-dialog';
 import '@unicef-polymer/etools-dropdown';
 import '@polymer/paper-input/paper-textarea';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {validateRequiredFields} from '../../utils/validation-helper';
-import {Permission} from '../../common/models/intervention.types';
+import {Permission, Intervention} from '../../common/models/intervention.types';
 import {RiskPermissions} from './risk.models';
-import {AnyObject} from '../../common/models/globals.types';
+import {LabelAndValue} from '../../common/models/globals.types';
+import {getEndpoint} from '../../utils/endpoint-helper';
+import {fireEvent} from '../../utils/fire-custom-event';
+import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {updateCurrentIntervention} from '../../common/actions';
 
 /**
  * @customElement
  */
 @customElement('risk-dialog')
-export class RiskDialog extends connect(getStore())(ComponentBaseMixin(LitElement)) {
+export class RiskDialog extends ComponentBaseMixin(LitElement) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -40,7 +45,8 @@ export class RiskDialog extends connect(getStore())(ComponentBaseMixin(LitElemen
         ?opened="${this.dialogOpened}"
         ok-btn-text="Save"
         dialog-title="${this.riskDialogTitle}"
-        @close="${() => this.handleDialogClose()}"
+        ?show-spinner="${this.savingInProcess}"
+        @close="${() => this.onClose()}"
         @confirm-btn-clicked="${() => this._validateAndSaveRisk()}"
       >
         <div class="row-padding layout-horizontal">
@@ -49,11 +55,14 @@ export class RiskDialog extends connect(getStore())(ComponentBaseMixin(LitElemen
               id="type"
               label="Type"
               .options="${this.riskTypes}"
-              .selected="${this.currentRisk}"
-              option-value="id"
-              option-label="risk_type"
+              .selected="${this.data.risk_type}"
+              option-value="value"
+              option-label="label"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.risk_type)}"
               ?required="${this.permissions.required.risk_type}"
+              @etools-selected-item-changed="${({detail}: CustomEvent) =>
+                this.selectedItemChanged(detail, 'risk_type', 'value')}"
+              trigger-value-change-event
             >
             </etools-dropdown>
           </div>
@@ -76,65 +85,59 @@ export class RiskDialog extends connect(getStore())(ComponentBaseMixin(LitElemen
     `;
   }
 
-  private riskTypes = [
-    {id: '0', risk_type: 'Social & Environmental'},
-    {id: '1', risk_type: 'Financial'},
-    {id: '2', risk_type: 'Operational'},
-    {id: '3', risk_type: 'Organizational'},
-    {id: '4', risk_type: 'Political'},
-    {id: '5', risk_type: 'Strategic'},
-    {id: '6', risk_type: 'Safety & security'}
-  ];
+  @property({type: Array}) riskTypes!: LabelAndValue[];
 
-  @property({type: Boolean, reflect: true})
-  dialogOpened = false;
+  @property({type: Boolean}) dialogOpened = true;
+
+  @property({type: Boolean}) savingInProcess = false;
 
   @property() riskDialogTitle = '';
-
-  @property() isEditDialog = false;
-
-  @property({type: Object})
-  toastEventSource!: LitElement;
 
   @property({type: Object})
   permissions!: Permission<RiskPermissions>;
 
-  @property({type: Object})
-  data!: any;
+  private endpoint!: EtoolsRequestEndpoint;
 
-  @property({type: Object})
-  currentRisk: AnyObject = {};
-
-  public openDialog() {
-    this.dialogOpened = true;
-    this.editMode = true;
-    if (this.data.risk_type !== undefined) {
-      this.riskDialogTitle = 'Edit risk';
-      this.currentRisk = this.data.risk_type.id;
-    } else {
-      this.riskDialogTitle = 'Add risk';
+  set dialogData(data: any) {
+    if (!data) {
+      return;
     }
+    const {item, interventionId, permissions, riskTypes} = data;
+    this.data = item;
+    this.endpoint = getEndpoint(interventionEndpoints.intervention, {interventionId});
+    this.permissions = permissions;
+    this.riskTypes = riskTypes;
+    this.riskDialogTitle = this.data.id ? 'Edit risk' : 'Add risk';
   }
 
-  _resetFields() {
-    this.data = {};
-    this.currentRisk = {};
-  }
-
-  public handleDialogClose() {
-    this.dialogOpened = false;
-    this.editMode = false;
-    this._resetFields();
+  protected onClose(): void {
+    fireEvent(this, 'dialog-closed', {confirmed: false});
   }
 
   _validateAndSaveRisk() {
     if (!validateRequiredFields(this)) {
       return;
     }
-    this._saveRisk(this.data);
+    this._saveRisk();
   }
 
-  _saveRisk(data: any) {
-    console.log(data);
+  _saveRisk() {
+    this.savingInProcess = true;
+
+    sendRequest({
+      endpoint: this.endpoint,
+      body: {risks: this.data},
+      method: 'PATCH'
+    })
+      .catch((error: any) => {
+        parseRequestErrorsAndShowAsToastMsgs(error, this);
+      })
+      .then((intervention: Intervention) => {
+        getStore().dispatch(updateCurrentIntervention(intervention));
+        this.onClose();
+      })
+      .finally(() => {
+        this.savingInProcess = false;
+      });
   }
 }

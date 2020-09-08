@@ -2,24 +2,29 @@ import {LitElement, html, property, customElement} from 'lit-element';
 import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-table/etools-table';
+import {EtoolsTableColumn, EtoolsTableColumnType} from '@unicef-polymer/etools-table/etools-table';
 import '@unicef-polymer/etools-dropdown';
 import '@polymer/paper-icon-button/paper-icon-button';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
+import {openDialog} from '../../utils/dialog';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {Risk, RiskPermissions} from './risk.models';
-import {Intervention, Permission} from '../../common/models/intervention.types';
-import {RootState} from '../../common/models/globals.types';
+import {Permission} from '../../common/models/intervention.types';
+import {RootState, LabelAndValue, AnyObject} from '../../common/models/globals.types';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
-import sample from 'lodash-es/sample';
-import {selectRiskPermissions} from './risk.selectors';
+import {selectRiskPermissions, selectRisks} from './risk.selectors';
 import './risk-dialog';
-import {RiskDialog} from './risk-dialog';
-import {EtoolsTableColumn, EtoolsTableColumnType} from '@unicef-polymer/etools-table/etools-table';
+import '../../common/layout/are-you-sure';
+import {getEndpoint} from '../../utils/endpoint-helper';
+import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {getIntervention} from '../../common/actions';
 
 const customStyles = html`
   <style>
@@ -31,29 +36,6 @@ const customStyles = html`
     }
   </style>
 `;
-
-const getRiskItems = () => {
-  const arr = [];
-  let i = 0;
-  const riskTypes = [
-    {id: '0', risk_type: 'Social & Environmental'},
-    {id: '1', risk_type: 'Financial'},
-    {id: '2', risk_type: 'Operational'},
-    {id: '3', risk_type: 'Organizational'},
-    {id: '4', risk_type: 'Political'},
-    {id: '5', risk_type: 'Strategic'},
-    {id: '6', risk_type: 'Safety & security'}
-  ];
-  while (i < 10) {
-    const riskItem = new Risk({} as Intervention);
-    // @ts-ignore
-    riskItem.risk_type = sample(riskTypes);
-    riskItem.mitigation_measures = `Mittigation measure ${i}`;
-    arr.push(riskItem);
-    i++;
-  }
-  return arr;
-};
 
 /**
  * @customElement
@@ -86,19 +68,16 @@ export class RisksElement extends connect(getStore())(ComponentBaseMixin(LitElem
       </style>
       <etools-content-panel show-expand-btn panel-title="Risks">
         <div slot="panel-btns">
-          <paper-icon-button
-            ?hidden="${!this.canEditAtLeastOneField}"
-            @tap="${(e: CustomEvent) => this.openRiskDialog(e)}"
-            icon="add"
-          >
+          <paper-icon-button ?hidden="${!this.canEditAtLeastOneField}" @tap="${() => this.openRiskDialog()}" icon="add">
           </paper-icon-button>
         </div>
         <etools-table
           .columns="${this.columns}"
           .items="${this.data}"
           @edit-item="${(e: CustomEvent) => this.openRiskDialog(e)}"
-          @delete-item="${this.deleteRiskItem}"
+          @delete-item="${this.confirmDeleteRiskItem}"
           .extraCSS="${this.getTableStyle()}"
+          .customData="${{riskTypes: this.riskTypes}}"
           .showEdit=${this.canEditAtLeastOneField}
           .showDelete=${this.canEditAtLeastOneField}
         >
@@ -107,16 +86,17 @@ export class RisksElement extends connect(getStore())(ComponentBaseMixin(LitElem
     `;
   }
 
-  private riskDialog!: RiskDialog;
-
   @property({type: Object})
   data!: Risk[];
 
   @property({type: Object})
-  originalData!: Risk[];
-
-  @property({type: Object})
   permissions!: Permission<RiskPermissions>;
+
+  @property({type: Array})
+  riskTypes!: LabelAndValue[];
+
+  @property({type: Number})
+  interventionId!: number;
 
   @property({type: Array})
   columns: EtoolsTableColumn[] = [
@@ -124,8 +104,9 @@ export class RisksElement extends connect(getStore())(ComponentBaseMixin(LitElem
       label: 'Type',
       name: 'risk_type',
       type: EtoolsTableColumnType.Custom,
-      customMethod: (item: any) => {
-        return item ? item.risk_type.risk_type : '-';
+      customMethod: (item: any, _key: string, customData: AnyObject) => {
+        const riskType = customData.riskTypes.find((x: LabelAndValue) => x.value === item.risk_type);
+        return riskType ? riskType.label : '-';
       },
       cssClass: 'col_type'
     },
@@ -137,15 +118,6 @@ export class RisksElement extends connect(getStore())(ComponentBaseMixin(LitElem
     }
   ];
 
-  connectedCallback() {
-    super.connectedCallback();
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    this.removeRiskDialog();
-  }
-
   stateChanged(state: RootState) {
     if (!state.interventions.current) {
       return;
@@ -153,8 +125,10 @@ export class RisksElement extends connect(getStore())(ComponentBaseMixin(LitElem
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'management')) {
       return;
     }
-    // this.data = [selectRisks(state)];
-    this.data = getRiskItems();
+
+    this.interventionId = state.interventions.current.id!;
+    this.riskTypes = (state.commonData && state.commonData.riskTypes) || [];
+    this.data = selectRisks(state);
     this.permissions = selectRiskPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
   }
@@ -166,30 +140,45 @@ export class RisksElement extends connect(getStore())(ComponentBaseMixin(LitElem
       ${customStyles}`;
   }
 
-  openRiskDialog(e: CustomEvent) {
-    this._createRiskDialog();
-    this.riskDialog.data = e.detail;
-    this.riskDialog.permissions = this.permissions;
-    (this.riskDialog as RiskDialog).openDialog();
+  openRiskDialog(e?: CustomEvent) {
+    openDialog({
+      dialog: 'risk-dialog',
+      dialogData: {
+        item: e ? e.detail : {},
+        interventionId: this.interventionId,
+        permissions: this.permissions,
+        riskTypes: this.riskTypes
+      }
+    });
   }
 
-  _createRiskDialog() {
-    if (!this.riskDialog) {
-      this.riskDialog = document.createElement('risk-dialog') as RiskDialog;
-      this.riskDialog.setAttribute('id', 'riskDialog');
-      this.riskDialog.toastEventSource = this;
-      document.querySelector('body')!.appendChild(this.riskDialog);
+  async confirmDeleteRiskItem(e: CustomEvent) {
+    const confirmed = await openDialog({
+      dialog: 'are-you-sure',
+      dialogData: {
+        content: 'Are you sure you want to delete this risk item?',
+        confirmBtnText: 'Delete'
+      }
+    }).then(({confirmed}) => {
+      return confirmed;
+    });
+
+    if (confirmed) {
+      this.deleteRiskItem(e.detail.id);
     }
   }
 
-  removeRiskDialog() {
-    if (this.riskDialog) {
-      document.querySelector('body')!.removeChild(this.riskDialog);
-    }
-  }
-
-  deleteRiskItem(event: CustomEvent) {
-    // TODO
-    console.log(event);
+  deleteRiskItem(riskId: string) {
+    const endpoint = getEndpoint(interventionEndpoints.riskDelete, {
+      interventionId: this.interventionId,
+      riskId: riskId
+    });
+    sendRequest({method: 'DELETE', endpoint: endpoint})
+      .catch((error: any) => {
+        parseRequestErrorsAndShowAsToastMsgs(error, this);
+      })
+      .then((_resp: any) => {
+        getStore().dispatch(getIntervention(String(this.interventionId)));
+      });
   }
 }
