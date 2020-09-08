@@ -132,14 +132,14 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
               ? html`
                   <etools-currency-amount-input
                     class="col-2"
-                    label="CSO Cache Budget"
+                    label="CSO Cash Budget"
                     .value="${this.editedData.cso_cash}"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue('cso_cash', detail.value)}"
                   ></etools-currency-amount-input>
 
                   <etools-currency-amount-input
                     class="col-2"
-                    label="Unicef Cache Budget"
+                    label="Unicef Cash Budget"
                     .value="${this.editedData.unicef_cash}"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue('unicef_cash', detail.value)}"
                   ></etools-currency-amount-input>
@@ -148,13 +148,13 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
                   <paper-input
                     readonly
                     class="col-2 total-input"
-                    label="CSO Cache Budget"
+                    label="CSO Cash Budget"
                     .value="${this.getSumValue('cso_cash')}"
                   ></paper-input>
                   <paper-input
                     readonly
                     class="col-2 total-input"
-                    label="Unicef Cache Budget"
+                    label="Unicef Cash Budget"
                     .value="${this.getSumValue('unicef_cash')}"
                   ></paper-input>
                 `}

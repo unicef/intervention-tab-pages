@@ -32,6 +32,8 @@ import {connect} from 'pwa-helpers/connect-mixin';
 import {openDialog} from '../../utils/dialog';
 import CONSTANTS from '../../common/constants';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import get from 'lodash-es/get';
 
 /**
  * @customElement
@@ -182,7 +184,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
             Budget view
           </div>
           <iron-icon
-            icon="add-box"
+            icon="add"
             ?hidden="${!this.isUnicefUser || !this.permissions.edit.result_links}"
             @click="${() => this.openCpOutputDialog()}"
           ></iron-icon>
@@ -208,7 +210,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
                       </div>
 
                       <div class="flex-none" ?hidden="${!this.showActivities}">
-                        <div class="heading">Total Cache budget</div>
+                        <div class="heading">Total Cash budget</div>
                         <div class="data">TTT 1231.144</div>
                       </div>
 
@@ -251,7 +253,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
           class="add-pd white row-h align-items-center"
           @click="${() => this.openPdOutputDialog()}"
         >
-          <iron-icon icon="add-box"></iron-icon>Add PD Output
+          <iron-icon icon="add"></iron-icon>Add PD Output
         </div>
       </etools-content-panel>
     `;
@@ -275,6 +277,9 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
   }
 
   stateChanged(state: RootState) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'results')) {
+      return;
+    }
     this.resultLinks = selectInterventionResultLinks(state);
     this.permissions = selectResultLinksPermissions(state);
     this.interventionId = selectInterventionId(state);

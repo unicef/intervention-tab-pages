@@ -3,6 +3,7 @@ import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {getStore} from '../../utils/redux-store-access';
+import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {connect} from 'pwa-helpers/connect-mixin';
 import get from 'lodash-es/get';
 import {LocationObject, RootState} from '../../common/models/globals.types';
@@ -145,6 +146,10 @@ export class GroupedLocationsDialog extends connect(getStore())(LitElement) {
   groupedLocDialog!: EtoolsDialog;
 
   stateChanged(state: RootState) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'details')) {
+      return;
+    }
+
     if (!isJsonStrMatch(this.allLocations, state.commonData!.locations)) {
       this.allLocations = [...state.commonData!.locations];
     }

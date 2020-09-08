@@ -33,6 +33,8 @@ import {MinimalAgreement} from '../../common/models/agreement.types';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {patchIntervention} from '../../common/actions';
 import {formatDate} from '../../utils/date-utils';
+import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import get from 'lodash-es/get';
 
 /**
  * @customElement
@@ -354,6 +356,10 @@ export class InterventionReviewAndSign extends connect(getStore())(
   uploadEndpoint: string = getEndpoint(interventionEndpoints.attachmentsUpload).url;
 
   stateChanged(state: RootState) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'management')) {
+      return;
+    }
+
     if (!isJsonStrMatch(this.signedByUnicefUsers, state.commonData!.unicefUsersData)) {
       this.signedByUnicefUsers = cloneDeep(state.commonData!.unicefUsersData);
     }

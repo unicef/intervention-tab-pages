@@ -79,7 +79,7 @@ export class CpOutputLevel extends LitElement {
                       </div>
 
                       <div class="flex-none" ?hidden="${!this.showActivities}">
-                        <div class="heading">Total Cache budget</div>
+                        <div class="heading">Total Cash budget</div>
                         <div class="data">TTT 1231.144</div>
                       </div>
 
@@ -99,7 +99,7 @@ export class CpOutputLevel extends LitElement {
                 <slot></slot>
 
                 <div class="add-pd row-h align-items-center" ?hidden="${!this.resultLink.cp_output}">
-                  <iron-icon icon="add-box" @click="${() => this.addPD()}"></iron-icon>Add PD Output
+                  <iron-icon icon="add" @click="${() => this.addPD()}"></iron-icon>Add PD Output
                 </div>
               </div>
             </etools-data-table-row>

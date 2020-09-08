@@ -10,6 +10,8 @@ import {connect} from 'pwa-helpers/connect-mixin';
 import {layoutFlex} from '../../common/styles/flex-layout-styles';
 import {formatDateShortMonth} from '../../utils/date-utils';
 import {RootState} from '../../common/models/globals.types';
+import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import get from 'lodash-es/get';
 
 /**
  * @customElement
@@ -154,6 +156,9 @@ export class TimingOverview extends connect(getStore())(LitElement) {
   }
 
   public stateChanged(state: RootState) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'timing')) {
+      return;
+    }
     if (state.interventions.current) {
       this.timingOverview = selectTimingOverview(state);
     }

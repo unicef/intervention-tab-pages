@@ -8,7 +8,7 @@ import {property} from '@polymer/decorators';
  * @polymer
  * @customElement
  */
-class EtoolsFormElementWrapper extends PolymerElement {
+class EtoolsFormElementWrapper2 extends PolymerElement {
   static get template() {
     return html`
       ${sharedStylesPolymer()}
@@ -115,4 +115,4 @@ class EtoolsFormElementWrapper extends PolymerElement {
   }
 }
 
-window.customElements.define('etools-form-element-wrapper', EtoolsFormElementWrapper);
+window.customElements.define('etools-form-element-wrapper-2', EtoolsFormElementWrapper2);

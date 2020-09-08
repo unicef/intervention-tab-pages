@@ -14,6 +14,7 @@ import './supply-agreement-dialog';
 import {AnyObject, RootState} from '../../common/models/globals.types';
 import {InterventionSupplyItem, Intervention, ExpectedResult} from '../../common/models/intervention.types';
 import {openDialog} from '../../utils/dialog';
+import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {selectSupplyAgreement, selectSupplyAgreementPermissions} from './supplyAgreement.selectors';
@@ -159,6 +160,9 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
   }
 
   stateChanged(state: RootState): void {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'results')) {
+      return;
+    }
     if (get(state, 'interventions.current')) {
       const currentIntervention = get(state, 'interventions.current');
       this.intervention = cloneDeep(currentIntervention);

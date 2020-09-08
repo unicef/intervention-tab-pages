@@ -3,9 +3,11 @@ import './final-review-popup';
 import {openDialog} from '../../utils/dialog';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
+import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {selectFinalReviewAttachment, selectInterventionId} from './final-review.selectors';
 import {ReviewAttachment} from '../../common/models/intervention.types';
 import {currentInterventionPermissions} from '../../common/selectors';
+import get from 'lodash-es/get';
 declare const moment: any;
 
 @customElement('final-review')
@@ -83,6 +85,10 @@ export class FinalReview extends connect(getStore())(LitElement) {
   }
 
   stateChanged(state: any): void {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'management')) {
+      return;
+    }
+
     this.attachment = selectFinalReviewAttachment(state);
     this.interventionId = selectInterventionId(state);
     this.canEdit = Boolean(currentInterventionPermissions(state)?.edit.final_partnership_review);

@@ -248,5 +248,11 @@ export const sharedStylesContent = `
   .hidden {
     display: none !important;
   }
+  
+  etools-content-panel {
+    --epc-header: {
+     border-bottom: 1px solid #000000 !important;
+    }
+  }
 `;
 export const sharedStyles = html`${unsafeCSS(sharedStylesContent)}`;
