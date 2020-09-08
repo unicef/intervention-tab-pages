@@ -58,7 +58,6 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
               .selected="${this.data.risk_type}"
               option-value="value"
               option-label="label"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.risk_type)}"
               ?required="${this.permissions.required.risk_type}"
               @etools-selected-item-changed="${({detail}: CustomEvent) =>
                 this.selectedItemChanged(detail, 'risk_type', 'value')}"
@@ -75,7 +74,6 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
               placeholder="—"
               .value="${this.data.mitigation_measures}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'mitigation_measures')}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.mitigation_measures)}"
               ?required="${this.permissions.required.mitigation_measures}"
             >
             </paper-textarea>
