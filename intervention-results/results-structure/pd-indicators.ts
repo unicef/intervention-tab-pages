@@ -102,6 +102,8 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
             .locationNames="${this.getLocationNames(indicator.locations)}"
             .sectionClusterNames="${this.getSectionAndCluster(indicator.section, indicator.cluster_name)}"
             ?hidden="${this._hideIndicator(indicator, this.showInactiveIndicators)}"
+            ?cluster-indicator="${indicator.cluster_indicator_id}"
+            ?high-frequency-indicator="${indicator.is_high_frequency}"
             @open-edit-indicator-dialog="${(e: CustomEvent) => this.openIndicatorDialog(e.detail.indicator)}"
             @open-deactivate-confirmation="${(e: CustomEvent) => this.openDeactivationDialog(e.detail.indicatorId)}"
           ></pd-indicator>
