@@ -64,7 +64,7 @@ export class PdActivities extends LitElement {
       <div class="row-h align-items-center header">
         <div class="heading flex-auto">
           PD Activities
-          <iron-icon icon="add-box" @click="${() => this.openDialog()}" ?hidden="${this.readonly}"></iron-icon>
+          <iron-icon icon="add" @click="${() => this.openDialog()}" ?hidden="${this.readonly}"></iron-icon>
         </div>
         <div class="heading number-data flex-none">CSO Cash</div>
         <div class="heading number-data flex-none">UNICEF Cash</div>

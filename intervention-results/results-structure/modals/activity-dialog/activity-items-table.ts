@@ -47,7 +47,7 @@ export class ActivityItemsTable extends LitElement {
           ></activity-item-row>`
       )}
 
-      <iron-icon icon="add-box" @click="${() => this.addNew()}"></iron-icon>
+      <iron-icon icon="add" @click="${() => this.addNew()}"></iron-icon>
     `;
   }
 

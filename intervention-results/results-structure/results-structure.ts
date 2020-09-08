@@ -184,7 +184,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
             Budget view
           </div>
           <iron-icon
-            icon="add-box"
+            icon="add"
             ?hidden="${!this.isUnicefUser || !this.permissions.edit.result_links}"
             @click="${() => this.openCpOutputDialog()}"
           ></iron-icon>
@@ -253,7 +253,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
           class="add-pd white row-h align-items-center"
           @click="${() => this.openPdOutputDialog()}"
         >
-          <iron-icon icon="add-box"></iron-icon>Add PD Output
+          <iron-icon icon="add"></iron-icon>Add PD Output
         </div>
       </etools-content-panel>
     `;
