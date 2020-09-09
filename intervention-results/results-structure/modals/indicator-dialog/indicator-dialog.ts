@@ -55,8 +55,11 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
         .indicator-content {
           margin: 16px 24px;
           margin-bottom: 40px;
-          border: solid 1px ${this.borderColor};
+          border: solid 1px rgba(0, 0, 0, 0.40);
           overflow-x: hidden; /*To avoid horizontal scroll in IE11 */
+        }
+        .indicator-content.cluster {
+          border: solid 1px #6dd36d;
         }
 
         .createDisaggreg {
@@ -136,7 +139,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
               ></paper-toggle-button>
               Cluster Indicator
             </div>
-            <div class="indicator-content">
+            <div class="indicator-content${this.isCluster ? ' cluster' : ''}">
               ${!this.isCluster
                 ? html` <non-cluster-indicator
                     id="nonClusterIndicatorEl"
@@ -225,9 +228,6 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   @query('etools-dialog')
   indicatorDialog!: EtoolsDialog;
 
-  @property({type: String})
-  borderColor = 'rgba(0, 0, 0, 0.40)';
-
   protected llResultId!: string; /** aka pdOutputId */
   private prpServerOn!: boolean;
 
@@ -270,7 +270,6 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
       return;
     }
     this.isCluster = chk.checked;
-    this.borderColor = this.isCluster ? 'green' : 'rgba(0, 0, 0, 0.40)'; // TODO - it doesn't work
   }
 
   connectedCallback() {

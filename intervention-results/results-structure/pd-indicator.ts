@@ -65,9 +65,6 @@ export class PdIndicator extends LitElement {
           --blue-background-dark: #a4c4e1;
           background: var(--blue-background-dark);
         }
-        :host([cluster-indicator]) div[slot='row-data-details'] {
-          border: 2px solid #8dd595;
-        }
         .hover-block {
           background-color: var(--blue-background) !important;
         }
