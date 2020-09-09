@@ -96,6 +96,7 @@ export class InterventionTabs extends LitElement {
         <div slot="title-row-actions" class="content-header-actions">
           <intervention-actions
             .interventionId="${this.intervention.id}"
+            .activeStatus="${this.intervention.status}"
             .actions="${this.availableActions}"
           ></intervention-actions>
         </div>

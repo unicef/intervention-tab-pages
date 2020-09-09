@@ -80,23 +80,19 @@ export class EtoolsStatus extends LitElement {
   @property({type: Array})
   statuses: EtoolsStatusItem[] = [];
 
+  @property({type: Number})
+  interventionId!: number;
+
   getStatusHtml(item: EtoolsStatusItem, index: number, activeStatusIndex: number) {
     const completed = this.isCompleted(index, activeStatusIndex);
-    // if status is terminated..we do not show active
-    console.log(activeStatusIndex, index);
-    if (3 == activeStatusIndex && 2 == index) {
-      return html``;
-    } else {
-      if (3 != index) {
-        return html`
-          <div class="status ${this.getStatusClasses(index, activeStatusIndex)}">
-            <span class="icon">
-              ${completed ? html`${completedStatusIcon}` : html`${this.getBaseOneIndex(index)}`}
-            </span>
-            <span class="label">${item[1]}</span>
-          </div>
-        `;
-      } else {
+    // if status is terminated..we do not show active, and reverse
+    // @lajos: THIS HAVE TO BE REFACTORED WHEN ALL STATUSES ARE AVAILABLE AND WE KNWO WHEN WHICH STATUS CAN BE SHOWN
+    if (this.activeStatus == 'terminated') {
+      if (2 == index) {
+        return html``;
+      }
+      if (3 == index) {
+        // special icon for terminated status
         return html`
           <div class="status ${this.getStatusClasses(index, activeStatusIndex)}">
             <iron-icon class="custom-icon" style="color: #ea4022" icon="report-problem"> </iron-icon>
@@ -104,7 +100,19 @@ export class EtoolsStatus extends LitElement {
           </div>
         `;
       }
+    } else {
+      // we do not show terminated status ina ny other casses
+      if (3 == index) {
+        return html``;
+      }
     }
+
+    return html`
+      <div class="status ${this.getStatusClasses(index, activeStatusIndex)}">
+        <span class="icon"> ${completed ? html`${completedStatusIcon}` : html`${this.getBaseOneIndex(index)}`} </span>
+        <span class="label">${item[1]}</span>
+      </div>
+    `;
   }
 
   /**
