@@ -156,7 +156,7 @@ export class RisksElement extends connect(getStore())(ComponentBaseMixin(LitElem
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
-        content: 'Are you sure you want to delete this risk item?',
+        content: 'Are you sure you want to delete this Risk item?',
         confirmBtnText: 'Delete'
       }
     }).then(({confirmed}) => {

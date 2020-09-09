@@ -16,6 +16,5 @@ export class RiskPermissions extends ModelsBase {
     super();
     this.setObjProperties(permissions);
   }
-  risk_type = true;
-  mitigation_measures = true;
+  risks = true;
 }
