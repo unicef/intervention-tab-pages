@@ -1,6 +1,6 @@
 import {LitElement, html, property, customElement} from 'lit-element';
 import {Permission} from '../../common/models/intervention.types';
-import {selectPartnerDetails, selectPartnerDetailsPermissions} from './partnerDetails.selectors';
+import {selectPartnerDetails, selectPartnerDetailsPermissions} from './partnerInfo.selectors';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-input/paper-input';
 import '@polymer/paper-icon-button/paper-icon-button';
@@ -9,7 +9,7 @@ import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {buttonsStyles} from '../../common/styles/button-styles';
-import {PartnerDetails, PartnerDetailsPermissions} from './partnerDetails.models';
+import {PartnerInfo, PartnerInfoPermissions} from './partnerInfo.models';
 import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
@@ -32,8 +32,8 @@ import {RootState} from '../../common/models/globals.types';
 /**
  * @customElement
  */
-@customElement('partner-details')
-export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixin(LitElement)) {
+@customElement('partner-info')
+export class PartnerInfoElement extends connect(getStore())(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [buttonsStyles, gridLayoutStylesLit];
   }
@@ -125,13 +125,13 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
   }
 
   @property({type: Object})
-  originalData!: PartnerDetails;
+  originalData!: PartnerInfo;
 
   @property({type: Object})
-  data!: PartnerDetails;
+  data!: PartnerInfo;
 
   @property({type: Object})
-  permissions!: Permission<PartnerDetailsPermissions>;
+  permissions!: Permission<PartnerInfoPermissions>;
 
   @property({type: Array})
   partnerAgreements!: MinimalAgreement[];
@@ -181,7 +181,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
     return agreements.filter((a: any) => String(a.partner) === String(partnerId));
   }
 
-  partnerIdHasChanged(newPartnerDetails: PartnerDetails) {
+  partnerIdHasChanged(newPartnerDetails: PartnerInfo) {
     return get(this.data, 'partner_id') !== newPartnerDetails.partner_id;
   }
 

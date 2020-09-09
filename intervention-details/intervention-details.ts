@@ -1,5 +1,5 @@
 import {LitElement, html} from 'lit-element';
-import './partner-details/partner-details';
+import './partner-details/partner-info';
 import './document-details/document-details';
 import './details-overview/details-overview';
 import './unicef-details/unicef-details';
@@ -17,7 +17,7 @@ export class InterventionDetails extends LitElement {
     return html`
       <style></style>
       <details-overview></details-overview>
-      <partner-details></partner-details>
+      <partner-info></partner-info>
       <unicef-details></unicef-details>
       <document-details></document-details>
       <gender-equity-rating></gender-equity-rating>
