@@ -146,14 +146,6 @@ export const sharedStylesContent = `
     }
   }
 
-  etools-dialog paper-textarea {
-    --iron-autogrow-textarea: {
-      overflow: auto;
-      padding: 0;
-      max-height: 96px;
-    }
-  }
-
   label[required] {
     @apply --required-star-style;
     background: url('./images/required.svg') no-repeat 87% 40%/6px;
@@ -192,6 +184,15 @@ export const sharedStylesContent = `
       padding: 0;
     }
   }
+
+  etools-dialog paper-textarea {
+    --iron-autogrow-textarea: {
+      overflow: auto;
+      padding: 0;
+      max-height: 96px;
+    }
+  }
+
   paper-textarea[readonly] {
     --paper-input-container-underline: {
       display: none;
