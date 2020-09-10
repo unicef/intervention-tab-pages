@@ -13,6 +13,7 @@ import {openDialog} from '../utils/dialog';
 import {ReviewAttachment} from '../common/models/intervention.types';
 import {AttachmentsListStyles} from './attachments-list.styles';
 import {IdAndName} from '../common/models/globals.types';
+import {getFileNameFromURL} from '../utils/utils';
 
 @customElement('attachments-list')
 export class AttachmentsList extends connect(getStore())(LitElement) {
@@ -77,18 +78,14 @@ export class AttachmentsList extends connect(getStore())(LitElement) {
                     ?hidden="${!attachment.active && !this.showInvalid}"
                   >
                     <div slot="row-data" class="p-relative layout-horizontal editable-row">
-                      <span class="col-data col-2">
-                        ${prettyDate(attachment.created) || '-'}
-                      </span>
-                      <span class="col-data col-3">
-                        ${this.getAttachmentType(attachment.type)}
-                      </span>
+                      <span class="col-data col-2">${prettyDate(attachment.created) || '-'}</span>
+                      <span class="col-data col-3">${this.getAttachmentType(attachment.type)}</span>
                       <span class="col-data col-6">
                         <iron-icon icon="attachment" class="attachment"></iron-icon>
                         <span class="break-word file-label">
                           <!-- target="_blank" is there for IE -->
                           <a href="${attachment.attachment_document || attachment.attachment}" target="_blank" download>
-                            ${this.getFileNameFromURL(attachment.attachment_document || attachment.attachment)}
+                            ${getFileNameFromURL(attachment.attachment_document || attachment.attachment)}
                           </a>
                         </span>
                       </span>
@@ -135,13 +132,6 @@ export class AttachmentsList extends connect(getStore())(LitElement) {
     const fileTypes = !(this.fileTypes instanceof Array) ? [] : this.fileTypes;
     const attachmentType = fileTypes.find((t: IdAndName) => Number(t.id) === type);
     return attachmentType ? attachmentType.name : '—';
-  }
-
-  getFileNameFromURL(url: string) {
-    if (!url) {
-      return '';
-    }
-    return url.split('?').shift()!.split('/').pop();
   }
 
   canEditAttachments() {
