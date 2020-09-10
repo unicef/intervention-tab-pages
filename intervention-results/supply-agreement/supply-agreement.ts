@@ -65,7 +65,6 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
         }
       </style>
       <etools-content-panel panel-title="Supply Agreement">
-
         <div slot="panel-btns">
           <span class="mr-40">
             <label class="label-input font-bold">TOTAL SUPPLY BUDGET: </label>

@@ -12,7 +12,12 @@ export class PdIndicator extends LitElement {
     return [
       gridLayoutStylesLit,
       ResultStructureStyles,
+      // language=css
       css`
+        :host {
+          --indicator-blue: #a4c4e1;
+          --indicator-green: #c4d7c6;
+        }
         etools-data-table-row {
           --blue-background: #b6d5f1;
           --blue-background-dark: #a4c4e1;
@@ -20,6 +25,37 @@ export class PdIndicator extends LitElement {
           --list-row-wrapper_-_background-color: var(--blue-background);
           --list-row-wrapper_-_align-items: stretch;
           --list-row-collapse-wrapper_-_margin-bottom: 0px;
+          --icon-wrapper-padding: 0px 0px;
+          --icon-wrapper-background: none;
+          --icon-wrapper-margin: 0 16px 0 0;
+        }
+        :host([high-frequency-indicator]) etools-data-table-row {
+          --icon-wrapper-background: var(--indicator-blue)
+            linear-gradient(
+              135deg,
+              #066ac7 12.5%,
+              #a4c4e1 12.5%,
+              #a4c4e1 50%,
+              #066ac7 50%,
+              #066ac7 62.5%,
+              #a4c4e1 62.5%,
+              #a4c4e1 100%
+            )
+            center/5.66px 5.66px;
+        }
+        :host([cluster-indicator]) etools-data-table-row {
+          --icon-wrapper-background: var(--indicator-green)
+            linear-gradient(
+              135deg,
+              #066ac7 12.5%,
+              #c4d7c6 12.5%,
+              #c4d7c6 50%,
+              #066ac7 50%,
+              #066ac7 62.5%,
+              #c4d7c6 62.5%,
+              #c4d7c6 100%
+            )
+            center/5.66px 5.66px;
         }
         .indicatorType {
           font-weight: 600;
@@ -44,7 +80,14 @@ export class PdIndicator extends LitElement {
 
   render() {
     return html`
-      ${this.getIndicatorTypeStyle(this.indicator)}
+      <style>
+        etools-data-table-row {
+          --list-row-collapse-wrapper: {
+            padding: 0;
+            margin: 0;
+          }
+        }
+      </style>
       <etools-data-table-row>
         <div slot="row-data" class="layout-horizontal align-items-center editable-row">
           <!--    Indicator name    -->
@@ -146,34 +189,5 @@ export class PdIndicator extends LitElement {
 
   private addInactivePrefix(indicator: any) {
     return !indicator || indicator.is_active ? '' : html`<strong>(inactive)</strong>`;
-  }
-
-  getIndicatorTypeStyle(indicator: any) {
-    let dynamicStyle = '';
-    let hfBgImg = '';
-    if (indicator.cluster_indicator_id) {
-      hfBgImg = `linear-gradient(135deg, #066ac7 12.50%, #c4d7c6 12.50%, #c4d7c6 50%, #066ac7 50%,
-         #066ac7 62.50%, #c4d7c6 62.50%, #c4d7c6 100%)`;
-      dynamicStyle = `--collapse-icon-bg-color: var(--indicator-green); --collapse-icon-bg-image: ${hfBgImg};`;
-    } else if (indicator.is_high_frequency) {
-      hfBgImg = `linear-gradient(135deg, #066ac7 12.50%, #a4c4e1 12.50%, #a4c4e1 50%, #066ac7 50%,
-        #066ac7 62.50%, #a4c4e1 62.50%, #a4c4e1 100%)`;
-      dynamicStyle = `--collapse-icon-bg-color: var(--indicator-blue); --collapse-icon-bg-image: ${hfBgImg};`;
-    }
-
-    const style = `{
-      --indicator-blue:#a4c4e1; --indicator-green:#c4d7c6;
-       ${dynamicStyle}
-      --icon-wrapper: {
-        background-color: var(--collapse-icon-bg-color, var(--indicator-blue));
-        background-image: var(--collapse-icon-bg-image, none);
-        background-size: 5.66px 5.66px;
-        padding: 0px 0px;
-        margin-right: 16px;
-      }
-    }`;
-    return html`<style>
-      etools-data-table-row ${style}
-    </style>`;
   }
 }
