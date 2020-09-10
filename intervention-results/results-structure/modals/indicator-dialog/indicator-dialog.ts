@@ -55,7 +55,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
         .indicator-content {
           margin: 16px 24px;
           margin-bottom: 40px;
-          border: solid 1px rgba(0, 0, 0, 0.40);
+          border: solid 1px rgba(0, 0, 0, 0.4);
           overflow-x: hidden; /*To avoid horizontal scroll in IE11 */
         }
         .indicator-content.cluster {

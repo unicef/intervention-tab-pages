@@ -25,6 +25,8 @@ import './pd-indicators';
 import './pd-activities';
 import './modals/pd-output-dialog';
 import './modals/cp-output-dialog';
+import '@polymer/paper-item';
+import '@polymer/paper-listbox';
 import '../../common/components/comments/comments-dialog';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {RootState} from '../../common/models/globals.types';
@@ -58,7 +60,20 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
         iron-icon[icon='create'] {
           margin-left: 50px;
         }
+        #view-menu-button {
+          display: none;
+          height: 28px;
+        }
+        #view-menu-button paper-button {
+          height: 28px;
+          background: var(--secondary-background-color);
+          padding-right: 0;
+        }
+        #view-menu-button paper-button iron-icon {
+          margin: 0 7px;
+        }
         .view-toggle-button {
+          display: flex;
           height: 28px;
           margin-left: 40px;
           padding: 0 19px;
@@ -77,6 +92,14 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
         }
         .pdOtputMargin {
           margin: 0 4px;
+        }
+        @media (max-width: 1100px) {
+          #view-menu-button {
+            display: block;
+          }
+          .view-toggle-button {
+            display: none;
+          }
         }
       `
     ];
@@ -166,6 +189,12 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
           padding-right: 10px;
           margin: 6px 0 6px 10px;
         }
+        etools-content-panel {
+          --epc-header: {
+            position: relative;
+            z-index: 10;
+          }
+        }
       </style>
 
       <etools-content-panel panel-title="Results Structure (${this.noOfPdOutputs})">
@@ -196,14 +225,20 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
             Show Inactive
           </paper-toggle-button>
 
-          <paper-menu-button id="pdExportMenuBtn" close-on-activate horizontal-align="right">
+          <paper-menu-button id="view-menu-button" close-on-activate horizontal-align="right">
             <paper-button slot="dropdown-trigger" class="dropdown-trigger">
-              <iron-icon icon="file-download"></iron-icon>
               View
+              <iron-icon icon="expand-more"></iron-icon>
             </paper-button>
-            <paper-listbox slot="dropdown-content">
+            <paper-listbox slot="dropdown-content" attr-for-selected="name" .selected="${this.viewType}">
               ${this.viewTabs.map(
-                (item) => html` <paper-item .selected="${item.type === this.viewType}">${item.name}</paper-item>`
+                (tab) =>
+                  html` <paper-item
+                    @click="${() => this.updateTableView(tab.showIndicators, tab.showActivities)}"
+                    name="${tab.type}"
+                  >
+                    ${tab.name}
+                  </paper-item>`
               )}
             </paper-listbox>
           </paper-menu-button>
