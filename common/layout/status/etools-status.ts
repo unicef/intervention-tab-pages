@@ -88,7 +88,7 @@ export class EtoolsStatus extends LitElement {
     // if status is terminated..we do not show active, and reverse
     // @lajos: this should be refactored to something better
     if (this.activeStatus == 'terminated') {
-      if (4 == index) {
+      if (this.statuses.length == index) {
         // special icon for terminated status
         return html`
           <div class="status ${this.getStatusClasses(index, activeStatusIndex)}">
