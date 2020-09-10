@@ -81,8 +81,13 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
         }
         etools-currency-amount-input {
           width: 140px;
+        }
+        
+        .inline-right {
+          display: inline;
           text-align: right;
         }
+        
       </style>
 
       <div class="page-content elevation" elevation="1" id="top-container">
@@ -140,41 +145,50 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
         </div>
 
         <div class="row-h flex-c">
-          <div class="col col-4 block">
+          <div class="col col-4">
+            <div class="inline-right">
               <label class="paper-label">Unicef Cash Contribution</label>
+                </br>
+                <etools-currency-amount-input
+                class="unicef_cash_contribution"
+                .value="${this.intervention.planned_budget.unicef_cash_local}"
+                type="number"
+                placeholder="&#8212;"
+                no-label-float
+                disabled
+              >
+              </etools-currency-amount-input>
+            </div>
+          </div>
+          <div class="col col-4">
+            <div class="inline-right">
+              <label class="paper-label">Unicef Supply Contribution</label>
               </br>
               <etools-currency-amount-input
-              .value="${this.intervention.planned_budget.unicef_cash_local}"
-              type="number"
-              placeholder="&#8212;"
-              no-label-float
-              disabled
-            >
-            </etools-currency-amount-input>
+                class="unicef_supply_contribution"
+                .value="${this.intervention.planned_budget.in_kind_amount_local}"
+                type="number"
+                placeholder="&#8212;"
+                no-label-float
+                disabled
+              >
+              </etools-currency-amount-input>
+            </div>
           </div>
-          <div class="col col-4 block">
-            <label class="paper-label">Unicef Supply Contribution</label>
-            </br>
-            <etools-currency-amount-input
-              .value="${this.intervention.planned_budget.in_kind_amount_local}"
-              type="number"
-              placeholder="&#8212;"
-              no-label-float
-              disabled
-            >
-            </etools-currency-amount-input>
-          </div>
-          <div class="col col-4 block">
-            <label class="paper-label">Total Unicef Contribution</label>
-            </br>
-            <etools-currency-amount-input
-              .value="${this._getTotalUnicef()}"
-              type="number"
-              placeholder="&#8212;"
-              no-label-float
-              disabled
-            >
-            </etools-currency-amount-input>
+          <div class="col col-4">
+            <div class="inline-right">
+              <label class="paper-label">Total Unicef Contribution</label>
+                </br>
+                <etools-currency-amount-input
+                  class="unicef_totla_contribution"
+                  .value="${this._getTotalUnicef()}"
+                  type="number"
+                  placeholder="&#8212;"
+                  no-label-float
+                  disabled
+                >
+                </etools-currency-amount-input>
+            </div>
           </div>
         </div>
       <div class="row-h flex-c">

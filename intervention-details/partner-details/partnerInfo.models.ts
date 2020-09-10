@@ -1,7 +1,7 @@
 import {InterventionPermissionsFields, Intervention} from '../../common/models/intervention.types';
 import {ModelsBase} from '../../common/models/models.base';
 
-export class PartnerDetails extends ModelsBase {
+export class PartnerInfo extends ModelsBase {
   constructor(intervention: Intervention) {
     super();
     this.setObjProperties(intervention);
@@ -13,7 +13,7 @@ export class PartnerDetails extends ModelsBase {
   agreement: number | null = null;
 }
 
-export class PartnerDetailsPermissions extends ModelsBase {
+export class PartnerInfoPermissions extends ModelsBase {
   constructor(permissions: InterventionPermissionsFields) {
     super();
     this.setObjProperties(permissions);
