@@ -10,11 +10,3 @@ export class Risk extends ModelsBase {
   risk_type = '';
   mitigation_measures = '';
 }
-
-export class RiskPermissions extends ModelsBase {
-  constructor(permissions: InterventionPermissionsFields) {
-    super();
-    this.setObjProperties(permissions);
-  }
-  risks = true;
-}

@@ -14,17 +14,17 @@ import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {Risk, RiskPermissions} from './risk.models';
-import {Permission} from '../../common/models/intervention.types';
+import {Risk} from './risk.models';
 import {RootState, LabelAndValue, AnyObject} from '../../common/models/globals.types';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
-import {selectRiskPermissions, selectRisks} from './risk.selectors';
+import {selectRisks} from './risk.selectors';
 import './risk-dialog';
 import '../../common/layout/are-you-sure';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {getIntervention} from '../../common/actions';
+import {currentInterventionPermissions} from '../../common/selectors';
 
 const customStyles = html`
   <style>
@@ -126,8 +126,7 @@ export class RisksElement extends connect(getStore())(ComponentBaseMixin(LitElem
     this.interventionId = state.interventions.current.id!;
     this.riskTypes = (state.commonData && state.commonData.riskTypes) || [];
     this.data = selectRisks(state);
-    const permissions = selectRiskPermissions(state);
-    this.set_canEditAtLeastOneField(permissions.edit);
+    this.set_canEditAtLeastOneField({risks: currentInterventionPermissions(state)?.edit.risks});
   }
 
   getTableStyle() {
