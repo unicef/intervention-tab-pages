@@ -35,54 +35,54 @@ export class BudgetSummaryEl extends connect(getStore())(FrNumbersConsistencyMix
       </style>
       <section class="elevation content-wrapper" elevation="1">
         <div class="layout-horizontal">
-          <div class="col col-1">
+          <div class="flex-1">
             <span>
               <label class="paper-label">Budget Currency</label>
             </span>
           </div>
-          <div class="col col-1">
+          <div class="flex-1">
             <span>
               <label class="paper-label">Budget HQ Rate</label>
             </span>
           </div>
-          <div class="col col-2">
+          <div class="flex-1">
             <span>
               <label class="paper-label">% Prgm Effectiveness</label>
             </span>
           </div>
-          <div class="col col-1">
+          <div class="flex-1">
             <span>
               <label class="paper-label">Total CSO Contrib</label>
             </span>
           </div>
-          <div class="col col-2">
+          <div class="flex-1">
             <span>
               <label class="paper-label">Total Unicef Contrib</label>
             </span>
           </div>
-          <div class="col col-1">
+          <div class="flex-1">
             <span>
               <label class="paper-label">Total Supply</label>
             </span>
           </div>
-          <div class="col col-1">
+          <div class="flex-1">
             <span>
               <label class="paper-label">% Partner Contrib</label>
             </span>
           </div>
-          <div class="col col-1">
+          <div class="flex-1">
             <span>
               <label class="paper-label">Total Cash Amt</label>
             </span>
           </div>
-          <div class="col col-2">
+          <div class="flex-1">
             <span>
               <label class="paper-label">Total Amt (Cash + Supply)</label>
             </span>
           </div>
         </div>
         <div class="layout-horizontal">
-          <div class="col col-1">
+          <div class="flex-1">
             <etools-info-tooltip
               class="fr-nr-warn currency-mismatch"
               icon-first
@@ -105,28 +105,28 @@ export class BudgetSummaryEl extends connect(getStore())(FrNumbersConsistencyMix
               </label>
             </span>
           </div>
-          <div class="col col-1">
+          <div class="flex-1">
             <span>
               <label class="input-label" ?empty="${!this.budgetSummary.hq_support_cost}">
                 ${this.budgetSummary.hq_support_cost}
               </label>
             </span>
           </div>
-          <div class="col col-2">
+          <div class="flex-1">
             <span>
               <label class="input-label" ?empty="${!this.budgetSummary.prgm_effectiveness}">
                 ${this.budgetSummary.prgm_effectiveness}
               </label>
             </span>
           </div>
-          <div class="col col-1">
+          <div class="flex-1">
             <span>
               <label class="input-label" ?empty="${!this.budgetSummary.partner_contribution_local}">
                 ${this.displayCurrencyAmount(this.budgetSummary.partner_contribution_local, '0.00')}
               </label>
             </span>
           </div>
-          <div class="col col-2">
+          <div class="flex-1">
             <etools-info-tooltip
               class="fr-nr-warn"
               icon-first
@@ -142,28 +142,28 @@ export class BudgetSummaryEl extends connect(getStore())(FrNumbersConsistencyMix
               </label>
             <span>
           </div>
-          <div class="col col-1">
+          <div class="flex-1">
             <span>
-              <label class="input-label" ?empty="${this.budgetSummary.total_supply}">
-                ${this.displayCurrencyAmount(this.budgetSummary.total_supply, '0.00')}
+              <label class="input-label" ?empty="${this.budgetSummary.in_kind_amout_local}">
+                ${this.displayCurrencyAmount(this.budgetSummary.in_kind_amout_local, '0.00')}
               </label>
             </span>
           </div>
-          <div class="col col-1">
+          <div class="flex-1">
             <span>
               <label class="input-label" ?empty="${!this.budgetSummary.partner_percentage}">
                 ${this.budgetSummary.partner_percentage}
               </label>
             </span>
           </div>
-          <div class="col col-1">
+          <div class="flex-1">
             <span>
               <label class="input-label" ?empty="${!this.budgetSummary.total_cash}">
                 ${this.budgetSummary.total_cash}
               </label>
             </span>
           </div>
-          <div class="col col-2">
+          <div class="flex-1">
             <span>
               <label class="input-label" ?empty="${!this.budgetSummary.in_kind_amount}">
                 ${this.budgetSummary.in_kind_amount}
