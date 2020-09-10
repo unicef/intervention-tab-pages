@@ -11,6 +11,8 @@ import {GenericObject, IdAndName} from '../common/models/globals.types';
 import {getStore} from '../utils/redux-store-access';
 import {updateCurrentIntervention} from '../common/actions';
 import {connect} from 'pwa-helpers/connect-mixin';
+import {validateRequiredFields} from '../utils/validation-helper';
+import {SharedStylesLit} from '../../../../styles/shared-styles-lit';
 
 @customElement('intervention-attachment-dialog')
 export class InterventionAttachmentDialog extends connect(getStore())(LitElement) {
@@ -54,7 +56,7 @@ export class InterventionAttachmentDialog extends connect(getStore())(LitElement
   protected render(): TemplateResult {
     return html`
       <style>
-        etools-dialog {
+        ${SharedStylesLit} etools-dialog {
           --etools-dialog-scrollable: {
             margin-top: 0 !important;
           }
@@ -91,7 +93,7 @@ export class InterventionAttachmentDialog extends connect(getStore())(LitElement
             dynamic-align
             required
             ?invalid="${this.errors.type}"
-            .errorMessage="${this.errors.type && this.errors.type[0]}"
+            .errorMessage="${(this.errors.type && this.errors.type[0]) || 'This field is required'}"
             @focus="${() => this.resetFieldError('type')}"
             @tap="${() => this.resetFieldError('type')}"
           ></etools-dropdown>
@@ -102,6 +104,7 @@ export class InterventionAttachmentDialog extends connect(getStore())(LitElement
             accept=".doc,.docx,.pdf,.jpg,.png"
             .showDeleteBtn="${false}"
             ?readonly="${this.data.id}"
+            required
             .fileUrl="${this.data && (this.data.attachment || this.data.attachment_document)}"
             .uploadEndpoint="${interventionEndpoints.attachmentsUpload.url!}"
             @upload-finished="${(event: CustomEvent) => this.fileSelected(event.detail)}"
@@ -150,6 +153,9 @@ export class InterventionAttachmentDialog extends connect(getStore())(LitElement
 
   processRequest(): void {
     if (this.savingInProcess) {
+      return;
+    }
+    if (!validateRequiredFields(this)) {
       return;
     }
     this.savingInProcess = true;

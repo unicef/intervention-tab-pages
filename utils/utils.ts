@@ -21,7 +21,7 @@ export const cloneDeep = (obj: any) => {
   return JSON.parse(JSON.stringify(obj));
 };
 
-export const getFileNameFromURL = (url: string) => {
+export const getFileNameFromURL = (url?: string) => {
   if (!url) {
     return '';
   }
