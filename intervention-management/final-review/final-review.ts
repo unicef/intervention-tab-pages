@@ -8,6 +8,7 @@ import {selectFinalReviewAttachment, selectInterventionId} from './final-review.
 import {ReviewAttachment} from '../../common/models/intervention.types';
 import {currentInterventionPermissions} from '../../common/selectors';
 import get from 'lodash-es/get';
+import {getFileNameFromURL} from '../../utils/utils';
 declare const moment: any;
 
 @customElement('final-review')
@@ -76,7 +77,7 @@ export class FinalReview extends connect(getStore())(LitElement) {
           <div ?hidden="${!this.attachment}">
             <a href="${this.attachment?.attachment_file}" target="_blank">
               <iron-icon icon="file-download"></iron-icon>
-              <span>${this.getFilenameFromURL(this.attachment?.attachment_file)}</span>
+              <span>${getFileNameFromURL(this.attachment?.attachment_file)}</span>
             </a>
           </div>
         </div>
@@ -102,12 +103,5 @@ export class FinalReview extends connect(getStore())(LitElement) {
         attachment: this.attachment
       }
     });
-  }
-
-  getFilenameFromURL(url?: string) {
-    if (!url) {
-      return '';
-    }
-    return url.split('?')[0].split('/').pop();
   }
 }

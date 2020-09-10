@@ -71,7 +71,7 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
           >
             ${this._getRatingRadioButtonsTemplate(this.ratings, this.permissions.edit.gender)}
           </paper-radio-group>
-          <div class="col col-6 pl-none">
+          <div class="col col-12 pl-none">
             <paper-textarea
               label="Gender Narrative"
               always-float-label
@@ -96,7 +96,7 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
           >
             ${this._getRatingRadioButtonsTemplate(this.ratings, this.permissions.edit.sustainability)}
           </paper-radio-group>
-          <div class="col col-6 pl-none">
+          <div class="col col-12 pl-none">
             <paper-textarea
               label="Sustainability Narrative"
               always-float-label
@@ -121,7 +121,7 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
           >
             ${this._getRatingRadioButtonsTemplate(this.ratings, this.permissions.edit.equity)}
           </paper-radio-group>
-          <div class="col col-6 pl-none">
+          <div class="col col-12 pl-none">
             <paper-textarea
               label="Equity Narrative"
               always-float-label

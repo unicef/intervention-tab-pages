@@ -26,3 +26,10 @@ etools-info-tooltip.frs-inline-list iron-icon {
 export const frWarningsStyles = css`
   ${unsafeCSS(frWarningsContent)}
 `;
+export const frWarningsStylesPolymer = () => {
+  const template = document.createElement('template');
+  template.innerHTML = `<style>
+    ${frWarningsContent}
+   </style>`;
+  return template;
+};

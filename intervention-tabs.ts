@@ -18,6 +18,7 @@ import {getIntervention} from './common/actions';
 import {sharedStyles} from './common/styles/shared-styles-lit';
 import {isJsonStrMatch} from './utils/utils';
 import {pageContentHeaderSlottedStyles} from './common/layout/page-content-header/page-content-header-slotted-styles';
+import {fireEvent} from './utils/fire-custom-event';
 
 const MOCKUP_STATUSES = [
   ['draft', 'Draft'],
@@ -58,14 +59,16 @@ export class InterventionTabs extends LitElement {
     return html`
       <style>
         :host {
+          --ecp-header-title_-_text-align: left;
           --ecp-content_-_padding: 8px 24px 16px 24px;
+          --ecp-header-bg: #ffffff;
+          --epc-header-color: #000000;
           --ecp-header-title: {
             padding: 0 24px 0 0;
             text-align: left;
             font-size: 18px;
             font-weight: 500;
           }
-          --ecp-header-title_-_text-align: left;
         }
 
         ${sharedStyles} etools-status {
@@ -198,6 +201,7 @@ export class InterventionTabs extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
+    this._showInterventionPageLoadingMessage();
   }
 
   disconnectedCallback() {
@@ -250,11 +254,25 @@ export class InterventionTabs extends LitElement {
       return;
     }
     if (newTabName !== oldTabName) {
+      const tabControl = this.shadowRoot!.querySelector(`intervention-${newTabName}`);
+      if (tabControl && !tabControl.shadowRoot) {
+        // show loading message if tab was not already loaded
+        this._showInterventionPageLoadingMessage();
+      }
+
       const newPath = `interventions/${this.intervention.id}/${newTabName}`;
       history.pushState(window.history.state, '', newPath);
       // Don't know why I have to specifically trigger popstate,
       // history.pushState should do that by default (?)
       window.dispatchEvent(new CustomEvent('popstate'));
     }
+  }
+
+  _showInterventionPageLoadingMessage() {
+    fireEvent(this, 'global-loading', {
+      message: 'Loading...',
+      active: true,
+      loadingSource: 'interv-page'
+    });
   }
 }

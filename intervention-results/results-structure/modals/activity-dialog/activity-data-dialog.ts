@@ -16,6 +16,7 @@ import './activity-timeframes';
 import {fireEvent} from '../../../../utils/fire-custom-event';
 import {ActivityItemsTable} from './activity-items-table';
 import {getIntervention} from '../../../../common/actions';
+import {ActivityTimeFrames} from './activity-timeframes';
 
 @customElement('activity-data-dialog')
 export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitElement) {
@@ -132,14 +133,14 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
               ? html`
                   <etools-currency-amount-input
                     class="col-2"
-                    label="CSO Cache Budget"
+                    label="CSO Cash Budget"
                     .value="${this.editedData.cso_cash}"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue('cso_cash', detail.value)}"
                   ></etools-currency-amount-input>
 
                   <etools-currency-amount-input
                     class="col-2"
-                    label="Unicef Cache Budget"
+                    label="Unicef Cash Budget"
                     .value="${this.editedData.unicef_cash}"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue('unicef_cash', detail.value)}"
                   ></etools-currency-amount-input>
@@ -148,13 +149,13 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
                   <paper-input
                     readonly
                     class="col-2 total-input"
-                    label="CSO Cache Budget"
+                    label="CSO Cash Budget"
                     .value="${this.getSumValue('cso_cash')}"
                   ></paper-input>
                   <paper-input
                     readonly
                     class="col-2 total-input"
-                    label="Unicef Cache Budget"
+                    label="Unicef Cash Budget"
                     .value="${this.getSumValue('unicef_cash')}"
                   ></paper-input>
                 `}
@@ -181,7 +182,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
             .timeFrames="${this.editedData.time_frames}"
             @time-frames-changed="${({detail}: CustomEvent) => {
               this.editedData.time_frames = detail;
-              this.performUpdate();
+              this.requestUpdate();
             }}"
           ></activity-time-frames>
         </div>
@@ -244,6 +245,10 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
       fireEvent(this, 'toast', {text: 'Please fill all Activity Items names'});
       return;
     }
+    if (!this.validateActivityTimeFrames()) {
+      fireEvent(this, 'toast', {text: 'Please select an Activity time frame.'});
+      return;
+    }
     this.loadingInProcess = true;
     sendRequest({
       endpoint: this.endpoint,
@@ -268,5 +273,10 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
   validateActivityItems(): boolean {
     const itemsTable: ActivityItemsTable | null = this.shadowRoot!.querySelector('activity-items-table');
     return itemsTable !== null && itemsTable.validate();
+  }
+
+  validateActivityTimeFrames() {
+    const items: ActivityTimeFrames | null = this.shadowRoot!.querySelector('activity-time-frames');
+    return items !== null && items.validate();
   }
 }

@@ -12,6 +12,10 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {ExpectedResult} from '../../common/models/intervention.types';
+import '@unicef-polymer/etools-dialog/etools-dialog';
+import '@unicef-polymer/etools-dropdown/etools-dropdown';
+import '@polymer/paper-input/paper-input';
+import '@polymer/paper-input/paper-textarea';
 
 /**
  * @customElement
@@ -27,6 +31,12 @@ export class SupplyAgreementDialog extends connect(getStore())(ComponentBaseMixi
     return html`
       <style>
         ${sharedStyles}
+        paper-textarea {
+          flex: auto;
+          --paper-input-container-input: {
+            display: block;
+          }
+        }
       </style>
 
       <etools-dialog
@@ -98,6 +108,19 @@ export class SupplyAgreementDialog extends connect(getStore())(ComponentBaseMixi
             }}"
           >
           </etools-dropdown>
+        </div>
+      </div>
+      
+      <div class="layout-horizontal">
+        <div class="col col-12">
+          <paper-textarea
+            id="otherMentions"
+            label="Other Mentions"
+            always-float-label
+            placeholder="—"
+            .value="${this.data.other_mentions}"
+            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'other_mentions')}"
+          ></paper-textarea>
         </div>
       </div>
       </etools-dialog>
