@@ -35,9 +35,7 @@ export class EtoolsWarnMessage extends LitElement {
         }
       </style>
 
-      <div class="warning">
-        ${this._internalMsgs.map((item: AnyObject) => html`<p>${item.msg}</p>`)}
-      </div>
+      <div class="warning">${this._internalMsgs.map((item: AnyObject) => html`<p>${item.msg}</p>`)}</div>
     `;
   }
 

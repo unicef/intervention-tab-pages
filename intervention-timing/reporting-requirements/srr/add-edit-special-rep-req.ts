@@ -60,9 +60,7 @@ class AddEditSpecialRepReq extends PolymerElement {
       >
         <div class="row-h">
           <div class="col layout-vertical col-5">
-            <iron-label for="startDate">
-              Report Due Date
-            </iron-label>
+            <iron-label for="startDate"> Report Due Date </iron-label>
             <calendar-lite
               id="startDate"
               date="[[prepareDatepickerDate(item.due_date)]]"

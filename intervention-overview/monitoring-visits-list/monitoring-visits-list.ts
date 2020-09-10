@@ -41,24 +41,12 @@ export class MonitoringVisitsList extends LitElement {
             label="Showing ${this._getVisitsCount(this.monitoringVisits.length, this.tpmActivities.length)} results"
             no-collapse
           >
-            <etools-data-table-column class="col-2" field="reference_number">
-              Reference #
-            </etools-data-table-column>
-            <etools-data-table-column class="col-2" field="primary_traveler">
-              Traveler
-            </etools-data-table-column>
-            <etools-data-table-column class="col-2" field="travel_type">
-              Travel Type
-            </etools-data-table-column>
-            <etools-data-table-column class="col-2" field="date">
-              End Date
-            </etools-data-table-column>
-            <etools-data-table-column class="col-2" field="locations">
-              Locations
-            </etools-data-table-column>
-            <etools-data-table-column class="col-2" field="status">
-              Status
-            </etools-data-table-column>
+            <etools-data-table-column class="col-2" field="reference_number"> Reference # </etools-data-table-column>
+            <etools-data-table-column class="col-2" field="primary_traveler"> Traveler </etools-data-table-column>
+            <etools-data-table-column class="col-2" field="travel_type"> Travel Type </etools-data-table-column>
+            <etools-data-table-column class="col-2" field="date"> End Date </etools-data-table-column>
+            <etools-data-table-column class="col-2" field="locations"> Locations </etools-data-table-column>
+            <etools-data-table-column class="col-2" field="status"> Status </etools-data-table-column>
           </etools-data-table-header>
 
           ${this.monitoringVisits.map(
@@ -78,18 +66,14 @@ export class MonitoringVisitsList extends LitElement {
                   <span class="col-data col-2" title="${visit.primary_traveler}">
                     <span class="truncate"> ${visit.primary_traveler} </span>
                   </span>
-                  <span class="col-data col-2" title="${visit.travel_type}">
-                    ${visit.travel_type}
-                  </span>
+                  <span class="col-data col-2" title="${visit.travel_type}"> ${visit.travel_type} </span>
                   <span class="col-data col-2" title="${prettyDate(visit.travel_latest_date)}">
                     ${prettyDate(visit.travel_latest_date)}
                   </span>
                   <span class="col-data col-2" title="${this.getDisplayValue(visit.locations)}">
                     ${this.getDisplayValue(visit.locations)}
                   </span>
-                  <span class="col-data col-2 capitalize" title="${visit.status}">
-                    ${visit.status}
-                  </span>
+                  <span class="col-data col-2 capitalize" title="${visit.status}"> ${visit.status} </span>
                 </div>
               </etools-data-table-row>
             `
@@ -114,15 +98,11 @@ export class MonitoringVisitsList extends LitElement {
                   <span class="col-data col-2" title="${this.getDisplayType(visit.is_pv)}">
                     ${this.getDisplayType(visit.is_pv)}
                   </span>
-                  <span class="col-data col-2" title="${prettyDate(visit.date)}">
-                    ${prettyDate(visit.date)}
-                  </span>
+                  <span class="col-data col-2" title="${prettyDate(visit.date)}"> ${prettyDate(visit.date)} </span>
                   <span class="col-data col-2" title="${this.getLocNames(visit.locations_details)}">
                     ${this.getLocNames(visit.locations_details)}
                   </span>
-                  <span class="col-data col-2 capitalize" title="${visit.status}">
-                    ${visit.status}
-                  </span>
+                  <span class="col-data col-2 capitalize" title="${visit.status}"> ${visit.status} </span>
                 </div>
               </etools-data-table-row>
             `

@@ -74,24 +74,12 @@ export class FundReservationsDisplay extends EtoolsCurrency(FrNumbersConsistency
 
       <div class="list-container" ?hidden="${this._noFrs(this.frsDetails)}">
         <etools-data-table-header id="listHeader" no-title ?hidden="${!this.frsDetails || !this.frsDetails.frs.length}">
-          <etools-data-table-column class="col-2">
-            FR#
-          </etools-data-table-column>
-          <etools-data-table-column class="col-2 right-align">
-            FR Posting Date
-          </etools-data-table-column>
-          <etools-data-table-column class="col-2 right-align">
-            FR Currency
-          </etools-data-table-column>
-          <etools-data-table-column class="col-2 right-align">
-            FR Amount
-          </etools-data-table-column>
-          <etools-data-table-column class="col-2 right-align">
-            Actual Disburs.
-          </etools-data-table-column>
-          <etools-data-table-column class="col-2 right-align">
-            Outstanding DCT
-          </etools-data-table-column>
+          <etools-data-table-column class="col-2"> FR# </etools-data-table-column>
+          <etools-data-table-column class="col-2 right-align"> FR Posting Date </etools-data-table-column>
+          <etools-data-table-column class="col-2 right-align"> FR Currency </etools-data-table-column>
+          <etools-data-table-column class="col-2 right-align"> FR Amount </etools-data-table-column>
+          <etools-data-table-column class="col-2 right-align"> Actual Disburs. </etools-data-table-column>
+          <etools-data-table-column class="col-2 right-align"> Outstanding DCT </etools-data-table-column>
         </etools-data-table-header>
 
         ${this.frsDetails.frs.map(
@@ -164,9 +152,7 @@ export class FundReservationsDisplay extends EtoolsCurrency(FrNumbersConsistency
                     `
                   )}
                 </div>
-                <div class="flex-c" ?hidden="${!isEmpty(fr.line_item_details)}">
-                  There are no details to display.
-                </div>
+                <div class="flex-c" ?hidden="${!isEmpty(fr.line_item_details)}">There are no details to display.</div>
               </div>
             </etools-data-table-row>
           `

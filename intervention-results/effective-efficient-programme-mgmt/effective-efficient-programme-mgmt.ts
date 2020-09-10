@@ -1,7 +1,6 @@
 import {customElement, html, LitElement, property} from 'lit-element';
 import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-content-panel';
-import '@unicef-polymer/etools-data-table';
 import '@unicef-polymer/etools-table/etools-table';
 import {EtoolsTableChildRow, EtoolsTableColumn, EtoolsTableColumnType} from '@unicef-polymer/etools-table/etools-table';
 import '@unicef-polymer/etools-currency-amount-input';
@@ -61,6 +60,9 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
           margin-bottom: 24px;
           --ecp-content-padding: 0;
           --ecp-content_-_padding: 0;
+        }
+        etools-table {
+          padding-top: 0;
         }
       </style>
 
@@ -149,7 +151,7 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
   }
 
   formatData(data: AnyObject) {
-    this.total_amount = data.total_amount;
+    this.total_amount = data.total_amount || 0;
     return [
       {
         title: 'Standard activity 1',

@@ -35,6 +35,10 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
 
+const RESULT_VIEW = 'result_view';
+const BUDGET_VIEW = 'budget_view';
+const COMBINED_VIEW = 'combined_view';
+
 /**
  * @customElement
  */
@@ -77,6 +81,15 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
       `
     ];
   }
+  get viewType(): string {
+    if (this.showActivities && this.showIndicators) {
+      return COMBINED_VIEW;
+    } else if (this.showActivities) {
+      return BUDGET_VIEW;
+    } else {
+      return RESULT_VIEW;
+    }
+  }
   get resultLinks(): ExpectedResult[] {
     return this._resultLinks || [];
   }
@@ -100,6 +113,27 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
   @property({type: String}) noOfPdOutputs: string | number = '0';
   @property({type: Boolean}) thereAreInactiveIndicators = false;
   @property({type: Boolean}) showInactiveIndicators = false;
+
+  viewTabs = [
+    {
+      name: 'Result view',
+      type: RESULT_VIEW,
+      showIndicators: true,
+      showActivities: false
+    },
+    {
+      name: 'Combined view',
+      type: COMBINED_VIEW,
+      showIndicators: true,
+      showActivities: true
+    },
+    {
+      name: 'Budget view',
+      type: BUDGET_VIEW,
+      showIndicators: false,
+      showActivities: true
+    }
+  ];
 
   private cpOutputs: CpOutput[] = [];
 
@@ -162,27 +196,28 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
             Show Inactive
           </paper-toggle-button>
 
-          <div
-            class="view-toggle-button layout-horizontal align-items-center"
-            ?active="${this.showIndicators && !this.showActivities}"
-            @click="${() => this.updateTableView(true, false)}"
-          >
-            Result view
-          </div>
-          <div
-            class="view-toggle-button layout-horizontal align-items-center"
-            ?active="${this.showIndicators && this.showActivities}"
-            @click="${() => this.updateTableView(true, true)}"
-          >
-            Combined view
-          </div>
-          <div
-            class="view-toggle-button layout-horizontal align-items-center"
-            ?active="${!this.showIndicators && this.showActivities}"
-            @click="${() => this.updateTableView(false, true)}"
-          >
-            Budget view
-          </div>
+          <paper-menu-button id="pdExportMenuBtn" close-on-activate horizontal-align="right">
+            <paper-button slot="dropdown-trigger" class="dropdown-trigger">
+              <iron-icon icon="file-download"></iron-icon>
+              View
+            </paper-button>
+            <paper-listbox slot="dropdown-content">
+              ${this.viewTabs.map(
+                (item) => html` <paper-item .selected="${item.type === this.viewType}">${item.name}</paper-item>`
+              )}
+            </paper-listbox>
+          </paper-menu-button>
+          ${this.viewTabs.map(
+            (tab) => html`
+              <div
+                class="view-toggle-button layout-horizontal align-items-center"
+                ?active="${tab.type === this.viewType}"
+                @click="${() => this.updateTableView(tab.showIndicators, tab.showActivities)}"
+              >
+                ${tab.name}
+              </div>
+            `
+          )}
           <iron-icon
             icon="add"
             ?hidden="${!this.isUnicefUser || !this.permissions.edit.result_links}"
