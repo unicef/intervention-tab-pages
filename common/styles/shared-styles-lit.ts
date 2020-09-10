@@ -190,7 +190,6 @@ export const sharedStylesContent = `
     --iron-autogrow-textarea: {
       overflow: auto;
       padding: 0;
-      max-height: 96px;
     }
   }
   paper-textarea[readonly] {
