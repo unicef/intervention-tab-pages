@@ -61,7 +61,6 @@ export class InterventionTabs extends LitElement {
           --ecp-header-title_-_text-align: left;
           --ecp-content_-_padding: 8px 24px 16px 24px;
           --ecp-header-bg: #ffffff;
-          --epc-header-color: #000000;
           --ecp-header-title: {
             padding: 0 24px 0 0;
             text-align: left;
