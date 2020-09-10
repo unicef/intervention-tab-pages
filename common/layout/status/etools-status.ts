@@ -86,12 +86,9 @@ export class EtoolsStatus extends LitElement {
   getStatusHtml(item: EtoolsStatusItem, index: number, activeStatusIndex: number) {
     const completed = this.isCompleted(index, activeStatusIndex);
     // if status is terminated..we do not show active, and reverse
-    // @lajos: THIS HAVE TO BE REFACTORED WHEN ALL STATUSES ARE AVAILABLE AND WE KNWO WHEN WHICH STATUS CAN BE SHOWN
+    // @lajos: this should be refactored to something better
     if (this.activeStatus == 'terminated') {
-      if (2 == index) {
-        return html``;
-      }
-      if (3 == index) {
+      if (4 == index) {
         // special icon for terminated status
         return html`
           <div class="status ${this.getStatusClasses(index, activeStatusIndex)}">
@@ -99,11 +96,6 @@ export class EtoolsStatus extends LitElement {
             <span class="label">${item[1]}</span>
           </div>
         `;
-      }
-    } else {
-      // we do not show terminated status ina ny other casses
-      if (3 == index) {
-        return html``;
       }
     }
 
@@ -130,11 +122,7 @@ export class EtoolsStatus extends LitElement {
   getStatusClasses(index: number, activeStatusIndex: number): string {
     const classes: string[] = [];
     if (index === activeStatusIndex) {
-      if (3 == index) {
-        classes.push('report-problem');
-      } else {
-        classes.push('active');
-      }
+      classes.push('active');
     }
     if (this.isCompleted(index, activeStatusIndex)) {
       classes.push('completed');

@@ -27,7 +27,7 @@ export class StatusButtons extends connect(getStore())(ComponentBaseMixin(LitEle
     ];
   }
   public render() {
-    if (['terminated', 'closed', 'draft'].includes(this.activeStatus)) {
+    if (['terminated', 'closed', 'draft', 'ended'].includes(this.activeStatus)) {
       return html``;
     } else {
       return html`
