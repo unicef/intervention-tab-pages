@@ -58,7 +58,7 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
               .selected="${this.data.risk_type}"
               option-value="value"
               option-label="label"
-              ?required="${this.permissions.required.risk_type}"
+              required
               @etools-selected-item-changed="${({detail}: CustomEvent) =>
                 this.selectedItemChanged(detail, 'risk_type', 'value')}"
               trigger-value-change-event
@@ -72,9 +72,9 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
               always-float-label
               type="text"
               placeholder="—"
+              required
               .value="${this.data.mitigation_measures}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'mitigation_measures')}"
-              ?required="${this.permissions.required.mitigation_measures}"
             >
             </paper-textarea>
           </div>
@@ -90,9 +90,6 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
   @property({type: Boolean}) savingInProcess = false;
 
   @property() riskDialogTitle = '';
-
-  @property({type: Object})
-  permissions!: Permission<RiskPermissions>;
 
   private endpoint!: EtoolsRequestEndpoint;
 

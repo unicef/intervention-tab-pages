@@ -89,9 +89,6 @@ export class RisksElement extends connect(getStore())(ComponentBaseMixin(LitElem
   @property({type: Object})
   data!: Risk[];
 
-  @property({type: Object})
-  permissions!: Permission<RiskPermissions>;
-
   @property({type: Array})
   riskTypes!: LabelAndValue[];
 
@@ -129,8 +126,8 @@ export class RisksElement extends connect(getStore())(ComponentBaseMixin(LitElem
     this.interventionId = state.interventions.current.id!;
     this.riskTypes = (state.commonData && state.commonData.riskTypes) || [];
     this.data = selectRisks(state);
-    this.permissions = selectRiskPermissions(state);
-    this.set_canEditAtLeastOneField(this.permissions.edit);
+    const permissions = selectRiskPermissions(state);
+    this.set_canEditAtLeastOneField(permissions.edit);
   }
 
   getTableStyle() {
@@ -146,7 +143,6 @@ export class RisksElement extends connect(getStore())(ComponentBaseMixin(LitElem
       dialogData: {
         item: e ? e.detail : {},
         interventionId: this.interventionId,
-        permissions: this.permissions,
         riskTypes: this.riskTypes
       }
     });
