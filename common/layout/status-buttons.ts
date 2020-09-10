@@ -1,17 +1,21 @@
-import {customElement, html, LitElement, property, css, query} from 'lit-element';
+import {customElement, html, LitElement, property, css} from 'lit-element';
+import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-menu-button/paper-menu-button';
 import '@polymer/iron-icon/iron-icon';
 import '@polymer/paper-listbox/paper-listbox';
 import {buttonsStyles} from '../../common/styles/button-styles';
-import EtoolsDialog from '@unicef-polymer/etools-dialog';
+import '../components/intervention/pd-termination';
+import {PdTermination} from '../components/intervention/pd-termination';
+import {connect} from 'pwa-helpers/connect-mixin';
+import {getStore} from '../../utils/redux-store-access';
 
 /**
  * @customElement
  * @LitElement
  */
 @customElement('status-buttons')
-export class StatusButtons extends LitElement {
+export class StatusButtons extends connect(getStore())(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [
       buttonsStyles,
@@ -23,11 +27,11 @@ export class StatusButtons extends LitElement {
     ];
   }
   public render() {
-    if (['terminated', 'closed'].includes(this.activeStatus)) {
+    if (['terminated', 'closed', 'draft'].includes(this.activeStatus)) {
       return html``;
     } else {
       return html`
-        <paper-button class="primary status" @tap=${this._setStatusTerminated}> Terminate PD </paper-button>
+        <paper-button class="primary status" @tap=${this._createTerminationDialog}> Terminate PD </paper-button>
       `;
     }
   }
@@ -35,26 +39,25 @@ export class StatusButtons extends LitElement {
   @property({type: String})
   activeStatus!: string;
 
-  @property({type: String})
-  interventionId!: string;
+  interventionId!: number;
 
-  @query('#pdTermination')
-  _terminationDialog!: EtoolsDialog & {resetValidations(): void};
+  private _terminationDialog!: PdTermination;
 
   _createTerminationDialog() {
-    this._terminationDialog = document.createElement('pd-termination') as any;
+    this._terminationDialog = document.createElement('pd-termination') as PdTermination;
     document.querySelector('body')!.appendChild(this._terminationDialog);
 
-    this._terminationDialog.set('terminationElSource', this);
+    this._terminationDialog.terminationElSource = this;
+    this._setStatusTerminated();
   }
 
   _setStatusTerminated() {
     // this._terminationDialog.resetValidations();
-    this._terminationDialog.set('interventionId', this.interventionId);
-    this._terminationDialog.set('termination', {
-      date: null,
-      attachment_notice: null
-    });
-    this._terminationDialog.set('opened', true);
+    this._terminationDialog.interventionId = this.interventionId;
+    this._terminationDialog.termination = {
+      date: '',
+      attachment_notice: 0
+    };
+    this._terminationDialog.dialogOpened = true;
   }
 }

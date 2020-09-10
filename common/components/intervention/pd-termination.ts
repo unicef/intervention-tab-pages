@@ -1,11 +1,11 @@
 import {LitElement, html, customElement, property} from 'lit-element';
 import EnvironmentFlagsMixin from '../../../common/mixins/environment-flags-mixin';
+import ComponentBaseMixin from '../../../common/mixins/component-base-mixin';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
-declare const moment: any;
 import '@unicef-polymer/etools-dialog/etools-dialog';
 import '@unicef-polymer/etools-upload/etools-upload';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
-import '../../../layout/etools-warn-message';
+import '../../../common/layout/etools-warn-message';
 import '../../styles/shared-styles-lit';
 import {sharedStyles} from '../../styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../styles/grid-layout-styles-lit';
@@ -13,6 +13,7 @@ import {requiredFieldStarredStylesPolymer} from '../../styles/required-field-sty
 import {fireEvent} from '../../../utils/fire-custom-event';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../../utils/redux-store-access';
+declare const moment: any;
 
 /**
  * @LitElement
@@ -20,7 +21,7 @@ import {getStore} from '../../../utils/redux-store-access';
  * @appliesMixin EnvironmentFlagsMixin
  */
 @customElement('pd-termination')
-export class PdTermination extends connect(getStore())(EnvironmentFlagsMixin(LitElement)) {
+export class PdTermination extends connect(getStore())(ComponentBaseMixin(EnvironmentFlagsMixin(LitElement))) {
   static get styles() {
     return [gridLayoutStylesLit];
   }
@@ -49,10 +50,10 @@ export class PdTermination extends connect(getStore())(EnvironmentFlagsMixin(Lit
         ?hidden="${this.warningOpened}"
         ok-btn-text="Terminate"
         dialog-title="Terminate PD/SSFA"
-        @close="_handleDialogClosed"
-        @confirm-btn-clicked="_triggerPdTermination"
-        disable-confirm-btn="${this.uploadInProgress}"
-        disable-dismiss-btn="${this.uploadInProgress}"
+        @close="${this._handleDialogClosed}"
+        @confirm-btn-clicked="${this._triggerPdTermination}"
+        ?disable-confirm-btn="${this.uploadInProgress}"
+        ?disable-dismiss-btn="${this.uploadInProgress}"
       >
         <div class="row-h flex-c">
           <datepicker-lite
@@ -73,21 +74,21 @@ export class PdTermination extends connect(getStore())(EnvironmentFlagsMixin(Lit
             id="terminationNotice"
             label="Termination Notice"
             accept=".doc,.docx,.pdf,.jpg,.png"
-            file-url="${this.termination.attachment_notice}"
-            upload-endpoint="${this.uploadEndpoint}"
+            .fileUrl="${this.termination.attachment_notice}"
+            .uploadEndpoint="${this.uploadEndpoint}"
             @upload-finished="${this._uploadFinished}"
             required
             auto-validate
-            upload-in-progress="{{uploadInProgress}}"
+            .uploadInProgress="${this.uploadInProgress}"
             error-message="Termination Notice file is required"
           >
-          </etools-upload>
         </div>
-        <div class="row-h">
+        <div class="row-h flex-c">
           <etools-warn-message
-            messages="Once you hit save, the PD/SSFA will be Terminated and this action can not be reversed"
+            .messages="Once you hit save, the PD/SSFA will be Terminated and this action can not be reversed"
           >
           </etools-warn-message>
+          Once you hit save, the PD/SSFA will be Terminated and this action can not be reversed
         </div>
       </etools-dialog>
 
@@ -95,7 +96,7 @@ export class PdTermination extends connect(getStore())(EnvironmentFlagsMixin(Lit
         no-padding
         id="pdTerminationConfirmation"
         theme="confirmation"
-        opened="${this.warningOpened}"
+        ?opened="${this.warningOpened}"
         size="md"
         ok-btn-text="Continue"
         @close="${this._terminationConfirmed}"
@@ -108,7 +109,7 @@ export class PdTermination extends connect(getStore())(EnvironmentFlagsMixin(Lit
   }
 
   @property({type: String})
-  uploadEndpoint: string = interventionEndpoints.attachmentsUpload.url;
+  uploadEndpoint: string | undefined = interventionEndpoints.attachmentsUpload.url;
 
   @property({type: Number})
   interventionId!: number;
@@ -129,13 +130,9 @@ export class PdTermination extends connect(getStore())(EnvironmentFlagsMixin(Lit
   uploadInProgress = false;
 
   @property({type: Boolean, reflect: true})
-  dialogOpened = false;
+  dialogOpened!: boolean;
 
   private _validationSelectors: string[] = ['#terminationDate', '#terminationNotice'];
-
-  connectedCallback() {
-    super.connectedCallback();
-  }
 
   _getMaxDate() {
     return moment(Date.now()).add(30, 'd').toDate();
@@ -203,6 +200,8 @@ export class PdTermination extends connect(getStore())(EnvironmentFlagsMixin(Lit
     if (e.detail.success) {
       const uploadResponse = e.detail.success;
       this.termination.attachment_notice = uploadResponse.id;
+      console.log(this.termination.attachment_notice);
+      console.log(this.termination);
     }
   }
 }
