@@ -103,7 +103,7 @@ export class InterventionAttachmentDialog extends connect(getStore())(LitElement
             .showDeleteBtn="${false}"
             ?readonly="${this.data.id}"
             .fileUrl="${this.data && (this.data.attachment || this.data.attachment_document)}"
-            .uploadEndpoint="${getEndpoint(interventionEndpoints.attachmentsUpload).url}"
+            .uploadEndpoint="${interventionEndpoints.attachmentsUpload.url!}"
             @upload-finished="${(event: CustomEvent) => this.fileSelected(event.detail)}"
             ?invalid="${this.errors.attachment_document}"
             .errorMessage="${this.errors.attachment_document && this.errors.attachment_document[0]}"
