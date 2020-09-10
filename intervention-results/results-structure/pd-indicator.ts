@@ -24,6 +24,7 @@ export class PdIndicator extends LitElement {
           display: block;
           --list-row-wrapper_-_background-color: var(--blue-background);
           --list-row-wrapper_-_align-items: stretch;
+          --list-row-collapse-wrapper_-_margin-bottom: 0px;
           --icon-wrapper-padding: 0px 0px;
           --icon-wrapper-background: none;
           --icon-wrapper-margin: 0 16px 0 0;
