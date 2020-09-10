@@ -8,6 +8,7 @@ import {
   serializeTimeFrameData
 } from '../../../../utils/timeframes.helper';
 import {fireEvent} from '../../../../utils/fire-custom-event';
+import isEmpty from 'lodash-es/isEmpty';
 
 @customElement('activity-time-frames')
 export class ActivityTimeFrames extends LitElement {
@@ -120,6 +121,9 @@ export class ActivityTimeFrames extends LitElement {
   validate() {
     const timeFrames: ActivityTime[] = this._timeFrames.map((frame: [string, ActivityTime[]]) => frame[1]).flat();
     const converted: InterventionActivityTimeframe[] = convertActivityTimeToData(timeFrames);
+    if (isEmpty(converted)) {
+      return true;
+    }
     let valid = false;
     converted.map((item) => {
       if (item.enabled) {
