@@ -156,6 +156,11 @@ export const gridLayoutStylesContent = `
   max-width: 33.333333%;
 }
 
+.col-4-5 {
+  flex: 0 0 37.5%;
+  max-width: 37.5%;
+}
+
 .col-5 {
   flex: 0 0 41.66666667%;
   max-width: 41.66666667%;

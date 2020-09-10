@@ -62,12 +62,12 @@ export class CpOutputLevel extends LitElement {
                 <!--      If PD is associated with CP Output      -->
                 ${this.resultLink.cp_output
                   ? html`
-                      <div class="flex-1 flex-fix">
-                        <div class="heading">Country Program output</div>
+                      <div class="col-6">
+                        <div class="heading">Country Program output234</div>
                         <div class="data">${this.resultLink.cp_output_name}</div>
                       </div>
 
-                      <div class="flex-1 flex-fix" ?hidden="${!this.showIndicators}">
+                      <div class="col-4-5" ?hidden="${!this.showIndicators}">
                         <div class="heading">Ram Indicators</div>
                         <div class="data">
                           ${this.resultLink.ram_indicator_names.length
@@ -78,12 +78,12 @@ export class CpOutputLevel extends LitElement {
                         </div>
                       </div>
 
-                      <div class="flex-none" ?hidden="${!this.showActivities}">
+                      <div class="col-1" ?hidden="${!this.showActivities}">
                         <div class="heading">Total Cash budget</div>
                         <div class="data">TTT 1231.144</div>
                       </div>
 
-                      <div class="hover-block">
+                      <div class="hover-block col-1">
                         <paper-icon-button icon="icons:create" @tap="${() => this.openPopup()}"></paper-icon-button>
                       </div>
                     `
