@@ -42,6 +42,8 @@ export interface EtoolsEndpoints {
   reports: EtoolsEndpoint;
   expectedResultsExport: EtoolsEndpoint;
   riskDelete: EtoolsEndpoint;
+  pdAttachments: EtoolsEndpoint;
+  updatePdAttachment: EtoolsEndpoint;
 }
 
 export const interventionEndpoints: EtoolsEndpoints = {
@@ -153,5 +155,11 @@ export const interventionEndpoints: EtoolsEndpoints = {
   },
   riskDelete: {
     template: '/api/pmp/v3/interventions/<%=interventionId%>/risks/<%=riskId%>'
+  },  
+  pdAttachments: {
+    template: '/api/pmp/v3/interventions/<%=id%>/attachments/'
+  },
+  updatePdAttachment: {
+    template: '/api/pmp/v3/interventions/<%=id%>/attachments/<%=attachment_id%>/'
   }
 };

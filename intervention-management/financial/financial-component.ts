@@ -67,10 +67,8 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
         .padd-top {
           padding-top: 8px;
         }
-
       </style>
       <etools-content-panel show-expand-btn panel-title="Financial">
-
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
         <div class="layout-horizontal padd-top">
           <div class="w100">

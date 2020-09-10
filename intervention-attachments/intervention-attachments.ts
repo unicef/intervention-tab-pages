@@ -1,5 +1,6 @@
 import {LitElement, customElement, html} from 'lit-element';
 import {fireEvent} from '../utils/fire-custom-event';
+import './attachments-list';
 
 /**
  * @customElement
@@ -8,11 +9,7 @@ import {fireEvent} from '../utils/fire-custom-event';
 export class InterventionAttachments extends LitElement {
   render() {
     // language=HTML
-    return html`
-      <style></style>
-
-      Attachments page
-    `;
+    return html`<attachments-list></attachments-list>`;
   }
 
   connectedCallback() {
