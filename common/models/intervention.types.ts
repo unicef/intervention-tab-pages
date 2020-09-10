@@ -1,3 +1,5 @@
+import {Risk} from '../../intervention-management/risks/risk.models';
+
 export interface ExpectedResult {
   id: number;
   cp_output: number;
@@ -251,6 +253,7 @@ export class Intervention {
   hq_support_cost = '';
   available_actions: string[] = [];
   prgm_effectiveness?: string;
+  risks: Risk[] = [];
 }
 
 export class InterventionAmendment {
@@ -335,4 +338,5 @@ export type ReviewAttachment = {
   created: string;
   id: number;
   intervention: number;
+  type: number;
 };
