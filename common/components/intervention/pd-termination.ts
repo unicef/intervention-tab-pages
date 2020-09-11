@@ -173,7 +173,6 @@ export class PdTermination extends connect(getStore())(ComponentBaseMixin(Enviro
         .dispatch(patchIntervention(body))
         .then(() => {
           this.dialogOpened = false;
-          console.log('fuck you');
         });
     }
   }
