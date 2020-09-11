@@ -111,7 +111,7 @@ export class SupplyAgreementDialog extends connect(getStore())(ComponentBaseMixi
           </etools-dropdown>
         </div>
       </div>
-      
+
       <div class="layout-horizontal">
         <div class="col col-12">
           <paper-textarea
@@ -151,7 +151,7 @@ export class SupplyAgreementDialog extends connect(getStore())(ComponentBaseMixi
   set dialogData({data, interventionId, result_links}: any) {
     this.cpOutputs = result_links || [];
     this.data = data;
-    this.isNewRecord = !this.data.result;
+    this.isNewRecord = !this.data.id;
     this.interventionId = interventionId;
     this.dialogTitle = this.isNewRecord ? 'Add  Supply Agreement' : 'Edit Supply Agreement';
     this.confirmBtnTxt = this.isNewRecord ? 'Add' : 'Save';
@@ -174,7 +174,7 @@ export class SupplyAgreementDialog extends connect(getStore())(ComponentBaseMixi
       ? getEndpoint(interventionEndpoints.supplyAgreementAdd, {interventionId: this.interventionId})
       : getEndpoint(interventionEndpoints.supplyAgreementEdit, {
           interventionId: this.interventionId,
-          supplyId: this.data.result
+          supplyId: this.data.id
         });
 
     sendRequest({
