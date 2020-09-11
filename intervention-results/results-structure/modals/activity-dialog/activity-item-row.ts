@@ -77,7 +77,7 @@ export class ActivityItemRow extends LitElement {
       return;
     }
     this.activityItem[field] = value;
-    this.performUpdate();
+    this.requestUpdate();
   }
 
   onBlur(): void {

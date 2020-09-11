@@ -91,7 +91,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
           padding: 0;
         }
       </style>
-      <etools-content-panel class="content-section" panel-title="Signatures & Dates">
+      <etools-content-panel show-expand-btn class="content-section" panel-title="Signatures & Dates">
         <div slot="panel-btns">
           ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
         </div>

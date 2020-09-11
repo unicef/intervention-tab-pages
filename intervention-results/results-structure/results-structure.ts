@@ -200,7 +200,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
         }
       </style>
 
-      <etools-content-panel panel-title="Results Structure (${this.noOfPdOutputs})">
+      <etools-content-panel show-expand-btn panel-title="Results Structure (${this.noOfPdOutputs})">
         <div slot="panel-btns" class="layout-horizontal align-items-center">
           <paper-button
             title="Export results"

@@ -12,7 +12,7 @@ import {getStore} from '../utils/redux-store-access';
 import {updateCurrentIntervention} from '../common/actions';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {validateRequiredFields} from '../utils/validation-helper';
-import {SharedStylesLit} from '../../../../styles/shared-styles-lit';
+import {sharedStyles} from '../common/styles/shared-styles-lit';
 
 @customElement('intervention-attachment-dialog')
 export class InterventionAttachmentDialog extends connect(getStore())(LitElement) {
@@ -56,7 +56,7 @@ export class InterventionAttachmentDialog extends connect(getStore())(LitElement
   protected render(): TemplateResult {
     return html`
       <style>
-        ${SharedStylesLit} etools-dialog {
+        ${sharedStyles} etools-dialog {
           --etools-dialog-scrollable: {
             margin-top: 0 !important;
           }
