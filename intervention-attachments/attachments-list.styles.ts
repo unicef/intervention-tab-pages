@@ -55,7 +55,6 @@ export const AttachmentsListStyles = html`
       cursor: pointer;
     }
     etools-data-table-header {
-      --list-bg-color: #f3eee9;
       --list-header-wrapper-column-height: 48px;
     }
     paper-icon-button[icon='add-box'] {
