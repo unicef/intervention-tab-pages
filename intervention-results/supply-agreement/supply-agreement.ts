@@ -18,6 +18,13 @@ import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {selectSupplyAgreement, selectSupplyAgreementPermissions} from './supplyAgreement.selectors';
+import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {getEndpoint} from '../../utils/endpoint-helper';
+import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {fireEvent} from '../../utils/fire-custom-event';
+import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {updateCurrentIntervention} from '../../common/actions';
+import '../../common/layout/are-you-sure';
 
 const customStyles = html`
   <style>
@@ -81,7 +88,7 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
           .columns="${this.columns}"
           .items="${this.supply_items}"
           @edit-item="${this.editSupplyItem}"
-          @delete-item="${this.deleteSupplyItem}"
+          @delete-item="${this.confirmDeleteSupplyItem}"
           .getChildRowTemplateMethod="${this.getChildRowTemplate.bind(this)}"
           .extraCSS="${this.getTableStyle()}"
           .showEdit=${this.permissions.edit.supply_items}
@@ -184,9 +191,39 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
     this.openSupplyDialog(new InterventionSupplyItem());
   }
 
-  deleteSupplyItem(event: CustomEvent) {
-    // TODO
-    console.log(event);
+  async confirmDeleteSupplyItem(e: CustomEvent) {
+    const confirmed = await openDialog({
+      dialog: 'are-you-sure',
+      dialogData: {
+        content: 'Are you sure you want to delete this Supply Agreement item?',
+        confirmBtnText: 'Delete'
+      }
+    }).then(({confirmed}) => {
+      return confirmed;
+    });
+
+    if (confirmed) {
+      this.deleteSupplyItem(e.detail.id);
+    }
+  }
+
+  deleteSupplyItem(supplyId: number) {
+    const endpoint = getEndpoint(interventionEndpoints.supplyAgreementEdit, {
+      interventionId: this.intervention.id,
+      supplyId: supplyId
+    });
+
+    sendRequest({
+      endpoint: endpoint,
+      method: 'DELETE'
+    })
+      .then((_resp: any) => {
+        this.intervention.supply_items = this.intervention.supply_items.filter((el: AnyObject) => el.id !== supplyId);
+        getStore().dispatch(updateCurrentIntervention(this.intervention));
+      })
+      .catch((err: any) => {
+        fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
+      });
   }
 
   private openSupplyDialog(item: InterventionSupplyItem) {
