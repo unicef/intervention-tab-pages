@@ -75,7 +75,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
         .view-toggle-button {
           display: flex;
           height: 28px;
-          margin-left: 40px;
+          margin-left: 4px;
           padding: 0 19px;
           font-weight: 500;
           font-size: 14px;
@@ -92,6 +92,9 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
         }
         .pdOtputMargin {
           margin: 0 4px;
+        }
+        #showInactive {
+          margin-right: 8px;
         }
         @media (max-width: 1100px) {
           #view-menu-button {
