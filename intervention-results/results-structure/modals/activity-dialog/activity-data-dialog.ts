@@ -174,7 +174,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
             .activityItems="${this.editedData.items || []}"
             @activity-items-changed="${({detail}: CustomEvent) => {
               this.editedData.items = detail;
-              this.performUpdate();
+              this.requestUpdate();
             }}"
           ></activity-items-table>
 
