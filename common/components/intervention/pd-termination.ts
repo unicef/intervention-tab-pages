@@ -200,8 +200,6 @@ export class PdTermination extends connect(getStore())(ComponentBaseMixin(Enviro
     if (e.detail.success) {
       const uploadResponse = e.detail.success;
       this.termination.attachment_notice = uploadResponse.id;
-      console.log(this.termination.attachment_notice);
-      console.log(this.termination);
     }
   }
 }
