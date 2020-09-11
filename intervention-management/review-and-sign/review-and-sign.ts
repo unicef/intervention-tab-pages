@@ -179,7 +179,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
                     .uploadEndpoint="${this.uploadEndpoint}"
                     @upload-finished="${this._prcRevDocUploadFinished}"
                     ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.prc_review_attachment)}"
-                    showDeleteBtn="${this.showPrcReviewDeleteBtn(this.data.status)}"
+                    .showDeleteBtn="${this.showPrcReviewDeleteBtn(this.data.status)}"
                     @delete-file="${this._prcRevDocDelete}"
                     @upload-started="${this._onUploadStarted}"
                     @change-unsaved-file="${this._onChangeUnsavedFile}"
@@ -289,7 +289,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
               .fileUrl="${this.data.signed_pd_attachment}"
               .uploadEndpoint="${this.uploadEndpoint}"
               @upload-finished="${this._signedPDUploadFinished}"
-              showDeleteBtn="${this.showSignedPDDeleteBtn(this.data.status)}"
+              .showDeleteBtn="${this.showSignedPDDeleteBtn(this.data.status)}"
               @delete-file="${this._signedPDDocDelete}"
               auto-validate
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.signed_pd_attachment)}"
