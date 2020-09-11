@@ -74,7 +74,7 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
         <div slot="panel-btns">
           <span class="mr-40">
             <label class="label-input font-bold">TOTAL SUPPLY BUDGET: </label>
-            <label class="f-12 font-bold">${this.intervention.planned_budget.in_kind_amount_local}</label>
+            <label class="f-12 font-bold">${this.intervention.planned_budget.currency} ${this.intervention.planned_budget.in_kind_amount_local}</label>
           </span>
           <paper-icon-button
             ?hidden="${!this.permissions.edit.supply_items}"
