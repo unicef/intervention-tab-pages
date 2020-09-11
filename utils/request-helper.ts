@@ -1,7 +1,6 @@
 import {sendRequest, EtoolsRequestConfig} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getStore} from './redux-store-access';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {showToast} from '../common/actions';
+import {fireEvent} from '../../../../utils/fire-custom-event';
 
 export const _sendRequest = (etoolsReqConfig: EtoolsRequestConfig, _requestKey?: string, _checkProgress?: boolean) => {
   return sendRequest(etoolsReqConfig, _requestKey, _checkProgress)
@@ -10,7 +9,10 @@ export const _sendRequest = (etoolsReqConfig: EtoolsRequestConfig, _requestKey?:
       if (error.status === 401) {
         // TODO
       }
-      getStore().dispatch(showToast(formatServerErrorAsText(error)));
+      fireEvent(document.body, 'toast', {
+        text: formatServerErrorAsText(error),
+        showCloseBtn: true
+      });
       throw error;
     });
 };
