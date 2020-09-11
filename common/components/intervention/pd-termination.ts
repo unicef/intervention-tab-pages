@@ -10,9 +10,10 @@ import '../../styles/shared-styles-lit';
 import {sharedStyles} from '../../styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../styles/grid-layout-styles-lit';
 import {requiredFieldStarredStylesPolymer} from '../../styles/required-field-styles';
-import {fireEvent} from '../../../utils/fire-custom-event';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../../utils/redux-store-access';
+import {formatDate} from '../../../utils/date-utils';
+import {patchIntervention} from '../../actions';
 declare const moment: any;
 
 /**
@@ -65,6 +66,8 @@ export class PdTermination extends connect(getStore())(ComponentBaseMixin(Enviro
             auto-validate
             required
             selected-date-display-format="D MMM YYYY"
+            fire-date-has-changed
+            @date-has-changed="${(e: CustomEvent) => this.updateDate(e.detail.date)}"
           >
           </datepicker-lite>
         </div>
@@ -78,7 +81,6 @@ export class PdTermination extends connect(getStore())(ComponentBaseMixin(Enviro
             .uploadEndpoint="${this.uploadEndpoint}"
             @upload-finished="${this._uploadFinished}"
             required
-            auto-validate
             .uploadInProgress="${this.uploadInProgress}"
             error-message="Termination Notice file is required"
           >
@@ -161,14 +163,18 @@ export class PdTermination extends connect(getStore())(ComponentBaseMixin(Enviro
 
   _terminatePD() {
     if (this.validate()) {
-      fireEvent(this.terminationElSource, 'terminate-pd', {
-        interventionId: this.interventionId,
-        terminationData: {
-          date: this.termination.date,
-          fileId: this.termination.attachment_notice
-        }
-      });
-      this.dialogOpened = false;
+      const body = {
+        id: this.interventionId,
+        end: this.termination.date,
+        termination_doc_attachment: this.termination.attachment_notice
+      };
+
+      getStore()
+        .dispatch(patchIntervention(body))
+        .then(() => {
+          this.dialogOpened = false;
+          console.log('fuck you');
+        });
     }
   }
 
@@ -200,6 +206,11 @@ export class PdTermination extends connect(getStore())(ComponentBaseMixin(Enviro
     if (e.detail.success) {
       const uploadResponse = e.detail.success;
       this.termination.attachment_notice = uploadResponse.id;
+      this.termination = {...this.termination};
     }
+  }
+  updateDate(terminationDate: Date) {
+    this.termination.date = formatDate(terminationDate, 'YYYY-MM-DD');
+    this.termination = {...this.termination};
   }
 }
