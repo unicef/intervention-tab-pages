@@ -169,7 +169,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
     if (!this.validate()) {
       return;
     }
-
+    this.requestInProcess = true;
     const endpoint = this.isNewRecord
       ? getEndpoint(interventionEndpoints.supplyAgreementAdd, {interventionId: this.interventionId})
       : getEndpoint(interventionEndpoints.supplyAgreementEdit, {
@@ -188,6 +188,9 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
       })
       .catch((err: any) => {
         fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
+      })
+      .finally(() => {
+        this.requestInProcess = false;
       });
   }
 }
