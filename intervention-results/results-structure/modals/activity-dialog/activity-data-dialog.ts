@@ -90,6 +90,13 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
         paper-toggle-button {
           margin: 25px 0;
         }
+        etools-dialog paper-textarea {
+          --iron-autogrow-textarea: {
+            overflow: auto;
+            padding: 0;
+            max-height: 96px;
+          }
+        }
       </style>
       <etools-dialog
         size="md"
