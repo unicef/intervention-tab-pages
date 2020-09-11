@@ -84,9 +84,7 @@ export class EtoolsStatus extends LitElement {
     const completed = this.isCompleted(index, activeStatusIndex);
     return html`
       <div class="status ${this.getStatusClasses(index, activeStatusIndex)}">
-        <span class="icon">
-          ${completed ? html`${completedStatusIcon}` : html`${this.getBaseOneIndex(index)}`}
-        </span>
+        <span class="icon"> ${completed ? html`${completedStatusIcon}` : html`${this.getBaseOneIndex(index)}`} </span>
         <span class="label">${item[1]}</span>
       </div>
     `;
