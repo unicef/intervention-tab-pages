@@ -505,7 +505,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
   }
 
   _prcRevDocDelete(_e: CustomEvent) {
-    this.data.prc_review_attachment = '';
+    this.data.prc_review_attachment = null;
     this._resetPrcFieldsValidations();
   }
 
