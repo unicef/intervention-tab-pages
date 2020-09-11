@@ -3,7 +3,6 @@ import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {getStore} from '../../utils/redux-store-access';
-import {connect} from 'pwa-helpers/connect-mixin';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {validateRequiredFields} from '../../utils/validation-helper';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
@@ -22,7 +21,7 @@ import '@polymer/paper-input/paper-textarea';
  * @customElement
  */
 @customElement('supply-agreement-dialog')
-export class SupplyAgreementDialog extends connect(getStore())(ComponentBaseMixin(LitElement)) {
+export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -103,6 +102,7 @@ export class SupplyAgreementDialog extends connect(getStore())(ComponentBaseMixi
             option-label="cp_output_name"
             option-value="id"
             .selected="${this.data.result}"
+
             trigger-value-change-event
             @etools-selected-item-changed="${({detail}: CustomEvent) => {
               this.selectedItemChanged(detail, 'result');
