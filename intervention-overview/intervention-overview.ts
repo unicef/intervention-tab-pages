@@ -117,11 +117,12 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
               Under
               <strong class="blue">${this.interventionAgreement.agreement_type}</strong>
               with
-              ${this.isUnicefUser ? html`
-                <a href="/pmp/partners/${this.intervention.partner_id}/details">
-                  <strong class="blue">${this.intervention.partner}</strong>
-                </a>` : 
-                html`<strong class="blue">${this.intervention.partner}</strong>`
+              ${
+                this.isUnicefUser
+                  ? html` <a href="/pmp/partners/${this.intervention.partner_id}/details">
+                            <strong class="blue">${this.intervention.partner}</strong>
+                          </a>` 
+                  : html`<strong class="blue">${this.intervention.partner}</strong>`
               }
             </div>
           </div>
@@ -280,7 +281,6 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
       return;
     }
 
-
     if (get(state, 'interventions.current')) {
       const currentIntervention = get(state, 'interventions.current');
       this.intervention = cloneDeep(currentIntervention);
@@ -314,15 +314,6 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
       this.isUnicefUser = state.user.data.is_unicef_user;
     }
   }
-
-  renderPartner() {
-    if (this.isUnicefUser) {
-
-    }
-    const location = window.location.host;
-    return location.indexOf('demo.unicef.io') > -1;
-  }
-  // isUnicefUser
 
   connectedCallback() {
     super.connectedCallback();
