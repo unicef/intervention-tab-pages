@@ -177,7 +177,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
                     accept=".doc,.docx,.pdf,.jpg,.png"
                     .fileUrl="${this.data.prc_review_attachment}"
                     .uploadEndpoint="${this.uploadEndpoint}"
-                    @upload-finished="_prcRevDocUploadFinished"
+                    @upload-finished="${this._prcRevDocUploadFinished}"
                     ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.prc_review_attachment)}"
                     showDeleteBtn="${this.showPrcReviewDeleteBtn(this.data.status)}"
                     @delete-file="${this._prcRevDocDelete}"
@@ -365,6 +365,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
     }
     // review it
     this.signedByUnicefUsers = cloneDeep(state.commonData!.unicefUsersData);
+
     if (state.interventions.current) {
       this.data = selectReviewData(state);
       this.originalData = cloneDeep(this.data);
@@ -482,28 +483,29 @@ export class InterventionReviewAndSign extends connect(getStore())(
   _resetPrcFields() {
     this.data.submission_date_prc = '';
     this.data.review_date_prc = '';
-    this.data.prc_review_attachment = '';
+    this.data.prc_review_attachment = null;
   }
 
   _signedPDUploadFinished(e: CustomEvent) {
-    getStore().dispatch({type: CONSTANTS.DECREASE_UPLOADS_IN_PROGRESS});
     if (e.detail.success) {
       const response = e.detail.success;
       this.data.signed_pd_attachment = response.id;
-      getStore().dispatch({type: CONSTANTS.INCREASE_UNSAVED_UPLOADS});
     }
   }
 
   _signedPDDocDelete(_e: CustomEvent) {
-    // @lajos: originally null
-    this.data.signed_pd_attachment = '';
-    getStore().dispatch({type: CONSTANTS.DECREASE_UNSAVED_UPLOADS});
+    this.data.signed_pd_attachment = null;
+  }
+
+  _prcRevDocUploadFinished(e: CustomEvent) {
+    if (e.detail.success) {
+      const response = e.detail.success;
+      this.data.prc_review_attachment = response.id;
+    }
   }
 
   _prcRevDocDelete(_e: CustomEvent) {
-    // @lajos this initially was set to undefined
     this.data.prc_review_attachment = '';
-    getStore().dispatch({type: CONSTANTS.DECREASE_UNSAVED_UPLOADS});
     this._resetPrcFieldsValidations();
   }
 

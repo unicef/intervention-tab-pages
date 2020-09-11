@@ -8,14 +8,14 @@ export class ReviewData extends ModelsBase {
   }
   document_type = '';
   agreement = '';
-  prc_review_attachment = '';
+  prc_review_attachment: string | null = null;
   submission_date_prc = '';
   submission_date = '';
   submitted_to_prc = false;
   review_date_prc = '';
   // @lajos bellow is a class
   frs_details = [];
-  signed_pd_attachment = '';
+  signed_pd_attachment: string | null = null;
   status = '';
   partner_authorized_officer_signatory = '';
   signed_by_partner_date = '';
