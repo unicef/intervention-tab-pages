@@ -57,7 +57,7 @@ export class PdAmendments extends connect(getStore())(LitElement) {
         }
       </style>
 
-      <etools-content-panel panel-title="Amendments">
+      <etools-content-panel show-expand-btn panel-title="Amendments">
         <div slot="panel-btns">
           <paper-icon-button
             icon="add"

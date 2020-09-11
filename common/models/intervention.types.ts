@@ -1,3 +1,5 @@
+import {Risk} from '../../intervention-management/risks/risk.models';
+
 export interface ExpectedResult {
   id: number;
   cp_output: number;
@@ -255,6 +257,7 @@ export class Intervention {
   available_actions: string[] = [];
   prgm_effectiveness?: string;
   supply_items: [] = [];
+  risks: Risk[] = [];
 }
 
 export class InterventionAmendment {
@@ -339,4 +342,5 @@ export type ReviewAttachment = {
   created: string;
   id: number;
   intervention: number;
+  type: number;
 };
