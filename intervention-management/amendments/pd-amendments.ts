@@ -60,7 +60,7 @@ export class PdAmendments extends connect(getStore())(LitElement) {
       <etools-content-panel show-expand-btn panel-title="Amendments">
         <div slot="panel-btns">
           <paper-icon-button
-            icon="add"
+            icon="add-box"
             title="Add Amendment"
             ?hidden="${!this.permissions.edit.amendments}"
             @tap="${() => this._showAddAmendmentDialog()}"

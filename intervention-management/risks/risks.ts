@@ -68,7 +68,11 @@ export class RisksElement extends connect(getStore())(ComponentBaseMixin(LitElem
       </style>
       <etools-content-panel show-expand-btn panel-title="Risks">
         <div slot="panel-btns">
-          <paper-icon-button ?hidden="${!this.canEditAtLeastOneField}" @tap="${() => this.openRiskDialog()}" icon="add">
+          <paper-icon-button
+            ?hidden="${!this.canEditAtLeastOneField}"
+            @tap="${() => this.openRiskDialog()}"
+            icon="add-box"
+          >
           </paper-icon-button>
         </div>
         <etools-table
