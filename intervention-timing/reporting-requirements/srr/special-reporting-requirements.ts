@@ -56,7 +56,7 @@ class SpecialReportingRequirements extends CommonMixin(ReportingRequirementsComm
               <span class="col-data col-3">[[getDateDisplayValue(item.due_date)]]</span>
               <span class="col-data col-6">[[item.description]]</span>
               <span class="col-data flex-c actions">
-                <icons-actions item$="[[item]]" on-edit="_onEdit" on-delete="_onDelete"> </icons-actions>
+                <icons-actions-2 item$="[[item]]" on-edit="_onEdit" on-delete="_onDelete"> </icons-actions-2>
               </span>
             </div>
           </etools-data-table-row>
