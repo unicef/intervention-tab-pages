@@ -366,6 +366,6 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   }
 
   _hideAddDisaggreations(isCluster: boolean, currentUser: User) {
-    return isCluster || !userIsPme(currentUser);
+    return isCluster || !userIsPme(currentUser) || !currentUser.is_unicef_user;
   }
 }
