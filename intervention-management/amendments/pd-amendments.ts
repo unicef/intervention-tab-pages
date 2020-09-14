@@ -62,7 +62,7 @@ export class PdAmendments extends connect(getStore())(LitElement) {
           <paper-icon-button
             icon="add-box"
             title="Add Amendment"
-            ?hidden="${!this.permissions.edit.amendments}"
+            hidden
             @tap="${() => this._showAddAmendmentDialog()}"
           >
           </paper-icon-button>
