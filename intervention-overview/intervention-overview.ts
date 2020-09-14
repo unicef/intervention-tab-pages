@@ -116,9 +116,13 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
               Under
               <strong class="blue">${this.interventionAgreement.agreement_type}</strong>
               with
-              <a href="/pmp/partners/${this.intervention.partner_id}/details">
-                <strong class="blue">${this.intervention.partner}</strong>
-              </a>
+              ${
+                this.isUnicefUser
+                  ? html` <a href="/pmp/partners/${this.intervention.partner_id}/details">
+                            <strong class="blue">${this.intervention.partner}</strong>
+                          </a>` 
+                  : html`<strong class="blue">${this.intervention.partner}</strong>`
+              }
             </div>
           </div>
         </div>

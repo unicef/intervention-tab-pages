@@ -38,9 +38,7 @@ class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRequireme
       </div>
 
       <div hidden$="[[!_empty(reportingRequirements)]]">
-        <div class="row-h">
-          There are no quarterly reporting requirements set.
-        </div>
+        <div class="row-h">There are no quarterly reporting requirements set.</div>
         <div class="row-h" hidden$="[[!editMode]]">
           <paper-button class="secondary-btn" on-click="openQuarterlyRepRequirementsDialog">
             Add Requirements

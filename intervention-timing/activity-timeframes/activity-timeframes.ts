@@ -34,7 +34,7 @@ export class ActivityTimeframes extends connect(getStore())(LitElement) {
     const timeFrames: GroupedActivityTime[] = this.getTimeFrames();
     const mappedActivities: GenericObject<InterventionActivity[]> = this.getActivities();
     return html`
-      <etools-content-panel panel-title="Activity Timeframes">
+      <etools-content-panel show-expand-btn panel-title="Activity Timeframes">
         ${!timeFrames.length
           ? html`
               <div class="align-items-baseline">

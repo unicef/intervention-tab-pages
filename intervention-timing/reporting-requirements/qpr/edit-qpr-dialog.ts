@@ -67,9 +67,7 @@ class EditQprDialog extends PolymerElement {
       >
         <div class="layout-horizontal">
           <span id="qpr-edit-info">All dates in the future can be edited before saving. | Or</span>
-          <paper-button class="secondary-btn" on-click="_addNewQpr">
-            Add Requirement
-          </paper-button>
+          <paper-button class="secondary-btn" on-click="_addNewQpr"> Add Requirement </paper-button>
         </div>
 
         <qpr-list
@@ -100,9 +98,7 @@ class EditQprDialog extends PolymerElement {
 
         <div class="row-h">
           <div class="col layout-vertical">
-            <iron-label for="startDate">
-              Start Date
-            </iron-label>
+            <iron-label for="startDate"> Start Date </iron-label>
             <calendar-lite
               id="startDate"
               date="[[prepareDatepickerDate(_editedQprDatesSet.start_date)]]"
@@ -113,9 +109,7 @@ class EditQprDialog extends PolymerElement {
             </calendar-lite>
           </div>
           <div class="col layout-vertical">
-            <iron-label for="endDate">
-              End Date
-            </iron-label>
+            <iron-label for="endDate"> End Date </iron-label>
             <calendar-lite
               id="endDate"
               date="[[prepareDatepickerDate(_editedQprDatesSet.end_date)]]"
@@ -126,9 +120,7 @@ class EditQprDialog extends PolymerElement {
             </calendar-lite>
           </div>
           <div class="col layout-vertical">
-            <iron-label for="dueDate">
-              Due Date
-            </iron-label>
+            <iron-label for="dueDate"> Due Date </iron-label>
             <calendar-lite
               id="dueDate"
               date="[[prepareDatepickerDate(_editedQprDatesSet.due_date)]]"

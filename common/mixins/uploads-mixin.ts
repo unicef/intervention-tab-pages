@@ -31,12 +31,10 @@ function UploadsMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
     public _onUploadStarted(e: any) {
       e.stopImmediatePropagation();
-      getStore().dispatch({type: CONSTANTS.INCREASE_UPLOADS_IN_PROGRESS});
     }
 
     public _onChangeUnsavedFile(e: any) {
       e.stopImmediatePropagation();
-      getStore().dispatch({type: CONSTANTS.DECREASE_UNSAVED_UPLOADS});
     }
   }
   return UploadsClass;

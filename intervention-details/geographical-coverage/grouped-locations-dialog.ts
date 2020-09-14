@@ -175,13 +175,7 @@ export class GroupedLocationsDialog extends connect(getStore())(LitElement) {
             <div class="parent-padding">
               <div class="adminLevelLoc">${item.adminLevelLocation!.name}</div>
               <div class="left-padding">
-                ${item.subordinateLocations.map(
-                  (sub) => html`
-                    <div class="child-bottom-padding">
-                      - ${sub.name}
-                    </div>
-                  `
-                )}
+                ${item.subordinateLocations.map((sub) => html` <div class="child-bottom-padding">- ${sub.name}</div> `)}
               </div>
             </div>
           `
@@ -192,11 +186,7 @@ export class GroupedLocationsDialog extends connect(getStore())(LitElement) {
 
   _renderMessage(message: string) {
     if (message !== '') {
-      return html`
-        <div class="bordered-div">
-          ${message}
-        </div>
-      `;
+      return html` <div class="bordered-div">${message}</div> `;
     } else {
       return html``;
     }

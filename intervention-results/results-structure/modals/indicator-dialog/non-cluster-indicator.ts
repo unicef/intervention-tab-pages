@@ -108,9 +108,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
               <paper-radio-button ?disabled="${this.readonly}" class="no-left-padding" name="percentage"
                 >Percentage
               </paper-radio-button>
-              <paper-radio-button ?disabled="${this.readonly}" name="ratio">
-                Ratio
-              </paper-radio-button>
+              <paper-radio-button ?disabled="${this.readonly}" name="ratio"> Ratio </paper-radio-button>
             </paper-radio-group>
           </div>
         </div>

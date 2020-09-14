@@ -180,7 +180,7 @@ export const sharedStylesContent = `
       display: block;
     }
     --iron-autogrow-textarea: {
-      overflow: auto;
+      overflow: hidden;
       padding: 0;
     }
   }
