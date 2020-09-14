@@ -107,8 +107,8 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
     }
 
     renderNameEmailPhone(item: any) {
-      return html`${item.first_name} ${item.last_name} (${item.email ? item.email : ''}
-      ${item.phone ? ', ' + item.phone : ''})`;
+      // eslint-disable-next-line
+      return html`${item.first_name} ${item.last_name} (${item.email ? item.email : ''}${item.phone ? ', ' + item.phone : ''})`;
     }
 
     selectedItemChanged(detail: any, key: string, optionValue = 'id') {

@@ -133,7 +133,7 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
               <div id="focalPointDetails">
                 ${this.renderReadonlyFocalPoints(
                   this.users_list,
-                  this.originalData?.unicef_focal_points ? [this.originalData?.unicef_focal_points!] : []
+                  this.originalData?.unicef_focal_points ? this.originalData?.unicef_focal_points! : []
                 )}
               </div>
             </div>
