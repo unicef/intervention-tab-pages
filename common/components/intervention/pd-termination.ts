@@ -1,6 +1,4 @@
 import {LitElement, html, customElement, property} from 'lit-element';
-import EnvironmentFlagsMixin from '../../../common/mixins/environment-flags-mixin';
-import ComponentBaseMixin from '../../../common/mixins/component-base-mixin';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import '@unicef-polymer/etools-dialog/etools-dialog';
 import '@unicef-polymer/etools-upload/etools-upload';
@@ -10,22 +8,19 @@ import '../../styles/shared-styles-lit';
 import {sharedStyles} from '../../styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../styles/grid-layout-styles-lit';
 import {requiredFieldStarredStylesPolymer} from '../../styles/required-field-styles';
-import {connect} from 'pwa-helpers/connect-mixin';
-import {getStore} from '../../../utils/redux-store-access';
 import {formatDate} from '../../../utils/date-utils';
-import {patchIntervention} from '../../actions';
 import {getEndpoint} from '../../../../../../../endpoints/endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {fireEvent} from '../../../../../../utils/fire-custom-event';
+import {EnvFlags} from '../../models/globals.types';
 declare const moment: any;
 
 /**
  * @LitElement
  * @customElement
- * @appliesMixin EnvironmentFlagsMixin
  */
 @customElement('pd-termination')
-export class PdTermination extends connect(getStore())(ComponentBaseMixin(EnvironmentFlagsMixin(LitElement))) {
+export class PdTermination extends LitElement {
   static get styles() {
     return [gridLayoutStylesLit];
   }
@@ -136,6 +131,9 @@ export class PdTermination extends connect(getStore())(ComponentBaseMixin(Enviro
 
   @property({type: Boolean, reflect: true})
   dialogOpened!: boolean;
+
+  @property({type: Object})
+  environmentFlags: EnvFlags | null = null;
 
   private _validationSelectors: string[] = ['#terminationDate', '#terminationNotice'];
 

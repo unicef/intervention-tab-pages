@@ -1,5 +1,4 @@
 import {customElement, html, LitElement, property, css} from 'lit-element';
-import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-menu-button/paper-menu-button';
 import '@polymer/iron-icon/iron-icon';
@@ -7,15 +6,13 @@ import '@polymer/paper-listbox/paper-listbox';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import '../components/intervention/pd-termination';
 import {PdTermination} from '../components/intervention/pd-termination';
-import {connect} from 'pwa-helpers/connect-mixin';
-import {getStore} from '../../utils/redux-store-access';
 
 /**
  * @customElement
  * @LitElement
  */
 @customElement('status-buttons')
-export class StatusButtons extends connect(getStore())(ComponentBaseMixin(LitElement)) {
+export class StatusButtons extends LitElement {
   static get styles() {
     return [
       buttonsStyles,
