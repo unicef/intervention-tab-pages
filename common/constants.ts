@@ -15,7 +15,6 @@ const CONSTANTS = {
   },
   AGREEMENT_TYPES: {
     PCA: 'PCA',
-    SSFA: 'SSFA',
     MOU: 'MOU'
   },
   STATUSES: {

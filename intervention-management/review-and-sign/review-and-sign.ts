@@ -125,7 +125,6 @@ export class InterventionReviewAndSign extends connect(getStore())(
                     this.permissions.edit.prc_review_attachment,
                     this._lockSubmitToPrc
                   )}"
-                  ?hidden="${!this._isNotSSFA(this.data.document_type)}"
                   @checked-changed="${({detail}: CustomEvent) => this.updatePrc(detail)}"
                 >
                   Submitted to PRC?
@@ -449,11 +448,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
    * we make the date fields required
    */
   _showSubmittedToPrcFields(submittedToPrc: boolean) {
-    return this._isNotSSFA(this.data.document_type) && submittedToPrc;
-  }
-
-  _isNotSSFA(documentType: string) {
-    return documentType !== CONSTANTS.DOCUMENT_TYPES.SSFA;
+    return submittedToPrc;
   }
 
   _showDaysToSignedFields(status: string) {
