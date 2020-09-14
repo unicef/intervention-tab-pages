@@ -75,7 +75,7 @@ export class GroupedLocationsDialog extends connect(getStore())(LitElement) {
       <etools-dialog
         id="groupedLocDialog"
         size="md"
-        dialog-title="Locations PD/SSFA Covers"
+        dialog-title="Locations PD/SPD Covers"
         hide-confirm-btn
         ?opened="${this.dialogOpened}"
         @close="${() => this.closeDialog()}"

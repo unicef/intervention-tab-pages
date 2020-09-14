@@ -364,7 +364,7 @@ export class FundReservations extends connect(getStore())(FrNumbersConsistencyMi
   _getNoFrsWarningText(interventionId: string) {
     let msg = 'There are no fund reservations numbers added.';
     if (!interventionId) {
-      msg = 'You can not add FR Numbers. The PD/SSFA needs to be saved first.';
+      msg = 'You can not add FR Numbers. The PD/SPD needs to be saved first.';
     }
     return msg;
   }

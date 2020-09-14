@@ -10,15 +10,15 @@ function FrNumbersConsistencyMixin<T extends Constructor<LitElement>>(baseClass:
       amountsCannotBeCompared: 'FRs Amount and UNICEF Cash Contribution can not be compared.',
       tooManyFrsCurencies: 'More than 1 FR currency is available.',
       amountAndDisbursementNotDisplayed: 'Totals for FR amount and Actual Disbursement can not be displayed.',
-      currencyMismatch: 'FR currency does not match PD/SSFA currency.',
+      currencyMismatch: 'FR currency does not match PD/SPD currency.',
       cannotCalcDisbursement: 'Disbursement to Date % can not calculate.',
       addedFrsCurrenciesMismatch:
-        'The currency of the PD/SSFA and the FR are not the same and cannot be ' +
+        'The currency of the PD/SPD and the FR are not the same and cannot be ' +
         'compared.\nTo be able to compare the amounts, you can cancel and enter the budget in the same currency ' +
         'as the FR.\n',
       amount: 'Total FR amount is not the same as planned UNICEF Cash Contribution.',
-      dateTmpl: 'FR <<field_name>> is not the same as PD/SSFA <<field_name>>.',
-      warningTmpl: 'The <<frs_fields>> <<verb>> not the same as PD/SSFA <<pd_fields>>.',
+      dateTmpl: 'FR <<field_name>> is not the same as PD/SPD <<field_name>>.',
+      warningTmpl: 'The <<frs_fields>> <<verb>> not the same as PD/SPD <<pd_fields>>.',
       FCmultiCurrFlagErrorMsg: 'There are multiple transaction currencies in VISION'
     };
     @property({type: Object})
@@ -57,7 +57,7 @@ function FrNumbersConsistencyMixin<T extends Constructor<LitElement>>(baseClass:
       }
 
       const warnFrsFields = []; // FR fields
-      const warnIntervFields = []; // PD/SSFA fields
+      const warnIntervFields = []; // PD/SPD fields
       if (this.checkFrsAndIntervDateConsistency(intervention.start, frsDetails.earliest_start_date)) {
         warnFrsFields.push(this.frsValidationFields.fr_earliest_date);
         warnIntervFields.push(this.frsValidationFields.start_date);
