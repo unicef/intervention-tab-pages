@@ -14,6 +14,9 @@ import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../../utils/redux-store-access';
 import {formatDate} from '../../../utils/date-utils';
 import {patchIntervention} from '../../actions';
+import {getEndpoint} from '../../../../../../../endpoints/endpoints';
+import {sendRequest} from '@unicef-polymer/etools-ajax';
+import {fireEvent} from '../../../../../../utils/fire-custom-event';
 declare const moment: any;
 
 /**
@@ -169,10 +172,31 @@ export class PdTermination extends connect(getStore())(ComponentBaseMixin(Enviro
         termination_doc_attachment: this.termination.attachment_notice
       };
 
-      getStore()
-        .dispatch(patchIntervention(body))
+      const endpoint = getEndpoint(interventionEndpoints.interventionAction, {
+        interventionId: this.interventionId,
+        action: 'terminate'
+      });
+      fireEvent(this, 'global-loading', {
+        active: true,
+        loadingSource: 'intervention-actions'
+      });
+      sendRequest({
+        endpoint,
+        body,
+        method: 'PATCH'
+      })
         .then(() => {
-          this.dialogOpened = false;
+          // TODO: update intervention in redux
+        })
+        .catch((e) => {
+          console.log(e);
+          fireEvent(this, 'toast', {text: 'Can not update intervention'});
+        })
+        .finally(() => {
+          fireEvent(this, 'global-loading', {
+            active: false,
+            loadingSource: 'intervention-actions'
+          });
         });
     }
   }
