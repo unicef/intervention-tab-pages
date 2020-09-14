@@ -203,7 +203,7 @@ function RepeatableDataSetsMixin<T extends Constructor<LitElement>>(baseClass: T
       this.dataItems = [...this.dataItems, newObj];
     }
 
-     /**
+    /**
      * Check is dataItems is Array, if not init with empty Array
      */
     public _makeSureDataItemsAreValid(dataItems?: any) {

@@ -16,7 +16,7 @@ import {Permission} from '../../common/models/intervention.types';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
 import {patchIntervention} from '../../common/actions';
-import {AnyObject, RootState, User} from '../../common/models/globals.types';
+import {AnyObject, RootState} from '../../common/models/globals.types';
 import {isJsonStrMatch, areEqual} from '../../utils/utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import cloneDeep from 'lodash-es/cloneDeep';
@@ -133,7 +133,7 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
               <div id="focalPointDetails">
                 ${this.renderReadonlyFocalPoints(
                   this.users_list,
-                  this.originalData?.unicef_focal_points ? [this.originalData?.unicef_focal_points!] : []
+                  this.originalData?.unicef_focal_points ? this.originalData?.unicef_focal_points! : []
                 )}
               </div>
             </div>
@@ -263,6 +263,9 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
   previousBudgetOwnerIds: string[] = [];
   previousBudgeOwnerDisplay: TemplateResult | TemplateResult[] = html``;
   renderReadonlyBudgetOwner(users: AnyObject[], selectedIds: string[]) {
+    if (users == undefined) {
+      return html`—`;
+    }
     if (areEqual(this.previousBudgetOwnerIds, selectedIds)) {
       return this.previousBudgeOwnerDisplay;
     }
@@ -277,6 +280,9 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
   previousFocalPointsIds: string[] = [];
   previousFocalPointsDisplay: TemplateResult | TemplateResult[] = html``;
   renderReadonlyFocalPoints(users: AnyObject[], selectedIds: string[]) {
+    if (users == undefined) {
+      return html`—`;
+    }
     if (areEqual(this.previousFocalPointsIds, selectedIds)) {
       return this.previousFocalPointsDisplay;
     }

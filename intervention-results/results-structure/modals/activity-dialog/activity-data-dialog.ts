@@ -16,6 +16,7 @@ import './activity-timeframes';
 import {fireEvent} from '../../../../utils/fire-custom-event';
 import {ActivityItemsTable} from './activity-items-table';
 import {getIntervention} from '../../../../common/actions';
+import {ActivityTimeFrames} from './activity-timeframes';
 
 @customElement('activity-data-dialog')
 export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitElement) {
@@ -88,6 +89,13 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
         }
         paper-toggle-button {
           margin: 25px 0;
+        }
+        etools-dialog paper-textarea {
+          --iron-autogrow-textarea: {
+            overflow: auto;
+            padding: 0;
+            max-height: 96px;
+          }
         }
       </style>
       <etools-dialog
@@ -173,7 +181,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
             .activityItems="${this.editedData.items || []}"
             @activity-items-changed="${({detail}: CustomEvent) => {
               this.editedData.items = detail;
-              this.performUpdate();
+              this.requestUpdate();
             }}"
           ></activity-items-table>
 
@@ -181,7 +189,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
             .timeFrames="${this.editedData.time_frames}"
             @time-frames-changed="${({detail}: CustomEvent) => {
               this.editedData.time_frames = detail;
-              this.performUpdate();
+              this.requestUpdate();
             }}"
           ></activity-time-frames>
         </div>
@@ -244,6 +252,10 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
       fireEvent(this, 'toast', {text: 'Please fill all Activity Items names'});
       return;
     }
+    if (!this.validateActivityTimeFrames()) {
+      fireEvent(this, 'toast', {text: 'Please select an Activity time frame.'});
+      return;
+    }
     this.loadingInProcess = true;
     sendRequest({
       endpoint: this.endpoint,
@@ -268,5 +280,10 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
   validateActivityItems(): boolean {
     const itemsTable: ActivityItemsTable | null = this.shadowRoot!.querySelector('activity-items-table');
     return itemsTable !== null && itemsTable.validate();
+  }
+
+  validateActivityTimeFrames() {
+    const items: ActivityTimeFrames | null = this.shadowRoot!.querySelector('activity-time-frames');
+    return items !== null && items.validate();
   }
 }

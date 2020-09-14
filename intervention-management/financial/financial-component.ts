@@ -67,10 +67,8 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
         .padd-top {
           padding-top: 8px;
         }
-
       </style>
       <etools-content-panel show-expand-btn panel-title="Financial">
-
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
         <div class="layout-horizontal padd-top">
           <div class="w100">
@@ -80,27 +78,27 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
         <div class="layout-horizontal row-padding-v">
           <div class="col col-3">
             <paper-checkbox
-              ?checked="${this.checkCashTransferModality('Direct Cash Transfer')}"
+              ?checked="${this.checkCashTransferModality('dct')}"
               ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.cash_transfer_modalities)}"
-              @checked-changed=${(e: CustomEvent) => this.updateData(e.detail.value, 'Direct Cash Transfer')}
+              @checked-changed=${(e: CustomEvent) => this.updateData(e.detail.value, 'dct')}
             >
               Direct Cash Transfer
             </paper-checkbox>
           </div>
           <div class="col col-3">
             <paper-checkbox
-              ?checked="${this.checkCashTransferModality('Direct Payment')}"
+              ?checked="${this.checkCashTransferModality('payment')}"
               ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.cash_transfer_modalities)}"
-              @checked-changed=${(e: CustomEvent) => this.updateData(e.detail.value, 'Direct Payment')}
+              @checked-changed=${(e: CustomEvent) => this.updateData(e.detail.value, 'payment')}
             >
               Direct Payment
             </paper-checkbox>
           </div>
           <div class="col col-3">
             <paper-checkbox
-              ?checked="${this.checkCashTransferModality('Reimbursement')}"
+              ?checked="${this.checkCashTransferModality('reimbursement')}"
               ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.cash_transfer_modalities)}"
-              @checked-changed=${(e: CustomEvent) => this.updateData(e.detail.value, 'Reimbursement')}
+              @checked-changed=${(e: CustomEvent) => this.updateData(e.detail.value, 'reimbursement')}
             >
               Reimbursement
             </paper-checkbox>
@@ -174,8 +172,7 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
     if (!state.interventions.current) {
       return;
     }
-    // temporary fix untill we have data from backend
-    state.interventions.current.hq_support_cost = '0';
+
     this.data = selectFinancialComponent(state);
     this.permissions = selectFinancialComponentPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
@@ -186,13 +183,7 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
   }
 
   checkCashTransferModality(value: string) {
-    if (!value) {
-      return;
-    }
-    if (this.data!.cash_tranfer_modalities.indexOf(value) > -1) {
-      return true;
-    }
-    return false;
+    return this.data.cash_transfer_modalities.indexOf(value) > -1;
   }
 
   updateSlider(e: CustomEvent) {
@@ -202,15 +193,14 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
     this.data = {...this.data, hq_support_cost: e.detail.value} as FinancialComponentData;
   }
 
-  updateData(value: any, checkbox: string) {
+  updateData(value: any, checkValue: string) {
     if (value == false) {
-      this.data.cash_tranfer_modalities = this.data.cash_tranfer_modalities.replace(checkbox, '');
-    } else {
-      this.data.cash_tranfer_modalities += ' ' + checkbox;
+      this.data.cash_transfer_modalities = this.data.cash_transfer_modalities.filter((el: string) => el !== checkValue);
+    } else if (this.data.cash_transfer_modalities.indexOf(checkValue) === -1) {
+      this.data.cash_transfer_modalities.push(checkValue);
     }
   }
 
-  // this will be reviewed after all backend data is available
   saveData() {
     if (!this.validate()) {
       return Promise.resolve(false);

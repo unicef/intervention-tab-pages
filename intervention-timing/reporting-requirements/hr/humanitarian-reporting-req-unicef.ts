@@ -36,9 +36,7 @@ class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(ReportingRe
       </style>
 
       <div hidden$="[[!_empty(reportingRequirements)]]">
-        <div class="row-h">
-          There are no humanitarian report requirements set.
-        </div>
+        <div class="row-h">There are no humanitarian report requirements set.</div>
         <div class="row-h" hidden$="[[!_showAdd(expectedResults, editMode)]]">
           <paper-button class="secondary-btn" on-click="openUnicefHumanitarianRepReqDialog">
             ADD REQUIREMENTS

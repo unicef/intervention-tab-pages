@@ -57,7 +57,7 @@ export class CpOutputLevel extends LitElement {
       </style>
       ${this.showCPOLevel && this.resultLink
         ? html`
-            <etools-data-table-row secondary-bg-on-hover>
+            <etools-data-table-row secondary-bg-on-hover details-opened>
               <div slot="row-data" class="layout-horizontal editable-row">
                 <!--      If PD is associated with CP Output      -->
                 ${this.resultLink.cp_output
@@ -99,7 +99,7 @@ export class CpOutputLevel extends LitElement {
                 <slot></slot>
 
                 <div class="add-pd row-h align-items-center" ?hidden="${!this.resultLink.cp_output}">
-                  <iron-icon icon="add" @click="${() => this.addPD()}"></iron-icon>Add PD Output
+                  <iron-icon icon="add-box" @click="${() => this.addPD()}"></iron-icon>Add PD Output
                 </div>
               </div>
             </etools-data-table-row>

@@ -1,7 +1,6 @@
 import {customElement, html, LitElement, property} from 'lit-element';
 import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-content-panel';
-import '@unicef-polymer/etools-data-table';
 import '@unicef-polymer/etools-table/etools-table';
 import {EtoolsTableChildRow, EtoolsTableColumn, EtoolsTableColumnType} from '@unicef-polymer/etools-table/etools-table';
 import '@unicef-polymer/etools-currency-amount-input';
@@ -62,10 +61,12 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
           --ecp-content-padding: 0;
           --ecp-content_-_padding: 0;
         }
+        etools-table {
+          padding-top: 0;
+        }
       </style>
 
-      <etools-content-panel panel-title="Effective and efficient programme management">
-
+      <etools-content-panel show-expand-btn panel-title="Effective and efficient programme management">
         <div slot="panel-btns">Total: ${this.total_amount}</div>
 
         <etools-table
@@ -150,7 +151,7 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
   }
 
   formatData(data: AnyObject) {
-    this.total_amount = data.total_amount;
+    this.total_amount = data.total_amount || 0;
     return [
       {
         title: 'Standard activity 1',

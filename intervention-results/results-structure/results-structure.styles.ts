@@ -40,6 +40,7 @@ export const ResultStructureStyles: CSSResult = css`
   }
   div[slot='row-data'] {
     width: 100%;
+    min-width: 0;
   }
   .details-container {
     width: 25%;

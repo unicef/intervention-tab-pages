@@ -146,14 +146,6 @@ export const sharedStylesContent = `
     }
   }
 
-  etools-dialog paper-textarea {
-    --iron-autogrow-textarea: {
-      overflow: auto;
-      padding: 0;
-      max-height: 96px;
-    }
-  }
-
   label[required] {
     @apply --required-star-style;
     background: url('./images/required.svg') no-repeat 87% 40%/6px;
@@ -188,11 +180,19 @@ export const sharedStylesContent = `
       display: block;
     }
     --iron-autogrow-textarea: {
+      overflow: hidden;
+      padding: 0;
+    }
+  }
+
+  etools-dialog paper-textarea {
+    --iron-autogrow-textarea: {
       overflow: auto;
       padding: 0;
       max-height: 96px;
     }
   }
+
   paper-textarea[readonly] {
     --paper-input-container-underline: {
       display: none;
@@ -248,10 +248,10 @@ export const sharedStylesContent = `
   .hidden {
     display: none !important;
   }
-  
+
   etools-content-panel {
     --epc-header: {
-     border-bottom: 1px solid #000000 !important;
+     border-bottom: 1px solid var(--dark-divider-color) !important;
     }
   }
 `;

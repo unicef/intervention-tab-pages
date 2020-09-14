@@ -7,7 +7,7 @@ export class FinancialComponentData extends ModelsBase {
     this.setObjProperties(intervention);
     this.currency = intervention.planned_budget.currency!;
   }
-  cash_tranfer_modalities = '';
+  cash_transfer_modalities: string[] = [];
   hq_support_cost = '';
   currency = '';
 }

@@ -1,3 +1,5 @@
+import {Risk} from '../../intervention-management/risks/risk.models';
+
 export interface ExpectedResult {
   id: number;
   cp_output: number;
@@ -123,8 +125,6 @@ export class InterventionSupplyItem {
   total_price: number | undefined = undefined;
   other_mentions = '';
   intervention = '';
-  // TODO delete
-  outputs: string[] = [];
 }
 
 export class InterventionPermissionsFields {
@@ -190,6 +190,9 @@ export class InterventionPermissionsFields {
   // financial component
   cash_transfer_modalities = false;
   hq_support_cost = false;
+
+  // Supply Agreement
+  supply_items = false;
 }
 
 export interface Permission<T> {
@@ -251,6 +254,8 @@ export class Intervention {
   hq_support_cost = '';
   available_actions: string[] = [];
   prgm_effectiveness?: string;
+  supply_items: InterventionSupplyItem[] = [];
+  risks: Risk[] = [];
 }
 
 export class InterventionAmendment {
@@ -335,4 +340,5 @@ export type ReviewAttachment = {
   created: string;
   id: number;
   intervention: number;
+  type: number;
 };
