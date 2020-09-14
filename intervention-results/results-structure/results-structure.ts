@@ -257,7 +257,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
             `
           )}
           <iron-icon
-            icon="add"
+            icon="add-box"
             ?hidden="${!this.isUnicefUser || !this.permissions.edit.result_links}"
             @click="${() => this.openCpOutputDialog()}"
           ></iron-icon>
@@ -326,7 +326,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
           class="add-pd white row-h align-items-center"
           @click="${() => this.openPdOutputDialog()}"
         >
-          <iron-icon icon="add"></iron-icon>Add PD Output
+          <iron-icon icon="add-box"></iron-icon>Add PD Output
         </div>
       </etools-content-panel>
     `;

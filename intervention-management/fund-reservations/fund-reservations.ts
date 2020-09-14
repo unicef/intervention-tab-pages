@@ -82,7 +82,7 @@ export class FundReservations extends connect(getStore())(FrNumbersConsistencyMi
       <etools-content-panel panel-title="Fund Reservations">
         <paper-icon-button
           slot="panel-btns"
-          icon="add"
+          icon="add-box"
           @tap="${() => this._openFrsDialog()}"
           ?hidden="${!this.permissions.edit.frs}"
         ></paper-icon-button>
