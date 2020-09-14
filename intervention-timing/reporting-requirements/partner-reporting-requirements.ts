@@ -29,6 +29,7 @@ import {ReportingRequirementsPermissions} from './reportingRequirementsPermissio
 import {Permission} from '../../common/models/intervention.types';
 import {selectReportingRequirementsPermissions} from './reportingRequirementsPermissions.selectors';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {isUnicefUser} from '../../common/selectors';
 
 /**
  * @polymer
@@ -102,7 +103,6 @@ class PartnerReportingRequirements extends connect(getStore())(PolymerElement) {
           @apply --layout-justified;
         }
       </style>
-
       <etools-content-panel show-expand-btn class="content-section" panel-title="Partner Reporting Requirements">
         <div class="flex-c layout-horizontal">
           <div class="reports-menu nav-menu">
@@ -125,7 +125,7 @@ class PartnerReportingRequirements extends connect(getStore())(PolymerElement) {
                   hidden$="[[_hideRepReqEditBtn(editMode, hrUnicefRequirementsCount)]]"
                 ></paper-icon-button>
               </paper-item>
-              <paper-item name="humanitarianCluster" class="nav-menu-item">
+              <paper-item name="humanitarianCluster" class="nav-menu-item" hidden$="[[!isUnicefUser]]">
                 Humanitarian Reports - Cluster ([[hrClusterRequirementsCount]])
               </paper-item>
               <paper-item name="special" class="nav-menu-item">
@@ -217,6 +217,9 @@ class PartnerReportingRequirements extends connect(getStore())(PolymerElement) {
   @property({type: Object})
   intervention!: AnyObject;
 
+  @property({type: Boolean})
+  isUnicefUser!: boolean;
+
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'timing')) {
       return;
@@ -224,6 +227,8 @@ class PartnerReportingRequirements extends connect(getStore())(PolymerElement) {
     if (!get(state, 'interventions.current')) {
       return;
     }
+    this.isUnicefUser = isUnicefUser(state);
+
     // @lajos TO DO: get correct values for bellow
     this.editMode = selectReportingRequirementsPermissions(state);
     console.log(this.editMode);
