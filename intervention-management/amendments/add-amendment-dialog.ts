@@ -18,7 +18,7 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {fireEvent} from '../../utils/fire-custom-event';
-import {updateCurrentIntervention, getIntervention} from '../../common/actions';
+import {getIntervention} from '../../common/actions';
 import {InterventionAmendment} from '../../common/models/intervention.types';
 import {LabelAndValue, AnyObject} from '../../common/models/globals.types';
 import CONSTANTS from '../../common/constants';

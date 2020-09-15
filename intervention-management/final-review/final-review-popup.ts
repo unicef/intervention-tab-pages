@@ -70,7 +70,7 @@ export class FinalReviewPopup extends LitElement {
 
   processRequest(): void {
     // validate if file is selected for new attachments
-    if (!this.data && !this.data.attachment) {
+    if (!this.data && !this.data!.attachment) {
       fireEvent(this, 'toast', {
         text: 'Please, select correct file',
         showCloseBtn: false
