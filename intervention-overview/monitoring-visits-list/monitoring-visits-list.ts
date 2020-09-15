@@ -16,8 +16,8 @@ declare const moment: any;
 /**
  * @customElement
  */
-@customElement('monitoring-visits-list')
-export class MonitoringVisitsList extends LitElement {
+@customElement('monitoring-visits-list-2')
+export class MonitoringVisitsList2 extends LitElement {
   static get styles() {
     return [gridLayoutStylesLit];
   }
