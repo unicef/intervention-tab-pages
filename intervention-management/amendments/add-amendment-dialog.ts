@@ -211,13 +211,8 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
     if (!amendmentTypes || !interventionDocumentType) {
       return;
     }
-    if (interventionDocumentType === CONSTANTS.DOCUMENT_TYPES.SSFA) {
-      this.filteredAmendmentTypes = this.amendmentTypes.filter((type: AnyObject) => {
-        return ['no_cost', 'other'].indexOf(type.value) > -1;
-      });
-    } else {
-      this.filteredAmendmentTypes = JSON.parse(JSON.stringify(this.amendmentTypes));
-    }
+
+    this.filteredAmendmentTypes = JSON.parse(JSON.stringify(this.amendmentTypes));
   }
 
   onTypesChanged() {
