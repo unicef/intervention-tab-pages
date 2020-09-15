@@ -133,7 +133,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
             </div>
             <div class="row-h">
               <paper-toggle-button
-                ?disabled="${this._clusterToggleIsDisabled(this.data)}"
+                ?disabled="${this._clusterToggleIsDisabled()}"
                 ?checked="${this.isCluster}"
                 @iron-change="${(e: CustomEvent) => this.isClusterChanged(e)}"
               ></paper-toggle-button>
@@ -228,6 +228,9 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   @query('etools-dialog')
   indicatorDialog!: EtoolsDialog;
 
+  @property({type: Boolean})
+  isEditRecord!: boolean;
+
   protected llResultId!: string; /** aka pdOutputId */
   private prpServerOn!: boolean;
 
@@ -248,7 +251,9 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
     if (!this.isCluster) {
       this.disaggregations = this._convertToArrayOfObj(this.data.disaggregation);
     }
-    this.setTitle(this.data);
+    this.isEditRecord = !!(this.data && this.data.id);
+    this.disableConfirmBtn = this.isEditRecord && this.isCluster && !this.currentUser.is_unicef_user;
+    this.setTitle();
   }
 
   tabChanged(e: CustomEvent) {
@@ -305,15 +310,15 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
     fireEvent(this, 'dialog-closed', {confirmed: false});
   }
 
-  _clusterToggleIsDisabled(indicator: any) {
-    if (indicator && indicator.id) {
+  _clusterToggleIsDisabled() {
+    if (this.isEditRecord || !this.currentUser.is_unicef_user) {
       return true;
     }
     return !this.prpServerOn;
   }
 
-  setTitle(indicator: Indicator) {
-    const title = indicator && indicator.id ? 'Edit Indicator' : 'Add Indicator';
+  setTitle() {
+    const title = this.isEditRecord ? 'Edit Indicator' : 'Add Indicator';
     setTimeout(() => {
       this.indicatorDialog.dialogTitle = title;
     });

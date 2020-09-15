@@ -44,13 +44,13 @@ class HruList extends CommonMixin(ReportingReqPastDatesCheckMixin(PolymerElement
             <span class="col-data col-1 right-align index-col">[[_getIndex(index, hruData)]]</span>
             <span class="col-data flex-c">[[getDateDisplayValue(item.end_date)]]</span>
             <span class="col-data col-1 actions">
-              <icons-actions
+              <icons-actions-2
                 hidden$="[[!_canEdit(editMode, inAmendment, item.due_date, item.id)]]"
                 data-args$="[[index]]"
                 on-delete="_deleteHruReq"
                 show-edit="[[_listItemEditable]]"
               >
-              </icons-actions>
+              </icons-actions-2>
             </span>
           </div>
         </etools-data-table-row>

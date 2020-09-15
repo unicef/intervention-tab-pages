@@ -2,12 +2,9 @@ import {LitElement, html, property, customElement, query} from 'lit-element';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
-import {getStore} from '../../utils/redux-store-access';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
-import {connect} from 'pwa-helpers/connect-mixin';
 import get from 'lodash-es/get';
-import {LocationObject, RootState} from '../../common/models/globals.types';
-import {isJsonStrMatch} from '../../utils/utils';
+import {LocationObject} from '../../common/models/globals.types';
+import {fireEvent} from '../../utils/fire-custom-event';
 
 class GroupedLocations {
   adminLevelLocation: LocationObject | null = null;
@@ -18,7 +15,7 @@ class GroupedLocations {
  * @customElement
  */
 @customElement('grouped-locations-dialog')
-export class GroupedLocationsDialog extends connect(getStore())(LitElement) {
+export class GroupedLocationsDialog extends LitElement {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -78,7 +75,7 @@ export class GroupedLocationsDialog extends connect(getStore())(LitElement) {
         dialog-title="Locations PD/SPD Covers"
         hide-confirm-btn
         ?opened="${this.dialogOpened}"
-        @close="${() => this.closeDialog()}"
+        @close="${() => this.onClose()}"
       >
         <etools-dropdown
           id="adminLevelsDropdw"
@@ -136,31 +133,13 @@ export class GroupedLocationsDialog extends connect(getStore())(LitElement) {
   @property({type: String})
   message = '';
 
-  @property({type: Boolean, reflect: true})
-  dialogOpened = false;
+  @property({type: Boolean}) dialogOpened = true;
 
   @property({type: Object})
   toastEventSource!: LitElement;
 
   @query('#groupedLocDialog')
   groupedLocDialog!: EtoolsDialog;
-
-  stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'details')) {
-      return;
-    }
-
-    if (!isJsonStrMatch(this.allLocations, state.commonData!.locations)) {
-      this.allLocations = [...state.commonData!.locations];
-    }
-    if (!isJsonStrMatch(this.adminLevels, state.commonData!.locationTypes)) {
-      this.adminLevels = [...state.commonData!.locationTypes];
-    }
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-  }
 
   _renderGrouping(groupedLocations: GroupedLocations[], interventionLocations: LocationObject[]) {
     if (!this.adminLevel) {
@@ -192,8 +171,15 @@ export class GroupedLocationsDialog extends connect(getStore())(LitElement) {
     }
   }
 
-  public openDialog() {
-    this.dialogOpened = true;
+  set dialogData(data: any) {
+    if (!data) {
+      return;
+    }
+    const {adminLevel, allLocations, adminLevels, interventionLocationIds} = data;
+    this.allLocations = allLocations;
+    this.adminLevels = adminLevels;
+    this.interventionLocationIds = interventionLocationIds;
+    this.adminLevel = adminLevel;
   }
 
   _removeCountry(locationTypes: any) {
@@ -205,9 +191,8 @@ export class GroupedLocationsDialog extends connect(getStore())(LitElement) {
     });
     if (index > -1) {
       locationTypes.splice(index, 1);
-      // this.adminLevels = [];
-      return JSON.parse(JSON.stringify(locationTypes));
     }
+    return JSON.parse(JSON.stringify(locationTypes));
   }
 
   interventionLocationIdsChanged(locationIds: string[]) {
@@ -311,7 +296,7 @@ export class GroupedLocationsDialog extends connect(getStore())(LitElement) {
     return this._findAdminLevelParent(parentLoc, adminLevel);
   }
 
-  public closeDialog() {
-    this.dialogOpened = false;
+  public onClose() {
+    fireEvent(this, 'dialog-closed', {confirmed: false});
   }
 }

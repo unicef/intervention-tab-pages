@@ -22,6 +22,7 @@ import {
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {AnyObject, RootState} from '../../common/models/globals.types';
 import cloneDeep from 'lodash-es/cloneDeep';
+import {ProgrammeManagement} from './effectiveEfficientProgrammeMgmt.models';
 
 const customStyles = html`
   <style>
@@ -30,6 +31,11 @@ const customStyles = html`
     }
     .right-a {
       text-align: right;
+    }
+    .label-input {
+      font-size: 12px;
+      line-height: 16px;
+      color: var(--secondary-text-color);
     }
   </style>
 `;
@@ -74,7 +80,7 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
           .columns="${this.columns}"
           .extraCSS="${this.getTableStyle()}"
           .showEdit=${this.canEdit}
-          @edit-item="${this.editItem}"
+          @edit-item="${this.openActivityDialog}"
           .getChildRowTemplateMethod="${this.getChildRowTemplate.bind(this)}"
         >
         </etools-table>
@@ -92,7 +98,7 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
   canEdit = true;
 
   @property({type: Object})
-  data: AnyObject = {};
+  data!: ProgrammeManagement;
 
   @property({type: Array})
   columns: EtoolsTableColumn[] = [
@@ -115,15 +121,12 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
       label: 'Total',
       name: 'total',
       cssClass: 'right-a',
-      type: EtoolsTableColumnType.Custom,
-      customMethod: (item: any) => {
-        return item ? item.unicef_cash + item.partner_contribution : '0';
-      }
+      type: EtoolsTableColumnType.Number
     }
   ];
 
   @property({type: Number})
-  total_amount = 0;
+  total_amount = '0';
 
   @property({type: Number})
   interventionId!: number;
@@ -145,34 +148,44 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
 
     const newPermissions = selectProgrammeManagementActivityPermissions(state);
     if (!isJsonStrMatch(this.permissions, newPermissions)) {
-      this.canEdit = newPermissions.edit.programme_management_activity;
+      this.canEdit = newPermissions.edit.management_budgets;
     }
     this.formattedData = this.formatData(this.data);
   }
 
-  formatData(data: AnyObject) {
-    this.total_amount = data.total_amount || 0;
+  formatData(data: ProgrammeManagement) {
+    this.total_amount = data.total || '0';
     return [
       {
-        title: 'Standard activity 1',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In iaculis metus et neque viverra ',
-        unicef_cash: String(data.act1_unicef),
-        partner_contribution: String(data.act1_partner),
+        title: 'In-country management and support staff',
+        description:
+          'Contribution for In-country management and support staff prorated to their contribution to the' +
+          ' programme (representation, planning, coordination, logistics, administration, finance contribution for' +
+          ' Operational costs prorated to their contribution to the programme (office space, equipment,' +
+          ' office supplies, maintenance',
+        unicef_cash: data.act1_unicef,
+        partner_contribution: data.act1_partner,
+        total: data.act1_total,
         index: 1
       },
       {
-        title: 'Standard activity 2',
+        title: 'Operational costs',
         description:
-          'There are many variations of passages available, but the majority have suffered alteration in some form',
+          'Contribution for Operational costs prorated to their contribution to the programme (office space,' +
+          ' equipment, office supplies, maintenance)',
         unicef_cash: data.act2_unicef,
         partner_contribution: data.act2_partner,
+        total: data.act2_total,
         index: 2
       },
       {
-        title: 'Standard activity 3',
-        description: 'It is a long established fact that a reader will be distracted by the readable content',
+        title: 'Planning, monitoring, evaluation and communication',
+        description:
+          'Contribution for Planning, monitoring, evaluation and communication, prorated to their' +
+          ' contribution to the programme (venue, travels, etc.)',
         unicef_cash: data.act3_unicef,
         partner_contribution: data.act3_partner,
+        total: data.act3_total,
         index: 3
       }
     ];
@@ -185,15 +198,11 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
       ${customStyles}`;
   }
 
-  editItem(e: CustomEvent) {
-    this.openActivityDialog(e.detail);
-  }
-
-  private openActivityDialog(activity: AnyObject) {
+  openActivityDialog(event: CustomEvent) {
     openDialog({
       dialog: 'activity-dialog',
       dialogData: {
-        activity: activity,
+        activity: event.detail,
         interventionId: this.interventionId
       }
     });

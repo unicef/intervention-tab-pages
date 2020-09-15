@@ -13,7 +13,7 @@ import get from 'lodash-es/get';
 import {prettyDate} from '../utils/date-utils';
 import {isJsonStrMatch} from '../utils/utils';
 import './fund-reservations-display/fund-reservations-display';
-import './monitoring-visits-list/monitoring-visits-list';
+import './monitoring-visits-list/monitoring-visits-list-2';
 import {MinimalAgreement} from '../common/models/agreement.types';
 import {pageIsNotCurrentlyActive} from '../utils/common-methods';
 import {AnyObject, RootState} from '../common/models/globals.types';
@@ -232,12 +232,12 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
                 class="content-section"
                 panel-title="Monitoring Activities"
               >
-                <monitoring-visits-list
+                <monitoring-visits-list-2
                   .interventionId="${this.intervention.id}"
                   .partnerId="${this.intervention.partner_id}"
                   showTpmVisits
                 >
-                </monitoring-visits-list>
+                </monitoring-visits-list-2>
               </etools-content-panel>
             `
           : html``

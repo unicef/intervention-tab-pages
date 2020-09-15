@@ -8,7 +8,6 @@ import {getStore} from '../../utils/redux-store-access';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import './add-amendment-dialog';
-import {AddAmendmentDialog} from './add-amendment-dialog';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {AnyObject, LabelAndValue, RootState} from '../../common/models/globals.types';
@@ -18,6 +17,7 @@ import {selectAmendmentsPermissions} from './pd-amendments.selectors';
 import {Permission} from '../../common/models/intervention.types';
 import {PdAmendmentPermissions} from './pd-amendments.models';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {openDialog} from '../../utils/dialog';
 
 /**
  * @customElement
@@ -62,7 +62,7 @@ export class PdAmendments extends connect(getStore())(LitElement) {
           <paper-icon-button
             icon="add-box"
             title="Add Amendment"
-            ?hidden="${!this.permissions.edit.amendments}"
+            hidden
             @tap="${() => this._showAddAmendmentDialog()}"
           >
           </paper-icon-button>
@@ -133,9 +133,6 @@ export class PdAmendments extends connect(getStore())(LitElement) {
   amendmentTypes!: LabelAndValue[];
 
   @property({type: Object})
-  addAmendmentDialog!: AddAmendmentDialog;
-
-  @property({type: Object})
   permissions!: Permission<PdAmendmentPermissions>;
 
   @property({type: Object})
@@ -166,26 +163,6 @@ export class PdAmendments extends connect(getStore())(LitElement) {
     }
   }
 
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    this._removeAddAmendmentDialog();
-  }
-
-  _createAddAmendmentDialog() {
-    if (!this.addAmendmentDialog) {
-      this.addAmendmentDialog = document.createElement('add-amendment-dialog') as AddAmendmentDialog;
-      this.addAmendmentDialog.setAttribute('id', 'addAmendmentDialog');
-      this.addAmendmentDialog.toastEventSource = this;
-      document.querySelector('body')!.appendChild(this.addAmendmentDialog);
-    }
-  }
-
-  _removeAddAmendmentDialog() {
-    if (this.addAmendmentDialog) {
-      document.querySelector('body')!.removeChild(this.addAmendmentDialog);
-    }
-  }
-
   _getReadonlyAmendmentTypes(types: string[]) {
     if (!types || !types.length) {
       return null;
@@ -203,9 +180,13 @@ export class PdAmendments extends connect(getStore())(LitElement) {
   }
 
   _showAddAmendmentDialog() {
-    this._createAddAmendmentDialog();
-    this.addAmendmentDialog.intervention = this.intervention;
-    this.addAmendmentDialog.openDialog();
+    openDialog({
+      dialog: 'add-amendment-dialog',
+      dialogData: {
+        intervention: cloneDeep(this.intervention),
+        amendmentTypes: this.amendmentTypes
+      }
+    });
   }
 
   _showOtherInput(selectedAmdTypes: string[], _selectedAmdTypesLength: number) {

@@ -98,10 +98,24 @@ export class PdIndicator extends LitElement {
           </div>
 
           <!--    Baseline    -->
-          <div class="text number-data flex-none">${this.indicator.baseline.v || '-'}</div>
+          <div class="text number-data flex-none">
+            ${this._displayBaselineOrTarget(
+              this.indicator.baseline,
+              this.indicator.indicator!.unit,
+              this.indicator.indicator!.display_type,
+              this.indicator.cluster_indicator_id!
+            )}
+          </div>
 
           <!--    Target    -->
-          <div class="text number-data flex-none">${this.indicator.target.v || '-'}</div>
+          <div class="text number-data flex-none">
+            ${this._displayBaselineOrTarget(
+              this.indicator.target,
+              this.indicator.indicator!.unit,
+              this.indicator.indicator!.display_type,
+              this.indicator.cluster_indicator_id!
+            )}
+          </div>
           <div class="hover-block" ?hidden="${this.readonly}">
             <paper-icon-button
               icon="icons:create"
@@ -189,5 +203,28 @@ export class PdIndicator extends LitElement {
 
   private addInactivePrefix(indicator: any) {
     return !indicator || indicator.is_active ? '' : html`<strong>(inactive)</strong>`;
+  }
+
+  _displayBaselineOrTarget(item: any, unit: string, displayType: string, isCluster: number) {
+    if (!item) {
+      return '—';
+    }
+    if (!item.v && parseInt(item.v) !== 0) {
+      return '—';
+    }
+
+    if (isCluster && this._clusterIndIsRatio(item)) {
+      return item.v + ' / ' + item.d;
+    }
+
+    if (unit === 'percentage' && displayType === 'ratio') {
+      return item.v + ' / ' + item.d;
+    }
+
+    return item.v;
+  }
+
+  _clusterIndIsRatio(item: any) {
+    return item.d && parseInt(item.d) !== 1 && parseInt(item.d) !== 100;
   }
 }

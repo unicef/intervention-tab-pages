@@ -31,6 +31,7 @@ import {isJsonStrMatch} from '../../utils/utils';
 import {FundReservationsPermissions} from './fund-reservations.models';
 import {Permission} from '../../common/models/intervention.types';
 import {selectFundReservationPermissions} from './fund-reservations.selectors';
+import {isUnicefUser} from '../../common/selectors';
 
 /**
  * @customElement
@@ -42,6 +43,9 @@ export class FundReservations extends connect(getStore())(FrNumbersConsistencyMi
   }
 
   render() {
+    if (!this.isUnicefUser) {
+      return html``;
+    }
     if (!this.intervention) {
       return html`<etools-loading loading-text="Loading..." active></etools-loading>`;
     }
@@ -127,12 +131,16 @@ export class FundReservations extends connect(getStore())(FrNumbersConsistencyMi
   @property({type: String})
   _frsConsistencyWarning!: string | boolean;
 
+  @property({type: Boolean})
+  isUnicefUser!: boolean;
+
   private _frsConfirmationsDialogMessage!: HTMLSpanElement;
 
   stateChanged(state: AnyObject) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'management')) {
       return;
     }
+    this.isUnicefUser = isUnicefUser(state);
     const currentIntervention = get(state, 'interventions.current');
     if (currentIntervention && !isJsonStrMatch(this.intervention, currentIntervention)) {
       this.intervention = cloneDeep(currentIntervention);

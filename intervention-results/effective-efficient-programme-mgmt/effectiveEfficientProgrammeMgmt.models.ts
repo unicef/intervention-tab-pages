@@ -4,18 +4,18 @@ import {ModelsBase} from '../../common/models/models.base';
 export class ProgrammeManagement extends ModelsBase {
   constructor(intervention: Intervention) {
     super();
-    this.setObjProperties(intervention);
+    this.setObjProperties(intervention.management_budgets!);
   }
-  created = '';
-  modified = '';
-  act1_unicef = 1;
-  act1_partner = 2;
-  act2_unicef = 3;
-  act2_partner = 4;
-  act3_unicef = 5;
-  act3_partner = 6;
-  intervention = '';
-  total_amount: number | null = null;
+  act1_unicef = '0';
+  act1_partner = '0';
+  act1_total = '0';
+  act2_unicef = '0';
+  act2_partner = '0';
+  act2_total = '0';
+  act3_unicef = '0';
+  act3_partner = '0';
+  act3_total = '0';
+  total = '0';
 }
 
 export class ProgrammeManagementActivityPermissions extends ModelsBase {
@@ -23,5 +23,5 @@ export class ProgrammeManagementActivityPermissions extends ModelsBase {
     super();
     this.setObjProperties(permissions);
   }
-  programme_management_activity = true;
+  management_budgets = false;
 }
