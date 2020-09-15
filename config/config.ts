@@ -1,3 +1,10 @@
+import CONSTANTS from '../common/constants';
+
+const getBasePath = () => {
+  console.log(document.getElementsByTagName('base')[0].href);
+  return document.getElementsByTagName('base')[0].href;
+};
+
 export const tokenStorageKeys = {
   prp: 'etoolsPrpToken'
 };
@@ -6,23 +13,20 @@ export const getTokenEndpoints = {
   prp: 'prpToken'
 };
 
-const STAGING_DOMAIN = 'etools-staging.unicef.org';
-const DEV_DOMAIN = 'etools-dev.unicef.org';
-const DEMO_DOMAIN = 'etools-demo.unicef.org';
-const LOCAL_DOMAIN = 'localhost:8082';
+export const ROOT_PATH = '/' + getBasePath().replace(window.location.origin, '').slice(1, -1) + '/';
 
 export const _checkEnvironment = () => {
   const location = window.location.href;
-  if (location.indexOf(STAGING_DOMAIN) > -1) {
+  if (location.indexOf(CONSTANTS.DOMAINS.STAGING) > -1) {
     return 'STAGING';
   }
-  if (location.indexOf(DEMO_DOMAIN) > -1) {
+  if (location.indexOf(CONSTANTS.DOMAINS.DEMO) > -1) {
     return 'DEMO';
   }
-  if (location.indexOf(DEV_DOMAIN) > -1) {
+  if (location.indexOf(CONSTANTS.DOMAINS.DEV) > -1) {
     return 'DEVELOPMENT';
   }
-  if (location.indexOf(LOCAL_DOMAIN) > -1) {
+  if (location.indexOf(CONSTANTS.DOMAINS.LOCAL) > -1) {
     return 'LOCAL';
   }
   return null;
@@ -46,48 +50,4 @@ export const tokenEndpointsHost = (host: string) => {
     }
   }
   return null;
-};
-
-export const CONSTANTS = {
-  PD_EXPORT_TYPES: {
-    PdResult: 'PD Result',
-    PdBudget: 'PD Budget',
-    PdLocations: 'PD Locations'
-  },
-  DEFAULT_LIST_SIZE: 10,
-  DOCUMENT_TYPES: {
-    PD: 'PD',
-    SSFA: 'SSFA',
-    SHPD: 'SHPD',
-    SPD: 'SPD',
-    ProgrammeDocument: 'Programme Document',
-    SmallScaleFundingAgreement: 'Small Scale Funding Agreement',
-    SimplifiedHumanitarianProgrammeDocument: 'Simplified Humanitarian Programme Document'
-  },
-  AGREEMENT_TYPES: {
-    PCA: 'PCA',
-    SSFA: 'SSFA',
-    MOU: 'MOU'
-  },
-  STATUSES: {
-    Draft: 'Draft',
-    Signed: 'Signed',
-    Active: 'Active',
-    Suspended: 'Suspended',
-    Terminated: 'Terminated',
-    Ended: 'Ended',
-    Closed: 'Closed'
-  },
-  PARTNER_STATUSES: {
-    NotSynced: 'Not Synced',
-    SyncedFromVISION: 'Synced from VISION',
-    BlockedInVISION: 'Blocked in VISION',
-    MarkedForDeletionInVISION: 'Marked For Deletion in VISION'
-  },
-  REQUIREMENTS_REPORT_TYPE: {
-    QPR: 'QPR', // Quarterly Progress Report
-    HR: 'HR', // Humanitarian Report
-    SPECIAL: 'SPECIAL', // Special Report
-    SR: 'SR' // Special Report, value frm PRP
-  }
 };
