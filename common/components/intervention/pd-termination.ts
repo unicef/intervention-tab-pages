@@ -7,12 +7,12 @@ import '../../../common/layout/etools-warn-message';
 import '../../styles/shared-styles-lit';
 import {sharedStyles} from '../../styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../styles/grid-layout-styles-lit';
-import {requiredFieldStarredStylesPolymer} from '../../styles/required-field-styles';
 import {formatDate} from '../../../utils/date-utils';
 import {getEndpoint} from '../../../../../../../endpoints/endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {fireEvent} from '../../../../../../utils/fire-custom-event';
-import {EnvFlags} from '../../models/globals.types';
+import {AnyObject, EnvFlags} from '../../models/globals.types';
+import {validateRequiredFields} from '../../../utils/validation-helper';
 declare const moment: any;
 
 /**
@@ -27,7 +27,7 @@ export class PdTermination extends LitElement {
   render() {
     return html`
       <style>
-        ${sharedStyles}${requiredFieldStarredStylesPolymer}:host {
+        ${sharedStyles}:host {
           /* host CSS */
         }
 
@@ -121,7 +121,10 @@ export class PdTermination extends LitElement {
   warningOpened!: boolean;
 
   @property({type: Object})
-  termination!: {date: string; attachment_notice: number};
+  termination = {
+    date: '',
+    attachment_notice: 0
+  };
 
   @property({type: Object})
   terminationElSource!: LitElement;
@@ -129,13 +132,22 @@ export class PdTermination extends LitElement {
   @property({type: Boolean})
   uploadInProgress = false;
 
-  @property({type: Boolean, reflect: true})
-  dialogOpened!: boolean;
+  @property({type: Boolean})
+  dialogOpened = true;
 
+  // @lajos: tobe refactored after backend has all the detils
   @property({type: Object})
   environmentFlags: EnvFlags | null = null;
 
   private _validationSelectors: string[] = ['#terminationDate', '#terminationNotice'];
+
+  set dialogData(data: AnyObject) {
+    if (!data) {
+      return;
+    }
+    const {interventionId} = data;
+    this.interventionId = interventionId;
+  }
 
   _getMaxDate() {
     return moment(Date.now()).add(30, 'd').toDate();
@@ -163,40 +175,41 @@ export class PdTermination extends LitElement {
   }
 
   _terminatePD() {
-    if (this.validate()) {
-      const body = {
-        id: this.interventionId,
-        end: this.termination.date,
-        termination_doc_attachment: this.termination.attachment_notice
-      };
-
-      const endpoint = getEndpoint(interventionEndpoints.interventionAction, {
-        interventionId: this.interventionId,
-        action: 'terminate'
-      });
-      fireEvent(this, 'global-loading', {
-        active: true,
-        loadingSource: 'intervention-actions'
-      });
-      sendRequest({
-        endpoint,
-        body,
-        method: 'PATCH'
-      })
-        .then(() => {
-          // TODO: update intervention in redux
-        })
-        .catch((e) => {
-          console.log(e);
-          fireEvent(this, 'toast', {text: 'Can not update intervention'});
-        })
-        .finally(() => {
-          fireEvent(this, 'global-loading', {
-            active: false,
-            loadingSource: 'intervention-actions'
-          });
-        });
+    if (!this.validate()) {
+      return;
     }
+    const body = {
+      id: this.interventionId,
+      end: this.termination.date,
+      termination_doc_attachment: this.termination.attachment_notice
+    };
+
+    const endpoint = getEndpoint(interventionEndpoints.interventionAction, {
+      interventionId: this.interventionId,
+      action: 'terminate'
+    });
+    fireEvent(this, 'global-loading', {
+      active: true,
+      loadingSource: 'intervention-actions'
+    });
+    sendRequest({
+      endpoint,
+      body,
+      method: 'PATCH'
+    })
+      .then(() => {
+        // TODO: update intervention in redux
+      })
+      .catch((e) => {
+        console.log(e);
+        fireEvent(this, 'toast', {text: 'Can not update intervention'});
+      })
+      .finally(() => {
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: 'intervention-actions'
+        });
+      });
   }
 
   // TODO: refactor validation at some point (common with ag add amendment dialog and more)
@@ -211,16 +224,10 @@ export class PdTermination extends LitElement {
 
   // TODO: refactor validation at some point (common with ag add amendment dialog and more)
   validate() {
-    let isValid = true;
-    this._validationSelectors.forEach((selector: string) => {
-      const el = this.shadowRoot!.querySelector(selector) as LitElement & {
-        validate(): boolean;
-      };
-      if (el && !el.validate()) {
-        isValid = false;
-      }
-    });
-    return isValid;
+    if (!validateRequiredFields(this)) {
+      return false;
+    }
+    return true;
   }
 
   _uploadFinished(e: CustomEvent) {

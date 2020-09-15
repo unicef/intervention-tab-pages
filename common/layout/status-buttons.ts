@@ -5,7 +5,7 @@ import '@polymer/iron-icon/iron-icon';
 import '@polymer/paper-listbox/paper-listbox';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import '../components/intervention/pd-termination';
-import {PdTermination} from '../components/intervention/pd-termination';
+import {openDialog} from '../../utils/dialog';
 
 /**
  * @customElement
@@ -38,23 +38,14 @@ export class StatusButtons extends LitElement {
 
   interventionId!: number;
 
-  private _terminationDialog!: PdTermination;
-
   _createTerminationDialog() {
-    this._terminationDialog = document.createElement('pd-termination') as PdTermination;
-    document.querySelector('body')!.appendChild(this._terminationDialog);
-
-    this._terminationDialog.terminationElSource = this;
-    this._setStatusTerminated();
-  }
-
-  _setStatusTerminated() {
-    // this._terminationDialog.resetValidations();
-    this._terminationDialog.interventionId = this.interventionId;
-    this._terminationDialog.termination = {
-      date: '',
-      attachment_notice: 0
-    };
-    this._terminationDialog.dialogOpened = true;
+    // this._terminationDialog = document.createElement('pd-termination') as PdTermination;
+    // document.querySelector('body')!.appendChild(this._terminationDialog);
+    openDialog({
+      dialog: 'pd-termination',
+      dialogData: {
+        interventionId: this.interventionId,
+      }
+    });
   }
 }
