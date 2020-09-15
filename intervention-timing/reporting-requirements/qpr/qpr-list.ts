@@ -24,7 +24,11 @@ class QprList extends CommonMixin(ReportingReqPastDatesCheckMixin(PolymerElement
   static get template() {
     return html`
       ${reportingRequirementsListStyles}${gridLayoutStylesPolymer()}
-      <style include="data-table-styles"></style>
+      <style include="data-table-styles">
+        etools-data-table-row {
+          --list-second-bg-color: #ffffff !important;
+        }
+      </style>
 
       <etools-data-table-header no-collapse no-title>
         <etools-data-table-column class="col-1 right-align index-col">ID</etools-data-table-column>

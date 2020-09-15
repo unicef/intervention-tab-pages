@@ -30,9 +30,7 @@ class IconsActions2 extends PolymerElement {
           flex-direction: row;
           background-color: var(--list-second-bg-color);
           position: absolute;
-          top: 1px;
           right: 0;
-          bottom: 1px;
 
           @apply --icons-actions;
         }

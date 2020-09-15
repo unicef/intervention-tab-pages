@@ -32,7 +32,11 @@ class SpecialReportingRequirements extends CommonMixin(ReportingRequirementsComm
   static get template() {
     return html`
       ${reportingRequirementsListStyles}${gridLayoutStylesPolymer()}${buttonsStylesPolymer()}
-      <style include="data-table-styles"></style>
+      <style include="data-table-styles">
+        etools-data-table-row {
+          --list-second-bg-color: #ffffff !important;
+        }
+      </style>
 
       <div class="row-h" hidden$="[[!_empty(reportingRequirements, reportingRequirements.length)]]">
         There are no special reporting requirements set.
