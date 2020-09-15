@@ -133,7 +133,7 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
               <div id="focalPointDetails">
                 ${this.renderReadonlyFocalPoints(
                   this.users_list,
-                  this.originalData?.unicef_focal_points ? [this.originalData?.unicef_focal_points!] : []
+                  this.originalData?.unicef_focal_points ? this.originalData?.unicef_focal_points! : []
                 )}
               </div>
             </div>
@@ -263,6 +263,9 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
   previousBudgetOwnerIds: string[] = [];
   previousBudgeOwnerDisplay: TemplateResult | TemplateResult[] = html``;
   renderReadonlyBudgetOwner(users: AnyObject[], selectedIds: string[]) {
+    if (users == undefined) {
+      return html`—`;
+    }
     if (areEqual(this.previousBudgetOwnerIds, selectedIds)) {
       return this.previousBudgeOwnerDisplay;
     }
@@ -277,6 +280,9 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
   previousFocalPointsIds: string[] = [];
   previousFocalPointsDisplay: TemplateResult | TemplateResult[] = html``;
   renderReadonlyFocalPoints(users: AnyObject[], selectedIds: string[]) {
+    if (users == undefined) {
+      return html`—`;
+    }
     if (areEqual(this.previousFocalPointsIds, selectedIds)) {
       return this.previousFocalPointsDisplay;
     }

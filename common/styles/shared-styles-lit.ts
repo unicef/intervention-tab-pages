@@ -180,7 +180,7 @@ export const sharedStylesContent = `
       display: block;
     }
     --iron-autogrow-textarea: {
-      overflow: auto;
+      overflow: hidden;
       padding: 0;
     }
   }
@@ -248,10 +248,10 @@ export const sharedStylesContent = `
   .hidden {
     display: none !important;
   }
-  
+
   etools-content-panel {
     --epc-header: {
-     border-bottom: 1px solid #000000 !important;
+     border-bottom: 1px solid var(--dark-divider-color) !important;
     }
   }
 `;

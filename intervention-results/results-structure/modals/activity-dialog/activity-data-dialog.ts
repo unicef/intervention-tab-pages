@@ -90,6 +90,13 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
         paper-toggle-button {
           margin: 25px 0;
         }
+        etools-dialog paper-textarea {
+          --iron-autogrow-textarea: {
+            overflow: auto;
+            padding: 0;
+            max-height: 96px;
+          }
+        }
       </style>
       <etools-dialog
         size="md"
@@ -174,7 +181,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
             .activityItems="${this.editedData.items || []}"
             @activity-items-changed="${({detail}: CustomEvent) => {
               this.editedData.items = detail;
-              this.performUpdate();
+              this.requestUpdate();
             }}"
           ></activity-items-table>
 

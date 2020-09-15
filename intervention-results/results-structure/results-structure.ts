@@ -25,6 +25,8 @@ import './pd-indicators';
 import './pd-activities';
 import './modals/pd-output-dialog';
 import './modals/cp-output-dialog';
+import '@polymer/paper-item';
+import '@polymer/paper-listbox';
 import '../../common/components/comments/comments-dialog';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {RootState} from '../../common/models/globals.types';
@@ -34,6 +36,10 @@ import CONSTANTS from '../../common/constants';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
+
+const RESULT_VIEW = 'result_view';
+const BUDGET_VIEW = 'budget_view';
+const COMBINED_VIEW = 'combined_view';
 
 /**
  * @customElement
@@ -54,9 +60,22 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
         iron-icon[icon='create'] {
           margin-left: 50px;
         }
-        .view-toggle-button {
+        #view-menu-button {
+          display: none;
           height: 28px;
-          margin-left: 40px;
+        }
+        #view-menu-button paper-button {
+          height: 28px;
+          background: var(--secondary-background-color);
+          padding-right: 0;
+        }
+        #view-menu-button paper-button iron-icon {
+          margin: 0 7px;
+        }
+        .view-toggle-button {
+          display: flex;
+          height: 28px;
+          margin-left: 4px;
           padding: 0 19px;
           font-weight: 500;
           font-size: 14px;
@@ -74,8 +93,28 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
         .pdOtputMargin {
           margin: 0 4px;
         }
+        #showInactive {
+          margin-right: 8px;
+        }
+        @media (max-width: 1100px) {
+          #view-menu-button {
+            display: block;
+          }
+          .view-toggle-button {
+            display: none;
+          }
+        }
       `
     ];
+  }
+  get viewType(): string {
+    if (this.showActivities && this.showIndicators) {
+      return COMBINED_VIEW;
+    } else if (this.showActivities) {
+      return BUDGET_VIEW;
+    } else {
+      return RESULT_VIEW;
+    }
   }
   get resultLinks(): ExpectedResult[] {
     return this._resultLinks || [];
@@ -100,6 +139,27 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
   @property({type: String}) noOfPdOutputs: string | number = '0';
   @property({type: Boolean}) thereAreInactiveIndicators = false;
   @property({type: Boolean}) showInactiveIndicators = false;
+
+  viewTabs = [
+    {
+      name: 'Result view',
+      type: RESULT_VIEW,
+      showIndicators: true,
+      showActivities: false
+    },
+    {
+      name: 'Combined view',
+      type: COMBINED_VIEW,
+      showIndicators: true,
+      showActivities: true
+    },
+    {
+      name: 'Budget view',
+      type: BUDGET_VIEW,
+      showIndicators: false,
+      showActivities: true
+    }
+  ];
 
   private cpOutputs: CpOutput[] = [];
 
@@ -132,9 +192,15 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
           padding-right: 10px;
           margin: 6px 0 6px 10px;
         }
+        etools-content-panel {
+          --epc-header: {
+            position: relative;
+            z-index: 10;
+          }
+        }
       </style>
 
-      <etools-content-panel panel-title="Results Structure (${this.noOfPdOutputs})">
+      <etools-content-panel show-expand-btn panel-title="Results Structure (${this.noOfPdOutputs})">
         <div slot="panel-btns" class="layout-horizontal align-items-center">
           <paper-button
             title="Export results"
@@ -162,29 +228,36 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
             Show Inactive
           </paper-toggle-button>
 
-          <div
-            class="view-toggle-button layout-horizontal align-items-center"
-            ?active="${this.showIndicators && !this.showActivities}"
-            @click="${() => this.updateTableView(true, false)}"
-          >
-            Result view
-          </div>
-          <div
-            class="view-toggle-button layout-horizontal align-items-center"
-            ?active="${this.showIndicators && this.showActivities}"
-            @click="${() => this.updateTableView(true, true)}"
-          >
-            Combined view
-          </div>
-          <div
-            class="view-toggle-button layout-horizontal align-items-center"
-            ?active="${!this.showIndicators && this.showActivities}"
-            @click="${() => this.updateTableView(false, true)}"
-          >
-            Budget view
-          </div>
+          <paper-menu-button id="view-menu-button" close-on-activate horizontal-align="right">
+            <paper-button slot="dropdown-trigger" class="dropdown-trigger">
+              View
+              <iron-icon icon="expand-more"></iron-icon>
+            </paper-button>
+            <paper-listbox slot="dropdown-content" attr-for-selected="name" .selected="${this.viewType}">
+              ${this.viewTabs.map(
+                (tab) =>
+                  html` <paper-item
+                    @click="${() => this.updateTableView(tab.showIndicators, tab.showActivities)}"
+                    name="${tab.type}"
+                  >
+                    ${tab.name}
+                  </paper-item>`
+              )}
+            </paper-listbox>
+          </paper-menu-button>
+          ${this.viewTabs.map(
+            (tab) => html`
+              <div
+                class="view-toggle-button layout-horizontal align-items-center"
+                ?active="${tab.type === this.viewType}"
+                @click="${() => this.updateTableView(tab.showIndicators, tab.showActivities)}"
+              >
+                ${tab.name}
+              </div>
+            `
+          )}
           <iron-icon
-            icon="add"
+            icon="add-box"
             ?hidden="${!this.isUnicefUser || !this.permissions.edit.result_links}"
             @click="${() => this.openCpOutputDialog()}"
           ></iron-icon>
@@ -202,7 +275,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
             >
               ${result.ll_results.map(
                 (pdOutput: ResultLinkLowerResult) => html`
-                  <etools-data-table-row class="pdOtputMargin">
+                  <etools-data-table-row details-opened class="pdOtputMargin">
                     <div slot="row-data" class="layout-horizontal align-items-center editable-row">
                       <div class="flex-1 flex-fix">
                         <div class="heading">Program Document output</div>
@@ -253,7 +326,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
           class="add-pd white row-h align-items-center"
           @click="${() => this.openPdOutputDialog()}"
         >
-          <iron-icon icon="add"></iron-icon>Add PD Output
+          <iron-icon icon="add-box"></iron-icon>Add PD Output
         </div>
       </etools-content-panel>
     `;

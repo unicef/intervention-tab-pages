@@ -13,7 +13,7 @@ import {fireEvent} from '../../utils/fire-custom-event';
  * @polymer
  * @customElement
  */
-class IconsActions extends PolymerElement {
+class IconsActions2 extends PolymerElement {
   static get template() {
     return html`
       <style>
@@ -73,6 +73,6 @@ class IconsActions extends PolymerElement {
   }
 }
 
-window.customElements.define('icons-actions', IconsActions);
+window.customElements.define('icons-actions-2', IconsActions2);
 
-export {IconsActions as IconsActionsEl};
+export {IconsActions2 as IconsActionsEl};

@@ -13,13 +13,18 @@ import {EtoolsTableColumn, EtoolsTableColumnType, EtoolsTableChildRow} from '@un
 import './supply-agreement-dialog';
 import {AnyObject, RootState} from '../../common/models/globals.types';
 import {InterventionSupplyItem, Intervention, ExpectedResult} from '../../common/models/intervention.types';
-import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getEndpoint} from '../../utils/endpoint-helper';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {openDialog} from '../../utils/dialog';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
+import {selectSupplyAgreement, selectSupplyAgreementPermissions} from './supplyAgreement.selectors';
+import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {getEndpoint} from '../../utils/endpoint-helper';
+import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {fireEvent} from '../../utils/fire-custom-event';
+import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {updateCurrentIntervention} from '../../common/actions';
+import '../../common/layout/are-you-sure';
 
 const customStyles = html`
   <style>
@@ -43,7 +48,7 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
     return [gridLayoutStylesLit, buttonsStyles];
   }
   render() {
-    if (!this.dataItems) {
+    if (!this.supply_items) {
       return html`<style>
           ${sharedStyles}
         </style>
@@ -64,25 +69,30 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
           font-size: 12px;
         }
       </style>
-      <etools-content-panel panel-title="Supply Agreement">
+
+      <etools-content-panel show-expand-btn panel-title="Supply Agreement">
         <div slot="panel-btns">
           <span class="mr-40">
             <label class="label-input font-bold">TOTAL SUPPLY BUDGET: </label>
-            <label class="f-12 font-bold">LBP 54353 (TODO)</label>
+            <label class="f-12 font-bold">${this.intervention.planned_budget.currency} ${this.intervention.planned_budget.in_kind_amount_local}</label>
           </span>
-          <paper-icon-button ?hidden="${!this.canEditSupply}" @tap="${() => this.addSupplyItem()}" icon="add">
+          <paper-icon-button
+            ?hidden="${!this.permissions.edit.supply_items}"
+            @tap="${() => this.addSupplyItem()}"
+            icon="add-box"
+          >
           </paper-icon-button>
         </div>
 
         <etools-table
           .columns="${this.columns}"
-          .items="${this.dataItems}"
+          .items="${this.supply_items}"
           @edit-item="${this.editSupplyItem}"
-          @delete-item="${this.deleteSupplyItem}"
+          @delete-item="${this.confirmDeleteSupplyItem}"
           .getChildRowTemplateMethod="${this.getChildRowTemplate.bind(this)}"
           .extraCSS="${this.getTableStyle()}"
-          .showEdit=${this.canEditSupply}
-          .showDelete=${this.canEditSupply}
+          .showEdit=${this.permissions.edit.supply_items}
+          .showDelete=${this.permissions.edit.supply_items}
         >
         </etools-table>
       </etools-content-panel>
@@ -90,7 +100,7 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
   }
 
   @property({type: Array})
-  dataItems: AnyObject[] = [];
+  supply_items!: AnyObject[];
 
   @property({type: Object})
   intervention!: Intervention;
@@ -123,8 +133,8 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
     }
   ];
 
-  @property({type: Boolean})
-  canEditSupply = true;
+  @property({type: Object})
+  permissions!: {edit: {supply_items?: boolean}};
 
   getChildRowTemplate(item: any): EtoolsTableChildRow {
     const childRow = {} as EtoolsTableChildRow;
@@ -164,22 +174,9 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
     if (get(state, 'interventions.current')) {
       const currentIntervention = get(state, 'interventions.current');
       this.intervention = cloneDeep(currentIntervention);
-      // TODO supply data will come on the intervention object, no need for the request below
-      this.loadListData();
     }
-  }
-
-  loadListData() {
-    sendRequest({
-      endpoint: getEndpoint(interventionEndpoints.supplyAgreementAdd, {interventionId: this.intervention.id})
-    })
-      .then((data: any) => {
-        this.dataItems = data;
-      })
-      .catch((err: any) => {
-        console.log(err);
-        this.dataItems = [];
-      });
+    this.supply_items = selectSupplyAgreement(state);
+    this.permissions = selectSupplyAgreementPermissions(state);
   }
 
   cancelSupply() {
@@ -194,20 +191,48 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
     this.openSupplyDialog(new InterventionSupplyItem());
   }
 
-  deleteSupplyItem(event: CustomEvent) {
-    // TODO
-    console.log(event);
+  async confirmDeleteSupplyItem(e: CustomEvent) {
+    const confirmed = await openDialog({
+      dialog: 'are-you-sure',
+      dialogData: {
+        content: 'Are you sure you want to delete this Supply Agreement item?',
+        confirmBtnText: 'Delete'
+      }
+    }).then(({confirmed}) => {
+      return confirmed;
+    });
+
+    if (confirmed) {
+      this.deleteSupplyItem(e.detail.id);
+    }
+  }
+
+  deleteSupplyItem(supplyId: number) {
+    const endpoint = getEndpoint(interventionEndpoints.supplyAgreementEdit, {
+      interventionId: this.intervention.id,
+      supplyId: supplyId
+    });
+
+    sendRequest({
+      endpoint: endpoint,
+      method: 'DELETE'
+    })
+      .then((_resp: any) => {
+        this.intervention.supply_items = this.intervention.supply_items.filter((el: AnyObject) => el.id !== supplyId);
+        getStore().dispatch(updateCurrentIntervention(this.intervention));
+      })
+      .catch((err: any) => {
+        fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
+      });
   }
 
   private openSupplyDialog(item: InterventionSupplyItem) {
-    const callbackFunction = this.loadListData.bind(this);
     openDialog({
       dialog: 'supply-agreement-dialog',
       dialogData: {
         data: item,
         interventionId: this.intervention.id,
-        result_links: this.intervention.result_links,
-        callbackFunction: callbackFunction
+        result_links: this.intervention.result_links
       }
     });
   }

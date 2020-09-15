@@ -3,7 +3,6 @@ import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {getStore} from '../../utils/redux-store-access';
-import {connect} from 'pwa-helpers/connect-mixin';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {validateRequiredFields} from '../../utils/validation-helper';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
@@ -12,6 +11,7 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {ExpectedResult} from '../../common/models/intervention.types';
+import {updateCurrentIntervention} from '../../common/actions';
 import '@unicef-polymer/etools-dialog/etools-dialog';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@polymer/paper-input/paper-input';
@@ -21,7 +21,7 @@ import '@polymer/paper-input/paper-textarea';
  * @customElement
  */
 @customElement('supply-agreement-dialog')
-export class SupplyAgreementDialog extends connect(getStore())(ComponentBaseMixin(LitElement)) {
+export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -102,6 +102,7 @@ export class SupplyAgreementDialog extends connect(getStore())(ComponentBaseMixi
             option-label="cp_output_name"
             option-value="id"
             .selected="${this.data.result}"
+
             trigger-value-change-event
             @etools-selected-item-changed="${({detail}: CustomEvent) => {
               this.selectedItemChanged(detail, 'result');
@@ -110,7 +111,7 @@ export class SupplyAgreementDialog extends connect(getStore())(ComponentBaseMixi
           </etools-dropdown>
         </div>
       </div>
-      
+
       <div class="layout-horizontal">
         <div class="col col-12">
           <paper-textarea
@@ -145,19 +146,13 @@ export class SupplyAgreementDialog extends connect(getStore())(ComponentBaseMixi
   interventionId!: number;
 
   @property({type: Object})
-  callbackFunction!: any;
-
-  @property({type: Object})
   cpOutputs: ExpectedResult[] = [];
 
-  set dialogData({data, interventionId, result_links, callbackFunction}: any) {
+  set dialogData({data, interventionId, result_links}: any) {
     this.cpOutputs = result_links || [];
     this.data = data;
     this.isNewRecord = !this.data.id;
     this.interventionId = interventionId;
-    // TODO callbackFunction it's used temporarily just to test list page updates
-    // will be removed when saving will work (see comments below)
-    this.callbackFunction = callbackFunction;
     this.dialogTitle = this.isNewRecord ? 'Add  Supply Agreement' : 'Edit Supply Agreement';
     this.confirmBtnTxt = this.isNewRecord ? 'Add' : 'Save';
   }
@@ -174,7 +169,7 @@ export class SupplyAgreementDialog extends connect(getStore())(ComponentBaseMixi
     if (!this.validate()) {
       return;
     }
-
+    this.requestInProcess = true;
     const endpoint = this.isNewRecord
       ? getEndpoint(interventionEndpoints.supplyAgreementAdd, {interventionId: this.interventionId})
       : getEndpoint(interventionEndpoints.supplyAgreementEdit, {
@@ -187,16 +182,15 @@ export class SupplyAgreementDialog extends connect(getStore())(ComponentBaseMixi
       method: this.isNewRecord ? 'POST' : 'PATCH',
       body: this.data
     })
-      .then((_response: any) => {
-        // TODO as response we will get intervention updates with supply and
-        // will need to dispatch here to update current intervention
-        if (this.callbackFunction) {
-          this.callbackFunction();
-        }
+      .then((response: any) => {
+        getStore().dispatch(updateCurrentIntervention(response.intervention));
         this.onClose();
       })
       .catch((err: any) => {
         fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
+      })
+      .finally(() => {
+        this.requestInProcess = false;
       });
   }
 }

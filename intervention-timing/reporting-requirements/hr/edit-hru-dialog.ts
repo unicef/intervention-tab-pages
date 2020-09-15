@@ -81,9 +81,7 @@ class EditHruDialog extends connect(getStore())(PolymerElement) {
           >
           </datepicker-lite>
         </div>
-        <div>
-          Use the date picker to select end dates of humanitarian report requirements.
-        </div>
+        <div>Use the date picker to select end dates of humanitarian report requirements.</div>
 
         <div class="layout-horizontal row-padding-v">
           <div class="col layout-vertical col-6">
@@ -101,9 +99,7 @@ class EditHruDialog extends connect(getStore())(PolymerElement) {
             </paper-button>
           </div>
           <div class="col col-6">
-            <div class="row-h" hidden$="[[!_empty(hruData.length)]]">
-              No dates added.
-            </div>
+            <div class="row-h" hidden$="[[!_empty(hruData.length)]]">No dates added.</div>
             <hru-list
               id="hruList"
               class="flex-c"
