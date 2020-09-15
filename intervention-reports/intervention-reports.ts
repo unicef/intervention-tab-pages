@@ -92,7 +92,7 @@ class InterventionReports extends connect(getStore())(PaginationMixin(CommonMixi
             <etools-data-table-column class="flex-c"> Due Date </etools-data-table-column>
             <etools-data-table-column class="flex-c"> Reporting Period </etools-data-table-column>
             <template is="dom-if" if="[[!noPdSsfaRef]]" restamp>
-              <etools-data-table-column class="col-2"> PD/SSFA ref.# </etools-data-table-column>
+              <etools-data-table-column class="col-2"> PD/SPD ref.# </etools-data-table-column>
             </template>
           </etools-data-table-header>
 
@@ -136,7 +136,7 @@ class InterventionReports extends connect(getStore())(PaginationMixin(CommonMixi
                   [[getDisplayValue(report.reporting_period)]]
                 </span>
                 <template is="dom-if" if="[[!noPdSsfaRef]]" restamp>
-                  <span class="col-data col-2" data-col-header-label="PD/SSFA ref.#">
+                  <span class="col-data col-2" data-col-header-label="PD/SPD ref.#">
                     <a
                       class="pd-ref truncate"
                       href$="interventions/[[report.programme_document.external_id]]/details"
