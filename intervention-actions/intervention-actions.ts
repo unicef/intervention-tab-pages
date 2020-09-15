@@ -5,7 +5,6 @@ import '@polymer/paper-button';
 import '@polymer/paper-menu-button';
 import '@polymer/paper-icon-button';
 import '../common/layout/export-intervention-data';
-import '../common/layout/status-buttons';
 import './reason-popup';
 import {getEndpoint} from '../utils/endpoint-helper';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
@@ -40,7 +39,7 @@ export class InterventionActions extends LitElement {
       (action: string) => !exportActions.includes(action) && action !== backAction
     );
     return html`
-      ${this.renderExport(exportActions)} ${this.renderStatusChangeButton()}${this.renderBackAction(backAction)}
+      ${this.renderExport(exportActions)}${this.renderBackAction(backAction)}
       ${this.renderGroupedActions(mainAction, groupedActions)}
     `;
   }
@@ -162,11 +161,5 @@ export class InterventionActions extends LitElement {
     if (element) {
       element.close();
     }
-  }
-
-  private renderStatusChangeButton(): TemplateResult {
-    return html`
-      <status-buttons .activeStatus=${this.activeStatus} .interventionId=${this.interventionId}></status-buttons>
-    `;
   }
 }

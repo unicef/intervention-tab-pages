@@ -49,7 +49,6 @@ export class PdTermination extends LitElement {
         ?hidden="${this.warningOpened}"
         ok-btn-text="Terminate"
         dialog-title="Terminate PD/SSFA"
-        @close="${this._handleDialogClosed}"
         @confirm-btn-clicked="${this._triggerPdTermination}"
         ?disable-confirm-btn="${this.uploadInProgress}"
         ?disable-dismiss-btn="${this.uploadInProgress}"
@@ -153,10 +152,6 @@ export class PdTermination extends LitElement {
     return moment(Date.now()).add(30, 'd').toDate();
   }
 
-  _handleDialogClosed() {
-    this.resetValidations();
-  }
-
   _triggerPdTermination() {
     if (!this.validate()) {
       return;
@@ -210,16 +205,6 @@ export class PdTermination extends LitElement {
           loadingSource: 'intervention-actions'
         });
       });
-  }
-
-  // TODO: refactor validation at some point (common with ag add amendment dialog and more)
-  resetValidations() {
-    this._validationSelectors.forEach((selector: string) => {
-      const el = this.shadowRoot!.querySelector(selector) as HTMLElement & {invalid: boolean};
-      if (el) {
-        el.invalid = false;
-      }
-    });
   }
 
   // TODO: refactor validation at some point (common with ag add amendment dialog and more)
