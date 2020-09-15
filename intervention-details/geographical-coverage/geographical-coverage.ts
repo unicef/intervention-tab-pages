@@ -2,7 +2,6 @@ import {customElement, html, LitElement, property} from 'lit-element';
 import '@polymer/paper-button/paper-button';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
 import './grouped-locations-dialog';
-import {GroupedLocationsDialog} from './grouped-locations-dialog';
 
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
@@ -16,10 +15,11 @@ import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {patchIntervention} from '../../common/actions';
 import {isJsonStrMatch} from '../../utils/utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
-import {LocationObject, RootState} from '../../common/models/globals.types';
+import {LocationObject, RootState, AnyObject} from '../../common/models/globals.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import isEmpty from 'lodash-es/isEmpty';
 import get from 'lodash-es/get';
+import {openDialog} from '../../utils/dialog';
 
 /**
  * @customElement
@@ -106,10 +106,11 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
     `;
   }
 
-  private locationsDialog!: GroupedLocationsDialog;
-
   @property({type: Array})
   allLocations!: LocationObject[];
+
+  @property({type: Array})
+  adminLevels!: AnyObject[];
 
   @property({type: Object})
   data!: {flat_locations: string[]};
@@ -119,7 +120,6 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
 
   connectedCallback() {
     super.connectedCallback();
-    this.createDialog();
   }
 
   stateChanged(state: RootState) {
@@ -132,6 +132,9 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
     if (!isJsonStrMatch(this.allLocations, state.commonData!.locations)) {
       this.allLocations = [...state.commonData!.locations];
     }
+    if (!isJsonStrMatch(this.adminLevels, state.commonData!.locationTypes)) {
+      this.adminLevels = [...state.commonData!.locationTypes];
+    }
     this.data = {flat_locations: get(state, 'interventions.current.flat_locations')};
     this.originalData = cloneDeep(this.data);
     this.sePermissions(state);
@@ -143,16 +146,15 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
   }
 
   private openLocationsDialog() {
-    this.locationsDialog.adminLevel = null;
-    this.locationsDialog.interventionLocationIds = this.data.flat_locations;
-    (this.locationsDialog as GroupedLocationsDialog).openDialog();
-  }
-
-  createDialog() {
-    this.locationsDialog = document.createElement('grouped-locations-dialog') as GroupedLocationsDialog;
-    this.locationsDialog.setAttribute('id', 'groupedLocDialog');
-    this.locationsDialog.toastEventSource = this;
-    document.querySelector('body')!.appendChild(this.locationsDialog);
+    openDialog({
+      dialog: 'grouped-locations-dialog',
+      dialogData: {
+        adminLevel: null,
+        allLocations: this.allLocations,
+        adminLevels: this.adminLevels,
+        interventionLocationIds: this.data.flat_locations
+      }
+    });
   }
 
   _isEmpty(array: any[]) {
