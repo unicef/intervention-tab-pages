@@ -91,6 +91,7 @@ export class User extends MinimalUser {
   country_override!: number;
   countries_available!: MinimalCountry[];
   groups!: UserGroup[];
+  is_unicef_user!: boolean;
 }
 
 export interface EtoolsUserModel {

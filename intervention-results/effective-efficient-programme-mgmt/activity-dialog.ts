@@ -11,7 +11,7 @@ import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {getStore} from '../../utils/redux-store-access';
-import {getIntervention} from '../../common/actions';
+import {updateCurrentIntervention} from '../../common/actions';
 
 /**
  * @customElement
@@ -121,12 +121,8 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
       method: 'PATCH',
       body: this.data
     })
-      .then(() =>
-        getStore()
-          .dispatch(getIntervention(String(this.interventionId)))
-          .catch(() => Promise.resolve())
-      )
-      .then(() => {
+      .then(({intervention}) => {
+        getStore().dispatch(updateCurrentIntervention(intervention));
         fireEvent(this, 'dialog-closed', {confirmed: true});
       })
       .catch(() => {

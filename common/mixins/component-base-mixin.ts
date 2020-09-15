@@ -93,9 +93,12 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
     }
 
     renderReadonlyUserDetails(users: AnyObject[], ids: string[]) {
+      if (users == undefined) {
+        return html`—`;
+      }
       const selsectedUsers = filterByIds(users, ids);
       if (isEmpty(selsectedUsers)) {
-        return html``;
+        return html`—`;
       } else {
         return selsectedUsers.map((u: any) => {
           return html`<div class="w100">${this.renderNameEmailPhone(u)}</div>`;
@@ -104,8 +107,8 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
     }
 
     renderNameEmailPhone(item: any) {
-      return html`${item.first_name} ${item.last_name} (${item.email ? item.email : ''}
-      ${item.phone ? ', ' + item.phone : ''})`;
+      // eslint-disable-next-line
+      return html`${item.first_name} ${item.last_name} (${item.email ? item.email : ''}${item.phone ? ', ' + item.phone : ''})`;
     }
 
     selectedItemChanged(detail: any, key: string, optionValue = 'id') {

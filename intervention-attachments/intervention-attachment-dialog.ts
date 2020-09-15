@@ -40,7 +40,6 @@ export class InterventionAttachmentDialog extends connect(getStore())(LitElement
   @property() savingInProcess = false;
   @property() data: Partial<ReviewAttachment> = {};
 
-  protected selectedFileId: number | null = null;
   private interventionId!: number;
   private fileTypes: IdAndName[] = [];
   private errors: GenericObject<any> = {};
@@ -147,7 +146,8 @@ export class InterventionAttachmentDialog extends connect(getStore())(LitElement
 
   protected fileSelected({success}: {success?: any; error?: string}): void {
     if (success) {
-      this.selectedFileId = success.id || null;
+      this.data.attachment_document = success.id || null;
+      this.data = {...this.data};
     }
   }
 
@@ -167,7 +167,7 @@ export class InterventionAttachmentDialog extends connect(getStore())(LitElement
           type
         }
       : {
-          attachment_document: this.selectedFileId,
+          attachment_document: this.data.attachment_document,
           active,
           type
         };
