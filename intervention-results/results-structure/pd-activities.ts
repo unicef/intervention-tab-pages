@@ -50,7 +50,7 @@ export class PdActivities extends LitElement {
             border-top: 1px solid var(--main-border-color);
           }
           --list-row-wrapper: {
-            background-color: var(--green-background);
+            background-color: var(--green-background) !important;
             min-height: 55px;
             border: 1px solid var(--main-border-color) !important;
             border-bottom: none !important;

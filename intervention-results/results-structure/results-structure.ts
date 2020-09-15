@@ -178,7 +178,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
             border-bottom: 1px solid var(--main-border-color) !important;
           }
           --list-row-wrapper: {
-            background-color: var(--secondary-background-color);
+            background-color: var(--secondary-background-color) !important;
             min-height: 55px;
             border-bottom: 1px solid var(--main-border-color) !important;
           }
