@@ -32,7 +32,6 @@ export class TechnicalGuidance extends connect(getStore())(ComponentBaseMixin(Li
         </style>
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
-    console.log(this.permissions);
     // language=HTML
     return html`
       <style>
