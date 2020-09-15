@@ -256,7 +256,21 @@ export class Intervention {
   prgm_effectiveness?: string;
   supply_items: InterventionSupplyItem[] = [];
   risks: Risk[] = [];
+  management_budgets?: ManagementBudget;
 }
+
+export type ManagementBudget = {
+  act1_partner: string;
+  act1_total: number;
+  act1_unicef: string;
+  act2_partner: string;
+  act2_total: number;
+  act2_unicef: string;
+  act3_partner: string;
+  act3_total: number;
+  act3_unicef: string;
+  total: number;
+};
 
 export class InterventionAmendment {
   id?: number;
