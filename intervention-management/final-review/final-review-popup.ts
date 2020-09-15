@@ -12,8 +12,7 @@ import {updateCurrentIntervention} from '../../common/actions';
 export class FinalReviewPopup extends LitElement {
   @property() savingInProcess = false;
   @property() dialogOpened = true;
-  @property() data: ReviewAttachment | null = null;
-  protected selectedFileId: number | null = null;
+  @property() data: Partial<ReviewAttachment> = {};
   private endpoint!: EtoolsRequestEndpoint;
 
   set dialogData(data: any) {
@@ -22,7 +21,7 @@ export class FinalReviewPopup extends LitElement {
     }
     const {attachment, interventionId} = data;
     this.endpoint = getEndpoint(interventionEndpoints.intervention, {interventionId});
-    this.data = attachment;
+    this.data = attachment ? {...attachment} : {attachment: null};
   }
 
   protected render(): TemplateResult {
@@ -65,19 +64,19 @@ export class FinalReviewPopup extends LitElement {
 
   protected fileSelected({success}: {success?: any; error?: string}): void {
     if (success) {
-      this.selectedFileId = success.id || null;
+      this.data.attachment = success.id || null;
     }
   }
 
   processRequest(): void {
     // validate if file is selected for new attachments
-    if (!this.data && !this.selectedFileId) {
+    if (!this.data && !this.data.attachment) {
       fireEvent(this, 'toast', {
         text: 'Please, select correct file',
         showCloseBtn: false
       });
       return;
-    } else if (!this.selectedFileId && this.data) {
+    } else if (!this.data.attachment && this.data) {
       this.onClose();
     }
     this.savingInProcess = true;
@@ -85,7 +84,7 @@ export class FinalReviewPopup extends LitElement {
     sendRequest({
       endpoint: this.endpoint,
       body: {
-        final_partnership_review: this.selectedFileId
+        final_partnership_review: this.data.attachment
       },
       method: 'PATCH'
     })
