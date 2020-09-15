@@ -5,7 +5,6 @@ import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
 import '@unicef-polymer/etools-upload/etools-upload';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
-import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
 import '../../common/layout/etools-warn-message';
 import {buttonsStyles} from '../../common/styles/button-styles';
@@ -13,25 +12,22 @@ import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {formatDate} from '../../utils/date-utils';
 import {requiredFieldStarredStylesPolymer} from '../../common/styles/required-field-styles';
-import {validateRequiredFields, resetRequiredFields} from '../../utils/validation-helper';
+import {validateRequiredFields} from '../../utils/validation-helper';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
-import {updateCurrentIntervention} from '../../common/actions';
+import {fireEvent} from '../../utils/fire-custom-event';
+import {updateCurrentIntervention, getIntervention} from '../../common/actions';
 import {InterventionAmendment} from '../../common/models/intervention.types';
-import {LabelAndValue, AnyObject, RootState} from '../../common/models/globals.types';
-import {isJsonStrMatch} from '../../utils/utils';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
-import get from 'lodash-es/get';
+import {LabelAndValue, AnyObject} from '../../common/models/globals.types';
 import CONSTANTS from '../../common/constants';
 
 /**
  * @customElement
  */
 @customElement('add-amendment-dialog')
-export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(LitElement)) {
+export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -56,8 +52,9 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
         ?opened="${this.dialogOpened}"
         ok-btn-text="Save"
         dialog-title="Add Amendment"
-        @close="${() => this.handleDialogClose()}"
+        @close="${() => this.onClose()}"
         @confirm-btn-clicked="${() => this._validateAndSaveAmendment()}"
+        ?show-spinner="${this.savingInProcess}"
         ?disable-confirm-btn="${this.uploadInProgress}"
         ?disable-dismiss-btn="${this.uploadInProgress}"
       >
@@ -149,11 +146,9 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
     `;
   }
 
-  @property({type: Boolean, reflect: true})
-  dialogOpened = false;
+  @property({type: Boolean}) dialogOpened = true;
 
-  @property({type: Object})
-  toastEventSource!: LitElement;
+  @property({type: Boolean}) savingInProcess = false;
 
   @property({type: Object})
   intervention!: AnyObject;
@@ -182,29 +177,18 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
   @property({type: Array})
   warnMessages: string[] = [];
 
-  stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'management')) {
+  set dialogData(data: any) {
+    if (!data) {
       return;
     }
-
-    if (
-      state.commonData.interventionAmendmentTypes &&
-      !isJsonStrMatch(this.amendmentTypes, state.commonData!.interventionAmendmentTypes)
-    ) {
-      this.amendmentTypes = [...state.commonData!.interventionAmendmentTypes];
-    }
+    const {intervention, amendmentTypes} = data;
+    this.intervention = intervention;
+    this.amendmentTypes = amendmentTypes;
+    this._filterAmendmentTypes(this.amendmentTypes, this.intervention.document_type);
   }
 
   getUploadInProgress(amdInProgress: boolean, prcInProgress: boolean) {
     return amdInProgress || prcInProgress;
-  }
-
-  startSpinner() {
-    (this.shadowRoot!.querySelector('#add-amendment') as EtoolsDialog).startSpinner();
-  }
-
-  stopSpinner() {
-    (this.shadowRoot!.querySelector('#add-amendment') as EtoolsDialog).stopSpinner();
   }
 
   _filterAmendmentTypes(amendmentTypes: AnyObject[], interventionDocumentType: string) {
@@ -282,26 +266,29 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
       }),
       body: newAmendment
     };
-    this.startSpinner();
+    this.savingInProcess = true;
     sendRequest(options)
       .then((resp: InterventionAmendment) => {
         this._handleResponse(resp);
-        this.stopSpinner();
       })
       .catch((error: any) => {
         this._handleErrorResponse(error);
-        this.stopSpinner();
+      })
+      .finally(() => {
+        this.savingInProcess = false;
       });
   }
 
-  _handleResponse(response: InterventionAmendment) {
-    this.intervention.amendments.push(response);
-    getStore().dispatch(updateCurrentIntervention(this.intervention));
-    this.handleDialogClose();
+  _handleResponse(_response: InterventionAmendment) {
+    // @dci if use `updateCurrentIntervention` permissions are not updated
+    getStore().dispatch(getIntervention(this.intervention.id));
+    // this.intervention.amendments.push(response);
+    // getStore().dispatch(updateCurrentIntervention(this.intervention));
+    this.onClose();
   }
 
   _handleErrorResponse(error: any) {
-    parseRequestErrorsAndShowAsToastMsgs(error, this.toastEventSource);
+    parseRequestErrorsAndShowAsToastMsgs(error, this);
   }
 
   _amendmentUploadFinished(e: CustomEvent) {
@@ -322,22 +309,8 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
     }
   }
 
-  _resetFields() {
-    this.originalData = {...{types: [], signed_date: ''}};
-    this.data = {...this.originalData};
-    resetRequiredFields(this);
-  }
-
-  public async openDialog() {
-    this.dialogOpened = true;
-    this._filterAmendmentTypes(this.amendmentTypes, this.intervention.document_type);
-    this._resetFields();
-  }
-
-  public handleDialogClose() {
-    this.dialogOpened = false;
-    // clear controls
-    this.originalData = {...{}};
+  public onClose() {
+    fireEvent(this, 'dialog-closed', {confirmed: false});
   }
 
   getCurrentDate() {

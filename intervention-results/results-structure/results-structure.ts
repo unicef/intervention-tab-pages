@@ -275,7 +275,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
             >
               ${result.ll_results.map(
                 (pdOutput: ResultLinkLowerResult) => html`
-                  <etools-data-table-row class="pdOtputMargin">
+                  <etools-data-table-row details-opened class="pdOtputMargin">
                     <div slot="row-data" class="layout-horizontal align-items-center editable-row">
                       <div class="flex-1 flex-fix">
                         <div class="heading">Program Document output</div>
