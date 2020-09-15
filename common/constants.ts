@@ -9,6 +9,7 @@ const CONSTANTS = {
     PD: 'PD',
     SSFA: 'SSFA',
     SHPD: 'SHPD',
+    SPD: 'SPD',
     ProgrammeDocument: 'Programme Document',
     SmallScaleFundingAgreement: 'Small Scale Funding Agreement',
     SimplifiedHumanitarianProgrammeDocument: 'Simplified Humanitarian Programme Document'
@@ -38,6 +39,13 @@ const CONSTANTS = {
     HR: 'HR', // Humanitarian Report
     SPECIAL: 'SPECIAL', // Special Report
     SR: 'SR' // Special Report, value frm PRP
+  },
+  DOMAINS: {
+    STAGING: 'etools-staging.unicef.org',
+    DEV: 'etools-dev.unicef.org',
+    DEMO: 'etools-demo.unicef.org',
+    TEST: 'etools-test.unicef.io',
+    LOCAL: 'localhost:8082'
   }
 };
 
