@@ -98,10 +98,10 @@ export class PdIndicator extends LitElement {
           </div>
 
           <!--    Baseline    -->
-          <div class="text number-data flex-none">${this.indicator.baseline.v || '-'}</div>
+          <div class="text number-data flex-none">${this.getDisplayValue(this.indicator.baseline.v)}</div>
 
           <!--    Target    -->
-          <div class="text number-data flex-none">${this.indicator.target.v || '-'}</div>
+          <div class="text number-data flex-none">${this.getDisplayValue(this.indicator.target.v)}</div>
           <div class="hover-block" ?hidden="${this.readonly}">
             <paper-icon-button
               icon="icons:create"
@@ -189,5 +189,14 @@ export class PdIndicator extends LitElement {
 
   private addInactivePrefix(indicator: any) {
     return !indicator || indicator.is_active ? '' : html`<strong>(inactive)</strong>`;
+  }
+
+  getDisplayValue(value: any) {
+    if (typeof value === 'string' && value !== '') {
+      return value;
+    } else if (typeof value === 'number') {
+      return value;
+    }
+    return '-';
   }
 }
