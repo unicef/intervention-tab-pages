@@ -168,7 +168,10 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
               ? html` <indicator-dissaggregations
                   id="indicatorDisaggregations"
                   .dataItems="${this.disaggregations}"
-                  @add-new-disaggreg="${this._updateScroll}"
+                  @add-new-disaggreg="${({detail}: CustomEvent) => {
+                    this._updateScroll();
+                    this.disaggregations = detail;
+                  }}"
                 >
                 </indicator-dissaggregations>`
               : html``}
@@ -191,7 +194,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
     return this._disaggregations;
   }
   set disaggregations(newVal: {disaggregId: string}[]) {
-    this._disaggregations = newVal;
+    this._disaggregations = [...newVal];
     fireEvent(this, 'update-tab-counter', {count: this._disaggregations.length});
   }
 
