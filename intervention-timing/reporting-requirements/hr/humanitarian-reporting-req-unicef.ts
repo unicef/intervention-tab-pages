@@ -94,7 +94,6 @@ class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(ReportingRe
   _createEditHruDialog() {
     this._reportingRequirementsSaved = this._reportingRequirementsSaved.bind(this);
     this.editHruDialog = document.createElement('edit-hru-dialog') as any;
-    this.editHruDialog.set('toastMsgLoadingSource', this);
     this.editHruDialog.addEventListener('reporting-requirements-saved', this._reportingRequirementsSaved as any);
     document.querySelector('body')!.appendChild(this.editHruDialog);
   }

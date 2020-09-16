@@ -135,9 +135,6 @@ export class GroupedLocationsDialog extends LitElement {
 
   @property({type: Boolean}) dialogOpened = true;
 
-  @property({type: Object})
-  toastEventSource!: LitElement;
-
   @query('#groupedLocDialog')
   groupedLocDialog!: EtoolsDialog;
 
