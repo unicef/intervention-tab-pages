@@ -86,9 +86,6 @@ class AddEditSpecialRepReq extends PolymerElement {
   @property({type: Object})
   item!: AnyObject;
 
-  @property({type: Object})
-  toastMsgLoadingSource!: PolymerElement;
-
   _isNew() {
     return !this.item.id;
   }
@@ -126,7 +123,7 @@ class AddEditSpecialRepReq extends PolymerElement {
       .catch((error: any) => {
         dialog.stopSpinner();
         logError('Failed to save/update special report requirement!', 'add-edit-special-rep-req', error);
-        parseRequestErrorsAndShowAsToastMsgs(error, this.toastMsgLoadingSource);
+        parseRequestErrorsAndShowAsToastMsgs(error, this);
       });
   }
 

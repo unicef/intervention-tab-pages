@@ -164,7 +164,7 @@ function SaveIndicatorMixin<T extends Constructor<LitElement>>(baseClass: T) {
       // @ts-ignore *Defined in component
       this.disableConfirmBtn = false;
 
-      parseRequestErrorsAndShowAsToastMsgs(error, this.toastEventSource);
+      parseRequestErrorsAndShowAsToastMsgs(error, this);
     }
 
     _getIndicatorBody() {
