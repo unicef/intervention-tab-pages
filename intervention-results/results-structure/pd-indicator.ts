@@ -78,6 +78,8 @@ export class PdIndicator extends LitElement {
         div[slot='row-data-details'] {
           --blue-background-dark: #a4c4e1;
           background: var(--blue-background-dark);
+          max-height: 220px;
+          overflow: auto;
         }
         .hover-block {
           background-color: var(--blue-background) !important;
