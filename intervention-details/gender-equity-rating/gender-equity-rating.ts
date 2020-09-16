@@ -69,7 +69,7 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
             selected="${this.data.gender_rating}"
             @selected-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'gender_rating')}"
           >
-            ${this._getRatingRadioButtonsTemplate(this.ratings, this.permissions.edit.gender)}
+            ${this._getRatingRadioButtonsTemplate(this.ratings, this.permissions.edit.gender_rating)}
           </paper-radio-group>
           <div class="col col-12 pl-none">
             <paper-textarea
@@ -79,9 +79,9 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
               placeholder="&#8212;"
               max-rows="4"
               .value="${this.data.gender_narrative}"
-              ?required="${this.permissions.required.gender}"
+              ?required="${this.permissions.required.gender_narrative}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'gender_narrative')}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.gender)}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.gender_narrative)}"
             >
             </paper-textarea>
           </div>
@@ -94,7 +94,7 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
             .selected="${this.data.sustainability_rating}"
             @selected-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'sustainability_rating')}"
           >
-            ${this._getRatingRadioButtonsTemplate(this.ratings, this.permissions.edit.sustainability)}
+            ${this._getRatingRadioButtonsTemplate(this.ratings, this.permissions.edit.sustainability_rating)}
           </paper-radio-group>
           <div class="col col-12 pl-none">
             <paper-textarea
@@ -104,9 +104,9 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
               placeholder="&#8212;"
               max-rows="4"
               .value="${this.data.sustainability_narrative}"
-              ?required="${this.permissions.required.sustainability}"
+              ?required="${this.permissions.required.sustainability_narrative}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'sustainability_narrative')}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.sustainability)}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.sustainability_narrative)}"
             >
             </paper-textarea>
           </div>
@@ -119,7 +119,7 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
             .selected="${this.data.equity_rating}"
             @selected-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'equity_rating')}"
           >
-            ${this._getRatingRadioButtonsTemplate(this.ratings, this.permissions.edit.equity)}
+            ${this._getRatingRadioButtonsTemplate(this.ratings, this.permissions.edit.equity_rating)}
           </paper-radio-group>
           <div class="col col-12 pl-none">
             <paper-textarea
@@ -129,9 +129,9 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
               placeholder="&#8212;"
               max-rows="4"
               .value="${this.data.equity_narrative}"
-              ?required="${this.permissions.required.equity}"
+              ?required="${this.permissions.required.equity_narrative}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'equity_narrative')}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.equity)}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.equity_narrative)}"
             >
             </paper-textarea>
           </div>

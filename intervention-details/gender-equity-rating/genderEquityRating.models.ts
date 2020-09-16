@@ -19,7 +19,10 @@ export class GenderEquityRatingPermissions extends ModelsBase {
     super();
     this.setObjProperties(permissions);
   }
-  gender = true;
-  equity = true;
-  sustainability = true;
+  gender_rating = true;
+  equity_rating = true;
+  sustainability_rating = true;
+  gender_narrative = true;
+  equity_narrative = true;
+  sustainability_narrative = true;
 }
