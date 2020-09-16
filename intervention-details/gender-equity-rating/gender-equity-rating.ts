@@ -79,7 +79,6 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
               placeholder="&#8212;"
               max-rows="4"
               .value="${this.data.gender_narrative}"
-              ?required="${this.permissions.required.gender_narrative}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'gender_narrative')}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.gender_narrative)}"
             >
@@ -104,7 +103,6 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
               placeholder="&#8212;"
               max-rows="4"
               .value="${this.data.sustainability_narrative}"
-              ?required="${this.permissions.required.sustainability_narrative}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'sustainability_narrative')}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.sustainability_narrative)}"
             >
@@ -129,7 +127,6 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
               placeholder="&#8212;"
               max-rows="4"
               .value="${this.data.equity_narrative}"
-              ?required="${this.permissions.required.equity_narrative}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'equity_narrative')}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.equity_narrative)}"
             >
