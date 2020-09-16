@@ -21,7 +21,6 @@ import {fireEvent} from '../../utils/fire-custom-event';
 import {getIntervention} from '../../common/actions';
 import {InterventionAmendment} from '../../common/models/intervention.types';
 import {LabelAndValue, AnyObject} from '../../common/models/globals.types';
-import CONSTANTS from '../../common/constants';
 
 /**
  * @customElement

@@ -1,4 +1,4 @@
-import {LitElement, html, customElement, css, property, TemplateResult} from 'lit-element';
+import {LitElement, html, customElement, property, TemplateResult} from 'lit-element';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import {Disaggregation, DisaggregationValue} from '../../common/models/globals.types';
 import {Indicator} from '../../common/models/intervention.types';
