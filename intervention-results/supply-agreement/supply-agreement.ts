@@ -25,6 +25,7 @@ import {fireEvent} from '../../utils/fire-custom-event';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {updateCurrentIntervention} from '../../common/actions';
 import '../../common/layout/are-you-sure';
+import {labelAndvalueStylesLit} from '../../../../../styles/label-and-value-styles-lit';
 
 const customStyles = html`
   <style>
@@ -45,7 +46,7 @@ const customStyles = html`
 @customElement('supply-agreements')
 export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [gridLayoutStylesLit, buttonsStyles, labelAndvalueStylesLit];
   }
   render() {
     if (!this.supply_items) {
@@ -73,7 +74,7 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
       <etools-content-panel show-expand-btn panel-title="Supply Agreement">
         <div slot="panel-btns">
           <span class="mr-40">
-            <label class="label-input font-bold">TOTAL SUPPLY BUDGET: </label>
+            <label class="paper-label font-bold">TOTAL SUPPLY BUDGET: </label>
             <label class="f-12 font-bold">${this.intervention.planned_budget.currency} ${this.intervention.planned_budget.in_kind_amount_local}</label>
           </span>
           <paper-icon-button
@@ -145,13 +146,13 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
       <td></td>
       <td class="ptb-0">
         <div class="child-row-inner-container">
-          <label class="label-input">Cp Outputs</label><br />
+          <label class="paper-label">Cp Outputs</label><br />
             <label>${output}</label><br />
         </div>
       </td>
       <td colspan="4" class="ptb-0">
         <div class="child-row-inner-container">
-          <label class="label-input">Other Mentions</label><br />
+          <label class="paper-label">Other Mentions</label><br />
           <label>${item.other_mentions}</label>
           </paper-input>
         </div>
