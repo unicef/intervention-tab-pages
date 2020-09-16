@@ -106,4 +106,7 @@ export const ResultStructureStyles: CSSResult = css`
   .empty-row {
     padding: 16px 12px 16px 56px;
   }
+  div[slot='panel-btns'] {
+    opacity: 1;
+  }
 `;

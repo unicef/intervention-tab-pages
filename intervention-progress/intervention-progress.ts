@@ -215,13 +215,13 @@ class InterventionProgress extends connect(getStore())(
               >
                 <span slot="field">N/A %</span>
                 <iron-icon slot="custom-icon" icon="pmp-custom-icons:not-equal"></iron-icon>
-                <span slot="message">FR currency does not match PD/SSFA currency.</span>
+                <span slot="message">FR currency does not match PD/SPD currency.</span>
               </etools-info-tooltip>
             </template>
           </div>
           <div class="col col-3">
             <etools-form-element-wrapper-2
-              label="Overall PD/SSFA Rating by UNICEF"
+              label="Overall PD/SPD Rating by UNICEF"
               value="[[_getOverallPdStatusDate(latestAcceptedPr.review_date)]]"
               no-placeholder
             >
@@ -386,7 +386,7 @@ class InterventionProgress extends connect(getStore())(
         });
       })
       .catch((error: any) => {
-        logError('PD/SSFA progress request failed!', 'intervention-progress', error);
+        logError('PD/SPD progress request failed!', 'intervention-progress', error);
         parseRequestErrorsAndShowAsToastMsgs(error, this);
         fireEvent(this, 'global-loading', {
           active: false,

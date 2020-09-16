@@ -1,7 +1,7 @@
 import {PolymerElement} from '@polymer/polymer';
 import {property} from '@polymer/decorators';
 import {Constructor, Paginator} from '../models/globals.types';
-import {CONSTANTS} from '../../config/config';
+import CONSTANTS from '../../common/constants';
 
 function PaginationMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
   class PaginationClass extends baseClass {

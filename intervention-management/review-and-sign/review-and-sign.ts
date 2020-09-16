@@ -125,7 +125,6 @@ export class InterventionReviewAndSign extends connect(getStore())(
                     this.permissions.edit.prc_review_attachment,
                     this._lockSubmitToPrc
                   )}"
-                  ?hidden="${!this._isNotSSFA(this.data.document_type)}"
                   @checked-changed="${({detail}: CustomEvent) => this.updatePrc(detail)}"
                 >
                   Submitted to PRC?
@@ -281,10 +280,10 @@ export class InterventionReviewAndSign extends connect(getStore())(
         </div>
         <div class="layout-horizontal row-padding-v">
           <div class="col col-6">
-            <!-- Signed PD/SSFA -->
+            <!-- Signed PD/SPD -->
             <etools-upload
               id="signedIntervFile"
-              label="Signed PD/SSFA"
+              label="Signed PD/SPD"
               accept=".doc,.docx,.pdf,.jpg,.png"
               .fileUrl="${this.data.signed_pd_attachment}"
               .uploadEndpoint="${this.uploadEndpoint}"
@@ -294,7 +293,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
               auto-validate
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.signed_pd_attachment)}"
               ?required="${this.permissions.required.signed_pd_attachment}"
-              error-message="Please select Signed PD/SSFA document"
+              error-message="Please select Signed PD/SPD document"
               @upload-started="${this._onUploadStarted}"
               @change-unsaved-file="${this._onChangeUnsavedFile}"
             >
@@ -449,11 +448,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
    * we make the date fields required
    */
   _showSubmittedToPrcFields(submittedToPrc: boolean) {
-    return this._isNotSSFA(this.data.document_type) && submittedToPrc;
-  }
-
-  _isNotSSFA(documentType: string) {
-    return documentType !== CONSTANTS.DOCUMENT_TYPES.SSFA;
+    return submittedToPrc;
   }
 
   _showDaysToSignedFields(status: string) {

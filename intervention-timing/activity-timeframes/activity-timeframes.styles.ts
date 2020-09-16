@@ -13,7 +13,7 @@ export const ActivityTimeframesStyles: CSSResult = css`
   .year-divider {
     width: 100%;
     max-width: 950px;
-    border-bottom: 1px solid var(--light-divider-color);
+    border-bottom: 1px solid var(--light-hex-divider-color);
     margin: 20px 0;
   }
   .frames-grid {
@@ -30,7 +30,7 @@ export const ActivityTimeframesStyles: CSSResult = css`
     top: 5%;
     left: 116px;
     height: 90%;
-    border-left: 1px solid var(--light-divider-color);
+    border-left: 1px solid var(--light-hex-divider-color);
   }
   .activities-container,
   .frame {
