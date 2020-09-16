@@ -25,7 +25,8 @@ export class EtoolsStatus extends LitElement {
           ${layoutCenter}
           border-bottom: 1px solid var(--light-divider-color);
           border-top: 1px solid var(--light-divider-color);
-          padding: 14px;
+          padding: 22px 14px 0;
+          flex-wrap: wrap;
           background-color: var(--primary-background-color);
           margin-top: 4px;
           justify-content: center;
@@ -36,6 +37,7 @@ export class EtoolsStatus extends LitElement {
           ${layoutCenter}
           color: var(--secondary-text-color);
           font-size: 16px;
+          margin-bottom: 22px;
         }
 
         .status:not(:last-of-type)::after {
