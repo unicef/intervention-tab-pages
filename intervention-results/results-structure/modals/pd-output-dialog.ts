@@ -126,7 +126,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
     if (this.unassociated || this.loadingInProcess) {
       return;
     }
-    if (validateRequiredFields(this)) {
+    if (!validateRequiredFields(this)) {
       return;
     }
     this.loadingInProcess = true;

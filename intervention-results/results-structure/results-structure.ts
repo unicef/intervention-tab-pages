@@ -1,4 +1,3 @@
-/* eslint-disable lit/no-legacy-template-syntax */
 import {getStore} from '../../utils/redux-store-access';
 import {css, html, CSSResultArray, customElement, LitElement, property} from 'lit-element';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
@@ -15,7 +14,8 @@ import {
   CpOutput,
   ExpectedResult,
   InterventionQuarter,
-  ResultLinkLowerResult
+  ResultLinkLowerResult,
+  Intervention
 } from '../../common/models/intervention.types';
 import '@unicef-polymer/etools-data-table';
 import '@unicef-polymer/etools-content-panel';
@@ -37,10 +37,10 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import '../../common/layout/are-you-sure';
 import get from 'lodash-es/get';
-import {getIntervention} from '../../common/actions';
-import {fireEvent} from '../../utils/fire-custom-event';
-import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {updateCurrentIntervention} from '../../common/actions';
 import {_sendRequest} from '../../utils/request-helper';
+import {isUnicefUser, currentIntervention} from '../../common/selectors';
+import findIndex from 'lodash-es/findIndex';
 
 const RESULT_VIEW = 'result_view';
 const BUDGET_VIEW = 'budget_view';
@@ -144,6 +144,8 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
   @property({type: String}) noOfPdOutputs: string | number = '0';
   @property({type: Boolean}) thereAreInactiveIndicators = false;
   @property({type: Boolean}) showInactiveIndicators = false;
+
+  private intervention!: Intervention;
 
   viewTabs = [
     {
@@ -291,7 +293,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
 
                       <div class="flex-none" ?hidden="${!this.showActivities}">
                         <div class="heading">Total Cash budget</div>
-                        <div class="data">TTT 1231.144</div>
+                        <div class="data">TODO 123</div>
                       </div>
 
                       <div class="hover-block">
@@ -299,6 +301,11 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
                           icon="icons:create"
                           ?hidden="${!this.permissions.edit.result_links}"
                           @tap="${() => this.openPdOutputDialog(pdOutput, result.cp_output, result.cp_output_name)}"
+                        ></paper-icon-button>
+                        <paper-icon-button
+                          icon="icons:delete"
+                          ?hidden="${!this.permissions.edit.result_links}"
+                          @click="${() => this.openDeletePdOutputDialog(pdOutput.id, result)}"
                         ></paper-icon-button>
                       </div>
                     </div>
@@ -366,7 +373,8 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
     this.interventionStatus = selectInterventionStatus(state);
     this.quarters = selectInterventionQuarters(state);
     this.cpOutputs = (state.commonData && state.commonData.cpOutputs) || [];
-    this.isUnicefUser = state.user?.data?.is_unicef_user;
+    this.isUnicefUser = isUnicefUser(state);
+    this.intervention = currentIntervention(state);
     this._updateNoOfPdOutputs();
   }
 
@@ -391,6 +399,45 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
         interventionId: this.interventionId
       }
     });
+  }
+
+  async openDeletePdOutputDialog(lower_result_id: number, result: ExpectedResult) {
+    const confirmed = await openDialog({
+      dialog: 'are-you-sure',
+      dialogData: {
+        content: 'Are you sure you want to remove this PD Output?',
+        confirmBtnText: 'Yes'
+      }
+    }).then(({confirmed}) => {
+      return confirmed;
+    });
+
+    if (confirmed) {
+      this.deletePDOutputFromPD(lower_result_id, result);
+    }
+  }
+
+  deletePDOutputFromPD(lower_result_id: number, result: ExpectedResult) {
+    const endpoint = getEndpoint(interventionEndpoints.lowerResultsDelete, {
+      lower_result_id
+    });
+    _sendRequest({
+      method: 'DELETE',
+      endpoint: endpoint
+    }).then((_resp: any) => {
+      getStore().dispatch(
+        updateCurrentIntervention(this.removeDeletedPDOutput(this.intervention, lower_result_id, result))
+      );
+    });
+  }
+
+  removeDeletedPDOutput(intervention: Intervention, lower_result_id: number | string, result: ExpectedResult) {
+    const fewerLowerResults = result.ll_results.filter(
+      (lr: ResultLinkLowerResult) => lr.id !== Number(lower_result_id)
+    );
+    const index = findIndex(intervention.result_links, (rl: ExpectedResult) => rl.id === result.id);
+    intervention.result_links[index].ll_results = fewerLowerResults;
+    return intervention;
   }
 
   openCpOutputDialog(resultLink?: ExpectedResult): void {
@@ -428,10 +475,16 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
     _sendRequest({
       method: 'DELETE',
       endpoint: endpoint
-    }).then((_resp: any) => {
-      // TODO - use relatedIntervention
-      getStore().dispatch(getIntervention());
+    }).then(() => {
+      getStore().dispatch(updateCurrentIntervention(this.removeDeletedCPOutput(this.intervention, resultLinkId)));
     });
+  }
+
+  removeDeletedCPOutput(intervention: Intervention, resultLinkId: string | number) {
+    intervention.result_links = intervention.result_links.filter(
+      (rl: ExpectedResult) => rl.id !== Number(resultLinkId)
+    );
+    return intervention;
   }
 
   _updateNoOfPdOutputs() {

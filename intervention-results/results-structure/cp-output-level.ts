@@ -96,7 +96,7 @@ export class CpOutputLevel extends LitElement {
                         <paper-icon-button
                           icon="icons:delete"
                           ?hidden="${this.readonly}"
-                          @tap="${this.openDeleteCPOutputPopup}"
+                          @click="${this.openDeleteCPOutputPopup}"
                         ></paper-icon-button>
                       </div>
                     `

@@ -44,6 +44,7 @@ export interface EtoolsEndpoints {
   riskDelete: EtoolsEndpoint;
   pdAttachments: EtoolsEndpoint;
   updatePdAttachment: EtoolsEndpoint;
+  lowerResultsDelete: EtoolsEndpoint;
 }
 
 export const interventionEndpoints: EtoolsEndpoints = {
@@ -129,6 +130,9 @@ export const interventionEndpoints: EtoolsEndpoints = {
   },
   deleteComment: {
     template: '/api/comments/v1/partners/intervention/<%=interventionId%>/<%=commentId%>/delete/'
+  },
+  lowerResultsDelete: {
+    template: '/api/v2/reports/lower_results/<%=lower_result_id%>/'
   },
   createIndicator: {
     template: '/api/v2/interventions/lower-results/<%=id%>/indicators/'
