@@ -9,6 +9,7 @@ import '@unicef-polymer/etools-dialog';
 import {getStore} from '../../../utils/redux-store-access';
 import {getIntervention} from '../../../common/actions';
 import {fireEvent} from '../../../utils/fire-custom-event';
+import {validateRequiredFields} from '../../../utils/validation-helper';
 
 @customElement('pd-output-dialog')
 export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElement) {
@@ -84,7 +85,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
             @value-changed="${({detail}: CustomEvent) => this.updateModelValue('name', detail.value)}"
             required
             ?invalid="${this.errors.name}"
-            .errorMessage="${this.errors.name && this.errors.name[0]}"
+            .errorMessage="${(this.errors.name && this.errors.name[0]) || 'This field is required'}"
             @focus="${() => this.resetFieldError('name')}"
             @tap="${() => this.resetFieldError('name')}"
           ></paper-input>
@@ -107,7 +108,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
                   dynamic-align
                   required
                   ?invalid="${this.errors.cp_output}"
-                  .errorMessage="${this.errors.cp_output && this.errors.cp_output[0]}"
+                  .errorMessage="${(this.errors.cp_output && this.errors.cp_output[0]) || 'This field is required'}"
                   @focus="${() => this.resetFieldError('cp_output')}"
                   @tap="${() => this.resetFieldError('cp_output')}"
                 ></etools-dropdown>
@@ -123,6 +124,9 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
 
   processRequest(): void {
     if (this.unassociated || this.loadingInProcess) {
+      return;
+    }
+    if (validateRequiredFields(this)) {
       return;
     }
     this.loadingInProcess = true;
