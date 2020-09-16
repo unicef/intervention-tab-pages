@@ -35,7 +35,12 @@ import {openDialog} from '../../utils/dialog';
 import CONSTANTS from '../../common/constants';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import '../../common/layout/are-you-sure';
 import get from 'lodash-es/get';
+import {getIntervention} from '../../common/actions';
+import {fireEvent} from '../../utils/fire-custom-event';
+import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {_sendRequest} from '../../utils/request-helper';
 
 const RESULT_VIEW = 'result_view';
 const BUDGET_VIEW = 'budget_view';
@@ -270,8 +275,10 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
               .interventionId="${this.interventionId}"
               .showIndicators="${this.showIndicators}"
               .showActivities="${this.showActivities}"
+              .readonly="${!this.permissions.edit.result_links}"
               @add-pd="${() => this.openPdOutputDialog({}, result.cp_output, result.cp_output_name)}"
-              @edit-indicators="${() => this.openCpOutputDialog(result)}"
+              @edit-cp-output="${() => this.openCpOutputDialog(result)}"
+              @delete-cp-output="${() => this.openDeleteCpOutputDialog(result.id)}"
             >
               ${result.ll_results.map(
                 (pdOutput: ResultLinkLowerResult) => html`
@@ -395,6 +402,35 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
         cpOutputs: this.cpOutputs.filter(({id}: CpOutput) => !existedCpOutputs.has(id)),
         interventionId: this.interventionId
       }
+    });
+  }
+
+  async openDeleteCpOutputDialog(resultLinkId: number) {
+    const confirmed = await openDialog({
+      dialog: 'are-you-sure',
+      dialogData: {
+        content: 'Are you sure you want to remove this CP Output?',
+        confirmBtnText: 'Yes'
+      }
+    }).then(({confirmed}) => {
+      return confirmed;
+    });
+
+    if (confirmed) {
+      this.deleteCPOutputFromPD(resultLinkId);
+    }
+  }
+
+  deleteCPOutputFromPD(resultLinkId: number) {
+    const endpoint = getEndpoint(interventionEndpoints.resultLinkGetDelete, {
+      result_link: resultLinkId
+    });
+    _sendRequest({
+      method: 'DELETE',
+      endpoint: endpoint
+    }).then((_resp: any) => {
+      // TODO - use relatedIntervention
+      getStore().dispatch(getIntervention());
     });
   }
 

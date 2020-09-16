@@ -20,7 +20,7 @@ export interface EtoolsEndpoints {
   interventionTPMActivities: EtoolsEndpoint;
   resultLinks: EtoolsEndpoint;
   ramIndicators: EtoolsEndpoint;
-  resultLinkDetails: EtoolsEndpoint;
+  resultLinkGetDelete: EtoolsEndpoint;
   pdDetails: EtoolsEndpoint;
   createPd: EtoolsEndpoint;
   pdActivityDetails: EtoolsEndpoint;
@@ -85,7 +85,7 @@ export const interventionEndpoints: EtoolsEndpoints = {
   resultLinks: {
     template: '/api/v2/interventions/<%=id%>/result-links/'
   },
-  resultLinkDetails: {
+  resultLinkGetDelete: {
     template: '/api/v2/interventions/result-links/<%=result_link%>/'
   },
   ramIndicators: {
@@ -155,7 +155,7 @@ export const interventionEndpoints: EtoolsEndpoints = {
   },
   riskDelete: {
     template: '/api/pmp/v3/interventions/<%=interventionId%>/risks/<%=riskId%>'
-  },  
+  },
   pdAttachments: {
     template: '/api/pmp/v3/interventions/<%=id%>/attachments/'
   },
