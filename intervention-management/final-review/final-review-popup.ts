@@ -12,7 +12,7 @@ import {updateCurrentIntervention} from '../../common/actions';
 export class FinalReviewPopup extends LitElement {
   @property() savingInProcess = false;
   @property() dialogOpened = true;
-  @property() data: Partial<ReviewAttachment> = {};
+  @property() data = {} as Partial<ReviewAttachment>;
   private endpoint!: EtoolsRequestEndpoint;
 
   set dialogData(data: any) {
