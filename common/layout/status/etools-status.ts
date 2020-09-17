@@ -82,8 +82,25 @@ export class EtoolsStatus extends LitElement {
   @property({type: Array})
   statuses: EtoolsStatusItem[] = [];
 
+  @property({type: Number})
+  interventionId!: number;
+
   getStatusHtml(item: EtoolsStatusItem, index: number, activeStatusIndex: number) {
     const completed = this.isCompleted(index, activeStatusIndex);
+    // if status is terminated..we do not show active, and reverse
+    // @lajos: this should be refactored to something better
+    if (this.activeStatus == 'terminated') {
+      if (this.statuses.length - 1 == index) {
+        // special icon for terminated status
+        return html`
+          <div class="status ${this.getStatusClasses(index, activeStatusIndex)}">
+            <iron-icon class="custom-icon" style="color: #ea4022" icon="report-problem"> </iron-icon>
+            <span class="label">${item[1]}</span>
+          </div>
+        `;
+      }
+    }
+
     return html`
       <div class="status ${this.getStatusClasses(index, activeStatusIndex)}">
         <span class="icon"> ${completed ? html`${completedStatusIcon}` : html`${this.getBaseOneIndex(index)}`} </span>

@@ -1,4 +1,4 @@
-import {LitElement, html, customElement, css, property, TemplateResult} from 'lit-element';
+import {LitElement, html, customElement, property, TemplateResult} from 'lit-element';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import {Disaggregation, DisaggregationValue} from '../../common/models/globals.types';
 import {Indicator} from '../../common/models/intervention.types';
@@ -121,12 +121,12 @@ export class PdIndicator extends LitElement {
             <paper-icon-button
               icon="icons:create"
               ?hidden="${!this.indicator.is_active || this.readonly}"
-              @tap="${() => this.openIndicatorDialog(this.indicator)}"
+              @click="${() => this.openIndicatorDialog(this.indicator)}"
             ></paper-icon-button>
             <paper-icon-button
               icon="icons:block"
               ?hidden="${!this.indicator.is_active || this.readonly}"
-              @tap="${() => this.openDeactivationDialog(String(this.indicator.id))}"
+              @click="${() => this.openDeactivationDialog(String(this.indicator.id))}"
             ></paper-icon-button>
           </div>
         </div>

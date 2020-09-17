@@ -54,7 +54,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
               <div class="actions">
                 <paper-icon-button
                   class="action delete"
-                  @tap="${(e: CustomEvent) => this._openDeleteConfirmation(e, index)}"
+                  @click="${(e: CustomEvent) => this._openDeleteConfirmation(e, index)}"
                   data-args="${index}"
                   icon="cancel"
                 ></paper-icon-button>
@@ -99,7 +99,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
       <div class="row-padding-v">
         <paper-button
           class="secondary-btn"
-          @tap="${this._addNewDisaggregation}"
+          @click="${this._addNewDisaggregation}"
           ?hidden="${this._maxDisaggregations(this.dataItems.length)}"
           title="Add Disaggregation"
           >ADD DISAGGREGATION

@@ -92,7 +92,7 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
           </etools-dropdown-multi>
           <paper-button
             class="secondary-btn see-locations right-align"
-            @tap="${this.openLocationsDialog}"
+            @click="${this.openLocationsDialog}"
             ?disabled="${this._isEmpty(this.data.flat_locations)}"
             title="See all locations"
           >

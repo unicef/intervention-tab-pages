@@ -48,7 +48,7 @@ export class AttachmentsList extends connect(getStore())(LitElement) {
             icon="add-box"
             ?hidden="${!this.canEdit}"
             title="Add"
-            @tap="${() => this.openAttachmentDialog()}"
+            @click="${() => this.openAttachmentDialog()}"
           >
           </paper-icon-button>
         </div>
@@ -97,7 +97,7 @@ export class AttachmentsList extends connect(getStore())(LitElement) {
                         <paper-icon-button
                           ?hidden="${!this.canEdit || !this.canEditAttachments()}"
                           icon="create"
-                          @tap="${() => this.openAttachmentDialog(attachment)}"
+                          @click="${() => this.openAttachmentDialog(attachment)}"
                         ></paper-icon-button>
                       </div>
                     </div>
