@@ -20,7 +20,7 @@ export interface EtoolsEndpoints {
   interventionTPMActivities: EtoolsEndpoint;
   resultLinks: EtoolsEndpoint;
   ramIndicators: EtoolsEndpoint;
-  resultLinkDetails: EtoolsEndpoint;
+  resultLinkGetDelete: EtoolsEndpoint;
   pdDetails: EtoolsEndpoint;
   createPd: EtoolsEndpoint;
   pdActivityDetails: EtoolsEndpoint;
@@ -44,6 +44,7 @@ export interface EtoolsEndpoints {
   riskDelete: EtoolsEndpoint;
   pdAttachments: EtoolsEndpoint;
   updatePdAttachment: EtoolsEndpoint;
+  lowerResultsDelete: EtoolsEndpoint;
 }
 
 export const interventionEndpoints: EtoolsEndpoints = {
@@ -85,7 +86,7 @@ export const interventionEndpoints: EtoolsEndpoints = {
   resultLinks: {
     template: '/api/v2/interventions/<%=id%>/result-links/'
   },
-  resultLinkDetails: {
+  resultLinkGetDelete: {
     template: '/api/v2/interventions/result-links/<%=result_link%>/'
   },
   ramIndicators: {
@@ -130,6 +131,9 @@ export const interventionEndpoints: EtoolsEndpoints = {
   deleteComment: {
     template: '/api/comments/v1/partners/intervention/<%=interventionId%>/<%=commentId%>/delete/'
   },
+  lowerResultsDelete: {
+    template: '/api/v2/reports/lower_results/<%=lower_result_id%>/'
+  },
   createIndicator: {
     template: '/api/v2/interventions/lower-results/<%=id%>/indicators/'
   },
@@ -155,7 +159,7 @@ export const interventionEndpoints: EtoolsEndpoints = {
   },
   riskDelete: {
     template: '/api/pmp/v3/interventions/<%=interventionId%>/risks/<%=riskId%>'
-  },  
+  },
   pdAttachments: {
     template: '/api/pmp/v3/interventions/<%=id%>/attachments/'
   },

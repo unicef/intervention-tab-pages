@@ -117,15 +117,15 @@ export class PdIndicator extends LitElement {
               this.indicator.cluster_indicator_id!
             )}
           </div>
-          <div class="hover-block" ?hidden="${this.readonly}">
+          <div class="hover-block">
             <paper-icon-button
               icon="icons:create"
-              ?hidden="${!this.indicator.is_active}"
+              ?hidden="${!this.indicator.is_active || this.readonly}"
               @click="${() => this.openIndicatorDialog(this.indicator)}"
             ></paper-icon-button>
             <paper-icon-button
               icon="icons:block"
-              ?hidden="${!this.indicator.is_active}"
+              ?hidden="${!this.indicator.is_active || this.readonly}"
               @click="${() => this.openDeactivationDialog(String(this.indicator.id))}"
             ></paper-icon-button>
           </div>

@@ -39,6 +39,7 @@ export class CpOutputLevel extends LitElement {
   @property({type: Boolean, reflect: true, attribute: 'show-cpo-level'}) showCPOLevel = false;
   @property({type: Boolean}) showIndicators = true;
   @property({type: Boolean}) showActivities = true;
+  @property({type: Boolean}) readonly = true;
 
   protected render(): TemplateResult {
     return html`
@@ -82,12 +83,21 @@ export class CpOutputLevel extends LitElement {
                       </div>
 
                       <div class="flex-none" ?hidden="${!this.showActivities}">
-                        <div class="heading">Total Cash budget</div>
-                        <div class="data">TTT 1231.144</div>
+                        <div class="heading">Total Cash Budget</div>
+                        <div class="data">TODO 1234</div>
                       </div>
 
                       <div class="hover-block">
-                        <paper-icon-button icon="icons:create" @click="${() => this.openPopup()}"></paper-icon-button>
+                        <paper-icon-button
+                          icon="icons:create"
+                          ?hidden="${this.readonly}"
+                          @click="${this.openEditCpOutputPopup}"
+                        ></paper-icon-button>
+                        <paper-icon-button
+                          icon="icons:delete"
+                          ?hidden="${this.readonly}"
+                          @click="${this.openDeleteCPOutputPopup}"
+                        ></paper-icon-button>
                       </div>
                     `
                   : html`
@@ -111,8 +121,12 @@ export class CpOutputLevel extends LitElement {
     `;
   }
 
-  openPopup(): void {
-    fireEvent(this, 'edit-indicators');
+  openEditCpOutputPopup(): void {
+    fireEvent(this, 'edit-cp-output');
+  }
+
+  openDeleteCPOutputPopup() {
+    fireEvent(this, 'delete-cp-output');
   }
 
   addPD(): void {

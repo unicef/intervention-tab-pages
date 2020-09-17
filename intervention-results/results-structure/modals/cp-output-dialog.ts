@@ -8,6 +8,8 @@ import {getStore} from '../../../utils/redux-store-access';
 import {GenericObject} from '../../../common/models/globals.types';
 import {getIntervention} from '../../../common/actions';
 import {fireEvent} from '../../../utils/fire-custom-event';
+import '@unicef-polymer/etools-dropdown/etools-dropdown';
+import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
 
 @customElement('cp-output-dialog')
 export class CpOutputDialog extends LitElement {
@@ -39,7 +41,7 @@ export class CpOutputDialog extends LitElement {
     }
     this.interventionId = interventionId;
     this.cpOutputs = cpOutputs;
-    this.loadIndicators(this.cpOutputId);
+    this.loadRamIndicators(this.cpOutputId);
   }
 
   get dialogTitle(): string {
@@ -127,7 +129,7 @@ export class CpOutputDialog extends LitElement {
 
   onCpOutputSelected(id: number) {
     this.selectedCpOutput = id;
-    this.loadIndicators(id);
+    this.loadRamIndicators(id);
   }
 
   resetFieldError(field: string) {
@@ -144,7 +146,7 @@ export class CpOutputDialog extends LitElement {
 
     this.loadingInProcess = true;
     const endpoint = this.cpOutputId
-      ? getEndpoint(interventionEndpoints.resultLinkDetails, {result_link: this.resultLinkId})
+      ? getEndpoint(interventionEndpoints.resultLinkGetDelete, {result_link: this.resultLinkId})
       : getEndpoint(interventionEndpoints.resultLinks, {id: this.interventionId});
     const method = this.cpOutputId ? 'PATCH' : 'POST';
     const body: GenericObject<any> = {ram_indicators: this.selectedIndicators};
@@ -175,7 +177,7 @@ export class CpOutputDialog extends LitElement {
     fireEvent(this, 'dialog-closed', {confirmed: false});
   }
 
-  private loadIndicators(cpOutputId: number): void {
+  private loadRamIndicators(cpOutputId: number): void {
     if (!cpOutputId) {
       return;
     }
