@@ -160,9 +160,7 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
         title: 'In-country management and support staff',
         description:
           'Contribution for In-country management and support staff prorated to their contribution to the' +
-          ' programme (representation, planning, coordination, logistics, administration, finance contribution for' +
-          ' Operational costs prorated to their contribution to the programme (office space, equipment,' +
-          ' office supplies, maintenance',
+          ' programme (representation, planning, coordination, logistics, administration, finance)',
         unicef_cash: data.act1_unicef,
         partner_contribution: data.act1_partner,
         total: data.act1_total,

@@ -148,9 +148,6 @@ class EditQprDialog extends PolymerElement {
   addOrModifyQprDialogOpened = false;
 
   @property({type: Object})
-  toastMsgLoadingSource!: PolymerElement;
-
-  @property({type: Object})
   _qprDatesSetModel = {
     start_date: null,
     end_date: null,
@@ -188,7 +185,7 @@ class EditQprDialog extends PolymerElement {
   _updateQprData(e: CustomEvent) {
     if (e.detail.confirmed) {
       if (this._duplicateDueDate(this._editedQprDatesSet.due_date)) {
-        fireEvent(this.toastMsgLoadingSource, 'toast', {
+        fireEvent(this, 'toast', {
           text: 'Requirement dates not added, selected Due Date is already in the list.',
           showCloseBtn: true
         });
@@ -242,7 +239,7 @@ class EditQprDialog extends PolymerElement {
       })
       .catch((error: any) => {
         logError('Failed to save/update qpr data!', 'edit-qpr-dialog', error);
-        parseRequestErrorsAndShowAsToastMsgs(error, this.toastMsgLoadingSource);
+        parseRequestErrorsAndShowAsToastMsgs(error, this);
         dialog.stopSpinner();
       });
   }

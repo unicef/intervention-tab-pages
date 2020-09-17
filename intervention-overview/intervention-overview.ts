@@ -82,12 +82,12 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
         etools-currency-amount-input {
           width: 140px;
         }
-        
+
         .inline-right {
           display: inline;
           text-align: right;
         }
-        
+
       </style>
 
       <div class="page-content elevation" elevation="1" id="top-container">
@@ -119,8 +119,8 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
               ${
                 this.isUnicefUser
                   ? html` <a href="/pmp/partners/${this.intervention.partner_id}/details">
-                            <strong class="blue">${this.intervention.partner}</strong>
-                          </a>` 
+                      <strong class="blue">${this.intervention.partner}</strong>
+                    </a>`
                   : html`<strong class="blue">${this.intervention.partner}</strong>`
               }
             </div>

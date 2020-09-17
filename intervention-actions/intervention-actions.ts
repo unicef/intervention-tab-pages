@@ -23,6 +23,7 @@ export class InterventionActions extends LitElement {
 
   @property() actions: string[] = [];
   interventionId!: number;
+  activeStatus!: string;
 
   private actionsNamesMap = new Proxy(namesMap, {
     get(target: GenericObject<string>, property: string): string {
@@ -38,7 +39,7 @@ export class InterventionActions extends LitElement {
       (action: string) => !exportActions.includes(action) && action !== backAction
     );
     return html`
-      ${this.renderExport(exportActions)} ${this.renderBackAction(backAction)}
+      ${this.renderExport(exportActions)}${this.renderBackAction(backAction)}
       ${this.renderGroupedActions(mainAction, groupedActions)}
     `;
   }
@@ -63,7 +64,7 @@ export class InterventionActions extends LitElement {
   private renderBackAction(action?: string): TemplateResult {
     return action
       ? html`
-          <paper-button class="main-button back-button" @tap="${() => this.processAction(action)}">
+          <paper-button class="main-button back-button" @click="${() => this.processAction(action)}">
             ${arrowLeftIcon} <span>${this.actionsNamesMap[action]}</span>
           </paper-button>
         `
@@ -76,7 +77,7 @@ export class InterventionActions extends LitElement {
     const className = `main-button${withAdditional}${onlyCancel}`;
     return mainAction
       ? html`
-          <paper-button class="${className}" @tap="${() => this.processAction(mainAction)}">
+          <paper-button class="${className}" @click="${() => this.processAction(mainAction)}">
             ${this.actionsNamesMap[mainAction]} ${this.getAdditionalTransitions(actions)}
           </paper-button>
         `
@@ -88,12 +89,12 @@ export class InterventionActions extends LitElement {
       return html``;
     }
     return html`
-      <paper-menu-button horizontal-align="right" @tap="${(event: MouseEvent) => event.stopImmediatePropagation()}">
+      <paper-menu-button horizontal-align="right" @click="${(event: MouseEvent) => event.stopImmediatePropagation()}">
         <paper-icon-button slot="dropdown-trigger" class="option-button" icon="expand-more"></paper-icon-button>
         <div slot="dropdown-content">
           ${actions.map(
             (action: string) => html`
-              <div class="other-options" @tap="${() => this.processAction(action)}">
+              <div class="other-options" @click="${() => this.processAction(action)}">
                 ${this.actionsNamesMap[action]}
               </div>
             `

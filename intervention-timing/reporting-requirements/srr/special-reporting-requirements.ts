@@ -159,7 +159,6 @@ class SpecialReportingRequirements extends CommonMixin(ReportingRequirementsComm
 
   _createAddEditDialog() {
     this.addEditDialog = document.createElement('add-edit-special-rep-req') as AddEditSpecialRepReqEl;
-    this.addEditDialog.set('toastMsgLoadingSource', this);
     this._onSpecialReportingRequirementsSaved = this._onSpecialReportingRequirementsSaved.bind(this);
     this.addEditDialog.addEventListener(
       'reporting-requirements-saved',
