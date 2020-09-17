@@ -87,7 +87,7 @@ export class CpOutputLevel extends LitElement {
                       </div>
 
                       <div class="hover-block">
-                        <paper-icon-button icon="icons:create" @tap="${() => this.openPopup()}"></paper-icon-button>
+                        <paper-icon-button icon="icons:create" @click="${() => this.openPopup()}"></paper-icon-button>
                       </div>
                     `
                   : html`

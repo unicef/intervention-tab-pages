@@ -53,7 +53,7 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
         <div slot="panel-btns">
           <paper-icon-button
             ?hidden="${this.hideEditIcon(this.editMode, this.canEditAtLeastOneField)}"
-            @tap="${this.allowEdit}"
+            @click="${this.allowEdit}"
             icon="create">
           </paper-icon-button>
         </div>

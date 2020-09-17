@@ -67,7 +67,7 @@ export class FinalReview extends connect(getStore())(LitElement) {
     return html`
       <etools-content-panel show-expand-btn panel-title="Final Partnership Review">
         <div slot="panel-btns" ?hidden="${!this.canEdit}">
-          <paper-icon-button @tap="${() => this.openPopup()}" icon="create"> </paper-icon-button>
+          <paper-icon-button @click="${() => this.openPopup()}" icon="create"> </paper-icon-button>
         </div>
         <div class="container">
           <div>

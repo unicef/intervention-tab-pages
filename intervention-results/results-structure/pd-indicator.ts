@@ -121,12 +121,12 @@ export class PdIndicator extends LitElement {
             <paper-icon-button
               icon="icons:create"
               ?hidden="${!this.indicator.is_active}"
-              @tap="${() => this.openIndicatorDialog(this.indicator)}"
+              @click="${() => this.openIndicatorDialog(this.indicator)}"
             ></paper-icon-button>
             <paper-icon-button
               icon="icons:block"
               ?hidden="${!this.indicator.is_active}"
-              @tap="${() => this.openDeactivationDialog(String(this.indicator.id))}"
+              @click="${() => this.openDeactivationDialog(String(this.indicator.id))}"
             ></paper-icon-button>
           </div>
         </div>

@@ -93,7 +93,7 @@ export class CpOutputDialog extends LitElement {
                   ?invalid="${this.errors.cp_output}"
                   .errorMessage="${this.errors.cp_output && this.errors.cp_output[0]}"
                   @focus="${() => this.resetFieldError('cp_output')}"
-                  @tap="${() => this.resetFieldError('cp_output')}"
+                  @click="${() => this.resetFieldError('cp_output')}"
                 ></etools-dropdown>
               `
             : html``}
@@ -114,7 +114,7 @@ export class CpOutputDialog extends LitElement {
             ?disabled="${!this.selectedCpOutput}"
             .errorMessage="${this.errors.ram_indicators && this.errors.ram_indicators[0]}"
             @focus="${() => this.resetFieldError('ram_indicators')}"
-            @tap="${() => this.resetFieldError('ram_indicators')}"
+            @click="${() => this.resetFieldError('ram_indicators')}"
           ></etools-dropdown-multi>
         </div>
       </etools-dialog>

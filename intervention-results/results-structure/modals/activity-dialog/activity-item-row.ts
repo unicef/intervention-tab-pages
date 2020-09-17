@@ -41,7 +41,7 @@ export class ActivityItemRow extends LitElement {
                 @value-changed="${({detail}: CustomEvent) => this.updateField('name', detail.value)}"
                 @blur="${() => this.onBlur()}"
                 @focus="${() => (this.invalid = false)}"
-                @tap="${() => (this.invalid = false)}"
+                @click="${() => (this.invalid = false)}"
               ></paper-textarea>
             </div>
             <div class="grid-cell center border">

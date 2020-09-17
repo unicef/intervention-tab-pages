@@ -86,7 +86,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
             ?invalid="${this.errors.name}"
             .errorMessage="${this.errors.name && this.errors.name[0]}"
             @focus="${() => this.resetFieldError('name')}"
-            @tap="${() => this.resetFieldError('name')}"
+            @click="${() => this.resetFieldError('name')}"
           ></paper-input>
 
           ${this.hideCpOutputs
@@ -109,7 +109,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
                   ?invalid="${this.errors.cp_output}"
                   .errorMessage="${this.errors.cp_output && this.errors.cp_output[0]}"
                   @focus="${() => this.resetFieldError('cp_output')}"
-                  @tap="${() => this.resetFieldError('cp_output')}"
+                  @click="${() => this.resetFieldError('cp_output')}"
                 ></etools-dropdown>
               `}
         </div>

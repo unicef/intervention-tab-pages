@@ -104,7 +104,7 @@ export class PdActivities extends LitElement {
               <div class="hover-block">
                 <paper-icon-button
                   icon="icons:create"
-                  @tap="${() => this.openDialog(activity)}"
+                  @click="${() => this.openDialog(activity)}"
                   ?hidden="${this.readonly}"
                 ></paper-icon-button>
               </div>

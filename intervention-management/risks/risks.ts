@@ -70,7 +70,7 @@ export class RisksElement extends connect(getStore())(ComponentBaseMixin(LitElem
         <div slot="panel-btns">
           <paper-icon-button
             ?hidden="${!this.canEditAtLeastOneField}"
-            @tap="${() => this.openRiskDialog()}"
+            @click="${() => this.openRiskDialog()}"
             icon="add-box"
           >
           </paper-icon-button>
