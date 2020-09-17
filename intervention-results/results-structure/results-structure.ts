@@ -41,6 +41,7 @@ import {updateCurrentIntervention} from '../../common/actions';
 import {_sendRequest} from '../../utils/request-helper';
 import {isUnicefUser, currentIntervention} from '../../common/selectors';
 import findIndex from 'lodash-es/findIndex';
+import {cloneDeep} from 'lodash-es';
 
 const RESULT_VIEW = 'result_view';
 const BUDGET_VIEW = 'budget_view';
@@ -292,7 +293,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
                       </div>
 
                       <div class="flex-none" ?hidden="${!this.showActivities}">
-                        <div class="heading">Total Cash budget</div>
+                        <div class="heading">Total Cash Budget</div>
                         <div class="data">TODO 123</div>
                       </div>
 
@@ -374,7 +375,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
     this.quarters = selectInterventionQuarters(state);
     this.cpOutputs = (state.commonData && state.commonData.cpOutputs) || [];
     this.isUnicefUser = isUnicefUser(state);
-    this.intervention = currentIntervention(state);
+    this.intervention = cloneDeep(currentIntervention(state));
     this._updateNoOfPdOutputs();
   }
 

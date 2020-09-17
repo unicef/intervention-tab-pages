@@ -83,7 +83,7 @@ export class CpOutputLevel extends LitElement {
                       </div>
 
                       <div class="flex-none" ?hidden="${!this.showActivities}">
-                        <div class="heading">Total Cash budget</div>
+                        <div class="heading">Total Cash Budget</div>
                         <div class="data">TODO 1234</div>
                       </div>
 

@@ -8,6 +8,8 @@ import {getStore} from '../../../utils/redux-store-access';
 import {GenericObject} from '../../../common/models/globals.types';
 import {getIntervention} from '../../../common/actions';
 import {fireEvent} from '../../../utils/fire-custom-event';
+import '@unicef-polymer/etools-dropdown/etools-dropdown';
+import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
 
 @customElement('cp-output-dialog')
 export class CpOutputDialog extends LitElement {
