@@ -91,7 +91,7 @@ export class CpOutputLevel extends LitElement {
                         <paper-icon-button
                           icon="icons:create"
                           ?hidden="${this.readonly}"
-                          @tap="${this.openEditCpOutputPopup}"
+                          @click="${this.openEditCpOutputPopup}"
                         ></paper-icon-button>
                         <paper-icon-button
                           icon="icons:delete"
