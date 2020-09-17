@@ -138,9 +138,6 @@ class EditHruDialog extends connect(getStore())(PolymerElement) {
   @property({type: Array})
   hruData: AnyObject[] = [];
 
-  @property({type: Object})
-  toastMsgLoadingSource!: PolymerElement;
-
   @property({type: Number})
   _hruEditedIndex = -1;
 
@@ -205,7 +202,7 @@ class EditHruDialog extends connect(getStore())(PolymerElement) {
   _addToList() {
     const alreadySelected = this.hruData.find((d: any) => d.end_date === this.selectedDate);
     if (alreadySelected) {
-      fireEvent(this.toastMsgLoadingSource, 'toast', {
+      fireEvent(this, 'toast', {
         text: 'This date is already added to the list.',
         showCloseBtn: true
       });
@@ -273,7 +270,7 @@ class EditHruDialog extends connect(getStore())(PolymerElement) {
       })
       .catch((error: any) => {
         logError('Failed to save/update HR data!', 'edit-hru-dialog', error);
-        parseRequestErrorsAndShowAsToastMsgs(error, this.toastMsgLoadingSource);
+        parseRequestErrorsAndShowAsToastMsgs(error, this);
         dialog.stopSpinner();
       });
   }
