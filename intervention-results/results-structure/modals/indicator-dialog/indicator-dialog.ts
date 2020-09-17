@@ -210,9 +210,6 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   @property({type: Boolean})
   isCluster = false;
 
-  @property({type: Object})
-  toastEventSource!: LitElement;
-
   @property({type: Boolean})
   disableConfirmBtn = false;
 
@@ -242,7 +239,6 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
     this.prpServerOn = data.prpServerOn;
     this.currentUser = getStore().getState().user.data;
     this.interventionStatus = getStore().getState().interventions.current.status;
-    this.toastEventSource = data.toastEventSource;
 
     if (!this.data.id) {
       this.preselectSectionAndLocation();
@@ -363,7 +359,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   }
 
   _showToast(e: CustomEvent) {
-    parseRequestErrorsAndShowAsToastMsgs(e.detail.error, this.toastEventSource);
+    parseRequestErrorsAndShowAsToastMsgs(e.detail.error, this);
   }
 
   _centerDialog() {

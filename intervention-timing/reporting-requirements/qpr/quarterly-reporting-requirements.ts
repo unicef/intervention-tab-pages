@@ -72,7 +72,6 @@ class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRequireme
 
   _createEditQprDialog() {
     this.editQprDialog = document.createElement('edit-qpr-dialog') as any;
-    this.editQprDialog.set('toastMsgLoadingSource', this);
     this._onReportingRequirementsSaved = this._onReportingRequirementsSaved.bind(this);
     this.editQprDialog.addEventListener('reporting-requirements-saved', this._onReportingRequirementsSaved as any);
     document.querySelector('body')!.appendChild(this.editQprDialog);

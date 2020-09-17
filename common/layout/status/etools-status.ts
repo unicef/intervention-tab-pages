@@ -25,7 +25,8 @@ export class EtoolsStatus extends LitElement {
           ${layoutCenter}
           border-bottom: 1px solid var(--light-divider-color);
           border-top: 1px solid var(--light-divider-color);
-          padding: 14px;
+          padding: 22px 14px 0;
+          flex-wrap: wrap;
           background-color: var(--primary-background-color);
           margin-top: 4px;
           justify-content: center;
@@ -36,6 +37,7 @@ export class EtoolsStatus extends LitElement {
           ${layoutCenter}
           color: var(--secondary-text-color);
           font-size: 16px;
+          margin-bottom: 22px;
         }
 
         .status:not(:last-of-type)::after {
@@ -80,8 +82,25 @@ export class EtoolsStatus extends LitElement {
   @property({type: Array})
   statuses: EtoolsStatusItem[] = [];
 
+  @property({type: Number})
+  interventionId!: number;
+
   getStatusHtml(item: EtoolsStatusItem, index: number, activeStatusIndex: number) {
     const completed = this.isCompleted(index, activeStatusIndex);
+    // if status is terminated..we do not show active, and reverse
+    // @lajos: this should be refactored to something better
+    if (this.activeStatus == 'terminated') {
+      if (this.statuses.length - 1 == index) {
+        // special icon for terminated status
+        return html`
+          <div class="status ${this.getStatusClasses(index, activeStatusIndex)}">
+            <iron-icon class="custom-icon" style="color: #ea4022" icon="report-problem"> </iron-icon>
+            <span class="label">${item[1]}</span>
+          </div>
+        `;
+      }
+    }
+
     return html`
       <div class="status ${this.getStatusClasses(index, activeStatusIndex)}">
         <span class="icon"> ${completed ? html`${completedStatusIcon}` : html`${this.getBaseOneIndex(index)}`} </span>

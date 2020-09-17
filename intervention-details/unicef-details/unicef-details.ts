@@ -53,7 +53,7 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
         <div slot="panel-btns">
           <paper-icon-button
             ?hidden="${this.hideEditIcon(this.editMode, this.canEditAtLeastOneField)}"
-            @tap="${this.allowEdit}"
+            @click="${this.allowEdit}"
             icon="create">
           </paper-icon-button>
         </div>
@@ -166,15 +166,7 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
           </div>
         </div>
 
-        <div class="layout-horizontal right-align row-padding-v"
-          ?hidden="${this.hideActionButtons(this.editMode, this.canEditAtLeastOneField)}">
-          <paper-button class="default" @tap="${this.cancel}">
-            Cancel
-          </paper-button>
-          <paper-button class="primary" @tap="${this.savePdDetails}">
-            Save
-          </paper-button>
-        </div>
+        ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
       </etools-content-panel>
     `;
   }
@@ -291,11 +283,12 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
     return this.previousFocalPointsDisplay;
   }
 
-  savePdDetails() {
+  saveData() {
     if (!this.validate()) {
-      return;
+      return Promise.resolve(false);
     }
-    getStore()
+
+    return getStore()
       .dispatch(patchIntervention(this.data))
       .then(() => {
         this.editMode = false;

@@ -89,7 +89,7 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
                 <div class="actions">
                   <paper-icon-button
                     class="action delete"
-                    @tap="${(event: CustomEvent) => this._openDeleteConfirmation(event, index)}"
+                    @click="${(event: CustomEvent) => this._openDeleteConfirmation(event, index)}"
                     .data-args="${index}"
                     icon="cancel"
                     ?hidden="${!this._showDeleteFrBtn(this.interventionStatus, this.dataItems.length)}"
@@ -122,7 +122,7 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
         </div>
 
         <div class="row-h">
-          <paper-button class="secondary-btn" @tap="${() => this._addNewFundReservation()}">
+          <paper-button class="secondary-btn" @click="${() => this._addNewFundReservation()}">
             <iron-icon icon="add"></iron-icon>
             Add FR Number
           </paper-button>

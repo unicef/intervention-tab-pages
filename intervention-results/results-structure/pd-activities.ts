@@ -55,6 +55,10 @@ export class PdActivities extends LitElement {
             border: 1px solid var(--main-border-color) !important;
             border-bottom: none !important;
           }
+          --icon-wrapper: {
+            padding: 0px 0px !important;
+            margin-right: 16px !important;
+          }
         }
         .editable-row .hover-block {
           background-color: var(--green-background) !important;
@@ -100,7 +104,7 @@ export class PdActivities extends LitElement {
               <div class="hover-block">
                 <paper-icon-button
                   icon="icons:create"
-                  @tap="${() => this.openDialog(activity)}"
+                  @click="${() => this.openDialog(activity)}"
                   ?hidden="${this.readonly}"
                 ></paper-icon-button>
               </div>
