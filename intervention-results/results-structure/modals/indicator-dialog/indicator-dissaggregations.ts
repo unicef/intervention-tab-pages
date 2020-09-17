@@ -128,7 +128,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
 
   _addNewDisaggregation() {
     this._addElement();
-    fireEvent(this, 'add-new-disaggreg');
+    fireEvent(this, 'add-new-disaggreg', this.dataItems);
   }
 
   _onDisaggregationSelected(event: CustomEvent, index: number) {
