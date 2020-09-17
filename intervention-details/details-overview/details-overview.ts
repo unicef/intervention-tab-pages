@@ -54,7 +54,7 @@ export class DetailsOverview extends connect(getStore())(LitElement) {
             </div>
             <div class="flex-1">
               <span>
-                <label class="paper-label">CFEI Number</label>
+                <label class="paper-label">CFEI/DSR Reference Number</label>
               </span>
             </div>
             <div class="flex-1">
