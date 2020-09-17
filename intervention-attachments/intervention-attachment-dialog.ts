@@ -94,7 +94,7 @@ export class InterventionAttachmentDialog extends connect(getStore())(LitElement
             ?invalid="${this.errors.type}"
             .errorMessage="${(this.errors.type && this.errors.type[0]) || 'This field is required'}"
             @focus="${() => this.resetFieldError('type')}"
-            @tap="${() => this.resetFieldError('type')}"
+            @click="${() => this.resetFieldError('type')}"
           ></etools-dropdown>
 
           <!-- Attachment -->
@@ -110,7 +110,7 @@ export class InterventionAttachmentDialog extends connect(getStore())(LitElement
             ?invalid="${this.errors.attachment_document}"
             .errorMessage="${this.errors.attachment_document && this.errors.attachment_document[0]}"
             @focus="${() => this.resetFieldError('attachment_document')}"
-            @tap="${() => this.resetFieldError('attachment_document')}"
+            @click="${() => this.resetFieldError('attachment_document')}"
           ></etools-upload>
 
           <etools-form-element-wrapper no-placeholder>

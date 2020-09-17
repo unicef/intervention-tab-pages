@@ -2,8 +2,6 @@ import {LitElement, property} from 'lit-element';
 import {Constructor} from '../models/globals.types';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {getStore} from '../../utils/redux-store-access';
-import CONSTANTS from '../constants';
 /**
  * @polymer
  * @mixinFunction

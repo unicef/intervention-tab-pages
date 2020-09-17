@@ -1,4 +1,4 @@
-import {LitElement, html, customElement, css, property, TemplateResult} from 'lit-element';
+import {LitElement, html, customElement, property, TemplateResult} from 'lit-element';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import {Disaggregation, DisaggregationValue} from '../../common/models/globals.types';
 import {Indicator} from '../../common/models/intervention.types';
@@ -9,14 +9,58 @@ import {ResultStructureStyles} from './results-structure.styles';
 @customElement('pd-indicator')
 export class PdIndicator extends LitElement {
   static get styles() {
-    return [
-      gridLayoutStylesLit,
-      ResultStructureStyles,
-      // language=css
-      css`
+    return [gridLayoutStylesLit, ResultStructureStyles];
+  }
+  @property() private disaggregations: Disaggregation[] = [];
+  @property({type: Array}) indicator!: Indicator;
+  @property({type: Boolean}) readonly!: boolean;
+  @property({type: Array}) locationNames: {name: string; adminLevel: string}[] = [];
+  @property({type: String}) sectionClusterNames = '';
+
+  render() {
+    return html`
+      <style>
         :host {
           --indicator-blue: #a4c4e1;
           --indicator-green: #c4d7c6;
+        }
+        :host etools-data-table-row {
+          --icon-wrapper: {
+            padding: 0px 0px !important;
+            margin-right: 16px !important;
+          }
+        }
+        :host([high-frequency-indicator]) etools-data-table-row {
+          --icon-wrapper: {
+            background: var(--indicator-blue)
+              linear-gradient(
+                135deg,
+                #066ac7 12.5%,
+                #a4c4e1 12.5%,
+                #a4c4e1 50%,
+                #066ac7 50%,
+                #066ac7 62.5%,
+                #a4c4e1 62.5%,
+                #a4c4e1 100%
+              )
+              center/5.66px 5.66px;
+          }
+        }
+        :host([cluster-indicator]) etools-data-table-row {
+          --icon-wrapper: {
+            background: var(--indicator-green)
+              linear-gradient(
+                135deg,
+                #066ac7 12.5%,
+                #c4d7c6 12.5%,
+                #c4d7c6 50%,
+                #066ac7 50%,
+                #066ac7 62.5%,
+                #c4d7c6 62.5%,
+                #c4d7c6 100%
+              )
+              center/5.66px 5.66px;
+          }
         }
         etools-data-table-row {
           --blue-background: #b6d5f1;
@@ -25,37 +69,6 @@ export class PdIndicator extends LitElement {
           --list-row-wrapper_-_background-color: var(--blue-background);
           --list-row-wrapper_-_align-items: stretch;
           --list-row-collapse-wrapper_-_margin-bottom: 0px;
-          --icon-wrapper-padding: 0px 0px;
-          --icon-wrapper-background: none;
-          --icon-wrapper-margin: 0 16px 0 0;
-        }
-        :host([high-frequency-indicator]) etools-data-table-row {
-          --icon-wrapper-background: var(--indicator-blue)
-            linear-gradient(
-              135deg,
-              #066ac7 12.5%,
-              #a4c4e1 12.5%,
-              #a4c4e1 50%,
-              #066ac7 50%,
-              #066ac7 62.5%,
-              #a4c4e1 62.5%,
-              #a4c4e1 100%
-            )
-            center/5.66px 5.66px;
-        }
-        :host([cluster-indicator]) etools-data-table-row {
-          --icon-wrapper-background: var(--indicator-green)
-            linear-gradient(
-              135deg,
-              #066ac7 12.5%,
-              #c4d7c6 12.5%,
-              #c4d7c6 50%,
-              #066ac7 50%,
-              #066ac7 62.5%,
-              #c4d7c6 62.5%,
-              #c4d7c6 100%
-            )
-            center/5.66px 5.66px;
         }
         .indicatorType {
           font-weight: 600;
@@ -65,27 +78,20 @@ export class PdIndicator extends LitElement {
         div[slot='row-data-details'] {
           --blue-background-dark: #a4c4e1;
           background: var(--blue-background-dark);
+          max-height: 220px;
+          overflow: auto;
         }
         .hover-block {
           background-color: var(--blue-background) !important;
         }
-      `
-    ];
-  }
-  @property() private disaggregations: Disaggregation[] = [];
-  @property({type: Array}) indicator!: Indicator;
-  @property({type: Boolean}) readonly!: boolean;
-  @property({type: Array}) locationNames: string[] = [];
-  @property({type: String}) sectionClusterNames = '';
-
-  render() {
-    return html`
-      <style>
         etools-data-table-row {
           --list-row-collapse-wrapper: {
             padding: 0;
             margin: 0;
           }
+        }
+        .font-bold {
+          font-weight: bold;
         }
       </style>
       <etools-data-table-row>
@@ -116,16 +122,16 @@ export class PdIndicator extends LitElement {
               this.indicator.cluster_indicator_id!
             )}
           </div>
-          <div class="hover-block" ?hidden="${this.readonly}">
+          <div class="hover-block">
             <paper-icon-button
               icon="icons:create"
-              ?hidden="${!this.indicator.is_active}"
-              @tap="${() => this.openIndicatorDialog(this.indicator)}"
+              ?hidden="${!this.indicator.is_active || this.readonly}"
+              @click="${() => this.openIndicatorDialog(this.indicator)}"
             ></paper-icon-button>
             <paper-icon-button
               icon="icons:block"
-              ?hidden="${!this.indicator.is_active}"
-              @tap="${() => this.openDeactivationDialog(String(this.indicator.id))}"
+              ?hidden="${!this.indicator.is_active || this.readonly}"
+              @click="${() => this.openDeactivationDialog(String(this.indicator.id))}"
             ></paper-icon-button>
           </div>
         </div>
@@ -137,7 +143,15 @@ export class PdIndicator extends LitElement {
             <div class="text details-heading">Locations</div>
             <div class="details-text">
               ${this.locationNames.length
-                ? this.locationNames.map((name: string) => html` <div class="details-list-item">${name}</div> `)
+                ? this.locationNames.map(
+                    (name) =>
+                      html`
+                        <div class="details-list-item">
+                          <span class="font-bold">${name.name}</span>
+                          ${name.adminLevel}
+                        </div>
+                      `
+                  )
                 : '-'}
             </div>
           </div>

@@ -78,7 +78,7 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
           </span>
           <paper-icon-button
             ?hidden="${!this.permissions.edit.supply_items}"
-            @tap="${() => this.addSupplyItem()}"
+            @click="${() => this.addSupplyItem()}"
             icon="add-box"
           >
           </paper-icon-button>
