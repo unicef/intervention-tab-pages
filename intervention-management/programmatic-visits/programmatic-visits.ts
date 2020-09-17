@@ -82,7 +82,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
         <div class="row-h extra-top-padd" ?hidden="${!this.editMode}">
           <paper-button
             class="secondary-btn ${this._getAddBtnPadding(this.data?.length)}"
-            @tap="${this._addNewPlannedVisit}"
+            @click="${this._addNewPlannedVisit}"
           >
             ADD YEAR
           </paper-button>
@@ -180,7 +180,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
               <div class="actions">
                 <paper-icon-button
                   class="action delete"
-                  @tap="${(event: CustomEvent) => this._openDeleteConfirmation(event, index)}"
+                  @click="${(event: CustomEvent) => this._openDeleteConfirmation(event, index)}"
                   data-args="${index}"
                   ?disabled="${!this._canBeRemoved(index, this.editMode)}"
                   icon="cancel"

@@ -206,7 +206,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
             title="Export results"
             class="primary export-res-btn"
             ?hidden="${!this.showExportResults(this.interventionStatus, this.resultLinks)}"
-            @tap="${this.exportExpectedResults}"
+            @click="${this.exportExpectedResults}"
           >
             Export
           </paper-button>
@@ -291,7 +291,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
                         <paper-icon-button
                           icon="icons:create"
                           ?hidden="${!this.permissions.edit.result_links}"
-                          @tap="${() => this.openPdOutputDialog(pdOutput, result.cp_output, result.cp_output_name)}"
+                          @click="${() => this.openPdOutputDialog(pdOutput, result.cp_output, result.cp_output_name)}"
                         ></paper-icon-button>
                       </div>
                     </div>

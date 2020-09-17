@@ -63,7 +63,7 @@ export class PdAmendments extends connect(getStore())(LitElement) {
             icon="add-box"
             title="Add Amendment"
             hidden
-            @tap="${() => this._showAddAmendmentDialog()}"
+            @click="${() => this._showAddAmendmentDialog()}"
           >
           </paper-icon-button>
         </div>
