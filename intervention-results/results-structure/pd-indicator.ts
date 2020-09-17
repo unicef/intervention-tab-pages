@@ -162,9 +162,9 @@ export class PdIndicator extends LitElement {
             <div class="details-text">${this.sectionClusterNames}</div>
           </div>
 
-          <!--    Disagregations    -->
+          <!--    Disaggregations    -->
           <div class="details-container">
-            <div class="text details-heading">Disagregation</div>
+            <div class="text details-heading">Disaggregation</div>
             <div class="details-text">
               ${this.indicator.disaggregation.length
                 ? this.indicator.disaggregation.map((disaggregation: string) => this.getDisaggregation(disaggregation))
