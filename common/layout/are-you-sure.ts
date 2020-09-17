@@ -7,7 +7,7 @@ export class AreYouSure extends LitElement {
   render() {
     return html` <style>
         .content {
-          margin-top: 40px;
+          margin-top: 16px;
           padding-left: 24px;
         }
       </style>
