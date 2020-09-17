@@ -23,6 +23,7 @@ export class InterventionActions extends LitElement {
 
   @property() actions: string[] = [];
   interventionId!: number;
+  activeStatus!: string;
 
   private actionsNamesMap = new Proxy(namesMap, {
     get(target: GenericObject<string>, property: string): string {
@@ -38,7 +39,7 @@ export class InterventionActions extends LitElement {
       (action: string) => !exportActions.includes(action) && action !== backAction
     );
     return html`
-      ${this.renderExport(exportActions)} ${this.renderBackAction(backAction)}
+      ${this.renderExport(exportActions)}${this.renderBackAction(backAction)}
       ${this.renderGroupedActions(mainAction, groupedActions)}
     `;
   }
