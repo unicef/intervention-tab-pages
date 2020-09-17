@@ -205,9 +205,11 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
 
   getLocationNames(ids: string[]): string[] {
     const locations = filterByIds<LocationObject>(this.locations, ids);
-    const locNames: string[] = [];
-    locations.forEach((l) => {
-      locNames.push(`${l.name} [${l.p_code}]`);
+    const locNames = locations.map((l: any) => {
+      return {
+        name: l.name.substring(0, l.name.indexOf('[')),
+        adminLevel: l.name.substring(l.name.indexOf('['))
+      };
     });
     return locNames;
   }

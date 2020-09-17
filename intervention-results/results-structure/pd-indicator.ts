@@ -14,7 +14,7 @@ export class PdIndicator extends LitElement {
   @property() private disaggregations: Disaggregation[] = [];
   @property({type: Array}) indicator!: Indicator;
   @property({type: Boolean}) readonly!: boolean;
-  @property({type: Array}) locationNames: string[] = [];
+  @property({type: Array}) locationNames: {name: string; adminLevel: string}[] = [];
   @property({type: String}) sectionClusterNames = '';
 
   render() {
@@ -78,6 +78,8 @@ export class PdIndicator extends LitElement {
         div[slot='row-data-details'] {
           --blue-background-dark: #a4c4e1;
           background: var(--blue-background-dark);
+          max-height: 220px;
+          overflow: auto;
         }
         .hover-block {
           background-color: var(--blue-background) !important;
@@ -87,6 +89,9 @@ export class PdIndicator extends LitElement {
             padding: 0;
             margin: 0;
           }
+        }
+        .font-bold {
+          font-weight: bold;
         }
       </style>
       <etools-data-table-row>
@@ -138,7 +143,15 @@ export class PdIndicator extends LitElement {
             <div class="text details-heading">Locations</div>
             <div class="details-text">
               ${this.locationNames.length
-                ? this.locationNames.map((name: string) => html` <div class="details-list-item">${name}</div> `)
+                ? this.locationNames.map(
+                    (name) =>
+                      html`
+                        <div class="details-list-item">
+                          <span class="font-bold">${name.name}</span>
+                          ${name.adminLevel}
+                        </div>
+                      `
+                  )
                 : '-'}
             </div>
           </div>
