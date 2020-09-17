@@ -69,7 +69,9 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Effective and efficient programme management">
-        <div slot="panel-btns">Total: ${this.total_amount}</div>
+        <div slot="panel-btns">
+          <label class="paper-label font-bold">Total:</label><label class="f-12 font-bold"> ${this.total_amount}</label>
+        </div>
 
         <etools-table
           .items="${this.formattedData}"

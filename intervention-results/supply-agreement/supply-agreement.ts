@@ -66,9 +66,9 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
         .mr-40 {
           margin-right: 40px;
         }
-        .f-12 {
-          font-size: 12px;
-        }
+        /*.f-12 {*/
+        /*  font-size: 12px;*/
+        /*}*/
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Supply Agreement">
