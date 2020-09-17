@@ -41,7 +41,7 @@ const customStyles = html`
 @customElement('effective-and-efficient-programme-management')
 export class EffectiveAndEfficientProgrammeManagement extends connect(getStore())(ComponentBaseMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles, elevationStyles];
+    return [gridLayoutStylesLit, buttonsStyles, elevationStyles, labelAndvalueStylesLit];
   }
 
   render() {
@@ -54,7 +54,7 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
     // language=HTML
     return html`
       <style>
-        ${sharedStyles} ${labelAndvalueStylesLit}
+        ${sharedStyles}
       </style>
       <style>
         :host {
