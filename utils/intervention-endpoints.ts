@@ -51,7 +51,7 @@ export const interventionEndpoints: EtoolsEndpoints = {
     template: '/api/pmp/v3/interventions/<%=interventionId%>/'
   },
   interventionAction: {
-    template: '/api/pmp/v3/interventions/<%=interventionId%>/<%=action%>'
+    template: '/api/pmp/v3/interventions/<%=interventionId%>/<%=action%>/'
   },
   partnerStaffMembers: {
     template: '/api/v2/partners/<%=id%>/staff-members/'
