@@ -41,7 +41,7 @@ import {updateCurrentIntervention} from '../../common/actions';
 import {_sendRequest} from '../../utils/request-helper';
 import {isUnicefUser, currentIntervention} from '../../common/selectors';
 import findIndex from 'lodash-es/findIndex';
-import {cloneDeep} from 'lodash-es';
+import {cloneDeep} from 'lodash-es/cloneDeep';
 
 const RESULT_VIEW = 'result_view';
 const BUDGET_VIEW = 'budget_view';
