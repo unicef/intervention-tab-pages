@@ -145,7 +145,7 @@ export class RisksElement extends connect(getStore())(ComponentBaseMixin(LitElem
     openDialog({
       dialog: 'risk-dialog',
       dialogData: {
-        item: e ? cloneDeep(e.detail) : {},
+        item: e ? e.detail : {},
         interventionId: this.interventionId,
         riskTypes: this.riskTypes
       }

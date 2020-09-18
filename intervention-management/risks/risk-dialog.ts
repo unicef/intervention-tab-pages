@@ -54,7 +54,7 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
               id="type"
               label="Type"
               .options="${this.riskTypes}"
-              .selected="${this.data.risk_type}"
+              .selected="${this.originalData.risk_type}"
               option-value="value"
               option-label="label"
               required
@@ -72,7 +72,7 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
               type="text"
               placeholder="—"
               required
-              .value="${this.data.mitigation_measures}"
+              .value="${this.originalData.mitigation_measures}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'mitigation_measures')}"
             >
             </paper-textarea>
@@ -97,7 +97,7 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
       return;
     }
     const {item, interventionId, permissions, riskTypes} = data;
-    this.data = item;
+    this.originalData = item;
     this.endpoint = getEndpoint(interventionEndpoints.intervention, {interventionId});
     this.permissions = permissions;
     this.riskTypes = riskTypes;
@@ -117,7 +117,7 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
 
   _saveRisk() {
     this.savingInProcess = true;
-
+debugger;
     sendRequest({
       endpoint: this.endpoint,
       body: {risks: this.data},
