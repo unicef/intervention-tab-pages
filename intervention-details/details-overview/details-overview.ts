@@ -52,7 +52,7 @@ export class DetailsOverview extends connect(getStore())(LitElement) {
                 <label class="paper-label">Document Type</label>
               </span>
             </div>
-            <div class="flex-1">
+            <div class="flex-3">
               <span>
                 <label class="paper-label">CFEI/DSR Reference Number</label>
               </span>
@@ -76,7 +76,7 @@ export class DetailsOverview extends connect(getStore())(LitElement) {
                 </label>
               </span>
             </div>
-            <div class="flex-1">
+            <div class="flex-3">
               <span>
                 <label class="input-label" ?empty="${!this.interventionOverview.cfei_number}">
                   ${this.interventionOverview.cfei_number}

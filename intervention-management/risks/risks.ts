@@ -25,6 +25,7 @@ import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {getIntervention} from '../../common/actions';
 import {currentInterventionPermissions} from '../../common/selectors';
+import {cloneDeep} from '../../utils/utils';
 
 const customStyles = html`
   <style>
@@ -144,7 +145,7 @@ export class RisksElement extends connect(getStore())(ComponentBaseMixin(LitElem
     openDialog({
       dialog: 'risk-dialog',
       dialogData: {
-        item: e ? e.detail : {},
+        item: e ? cloneDeep(e.detail) : {},
         interventionId: this.interventionId,
         riskTypes: this.riskTypes
       }
