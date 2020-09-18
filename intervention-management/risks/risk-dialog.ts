@@ -117,7 +117,7 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
 
   _saveRisk() {
     this.savingInProcess = true;
-debugger;
+
     sendRequest({
       endpoint: this.endpoint,
       body: {risks: this.data},

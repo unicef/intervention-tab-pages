@@ -25,7 +25,6 @@ import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {getIntervention} from '../../common/actions';
 import {currentInterventionPermissions} from '../../common/selectors';
-import {cloneDeep} from '../../utils/utils';
 
 const customStyles = html`
   <style>
