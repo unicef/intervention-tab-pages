@@ -62,7 +62,7 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
           <div class="col col-4">
             <paper-input
               label="Document Type"
-              .value="${this.data.document_type}"
+              .value="${this.getDocumentLongName(this.data.document_type)}"
               class="row-padding-v"
               readonly>
             </paper-input>
