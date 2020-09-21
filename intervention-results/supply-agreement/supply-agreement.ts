@@ -25,7 +25,6 @@ import {fireEvent} from '../../utils/fire-custom-event';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {updateCurrentIntervention} from '../../common/actions';
 import '../../common/layout/are-you-sure';
-import {labelAndvalueStylesLit} from '../../../../../styles/label-and-value-styles-lit';
 
 const customStyles = html`
   <style>
@@ -46,7 +45,7 @@ const customStyles = html`
 @customElement('supply-agreements')
 export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles, labelAndvalueStylesLit];
+    return [gridLayoutStylesLit, buttonsStyles];
   }
   render() {
     if (!this.supply_items) {

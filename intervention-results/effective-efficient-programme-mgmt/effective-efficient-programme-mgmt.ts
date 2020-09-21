@@ -23,7 +23,6 @@ import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {AnyObject, RootState} from '../../common/models/globals.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {ProgrammeManagement} from './effectiveEfficientProgrammeMgmt.models';
-import {labelAndvalueStylesLit} from '../../../../../styles/label-and-value-styles-lit';
 
 const customStyles = html`
   <style>
@@ -41,7 +40,7 @@ const customStyles = html`
 @customElement('effective-and-efficient-programme-management')
 export class EffectiveAndEfficientProgrammeManagement extends connect(getStore())(ComponentBaseMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles, elevationStyles, labelAndvalueStylesLit];
+    return [gridLayoutStylesLit, buttonsStyles, elevationStyles];
   }
 
   render() {
