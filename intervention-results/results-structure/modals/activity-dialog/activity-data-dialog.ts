@@ -120,7 +120,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
             ?invalid="${this.errors.name}"
             .errorMessage="${this.errors.name && this.errors.name[0]}"
             @focus="${() => this.resetFieldError('name')}"
-            @tap="${() => this.resetFieldError('name')}"
+            @click="${() => this.resetFieldError('name')}"
           ></paper-input>
 
           <paper-textarea
@@ -132,7 +132,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
             ?invalid="${this.errors.context_details}"
             .errorMessage="${this.errors.context_details && this.errors.context_details[0]}"
             @focus="${() => this.resetFieldError('context_details')}"
-            @tap="${() => this.resetFieldError('context_details')}"
+            @click="${() => this.resetFieldError('context_details')}"
           ></paper-textarea>
 
           <div class="layout-horizontal align-items-center">

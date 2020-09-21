@@ -87,7 +87,7 @@ export class FundReservations extends connect(getStore())(FrNumbersConsistencyMi
         <paper-icon-button
           slot="panel-btns"
           icon="add-box"
-          @tap="${() => this._openFrsDialog()}"
+          @click="${() => this._openFrsDialog()}"
           ?hidden="${!this.permissions.edit.frs}"
         ></paper-icon-button>
         <div id="frs-container" ?hidden="${!this.thereAreFrs(this.intervention.frs_details)}">

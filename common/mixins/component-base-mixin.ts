@@ -80,8 +80,8 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
         ? html``
         : html`
             <div class="layout-horizontal right-align row-padding-v">
-              <paper-button class="default" @tap="${this.cancel}"> Cancel </paper-button>
-              <paper-button class="primary" @tap="${this.save}"> Save </paper-button>
+              <paper-button class="default" @click="${this.cancel}"> Cancel </paper-button>
+              <paper-button class="primary" @click="${this.save}"> Save </paper-button>
             </div>
           `;
     }
@@ -89,7 +89,7 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
     renderEditBtn(editMode: boolean, canEditAnyFields: boolean) {
       return this.hideEditIcon(editMode, canEditAnyFields)
         ? html``
-        : html` <paper-icon-button @tap="${this.allowEdit}" icon="create"> </paper-icon-button> `;
+        : html` <paper-icon-button @click="${this.allowEdit}" icon="create"> </paper-icon-button> `;
     }
 
     renderReadonlyUserDetails(users: AnyObject[], ids: string[]) {

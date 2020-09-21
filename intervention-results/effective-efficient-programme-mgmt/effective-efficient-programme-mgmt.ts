@@ -23,7 +23,6 @@ import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {AnyObject, RootState} from '../../common/models/globals.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {ProgrammeManagement} from './effectiveEfficientProgrammeMgmt.models';
-import {labelAndvalueStylesLit} from '../../../../../styles/label-and-value-styles-lit';
 
 const customStyles = html`
   <style>
@@ -41,7 +40,7 @@ const customStyles = html`
 @customElement('effective-and-efficient-programme-management')
 export class EffectiveAndEfficientProgrammeManagement extends connect(getStore())(ComponentBaseMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles, elevationStyles, labelAndvalueStylesLit];
+    return [gridLayoutStylesLit, buttonsStyles, elevationStyles];
   }
 
   render() {
@@ -158,9 +157,7 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
         title: 'In-country management and support staff',
         description:
           'Contribution for In-country management and support staff prorated to their contribution to the' +
-          ' programme (representation, planning, coordination, logistics, administration, finance contribution for' +
-          ' Operational costs prorated to their contribution to the programme (office space, equipment,' +
-          ' office supplies, maintenance',
+          ' programme (representation, planning, coordination, logistics, administration, finance)',
         unicef_cash: data.act1_unicef,
         partner_contribution: data.act1_partner,
         total: data.act1_total,

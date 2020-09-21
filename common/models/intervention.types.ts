@@ -257,6 +257,7 @@ export class Intervention {
   supply_items: InterventionSupplyItem[] = [];
   risks: Risk[] = [];
   management_budgets?: ManagementBudget;
+  cfei_number?: string;
 }
 
 export type ManagementBudget = {
