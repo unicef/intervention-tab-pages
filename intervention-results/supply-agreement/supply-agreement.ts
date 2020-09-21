@@ -65,16 +65,13 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
         .mr-40 {
           margin-right: 40px;
         }
-        /*.f-12 {*/
-        /*  font-size: 12px;*/
-        /*}*/
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Supply Agreement">
         <div slot="panel-btns">
           <span class="mr-40">
-            <label class="paper-label font-bold">TOTAL SUPPLY BUDGET: </label>
-            <label class="f-12 font-bold">${this.intervention.planned_budget.currency} ${this.intervention.planned_budget.in_kind_amount_local}</label>
+            <label class="paper-label">TOTAL SUPPLY BUDGET: </label>
+            <label class="font-bold">${this.intervention.planned_budget.currency} ${this.intervention.planned_budget.in_kind_amount_local}</label>
           </span>
           <paper-icon-button
             ?hidden="${!this.permissions.edit.supply_items}"
