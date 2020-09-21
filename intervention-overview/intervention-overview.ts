@@ -147,6 +147,39 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
             </div>
           </div>
         </div>
+        
+        <div class="row-h flex-c">
+          <div class="col col-4">
+            <div class="inline-right">
+              <label class="paper-label">Total value of the Effective Programme management Cost</label>
+                </br>
+                <etools-currency-amount-input
+                class="effective_programme_cost w100"
+                type="number"
+                placeholder="&#8212;"
+                no-label-float
+                disabled
+              >
+              </etools-currency-amount-input>
+            </div>
+          </div>
+          
+          <div class="col col-6">
+            <div class="inline-right">
+              <label class="paper-label">% Total value of Unicef's contribution that is Effective and Efficient Programme Management Cost</label>
+                </br>
+                <etools-currency-amount-input
+                class="percent_effective_programme_cost w100"
+                type="number"
+                placeholder="&#8212;"
+                .value="${this.intervention.planned_budget.programme_effectiveness}"
+                no-label-float
+                disabled
+              >
+              </etools-currency-amount-input>
+            </div>
+          </div>
+        </div>
 
         <div class="row-h flex-c">
           <div class="col col-4">

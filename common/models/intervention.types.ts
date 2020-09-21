@@ -64,6 +64,7 @@ export class PlannedBudget {
   total?: string;
   in_kind_amount_local?: string;
   partner_contribution_local?: string;
+  programme_effectiveness?: string;
 }
 
 export class InterventionAttachment {
