@@ -199,9 +199,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
          <div class="col col-4 block">
           <label class="paper-label">Partner HACT Risk Rating</label>
           <br />
-          <div class="content">
-            ${this.interventionPartner?.rating || 'N\\A'}
-          </div>
+          <div class="content">${this.getPartnerHactRiskRatingHtml()}</div>
         </div>
         <div class="col col-4 block">
           <label class="paper-label">Partner PSEA Risk Rating</label>
@@ -381,6 +379,16 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
     // eslint-disable-next-line lit/no-invalid-html
     return html`<a target="_blank" href="/psea/assessments/list?partner=${this.intervention.partner_id}">
       <strong class="blue">${this.interventionPartner.sea_risk_rating_name}</strong></a
+    >`;
+  }
+
+  getPartnerHactRiskRatingHtml() {
+    if (!this.isUnicefUser || !this.interventionPartner?.rating) {
+      return html`${this.interventionPartner?.rating || 'N\\A'}`;
+    }
+    // eslint-disable-next-line lit/no-invalid-html
+    return html`<a target="_blank" href="/ap/engagements/list?partner__in=${this.intervention.partner_id}">
+      <strong class="blue">${this.interventionPartner.rating}</strong></a
     >`;
   }
 }
