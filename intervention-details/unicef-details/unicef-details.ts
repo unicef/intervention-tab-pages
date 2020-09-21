@@ -51,11 +51,7 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
       <etools-content-panel show-expand-btn panel-title="Unicef Details">
 
         <div slot="panel-btns">
-          <paper-icon-button
-            ?hidden="${this.hideEditIcon(this.editMode, this.canEditAtLeastOneField)}"
-            @click="${this.allowEdit}"
-            icon="create">
-          </paper-icon-button>
+          ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
         </div>
 
         <div class="row-padding-v">
