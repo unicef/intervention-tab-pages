@@ -203,7 +203,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
         etools-content-panel {
           --epc-header: {
             position: relative;
-            z-index: 10;
+            z-index: 1000;
           }
         }
       </style>
