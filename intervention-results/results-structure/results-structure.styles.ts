@@ -43,7 +43,7 @@ export const ResultStructureStyles: CSSResult = css`
     min-width: 0;
   }
   .details-container {
-    width: 25%;
+    width: 50%;
   }
   .details-list-item {
     margin-bottom: 3px;
