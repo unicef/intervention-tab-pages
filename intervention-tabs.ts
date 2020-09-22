@@ -19,6 +19,7 @@ import {sharedStyles} from './common/styles/shared-styles-lit';
 import {isJsonStrMatch} from './utils/utils';
 import {pageContentHeaderSlottedStyles} from './common/layout/page-content-header/page-content-header-slotted-styles';
 import {fireEvent} from './utils/fire-custom-event';
+import {buildUrlQueryString} from './utils/utils';
 
 const MOCKUP_STATUSES = [
   ['draft', 'Draft'],
@@ -89,7 +90,9 @@ export class InterventionTabs extends LitElement {
       <intervention-page-content-header with-tabs-visible>
         <h1 slot="page-title">${this.intervention.number}</h1>
         <div slot="mode">
-          <paper-toggle-button id="commentMode" ?checked="${this.commentMode}">Comment Mode</paper-toggle-button>
+          <paper-toggle-button id="commentMode" ?checked="${this.commentMode}" @iron-change="${this.commentModeChange}"
+            >Comment Mode</paper-toggle-button
+          >
         </div>
 
         <div slot="statusFlag" ?hidden="${!this.intervention.accepted}">
@@ -225,20 +228,25 @@ export class InterventionTabs extends LitElement {
             this.intervention = cloneDeep(currentIntervention);
           }
         }
-        if (!isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)) {
-          this._routeDetails = cloneDeep(state.app!.routeDetails);
-          getStore().dispatch(getIntervention(currentInterventionId));
-        }
+        getStore().dispatch(getIntervention(currentInterventionId));
+      }
+      if (!isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)) {
+        this._routeDetails = cloneDeep(state.app!.routeDetails);
+        this.commentMode = !!(this._routeDetails.queryParams || {})['comment_mode'];
       }
       this.availableActions = selectAvailableActions(state);
 
       // Progress, Reports tabs are visible only for unicef users if flag prp_mode_off it's not ON
       const envFlags = get(state, 'commonData.envFlags');
-      if (get(state, 'user.data.is_unicef_user') && envFlags && !envFlags.prp_mode_off &&
-      !this.pageTabs.find((x) => x.tab === 'progress')) {
+      if (
+        get(state, 'user.data.is_unicef_user') &&
+        envFlags &&
+        !envFlags.prp_mode_off &&
+        !this.pageTabs.find((x) => x.tab === 'progress')
+      ) {
         this.pageTabs.push({tab: 'progress', tabLabel: 'Progress', hidden: false});
         this.pageTabs.push({tab: 'reports', tabLabel: 'Reports', hidden: false});
-        }
+      }
     }
   }
 
@@ -268,6 +276,24 @@ export class InterventionTabs extends LitElement {
       // history.pushState should do that by default (?)
       window.dispatchEvent(new CustomEvent('popstate'));
     }
+  }
+
+  commentModeChange(e: CustomEvent) {
+    if (!e.detail) {
+      return;
+    }
+    const element = e.currentTarget as HTMLInputElement;
+    // initial load
+    if (element.checked === this.commentMode) {
+      return;
+    }
+    this.commentMode = element.checked;
+    const currentParams = cloneDeep(this._routeDetails!.queryParams || {});
+    currentParams['comment_mode'] = this.commentMode ? 'true' : '';
+    const stringParams: string = buildUrlQueryString(currentParams);
+    const newPath = this._routeDetails!.path + (stringParams !== '' ? `?${stringParams}` : '');
+    history.pushState(window.history.state, '', newPath);
+    window.dispatchEvent(new CustomEvent('popstate'));
   }
 
   _showInterventionPageLoadingMessage() {
