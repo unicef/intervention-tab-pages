@@ -152,6 +152,7 @@ function RepeatableDataSetsMixin<T extends Constructor<LitElement>>(baseClass: T
         this.dataItems.splice(index, 1);
         // To mke sure all req. observers are triggered
         this.dataItems = cloneDeep(this.dataItems);
+
         fireEvent(this, 'delete-confirm', {index: this.elToDeleteIndex});
       }
     }
