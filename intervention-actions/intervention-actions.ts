@@ -121,7 +121,7 @@ export class InterventionActions extends LitElement {
     sendRequest({
       endpoint,
       body,
-      method: 'POST'
+      method: 'PATCH'
     })
       .then(() => {
         // TODO: update intervention in redux

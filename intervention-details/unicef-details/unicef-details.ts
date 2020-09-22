@@ -51,22 +51,20 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
       <etools-content-panel show-expand-btn panel-title="Unicef Details">
 
         <div slot="panel-btns">
-          <paper-icon-button
-            ?hidden="${this.hideEditIcon(this.editMode, this.canEditAtLeastOneField)}"
-            @click="${this.allowEdit}"
-            icon="create">
-          </paper-icon-button>
+          ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
         </div>
 
-        <div class="row-padding-v">
+        <div class="layout-horizontal">
           <div class="col col-4">
-            <paper-input
-              label="Document Type"
-              .value="${this.data.document_type}"
-              class="row-padding-v"
-              readonly>
-            </paper-input>
+            <span>
+              <label class="paper-label">Document Type</label>
+            </span>
           </div>
+        </div>
+        <div class="layout-horizontal">
+          <label class="input-label" ?empty="${!this.data.document_type}">
+            ${this.getDocumentLongName(this.data.document_type)}
+           </label>
         </div>
         <div class="layout-horizontal row-padding-v">
           <div class="col col-4">
