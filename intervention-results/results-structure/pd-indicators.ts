@@ -152,7 +152,7 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
         sectionOptions: this.indicatorSectionOptions,
         locationOptions: this.indicatorLocationOptions,
         llResultId: this.pdOutputId,
-        prpServerOn: this.prpServerIsOn()!,
+        prpServerOn: this.prpServerIsOn()!
       }
     });
   }
