@@ -228,11 +228,11 @@ export class InterventionTabs extends LitElement {
             this.intervention = cloneDeep(currentIntervention);
           }
         }
-        getStore().dispatch(getIntervention(currentInterventionId));
-      }
-      if (!isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)) {
-        this._routeDetails = cloneDeep(state.app!.routeDetails);
-        this.commentMode = !!(this._routeDetails.queryParams || {})['comment_mode'];
+        if (!isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)) {
+          this._routeDetails = cloneDeep(state.app!.routeDetails);
+          this.commentMode = !!(this._routeDetails.queryParams || {})['comment_mode'];
+          getStore().dispatch(getIntervention(currentInterventionId));
+        }
       }
       this.availableActions = selectAvailableActions(state);
 
@@ -290,14 +290,20 @@ export class InterventionTabs extends LitElement {
       return;
     }
     this.commentMode = element.checked;
-    // add/remove `comment_mode` param in url based on selection
-    const currentParams = cloneDeep(this._routeDetails!.queryParams || {});
-    currentParams['comment_mode'] = this.commentMode ? 'true' : '';
-    const stringParams: string = buildUrlQueryString(currentParams);
-    const newPath = this._routeDetails!.path + (stringParams !== '' ? `?${stringParams}` : '');
-    // refresh page
-    history.pushState(window.history.state, '', newPath);
+    // add/remove `comment_mode` param in url based on selection and refresh page
+    history.pushState(window.history.state, '', this.computeNewPath());
     window.dispatchEvent(new CustomEvent('popstate'));
+  }
+
+  computeNewPath() {
+    const queryParams = this._routeDetails!.queryParams || {};
+    if (this.commentMode) {
+      queryParams['comment_mode'] = 'true';
+    } else {
+      delete queryParams['comment_mode'];
+    }
+    const stringParams: string = buildUrlQueryString(queryParams);
+    return this._routeDetails!.path + (stringParams !== '' ? `?${stringParams}` : '');
   }
 
   _showInterventionPageLoadingMessage() {
