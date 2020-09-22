@@ -288,10 +288,12 @@ export class InterventionTabs extends LitElement {
       return;
     }
     this.commentMode = element.checked;
+    // add/remove `comment_mode` param in url based on selection
     const currentParams = cloneDeep(this._routeDetails!.queryParams || {});
     currentParams['comment_mode'] = this.commentMode ? 'true' : '';
     const stringParams: string = buildUrlQueryString(currentParams);
     const newPath = this._routeDetails!.path + (stringParams !== '' ? `?${stringParams}` : '');
+    // refresh page
     history.pushState(window.history.state, '', newPath);
     window.dispatchEvent(new CustomEvent('popstate'));
   }
