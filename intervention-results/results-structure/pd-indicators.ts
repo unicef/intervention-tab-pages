@@ -22,6 +22,7 @@ import {fireEvent} from '../../utils/fire-custom-event';
 import {openDialog} from '../../utils/dialog';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import './pd-indicator';
+import {sharedStyles} from '../../common/styles/shared-styles-lit';
 
 @customElement('pd-indicators')
 export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitElement)) {
@@ -63,7 +64,7 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
     // language=HTML
     return html`
       <style>
-        :host etools-data-table-row {
+        ${sharedStyles} :host etools-data-table-row {
           --list-bg-color: var(--blue-background);
           --list-second-bg-color: var(--blue-background);
           --list-row-collapse-wrapper: {

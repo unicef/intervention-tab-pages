@@ -35,25 +35,7 @@ export const AttachmentsListStyles = html`
       margin-bottom: 0;
       padding: 12px 0;
     }
-    .editable-row .hover-block {
-      display: none;
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      line-height: 48px;
-      background-color: #eeeeee;
-      z-index: 100;
-    }
-    .editable-row .hover-block paper-icon-button {
-      color: rgba(0, 0, 0, 0.54);
-      padding-left: 5px;
-    }
-    .editable-row:hover > .hover-block {
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-    }
+
     etools-data-table-header {
       --list-header-wrapper-column-height: 48px;
     }

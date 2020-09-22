@@ -42,6 +42,7 @@ import {_sendRequest} from '../../utils/request-helper';
 import {isUnicefUser, currentIntervention} from '../../common/selectors';
 import findIndex from 'lodash-es/findIndex';
 import cloneDeep from 'lodash-es/cloneDeep';
+import {sharedStyles} from '../../common/styles/shared-styles-lit';
 
 const RESULT_VIEW = 'result_view';
 const BUDGET_VIEW = 'budget_view';
@@ -175,7 +176,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
     // language=HTML
     return html`
       <style>
-        :host {
+        ${sharedStyles} :host {
           display: block;
           margin-bottom: 24px;
         }

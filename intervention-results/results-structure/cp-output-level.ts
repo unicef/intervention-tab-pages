@@ -6,6 +6,7 @@ import '@unicef-polymer/etools-data-table';
 import '@polymer/iron-icons';
 import './modals/cp-output-dialog';
 import {fireEvent} from '../../utils/fire-custom-event';
+import {sharedStyles} from '../../common/styles/shared-styles-lit';
 
 @customElement('cp-output-level')
 export class CpOutputLevel extends LitElement {
@@ -44,7 +45,7 @@ export class CpOutputLevel extends LitElement {
   protected render(): TemplateResult {
     return html`
       <style>
-        etools-data-table-row {
+        ${sharedStyles} etools-data-table-row {
           overflow: hidden;
           --list-second-bg-color: var(--secondary-background-color) !important;
           --list-row-wrapper-padding: 5px 12px 5px 0;

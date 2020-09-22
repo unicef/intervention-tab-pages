@@ -5,6 +5,7 @@ import '@polymer/iron-icons';
 import './modals/activity-dialog/activity-data-dialog';
 import {InterventionActivity, InterventionQuarter} from '../../common/models/intervention.types';
 import {openDialog} from '../../utils/dialog';
+import {sharedStyles} from '../../common/styles/shared-styles-lit';
 
 @customElement('pd-activities')
 export class PdActivities extends LitElement {
@@ -41,7 +42,7 @@ export class PdActivities extends LitElement {
     // language=HTML
     return html`
       <style>
-        etools-data-table-row {
+        ${sharedStyles} etools-data-table-row {
           --list-bg-color: var(--green-background);
           --list-second-bg-color: var(--green-background);
           --list-row-collapse-wrapper: {
