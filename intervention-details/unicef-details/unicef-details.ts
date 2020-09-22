@@ -248,7 +248,7 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
    * Optimization to avoid multiple calls to filter through the long users array
    */
   previousBudgetOwnerIds: string[] = [];
-  previousBudgeOwnerDisplay: TemplateResult | TemplateResult[] = html``;
+  previousBudgeOwnerDisplay: TemplateResult | TemplateResult[] = html`—`;
   renderReadonlyBudgetOwner(users: AnyObject[], selectedIds: string[]) {
     if (users == undefined) {
       return html`—`;
@@ -265,7 +265,7 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
    * Optimization to avoid multiple calls to filter through the long users array
    */
   previousFocalPointsIds: string[] = [];
-  previousFocalPointsDisplay: TemplateResult | TemplateResult[] = html``;
+  previousFocalPointsDisplay: TemplateResult | TemplateResult[] = html`—`;
   renderReadonlyFocalPoints(users: AnyObject[], selectedIds: string[]) {
     if (users == undefined) {
       return html`—`;
