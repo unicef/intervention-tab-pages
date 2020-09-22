@@ -17,7 +17,7 @@ const CONSTANTS = {
   DOCUMENT_TYPES_LONG: {
     PD: 'Programme Document',
     SSFA: 'Small Scale Funding Agreement',
-    SHPD: 'Simplified Humanitarian Programme Document',
+    SPD: 'Simplified Programme Document'
   },
   AGREEMENT_TYPES: {
     PCA: 'PCA',

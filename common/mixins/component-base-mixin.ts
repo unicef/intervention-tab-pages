@@ -169,8 +169,11 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
     }
 
     getDocumentLongName(value: any): string | undefined {
-      const documents = new Map(Object.entries(CONSTANTS.DOCUMENT_TYPES_LONG));
-      return documents.get(value);
+      if (!value) {
+        return;
+      }
+      // @ts-ignore
+      return CONSTANTS.DOCUMENT_TYPES_LONG[value.toUpperCase()];
     }
   }
   return ComponentBaseClass;

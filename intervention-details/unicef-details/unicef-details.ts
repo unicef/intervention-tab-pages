@@ -58,15 +58,17 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
           </paper-icon-button>
         </div>
 
-        <div class="row-padding-v">
+        <div class="layout-horizontal">
           <div class="col col-4">
-            <paper-input
-              label="Document Type"
-              .value="${this.getDocumentLongName(this.data.document_type)}"
-              class="row-padding-v"
-              readonly>
-            </paper-input>
+            <span>
+              <label class="paper-label">Document Type</label>
+            </span>
           </div>
+        </div>
+        <div class="layout-horizontal">
+          <label class="input-label" ?empty="${!this.data.document_type}">
+            ${this.getDocumentLongName(this.data.document_type)}
+           </label>
         </div>
         <div class="layout-horizontal row-padding-v">
           <div class="col col-4">
