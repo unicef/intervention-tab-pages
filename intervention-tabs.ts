@@ -270,7 +270,9 @@ export class InterventionTabs extends LitElement {
         this._showInterventionPageLoadingMessage();
       }
 
-      const newPath = `interventions/${this.intervention.id}/${newTabName}`;
+      const stringParams: string = buildUrlQueryString(this._routeDetails!.queryParams || {});
+      const newPath =
+        `interventions/${this.intervention.id}/${newTabName}` + (stringParams !== '' ? `?${stringParams}` : '');
       history.pushState(window.history.state, '', newPath);
       // Don't know why I have to specifically trigger popstate,
       // history.pushState should do that by default (?)
