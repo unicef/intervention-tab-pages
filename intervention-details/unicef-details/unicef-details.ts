@@ -72,14 +72,14 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
           <div class="col col-4">
             <etools-dropdown-multi
               id="officeInput"
-              label="Unicef Office"
+              label="Unicef Offices"
               class="row-padding-v"
               .options="${this.office_list}"
               option-label="name"
               option-value="id"
               .selectedValues="${this.data.offices}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.unicef_office)}"
-              ?required="${this.permissions.required.unicef_office}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.offices)}"
+              ?required="${this.permissions.required.offices}"
               @etools-selected-items-changed="${({detail}: CustomEvent) =>
                 this.selectedItemsChanged(detail, 'offices')}"
               trigger-value-change-event>
