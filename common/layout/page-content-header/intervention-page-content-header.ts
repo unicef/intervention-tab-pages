@@ -40,26 +40,21 @@ export class InterventionPageContentHeader extends LitElement {
             min-height: 31px;
           }
         }
-
         :host([with-tabs-visible]) {
           min-height: 114px;
         }
-
         .content-header-row {
           ${layoutHorizontal}
           ${layoutStartJustified}
         }
-
         .title-row {
           ${layoutCenter}
           margin: 15px 0 0;
           padding: 0 24px;
         }
-
         .title-row h1 {
           @apply --page-title;
         }
-
         .tabs {
           margin-top: 5px;
         }
@@ -86,7 +81,7 @@ export class InterventionPageContentHeader extends LitElement {
           }
         }
         .statusContainer {
-        padding-left: 20px;
+          padding-left: 20px;
         }
         .vb {
           border-left: 2px solid var(--light-hex-divider-color);
@@ -94,6 +89,9 @@ export class InterventionPageContentHeader extends LitElement {
         }
         .title {
           padding-right: 20px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
         .cont {
           ${layoutHorizontal}
@@ -101,34 +99,35 @@ export class InterventionPageContentHeader extends LitElement {
           ${layoutFlex}
           ${layoutCenter}
         }
-        .l-h {
+        .flex-block {
+          flex: 1;
+          min-width: 0;
           ${layoutHorizontal}
+        }
+        .none-flex {
+          flex: none;
         }
       </style>
 
       <div class="content-header-row title-row">
-        <div class="cont">
-          <div class="l-h">
-            <div class="title">
-              <h1>
-                <slot name="page-title"></slot>
-              </h1>
-            </div>
-            <div class="vb"></div>
-            <div class="modeContainer">
-              <slot name="mode"></slot>
-            </div>
-            <div class="statusContainer">
-              <slot name="statusFlag"></slot>
-            </div>
+        <div class="flex-block">
+          <h1 class="title">
+            <slot name="page-title"></slot>
+          </h1>
+          <div class="vb none-flex"></div>
+          <div class="modeContainer none-flex">
+            <slot name="mode"></slot>
           </div>
-          <div>
-            <slot name="title-row-actions"></slot>
+          <div class="statusContainer none-flex">
+            <slot name="statusFlag"></slot>
           </div>
+        </div>
+        <div>
+          <slot name="title-row-actions"></slot>
         </div>
       </div>
 
-      <div class="content-header-row tabs" ?hidden="${this.withTabsVisible}">
+      <div class="content-header-row tabs none-flex" ?hidden="${this.withTabsVisible}">
         <slot name="tabs"></slot>
       </div>
     `;
