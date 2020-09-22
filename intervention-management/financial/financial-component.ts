@@ -77,14 +77,14 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
         </div>
         <div class="layout-horizontal row-padding-v">
           ${this.cashTransferModalities.map(
-            (options: LabelAndValue) =>
+            (option: LabelAndValue) =>
               html`<div class="col col-3">
                 <paper-checkbox
-                  ?checked="${this.checkCashTransferModality(options.value)}"
+                  ?checked="${this.checkCashTransferModality(option.value)}"
                   ?disabled="${this.isReadonly(this.editMode, true)}"
-                  @checked-changed=${(e: CustomEvent) => this.updateData(e.detail.value, options.value)}
+                  @checked-changed=${(e: CustomEvent) => this.updateData(e.detail.value, option.value)}
                 >
-                  ${options.label}
+                  ${option.label}
                 </paper-checkbox>
               </div>`
           )}
