@@ -1,6 +1,5 @@
 import {getStore} from '../../utils/redux-store-access';
 import {css, html, CSSResultArray, customElement, LitElement, property} from 'lit-element';
-import {repeat} from 'lit-html/directives/repeat';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {
@@ -137,7 +136,6 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
   quarters: InterventionQuarter[] = [];
 
   @property({type: Boolean}) isUnicefUser = true;
-  @property({type: Boolean}) open = true;
   @property({type: Boolean}) showIndicators = true;
   @property({type: Boolean}) showActivities = true;
   @property({type: Object})
@@ -210,11 +208,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
         }
       </style>
 
-      <etools-content-panel
-        show-expand-btn
-        .open="${this.open}"
-        panel-title="Results Structure (${this.noOfPdOutputs})"
-      >
+      <etools-content-panel show-expand-btn panel-title="Results Structure (${this.noOfPdOutputs})">
         <div slot="panel-btns" class="layout-horizontal align-items-center">
           <paper-button
             title="Export results"
@@ -276,10 +270,8 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
             @click="${() => this.openCpOutputDialog()}"
           ></iron-icon>
         </div>
-        ${repeat(
-          this.resultLinks,
-          (result: ExpectedResult) => result.id,
-          (result, _index) => html`
+        ${this.resultLinks.map(
+          (result: ExpectedResult) => html`
             <cp-output-level
               ?show-cpo-level="${this.isUnicefUser}"
               .resultLink="${result}"
@@ -358,7 +350,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
   connectedCallback(): void {
     super.connectedCallback();
     // TODO: Remove test code for comments dialog
-    // getStore()
+    //  getStore()
     //   .dispatch(getComments(9))
     //   .then(() => {
     //     openDialog({
@@ -389,6 +381,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
         this.open = true;
       });
     }
+
     this.interventionStatus = selectInterventionStatus(state);
     this.quarters = selectInterventionQuarters(state);
     this.cpOutputs = (state.commonData && state.commonData.cpOutputs) || [];
