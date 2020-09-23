@@ -154,7 +154,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
               <label class="paper-label">Total value of the Effective Programme management Cost</label>
                 </br>
                 <etools-currency-amount-input
-                class="effective_programme_cost w100"
+                class="w100"
                 type="number"
                 .value="${this.intervention.management_budgets?.total}"
                 placeholder="&#8212;"
@@ -170,7 +170,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
               <label class="paper-label">% Total value of Unicef's contribution that is Effective and Efficient Programme Management Cost</label>
                 </br>
                 <etools-currency-amount-input
-                class="percent_effective_programme_cost w100"
+                class="w100"
                 type="number"
                 placeholder="&#8212;"
                 .value="${this.intervention.planned_budget.programme_effectiveness}"
@@ -188,7 +188,6 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
               <label class="paper-label">Unicef Cash Contribution</label>
                 </br>
                 <etools-currency-amount-input
-                class="unicef_cash_contribution"
                 .value="${this.intervention.planned_budget.unicef_cash_local}"
                 type="number"
                 placeholder="&#8212;"
@@ -203,7 +202,6 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
               <label class="paper-label">Unicef Supply Contribution</label>
               </br>
               <etools-currency-amount-input
-                class="unicef_supply_contribution"
                 .value="${this.intervention.planned_budget.in_kind_amount_local}"
                 type="number"
                 placeholder="&#8212;"
@@ -218,7 +216,6 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
               <label class="paper-label">Total Unicef Contribution</label>
                 </br>
                 <etools-currency-amount-input
-                  class="unicef_totla_contribution"
                   .value="${this._getTotalUnicef()}"
                   type="number"
                   placeholder="&#8212;"
