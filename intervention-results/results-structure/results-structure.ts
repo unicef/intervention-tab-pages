@@ -350,7 +350,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
   connectedCallback(): void {
     super.connectedCallback();
     // TODO: Remove test code for comments dialog
-    // getStore()
+    //  getStore()
     //   .dispatch(getComments(9))
     //   .then(() => {
     //     openDialog({
