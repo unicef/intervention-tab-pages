@@ -56,18 +56,10 @@ export class AttachmentsList extends connect(getStore())(LitElement) {
         ${this.attachments.length
           ? html`
               <etools-data-table-header no-collapse no-title>
-                <etools-data-table-column class="col-2">
-                  Date Uploaded
-                </etools-data-table-column>
-                <etools-data-table-column class="col-3">
-                  Document Type
-                </etools-data-table-column>
-                <etools-data-table-column class="col-6">
-                  Document
-                </etools-data-table-column>
-                <etools-data-table-column class="col-1 center-align">
-                  Invalid
-                </etools-data-table-column>
+                <etools-data-table-column class="col-2"> Date Uploaded </etools-data-table-column>
+                <etools-data-table-column class="col-3"> Document Type </etools-data-table-column>
+                <etools-data-table-column class="col-6"> Document </etools-data-table-column>
+                <etools-data-table-column class="col-1 center-align"> Invalid </etools-data-table-column>
               </etools-data-table-header>
 
               ${this.attachments.map(
