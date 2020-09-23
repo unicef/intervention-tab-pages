@@ -7,6 +7,7 @@ import {Intervention, ReviewAttachment} from '../../common/models/intervention.t
 import '@unicef-polymer/etools-upload/etools-upload';
 import {getStore} from '../../utils/redux-store-access';
 import {updateCurrentIntervention} from '../../common/actions';
+import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 
 @customElement('final-review-popup')
 export class FinalReviewPopup extends LitElement {
@@ -70,15 +71,14 @@ export class FinalReviewPopup extends LitElement {
 
   processRequest(): void {
     // validate if file is selected for new attachments
-    if (!this.data && !this.data!.attachment) {
+    if (!this.data.attachment) {
       fireEvent(this, 'toast', {
         text: 'Please, select correct file',
         showCloseBtn: false
       });
       return;
-    } else if (!this.data.attachment && this.data) {
-      this.onClose();
     }
+
     this.savingInProcess = true;
 
     sendRequest({
@@ -94,6 +94,9 @@ export class FinalReviewPopup extends LitElement {
       })
       .finally(() => {
         this.savingInProcess = false;
+      })
+      .catch((err: any) => {
+        fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
       });
   }
 
