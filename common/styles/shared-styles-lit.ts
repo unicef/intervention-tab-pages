@@ -154,8 +154,15 @@ export const sharedStylesContent = `
   .readonly {
     pointer-events: none;
   }
+
   .font-bold {
     font-weight: bold;
+  }
+
+  .font-bold-12 {
+    font-weight: bold;
+    font-size: 12px;
+    color: var(--primary-text-color);
   }
 
   paper-textarea {
