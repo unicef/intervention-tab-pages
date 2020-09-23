@@ -76,33 +76,18 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
           </div>
         </div>
         <div class="layout-horizontal row-padding-v">
-          <div class="col col-3">
-            <paper-checkbox
-              ?checked="${this.checkCashTransferModality('dct')}"
-              ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.cash_transfer_modalities)}"
-              @checked-changed=${(e: CustomEvent) => this.updateData(e.detail.value, 'dct')}
-            >
-              Direct Cash Transfer
-            </paper-checkbox>
-          </div>
-          <div class="col col-3">
-            <paper-checkbox
-              ?checked="${this.checkCashTransferModality('payment')}"
-              ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.cash_transfer_modalities)}"
-              @checked-changed=${(e: CustomEvent) => this.updateData(e.detail.value, 'payment')}
-            >
-              Direct Payment
-            </paper-checkbox>
-          </div>
-          <div class="col col-3">
-            <paper-checkbox
-              ?checked="${this.checkCashTransferModality('reimbursement')}"
-              ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.cash_transfer_modalities)}"
-              @checked-changed=${(e: CustomEvent) => this.updateData(e.detail.value, 'reimbursement')}
-            >
-              Reimbursement
-            </paper-checkbox>
-          </div>
+          ${this.cashTransferModalities.map(
+            (option: LabelAndValue) =>
+              html`<div class="col col-3">
+                <paper-checkbox
+                  ?checked="${this.checkCashTransferModality(option.value)}"
+                  ?disabled="${this.isReadonly(this.editMode, true)}"
+                  @checked-changed=${(e: CustomEvent) => this.updateData(e.detail.value, option.value)}
+                >
+                  ${option.label}
+                </paper-checkbox>
+              </div>`
+          )}
         </div>
         <div class="layout-horizontal row-padding-v">
           <div class="w100">
@@ -160,6 +145,9 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
   @property({type: Array})
   currencies!: LabelAndValue[];
 
+  @property({type: Array})
+  cashTransferModalities!: LabelAndValue[];
+
   connectedCallback() {
     super.connectedCallback();
   }
@@ -172,13 +160,15 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
     if (!state.interventions.current) {
       return;
     }
-
     this.data = selectFinancialComponent(state);
     this.permissions = selectFinancialComponentPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
     this.originalData = cloneDeep(this.data);
     if (!isJsonStrMatch(this.currencies, state.commonData!.currencies)) {
       this.currencies = [...state.commonData!.currencies];
+    }
+    if (!isJsonStrMatch(this.cashTransferModalities, state.commonData!.cashTransferModalities)) {
+      this.cashTransferModalities = [...state.commonData!.cashTransferModalities];
     }
   }
 

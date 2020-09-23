@@ -87,7 +87,7 @@ export class InterventionTabs extends LitElement {
       </style>
 
       <intervention-page-content-header with-tabs-visible>
-        <h1 slot="page-title">${this.intervention.number}</h1>
+        <span slot="page-title">${this.intervention.number}</span>
         <div slot="mode">
           <paper-toggle-button id="commentMode" ?checked="${this.commentMode}">Comment Mode</paper-toggle-button>
         </div>
@@ -232,8 +232,14 @@ export class InterventionTabs extends LitElement {
       }
       this.availableActions = selectAvailableActions(state);
 
-      // Progress, Reports tabs are visible only for unicef users
-      if (get(state, 'user.data.is_unicef_user') && !this.pageTabs.find((x) => x.tab === 'progress')) {
+      // Progress, Reports tabs are visible only for unicef users if flag prp_mode_off it's not ON
+      const envFlags = get(state, 'commonData.envFlags');
+      if (
+        get(state, 'user.data.is_unicef_user') &&
+        envFlags &&
+        !envFlags.prp_mode_off &&
+        !this.pageTabs.find((x) => x.tab === 'progress')
+      ) {
         this.pageTabs.push({tab: 'progress', tabLabel: 'Progress', hidden: false});
         this.pageTabs.push({tab: 'reports', tabLabel: 'Reports', hidden: false});
       }

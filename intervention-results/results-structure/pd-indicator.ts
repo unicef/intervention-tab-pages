@@ -139,7 +139,7 @@ export class PdIndicator extends LitElement {
         <!--    Indicator row collapsible Details    -->
         <div slot="row-data-details" class="row-h">
           <!--    Locations    -->
-          <div class="details-container">
+          <div class="details-container-locations">
             <div class="text details-heading">Locations</div>
             <div class="details-text">
               ${this.locationNames.length
@@ -162,9 +162,9 @@ export class PdIndicator extends LitElement {
             <div class="details-text">${this.sectionClusterNames}</div>
           </div>
 
-          <!--    Disagregations    -->
+          <!--    Disaggregations    -->
           <div class="details-container">
-            <div class="text details-heading">Disagregation</div>
+            <div class="text details-heading">Disaggregation</div>
             <div class="details-text">
               ${this.indicator.disaggregation.length
                 ? this.indicator.disaggregation.map((disaggregation: string) => this.getDisaggregation(disaggregation))

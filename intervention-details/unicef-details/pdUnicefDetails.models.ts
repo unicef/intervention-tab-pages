@@ -20,7 +20,7 @@ export class PdUnicefDetailsPermissions extends ModelsBase {
     super();
     this.setObjProperties(permissions);
   }
-  unicef_office = true;
+  offices = true;
   sections = true;
   focal_points = true;
   budget_owner = true;

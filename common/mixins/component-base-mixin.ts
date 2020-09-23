@@ -6,6 +6,7 @@ import {fireEvent} from '../../utils/fire-custom-event';
 import {validateRequiredFields} from '../../utils/validation-helper';
 import {formatDate} from '../../utils/date-utils';
 import isEmpty from 'lodash-es/isEmpty';
+import CONSTANTS from '../constants';
 
 function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class ComponentBaseClass extends baseClass {
@@ -108,7 +109,8 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
     renderNameEmailPhone(item: any) {
       // eslint-disable-next-line
-      return html`${item.first_name} ${item.last_name} (${item.email ? item.email : ''}${item.phone ? ', ' + item.phone : ''})`;
+      return html`${item.first_name} ${item.last_name}
+      (${item.email ? item.email : ''}${item.phone ? ', ' + item.phone : ''})`;
     }
 
     selectedItemChanged(detail: any, key: string, optionValue = 'id') {
@@ -164,6 +166,14 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
       this.data[key] = detail.value;
       this.requestUpdate();
+    }
+
+    getDocumentLongName(value: any): string | undefined {
+      if (!value) {
+        return;
+      }
+      // @ts-ignore
+      return CONSTANTS.DOCUMENT_TYPES_LONG[value.toUpperCase()];
     }
   }
   return ComponentBaseClass;

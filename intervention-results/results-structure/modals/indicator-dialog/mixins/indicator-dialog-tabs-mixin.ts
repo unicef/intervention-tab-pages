@@ -46,7 +46,7 @@ function IndicatorDialogTabsMixin<T extends Constructor<LitElement>>(baseClass: 
 
     updateTabCount(event: CustomEvent) {
       this.indicatorDataTabs[1].counter = event.detail.count;
-      this.requestUpdate();
+      this.indicatorDataTabs = [...this.indicatorDataTabs];
     }
 
     // /**

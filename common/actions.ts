@@ -1,11 +1,14 @@
 import {_sendRequest} from '../utils/request-helper';
 import {getEndpoint} from '../utils/endpoint-helper';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
-import {Intervention} from './models/intervention.types';
+import {Intervention, PlannedBudget} from './models/intervention.types';
 import {SHOW_TOAST} from './actionsConstants';
 import {AnyObject} from './models/globals.types';
 
 export const updateCurrentIntervention = (intervention: AnyObject) => {
+  if (!intervention.planned_budget) {
+    intervention.planned_budget = new PlannedBudget();
+  }
   return {
     type: 'UPDATE_CURRENT_INTERVENTION',
     current: intervention
