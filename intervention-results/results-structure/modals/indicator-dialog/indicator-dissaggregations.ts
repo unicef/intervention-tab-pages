@@ -116,6 +116,12 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
     this.dataSetModel = {disaggregId: null};
     this.editMode = true;
     this.preDefinedDisaggregtions = flaggedSortedDisaggregs(getStore().getState());
+    this.addEventListener('delete-confirm', this._updateTabCounter as any);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.removeEventListener('delete-confirm', this._updateTabCounter as any);
   }
 
   _isEmptyList(disaggregations: Disaggregation[], disaggregLength: number) {
@@ -161,5 +167,9 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
 
   _getDisagregGroupElem(index: number) {
     return this.shadowRoot!.querySelector('#disaggregationGroups_' + index) as PaperInputElement;
+  }
+
+  _updateTabCounter() {
+    fireEvent(this, 'update-tab-counter', {count: this.dataItems.length});
   }
 }

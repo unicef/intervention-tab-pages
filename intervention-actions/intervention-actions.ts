@@ -14,6 +14,9 @@ import {openDialog} from '../utils/dialog';
 import {InterventionActionsStyles} from './intervention-actions.styles';
 import {ACTIONS_WITH_COMMENT, BACK_ACTIONS, CANCEL, EXPORT_ACTIONS, namesMap} from './intervention-actions.constants';
 import {PaperMenuButton} from '@polymer/paper-menu-button/paper-menu-button';
+import {Intervention} from '../common/models/intervention.types';
+import {updateCurrentIntervention} from '../common/actions';
+import {getStore} from '../utils/redux-store-access';
 
 @customElement('intervention-actions')
 export class InterventionActions extends LitElement {
@@ -121,14 +124,10 @@ export class InterventionActions extends LitElement {
     sendRequest({
       endpoint,
       body,
-      method: 'POST'
+      method: 'PATCH'
     })
-      .then(() => {
-        // TODO: update intervention in redux
-      })
-      .catch((e) => {
-        console.log(e);
-        fireEvent(this, 'toast', {text: 'Can not update intervention'});
+      .then((intervention: Intervention) => {
+        getStore().dispatch(updateCurrentIntervention(intervention));
       })
       .finally(() => {
         fireEvent(this, 'global-loading', {
