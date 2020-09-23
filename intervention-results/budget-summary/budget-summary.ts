@@ -185,6 +185,6 @@ export class BudgetSummaryEl extends connect(getStore())(FrNumbersConsistencyMix
   }
 
   roundPercentage(percentage: string | number) {
-    return Math.round(Number(percentage) * 100) / 100;
+    return Math.round(Number(percentage) * 100) / 100 + '%';
   }
 }
