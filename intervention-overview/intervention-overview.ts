@@ -18,7 +18,6 @@ import {MinimalAgreement} from '../common/models/agreement.types';
 import {pageIsNotCurrentlyActive} from '../utils/common-methods';
 import {AnyObject, RootState} from '../common/models/globals.types';
 import {fireEvent} from '../utils/fire-custom-event';
-import sumBy from 'lodash-es/sumBy';
 
 /**
  * @customElement
