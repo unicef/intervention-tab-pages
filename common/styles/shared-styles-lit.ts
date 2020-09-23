@@ -238,7 +238,7 @@ export const sharedStylesContent = `
     }
   }
   
-  // styles from label-and-value-styles
+  /* styles from label-and-value-styles */
   .paper-label {
     font-size: 12px;
     color: var(--secondary-text-color);
