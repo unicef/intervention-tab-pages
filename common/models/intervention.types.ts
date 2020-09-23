@@ -59,12 +59,17 @@ export interface CpOutput {
 }
 
 export class PlannedBudget {
+  id?: number;
+  intervention?: number;
   currency?: string;
   unicef_cash_local?: string;
   total?: string;
   in_kind_amount_local?: string;
   partner_contribution_local?: string;
+  partner_contribution_percent?: number;
   programme_effectiveness?: string;
+  total_local?: number;
+  total_unicef_contribution_local?: number;
 }
 
 export class InterventionAttachment {
