@@ -43,10 +43,11 @@ export const ResultStructureStyles: CSSResult = css`
     min-width: 0;
   }
   .details-container {
-    width: 25%;
+    flex: 30%;
+    padding-left: 10px;
   }
-  .locations-container {
-    width: 50%;
+  .details-container-locations {
+    flex: 40%;
   }
   .details-list-item {
     margin-bottom: 3px;
