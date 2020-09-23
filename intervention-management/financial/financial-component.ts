@@ -119,6 +119,9 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
               placeholder="&#8212;"
               .options="${this.currencies}"
               .selected="${this.data.currency}"
+              trigger-value-change-event
+              @etools-selected-item-changed="${({detail}: CustomEvent) =>
+                this.selectedItemChanged(detail, 'currency', 'value')}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_budget)}"
               no-label-float
             >
@@ -200,5 +203,9 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
       .then(() => {
         this.editMode = false;
       });
+  }
+
+  updateCurrency(detail: any) {
+    this.data.currency = detail.value;
   }
 }
