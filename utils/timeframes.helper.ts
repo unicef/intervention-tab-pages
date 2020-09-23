@@ -17,13 +17,13 @@ const moment = window.moment;
 
 export function serializeTimeFrameData(data: InterventionActivityTimeframe[]): ActivityTime[] {
   return (data || []).map((frame: InterventionActivityTimeframe) => {
-    const start: Date = new Date(frame.start);
-    const end: Date = new Date(frame.end);
+    const start = moment(frame.start);
+    const end = moment(frame.end);
     return {
-      start,
-      end,
-      year: start.getFullYear(),
-      frameDisplay: `${moment(start).format('DD MMM')} - ${moment(end).format('DD MMM')}`,
+      start: start.toDate(),
+      end: end.toDate(),
+      year: start.year(),
+      frameDisplay: `${start.format('DD MMM')} - ${end.format('DD MMM')}`,
       name: frame.name,
       enabled: Boolean(frame.enabled)
     };

@@ -29,12 +29,12 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         ${sharedStyles} *[hidden] {
           display: none !important;
         }
-
+        .layout-horizontal {
+          overflow: hidden;
+        }
         etools-dialog {
           --etools-dialog-scrollable: {
-            display: flex;
-            min-height: 300px;
-            font-size: 16px;
+            margin-top: 0 !important;
           }
         }
       </style>

@@ -11,12 +11,13 @@ import {layoutFlex} from '../../common/styles/flex-layout-styles';
 import {RootState} from '../../common/models/globals.types';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
+import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 
 /**
  * @customElement
  */
 @customElement('details-overview')
-export class DetailsOverview extends connect(getStore())(LitElement) {
+export class DetailsOverview extends connect(getStore())(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, elevationStyles];
   }
@@ -52,7 +53,7 @@ export class DetailsOverview extends connect(getStore())(LitElement) {
                 <label class="paper-label">Document Type</label>
               </span>
             </div>
-            <div class="flex-1">
+            <div class="flex-3">
               <span>
                 <label class="paper-label">CFEI/DSR Reference Number</label>
               </span>
@@ -72,11 +73,11 @@ export class DetailsOverview extends connect(getStore())(LitElement) {
             <div class="flex-2">
               <span>
                 <label class="input-label" ?empty="${!this.interventionOverview.document_type}">
-                  ${this.interventionOverview.document_type}
+                  ${this.getDocumentLongName(this.interventionOverview.document_type)}
                 </label>
               </span>
             </div>
-            <div class="flex-1">
+            <div class="flex-3">
               <span>
                 <label class="input-label" ?empty="${!this.interventionOverview.cfei_number}">
                   ${this.interventionOverview.cfei_number}
