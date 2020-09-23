@@ -5,7 +5,7 @@ import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-inpu
 import {elevationStyles} from '../common/styles/elevation-styles';
 import {gridLayoutStylesLit} from '../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../common/styles/shared-styles-lit';
-import {Intervention, CpOutput, ExpectedResult} from '../common/models/intervention.types';
+import {Intervention, CpOutput, ExpectedResult, ManagementBudget} from '../common/models/intervention.types';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../utils/redux-store-access';
 import cloneDeep from 'lodash-es/cloneDeep';
@@ -18,6 +18,7 @@ import {MinimalAgreement} from '../common/models/agreement.types';
 import {pageIsNotCurrentlyActive} from '../utils/common-methods';
 import {AnyObject, RootState} from '../common/models/globals.types';
 import {fireEvent} from '../utils/fire-custom-event';
+import sumBy from 'lodash-es/sumBy';
 
 /**
  * @customElement
@@ -173,7 +174,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
                 class="w100"
                 type="number"
                 placeholder="&#8212;"
-                .value="${this.intervention.planned_budget.programme_effectiveness}"
+                .value="${this.getUnicefEEContribOutOfTotalEE()}"
                 no-label-float
                 disabled
               >
@@ -216,7 +217,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
               <label class="paper-label">Total Unicef Contribution</label>
                 </br>
                 <etools-currency-amount-input
-                  .value="${this._getTotalUnicef()}"
+                  .value="${this.intervention.planned_budget.total_unicef_contribution_local}"
                   type="number"
                   placeholder="&#8212;"
                   no-label-float
@@ -350,6 +351,24 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
     });
   }
 
+  getUnicefEEContribOutOfTotalEE() {
+    const totalEEUnicefContrib = this.getUnicefEEContrib(this.intervention.management_budgets);
+    const totalEE = this.intervention.management_budgets ? this.intervention.management_budgets.total : 0;
+    const percentage = (totalEEUnicefContrib * 100) / (totalEE | 1);
+    return percentage + ' %'; // TODO % is not displayed
+  }
+
+  getUnicefEEContrib(management_budgets?: ManagementBudget) {
+    if (!management_budgets) {
+      return 0;
+    }
+    return (
+      Number(management_budgets.act1_unicef) +
+      Number(management_budgets.act2_unicef) +
+      Number(management_budgets.act3_unicef)
+    );
+  }
+
   _parseCpOutputs(cpOutputsLength: number, resultsLength: number) {
     if (!cpOutputsLength || !resultsLength) {
       this.interventionCpOutputs = [];
@@ -384,23 +403,6 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
     });
 
     return sectionNames.join(', ');
-  }
-
-  _getTotalUnicef() {
-    let total = 0;
-    if (this.intervention.planned_budget.unicef_cash_local) {
-      const val = parseFloat(this.intervention.planned_budget.unicef_cash_local);
-      if (!isNaN(val)) {
-        total += val;
-      }
-    }
-    if (this.intervention.planned_budget.in_kind_amount_local) {
-      const val = parseFloat(this.intervention.planned_budget.in_kind_amount_local);
-      if (!isNaN(val)) {
-        total += val;
-      }
-    }
-    return total;
   }
 
   getPartnerPseaRiskRatingHtml() {
