@@ -1,5 +1,6 @@
 import {getStore} from '../../utils/redux-store-access';
 import {css, html, CSSResultArray, customElement, LitElement, property} from 'lit-element';
+import {repeat} from 'lit-html/directives/repeat';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {
@@ -275,8 +276,10 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
             @click="${() => this.openCpOutputDialog()}"
           ></iron-icon>
         </div>
-        ${this.resultLinks.map(
-          (result: ExpectedResult) => html`
+        ${repeat(
+          this.resultLinks,
+          (result: ExpectedResult) => result.id,
+          (result, _index) => html`
             <cp-output-level
               ?show-cpo-level="${this.isUnicefUser}"
               .resultLink="${result}"
