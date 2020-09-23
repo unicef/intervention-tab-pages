@@ -26,7 +26,7 @@ class QprList extends CommonMixin(ReportingReqPastDatesCheckMixin(PolymerElement
       ${reportingRequirementsListStyles}${gridLayoutStylesPolymer()}
       <style include="data-table-styles">
         etools-data-table-row {
-          --list-second-bg-color: #ffffff !important;
+          --icons-actions_-_background-color: transparent !important;
         }
       </style>
 
