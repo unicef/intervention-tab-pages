@@ -15,7 +15,6 @@ export class BudgetSummary extends ModelsBase {
   in_kind_amount_local = 0;
   partner_contribution_percent = 0;
   total_local = 0;
-  total_cash = '';
   total_unicef_contribution_local = 0;
   total_cash_local = 0;
 }
