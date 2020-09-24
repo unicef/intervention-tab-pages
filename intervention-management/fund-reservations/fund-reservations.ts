@@ -83,7 +83,7 @@ export class FundReservations extends connect(getStore())(FrNumbersConsistencyMi
         }
       </style>
 
-      <etools-content-panel panel-title="Fund Reservations">
+      <etools-content-panel show-expand-btn panel-title="Fund Reservations">
         <paper-icon-button
           slot="panel-btns"
           icon="add-box"
