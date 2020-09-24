@@ -42,7 +42,6 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
           width: 100%;
           --ecp-content-padding: 0px;
           --paper-input-container-underline-disabled_-_display: none;
-          --paper-input-container-underline-disabled_-_width: 140px;
         }
 
         .block {
@@ -88,7 +87,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
           background-color: var(--primary-background-color);
         }
         etools-currency-amount-input {
-          width: 140px;
+          width: 160px;
         }
         .inline-right {
           display: inline;
@@ -157,7 +156,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
         <div class="row-h flex-c">
           <div class="col col-4">
             <div class="inline-right">
-              <label class="paper-label">Total value of the Effective Programme management Cost</label>
+              <label class="label-secondary-color">Total value of the Effective Programme management Cost</label>
                 </br>
                 <etools-currency-amount-input
                 class="w100"
@@ -173,7 +172,9 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
 
           <div class="col col-6">
             <div class="inline-right">
-              <label class="paper-label">% Total value of Unicef's contribution that is Effective and Efficient Programme Management Cost</label>
+                <label class="label-secondary-color">
+                % Total value of Unicef's contribution that is Effective and Efficient Programme Management Cost
+                </label>
                 </br>
                 <etools-currency-amount-input
                 class="w100"
@@ -191,7 +192,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
         <div class="row-h flex-c">
           <div class="col col-4">
             <div class="inline-right">
-              <label class="paper-label">Unicef Cash Contribution</label>
+              <label class="label-secondary-color">Unicef Cash Contribution</label>
                 </br>
                 <etools-currency-amount-input
                 .value="${this.intervention.planned_budget.unicef_cash_local}"
@@ -205,7 +206,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
           </div>
           <div class="col col-4">
             <div class="inline-right">
-              <label class="paper-label">Unicef Supply Contribution</label>
+              <label class="label-secondary-color">Unicef Supply Contribution</label>
               </br>
               <etools-currency-amount-input
                 .value="${this.intervention.planned_budget.in_kind_amount_local}"
@@ -219,7 +220,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
           </div>
           <div class="col col-4">
             <div class="inline-right">
-              <label class="paper-label">Total Unicef Contribution</label>
+              <label class="label-secondary-color">Total Unicef Contribution</label>
                 </br>
                 <etools-currency-amount-input
                   .value="${this.intervention.planned_budget.total_unicef_contribution_local}"
@@ -234,12 +235,12 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
         </div>
       <div class="row-h flex-c">
          <div class="col col-4 block">
-          <label class="paper-label">Partner HACT Risk Rating</label>
+          <label class="label-secondary-color">Partner HACT Risk Rating</label>
           <br />
           <div class="content">${this.getPartnerHactRiskRatingHtml()}</div>
         </div>
         <div class="col col-4 block">
-          <label class="paper-label">Partner PSEA Risk Rating</label>
+          <label class="label-secondary-color">Partner PSEA Risk Rating</label>
           <br />
           <div class="content">${this.getPartnerPseaRiskRatingHtml()}</div>
         </div>
