@@ -1,4 +1,5 @@
 import {html, unsafeCSS} from 'lit-element';
+// language=css
 export const sharedStylesContent = `
   :host {
     display: block;
