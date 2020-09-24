@@ -17,6 +17,7 @@ import {fireEvent} from '../../../../utils/fire-custom-event';
 import {ActivityItemsTable} from './activity-items-table';
 import {getIntervention} from '../../../../common/actions';
 import {ActivityTimeFrames} from './activity-timeframes';
+import {validateRequiredFields} from '../../../../utils/validation-helper';
 
 @customElement('activity-data-dialog')
 export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitElement) {
@@ -234,8 +235,16 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
     };
   }
 
+  validate() {
+    return validateRequiredFields(this);
+  }
+
   processRequest(): void {
     if (this.loadingInProcess) {
+      return;
+    }
+
+    if (!this.validate()) {
       return;
     }
 
