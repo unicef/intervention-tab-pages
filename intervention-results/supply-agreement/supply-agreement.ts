@@ -62,15 +62,18 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
           --ecp-content-padding: 0;
           --ecp-content_-_padding: 0;
         }
-        .mr-40 {
-          margin-right: 40px;
+        .mr-20 {
+          margin-right: 20px;
+        }
+        .pad-right {
+          padding-right: 6px;
         }
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Supply Agreement">
         <div slot="panel-btns">
-          <span class="mr-40">
-            <label class="paper-label font-bold">Total Supply Budget: </label>
+          <span class="mr-20">
+            <label class="paper-label font-bold pad-right">TOTAL SUPPLY BUDGET: </label>
             <label class="font-bold-12"
               >${this.intervention.planned_budget.currency}
               ${this.intervention.planned_budget.in_kind_amount_local}</label
