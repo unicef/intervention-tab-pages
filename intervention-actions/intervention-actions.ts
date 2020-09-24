@@ -11,6 +11,7 @@ import {interventionEndpoints} from '../utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {fireEvent} from '../utils/fire-custom-event';
 import {openDialog} from '../utils/dialog';
+import '../common/layout/are-you-sure';
 import {InterventionActionsStyles} from './intervention-actions.styles';
 import {ACTIONS_WITH_COMMENT, BACK_ACTIONS, CANCEL, EXPORT_ACTIONS, namesMap} from './intervention-actions.constants';
 import {PaperMenuButton} from '@polymer/paper-menu-button/paper-menu-button';
@@ -109,6 +110,18 @@ export class InterventionActions extends LitElement {
 
   async processAction(action: string): Promise<void> {
     this.closeDropdown();
+    const confirmed = await openDialog({
+      dialog: 'are-you-sure',
+      dialogData: {
+        content: 'Are you sure you want to ' + action + ' ?',
+        confirmBtnText: action
+      }
+    }).then(({confirmed}) => {
+      return confirmed;
+    });
+    if (!confirmed) {
+      return;
+    }
     const body = ACTIONS_WITH_COMMENT.includes(action) ? await this.openCommentDialog(action) : {};
     if (body === null) {
       return;
