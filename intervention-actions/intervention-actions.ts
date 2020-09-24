@@ -110,11 +110,26 @@ export class InterventionActions extends LitElement {
 
   async processAction(action: string): Promise<void> {
     this.closeDropdown();
+    let message = '';
+    let btn = '';
+    switch (action) {
+      case 'signature':
+        btn = 'Send';
+        message = 'Are you sure you want to send for signature?';
+        break;
+      case 'cancel':
+        btn = 'Yes';
+        message = 'Are you sure you want to ' + action + ' ?';
+        break;
+      default:
+        btn = action;
+        message = 'Are you sure you want to ' + action + ' ?';
+    }
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
-        content: 'Are you sure you want to ' + action + ' ?',
-        confirmBtnText: action
+        content: message,
+        confirmBtnText: btn
       }
     }).then(({confirmed}) => {
       return confirmed;
