@@ -29,7 +29,10 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
   }
   render() {
     if (!this.interventionCpOutputs || !this.intervention || !this.interventionAgreement) {
-      return html`<etools-loading loading-text="Loading..." active></etools-loading>`;
+      return html`<style>
+          ${sharedStyles}
+        </style>
+        <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
 
     // language=HTML
@@ -38,22 +41,27 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
         ${sharedStyles} :host {
           width: 100%;
           --ecp-content-padding: 0px;
-          --paper-input-container-underline-disabled: {
-            display: none;
-            width: 140px;
-          }
+          --paper-input-container-underline-disabled_-_display: none;
+          --paper-input-container-underline-disabled_-_width: 140px;
         }
+
         .block {
           display: block !important;
         }
         .content {
           margin-top: 8px;
+          font-size: 14px;
         }
         iron-label {
           color: var(--dark-secondary-text-color);
         }
         .secondary {
           color: var(--dark-secondary-text-color);
+          font-size: 14px;
+        }
+        .label-secondary-color {
+          color: var(--secondary-text-color);
+          font-size: 14px;
         }
         .blue {
           color: var(--paper-blue-500);
@@ -82,18 +90,16 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
         etools-currency-amount-input {
           width: 140px;
         }
-
         .inline-right {
           display: inline;
           text-align: right;
         }
-
       </style>
 
       <div class="page-content elevation" elevation="1" id="top-container">
         <div class="row-h flex-c">
           <div class="col col-12 block">
-            <iron-label for="cp_outputs_list">
+            <iron-label for="cp_outputs_list" class="label-secondary-color">
               Cp Output(s)
             </iron-label>
             <br />
@@ -105,7 +111,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
 
         <div class="row-h flex-c">
           <div class="col col-12 block">
-            <iron-label for="document_title">
+            <iron-label for="document_title" class="label-secondary-color">
               Document Title
             </iron-label>
             <br />
@@ -129,7 +135,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
 
         <div class="row-h flex-c">
           <div class="col col-4 block">
-            <iron-label for="interventions_timeline">
+            <iron-label for="interventions_timeline" class="label-secondary-color">
               Timeline
             </iron-label>
             <br />
@@ -138,7 +144,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
             </div>
           </div>
           <div class="col col-4 block">
-            <iron-label for="intervention-sections">
+            <iron-label for="intervention-sections" class="label-secondary-color">
               Sections
             </iron-label>
             <br />
