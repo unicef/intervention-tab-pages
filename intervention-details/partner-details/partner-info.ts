@@ -172,7 +172,7 @@ export class PartnerInfoElement extends connect(getStore())(ComponentBaseMixin(L
       if (this.partnerIdHasChanged(newPartnerDetails)) {
         this.partnerStaffMembers = await this.getAllPartnerStaffMembers(newPartnerDetails.partner_id!);
       }
-      this.data = newPartnerDetails;
+      this.data = cloneDeep(newPartnerDetails);
       this.originalData = cloneDeep(this.data);
     }
   }
