@@ -20,6 +20,7 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import isEmpty from 'lodash-es/isEmpty';
 import get from 'lodash-es/get';
 import {openDialog} from '../../utils/dialog';
+import {layoutCenter, layoutVertical} from '../../common/styles/flex-layout-styles';
 
 /**
  * @customElement
@@ -51,6 +52,12 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
           min-width: 100px;
           flex-direction: row;
           padding-bottom: 12px;
+        }
+
+        .locations-btn {
+          margin: auto;
+          ${layoutVertical}
+          ${layoutCenter}
         }
 
         .see-locations iron-icon {
@@ -90,15 +97,17 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
               this.selectedItemsChanged(detail, 'flat_locations')}"
           >
           </etools-dropdown-multi>
-          <paper-button
-            class="secondary-btn see-locations right-align"
-            @click="${this.openLocationsDialog}"
-            ?hidden="${this._isEmpty(this.data.flat_locations)}"
-            title="See all locations"
-          >
-            <iron-icon icon="add"></iron-icon>
-            See all
-          </paper-button>
+          <div class="locations-btn">
+            <paper-button
+              class="secondary-btn see-locations right-align"
+              @click="${this.openLocationsDialog}"
+              ?hidden="${this._isEmpty(this.data.flat_locations)}"
+              title="See all locations"
+            >
+              <iron-icon icon="add"></iron-icon>
+              See all
+            </paper-button>
+          </div>
         </div>
 
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}

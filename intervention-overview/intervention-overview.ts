@@ -5,7 +5,7 @@ import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-inpu
 import {elevationStyles} from '../common/styles/elevation-styles';
 import {gridLayoutStylesLit} from '../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../common/styles/shared-styles-lit';
-import {Intervention, CpOutput, ExpectedResult} from '../common/models/intervention.types';
+import {Intervention, CpOutput, ExpectedResult, ManagementBudget} from '../common/models/intervention.types';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../utils/redux-store-access';
 import cloneDeep from 'lodash-es/cloneDeep';
@@ -151,10 +151,43 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
         <div class="row-h flex-c">
           <div class="col col-4">
             <div class="inline-right">
+              <label class="paper-label">Total value of the Effective Programme management Cost</label>
+                </br>
+                <etools-currency-amount-input
+                class="w100"
+                type="number"
+                .value="${this.intervention.management_budgets?.total}"
+                placeholder="&#8212;"
+                no-label-float
+                disabled
+              >
+              </etools-currency-amount-input>
+            </div>
+          </div>
+
+          <div class="col col-6">
+            <div class="inline-right">
+              <label class="paper-label">% Total value of Unicef's contribution that is Effective and Efficient Programme Management Cost</label>
+                </br>
+                <etools-currency-amount-input
+                class="w100"
+                type="number"
+                placeholder="&#8212;"
+                .value="${this.getUnicefEEContribOutOfTotalEE()}"
+                no-label-float
+                disabled
+              >
+              </etools-currency-amount-input>
+            </div>
+          </div>
+        </div>
+
+        <div class="row-h flex-c">
+          <div class="col col-4">
+            <div class="inline-right">
               <label class="paper-label">Unicef Cash Contribution</label>
                 </br>
                 <etools-currency-amount-input
-                class="unicef_cash_contribution"
                 .value="${this.intervention.planned_budget.unicef_cash_local}"
                 type="number"
                 placeholder="&#8212;"
@@ -169,7 +202,6 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
               <label class="paper-label">Unicef Supply Contribution</label>
               </br>
               <etools-currency-amount-input
-                class="unicef_supply_contribution"
                 .value="${this.intervention.planned_budget.in_kind_amount_local}"
                 type="number"
                 placeholder="&#8212;"
@@ -184,8 +216,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
               <label class="paper-label">Total Unicef Contribution</label>
                 </br>
                 <etools-currency-amount-input
-                  class="unicef_totla_contribution"
-                  .value="${this._getTotalUnicef()}"
+                  .value="${this.intervention.planned_budget.total_unicef_contribution_local}"
                   type="number"
                   placeholder="&#8212;"
                   no-label-float
@@ -319,6 +350,24 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
     });
   }
 
+  getUnicefEEContribOutOfTotalEE() {
+    const totalEEUnicefContrib = this.getUnicefEEContrib(this.intervention.management_budgets);
+    const totalEE = this.intervention.management_budgets ? this.intervention.management_budgets.total : 0;
+    const percentage = (totalEEUnicefContrib * 100) / (totalEE | 1);
+    return percentage + ' %'; // TODO % is not displayed
+  }
+
+  getUnicefEEContrib(management_budgets?: ManagementBudget) {
+    if (!management_budgets) {
+      return 0;
+    }
+    return (
+      Number(management_budgets.act1_unicef) +
+      Number(management_budgets.act2_unicef) +
+      Number(management_budgets.act3_unicef)
+    );
+  }
+
   _parseCpOutputs(cpOutputsLength: number, resultsLength: number) {
     if (!cpOutputsLength || !resultsLength) {
       this.interventionCpOutputs = [];
@@ -353,23 +402,6 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
     });
 
     return sectionNames.join(', ');
-  }
-
-  _getTotalUnicef() {
-    let total = 0;
-    if (this.intervention.planned_budget.unicef_cash_local) {
-      const val = parseFloat(this.intervention.planned_budget.unicef_cash_local);
-      if (!isNaN(val)) {
-        total += val;
-      }
-    }
-    if (this.intervention.planned_budget.in_kind_amount_local) {
-      const val = parseFloat(this.intervention.planned_budget.in_kind_amount_local);
-      if (!isNaN(val)) {
-        total += val;
-      }
-    }
-    return total;
   }
 
   getPartnerPseaRiskRatingHtml() {

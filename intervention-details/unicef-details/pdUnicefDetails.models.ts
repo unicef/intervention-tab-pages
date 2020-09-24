@@ -22,6 +22,6 @@ export class PdUnicefDetailsPermissions extends ModelsBase {
   }
   offices = true;
   sections = true;
-  focal_points = true;
+  unicef_focal_points = true;
   budget_owner = true;
 }
