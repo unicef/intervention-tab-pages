@@ -32,11 +32,6 @@ const customStyles = html`
     .right-a {
       text-align: right;
     }
-    .label-input {
-      font-size: 12px;
-      line-height: 16px;
-      color: var(--secondary-text-color);
-    }
   </style>
 `;
 /**
@@ -212,7 +207,7 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
     childRow.rowHTML = html`
       <td colspan="7">
         <div class="child-row-inner-container">
-          <label class="label-input">Description</label><br />
+          <label class="paper-label">Description</label><br />
           <label>${item.description}</label>
         </div>
       </td>

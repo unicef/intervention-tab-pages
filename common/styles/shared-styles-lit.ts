@@ -159,23 +159,6 @@ export const sharedStylesContent = `
     font-weight: bold;
   }
 
-  .paper-label {
-    font-size: 12px;
-    color: var(--secondary-text-color);
-    padding-top: 8px;
-  }
-
-  .input-label {
-    min-height: 24px;
-    padding-top: 4px;
-    min-width: 0;
-  }
-
-  .input-label[empty]::after {
-    content: '—';
-    color: var(--secondary-text-color);
-  }
-
   paper-textarea {
     --paper-input-container-input: {
       display: block;
@@ -254,6 +237,26 @@ export const sharedStylesContent = `
     --epc-header: {
      border-bottom: 1px solid var(--dark-divider-color) !important;
     }
+  }
+  
+  /* styles from label-and-value-styles */
+  .paper-label {
+    font-size: 12px;
+    color: var(--secondary-text-color);
+    padding-top: 6px;
+  }
+
+  .input-label {
+    min-height: 24px;
+    padding-top: 4px;
+    padding-bottom: 6px;
+    min-width: 0;
+    font-size: 16px;
+  }
+
+  .input-label[empty]::after {
+    content: '—';
+    color: var(--secondary-text-color);
   }
 `;
 export const sharedStyles = html`${unsafeCSS(sharedStylesContent)}`;
