@@ -155,8 +155,15 @@ export const sharedStylesContent = `
   .readonly {
     pointer-events: none;
   }
+
   .font-bold {
     font-weight: bold;
+  }
+
+  .font-bold-12 {
+    font-weight: bold;
+    font-size: 12px;
+    color: var(--primary-text-color);
   }
 
   paper-textarea {
@@ -238,8 +245,7 @@ export const sharedStylesContent = `
      border-bottom: 1px solid var(--dark-divider-color) !important;
     }
   }
-  
-  /* styles from label-and-value-styles */
+
   .paper-label {
     font-size: 12px;
     color: var(--secondary-text-color);
