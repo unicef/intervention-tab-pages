@@ -11,6 +11,7 @@ import {formatDateShortMonth} from '../../utils/date-utils';
 import {RootState} from '../../common/models/globals.types';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
+import {InfoElementStyles} from '../../common/styles/info-element-styles';
 
 /**
  * @customElement
@@ -29,35 +30,7 @@ export class TimingOverview extends connect(getStore())(LitElement) {
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     return html`
-      <style>
-        ${sharedStyles} :host {
-          display: block;
-          margin-bottom: 24px;
-        }
-        section.table {
-          display: flex;
-          position: relative;
-          justify-content: flex-start;
-          padding: 0px 24px;
-          flex-wrap: wrap;
-        }
-        .data-column {
-          margin: 14px 0;
-          min-width: 150px;
-          padding: 0 5px;
-          box-sizing: border-box;
-          flex: 1;
-        }
-        .data-column > div {
-          display: flex;
-          padding-top: 4px;
-        }
-        .input-label {
-          padding-top: 0;
-          display: flex;
-          align-items: center;
-        }
-      </style>
+      ${InfoElementStyles}
       <section class="elevation table" elevation="1">
         <div class="data-column">
           <label class="paper-label">Date Created</label>

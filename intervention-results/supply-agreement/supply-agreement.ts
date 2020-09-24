@@ -62,19 +62,19 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
           --ecp-content-padding: 0;
           --ecp-content_-_padding: 0;
         }
-        .mr-40 {
-          margin-right: 40px;
+        .mr-20 {
+          margin-right: 20px;
         }
-        .f-12 {
-          font-size: 12px;
+        .pad-right {
+          padding-right: 6px;
         }
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Supply Agreement">
         <div slot="panel-btns">
-          <span class="mr-40">
-            <label class="label-input font-bold">TOTAL SUPPLY BUDGET: </label>
-            <label class="f-12 font-bold"
+          <span class="mr-20">
+            <label class="paper-label font-bold pad-right">TOTAL SUPPLY BUDGET: </label>
+            <label class="font-bold-12"
               >${this.intervention.planned_budget.currency}
               ${this.intervention.planned_budget.in_kind_amount_local}</label
             >
@@ -148,13 +148,13 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
       <td></td>
       <td class="ptb-0">
         <div class="child-row-inner-container">
-          <label class="label-input">Cp Outputs</label><br />
+          <label class="paper-label">Cp Outputs</label><br />
             <label>${output}</label><br />
         </div>
       </td>
       <td colspan="4" class="ptb-0">
         <div class="child-row-inner-container">
-          <label class="label-input">Other Mentions</label><br />
+          <label class="paper-label">Other Mentions</label><br />
           <label>${item.other_mentions}</label>
           </paper-input>
         </div>

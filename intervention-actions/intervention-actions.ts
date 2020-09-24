@@ -11,6 +11,7 @@ import {interventionEndpoints} from '../utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {fireEvent} from '../utils/fire-custom-event';
 import {openDialog} from '../utils/dialog';
+import '../common/layout/are-you-sure';
 import {InterventionActionsStyles} from './intervention-actions.styles';
 import {ACTIONS_WITH_COMMENT, BACK_ACTIONS, CANCEL, EXPORT_ACTIONS, namesMap} from './intervention-actions.constants';
 import {PaperMenuButton} from '@polymer/paper-menu-button/paper-menu-button';
@@ -107,8 +108,41 @@ export class InterventionActions extends LitElement {
     `;
   }
 
+  async confirmAction(action: string) {
+    let message = '';
+    let btn = '';
+    switch (action) {
+      case 'signature':
+        btn = 'Send';
+        message = 'Are you sure you want to send for signature?';
+        break;
+      case 'cancel':
+        btn = 'Yes';
+        message = 'Are you sure you want to ' + action + ' ?';
+        break;
+      default:
+        btn = action;
+        message = 'Are you sure you want to ' + action + ' ?';
+    }
+    const confirmed = await openDialog({
+      dialog: 'are-you-sure',
+      dialogData: {
+        content: message,
+        confirmBtnText: btn
+      }
+    }).then(({confirmed}) => {
+      return confirmed;
+    });
+
+    return confirmed;
+  }
+
   async processAction(action: string): Promise<void> {
     this.closeDropdown();
+
+    if (!(await this.confirmAction(action))) {
+      return;
+    }
     const body = ACTIONS_WITH_COMMENT.includes(action) ? await this.openCommentDialog(action) : {};
     if (body === null) {
       return;

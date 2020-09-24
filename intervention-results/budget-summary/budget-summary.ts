@@ -1,5 +1,4 @@
 import {LitElement, customElement, html, property} from 'lit-element';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {elevationStyles} from '../../common/styles/elevation-styles';
 import {BudgetSummary} from './budgetSummary.models';
@@ -14,6 +13,7 @@ import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import {frWarningsStyles} from '../../common/styles/fr-warnings-styles';
 import {Intervention, FrsDetails} from '../../common/models/intervention.types';
 import {customIcons} from '../../common/styles/custom-icons';
+import {InfoElementStyles} from '../../common/styles/info-element-styles';
 
 /**
  * @customElement
@@ -26,36 +26,7 @@ export class BudgetSummaryEl extends connect(getStore())(FrNumbersConsistencyMix
   render() {
     // language=HTML
     return html`
-      ${customIcons}
-      <style>
-        ${sharedStyles} :host {
-          display: block;
-          margin-bottom: 24px;
-        }
-        section.table {
-          display: flex;
-          position: relative;
-          justify-content: flex-start;
-          padding: 0px 24px;
-          flex-wrap: wrap;
-        }
-        .data-column {
-          margin: 14px 0;
-          min-width: 150px;
-          max-width: max-content;
-          padding: 0 5px;
-          box-sizing: border-box;
-        }
-        .data-column > div {
-          display: flex;
-          padding-top: 4px;
-        }
-        .input-label {
-          padding-top: 0;
-          display: flex;
-          align-items: center;
-        }
-      </style>
+      ${customIcons} ${InfoElementStyles}
       <section class="elevation table" elevation="1">
         <div class="data-column">
           <label class="paper-label">Budget Currency</label>
@@ -82,20 +53,20 @@ export class BudgetSummaryEl extends connect(getStore())(FrNumbersConsistencyMix
 
         <div class="data-column">
           <label class="paper-label">Budget HQ Rate</label>
-          <div class="input-label" ?empty="${!this.budgetSummary.hq_support_cost}">
+          <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.hq_support_cost)}">
             ${this.roundPercentage(this.budgetSummary.hq_support_cost)}
           </div>
         </div>
 
         <div class="data-column">
           <label class="paper-label">% Prgm Effectiveness</label>
-          <div class="input-label" ?empty="${!this.budgetSummary.programme_effectiveness}">
+          <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.programme_effectiveness)}">
             ${this.roundPercentage(this.budgetSummary.programme_effectiveness)}
           </div>
         </div>
         <div class="data-column">
           <label class="paper-label">Total CSO Contrib</label>
-          <div class="input-label" ?empty="${!this.budgetSummary.partner_contribution_local}">
+          <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.partner_contribution_local)}">
             ${this.displayCurrencyAmount(this.budgetSummary.partner_contribution_local, '0.00')}
           </div>
         </div>
@@ -127,14 +98,14 @@ export class BudgetSummaryEl extends connect(getStore())(FrNumbersConsistencyMix
 
         <div class="data-column">
           <label class="paper-label">Total Supply</label>
-          <div class="input-label" ?empty="${!this.budgetSummary.in_kind_amount_local}">
+          <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.in_kind_amount_local)}">
             ${this.displayCurrencyAmount(this.budgetSummary.in_kind_amount_local, '0.00')}
           </div>
         </div>
 
         <div class="data-column">
           <label class="paper-label">% Partner Contrib</label>
-          <div class="input-label" ?empty="${!this.budgetSummary.partner_contribution_percent}">
+          <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.partner_contribution_percent)}">
             ${this.roundPercentage(this.budgetSummary.partner_contribution_percent)}
           </div>
         </div>
@@ -148,7 +119,7 @@ export class BudgetSummaryEl extends connect(getStore())(FrNumbersConsistencyMix
 
         <div class="data-column">
           <label class="paper-label">Total Amt (Cash + Supply)</label>
-          <div class="input-label" ?empty="${!this.budgetSummary.total_local}">
+          <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.total_local)}">
             ${this.displayCurrencyAmount(this.budgetSummary.total_local)}
           </div>
         </div>
@@ -192,6 +163,10 @@ export class BudgetSummaryEl extends connect(getStore())(FrNumbersConsistencyMix
   }
 
   roundPercentage(percentage: string | number) {
-    return Math.round(Number(percentage) * 100) / 100;
+    return Math.round(Number(percentage) * 100) / 100 + '%';
+  }
+
+  isEmpty(value: any): boolean {
+    return !value && value !== 0;
   }
 }
