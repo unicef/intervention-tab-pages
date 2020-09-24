@@ -119,16 +119,21 @@ export class InterventionTabs extends LitElement {
       </intervention-page-content-header>
 
       <div class="page-content">
-        <intervention-details ?hidden="${!this.isActiveTab(this.activeTab, 'details')}"> </intervention-details>
-        <intervention-overview ?hidden="${!this.isActiveTab(this.activeTab, 'overview')}"> </intervention-overview>
-        <intervention-results ?hidden="${!this.isActiveTab(this.activeTab, 'results')}"> </intervention-results>
-        <intervention-timing ?hidden="${!this.isActiveTab(this.activeTab, 'timing')}"> </intervention-timing>
-        <intervention-management ?hidden="${!this.isActiveTab(this.activeTab, 'management')}">
-        </intervention-management>
-        <intervention-attachments ?hidden="${!this.isActiveTab(this.activeTab, 'attachments')}">
-        </intervention-attachments>
-        <intervention-reports ?hidden="${!this.isActiveTab(this.activeTab, 'reports')}"></intervention-reports>
-        <intervention-progress ?hidden="${!this.isActiveTab(this.activeTab, 'progress')}"></intervention-progress>
+        ${this.store
+          ? html`
+              <intervention-details ?hidden="${!this.isActiveTab(this.activeTab, 'details')}"> </intervention-details>
+              <intervention-overview ?hidden="${!this.isActiveTab(this.activeTab, 'overview')}">
+              </intervention-overview>
+              <intervention-results ?hidden="${!this.isActiveTab(this.activeTab, 'results')}"> </intervention-results>
+              <intervention-timing ?hidden="${!this.isActiveTab(this.activeTab, 'timing')}"> </intervention-timing>
+              <intervention-management ?hidden="${!this.isActiveTab(this.activeTab, 'management')}">
+              </intervention-management>
+              <intervention-attachments ?hidden="${!this.isActiveTab(this.activeTab, 'attachments')}">
+              </intervention-attachments>
+              <intervention-reports ?hidden="${!this.isActiveTab(this.activeTab, 'reports')}"></intervention-reports>
+              <intervention-progress ?hidden="${!this.isActiveTab(this.activeTab, 'progress')}"></intervention-progress>
+            `
+          : html`<etools-loading id="intervention-tabs" loading-text="Loading..." active></etools-loading>`}
       </div>
     `;
   }
