@@ -105,7 +105,9 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
             <iron-label for="cp_outputs_list" class="label-secondary-color"> Cp Output(s) </iron-label>
             <br />
             <div class="content" id="cp_outputs_list">
-              ${this.interventionCpOutputs.map((cpOut: string) => html`<strong>${cpOut}</strong><br />`)}
+              ${this.interventionCpOutputs.length
+                ? this.interventionCpOutputs.map((cpOut: string) => html`<strong>${cpOut}</strong><br />`)
+                : html`&#8212;`}
             </div>
           </div>
         </div>
@@ -133,7 +135,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
             <iron-label for="interventions_timeline" class="label-secondary-color"> Timeline </iron-label>
             <br />
             <div class="content" id="interventions_timeline">
-              ${prettyDate(this.intervention.start)} - ${prettyDate(this.intervention.end)}
+              ${prettyDate(this.intervention.start)} &#8212; ${prettyDate(this.intervention.end)}
             </div>
           </div>
           <div class="col col-4 block">
