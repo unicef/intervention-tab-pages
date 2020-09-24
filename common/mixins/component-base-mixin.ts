@@ -1,4 +1,4 @@
-import {LitElement, property, html} from 'lit-element';
+import {LitElement, property, html, query} from 'lit-element';
 import {Constructor, AnyObject} from '../models/globals.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {areEqual, filterByIds} from '../../utils/utils';
@@ -6,6 +6,8 @@ import {fireEvent} from '../../utils/fire-custom-event';
 import {validateRequiredFields} from '../../utils/validation-helper';
 import {formatDate} from '../../utils/date-utils';
 import isEmpty from 'lodash-es/isEmpty';
+import CONSTANTS from '../constants';
+import {EtoolsContentPanel} from '@unicef-polymer/etools-content-panel/etools-content-panel';
 
 function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class ComponentBaseClass extends baseClass {
@@ -23,6 +25,9 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
     @property({type: Object})
     permissions!: any;
+
+    @query('etools-content-panel')
+    contentPanel?: EtoolsContentPanel;
 
     set_canEditAtLeastOneField(editPermissions: AnyObject) {
       this.canEditAtLeastOneField = Object.keys(editPermissions).some((key: string) => editPermissions[key] === true);
@@ -46,6 +51,9 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
     allowEdit() {
       this.editMode = true;
+      if (this.contentPanel) {
+        this.contentPanel.set('open', true);
+      }
     }
 
     cancel() {
@@ -108,7 +116,8 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
     renderNameEmailPhone(item: any) {
       // eslint-disable-next-line
-      return html`${item.first_name} ${item.last_name} (${item.email ? item.email : ''}${item.phone ? ', ' + item.phone : ''})`;
+      return html`${item.first_name} ${item.last_name}
+      (${item.email ? item.email : ''}${item.phone ? ', ' + item.phone : ''})`;
     }
 
     selectedItemChanged(detail: any, key: string, optionValue = 'id') {
@@ -164,6 +173,14 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
       this.data[key] = detail.value;
       this.requestUpdate();
+    }
+
+    getDocumentLongName(value: any): string | undefined {
+      if (!value) {
+        return;
+      }
+      // @ts-ignore
+      return CONSTANTS.DOCUMENT_TYPES_LONG[value.toUpperCase()];
     }
   }
   return ComponentBaseClass;

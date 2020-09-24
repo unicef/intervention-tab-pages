@@ -1,4 +1,5 @@
 import {html, unsafeCSS} from 'lit-element';
+// language=css
 export const sharedStylesContent = `
   :host {
     display: block;
@@ -154,25 +155,15 @@ export const sharedStylesContent = `
   .readonly {
     pointer-events: none;
   }
+
   .font-bold {
     font-weight: bold;
   }
 
-  .paper-label {
+  .font-bold-12 {
+    font-weight: bold;
     font-size: 12px;
-    color: var(--secondary-text-color);
-    padding-top: 8px;
-  }
-
-  .input-label {
-    min-height: 24px;
-    padding-top: 4px;
-    min-width: 0;
-  }
-
-  .input-label[empty]::after {
-    content: '—';
-    color: var(--secondary-text-color);
+    color: var(--primary-text-color);
   }
 
   paper-textarea {
@@ -275,6 +266,24 @@ export const sharedStylesContent = `
     display: flex;
     align-items: center;
     cursor: pointer;
+  }
+  .paper-label {
+    font-size: 12px;
+    color: var(--secondary-text-color);
+    padding-top: 6px;
+  }
+
+  .input-label {
+    min-height: 24px;
+    padding-top: 4px;
+    padding-bottom: 6px;
+    min-width: 0;
+    font-size: 16px;
+  }
+
+  .input-label[empty]::after {
+    content: '—';
+    color: var(--secondary-text-color);
   }
 `;
 export const sharedStyles = html`${unsafeCSS(sharedStylesContent)}`;

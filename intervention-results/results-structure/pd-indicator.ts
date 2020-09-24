@@ -140,7 +140,7 @@ export class PdIndicator extends LitElement {
         <!--    Indicator row collapsible Details    -->
         <div slot="row-data-details" class="row-h">
           <!--    Locations    -->
-          <div class="details-container">
+          <div class="details-container-locations">
             <div class="text details-heading">Locations</div>
             <div class="details-text">
               ${this.locationNames.length

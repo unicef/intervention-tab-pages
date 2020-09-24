@@ -51,22 +51,20 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
       <etools-content-panel show-expand-btn panel-title="Unicef Details">
 
         <div slot="panel-btns">
-          <paper-icon-button
-            ?hidden="${this.hideEditIcon(this.editMode, this.canEditAtLeastOneField)}"
-            @click="${this.allowEdit}"
-            icon="create">
-          </paper-icon-button>
+          ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
         </div>
 
-        <div class="row-padding-v">
+        <div class="layout-horizontal">
           <div class="col col-4">
-            <paper-input
-              label="Document Type"
-              .value="${this.data.document_type}"
-              class="row-padding-v"
-              readonly>
-            </paper-input>
+            <span>
+              <label class="paper-label">Document Type</label>
+            </span>
           </div>
+        </div>
+        <div class="layout-horizontal">
+          <label class="input-label" ?empty="${!this.data.document_type}">
+            ${this.getDocumentLongName(this.data.document_type)}
+           </label>
         </div>
         <div class="layout-horizontal row-padding-v">
           <div class="col col-4">
@@ -122,13 +120,13 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
               option-label="name"
               option-value="id"
               .selectedValues="${this.data.unicef_focal_points}"
-              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.focal_points)}"
-              ?required="${this.permissions.required.focal_points}"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.unicef_focal_points)}"
+              ?required="${this.permissions.required.unicef_focal_points}"
               @etools-selected-items-changed="${({detail}: CustomEvent) =>
                 this.selectedItemsChanged(detail, 'unicef_focal_points')}"
               trigger-value-change-event>
             </etools-dropdown-multi>
-            <div ?hidden="${!this.isReadonly(this.editMode, this.permissions.edit.focal_points)}">
+            <div ?hidden="${!this.isReadonly(this.editMode, this.permissions.edit.unicef_focal_points)}">
               <label for="focalPointInput" class="paper-label">Unicef Focal Points</label>
               <div id="focalPointDetails">
                 ${this.renderReadonlyFocalPoints(
@@ -198,11 +196,8 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
       this.isUnicefUser = state.user.data.is_unicef_user;
     }
     if (state.interventions.current) {
-      const pdUnicefDetails = selectPdUnicefDetails(state);
-      if (!isJsonStrMatch(this.data, pdUnicefDetails)) {
-        this.data = cloneDeep(pdUnicefDetails);
-        this.originalData = cloneDeep(pdUnicefDetails);
-      }
+      this.data = cloneDeep(selectPdUnicefDetails(state));
+      this.originalData = cloneDeep(this.data);
     }
     this.setPermissions(state);
     this.populateDropdownOptions(state);
@@ -253,7 +248,7 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
    * Optimization to avoid multiple calls to filter through the long users array
    */
   previousBudgetOwnerIds: string[] = [];
-  previousBudgeOwnerDisplay: TemplateResult | TemplateResult[] = html``;
+  previousBudgeOwnerDisplay: TemplateResult | TemplateResult[] = html`—`;
   renderReadonlyBudgetOwner(users: AnyObject[], selectedIds: string[]) {
     if (users == undefined) {
       return html`—`;
@@ -270,7 +265,7 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
    * Optimization to avoid multiple calls to filter through the long users array
    */
   previousFocalPointsIds: string[] = [];
-  previousFocalPointsDisplay: TemplateResult | TemplateResult[] = html``;
+  previousFocalPointsDisplay: TemplateResult | TemplateResult[] = html`—`;
   renderReadonlyFocalPoints(users: AnyObject[], selectedIds: string[]) {
     if (users == undefined) {
       return html`—`;

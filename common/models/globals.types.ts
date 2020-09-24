@@ -265,6 +265,7 @@ export interface CommonDataState {
   // used on PMP
   PRPCountryData?: AnyObject[];
   riskTypes: LabelAndValue[];
+  cashTransferModalities: LabelAndValue[];
 }
 
 export interface RootState {
