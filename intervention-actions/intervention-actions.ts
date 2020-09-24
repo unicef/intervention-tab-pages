@@ -108,8 +108,7 @@ export class InterventionActions extends LitElement {
     `;
   }
 
-  async processAction(action: string): Promise<void> {
-    this.closeDropdown();
+  async confirmAction(action: string) {
     let message = '';
     let btn = '';
     switch (action) {
@@ -134,7 +133,14 @@ export class InterventionActions extends LitElement {
     }).then(({confirmed}) => {
       return confirmed;
     });
-    if (!confirmed) {
+
+    return confirmed;
+  }
+
+  async processAction(action: string): Promise<void> {
+    this.closeDropdown();
+
+    if (!(await this.confirmAction(action))) {
       return;
     }
     const body = ACTIONS_WITH_COMMENT.includes(action) ? await this.openCommentDialog(action) : {};
