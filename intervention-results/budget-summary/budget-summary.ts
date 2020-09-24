@@ -102,6 +102,13 @@ export class BudgetSummaryEl extends connect(getStore())(FrNumbersConsistencyMix
 
         <div class="data-column">
           <label class="paper-label">Total Unicef Contrib</label>
+          <div class="input-label" ?empty="${!this.budgetSummary.total_unicef_contribution_local}">
+            ${this.displayCurrencyAmount(this.budgetSummary.total_unicef_contribution_local, '0.00')}
+          </div>
+        </div>
+
+        <div class="data-column">
+          <label class="paper-label">Total Unicef Cash</label>
           <div>
             <etools-info-tooltip
               class="fr-nr-warn"
@@ -134,8 +141,8 @@ export class BudgetSummaryEl extends connect(getStore())(FrNumbersConsistencyMix
 
         <div class="data-column">
           <label class="paper-label">Total Cash Amt</label>
-          <div class="input-label" ?empty="${!this.budgetSummary.unicef_cash_local}">
-            ${this.displayCurrencyAmount(this.budgetSummary.unicef_cash_local)}
+          <div class="input-label" ?empty="${!this.budgetSummary.total_cash_local}">
+            ${this.displayCurrencyAmount(this.budgetSummary.total_cash_local)}
           </div>
         </div>
 
