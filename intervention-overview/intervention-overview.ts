@@ -90,17 +90,19 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
           width: 160px;
         }
         .inline-right {
-          display: inline;
+          display: flex;
           text-align: right;
+          flex-direction: column;
+        }
+        .inline-right label {
+          text-align: left;
         }
       </style>
 
       <div class="page-content elevation" elevation="1" id="top-container">
         <div class="row-h flex-c">
           <div class="col col-12 block">
-            <iron-label for="cp_outputs_list" class="label-secondary-color">
-              Cp Output(s)
-            </iron-label>
+            <iron-label for="cp_outputs_list" class="label-secondary-color"> Cp Output(s) </iron-label>
             <br />
             <div class="content" id="cp_outputs_list">
               ${this.interventionCpOutputs.map((cpOut: string) => html`<strong>${cpOut}</strong><br />`)}
@@ -110,46 +112,34 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
 
         <div class="row-h flex-c">
           <div class="col col-12 block">
-            <iron-label for="document_title" class="label-secondary-color">
-              Document Title
-            </iron-label>
+            <iron-label for="document_title" class="label-secondary-color"> Document Title </iron-label>
             <br />
-            <div class="content" id="document_title">
-              ${this.intervention.title}
-            </div>
+            <div class="content" id="document_title">${this.intervention.title}</div>
             <div class="secondary">
               Under
               <strong class="blue">${this.interventionAgreement.agreement_type}</strong>
               with
-              ${
-                this.isUnicefUser
-                  ? html` <a href="/pmp/partners/${this.intervention.partner_id}/details">
-                      <strong class="blue">${this.intervention.partner}</strong>
-                    </a>`
-                  : html`<strong class="blue">${this.intervention.partner}</strong>`
-              }
+              ${this.isUnicefUser
+                ? html` <a href="/pmp/partners/${this.intervention.partner_id}/details">
+                    <strong class="blue">${this.intervention.partner}</strong>
+                  </a>`
+                : html`<strong class="blue">${this.intervention.partner}</strong>`}
             </div>
           </div>
         </div>
 
         <div class="row-h flex-c">
           <div class="col col-4 block">
-            <iron-label for="interventions_timeline" class="label-secondary-color">
-              Timeline
-            </iron-label>
+            <iron-label for="interventions_timeline" class="label-secondary-color"> Timeline </iron-label>
             <br />
             <div class="content" id="interventions_timeline">
               ${prettyDate(this.intervention.start)} - ${prettyDate(this.intervention.end)}
             </div>
           </div>
           <div class="col col-4 block">
-            <iron-label for="intervention-sections" class="label-secondary-color">
-              Sections
-            </iron-label>
+            <iron-label for="intervention-sections" class="label-secondary-color"> Sections </iron-label>
             <br />
-            <div class="content" id="intervention-sections">
-              ${this.inteventionSections}
-            </div>
+            <div class="content" id="intervention-sections">${this.inteventionSections}</div>
           </div>
         </div>
 
@@ -157,8 +147,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
           <div class="col col-4">
             <div class="inline-right">
               <label class="label-secondary-color">Total value of the Effective Programme management Cost</label>
-                </br>
-                <etools-currency-amount-input
+              <etools-currency-amount-input
                 class="w100"
                 type="number"
                 .value="${this.intervention.management_budgets?.total}"
@@ -172,11 +161,10 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
 
           <div class="col col-6">
             <div class="inline-right">
-                <label class="label-secondary-color">
+              <label class="label-secondary-color">
                 % Total value of Unicef's contribution that is Effective and Efficient Programme Management Cost
-                </label>
-                </br>
-                <etools-currency-amount-input
+              </label>
+              <etools-currency-amount-input
                 class="w100"
                 type="number"
                 placeholder="&#8212;"
@@ -193,8 +181,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
           <div class="col col-4">
             <div class="inline-right">
               <label class="label-secondary-color">Unicef Cash Contribution</label>
-                </br>
-                <etools-currency-amount-input
+              <etools-currency-amount-input
                 .value="${this.intervention.planned_budget.unicef_cash_local}"
                 type="number"
                 placeholder="&#8212;"
@@ -207,7 +194,6 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
           <div class="col col-4">
             <div class="inline-right">
               <label class="label-secondary-color">Unicef Supply Contribution</label>
-              </br>
               <etools-currency-amount-input
                 .value="${this.intervention.planned_budget.in_kind_amount_local}"
                 type="number"
@@ -221,61 +207,58 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
           <div class="col col-4">
             <div class="inline-right">
               <label class="label-secondary-color">Total Unicef Contribution</label>
-                </br>
-                <etools-currency-amount-input
-                  .value="${this.intervention.planned_budget.total_unicef_contribution_local}"
-                  type="number"
-                  placeholder="&#8212;"
-                  no-label-float
-                  disabled
-                >
-                </etools-currency-amount-input>
+              <etools-currency-amount-input
+                .value="${this.intervention.planned_budget.total_unicef_contribution_local}"
+                type="number"
+                placeholder="&#8212;"
+                no-label-float
+                disabled
+              >
+              </etools-currency-amount-input>
             </div>
           </div>
         </div>
-      <div class="row-h flex-c">
-         <div class="col col-4 block">
-          <label class="label-secondary-color">Partner HACT Risk Rating</label>
-          <br />
-          <div class="content">${this.getPartnerHactRiskRatingHtml()}</div>
+        <div class="row-h flex-c">
+          <div class="col col-4 block">
+            <label class="label-secondary-color">Partner HACT Risk Rating</label>
+            <br />
+            <div class="content">${this.getPartnerHactRiskRatingHtml()}</div>
+          </div>
+          <div class="col col-4 block">
+            <label class="label-secondary-color">Partner PSEA Risk Rating</label>
+            <br />
+            <div class="content">${this.getPartnerPseaRiskRatingHtml()}</div>
+          </div>
         </div>
-        <div class="col col-4 block">
-          <label class="label-secondary-color">Partner PSEA Risk Rating</label>
-          <br />
-          <div class="content">${this.getPartnerPseaRiskRatingHtml()}</div>
-        </div>
-       </div>
       </div>
 
-      ${
-        this.isUnicefUser
-          ? html`
-              <etools-content-panel
-                id="fund-reservation-display"
-                class="content-section"
-                panel-title="Implementation Status"
-              >
-                <fund-reservations-display
-                  .intervention="${this.intervention}"
-                  .frsDetails="${this.intervention.frs_details}"
-                ></fund-reservations-display>
-              </etools-content-panel>
+      ${this.isUnicefUser
+        ? html`
+            <etools-content-panel
+              id="fund-reservation-display"
+              class="content-section"
+              panel-title="Implementation Status"
+            >
+              <fund-reservations-display
+                .intervention="${this.intervention}"
+                .frsDetails="${this.intervention.frs_details}"
+              ></fund-reservations-display>
+            </etools-content-panel>
 
-              <etools-content-panel
-                id="monitoring-visits-panel"
-                class="content-section"
-                panel-title="Monitoring Activities"
+            <etools-content-panel
+              id="monitoring-visits-panel"
+              class="content-section"
+              panel-title="Monitoring Activities"
+            >
+              <monitoring-visits-list-2
+                .interventionId="${this.intervention.id}"
+                .partnerId="${this.intervention.partner_id}"
+                showTpmVisits
               >
-                <monitoring-visits-list-2
-                  .interventionId="${this.intervention.id}"
-                  .partnerId="${this.intervention.partner_id}"
-                  showTpmVisits
-                >
-                </monitoring-visits-list-2>
-              </etools-content-panel>
-            `
-          : html``
-      }
+              </monitoring-visits-list-2>
+            </etools-content-panel>
+          `
+        : html``}
     `;
   }
 
