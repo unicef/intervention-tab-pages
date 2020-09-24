@@ -376,7 +376,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
 
   _parseSections(sectionsLength: number, intSectionsLength: number) {
     if (!sectionsLength || !intSectionsLength) {
-      this.inteventionSections = '';
+      this.inteventionSections = '—';
       return;
     }
 
