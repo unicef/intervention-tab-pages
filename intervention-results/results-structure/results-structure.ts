@@ -139,7 +139,6 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
   @property({type: Boolean}) isUnicefUser = true;
   @property({type: Boolean}) showIndicators = true;
   @property({type: Boolean}) showActivities = true;
-  @property({type: Boolean}) expandPanel = true;
   @property({type: Object})
   permissions!: {edit: {result_links?: boolean}; required: {result_links?: boolean}};
 
@@ -210,11 +209,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
         }
       </style>
 
-      <etools-content-panel
-        show-expand-btn
-        .open="${this.expandPanel}"
-        panel-title="Results Structure (${this.noOfPdOutputs})"
-      >
+      <etools-content-panel show-expand-btn panel-title="Results Structure (${this.noOfPdOutputs})">
         <div slot="panel-btns" class="layout-horizontal align-items-center">
           <paper-button
             title="Export results"
@@ -378,18 +373,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
     }
     this.resultLinks = selectInterventionResultLinks(state);
     this.permissions = selectResultLinksPermissions(state);
-
-    const newId = selectInterventionId(state);
-    if (newId !== this.interventionId) {
-      // if intervention changed, need to show the panel expanded by default,
-      // to handle issue of previous state being preserved need to reset the `expandPanel` property
-      this.expandPanel = false;
-      this.interventionId = newId;
-      setTimeout(() => {
-        this.expandPanel = true;
-      });
-    }
-
+    this.interventionId = selectInterventionId(state);
     this.interventionStatus = selectInterventionStatus(state);
     this.quarters = selectInterventionQuarters(state);
     this.cpOutputs = (state.commonData && state.commonData.cpOutputs) || [];
