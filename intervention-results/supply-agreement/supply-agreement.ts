@@ -192,6 +192,7 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
 
   addSupplyItem() {
     this.openSupplyDialog(new InterventionSupplyItem());
+    this.openContentPanel();
   }
 
   async confirmDeleteSupplyItem(e: CustomEvent) {

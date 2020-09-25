@@ -1,4 +1,4 @@
-import {LitElement, property, html, query} from 'lit-element';
+import {LitElement, property, html} from 'lit-element';
 import {Constructor, AnyObject} from '../models/globals.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {areEqual, filterByIds} from '../../utils/utils';
@@ -7,10 +7,10 @@ import {validateRequiredFields} from '../../utils/validation-helper';
 import {formatDate} from '../../utils/date-utils';
 import isEmpty from 'lodash-es/isEmpty';
 import CONSTANTS from '../constants';
-import {EtoolsContentPanel} from '@unicef-polymer/etools-content-panel/etools-content-panel';
+import ContentPanelMixin from './content-panel-mixin';
 
 function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
-  class ComponentBaseClass extends baseClass {
+  class ComponentBaseClass extends ContentPanelMixin(baseClass) {
     @property({type: Boolean})
     editMode = false;
 
@@ -25,9 +25,6 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
     @property({type: Object})
     permissions!: any;
-
-    @query('etools-content-panel')
-    contentPanel?: EtoolsContentPanel;
 
     set_canEditAtLeastOneField(editPermissions: AnyObject) {
       this.canEditAtLeastOneField = Object.keys(editPermissions).some((key: string) => editPermissions[key] === true);
@@ -51,9 +48,7 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
     allowEdit() {
       this.editMode = true;
-      if (this.contentPanel) {
-        this.contentPanel.set('open', true);
-      }
+      this.openContentPanel();
     }
 
     cancel() {

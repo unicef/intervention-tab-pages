@@ -44,6 +44,7 @@ import {isUnicefUser, currentIntervention} from '../../common/selectors';
 import findIndex from 'lodash-es/findIndex';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import ContentPanelMixin from '../../common/mixins/content-panel-mixin';
 
 const RESULT_VIEW = 'result_view';
 const BUDGET_VIEW = 'budget_view';
@@ -53,7 +54,7 @@ const COMBINED_VIEW = 'combined_view';
  * @customElement
  */
 @customElement('results-structure')
-export class ResultsStructure extends connect(getStore())(LitElement) {
+export class ResultsStructure extends connect(getStore())(ContentPanelMixin(LitElement)) {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
@@ -455,6 +456,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
         interventionId: this.interventionId
       }
     });
+    this.openContentPanel();
   }
 
   async openDeleteCpOutputDialog(resultLinkId: number) {

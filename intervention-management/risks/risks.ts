@@ -149,6 +149,7 @@ export class RisksElement extends connect(getStore())(ComponentBaseMixin(LitElem
         riskTypes: this.riskTypes
       }
     });
+    this.openContentPanel();
   }
 
   async confirmDeleteRiskItem(e: CustomEvent) {
