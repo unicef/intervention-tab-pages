@@ -112,7 +112,7 @@ export class BudgetSummaryEl extends connect(getStore())(FrNumbersConsistencyMix
 
         <div class="data-column">
           <label class="paper-label">Total Cash Amt</label>
-          <div class="input-label" ?empty="${!this.budgetSummary.total_cash_local}">
+          <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.total_cash_local)}">
             ${this.displayCurrencyAmount(this.budgetSummary.total_cash_local)}
           </div>
         </div>
