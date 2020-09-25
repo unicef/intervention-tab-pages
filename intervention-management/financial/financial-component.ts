@@ -116,10 +116,17 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
           <div class="col col-3">
             <etools-dropdown
               id="currencyDd"
+              option-value="value"
+              option-label="label"
               placeholder="&#8212;"
               .options="${this.currencies}"
-              .selected="${this.data.currency}"
+              .selected="${this.data.planned_budget.currency}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_budget)}"
+              @etools-selected-item-changed="${({detail}: CustomEvent) => {
+                this.data.planned_budget.currency = detail.selectedItem ? detail.selectedItem.value : '';
+                this.requestUpdate();
+              }}"
+              trigger-value-change-event
               no-label-float
             >
             </etools-dropdown>
@@ -160,16 +167,16 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
     if (!state.interventions.current) {
       return;
     }
-    this.data = selectFinancialComponent(state);
     this.permissions = selectFinancialComponentPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
-    this.originalData = cloneDeep(this.data);
     if (!isJsonStrMatch(this.currencies, state.commonData!.currencies)) {
       this.currencies = [...state.commonData!.currencies];
     }
     if (!isJsonStrMatch(this.cashTransferModalities, state.commonData!.cashTransferModalities)) {
       this.cashTransferModalities = [...state.commonData!.cashTransferModalities];
     }
+    this.data = selectFinancialComponent(state);
+    this.originalData = cloneDeep(this.data);
   }
 
   checkCashTransferModality(value: string) {
