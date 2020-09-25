@@ -101,7 +101,7 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
     this.endpoint = getEndpoint(interventionEndpoints.intervention, {interventionId});
     this.permissions = permissions;
     this.riskTypes = riskTypes;
-    this.riskDialogTitle = this.data.id ? 'Edit risk' : 'Add risk';
+    this.riskDialogTitle = item.id ? 'Edit risk' : 'Add risk';
   }
 
   protected onClose(): void {
