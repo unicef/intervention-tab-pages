@@ -116,10 +116,16 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
           <div class="col col-3">
             <etools-dropdown
               id="currencyDd"
+              option-value="value"
+              option-label="label"
               placeholder="&#8212;"
               .options="${this.currencies}"
-              .selected="${this.data.currency}"
+              .selected="${this.data.planned_budget.currency}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_budget)}"
+              @etools-selected-item-changed="${({detail}: CustomEvent) => {
+                this.data.planned_budget.currency = detail.selectedItem.value;
+              }}"
+              trigger-value-change-event
               no-label-float
             >
             </etools-dropdown>
