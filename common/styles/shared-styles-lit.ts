@@ -82,12 +82,12 @@ export const sharedStylesContent = `
     }
     --paper-input-container: {
       pointer-events: none;
-      cusrsor: text;
+      cursor: text;
     }
     --paper-input-container-label: {
       pointer-events: none;
       color: var(--secondary-text-color, #737373);
-      cusrsor: text;
+      cursor: text;
     }
     --esmm-select-cursor: text;
     --esmm-external-wrapper: {

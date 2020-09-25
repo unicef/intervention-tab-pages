@@ -29,7 +29,10 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
   }
   render() {
     if (!this.interventionCpOutputs || !this.intervention || !this.interventionAgreement) {
-      return html`<etools-loading loading-text="Loading..." active></etools-loading>`;
+      return html`<style>
+          ${sharedStyles}
+        </style>
+        <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
 
     // language=HTML
@@ -38,22 +41,26 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
         ${sharedStyles} :host {
           width: 100%;
           --ecp-content-padding: 0px;
-          --paper-input-container-underline-disabled: {
-            display: none;
-            width: 140px;
-          }
+          --paper-input-container-underline-disabled_-_display: none;
         }
+
         .block {
           display: block !important;
         }
         .content {
           margin-top: 8px;
+          font-size: 14px;
         }
         iron-label {
           color: var(--dark-secondary-text-color);
         }
         .secondary {
           color: var(--dark-secondary-text-color);
+          font-size: 14px;
+        }
+        .label-secondary-color {
+          color: var(--secondary-text-color);
+          font-size: 14px;
         }
         .blue {
           color: var(--paper-blue-500);
@@ -80,80 +87,69 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
           background-color: var(--primary-background-color);
         }
         etools-currency-amount-input {
-          width: 140px;
+          width: 160px;
         }
-
         .inline-right {
-          display: inline;
+          display: flex;
           text-align: right;
+          flex-direction: column;
         }
-
+        .inline-right label {
+          text-align: left;
+        }
       </style>
 
       <div class="page-content elevation" elevation="1" id="top-container">
         <div class="row-h flex-c">
           <div class="col col-12 block">
-            <iron-label for="cp_outputs_list">
-              Cp Output(s)
-            </iron-label>
+            <iron-label for="cp_outputs_list" class="label-secondary-color"> Cp Output(s) </iron-label>
             <br />
             <div class="content" id="cp_outputs_list">
-              ${this.interventionCpOutputs.map((cpOut: string) => html`<strong>${cpOut}</strong><br />`)}
+              ${this.interventionCpOutputs.length
+                ? this.interventionCpOutputs.map((cpOut: string) => html`<strong>${cpOut}</strong><br />`)
+                : html`&#8212;`}
             </div>
           </div>
         </div>
 
         <div class="row-h flex-c">
           <div class="col col-12 block">
-            <iron-label for="document_title">
-              Document Title
-            </iron-label>
+            <iron-label for="document_title" class="label-secondary-color"> Document Title </iron-label>
             <br />
-            <div class="content" id="document_title">
-              ${this.intervention.title}
-            </div>
+            <div class="content" id="document_title">${this.intervention.title}</div>
             <div class="secondary">
               Under
               <strong class="blue">${this.interventionAgreement.agreement_type}</strong>
               with
-              ${
-                this.isUnicefUser
-                  ? html` <a href="/pmp/partners/${this.intervention.partner_id}/details">
-                      <strong class="blue">${this.intervention.partner}</strong>
-                    </a>`
-                  : html`<strong class="blue">${this.intervention.partner}</strong>`
-              }
+              ${this.isUnicefUser
+                ? html` <a href="/pmp/partners/${this.intervention.partner_id}/details">
+                    <strong class="blue">${this.intervention.partner}</strong>
+                  </a>`
+                : html`<strong class="blue">${this.intervention.partner}</strong>`}
             </div>
           </div>
         </div>
 
         <div class="row-h flex-c">
           <div class="col col-4 block">
-            <iron-label for="interventions_timeline">
-              Timeline
-            </iron-label>
+            <iron-label for="interventions_timeline" class="label-secondary-color"> Timeline </iron-label>
             <br />
             <div class="content" id="interventions_timeline">
-              ${prettyDate(this.intervention.start)} - ${prettyDate(this.intervention.end)}
+              ${prettyDate(this.intervention.start)} &#8212; ${prettyDate(this.intervention.end)}
             </div>
           </div>
           <div class="col col-4 block">
-            <iron-label for="intervention-sections">
-              Sections
-            </iron-label>
+            <iron-label for="intervention-sections" class="label-secondary-color"> Sections </iron-label>
             <br />
-            <div class="content" id="intervention-sections">
-              ${this.inteventionSections}
-            </div>
+            <div class="content" id="intervention-sections">${this.inteventionSections}</div>
           </div>
         </div>
 
         <div class="row-h flex-c">
           <div class="col col-4">
             <div class="inline-right">
-              <label class="paper-label">Total value of the Effective Programme management Cost</label>
-                </br>
-                <etools-currency-amount-input
+              <label class="label-secondary-color">Total value of the Effective Programme management Cost</label>
+              <etools-currency-amount-input
                 class="w100"
                 type="number"
                 .value="${this.intervention.management_budgets?.total}"
@@ -167,9 +163,10 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
 
           <div class="col col-6">
             <div class="inline-right">
-              <label class="paper-label">% Total value of Unicef's contribution that is Effective and Efficient Programme Management Cost</label>
-                </br>
-                <etools-currency-amount-input
+              <label class="label-secondary-color">
+                % Total value of Unicef's contribution that is Effective and Efficient Programme Management Cost
+              </label>
+              <etools-currency-amount-input
                 class="w100"
                 type="number"
                 placeholder="&#8212;"
@@ -185,9 +182,8 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
         <div class="row-h flex-c">
           <div class="col col-4">
             <div class="inline-right">
-              <label class="paper-label">Unicef Cash Contribution</label>
-                </br>
-                <etools-currency-amount-input
+              <label class="label-secondary-color">Unicef Cash Contribution</label>
+              <etools-currency-amount-input
                 .value="${this.intervention.planned_budget.unicef_cash_local}"
                 type="number"
                 placeholder="&#8212;"
@@ -199,8 +195,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
           </div>
           <div class="col col-4">
             <div class="inline-right">
-              <label class="paper-label">Unicef Supply Contribution</label>
-              </br>
+              <label class="label-secondary-color">Unicef Supply Contribution</label>
               <etools-currency-amount-input
                 .value="${this.intervention.planned_budget.in_kind_amount_local}"
                 type="number"
@@ -213,62 +208,59 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
           </div>
           <div class="col col-4">
             <div class="inline-right">
-              <label class="paper-label">Total Unicef Contribution</label>
-                </br>
-                <etools-currency-amount-input
-                  .value="${this.intervention.planned_budget.total_unicef_contribution_local}"
-                  type="number"
-                  placeholder="&#8212;"
-                  no-label-float
-                  disabled
-                >
-                </etools-currency-amount-input>
+              <label class="label-secondary-color">Total Unicef Contribution</label>
+              <etools-currency-amount-input
+                .value="${this.intervention.planned_budget.total_unicef_contribution_local}"
+                type="number"
+                placeholder="&#8212;"
+                no-label-float
+                disabled
+              >
+              </etools-currency-amount-input>
             </div>
           </div>
         </div>
-      <div class="row-h flex-c">
-         <div class="col col-4 block">
-          <label class="paper-label">Partner HACT Risk Rating</label>
-          <br />
-          <div class="content">${this.getPartnerHactRiskRatingHtml()}</div>
+        <div class="row-h flex-c">
+          <div class="col col-4 block">
+            <label class="label-secondary-color">Partner HACT Risk Rating</label>
+            <br />
+            <div class="content">${this.getPartnerHactRiskRatingHtml()}</div>
+          </div>
+          <div class="col col-4 block">
+            <label class="label-secondary-color">Partner PSEA Risk Rating</label>
+            <br />
+            <div class="content">${this.getPartnerPseaRiskRatingHtml()}</div>
+          </div>
         </div>
-        <div class="col col-4 block">
-          <label class="paper-label">Partner PSEA Risk Rating</label>
-          <br />
-          <div class="content">${this.getPartnerPseaRiskRatingHtml()}</div>
-        </div>
-       </div>
       </div>
 
-      ${
-        this.isUnicefUser
-          ? html`
-              <etools-content-panel
-                id="fund-reservation-display"
-                class="content-section"
-                panel-title="Implementation Status"
-              >
-                <fund-reservations-display
-                  .intervention="${this.intervention}"
-                  .frsDetails="${this.intervention.frs_details}"
-                ></fund-reservations-display>
-              </etools-content-panel>
+      ${this.isUnicefUser
+        ? html`
+            <etools-content-panel
+              id="fund-reservation-display"
+              class="content-section"
+              panel-title="Implementation Status"
+            >
+              <fund-reservations-display
+                .intervention="${this.intervention}"
+                .frsDetails="${this.intervention.frs_details}"
+              ></fund-reservations-display>
+            </etools-content-panel>
 
-              <etools-content-panel
-                id="monitoring-visits-panel"
-                class="content-section"
-                panel-title="Monitoring Activities"
+            <etools-content-panel
+              id="monitoring-visits-panel"
+              class="content-section"
+              panel-title="Monitoring Activities"
+            >
+              <monitoring-visits-list-2
+                .interventionId="${this.intervention.id}"
+                .partnerId="${this.intervention.partner_id}"
+                showTpmVisits
               >
-                <monitoring-visits-list-2
-                  .interventionId="${this.intervention.id}"
-                  .partnerId="${this.intervention.partner_id}"
-                  showTpmVisits
-                >
-                </monitoring-visits-list-2>
-              </etools-content-panel>
-            `
-          : html``
-      }
+              </monitoring-visits-list-2>
+            </etools-content-panel>
+          `
+        : html``}
     `;
   }
 
@@ -384,7 +376,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
 
   _parseSections(sectionsLength: number, intSectionsLength: number) {
     if (!sectionsLength || !intSectionsLength) {
-      this.inteventionSections = '';
+      this.inteventionSections = '—';
       return;
     }
 
