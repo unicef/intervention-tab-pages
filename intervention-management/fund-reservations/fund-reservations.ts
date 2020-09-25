@@ -32,12 +32,13 @@ import {FundReservationsPermissions} from './fund-reservations.models';
 import {Permission} from '../../common/models/intervention.types';
 import {selectFundReservationPermissions} from './fund-reservations.selectors';
 import {isUnicefUser} from '../../common/selectors';
+import ContentPanelMixin from '../../common/mixins/content-panel-mixin';
 
 /**
  * @customElement
  */
 @customElement('fund-reservations')
-export class FundReservations extends connect(getStore())(FrNumbersConsistencyMixin(LitElement)) {
+export class FundReservations extends connect(getStore())(ContentPanelMixin(FrNumbersConsistencyMixin(LitElement))) {
   static get styles() {
     return [frWarningsStyles];
   }
@@ -234,6 +235,7 @@ export class FundReservations extends connect(getStore())(FrNumbersConsistencyMi
     this.frsDialogEl.dataItems = frs;
     this.frsDialogEl.interventionStatus = this.intervention.status;
     this.frsDialogEl.openDialog();
+    this.openContentPanel();
   }
 
   // get original/initial intervention frs numbers
