@@ -149,13 +149,13 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
       <td class="ptb-0">
         <div class="child-row-inner-container">
           <label class="paper-label">Cp Outputs</label><br />
-            <label>${output}</label><br />
+            <label>${output || '—'}</label><br />
         </div>
       </td>
       <td colspan="4" class="ptb-0">
         <div class="child-row-inner-container">
           <label class="paper-label">Other Mentions</label><br />
-          <label>${item.other_mentions}</label>
+          <label>${item.other_mentions || '—'}</label>
           </paper-input>
         </div>
       </td>
