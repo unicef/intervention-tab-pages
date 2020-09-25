@@ -120,7 +120,7 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
               option-label="label"
               placeholder="&#8212;"
               .options="${this.currencies}"
-              .selected="${this.originalData.planned_budget.currency}"
+              .selected="${this.data.planned_budget.currency}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_budget)}"
               @etools-selected-item-changed="${({detail}: CustomEvent) => {
                 this.data.planned_budget.currency = detail.selectedItem ? detail.selectedItem.value : '';
