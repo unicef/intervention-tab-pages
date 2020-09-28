@@ -18,7 +18,7 @@ import {MinimalAgreement} from '../common/models/agreement.types';
 import {pageIsNotCurrentlyActive} from '../utils/common-methods';
 import {AnyObject, RootState} from '../common/models/globals.types';
 import {fireEvent} from '../utils/fire-custom-event';
-import {Partner} from '../../../../../../../pmp/src_ts/models/partners.models';
+import {StaticPartner} from '../common/models/partner.types';
 
 /**
  * @customElement
@@ -320,7 +320,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
     }
     if (this.intervention) {
       const partners = get(state, 'commonData.partners') || get(state, 'partners.list') || [];
-      const interventionPartner = partners.find((partner: Partner) => partner.name === this.intervention.partner);
+      const interventionPartner = partners.find((partner: StaticPartner) => partner.name === this.intervention.partner);
       this.interventionPartner = interventionPartner || {};
     }
     if (this.sections && this.intervention) {
