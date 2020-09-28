@@ -1,6 +1,7 @@
 import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi.js';
 import IndicatorsCommonMixin from './mixins/indicators-common-mixin';
+import EndpointsLitMixin from '../../../../common/mixins/endpoints-mixin-lit';
 import {PaperInputElement} from '@polymer/paper-input/paper-input';
 import {html, LitElement, property, customElement} from 'lit-element';
 import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
@@ -15,7 +16,7 @@ import isEmpty from 'lodash-es/isEmpty';
  * @appliesMixin IndicatorsCommonMixin
  */
 @customElement('cluster-indicator')
-class ClusterIndicator extends IndicatorsCommonMixin(LitElement) {
+class ClusterIndicator extends EndpointsLitMixin(IndicatorsCommonMixin(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit];
   }
@@ -367,18 +368,18 @@ class ClusterIndicator extends IndicatorsCommonMixin(LitElement) {
   connectedCallback() {
     super.connectedCallback();
 
-    // TODO
-    // this.fireRequest('getResponsePlans', {})
-    //   .then((response: any) => {
-    //     this.responsePlans = response;
-    //   })
-    //   .catch((error: any) => {
-    //     fireEvent(this, 'show-toast', {
-    //       error: {response: error.message || error.response}
-    //     });
-    //   });
+    // TODO @dci
+    this.fireRequest('getResponsePlans', {})
+      .then((response: any) => {
+        this.responsePlans = response;
+      })
+      .catch((error: any) => {
+        fireEvent(this, 'show-toast', {
+          error: {response: error.message || error.response}
+        });
+      });
 
-    // this.resetValidations();
+    this.resetValidations();
   }
 
   indicatorChanged(indicator: any) {
@@ -395,20 +396,20 @@ class ClusterIndicator extends IndicatorsCommonMixin(LitElement) {
     }
   }
 
-  _getPrpClusterIndicator(_clusterIndicId: string) {
+  _getPrpClusterIndicator(clusterIndicId: string) {
     fireEvent(this, 'start-spinner', {spinnerText: 'Loading...'});
-    // TODO
-    // this.fireRequest('getPrpClusterIndicator', {id: clusterIndicId})
-    //   .then((response: any) => {
-    //     this.prpClusterIndicator = response;
-    //     fireEvent(this, 'stop-spinner');
-    //   })
-    //   .catch((error: any) => {
-    //     fireEvent(this, 'stop-spinner');
-    //     fireEvent(this, 'show-toast', {
-    //       error: {response: error.message || error.response}
-    //     });
-    //   });
+    // TODO @dci
+    this.fireRequest('getPrpClusterIndicator', {id: clusterIndicId})
+      .then((response: any) => {
+        this.prpClusterIndicator = response;
+        fireEvent(this, 'stop-spinner');
+      })
+      .catch((error: any) => {
+        fireEvent(this, 'stop-spinner');
+        fireEvent(this, 'show-toast', {
+          error: {response: error.message || error.response}
+        });
+      });
   }
 
   _responsePlanChanged(responsePlan: any) {
@@ -447,18 +448,18 @@ class ClusterIndicator extends IndicatorsCommonMixin(LitElement) {
       return;
     }
     fireEvent(this, 'start-spinner', {spinnerText: 'Loading...'});
-    // TODO
-    // this.fireRequest('getPrpClusterIndicators', {id: clusterId})
-    //   .then((response: any) => {
-    //     this.prpClusterIndicators = this._unnestIndicatorTitle(response.results);
-    //     fireEvent(this, 'stop-spinner');
-    //   })
-    //   .catch((error: any) => {
-    //     fireEvent(this, 'stop-spinner');
-    //     fireEvent(this, 'show-toast', {
-    //       error: {response: error.message || error.response}
-    //     });
-    //   });
+    // TODO @dci
+    this.fireRequest('getPrpClusterIndicators', {id: clusterId})
+      .then((response: any) => {
+        this.prpClusterIndicators = this._unnestIndicatorTitle(response.results);
+        fireEvent(this, 'stop-spinner');
+      })
+      .catch((error: any) => {
+        fireEvent(this, 'stop-spinner');
+        fireEvent(this, 'show-toast', {
+          error: {response: error.message || error.response}
+        });
+      });
   }
 
   /* ESM dropdown can't process a nested property as option-label
