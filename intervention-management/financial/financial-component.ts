@@ -192,6 +192,7 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
     } else if (this.data.cash_transfer_modalities.indexOf(checkValue) === -1) {
       this.data.cash_transfer_modalities.push(checkValue);
     }
+    this.data = {...this.data, cash_transfer_modalities: this.data.cash_transfer_modalities} as FinancialComponentData;
   }
 
   saveData() {
