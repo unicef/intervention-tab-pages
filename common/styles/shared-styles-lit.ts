@@ -1,4 +1,5 @@
 import {html, unsafeCSS} from 'lit-element';
+// language=css
 export const sharedStylesContent = `
   :host {
     display: block;
@@ -81,12 +82,12 @@ export const sharedStylesContent = `
     }
     --paper-input-container: {
       pointer-events: none;
-      cusrsor: text;
+      cursor: text;
     }
     --paper-input-container-label: {
       pointer-events: none;
       color: var(--secondary-text-color, #737373);
-      cusrsor: text;
+      cursor: text;
     }
     --esmm-select-cursor: text;
     --esmm-external-wrapper: {
@@ -154,25 +155,15 @@ export const sharedStylesContent = `
   .readonly {
     pointer-events: none;
   }
+
   .font-bold {
     font-weight: bold;
   }
 
-  .paper-label {
+  .font-bold-12 {
+    font-weight: bold;
     font-size: 12px;
-    color: var(--secondary-text-color);
-    padding-top: 8px;
-  }
-
-  .input-label {
-    min-height: 24px;
-    padding-top: 4px;
-    min-width: 0;
-  }
-
-  .input-label[empty]::after {
-    content: '—';
-    color: var(--secondary-text-color);
+    color: var(--primary-text-color);
   }
 
   paper-textarea {
@@ -253,6 +244,46 @@ export const sharedStylesContent = `
     --epc-header: {
      border-bottom: 1px solid var(--dark-divider-color) !important;
     }
+  }
+
+  .editable-row .hover-block {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    line-height: 48px;
+    background-color: #eeeeee;
+    z-index: 100;
+  }
+
+  .editable-row .hover-block paper-icon-button {
+    color: rgba(0, 0, 0, 0.54);
+    padding-left: 5px;
+  }
+
+  .editable-row:hover > .hover-block {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  .paper-label {
+    font-size: 12px;
+    color: var(--secondary-text-color);
+    padding-top: 6px;
+  }
+
+  .input-label {
+    min-height: 24px;
+    padding-top: 4px;
+    padding-bottom: 6px;
+    min-width: 0;
+    font-size: 16px;
+  }
+
+  .input-label[empty]::after {
+    content: '—';
+    color: var(--secondary-text-color);
   }
 `;
 export const sharedStyles = html`${unsafeCSS(sharedStylesContent)}`;

@@ -28,6 +28,9 @@ class HruList extends CommonMixin(ReportingReqPastDatesCheckMixin(PolymerElement
           max-height: 400px;
           overflow-y: auto;
         }
+        etools-data-table-row {
+          --icons-actions_-_background-color: transparent !important;
+        }
       </style>
 
       <etools-data-table-header no-collapse no-title>

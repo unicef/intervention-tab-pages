@@ -1,5 +1,6 @@
 import {getStore} from '../../utils/redux-store-access';
 import {css, html, CSSResultArray, customElement, LitElement, property} from 'lit-element';
+import {repeat} from 'lit-html/directives/repeat';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {
@@ -42,6 +43,8 @@ import {_sendRequest} from '../../utils/request-helper';
 import {isUnicefUser, currentIntervention} from '../../common/selectors';
 import findIndex from 'lodash-es/findIndex';
 import cloneDeep from 'lodash-es/cloneDeep';
+import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import ContentPanelMixin from '../../common/mixins/content-panel-mixin';
 
 const RESULT_VIEW = 'result_view';
 const BUDGET_VIEW = 'budget_view';
@@ -51,7 +54,7 @@ const COMBINED_VIEW = 'combined_view';
  * @customElement
  */
 @customElement('results-structure')
-export class ResultsStructure extends connect(getStore())(LitElement) {
+export class ResultsStructure extends connect(getStore())(ContentPanelMixin(LitElement)) {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
@@ -175,7 +178,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
     // language=HTML
     return html`
       <style>
-        :host {
+        ${sharedStyles} :host {
           display: block;
           margin-bottom: 24px;
         }
@@ -270,8 +273,10 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
             @click="${() => this.openCpOutputDialog()}"
           ></iron-icon>
         </div>
-        ${this.resultLinks.map(
-          (result: ExpectedResult) => html`
+        ${repeat(
+          this.resultLinks,
+          (result: ExpectedResult) => result.id,
+          (result, _index) => html`
             <cp-output-level
               ?show-cpo-level="${this.isUnicefUser}"
               .resultLink="${result}"
@@ -350,7 +355,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
   connectedCallback(): void {
     super.connectedCallback();
     // TODO: Remove test code for comments dialog
-    // getStore()
+    //  getStore()
     //   .dispatch(getComments(9))
     //   .then(() => {
     //     openDialog({
@@ -451,6 +456,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
         interventionId: this.interventionId
       }
     });
+    this.openContentPanel();
   }
 
   async openDeleteCpOutputDialog(resultLinkId: number) {

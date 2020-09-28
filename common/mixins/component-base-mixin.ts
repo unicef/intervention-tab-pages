@@ -7,9 +7,10 @@ import {validateRequiredFields} from '../../utils/validation-helper';
 import {formatDate} from '../../utils/date-utils';
 import isEmpty from 'lodash-es/isEmpty';
 import CONSTANTS from '../constants';
+import ContentPanelMixin from './content-panel-mixin';
 
 function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
-  class ComponentBaseClass extends baseClass {
+  class ComponentBaseClass extends ContentPanelMixin(baseClass) {
     @property({type: Boolean})
     editMode = false;
 
@@ -47,6 +48,7 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
     allowEdit() {
       this.editMode = true;
+      this.openContentPanel();
     }
 
     cancel() {

@@ -1,15 +1,14 @@
 import {ModelsBase} from '../../common/models/models.base';
-import {InterventionPermissionsFields, Intervention} from '../../common/models/intervention.types';
+import {InterventionPermissionsFields, Intervention, PlannedBudget} from '../../common/models/intervention.types';
 
 export class FinancialComponentData extends ModelsBase {
   constructor(intervention: Intervention) {
     super();
     this.setObjProperties(intervention);
-    this.currency = intervention.planned_budget.currency!;
   }
   cash_transfer_modalities: string[] = [];
   hq_support_cost = '';
-  currency = '';
+  planned_budget = new PlannedBudget();
 }
 
 export class FinancialComponentPermissions extends ModelsBase {
