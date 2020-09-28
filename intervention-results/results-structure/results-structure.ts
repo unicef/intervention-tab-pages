@@ -142,7 +142,10 @@ export class ResultsStructure extends connect(getStore())(ContentPanelMixin(LitE
   @property({type: Boolean}) showIndicators = true;
   @property({type: Boolean}) showActivities = true;
   @property({type: Object})
-  permissions!: {edit: {result_links?: boolean}; required: {result_links?: boolean}};
+  permissions!: {
+    edit: {result_links?: boolean; pd_outputs?: boolean};
+    required: {result_links?: boolean; pd_outputs?: boolean};
+  };
 
   @property() private _resultLinks: ExpectedResult[] | null = [];
   @property({type: String}) noOfPdOutputs: string | number = '0';
@@ -280,6 +283,7 @@ export class ResultsStructure extends connect(getStore())(ContentPanelMixin(LitE
             <cp-output-level
               ?show-cpo-level="${this.isUnicefUser}"
               .resultLink="${result}"
+              .permissions="${this.permissions}"
               .interventionId="${this.interventionId}"
               .showIndicators="${this.showIndicators}"
               .showActivities="${this.showActivities}"

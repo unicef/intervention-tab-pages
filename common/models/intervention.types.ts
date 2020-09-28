@@ -157,6 +157,7 @@ export class InterventionPermissionsFields {
 
   // details - PD Output or SSFA Expected results
   result_links = false;
+  pd_outputs = false;
 
   // details - Planned Budget
   planned_budget = false;
