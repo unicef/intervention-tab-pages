@@ -363,9 +363,9 @@ class ClusterIndicator extends connect(getStore())(EndpointsLitMixin(IndicatorsC
   @property({type: Object})
   prpClusterIndicator: AnyObject = {};
 
-   stateChanged(state: any) {
-     this.endStateChanged(state);
-   }
+  stateChanged(state: any) {
+    this.endStateChanged(state);
+  }
 
   connectedCallback() {
     super.connectedCallback();
