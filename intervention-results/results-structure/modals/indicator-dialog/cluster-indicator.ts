@@ -6,6 +6,8 @@ import {PaperInputElement} from '@polymer/paper-input/paper-input';
 import {html, LitElement, property, customElement} from 'lit-element';
 import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
 import {Indicator} from '../../../../common/models/intervention.types';
+import {connect} from 'pwa-helpers/connect-mixin';
+import {getStore} from '../../../../utils/redux-store-access';
 import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 import {fireEvent} from '../../../../utils/fire-custom-event';
 import {AnyObject} from '../../../../common/models/globals.types';
@@ -16,7 +18,7 @@ import isEmpty from 'lodash-es/isEmpty';
  * @appliesMixin IndicatorsCommonMixin
  */
 @customElement('cluster-indicator')
-class ClusterIndicator extends EndpointsLitMixin(IndicatorsCommonMixin(LitElement)) {
+class ClusterIndicator extends connect(getStore())(EndpointsLitMixin(IndicatorsCommonMixin(LitElement))) {
   static get styles() {
     return [gridLayoutStylesLit];
   }
@@ -361,14 +363,13 @@ class ClusterIndicator extends EndpointsLitMixin(IndicatorsCommonMixin(LitElemen
   @property({type: Object})
   prpClusterIndicator: AnyObject = {};
 
-  // stateChanged(state: any) {
-  //   this.endStateChanged(state);
-  // }
+   stateChanged(state: any) {
+     this.endStateChanged(state);
+   }
 
   connectedCallback() {
     super.connectedCallback();
 
-    // TODO @dci
     this.fireRequest('getResponsePlans', {})
       .then((response: any) => {
         this.responsePlans = response;
@@ -398,7 +399,7 @@ class ClusterIndicator extends EndpointsLitMixin(IndicatorsCommonMixin(LitElemen
 
   _getPrpClusterIndicator(clusterIndicId: string) {
     fireEvent(this, 'start-spinner', {spinnerText: 'Loading...'});
-    // TODO @dci
+
     this.fireRequest('getPrpClusterIndicator', {id: clusterIndicId})
       .then((response: any) => {
         this.prpClusterIndicator = response;
@@ -448,7 +449,7 @@ class ClusterIndicator extends EndpointsLitMixin(IndicatorsCommonMixin(LitElemen
       return;
     }
     fireEvent(this, 'start-spinner', {spinnerText: 'Loading...'});
-    // TODO @dci
+
     this.fireRequest('getPrpClusterIndicators', {id: clusterId})
       .then((response: any) => {
         this.prpClusterIndicators = this._unnestIndicatorTitle(response.results);
