@@ -14,7 +14,7 @@ export const ResultStructureStyles: CSSResult = css`
   }
   .bold-data {
     font-weight: bold;
-    font-size: 18px;
+    font-size: 16px;
   }
   .truncate {
     white-space: nowrap;
