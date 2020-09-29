@@ -23,8 +23,8 @@ function EndpointsMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
       if (!isJsonStrMatch(state.commonData!.PRPCountryData!, this.prpCountries)) {
         this.prpCountries = [...state.commonData!.PRPCountryData!];
       }
-      if (!isJsonStrMatch(state.user, this.currentUser)) {
-        this.currentUser = JSON.parse(JSON.stringify(state.user));
+      if (!isJsonStrMatch(state.user.data, this.currentUser)) {
+        this.currentUser = JSON.parse(JSON.stringify(state.user.data));
       }
     }
 

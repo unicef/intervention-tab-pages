@@ -48,6 +48,7 @@ export interface EtoolsEndpoints {
   getPrpClusterIndicators: EtoolsEndpoint;
   getPrpClusterIndicator: EtoolsEndpoint;
   getResponsePlans: EtoolsEndpoint;
+  hrClusterReportingRequirements: EtoolsEndpoint;
 }
 
 export const interventionEndpoints: EtoolsEndpoints = {
@@ -181,6 +182,10 @@ export const interventionEndpoints: EtoolsEndpoints = {
   },
   getResponsePlans: {
     template: '/api/core/workspace/<%=countryId%>/response-plan/',
+    token: 'prp'
+  },
+  hrClusterReportingRequirements: {
+    template: '/api/indicator/reporting-frequencies/',
     token: 'prp'
   }
 };

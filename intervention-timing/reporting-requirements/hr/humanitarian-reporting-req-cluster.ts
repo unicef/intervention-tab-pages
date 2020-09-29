@@ -18,7 +18,7 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
  * @appliesMixin EndpointsMixin
  * @appliesMixin CommonMixin
  */
-class HumanitarianReportingReqCluster extends CommonMixin(EndpointsMixin(PolymerElement)) {
+class HumanitarianReportingReqCluster extends EndpointsMixin(CommonMixin(PolymerElement)) {
   static get template() {
     return html`
       ${gridLayoutStylesPolymer()}
