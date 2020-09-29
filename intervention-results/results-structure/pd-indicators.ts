@@ -162,7 +162,7 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
-        content: 'Are you sure you want to deactivate this indicator?',
+        content: 'This is an irreversible action, are you sure you want to deactivate this indicator?',
         confirmBtnText: 'Deactivate'
       }
     }).then(({confirmed}) => {
