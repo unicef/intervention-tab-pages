@@ -40,7 +40,7 @@ export const AttachmentsListStyles = html`
       --list-header-wrapper-column-height: 48px;
     }
     paper-icon-button[icon='add-box'] {
-      color: var(--secondary-text-color);
+      color: var(--primary-text-color);
       margin-left: 20px;
     }
   </style>

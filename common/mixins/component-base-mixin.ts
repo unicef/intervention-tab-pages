@@ -97,11 +97,11 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
     renderReadonlyUserDetails(users: AnyObject[], ids: string[]) {
       if (users == undefined) {
-        return html`—`;
+        return html`<span class="placeholder">—</span>`;
       }
       const selsectedUsers = filterByIds(users, ids);
       if (isEmpty(selsectedUsers)) {
-        return html`—`;
+        return html`<span class="placeholder">—</span>`;
       } else {
         return selsectedUsers.map((u: any) => {
           return html`<div class="w100">${this.renderNameEmailPhone(u)}</div>`;
