@@ -120,6 +120,10 @@ export class InterventionActions extends LitElement {
         btn = 'Yes';
         message = 'Are you sure you want to ' + action + ' ?';
         break;
+      case 'send_to_partner':
+        btn = 'Yes';
+        message = 'Are you sure you want to send to partner?';
+        break;
       default:
         btn = action;
         message = 'Are you sure you want to ' + action + ' ?';

@@ -17,6 +17,8 @@ import {fireEvent} from '../../../../utils/fire-custom-event';
 import {ActivityItemsTable} from './activity-items-table';
 import {getIntervention} from '../../../../common/actions';
 import {ActivityTimeFrames} from './activity-timeframes';
+import {validateRequiredFields} from '../../../../utils/validation-helper';
+import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 
 @customElement('activity-data-dialog')
 export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitElement) {
@@ -56,7 +58,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
     // language=html
     return html`
       <style>
-        etools-dialog {
+        ${sharedStyles}etools-dialog {
           --etools-dialog-scrollable: {
             margin-top: 0 !important;
           }
@@ -234,8 +236,16 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
     };
   }
 
+  validate() {
+    return validateRequiredFields(this);
+  }
+
   processRequest(): void {
     if (this.loadingInProcess) {
+      return;
+    }
+
+    if (!this.validate()) {
       return;
     }
 
