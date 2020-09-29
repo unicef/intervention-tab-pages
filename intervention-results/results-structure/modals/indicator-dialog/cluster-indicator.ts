@@ -41,7 +41,7 @@ class ClusterIndicator extends IndicatorsCommonMixin(LitElement) {
               <div class="col col-6">
                 <div class="layout-vertical">
                   <label class="paper-label">Response Plan</label>
-                  <label class="input-label" empty="${!this.indicator?.response_plan_name}"
+                  <label class="input-label" ?empty="${!this.indicator?.response_plan_name}"
                     >${this.indicator?.response_plan_name}</label
                   >
                 </div>
@@ -49,7 +49,7 @@ class ClusterIndicator extends IndicatorsCommonMixin(LitElement) {
               <div class="col col-6">
                 <div class="layout-vertical">
                   <label class="paper-label">Cluster</label>
-                  <label class="input-label" empty="${!this.indicator?.cluster_name}"
+                  <label class="input-label" ?empty="${!this.indicator?.cluster_name}"
                     >${this.indicator?.cluster_name}</label
                   >
                 </div>
@@ -58,7 +58,7 @@ class ClusterIndicator extends IndicatorsCommonMixin(LitElement) {
             <div class="row-h flex-c">
               <div class="layout-vertical">
                 <label class="paper-label">Indicator</label>
-                <label class="input-label" empty="${!this.indicator?.cluster_indicator_title}"
+                <label class="input-label" ?empty="${!this.indicator?.cluster_indicator_title}"
                   >${this.indicator?.cluster_indicator_title}</label
                 >
               </div>
@@ -273,7 +273,7 @@ class ClusterIndicator extends IndicatorsCommonMixin(LitElement) {
       <div class="row-h flex-c">
         <div class="layout-vertical">
           <label class="paper-label">Means of Verification</label>
-          <label class="input-label" empty="${!this.prpClusterIndicator.means_of_verification}">
+          <label class="input-label" ?empty="${!this.prpClusterIndicator.means_of_verification}">
             ${this.prpClusterIndicator.means_of_verification}
           </label>
         </div>

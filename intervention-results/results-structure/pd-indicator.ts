@@ -99,18 +99,16 @@ export class PdIndicator extends LitElement {
         <div slot="row-data" class="layout-horizontal align-items-center editable-row">
           <!--    Indicator name    -->
           <div class="text flex-auto">
-            ${this.getIndicatorDisplayType(this.indicator.indicator!.unit, this.indicator.indicator!.display_type)}
+            ${this.getIndicatorDisplayType(this.indicator)}
             ${this.addInactivePrefix(this.indicator)}
-            ${(this.indicator.indicator && this.indicator.indicator.title) || '-'}
+            ${(this.indicator.indicator ? this.indicator.indicator.title : (this.indicator.cluster_indicator_title || '-')) || '-'}
           </div>
 
           <!--    Baseline    -->
           <div class="text number-data flex-none">
             ${this._displayBaselineOrTarget(
               this.indicator.baseline,
-              this.indicator.indicator!.unit,
-              this.indicator.indicator!.display_type,
-              this.indicator.cluster_indicator_id!
+              this.indicator
             )}
           </div>
 
@@ -118,9 +116,7 @@ export class PdIndicator extends LitElement {
           <div class="text number-data flex-none">
             ${this._displayBaselineOrTarget(
               this.indicator.target,
-              this.indicator.indicator!.unit,
-              this.indicator.indicator!.display_type,
-              this.indicator.cluster_indicator_id!
+              this.indicator
             )}
           </div>
           <div class="hover-block">
@@ -184,7 +180,9 @@ export class PdIndicator extends LitElement {
   }
 
   // Both unit and displayType are used because of inconsitencies in the db.
-  getIndicatorDisplayType(unit: string, displayType: string) {
+  getIndicatorDisplayType(indicator: Indicator) {
+    const unit = indicator.indicator ? indicator.indicator!.unit : '';
+    const displayType = indicator.indicator ? indicator.indicator!.display_type : '';
     if (!unit) {
       return '';
     }
@@ -220,7 +218,7 @@ export class PdIndicator extends LitElement {
     return !indicator || indicator.is_active ? '' : html`<strong>(inactive)</strong>`;
   }
 
-  _displayBaselineOrTarget(item: any, unit: string, displayType: string, isCluster: number) {
+  _displayBaselineOrTarget(item: any, indicator: Indicator) {
     if (!item) {
       return '—';
     }
@@ -228,10 +226,12 @@ export class PdIndicator extends LitElement {
       return '—';
     }
 
+    const isCluster = indicator.cluster_indicator_id;
     if (isCluster && this._clusterIndIsRatio(item)) {
       return item.v + ' / ' + item.d;
     }
-
+    const unit = indicator.indicator ? indicator.indicator!.unit : '';
+    const displayType = indicator.indicator ? indicator.indicator!.display_type : '';
     if (unit === 'percentage' && displayType === 'ratio') {
       return item.v + ' / ' + item.d;
     }
