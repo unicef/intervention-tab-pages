@@ -101,7 +101,7 @@ export class PdIndicator extends LitElement {
           <div class="text flex-auto">
             ${this.getIndicatorDisplayType(this.indicator)}
             ${this.addInactivePrefix(this.indicator)}
-            ${(this.indicator.indicator ? this.indicator.indicator.title : (this.indicator.cluster_indicator_title || '-')) || '-'}
+            ${(this.indicator.indicator ? this.indicator.indicator.title : this.indicator.cluster_indicator_title) || '-'}
           </div>
 
           <!--    Baseline    -->
