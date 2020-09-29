@@ -12,7 +12,7 @@ import {NonClusterIndicatorEl} from '../non-cluster-indicator';
 import {ClusterIndicatorEl} from '../cluster-indicator';
 import {IndicatorDisaggregations} from '../indicator-dissaggregations';
 import {getStore} from '../../../../../utils/redux-store-access';
-import {getIntervention, updateCurrentIntervention} from '../../../../../common/actions';
+import {updateCurrentIntervention} from '../../../../../common/actions';
 
 /**
  * @mixinFunction
