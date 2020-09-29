@@ -361,9 +361,9 @@ class ClusterIndicator extends EndpointsLitMixin(IndicatorsCommonMixin(LitElemen
   @property({type: Object})
   prpClusterIndicator: AnyObject = {};
 
-  // stateChanged(state: any) {
-  //   this.endStateChanged(state);
-  // }
+  stateChanged(state: any) {
+    this.endStateChanged(state);
+  }
 
   connectedCallback() {
     super.connectedCallback();
