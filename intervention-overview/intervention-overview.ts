@@ -166,15 +166,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
               <label class="label-secondary-color">
                 % Total value of Unicef's contribution that is Effective and Efficient Programme Management Cost
               </label>
-              <etools-currency-amount-input
-                class="w100"
-                type="number"
-                placeholder="&#8212;"
-                .value="${this.getUnicefEEContribOutOfTotalEE()}"
-                no-label-float
-                disabled
-              >
-              </etools-currency-amount-input>
+              <div class="input-label">${this.getUnicefEEContribOutOfTotalEE()}</div>
             </div>
           </div>
         </div>
@@ -345,8 +337,8 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
   getUnicefEEContribOutOfTotalEE() {
     const totalEEUnicefContrib = this.getUnicefEEContrib(this.intervention.management_budgets);
     const totalEE = this.intervention.management_budgets ? this.intervention.management_budgets.total : 0;
-    const percentage = (totalEEUnicefContrib * 100) / (totalEE | 1);
-    return percentage + ' %'; // TODO % is not displayed
+    const percentage = Math.round((totalEEUnicefContrib * 100) / (totalEE | 1)).toFixed(2);
+    return percentage + ' %';
   }
 
   getUnicefEEContrib(management_budgets?: ManagementBudget) {
