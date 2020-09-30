@@ -6,6 +6,7 @@ import '@polymer/paper-menu-button';
 import '@polymer/paper-icon-button';
 import '../common/layout/export-intervention-data';
 import './reason-popup';
+import '../common/components/intervention/pd-termination';
 import {getEndpoint} from '../utils/endpoint-helper';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
@@ -124,6 +125,13 @@ export class InterventionActions extends LitElement {
         btn = 'Yes';
         message = 'Are you sure you want to send to partner?';
         break;
+      case 'terminate':
+        return openDialog({
+          dialog: 'pd-termination',
+          dialogData: {
+            interventionId: this.interventionId,
+          }
+        });
       default:
         btn = action;
         message = 'Are you sure you want to ' + action + ' ?';
