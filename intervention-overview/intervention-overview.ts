@@ -1,4 +1,5 @@
 import {LitElement, customElement, html, property} from 'lit-element';
+import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import '@polymer/iron-label/iron-label';
 import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
@@ -22,9 +23,10 @@ import {StaticPartner} from '../common/models/partner.types';
 
 /**
  * @customElement
+ * apply EtoolsCurrencyMixin
  */
 @customElement('intervention-overview')
-export class InterventionOverview extends connect(getStore())(LitElement) {
+export class InterventionOverview extends connect(getStore())(EtoolsCurrency(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, elevationStyles];
   }
@@ -167,15 +169,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
               <label class="label-secondary-color">
                 % Total value of Unicef's contribution that is Effective and Efficient Programme Management Cost
               </label>
-              <etools-currency-amount-input
-                class="w100"
-                type="number"
-                placeholder="&#8212;"
-                .value="${this.getUnicefEEContribOutOfTotalEE()}"
-                no-label-float
-                disabled
-              >
-              </etools-currency-amount-input>
+              <div class="input-label">${this.getUnicefEEContribOutOfTotalEE()}</div>
             </div>
           </div>
         </div>
@@ -347,7 +341,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
     const totalEEUnicefContrib = this.getUnicefEEContrib(this.intervention.management_budgets);
     const totalEE = this.intervention.management_budgets ? this.intervention.management_budgets.total : 0;
     const percentage = (totalEEUnicefContrib * 100) / (totalEE | 1);
-    return percentage + ' %'; // TODO % is not displayed
+    return (this.addCurrencyAmountDelimiter(percentage) || '0') + ' %';
   }
 
   getUnicefEEContrib(management_budgets?: ManagementBudget) {
