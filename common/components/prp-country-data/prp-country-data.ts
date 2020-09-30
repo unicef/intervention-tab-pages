@@ -8,9 +8,7 @@ import {updatePrpCountries} from '../../../../../../../redux/actions/common-data
 @customElement('prp-country-data')
 export class PrpCountryData extends connect(store)(EndpointsLitMixin(LitElement)) {
   getPRPCountries() {
-    console.log('in getPRPCountries...');
     return this.fireRequest('getPRPCountries', {}).then((prpCountries: any[]) => {
-      console.log('PRPCountries... loaded...' + prpCountries.length);
       store.dispatch(updatePrpCountries(prpCountries));
     });
   }
