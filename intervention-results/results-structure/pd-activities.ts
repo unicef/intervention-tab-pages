@@ -153,7 +153,7 @@ export class PdActivities extends LitElement {
   }
 
   getPartnerPercent(partner: string, unicef: string): string {
-    if (!partner) {
+    if (!Number(partner)) {
       return '%0';
     }
     const total: number = this.getTotal(partner, unicef);
