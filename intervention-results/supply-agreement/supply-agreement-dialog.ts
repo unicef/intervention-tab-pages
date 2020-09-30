@@ -166,6 +166,12 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
   }
 
   onSaveClick() {
+    // remove comma from formatted money values
+    if (this.data) {
+      this.data.total_price = this.data.total_price!.replace(/,/g, '');
+      this.data.unit_number = this.data.unit_number!.replace(/,/g, '');
+      this.data.unit_price = this.data.unit_price!.replace(/,/g, '');
+    }
     if (!this.validate()) {
       return;
     }
