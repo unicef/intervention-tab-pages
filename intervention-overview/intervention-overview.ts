@@ -1,5 +1,4 @@
 import {LitElement, customElement, html, property} from 'lit-element';
-import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import '@polymer/iron-label/iron-label';
 import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
@@ -23,10 +22,9 @@ import {StaticPartner} from '../common/models/partner.types';
 
 /**
  * @customElement
- * apply EtoolsCurrencyMixin
  */
 @customElement('intervention-overview')
-export class InterventionOverview extends connect(getStore())(EtoolsCurrency(LitElement)) {
+export class InterventionOverview extends connect(getStore())(LitElement) {
   static get styles() {
     return [gridLayoutStylesLit, elevationStyles];
   }
@@ -340,8 +338,8 @@ export class InterventionOverview extends connect(getStore())(EtoolsCurrency(Lit
   getUnicefEEContribOutOfTotalEE() {
     const totalEEUnicefContrib = this.getUnicefEEContrib(this.intervention.management_budgets);
     const totalEE = this.intervention.management_budgets ? this.intervention.management_budgets.total : 0;
-    const percentage = (totalEEUnicefContrib * 100) / (totalEE | 1);
-    return (this.addCurrencyAmountDelimiter(percentage) || '0') + ' %';
+    const percentage = Math.round((totalEEUnicefContrib * 100) / (totalEE | 1)).toFixed(2);
+    return percentage + ' %';
   }
 
   getUnicefEEContrib(management_budgets?: ManagementBudget) {
