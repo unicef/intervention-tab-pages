@@ -3,6 +3,7 @@ import '@polymer/paper-button/paper-button';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
+import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-loading/etools-loading';
 import '@polymer/paper-input/paper-input';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
@@ -103,14 +104,16 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
             </etools-dropdown-multi>
           </div>
           <div class="col col-4">
-            <etools-dropdown-multi
+            <paper-textarea
+              id="title"
               label="Clusters"
-              class="row-padding-v"
-              .options="${this.cluster_list}"
-              option-label="name"
-              option-value="id"
-              .selectedValues="${this.data.cluster_names}"
-              readonly>
+              class="w100"
+              always-float-label
+              placeholder="—"
+              .value="${this.getClusterText(this.data.cluster_names)}"
+              readonly
+              >
+            </paper-textarea>
           </div>
         </div>
         <div class="layout-horizontal row-padding-v">
@@ -187,9 +190,6 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
   @property({type: Array})
   section_list!: AnyObject[];
 
-  @property({type: Array})
-  cluster_list!: AnyObject[];
-
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'details')) {
       return;
@@ -220,7 +220,6 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
         // if user is not Unicef user, this is opened in read-only mode and we just display already saved
         this.users_list = [...this.data.unicef_focal_points];
         this.section_list = [...this.data.sections];
-        this.cluster_list = [...this.data.cluster_names];
         this.office_list = [...this.data.offices];
       }
     } else {
@@ -229,9 +228,6 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
       }
       if (get(state, 'commonData.sections.length')) {
         this.section_list = [...state.commonData!.sections];
-      }
-      if (get(state, 'commonData.clusters.length')) {
-        this.cluster_list = [...state.commonData!.clusters];
       }
       if (get(state, 'commonData.offices.length')) {
         this.office_list = [...state.commonData!.offices];
@@ -247,6 +243,9 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
     }
   }
 
+  getClusterText(clusters: string[]) {
+    return (clusters || []).join(', ');
+  }
   /**
    * Optimization to avoid multiple calls to filter through the long users array
    */

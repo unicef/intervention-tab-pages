@@ -2,6 +2,7 @@ import isArray from 'lodash-es/isArray';
 import isObject from 'lodash-es/isObject';
 import isEmpty from 'lodash-es/isEmpty';
 import {formatDate} from './date-utils';
+import {AnyObject} from '../common/models/globals.types';
 
 export const isJsonStrMatch = (a: any, b: any) => {
   return JSON.stringify(a) === JSON.stringify(b);
@@ -91,3 +92,37 @@ function _formatYYYY_MM_DD(obj2: string | Date) {
   }
   return formatDate(obj2, 'YYYY-MM-DD');
 }
+
+export const buildUrlQueryString = (params: AnyObject): string => {
+  const queryParams = [];
+
+  for (const param in params) {
+    if (!params[param]) {
+      continue;
+    }
+    const paramValue = params[param];
+    let filterUrlValue;
+
+    if (paramValue instanceof Array) {
+      if (paramValue.length > 0) {
+        filterUrlValue = paramValue.join(',');
+      }
+    } else if (typeof paramValue === 'boolean') {
+      if (paramValue) {
+        // ignore if it's false
+        filterUrlValue = 'true';
+      }
+    } else {
+      if (!(param === 'page' && paramValue === 1)) {
+        // do not include page if page=1
+        filterUrlValue = String(paramValue).trim();
+      }
+    }
+
+    if (filterUrlValue) {
+      queryParams.push(param + '=' + filterUrlValue);
+    }
+  }
+
+  return queryParams.join('&');
+};

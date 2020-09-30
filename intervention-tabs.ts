@@ -19,6 +19,7 @@ import {sharedStyles} from './common/styles/shared-styles-lit';
 import {isJsonStrMatch} from './utils/utils';
 import {pageContentHeaderSlottedStyles} from './common/layout/page-content-header/page-content-header-slotted-styles';
 import {fireEvent} from './utils/fire-custom-event';
+import {buildUrlQueryString} from './utils/utils';
 
 const MOCKUP_STATUSES = [
   ['draft', 'Draft'],
@@ -89,7 +90,9 @@ export class InterventionTabs extends LitElement {
       <intervention-page-content-header with-tabs-visible>
         <span slot="page-title">${this.intervention.number}</span>
         <div slot="mode">
-          <paper-toggle-button id="commentMode" ?checked="${this.commentMode}">Comment Mode</paper-toggle-button>
+          <paper-toggle-button id="commentMode" ?checked="${this.commentMode}" @iron-change="${this.commentModeChange}"
+            >Comment Mode</paper-toggle-button
+          >
         </div>
 
         <div slot="statusFlag" ?hidden="${!this.intervention.accepted}">
@@ -232,6 +235,7 @@ export class InterventionTabs extends LitElement {
         }
         if (!isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)) {
           this._routeDetails = cloneDeep(state.app!.routeDetails);
+          this.commentMode = !!(this._routeDetails.queryParams || {})['comment_mode'];
           getStore().dispatch(getIntervention(currentInterventionId));
         }
       }
@@ -271,12 +275,40 @@ export class InterventionTabs extends LitElement {
         this._showInterventionPageLoadingMessage();
       }
 
-      const newPath = `interventions/${this.intervention.id}/${newTabName}`;
+      const stringParams: string = buildUrlQueryString(this._routeDetails!.queryParams || {});
+      const newPath =
+        `interventions/${this.intervention.id}/${newTabName}` + (stringParams !== '' ? `?${stringParams}` : '');
       history.pushState(window.history.state, '', newPath);
       // Don't know why I have to specifically trigger popstate,
       // history.pushState should do that by default (?)
       window.dispatchEvent(new CustomEvent('popstate'));
     }
+  }
+
+  commentModeChange(e: CustomEvent) {
+    if (!e.detail) {
+      return;
+    }
+    const element = e.currentTarget as HTMLInputElement;
+    // initial load
+    if (element.checked === this.commentMode) {
+      return;
+    }
+    this.commentMode = element.checked;
+    // add/remove `comment_mode` param in url based on selection and refresh page
+    history.pushState(window.history.state, '', this.computeNewPath());
+    window.dispatchEvent(new CustomEvent('popstate'));
+  }
+
+  computeNewPath() {
+    const queryParams = this._routeDetails!.queryParams || {};
+    if (this.commentMode) {
+      queryParams['comment_mode'] = 'true';
+    } else {
+      delete queryParams['comment_mode'];
+    }
+    const stringParams: string = buildUrlQueryString(queryParams);
+    return this._routeDetails!.path + (stringParams !== '' ? `?${stringParams}` : '');
   }
 
   _showInterventionPageLoadingMessage() {
