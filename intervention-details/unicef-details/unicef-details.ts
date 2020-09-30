@@ -47,6 +47,9 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
           display: block;
           margin-bottom: 24px;
         }
+        .placeholder {
+            color: var(--secondary-text-color);
+          }
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Unicef Details">
@@ -247,10 +250,10 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
    * Optimization to avoid multiple calls to filter through the long users array
    */
   previousBudgetOwnerIds: string[] = [];
-  previousBudgeOwnerDisplay: TemplateResult | TemplateResult[] = html`—`;
+  previousBudgeOwnerDisplay: TemplateResult | TemplateResult[] = html`<span class="placeholder">—</span>`;
   renderReadonlyBudgetOwner(users: AnyObject[], selectedIds: string[]) {
     if (users == undefined) {
-      return html`—`;
+      return html`<span class="placeholder">—</span>`;
     }
     if (areEqual(this.previousBudgetOwnerIds, selectedIds)) {
       return this.previousBudgeOwnerDisplay;
@@ -264,10 +267,10 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
    * Optimization to avoid multiple calls to filter through the long users array
    */
   previousFocalPointsIds: string[] = [];
-  previousFocalPointsDisplay: TemplateResult | TemplateResult[] = html`—`;
+  previousFocalPointsDisplay: TemplateResult | TemplateResult[] = html`<span class="placeholder">—</span>`;
   renderReadonlyFocalPoints(users: AnyObject[], selectedIds: string[]) {
     if (users == undefined) {
-      return html`—`;
+      return html`<span class="placeholder">—</span>`;
     }
     if (areEqual(this.previousFocalPointsIds, selectedIds)) {
       return this.previousFocalPointsDisplay;

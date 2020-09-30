@@ -207,6 +207,7 @@ export class ResultsStructure extends connect(getStore())(ContentPanelMixin(LitE
           --epc-header: {
             position: relative;
             z-index: 1000;
+            border-bottom: 1px groove var(--dark-divider-color);
           }
         }
       </style>
