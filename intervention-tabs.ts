@@ -86,6 +86,7 @@ export class InterventionTabs extends LitElement {
         }
       </style>
 
+      <!-- Loading PRP country data -->
       <prp-country-data></prp-country-data>
 
       <intervention-page-content-header with-tabs-visible>
