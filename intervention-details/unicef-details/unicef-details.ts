@@ -14,7 +14,6 @@ import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {selectPdUnicefDetails, selectPdUnicefDetailsPermissions} from './pdUnicefDetails.selectors';
 import {PdUnicefDetailsPermissions} from './pdUnicefDetails.models';
 import {Permission} from '../../common/models/intervention.types';
-import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
 import {patchIntervention} from '../../common/actions';
 import {AnyObject, RootState} from '../../common/models/globals.types';
@@ -22,13 +21,13 @@ import {isJsonStrMatch, areEqual} from '../../utils/utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
-// import {handleItemsNoLongerAssignedToCurrentCountry} from '../../utils/common-methods';
+import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 
 /**
  * @customElement
  */
 @customElement('unicef-details')
-export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin(LitElement)) {
+export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -42,21 +41,23 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
     }
     return html`
       <style>
-      ${sharedStyles}
+        ${sharedStyles}
         :host {
           display: block;
           margin-bottom: 24px;
         }
         .placeholder {
-            color: var(--secondary-text-color);
-          }
+          color: var(--secondary-text-color);
+        }
       </style>
 
-      <etools-content-panel show-expand-btn panel-title="Unicef Details">
-
-        <div slot="panel-btns">
-          ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
-        </div>
+      <etools-content-panel
+        show-expand-btn
+        panel-title="Unicef Details"
+        comment-element="unicef-details"
+        comment-description="Unicef Details"
+      >
+        <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="layout-horizontal">
           <div class="col col-4">
@@ -68,7 +69,7 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
         <div class="layout-horizontal">
           <label class="input-label" ?empty="${!this.data.document_type}">
             ${this.getDocumentLongName(this.data.document_type)}
-           </label>
+          </label>
         </div>
         <div class="layout-horizontal row-padding-v">
           <div class="col col-4">
@@ -191,6 +192,12 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
   @property({type: Array})
   section_list!: AnyObject[];
 
+  interventionId!: number | null;
+
+  get currentInterventionId(): number | null {
+    return this.interventionId;
+  }
+
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'details')) {
       return;
@@ -202,9 +209,11 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
     if (state.interventions.current) {
       this.data = cloneDeep(selectPdUnicefDetails(state));
       this.originalData = cloneDeep(this.data);
+      this.interventionId = state.interventions.current.id;
     }
     this.setPermissions(state);
     this.populateDropdownOptions(state);
+    super.stateChanged(state);
   }
 
   private setPermissions(state: any) {

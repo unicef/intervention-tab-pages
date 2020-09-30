@@ -15,7 +15,6 @@ import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {Permission} from '../../common/models/intervention.types';
 import {RootState} from '../../common/models/globals.types';
 import {getStore} from '../../utils/redux-store-access';
-import {connect} from 'pwa-helpers/connect-mixin';
 import './financialComponent.models';
 import './financialComponent.selectors';
 import {FinancialComponentData, FinancialComponentPermissions} from './financialComponent.selectors';
@@ -26,12 +25,13 @@ import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import {isJsonStrMatch} from '../../utils/utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
+import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 
 /**
  * @customElement
  */
 @customElement('financial-component')
-export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(LitElement)) {
+export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -68,7 +68,12 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
           padding-top: 8px;
         }
       </style>
-      <etools-content-panel show-expand-btn panel-title="Financial">
+      <etools-content-panel
+        show-expand-btn
+        panel-title="Financial"
+        comment-element="financial"
+        comment-description="Financial"
+      >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
         <div class="layout-horizontal padd-top">
           <div class="w100">
@@ -155,6 +160,12 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
   @property({type: Array})
   cashTransferModalities!: LabelAndValue[];
 
+  interventionId!: number | null;
+
+  get currentInterventionId(): number | null {
+    return this.interventionId;
+  }
+
   connectedCallback() {
     super.connectedCallback();
   }
@@ -177,6 +188,8 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
     }
     this.data = selectFinancialComponent(state);
     this.originalData = cloneDeep(this.data);
+    this.interventionId = state.interventions.current.id;
+    super.stateChanged(state);
   }
 
   checkCashTransferModality(value: string) {

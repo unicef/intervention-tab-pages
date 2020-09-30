@@ -3,13 +3,7 @@ import './budget-summary/budget-summary';
 import './supply-agreement/supply-agreement';
 import './results-structure/results-structure';
 import './effective-efficient-programme-mgmt/effective-efficient-programme-mgmt';
-import {getStore} from '../utils/redux-store-access';
-import {commentsData} from '../common/components/comments/comments.reducer';
 import {fireEvent} from '../utils/fire-custom-event';
-
-getStore().addReducers({
-  commentsData
-});
 
 /**
  * @customElement

@@ -19,7 +19,6 @@ import {sectionContentStylesPolymer} from '../../common/styles/content-section-s
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {getStore} from '../../utils/redux-store-access';
-import {connect} from 'pwa-helpers/connect-mixin';
 import {isJsonStrMatch} from '../../utils/utils';
 
 import {Permission} from '../../common/models/intervention.types';
@@ -35,6 +34,7 @@ import {patchIntervention} from '../../common/actions';
 import {formatDate} from '../../utils/date-utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
+import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 
 /**
  * @customElement
@@ -43,7 +43,7 @@ import get from 'lodash-es/get';
  * @appliesMixin UploadsMixin
  */
 @customElement('review-and-sign')
-export class InterventionReviewAndSign extends connect(getStore())(
+export class InterventionReviewAndSign extends CommentsMixin(
   ComponentBaseMixin(MissingDropdownOptionsMixin(UploadMixin(LitElement)))
 ) {
   static get styles() {
@@ -91,7 +91,12 @@ export class InterventionReviewAndSign extends connect(getStore())(
           padding: 0;
         }
       </style>
-      <etools-content-panel show-expand-btn class="content-section" panel-title="Signatures & Dates">
+      <etools-content-panel
+        show-expand-btn class="content-section"
+        panel-title="Signatures & Dates"
+        comment-element="signatures-and-dates"
+        comment-description="Signatures & Dates"
+      >
         <div slot="panel-btns">
           ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
         </div>
@@ -354,6 +359,12 @@ export class InterventionReviewAndSign extends connect(getStore())(
   @property({type: String})
   uploadEndpoint: string = getEndpoint(interventionEndpoints.attachmentsUpload).url;
 
+  interventionId!: number | null;
+
+  get currentInterventionId(): number | null {
+    return this.interventionId;
+  }
+
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'management')) {
       return;
@@ -380,6 +391,8 @@ export class InterventionReviewAndSign extends connect(getStore())(
         const agreementData = this.filterAgreementsById(agreements!, this.data.agreement);
         this.agreementAuthorizedOfficers = this.getAuthorizedOfficersList(agreementData);
       }
+      this.interventionId = state.interventions.current.id;
+      super.stateChanged(state);
     }
   }
 

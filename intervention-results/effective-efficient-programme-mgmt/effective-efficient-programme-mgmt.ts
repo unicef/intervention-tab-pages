@@ -5,8 +5,6 @@ import '@unicef-polymer/etools-table/etools-table';
 import {EtoolsTableChildRow, EtoolsTableColumn, EtoolsTableColumnType} from '@unicef-polymer/etools-table/etools-table';
 import '@unicef-polymer/etools-currency-amount-input';
 import './activity-dialog';
-import {connect} from 'pwa-helpers/connect-mixin';
-import {getStore} from '../../utils/redux-store-access';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
@@ -24,6 +22,7 @@ import {AnyObject, RootState} from '../../common/models/globals.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {ProgrammeManagement} from './effectiveEfficientProgrammeMgmt.models';
 import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
+import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 
 const customStyles = html`
   <style>
@@ -39,7 +38,7 @@ const customStyles = html`
  * @customElement
  */
 @customElement('effective-and-efficient-programme-management')
-export class EffectiveAndEfficientProgrammeManagement extends connect(getStore())(
+export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(
   EtoolsCurrency(ComponentBaseMixin(LitElement))
 ) {
   static get styles() {
@@ -73,7 +72,12 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
         }
       </style>
 
-      <etools-content-panel show-expand-btn panel-title="Effective and efficient programme management">
+      <etools-content-panel
+        show-expand-btn
+        panel-title="Effective and efficient programme management"
+        comment-element="programme-management"
+        comment-description="Effective and efficient programme management"
+      >
         <div slot="panel-btns">
           <label class="paper-label font-bold pad-right">TOTAL:</label
           ><label class="font-bold-12">${this.data.currency} ${this.total_amount}</label>
@@ -135,6 +139,10 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
   @property({type: Number})
   interventionId!: number;
 
+  get currentInterventionId(): number | null {
+    return this.interventionId;
+  }
+
   connectedCallback() {
     super.connectedCallback();
   }
@@ -155,6 +163,7 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
       this.canEdit = newPermissions.edit.management_budgets;
     }
     this.formattedData = this.formatData(this.data);
+    super.stateChanged(state);
   }
 
   formatData(data: ProgrammeManagement) {

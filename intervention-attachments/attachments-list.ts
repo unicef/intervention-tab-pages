@@ -5,8 +5,6 @@ import '@unicef-polymer/etools-content-panel';
 import '@unicef-polymer/etools-data-table';
 import '@polymer/iron-icons';
 import './intervention-attachment-dialog';
-import {connect} from 'pwa-helpers/connect-mixin';
-import {getStore} from '../utils/redux-store-access';
 import {sharedStyles} from '../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../common/styles/grid-layout-styles-lit';
 import {openDialog} from '../utils/dialog';
@@ -14,9 +12,10 @@ import {ReviewAttachment} from '../common/models/intervention.types';
 import {AttachmentsListStyles} from './attachments-list.styles';
 import {IdAndName} from '../common/models/globals.types';
 import {getFileNameFromURL} from '../utils/utils';
+import {CommentsMixin} from '../common/components/comments/comments-mixin';
 
 @customElement('attachments-list')
-export class AttachmentsList extends connect(getStore())(LitElement) {
+export class AttachmentsList extends CommentsMixin(LitElement) {
   static get styles(): CSSResultArray {
     return [gridLayoutStylesLit];
   }
@@ -26,6 +25,12 @@ export class AttachmentsList extends connect(getStore())(LitElement) {
   @property() canEdit = true;
   @property() fileTypes: IdAndName[] = [];
 
+  interventionId!: number | null;
+
+  get currentInterventionId(): number | null {
+    return this.interventionId;
+  }
+
   protected render(): TemplateResult {
     return html`
       <style>
@@ -33,7 +38,12 @@ export class AttachmentsList extends connect(getStore())(LitElement) {
       </style>
       ${AttachmentsListStyles}
 
-      <etools-content-panel class="content-section" .panelTitle="Attachments (${this.attachments.length})">
+      <etools-content-panel
+        class="content-section"
+        .panelTitle="Attachments (${this.attachments.length})"
+        comment-element="attachments"
+        comment-description="Attachments"
+      >
         <div slot="panel-btns" class="layout-horizontal">
           <paper-toggle-button
             id="showInvalid"
@@ -111,6 +121,8 @@ export class AttachmentsList extends connect(getStore())(LitElement) {
     this.interventionStatus = state.interventions?.current.status || '';
     this.canEdit = state.interventions?.current.permissions.edit.attachments || false;
     this.fileTypes = state.commonData.fileTypes || [];
+    this.interventionId = state.interventions?.current.id;
+    super.stateChanged(state);
   }
 
   openAttachmentDialog(attachment?: ReviewAttachment): void {

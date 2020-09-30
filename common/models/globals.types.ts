@@ -1,7 +1,7 @@
 import {PolymerElement} from '@polymer/polymer';
 import {Intervention, CpOutput} from './intervention.types';
 import {MinimalAgreement} from './agreement.types';
-import {InterventionComment} from '../types/types';
+import {CommentsCollection} from '../components/comments/comments.reducer';
 
 /*
  * The type Constructor<T> is an alias for the construct signature
@@ -274,5 +274,8 @@ export interface RootState {
   agreements: AgreementsState;
   user: UserState;
   commonData: CommonDataState;
-  commentsData: GenericObject<InterventionComment[]>;
+  commentsData: {
+    commentsModeEnabled: boolean;
+    collection: GenericObject<CommentsCollection>;
+  };
 }

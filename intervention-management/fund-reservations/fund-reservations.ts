@@ -7,7 +7,6 @@ import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {removeDialog, createDynamicDialog} from '@unicef-polymer/etools-dialog/dynamic-dialog';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
 
 import FrNumbersConsistencyMixin from '../../common/mixins/fr-numbers-consistency-mixin';
@@ -21,7 +20,7 @@ import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {getArraysDiff} from '../../utils/array-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {AnyObject} from '../../common/models/globals.types';
+import {AnyObject, RootState} from '../../common/models/globals.types';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {fireEvent} from '../../utils/fire-custom-event';
@@ -33,12 +32,13 @@ import {Permission} from '../../common/models/intervention.types';
 import {selectFundReservationPermissions} from './fund-reservations.selectors';
 import {isUnicefUser} from '../../common/selectors';
 import ContentPanelMixin from '../../common/mixins/content-panel-mixin';
+import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 
 /**
  * @customElement
  */
 @customElement('fund-reservations')
-export class FundReservations extends connect(getStore())(ContentPanelMixin(FrNumbersConsistencyMixin(LitElement))) {
+export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersConsistencyMixin(LitElement))) {
   static get styles() {
     return [frWarningsStyles];
   }
@@ -84,7 +84,12 @@ export class FundReservations extends connect(getStore())(ContentPanelMixin(FrNu
         }
       </style>
 
-      <etools-content-panel show-expand-btn panel-title="Fund Reservations">
+      <etools-content-panel
+        show-expand-btn
+        panel-title="Fund Reservations"
+        comment-element="fund-reservations"
+        comment-description="Fund Reservations"
+      >
         <paper-icon-button
           slot="panel-btns"
           icon="add-box"
@@ -135,9 +140,13 @@ export class FundReservations extends connect(getStore())(ContentPanelMixin(FrNu
   @property({type: Boolean})
   isUnicefUser!: boolean;
 
+  get currentInterventionId(): number | null {
+    return this.intervention?.id;
+  }
+
   private _frsConfirmationsDialogMessage!: HTMLSpanElement;
 
-  stateChanged(state: AnyObject) {
+  stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'management')) {
       return;
     }
@@ -148,6 +157,7 @@ export class FundReservations extends connect(getStore())(ContentPanelMixin(FrNu
       this._frsDetailsChanged(this.intervention.frs_details);
     }
     this.sePermissions(state);
+    super.stateChanged(state);
   }
 
   private sePermissions(state: any) {

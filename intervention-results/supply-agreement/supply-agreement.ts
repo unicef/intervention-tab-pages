@@ -26,6 +26,7 @@ import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-pa
 import {updateCurrentIntervention} from '../../common/actions';
 import '../../common/layout/are-you-sure';
 import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
+import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 
 const customStyles = html`
   <style>
@@ -44,7 +45,7 @@ const customStyles = html`
 `;
 
 @customElement('supply-agreements')
-export class FollowUpPage extends connect(getStore())(EtoolsCurrency(ComponentBaseMixin(LitElement))) {
+export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixin(LitElement))) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -71,7 +72,12 @@ export class FollowUpPage extends connect(getStore())(EtoolsCurrency(ComponentBa
         }
       </style>
 
-      <etools-content-panel show-expand-btn panel-title="Supply Agreement">
+      <etools-content-panel
+        show-expand-btn
+        panel-title="Supply Agreement"
+        comment-element="supply-agreement"
+        comment-description="Supply Agreement"
+      >
         <div slot="panel-btns">
           <span class="mr-20">
             <label class="paper-label font-bold pad-right">TOTAL SUPPLY BUDGET: </label>
@@ -140,6 +146,10 @@ export class FollowUpPage extends connect(getStore())(EtoolsCurrency(ComponentBa
   @property({type: Object})
   permissions!: {edit: {supply_items?: boolean}};
 
+  get currentInterventionId(): number | null {
+    return this.intervention?.id;
+  }
+
   getChildRowTemplate(item: any): EtoolsTableChildRow {
     const childRow = {} as EtoolsTableChildRow;
     childRow.showExpanded = false;
@@ -188,6 +198,7 @@ export class FollowUpPage extends connect(getStore())(EtoolsCurrency(ComponentBa
       item.unit_price = this.addCurrencyAmountDelimiter(item.unit_price);
       return item;
     });
+    super.stateChanged(state);
   }
 
   cancelSupply() {
