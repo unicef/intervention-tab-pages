@@ -138,7 +138,7 @@ export const interventionEndpoints: EtoolsEndpoints = {
     template: '/api/v2/interventions/lower-results/<%=id%>/indicators/'
   },
   getEditDeleteIndicator: {
-    template: '/api/v2/interventions/applied-indicators/<%=id%>/'
+    template: '/api/pmp/v3/interventions/applied-indicators/<%=id%>/'
   },
   cpOutputRamIndicators: {
     template: '/api/v2/interventions/<%=intervention_id%>/output_cp_indicators/<%=cp_output_id%>/'

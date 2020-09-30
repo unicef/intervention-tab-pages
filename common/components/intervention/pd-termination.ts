@@ -138,8 +138,6 @@ export class PdTermination extends LitElement {
   @property({type: Object})
   environmentFlags: EnvFlags | null = null;
 
-  private _validationSelectors: string[] = ['#terminationDate', '#terminationNotice'];
-
   set dialogData(data: AnyObject) {
     if (!data) {
       return;

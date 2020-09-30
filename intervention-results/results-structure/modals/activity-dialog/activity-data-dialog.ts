@@ -15,8 +15,9 @@ import {getStore} from '../../../../utils/redux-store-access';
 import './activity-timeframes';
 import {fireEvent} from '../../../../utils/fire-custom-event';
 import {ActivityItemsTable} from './activity-items-table';
-import {getIntervention} from '../../../../common/actions';
+import {updateCurrentIntervention} from '../../../../common/actions';
 import {ActivityTimeFrames} from './activity-timeframes';
+import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 
 @customElement('activity-data-dialog')
 export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitElement) {
@@ -30,7 +31,6 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
   @property() useInputLevel = false;
 
   set dialogData({activityId, pdOutputId, interventionId, quarters}: any) {
-    this.interventionId = interventionId;
     if (!activityId) {
       this.data = {time_frames: quarters} as InterventionActivity;
       this.isEditDialog = false;
@@ -50,7 +50,6 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
   }
 
   private endpoint!: EtoolsRequestEndpoint;
-  private interventionId!: number;
 
   protected render(): TemplateResult {
     // language=html
@@ -262,18 +261,14 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
       method: this.isEditDialog ? 'PATCH' : 'POST',
       body: this.isEditDialog ? {id: this.editedData.id, ...diff} : diff
     })
-      .then(() =>
-        getStore()
-          .dispatch(getIntervention(String(this.interventionId)))
-          .catch(() => Promise.resolve())
-      )
+      .then((response: any) => getStore().dispatch(updateCurrentIntervention(response.intervention)))
       .then(() => {
         fireEvent(this, 'dialog-closed', {confirmed: true});
       })
       .catch((error) => {
         this.loadingInProcess = false;
         this.errors = (error && error.response) || {};
-        fireEvent(this, 'toast', {text: 'Can not save PD Activity!'});
+        fireEvent(this, 'toast', {text: formatServerErrorAsText(error)});
       });
   }
 
