@@ -21,7 +21,7 @@ export const selectInterventionQuarters = createSelector(currentIntervention, (i
 export const selectResultLinksPermissions = createSelector(currentIntervention, (intervention: Intervention) => {
   const permissions = intervention && intervention.permissions;
   return {
-    edit: {result_links: permissions?.edit.result_links, pd_outputs: permissions?.edit.pd_outputs},
-    required: {result_links: permissions?.required.result_links, pd_outputs: permissions?.required.pd_outputs}
+    edit: {result_links: permissions?.edit.result_links},
+    required: {result_links: permissions?.required.result_links}
   };
 });

@@ -41,11 +41,6 @@ export class CpOutputLevel extends LitElement {
   @property({type: Boolean}) showIndicators = true;
   @property({type: Boolean}) showActivities = true;
   @property({type: Boolean}) readonly = true;
-  @property({type: Object})
-  permissions!: {
-    edit: {result_links?: boolean; pd_outputs?: boolean};
-    required: {result_links?: boolean; pd_outputs?: boolean};
-  };
 
   protected render(): TemplateResult {
     return html`
@@ -117,10 +112,7 @@ export class CpOutputLevel extends LitElement {
               <div slot="row-data-details">
                 <slot></slot>
 
-                <div
-                  class="add-pd row-h align-items-center"
-                  ?hidden="${!this.resultLink.cp_output || !this.permissions.edit.pd_outputs}"
-                >
+                <div class="add-pd row-h align-items-center" ?hidden="${!this.resultLink.cp_output}">
                   <iron-icon icon="add-box" @click="${() => this.addPD()}"></iron-icon>Add PD Output
                 </div>
               </div>
