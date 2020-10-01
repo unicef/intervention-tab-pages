@@ -16,7 +16,7 @@ const ACCEPT_AND_REVIEW = 'accept_and_review';
 
 export const EXPORT_ACTIONS = [EXPORT_CSV, EXPORT_PDF, EXPORT_COMMENTS];
 export const BACK_ACTIONS = [SEND_TO_PARTNER, SEND_TO_UNICEF, UNLOCK];
-export const ACTIONS_WITH_COMMENT = [CANCEL, SEND_TO_UNICEF, SEND_TO_PARTNER];
+export const ACTIONS_WITH_COMMENT = [CANCEL];
 
 export const namesMap: GenericObject<string> = {
   [EXPORT_COMMENTS]: 'Export Comments',

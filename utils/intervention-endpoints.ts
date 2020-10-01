@@ -45,6 +45,11 @@ export interface EtoolsEndpoints {
   pdAttachments: EtoolsEndpoint;
   updatePdAttachment: EtoolsEndpoint;
   lowerResultsDelete: EtoolsEndpoint;
+  getPrpClusterIndicators: EtoolsEndpoint;
+  getPrpClusterIndicator: EtoolsEndpoint;
+  getResponsePlans: EtoolsEndpoint;
+  hrClusterReportingRequirements: EtoolsEndpoint;
+  getPRPCountries: EtoolsEndpoint;
 }
 
 export const interventionEndpoints: EtoolsEndpoints = {
@@ -138,7 +143,7 @@ export const interventionEndpoints: EtoolsEndpoints = {
     template: '/api/v2/interventions/lower-results/<%=id%>/indicators/'
   },
   getEditDeleteIndicator: {
-    template: '/api/v2/interventions/applied-indicators/<%=id%>/'
+    template: '/api/pmp/v3/interventions/applied-indicators/<%=id%>/'
   },
   cpOutputRamIndicators: {
     template: '/api/v2/interventions/<%=intervention_id%>/output_cp_indicators/<%=cp_output_id%>/'
@@ -165,5 +170,29 @@ export const interventionEndpoints: EtoolsEndpoints = {
   },
   updatePdAttachment: {
     template: '/api/pmp/v3/interventions/<%=id%>/attachments/<%=attachment_id%>/'
+  },
+  getPrpClusterIndicators: {
+    // by cluster id
+    template: '/api/indicator/ca/?clusters=<%=id%>',
+    token: 'prp'
+  },
+  getPrpClusterIndicator: {
+    // by id
+    template: '/api/indicator/<%=id%>/',
+    token: 'prp'
+  },
+  getResponsePlans: {
+    template: '/api/core/workspace/<%=countryId%>/response-plan/',
+    token: 'prp'
+  },
+  hrClusterReportingRequirements: {
+    template: '/api/indicator/reporting-frequencies/',
+    token: 'prp'
+  },
+  getPRPCountries: {
+    template: '/api/core/workspace/',
+    exp: 60 * 60 * 60 * 1000,
+    token: 'prp',
+    cachingKey: 'prpCountries'
   }
 };

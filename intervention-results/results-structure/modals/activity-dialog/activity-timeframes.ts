@@ -1,14 +1,8 @@
 import {LitElement, html, TemplateResult, CSSResultArray, css, property, customElement} from 'lit-element';
 import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
 import {InterventionActivityTimeframe} from '../../../../common/models/intervention.types';
-import {
-  ActivityTime,
-  convertActivityTimeToData,
-  groupByYear,
-  serializeTimeFrameData
-} from '../../../../utils/timeframes.helper';
+import {ActivityTime, groupByYear, serializeTimeFrameData} from '../../../../utils/timeframes.helper';
 import {fireEvent} from '../../../../utils/fire-custom-event';
-import isEmpty from 'lodash-es/isEmpty';
 
 @customElement('activity-time-frames')
 export class ActivityTimeFrames extends LitElement {
@@ -74,12 +68,13 @@ export class ActivityTimeFrames extends LitElement {
     ];
   }
 
-  set timeFrames(frames: InterventionActivityTimeframe[]) {
+  set quarters(frames: InterventionActivityTimeframe[]) {
     const activityTimes: ActivityTime[] = serializeTimeFrameData(frames);
     this._timeFrames = groupByYear(activityTimes);
   }
 
   @property() private _timeFrames: [string, ActivityTime[]][] = [];
+  @property() selectedTimeFrames: number[] = [];
 
   protected render(): TemplateResult {
     return html`
@@ -93,8 +88,8 @@ export class ActivityTimeFrames extends LitElement {
                 ${frames.map(
                   (frame: ActivityTime, index: number) => html`
                     <div
-                      class="time-frame${frame.enabled ? ' selected' : ''}"
-                      @click="${() => this.toggleFrame(frame)}"
+                      class="time-frame${this.selectedTimeFrames?.includes(frame.id) ? ' selected' : ''}"
+                      @click="${() => this.toggleFrame(frame.id)}"
                     >
                       <div class="title">${frame.name}</div>
                       <div class="description">${frame.frameDisplay}</div>
@@ -111,25 +106,20 @@ export class ActivityTimeFrames extends LitElement {
     `;
   }
 
-  toggleFrame(frame: ActivityTime): void {
-    frame.enabled = !frame.enabled;
-    const timeFrames: ActivityTime[] = this._timeFrames.map((frame: [string, ActivityTime[]]) => frame[1]).flat();
-    const converted: InterventionActivityTimeframe[] = convertActivityTimeToData(timeFrames);
-    fireEvent(this, 'time-frames-changed', converted);
+  toggleFrame(frameId: number): void {
+    const exists: boolean = this.selectedTimeFrames.includes(frameId);
+    if (exists) {
+      fireEvent(
+        this,
+        'time-frames-changed',
+        this.selectedTimeFrames.filter((id: number) => id !== frameId)
+      );
+    } else {
+      fireEvent(this, 'time-frames-changed', [...this.selectedTimeFrames, frameId]);
+    }
   }
 
   validate() {
-    const timeFrames: ActivityTime[] = this._timeFrames.map((frame: [string, ActivityTime[]]) => frame[1]).flat();
-    const converted: InterventionActivityTimeframe[] = convertActivityTimeToData(timeFrames);
-    if (isEmpty(converted)) {
-      return true;
-    }
-    let valid = false;
-    converted.map((item) => {
-      if (item.enabled) {
-        valid = true;
-      }
-    });
-    return valid;
+    return !this._timeFrames.length || Boolean(this.selectedTimeFrames.length);
   }
 }

@@ -7,7 +7,7 @@ export type ActivityTime = {
   year: number;
   frameDisplay: string;
   name: string;
-  enabled: boolean;
+  id: number;
 };
 
 export type GroupedActivityTime = [string, ActivityTime[]];
@@ -25,18 +25,9 @@ export function serializeTimeFrameData(data: InterventionActivityTimeframe[]): A
       year: start.year(),
       frameDisplay: `${start.format('DD MMM')} - ${end.format('DD MMM')}`,
       name: frame.name,
-      enabled: Boolean(frame.enabled)
+      id: frame.id
     };
   });
-}
-
-export function convertActivityTimeToData(time: ActivityTime[]): InterventionActivityTimeframe[] {
-  return time.map((timeData: ActivityTime) => ({
-    start: moment(timeData.start).format('YYYY-MM-DD'),
-    end: moment(timeData.end).format('YYYY-MM-DD'),
-    enabled: timeData.enabled,
-    name: timeData.name
-  }));
 }
 
 export function groupByYear(times: ActivityTime[]): [string, ActivityTime[]][] {

@@ -12,7 +12,7 @@ import {NonClusterIndicatorEl} from '../non-cluster-indicator';
 import {ClusterIndicatorEl} from '../cluster-indicator';
 import {IndicatorDisaggregations} from '../indicator-dissaggregations';
 import {getStore} from '../../../../../utils/redux-store-access';
-import {getIntervention} from '../../../../../common/actions';
+import {updateCurrentIntervention} from '../../../../../common/actions';
 
 /**
  * @mixinFunction
@@ -150,12 +150,9 @@ function SaveIndicatorMixin<T extends Constructor<LitElement>>(baseClass: T) {
       return this.data.id ? interventionEndpoints.getEditDeleteIndicator : interventionEndpoints.createIndicator;
     }
 
-    _handleSaveIndicatorResponse(_response: any) {
+    _handleSaveIndicatorResponse(response: any) {
       this._stopSpinner();
-
-      // TODO
-      // getStore().dispatch(updateCurrentIntervention(response.relatedIntervention));
-      getStore().dispatch(getIntervention());
+      getStore().dispatch(updateCurrentIntervention(response.intervention));
       this.indicatorDialog.opened = false;
     }
 

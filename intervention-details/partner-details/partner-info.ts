@@ -45,6 +45,9 @@ export class PartnerInfoElement extends connect(getStore())(ComponentBaseMixin(L
           display: block;
           margin-bottom: 24px;
         }
+        .placeholder {
+          color: var(--secondary-text-color);
+        }
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Partner Details">
