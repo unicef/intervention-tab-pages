@@ -88,7 +88,7 @@ export class ActivityTimeFrames extends LitElement {
                 ${frames.map(
                   (frame: ActivityTime, index: number) => html`
                     <div
-                      class="time-frame${this.selectedTimeFrames.includes(frame.id) ? ' selected' : ''}"
+                      class="time-frame${this.selectedTimeFrames?.includes(frame.id) ? ' selected' : ''}"
                       @click="${() => this.toggleFrame(frame.id)}"
                     >
                       <div class="title">${frame.name}</div>
