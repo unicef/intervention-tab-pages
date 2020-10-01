@@ -70,11 +70,15 @@ function RepeatableDataSetsMixin<T extends Constructor<LitElement>>(baseClass: T
         closeCallback: this._onDeleteConfirmation,
         content: deleteConfirmationContent
       });
+
+      // this._deleteDialog.updateStyles({
+      //   '--paper-dialog-scrollable': 'var(--paper-dialog-content)'
+      // });
     }
 
-    public _onDeleteConfirmation(event: any) {
-      this._deleteDialog.opened = false;
-      if (event.detail.confirmed === true) {
+    public _onDeleteConfirmation(event: any, index: number, confirmed: boolean) {
+      this.elToDeleteIndex = index;
+      if (confirmed) {
         const id = this.dataItems[this.elToDeleteIndex] ? this.dataItems[this.elToDeleteIndex].id : null;
 
         if (id) {

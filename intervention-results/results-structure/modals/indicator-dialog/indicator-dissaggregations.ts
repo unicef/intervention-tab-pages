@@ -16,6 +16,15 @@ import {repeatableDataSetsStyles} from '../../../../common/styles/repeatable-dat
 import {buttonsStyles} from '../../../../common/styles/button-styles';
 import {fireEvent} from '../../../../utils/fire-custom-event';
 import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
+import '../../../../common/layout/are-you-sure';
+import {openDialog} from '../../../../utils/dialog';
+
+// <paper-icon-button
+// class="action delete"
+// @click="${(e: CustomEvent) => this.confirmDeleteItem(e, index)}"
+// data-args="${index}"
+// icon="cancel"
+//   ></paper-icon-button>
 
 /**
  * @customElement
@@ -43,6 +52,23 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
           box-sizing: border-box;
         }
 
+        /*--etools-dialog-content: {*/
+        /*  color: red;*/
+        /*  margin-top: 40px !important;*/
+        /*  padding: 8px 24px;*/
+        /*  overflow-x: hidden;*/
+        /*  overflow-y: auto;*/
+        /*}*/
+        /*etools-dialog {*/
+        /*  --etools-dialog-scrollable: {*/
+        /*  background: yellow;*/
+        /*  margin-top: 50px;*/
+        /*  }*/
+        /*}*/
+        
+        /*--etools-dialog-content_-_margin-top: 50px;*/
+        /*--etools-dialog-content-margin-top: 50px;*/
+
         paper-input {
           width: 100%;
         }
@@ -54,7 +80,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
               <div class="actions">
                 <paper-icon-button
                   class="action delete"
-                  @click="${(e: CustomEvent) => this._openDeleteConfirmation(e, index)}"
+                  @click="${(e: CustomEvent) => this.confirmDeleteItem(e, index)}"
                   data-args="${index}"
                   icon="cancel"
                 ></paper-icon-button>
@@ -130,6 +156,22 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
 
   _maxDisaggregations(disaggregLength: number) {
     return disaggregLength >= 3;
+  }
+
+  async confirmDeleteItem(e: CustomEvent, index: number) {
+    const confirmed = await openDialog({
+      dialog: 'are-you-sure',
+      dialogData: {
+        content: 'Are you sure you want to delete this item?',
+        confirmBtnText: 'Delete'
+      }
+    }).then(({confirmed}) => {
+      return confirmed;
+    });
+
+    if (confirmed) {
+      this._onDeleteConfirmation(e, index, confirmed);
+    }
   }
 
   _addNewDisaggregation() {
