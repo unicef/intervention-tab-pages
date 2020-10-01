@@ -227,12 +227,13 @@ export class InterventionTabs extends LitElement {
 
       const currentInterventionId = get(state, 'app.routeDetails.params.interventionId');
       const currentIntervention = get(state, 'interventions.current');
-      if (currentInterventionId !== String(get(this.intervention, 'id'))) {
-        if (currentIntervention) {
-          if (!isJsonStrMatch(this.intervention, currentIntervention)) {
-            this.intervention = cloneDeep(currentIntervention);
-          }
+
+      if (currentIntervention) {
+        if (!isJsonStrMatch(this.intervention, currentIntervention)) {
+          this.intervention = cloneDeep(currentIntervention);
         }
+      }
+      if (currentInterventionId !== String(get(this.intervention, 'id'))) {
         if (!isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)) {
           this._routeDetails = cloneDeep(state.app!.routeDetails);
           this.commentMode = !!(this._routeDetails.queryParams || {})['comment_mode'];
