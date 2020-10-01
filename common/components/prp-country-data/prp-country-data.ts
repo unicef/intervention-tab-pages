@@ -4,13 +4,16 @@ import EndpointsLitMixin from '../../../../../interventions/intervention-tab-pag
 import {connect} from 'pwa-helpers/connect-mixin';
 import {store} from '../../../../../../../redux/store';
 import {updatePrpCountries} from '../../../../../../../redux/actions/common-data';
+import get from 'lodash-es/get';
 
 @customElement('prp-country-data')
 export class PrpCountryData extends connect(store)(EndpointsLitMixin(LitElement)) {
   getPRPCountries() {
-    return this.fireRequest('getPRPCountries', {}).then((prpCountries: any[]) => {
-      store.dispatch(updatePrpCountries(prpCountries));
-    });
+    if (!(get(store.getState(), 'commonData.PRPCountryData') || []).length) {
+      return this.fireRequest('getPRPCountries', {}).then((prpCountries: any[]) => {
+        store.dispatch(updatePrpCountries(prpCountries));
+      });
+    }
   }
 
   connectedCallback() {
