@@ -190,7 +190,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
 
           <activity-time-frames
             .quarters="${this.quarters}"
-            .selectedTimeFrames="${this.editedData.time_frames}"
+            .selectedTimeFrames="${this.editedData.time_frames || []}"
             @time-frames-changed="${({detail}: CustomEvent) => {
               this.editedData.time_frames = detail;
               this.requestUpdate();
