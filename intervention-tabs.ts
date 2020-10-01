@@ -6,7 +6,7 @@ import './common/layout/etools-tabs';
 // eslint-disable-next-line max-len
 import './common/layout/status/etools-status';
 import './intervention-actions/intervention-actions';
-
+import './common/components/prp-country-data/prp-country-data';
 import {customElement, LitElement, html, property, css} from 'lit-element';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
@@ -86,6 +86,9 @@ export class InterventionTabs extends LitElement {
           width: 100%;
         }
       </style>
+
+      <!-- Loading PRP country data -->
+      <prp-country-data></prp-country-data>
 
       <intervention-page-content-header with-tabs-visible>
         <span slot="page-title">${this.intervention.number}</span>

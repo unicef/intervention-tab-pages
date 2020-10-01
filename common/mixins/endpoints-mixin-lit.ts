@@ -1,25 +1,20 @@
+import {LitElement, property} from 'lit-element';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {isJsonStrMatch} from '../../utils/utils';
-import {logError} from '@unicef-polymer/etools-behaviors/etools-logging.js';
-import {PolymerElement} from '@polymer/polymer';
-import {property} from '@polymer/decorators';
+import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {Constructor, User, AnyObject, RootState} from '../../common/models/globals.types';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {tokenEndpointsHost, tokenStorageKeys, getTokenEndpoints} from '../../config/config';
 
-/**
- * @polymer
- * @mixinFunction
- */
-function EndpointsMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
-  class EndpointsMixinClass extends (baseClass as Constructor<PolymerElement>) {
+function EndpointsLitMixin<T extends Constructor<LitElement>>(baseClass: T) {
+  class EndpointsMixinLitClass extends baseClass {
     @property({type: Object})
     prpCountries!: AnyObject[];
 
     @property({type: Object})
     currentUser!: User;
 
-    public endStateChanged(state: RootState) {
+    endStateChanged(state: RootState) {
       if (!isJsonStrMatch(state.commonData!.PRPCountryData!, this.prpCountries)) {
         this.prpCountries = [...state.commonData!.PRPCountryData!];
       }
@@ -52,7 +47,7 @@ function EndpointsMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
       return template.indexOf('<%=countryId%>') > -1;
     }
 
-    public getEndpoint(endpointName: string, data?: AnyObject) {
+    getEndpoint(endpointName: string, data?: AnyObject) {
       const endpoint = JSON.parse(JSON.stringify((interventionEndpoints as any)[endpointName]));
       const authorizationTokenMustBeAdded = this.authorizationTokenMustBeAdded(endpoint);
       const baseSite = authorizationTokenMustBeAdded ? tokenEndpointsHost(endpoint.token) : window.location.origin;
@@ -103,34 +98,34 @@ function EndpointsMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
       return defer;
     }
 
-    public authorizationTokenMustBeAdded(endpoint: AnyObject): boolean {
+    authorizationTokenMustBeAdded(endpoint: AnyObject): boolean {
       return endpoint && endpoint.token;
     }
 
-    public getCurrentToken(tokenKey: string) {
+    getCurrentToken(tokenKey: string) {
       return localStorage.getItem((tokenStorageKeys as AnyObject)[tokenKey]);
     }
 
-    public storeToken(tokenKey: string, tokenBase64Encoded: string) {
+    storeToken(tokenKey: string, tokenBase64Encoded: string) {
       localStorage.setItem((tokenStorageKeys as AnyObject)[tokenKey], tokenBase64Encoded);
     }
 
-    public decodeBase64Token(encodedToken: string) {
+    decodeBase64Token(encodedToken: string) {
       const base64Url = encodedToken.split('.')[1];
       const base64 = base64Url.replace('-', '+').replace('_', '/');
       return JSON.parse(window.atob(base64));
     }
 
-    public tokenIsValid(token: string) {
+    tokenIsValid(token: string) {
       const decodedToken = this.decodeBase64Token(token);
       return Date.now() < decodedToken.exp;
     }
 
-    public getAuthorizationHeader(token: string) {
+    getAuthorizationHeader(token: string) {
       return {Authorization: 'JWT ' + token};
     }
 
-    public requestToken(endpoint: EtoolsRequestEndpoint) {
+    requestToken(endpoint: EtoolsRequestEndpoint) {
       return sendRequest({
         endpoint: endpoint
       });
@@ -142,11 +137,11 @@ function EndpointsMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
       return options;
     }
 
-    public getTokenEndpointName(tokenKey: string) {
+    getTokenEndpointName(tokenKey: string) {
       return (getTokenEndpoints as AnyObject)[tokenKey];
     }
 
-    public addTokenToRequestOptions(endpointName: string, data: AnyObject) {
+    addTokenToRequestOptions(endpointName: string, data: AnyObject) {
       let options: any = {};
       try {
         options.endpoint = this.getEndpoint(endpointName, data);
@@ -203,7 +198,7 @@ function EndpointsMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
       return options;
     }
 
-    public fireRequest(
+    fireRequest(
       endpoint: any,
       endpointTemplateData: AnyObject,
       requestAdditionalOptions?: AnyObject,
@@ -228,7 +223,7 @@ function EndpointsMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
       return defer.promise;
     }
   }
-  return EndpointsMixinClass;
+  return EndpointsMixinLitClass;
 }
 
-export default EndpointsMixin;
+export default EndpointsLitMixin;
