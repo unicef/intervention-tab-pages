@@ -129,7 +129,7 @@ export class PdActivities extends LitElement {
               <div class="details-container">
                 <div class="text details-heading">Time periods</div>
                 <div class="details-text">
-                  <b>${(activity.time_frames || []).map(({name}: InterventionQuarter) => name).join(', ') || '-'}</b>
+                  <b>${this.getQuartersNames(activity.time_frames)}</b>
                 </div>
               </div>
 
@@ -217,5 +217,13 @@ export class PdActivities extends LitElement {
       .catch((err: any) => {
         fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
       });
+  }
+
+  getQuartersNames(selectedTimeFrames: number[]): string {
+    return (
+      selectedTimeFrames
+        .map((timeFrameId: number) => this.quarters.find(({id}: InterventionQuarter) => id === timeFrameId)?.name)
+        .join(', ') || '-'
+    );
   }
 }

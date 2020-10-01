@@ -299,7 +299,7 @@ export type InterventionActivity = {
   cso_supplies: string;
   items: InterventionActivityItem[];
   name: string;
-  time_frames: InterventionActivityTimeframe[];
+  time_frames: number[];
   unicef_cash: string;
   unicef_suppies: number;
 };
@@ -316,6 +316,7 @@ export type InterventionActivityTimeframe = InterventionQuarter & {
 };
 
 export type InterventionQuarter = {
+  id: number;
   start: string;
   end: string;
   name: string;
