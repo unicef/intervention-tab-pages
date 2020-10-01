@@ -10,7 +10,7 @@ import get from 'lodash-es/get';
 export class PrpCountryData extends connect(store)(EndpointsLitMixin(LitElement)) {
   getPRPCountries() {
     if (!(get(store.getState(), 'commonData.PRPCountryData') || []).length) {
-      return this.fireRequest('getPRPCountries', {}).then((prpCountries: any[]) => {
+      this.fireRequest('getPRPCountries', {}).then((prpCountries: any[]) => {
         store.dispatch(updatePrpCountries(prpCountries));
       });
     }
