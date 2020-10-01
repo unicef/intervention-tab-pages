@@ -34,6 +34,13 @@ export const showToast = (message: string, showCloseBtn = true) => {
   };
 };
 
+export const updatePrpCountries = (PRPCountryData: AnyObject[]) => {
+  return {
+    type: 'UPDATE_PRP_COUNTRIES',
+    PRPCountryData
+  };
+};
+
 export const patchIntervention = (interventionChunck: any, interventionId?: string) => (
   dispatch: any,
   getState: any

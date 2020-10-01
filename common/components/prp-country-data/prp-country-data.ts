@@ -1,17 +1,16 @@
 import {LitElement, customElement} from 'lit-element';
 // eslint-disable-next-line max-len
-import EndpointsLitMixin from '../../../../../interventions/intervention-tab-pages/common/mixins/endpoints-mixin-lit';
-import {connect} from 'pwa-helpers/connect-mixin';
-import {store} from '../../../../../../../redux/store';
-import {updatePrpCountries} from '../../../../../../../redux/actions/common-data';
+import EndpointsLitMixin from '../../../../intervention-tab-pages/common/mixins/endpoints-mixin-lit';
+import {getStore} from '../../../utils/redux-store-access';
+import {updatePrpCountries} from '../../actions';
 import get from 'lodash-es/get';
 
 @customElement('prp-country-data')
-export class PrpCountryData extends connect(store)(EndpointsLitMixin(LitElement)) {
+export class PrpCountryData extends EndpointsLitMixin(LitElement) {
   getPRPCountries() {
-    if (!(get(store.getState(), 'commonData.PRPCountryData') || []).length) {
+    if (!(get(getStore().getState(), 'commonData.PRPCountryData') || []).length) {
       this.fireRequest('getPRPCountries', {}).then((prpCountries: any[]) => {
-        store.dispatch(updatePrpCountries(prpCountries));
+        getStore().dispatch(updatePrpCountries(prpCountries));
       });
     }
   }
