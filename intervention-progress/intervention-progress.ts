@@ -14,7 +14,7 @@ import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixin
 import './layout/etools-form-element-wrapper';
 import './layout/etools-progress-bar';
 import './layout/etools-ram-indicators';
-import '../common/layout/status/report-status';
+import '../common/layout/status/intervention-report-status';
 import './reports/indicator-report-target';
 
 import CommonMixin from '../common/mixins/common-mixin';
@@ -225,7 +225,7 @@ class InterventionProgress extends connect(getStore())(
               value="[[_getOverallPdStatusDate(latestAcceptedPr.review_date)]]"
               no-placeholder
             >
-              <report-status status="[[latestAcceptedPr.review_overall_status]]" slot="prefix"></report-status>
+              <intervention-report-status status="[[latestAcceptedPr.review_overall_status]]" slot="prefix"></intervention-report-status>
             </etools-form-element-wrapper-2>
           </div>
         </div>
@@ -262,7 +262,7 @@ class InterventionProgress extends connect(getStore())(
                 <div slot="row-data">
                   <span class="col-data col-9"> [[lowerResult.title]] </span>
                   <span class="col-data col-3">
-                    <report-status status="[[_getLowerResultStatus(lowerResult.id)]]"></report-status>
+                    <intervention-report-status status="[[_getLowerResultStatus(lowerResult.id)]]"></intervention-report-status>
                     <span class="lower-result-status-date">[[_getLowerResultStatusDate(lowerResult.id)]]</span>
                   </span>
                 </div>

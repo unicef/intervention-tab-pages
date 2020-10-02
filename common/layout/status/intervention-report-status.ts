@@ -9,9 +9,9 @@ import {property} from '@polymer/decorators/lib/decorators';
  * @customElement
  * @extends {Polymer.Element}
  */
-class ReportStatus extends PolymerElement {
+class InterventionReportStatus extends PolymerElement {
   static get is() {
-    return 'report-status';
+    return 'intervention-report-status';
   }
 
   static get template() {
@@ -183,4 +183,4 @@ class ReportStatus extends PolymerElement {
   }
 }
 
-window.customElements.define(ReportStatus.is, ReportStatus);
+window.customElements.define(InterventionReportStatus.is, InterventionReportStatus);
