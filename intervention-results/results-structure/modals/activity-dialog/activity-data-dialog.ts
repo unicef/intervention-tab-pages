@@ -31,10 +31,12 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
   @property() loadingInProcess = false;
   @property() isEditDialog = true;
   @property() useInputLevel = false;
+  quarters: ActivityTimeFrames[] = [];
 
   set dialogData({activityId, pdOutputId, interventionId, quarters}: any) {
+    this.quarters = quarters;
     if (!activityId) {
-      this.data = {time_frames: quarters} as InterventionActivity;
+      this.data = {} as InterventionActivity;
       this.isEditDialog = false;
       this.endpoint = getEndpoint(interventionEndpoints.pdActivities, {pdOutputId, interventionId});
       return;
@@ -187,7 +189,8 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
           ></activity-items-table>
 
           <activity-time-frames
-            .timeFrames="${this.editedData.time_frames}"
+            .quarters="${this.quarters}"
+            .selectedTimeFrames="${this.editedData.time_frames || []}"
             @time-frames-changed="${({detail}: CustomEvent) => {
               this.editedData.time_frames = detail;
               this.requestUpdate();

@@ -51,7 +51,7 @@ export class ActivityTimeframes extends connect(getStore())(LitElement) {
 
                 <div class="frames-grid">
                   ${frames.map(
-                    ({name, frameDisplay}: ActivityTime, index: number) => html`
+                    ({name, frameDisplay, id}: ActivityTime, index: number) => html`
                       <!--   Frame data   -->
                       <div class="frame ${index === frames.length - 1 ? 'hide-border' : ''}">
                         <div class="frame-name">${name}</div>
@@ -59,8 +59,8 @@ export class ActivityTimeframes extends connect(getStore())(LitElement) {
                       </div>
 
                       <div class="activities-container ${index === frames.length - 1 ? 'hide-border' : ''}">
-                        <div class="no-activities" ?hidden="${mappedActivities[name].length}">- No Activities</div>
-                        ${mappedActivities[name].map(
+                        <div class="no-activities" ?hidden="${mappedActivities[id].length}">- No Activities</div>
+                        ${mappedActivities[id].map(
                           ({name: activityName}: InterventionActivity) => html`
                             <div class="activity-name">Activity ${activityName}</div>
                           `
@@ -113,13 +113,13 @@ export class ActivityTimeframes extends connect(getStore())(LitElement) {
     const mappedActivities: GenericObject<InterventionActivity[]> = quarters.reduce(
       (data: GenericObject<InterventionActivity[]>, quarter: InterventionQuarter) => ({
         ...data,
-        [quarter.name]: []
+        [quarter.id]: []
       }),
       {}
     );
     activities.forEach((activity: InterventionActivity) => {
-      activity.time_frames.forEach(({name}: InterventionActivityTimeframe) => {
-        mappedActivities[name].push(activity);
+      activity.time_frames.forEach((id: number) => {
+        mappedActivities[id].push(activity);
       });
     });
     return mappedActivities;

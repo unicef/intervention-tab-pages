@@ -6,7 +6,7 @@ import './common/layout/etools-tabs';
 // eslint-disable-next-line max-len
 import './common/layout/status/etools-status';
 import './intervention-actions/intervention-actions';
-
+import './common/components/prp-country-data/prp-country-data';
 import {customElement, LitElement, html, property, css} from 'lit-element';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
@@ -86,6 +86,9 @@ export class InterventionTabs extends LitElement {
           width: 100%;
         }
       </style>
+
+      <!-- Loading PRP country data -->
+      <prp-country-data></prp-country-data>
 
       <intervention-page-content-header with-tabs-visible>
         <span slot="page-title">${this.intervention.number}</span>
@@ -227,12 +230,13 @@ export class InterventionTabs extends LitElement {
 
       const currentInterventionId = get(state, 'app.routeDetails.params.interventionId');
       const currentIntervention = get(state, 'interventions.current');
-      if (currentInterventionId !== String(get(this.intervention, 'id'))) {
-        if (currentIntervention) {
-          if (!isJsonStrMatch(this.intervention, currentIntervention)) {
-            this.intervention = cloneDeep(currentIntervention);
-          }
+
+      if (currentIntervention) {
+        if (!isJsonStrMatch(this.intervention, currentIntervention)) {
+          this.intervention = cloneDeep(currentIntervention);
         }
+      }
+      if (currentInterventionId !== String(get(this.intervention, 'id'))) {
         if (!isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)) {
           this._routeDetails = cloneDeep(state.app!.routeDetails);
           this.commentMode = !!(this._routeDetails.queryParams || {})['comment_mode'];

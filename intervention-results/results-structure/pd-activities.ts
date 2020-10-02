@@ -6,6 +6,13 @@ import './modals/activity-dialog/activity-data-dialog';
 import {InterventionActivity, InterventionQuarter} from '../../common/models/intervention.types';
 import {openDialog} from '../../utils/dialog';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {sendRequest} from '@unicef-polymer/etools-ajax';
+import {getStore} from '../../utils/redux-store-access';
+import {getIntervention} from '../../common/actions';
+import {fireEvent} from '../../utils/fire-custom-event';
+import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {getEndpoint} from '../../utils/endpoint-helper';
 
 @customElement('pd-activities')
 export class PdActivities extends LitElement {
@@ -108,6 +115,11 @@ export class PdActivities extends LitElement {
                   @click="${() => this.openDialog(activity)}"
                   ?hidden="${this.readonly}"
                 ></paper-icon-button>
+                <paper-icon-button
+                  icon="icons:delete"
+                  ?hidden="${this.readonly}"
+                  @click="${() => this.openDeleteDialog(String(activity.id))}"
+                ></paper-icon-button>
               </div>
             </div>
 
@@ -117,7 +129,7 @@ export class PdActivities extends LitElement {
               <div class="details-container">
                 <div class="text details-heading">Time periods</div>
                 <div class="details-text">
-                  <b>${(activity.time_frames || []).map(({name}: InterventionQuarter) => name).join(', ') || '-'}</b>
+                  <b>${this.getQuartersNames(activity.time_frames)}</b>
                 </div>
               </div>
 
@@ -153,7 +165,7 @@ export class PdActivities extends LitElement {
   }
 
   getPartnerPercent(partner: string, unicef: string): string {
-    if (!partner) {
+    if (!Number(partner)) {
       return '%0';
     }
     const total: number = this.getTotal(partner, unicef);
@@ -171,5 +183,47 @@ export class PdActivities extends LitElement {
         quarters: this.quarters
       }
     });
+  }
+
+  async openDeleteDialog(activityId: string) {
+    const confirmed = await openDialog({
+      dialog: 'are-you-sure',
+      dialogData: {
+        content: 'Are you sure you want to delete this activity?',
+        confirmBtnText: 'Delete'
+      }
+    }).then(({confirmed}) => {
+      return confirmed;
+    });
+
+    if (confirmed) {
+      this.deleteActivity(activityId);
+    }
+  }
+
+  deleteActivity(activityId: string) {
+    const endpoint = getEndpoint(interventionEndpoints.pdActivityDetails, {
+      activityId: activityId,
+      interventionId: this.interventionId,
+      pdOutputId: this.pdOutputId
+    });
+    sendRequest({
+      method: 'DELETE',
+      endpoint: endpoint
+    })
+      .then((_resp: any) => {
+        getStore().dispatch(getIntervention());
+      })
+      .catch((err: any) => {
+        fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
+      });
+  }
+
+  getQuartersNames(selectedTimeFrames: number[]): string {
+    return (
+      selectedTimeFrames
+        .map((timeFrameId: number) => this.quarters.find(({id}: InterventionQuarter) => id === timeFrameId)?.name)
+        .join(', ') || '-'
+    );
   }
 }

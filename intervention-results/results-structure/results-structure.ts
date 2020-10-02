@@ -21,6 +21,7 @@ import {
 import '@unicef-polymer/etools-data-table';
 import '@unicef-polymer/etools-content-panel';
 import '@polymer/paper-toggle-button/paper-toggle-button';
+import '@polymer/paper-icon-button/paper-icon-button';
 import './cp-output-level';
 import './pd-indicators';
 import './pd-activities';
@@ -142,7 +143,10 @@ export class ResultsStructure extends connect(getStore())(ContentPanelMixin(LitE
   @property({type: Boolean}) showIndicators = true;
   @property({type: Boolean}) showActivities = true;
   @property({type: Object})
-  permissions!: {edit: {result_links?: boolean}; required: {result_links?: boolean}};
+  permissions!: {
+    edit: {result_links?: boolean};
+    required: {result_links?: boolean};
+  };
 
   @property() private _resultLinks: ExpectedResult[] | null = [];
   @property({type: String}) noOfPdOutputs: string | number = '0';
@@ -210,6 +214,10 @@ export class ResultsStructure extends connect(getStore())(ContentPanelMixin(LitE
             border-bottom: 1px groove var(--dark-divider-color);
           }
         }
+        .add-cp {
+          opacity: 0.84;
+          margin-left: 6px;
+        }
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Results Structure (${this.noOfPdOutputs})">
@@ -268,11 +276,12 @@ export class ResultsStructure extends connect(getStore())(ContentPanelMixin(LitE
               </div>
             `
           )}
-          <iron-icon
+          <paper-icon-button
+            class="add-cp"
             icon="add-box"
             ?hidden="${!this.isUnicefUser || !this.permissions.edit.result_links}"
             @click="${() => this.openCpOutputDialog()}"
-          ></iron-icon>
+          ></paper-icon-button>
         </div>
         ${repeat(
           this.resultLinks,
