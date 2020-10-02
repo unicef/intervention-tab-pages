@@ -66,7 +66,7 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
                 label="Start date"
                 .value="${this.data.start}"
                 ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.start)}"
-                ?required="${this.permissions.required.start}"
+                ?required="${this.permissions.required.start && this.editMode}"
                 error-message="Please select start date"
                 auto-validate
                 selected-date-display-format="D MMM YYYY"
@@ -94,7 +94,7 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
                 label="End date"
                 .value="${this.data.end}"
                 ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.end)}"
-                ?required="${this.permissions.required.end}"
+                ?required="${this.permissions.required.end && this.editMode}"
                 error-message="Please select end date"
                 auto-validate
                 selected-date-display-format="D MMM YYYY"
