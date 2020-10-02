@@ -41,6 +41,7 @@ export class CpOutputLevel extends LitElement {
   @property({type: Boolean}) showIndicators = true;
   @property({type: Boolean}) showActivities = true;
   @property({type: Boolean}) readonly = true;
+  @property() interventionStatus!: string;
 
   protected render(): TemplateResult {
     return html`
@@ -112,7 +113,13 @@ export class CpOutputLevel extends LitElement {
               <div slot="row-data-details">
                 <slot></slot>
 
-                <div class="add-pd row-h align-items-center" ?hidden="${!this.resultLink.cp_output}">
+                <div
+                  class="add-pd row-h align-items-center"
+                  ?hidden="${!this.resultLink.cp_output ||
+                  this.interventionStatus === 'ended' ||
+                  this.interventionStatus === 'terminated' ||
+                  this.interventionStatus === 'closed'}"
+                >
                   <iron-icon icon="add-box" @click="${() => this.addPD()}"></iron-icon>Add PD Output
                 </div>
               </div>

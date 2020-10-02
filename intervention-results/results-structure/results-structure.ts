@@ -290,6 +290,7 @@ export class ResultsStructure extends connect(getStore())(ContentPanelMixin(LitE
             <cp-output-level
               ?show-cpo-level="${this.isUnicefUser}"
               .resultLink="${result}"
+              .interventionStatus="${this.interventionStatus}"
               .interventionId="${this.interventionId}"
               .showIndicators="${this.showIndicators}"
               .showActivities="${this.showActivities}"
