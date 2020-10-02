@@ -40,8 +40,11 @@ export class CpOutputLevel extends LitElement {
   @property({type: Boolean, reflect: true, attribute: 'show-cpo-level'}) showCPOLevel = false;
   @property({type: Boolean}) showIndicators = true;
   @property({type: Boolean}) showActivities = true;
-  @property({type: Boolean}) readonly = true;
-  @property() interventionStatus!: string;
+  @property({type: Object})
+  permissions!: {
+    edit: {result_links?: boolean};
+    required: {result_links?: boolean};
+  };
 
   protected render(): TemplateResult {
     return html`
@@ -92,12 +95,12 @@ export class CpOutputLevel extends LitElement {
                       <div class="hover-block">
                         <paper-icon-button
                           icon="icons:create"
-                          ?hidden="${this.readonly}"
+                          ?hidden="${!this.permissions.edit.result_links}"
                           @click="${this.openEditCpOutputPopup}"
                         ></paper-icon-button>
                         <paper-icon-button
                           icon="icons:delete"
-                          ?hidden="${this.readonly}"
+                          ?hidden="${!this.permissions.edit.result_links}"
                           @click="${this.openDeleteCPOutputPopup}"
                         ></paper-icon-button>
                       </div>
@@ -115,10 +118,7 @@ export class CpOutputLevel extends LitElement {
 
                 <div
                   class="add-pd row-h align-items-center"
-                  ?hidden="${!this.resultLink.cp_output ||
-                  this.interventionStatus === 'ended' ||
-                  this.interventionStatus === 'terminated' ||
-                  this.interventionStatus === 'closed'}"
+                  ?hidden="${!this.resultLink.cp_output || !this.permissions.edit.result_links}"
                 >
                   <iron-icon icon="add-box" @click="${() => this.addPD()}"></iron-icon>Add PD Output
                 </div>

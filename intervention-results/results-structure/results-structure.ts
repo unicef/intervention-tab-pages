@@ -290,11 +290,10 @@ export class ResultsStructure extends connect(getStore())(ContentPanelMixin(LitE
             <cp-output-level
               ?show-cpo-level="${this.isUnicefUser}"
               .resultLink="${result}"
-              .interventionStatus="${this.interventionStatus}"
               .interventionId="${this.interventionId}"
               .showIndicators="${this.showIndicators}"
               .showActivities="${this.showActivities}"
-              .readonly="${!this.permissions.edit.result_links}"
+              .permissions="${this.permissions}"
               @add-pd="${() => this.openPdOutputDialog({}, result.cp_output, result.cp_output_name)}"
               @edit-cp-output="${() => this.openCpOutputDialog(result)}"
               @delete-cp-output="${() => this.openDeleteCpOutputDialog(result.id)}"
