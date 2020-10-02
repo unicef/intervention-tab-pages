@@ -198,7 +198,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
                     placeholder="&#8212;"
                     .selected="${item.year}"
                     .options="${this.years}"
-                    ?required=${true && this.editMode}
+                    ?required=${this.editMode}
                     error-message="Required"
                     trigger-value-change-event
                     @etools-selected-item-changed="${(e: CustomEvent) => this._yearChanged(e, index)}"
