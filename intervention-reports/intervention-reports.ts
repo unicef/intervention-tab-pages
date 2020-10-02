@@ -13,7 +13,7 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../utils/redux-store-access';
 
-import '../common/layout/status/report-status';
+import '../common/layout/status/intervention-report-status';
 import {isEmptyObject, isJsonStrMatch} from '../utils/utils';
 import {fireEvent} from '../utils/fire-custom-event';
 import {GenericObject, RootState, User} from '../common/models/globals.types';
@@ -127,7 +127,7 @@ class InterventionReports extends connect(getStore())(PaginationMixin(CommonMixi
                   </paper-tooltip>
                 </span>
                 <span class="col-data flex-c" data-col-header-label="Report Status">
-                  <report-status status="[[report.status]]"></report-status>
+                  <intervention-report-status status="[[report.status]]"></intervention-report-status>
                 </span>
                 <span class="col-data flex-c" data-col-header-label="Due Date">
                   [[_displayOrDefault(report.due_date)]]
