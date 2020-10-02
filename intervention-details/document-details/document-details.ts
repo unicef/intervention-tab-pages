@@ -54,10 +54,11 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
             label="Title"
             always-float-label
             placeholder="—"
+            .autoValidate="${this.autoValidate}"
             .value="${this.data.title}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'title')}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.title)}"
-            ?required="${this.permissions.required.title}"
+            ?required="${this.permissions.required.title && this.editMode}"
           >
           </paper-textarea>
         </div>
@@ -72,7 +73,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
             .value="${this.data.context}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'context')}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.context)}"
-            ?required="${this.permissions.required.context}"
+            ?required="${this.permissions.required.context && this.editMode}"
           >
           </paper-textarea>
         </div>
@@ -86,7 +87,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
             .value="${this.data.implementation_strategy}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'implementation_strategy')}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.implementation_strategy)}"
-            ?required="${this.permissions.required.implementation_strategy}"
+            ?required="${this.permissions.required.implementation_strategy && this.editMode}"
           >
           </paper-textarea>
         </div>
@@ -100,7 +101,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
             .value="${this.data.ip_program_contribution}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'ip_program_contribution')}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.ip_program_contribution)}"
-            ?required="${this.permissions.required.ip_program_contribution}"
+            ?required="${this.permissions.required.ip_program_contribution && this.editMode}"
           >
           </paper-textarea>
         </div>
@@ -121,8 +122,24 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
   @property({type: Boolean})
   canEditDocumentDetails!: boolean;
 
+  @property({type: Boolean})
+  autoValidate = false;
+
   connectedCallback() {
     super.connectedCallback();
+  }
+
+  firstUpdated() {
+    this._handlePaperTextareaAutovalidateError();
+  }
+
+
+   /**
+   * This will prevent a console error "Uncaught TypeError: Cannot read property 'textarea' of undefined"
+   * The error occurs only on first load/ hard refresh and on paper-textareas that have auto-validate
+   */
+  _handlePaperTextareaAutovalidateError() {
+    this.autoValidate = true;
   }
 
   stateChanged(state: RootState) {
