@@ -273,7 +273,7 @@ export class InterventionTabs extends LitElement {
 
   getPerformedAction() {
     if (this.intervention.unicef_accepted) {
-      return 'Unicef Accepted';
+      return 'Unicef Accepted';// TODO -is this needed?
     }
     if (this.intervention.partner_accepted) {
       return 'IP Accepted';
