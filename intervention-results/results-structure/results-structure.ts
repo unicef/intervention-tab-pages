@@ -293,7 +293,7 @@ export class ResultsStructure extends connect(getStore())(ContentPanelMixin(LitE
               .interventionId="${this.interventionId}"
               .showIndicators="${this.showIndicators}"
               .showActivities="${this.showActivities}"
-              .permissions="${this.permissions}"
+              .readonly="${!this.permissions.edit.result_links}"
               @add-pd="${() => this.openPdOutputDialog({}, result.cp_output, result.cp_output_name)}"
               @edit-cp-output="${() => this.openCpOutputDialog(result)}"
               @delete-cp-output="${() => this.openDeleteCpOutputDialog(result.id)}"
