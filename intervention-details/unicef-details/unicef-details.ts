@@ -81,7 +81,7 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
               option-value="id"
               .selectedValues="${this.data.offices}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.offices)}"
-              ?required="${this.permissions.required.offices && this.editMode}"
+              ?required="${this.permissions.required.offices}"
               @etools-selected-items-changed="${({detail}: CustomEvent) =>
                 this.selectedItemsChanged(detail, 'offices')}"
               trigger-value-change-event
@@ -98,7 +98,7 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
               option-value="id"
               .selectedValues="${this.data.sections}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.sections)}"
-              ?required="${this.permissions.required.sections && this.editMode}"
+              ?required="${this.permissions.required.sections}"
               @etools-selected-items-changed="${({detail}: CustomEvent) =>
                 this.selectedItemsChanged(detail, 'sections')}"
               trigger-value-change-event>
@@ -128,7 +128,7 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
               option-value="id"
               .selectedValues="${this.data.unicef_focal_points}"
               ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.unicef_focal_points)}"
-              ?required="${this.permissions.required.unicef_focal_points && this.editMode}"
+              ?required="${this.permissions.required.unicef_focal_points}"
               @etools-selected-items-changed="${({detail}: CustomEvent) =>
                 this.selectedItemsChanged(detail, 'unicef_focal_points')}"
               trigger-value-change-event>
@@ -153,7 +153,7 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
               option-value="id"
               .selected="${this.data.budget_owner}"
               ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.budget_owner)}"
-              ?required="${this.permissions.required.budget_owner && this.editMode}"
+              ?required="${this.permissions.required.budget_owner}"
               @etools-selected-item-changed="${({detail}: CustomEvent) =>
                 this.selectedItemChanged(detail, 'budget_owner')}"
               trigger-value-change-event>

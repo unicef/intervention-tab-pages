@@ -59,7 +59,7 @@ export class PartnerInfoElement extends connect(getStore())(ComponentBaseMixin(L
               class="w100"
               label="Partner Organization"
               .value="${this.data?.partner}"
-              ?required=${this.editMode}
+              required
               readonly
               always-float-label
             >
@@ -76,7 +76,7 @@ export class PartnerInfoElement extends connect(getStore())(ComponentBaseMixin(L
               trigger-value-change-event
               @etools-selected-item-changed="${({detail}: CustomEvent) => this.selectedAgreementChanged(detail)}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.agreement)}"
-              ?required="${this.editMode}"
+              required
               auto-validate
             >
             </etools-dropdown>
@@ -106,7 +106,7 @@ export class PartnerInfoElement extends connect(getStore())(ComponentBaseMixin(L
               .options="${this.partnerStaffMembers}"
               option-label="name"
               option-value="id"
-              ?required=${this.permissions?.required.partner_focal_points && this.editMode}
+              ?required=${this.permissions?.required.partner_focal_points}
               trigger-value-change-event
               @etools-selected-items-changed="${({detail}: CustomEvent) =>
                 this.selectedItemsChanged(detail, 'partner_focal_points')}"

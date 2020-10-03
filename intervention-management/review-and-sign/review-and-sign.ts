@@ -104,7 +104,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
               .value="${this.data.submission_date}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.submission_date)}"
               selected-date-display-format="D MMM YYYY"
-              ?required="${this.permissions.required.submission_date && this.editMode}"
+              ?required="${this.permissions.required.submission_date}"
               max-date="${this.getCurrentDate()}"
               fire-date-has-changed
               @date-has-changed="${(e: CustomEvent) =>
@@ -143,7 +143,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
                     label="Submission Date to PRC"
                     .value="${this.data.submission_date_prc}"
                     ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.submission_date_prc)}"
-                    ?required="${this.data.prc_review_attachment && this.editMode}"
+                    ?required="${this.data.prc_review_attachment}"
                     fire-date-has-changed
                     @date-has-changed="${(e: CustomEvent) =>
                       this.valueChanged({value: formatDate(e.detail.date, 'YYYY-MM-DD')}, 'submission_date_prc')}"
@@ -159,7 +159,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
                     label="Review Date by PRC"
                     .value="${this.data.review_date_prc}"
                     ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.review_date_prc)}"
-                    ?required="${this.data.prc_review_attachment && this.editMode}"
+                    ?required="${this.data.prc_review_attachment}"
                     fire-date-has-changed
                     @date-has-changed="${(e: CustomEvent) =>
                       this.valueChanged({value: formatDate(e.detail.date, 'YYYY-MM-DD')}, 'review_date_prc')}"
@@ -198,7 +198,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
               .options="${this.getCleanEsmmOptions(this.agreementAuthorizedOfficers)}"
               .selected="${this.data.partner_authorized_officer_signatory}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.partner_authorized_officer_signatory)}"
-              ?required="${this.permissions.required.partner_authorized_officer_signatory && this.editMode}"
+              ?required="${this.permissions.required.partner_authorized_officer_signatory}"
               auto-validate
               error-message="Please select Partner Authorized Officer"
               @etools-selected-item-changed="${({detail}: CustomEvent) =>
@@ -213,7 +213,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
               id="signedByPartnerDateField"
               label="Signed by Partner Date"
               .value="${this.data.signed_by_partner_date}"
-              ?required="${this.permissions.required.signed_by_partner_date && this.editMode}"
+              ?required="${this.permissions.required.signed_by_partner_date}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.signed_by_partner_date)}"
               fire-date-has-changed
               @date-has-changed="${(e: CustomEvent) =>
@@ -243,7 +243,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
               label="Signed by UNICEF Date"
               .value="${this.data.signed_by_unicef_date}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.signed_by_unicef_date)}"
-              ?required="${this.permissions.required.signed_by_unicef_date && this.editMode}"
+              ?required="${this.permissions.required.signed_by_unicef_date}"
               fire-date-has-changed
               @date-has-changed="${(e: CustomEvent) =>
                 this.valueChanged({value: formatDate(e.detail.date, 'YYYY-MM-DD')}, 'signed_by_unicef_date')}"
@@ -292,7 +292,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
               @delete-file="${this._signedPDDocDelete}"
               auto-validate
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.signed_pd_attachment)}"
-              ?required="${this.permissions.required.signed_pd_attachment && this.editMode}"
+              ?required="${this.permissions.required.signed_pd_attachment}"
               error-message="Please select Signed PD/SPD document"
               @upload-started="${this._onUploadStarted}"
               @change-unsaved-file="${this._onChangeUnsavedFile}"

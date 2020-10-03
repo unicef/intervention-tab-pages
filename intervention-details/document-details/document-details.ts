@@ -58,7 +58,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
             .value="${this.data.title}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'title')}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.title)}"
-            ?required="${this.permissions.required.title && this.editMode}"
+            ?required="${this.permissions.required.title}"
           >
           </paper-textarea>
         </div>
@@ -73,7 +73,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
             .value="${this.data.context}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'context')}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.context)}"
-            ?required="${this.permissions.required.context && this.editMode}"
+            ?required="${this.permissions.required.context}"
           >
           </paper-textarea>
         </div>
@@ -87,7 +87,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
             .value="${this.data.implementation_strategy}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'implementation_strategy')}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.implementation_strategy)}"
-            ?required="${this.permissions.required.implementation_strategy && this.editMode}"
+            ?required="${this.permissions.required.implementation_strategy}"
           >
           </paper-textarea>
         </div>
@@ -101,7 +101,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
             .value="${this.data.ip_program_contribution}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'ip_program_contribution')}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.ip_program_contribution)}"
-            ?required="${this.permissions.required.ip_program_contribution && this.editMode}"
+            ?required="${this.permissions.required.ip_program_contribution}"
           >
           </paper-textarea>
         </div>
