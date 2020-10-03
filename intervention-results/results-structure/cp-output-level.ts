@@ -40,7 +40,6 @@ export class CpOutputLevel extends LitElement {
   @property({type: Boolean, reflect: true, attribute: 'show-cpo-level'}) showCPOLevel = false;
   @property({type: Boolean}) showIndicators = true;
   @property({type: Boolean}) showActivities = true;
-  @property({type: Object})
   @property({type: Boolean})
   readonly = true;
 
