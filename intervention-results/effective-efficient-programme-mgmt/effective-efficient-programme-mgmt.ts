@@ -23,6 +23,7 @@ import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {AnyObject, RootState} from '../../common/models/globals.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {ProgrammeManagement} from './effectiveEfficientProgrammeMgmt.models';
+import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
 
 const customStyles = html`
   <style>
@@ -38,7 +39,9 @@ const customStyles = html`
  * @customElement
  */
 @customElement('effective-and-efficient-programme-management')
-export class EffectiveAndEfficientProgrammeManagement extends connect(getStore())(ComponentBaseMixin(LitElement)) {
+export class EffectiveAndEfficientProgrammeManagement extends connect(getStore())(
+  EtoolsCurrency(ComponentBaseMixin(LitElement))
+) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles, elevationStyles];
   }
@@ -155,16 +158,16 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
   }
 
   formatData(data: ProgrammeManagement) {
-    this.total_amount = data.total || '0';
+    this.total_amount = this.addCurrencyAmountDelimiter(data.total) || '0';
     return [
       {
         title: 'In-country management and support staff',
         description:
           'Contribution for In-country management and support staff prorated to their contribution to the' +
           ' programme (representation, planning, coordination, logistics, administration, finance)',
-        unicef_cash: data.act1_unicef,
-        partner_contribution: data.act1_partner,
-        total: data.act1_total,
+        unicef_cash: this.addCurrencyAmountDelimiter(data.act1_unicef),
+        partner_contribution: this.addCurrencyAmountDelimiter(data.act1_partner),
+        total: this.addCurrencyAmountDelimiter(data.act1_total),
         index: 1
       },
       {
@@ -172,9 +175,9 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
         description:
           'Contribution for Operational costs prorated to their contribution to the programme (office space,' +
           ' equipment, office supplies, maintenance)',
-        unicef_cash: data.act2_unicef,
-        partner_contribution: data.act2_partner,
-        total: data.act2_total,
+        unicef_cash: this.addCurrencyAmountDelimiter(data.act2_unicef),
+        partner_contribution: this.addCurrencyAmountDelimiter(data.act2_partner),
+        total: this.addCurrencyAmountDelimiter(data.act2_total),
         index: 2
       },
       {
@@ -182,9 +185,9 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
         description:
           'Contribution for Planning, monitoring, evaluation and communication, prorated to their' +
           ' contribution to the programme (venue, travels, etc.)',
-        unicef_cash: data.act3_unicef,
-        partner_contribution: data.act3_partner,
-        total: data.act3_total,
+        unicef_cash: this.addCurrencyAmountDelimiter(data.act3_unicef),
+        partner_contribution: this.addCurrencyAmountDelimiter(data.act3_partner),
+        total: this.addCurrencyAmountDelimiter(data.act3_total),
         index: 3
       }
     ];

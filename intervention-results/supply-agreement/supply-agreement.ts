@@ -25,6 +25,7 @@ import {fireEvent} from '../../utils/fire-custom-event';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {updateCurrentIntervention} from '../../common/actions';
 import '../../common/layout/are-you-sure';
+import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
 
 const customStyles = html`
   <style>
@@ -43,7 +44,7 @@ const customStyles = html`
 `;
 
 @customElement('supply-agreements')
-export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElement)) {
+export class FollowUpPage extends connect(getStore())(EtoolsCurrency(ComponentBaseMixin(LitElement))) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -76,7 +77,7 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
             <label class="paper-label font-bold pad-right">TOTAL SUPPLY BUDGET: </label>
             <label class="font-bold-12"
               >${this.intervention.planned_budget.currency}
-              ${this.intervention.planned_budget.in_kind_amount_local}</label
+              ${this.displayCurrencyAmount(this.intervention.planned_budget.in_kind_amount_local)}</label
             >
           </span>
           <paper-icon-button
@@ -180,6 +181,13 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
     }
     this.supply_items = selectSupplyAgreement(state);
     this.permissions = selectSupplyAgreementPermissions(state);
+
+    this.supply_items.map((item: AnyObject) => {
+      item.total_price = this.addCurrencyAmountDelimiter(item.total_price);
+      item.unit_number = this.addCurrencyAmountDelimiter(item.unit_number);
+      item.unit_price = this.addCurrencyAmountDelimiter(item.unit_price);
+      return item;
+    });
   }
 
   cancelSupply() {
