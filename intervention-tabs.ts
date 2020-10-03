@@ -272,9 +272,6 @@ export class InterventionTabs extends LitElement {
   }
 
   getPerformedAction() {
-    if (this.intervention.partner_accepted && this.intervention.unicef_accepted) {
-      return 'IP & Unicef Accepted';
-    }
     if (this.intervention.unicef_accepted) {
       return 'Unicef Accepted';
     }
