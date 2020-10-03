@@ -1,5 +1,7 @@
 import {customElement, html, LitElement, property, TemplateResult} from 'lit-element';
 import {fireEvent} from '../utils/fire-custom-event';
+import '@polymer/paper-input/paper-textarea';
+import '@unicef-polymer/etools-dialog/etools-dialog';
 
 @customElement('reason-popup')
 export class ReasonPopup extends LitElement {

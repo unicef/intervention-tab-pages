@@ -12,7 +12,7 @@ const ACCEPT = 'accept';
 const REVIEW = 'review';
 const SIGNATURE = 'signature';
 export const CANCEL = 'cancel';
-const ACCEPT_AND_REVIEW = 'accept_and_review';
+const ACCEPT_REVIEW = 'accept_review';
 
 export const EXPORT_ACTIONS = [EXPORT_CSV, EXPORT_PDF, EXPORT_COMMENTS];
 export const BACK_ACTIONS = [SEND_TO_PARTNER, SEND_TO_UNICEF, UNLOCK];
@@ -26,7 +26,7 @@ export const namesMap: GenericObject<string> = {
   [SEND_TO_UNICEF]: 'Send To Unicef',
   [UNLOCK]: 'Unlock',
   [ACCEPT]: 'Accept',
-  [ACCEPT_AND_REVIEW]: 'Accept and Review',
+  [ACCEPT_REVIEW]: 'Accept & Review',
   [REVIEW]: 'Review',
   [SIGNATURE]: 'Ready for Signature',
   [CANCEL]: 'Cancel'
