@@ -16,6 +16,7 @@ import '@unicef-polymer/etools-dialog/etools-dialog';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@polymer/paper-input/paper-input';
 import '@polymer/paper-input/paper-textarea';
+import '@unicef-polymer/etools-currency-amount-input';
 
 /**
  * @customElement
@@ -80,15 +81,15 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
           </paper-input>
         </div>
         <div class="col col-4">
-          <paper-input
-            value="${this.data.unit_price ? this.data.unit_price : ''}"
-            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unit_price')}"
+          <etools-currency-amount-input
+            id="unicefCash"
             label="Price / Unit"
-            allowed-pattern="[0-9]"
             placeholder="Enter price / unit"
             required
+            .value="${this.data.unit_price ? this.data.unit_price : ''}"
+            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unit_price')}"
           >
-          </paper-input>
+          </etools-currency-amount-input>
         </div>
       </div>
 
@@ -166,6 +167,10 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
   }
 
   onSaveClick() {
+    // remove comma from formatted money values
+    if (this.data.total_price) {
+      this.data.total_price = this.data.total_price!.replace(/,/g, '');
+    }
     if (!this.validate()) {
       return;
     }
