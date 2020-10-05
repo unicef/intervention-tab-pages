@@ -265,7 +265,7 @@ export class Intervention {
   management_budgets?: ManagementBudget;
   cfei_number?: string;
   status_list: [] = [];
-  unicef_court = false;
+  unicef_court = true;
   unicef_accepted = false;
   partner_accepted = false;
 }
