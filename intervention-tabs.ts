@@ -264,17 +264,14 @@ export class InterventionTabs extends LitElement {
   }
 
   showPerformedActionsStatus() {
-    return (
-      (!this.intervention.unicef_court && this.isUnicefUser) ||
-      this.intervention.unicef_accepted ||
-      this.intervention.partner_accepted
-    );
+    return (!this.intervention.unicef_court && this.isUnicefUser) || this.intervention.partner_accepted;
   }
 
   getPerformedAction() {
-    if (this.intervention.unicef_accepted) {
-      return 'Unicef Accepted';// TODO -is this needed?
-    }
+    /** We're not showwing `Unicef Accepted` also  because when
+     * Uniced accepts it means that the Partner has already accepted and
+     * the PD moves to `Review` status
+     */
     if (this.intervention.partner_accepted) {
       return 'IP Accepted';
     }
