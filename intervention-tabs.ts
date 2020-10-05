@@ -269,7 +269,7 @@ export class InterventionTabs extends LitElement {
 
   getPerformedAction() {
     /** We're not showwing `Unicef Accepted` also  because when
-     * Uniced accepts it means that the Partner has already accepted and
+     * Unicef accepts it means that the Partner has already accepted and
      * the PD moves to `Review` status
      */
     if (this.intervention.partner_accepted) {
