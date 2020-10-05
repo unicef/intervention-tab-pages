@@ -121,7 +121,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
             @value-changed="${({detail}: CustomEvent) => this.updateModelValue('name', detail.value)}"
             required
             ?invalid="${this.errors.name}"
-            .errorMessage="${this.errors.name && this.errors.name[0]}"
+            .errorMessage="${(this.errors.name && this.errors.name[0]) || 'This field is required'}"
             @focus="${() => this.resetFieldError('name')}"
             @click="${() => this.resetFieldError('name')}"
           ></paper-input>
