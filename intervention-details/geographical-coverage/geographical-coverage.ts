@@ -1,6 +1,7 @@
-import {customElement, html, LitElement, property} from 'lit-element';
+import {customElement, html, LitElement, property, query} from 'lit-element';
 import '@polymer/paper-button/paper-button';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
+import {EtoolsDropdownMultiEl} from '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
 import './grouped-locations-dialog';
 
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
@@ -93,15 +94,17 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
             error-message="Please select locations"
             disable-on-focus-handling
             trigger-value-change-event
-            @etools-selected-items-changed="${({detail}: CustomEvent) =>
-              this.selectedItemsChanged(detail, 'flat_locations')}"
+            @etools-selected-items-changed="${({detail}: CustomEvent) => {
+              this.selectedItemsChanged(detail, 'flat_locations');
+              this.setLocationsSelected(this.data.flat_locations);
+            }}"
           >
           </etools-dropdown-multi>
           <div class="locations-btn">
             <paper-button
               class="secondary-btn see-locations right-align"
               @click="${this.openLocationsDialog}"
-              ?hidden="${this._isEmpty(this.data.flat_locations)}"
+              ?hidden="${!this.hasLocationsSelected}"
               title="See all locations"
             >
               <iron-icon icon="add"></iron-icon>
@@ -126,6 +129,10 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
 
   @property({type: Object})
   permissions!: Permission<LocationsPermissions>;
+
+  private hasLocationsSelected = false;
+
+  @query('#locations') locationsDropDown!: EtoolsDropdownMultiEl;
 
   connectedCallback() {
     super.connectedCallback();
@@ -166,8 +173,13 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
     });
   }
 
-  _isEmpty(array: any[]) {
-    return isEmpty(array);
+  setLocationsSelected(array: any[]) {
+    const locationSelected = !isEmpty(array);
+    if (locationSelected !== this.hasLocationsSelected && this.locationsDropDown) {
+      this.hasLocationsSelected = locationSelected;
+      this.locationsDropDown._onDropdownOpen();
+      this.requestUpdate();
+    }
   }
 
   saveData() {
