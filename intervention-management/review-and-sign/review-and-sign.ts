@@ -111,6 +111,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
                 this.valueChanged({value: formatDate(e.detail.date, 'YYYY-MM-DD')}, 'submission_date')}"
               max-date-error-msg="Date can not be in the future"
               error-message="Document Submission Date is required"
+              ?auto-validate="${this.editMode}"
             >
 
           </div>
@@ -217,6 +218,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
               fire-date-has-changed
               @date-has-changed="${(e: CustomEvent) =>
                 this.valueChanged({value: formatDate(e.detail.date, 'YYYY-MM-DD')}, 'signed_by_partner_date')}"
+              ?auto-validate="${this.editMode}"
               error-message="Date is required"
               max-date-error-msg="Date can not be in the future"
               max-date="${this.getCurrentDate()}"
@@ -245,6 +247,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
               fire-date-has-changed
               @date-has-changed="${(e: CustomEvent) =>
                 this.valueChanged({value: formatDate(e.detail.date, 'YYYY-MM-DD')}, 'signed_by_unicef_date')}"
+              ?auto-validate="${this.editMode}"
               error-message="Date is required"
               max-date-error-msg="Date can not be in the future"
               max-date="${this.getCurrentDate()}"
@@ -287,6 +290,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
               @upload-finished="${this._signedPDUploadFinished}"
               .showDeleteBtn="${this.showSignedPDDeleteBtn(this.data.status)}"
               @delete-file="${this._signedPDDocDelete}"
+              ?auto-validate="${this.editMode}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.signed_pd_attachment)}"
               ?required="${this.permissions.required.signed_pd_attachment}"
               error-message="Please select Signed PD/SPD document"
@@ -361,11 +365,18 @@ export class InterventionReviewAndSign extends connect(getStore())(
     // review it
     this.signedByUnicefUsers = cloneDeep(state.commonData!.unicefUsersData);
 
+    // setTimeout(() => {
+    //   const perm = selectReviewDataPermissions(state);
+    //   this.permissions = {...this.permissions, ...perm};
+    //   console.log('permissions', this.permissions);
+    //   this.set_canEditAtLeastOneField(this.permissions.edit);
+    // }, 100);
+
     if (state.interventions.current) {
       this.data = selectReviewData(state);
       this.originalData = cloneDeep(this.data);
-      this.permissions = selectReviewDataPermissions(state);
-      this.set_canEditAtLeastOneField(this.permissions.edit);
+      // this.permissions = selectReviewDataPermissions(state);
+      // this.set_canEditAtLeastOneField(this.permissions.edit);
       if (this.data.submitted_to_prc) {
         this._lockSubmitToPrc = true;
       } else {
@@ -376,6 +387,15 @@ export class InterventionReviewAndSign extends connect(getStore())(
         const agreementData = this.filterAgreementsById(agreements!, this.data.agreement);
         this.agreementAuthorizedOfficers = this.getAuthorizedOfficersList(agreementData);
       }
+    }
+    this.sePermissions(state);
+  }
+
+  private sePermissions(state: any) {
+    const permissions = selectReviewDataPermissions(state);
+    if (!isJsonStrMatch(this.permissions, permissions)) {
+      this.permissions = permissions;
+      this.set_canEditAtLeastOneField(this.permissions.edit);
     }
   }
 
@@ -401,6 +421,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
     this.setDropdownMissingOptionsAjaxDetails(this.shadowRoot?.querySelector('#signedByUnicef'), 'unicefUsers', {
       dropdown: true
     });
+    this.validate();
   }
 
   _resetPrcFieldsValidations() {
