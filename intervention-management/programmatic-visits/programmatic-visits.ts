@@ -198,7 +198,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
                     placeholder="&#8212;"
                     .selected="${item.year}"
                     .options="${this.years}"
-                    required
+                    ?required=${this.editMode}
                     error-message="Required"
                     trigger-value-change-event
                     @etools-selected-item-changed="${(e: CustomEvent) => this._yearChanged(e, index)}"
@@ -216,7 +216,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
                     min="0"
                     allowed-pattern="[0-9.]"
                     placeholder="&#8212;"
-                    ?required="${item.year}"
+                    ?required="${item.year && this.editMode}"
                     error-message="Required"
                     auto-validate
                     @value-changed="${(e: CustomEvent) => this.inputChanged(e, index, 'q1')}"
@@ -233,7 +233,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
                     min="0"
                     allowed-pattern="[0-9.]"
                     placeholder="&#8212;"
-                    ?required="${item.year}"
+                    ?required="${item.year && this.editMode}"
                     error-message="Required"
                     auto-validate
                     @value-changed="${(e: CustomEvent) => this.inputChanged(e, index, 'q2')}"
@@ -250,7 +250,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
                     min="0"
                     allowed-pattern="[0-9.]"
                     placeholder="&#8212;"
-                    ?required="${item.year}"
+                    ?required="${item.year && this.editMode}"
                     error-message="Required"
                     auto-validate
                     @value-changed="${(e: CustomEvent) => this.inputChanged(e, index, 'q3')}"
@@ -267,7 +267,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
                     min="0"
                     allowed-pattern="[0-9.]"
                     placeholder="&#8212;"
-                    ?required="${item.year}"
+                    ?required="${item.year && this.editMode}"
                     error-message="Required"
                     auto-validate
                     @value-changed="${(e: CustomEvent) => this.inputChanged(e, index, 'q4')}"

@@ -204,9 +204,19 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
       return Promise.resolve(false);
     }
     return getStore()
-      .dispatch(patchIntervention(this.data))
+      .dispatch(patchIntervention(this.cleanUp(this.data)))
       .then(() => {
         this.editMode = false;
       });
+  }
+  /**
+   * Backend errors out otherwise
+   */
+  cleanUp(data: FinancialComponentData) {
+    if (!data || !data.planned_budget) {
+      return data;
+    }
+    data.planned_budget = {id: data.planned_budget.id, currency: data.planned_budget.currency};
+    return data;
   }
 }
