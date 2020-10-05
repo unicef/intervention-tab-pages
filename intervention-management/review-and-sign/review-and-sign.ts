@@ -111,7 +111,6 @@ export class InterventionReviewAndSign extends connect(getStore())(
                 this.valueChanged({value: formatDate(e.detail.date, 'YYYY-MM-DD')}, 'submission_date')}"
               max-date-error-msg="Date can not be in the future"
               error-message="Document Submission Date is required"
-              auto-validate
             >
 
           </div>
@@ -218,7 +217,6 @@ export class InterventionReviewAndSign extends connect(getStore())(
               fire-date-has-changed
               @date-has-changed="${(e: CustomEvent) =>
                 this.valueChanged({value: formatDate(e.detail.date, 'YYYY-MM-DD')}, 'signed_by_partner_date')}"
-              auto-validate
               error-message="Date is required"
               max-date-error-msg="Date can not be in the future"
               max-date="${this.getCurrentDate()}"
@@ -247,7 +245,6 @@ export class InterventionReviewAndSign extends connect(getStore())(
               fire-date-has-changed
               @date-has-changed="${(e: CustomEvent) =>
                 this.valueChanged({value: formatDate(e.detail.date, 'YYYY-MM-DD')}, 'signed_by_unicef_date')}"
-              auto-validate
               error-message="Date is required"
               max-date-error-msg="Date can not be in the future"
               max-date="${this.getCurrentDate()}"
@@ -290,7 +287,6 @@ export class InterventionReviewAndSign extends connect(getStore())(
               @upload-finished="${this._signedPDUploadFinished}"
               .showDeleteBtn="${this.showSignedPDDeleteBtn(this.data.status)}"
               @delete-file="${this._signedPDDocDelete}"
-              auto-validate
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.signed_pd_attachment)}"
               ?required="${this.permissions.required.signed_pd_attachment}"
               error-message="Please select Signed PD/SPD document"
