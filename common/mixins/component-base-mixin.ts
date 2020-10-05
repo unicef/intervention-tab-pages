@@ -8,6 +8,9 @@ import {formatDate} from '../../utils/date-utils';
 import isEmpty from 'lodash-es/isEmpty';
 import CONSTANTS from '../constants';
 import ContentPanelMixin from './content-panel-mixin';
+import {Intervention} from '../models/intervention.types';
+import {getStore} from '../../utils/redux-store-access';
+import {updateCurrentIntervention} from '../actions';
 
 function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class ComponentBaseClass extends ContentPanelMixin(baseClass) {
@@ -76,6 +79,23 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
           loadingSource: this.localName
         });
       });
+    }
+
+    dispatchUpdateCurrentIntervention(intervention: Intervention) {
+      getStore().dispatch(updateCurrentIntervention(intervention));
+
+      this.updateDexieData(intervention);
+    }
+
+    /**
+     * In PMP ,the intervention and agreements list are cached in DexieDb,
+     * and intervention edits will not be visible on the list imediatelly without this.
+     * ch22752
+     */
+    updateDexieData(intervention: Intervention) {
+      if (window.location.href.indexOf('/pmp') > -1) {
+        fireEvent(this, 'intervention-was-edited', {intervention});
+      }
     }
 
     renderActions(editMode: boolean, canEditAnyFields: boolean) {

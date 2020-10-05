@@ -16,11 +16,10 @@ import {InterventionActionsStyles} from './intervention-actions.styles';
 import {ACTIONS_WITH_COMMENT, BACK_ACTIONS, CANCEL, EXPORT_ACTIONS, namesMap} from './intervention-actions.constants';
 import {PaperMenuButton} from '@polymer/paper-menu-button/paper-menu-button';
 import {Intervention} from '../common/models/intervention.types';
-import {updateCurrentIntervention} from '../common/actions';
-import {getStore} from '../utils/redux-store-access';
+import ComponentBaseMixin from '../common/mixins/component-base-mixin';
 
 @customElement('intervention-actions')
-export class InterventionActions extends LitElement {
+export class InterventionActions extends ComponentBaseMixin(LitElement) {
   static get styles(): CSSResultArray {
     return [InterventionActionsStyles];
   }
@@ -169,7 +168,7 @@ export class InterventionActions extends LitElement {
       method: 'PATCH'
     })
       .then((intervention: Intervention) => {
-        getStore().dispatch(updateCurrentIntervention(intervention));
+        this.dispatchUpdateCurrentIntervention(intervention);
       })
       .finally(() => {
         fireEvent(this, 'global-loading', {

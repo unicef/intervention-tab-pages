@@ -45,7 +45,7 @@ import {isUnicefUser, currentIntervention} from '../../common/selectors';
 import findIndex from 'lodash-es/findIndex';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import ContentPanelMixin from '../../common/mixins/content-panel-mixin';
+import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 
 const RESULT_VIEW = 'result_view';
 const BUDGET_VIEW = 'budget_view';
@@ -55,7 +55,7 @@ const COMBINED_VIEW = 'combined_view';
  * @customElement
  */
 @customElement('results-structure')
-export class ResultsStructure extends connect(getStore())(ContentPanelMixin(LitElement)) {
+export class ResultsStructure extends connect(getStore())(ComponentBaseMixin(LitElement)) {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
@@ -493,7 +493,7 @@ export class ResultsStructure extends connect(getStore())(ContentPanelMixin(LitE
       method: 'DELETE',
       endpoint: endpoint
     }).then(() => {
-      getStore().dispatch(updateCurrentIntervention(this.removeDeletedCPOutput(this.intervention, resultLinkId)));
+      this.dispatchUpdateCurrentIntervention(this.removeDeletedCPOutput(this.intervention, resultLinkId));
     });
   }
 

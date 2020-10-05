@@ -9,13 +9,13 @@ import '@polymer/paper-checkbox';
 import '@unicef-polymer/etools-dialog';
 import {GenericObject, IdAndName} from '../common/models/globals.types';
 import {getStore} from '../utils/redux-store-access';
-import {updateCurrentIntervention} from '../common/actions';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {validateRequiredFields} from '../utils/validation-helper';
 import {sharedStyles} from '../common/styles/shared-styles-lit';
+import ComponentBaseMixin from '../common/mixins/component-base-mixin';
 
 @customElement('intervention-attachment-dialog')
-export class InterventionAttachmentDialog extends connect(getStore())(LitElement) {
+export class InterventionAttachmentDialog extends connect(getStore())(ComponentBaseMixin(LitElement)) {
   static get styles(): CSSResultArray {
     // language=css
     return [
@@ -180,7 +180,7 @@ export class InterventionAttachmentDialog extends connect(getStore())(LitElement
       body
     })
       .then(({intervention}: any) => {
-        getStore().dispatch(updateCurrentIntervention(intervention));
+        this.dispatchUpdateCurrentIntervention(intervention);
         this.onClose();
       })
       .catch((error: any) => {

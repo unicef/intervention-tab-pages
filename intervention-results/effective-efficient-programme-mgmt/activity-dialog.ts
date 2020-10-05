@@ -10,8 +10,6 @@ import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '../../utils/fire-custom-event';
-import {getStore} from '../../utils/redux-store-access';
-import {updateCurrentIntervention} from '../../common/actions';
 
 /**
  * @customElement
@@ -122,7 +120,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
       body: this.data
     })
       .then(({intervention}) => {
-        getStore().dispatch(updateCurrentIntervention(intervention));
+        this.dispatchUpdateCurrentIntervention(intervention);
         fireEvent(this, 'dialog-closed', {confirmed: true});
       })
       .catch(() => {
