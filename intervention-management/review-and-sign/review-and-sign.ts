@@ -322,6 +322,18 @@ export class InterventionReviewAndSign extends connect(getStore())(
               : html``
           }
         </div>
+        <div class="layout-horizontal row-padding-v">
+          <div class="col col-6">
+            <!-- TERMINATION DOC -->
+            <etools-upload
+              id="terminationDoc"
+              label="Termination Notice"
+              .hidden="${!this.data.termination_doc_attachment}"
+              .fileUrl="${this.data.termination_doc_attachment}"
+              readonly
+            >
+          </div>
+        </div>
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
       </etools-content-panel>
     `;
@@ -380,6 +392,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
         const agreementData = this.filterAgreementsById(agreements!, this.data.agreement);
         this.agreementAuthorizedOfficers = this.getAuthorizedOfficersList(agreementData);
       }
+      console.log(this.data.termination_doc_attachment);
     }
   }
 
