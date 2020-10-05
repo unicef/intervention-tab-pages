@@ -1,10 +1,13 @@
 import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi.js';
 import IndicatorsCommonMixin from './mixins/indicators-common-mixin';
+import EndpointsLitMixin from '../../../../common/mixins/endpoints-mixin-lit';
 import {PaperInputElement} from '@polymer/paper-input/paper-input';
 import {html, LitElement, property, customElement} from 'lit-element';
 import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
 import {Indicator} from '../../../../common/models/intervention.types';
+import {connect} from 'pwa-helpers/connect-mixin';
+import {getStore} from '../../../../utils/redux-store-access';
 import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 import {fireEvent} from '../../../../utils/fire-custom-event';
 import {AnyObject} from '../../../../common/models/globals.types';
@@ -15,7 +18,7 @@ import isEmpty from 'lodash-es/isEmpty';
  * @appliesMixin IndicatorsCommonMixin
  */
 @customElement('cluster-indicator')
-class ClusterIndicator extends IndicatorsCommonMixin(LitElement) {
+class ClusterIndicator extends connect(getStore())(EndpointsLitMixin(IndicatorsCommonMixin(LitElement))) {
   static get styles() {
     return [gridLayoutStylesLit];
   }
@@ -41,7 +44,7 @@ class ClusterIndicator extends IndicatorsCommonMixin(LitElement) {
               <div class="col col-6">
                 <div class="layout-vertical">
                   <label class="paper-label">Response Plan</label>
-                  <label class="input-label" empty="${!this.indicator?.response_plan_name}"
+                  <label class="input-label" ?empty="${!this.indicator?.response_plan_name}"
                     >${this.indicator?.response_plan_name}</label
                   >
                 </div>
@@ -49,7 +52,7 @@ class ClusterIndicator extends IndicatorsCommonMixin(LitElement) {
               <div class="col col-6">
                 <div class="layout-vertical">
                   <label class="paper-label">Cluster</label>
-                  <label class="input-label" empty="${!this.indicator?.cluster_name}"
+                  <label class="input-label" ?empty="${!this.indicator?.cluster_name}"
                     >${this.indicator?.cluster_name}</label
                   >
                 </div>
@@ -58,7 +61,7 @@ class ClusterIndicator extends IndicatorsCommonMixin(LitElement) {
             <div class="row-h flex-c">
               <div class="layout-vertical">
                 <label class="paper-label">Indicator</label>
-                <label class="input-label" empty="${!this.indicator?.cluster_indicator_title}"
+                <label class="input-label" ?empty="${!this.indicator?.cluster_indicator_title}"
                   >${this.indicator?.cluster_indicator_title}</label
                 >
               </div>
@@ -273,7 +276,7 @@ class ClusterIndicator extends IndicatorsCommonMixin(LitElement) {
       <div class="row-h flex-c">
         <div class="layout-vertical">
           <label class="paper-label">Means of Verification</label>
-          <label class="input-label" empty="${!this.prpClusterIndicator.means_of_verification}">
+          <label class="input-label" ?empty="${!this.prpClusterIndicator.means_of_verification}">
             ${this.prpClusterIndicator.means_of_verification}
           </label>
         </div>
@@ -360,25 +363,24 @@ class ClusterIndicator extends IndicatorsCommonMixin(LitElement) {
   @property({type: Object})
   prpClusterIndicator: AnyObject = {};
 
-  // stateChanged(state: any) {
-  //   this.endStateChanged(state);
-  // }
+  stateChanged(state: any) {
+    this.endStateChanged(state);
+  }
 
   connectedCallback() {
     super.connectedCallback();
 
-    // TODO
-    // this.fireRequest('getResponsePlans', {})
-    //   .then((response: any) => {
-    //     this.responsePlans = response;
-    //   })
-    //   .catch((error: any) => {
-    //     fireEvent(this, 'show-toast', {
-    //       error: {response: error.message || error.response}
-    //     });
-    //   });
+    this.fireRequest('getResponsePlans', {})
+      .then((response: any) => {
+        this.responsePlans = response;
+      })
+      .catch((error: any) => {
+        fireEvent(this, 'show-toast', {
+          error: {response: error.message || error.response}
+        });
+      });
 
-    // this.resetValidations();
+    this.resetValidations();
   }
 
   indicatorChanged(indicator: any) {
@@ -395,20 +397,20 @@ class ClusterIndicator extends IndicatorsCommonMixin(LitElement) {
     }
   }
 
-  _getPrpClusterIndicator(_clusterIndicId: string) {
+  _getPrpClusterIndicator(clusterIndicId: string) {
     fireEvent(this, 'start-spinner', {spinnerText: 'Loading...'});
-    // TODO
-    // this.fireRequest('getPrpClusterIndicator', {id: clusterIndicId})
-    //   .then((response: any) => {
-    //     this.prpClusterIndicator = response;
-    //     fireEvent(this, 'stop-spinner');
-    //   })
-    //   .catch((error: any) => {
-    //     fireEvent(this, 'stop-spinner');
-    //     fireEvent(this, 'show-toast', {
-    //       error: {response: error.message || error.response}
-    //     });
-    //   });
+
+    this.fireRequest('getPrpClusterIndicator', {id: clusterIndicId})
+      .then((response: any) => {
+        this.prpClusterIndicator = response;
+        fireEvent(this, 'stop-spinner');
+      })
+      .catch((error: any) => {
+        fireEvent(this, 'stop-spinner');
+        fireEvent(this, 'show-toast', {
+          error: {response: error.message || error.response}
+        });
+      });
   }
 
   _responsePlanChanged(responsePlan: any) {
@@ -447,18 +449,18 @@ class ClusterIndicator extends IndicatorsCommonMixin(LitElement) {
       return;
     }
     fireEvent(this, 'start-spinner', {spinnerText: 'Loading...'});
-    // TODO
-    // this.fireRequest('getPrpClusterIndicators', {id: clusterId})
-    //   .then((response: any) => {
-    //     this.prpClusterIndicators = this._unnestIndicatorTitle(response.results);
-    //     fireEvent(this, 'stop-spinner');
-    //   })
-    //   .catch((error: any) => {
-    //     fireEvent(this, 'stop-spinner');
-    //     fireEvent(this, 'show-toast', {
-    //       error: {response: error.message || error.response}
-    //     });
-    //   });
+
+    this.fireRequest('getPrpClusterIndicators', {id: clusterId})
+      .then((response: any) => {
+        this.prpClusterIndicators = this._unnestIndicatorTitle(response.results);
+        fireEvent(this, 'stop-spinner');
+      })
+      .catch((error: any) => {
+        fireEvent(this, 'stop-spinner');
+        fireEvent(this, 'show-toast', {
+          error: {response: error.message || error.response}
+        });
+      });
   }
 
   /* ESM dropdown can't process a nested property as option-label

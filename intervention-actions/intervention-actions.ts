@@ -117,6 +117,10 @@ export class InterventionActions extends LitElement {
         btn = 'Send';
         message = 'Are you sure you want to send for signature?';
         break;
+      case 'accept_review':
+        btn = 'Send';
+        message = 'Are you sure you want to send for Accept & Review?';
+        break;
       case 'cancel':
         btn = 'Yes';
         message = 'Are you sure you want to ' + action + ' ?';

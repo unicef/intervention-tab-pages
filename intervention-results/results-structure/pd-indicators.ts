@@ -102,6 +102,7 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
             .disaggregations="${this.disaggregations}"
             .locationNames="${this.getLocationNames(indicator.locations)}"
             .sectionClusterNames="${this.getSectionAndCluster(indicator.section, indicator.cluster_name)}"
+            .readonly="${this.readonly}"
             ?hidden="${this._hideIndicator(indicator, this.showInactiveIndicators)}"
             ?cluster-indicator="${indicator.cluster_indicator_id}"
             ?high-frequency-indicator="${indicator.is_high_frequency}"
@@ -204,7 +205,7 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
     );
   }
 
-  getLocationNames(ids: string[]): string[] {
+  getLocationNames(ids: string[]): {name: string, adminLevel: string}[] {
     const locations = filterByIds<LocationObject>(this.locations, ids);
     const locNames = locations.map((l: any) => {
       return {

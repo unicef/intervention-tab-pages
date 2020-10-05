@@ -6,13 +6,13 @@ import './modals/activity-dialog/activity-data-dialog';
 import {InterventionActivity, InterventionQuarter} from '../../common/models/intervention.types';
 import {openDialog} from '../../utils/dialog';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {getEndpoint} from '../../../../../../endpoints/endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {getStore} from '../../utils/redux-store-access';
 import {getIntervention} from '../../common/actions';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {getEndpoint} from '../../utils/endpoint-helper';
 
 @customElement('pd-activities')
 export class PdActivities extends LitElement {
@@ -129,7 +129,7 @@ export class PdActivities extends LitElement {
               <div class="details-container">
                 <div class="text details-heading">Time periods</div>
                 <div class="details-text">
-                  <b>${(activity.time_frames || []).map(({name}: InterventionQuarter) => name).join(', ') || '-'}</b>
+                  <b>${this.getQuartersNames(activity.time_frames)}</b>
                 </div>
               </div>
 
@@ -217,5 +217,13 @@ export class PdActivities extends LitElement {
       .catch((err: any) => {
         fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
       });
+  }
+
+  getQuartersNames(selectedTimeFrames: number[]): string {
+    return (
+      selectedTimeFrames
+        .map((timeFrameId: number) => this.quarters.find(({id}: InterventionQuarter) => id === timeFrameId)?.name)
+        .join(', ') || '-'
+    );
   }
 }
