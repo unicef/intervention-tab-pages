@@ -174,10 +174,12 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
   }
 
   setLocationsSelected(array: any[]) {
-    const locationSelected = !isEmpty(array);
-    if (locationSelected !== this.hasLocationsSelected && this.locationsDropDown) {
-      this.hasLocationsSelected = locationSelected;
-      this.locationsDropDown._onDropdownOpen();
+    const locationsSelected = !isEmpty(array);
+    if (locationsSelected !== this.hasLocationsSelected) {
+      this.hasLocationsSelected = locationsSelected;
+      if (this.locationsDropDown) {
+        this.locationsDropDown._onDropdownOpen();
+      }
       this.requestUpdate();
     }
   }
