@@ -24,7 +24,7 @@ function RepeatableDataSetsMixin<T extends Constructor<LitElement>>(baseClass: T
     deleteActionDefaultErrMsg = 'Deleting items from server action has failed!';
 
     @property({type: Array})
-    dataItems!: any[];
+    data!: any[];
 
     @property({type: Boolean})
     editMode!: boolean;
@@ -59,7 +59,7 @@ function RepeatableDataSetsMixin<T extends Constructor<LitElement>>(baseClass: T
         return;
       }
 
-      const id = this.dataItems[this.elToDeleteIndex] ? this.dataItems[this.elToDeleteIndex].id : null;
+      const id = this.data[this.elToDeleteIndex] ? this.data[this.elToDeleteIndex].id : null;
       if (!id) {
         this._deleteElement();
         this.elToDeleteIndex = -1;
@@ -128,9 +128,9 @@ function RepeatableDataSetsMixin<T extends Constructor<LitElement>>(baseClass: T
       }
       const index = Number(this.elToDeleteIndex);
       if (index >= 0) {
-        this.dataItems.splice(index, 1);
+        this.data.splice(index, 1);
         // To mke sure all req. observers are triggered
-        this.dataItems = cloneDeep(this.dataItems);
+        this.data = cloneDeep(this.data);
 
         fireEvent(this, 'delete-confirm', {index: this.elToDeleteIndex});
       }
@@ -143,56 +143,13 @@ function RepeatableDataSetsMixin<T extends Constructor<LitElement>>(baseClass: T
      */
     public isAlreadySelected(selValue: any, selIndex: any, itemValueName: any) {
       const duplicateItems =
-        this.dataItems &&
-        this.dataItems.filter((item, index) => {
+        this.data &&
+        this.data.filter((item, index) => {
           return parseInt(item[itemValueName]) === parseInt(selValue) && parseInt(String(index)) !== parseInt(selIndex);
         });
       return duplicateItems && duplicateItems.length;
     }
-
-    public _emptyList(listLength: number) {
-      return listLength === 0;
-    }
-
-    public _getItemModelObject(addNull: any) {
-      if (addNull) {
-        return null;
-      }
-      if (this.dataSetModel === null) {
-        const newObj: AnyObject = {};
-        if (this.dataItems.length > 0 && typeof this.dataItems[0] === 'object') {
-          Object.keys(this.dataItems[0]).forEach(function (property) {
-            newObj[property] = ''; // (this.model[0][property]) ? this.model[0][property] :
-          });
-        }
-
-        return newObj;
-      } else {
-        return JSON.parse(JSON.stringify(this.dataSetModel));
-      }
-    }
-
-    public _addElement(addNull?: boolean) {
-      if (!this.editMode) {
-        return;
-      }
-      this._makeSureDataItemsAreValid();
-
-      const newObj = this._getItemModelObject(addNull);
-      this.dataItems = [...this.dataItems, newObj];
-    }
-
-    /**
-     * Check is dataItems is Array, if not init with empty Array
-     */
-    public _makeSureDataItemsAreValid(dataItems?: any) {
-      const items = dataItems ? dataItems : this.dataItems;
-      if (!Array.isArray(items)) {
-        this.dataItems = [];
-      }
-    }
   }
-
   return RepeatableDataSetsClass;
 }
 

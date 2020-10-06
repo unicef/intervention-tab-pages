@@ -90,10 +90,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
 
         <div class="pv-container">${this.renderVisitsTemplate(this.data)}</div>
 
-        <div
-          .class="row-h ${this._getNoPVMsgPadding(this.data?.length)}"
-          ?hidden="${!this._emptyList(this.data?.length)}"
-        >
+        <div .class="row-h ${this._getNoPVMsgPadding(this.data?.length)}" ?hidden="${!isEmpty(this.data)}">
           <p>There are no planned visits added.</p>
         </div>
 
