@@ -54,49 +54,48 @@ function RepeatableDataSetsMixin<T extends Constructor<LitElement>>(baseClass: T
     }
 
     public _onDeleteConfirmation(confirmed: boolean) {
-      if (confirmed) {
-        const id = this.dataItems[this.elToDeleteIndex] ? this.dataItems[this.elToDeleteIndex].id : null;
-
-        if (id) {
-          // @ts-ignore
-          if (!this._deleteEpName) {
-            // logError('You must define _deleteEpName property to be able to remove existing records');
-            return;
-          }
-
-          fireEvent(this, 'global-loading', {
-            message: this.deleteActionLoadingMsg,
-            active: true,
-            loadingSource: this.deleteLoadingSource
-          });
-
-          // @ts-ignore
-          let endpointParams = {id: id};
-          // @ts-ignore
-          if (this.extraEndpointParams) {
-            // @ts-ignore
-            endpointParams = {...endpointParams, ...this.extraEndpointParams};
-          }
-          // @ts-ignore
-          const deleteEndpoint = this.getEndpoint(this._deleteEpName, endpointParams);
-          sendRequest({
-            method: 'DELETE',
-            endpoint: deleteEndpoint,
-            body: {}
-          })
-            .then((_resp: any) => {
-              this._handleDeleteResponse();
-            })
-            .catch((error: any) => {
-              this._handleDeleteError(error.response);
-            });
-        } else {
-          this._deleteElement();
-          this.elToDeleteIndex = -1;
-        }
-      } else {
+      if (!confirmed) {
         this.elToDeleteIndex = -1;
+        return;
       }
+
+      const id = this.dataItems[this.elToDeleteIndex] ? this.dataItems[this.elToDeleteIndex].id : null;
+      if (!id) {
+        this._deleteElement();
+        this.elToDeleteIndex = -1;
+        return;
+      }
+      // @ts-ignore
+      if (!this._deleteEpName) {
+        // logError('You must define _deleteEpName property to be able to remove existing records');
+        return;
+      }
+
+      fireEvent(this, 'global-loading', {
+        message: this.deleteActionLoadingMsg,
+        active: true,
+        loadingSource: this.deleteLoadingSource
+      });
+
+      let endpointParams = {id: id};
+      // @ts-ignore
+      if (this.extraEndpointParams) {
+        // @ts-ignore
+        endpointParams = {...endpointParams, ...this.extraEndpointParams};
+      }
+      // @ts-ignore
+      const deleteEndpoint = this.getEndpoint(this._deleteEpName, endpointParams);
+      sendRequest({
+        method: 'DELETE',
+        endpoint: deleteEndpoint,
+        body: {}
+      })
+        .then((_resp: any) => {
+          this._handleDeleteResponse();
+        })
+        .catch((error: any) => {
+          this._handleDeleteError(error.response);
+        });
     }
 
     public _handleDeleteResponse() {
