@@ -392,7 +392,6 @@ export class InterventionReviewAndSign extends connect(getStore())(
         const agreementData = this.filterAgreementsById(agreements!, this.data.agreement);
         this.agreementAuthorizedOfficers = this.getAuthorizedOfficersList(agreementData);
       }
-      console.log(this.data.termination_doc_attachment);
     }
   }
 

@@ -10,9 +10,13 @@ import {gridLayoutStylesLit} from '../../styles/grid-layout-styles-lit';
 import {formatDate} from '../../../utils/date-utils';
 import {getEndpoint} from '../../../utils/endpoint-helper';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
-import {fireEvent} from '../../../utils/fire-custom-event';
 import {AnyObject, EnvFlags} from '../../models/globals.types';
 import {validateRequiredFields} from '../../../utils/validation-helper';
+import ComponentBaseMixin from '../../mixins/component-base-mixin';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {Intervention} from '../../models/intervention.types';
+import {getStore} from '../../../utils/redux-store-access';
+import {updateCurrentIntervention} from '../../actions';
 declare const moment: any;
 
 /**
@@ -20,7 +24,7 @@ declare const moment: any;
  * @customElement
  */
 @customElement('pd-termination')
-export class PdTermination extends LitElement {
+export class PdTermination extends ComponentBaseMixin(LitElement) {
   static get styles() {
     return [gridLayoutStylesLit];
   }
@@ -52,6 +56,7 @@ export class PdTermination extends LitElement {
         @confirm-btn-clicked="${this._triggerPdTermination}"
         ?disable-confirm-btn="${this.uploadInProgress}"
         ?disable-dismiss-btn="${this.uploadInProgress}"
+        ?show-spinner="${this.savingInProcess}"
       >
         <div class="row-h flex-c">
           <datepicker-lite
@@ -134,7 +139,9 @@ export class PdTermination extends LitElement {
   @property({type: Boolean})
   dialogOpened = true;
 
-  // @lajos: tobe refactored after backend has all the detils
+  @property()
+  savingInProcess = false;
+
   @property({type: Object})
   environmentFlags: EnvFlags | null = null;
 
@@ -181,27 +188,21 @@ export class PdTermination extends LitElement {
       interventionId: this.interventionId,
       action: 'terminate'
     });
-    fireEvent(this, 'global-loading', {
-      active: true,
-      loadingSource: 'intervention-actions'
-    });
+    this.savingInProcess = true;
     sendRequest({
       endpoint,
       body,
       method: 'PATCH'
     })
-      .then(() => {
-        // TODO: update intervention in redux
+      .then((intervention: Intervention) => {
+        getStore().dispatch(updateCurrentIntervention(intervention));
       })
       .catch((e) => {
-        console.log(e);
-        fireEvent(this, 'toast', {text: 'Can not update intervention'});
+        this._handleErrorResponse(e);
       })
       .finally(() => {
-        fireEvent(this, 'global-loading', {
-          active: false,
-          loadingSource: 'intervention-actions'
-        });
+        this.savingInProcess = false;
+        this.dialogOpened = false;
       });
   }
 
@@ -220,8 +221,13 @@ export class PdTermination extends LitElement {
       this.termination = {...this.termination};
     }
   }
+
   updateDate(terminationDate: Date) {
     this.termination.date = formatDate(terminationDate, 'YYYY-MM-DD');
     this.termination = {...this.termination};
+  }
+
+  _handleErrorResponse(error: any) {
+    parseRequestErrorsAndShowAsToastMsgs(error, this);
   }
 }

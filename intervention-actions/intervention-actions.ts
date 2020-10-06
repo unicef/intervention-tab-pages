@@ -133,7 +133,7 @@ export class InterventionActions extends LitElement {
         return openDialog({
           dialog: 'pd-termination',
           dialogData: {
-            interventionId: this.interventionId,
+            interventionId: this.interventionId
           }
         });
       default:
