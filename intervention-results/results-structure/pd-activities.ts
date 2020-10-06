@@ -87,7 +87,7 @@ export class PdActivities extends LitElement {
       ${this.activities.map(
         (activity: InterventionActivity) => html`
           <etools-data-table-row>
-            <div slot="row-data" class="layout-horizontal editable-row fixed-height">
+            <div slot="row-data" class="layout-horizontal editable-row">
               <!--    PD Activity name    -->
               <div class="text flex-auto">${activity.name || '-'}</div>
 
