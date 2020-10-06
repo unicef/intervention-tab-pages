@@ -184,7 +184,7 @@ export class FollowUpPage extends connect(getStore())(EtoolsCurrency(ComponentBa
 
     this.supply_items.map((item: AnyObject) => {
       item.total_price = this.addCurrencyAmountDelimiter(item.total_price);
-      item.unit_number = this.addCurrencyAmountDelimiter(item.unit_number);
+      item.unit_number = Number(item.unit_number);
       item.unit_price = this.addCurrencyAmountDelimiter(item.unit_price);
       return item;
     });

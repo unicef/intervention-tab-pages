@@ -72,6 +72,7 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
               type="text"
               placeholder="—"
               required
+              error-message="This field is required"
               .value="${this.originalData.mitigation_measures}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'mitigation_measures')}"
             >
