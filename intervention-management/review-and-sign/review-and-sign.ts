@@ -365,18 +365,14 @@ export class InterventionReviewAndSign extends connect(getStore())(
     // review it
     this.signedByUnicefUsers = cloneDeep(state.commonData!.unicefUsersData);
 
-    // setTimeout(() => {
-    //   const perm = selectReviewDataPermissions(state);
-    //   this.permissions = {...this.permissions, ...perm};
-    //   console.log('permissions', this.permissions);
-    //   this.set_canEditAtLeastOneField(this.permissions.edit);
-    // }, 100);
-
     if (state.interventions.current) {
       this.data = selectReviewData(state);
       this.originalData = cloneDeep(this.data);
-      // this.permissions = selectReviewDataPermissions(state);
-      // this.set_canEditAtLeastOneField(this.permissions.edit);
+      const permissions = selectReviewDataPermissions(state);
+      if (!isJsonStrMatch(this.permissions, permissions)) {
+        this.permissions = permissions;
+        this.set_canEditAtLeastOneField(this.permissions.edit);
+      }
       if (this.data.submitted_to_prc) {
         this._lockSubmitToPrc = true;
       } else {
@@ -387,15 +383,6 @@ export class InterventionReviewAndSign extends connect(getStore())(
         const agreementData = this.filterAgreementsById(agreements!, this.data.agreement);
         this.agreementAuthorizedOfficers = this.getAuthorizedOfficersList(agreementData);
       }
-    }
-    this.sePermissions(state);
-  }
-
-  private sePermissions(state: any) {
-    const permissions = selectReviewDataPermissions(state);
-    if (!isJsonStrMatch(this.permissions, permissions)) {
-      this.permissions = permissions;
-      this.set_canEditAtLeastOneField(this.permissions.edit);
     }
   }
 
@@ -421,7 +408,6 @@ export class InterventionReviewAndSign extends connect(getStore())(
     this.setDropdownMissingOptionsAjaxDetails(this.shadowRoot?.querySelector('#signedByUnicef'), 'unicefUsers', {
       dropdown: true
     });
-    this.validate();
   }
 
   _resetPrcFieldsValidations() {
