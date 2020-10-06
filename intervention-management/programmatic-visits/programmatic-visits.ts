@@ -117,11 +117,6 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
   @property({type: Array})
   data!: PlannedVisit[];
 
-  connectedCallback() {
-    super.connectedCallback();
-    this._createDeleteConfirmationDialog();
-  }
-
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'management')) {
       return;

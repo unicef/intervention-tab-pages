@@ -1,10 +1,10 @@
 import {LitElement, property} from 'lit-element';
 import {Constructor, AnyObject} from '../models/globals.types';
-import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
-import {createDynamicDialog, removeDialog} from '@unicef-polymer/etools-dialog/dynamic-dialog';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {cloneDeep} from '../../utils/utils';
+import '../../common/layout/are-you-sure';
+import {openDialog} from '../../utils/dialog';
 
 function RepeatableDataSetsMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class RepeatableDataSetsClass extends baseClass {
@@ -32,49 +32,29 @@ function RepeatableDataSetsMixin<T extends Constructor<LitElement>>(baseClass: T
     @property({type: Object})
     dataSetModel!: AnyObject | null;
 
-    private _deleteDialog!: EtoolsDialog;
     private elToDeleteIndex!: number;
 
-    public connectedCallback() {
-      super.connectedCallback();
-      // create delete confirmation dialog
-      this._createDeleteConfirmationDialog();
-    }
-
-    public disconnectedCallback() {
-      super.disconnectedCallback();
-      // remove delete confirmation dialog when the element is detached
-      this._deleteDialog.removeEventListener('close', this._onDeleteConfirmation);
-      removeDialog(this._deleteDialog);
-    }
-
-    public _openDeleteConfirmation(event: CustomEvent, index: number) {
+    async _openDeleteConfirmation(event: CustomEvent, index: number) {
       event.stopPropagation();
       if (!this.editMode) {
         return;
       }
       this.elToDeleteIndex = index;
-      this._deleteDialog.opened = true;
-    }
-
-    public _createDeleteConfirmationDialog() {
-      const deleteConfirmationContent = document.createElement('div');
-      deleteConfirmationContent.innerHTML = this.deleteConfirmationMessage;
-      this._onDeleteConfirmation = this._onDeleteConfirmation.bind(this);
-
-      this._deleteDialog = createDynamicDialog({
-        title: this.deleteConfirmationTitle,
-        size: 'md',
-        okBtnText: 'Yes',
-        cancelBtnText: 'No',
-        closeCallback: this._onDeleteConfirmation,
-        content: deleteConfirmationContent
+      const confirmed = await openDialog({
+        dialog: 'are-you-sure',
+        dialogData: {
+          content: this.deleteConfirmationMessage,
+          confirmBtnText: 'Yes'
+        }
+      }).then(({confirmed}) => {
+        return confirmed;
       });
+
+      this._onDeleteConfirmation(confirmed);
     }
 
-    public _onDeleteConfirmation(event: any) {
-      this._deleteDialog.opened = false;
-      if (event.detail.confirmed === true) {
+    public _onDeleteConfirmation(confirmed: boolean) {
+      if (confirmed) {
         const id = this.dataItems[this.elToDeleteIndex] ? this.dataItems[this.elToDeleteIndex].id : null;
 
         if (id) {
