@@ -48,7 +48,9 @@ export class TimingOverview extends connect(getStore())(LitElement) {
 
         <div class="data-column">
           <label class="paper-label">Date first draft by Partner</label>
-          <div class="input-label" empty></div>
+          <div class="input-label" ?empty="${!this.timingOverview.date_draft_by_partner}">
+            ${formatDateShortMonth(this.timingOverview.date_draft_by_partner)}
+          </div>
         </div>
 
         <div class="data-column">

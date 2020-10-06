@@ -54,6 +54,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
             label="Title"
             always-float-label
             placeholder="—"
+            .autoValidate="${this.autoValidate}"
             .value="${this.data.title}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'title')}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.title)}"
@@ -121,8 +122,24 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
   @property({type: Boolean})
   canEditDocumentDetails!: boolean;
 
+  @property({type: Boolean})
+  autoValidate = false;
+
   connectedCallback() {
     super.connectedCallback();
+  }
+
+  firstUpdated() {
+    this._handlePaperTextareaAutovalidateError();
+  }
+
+
+   /**
+   * This will prevent a console error "Uncaught TypeError: Cannot read property 'textarea' of undefined"
+   * The error occurs only on first load/ hard refresh and on paper-textareas that have auto-validate
+   */
+  _handlePaperTextareaAutovalidateError() {
+    this.autoValidate = true;
   }
 
   stateChanged(state: RootState) {

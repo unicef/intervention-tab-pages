@@ -9,20 +9,13 @@ export class TimingOverviewData extends ModelsBase {
     super();
     this.setObjProperties(intervention);
   }
-  // assumed date created
   created = '';
-  // date first sent to partner?
   date_sent_to_partner = '';
-  // @lajos: NOT FOUND date first draft by partnerr
-  // date_draft_partner?
-  // prc submission date
+  date_draft_by_partner = '';
   submission_date_prc = '';
-  // PRC review date
   review_date_prc = '';
-  // date signed by partner
   signed_by_partner_date = '';
-  // date UNICEF signed
   signed_by_unicef_date = '';
   // date last amended
-  // @lajos: NOT FOUND -> date_amended?
+  // @lajos: missing backend data for date last amended
 }

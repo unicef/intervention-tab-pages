@@ -88,7 +88,6 @@ export class PartnerInfoElement extends connect(getStore())(ComponentBaseMixin(L
               class="w100"
               label="Partner Vendor Number"
               .value="${this.data?.partner_vendor}"
-              required
               readonly
               always-float-label
             >
@@ -107,6 +106,7 @@ export class PartnerInfoElement extends connect(getStore())(ComponentBaseMixin(L
               .options="${this.partnerStaffMembers}"
               option-label="name"
               option-value="id"
+              ?required=${this.permissions?.required.partner_focal_points}
               trigger-value-change-event
               @etools-selected-items-changed="${({detail}: CustomEvent) =>
                 this.selectedItemsChanged(detail, 'partner_focal_points')}"

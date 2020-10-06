@@ -11,7 +11,7 @@ import {customElement, LitElement, html, property, css} from 'lit-element';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {setStore, getStore} from './utils/redux-store-access';
-import {selectAvailableActions, currentPage, currentSubpage} from './common/selectors';
+import {selectAvailableActions, currentPage, currentSubpage, isUnicefUser} from './common/selectors';
 import {elevationStyles} from './common/styles/elevation-styles';
 import {AnyObject, RouteDetails, RootState} from './common/models/globals.types';
 import {getIntervention} from './common/actions';
@@ -20,6 +20,7 @@ import {isJsonStrMatch} from './utils/utils';
 import {pageContentHeaderSlottedStyles} from './common/layout/page-content-header/page-content-header-slotted-styles';
 import {fireEvent} from './utils/fire-custom-event';
 import {buildUrlQueryString} from './utils/utils';
+import {Intervention} from './common/models/intervention.types';
 
 const MOCKUP_STATUSES = [
   ['draft', 'Draft'],
@@ -98,8 +99,8 @@ export class InterventionTabs extends LitElement {
           >
         </div>
 
-        <div slot="statusFlag" ?hidden="${!this.intervention.accepted}">
-          <span class="icon flag">Accepted</span>
+        <div slot="statusFlag" ?hidden="${!this.showPerformedActionsStatus()}">
+          <span class="icon flag">${this.getPerformedAction()}</span>
         </div>
 
         <div slot="title-row-actions" class="content-header-actions">
@@ -182,7 +183,7 @@ export class InterventionTabs extends LitElement {
   activeTab = 'details';
 
   @property({type: Object})
-  intervention!: AnyObject;
+  intervention!: Intervention;
 
   @property({type: Boolean})
   commentMode = false;
@@ -204,6 +205,9 @@ export class InterventionTabs extends LitElement {
     this.stateChanged(getStore().getState());
     this._store = parentAppReduxStore;
   }
+
+  @property({type: Boolean})
+  isUnicefUser = false;
 
   /*
    * Used to avoid unnecessary get intervention request
@@ -227,7 +231,7 @@ export class InterventionTabs extends LitElement {
   public stateChanged(state: RootState) {
     if (currentPage(state) === 'interventions' && currentSubpage(state) !== 'list') {
       this.activeTab = currentSubpage(state) as string;
-
+      this.isUnicefUser = isUnicefUser(state);
       const currentInterventionId = get(state, 'app.routeDetails.params.interventionId');
       const currentIntervention = get(state, 'interventions.current');
 
@@ -257,6 +261,24 @@ export class InterventionTabs extends LitElement {
         this.pageTabs.push({tab: 'reports', tabLabel: 'Reports', hidden: false});
       }
     }
+  }
+
+  showPerformedActionsStatus() {
+    return (!this.intervention.unicef_court && this.isUnicefUser) || this.intervention.partner_accepted;
+  }
+
+  getPerformedAction() {
+    /** We're not showing `Unicef Accepted` also  because when
+     * Unicef accepts it means that the Partner has already accepted and
+     * the PD moves to `Review` status
+     */
+    if (this.intervention.partner_accepted) {
+      return 'IP Accepted';
+    }
+    if (!this.intervention.unicef_court && this.isUnicefUser) {
+      return 'Sent to Partner';
+    }
+    return '';
   }
 
   handleTabChange(e: CustomEvent) {
