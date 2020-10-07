@@ -96,7 +96,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
         <div class="row-padding-v">
           <paper-textarea
             id="ip_program_contribution"
-            label="Partner non-financial contribution"
+            label="Partner Non-Financial Contribution"
             always-float-label
             placeholder="—"
             .value="${this.data.ip_program_contribution}"

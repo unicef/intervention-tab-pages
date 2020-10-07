@@ -20,8 +20,8 @@ export class InterventionDetails extends LitElement {
       <partner-info></partner-info>
       <unicef-details></unicef-details>
       <document-details></document-details>
-      <gender-equity-rating></gender-equity-rating>
       <geographical-coverage></geographical-coverage>
+      <gender-equity-rating></gender-equity-rating>
       <technical-guidance></technical-guidance>
     `;
   }

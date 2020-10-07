@@ -73,7 +73,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
           <paper-input
             value="${this.data.unit_number ? this.data.unit_number : ''}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unit_number')}"
-            label="Number of units"
+            label="Number of Units"
             allowed-pattern="[0-9]"
             placeholder="Enter number of units"
             required
