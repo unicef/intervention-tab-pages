@@ -243,7 +243,7 @@ function SaveIndicatorMixin<T extends Constructor<LitElement>>(baseClass: T) {
     }
 
     getDisaggregations() {
-      return this.shadowRoot?.querySelector<IndicatorDisaggregations>('#indicatorDisaggregations')?.dataItems;
+      return this.shadowRoot?.querySelector<IndicatorDisaggregations>('#indicatorDisaggregations')?.data;
     }
   }
   return SaveIndicatorClass;

@@ -82,7 +82,7 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
         keep-dialog-open
         spinner-text="Checking FR Numbers updates..."
       >
-        ${(this.dataItems || []).map(
+        ${(this.data || []).map(
           (item: AnyObject, index: number) => html`
             <div class="row-h item-container">
               <div class="item-actions-container">
@@ -92,7 +92,7 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
                     @click="${(event: CustomEvent) => this._openDeleteConfirmation(event, index)}"
                     .data-args="${index}"
                     icon="cancel"
-                    ?hidden="${!this._showDeleteFrBtn(this.interventionStatus, this.dataItems.length)}"
+                    ?hidden="${!this._showDeleteFrBtn(this.interventionStatus, this.data.length)}"
                   >
                   </paper-icon-button>
                 </div>
@@ -117,7 +117,7 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
           `
         )}
 
-        <div class="${(this.dataItems || []).length ? 'hidden' : 'row-h'}">
+        <div class="${(this.data || []).length ? 'hidden' : 'row-h'}">
           There are no fund reservations numbers added.
         </div>
 
@@ -177,8 +177,8 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
 
   validate() {
     let valid = true;
-    if (this.dataItems instanceof Array && this.dataItems.length > 0) {
-      this.dataItems.forEach((_item, index) => {
+    if (this.data instanceof Array && this.data.length > 0) {
+      this.data.forEach((_item, index) => {
         const lastItem = this.shadowRoot!.querySelector('#fr-nr-' + index) as PaperInputElement;
         if (lastItem && !lastItem.validate()) {
           valid = false;
@@ -193,8 +193,8 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
     if (!this.validate()) {
       return;
     }
-    this.dataItems.push({fr_number: ''});
-    this.dataItems = [...this.dataItems];
+    this.data.push({fr_number: ''});
+    this.data = [...this.data];
     setTimeout(this._centerDialog.bind(this), 0);
     setTimeout(this._updateScroll.bind(this), 100);
   }
@@ -231,8 +231,8 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
 
   // prepare the fr numbers list, used to verify them using API endpoint (/api/v2/funds/frs)
   _getUpdatedFrsNumbers() {
-    if (this.dataItems instanceof Array && this.dataItems.length > 0) {
-      return this.dataItems.map((item) => {
+    if (this.data instanceof Array && this.data.length > 0) {
+      return this.data.map((item) => {
         return item.fr_number;
       });
     }
