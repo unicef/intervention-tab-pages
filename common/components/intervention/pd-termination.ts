@@ -48,7 +48,7 @@ export class PdTermination extends LitElement {
         size="md"
         ?hidden="${this.warningOpened}"
         ok-btn-text="Terminate"
-        dialog-title="Terminate PD/SSFA"
+        dialog-title="Terminate PD"
         @confirm-btn-clicked="${this._triggerPdTermination}"
         ?disable-confirm-btn="${this.uploadInProgress}"
         ?disable-dismiss-btn="${this.uploadInProgress}"
@@ -84,10 +84,10 @@ export class PdTermination extends LitElement {
         </div>
         <div class="row-h flex-c">
           <etools-warn-message
-            .messages="Once you hit save, the PD/SSFA will be Terminated and this action can not be reversed"
+            .messages="Once you hit save, the PD will be Terminated and this action can not be reversed"
           >
           </etools-warn-message>
-          Once you hit save, the PD/SSFA will be Terminated and this action can not be reversed
+          Once you hit save, the PD will be Terminated and this action can not be reversed
         </div>
       </etools-dialog>
 
