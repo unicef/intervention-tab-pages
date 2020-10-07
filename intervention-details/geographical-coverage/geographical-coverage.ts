@@ -56,6 +56,7 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
 
         .locations-btn {
           margin: auto;
+          width: 100px;
           ${layoutVertical}
           ${layoutCenter}
         }
