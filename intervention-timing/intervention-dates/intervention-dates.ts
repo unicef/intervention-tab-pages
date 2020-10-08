@@ -63,7 +63,7 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
               <datepicker-lite
                 slot="field"
                 id="intStart"
-                label="Start date"
+                label="Start Date"
                 .value="${this.data.start}"
                 ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.start)}"
                 ?required="${this.permissions.required.start}"
@@ -91,7 +91,7 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
               <datepicker-lite
                 slot="field"
                 id="intEnd"
-                label="End date"
+                label="End Date"
                 .value="${this.data.end}"
                 ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.end)}"
                 ?required="${this.permissions.required.end}"

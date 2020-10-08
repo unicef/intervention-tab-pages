@@ -67,7 +67,7 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
           <div class="col col-8">
             <paper-textarea
               id="mitigationMeasures"
-              label="Proposed mitigation measures"
+              label="Proposed Mitigation Measures"
               always-float-label
               type="text"
               placeholder="—"

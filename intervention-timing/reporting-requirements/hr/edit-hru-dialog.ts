@@ -71,7 +71,7 @@ class EditHruDialog extends connect(getStore())(PolymerElement) {
         <div class="start-date">
           <datepicker-lite
             id="dtPickerStDate"
-            label="Select start date"
+            label="Select Start Date"
             value="{{repStartDate}}"
             required
             min-date="[[minDate]]"

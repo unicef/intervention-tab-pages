@@ -166,11 +166,11 @@ export class PdActivities extends LitElement {
 
   getPartnerPercent(partner: string, unicef: string): string {
     if (!Number(partner)) {
-      return '%0';
+      return '0 %';
     }
     const total: number = this.getTotal(partner, unicef);
     const percent: number = Number(partner) / (total / 100);
-    return `%${Number(percent.toFixed(2))}`;
+    return `${Number(percent.toFixed(2))} %`;
   }
 
   openDialog(activity?: InterventionActivity): void {

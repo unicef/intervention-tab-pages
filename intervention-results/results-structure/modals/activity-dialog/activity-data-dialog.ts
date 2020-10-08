@@ -115,7 +115,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
         <div class="container layout vertical">
           <paper-input
             class="validate-input flex-1"
-            label="Activity name"
+            label="Activity Name"
             placeholder="Enter Activity Name"
             .value="${this.editedData.name}"
             @value-changed="${({detail}: CustomEvent) => this.updateModelValue('name', detail.value)}"
