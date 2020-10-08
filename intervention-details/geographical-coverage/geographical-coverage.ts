@@ -7,7 +7,6 @@ import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {getStore} from '../../utils/redux-store-access';
-import {connect} from 'pwa-helpers/connect-mixin';
 import {LocationsPermissions} from './geographicalCoverage.models';
 import {Permission} from '../../common/models/intervention.types';
 import {selectLocationsPermissions} from './geographicalCoverage.selectors';
@@ -21,12 +20,13 @@ import isEmpty from 'lodash-es/isEmpty';
 import get from 'lodash-es/get';
 import {openDialog} from '../../utils/dialog';
 import {layoutCenter, layoutVertical} from '../../common/styles/flex-layout-styles';
+import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 
 /**
  * @customElement
  */
 @customElement('geographical-coverage')
-export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin(LitElement)) {
+export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -77,7 +77,12 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
         }
       </style>
 
-      <etools-content-panel show-expand-btn panel-title="Geographical Coverage">
+      <etools-content-panel
+        show-expand-btn
+        panel-title="Geographical Coverage"
+        comment-element="geographical-coverage"
+        comment-description="Geographical Coverage"
+      >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="flex-c layout-horizontal row-padding-v">
@@ -128,6 +133,12 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
   @property({type: Object})
   permissions!: Permission<LocationsPermissions>;
 
+  interventionId!: number | null;
+
+  get currentInterventionId(): number | null {
+    return this.interventionId;
+  }
+
   connectedCallback() {
     super.connectedCallback();
   }
@@ -147,10 +158,12 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
     }
     this.data = {flat_locations: get(state, 'interventions.current.flat_locations')};
     this.originalData = cloneDeep(this.data);
-    this.sePermissions(state);
+    this.setPermissions(state);
+    this.interventionId = state.interventions.current.id;
+    super.stateChanged(state);
   }
 
-  private sePermissions(state: any) {
+  private setPermissions(state: any) {
     this.permissions = selectLocationsPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
   }

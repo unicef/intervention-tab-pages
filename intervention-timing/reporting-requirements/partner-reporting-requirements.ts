@@ -30,6 +30,7 @@ import {Permission} from '../../common/models/intervention.types';
 import {selectReportingRequirementsPermissions} from './reportingRequirementsPermissions.selectors';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {isUnicefUser} from '../../common/selectors';
+import {computed} from '@polymer/decorators/lib/decorators';
 
 /**
  * @polymer
@@ -68,29 +69,30 @@ class PartnerReportingRequirements extends connect(getStore())(PolymerElement) {
         }
 
         .nav-menu-item {
+          display: flex;
+          align-items: center;
+          height: 48px;
           padding-left: 24px;
           padding-right: 24px;
           font-size: 14px;
           font-weight: bold;
           text-transform: capitalize;
-
-          --paper-item-focused-before: {
-            opacity: 0;
-          }
+          cursor: pointer;
         }
 
-        .nav-menu-item.iron-selected {
+        .nav-menu-item[selected] {
           color: var(--primary-color);
+          background-color: var(--medium-theme-background-color);
         }
 
         .nav-menu-item {
           color: var(--secondary-text-color);
+          padding-left: 24px;
+          padding-right: 24px;
+          font-size: 14px;
+          font-weight: bold;
+          text-transform: capitalize;
         }
-
-        .nav-menu-item.iron-selected {
-          background-color: var(--medium-theme-background-color);
-        }
-
         /* ------------------------------- */
 
         .edit-rep-req {
@@ -106,32 +108,55 @@ class PartnerReportingRequirements extends connect(getStore())(PolymerElement) {
       <etools-content-panel show-expand-btn class="content-section" panel-title="Partner Reporting Requirements">
         <div class="flex-c layout-horizontal">
           <div class="reports-menu nav-menu">
-            <iron-selector selected="{{selectedReportType}}" attr-for-selected="name" selectable="paper-item">
-              <paper-item name="qtyProgress" class="nav-menu-item qpr">
-                <span>Quarterly Progress Reports ([[qprRequirementsCount]])</span>
-                <paper-icon-button
-                  class="edit-rep-req"
-                  icon="create"
-                  on-click="_openQprEditDialog"
-                  hidden$="[[_hideRepReqEditBtn(editMode, qprRequirementsCount)]]"
-                ></paper-icon-button>
-              </paper-item>
-              <paper-item name="humanitarianUnicef" class="nav-menu-item">
-                <span>Humanitarian Reports - UNICEF ([[hrUnicefRequirementsCount]])</span>
-                <paper-icon-button
-                  class="edit-rep-req"
-                  icon="create"
-                  on-click="_openHruEditDialog"
-                  hidden$="[[_hideRepReqEditBtn(editMode, hrUnicefRequirementsCount)]]"
-                ></paper-icon-button>
-              </paper-item>
-              <paper-item name="humanitarianCluster" class="nav-menu-item" hidden$="[[!isUnicefUser]]">
-                Humanitarian Reports - Cluster ([[hrClusterRequirementsCount]])
-              </paper-item>
-              <paper-item name="special" class="nav-menu-item">
-                Special Report ([[specialRequirementsCount]])
-              </paper-item>
-            </iron-selector>
+            <div
+              name="qtyProgress"
+              title="Quarterly Progress Reports"
+              class="nav-menu-item qpr"
+              selected$="[[isSelected('qtyProgress', selectedReportType)]]"
+              on-click="selectType"
+            >
+              <span>Quarterly Progress Reports ([[qprRequirementsCount]])</span>
+              <paper-icon-button
+                class="edit-rep-req"
+                icon="create"
+                on-click="_openQprEditDialog"
+                hidden$="[[_hideRepReqEditBtn(isReadonly, qprRequirementsCount)]]"
+              ></paper-icon-button>
+            </div>
+            <div
+              name="humanitarianUnicef"
+              title="Humanitarian Reports - UNICEF"
+              class="nav-menu-item"
+              selected$="[[isSelected('humanitarianUnicef', selectedReportType)]]"
+              on-click="selectType"
+            >
+              <span>Humanitarian Reports - UNICEF ([[hrUnicefRequirementsCount]])</span>
+              <paper-icon-button
+                class="edit-rep-req"
+                icon="create"
+                on-click="_openHruEditDialog"
+                hidden$="[[_hideRepReqEditBtn(isReadonly, hrUnicefRequirementsCount)]]"
+              ></paper-icon-button>
+            </div>
+            <div
+              name="humanitarianCluster"
+              title="Humanitarian Reports - Cluster"
+              class="nav-menu-item"
+              selected$="[[isSelected('humanitarianCluster', selectedReportType)]]"
+              hidden$="[[!isUnicefUser]]"
+              on-click="selectType"
+            >
+              Humanitarian Reports - Cluster ([[hrClusterRequirementsCount]])
+            </div>
+            <div
+              name="special"
+              title="Special Report"
+              class="nav-menu-item"
+              selected$="[[isSelected('special', selectedReportType)]]"
+              on-click="selectType"
+            >
+              Special Report ([[specialRequirementsCount]])
+            </div>
           </div>
           <div class="flex-c reporting-req-data">
             <iron-pages
@@ -147,7 +172,7 @@ class PartnerReportingRequirements extends connect(getStore())(PolymerElement) {
                 intervention-start="[[interventionStart]]"
                 intervention-end="[[interventionEnd]]"
                 requirements-count="{{qprRequirementsCount}}"
-                edit-mode="[[editMode]]"
+                edit-mode="[[!isReadonly]]"
               >
               </quarterly-reporting-requirements>
 
@@ -158,7 +183,7 @@ class PartnerReportingRequirements extends connect(getStore())(PolymerElement) {
                 intervention-start="[[interventionStart]]"
                 requirements-count="{{hrUnicefRequirementsCount}}"
                 expected-results="[[expectedResults]]"
-                edit-mode="[[editMode]]"
+                edit-mode="[[!isReadonly]]"
               >
               </humanitarian-reporting-req-unicef>
 
@@ -220,6 +245,14 @@ class PartnerReportingRequirements extends connect(getStore())(PolymerElement) {
   @property({type: Boolean})
   isUnicefUser!: boolean;
 
+  @property({type: Boolean})
+  commentsMode!: boolean;
+
+  @computed('commentsMode', 'editMode')
+  get isReadonly(): boolean {
+    return this.commentsMode || !this.editMode;
+  }
+
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'timing')) {
       return;
@@ -231,7 +264,6 @@ class PartnerReportingRequirements extends connect(getStore())(PolymerElement) {
 
     // @lajos TO DO: get correct values for bellow
     this.editMode = selectReportingRequirementsPermissions(state);
-    console.log(this.editMode);
     const currentIntervention = get(state, 'interventions.current');
     this.intervention = cloneDeep(currentIntervention);
     this.interventionId = this.intervention.id;
@@ -248,8 +280,20 @@ class PartnerReportingRequirements extends connect(getStore())(PolymerElement) {
     (this.$.hru as HumanitarianReportingReqUnicefEl).openUnicefHumanitarianRepReqDialog();
   }
 
-  _hideRepReqEditBtn(editMode: boolean, qprCount: number) {
-    return qprCount === 0 || !editMode;
+  _hideRepReqEditBtn(readonly: boolean, qprCount: number) {
+    return qprCount === 0 || readonly;
+  }
+
+  selectType(event: MouseEvent): void {
+    if (this.commentsMode) {
+      return;
+    }
+    const tab: string = (event.currentTarget as HTMLElement).getAttribute('name') as string;
+    this.set('selectedReportType', tab);
+  }
+
+  isSelected(type: string): boolean {
+    return type === this.selectedReportType;
   }
 }
 

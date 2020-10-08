@@ -6,7 +6,15 @@ import {InterventionComment} from '../../types/types';
 
 export const SET_COMMENTS = 'SET_COMMENTS';
 export const ADD_COMMENT = 'ADD_COMMENT';
-export const UPDATE_COMMENT = 'ADD_COMMENT';
+export const UPDATE_COMMENT = 'UPDATE_COMMENT';
+export const ENABLE_COMMENT_MODE = 'ENABLE_COMMENT_MODE';
+
+export const enableCommentMode = (state: boolean) => {
+  return {
+    type: ENABLE_COMMENT_MODE,
+    state
+  };
+};
 
 export const addComment = (relatedTo: string, comment: InterventionComment, interventionId: number) => {
   return {

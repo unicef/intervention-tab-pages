@@ -13,18 +13,18 @@ import {Permission} from '../../common/models/intervention.types';
 import {DocumentDetailsPermissions, DocumentDetails} from './documentDetails.models';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {getStore} from '../../utils/redux-store-access';
-import {connect} from 'pwa-helpers/connect-mixin';
 import {patchIntervention} from '../../common/actions';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {RootState} from '../../common/models/globals.types';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
+import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 
 /**
  * @customElement
  */
 @customElement('document-details')
-export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixin(LitElement)) {
+export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -45,7 +45,12 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
         }
       </style>
 
-      <etools-content-panel show-expand-btn panel-title="Document Details">
+      <etools-content-panel
+        show-expand-btn
+        panel-title="Document Details"
+        comment-element="document-details"
+        comment-description="Document Details"
+      >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="row-padding-v">
@@ -126,16 +131,22 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
   @property({type: Boolean})
   autoValidate = false;
 
+  interventionId!: number | null;
+
+  get currentInterventionId(): number | null {
+    return this.interventionId;
+  }
+
   connectedCallback() {
     super.connectedCallback();
   }
 
   firstUpdated() {
     this._handlePaperTextareaAutovalidateError();
+    super.firstUpdated();
   }
 
-
-   /**
+  /**
    * This will prevent a console error "Uncaught TypeError: Cannot read property 'textarea' of undefined"
    * The error occurs only on first load/ hard refresh and on paper-textareas that have auto-validate
    */
@@ -153,10 +164,12 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
     }
     this.data = selectDocumentDetails(state);
     this.originalData = cloneDeep(this.data);
-    this.sePermissions(state);
+    this.setPermissions(state);
+    this.interventionId = state.interventions.current.id;
+    super.stateChanged(state);
   }
 
-  private sePermissions(state: any) {
+  private setPermissions(state: any) {
     this.permissions = selectDocumentDetailsPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
   }

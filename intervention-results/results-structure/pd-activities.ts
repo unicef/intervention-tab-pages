@@ -13,9 +13,10 @@ import {fireEvent} from '../../utils/fire-custom-event';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {getEndpoint} from '../../utils/endpoint-helper';
+import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
 
 @customElement('pd-activities')
-export class PdActivities extends LitElement {
+export class PdActivities extends CommentsMixin(LitElement) {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
@@ -44,6 +45,10 @@ export class PdActivities extends LitElement {
   interventionId!: number;
   pdOutputId!: number;
   quarters!: InterventionQuarter[];
+
+  get currentInterventionId(): number {
+    return this.interventionId;
+  }
 
   protected render(): TemplateResult {
     // language=HTML
@@ -86,7 +91,11 @@ export class PdActivities extends LitElement {
 
       ${this.activities.map(
         (activity: InterventionActivity) => html`
-          <etools-data-table-row>
+          <etools-data-table-row
+            related-to="activity-${activity.id}"
+            related-to-description=" Activity - ${activity.name}"
+            comments-container
+          >
             <div slot="row-data" class="layout-horizontal editable-row">
               <!--    PD Activity name    -->
               <div class="text flex-auto">${activity.name || '-'}</div>
@@ -154,6 +163,13 @@ export class PdActivities extends LitElement {
           `
         : ''}
     `;
+  }
+
+  getSpecialElements(container: HTMLElement): CommentElementMeta[] {
+    const element: HTMLElement = container.shadowRoot!.querySelector('#wrapper') as HTMLElement;
+    const relatedTo: string = container.getAttribute('related-to') as string;
+    const relatedToDescription = container.getAttribute('related-to-description') as string;
+    return [{element, relatedTo, relatedToDescription}];
   }
 
   formatCurrency(value: string | number): string {

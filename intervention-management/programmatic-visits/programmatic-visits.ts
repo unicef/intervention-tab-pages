@@ -1,5 +1,4 @@
 import {LitElement, html, property, customElement} from 'lit-element';
-import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {buttonsStyles} from '../../common/styles/button-styles';
@@ -21,12 +20,13 @@ import RepeatableDataSetsMixin from '../../common/mixins/repeatable-data-sets-mi
 import {fireEvent} from '../../utils/fire-custom-event';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
+import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 
 /**
  * @customElement
  */
 @customElement('programmatic-visits')
-export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(RepeatableDataSetsMixin(LitElement))) {
+export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(RepeatableDataSetsMixin(LitElement))) {
   static get styles() {
     return [buttonsStyles, gridLayoutStylesLit];
   }
@@ -76,7 +76,12 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
         }
       </style>
 
-      <etools-content-panel show-expand-btn panel-title="Programmatic Visits">
+      <etools-content-panel
+        show-expand-btn
+        panel-title="Programmatic Visits"
+        comment-element="programmatic-visits"
+        comment-description="Programmatic Visits"
+      >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="row-h extra-top-padd" ?hidden="${!this.editMode}">
@@ -114,6 +119,12 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
   @property({type: Array})
   data!: PlannedVisit[];
 
+  interventionId!: number | null;
+
+  get currentInterventionId(): number | null {
+    return this.interventionId;
+  }
+
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'management')) {
       return;
@@ -124,6 +135,8 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
     this.populateVisits(state);
     this.permissions = selectPlannedVisitsPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
+    this.interventionId = state.interventions.current.id;
+    super.stateChanged(state);
   }
 
   populateVisits(state: any) {
