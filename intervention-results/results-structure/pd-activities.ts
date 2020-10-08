@@ -81,7 +81,7 @@ export class PdActivities extends LitElement {
         <div class="heading number-data flex-none">CSO Cash</div>
         <div class="heading number-data flex-none">UNICEF Cash</div>
         <div class="heading number-data flex-none">Total</div>
-        <div class="heading number-data flex-none">Partner %</div>
+        <div class="heading number-data flex-none">%Partner</div>
       </div>
 
       ${this.activities.map(
