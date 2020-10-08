@@ -41,8 +41,6 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
     }
     return html`
       <style>
-        ${sharedStyles}
-        :host {
         ${sharedStyles} :host {
           display: block;
           margin-bottom: 24px;
