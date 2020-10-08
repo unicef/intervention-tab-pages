@@ -64,6 +64,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'title')}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.title)}"
             ?required="${this.permissions.required.title}"
+            error-message="This field is required"
           >
           </paper-textarea>
         </div>
@@ -100,7 +101,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
         <div class="row-padding-v">
           <paper-textarea
             id="ip_program_contribution"
-            label="Partner non-financial contribution"
+            label="Partner Non-Financial Contribution"
             always-float-label
             placeholder="—"
             .value="${this.data.ip_program_contribution}"

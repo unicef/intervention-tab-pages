@@ -115,13 +115,13 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
         <div class="container layout vertical">
           <paper-input
             class="validate-input flex-1"
-            label="Activity name"
+            label="Activity Name"
             placeholder="Enter Activity Name"
             .value="${this.editedData.name}"
             @value-changed="${({detail}: CustomEvent) => this.updateModelValue('name', detail.value)}"
             required
             ?invalid="${this.errors.name}"
-            .errorMessage="${this.errors.name && this.errors.name[0]}"
+            .errorMessage="${(this.errors.name && this.errors.name[0]) || 'This field is required'}"
             @focus="${() => this.resetFieldError('name')}"
             @click="${() => this.resetFieldError('name')}"
           ></paper-input>

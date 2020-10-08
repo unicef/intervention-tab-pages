@@ -167,7 +167,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
             ${!this.isCluster
               ? html` <indicator-dissaggregations
                   id="indicatorDisaggregations"
-                  .dataItems="${this.disaggregations}"
+                  .data="${this.disaggregations}"
                   @add-new-disaggreg="${({detail}: CustomEvent) => {
                     this._updateScroll();
                     this.disaggregations = detail;

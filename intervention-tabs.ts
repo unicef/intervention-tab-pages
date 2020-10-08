@@ -273,19 +273,34 @@ export class InterventionTabs extends LitElement {
   }
 
   showPerformedActionsStatus() {
-    return (!this.intervention.unicef_court && this.isUnicefUser) || this.intervention.partner_accepted;
+    return (
+      ['draft', 'development'].includes(this.intervention.status) &&
+      (this.intervention.partner_accepted ||
+        this.intervention.unicef_accepted ||
+        (!this.intervention.unicef_court && !!this.intervention.date_sent_to_partner) ||
+        (this.intervention.unicef_court && !!this.intervention.date_draft_by_partner))
+    );
   }
 
   getPerformedAction() {
-    /** We're not showing `Unicef Accepted` also  because when
-     * Unicef accepts it means that the Partner has already accepted and
-     * the PD moves to `Review` status
-     */
-    if (this.intervention.partner_accepted) {
+    if (!['draft', 'development'].includes(this.intervention.status)) {
+      return '';
+    }
+    if (this.intervention.partner_accepted && this.intervention.unicef_accepted) {
+      return 'IP & Unicef Accepted';
+    }
+    if (!this.intervention.partner_accepted && this.intervention.unicef_accepted) {
+      return 'Unicef Accepted';
+    }
+    if (this.intervention.partner_accepted && !this.intervention.unicef_accepted) {
       return 'IP Accepted';
     }
-    if (!this.intervention.unicef_court && this.isUnicefUser) {
+    if (!this.intervention.unicef_court && !!this.intervention.date_sent_to_partner) {
       return 'Sent to Partner';
+    }
+
+    if (this.intervention.unicef_court && !!this.intervention.date_draft_by_partner) {
+      return 'Sent to Unicef';
     }
     return '';
   }

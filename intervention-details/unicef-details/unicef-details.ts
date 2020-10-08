@@ -43,6 +43,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
       <style>
         ${sharedStyles}
         :host {
+        ${sharedStyles} :host {
           display: block;
           margin-bottom: 24px;
         }
@@ -102,7 +103,8 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
               ?required="${this.permissions.required.sections}"
               @etools-selected-items-changed="${({detail}: CustomEvent) =>
                 this.selectedItemsChanged(detail, 'sections')}"
-              trigger-value-change-event>
+              trigger-value-change-event
+            >
             </etools-dropdown-multi>
           </div>
           <div class="col col-4">
@@ -114,7 +116,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
               placeholder="—"
               .value="${this.getClusterText(this.data.cluster_names)}"
               readonly
-              >
+            >
             </paper-textarea>
           </div>
         </div>
@@ -132,7 +134,8 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
               ?required="${this.permissions.required.unicef_focal_points}"
               @etools-selected-items-changed="${({detail}: CustomEvent) =>
                 this.selectedItemsChanged(detail, 'unicef_focal_points')}"
-              trigger-value-change-event>
+              trigger-value-change-event
+            >
             </etools-dropdown-multi>
             <div ?hidden="${!this.isReadonly(this.editMode, this.permissions.edit.unicef_focal_points)}">
               <label for="focalPointInput" class="paper-label">Unicef Focal Points</label>
@@ -144,7 +147,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
               </div>
             </div>
           </div>
-          <div class="col col-8">
+          <div class="col col-8" ?hidden="${!this.isUnicefUser}">
             <etools-dropdown
               id="budgetOwnerInput"
               label="Unicef Budget Owner"
@@ -157,7 +160,8 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
               ?required="${this.permissions.required.budget_owner}"
               @etools-selected-item-changed="${({detail}: CustomEvent) =>
                 this.selectedItemChanged(detail, 'budget_owner')}"
-              trigger-value-change-event>
+              trigger-value-change-event
+            >
             </etools-dropdown>
 
             <div ?hidden="${!this.isReadonly(this.editMode, this.permissions.edit.budget_owner)}">
@@ -225,32 +229,23 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
   }
 
   populateDropdownOptions(state: any) {
-    if (!this.isUnicefUser) {
-      if (this.data) {
-        // if user is not Unicef user, this is opened in read-only mode and we just display already saved
-        this.users_list = [...this.data.unicef_focal_points];
-        this.section_list = [...this.data.sections];
-        this.office_list = [...this.data.offices];
-      }
-    } else {
-      if (get(state, 'commonData.unicefUsersData.length')) {
-        this.users_list = [...state.commonData!.unicefUsersData];
-      }
-      if (get(state, 'commonData.sections.length')) {
-        this.section_list = [...state.commonData!.sections];
-      }
-      if (get(state, 'commonData.offices.length')) {
-        this.office_list = [...state.commonData!.offices];
-      }
-      // TO DO
-      // check if already saved records exists on loaded data, if not they will be added
-      // (they might be missing if changed country)
-      // handleItemsNoLongerAssignedToCurrentCountry(
-      //   this.focal_point_list,
-      //   this.pdUnicefDetails.details.unicef_focal_points
-      // );
-      // this.focal_point_list = [...this.focal_point_list];
+    if (get(state, 'commonData.unicefUsersData.length')) {
+      this.users_list = [...state.commonData!.unicefUsersData];
     }
+    if (get(state, 'commonData.sections.length')) {
+      this.section_list = [...state.commonData!.sections];
+    }
+    if (get(state, 'commonData.offices.length')) {
+      this.office_list = [...state.commonData!.offices];
+    }
+    // TO DO
+    // check if already saved records exists on loaded data, if not they will be added
+    // (they might be missing if changed country)
+    // handleItemsNoLongerAssignedToCurrentCountry(
+    //   this.focal_point_list,
+    //   this.pdUnicefDetails.details.unicef_focal_points
+    // );
+    // this.focal_point_list = [...this.focal_point_list];
   }
 
   getClusterText(clusters: string[]) {

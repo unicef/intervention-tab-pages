@@ -76,7 +76,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(
         show-expand-btn
         panel-title="Effective and efficient programme management"
         comment-element="programme-management"
-        comment-description="Effective and efficient programme management"
+        comment-description="Effective and Efficient Programme Management"
       >
         <div slot="panel-btns">
           <label class="paper-label font-bold pad-right">TOTAL:</label

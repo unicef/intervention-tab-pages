@@ -242,7 +242,7 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
       return {fr_number: fr.fr_number};
     });
 
-    this.frsDialogEl.dataItems = frs;
+    this.frsDialogEl.data = frs;
     this.frsDialogEl.interventionStatus = this.intervention.status;
     this.frsDialogEl.openDialog();
     this.openContentPanel();

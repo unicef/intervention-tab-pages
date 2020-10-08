@@ -268,6 +268,8 @@ export class Intervention {
   unicef_court = true;
   unicef_accepted = false;
   partner_accepted = false;
+  date_draft_by_partner = '';
+  date_sent_to_partner = '';
 }
 
 export type ManagementBudget = {

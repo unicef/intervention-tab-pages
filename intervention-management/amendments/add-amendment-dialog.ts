@@ -61,7 +61,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
           <!-- Signed Date -->
           <datepicker-lite
             id="signed-date"
-            label="Signed date"
+            label="Signed Date"
             .value="${this.data.signed_date}"
             max-date="${this.getCurrentDate()}"
             fire-date-has-changed

@@ -56,6 +56,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
 
         .locations-btn {
           margin: auto;
+          width: 100px;
           ${layoutVertical}
           ${layoutCenter}
         }

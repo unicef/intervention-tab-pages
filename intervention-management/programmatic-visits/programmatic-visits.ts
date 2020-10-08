@@ -95,10 +95,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
 
         <div class="pv-container">${this.renderVisitsTemplate(this.data)}</div>
 
-        <div
-          .class="row-h ${this._getNoPVMsgPadding(this.data?.length)}"
-          ?hidden="${!this._emptyList(this.data?.length)}"
-        >
+        <div .class="row-h ${this._getNoPVMsgPadding(this.data?.length)}" ?hidden="${!isEmpty(this.data)}">
           <p>There are no planned visits added.</p>
         </div>
 
@@ -126,11 +123,6 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
 
   get currentInterventionId(): number | null {
     return this.interventionId;
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this._createDeleteConfirmationDialog();
   }
 
   stateChanged(state: RootState) {
