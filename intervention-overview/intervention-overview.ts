@@ -120,7 +120,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
             <div class="content" id="document_title">${this.intervention.title}</div>
             <div class="secondary">
               Under
-              <strong class="blue">${this.interventionAgreement.agreement_type}</strong>
+              <strong>${this.interventionAgreement.agreement_type}</strong>
               with
               ${this.isUnicefUser
                 ? html` <a href="/pmp/partners/${this.intervention.partner_id}/details">
