@@ -41,6 +41,12 @@ export class CommentsDialog extends connect(getStore())(LitElement) {
           background: var(--primary-color);
           color: #ffffff;
         }
+        .no-comments {
+          font-size: 15px;
+          font-style: italic;
+          line-height: 16px;
+          color: var(--secondary-text-color);
+        }
       `
     ];
   }
@@ -52,7 +58,9 @@ export class CommentsDialog extends connect(getStore())(LitElement) {
     this.interventionId = interventionId;
     this.relatedTo = relatedTo;
     this.commentsDialogTitle = `Comments on: ${relatedToDescription}`;
-    const comments: GenericObject<InterventionComment[]> = getStore().getState().commentsData[interventionId];
+    const comments: GenericObject<InterventionComment[]> = getStore().getState().commentsData.collection[
+      interventionId
+    ];
     const relatedToComments: InterventionComment[] = (comments && comments[relatedTo]) || [];
     this.comments = [...relatedToComments];
     this.requestUpdate().then(() => this.scrollDown());
@@ -102,6 +110,7 @@ export class CommentsDialog extends connect(getStore())(LitElement) {
                 @retry="${() => this.retry(index)}"
               ></comment-element>`
           )}
+          <div class="no-comments" ?hidden="${this.comments.length}">There are no comments yet</div>
         </div>
         <div class="message-input" slot="buttons">
           <paper-textarea

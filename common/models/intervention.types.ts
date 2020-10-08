@@ -264,6 +264,12 @@ export class Intervention {
   risks: Risk[] = [];
   management_budgets?: ManagementBudget;
   cfei_number?: string;
+  status_list: [] = [];
+  unicef_court = true;
+  unicef_accepted = false;
+  partner_accepted = false;
+  date_draft_by_partner = '';
+  date_sent_to_partner = '';
 }
 
 export type ManagementBudget = {

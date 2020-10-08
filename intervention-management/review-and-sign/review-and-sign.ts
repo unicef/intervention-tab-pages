@@ -19,7 +19,6 @@ import {sectionContentStylesPolymer} from '../../common/styles/content-section-s
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {getStore} from '../../utils/redux-store-access';
-import {connect} from 'pwa-helpers/connect-mixin';
 import {isJsonStrMatch} from '../../utils/utils';
 
 import {Permission} from '../../common/models/intervention.types';
@@ -35,6 +34,7 @@ import {patchIntervention} from '../../common/actions';
 import {formatDate} from '../../utils/date-utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
+import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 
 /**
  * @customElement
@@ -43,7 +43,7 @@ import get from 'lodash-es/get';
  * @appliesMixin UploadsMixin
  */
 @customElement('review-and-sign')
-export class InterventionReviewAndSign extends connect(getStore())(
+export class InterventionReviewAndSign extends CommentsMixin(
   ComponentBaseMixin(MissingDropdownOptionsMixin(UploadMixin(LitElement)))
 ) {
   static get styles() {
@@ -91,7 +91,12 @@ export class InterventionReviewAndSign extends connect(getStore())(
           padding: 0;
         }
       </style>
-      <etools-content-panel show-expand-btn class="content-section" panel-title="Signatures & Dates">
+      <etools-content-panel
+        show-expand-btn class="content-section"
+        panel-title="Signatures & Dates"
+        comment-element="signatures-and-dates"
+        comment-description="Signatures & Dates"
+      >
         <div slot="panel-btns">
           ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
         </div>
@@ -111,7 +116,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
                 this.valueChanged({value: formatDate(e.detail.date, 'YYYY-MM-DD')}, 'submission_date')}"
               max-date-error-msg="Date can not be in the future"
               error-message="Document Submission Date is required"
-              auto-validate
+              ?auto-validate="${this.editMode}"
             >
 
           </div>
@@ -218,7 +223,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
               fire-date-has-changed
               @date-has-changed="${(e: CustomEvent) =>
                 this.valueChanged({value: formatDate(e.detail.date, 'YYYY-MM-DD')}, 'signed_by_partner_date')}"
-              auto-validate
+              ?auto-validate="${this.editMode}"
               error-message="Date is required"
               max-date-error-msg="Date can not be in the future"
               max-date="${this.getCurrentDate()}"
@@ -247,7 +252,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
               fire-date-has-changed
               @date-has-changed="${(e: CustomEvent) =>
                 this.valueChanged({value: formatDate(e.detail.date, 'YYYY-MM-DD')}, 'signed_by_unicef_date')}"
-              auto-validate
+              ?auto-validate="${this.editMode}"
               error-message="Date is required"
               max-date-error-msg="Date can not be in the future"
               max-date="${this.getCurrentDate()}"
@@ -290,7 +295,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
               @upload-finished="${this._signedPDUploadFinished}"
               .showDeleteBtn="${this.showSignedPDDeleteBtn(this.data.status)}"
               @delete-file="${this._signedPDDocDelete}"
-              auto-validate
+              ?auto-validate="${this.editMode}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.signed_pd_attachment)}"
               ?required="${this.permissions.required.signed_pd_attachment}"
               error-message="Please select Signed PD/SPD document"
@@ -354,6 +359,12 @@ export class InterventionReviewAndSign extends connect(getStore())(
   @property({type: String})
   uploadEndpoint: string = getEndpoint(interventionEndpoints.attachmentsUpload).url;
 
+  interventionId!: number | null;
+
+  get currentInterventionId(): number | null {
+    return this.interventionId;
+  }
+
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'management')) {
       return;
@@ -368,8 +379,11 @@ export class InterventionReviewAndSign extends connect(getStore())(
     if (state.interventions.current) {
       this.data = selectReviewData(state);
       this.originalData = cloneDeep(this.data);
-      this.permissions = selectReviewDataPermissions(state);
-      this.set_canEditAtLeastOneField(this.permissions.edit);
+      const permissions = selectReviewDataPermissions(state);
+      if (!isJsonStrMatch(this.permissions, permissions)) {
+        this.permissions = permissions;
+        this.set_canEditAtLeastOneField(this.permissions.edit);
+      }
       if (this.data.submitted_to_prc) {
         this._lockSubmitToPrc = true;
       } else {
@@ -380,6 +394,8 @@ export class InterventionReviewAndSign extends connect(getStore())(
         const agreementData = this.filterAgreementsById(agreements!, this.data.agreement);
         this.agreementAuthorizedOfficers = this.getAuthorizedOfficersList(agreementData);
       }
+      this.interventionId = state.interventions.current.id;
+      super.stateChanged(state);
     }
   }
 

@@ -75,7 +75,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
           <div class="col col-6">
             <etools-currency-amount-input
               id="unicefCash"
-              label="UNICEF cash"
+              label="UNICEF Cash"
               .value="${this.originalData.unicef_cash}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, this.getPropertyName('unicef'))}"
             >
@@ -84,7 +84,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
           <div class="col col-6">
             <etools-currency-amount-input
               id="partnerContribution"
-              label="Partner contribution"
+              label="Partner Contribution"
               .value="${this.originalData.partner_contribution}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, this.getPropertyName('partner'))}"
             >

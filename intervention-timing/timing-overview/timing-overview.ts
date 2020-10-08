@@ -5,19 +5,18 @@ import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {elevationStyles} from '../../common/styles/elevation-styles';
 import {TimingOverviewData} from './timingOverview.models';
 import {selectTimingOverview} from './timingOverview.selectors';
-import {getStore} from '../../utils/redux-store-access';
-import {connect} from 'pwa-helpers/connect-mixin';
 import {formatDateShortMonth} from '../../utils/date-utils';
 import {RootState} from '../../common/models/globals.types';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
 import {InfoElementStyles} from '../../common/styles/info-element-styles';
+import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 
 /**
  * @customElement
  */
 @customElement('timing-overview')
-export class TimingOverview extends connect(getStore())(LitElement) {
+export class TimingOverview extends CommentsMixin(LitElement) {
   static get styles() {
     return [gridLayoutStylesLit, elevationStyles];
   }
@@ -31,7 +30,7 @@ export class TimingOverview extends connect(getStore())(LitElement) {
     }
     return html`
       ${InfoElementStyles}
-      <section class="elevation table" elevation="1">
+      <section class="elevation table" elevation="1" comment-element="timing-overview" comment-description="Overview">
         <div class="data-column">
           <label class="paper-label">Date Created</label>
           <div class="input-label" ?empty="${!this.timingOverview.created}">
@@ -48,7 +47,9 @@ export class TimingOverview extends connect(getStore())(LitElement) {
 
         <div class="data-column">
           <label class="paper-label">Date first draft by Partner</label>
-          <div class="input-label" empty></div>
+          <div class="input-label" ?empty="${!this.timingOverview.date_draft_by_partner}">
+            ${formatDateShortMonth(this.timingOverview.date_draft_by_partner)}
+          </div>
         </div>
 
         <div class="data-column">
@@ -90,6 +91,12 @@ export class TimingOverview extends connect(getStore())(LitElement) {
   @property({type: Object})
   timingOverview!: TimingOverviewData;
 
+  interventionId!: number | null;
+
+  get currentInterventionId(): number | null {
+    return this.interventionId;
+  }
+
   connectedCallback() {
     super.connectedCallback();
   }
@@ -100,6 +107,8 @@ export class TimingOverview extends connect(getStore())(LitElement) {
     }
     if (state.interventions.current) {
       this.timingOverview = selectTimingOverview(state);
+      this.interventionId = state.interventions.current.id;
+      super.stateChanged(state);
     }
   }
 }

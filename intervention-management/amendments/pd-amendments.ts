@@ -3,8 +3,6 @@ import '@polymer/iron-icons/iron-icons';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-data-table/etools-data-table';
-import {connect} from 'pwa-helpers/connect-mixin';
-import {getStore} from '../../utils/redux-store-access';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import './add-amendment-dialog';
@@ -18,12 +16,13 @@ import {Permission} from '../../common/models/intervention.types';
 import {PdAmendmentPermissions} from './pd-amendments.models';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {openDialog} from '../../utils/dialog';
+import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 
 /**
  * @customElement
  */
 @customElement('pd-amendments')
-export class PdAmendments extends connect(getStore())(LitElement) {
+export class PdAmendments extends CommentsMixin(LitElement) {
   static get styles() {
     return [gridLayoutStylesLit];
   }
@@ -57,7 +56,12 @@ export class PdAmendments extends connect(getStore())(LitElement) {
         }
       </style>
 
-      <etools-content-panel show-expand-btn panel-title="Amendments">
+      <etools-content-panel
+        show-expand-btn
+        panel-title="Amendments"
+        comment-element="amendments"
+        comment-description="Amendments"
+      >
         <div slot="panel-btns">
           <paper-icon-button
             icon="add-box"
@@ -138,6 +142,10 @@ export class PdAmendments extends connect(getStore())(LitElement) {
   @property({type: Object})
   intervention!: AnyObject;
 
+  get currentInterventionId(): number | null {
+    return this.intervention?.id;
+  }
+
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'management')) {
       return;
@@ -153,6 +161,7 @@ export class PdAmendments extends connect(getStore())(LitElement) {
       this.amendments = this.intervention.amendments;
     }
     this.setPermissions(state);
+    super.stateChanged(state);
   }
 
   private setPermissions(state: any) {

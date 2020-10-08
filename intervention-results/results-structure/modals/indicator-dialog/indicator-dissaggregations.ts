@@ -9,7 +9,7 @@ import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown.
 import {LitElement, html, property, customElement} from 'lit-element';
 import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
 import RepeatableDataSetsMixin from '../../../../common/mixins/repeatable-data-sets-mixin';
-import {Disaggregation} from '../../../../common/models/globals.types';
+import {AnyObject, Disaggregation} from '../../../../common/models/globals.types';
 import {flaggedSortedDisaggregs} from '../../redux/selectors';
 import {getStore} from '../../../../utils/redux-store-access';
 import {repeatableDataSetsStyles} from '../../../../common/styles/repeatable-data-sets-styles';
@@ -47,8 +47,8 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
           width: 100%;
         }
       </style>
-      <div ?hidden="${this._isEmptyList(this.dataItems, this.dataItems.length)}">
-        ${this.dataItems.map(
+      <div ?hidden="${this._isEmptyList(this.data, this.data.length)}">
+        ${this.data.map(
           (item: any, index: number) => html` <div class="row-h item-container no-h-margin">
             <div class="item-actions-container">
               <div class="actions">
@@ -92,7 +92,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
         )}
       </div>
 
-      <div class="row-padding-v" ?hidden="${!this._isEmptyList(this.dataItems, this.dataItems.length)}">
+      <div class="row-padding-v" ?hidden="${!this._isEmptyList(this.data, this.data.length)}">
         <p>There are no disaggregations added.</p>
       </div>
 
@@ -100,7 +100,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
         <paper-button
           class="secondary-btn"
           @click="${this._addNewDisaggregation}"
-          ?hidden="${this._maxDisaggregations(this.dataItems.length)}"
+          ?hidden="${this._maxDisaggregations(this.data.length)}"
           title="Add Disaggregation"
           >ADD DISAGGREGATION
         </paper-button>
@@ -134,7 +134,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
 
   _addNewDisaggregation() {
     this._addElement();
-    fireEvent(this, 'add-new-disaggreg', this.dataItems);
+    fireEvent(this, 'add-new-disaggreg', this.data);
   }
 
   _onDisaggregationSelected(event: CustomEvent, index: number) {
@@ -143,14 +143,14 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
       return;
     }
 
-    this.dataItems[index].disaggregId = selectedDisagreg.id;
+    this.data[index].disaggregId = selectedDisagreg.id;
     if (this.isAlreadySelected(selectedDisagreg.id, index, 'disaggregId')) {
       this.shadowRoot!.querySelector<EtoolsDropdownEl>('#disaggregate_by_' + index)!.selected = null;
       this._clearDisagregGroups(index);
       fireEvent(this, 'show-toast', {
         error: {response: 'Disaggregation already selected'}
       });
-      this.dataItems[index].disaggregId = null;
+      this.data[index].disaggregId = null;
     } else {
       this._displayDisaggregationGroups(selectedDisagreg, index);
     }
@@ -170,6 +170,44 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
   }
 
   _updateTabCounter() {
-    fireEvent(this, 'update-tab-counter', {count: this.dataItems.length});
+    fireEvent(this, 'update-tab-counter', {count: this.data.length});
+  }
+
+  public _getItemModelObject(addNull: any) {
+    if (addNull) {
+      return null;
+    }
+    if (this.dataSetModel === null) {
+      const newObj: AnyObject = {};
+      if (this.data.length > 0 && typeof this.data[0] === 'object') {
+        Object.keys(this.data[0]).forEach(function (property) {
+          newObj[property] = ''; // (this.model[0][property]) ? this.model[0][property] :
+        });
+      }
+
+      return newObj;
+    } else {
+      return JSON.parse(JSON.stringify(this.dataSetModel));
+    }
+  }
+
+  public _addElement(addNull?: boolean) {
+    if (!this.editMode) {
+      return;
+    }
+    this._makeSureDataItemsAreValid();
+
+    const newObj = this._getItemModelObject(addNull);
+    this.data = [...this.data, newObj];
+  }
+
+  /**
+   * Check is dataItems is Array, if not init with empty Array
+   */
+  public _makeSureDataItemsAreValid(dataItems?: any) {
+    const items = dataItems ? dataItems : this.data;
+    if (!Array.isArray(items)) {
+      this.data = [];
+    }
   }
 }

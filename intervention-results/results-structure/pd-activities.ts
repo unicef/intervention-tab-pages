@@ -13,9 +13,10 @@ import {fireEvent} from '../../utils/fire-custom-event';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {getEndpoint} from '../../utils/endpoint-helper';
+import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
 
 @customElement('pd-activities')
-export class PdActivities extends LitElement {
+export class PdActivities extends CommentsMixin(LitElement) {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
@@ -44,6 +45,10 @@ export class PdActivities extends LitElement {
   interventionId!: number;
   pdOutputId!: number;
   quarters!: InterventionQuarter[];
+
+  get currentInterventionId(): number {
+    return this.interventionId;
+  }
 
   protected render(): TemplateResult {
     // language=HTML
@@ -86,8 +91,12 @@ export class PdActivities extends LitElement {
 
       ${this.activities.map(
         (activity: InterventionActivity) => html`
-          <etools-data-table-row>
-            <div slot="row-data" class="layout-horizontal editable-row fixed-height">
+          <etools-data-table-row
+            related-to="activity-${activity.id}"
+            related-to-description=" Activity - ${activity.name}"
+            comments-container
+          >
+            <div slot="row-data" class="layout-horizontal editable-row">
               <!--    PD Activity name    -->
               <div class="text flex-auto">${activity.name || '-'}</div>
 
@@ -156,6 +165,13 @@ export class PdActivities extends LitElement {
     `;
   }
 
+  getSpecialElements(container: HTMLElement): CommentElementMeta[] {
+    const element: HTMLElement = container.shadowRoot!.querySelector('#wrapper') as HTMLElement;
+    const relatedTo: string = container.getAttribute('related-to') as string;
+    const relatedToDescription = container.getAttribute('related-to-description') as string;
+    return [{element, relatedTo, relatedToDescription}];
+  }
+
   formatCurrency(value: string | number): string {
     return String(value).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
   }
@@ -166,11 +182,11 @@ export class PdActivities extends LitElement {
 
   getPartnerPercent(partner: string, unicef: string): string {
     if (!Number(partner)) {
-      return '%0';
+      return '0 %';
     }
     const total: number = this.getTotal(partner, unicef);
     const percent: number = Number(partner) / (total / 100);
-    return `%${Number(percent.toFixed(2))}`;
+    return `${Number(percent.toFixed(2))} %`;
   }
 
   openDialog(activity?: InterventionActivity): void {

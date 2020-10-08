@@ -1,5 +1,4 @@
 import {LitElement, html, customElement, property} from 'lit-element';
-import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
@@ -15,12 +14,13 @@ import '@unicef-polymer/etools-loading/etools-loading';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
+import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 
 /**
  * @customElement
  */
 @customElement('technical-guidance')
-export class TechnicalGuidance extends connect(getStore())(ComponentBaseMixin(LitElement)) {
+export class TechnicalGuidance extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -41,7 +41,12 @@ export class TechnicalGuidance extends connect(getStore())(ComponentBaseMixin(Li
         }
       </style>
 
-      <etools-content-panel show-expand-btn panel-title="Technical Guidance, Capacity Development, Miscellaneous">
+      <etools-content-panel
+        show-expand-btn
+        panel-title="Technical Guidance, Capacity Development, Miscellaneous"
+        comment-element="technical-guidance"
+        comment-description="Technical Guidance, Capacity Development, Miscellaneous"
+      >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="row-padding-v">
@@ -114,6 +119,12 @@ export class TechnicalGuidance extends connect(getStore())(ComponentBaseMixin(Li
   @property({type: Object})
   permissions!: Permission<TechnicalDetailsPermissions>;
 
+  interventionId!: number | null;
+
+  get currentInterventionId(): number | null {
+    return this.interventionId;
+  }
+
   connectedCallback() {
     super.connectedCallback();
   }
@@ -130,6 +141,8 @@ export class TechnicalGuidance extends connect(getStore())(ComponentBaseMixin(Li
     this.originalData = cloneDeep(this.data);
     this.permissions = selectTechnicalDetailsPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
+    this.interventionId = state.interventions.current.id;
+    super.stateChanged(state);
   }
 
   saveData() {

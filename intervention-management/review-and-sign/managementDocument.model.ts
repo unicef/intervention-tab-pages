@@ -13,7 +13,6 @@ export class ReviewData extends ModelsBase {
   submission_date = '';
   submitted_to_prc = false;
   review_date_prc = '';
-  // @lajos bellow is a class
   frs_details = [];
   signed_pd_attachment: string | null = null;
   status = '';
@@ -39,5 +38,4 @@ export class ReviewDataPermission extends ModelsBase {
   signed_by_unicef_date = true;
   unicef_signatory = true;
   signed_pd_attachment = true;
-  submitted_to_prc = true;
 }

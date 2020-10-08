@@ -12,19 +12,19 @@ import {ProgrammeDocDates, InterventionDatesPermissions} from './interventionDat
 import cloneDeep from 'lodash-es/cloneDeep';
 import {selectInterventionDates, selectInterventionDatesPermissions} from './interventionDates.selectors';
 import {buttonsStyles} from '../../common/styles/button-styles';
-import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
 import {patchIntervention} from '../../common/actions';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
 import '@unicef-polymer/etools-upload/etools-upload';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 
 /**
  * @customElement
  */
 @customElement('intervention-dates')
-export class InterventionDates extends connect(getStore())(ComponentBaseMixin(FrNumbersConsistencyMixin(LitElement))) {
+export class InterventionDates extends CommentsMixin(ComponentBaseMixin(FrNumbersConsistencyMixin(LitElement))) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -48,7 +48,12 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
         }
       </style>
 
-      <etools-content-panel show-expand-btn panel-title="Programme Document Dates">
+      <etools-content-panel
+        show-expand-btn
+        panel-title="Programme Document Dates"
+        comment-element="programme-document-dates"
+        comment-description="Programme Document Dates"
+      >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
         <div class="layout-horizontal row-padding-v">
           <div class="col col-3">
@@ -63,7 +68,7 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
               <datepicker-lite
                 slot="field"
                 id="intStart"
-                label="Start date"
+                label="Start Date"
                 .value="${this.data.start}"
                 ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.start)}"
                 ?required="${this.permissions.required.start}"
@@ -91,7 +96,7 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
               <datepicker-lite
                 slot="field"
                 id="intEnd"
-                label="End date"
+                label="End Date"
                 .value="${this.data.end}"
                 ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.end)}"
                 ?required="${this.permissions.required.end}"
@@ -149,6 +154,12 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
   @property({type: Object})
   permissions!: Permission<InterventionDatesPermissions>;
 
+  interventionId!: number | null;
+
+  get currentInterventionId(): number | null {
+    return this.interventionId;
+  }
+
   connectedCallback() {
     super.connectedCallback();
   }
@@ -164,6 +175,8 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
     this.originalData = cloneDeep(this.data);
     this.permissions = selectInterventionDatesPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
+    this.interventionId = state.interventions.current.id;
+    super.stateChanged(state);
   }
 
   private hideActivationLetter(interventionStatus: string, isContingencyPd: boolean) {

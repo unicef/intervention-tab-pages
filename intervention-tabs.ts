@@ -11,7 +11,7 @@ import {customElement, LitElement, html, property, css} from 'lit-element';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {setStore, getStore} from './utils/redux-store-access';
-import {selectAvailableActions, currentPage, currentSubpage} from './common/selectors';
+import {selectAvailableActions, currentPage, currentSubpage, isUnicefUser} from './common/selectors';
 import {elevationStyles} from './common/styles/elevation-styles';
 import {AnyObject, RouteDetails, RootState} from './common/models/globals.types';
 import {getIntervention} from './common/actions';
@@ -20,6 +20,9 @@ import {isJsonStrMatch} from './utils/utils';
 import {pageContentHeaderSlottedStyles} from './common/layout/page-content-header/page-content-header-slotted-styles';
 import {fireEvent} from './utils/fire-custom-event';
 import {buildUrlQueryString} from './utils/utils';
+import {enableCommentMode, getComments} from './common/components/comments/comments.actions';
+import {commentsData} from './common/components/comments/comments.reducer';
+import {Intervention} from './common/models/intervention.types';
 
 const MOCKUP_STATUSES = [
   ['draft', 'Draft'],
@@ -98,8 +101,8 @@ export class InterventionTabs extends LitElement {
           >
         </div>
 
-        <div slot="statusFlag" ?hidden="${!this.intervention.accepted}">
-          <span class="icon flag">Accepted</span>
+        <div slot="statusFlag" ?hidden="${!this.showPerformedActionsStatus()}">
+          <span class="icon flag">${this.getPerformedAction()}</span>
         </div>
 
         <div slot="title-row-actions" class="content-header-actions">
@@ -182,7 +185,7 @@ export class InterventionTabs extends LitElement {
   activeTab = 'details';
 
   @property({type: Object})
-  intervention!: AnyObject;
+  intervention!: Intervention;
 
   @property({type: Boolean})
   commentMode = false;
@@ -200,10 +203,16 @@ export class InterventionTabs extends LitElement {
 
   set store(parentAppReduxStore: any) {
     setStore(parentAppReduxStore);
+    parentAppReduxStore.addReducers({
+      commentsData
+    });
     this._storeUnsubscribe = getStore().subscribe(() => this.stateChanged(getStore().getState()));
     this.stateChanged(getStore().getState());
     this._store = parentAppReduxStore;
   }
+
+  @property({type: Boolean})
+  isUnicefUser = false;
 
   /*
    * Used to avoid unnecessary get intervention request
@@ -227,7 +236,7 @@ export class InterventionTabs extends LitElement {
   public stateChanged(state: RootState) {
     if (currentPage(state) === 'interventions' && currentSubpage(state) !== 'list') {
       this.activeTab = currentSubpage(state) as string;
-
+      this.isUnicefUser = isUnicefUser(state);
       const currentInterventionId = get(state, 'app.routeDetails.params.interventionId');
       const currentIntervention = get(state, 'interventions.current');
 
@@ -238,10 +247,14 @@ export class InterventionTabs extends LitElement {
       }
       if (currentInterventionId !== String(get(this.intervention, 'id'))) {
         if (!isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)) {
-          this._routeDetails = cloneDeep(state.app!.routeDetails);
-          this.commentMode = !!(this._routeDetails.queryParams || {})['comment_mode'];
           getStore().dispatch(getIntervention(currentInterventionId));
+          getStore().dispatch(getComments(currentInterventionId));
         }
+      }
+      if (!isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)) {
+        this._routeDetails = cloneDeep(state.app!.routeDetails);
+        this.commentMode = !!(this._routeDetails.queryParams || {})['comment_mode'];
+        getStore().dispatch(enableCommentMode(this.commentMode));
       }
       this.availableActions = selectAvailableActions(state);
 
@@ -257,6 +270,39 @@ export class InterventionTabs extends LitElement {
         this.pageTabs.push({tab: 'reports', tabLabel: 'Reports', hidden: false});
       }
     }
+  }
+
+  showPerformedActionsStatus() {
+    return (
+      ['draft', 'development'].includes(this.intervention.status) &&
+      (this.intervention.partner_accepted ||
+        this.intervention.unicef_accepted ||
+        (!this.intervention.unicef_court && !!this.intervention.date_sent_to_partner) ||
+        (this.intervention.unicef_court && !!this.intervention.date_draft_by_partner))
+    );
+  }
+
+  getPerformedAction() {
+    if (!['draft', 'development'].includes(this.intervention.status)) {
+      return '';
+    }
+    if (this.intervention.partner_accepted && this.intervention.unicef_accepted) {
+      return 'IP & Unicef Accepted';
+    }
+    if (!this.intervention.partner_accepted && this.intervention.unicef_accepted) {
+      return 'Unicef Accepted';
+    }
+    if (this.intervention.partner_accepted && !this.intervention.unicef_accepted) {
+      return 'IP Accepted';
+    }
+    if (!this.intervention.unicef_court && !!this.intervention.date_sent_to_partner) {
+      return 'Sent to Partner';
+    }
+
+    if (this.intervention.unicef_court && !!this.intervention.date_draft_by_partner) {
+      return 'Sent to Unicef';
+    }
+    return '';
   }
 
   handleTabChange(e: CustomEvent) {
@@ -299,6 +345,7 @@ export class InterventionTabs extends LitElement {
       return;
     }
     this.commentMode = element.checked;
+    getStore().dispatch(enableCommentMode(this.commentMode));
     // add/remove `comment_mode` param in url based on selection and refresh page
     history.pushState(window.history.state, '', this.computeNewPath());
     window.dispatchEvent(new CustomEvent('popstate'));

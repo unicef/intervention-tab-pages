@@ -60,16 +60,16 @@ export const interventionEndpoints: EtoolsEndpoints = {
     template: '/api/pmp/v3/interventions/<%=interventionId%>/<%=action%>/'
   },
   partnerStaffMembers: {
-    template: '/api/v2/partners/<%=id%>/staff-members/'
+    template: '/api/pmp/v3/partners/<%=id%>/staff-members/'
   },
   partnerAgreements: {
     template: '/api/pmp/v3/agreements/?partner_id=<%=id%>'
   },
   specialReportingRequirements: {
-    template: '/api/v2/reports/interventions/<%=intervId%>/special-reporting-requirements/'
+    template: '/api/reports/v3/interventions/<%=intervId%>/special-reporting-requirements/'
   },
   reportingRequirements: {
-    template: '/api/v2/interventions/<%=intervId%>/reporting-requirements/<%=reportType%>/'
+    template: '/api/pmp/v3/interventions/<%=intervId%>/reporting-requirements/<%=reportType%>/'
   },
   specialReportingRequirementsUpdate: {
     template: '/api/v2/reports/interventions/special-reporting-requirements/<%=reportId%>/'
@@ -140,7 +140,7 @@ export const interventionEndpoints: EtoolsEndpoints = {
     template: '/api/v2/reports/lower_results/<%=lower_result_id%>/'
   },
   createIndicator: {
-    template: '/api/v2/interventions/lower-results/<%=id%>/indicators/'
+    template: '/api/pmp/v3/interventions/lower-results/<%=id%>/indicators/'
   },
   getEditDeleteIndicator: {
     template: '/api/pmp/v3/interventions/applied-indicators/<%=id%>/'
