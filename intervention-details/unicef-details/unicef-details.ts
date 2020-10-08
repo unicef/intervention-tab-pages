@@ -42,21 +42,17 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
     }
     return html`
       <style>
-      ${sharedStyles}
-        :host {
+        ${sharedStyles} :host {
           display: block;
           margin-bottom: 24px;
         }
         .placeholder {
-            color: var(--secondary-text-color);
-          }
+          color: var(--secondary-text-color);
+        }
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Unicef Details">
-
-        <div slot="panel-btns">
-          ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
-        </div>
+        <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="layout-horizontal">
           <div class="col col-4">
@@ -68,7 +64,7 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
         <div class="layout-horizontal">
           <label class="input-label" ?empty="${!this.data.document_type}">
             ${this.getDocumentLongName(this.data.document_type)}
-           </label>
+          </label>
         </div>
         <div class="layout-horizontal row-padding-v">
           <div class="col col-4">
@@ -101,7 +97,8 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
               ?required="${this.permissions.required.sections}"
               @etools-selected-items-changed="${({detail}: CustomEvent) =>
                 this.selectedItemsChanged(detail, 'sections')}"
-              trigger-value-change-event>
+              trigger-value-change-event
+            >
             </etools-dropdown-multi>
           </div>
           <div class="col col-4">
@@ -113,7 +110,7 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
               placeholder="—"
               .value="${this.getClusterText(this.data.cluster_names)}"
               readonly
-              >
+            >
             </paper-textarea>
           </div>
         </div>
@@ -131,7 +128,8 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
               ?required="${this.permissions.required.unicef_focal_points}"
               @etools-selected-items-changed="${({detail}: CustomEvent) =>
                 this.selectedItemsChanged(detail, 'unicef_focal_points')}"
-              trigger-value-change-event>
+              trigger-value-change-event
+            >
             </etools-dropdown-multi>
             <div ?hidden="${!this.isReadonly(this.editMode, this.permissions.edit.unicef_focal_points)}">
               <label for="focalPointInput" class="paper-label">Unicef Focal Points</label>
@@ -143,7 +141,7 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
               </div>
             </div>
           </div>
-          <div class="col col-8">
+          <div class="col col-8" ?hidden="${!this.isUnicefUser}">
             <etools-dropdown
               id="budgetOwnerInput"
               label="Unicef Budget Owner"
@@ -156,7 +154,8 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
               ?required="${this.permissions.required.budget_owner}"
               @etools-selected-item-changed="${({detail}: CustomEvent) =>
                 this.selectedItemChanged(detail, 'budget_owner')}"
-              trigger-value-change-event>
+              trigger-value-change-event
+            >
             </etools-dropdown>
 
             <div ?hidden="${!this.isReadonly(this.editMode, this.permissions.edit.budget_owner)}">
