@@ -215,32 +215,23 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
   }
 
   populateDropdownOptions(state: any) {
-    if (!this.isUnicefUser) {
-      if (this.data) {
-        // if user is not Unicef user, this is opened in read-only mode and we just display already saved
-        this.users_list = [...this.data.unicef_focal_points];
-        this.section_list = [...this.data.sections];
-        this.office_list = [...this.data.offices];
-      }
-    } else {
-      if (get(state, 'commonData.unicefUsersData.length')) {
-        this.users_list = [...state.commonData!.unicefUsersData];
-      }
-      if (get(state, 'commonData.sections.length')) {
-        this.section_list = [...state.commonData!.sections];
-      }
-      if (get(state, 'commonData.offices.length')) {
-        this.office_list = [...state.commonData!.offices];
-      }
-      // TO DO
-      // check if already saved records exists on loaded data, if not they will be added
-      // (they might be missing if changed country)
-      // handleItemsNoLongerAssignedToCurrentCountry(
-      //   this.focal_point_list,
-      //   this.pdUnicefDetails.details.unicef_focal_points
-      // );
-      // this.focal_point_list = [...this.focal_point_list];
+    if (get(state, 'commonData.unicefUsersData.length')) {
+      this.users_list = [...state.commonData!.unicefUsersData];
     }
+    if (get(state, 'commonData.sections.length')) {
+      this.section_list = [...state.commonData!.sections];
+    }
+    if (get(state, 'commonData.offices.length')) {
+      this.office_list = [...state.commonData!.offices];
+    }
+    // TO DO
+    // check if already saved records exists on loaded data, if not they will be added
+    // (they might be missing if changed country)
+    // handleItemsNoLongerAssignedToCurrentCountry(
+    //   this.focal_point_list,
+    //   this.pdUnicefDetails.details.unicef_focal_points
+    // );
+    // this.focal_point_list = [...this.focal_point_list];
   }
 
   getClusterText(clusters: string[]) {
