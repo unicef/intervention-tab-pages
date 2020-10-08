@@ -265,6 +265,9 @@ export class InterventionTabs extends LitElement {
 
   showPerformedActionsStatus() {
     return (
+      (this.intervention.partner_accepted &&
+        this.intervention.unicef_accepted &&
+        ['draft', 'development'].includes(this.intervention.status)) ||
       (!this.intervention.unicef_court && this.isUnicefUser) ||
       (this.intervention.partner_accepted && !this.intervention.unicef_accepted) ||
       (!this.intervention.partner_accepted && this.intervention.unicef_accepted)
@@ -272,6 +275,14 @@ export class InterventionTabs extends LitElement {
   }
 
   getPerformedAction() {
+    if (
+      this.intervention.partner_accepted &&
+      this.intervention.unicef_accepted &&
+      ['draft', 'development'].includes(this.intervention.status)
+    ) {
+      return 'IP & Unicef Accepted';
+    }
+
     if (!this.intervention.partner_accepted && this.intervention.unicef_accepted) {
       return 'Unicef Accepted';
     }
