@@ -12,8 +12,9 @@ import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {fireEvent} from '../utils/fire-custom-event';
 import {openDialog} from '../utils/dialog';
 import '../common/layout/are-you-sure';
+import '../common/components/intervention/pd-termination';
 import {InterventionActionsStyles} from './intervention-actions.styles';
-import {ACTIONS_WITH_COMMENT, BACK_ACTIONS, CANCEL, EXPORT_ACTIONS, namesMap} from './intervention-actions.constants';
+import {ACTIONS_WITH_INPUT, BACK_ACTIONS, CANCEL, EXPORT_ACTIONS, namesMap} from './intervention-actions.constants';
 import {PaperMenuButton} from '@polymer/paper-menu-button/paper-menu-button';
 import {Intervention} from '../common/models/intervention.types';
 import {updateCurrentIntervention} from '../common/actions';
@@ -132,6 +133,10 @@ export class InterventionActions extends LitElement {
         btn = 'Yes';
         message = 'Are you sure you want to send to unicef?';
         break;
+      case 'terminate':
+        btn = 'Continue';
+        message = 'Are you sure you want to ' + action + ' ?';
+        break;
       default:
         btn = action;
         message = 'Are you sure you want to ' + action + ' ?';
@@ -155,10 +160,13 @@ export class InterventionActions extends LitElement {
     if (!(await this.confirmAction(action))) {
       return;
     }
-    const body = ACTIONS_WITH_COMMENT.includes(action) ? await this.openCommentDialog(action) : {};
+    console.log(ACTIONS_WITH_INPUT.includes(action) ? console.log('true') : console.log('false'));
+    const body = ACTIONS_WITH_INPUT.includes(action) ? await this.confirmActions(action) : {};
     if (body === null) {
       return;
     }
+    console.log(body);
+    return;
     const endpoint = getEndpoint(interventionEndpoints.interventionAction, {
       interventionId: this.interventionId,
       action
@@ -201,10 +209,38 @@ export class InterventionActions extends LitElement {
     });
   }
 
+  private openTermiantionDialog() {
+    return openDialog({
+      dialog: 'pd-termination',
+      dialogData: {
+        interventionId: this.interventionId
+      }
+    }).then(({confirmed, response}) => {
+      if (!confirmed || !response) {
+        return null;
+      }
+      console.log(response);
+      return {
+        id: response.id,
+        end: response.end,
+        termination_doc_attachment: response.termination_doc_attachment
+      };
+    });
+  }
+
   private closeDropdown(): void {
     const element: PaperMenuButton | null = this.shadowRoot!.querySelector('paper-menu-button');
     if (element) {
       element.close();
+    }
+  }
+
+  private confirmActions(action: string) {
+    switch (action) {
+      case 'cancel':
+        return this.openCommentDialog(action);
+      case 'terminate':
+        return this.openTermiantionDialog();
     }
   }
 }
