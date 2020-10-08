@@ -112,8 +112,13 @@ export class PdActivities extends LitElement {
               <div class="hover-block">
                 <paper-icon-button
                   icon="icons:create"
-                  @click="${() => this.openDialog(activity)}"
+                  @click="${() => this.openDialog(activity, false)}"
                   ?hidden="${this.readonly}"
+                ></paper-icon-button>
+                <paper-icon-button
+                  icon="icons:visibility"
+                  @click="${() => this.openDialog(activity, true)}"
+                  ?hidden="${!this.readonly}"
                 ></paper-icon-button>
                 <paper-icon-button
                   icon="icons:delete"
@@ -173,14 +178,15 @@ export class PdActivities extends LitElement {
     return `${Number(percent.toFixed(2))} %`;
   }
 
-  openDialog(activity?: InterventionActivity): void {
+  openDialog(activity?: InterventionActivity, readOnly?: boolean): void {
     openDialog<any>({
       dialog: 'activity-data-dialog',
       dialogData: {
         activityId: activity && activity.id,
         interventionId: this.interventionId,
         pdOutputId: this.pdOutputId,
-        quarters: this.quarters
+        quarters: this.quarters,
+        readOnly: readOnly
       }
     });
   }

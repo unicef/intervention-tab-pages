@@ -106,7 +106,8 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
             ?hidden="${this._hideIndicator(indicator, this.showInactiveIndicators)}"
             ?cluster-indicator="${indicator.cluster_indicator_id}"
             ?high-frequency-indicator="${indicator.is_high_frequency}"
-            @open-edit-indicator-dialog="${(e: CustomEvent) => this.openIndicatorDialog(e.detail.indicator)}"
+            @open-edit-indicator-dialog="${(e: CustomEvent) =>
+              this.openIndicatorDialog(e.detail.indicator, e.detail.readOnly)}"
             @open-deactivate-confirmation="${(e: CustomEvent) => this.openDeactivationDialog(e.detail.indicatorId)}"
           ></pd-indicator>
         `
@@ -146,7 +147,7 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
     }
   }
 
-  openIndicatorDialog(indicator?: Indicator) {
+  openIndicatorDialog(indicator?: Indicator, readOnly?: boolean) {
     openDialog<IndicatorDialogData>({
       dialog: 'indicator-dialog',
       dialogData: {
@@ -154,7 +155,8 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
         sectionOptions: this.indicatorSectionOptions,
         locationOptions: this.indicatorLocationOptions,
         llResultId: this.pdOutputId,
-        prpServerOn: this.prpServerIsOn()!
+        prpServerOn: this.prpServerIsOn()!,
+        readOnly: readOnly
       }
     });
   }
