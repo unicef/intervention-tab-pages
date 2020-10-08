@@ -19,7 +19,6 @@ import {pageIsNotCurrentlyActive} from '../utils/common-methods';
 import {AnyObject, RootState} from '../common/models/globals.types';
 import {fireEvent} from '../utils/fire-custom-event';
 import {StaticPartner} from '../common/models/partner.types';
-import {result} from 'lodash-es';
 
 /**
  * @customElement

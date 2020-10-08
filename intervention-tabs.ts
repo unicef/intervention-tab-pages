@@ -265,32 +265,33 @@ export class InterventionTabs extends LitElement {
 
   showPerformedActionsStatus() {
     return (
-      (this.intervention.partner_accepted &&
-        this.intervention.unicef_accepted &&
-        ['draft', 'development'].includes(this.intervention.status)) ||
-      (!this.intervention.unicef_court && this.isUnicefUser) ||
-      (this.intervention.partner_accepted && !this.intervention.unicef_accepted) ||
-      (!this.intervention.partner_accepted && this.intervention.unicef_accepted)
+      ['draft', 'development'].includes(this.intervention.status) &&
+      (this.intervention.partner_accepted ||
+        this.intervention.unicef_accepted ||
+        (!this.intervention.unicef_court && !!this.intervention.date_sent_to_partner) ||
+        (this.intervention.unicef_court && !!this.intervention.date_draft_by_partner))
     );
   }
 
   getPerformedAction() {
-    if (
-      this.intervention.partner_accepted &&
-      this.intervention.unicef_accepted &&
-      ['draft', 'development'].includes(this.intervention.status)
-    ) {
+    if (!['draft', 'development'].includes(this.intervention.status)) {
+      return '';
+    }
+    if (this.intervention.partner_accepted && this.intervention.unicef_accepted) {
       return 'IP & Unicef Accepted';
     }
-
     if (!this.intervention.partner_accepted && this.intervention.unicef_accepted) {
       return 'Unicef Accepted';
     }
     if (this.intervention.partner_accepted && !this.intervention.unicef_accepted) {
       return 'IP Accepted';
     }
-    if (!this.intervention.unicef_court && this.isUnicefUser) {
+    if (!this.intervention.unicef_court && !!this.intervention.date_sent_to_partner) {
       return 'Sent to Partner';
+    }
+
+    if (this.intervention.unicef_court && !!this.intervention.date_draft_by_partner) {
+      return 'Sent to Unicef';
     }
     return '';
   }
