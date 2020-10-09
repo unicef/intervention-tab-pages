@@ -89,10 +89,6 @@ export class FinalReview extends CommentsMixin(LitElement) {
     `;
   }
 
-  get currentInterventionId(): number | null {
-    return this.interventionId;
-  }
-
   stateChanged(state: any): void {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'management')) {
       return;

@@ -119,10 +119,6 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
     }
   ];
 
-  get currentInterventionId(): number | null {
-    return this.interventionId;
-  }
-
   stateChanged(state: RootState) {
     if (!state.interventions.current) {
       return;

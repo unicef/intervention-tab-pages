@@ -119,12 +119,6 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
   @property({type: Array})
   data!: PlannedVisit[];
 
-  interventionId!: number | null;
-
-  get currentInterventionId(): number | null {
-    return this.interventionId;
-  }
-
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'management')) {
       return;
@@ -135,7 +129,6 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
     this.populateVisits(state);
     this.permissions = selectPlannedVisitsPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
-    this.interventionId = state.interventions.current.id;
     super.stateChanged(state);
   }
 

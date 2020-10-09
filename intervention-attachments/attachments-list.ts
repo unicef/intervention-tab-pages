@@ -25,12 +25,6 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
   @property() canEdit = true;
   @property() fileTypes: IdAndName[] = [];
 
-  interventionId!: number | null;
-
-  get currentInterventionId(): number | null {
-    return this.interventionId;
-  }
-
   protected render(): TemplateResult {
     return html`
       <style>
@@ -121,7 +115,6 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
     this.interventionStatus = state.interventions?.current.status || '';
     this.canEdit = state.interventions?.current.permissions.edit.attachments || false;
     this.fileTypes = state.commonData.fileTypes || [];
-    this.interventionId = state.interventions?.current.id;
     super.stateChanged(state);
   }
 
