@@ -196,7 +196,9 @@ export class InterventionActions extends LitElement {
       }
 
       return {
-        comment: response.comment
+        // tmeporary fix, as only cancel uses this modal
+        // @TODO: dinamically set property
+        cancel_justification: response.comment
       };
     });
   }
