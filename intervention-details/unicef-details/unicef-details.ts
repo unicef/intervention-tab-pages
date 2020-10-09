@@ -14,7 +14,6 @@ import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {selectPdUnicefDetails, selectPdUnicefDetailsPermissions} from './pdUnicefDetails.selectors';
 import {PdUnicefDetailsPermissions} from './pdUnicefDetails.models';
 import {Permission} from '../../common/models/intervention.types';
-import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
 import {patchIntervention} from '../../common/actions';
 import {AnyObject, RootState} from '../../common/models/globals.types';
@@ -22,13 +21,13 @@ import {isJsonStrMatch, areEqual} from '../../utils/utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
-// import {handleItemsNoLongerAssignedToCurrentCountry} from '../../utils/common-methods';
+import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 
 /**
  * @customElement
  */
 @customElement('unicef-details')
-export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin(LitElement)) {
+export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -51,7 +50,12 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
         }
       </style>
 
-      <etools-content-panel show-expand-btn panel-title="Unicef Details">
+      <etools-content-panel
+        show-expand-btn
+        panel-title="Unicef Details"
+        comment-element="unicef-details"
+        comment-description="Unicef Details"
+      >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="layout-horizontal">
@@ -204,6 +208,7 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
     }
     this.setPermissions(state);
     this.populateDropdownOptions(state);
+    super.stateChanged(state);
   }
 
   private setPermissions(state: any) {
@@ -215,32 +220,23 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
   }
 
   populateDropdownOptions(state: any) {
-    if (!this.isUnicefUser) {
-      if (this.data) {
-        // if user is not Unicef user, this is opened in read-only mode and we just display already saved
-        this.users_list = [...this.data.unicef_focal_points];
-        this.section_list = [...this.data.sections];
-        this.office_list = [...this.data.offices];
-      }
-    } else {
-      if (get(state, 'commonData.unicefUsersData.length')) {
-        this.users_list = [...state.commonData!.unicefUsersData];
-      }
-      if (get(state, 'commonData.sections.length')) {
-        this.section_list = [...state.commonData!.sections];
-      }
-      if (get(state, 'commonData.offices.length')) {
-        this.office_list = [...state.commonData!.offices];
-      }
-      // TO DO
-      // check if already saved records exists on loaded data, if not they will be added
-      // (they might be missing if changed country)
-      // handleItemsNoLongerAssignedToCurrentCountry(
-      //   this.focal_point_list,
-      //   this.pdUnicefDetails.details.unicef_focal_points
-      // );
-      // this.focal_point_list = [...this.focal_point_list];
+    if (get(state, 'commonData.unicefUsersData.length')) {
+      this.users_list = [...state.commonData!.unicefUsersData];
     }
+    if (get(state, 'commonData.sections.length')) {
+      this.section_list = [...state.commonData!.sections];
+    }
+    if (get(state, 'commonData.offices.length')) {
+      this.office_list = [...state.commonData!.offices];
+    }
+    // TO DO
+    // check if already saved records exists on loaded data, if not they will be added
+    // (they might be missing if changed country)
+    // handleItemsNoLongerAssignedToCurrentCountry(
+    //   this.focal_point_list,
+    //   this.pdUnicefDetails.details.unicef_focal_points
+    // );
+    // this.focal_point_list = [...this.focal_point_list];
   }
 
   getClusterText(clusters: string[]) {

@@ -1,43 +1,82 @@
 import {Reducer} from 'redux';
 import {GenericObject} from '../../models/globals.types';
 import {InterventionComment} from '../../types/types';
-import {ADD_COMMENT, SET_COMMENTS, UPDATE_COMMENT} from './comments.actions';
+import {ADD_COMMENT, ENABLE_COMMENT_MODE, SET_COMMENTS, UPDATE_COMMENT} from './comments.actions';
 
-type CommentsCollection = GenericObject<InterventionComment[]>;
+export type CommentsCollection = GenericObject<InterventionComment[]>;
+export type CommentsState = {
+  commentsModeEnabled: boolean;
+  collection: GenericObject<CommentsCollection>;
+};
+const INITIAL: CommentsState = {
+  commentsModeEnabled: false,
+  collection: {}
+};
 
-export const commentsData: Reducer<GenericObject<CommentsCollection>, any> = (state = {}, action) => {
+export const commentsData: Reducer<CommentsState, any> = (state = INITIAL, action) => {
   switch (action.type) {
     case SET_COMMENTS:
       return {
-        ...state,
-        [action.interventionId]: action.data
+        commentsModeEnabled: state.commentsModeEnabled,
+        collection: setCommentsToCollection(state.collection, action.interventionId, action.data)
       };
     case ADD_COMMENT:
       return {
-        [action.interventionId]: {
-          ...state[action.interventionId],
-          [action.relatedTo]: [...(state.comments[action.relatedTo] || []), action.data]
-        }
+        commentsModeEnabled: state.commentsModeEnabled,
+        collection: addCommentToCollection(state.collection, action.interventionId, action.relatedTo, action.data)
       };
     case UPDATE_COMMENT:
       return {
-        [action.interventionId]: {
-          ...state[action.interventionId],
-          [action.relatedTo]: updateComment(state.comments[action.relatedTo], action.data)
-        }
+        commentsModeEnabled: state.commentsModeEnabled,
+        collection: updateComment(state.collection, action.interventionId, action.relatedTo, action.data)
+      };
+    case ENABLE_COMMENT_MODE:
+      return {
+        ...state,
+        commentsModeEnabled: action.state
       };
     default:
       return state;
   }
 };
 
-function updateComment(comments: InterventionComment[] = [], comment: InterventionComment): InterventionComment[] {
-  const index: number = comments.findIndex(({id}: InterventionComment) => id === comment.id);
+function setCommentsToCollection(
+  collection: GenericObject<CommentsCollection>,
+  id: number,
+  comments: GenericObject<InterventionComment[]>
+): GenericObject<CommentsCollection> {
+  collection[id] = comments;
+  return collection;
+}
+
+function addCommentToCollection(
+  collection: GenericObject<CommentsCollection>,
+  id: number,
+  relatedTo: string,
+  comment: InterventionComment
+): GenericObject<CommentsCollection> {
+  if (!collection[id]) {
+    collection[id] = {};
+  }
+  const currentComments = collection[id][relatedTo] || [];
+  collection[id][relatedTo] = [...currentComments, comment];
+  return collection;
+}
+
+function updateComment(
+  collection: GenericObject<CommentsCollection>,
+  id: number,
+  relatedTo: string,
+  comment: InterventionComment
+): GenericObject<CommentsCollection> {
+  const currentComments = collection[id][relatedTo] || [];
+  const index: number = currentComments.findIndex(({id}: InterventionComment) => id === comment.id);
   if (index === -1) {
     console.warn("Comment which you want to update doesn't exists");
-    return comments;
+    return collection;
   }
-  const updatedComments: InterventionComment[] = [...comments];
+  const updatedComments: InterventionComment[] = [...currentComments];
   updatedComments.splice(index, 1, comment);
-  return updatedComments;
+  collection[id][relatedTo] = updatedComments;
+  return collection;
 }

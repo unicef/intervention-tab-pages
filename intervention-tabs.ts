@@ -20,6 +20,8 @@ import {isJsonStrMatch} from './utils/utils';
 import {pageContentHeaderSlottedStyles} from './common/layout/page-content-header/page-content-header-slotted-styles';
 import {fireEvent} from './utils/fire-custom-event';
 import {buildUrlQueryString} from './utils/utils';
+import {enableCommentMode, getComments} from './common/components/comments/comments.actions';
+import {commentsData} from './common/components/comments/comments.reducer';
 import {Intervention} from './common/models/intervention.types';
 
 const MOCKUP_STATUSES = [
@@ -201,6 +203,9 @@ export class InterventionTabs extends LitElement {
 
   set store(parentAppReduxStore: any) {
     setStore(parentAppReduxStore);
+    parentAppReduxStore.addReducers({
+      commentsData
+    });
     this._storeUnsubscribe = getStore().subscribe(() => this.stateChanged(getStore().getState()));
     this.stateChanged(getStore().getState());
     this._store = parentAppReduxStore;
@@ -242,10 +247,14 @@ export class InterventionTabs extends LitElement {
       }
       if (currentInterventionId !== String(get(this.intervention, 'id'))) {
         if (!isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)) {
-          this._routeDetails = cloneDeep(state.app!.routeDetails);
-          this.commentMode = !!(this._routeDetails.queryParams || {})['comment_mode'];
           getStore().dispatch(getIntervention(currentInterventionId));
+          getStore().dispatch(getComments(currentInterventionId));
         }
+      }
+      if (!isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)) {
+        this._routeDetails = cloneDeep(state.app!.routeDetails);
+        this.commentMode = !!(this._routeDetails.queryParams || {})['comment_mode'];
+        getStore().dispatch(enableCommentMode(this.commentMode));
       }
       this.availableActions = selectAvailableActions(state);
 
@@ -265,21 +274,33 @@ export class InterventionTabs extends LitElement {
 
   showPerformedActionsStatus() {
     return (
-      (!this.intervention.unicef_court && this.isUnicefUser) ||
-      (this.intervention.partner_accepted && !this.intervention.unicef_accepted) ||
-      (!this.intervention.partner_accepted && this.intervention.unicef_accepted)
+      ['draft', 'development'].includes(this.intervention.status) &&
+      (this.intervention.partner_accepted ||
+        this.intervention.unicef_accepted ||
+        (!this.intervention.unicef_court && !!this.intervention.date_sent_to_partner) ||
+        (this.intervention.unicef_court && !!this.intervention.date_draft_by_partner))
     );
   }
 
   getPerformedAction() {
+    if (!['draft', 'development'].includes(this.intervention.status)) {
+      return '';
+    }
+    if (this.intervention.partner_accepted && this.intervention.unicef_accepted) {
+      return 'IP & Unicef Accepted';
+    }
     if (!this.intervention.partner_accepted && this.intervention.unicef_accepted) {
       return 'Unicef Accepted';
     }
     if (this.intervention.partner_accepted && !this.intervention.unicef_accepted) {
       return 'IP Accepted';
     }
-    if (!this.intervention.unicef_court && this.isUnicefUser) {
+    if (!this.intervention.unicef_court && !!this.intervention.date_sent_to_partner) {
       return 'Sent to Partner';
+    }
+
+    if (this.intervention.unicef_court && !!this.intervention.date_draft_by_partner) {
+      return 'Sent to Unicef';
     }
     return '';
   }
@@ -324,6 +345,7 @@ export class InterventionTabs extends LitElement {
       return;
     }
     this.commentMode = element.checked;
+    getStore().dispatch(enableCommentMode(this.commentMode));
     // add/remove `comment_mode` param in url based on selection and refresh page
     history.pushState(window.history.state, '', this.computeNewPath());
     window.dispatchEvent(new CustomEvent('popstate'));

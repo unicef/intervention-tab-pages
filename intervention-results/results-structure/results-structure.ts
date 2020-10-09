@@ -29,10 +29,8 @@ import './modals/pd-output-dialog';
 import './modals/cp-output-dialog';
 import '@polymer/paper-item';
 import '@polymer/paper-listbox';
-import '../../common/components/comments/comments-dialog';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {RootState} from '../../common/models/globals.types';
-import {connect} from 'pwa-helpers/connect-mixin';
 import {openDialog} from '../../utils/dialog';
 import CONSTANTS from '../../common/constants';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
@@ -46,6 +44,7 @@ import findIndex from 'lodash-es/findIndex';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import ContentPanelMixin from '../../common/mixins/content-panel-mixin';
+import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
 
 const RESULT_VIEW = 'result_view';
 const BUDGET_VIEW = 'budget_view';
@@ -55,7 +54,7 @@ const COMBINED_VIEW = 'combined_view';
  * @customElement
  */
 @customElement('results-structure')
-export class ResultsStructure extends connect(getStore())(ContentPanelMixin(LitElement)) {
+export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement)) {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
@@ -279,7 +278,7 @@ export class ResultsStructure extends connect(getStore())(ContentPanelMixin(LitE
           <paper-icon-button
             class="add-cp"
             icon="add-box"
-            ?hidden="${!this.isUnicefUser || !this.permissions.edit.result_links}"
+            ?hidden="${!this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
             @click="${() => this.openCpOutputDialog()}"
           ></paper-icon-button>
         </div>
@@ -293,14 +292,20 @@ export class ResultsStructure extends connect(getStore())(ContentPanelMixin(LitE
               .interventionId="${this.interventionId}"
               .showIndicators="${this.showIndicators}"
               .showActivities="${this.showActivities}"
-              .readonly="${!this.permissions.edit.result_links}"
+              .readonly="${!this.permissions.edit.result_links || this.commentMode}"
               @add-pd="${() => this.openPdOutputDialog({}, result.cp_output, result.cp_output_name)}"
               @edit-cp-output="${() => this.openCpOutputDialog(result)}"
               @delete-cp-output="${() => this.openDeleteCpOutputDialog(result.id)}"
             >
               ${result.ll_results.map(
                 (pdOutput: ResultLinkLowerResult) => html`
-                  <etools-data-table-row details-opened class="pdOtputMargin">
+                  <etools-data-table-row
+                    details-opened
+                    class="pdOtputMargin"
+                    related-to="pd-output-${pdOutput.id}"
+                    related-to-description=" PD Output - ${pdOutput.name}"
+                    comments-container
+                  >
                     <div slot="row-data" class="layout-horizontal align-items-center editable-row">
                       <div class="flex-1 flex-fix">
                         <div class="heading">Program Document output</div>
@@ -331,7 +336,7 @@ export class ResultsStructure extends connect(getStore())(ContentPanelMixin(LitE
                         ?hidden="${!this.showIndicators}"
                         .indicators="${pdOutput.applied_indicators}"
                         .pdOutputId="${pdOutput.id}"
-                        .readonly="${!this.permissions.edit.result_links}"
+                        .readonly="${!this.permissions.edit.result_links || this.commentMode}"
                         .showInactiveIndicators="${this.showInactiveIndicators}"
                       ></pd-indicators>
                       <pd-activities
@@ -340,7 +345,7 @@ export class ResultsStructure extends connect(getStore())(ContentPanelMixin(LitE
                         .pdOutputId="${pdOutput.id}"
                         .quarters="${this.quarters}"
                         ?hidden="${!this.showActivities}"
-                        .readonly="${!this.permissions.edit.result_links}"
+                        .readonly="${!this.permissions.edit.result_links || this.commentMode}"
                       ></pd-activities>
                     </div>
                   </etools-data-table-row>
@@ -352,7 +357,7 @@ export class ResultsStructure extends connect(getStore())(ContentPanelMixin(LitE
         ${!this.resultLinks.length ? html` <div class="no-results">There are no results added.</div> ` : ''}
 
         <div
-          ?hidden="${this.isUnicefUser}"
+          ?hidden="${this.isUnicefUser || this.commentMode}"
           class="add-pd white row-h align-items-center"
           @click="${() => this.openPdOutputDialog()}"
         >
@@ -364,19 +369,6 @@ export class ResultsStructure extends connect(getStore())(ContentPanelMixin(LitE
 
   connectedCallback(): void {
     super.connectedCallback();
-    // TODO: Remove test code for comments dialog
-    //  getStore()
-    //   .dispatch(getComments(9))
-    //   .then(() => {
-    //     openDialog({
-    //       dialog: 'comments-dialog',
-    //       dialogData: {
-    //         interventionId: 9,
-    //         relatedTo: 'test',
-    //         relatedToDescription: 'Test Data'
-    //       }
-    //     });
-    //   });
   }
 
   stateChanged(state: RootState) {
@@ -392,6 +384,14 @@ export class ResultsStructure extends connect(getStore())(ContentPanelMixin(LitE
     this.isUnicefUser = isUnicefUser(state);
     this.intervention = cloneDeep(currentIntervention(state));
     this._updateNoOfPdOutputs();
+    super.stateChanged(state);
+  }
+
+  getSpecialElements(container: HTMLElement): CommentElementMeta[] {
+    const element: HTMLElement = container.shadowRoot!.querySelector('#wrapper') as HTMLElement;
+    const relatedTo: string = container.getAttribute('related-to') as string;
+    const relatedToDescription = container.getAttribute('related-to-description') as string;
+    return [{element, relatedTo, relatedToDescription}];
   }
 
   updateTableView(indicators: boolean, activities: boolean): void {

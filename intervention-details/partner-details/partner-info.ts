@@ -11,7 +11,6 @@ import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {PartnerInfo, PartnerInfoPermissions} from './partnerInfo.models';
 import {getStore} from '../../utils/redux-store-access';
-import {connect} from 'pwa-helpers/connect-mixin';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import get from 'lodash-es/get';
@@ -23,17 +22,17 @@ import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {isJsonStrMatch} from '../../utils/utils';
-// import {isUnicefUSer} from '../../common/selectors';
 import isEmpty from 'lodash-es/isEmpty';
 import {PartnerStaffMember} from '../../common/models/partner.types';
 import {MinimalAgreement} from '../../common/models/agreement.types';
 import {RootState} from '../../common/models/globals.types';
+import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 
 /**
  * @customElement
  */
 @customElement('partner-info')
-export class PartnerInfoElement extends connect(getStore())(ComponentBaseMixin(LitElement)) {
+export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [buttonsStyles, gridLayoutStylesLit];
   }
@@ -50,7 +49,12 @@ export class PartnerInfoElement extends connect(getStore())(ComponentBaseMixin(L
         }
       </style>
 
-      <etools-content-panel show-expand-btn panel-title="Partner Details">
+      <etools-content-panel
+        show-expand-btn
+        panel-title="Partner Details"
+        comment-element="partner-details"
+        comment-description="Partner Details"
+      >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="row-padding-v layout-horizontal">
@@ -150,13 +154,14 @@ export class PartnerInfoElement extends connect(getStore())(ComponentBaseMixin(L
   }
 
   async stateChanged(state: RootState) {
-    if (!state.interventions.current) {
-      return;
-    }
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'details')) {
+    if (
+      !state.interventions.current ||
+      pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'details')
+    ) {
       return;
     }
 
+    super.stateChanged(state);
     await this.setPartnerDetailsAndPopulateDropdowns(state);
 
     this.permissions = selectPartnerDetailsPermissions(state);

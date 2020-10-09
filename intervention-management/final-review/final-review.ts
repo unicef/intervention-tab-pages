@@ -1,18 +1,17 @@
 import {LitElement, html, TemplateResult, customElement, CSSResultArray, css, property} from 'lit-element';
 import './final-review-popup';
 import {openDialog} from '../../utils/dialog';
-import {connect} from 'pwa-helpers/connect-mixin';
-import {getStore} from '../../utils/redux-store-access';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {selectFinalReviewAttachment, selectInterventionId} from './final-review.selectors';
 import {ReviewAttachment} from '../../common/models/intervention.types';
 import {currentInterventionPermissions} from '../../common/selectors';
 import get from 'lodash-es/get';
 import {getFileNameFromURL} from '../../utils/utils';
+import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 declare const moment: any;
 
 @customElement('final-review')
-export class FinalReview extends connect(getStore())(LitElement) {
+export class FinalReview extends CommentsMixin(LitElement) {
   static get styles(): CSSResultArray {
     // language=css
     return [
@@ -65,7 +64,12 @@ export class FinalReview extends connect(getStore())(LitElement) {
 
   protected render(): TemplateResult {
     return html`
-      <etools-content-panel show-expand-btn panel-title="Final Partnership Review">
+      <etools-content-panel
+        show-expand-btn
+        panel-title="Final Partnership Review"
+        comment-element="final-partnership-review"
+        comment-description="Final Partnership Review"
+      >
         <div slot="panel-btns" ?hidden="${!this.canEdit}">
           <paper-icon-button @click="${() => this.openPopup()}" icon="create"> </paper-icon-button>
         </div>
@@ -93,6 +97,7 @@ export class FinalReview extends connect(getStore())(LitElement) {
     this.attachment = selectFinalReviewAttachment(state);
     this.interventionId = selectInterventionId(state);
     this.canEdit = Boolean(currentInterventionPermissions(state)?.edit.final_partnership_review);
+    super.stateChanged(state);
   }
 
   openPopup(): void {

@@ -6,9 +6,10 @@ import {fireEvent} from '../../utils/fire-custom-event';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {ResultStructureStyles} from './results-structure.styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
 
 @customElement('pd-indicator')
-export class PdIndicator extends LitElement {
+export class PdIndicator extends CommentsMixin(LitElement) {
   static get styles() {
     return [gridLayoutStylesLit, ResultStructureStyles];
   }
@@ -27,7 +28,7 @@ export class PdIndicator extends LitElement {
         }
         :host etools-data-table-row {
           --icon-wrapper: {
-            padding: 0px 0px !important;
+            padding: 0 0 !important;
             margin-right: 16px !important;
           }
         }
@@ -95,7 +96,11 @@ export class PdIndicator extends LitElement {
           font-weight: bold;
         }
       </style>
-      <etools-data-table-row>
+      <etools-data-table-row
+        related-to="indicator-${this.indicator.id}"
+        related-to-description="Indicator - ${this.indicator.indicator?.title}"
+        comments-container
+      >
         <div slot="row-data" class="layout-horizontal align-items-center editable-row">
           <!--    Indicator name    -->
           <div class="text flex-auto">
@@ -170,6 +175,13 @@ export class PdIndicator extends LitElement {
         </div>
       </etools-data-table-row>
     `;
+  }
+
+  getSpecialElements(container: HTMLElement): CommentElementMeta[] {
+    const element: HTMLElement = container.shadowRoot!.querySelector('#wrapper') as HTMLElement;
+    const relatedTo: string = container.getAttribute('related-to') as string;
+    const relatedToDescription = container.getAttribute('related-to-description') as string;
+    return [{element, relatedTo, relatedToDescription}];
   }
   openDeactivationDialog(indicatorId: string) {
     fireEvent(this, 'open-deactivate-confirmation', {indicatorId: indicatorId});

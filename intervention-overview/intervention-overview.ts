@@ -120,7 +120,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
             <div class="content" id="document_title">${this.intervention.title}</div>
             <div class="secondary">
               Under
-              <strong class="blue">${this.interventionAgreement.agreement_type}</strong>
+              <strong>${this.interventionAgreement.agreement_type}</strong>
               with
               ${this.isUnicefUser
                 ? html` <a href="/pmp/partners/${this.intervention.partner_id}/details">
@@ -167,7 +167,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
               <label class="label-secondary-color">
                 % Total value of Unicef's contribution that is Effective and Efficient Programme Management Cost
               </label>
-              <div class="input-label">${this.getUnicefEEContribOutOfTotalEE()}</div>
+              <div class="input-label">${this.getUnicefEEContribOutOfTotaUnicefContrib()}</div>
             </div>
           </div>
         </div>
@@ -335,14 +335,40 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
     });
   }
 
-  getUnicefEEContribOutOfTotalEE() {
+  getUnicefEEContribOutOfTotaUnicefContrib() {
     const totalEEUnicefContrib = this.getUnicefEEContrib(this.intervention.management_budgets);
-    const totalEE = this.intervention.management_budgets ? this.intervention.management_budgets.total : 0;
-    const percentage = Math.round((totalEEUnicefContrib * 100) / (totalEE | 1)).toFixed(2);
-    return percentage + ' %';
+    const rawPercentage = (totalEEUnicefContrib * 100) / (this.getTotalUnicefContrib() || 1);
+
+    return this.formatPercentage(rawPercentage) + '%';
   }
 
-  getUnicefEEContrib(management_budgets?: ManagementBudget) {
+  formatPercentage(rawPercentage: number) {
+    let percentage = '0';
+    if (rawPercentage === 0) {
+      return percentage;
+    }
+    if (rawPercentage < 0.01) {
+      percentage = rawPercentage.toFixed(4); // Taking into consideration values like 0.0018
+    } else {
+      percentage = rawPercentage.toFixed(2);
+    }
+    if (this.decimalFractionEquals0(percentage)) {
+      percentage = percentage.substring(0, percentage.lastIndexOf('.')); // Removing `.00` form value like `100.00%`
+    }
+    return percentage;
+  }
+
+  private decimalFractionEquals0(percentage: string) {
+    return percentage.lastIndexOf('.') > 0 && Number(percentage.substring(percentage.lastIndexOf('.') + 1)) === 0;
+  }
+
+  private getTotalUnicefContrib() {
+    return Number(
+      this.intervention.planned_budget ? this.intervention.planned_budget.total_unicef_contribution_local || 0 : 0
+    );
+  }
+
+  private getUnicefEEContrib(management_budgets?: ManagementBudget) {
     if (!management_budgets) {
       return 0;
     }

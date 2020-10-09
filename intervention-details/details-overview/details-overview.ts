@@ -5,19 +5,18 @@ import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {elevationStyles} from '../../common/styles/elevation-styles';
 import {InterventionOverview} from './interventionOverview.models';
 import {selectInterventionOverview} from './interventionOverview.selectors';
-import {getStore} from '../../utils/redux-store-access';
-import {connect} from 'pwa-helpers/connect-mixin';
 import {layoutFlex} from '../../common/styles/flex-layout-styles';
 import {RootState} from '../../common/models/globals.types';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
+import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 
 /**
  * @customElement
  */
 @customElement('details-overview')
-export class DetailsOverview extends connect(getStore())(ComponentBaseMixin(LitElement)) {
+export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, elevationStyles];
   }
@@ -45,7 +44,7 @@ export class DetailsOverview extends connect(getStore())(ComponentBaseMixin(LitE
           }
         }
       </style>
-      <section class="elevation content-wrapper" elevation="1">
+      <section class="elevation content-wrapper" elevation="1" comment-element="details" comment-description="Details">
         <div class="container-width">
           <div class="layout-horizontal">
             <div class="flex-2">
@@ -115,6 +114,7 @@ export class DetailsOverview extends connect(getStore())(ComponentBaseMixin(LitE
     if (state.interventions.current) {
       this.interventionOverview = selectInterventionOverview(state);
     }
+    super.stateChanged(state);
   }
 
   private _getText(value: boolean): string {

@@ -4,12 +4,14 @@ import './intervention-dates/intervention-dates';
 import './timing-overview/timing-overview';
 import './activity-timeframes/activity-timeframes';
 import {fireEvent} from '../utils/fire-custom-event';
+import {CommentElementMeta, CommentsMixin} from '../common/components/comments/comments-mixin';
+import {RootState} from '../common/models/globals.types';
 
 /**
  * @customElement
  */
 @customElement('intervention-timing')
-export class InterventionTiming extends LitElement {
+export class InterventionTiming extends CommentsMixin(LitElement) {
   render() {
     // language=HTML
     return html`
@@ -17,7 +19,11 @@ export class InterventionTiming extends LitElement {
       <timing-overview></timing-overview>
       <intervention-dates></intervention-dates>
       <activity-timeframes></activity-timeframes>
-      <partner-reporting-requirements class="content-section"> </partner-reporting-requirements>
+      <partner-reporting-requirements
+        class="content-section"
+        .commentsMode="${this.commentMode}"
+        comments-container
+      ></partner-reporting-requirements>
     `;
   }
   connectedCallback() {
@@ -26,6 +32,14 @@ export class InterventionTiming extends LitElement {
     fireEvent(this, 'global-loading', {
       active: false,
       loadingSource: 'interv-page'
+    });
+  }
+
+  getSpecialElements(container: HTMLElement): CommentElementMeta[] {
+    return Array.from(container.shadowRoot!.querySelectorAll('.nav-menu-item')).map((element: any) => {
+      const relatedTo: string = element.getAttribute('name') as string;
+      const relatedToDescription = element.getAttribute('title') as string;
+      return {element, relatedTo, relatedToDescription};
     });
   }
 }

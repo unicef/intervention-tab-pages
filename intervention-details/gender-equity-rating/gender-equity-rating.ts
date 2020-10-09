@@ -13,19 +13,19 @@ import {selectGenderEquityRating, selectGenderEquityRatingPermissions} from './g
 import {GenderEquityRatingPermissions, GenderEquityRating} from './genderEquityRating.models';
 import {Permission} from '../../common/models/intervention.types';
 import {getStore} from '../../utils/redux-store-access';
-import {connect} from 'pwa-helpers/connect-mixin';
 import {AnyObject, RootState} from '../../common/models/globals.types';
 import {patchIntervention} from '../../common/actions';
 import {isJsonStrMatch} from '../../utils/utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
+import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 
 /**
  * @customElement
  */
 @customElement('gender-equity-rating')
-export class GenderEquityRatingElement extends connect(getStore())(ComponentBaseMixin(LitElement)) {
+export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -51,7 +51,12 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
         }
       </style>
 
-      <etools-content-panel show-expand-btn panel-title="Gender, Equity & Sustainability">
+      <etools-content-panel
+        show-expand-btn
+        panel-title="Gender, Equity & Sustainability"
+        comment-element="gender-equity-sustainability"
+        comment-description="Gender, Equity & Sustainability"
+      >
         <div slot="panel-btns">
           <paper-icon-button
             ?hidden="${this.hideEditIcon(this.editMode, this.canEditAtLeastOneField)}"
@@ -164,10 +169,11 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
         this.originalData = cloneDeep(genderEquityRating);
       }
     }
-    this.sePermissions(state);
+    this.setPermissions(state);
+    super.stateChanged(state);
   }
 
-  private sePermissions(state: any) {
+  private setPermissions(state: any) {
     const permissions = selectGenderEquityRatingPermissions(state);
     if (!isJsonStrMatch(this.permissions, permissions)) {
       this.permissions = permissions;

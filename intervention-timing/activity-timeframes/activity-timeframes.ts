@@ -1,7 +1,5 @@
 import {LitElement, html, TemplateResult, customElement, CSSResultArray, property} from 'lit-element';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import {connect} from 'pwa-helpers/connect-mixin';
-import {getStore} from '../../utils/redux-store-access';
 import {
   ExpectedResult,
   Intervention,
@@ -16,9 +14,10 @@ import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {ActivityTimeframesStyles} from './activity-timeframes.styles';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {get} from 'lodash-es';
+import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 
 @customElement('activity-timeframes')
-export class ActivityTimeframes extends connect(getStore())(LitElement) {
+export class ActivityTimeframes extends CommentsMixin(LitElement) {
   static get styles(): CSSResultArray {
     // language=css
     return [gridLayoutStylesLit, ActivityTimeframesStyles];
@@ -34,7 +33,12 @@ export class ActivityTimeframes extends connect(getStore())(LitElement) {
     const timeFrames: GroupedActivityTime[] = this.getTimeFrames();
     const mappedActivities: GenericObject<InterventionActivity[]> = this.getActivities();
     return html`
-      <etools-content-panel show-expand-btn panel-title="Activity Timeframes">
+      <etools-content-panel
+        show-expand-btn
+        panel-title="Activity Timeframes"
+        comment-element="activity-timeframes"
+        comment-description="Activity Timeframes"
+      >
         ${!timeFrames.length
           ? html`
               <div class="align-items-baseline">
@@ -83,6 +87,7 @@ export class ActivityTimeframes extends connect(getStore())(LitElement) {
       return;
     }
     this.intervention = state.interventions.current;
+    super.stateChanged(state);
   }
 
   private getTimeFrames(): GroupedActivityTime[] {

@@ -248,12 +248,12 @@ class InterventionProgress extends connect(getStore())(
           ></etools-ram-indicators>
 
           <div class="row-h" hidden$="[[!_emptyList(item.ll_outputs)]]">
-            <p>There are no PD Outputs or SSFA Expected Results.</p>
+            <p>There are no PD Outputs.</p>
           </div>
 
           <div class="lower-results-table" hidden$="[[_emptyList(item.ll_outputs)]]">
             <etools-data-table-header id="listHeader" no-title>
-              <etools-data-table-column class="col-9"> PD Outputs or SSFA Expected Results </etools-data-table-column>
+              <etools-data-table-column class="col-9"> PD Outputs </etools-data-table-column>
               <etools-data-table-column class="col-3"> Current progress (Last Reported on) </etools-data-table-column>
             </etools-data-table-header>
 
@@ -269,7 +269,7 @@ class InterventionProgress extends connect(getStore())(
                 <div slot="row-data-details">
                   <div class="row-details-content flex-c">
                     <div class="row-h" hidden$="[[_countIndicatorReports(lowerResult.id)]]">
-                      No indicators on this PD Output or SSFA Expected Result
+                      No indicators on this PD Output
                     </div>
                     <template is="dom-repeat" items="[[_getIndicatorsReports(lowerResult.id)]]" as="indicatorReport">
                       <div class="row-h indicator-report">

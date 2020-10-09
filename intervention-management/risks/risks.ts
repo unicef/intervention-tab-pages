@@ -7,7 +7,6 @@ import '@unicef-polymer/etools-dropdown';
 import '@polymer/paper-icon-button/paper-icon-button';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
-import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
 import {openDialog} from '../../utils/dialog';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
@@ -25,6 +24,7 @@ import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {getIntervention} from '../../common/actions';
 import {currentInterventionPermissions} from '../../common/selectors';
+import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 
 const customStyles = html`
   <style>
@@ -41,7 +41,7 @@ const customStyles = html`
  * @customElement
  */
 @customElement('risks-element')
-export class RisksElement extends connect(getStore())(ComponentBaseMixin(LitElement)) {
+export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [buttonsStyles, gridLayoutStylesLit];
   }
@@ -66,7 +66,7 @@ export class RisksElement extends connect(getStore())(ComponentBaseMixin(LitElem
           width: 100%;
         }
       </style>
-      <etools-content-panel show-expand-btn panel-title="Risks">
+      <etools-content-panel show-expand-btn panel-title="Risks" comment-element="risks" comment-description="Risks">
         <div slot="panel-btns">
           <paper-icon-button
             ?hidden="${!this.canEditAtLeastOneField}"
@@ -131,6 +131,7 @@ export class RisksElement extends connect(getStore())(ComponentBaseMixin(LitElem
     this.riskTypes = (state.commonData && state.commonData.riskTypes) || [];
     this.data = selectRisks(state);
     this.set_canEditAtLeastOneField({risks: currentInterventionPermissions(state)?.edit.risks});
+    super.stateChanged(state);
   }
 
   getTableStyle() {

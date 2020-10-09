@@ -12,19 +12,19 @@ import {ProgrammeDocDates, InterventionDatesPermissions} from './interventionDat
 import cloneDeep from 'lodash-es/cloneDeep';
 import {selectInterventionDates, selectInterventionDatesPermissions} from './interventionDates.selectors';
 import {buttonsStyles} from '../../common/styles/button-styles';
-import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
 import {patchIntervention} from '../../common/actions';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
 import '@unicef-polymer/etools-upload/etools-upload';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 
 /**
  * @customElement
  */
 @customElement('intervention-dates')
-export class InterventionDates extends connect(getStore())(ComponentBaseMixin(FrNumbersConsistencyMixin(LitElement))) {
+export class InterventionDates extends CommentsMixin(ComponentBaseMixin(FrNumbersConsistencyMixin(LitElement))) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -48,7 +48,12 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
         }
       </style>
 
-      <etools-content-panel show-expand-btn panel-title="Programme Document Dates">
+      <etools-content-panel
+        show-expand-btn
+        panel-title="Programme Document Dates"
+        comment-element="programme-document-dates"
+        comment-description="Programme Document Dates"
+      >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
         <div class="layout-horizontal row-padding-v">
           <div class="col col-3">
@@ -164,6 +169,7 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
     this.originalData = cloneDeep(this.data);
     this.permissions = selectInterventionDatesPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
+    super.stateChanged(state);
   }
 
   private hideActivationLetter(interventionStatus: string, isContingencyPd: boolean) {

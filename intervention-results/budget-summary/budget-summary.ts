@@ -3,8 +3,6 @@ import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {elevationStyles} from '../../common/styles/elevation-styles';
 import {BudgetSummary} from './budgetSummary.models';
 import {selectBudgetSummary} from './budgetSummary.selectors';
-import {connect} from 'pwa-helpers/connect-mixin';
-import {getStore} from '../../utils/redux-store-access';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {RootState} from '../../common/models/globals.types';
 import get from 'lodash-es/get';
@@ -14,12 +12,13 @@ import {frWarningsStyles} from '../../common/styles/fr-warnings-styles';
 import {Intervention, FrsDetails} from '../../common/models/intervention.types';
 import {customIcons} from '../../common/styles/custom-icons';
 import {InfoElementStyles} from '../../common/styles/info-element-styles';
+import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 
 /**
  * @customElement
  */
 @customElement('budget-summary')
-export class BudgetSummaryEl extends connect(getStore())(FrNumbersConsistencyMixin(LitElement)) {
+export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, elevationStyles, frWarningsStyles];
   }
@@ -27,7 +26,12 @@ export class BudgetSummaryEl extends connect(getStore())(FrNumbersConsistencyMix
     // language=HTML
     return html`
       ${customIcons} ${InfoElementStyles}
-      <section class="elevation table" elevation="1">
+      <section
+        class="elevation table"
+        elevation="1"
+        comment-element="budget-summary"
+        comment-description="Budget Summary"
+      >
         <div class="data-column">
           <label class="paper-label">Budget Currency</label>
           <div>
@@ -156,6 +160,7 @@ export class BudgetSummaryEl extends connect(getStore())(FrNumbersConsistencyMix
       true
     );
     this._frsConsistencyWarning = String(warn);
+    super.stateChanged(state);
   }
 
   roundPercentage(percentage: string | number) {
