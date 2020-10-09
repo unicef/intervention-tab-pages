@@ -286,7 +286,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                   required
                   error-message="Invalid"
                   placeholder="Numerator"
-                  ?readonly="${this.isReadOnly()}"
+                  ?readonly="${this.readonly}"
                   @value-changed="${({detail}: CustomEvent) => {
                     this.indicator.target.v = detail.value;
                     this._targetChanged(this.indicator.target.v);
@@ -303,8 +303,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                   auto-validate
                   error-message="Empty or < 1"
                   placeholder="Denominator"
-                  ?readonly="${this.isReadonlyDenominator(this.interventionStatus, this.indicator.id) ||
-                  this.isReadOnly()}"
+                  ?readonly="${this.isReadonlyDenominator(this.interventionStatus, this.indicator.id) || this.readonly}"
                   @value-changed="${({detail}: CustomEvent) => {
                     this.indicator.target.d = detail.value;
                   }}"
