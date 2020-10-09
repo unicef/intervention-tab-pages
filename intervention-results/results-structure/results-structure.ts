@@ -406,10 +406,14 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
   openPdOutputDialog(): void;
   openPdOutputDialog(pdOutput: Partial<ResultLinkLowerResult>, cpOutput: number, cpoName: string): void;
   openPdOutputDialog(pdOutput?: Partial<ResultLinkLowerResult>, cpOutput?: number, cpoName?: string): void {
-    const currentOutputExists = Boolean(this.cpOutputs.find(({id}: CpOutput) => id === cpOutput));
+    const currentOutputExists = !cpOutput || Boolean(this.cpOutputs.find(({id}: CpOutput) => id === cpOutput));
+    const currentOutputs: Set<number> = new Set(
+      this.intervention.result_links.map(({cp_output}: ExpectedResult) => cp_output)
+    );
+    const filteredCPOutputs: CpOutput[] = this.cpOutputs.filter(({id}: CpOutput) => currentOutputs.has(id));
     const cpOutputs: CpOutput[] = currentOutputExists
-      ? this.cpOutputs
-      : [{id: cpOutput, name: cpoName} as CpOutput, ...this.cpOutputs];
+      ? filteredCPOutputs
+      : [{id: cpOutput, name: cpoName} as CpOutput, ...filteredCPOutputs];
     openDialog<any>({
       dialog: 'pd-output-dialog',
       dialogData: {
