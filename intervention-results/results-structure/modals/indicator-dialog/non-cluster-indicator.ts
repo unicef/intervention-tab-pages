@@ -439,7 +439,6 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
   }
 
   _indicatorChanged(indicator: Indicator) {
-    debugger;
     if (!indicator) {
       return;
     }
