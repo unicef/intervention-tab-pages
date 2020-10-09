@@ -83,7 +83,7 @@ class ClusterIndicator extends connect(getStore())(EndpointsLitMixin(IndicatorsC
                   error-message="Please select Response Plan"
                   disable-on-focus-handling
                   fit-into="etools-dialog"
-                  ?disabled="${this.readonly}"
+                  ?readonly="${this.readonly}"
                   trigger-value-change-event
                   @etools-selected-item-changed="${({detail}: CustomEvent) => {
                     this.responsePlanId = detail.selectedItem.id;
@@ -104,7 +104,7 @@ class ClusterIndicator extends connect(getStore())(EndpointsLitMixin(IndicatorsC
                   error-message="Please select Cluster"
                   disable-on-focus-handling
                   fit-into="etools-dialog"
-                  ?disabled="${this.readonly}"
+                  ?readonly="${this.readonly}"
                   trigger-value-change-event
                   @etools-selected-item-changed="${({detail}: CustomEvent) => {
                     this.clusterId = detail.selectedItem.id;
@@ -128,7 +128,7 @@ class ClusterIndicator extends connect(getStore())(EndpointsLitMixin(IndicatorsC
                 error-message="Please select Indicator"
                 disable-on-focus-handling
                 fit-into="etools-dialog"
-                ?disabled="${this.readonly}"
+                ?readonly="${this.readonly}"
                 trigger-value-change-event
                 @etools-selected-item-changed="${({detail}: CustomEvent) => {
                   this.indicator.cluster_indicator_id = detail.selectedItem?.id;
@@ -305,7 +305,7 @@ class ClusterIndicator extends connect(getStore())(EndpointsLitMixin(IndicatorsC
           error-message="Please select locations"
           disable-on-focus-handling
           fit-into="etools-dialog"
-          ?disabled="${this.readonly}"
+          ?readonly="${this.readonly}"
           trigger-value-change-event
           @etools-selected-items-changed="${({detail}: CustomEvent) => {
             const newIds = detail.selectedItems.map((i: any) => i.id);
