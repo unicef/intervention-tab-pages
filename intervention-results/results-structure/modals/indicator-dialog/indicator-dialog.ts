@@ -125,7 +125,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
                   error-message="Please select section(s)"
                   disable-on-focus-handling
                   fit-into="etools-dialog"
-                  ?disabled="${this.readonly}"
+                  ?readonly="${this.readonly}"
                   trigger-value-change-event
                   @etools-selected-item-changed="${({detail}: CustomEvent) =>
                     this.selectedItemChanged(detail, 'section')}"

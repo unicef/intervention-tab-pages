@@ -72,7 +72,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
                     option-value="id"
                     option-label="name"
                     trigger-value-change-event
-                    ?disabled="${this.readonly}"
+                    ?readonly="${this.readonly}"
                     @etools-selected-item-changed="${(event: CustomEvent) =>
                       this._onDisaggregationSelected(event, index)}"
                     disable-on-focus-handling
