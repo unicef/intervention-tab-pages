@@ -174,8 +174,8 @@ export class PdIndicator extends LitElement {
   openDeactivationDialog(indicatorId: string) {
     fireEvent(this, 'open-deactivate-confirmation', {indicatorId: indicatorId});
   }
-  openIndicatorDialog(indicator: Indicator, readOnly: boolean) {
-    fireEvent(this, 'open-edit-indicator-dialog', {indicator: indicator, readOnly: readOnly});
+  openIndicatorDialog(indicator: Indicator, readonly: boolean) {
+    fireEvent(this, 'open-edit-indicator-dialog', {indicator: indicator, readonly: readonly});
   }
 
   // Both unit and displayType are used because of inconsitencies in the db.

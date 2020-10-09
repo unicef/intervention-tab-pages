@@ -107,7 +107,7 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
             ?cluster-indicator="${indicator.cluster_indicator_id}"
             ?high-frequency-indicator="${indicator.is_high_frequency}"
             @open-edit-indicator-dialog="${(e: CustomEvent) =>
-              this.openIndicatorDialog(e.detail.indicator, e.detail.readOnly)}"
+              this.openIndicatorDialog(e.detail.indicator, e.detail.readonly)}"
             @open-deactivate-confirmation="${(e: CustomEvent) => this.openDeactivationDialog(e.detail.indicatorId)}"
           ></pd-indicator>
         `
