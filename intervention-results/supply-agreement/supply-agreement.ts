@@ -146,10 +146,6 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
   @property({type: Object})
   permissions!: {edit: {supply_items?: boolean}};
 
-  get currentInterventionId(): number | null {
-    return this.intervention?.id;
-  }
-
   getChildRowTemplate(item: any): EtoolsTableChildRow {
     const childRow = {} as EtoolsTableChildRow;
     childRow.showExpanded = false;

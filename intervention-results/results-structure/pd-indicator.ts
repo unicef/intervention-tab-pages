@@ -18,11 +18,6 @@ export class PdIndicator extends CommentsMixin(LitElement) {
   @property({type: Boolean}) readonly!: boolean;
   @property({type: Array}) locationNames: {name: string; adminLevel: string}[] = [];
   @property({type: String}) sectionClusterNames = '';
-  interventionId!: number | null;
-
-  get currentInterventionId(): number | null {
-    return this.interventionId;
-  }
 
   render() {
     return html`
@@ -182,6 +177,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
       </etools-data-table-row>
     `;
   }
+
   getSpecialElements(container: HTMLElement): CommentElementMeta[] {
     const element: HTMLElement = container.shadowRoot!.querySelector('#wrapper') as HTMLElement;
     const relatedTo: string = container.getAttribute('related-to') as string;

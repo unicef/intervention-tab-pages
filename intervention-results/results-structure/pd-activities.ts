@@ -46,10 +46,6 @@ export class PdActivities extends CommentsMixin(LitElement) {
   pdOutputId!: number;
   quarters!: InterventionQuarter[];
 
-  get currentInterventionId(): number {
-    return this.interventionId;
-  }
-
   protected render(): TemplateResult {
     // language=HTML
     return html`

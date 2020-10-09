@@ -149,30 +149,23 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
   @property({type: Array})
   partnerStaffMembers!: PartnerStaffMember[];
 
-  interventionId!: number | null;
-
-  get currentInterventionId(): number | null {
-    return this.interventionId;
-  }
-
   connectedCallback() {
     super.connectedCallback();
   }
 
   async stateChanged(state: RootState) {
-    if (!state.interventions.current) {
-      return;
-    }
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'details')) {
+    if (
+      !state.interventions.current ||
+      pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'details')
+    ) {
       return;
     }
 
+    super.stateChanged(state);
     await this.setPartnerDetailsAndPopulateDropdowns(state);
 
     this.permissions = selectPartnerDetailsPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
-    this.interventionId = state.interventions.current.id;
-    super.stateChanged(state);
   }
 
   async setPartnerDetailsAndPopulateDropdowns(state: any) {

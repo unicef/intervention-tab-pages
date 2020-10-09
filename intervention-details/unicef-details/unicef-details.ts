@@ -194,12 +194,6 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
   @property({type: Array})
   section_list!: AnyObject[];
 
-  interventionId!: number | null;
-
-  get currentInterventionId(): number | null {
-    return this.interventionId;
-  }
-
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'details')) {
       return;
@@ -211,7 +205,6 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
     if (state.interventions.current) {
       this.data = cloneDeep(selectPdUnicefDetails(state));
       this.originalData = cloneDeep(this.data);
-      this.interventionId = state.interventions.current.id;
     }
     this.setPermissions(state);
     this.populateDropdownOptions(state);

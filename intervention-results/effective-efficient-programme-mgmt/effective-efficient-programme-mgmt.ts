@@ -139,10 +139,6 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(
   @property({type: Number})
   interventionId!: number;
 
-  get currentInterventionId(): number | null {
-    return this.interventionId;
-  }
-
   connectedCallback() {
     super.connectedCallback();
   }
