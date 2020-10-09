@@ -3,9 +3,8 @@ import {LitElement} from 'lit-element';
 import {CommentsCollection} from './comments.reducer';
 import {InterventionComment} from '../../types/types';
 import {openDialog} from '../../../utils/dialog';
-import {connect} from 'pwa-helpers/connect-mixin';
-import {getStore} from '../../../utils/redux-store-access';
 import './comments-dialog';
+import {connectStore} from '../../mixins/connect-store-mixin';
 
 type MetaData = CommentElementMeta & {
   oldStyles: string;
@@ -39,7 +38,7 @@ export type CommentElementMeta = {
  * @constructor
  */
 export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
-  return class CommentsMixin extends connect(getStore())(baseClass) {
+  return class CommentsMixin extends connectStore(baseClass) {
     get commentMode(): boolean {
       return this.commentsModeEnabled;
     }

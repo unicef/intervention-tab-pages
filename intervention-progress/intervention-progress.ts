@@ -28,8 +28,6 @@ import {gridLayoutStylesPolymer} from '../common/styles/grid-layout-styles-polym
 import {isEmptyObject} from '../utils/utils';
 import {fireEvent} from '../utils/fire-custom-event';
 import {GenericObject, AnyObject, RootState} from '../common/models/globals.types';
-import {connect} from 'pwa-helpers/connect-mixin';
-import {getStore} from '../utils/redux-store-access';
 import {pageIsNotCurrentlyActive} from '../utils/common-methods';
 
 import {
@@ -46,6 +44,7 @@ import {property} from '@polymer/decorators';
 import {pmpCustomIcons} from './styles/pmp-icons';
 import {frWarningsStylesPolymer} from '../common/styles/fr-warnings-styles';
 import get from 'lodash-es/get';
+import {connectStore} from '../common/mixins/connect-store-mixin';
 declare const moment: any;
 
 /**
@@ -56,7 +55,7 @@ declare const moment: any;
  * @appliesMixin CommonMixin
  * @appliesMixin UtilsMixin
  */
-class InterventionProgress extends connect(getStore())(
+class InterventionProgress extends connectStore(
   EndpointsMixin(UtilsMixin(CommonMixin(EtoolsCurrency(PolymerElement))))
 ) {
   static get template() {
