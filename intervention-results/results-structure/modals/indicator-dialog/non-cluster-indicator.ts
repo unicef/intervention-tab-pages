@@ -391,7 +391,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
   }
 
   @property({type: Boolean}) // observer: '_readonlyChanged'
-  isReadOnlyMode = false;
+  readonlyAfterIndicatorCreation = false;
 
   @property({type: Boolean})
   readonly = false;
@@ -423,7 +423,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
   }
 
   private isReadOnly() {
-    return this.readonly || this.isReadOnlyMode;
+    return this.readonly || this.readonlyAfterIndicatorCreation;
   }
 
   private baselineIsUnknownChanged(checked: boolean) {
@@ -444,10 +444,10 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
     }
     if (!this.indicator.id) {
       this.baselineIsUnknown = false;
-      this.isReadOnlyMode = false;
+      this.readonlyAfterIndicatorCreation = false;
     } else {
       this.baselineIsUnknown = !indicator.baseline || this._isEmptyExcept0(indicator.baseline.v as any);
-      this.isReadOnlyMode = true;
+      this.readonlyAfterIndicatorCreation = true;
     }
   }
 
