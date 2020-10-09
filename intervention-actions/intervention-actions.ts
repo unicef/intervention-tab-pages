@@ -160,13 +160,11 @@ export class InterventionActions extends LitElement {
     if (!(await this.confirmAction(action))) {
       return;
     }
-    console.log(ACTIONS_WITH_INPUT.includes(action) ? console.log('true') : console.log('false'));
     const body = ACTIONS_WITH_INPUT.includes(action) ? await this.confirmActions(action) : {};
     if (body === null) {
       return;
     }
-    console.log(body);
-    return;
+
     const endpoint = getEndpoint(interventionEndpoints.interventionAction, {
       interventionId: this.interventionId,
       action
@@ -219,7 +217,6 @@ export class InterventionActions extends LitElement {
       if (!confirmed || !response) {
         return null;
       }
-      console.log(response);
       return {
         id: response.id,
         end: response.end,
@@ -241,6 +238,9 @@ export class InterventionActions extends LitElement {
         return this.openCommentDialog(action);
       case 'terminate':
         return this.openTermiantionDialog();
+      // just to bypass lint warning
+      default:
+        return;
     }
   }
 }

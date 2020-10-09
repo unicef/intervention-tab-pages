@@ -162,12 +162,9 @@ export class PdTermination extends ComponentBaseMixin(LitElement) {
   }
 
   _uploadFinished(e: CustomEvent) {
-    console.log('here');
-    console.log(e);
     if (e.detail.success) {
       const uploadResponse = e.detail.success;
       this.termination.attachment_notice = uploadResponse.id;
-      console.log('uplaod finished', uploadResponse.id);
       this.termination = {...this.termination};
     }
   }
@@ -182,8 +179,6 @@ export class PdTermination extends ComponentBaseMixin(LitElement) {
   }
 
   confirmReason(): void {
-    console.log('what the fuck');
-    console.log(this.termination.attachment_notice);
     fireEvent(this, 'dialog-closed', {
       confirmed: true,
       response: {
