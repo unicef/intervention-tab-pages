@@ -178,7 +178,7 @@ export class PdActivities extends LitElement {
     return `${Number(percent.toFixed(2))} %`;
   }
 
-  openDialog(activity?: InterventionActivity, readOnly?: boolean): void {
+  openDialog(activity?: InterventionActivity, readonly?: boolean): void {
     openDialog<any>({
       dialog: 'activity-data-dialog',
       dialogData: {
@@ -186,7 +186,7 @@ export class PdActivities extends LitElement {
         interventionId: this.interventionId,
         pdOutputId: this.pdOutputId,
         quarters: this.quarters,
-        readOnly: readOnly
+        readonly: readonly
       }
     });
   }

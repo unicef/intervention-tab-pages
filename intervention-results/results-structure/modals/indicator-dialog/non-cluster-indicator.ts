@@ -176,7 +176,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                       auto-validate
                       error-message="Invalid number"
                       placeholder="&#8212;"
-                      ?disabled="${this.baselineIsUnknown || this.readOnly}"
+                      ?disabled="${this.baselineIsUnknown || this.readonly}"
                       @value-changed="${({detail}: CustomEvent) => {
                         this.indicator.baseline.v = detail.value;
                       }}"
@@ -193,7 +193,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                       auto-validate
                       error-message="Invalid number"
                       placeholder="&#8212;"
-                      ?disabled="${this.baselineIsUnknown || this.readOnly}"
+                      ?disabled="${this.baselineIsUnknown || this.readonly}"
                       @value-changed="${({detail}: CustomEvent) => {
                         this.indicator.baseline.v = detail.value;
                         this._baselineChanged(this.indicator.baseline.v);
@@ -252,7 +252,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                   auto-validate
                   error-message="Invalid"
                   placeholder="Numerator"
-                  ?disabled="${this.baselineIsUnknown || this.readOnly}"
+                  ?disabled="${this.baselineIsUnknown || this.readonly}"
                   @value-changed="${({detail}: CustomEvent) => {
                     this.indicator.baseline.v = detail.value;
                     this._baselineChanged(this.indicator.baseline.v);
@@ -268,7 +268,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                   auto-validate
                   error-message="Invalid"
                   placeholder="Denominator"
-                  ?disabled="${this.baselineIsUnknown || this.readOnly}"
+                  ?disabled="${this.baselineIsUnknown || this.readonly}"
                   @value-changed="${({detail}: CustomEvent) => {
                     this.indicator.baseline.d = detail.value;
                   }}"
@@ -395,7 +395,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
   isReadOnlyMode = false;
 
   @property({type: Boolean})
-  readOnly = false;
+  readonly = false;
 
   @property({type: Array})
   locationOptions!: [];
@@ -424,7 +424,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
   }
 
   private isReadOnly() {
-    return this.readOnly || this.isReadOnlyMode;
+    return this.readonly || this.isReadOnlyMode;
   }
 
   private baselineIsUnknownChanged(checked: boolean) {

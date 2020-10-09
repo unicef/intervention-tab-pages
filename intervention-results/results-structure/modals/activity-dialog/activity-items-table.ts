@@ -26,7 +26,7 @@ export class ActivityItemsTable extends LitElement {
   }
 
   @property() activityItems: Partial<InterventionActivityItem>[] = [];
-  @property() readOnly: boolean | undefined = false;
+  @property() readonly: boolean | undefined = false;
 
   protected render(): TemplateResult {
     // language=html
@@ -45,7 +45,7 @@ export class ActivityItemsTable extends LitElement {
             .activityItem="${item}"
             @item-changed="${({detail}: CustomEvent) => this.updateActivityItem(index, detail)}"
             @remove-item="${() => this.updateActivityItem(index, null)}"
-            .readOnly="${this.readOnly}"
+            .readonly="${this.readonly}"
           ></activity-item-row>`
       )}
 

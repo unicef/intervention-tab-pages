@@ -31,12 +31,12 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
   @property() loadingInProcess = false;
   @property() isEditDialog = true;
   @property() useInputLevel = false;
-  @property() readOnly: boolean | undefined = false;
+  @property() readonly: boolean | undefined = false;
   quarters: ActivityTimeFrames[] = [];
 
-  set dialogData({activityId, pdOutputId, interventionId, quarters, readOnly}: any) {
+  set dialogData({activityId, pdOutputId, interventionId, quarters, readonly}: any) {
     this.quarters = quarters;
-    this.readOnly = readOnly;
+    this.readonly = readonly;
     if (!activityId) {
       this.data = {} as InterventionActivity;
       this.isEditDialog = false;
@@ -112,7 +112,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
         @confirm-btn-clicked="${() => this.processRequest()}"
         @close="${this.onClose}"
         .okBtnText="Save"
-        .hideConfirmBtn="${this.readOnly}"
+        .hideConfirmBtn="${this.readonly}"
         no-padding
       >
         <div class="container layout vertical">
@@ -125,7 +125,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
             required
             ?invalid="${this.errors.name}"
             .errorMessage="${(this.errors.name && this.errors.name[0]) || 'This field is required'}"
-            ?readonly="${this.readOnly}"
+            ?readonly="${this.readonly}"
             @focus="${() => this.resetFieldError('name')}"
             @click="${() => this.resetFieldError('name')}"
           ></paper-input>
@@ -138,7 +138,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
             @value-changed="${({detail}: CustomEvent) => this.updateModelValue('context_details', detail.value)}"
             ?invalid="${this.errors.context_details}"
             .errorMessage="${this.errors.context_details && this.errors.context_details[0]}"
-            ?readonly="${this.readOnly}"
+            ?readonly="${this.readonly}"
             @focus="${() => this.resetFieldError('context_details')}"
             @click="${() => this.resetFieldError('context_details')}"
           ></paper-textarea>
@@ -149,7 +149,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
                   <etools-currency-amount-input
                     class="col-2"
                     label="CSO Cash Budget"
-                    ?readonly="${this.readOnly}"
+                    ?readonly="${this.readonly}"
                     .value="${this.editedData.cso_cash}"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue('cso_cash', detail.value)}"
                   ></etools-currency-amount-input>
@@ -157,7 +157,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
                   <etools-currency-amount-input
                     class="col-2"
                     label="Unicef Cash Budget"
-                    ?readonly="${this.readOnly}"
+                    ?readonly="${this.readonly}"
                     .value="${this.editedData.unicef_cash}"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue('unicef_cash', detail.value)}"
                   ></etools-currency-amount-input>
@@ -183,7 +183,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
           </div>
 
           <paper-toggle-button
-            ?disabled="${this.readOnly}"
+            ?disabled="${this.readonly}"
             ?checked="${this.useInputLevel}"
             @iron-change="${this.inputLevelChange}"
             class="col-3"
@@ -194,7 +194,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
           <activity-items-table
             ?hidden="${!this.useInputLevel}"
             .activityItems="${this.editedData.items || []}"
-            .readOnly="${this.readOnly}"
+            .readonly="${this.readonly}"
             @activity-items-changed="${({detail}: CustomEvent) => {
               this.editedData.items = detail;
               this.requestUpdate();
@@ -204,7 +204,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
           <activity-time-frames
             .quarters="${this.quarters}"
             .selectedTimeFrames="${this.editedData.time_frames || []}"
-            .readOnly="${this.readOnly}"
+            .readonly="${this.readonly}"
             @time-frames-changed="${({detail}: CustomEvent) => {
               this.editedData.time_frames = detail;
               this.requestUpdate();

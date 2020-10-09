@@ -147,7 +147,7 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
     }
   }
 
-  openIndicatorDialog(indicator?: Indicator, readOnly?: boolean) {
+  openIndicatorDialog(indicator?: Indicator, readonly?: boolean) {
     openDialog<IndicatorDialogData>({
       dialog: 'indicator-dialog',
       dialogData: {
@@ -156,7 +156,7 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
         locationOptions: this.indicatorLocationOptions,
         llResultId: this.pdOutputId,
         prpServerOn: this.prpServerIsOn()!,
-        readOnly: readOnly
+        readonly: readonly
       }
     });
   }

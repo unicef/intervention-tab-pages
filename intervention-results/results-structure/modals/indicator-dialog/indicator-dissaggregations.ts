@@ -54,7 +54,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
               <div class="actions">
                 <paper-icon-button
                   class="action delete"
-                  ?disabled="${this.readOnly}"
+                  ?disabled="${this.readonly}"
                   @click="${(e: CustomEvent) => this._openDeleteConfirmation(e, index)}"
                   data-args="${index}"
                   icon="cancel"
@@ -72,7 +72,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
                     option-value="id"
                     option-label="name"
                     trigger-value-change-event
-                    ?disabled="${this.readOnly}"
+                    ?disabled="${this.readonly}"
                     @etools-selected-item-changed="${(event: CustomEvent) =>
                       this._onDisaggregationSelected(event, index)}"
                     disable-on-focus-handling
@@ -102,7 +102,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
         <paper-button
           class="secondary-btn"
           @click="${this._addNewDisaggregation}"
-          ?hidden="${this._maxDisaggregations(this.data.length) || this.readOnly}"
+          ?hidden="${this._maxDisaggregations(this.data.length) || this.readonly}"
           title="Add Disaggregation"
           >ADD DISAGGREGATION
         </paper-button>
@@ -114,7 +114,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
   preDefinedDisaggregtions!: Disaggregation[];
 
   @property({type: Boolean})
-  readOnly!: boolean | undefined;
+  readonly!: boolean | undefined;
 
   connectedCallback() {
     super.connectedCallback();

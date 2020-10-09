@@ -26,7 +26,7 @@ export class ActivityItemRow extends LitElement {
 
   @property() activityItem: Partial<InterventionActivityItem> = {};
   @property() invalid = false;
-  @property() readOnly: boolean | undefined = false;
+  @property() readonly: boolean | undefined = false;
 
   protected render(): TemplateResult {
     return this.activityItem
@@ -39,7 +39,7 @@ export class ActivityItemRow extends LitElement {
                 no-label-float
                 placeholder="Enter description"
                 ?invalid="${this.invalid}"
-                ?readonly="${this.readOnly}"
+                ?readonly="${this.readonly}"
                 @value-changed="${({detail}: CustomEvent) => this.updateField('name', detail.value)}"
                 @blur="${() => this.onBlur()}"
                 @focus="${() => (this.invalid = false)}"
@@ -50,7 +50,7 @@ export class ActivityItemRow extends LitElement {
               <etools-currency-amount-input
                 .value="${this.activityItem.cso_cash || 0}"
                 no-label-float
-                ?readonly="${this.readOnly}"
+                ?readonly="${this.readonly}"
                 @value-changed="${({detail}: CustomEvent) => this.updateField('cso_cash', detail.value)}"
                 @blur="${() => this.onBlur()}"
               ></etools-currency-amount-input>
@@ -59,13 +59,13 @@ export class ActivityItemRow extends LitElement {
               <etools-currency-amount-input
                 .value="${this.activityItem.unicef_cash || 0}"
                 no-label-float
-                ?readonly="${this.readOnly}"
+                ?readonly="${this.readonly}"
                 @value-changed="${({detail}: CustomEvent) => this.updateField('unicef_cash', detail.value)}"
                 @blur="${() => this.onBlur()}"
               ></etools-currency-amount-input>
             </div>
             <div>
-              <iron-icon icon="close" ?disabled="${this.readOnly}" @click="${() => this.onRemove()}"></iron-icon>
+              <iron-icon icon="close" ?disabled="${this.readonly}" @click="${() => this.onRemove()}"></iron-icon>
             </div>
             <div class="grid-cell end">
               ${getTotal(this.activityItem.cso_cash || 0, this.activityItem.unicef_cash || 0)}

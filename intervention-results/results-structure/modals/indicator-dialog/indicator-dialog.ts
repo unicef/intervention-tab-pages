@@ -92,7 +92,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
         ok-btn-text="Save"
         keep-dialog-open
         .disableConfirmBtn="${this.disableConfirmBtn}"
-        .hideConfirmBtn="${this.readOnly}"
+        .hideConfirmBtn="${this.readonly}"
         spinner-text="${this.spinnerText}"
       >
         <etools-tabs-lit
@@ -125,7 +125,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
                   error-message="Please select section(s)"
                   disable-on-focus-handling
                   fit-into="etools-dialog"
-                  ?disabled="${this.readOnly}"
+                  ?disabled="${this.readonly}"
                   trigger-value-change-event
                   @etools-selected-item-changed="${({detail}: CustomEvent) =>
                     this.selectedItemChanged(detail, 'section')}"
@@ -135,7 +135,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
             </div>
             <div class="row-h">
               <paper-toggle-button
-                ?disabled="${this.readOnly || this._clusterToggleIsDisabled()}"
+                ?disabled="${this.readonly || this._clusterToggleIsDisabled()}"
                 ?checked="${this.isCluster}"
                 @iron-change="${(e: CustomEvent) => this.isClusterChanged(e)}"
               ></paper-toggle-button>
@@ -148,7 +148,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
                     .indicator="${this.data}"
                     .locationOptions="${this.locationOptions}"
                     .interventionStatus="${this.interventionStatus}"
-                    .readOnly="${this.readOnly}"
+                    .readonly="${this.readonly}"
                   ></non-cluster-indicator>`
                 : html``}
               ${this.isCluster
@@ -156,7 +156,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
                     id="clusterIndicatorEl"
                     .indicator="${this.data}"
                     .locationOptions="${this.locationOptions}"
-                    .readOnly="${this.readOnly}"
+                    .readonly="${this.readonly}"
                     @prp-disaggregations-changed="${({detail}: CustomEvent) =>
                       this.displayClusterDisaggregations(detail)}"
                   ></cluster-indicator>`
@@ -172,7 +172,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
               ? html` <indicator-dissaggregations
                   id="indicatorDisaggregations"
                   .data="${this.disaggregations}"
-                  .readOnly="${this.readOnly}"
+                  .readonly="${this.readonly}"
                   @add-new-disaggreg="${({detail}: CustomEvent) => {
                     this._updateScroll();
                     this.disaggregations = detail;
@@ -237,7 +237,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   isEditRecord!: boolean;
 
   @property({type: Boolean})
-  readOnly: boolean | undefined = false;
+  readonly: boolean | undefined = false;
 
   protected llResultId!: string; /** aka pdOutputId */
   private prpServerOn!: boolean;
@@ -250,7 +250,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
     this.prpServerOn = data.prpServerOn;
     this.currentUser = getStore().getState().user.data;
     this.interventionStatus = getStore().getState().interventions.current.status;
-    this.readOnly = data.readOnly;
+    this.readonly = data.readonly;
 
     if (!this.data.id) {
       this.preselectSectionAndLocation();
