@@ -142,10 +142,6 @@ export class PdAmendments extends CommentsMixin(LitElement) {
   @property({type: Object})
   intervention!: AnyObject;
 
-  get currentInterventionId(): number | null {
-    return this.intervention?.id;
-  }
-
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'management')) {
       return;

@@ -22,7 +22,7 @@ export type CommentElementMeta = {
 /**
  * - !CommentsMixin uses connect mixin, so don't use it in your component!
  * - !If you use stateChanged inside your component remember to call super.stateChanged() at the end of your method!
- * - !You need to provide currentInterventionId getter inside your component!
+ * - !For the firstUpdated method all is the same as for stateChanged!
  *
  * Use several attributes:
  *
@@ -44,10 +44,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
       return this.commentsModeEnabled;
     }
 
-    get currentInterventionId(): number | null {
-      return null;
-    }
-
+    private currentInterventionId: number | null = null;
     private comments: CommentsCollection = {};
     private metaDataCollection: MetaData[] = [];
     private commentsModeEnabled = false;
@@ -63,6 +60,8 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
     stateChanged(state: RootState) {
       const commentsState = state.commentsData;
+      this.currentInterventionId =
+        Number(state.app.routeDetails.params?.interventionId) || state.interventions?.current?.id || null;
       if (!commentsState || !this.currentInterventionId) {
         return;
       }

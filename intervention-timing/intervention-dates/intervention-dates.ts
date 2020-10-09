@@ -154,12 +154,6 @@ export class InterventionDates extends CommentsMixin(ComponentBaseMixin(FrNumber
   @property({type: Object})
   permissions!: Permission<InterventionDatesPermissions>;
 
-  interventionId!: number | null;
-
-  get currentInterventionId(): number | null {
-    return this.interventionId;
-  }
-
   connectedCallback() {
     super.connectedCallback();
   }
@@ -175,7 +169,6 @@ export class InterventionDates extends CommentsMixin(ComponentBaseMixin(FrNumber
     this.originalData = cloneDeep(this.data);
     this.permissions = selectInterventionDatesPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
-    this.interventionId = state.interventions.current.id;
     super.stateChanged(state);
   }
 

@@ -131,12 +131,6 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
   @property({type: Boolean})
   autoValidate = false;
 
-  interventionId!: number | null;
-
-  get currentInterventionId(): number | null {
-    return this.interventionId;
-  }
-
   connectedCallback() {
     super.connectedCallback();
   }
@@ -165,7 +159,6 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
     this.data = selectDocumentDetails(state);
     this.originalData = cloneDeep(this.data);
     this.setPermissions(state);
-    this.interventionId = state.interventions.current.id;
     super.stateChanged(state);
   }
 

@@ -138,10 +138,6 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
   @property({type: Object})
   frsDetails!: FrsDetails;
 
-  get currentInterventionId(): number | null {
-    return this.intervention?.id;
-  }
-
   connectedCallback() {
     super.connectedCallback();
   }

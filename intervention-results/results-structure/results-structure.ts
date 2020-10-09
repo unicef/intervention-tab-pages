@@ -133,9 +133,6 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
       (linkA, linkB) => Number(Boolean(linkB.cp_output)) - Number(Boolean(linkA.cp_output))
     );
   }
-  get currentInterventionId(): number | null {
-    return this.interventionId;
-  }
   @property() interventionId!: number | null;
   @property() interventionStatus!: string;
 
@@ -338,7 +335,6 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                       <pd-indicators
                         ?hidden="${!this.showIndicators}"
                         .indicators="${pdOutput.applied_indicators}"
-                        .interventionId="${this.interventionId}"
                         .pdOutputId="${pdOutput.id}"
                         .readonly="${!this.permissions.edit.result_links || this.commentMode}"
                         .showInactiveIndicators="${this.showInactiveIndicators}"
