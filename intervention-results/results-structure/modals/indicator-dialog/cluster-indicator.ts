@@ -83,6 +83,7 @@ class ClusterIndicator extends connect(getStore())(EndpointsLitMixin(IndicatorsC
                   error-message="Please select Response Plan"
                   disable-on-focus-handling
                   fit-into="etools-dialog"
+                  ?readonly="${this.readonly}"
                   trigger-value-change-event
                   @etools-selected-item-changed="${({detail}: CustomEvent) => {
                     this.responsePlanId = detail.selectedItem.id;
@@ -103,6 +104,7 @@ class ClusterIndicator extends connect(getStore())(EndpointsLitMixin(IndicatorsC
                   error-message="Please select Cluster"
                   disable-on-focus-handling
                   fit-into="etools-dialog"
+                  ?readonly="${this.readonly}"
                   trigger-value-change-event
                   @etools-selected-item-changed="${({detail}: CustomEvent) => {
                     this.clusterId = detail.selectedItem.id;
@@ -126,6 +128,7 @@ class ClusterIndicator extends connect(getStore())(EndpointsLitMixin(IndicatorsC
                 error-message="Please select Indicator"
                 disable-on-focus-handling
                 fit-into="etools-dialog"
+                ?readonly="${this.readonly}"
                 trigger-value-change-event
                 @etools-selected-item-changed="${({detail}: CustomEvent) => {
                   this.indicator.cluster_indicator_id = detail.selectedItem?.id;
@@ -145,6 +148,7 @@ class ClusterIndicator extends connect(getStore())(EndpointsLitMixin(IndicatorsC
             label="Numerator Label"
             .value="${this.indicator.numerator_label}"
             placeholder="&#8212;"
+            ?readonly="${this.readonly}"
             @value-changed="${({detail}: CustomEvent) => {
               this.indicator.numerator_label = detail.value;
             }}"
@@ -157,6 +161,7 @@ class ClusterIndicator extends connect(getStore())(EndpointsLitMixin(IndicatorsC
             label="Denominator Label"
             .value="${this.indicator.denominator_label}"
             placeholder="&#8212;"
+            ?readonly="${this.readonly}"
             @value-changed="${({detail}: CustomEvent) => {
               this.indicator.denominator_label = detail.value;
             }}"
@@ -177,6 +182,7 @@ class ClusterIndicator extends connect(getStore())(EndpointsLitMixin(IndicatorsC
                 .pattern="${this.digitsNotStartingWith0Pattern}"
                 auto-validate
                 error-message="Invalid"
+                ?readonly="${this.readonly}"
                 @value-changed="${({detail}: CustomEvent) => {
                   this.indicator.baseline.v = detail.value;
                 }}"
@@ -191,6 +197,7 @@ class ClusterIndicator extends connect(getStore())(EndpointsLitMixin(IndicatorsC
                 .pattern="${this.digitsNotStartingWith0Pattern}"
                 auto-validate
                 error-message="Invalid"
+                ?readonly="${this.readonly}"
                 @value-changed="${({detail}: CustomEvent) => {
                   this.indicator.baseline.d = detail.value;
                 }}"
@@ -208,6 +215,7 @@ class ClusterIndicator extends connect(getStore())(EndpointsLitMixin(IndicatorsC
                 auto-validate
                 required
                 error-message="Invalid"
+                ?readonly="${this.readonly}"
                 @value-changed="${({detail}: CustomEvent) => {
                   this.indicator.target.v = detail.value;
                   this._targetChanged(this.indicator.target.v);
@@ -246,6 +254,7 @@ class ClusterIndicator extends connect(getStore())(EndpointsLitMixin(IndicatorsC
                   .pattern="${this.numberPattern}"
                   auto-validate
                   error-message="Invalid number"
+                  ?readonly="${this.readonly}"
                   @value-changed="${({detail}: CustomEvent) => {
                     this.indicator.baseline.v = detail.value;
                     this._baselineChanged(this.indicator.baseline.v);
@@ -264,6 +273,7 @@ class ClusterIndicator extends connect(getStore())(EndpointsLitMixin(IndicatorsC
                   .pattern="${this.numberPattern}"
                   auto-validate
                   error-message="Please add a valid target"
+                  ?readonly="${this.readonly}"
                   @value-changed="${({detail}: CustomEvent) => {
                     this.indicator.target.v = detail.value;
                   }}"
@@ -295,6 +305,7 @@ class ClusterIndicator extends connect(getStore())(EndpointsLitMixin(IndicatorsC
           error-message="Please select locations"
           disable-on-focus-handling
           fit-into="etools-dialog"
+          ?readonly="${this.readonly}"
           trigger-value-change-event
           @etools-selected-items-changed="${({detail}: CustomEvent) => {
             const newIds = detail.selectedItems.map((i: any) => i.id);
@@ -331,6 +342,9 @@ class ClusterIndicator extends connect(getStore())(EndpointsLitMixin(IndicatorsC
 
   @property({type: String})
   responsePlanId!: string | undefined;
+
+  @property({type: Boolean})
+  readonly!: boolean | undefined;
 
   private _cluster!: AnyObject;
   @property({type: Object})

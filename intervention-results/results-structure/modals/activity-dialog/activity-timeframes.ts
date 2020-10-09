@@ -75,6 +75,7 @@ export class ActivityTimeFrames extends LitElement {
 
   @property() private _timeFrames: [string, ActivityTime[]][] = [];
   @property() selectedTimeFrames: number[] = [];
+  @property() readonly: boolean | undefined = false;
 
   protected render(): TemplateResult {
     return html`
@@ -107,6 +108,9 @@ export class ActivityTimeFrames extends LitElement {
   }
 
   toggleFrame(frameId: number): void {
+    if (this.readonly) {
+      return;
+    }
     const exists: boolean = this.selectedTimeFrames.includes(frameId);
     if (exists) {
       fireEvent(

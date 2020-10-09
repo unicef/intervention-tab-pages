@@ -13,7 +13,7 @@ export class AreYouSure extends LitElement {
       </style>
       <etools-dialog
         id="infoDialog"
-        size="sm"
+        size="md"
         no-padding
         opened
         theme="confirmation"

@@ -104,31 +104,30 @@ export class PdIndicator extends CommentsMixin(LitElement) {
         <div slot="row-data" class="layout-horizontal align-items-center editable-row">
           <!--    Indicator name    -->
           <div class="text flex-auto">
-            ${this.getIndicatorDisplayType(this.indicator)}
-            ${this.addInactivePrefix(this.indicator)}
-            ${(this.indicator.indicator ? this.indicator.indicator.title : this.indicator.cluster_indicator_title) || '-'}
+            ${this.getIndicatorDisplayType(this.indicator)} ${this.addInactivePrefix(this.indicator)}
+            ${(this.indicator.indicator ? this.indicator.indicator.title : this.indicator.cluster_indicator_title) ||
+            '-'}
           </div>
 
           <!--    Baseline    -->
           <div class="text number-data flex-none">
-            ${this._displayBaselineOrTarget(
-              this.indicator.baseline,
-              this.indicator
-            )}
+            ${this._displayBaselineOrTarget(this.indicator.baseline, this.indicator)}
           </div>
 
           <!--    Target    -->
           <div class="text number-data flex-none">
-            ${this._displayBaselineOrTarget(
-              this.indicator.target,
-              this.indicator
-            )}
+            ${this._displayBaselineOrTarget(this.indicator.target, this.indicator)}
           </div>
           <div class="hover-block">
             <paper-icon-button
               icon="icons:create"
               ?hidden="${!this.indicator.is_active || this.readonly}"
-              @click="${() => this.openIndicatorDialog(this.indicator)}"
+              @click="${() => this.openIndicatorDialog(this.indicator, false)}"
+            ></paper-icon-button>
+            <paper-icon-button
+              icon="icons:visibility"
+              @click="${() => this.openIndicatorDialog(this.indicator, true)}"
+              ?hidden="${!this.readonly}"
             ></paper-icon-button>
             <paper-icon-button
               icon="icons:block"
@@ -187,8 +186,8 @@ export class PdIndicator extends CommentsMixin(LitElement) {
   openDeactivationDialog(indicatorId: string) {
     fireEvent(this, 'open-deactivate-confirmation', {indicatorId: indicatorId});
   }
-  openIndicatorDialog(indicator: Indicator) {
-    fireEvent(this, 'open-edit-indicator-dialog', {indicator: indicator});
+  openIndicatorDialog(indicator: Indicator, readonly: boolean) {
+    fireEvent(this, 'open-edit-indicator-dialog', {indicator: indicator, readonly: readonly});
   }
 
   // Both unit and displayType are used because of inconsitencies in the db.
