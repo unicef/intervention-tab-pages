@@ -324,7 +324,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
       <div class="unknown">
         <paper-checkbox
           ?checked="${this.baselineIsUnknown}"
-          ?disabled="${this.isReadOnly()}"
+          ?disabled="${this.readonly}"
           @checked-changed="${({target}: CustomEvent) =>
             this.baselineIsUnknownChanged(Boolean((target as PaperCheckboxElement).checked))}"
           >Unknown</paper-checkbox
