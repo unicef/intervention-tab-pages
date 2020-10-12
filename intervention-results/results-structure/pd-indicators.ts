@@ -3,7 +3,6 @@ import {ResultStructureStyles} from './results-structure.styles';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import '@polymer/iron-icons';
 import {Indicator, Intervention} from '../../common/models/intervention.types';
-import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
 import {Disaggregation, LocationObject, Section, RootState} from '../../common/models/globals.types';
 import './modals/indicator-dialog/indicator-dialog';
@@ -23,9 +22,10 @@ import {openDialog} from '../../utils/dialog';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import './pd-indicator';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {connectStore} from '../../common/mixins/connect-store-mixin';
 
 @customElement('pd-indicators')
-export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitElement)) {
+export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)) {
   static get styles(): CSSResultArray {
     // language=CSS
     return [

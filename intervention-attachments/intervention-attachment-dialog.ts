@@ -10,12 +10,12 @@ import '@unicef-polymer/etools-dialog';
 import {GenericObject, IdAndName} from '../common/models/globals.types';
 import {getStore} from '../utils/redux-store-access';
 import {updateCurrentIntervention} from '../common/actions';
-import {connect} from 'pwa-helpers/connect-mixin';
 import {validateRequiredFields} from '../utils/validation-helper';
 import {sharedStyles} from '../common/styles/shared-styles-lit';
+import {connectStore} from '../common/mixins/connect-store-mixin';
 
 @customElement('intervention-attachment-dialog')
-export class InterventionAttachmentDialog extends connect(getStore())(LitElement) {
+export class InterventionAttachmentDialog extends connectStore(LitElement) {
   static get styles(): CSSResultArray {
     // language=css
     return [
