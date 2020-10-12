@@ -71,7 +71,7 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
         dialog-title="Attachment"
         @confirm-btn-clicked="${() => this.processRequest()}"
         @close="${this.onClose}"
-        .okBtnText="Save"
+        ok-btn-text="Save"
         no-padding
       >
         <etools-loading ?active="${this.savingInProcess}"></etools-loading>

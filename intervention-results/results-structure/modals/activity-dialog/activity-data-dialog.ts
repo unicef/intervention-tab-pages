@@ -111,7 +111,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
         dialog-title="Activity Data"
         @confirm-btn-clicked="${() => this.processRequest()}"
         @close="${this.onClose}"
-        .okBtnText="Save"
+        ok-btn-text="Save"
         .hideConfirmBtn="${this.readonly}"
         no-padding
       >
