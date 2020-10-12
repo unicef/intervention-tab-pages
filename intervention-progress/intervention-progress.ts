@@ -225,7 +225,10 @@ class InterventionProgress extends connect(getStore())(
               value="[[_getOverallPdStatusDate(latestAcceptedPr.review_date)]]"
               no-placeholder
             >
-              <intervention-report-status status="[[latestAcceptedPr.review_overall_status]]" slot="prefix"></intervention-report-status>
+              <intervention-report-status
+                status="[[latestAcceptedPr.review_overall_status]]"
+                slot="prefix"
+              ></intervention-report-status>
             </etools-form-element-wrapper-2>
           </div>
         </div>
@@ -262,7 +265,9 @@ class InterventionProgress extends connect(getStore())(
                 <div slot="row-data">
                   <span class="col-data col-9"> [[lowerResult.title]] </span>
                   <span class="col-data col-3">
-                    <intervention-report-status status="[[_getLowerResultStatus(lowerResult.id)]]"></intervention-report-status>
+                    <intervention-report-status
+                      status="[[_getLowerResultStatus(lowerResult.id)]]"
+                    ></intervention-report-status>
                     <span class="lower-result-status-date">[[_getLowerResultStatusDate(lowerResult.id)]]</span>
                   </span>
                 </div>
