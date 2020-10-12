@@ -8,9 +8,9 @@ export type DataComparisonOptions = {
 
 export function simplifyValue(value: any): any {
   if (Array.isArray(value)) {
-    return value.map((obj: any) => (obj && obj.hasOwnProperty('id') && obj.id) || obj);
+    return value.map((obj: any) => (obj && Object.hasOwnProperty.call(obj, 'id') && obj.id) || obj);
   }
-  if (value && value.hasOwnProperty('id')) {
+  if (value && Object.hasOwnProperty.call(value, 'id')) {
     return value.id;
   }
   return value;
