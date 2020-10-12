@@ -83,9 +83,6 @@ export class PdIndicator extends CommentsMixin(LitElement) {
           max-height: 220px;
           overflow: auto;
         }
-        .hover-block {
-          background-color: var(--blue-background) !important;
-        }
         etools-data-table-row {
           --list-row-collapse-wrapper: {
             padding: 0;
@@ -97,6 +94,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
         }
       </style>
       <etools-data-table-row
+        secondary-bg-on-hover
         related-to="indicator-${this.indicator.id}"
         related-to-description="Indicator - ${this.indicator.indicator?.title}"
         comments-container

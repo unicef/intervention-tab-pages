@@ -52,14 +52,13 @@ export class PdActivities extends CommentsMixin(LitElement) {
       <style>
         ${sharedStyles} etools-data-table-row {
           --list-bg-color: var(--green-background);
-          --list-second-bg-color: var(--green-background);
           --list-row-collapse-wrapper: {
             padding: 0 !important;
             background-color: var(--green-background-dark);
             border-top: 1px solid var(--main-border-color);
           }
           --list-row-wrapper: {
-            background-color: var(--green-background) !important;
+            background-color: var(--green-background);
             min-height: 55px;
             border: 1px solid var(--main-border-color) !important;
             border-bottom: none !important;
@@ -68,9 +67,6 @@ export class PdActivities extends CommentsMixin(LitElement) {
             padding: 0px 0px !important;
             margin-right: 16px !important;
           }
-        }
-        .editable-row .hover-block {
-          background-color: var(--green-background) !important;
         }
       </style>
 
@@ -88,6 +84,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
       ${this.activities.map(
         (activity: InterventionActivity) => html`
           <etools-data-table-row
+            secondary-bg-on-hover
             related-to="activity-${activity.id}"
             related-to-description=" Activity - ${activity.name}"
             comments-container
