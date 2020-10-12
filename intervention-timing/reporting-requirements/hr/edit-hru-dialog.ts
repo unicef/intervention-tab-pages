@@ -199,6 +199,13 @@ class EditHruDialog extends connectStore(PolymerElement) {
   }
 
   _addToList() {
+    if (!this.selectedDate) {
+      fireEvent(this, 'toast', {
+        text: 'Please select a date.',
+        showCloseBtn: true
+      });
+      return;
+    }
     const alreadySelected = this.hruData.find((d: any) => d.end_date === this.selectedDate);
     if (alreadySelected) {
       fireEvent(this, 'toast', {
