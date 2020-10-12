@@ -220,6 +220,7 @@ class InterventionReports extends connectStore(PaginationMixin(CommonMixin(Endpo
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'reports')) {
       return;
     }
+    this.interventionId = get(state, 'app.routeDetails.params.interventionId');
     this.endStateChanged(state);
   }
 
@@ -231,7 +232,7 @@ class InterventionReports extends connectStore(PaginationMixin(CommonMixin(Endpo
     _page: string,
     qParamsData: any
   ) {
-    if (isEmptyObject(currentUser) || this._queryParamsNotInitialized(qParamsData) || isEmptyObject(prpCountries)) {
+    if (isEmptyObject(currentUser) || this._queryParamsNotInitialized(qParamsData) || isEmptyObject(prpCountries) || !interventionId) {
       return;
     }
 
