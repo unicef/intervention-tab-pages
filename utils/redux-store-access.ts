@@ -10,7 +10,7 @@ export const setStore = (parentAppReduxStore: Store<RootState>) => {
   if (storeResolver) {
     storeResolver(store);
     storePromise = null;
-    storePromise = null;
+    storeResolver = null;
   }
 };
 
