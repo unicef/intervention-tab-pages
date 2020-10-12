@@ -25,10 +25,6 @@ export class ActivityTimeframes extends CommentsMixin(LitElement) {
 
   @property() intervention: Intervention | null = null;
 
-  get currentInterventionId(): number | null {
-    return this.intervention?.id || null;
-  }
-
   protected render(): TemplateResult {
     if (!this.intervention) {
       return html``;

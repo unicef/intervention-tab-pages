@@ -10,8 +10,6 @@ import {Debouncer} from '@polymer/polymer/lib/utils/debounce';
 import {timeOut} from '@polymer/polymer/lib/utils/async';
 import {abortRequestByKey} from '@unicef-polymer/etools-ajax/etools-iron-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {connect} from 'pwa-helpers/connect-mixin';
-import {getStore} from '../utils/redux-store-access';
 
 import '../common/layout/status/intervention-report-status';
 import {isEmptyObject, isJsonStrMatch} from '../utils/utils';
@@ -23,6 +21,7 @@ import EndpointsMixin from '../common/mixins/endpoints-mixin';
 import PaginationMixin from '../common/mixins/pagination-mixin';
 import {pageIsNotCurrentlyActive} from '../utils/common-methods';
 import get from 'lodash-es/get';
+import {connectStore} from '../common/mixins/connect-store-mixin';
 
 /**
  * @polymer
@@ -32,7 +31,7 @@ import get from 'lodash-es/get';
  * @appliesMixin CommonMixin
  * @appliesMixin EndpointsMixin
  */
-class InterventionReports extends connect(getStore())(PaginationMixin(CommonMixin(EndpointsMixin(PolymerElement)))) {
+class InterventionReports extends connectStore(PaginationMixin(CommonMixin(EndpointsMixin(PolymerElement)))) {
   static get template() {
     return html`
       ${gridLayoutStylesPolymer()}
@@ -221,6 +220,7 @@ class InterventionReports extends connect(getStore())(PaginationMixin(CommonMixi
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'reports')) {
       return;
     }
+    this.interventionId = get(state, 'app.routeDetails.params.interventionId');
     this.endStateChanged(state);
   }
 
@@ -232,7 +232,7 @@ class InterventionReports extends connect(getStore())(PaginationMixin(CommonMixi
     _page: string,
     qParamsData: any
   ) {
-    if (isEmptyObject(currentUser) || this._queryParamsNotInitialized(qParamsData) || isEmptyObject(prpCountries)) {
+    if (isEmptyObject(currentUser) || this._queryParamsNotInitialized(qParamsData) || isEmptyObject(prpCountries) || !interventionId) {
       return;
     }
 

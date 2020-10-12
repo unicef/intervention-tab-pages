@@ -17,22 +17,21 @@ import {prepareDatepickerDate, convertDate} from '../../../utils/date-utils';
 // this was refactored
 // import EndpointsMixin from '../mixins/endpoints-mixin';
 import {getEndpoint} from '../../../utils/endpoint-helper';
-import {connect} from 'pwa-helpers/connect-mixin';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {property} from '@polymer/decorators';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
-import {AnyObject, RootState} from '../../../common/models/globals.types.js';
-import {isEmptyObject} from '../../../utils/utils.js';
-import {getStore} from '../../../utils/redux-store-access.js';
+import {AnyObject, RootState} from '../../../common/models/globals.types';
+import {isEmptyObject} from '../../../utils/utils';
+import {connectStore} from '../../../common/mixins/connect-store-mixin';
 
 /**
  * @polymer
  * @customElement
  * @appliesMixin EndpointsMixin
  */
-class EditHruDialog extends connect(getStore())(PolymerElement) {
+class EditHruDialog extends connectStore(PolymerElement) {
   static get template() {
     return html`
       ${requiredFieldStarredStylesPolymer}${gridLayoutStylesPolymer()}${buttonsStylesPolymer()}
@@ -200,6 +199,13 @@ class EditHruDialog extends connect(getStore())(PolymerElement) {
   }
 
   _addToList() {
+    if (!this.selectedDate) {
+      fireEvent(this, 'toast', {
+        text: 'Please select a date.',
+        showCloseBtn: true
+      });
+      return;
+    }
     const alreadySelected = this.hruData.find((d: any) => d.end_date === this.selectedDate);
     if (alreadySelected) {
       fireEvent(this, 'toast', {

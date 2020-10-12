@@ -7,4 +7,5 @@ export type IndicatorDialogData = {
   locationOptions: LocationObject[];
   llResultId: string;
   prpServerOn: boolean;
+  readonly: boolean | undefined;
 };

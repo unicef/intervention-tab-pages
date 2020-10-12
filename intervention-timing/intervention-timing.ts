@@ -5,18 +5,12 @@ import './timing-overview/timing-overview';
 import './activity-timeframes/activity-timeframes';
 import {fireEvent} from '../utils/fire-custom-event';
 import {CommentElementMeta, CommentsMixin} from '../common/components/comments/comments-mixin';
-import {RootState} from '../common/models/globals.types';
 
 /**
  * @customElement
  */
 @customElement('intervention-timing')
 export class InterventionTiming extends CommentsMixin(LitElement) {
-  interventionId!: number | null;
-  get currentInterventionId(): number | null {
-    return this.interventionId;
-  }
-
   render() {
     // language=HTML
     return html`
@@ -38,13 +32,6 @@ export class InterventionTiming extends CommentsMixin(LitElement) {
       active: false,
       loadingSource: 'interv-page'
     });
-  }
-
-  stateChanged(state: RootState) {
-    if (state.interventions.current) {
-      this.interventionId = state.interventions.current.id;
-      super.stateChanged(state);
-    }
   }
 
   getSpecialElements(container: HTMLElement): CommentElementMeta[] {

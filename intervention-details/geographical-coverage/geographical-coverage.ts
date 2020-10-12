@@ -133,12 +133,6 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
   @property({type: Object})
   permissions!: Permission<LocationsPermissions>;
 
-  interventionId!: number | null;
-
-  get currentInterventionId(): number | null {
-    return this.interventionId;
-  }
-
   connectedCallback() {
     super.connectedCallback();
   }
@@ -159,7 +153,6 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
     this.data = {flat_locations: get(state, 'interventions.current.flat_locations')};
     this.originalData = cloneDeep(this.data);
     this.setPermissions(state);
-    this.interventionId = state.interventions.current.id;
     super.stateChanged(state);
   }
 

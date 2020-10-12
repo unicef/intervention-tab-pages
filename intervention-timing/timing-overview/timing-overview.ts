@@ -91,12 +91,6 @@ export class TimingOverview extends CommentsMixin(LitElement) {
   @property({type: Object})
   timingOverview!: TimingOverviewData;
 
-  interventionId!: number | null;
-
-  get currentInterventionId(): number | null {
-    return this.interventionId;
-  }
-
   connectedCallback() {
     super.connectedCallback();
   }
@@ -107,7 +101,6 @@ export class TimingOverview extends CommentsMixin(LitElement) {
     }
     if (state.interventions.current) {
       this.timingOverview = selectTimingOverview(state);
-      this.interventionId = state.interventions.current.id;
       super.stateChanged(state);
     }
   }

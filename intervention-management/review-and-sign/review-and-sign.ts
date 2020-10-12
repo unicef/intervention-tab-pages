@@ -371,12 +371,6 @@ export class InterventionReviewAndSign extends CommentsMixin(
   @property({type: String})
   uploadEndpoint: string = getEndpoint(interventionEndpoints.attachmentsUpload).url;
 
-  interventionId!: number | null;
-
-  get currentInterventionId(): number | null {
-    return this.interventionId;
-  }
-
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'management')) {
       return;
@@ -406,7 +400,6 @@ export class InterventionReviewAndSign extends CommentsMixin(
         const agreementData = this.filterAgreementsById(agreements!, this.data.agreement);
         this.agreementAuthorizedOfficers = this.getAuthorizedOfficersList(agreementData);
       }
-      this.interventionId = state.interventions.current.id;
       super.stateChanged(state);
     }
   }

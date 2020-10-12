@@ -6,15 +6,15 @@ import './comment';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {getEndpoint} from '../../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
-import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../../utils/redux-store-access';
 import {addComment, updateComment} from './comments.actions';
 import {InterventionComment} from '../../types/types';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {GenericObject, RootState} from '../../models/globals.types';
+import {connectStore} from '../../mixins/connect-store-mixin';
 
 @customElement('comments-dialog')
-export class CommentsDialog extends connect(getStore())(LitElement) {
+export class CommentsDialog extends connectStore(LitElement) {
   static get styles(): CSSResultArray {
     // language=css
     return [
@@ -272,11 +272,11 @@ export class CommentsDialog extends connect(getStore())(LitElement) {
     if (event.ctrlKey) {
       this.newMessageText += '\n';
       this.performUpdate();
-      this.dialogElement.notifyResize();
     } else {
       event.preventDefault();
       this.addComment();
     }
+    this.dialogElement.notifyResize();
   }
 
   private scrollDown(): void {

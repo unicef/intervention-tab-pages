@@ -37,10 +37,9 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import '../../common/layout/are-you-sure';
 import get from 'lodash-es/get';
-import {updateCurrentIntervention} from '../../common/actions';
+import {getIntervention, updateCurrentIntervention} from '../../common/actions';
 import {_sendRequest} from '../../utils/request-helper';
 import {isUnicefUser, currentIntervention} from '../../common/selectors';
-import findIndex from 'lodash-es/findIndex';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import ContentPanelMixin from '../../common/mixins/content-panel-mixin';
@@ -132,9 +131,6 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     this._resultLinks = data.sort(
       (linkA, linkB) => Number(Boolean(linkB.cp_output)) - Number(Boolean(linkA.cp_output))
     );
-  }
-  get currentInterventionId(): number | null {
-    return this.interventionId;
   }
   @property() interventionId!: number | null;
   @property() interventionStatus!: string;
@@ -329,7 +325,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                         <paper-icon-button
                           icon="icons:delete"
                           ?hidden="${!this.permissions.edit.result_links}"
-                          @click="${() => this.openDeletePdOutputDialog(pdOutput.id, result)}"
+                          @click="${() => this.openDeletePdOutputDialog(pdOutput.id)}"
                         ></paper-icon-button>
                       </div>
                     </div>
@@ -338,7 +334,6 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                       <pd-indicators
                         ?hidden="${!this.showIndicators}"
                         .indicators="${pdOutput.applied_indicators}"
-                        .interventionId="${this.interventionId}"
                         .pdOutputId="${pdOutput.id}"
                         .readonly="${!this.permissions.edit.result_links || this.commentMode}"
                         .showInactiveIndicators="${this.showInactiveIndicators}"
@@ -421,7 +416,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     });
   }
 
-  async openDeletePdOutputDialog(lower_result_id: number, result: ExpectedResult) {
+  async openDeletePdOutputDialog(lower_result_id: number) {
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
@@ -433,11 +428,11 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     });
 
     if (confirmed) {
-      this.deletePDOutputFromPD(lower_result_id, result);
+      this.deletePDOutputFromPD(lower_result_id);
     }
   }
 
-  deletePDOutputFromPD(lower_result_id: number, result: ExpectedResult) {
+  deletePDOutputFromPD(lower_result_id: number) {
     const endpoint = getEndpoint(interventionEndpoints.lowerResultsDelete, {
       lower_result_id
     });
@@ -445,19 +440,8 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
       method: 'DELETE',
       endpoint: endpoint
     }).then((_resp: any) => {
-      getStore().dispatch(
-        updateCurrentIntervention(this.removeDeletedPDOutput(this.intervention, lower_result_id, result))
-      );
+      getStore().dispatch(getIntervention());
     });
-  }
-
-  removeDeletedPDOutput(intervention: Intervention, lower_result_id: number | string, result: ExpectedResult) {
-    const fewerLowerResults = result.ll_results.filter(
-      (lr: ResultLinkLowerResult) => lr.id !== Number(lower_result_id)
-    );
-    const index = findIndex(intervention.result_links, (rl: ExpectedResult) => rl.id === result.id);
-    intervention.result_links[index].ll_results = fewerLowerResults;
-    return intervention;
   }
 
   openCpOutputDialog(resultLink?: ExpectedResult): void {

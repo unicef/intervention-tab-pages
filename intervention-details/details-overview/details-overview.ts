@@ -101,11 +101,6 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
 
   @property({type: Object})
   interventionOverview!: InterventionOverview;
-  interventionId!: number | null;
-
-  get currentInterventionId(): number | null {
-    return this.interventionId;
-  }
 
   connectedCallback() {
     super.connectedCallback();
@@ -118,7 +113,6 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
 
     if (state.interventions.current) {
       this.interventionOverview = selectInterventionOverview(state);
-      this.interventionId = state.interventions.current.id;
     }
     super.stateChanged(state);
   }

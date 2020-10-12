@@ -12,7 +12,6 @@ import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-
 import {buttonsStyles} from '../../../../common/styles/button-styles';
 import {Indicator} from '../../../../common/models/intervention.types';
 import {PaperCheckboxElement} from '@polymer/paper-checkbox/paper-checkbox.js';
-import {_layoutEnd} from '../../../../common/styles/flex-layout-styles';
 
 /**
  * @customElement
@@ -67,7 +66,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
 
         .add-locations {
           padding-right: 0;
-          ${_layoutEnd};
+          align-items: flex-end;
           padding-bottom: 12px !important;
           padding-left: 10px !important;
         }
@@ -78,6 +77,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           <label class="paper-label">Type </label>
           <div class="radioGroup">
             <paper-radio-group
+              .disabled="${this.readonly}"
               .selected="${this.indicator!.indicator!.unit}"
               @selected-changed="${({detail}: CustomEvent) => {
                 this.indicator!.indicator!.unit = detail.value;
@@ -87,10 +87,10 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                 this.requestUpdate();
               }}"
             >
-              <paper-radio-button ?disabled="${this.readonly}" class="no-left-padding" name="number"
+              <paper-radio-button ?disabled="${this.isReadonly()}" class="no-left-padding" name="number"
                 >Quantity / Scale
               </paper-radio-button>
-              <paper-radio-button ?disabled="${this.readonly}" name="percentage">Percent/Ratio</paper-radio-button>
+              <paper-radio-button ?disabled="${this.isReadonly()}" name="percentage">Percent/Ratio</paper-radio-button>
             </paper-radio-group>
           </div>
         </div>
@@ -105,10 +105,10 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                 this.requestUpdate();
               }}"
             >
-              <paper-radio-button ?disabled="${this.readonly}" class="no-left-padding" name="percentage"
+              <paper-radio-button ?disabled="${this.isReadonly()}" class="no-left-padding" name="percentage"
                 >Percentage
               </paper-radio-button>
-              <paper-radio-button ?disabled="${this.readonly}" name="ratio"> Ratio </paper-radio-button>
+              <paper-radio-button ?disabled="${this.isReadonly()}" name="ratio"> Ratio </paper-radio-button>
             </paper-radio-group>
           </div>
         </div>
@@ -122,7 +122,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           placeholder="&#8212;"
           error-message="Please add a title"
           auto-validate
-          ?readonly="${this.readonly}"
+          ?readonly="${this.isReadonly()}"
           @value-changed="${({detail}: CustomEvent) => {
             if (detail.value === undefined) {
               return;
@@ -141,6 +141,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
             label="Numerator Label"
             .value="${this.indicator.numerator_label}"
             placeholder="&#8212;"
+            ?readonly="${this.readonly}"
             @value-changed="${({detail}: CustomEvent) => {
               this.indicator.numerator_label = detail.value;
             }}"
@@ -153,6 +154,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
             label="Denominator Label"
             .value="${this.indicator.denominator_label}"
             placeholder="&#8212;"
+            ?readonly="${this.readonly}"
             @value-changed="${({detail}: CustomEvent) => {
               this.indicator.denominator_label = detail.value;
             }}"
@@ -173,7 +175,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                       auto-validate
                       error-message="Invalid number"
                       placeholder="&#8212;"
-                      ?disabled="${this.baselineIsUnknown}"
+                      ?disabled="${this.baselineIsUnknown || this.readonly}"
                       @value-changed="${({detail}: CustomEvent) => {
                         this.indicator.baseline.v = detail.value;
                       }}"
@@ -190,7 +192,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                       auto-validate
                       error-message="Invalid number"
                       placeholder="&#8212;"
-                      ?disabled="${this.baselineIsUnknown}"
+                      ?disabled="${this.baselineIsUnknown || this.readonly}"
                       @value-changed="${({detail}: CustomEvent) => {
                         this.indicator.baseline.v = detail.value;
                         this._baselineChanged(this.indicator.baseline.v);
@@ -210,6 +212,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                   .pattern="${this.numberPattern}"
                   auto-validate
                   error-message="Please add a valid target"
+                  ?readonly="${this.readonly}"
                   @value-changed="${({detail}: CustomEvent) => {
                     this.indicator.target.v = detail.value;
                     this._targetChanged(this.indicator.target.v);
@@ -227,6 +230,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                   .pattern="${this.digitsPattern}"
                   auto-validate
                   error-message="Please add a valid target"
+                  ?readonly="${this.readonly}"
                   ?hidden="${this._unitIsNumeric(this.indicator!.indicator!.unit)}"
                   @value-changed="${({detail}: CustomEvent) => {
                     this.indicator.target.v = detail.value;
@@ -247,7 +251,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                   auto-validate
                   error-message="Invalid"
                   placeholder="Numerator"
-                  ?disabled="${this.baselineIsUnknown}"
+                  ?disabled="${this.baselineIsUnknown || this.readonly}"
                   @value-changed="${({detail}: CustomEvent) => {
                     this.indicator.baseline.v = detail.value;
                     this._baselineChanged(this.indicator.baseline.v);
@@ -263,7 +267,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                   auto-validate
                   error-message="Invalid"
                   placeholder="Denominator"
-                  ?disabled="${this.baselineIsUnknown}"
+                  ?disabled="${this.baselineIsUnknown || this.readonly}"
                   @value-changed="${({detail}: CustomEvent) => {
                     this.indicator.baseline.d = detail.value;
                   }}"
@@ -281,6 +285,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                   required
                   error-message="Invalid"
                   placeholder="Numerator"
+                  ?readonly="${this.readonly}"
                   @value-changed="${({detail}: CustomEvent) => {
                     this.indicator.target.v = detail.value;
                     this._targetChanged(this.indicator.target.v);
@@ -297,7 +302,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                   auto-validate
                   error-message="Empty or < 1"
                   placeholder="Denominator"
-                  ?readonly="${this.isReadonlyDenominator(this.interventionStatus, this.indicator.id)}"
+                  ?readonly="${this.isReadonlyDenominator(this.interventionStatus, this.indicator.id) || this.readonly}"
                   @value-changed="${({detail}: CustomEvent) => {
                     this.indicator.target.d = detail.value;
                   }}"
@@ -308,6 +313,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         <div class="col col-6">
           <paper-toggle-button
             ?checked="${this.indicator.is_high_frequency}"
+            ?disabled="${this.readonly}"
             @iron-change="${this.isHighFrequencyChanged}"
           >
             High Frequency Humanitarian Indicator
@@ -317,6 +323,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
       <div class="unknown">
         <paper-checkbox
           ?checked="${this.baselineIsUnknown}"
+          ?disabled="${this.readonly}"
           @checked-changed="${({target}: CustomEvent) =>
             this.baselineIsUnknownChanged(Boolean((target as PaperCheckboxElement).checked))}"
           >Unknown</paper-checkbox
@@ -328,6 +335,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           label="Means of Verification"
           type="text"
           .value="${this.indicator.means_of_verification}"
+          ?readonly="${this.readonly}"
           placeholder="&#8212;"
           @value-changed="${({detail}: CustomEvent) => {
             this.indicator.means_of_verification = detail.value;
@@ -349,6 +357,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           error-message="Please select locations"
           disable-on-focus-handling
           fit-into="etools-dialog"
+          ?readonly="${this.readonly}"
           trigger-value-change-event
           @etools-selected-items-changed="${({detail}: CustomEvent) => {
             const newIds = detail.selectedItems.map((i: any) => i.id);
@@ -356,7 +365,12 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           }}"
         >
         </etools-dropdown-multi>
-        <paper-button class="secondary-btn add-locations" @click="${this._addAllLocations}" title="Add all locations">
+        <paper-button
+          class="secondary-btn add-locations"
+          ?hidden="${this.readonly}"
+          @click="${this._addAllLocations}"
+          title="Add all locations"
+        >
           Add all
         </paper-button>
       </div>
@@ -376,6 +390,9 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
   }
 
   @property({type: Boolean}) // observer: '_readonlyChanged'
+  indicatorIsNew = false;
+
+  @property({type: Boolean})
   readonly = false;
 
   @property({type: Array})
@@ -387,21 +404,16 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
   @property({type: String})
   interventionStatus!: string;
 
-  // static get observers() {
-  //   return [
-  //     '_baselineChanged(indicator.baseline.v, indicator.indicator.unit)',
-  //     '_targetChanged(indicator.target.v, indicator.indicator.unit)',
-  //     '_baselineUnknownChanged(baselineIsUnknown)',
-  //     '_typeChanged(indicator.indicator.display_type, indicator.indicator.unit)'
-  //   ];
-  // }
-
   private isHighFrequencyChanged(e: CustomEvent) {
     const chk = e.target as PaperCheckboxElement;
     if (chk.checked === undefined || chk.checked === null) {
       return;
     }
     this.indicator.is_high_frequency = chk.checked;
+  }
+
+  private isReadonly() {
+    return this.readonly || !this.indicatorIsNew;
   }
 
   private baselineIsUnknownChanged(checked: boolean) {
@@ -422,10 +434,10 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
     }
     if (!this.indicator.id) {
       this.baselineIsUnknown = false;
-      this.readonly = false;
+      this.indicatorIsNew = true;
     } else {
       this.baselineIsUnknown = !indicator.baseline || this._isEmptyExcept0(indicator.baseline.v as any);
-      this.readonly = true;
+      this.indicatorIsNew = false;
     }
   }
 

@@ -10,12 +10,12 @@ import '@unicef-polymer/etools-dialog';
 import {GenericObject, IdAndName} from '../common/models/globals.types';
 import {getStore} from '../utils/redux-store-access';
 import {updateCurrentIntervention} from '../common/actions';
-import {connect} from 'pwa-helpers/connect-mixin';
 import {validateRequiredFields} from '../utils/validation-helper';
 import {sharedStyles} from '../common/styles/shared-styles-lit';
+import {connectStore} from '../common/mixins/connect-store-mixin';
 
 @customElement('intervention-attachment-dialog')
-export class InterventionAttachmentDialog extends connect(getStore())(LitElement) {
+export class InterventionAttachmentDialog extends connectStore(LitElement) {
   static get styles(): CSSResultArray {
     // language=css
     return [
@@ -71,7 +71,7 @@ export class InterventionAttachmentDialog extends connect(getStore())(LitElement
         dialog-title="Attachment"
         @confirm-btn-clicked="${() => this.processRequest()}"
         @close="${this.onClose}"
-        .okBtnText="Save"
+        ok-btn-text="Save"
         no-padding
       >
         <etools-loading ?active="${this.savingInProcess}"></etools-loading>
