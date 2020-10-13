@@ -3,7 +3,6 @@ import '@unicef-polymer/etools-content-panel/etools-content-panel.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@unicef-polymer/etools-table/etools-table';
 import {getStore} from '../../utils/redux-store-access';
-import {connect} from 'pwa-helpers/connect-mixin';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import '@unicef-polymer/etools-loading';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
@@ -23,7 +22,7 @@ import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {updateCurrentIntervention} from '../../common/actions';
+import {getIntervention} from '../../common/actions';
 import '../../common/layout/are-you-sure';
 import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
@@ -237,8 +236,7 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
       method: 'DELETE'
     })
       .then((_resp: any) => {
-        this.intervention.supply_items = this.intervention.supply_items.filter((el: AnyObject) => el.id !== supplyId);
-        getStore().dispatch(updateCurrentIntervention(this.intervention));
+        getStore().dispatch(getIntervention());
       })
       .catch((err: any) => {
         fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});

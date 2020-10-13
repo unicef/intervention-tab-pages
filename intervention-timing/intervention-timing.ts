@@ -5,7 +5,6 @@ import './timing-overview/timing-overview';
 import './activity-timeframes/activity-timeframes';
 import {fireEvent} from '../utils/fire-custom-event';
 import {CommentElementMeta, CommentsMixin} from '../common/components/comments/comments-mixin';
-import {RootState} from '../common/models/globals.types';
 
 /**
  * @customElement

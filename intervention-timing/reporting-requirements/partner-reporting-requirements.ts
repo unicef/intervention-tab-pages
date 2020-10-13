@@ -15,9 +15,6 @@ import './hr/humanitarian-reporting-req-cluster';
 import './srr/special-reporting-requirements';
 import {gridLayoutStylesPolymer} from '../../common/styles/grid-layout-styles-polymer';
 import {sectionContentStylesPolymer} from '../../common/styles/content-section-styles-polymer';
-// @lajos needs to be checked if OK
-import {connect} from 'pwa-helpers/connect-mixin';
-import {getStore} from '../../utils/redux-store-access';
 
 import {property} from '@polymer/decorators';
 import {HumanitarianReportingReqUnicefEl} from './hr/humanitarian-reporting-req-unicef';
@@ -31,12 +28,13 @@ import {selectReportingRequirementsPermissions} from './reportingRequirementsPer
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {isUnicefUser} from '../../common/selectors';
 import {computed} from '@polymer/decorators/lib/decorators';
+import {connectStore} from '../../common/mixins/connect-store-mixin';
 
 /**
  * @polymer
  * @customElement
  */
-class PartnerReportingRequirements extends connect(getStore())(PolymerElement) {
+class PartnerReportingRequirements extends connectStore(PolymerElement) {
   static get template() {
     return html`
       ${gridLayoutStylesPolymer()}${sectionContentStylesPolymer}
