@@ -19,6 +19,7 @@ import {PaperMenuButton} from '@polymer/paper-menu-button/paper-menu-button';
 import {Intervention} from '../common/models/intervention.types';
 import {updateCurrentIntervention} from '../common/actions';
 import {getStore} from '../utils/redux-store-access';
+import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 
 @customElement('intervention-actions')
 export class InterventionActions extends LitElement {
@@ -186,6 +187,9 @@ export class InterventionActions extends LitElement {
           active: false,
           loadingSource: 'intervention-actions'
         });
+      })
+      .catch((err: any) => {
+        fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
       });
   }
 

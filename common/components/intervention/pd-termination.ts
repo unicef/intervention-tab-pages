@@ -8,16 +8,12 @@ import '../../styles/shared-styles-lit';
 import {sharedStyles} from '../../styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../styles/grid-layout-styles-lit';
 import {formatDate} from '../../../utils/date-utils';
-// import {getEndpoint} from '../../../utils/endpoint-helper';
-// import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {AnyObject, EnvFlags} from '../../models/globals.types';
 import {validateRequiredFields} from '../../../utils/validation-helper';
 import ComponentBaseMixin from '../../mixins/component-base-mixin';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-// import {Intervention} from '../../models/intervention.types';
-// import {getStore} from '../../../utils/redux-store-access';
-// import {updateCurrentIntervention} from '../../actions';
 import {fireEvent} from '../../../utils/fire-custom-event';
+import {openDialog} from '../../../utils/dialog';
 declare const moment: any;
 
 /**
@@ -85,24 +81,11 @@ export class PdTermination extends ComponentBaseMixin(LitElement) {
           >
         </div>
         <div class="row-h flex-c">
-          <etools-warn-message
-            .messages="Once you hit save, the PD/SSFA will be Terminated and this action can not be reversed"
+          <etools-warn-message-lit
+            .messages="${this.warnMessages}"
           >
-          </etools-warn-message>
-          Once you hit save, the PD/SSFA will be Terminated and this action can not be reversed
-        </div>
-      </etools-dialog>
-      <etools-dialog
-        no-padding
-        id="pdTerminationConfirmation"
-        theme="confirmation"
-        ?opened="${this.warningOpened}"
-        size="md"
-        ok-btn-text="Continue"
-        @close="${this.confirmReason}"
-      >
-        <div class="row-h">
-          Please make sure that the reporting requirements for the PD are updated with the correct dates
+          </etools-warn-message-lit>
+
         </div>
       </etools-dialog>
     `;
@@ -149,6 +132,8 @@ export class PdTermination extends ComponentBaseMixin(LitElement) {
     this.interventionId = interventionId;
   }
 
+  warnMessages: string[] = ['Once you hit save, the PD/SSFA will be Terminated and this action can not be reversed'];
+
   _getMaxDate() {
     return moment(Date.now()).add(30, 'd').toDate();
   }
@@ -178,12 +163,25 @@ export class PdTermination extends ComponentBaseMixin(LitElement) {
     if (!this.validate()) {
       return;
     }
-    // if (this.environmentFlags && !this.environmentFlags.prp_mode_off && this.environmentFlags.prp_server_on) {
-    if (1 == 1) {
-      this.warningOpened = true;
+
+    if (this.environmentFlags && !this.environmentFlags.prp_mode_off && this.environmentFlags.prp_server_on) {
+      this.dialogOpened = false;
+      openDialog({
+        dialog: 'are-you-sure',
+        dialogData: {
+          content:
+            'Please make sure that the reporting requirements for the PD/SSFA are updated with the correct dates',
+          confirmBtnText: 'Terminate'
+        }
+      }).then(({confirmed}) => {
+        if (confirmed) {
+          this.confirmReason();
+        }
+      });
     } else {
       this.confirmReason();
     }
+    return;
   }
 
   confirmReason(): void {
