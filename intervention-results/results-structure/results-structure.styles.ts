@@ -93,4 +93,12 @@ export const ResultStructureStyles: CSSResult = css`
   div[slot='panel-btns'] {
     opacity: 1;
   }
+  .bold-header {
+    font-weight: bold;
+  }
+  .add-btn {
+    opacity: 0.84;
+    margin-left: 6px;
+    color: rgba(0, 0, 0, 0.87);
+  }
 `;

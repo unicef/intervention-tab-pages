@@ -76,13 +76,24 @@ export class PdActivities extends CommentsMixin(LitElement) {
 
       <div class="row-h align-items-center header">
         <div class="heading flex-auto">
-          PD Activities
-          <iron-icon icon="add-box" @click="${() => this.openDialog()}" ?hidden="${this.readonly}"></iron-icon>
+          <div class="bold-header">
+            PD Activities
+            <paper-icon-button
+              icon="add-box"
+              class="add-btn"
+              ?hidden="${this.readonly}"
+              @click="${() => this.openDialog()}"
+            ></paper-icon-button>
+          </div>
         </div>
-        <div class="heading number-data flex-none">CSO Cash</div>
-        <div class="heading number-data flex-none">UNICEF Cash</div>
-        <div class="heading number-data flex-none">Total</div>
-        <div class="heading number-data flex-none">%Partner</div>
+        ${this.activities.length
+          ? html`
+              <div class="heading number-data flex-none">CSO Cash</div>
+              <div class="heading number-data flex-none">UNICEF Cash</div>
+              <div class="heading number-data flex-none">Total</div>
+              <div class="heading number-data flex-none">%Partner</div>
+            `
+          : ''}
       </div>
 
       ${this.activities.map(
@@ -152,17 +163,6 @@ export class PdActivities extends CommentsMixin(LitElement) {
           </etools-data-table-row>
         `
       )}
-      ${!this.activities.length
-        ? html`
-            <div class="layout-horizontal empty-row">
-              <div class="text flex-auto">-</div>
-              <div class="text number-data flex-none">-</div>
-              <div class="text number-data flex-none">-</div>
-              <div class="text number-data flex-none">-</div>
-              <div class="text number-data flex-none">-</div>
-            </div>
-          `
-        : ''}
     `;
   }
 

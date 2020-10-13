@@ -212,10 +212,6 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
             border-bottom: 1px groove var(--dark-divider-color);
           }
         }
-        .add-cp {
-          opacity: 0.84;
-          margin-left: 6px;
-        }
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Results Structure (${this.noOfPdOutputs})">
@@ -275,7 +271,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
             `
           )}
           <paper-icon-button
-            class="add-cp"
+            class="add-btn"
             icon="add-box"
             ?hidden="${!this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
             @click="${() => this.openCpOutputDialog()}"

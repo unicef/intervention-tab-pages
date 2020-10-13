@@ -88,11 +88,22 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
 
       <div class="row-h align-items-center header">
         <div class="heading flex-auto">
-          PD Indicators
-          <iron-icon icon="add-box" @click="${() => this.openIndicatorDialog()}" ?hidden="${this.readonly}"></iron-icon>
+          <div class="bold-header">
+            PD Indicators
+            <paper-icon-button
+              icon="add-box"
+              class="add-btn"
+              ?hidden="${this.readonly}"
+              @click="${() => this.openIndicatorDialog()}"
+            ></paper-icon-button>
+          </div>
         </div>
-        <div class="heading number-data flex-none">Baseline</div>
-        <div class="heading number-data flex-none">Target</div>
+        ${this.indicators.length
+          ? html`
+              <div class="heading number-data flex-none">Baseline</div>
+              <div class="heading number-data flex-none">Target</div>
+            `
+          : ''}
       </div>
 
       ${this.indicators.map(
@@ -112,15 +123,6 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
           ></pd-indicator>
         `
       )}
-      ${!this.indicators.length
-        ? html`
-            <div class="layout-horizontal empty-row">
-              <div class="text flex-auto">-</div>
-              <div class="text number-data flex-none">-</div>
-              <div class="text number-data flex-none">-</div>
-            </div>
-          `
-        : ''}
     `;
   }
 
