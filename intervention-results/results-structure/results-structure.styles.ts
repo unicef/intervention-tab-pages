@@ -99,6 +99,6 @@ export const ResultStructureStyles: CSSResult = css`
   .add-btn {
     opacity: 0.84;
     margin-left: 6px;
-    color: rgba(0, 0, 0, 0.87);
+    color: #212121;
   }
 `;
