@@ -160,12 +160,6 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
   @property({type: Array})
   cashTransferModalities!: LabelAndValue[];
 
-  interventionId!: number | null;
-
-  get currentInterventionId(): number | null {
-    return this.interventionId;
-  }
-
   connectedCallback() {
     super.connectedCallback();
   }
@@ -188,7 +182,6 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
     }
     this.data = selectFinancialComponent(state);
     this.originalData = cloneDeep(this.data);
-    this.interventionId = state.interventions.current.id;
     super.stateChanged(state);
   }
 

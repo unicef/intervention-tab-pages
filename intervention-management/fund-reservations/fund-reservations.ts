@@ -140,10 +140,6 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
   @property({type: Boolean})
   isUnicefUser!: boolean;
 
-  get currentInterventionId(): number | null {
-    return this.intervention?.id;
-  }
-
   private _frsConfirmationsDialogMessage!: HTMLSpanElement;
 
   stateChanged(state: RootState) {

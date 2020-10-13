@@ -154,12 +154,6 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
   @property({type: Object})
   data!: GenderEquityRating;
 
-  interventionId!: number | null;
-
-  get currentInterventionId(): number | null {
-    return this.interventionId;
-  }
-
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'details')) {
       return;
@@ -174,13 +168,12 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         this.data = cloneDeep(genderEquityRating);
         this.originalData = cloneDeep(genderEquityRating);
       }
-      this.interventionId = state.interventions.current.id;
     }
-    this.sePermissions(state);
+    this.setPermissions(state);
     super.stateChanged(state);
   }
 
-  private sePermissions(state: any) {
+  private setPermissions(state: any) {
     const permissions = selectGenderEquityRatingPermissions(state);
     if (!isJsonStrMatch(this.permissions, permissions)) {
       this.permissions = permissions;

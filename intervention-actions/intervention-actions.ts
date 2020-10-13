@@ -160,7 +160,7 @@ export class InterventionActions extends LitElement {
     if (!(await this.confirmAction(action))) {
       return;
     }
-    const body = ACTIONS_WITH_INPUT.includes(action) ? await this.confirmActions(action) : {};
+    const body = ACTIONS_WITH_INPUT.includes(action) ? await this.openActionsWithInputsDialogs(action) : {};
     if (body === null) {
       return;
     }
@@ -232,13 +232,12 @@ export class InterventionActions extends LitElement {
     }
   }
 
-  private confirmActions(action: string) {
+  private openActionsWithInputsDialogs(action: string) {
     switch (action) {
       case 'cancel':
         return this.openCommentDialog(action);
       case 'terminate':
         return this.openTermiantionDialog();
-      // just to bypass lint warning
       default:
         return;
     }

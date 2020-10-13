@@ -150,7 +150,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
   cpOutputs: ExpectedResult[] = [];
 
   set dialogData({data, interventionId, result_links}: any) {
-    this.cpOutputs = result_links || [];
+    this.cpOutputs = (result_links || []).filter((x: ExpectedResult) => !!x.cp_output_name);
     this.data = data;
     this.isNewRecord = !this.data.id;
     this.interventionId = interventionId;

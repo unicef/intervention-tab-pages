@@ -28,8 +28,6 @@ import {gridLayoutStylesPolymer} from '../common/styles/grid-layout-styles-polym
 import {isEmptyObject} from '../utils/utils';
 import {fireEvent} from '../utils/fire-custom-event';
 import {GenericObject, AnyObject, RootState} from '../common/models/globals.types';
-import {connect} from 'pwa-helpers/connect-mixin';
-import {getStore} from '../utils/redux-store-access';
 import {pageIsNotCurrentlyActive} from '../utils/common-methods';
 
 import {
@@ -46,6 +44,7 @@ import {property} from '@polymer/decorators';
 import {pmpCustomIcons} from './styles/pmp-icons';
 import {frWarningsStylesPolymer} from '../common/styles/fr-warnings-styles';
 import get from 'lodash-es/get';
+import {connectStore} from '../common/mixins/connect-store-mixin';
 declare const moment: any;
 
 /**
@@ -56,7 +55,7 @@ declare const moment: any;
  * @appliesMixin CommonMixin
  * @appliesMixin UtilsMixin
  */
-class InterventionProgress extends connect(getStore())(
+class InterventionProgress extends connectStore(
   EndpointsMixin(UtilsMixin(CommonMixin(EtoolsCurrency(PolymerElement))))
 ) {
   static get template() {
@@ -225,7 +224,10 @@ class InterventionProgress extends connect(getStore())(
               value="[[_getOverallPdStatusDate(latestAcceptedPr.review_date)]]"
               no-placeholder
             >
-              <intervention-report-status status="[[latestAcceptedPr.review_overall_status]]" slot="prefix"></intervention-report-status>
+              <intervention-report-status
+                status="[[latestAcceptedPr.review_overall_status]]"
+                slot="prefix"
+              ></intervention-report-status>
             </etools-form-element-wrapper-2>
           </div>
         </div>
@@ -262,7 +264,9 @@ class InterventionProgress extends connect(getStore())(
                 <div slot="row-data">
                   <span class="col-data col-9"> [[lowerResult.title]] </span>
                   <span class="col-data col-3">
-                    <intervention-report-status status="[[_getLowerResultStatus(lowerResult.id)]]"></intervention-report-status>
+                    <intervention-report-status
+                      status="[[_getLowerResultStatus(lowerResult.id)]]"
+                    ></intervention-report-status>
                     <span class="lower-result-status-date">[[_getLowerResultStatusDate(lowerResult.id)]]</span>
                   </span>
                 </div>

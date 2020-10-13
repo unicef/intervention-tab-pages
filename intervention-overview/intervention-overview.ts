@@ -6,8 +6,6 @@ import {elevationStyles} from '../common/styles/elevation-styles';
 import {gridLayoutStylesLit} from '../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../common/styles/shared-styles-lit';
 import {Intervention, CpOutput, ExpectedResult, ManagementBudget} from '../common/models/intervention.types';
-import {connect} from 'pwa-helpers/connect-mixin';
-import {getStore} from '../utils/redux-store-access';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {prettyDate} from '../utils/date-utils';
@@ -19,12 +17,13 @@ import {pageIsNotCurrentlyActive} from '../utils/common-methods';
 import {AnyObject, RootState} from '../common/models/globals.types';
 import {fireEvent} from '../utils/fire-custom-event';
 import {StaticPartner} from '../common/models/partner.types';
+import {connectStore} from '../common/mixins/connect-store-mixin';
 
 /**
  * @customElement
  */
 @customElement('intervention-overview')
-export class InterventionOverview extends connect(getStore())(LitElement) {
+export class InterventionOverview extends connectStore(LitElement) {
   static get styles() {
     return [gridLayoutStylesLit, elevationStyles];
   }
@@ -90,14 +89,6 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
         etools-currency-amount-input {
           width: 160px;
         }
-        .inline-right {
-          display: flex;
-          text-align: right;
-          flex-direction: column;
-        }
-        .inline-right label {
-          text-align: left;
-        }
       </style>
 
       <div class="page-content elevation" elevation="1" id="top-container">
@@ -148,7 +139,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
 
         <div class="row-h flex-c">
           <div class="col col-4">
-            <div class="inline-right">
+            <div>
               <label class="label-secondary-color">Total value of the Effective Programme management Cost</label>
               <etools-currency-amount-input
                 class="w100"
@@ -163,7 +154,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
           </div>
 
           <div class="col col-6">
-            <div class="inline-right">
+            <div>
               <label class="label-secondary-color">
                 % Total value of Unicef's contribution that is Effective and Efficient Programme Management Cost
               </label>
@@ -174,7 +165,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
 
         <div class="row-h flex-c">
           <div class="col col-4">
-            <div class="inline-right">
+            <div>
               <label class="label-secondary-color">Unicef Cash Contribution</label>
               <etools-currency-amount-input
                 .value="${this.intervention.planned_budget.unicef_cash_local}"
@@ -187,7 +178,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
             </div>
           </div>
           <div class="col col-4">
-            <div class="inline-right">
+            <div>
               <label class="label-secondary-color">Unicef Supply Contribution</label>
               <etools-currency-amount-input
                 .value="${this.intervention.planned_budget.in_kind_amount_local}"
@@ -200,7 +191,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
             </div>
           </div>
           <div class="col col-4">
-            <div class="inline-right">
+            <div>
               <label class="label-secondary-color">Total Unicef Contribution</label>
               <etools-currency-amount-input
                 .value="${this.intervention.planned_budget.total_unicef_contribution_local}"

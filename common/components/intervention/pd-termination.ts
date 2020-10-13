@@ -153,12 +153,8 @@ export class PdTermination extends ComponentBaseMixin(LitElement) {
     return moment(Date.now()).add(30, 'd').toDate();
   }
 
-  // TODO: refactor validation at some point (common with ag add amendment dialog and more)
   validate() {
-    if (!validateRequiredFields(this)) {
-      return false;
-    }
-    return true;
+    return validateRequiredFields(this);
   }
 
   _uploadFinished(e: CustomEvent) {

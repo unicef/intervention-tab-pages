@@ -3,7 +3,6 @@ import {ResultStructureStyles} from './results-structure.styles';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import '@polymer/iron-icons';
 import {Indicator, Intervention} from '../../common/models/intervention.types';
-import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
 import {Disaggregation, LocationObject, Section, RootState} from '../../common/models/globals.types';
 import './modals/indicator-dialog/indicator-dialog';
@@ -23,9 +22,10 @@ import {openDialog} from '../../utils/dialog';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import './pd-indicator';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {connectStore} from '../../common/mixins/connect-store-mixin';
 
 @customElement('pd-indicators')
-export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitElement)) {
+export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)) {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
@@ -48,7 +48,6 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
   @property() pdOutputId!: string;
   @property({type: Boolean}) readonly!: boolean;
   @property({type: Boolean}) showInactiveIndicators!: boolean;
-  interventionId!: number | null;
 
   /** On create/edit indicator only sections already saved on the intervention can be selected */
   set interventionSections(ids: string[]) {
@@ -103,12 +102,12 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
             .disaggregations="${this.disaggregations}"
             .locationNames="${this.getLocationNames(indicator.locations)}"
             .sectionClusterNames="${this.getSectionAndCluster(indicator.section, indicator.cluster_name)}"
-            .interventionId="${this.interventionId}"
             .readonly="${this.readonly}"
             ?hidden="${this._hideIndicator(indicator, this.showInactiveIndicators)}"
             ?cluster-indicator="${indicator.cluster_indicator_id}"
             ?high-frequency-indicator="${indicator.is_high_frequency}"
-            @open-edit-indicator-dialog="${(e: CustomEvent) => this.openIndicatorDialog(e.detail.indicator)}"
+            @open-edit-indicator-dialog="${(e: CustomEvent) =>
+              this.openIndicatorDialog(e.detail.indicator, e.detail.readonly)}"
             @open-deactivate-confirmation="${(e: CustomEvent) => this.openDeactivationDialog(e.detail.indicatorId)}"
           ></pd-indicator>
         `
@@ -148,7 +147,7 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
     }
   }
 
-  openIndicatorDialog(indicator?: Indicator) {
+  openIndicatorDialog(indicator?: Indicator, readonly?: boolean) {
     openDialog<IndicatorDialogData>({
       dialog: 'indicator-dialog',
       dialogData: {
@@ -156,7 +155,8 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
         sectionOptions: this.indicatorSectionOptions,
         locationOptions: this.indicatorLocationOptions,
         llResultId: this.pdOutputId,
-        prpServerOn: this.prpServerIsOn()!
+        prpServerOn: this.prpServerIsOn()!,
+        readonly: readonly
       }
     });
   }
@@ -207,7 +207,7 @@ export class PdIndicators extends connect(getStore())(EnvironmentFlagsMixin(LitE
     );
   }
 
-  getLocationNames(ids: string[]): {name: string, adminLevel: string}[] {
+  getLocationNames(ids: string[]): {name: string; adminLevel: string}[] {
     const locations = filterByIds<LocationObject>(this.locations, ids);
     const locNames = locations.map((l: any) => {
       return {
