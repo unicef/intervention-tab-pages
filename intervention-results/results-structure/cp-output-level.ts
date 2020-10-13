@@ -28,9 +28,6 @@ export class CpOutputLevel extends LitElement {
         .alert {
           color: var(--error-color);
         }
-        .editable-row .hover-block {
-          background-color: #ffffff !important;
-        }
       `
     ];
   }
@@ -48,7 +45,6 @@ export class CpOutputLevel extends LitElement {
       <style>
         ${sharedStyles} etools-data-table-row {
           overflow: hidden;
-          --list-second-bg-color: var(--secondary-background-color) !important;
           --list-row-wrapper-padding: 5px 12px 5px 0;
           --list-row-collapse-wrapper: {
             padding: 0 !important;

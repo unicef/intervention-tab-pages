@@ -191,7 +191,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
             border-bottom: 1px solid var(--main-border-color) !important;
           }
           --list-row-wrapper: {
-            background-color: var(--secondary-background-color) !important;
+            background-color: var(--secondary-background-color);
             min-height: 55px;
             border-bottom: 1px solid var(--main-border-color) !important;
           }
