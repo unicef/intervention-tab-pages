@@ -98,7 +98,13 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
             ></paper-icon-button>
           </div>
         </div>
-        ${this.indicators.length
+        <!-- TODO: refactor -->
+        ${this.indicators.filter((indicator: Indicator) => {
+          if (!this._hideIndicator(indicator, this.showInactiveIndicators)) {
+            return indicator;
+          }
+          return;
+        }).length
           ? html`
               <div class="heading number-data flex-none">Baseline</div>
               <div class="heading number-data flex-none">Target</div>
