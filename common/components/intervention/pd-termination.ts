@@ -51,7 +51,7 @@ export class PdTermination extends ComponentBaseMixin(LitElement) {
         ?hidden="${this.warningOpened}"
         ok-btn-text="Terminate"
         dialog-title="Terminate PD/SSFA"
-        @confirm-btn-clicked="${this.confirmReason}"
+        @confirm-btn-clicked="${this._triggerPdTermination}"
         ?disable-confirm-btn="${this.uploadInProgress}"
         ?disable-dismiss-btn="${this.uploadInProgress}"
         ?show-spinner="${this.savingInProcess}"
@@ -176,6 +176,18 @@ export class PdTermination extends ComponentBaseMixin(LitElement) {
 
   _handleErrorResponse(error: any) {
     parseRequestErrorsAndShowAsToastMsgs(error, this);
+  }
+
+  _triggerPdTermination() {
+    if (!this.validate()) {
+      return;
+    }
+    // if (this.environmentFlags && !this.environmentFlags.prp_mode_off && this.environmentFlags.prp_server_on) {
+    if (1 == 1) {
+      this.warningOpened = true;
+    } else {
+      this.confirmReason();
+    }
   }
 
   confirmReason(): void {
