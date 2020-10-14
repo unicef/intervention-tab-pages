@@ -3,6 +3,7 @@ import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-
 import {InterventionActivityTimeframe} from '../../../../common/models/intervention.types';
 import {ActivityTime, groupByYear, serializeTimeFrameData} from '../../../../utils/timeframes.helper';
 import {fireEvent} from '../../../../utils/fire-custom-event';
+import {layoutCenter, layoutFlex, layoutInline, layoutWrap} from '../../../../common/styles/flex-layout-styles';
 
 @customElement('activity-time-frames')
 export class ActivityTimeFrames extends LitElement {
@@ -80,10 +81,10 @@ export class ActivityTimeFrames extends LitElement {
   protected render(): TemplateResult {
     return html`
       <label class="paper-label" required>Activity Times (click to select/deselect)</label>
-      <div class="layout-horizontal center-align">
+      <div class="layout-horizontal center-align layout-wrap">
         ${this._timeFrames.map(
           ([year, frames]: any, index: number) => html`
-            <div>
+            <div class="layout-vertical center-align layout-wrap">
               <div class="layout-horizontal center-align title year">${year}</div>
               <div class="layout-horizontal center-align">
                 ${frames.map(
