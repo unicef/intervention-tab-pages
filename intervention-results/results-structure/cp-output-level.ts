@@ -77,9 +77,7 @@ export class CpOutputLevel extends LitElement {
                         <div class="heading">Ram Indicators</div>
                         <div class="data">
                           ${this.resultLink.ram_indicator_names.length
-                            ? this.resultLink.ram_indicator_names.map(
-                                (name: string) => html`<div class="truncate">${name}</div>`
-                              )
+                            ? this.resultLink.ram_indicator_names.map((name: string) => html`<div>${name}</div>`)
                             : '-'}
                         </div>
                       </div>
