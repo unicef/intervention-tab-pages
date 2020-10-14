@@ -194,12 +194,10 @@ export class InterventionActions extends LitElement {
       if (!confirmed || !response) {
         return null;
       }
-
-      return {
-        // tmeporary fix, as only cancel uses this modal
-        // @TODO: dinamically set property
-        cancel_justification: response.comment
-      };
+      if (action === 'cancel') {
+        return {cancel_justification: response.comment}
+      }
+      return {};
     });
   }
 
