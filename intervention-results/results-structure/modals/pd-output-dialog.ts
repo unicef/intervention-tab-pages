@@ -51,7 +51,9 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
         }
         .unassociated-warning {
           display: flex;
-          align-items: center;
+          flex-direction: column;
+          font-size: 13px;
+          align-items: flex-start;
           padding: 12px 22px;
           background: #ffaa0eb8;
         }
@@ -74,7 +76,15 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
         no-padding
       >
         <div class="unassociated-warning" ?hidden="${!this.unassociated || this.hideCpOutputs}">
-          <iron-icon icon="warning"></iron-icon> Please associate PD with CP Output before moving forward
+          <div><iron-icon icon="warning"></iron-icon> Please associate PD with CP Output before moving forward</div>
+          ${!this.cpOutputs.length
+            ? html`
+                <div>
+                  <br /><iron-icon icon="warning"></iron-icon> You have to add a CP Output to the Results Structure and
+                  then you will be able to associate it to the PD Output
+                </div>
+              `
+            : ''}
         </div>
         <div class="container layout vertical">
           <paper-input

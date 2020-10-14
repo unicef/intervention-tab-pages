@@ -30,7 +30,7 @@ import './modals/cp-output-dialog';
 import '@polymer/paper-item';
 import '@polymer/paper-listbox';
 import {getEndpoint} from '../../utils/endpoint-helper';
-import {RootState} from '../../common/models/globals.types';
+import {IdAndName, RootState} from '../../common/models/globals.types';
 import {openDialog} from '../../utils/dialog';
 import CONSTANTS from '../../common/constants';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
@@ -292,7 +292,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
               .showIndicators="${this.showIndicators}"
               .showActivities="${this.showActivities}"
               .readonly="${!this.permissions.edit.result_links || this.commentMode}"
-              @add-pd="${() => this.openPdOutputDialog({}, result.cp_output, result.cp_output_name)}"
+              @add-pd="${() => this.openPdOutputDialog({}, result.cp_output)}"
               @edit-cp-output="${() => this.openCpOutputDialog(result)}"
               @delete-cp-output="${() => this.openDeleteCpOutputDialog(result.id)}"
             >
@@ -320,7 +320,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                         <paper-icon-button
                           icon="icons:create"
                           ?hidden="${!this.permissions.edit.result_links}"
-                          @click="${() => this.openPdOutputDialog(pdOutput, result.cp_output, result.cp_output_name)}"
+                          @click="${() => this.openPdOutputDialog(pdOutput, result.cp_output)}"
                         ></paper-icon-button>
                         <paper-icon-button
                           icon="icons:delete"
@@ -399,12 +399,14 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
   }
 
   openPdOutputDialog(): void;
-  openPdOutputDialog(pdOutput: Partial<ResultLinkLowerResult>, cpOutput: number, cpoName: string): void;
-  openPdOutputDialog(pdOutput?: Partial<ResultLinkLowerResult>, cpOutput?: number, cpoName?: string): void {
-    const currentOutputExists = Boolean(this.cpOutputs.find(({id}: CpOutput) => id === cpOutput));
-    const cpOutputs: CpOutput[] = currentOutputExists
-      ? this.cpOutputs
-      : [{id: cpOutput, name: cpoName} as CpOutput, ...this.cpOutputs];
+  openPdOutputDialog(pdOutput: Partial<ResultLinkLowerResult>, cpOutput: number): void;
+  openPdOutputDialog(pdOutput?: Partial<ResultLinkLowerResult>, cpOutput?: number): void {
+    const cpOutputs: IdAndName<number>[] = this.intervention.result_links
+      .map(({cp_output: id, cp_output_name: name}: ExpectedResult) => ({
+        id,
+        name
+      }))
+      .filter(({id}: IdAndName<number>) => id);
     openDialog<any>({
       dialog: 'pd-output-dialog',
       dialogData: {
