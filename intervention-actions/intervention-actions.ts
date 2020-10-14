@@ -197,7 +197,7 @@ export class InterventionActions extends LitElement {
       if (action === 'cancel') {
         return {cancel_justification: response.comment}
       }
-      return {};
+      return null;
     });
   }
 
