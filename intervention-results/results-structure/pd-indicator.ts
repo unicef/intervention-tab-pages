@@ -32,6 +32,9 @@ export class PdIndicator extends CommentsMixin(LitElement) {
             margin-right: 16px !important;
           }
         }
+        .editable-row .hover-block {
+          background-color: rgb(189, 211, 230);
+        }
         :host([high-frequency-indicator]) etools-data-table-row {
           --icon-wrapper: {
             background: var(--indicator-blue)

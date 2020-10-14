@@ -28,6 +28,9 @@ export class CpOutputLevel extends LitElement {
         .alert {
           color: var(--error-color);
         }
+        .editable-row .hover-block {
+          background-color: rgb(240, 240, 240);
+        }
       `
     ];
   }

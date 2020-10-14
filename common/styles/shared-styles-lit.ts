@@ -267,6 +267,11 @@ export const sharedStylesContent = `
     align-items: center;
     cursor: pointer;
   }
+
+  etools-data-table-row {
+    --list-second-bg-color: rgba(204, 204, 204, 0.3);
+  }
+
   .paper-label {
     font-size: 12px;
     color: var(--secondary-text-color);

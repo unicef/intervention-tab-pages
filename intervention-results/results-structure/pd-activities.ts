@@ -68,6 +68,9 @@ export class PdActivities extends CommentsMixin(LitElement) {
             margin-right: 16px !important;
           }
         }
+        .editable-row .hover-block {
+          background-color: rgb(199, 212, 200);
+        }
       </style>
 
       <div class="row-h align-items-center header">

@@ -216,6 +216,9 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           opacity: 0.84;
           margin-left: 6px;
         }
+        .editable-row .hover-block {
+          background-color: rgb(230, 230, 230);
+        }
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Results Structure (${this.noOfPdOutputs})">
