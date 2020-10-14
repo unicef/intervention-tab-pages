@@ -3,6 +3,7 @@ import '@polymer/paper-toggle-button';
 
 import './common/layout/page-content-header/intervention-page-content-header';
 import './common/layout/etools-tabs';
+import './common/components/cancel/cancel-justification';
 // eslint-disable-next-line max-len
 import './common/layout/status/etools-status';
 import './intervention-actions/intervention-actions';
@@ -130,6 +131,11 @@ export class InterventionTabs extends LitElement {
       <div class="page-content">
         ${this.store
           ? html`
+              ${this.intervention.cancel_justification
+                ? html`<cancel-justification
+                    .justification=${this.intervention.cancel_justification}
+                  ></cancel-justification>`
+                : ''}
               <intervention-details ?hidden="${!this.isActiveTab(this.activeTab, 'details')}"> </intervention-details>
               <intervention-overview ?hidden="${!this.isActiveTab(this.activeTab, 'overview')}">
               </intervention-overview>

@@ -194,10 +194,10 @@ export class InterventionActions extends LitElement {
       if (!confirmed || !response) {
         return null;
       }
-
-      return {
-        comment: response.comment
-      };
+      if (action === 'cancel') {
+        return {cancel_justification: response.comment}
+      }
+      return null;
     });
   }
 

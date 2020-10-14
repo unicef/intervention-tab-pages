@@ -270,6 +270,7 @@ export class Intervention {
   partner_accepted = false;
   date_draft_by_partner = '';
   date_sent_to_partner = '';
+  cancel_justification = '';
 }
 
 export type ManagementBudget = {
