@@ -8,12 +8,14 @@ import '../../styles/shared-styles-lit';
 import {sharedStyles} from '../../styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../styles/grid-layout-styles-lit';
 import {formatDate} from '../../../utils/date-utils';
-import {AnyObject, EnvFlags} from '../../models/globals.types';
+import {AnyObject} from '../../models/globals.types';
 import {validateRequiredFields} from '../../../utils/validation-helper';
 import ComponentBaseMixin from '../../mixins/component-base-mixin';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {fireEvent} from '../../../utils/fire-custom-event';
 import {openDialog} from '../../../utils/dialog';
+import EnvironmentFlagsMixin from '../../mixins/environment-flags-mixin';
+import {getStore} from '../../../utils/redux-store-access';
 declare const moment: any;
 
 /**
@@ -21,7 +23,7 @@ declare const moment: any;
  * @customElement
  */
 @customElement('pd-termination')
-export class PdTermination extends ComponentBaseMixin(LitElement) {
+export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit];
   }
@@ -121,9 +123,6 @@ export class PdTermination extends ComponentBaseMixin(LitElement) {
   @property()
   savingInProcess = false;
 
-  @property({type: Object})
-  environmentFlags: EnvFlags | null = null;
-
   set dialogData(data: AnyObject) {
     if (!data) {
       return;
@@ -163,7 +162,7 @@ export class PdTermination extends ComponentBaseMixin(LitElement) {
     if (!this.validate()) {
       return;
     }
-
+    this.envFlagsStateChanged(getStore().getState());
     if (this.environmentFlags && !this.environmentFlags.prp_mode_off && this.environmentFlags.prp_server_on) {
       this.dialogOpened = false;
       openDialog({
