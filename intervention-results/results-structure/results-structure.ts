@@ -356,7 +356,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         ${!this.resultLinks.length ? html` <div class="no-results">There are no results added.</div> ` : ''}
 
         <div
-          ?hidden="${this.isUnicefUser || this.commentMode}"
+          ?hidden="${this.isUnicefUser || this.commentMode || !this.permissions.edit.result_links}"
           class="add-pd white row-h align-items-center"
           @click="${() => this.openPdOutputDialog()}"
         >
