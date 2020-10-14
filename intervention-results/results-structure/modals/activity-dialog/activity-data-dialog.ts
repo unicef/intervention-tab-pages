@@ -123,6 +123,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
             .value="${this.editedData.name}"
             @value-changed="${({detail}: CustomEvent) => this.updateModelValue('name', detail.value)}"
             required
+            auto-validate
             ?invalid="${this.errors.name}"
             .errorMessage="${(this.errors.name && this.errors.name[0]) || 'This field is required'}"
             ?readonly="${this.readonly}"
