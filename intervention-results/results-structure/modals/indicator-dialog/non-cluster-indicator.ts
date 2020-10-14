@@ -70,6 +70,11 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           padding-bottom: 12px !important;
           padding-left: 10px !important;
         }
+
+        .row-h {
+          padding-top: 0 !important;
+          padding-bottom: 16px;
+        }
       </style>
 
       <div class="row-h flex-c">

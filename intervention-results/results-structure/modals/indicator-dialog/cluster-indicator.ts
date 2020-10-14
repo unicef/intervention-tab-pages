@@ -36,6 +36,11 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
           padding: 0 8px 0 8px;
           margin-bottom: 10px;
         }
+
+        .row-h {
+          padding-top: 0 !important;
+          padding-bottom: 16px;
+        }
       </style>
       ${!this.isNewIndicator
         ? html`
