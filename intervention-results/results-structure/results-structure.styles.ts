@@ -35,6 +35,8 @@ export const ResultStructureStyles: CSSResult = css`
   }
   .header {
     border: 1px solid var(--main-border-color);
+    border-top: none;
+    border-bottom: none;
     padding-left: 56px !important;
     padding-right: 12px !important;
   }
@@ -89,6 +91,8 @@ export const ResultStructureStyles: CSSResult = css`
 
   .empty-row {
     padding: 16px 12px 16px 56px;
+    border-bottom: 1px solid var(--main-border-color);
+    border-top: 1px solid var(--main-border-color);
   }
   div[slot='panel-btns'] {
     opacity: 1;
