@@ -189,7 +189,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(EtoolsCurr
           --list-row-wrapper-padding: 5px 12px 5px 0;
           --list-row-collapse-wrapper: {
             padding: 0 !important;
-            border-bottom: 1px solid var(--main-border-color) !important;
+            border-bottom: none !important;
           }
           --list-row-wrapper: {
             background-color: var(--secondary-background-color) !important;
