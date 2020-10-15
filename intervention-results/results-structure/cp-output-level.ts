@@ -69,7 +69,7 @@ export class CpOutputLevel extends LitElement {
                 ${this.resultLink.cp_output
                   ? html`
                       <div class="flex-1 flex-fix">
-                        <div class="heading">Country Program output</div>
+                        <div class="heading">Country Program Output</div>
                         <div class="data">${this.resultLink.cp_output_name}</div>
                       </div>
 
