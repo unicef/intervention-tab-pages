@@ -8,6 +8,7 @@ export interface ExpectedResult {
   ll_results: ResultLinkLowerResult[];
   ram_indicators: number[];
   ram_indicator_names: string[];
+  total: string;
 }
 
 export interface ResultLinkLowerResult {
@@ -21,6 +22,7 @@ export interface ResultLinkLowerResult {
   created?: string;
   result_link?: number;
   cp_output: number | null;
+  total: string;
 }
 
 export class IndicatorIndicator {

@@ -145,7 +145,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
             <div slot="row-data-details" class="row-h">
               <!--    Locations    -->
               <div class="details-container">
-                <div class="text details-heading">Time periods</div>
+                <div class="text details-heading">Time Periods</div>
                 <div class="details-text">
                   <b>${this.getQuartersNames(activity.time_frames)}</b>
                 </div>
@@ -153,7 +153,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
 
               <!--    Section and Cluster    -->
               <div class="details-container full">
-                <div class="text details-heading">Other comments</div>
+                <div class="text details-heading">Other Notes</div>
                 <div class="details-text">${activity.context_details || '-'}</div>
               </div>
             </div>
