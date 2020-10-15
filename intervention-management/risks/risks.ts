@@ -120,7 +120,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       cssClass: 'col_type'
     },
     {
-      label: 'Proposed mitigation measures',
+      label: 'Proposed Mitigation Measures',
       name: 'mitigation_measures',
       type: EtoolsTableColumnType.Text,
       cssClass: 'col_measures'

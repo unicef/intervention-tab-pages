@@ -309,7 +309,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(EtoolsCurr
                   >
                     <div slot="row-data" class="layout-horizontal align-items-center editable-row">
                       <div class="flex-1 flex-fix">
-                        <div class="heading">Program Document output</div>
+                        <div class="heading">Program Document Output</div>
                         <div class="data bold-data">${pdOutput.name}</div>
                       </div>
 

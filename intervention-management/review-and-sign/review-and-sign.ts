@@ -198,7 +198,7 @@ export class InterventionReviewAndSign extends CommentsMixin(
             <!-- Signed By Partner Authorized Officer -->
             <etools-dropdown
               id="signedByAuthorizedOfficer"
-              label="Signed By Partner Authorized Officer"
+              label="Signed by Partner Authorized Officer"
               placeholder="&#8212;"
               .options="${this.getCleanEsmmOptions(this.agreementAuthorizedOfficers)}"
               .selected="${this.data.partner_authorized_officer_signatory}"

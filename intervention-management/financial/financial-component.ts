@@ -77,7 +77,7 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
         <div class="layout-horizontal padd-top">
           <div class="w100">
-            <label class="paper-label">Cash Transfer modality(ies)</label>
+            <label class="paper-label">Cash Transfer Modality(ies)</label>
           </div>
         </div>
         <div class="layout-horizontal row-padding-v">
@@ -96,7 +96,7 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
         </div>
         <div class="layout-horizontal row-padding-v">
           <div class="w100">
-            <label class="paper-label">Headquarters contribution (automatic 7% for INGO)</label>
+            <label class="paper-label">Headquarters Contribution (automatic 7% for INGO)</label>
           </div>
         </div>
         <div class="layout-horizontal">

@@ -75,7 +75,7 @@ export class FinalReview extends CommentsMixin(LitElement) {
         </div>
         <div class="container">
           <div>
-            <div class="label">Date review performed</div>
+            <div class="label">Date Review Performed</div>
             <div class="date">${this.reviewDate}</div>
           </div>
           <div ?hidden="${!this.attachment}">
