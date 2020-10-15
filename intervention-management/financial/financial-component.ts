@@ -130,6 +130,9 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
               .selected="${this.data.planned_budget.currency}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_budget)}"
               @etools-selected-item-changed="${({detail}: CustomEvent) => {
+                if (detail === undefined || detail.selectedItem === null) {
+                  return;
+                }
                 this.data.planned_budget.currency = detail.selectedItem ? detail.selectedItem.value : '';
                 this.requestUpdate();
               }}"
