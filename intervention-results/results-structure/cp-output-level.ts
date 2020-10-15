@@ -7,9 +7,10 @@ import '@polymer/iron-icons';
 import './modals/cp-output-dialog';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
 
 @customElement('cp-output-level')
-export class CpOutputLevel extends LitElement {
+export class CpOutputLevel extends EtoolsCurrency(LitElement) {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
@@ -36,6 +37,7 @@ export class CpOutputLevel extends LitElement {
   }
 
   @property() interventionId!: number;
+  @property() currency!: string | undefined;
   @property() resultLink!: ExpectedResult;
   @property({type: Boolean, reflect: true, attribute: 'show-cpo-level'}) showCPOLevel = false;
   @property({type: Boolean}) showIndicators = true;
@@ -84,7 +86,9 @@ export class CpOutputLevel extends LitElement {
 
                       <div class="flex-none" ?hidden="${!this.showActivities}">
                         <div class="heading">Total Cash Budget</div>
-                        <div class="data">TODO 1234</div>
+                        <div class="data">
+                          ${this.currency} ${this.displayCurrencyAmount(this.resultLink.total, '0.00')}
+                        </div>
                       </div>
 
                       <div class="hover-block">
