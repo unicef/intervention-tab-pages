@@ -205,6 +205,9 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
   }
 
   selectedAgreementChanged(detail: any) {
+    if (!detail || !detail.selectedItem) {
+      return;
+    }
     this.selectedItemChanged(detail, 'agreement');
     this.agreementAuthorizedOfficers = detail.selectedItem?.authorized_officers;
   }
