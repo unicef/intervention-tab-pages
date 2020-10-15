@@ -174,16 +174,16 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
         }
       }).then(({confirmed}) => {
         if (confirmed) {
-          this.confirmReason();
+          this.terminatePD();
         }
       });
     } else {
-      this.confirmReason();
+      this.terminatePD();
     }
     return;
   }
 
-  confirmReason(): void {
+  terminatePD(): void {
     fireEvent(this, 'dialog-closed', {
       confirmed: true,
       response: {
