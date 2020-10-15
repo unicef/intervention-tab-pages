@@ -22,6 +22,7 @@ export class ReviewData extends ModelsBase {
   unicef_signatory = '';
   days_from_submission_to_signed = '';
   days_from_review_to_signed = '';
+  termination_doc_attachment = '';
 }
 
 export class ReviewDataPermission extends ModelsBase {
