@@ -72,7 +72,7 @@ export class CpOutputDialog extends LitElement {
         @confirm-btn-clicked="${() => this.processRequest()}"
         @close="${this.onClose}"
         ?show-spinner="${this.loadingInProcess}"
-        .okBtnText="Save"
+        ok-btn-text="Save"
         no-padding
       >
         <div class="container layout vertical">
