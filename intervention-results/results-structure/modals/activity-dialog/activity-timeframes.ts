@@ -3,7 +3,6 @@ import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-
 import {InterventionActivityTimeframe} from '../../../../common/models/intervention.types';
 import {ActivityTime, groupByYear, serializeTimeFrameData} from '../../../../utils/timeframes.helper';
 import {fireEvent} from '../../../../utils/fire-custom-event';
-import {layoutCenter, layoutFlex, layoutInline, layoutWrap} from '../../../../common/styles/flex-layout-styles';
 
 @customElement('activity-time-frames')
 export class ActivityTimeFrames extends LitElement {
@@ -29,6 +28,7 @@ export class ActivityTimeFrames extends LitElement {
         }
         .year {
           height: 37px;
+          margin-bottom: 15px;
         }
         .time-frame {
           display: flex;
@@ -65,6 +65,9 @@ export class ActivityTimeFrames extends LitElement {
           width: 100%;
           max-width: inherit;
         }
+        .time-frame-container {
+          max-width: 210px;
+        }
       `
     ];
   }
@@ -84,7 +87,7 @@ export class ActivityTimeFrames extends LitElement {
       <div class="layout-horizontal center-align layout-wrap">
         ${this._timeFrames.map(
           ([year, frames]: any, index: number) => html`
-            <div class="layout-vertical center-align layout-wrap">
+            <div class="layout-vertical center-align layout-wrap time-frame-container row-h">
               <div class="layout-horizontal center-align title year">${year}</div>
               <div class="layout-horizontal center-align">
                 ${frames.map(
@@ -101,7 +104,7 @@ export class ActivityTimeFrames extends LitElement {
                 )}
               </div>
             </div>
-            <div class="year-divider" ?hidden="${index + 1 === this._timeFrames.length}"></div>
+            <div class="year-divider" ?hidden="${index + 1 === this._timeFrames.length || (index + 1) % 3 === 0}"></div>
           `
         )}
       </div>
