@@ -111,7 +111,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(
   @property({type: Array})
   columns: EtoolsTableColumn[] = [
     {
-      label: 'Item (all prices in PD Currency)',
+      label: 'Item (all prices in PD currency)',
       name: 'title',
       type: EtoolsTableColumnType.Text
     },
