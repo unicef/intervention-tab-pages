@@ -72,6 +72,14 @@ export class PdActivities extends CommentsMixin(LitElement) {
         .editable-row .hover-block {
           background-color: var(--green-background) !important;
         }
+        etools-data-table-row:last-child {
+          --list-row-wrapper: {
+            background-color: var(--green-background) !important;
+            min-height: 55px;
+            border: 1px solid var(--main-border-color) !important;
+            border-bottom: 1px solid var(--main-border-color) !important;
+          }
+        }
       </style>
 
       <div class="row-h align-items-center header">
@@ -137,7 +145,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
             <div slot="row-data-details" class="row-h">
               <!--    Locations    -->
               <div class="details-container">
-                <div class="text details-heading">Time periods</div>
+                <div class="text details-heading">Time Periods</div>
                 <div class="details-text">
                   <b>${this.getQuartersNames(activity.time_frames)}</b>
                 </div>
@@ -145,7 +153,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
 
               <!--    Section and Cluster    -->
               <div class="details-container full">
-                <div class="text details-heading">Other comments</div>
+                <div class="text details-heading">Other Notes</div>
                 <div class="details-text">${activity.context_details || '-'}</div>
               </div>
             </div>

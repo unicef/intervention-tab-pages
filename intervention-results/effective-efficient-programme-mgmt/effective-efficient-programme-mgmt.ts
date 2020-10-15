@@ -74,7 +74,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(
 
       <etools-content-panel
         show-expand-btn
-        panel-title="Effective and efficient programme management"
+        panel-title="Effective and Efficient Programme Management"
         comment-element="programme-management"
         comment-description="Effective and Efficient Programme Management"
       >

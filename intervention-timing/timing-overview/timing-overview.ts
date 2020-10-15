@@ -39,14 +39,14 @@ export class TimingOverview extends CommentsMixin(LitElement) {
         </div>
 
         <div class="data-column">
-          <label class="paper-label">Date first sent to Partner</label>
+          <label class="paper-label">Date First Sent to Partner</label>
           <div class="input-label" ?empty="${!this.timingOverview.date_sent_to_partner}">
             ${formatDateShortMonth(this.timingOverview.date_sent_to_partner)}
           </div>
         </div>
 
         <div class="data-column">
-          <label class="paper-label">Date first draft by Partner</label>
+          <label class="paper-label">Date First Draft by Partner</label>
           <div class="input-label" ?empty="${!this.timingOverview.date_draft_by_partner}">
             ${formatDateShortMonth(this.timingOverview.date_draft_by_partner)}
           </div>
