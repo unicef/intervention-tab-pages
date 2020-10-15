@@ -65,6 +65,10 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         #mitigationMeasures {
           width: 100%;
         }
+        .row-h {
+          overflow: hidden;
+          padding: 20px;
+        }
       </style>
       <etools-content-panel show-expand-btn panel-title="Risks" comment-element="risks" comment-description="Risks">
         <div slot="panel-btns">
@@ -76,6 +80,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           </paper-icon-button>
         </div>
         <etools-table
+          ?hidden="${!this.data?.length}"
           .columns="${this.columns}"
           .items="${this.data}"
           @edit-item="${(e: CustomEvent) => this.openRiskDialog(e)}"
@@ -86,6 +91,9 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           .showDelete=${this.canEditAtLeastOneField}
         >
         </etools-table>
+        <div class="row-h" ?hidden="${this.data?.length}">
+          <p>There are no risks added.</p>
+        </div>
       </etools-content-panel>
     `;
   }
@@ -112,7 +120,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       cssClass: 'col_type'
     },
     {
-      label: 'Proposed mitigation measures',
+      label: 'Proposed Mitigation Measures',
       name: 'mitigation_measures',
       type: EtoolsTableColumnType.Text,
       cssClass: 'col_measures'

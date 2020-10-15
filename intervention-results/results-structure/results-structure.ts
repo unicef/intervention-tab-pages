@@ -44,6 +44,7 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import ContentPanelMixin from '../../common/mixins/content-panel-mixin';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
+import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
 
 const RESULT_VIEW = 'result_view';
 const BUDGET_VIEW = 'budget_view';
@@ -53,7 +54,7 @@ const COMBINED_VIEW = 'combined_view';
  * @customElement
  */
 @customElement('results-structure')
-export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement)) {
+export class ResultsStructure extends CommentsMixin(ContentPanelMixin(EtoolsCurrency(LitElement))) {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
@@ -188,7 +189,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           --list-row-wrapper-padding: 5px 12px 5px 0;
           --list-row-collapse-wrapper: {
             padding: 0 !important;
-            border-bottom: 1px solid var(--main-border-color) !important;
+            border-bottom: none !important;
           }
           --list-row-wrapper: {
             background-color: var(--secondary-background-color) !important;
@@ -291,6 +292,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
               .interventionId="${this.interventionId}"
               .showIndicators="${this.showIndicators}"
               .showActivities="${this.showActivities}"
+              .currency="${this.intervention.planned_budget.currency}"
               .readonly="${!this.permissions.edit.result_links || this.commentMode}"
               @add-pd="${() => this.openPdOutputDialog({}, result.cp_output)}"
               @edit-cp-output="${() => this.openCpOutputDialog(result)}"
@@ -307,13 +309,16 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                   >
                     <div slot="row-data" class="layout-horizontal align-items-center editable-row">
                       <div class="flex-1 flex-fix">
-                        <div class="heading">Program Document output</div>
+                        <div class="heading">Program Document Output</div>
                         <div class="data bold-data">${pdOutput.name}</div>
                       </div>
 
                       <div class="flex-none" ?hidden="${!this.showActivities}">
                         <div class="heading">Total Cash Budget</div>
-                        <div class="data">TODO 123</div>
+                        <div class="data">
+                          ${this.intervention.planned_budget.currency}
+                          ${this.displayCurrencyAmount(pdOutput.total, '0.00')}
+                        </div>
                       </div>
 
                       <div class="hover-block">
@@ -356,7 +361,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         ${!this.resultLinks.length ? html` <div class="no-results">There are no results added.</div> ` : ''}
 
         <div
-          ?hidden="${this.isUnicefUser || this.commentMode}"
+          ?hidden="${this.isUnicefUser || this.commentMode || !this.permissions.edit.result_links}"
           class="add-pd white row-h align-items-center"
           @click="${() => this.openPdOutputDialog()}"
         >
