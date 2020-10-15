@@ -327,6 +327,18 @@ export class InterventionReviewAndSign extends CommentsMixin(
               : html``
           }
         </div>
+        <div class="layout-horizontal row-padding-v">
+          <div class="col col-6">
+            <!-- TERMINATION DOC -->
+            <etools-upload
+              id="terminationDoc"
+              label="Termination Notice"
+              .hidden="${!this.data.termination_doc_attachment}"
+              .fileUrl="${this.data.termination_doc_attachment}"
+              readonly
+            >
+          </div>
+        </div>
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
       </etools-content-panel>
     `;
