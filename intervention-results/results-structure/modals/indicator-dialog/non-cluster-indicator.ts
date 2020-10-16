@@ -12,6 +12,7 @@ import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-
 import {buttonsStyles} from '../../../../common/styles/button-styles';
 import {Indicator} from '../../../../common/models/intervention.types';
 import {PaperCheckboxElement} from '@polymer/paper-checkbox/paper-checkbox.js';
+import {layoutCenter, layoutVertical} from '../../../../common/styles/flex-layout-styles';
 
 /**
  * @customElement
@@ -71,13 +72,10 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           padding-left: 10px !important;
         }
 
-        .row-h {
-          padding-top: 16px !important;
-          padding-bottom: 0px !important;
-        }
-
-        .last-item {
-          padding-bottom: 16px !important;
+        .all-locations {
+          margin: auto;
+          ${layoutVertical}
+          ${layoutCenter}
         }
       </style>
 
@@ -375,14 +373,16 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           }}"
         >
         </etools-dropdown-multi>
-        <paper-button
-          class="secondary-btn add-locations"
-          ?hidden="${this.readonly}"
-          @click="${this._addAllLocations}"
-          title="Add all locations"
-        >
-          Add all
-        </paper-button>
+        <div class="all-locations">
+          <paper-button
+            class="secondary-btn add-locations"
+            ?hidden="${this.readonly}"
+            @click="${this._addAllLocations}"
+            title="Add all locations"
+          >
+            Add all
+          </paper-button>
+        </div>
       </div>
     `;
   }
