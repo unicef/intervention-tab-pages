@@ -200,7 +200,7 @@ export class InterventionTabs extends connectStore(LitElement) {
   /*
    * Used to avoid unnecessary get intervention request
    */
-  _routeDetails!: RouteDetails;
+  _routeDetails: RouteDetails | null = null;
 
   connectedCallback() {
     super.connectedCallback();
@@ -243,6 +243,7 @@ export class InterventionTabs extends connectStore(LitElement) {
         this._routeDetails = cloneDeep(state.app!.routeDetails);
         this.commentMode = !!(this._routeDetails.queryParams || {})['comment_mode'];
         getStore().dispatch(enableCommentMode(this.commentMode));
+        fireEvent(this, 'scroll-up');
       }
       this.availableActions = selectAvailableActions(state);
 
@@ -257,6 +258,9 @@ export class InterventionTabs extends connectStore(LitElement) {
         this.pageTabs.push({tab: 'progress', tabLabel: 'Progress', hidden: false});
         this.pageTabs.push({tab: 'reports', tabLabel: 'Reports', hidden: false});
       }
+    } else if (this._routeDetails) {
+      this._routeDetails = null;
+      fireEvent(this, 'scroll-up');
     }
   }
 
