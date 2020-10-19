@@ -27,12 +27,13 @@ export class ActivityTimeFrames extends LitElement {
           line-height: 16px;
         }
         .year {
+          margin-left: 50%;
+          margin-right: 50%;
           height: 37px;
+          margin-top: 15px;
           margin-bottom: 15px;
         }
         .time-frame {
-          display: flex;
-          flex-direction: column;
           align-items: center;
           justify-content: center;
           padding: 5px;
@@ -66,7 +67,9 @@ export class ActivityTimeFrames extends LitElement {
           max-width: inherit;
         }
         .time-frame-container {
-          max-width: 210px;
+          padding: 16px 0;
+          flex: 0 0 30.3333%;
+          max-width: 30.3333%;
         }
       `
     ];
@@ -83,12 +86,12 @@ export class ActivityTimeFrames extends LitElement {
 
   protected render(): TemplateResult {
     return html`
-      <label class="paper-label" required>Activity Times (click to select/deselect)</label>
-      <div class="layout-horizontal center-align layout-wrap">
+      <label class="paper-label layout-horizontal center-align" required>Activity Times (click to select/deselect)</label>
+      <div class="layout-horizontal center-align layout-wrap col-12">
         ${this._timeFrames.map(
           ([year, frames]: any, index: number) => html`
-            <div class="layout-vertical center-align layout-wrap time-frame-container row-h">
-              <div class="layout-horizontal center-align title year">${year}</div>
+            <div class="layout-horizontal center-align layout-wrap time-frame-container">
+              <div class="layout-horizontal center-align title year row-h">${year}</div>
               <div class="layout-horizontal center-align">
                 ${frames.map(
                   (frame: ActivityTime, index: number) => html`
