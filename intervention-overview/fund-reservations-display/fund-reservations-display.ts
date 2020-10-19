@@ -3,6 +3,7 @@ import '@polymer/iron-label/iron-label';
 import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import '@unicef-polymer/etools-data-table/etools-data-table';
+import '@polymer/iron-icons/iron-icons';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {frWarningsStyles} from '../../common/styles/fr-warnings-styles';
@@ -66,6 +67,9 @@ export class FundReservationsDisplay extends EtoolsCurrency(FrNumbersConsistency
         div[simple-header] {
           color: var(--list-secondary-text-color, #757575);
         }
+        .pl-5 {
+          padding-left: 5px;
+        }
       </style>
 
       <div class="row-h" ?hidden="${this.frsDetails.frs.length}">
@@ -86,7 +90,11 @@ export class FundReservationsDisplay extends EtoolsCurrency(FrNumbersConsistency
           (fr: AnyObject) => html`
             <etools-data-table-row>
               <div slot="row-data" class="layout-horizontal">
-                <span class="col-data col-2">${fr.fr_number}</span>
+                <span class="col-data col-2">${fr.fr_number}
+                  <a title="See more details" class="pl-5" target="_blank" href="${this.getFRNumberLink(fr.fr_number)}">
+                    <iron-icon icon="visibility"></iron-icon>
+                  </a>
+                </span>
                 <span class="col-data col-2 right-align">${prettyDate(fr.start_date)}</span>
                 <span class="col-data col-2 right-align">
                   <etools-info-tooltip
@@ -302,5 +310,9 @@ export class FundReservationsDisplay extends EtoolsCurrency(FrNumbersConsistency
 
   _getOtherStyleIfNA(value: any) {
     return (value ? '' : 'fr-val-not-available') + ' fund-reservations-display';
+  }
+
+  getFRNumberLink(frNumber: string) {
+    return `https://mappsprd.unicef.org:44300/sap/bc/ui5_ui5/sap/zhact_etools_fr/index.html?Belnr=${frNumber}`;
   }
 }
