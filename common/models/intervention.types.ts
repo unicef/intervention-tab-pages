@@ -150,7 +150,7 @@ export class InterventionPermissionsFields {
 
   // details - PD or SSFA Details
   contingency_pd = false;
-  country_programme = false;
+  country_programmes = false;
   start = false;
   end = false;
   sections = false;
@@ -212,7 +212,7 @@ export class Intervention {
   id: number | null = null;
   agreement?: number;
   document_type?: string;
-  country_programme?: number;
+  country_programmes?: number;
   number?: string;
   reference_number_year?: string | null = null;
   prc_review_attachment?: number | string;
