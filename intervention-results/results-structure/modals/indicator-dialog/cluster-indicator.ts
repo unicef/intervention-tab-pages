@@ -38,8 +38,12 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
         }
 
         .row-h {
-          padding-top: 0 !important;
-          padding-bottom: 16px;
+          padding-top: 16px !important;
+          padding-bottom: 0px !important;
+        }
+
+        .last-item {
+          padding-bottom: 24px !important;
         }
       </style>
       ${!this.isNewIndicator
@@ -295,7 +299,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
           </label>
         </div>
       </div>
-      <div class="row-h flex-c">
+      <div class="last-item row-h flex-c">
         <etools-dropdown-multi
           id="locationsDropdw"
           label="Locations"

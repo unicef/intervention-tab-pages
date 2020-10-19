@@ -77,6 +77,15 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           ${layoutVertical}
           ${layoutCenter}
         }
+
+        .row-h {
+          padding-top: 16px !important;
+          padding-bottom: 0px !important;
+        }
+
+        .last-item {
+          padding-bottom: 24px !important;
+        }
       </style>
 
       <div class="row-h flex-c">
