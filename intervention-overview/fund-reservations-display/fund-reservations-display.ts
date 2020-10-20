@@ -41,9 +41,13 @@ export class FundReservationsDisplay extends EtoolsCurrency(FrNumbersConsistency
           --list-row-no-collapse: {
             background-color: var(--light-theme-background-color);
           }
+          --list-bg-color: var(--light-theme-background-color);
         }
         #plannedUnicefCash, #totalsRow {
           --list-row-wrapper-padding: 0 24px 0 56px;
+        }
+        #plannedUnicefCash {
+          --list-bg-color: none;
         }
         #plannedUnicefCash .unicef-cash-col {
           background-color: var(--light-info-color);
