@@ -50,6 +50,7 @@ export interface EtoolsEndpoints {
   getResponsePlans: EtoolsEndpoint;
   hrClusterReportingRequirements: EtoolsEndpoint;
   getPRPCountries: EtoolsEndpoint;
+  downloadComment: EtoolsEndpoint;
 }
 
 export const interventionEndpoints: EtoolsEndpoints = {
@@ -135,6 +136,9 @@ export const interventionEndpoints: EtoolsEndpoints = {
   },
   deleteComment: {
     template: '/api/comments/v1/partners/intervention/<%=interventionId%>/<%=commentId%>/delete/'
+  },
+  downloadComment: {
+    template: '/api/comments/v1/partners/intervention/<%=interventionId%>/csv/'
   },
   lowerResultsDelete: {
     template: '/api/v2/reports/lower_results/<%=lower_result_id%>/'

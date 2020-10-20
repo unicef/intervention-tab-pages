@@ -55,13 +55,11 @@ export class InterventionActions extends LitElement {
       name: this.actionsNamesMap[action],
       type: action
     }));
-    const endpointUrl: string = getEndpoint(interventionEndpoints.intervention, {interventionId: this.interventionId})
-      .url;
     return actions.length
       ? html`
           <export-intervention-data
             .exportLinks="${preparedExportActions}"
-            .endpoint="${endpointUrl}"
+            .interventionId="${this.interventionId}"
           ></export-intervention-data>
         `
       : html``;

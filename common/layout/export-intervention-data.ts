@@ -6,6 +6,8 @@ import '@polymer/paper-listbox/paper-listbox';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {elevation2} from '../styles/elevation-styles';
 import {AnyObject} from '../models/globals.types';
+import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {getEndpoint} from '../../utils/endpoint-helper';
 
 /**
  * @customElement
@@ -90,13 +92,19 @@ export class ExportInterventionData extends LitElement {
   @property({type: String})
   params = '';
 
-  @property({type: String})
-  endpoint = '';
+  @property({type: Number})
+  interventionId = '';
 
   export(_type: string) {
-    // const url = this.endpoint + `export/${_type}/` + (this.params ? `?${this.params}` : '');
-    // Export not implemented yet
-    // window.open(url, '_blank');
-    fireEvent(this, 'toast', {text: 'Export not implemented...'});
+    let url = '';
+    if (_type == 'download_comments') {
+      url = getEndpoint(interventionEndpoints.downloadComment, {interventionId: this.interventionId}).url;
+      window.open(url, '_blank');
+    } else {
+      // TODO: Export not implemented yet
+      // url = getEndpoint(interventionEndpoints.intervention, {interventionId: this.interventionId}).url;
+      // url = url + `export/${_type}/` + (this.params ? `?${this.params}` : '');
+      fireEvent(this, 'toast', {text: 'Export this not implemented...'});
+    }
   }
 }
