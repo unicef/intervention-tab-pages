@@ -92,18 +92,28 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
           >
           </paper-icon-button>
         </div>
-
-        <etools-table
-          .columns="${this.columns}"
-          .items="${this.supply_items}"
-          @edit-item="${this.editSupplyItem}"
-          @delete-item="${this.confirmDeleteSupplyItem}"
-          .getChildRowTemplateMethod="${this.getChildRowTemplate.bind(this)}"
-          .extraCSS="${this.getTableStyle()}"
-          .showEdit=${this.permissions.edit.supply_items}
-          .showDelete=${this.permissions.edit.supply_items}
-        >
-        </etools-table>
+        ${this.isUnicefUser
+          ? html`<etools-table
+              .columns="${this.columns}"
+              .items="${this.supply_items}"
+              @edit-item="${this.editSupplyItem}"
+              @delete-item="${this.confirmDeleteSupplyItem}"
+              .getChildRowTemplateMethod="${this.getChildRowTemplate.bind(this)}"
+              .extraCSS="${this.getTableStyle()}"
+              .showEdit=${this.permissions.edit.supply_items}
+              .showDelete=${this.permissions.edit.supply_items}
+            >
+            </etools-table>`
+          : html`<etools-table
+              .columns="${this.columns}"
+              .items="${this.supply_items}"
+              @edit-item="${this.editSupplyItem}"
+              @delete-item="${this.confirmDeleteSupplyItem}"
+              .extraCSS="${this.getTableStyle()}"
+              .showEdit=${this.permissions.edit.supply_items}
+              .showDelete=${this.permissions.edit.supply_items}
+            >
+            </etools-table>`}
       </etools-content-panel>
     `;
   }
@@ -144,6 +154,9 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
 
   @property({type: Object})
   permissions!: {edit: {supply_items?: boolean}};
+
+  @property({type: Boolean})
+  isUnicefUser = false;
 
   getChildRowTemplate(item: any): EtoolsTableChildRow {
     const childRow = {} as EtoolsTableChildRow;
@@ -186,13 +199,15 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
     }
     this.supply_items = selectSupplyAgreement(state);
     this.permissions = selectSupplyAgreementPermissions(state);
-
     this.supply_items.map((item: AnyObject) => {
       item.total_price = this.addCurrencyAmountDelimiter(item.total_price);
       item.unit_number = Number(item.unit_number);
       item.unit_price = this.addCurrencyAmountDelimiter(item.unit_price);
       return item;
     });
+    if (state.user && state.user.data) {
+      this.isUnicefUser = state.user.data.is_unicef_user;
+    }
     super.stateChanged(state);
   }
 
@@ -249,7 +264,8 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
       dialogData: {
         data: item,
         interventionId: this.intervention.id,
-        result_links: this.intervention.result_links
+        result_links: this.intervention.result_links,
+        isUnicefUser: this.isUnicefUser
       }
     });
   }
