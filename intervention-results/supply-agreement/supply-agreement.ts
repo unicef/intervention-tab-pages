@@ -26,6 +26,7 @@ import {getIntervention} from '../../common/actions';
 import '../../common/layout/are-you-sure';
 import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
+import {isUnicefUser} from '../../common/selectors';
 
 const customStyles = html`
   <style>
@@ -206,7 +207,7 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
       return item;
     });
     if (state.user && state.user.data) {
-      this.isUnicefUser = state.user.data.is_unicef_user;
+      this.isUnicefUser = isUnicefUser(state);
     }
     super.stateChanged(state);
   }
