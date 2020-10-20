@@ -3,6 +3,7 @@ import '@polymer/paper-toggle-button';
 
 import './common/layout/page-content-header/intervention-page-content-header';
 import './common/layout/etools-tabs';
+import './common/components/cancel/cancel-justification';
 // eslint-disable-next-line max-len
 import './common/layout/status/etools-status';
 import './intervention-actions/intervention-actions';
@@ -10,10 +11,10 @@ import './common/components/prp-country-data/prp-country-data';
 import {customElement, LitElement, html, property, css} from 'lit-element';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
-import {setStore, getStore} from './utils/redux-store-access';
+import {getStore, getStoreAsync} from './utils/redux-store-access';
 import {selectAvailableActions, currentPage, currentSubpage, isUnicefUser} from './common/selectors';
 import {elevationStyles} from './common/styles/elevation-styles';
-import {AnyObject, RouteDetails, RootState} from './common/models/globals.types';
+import {RouteDetails, RootState} from './common/models/globals.types';
 import {getIntervention} from './common/actions';
 import {sharedStyles} from './common/styles/shared-styles-lit';
 import {isJsonStrMatch} from './utils/utils';
@@ -23,6 +24,8 @@ import {buildUrlQueryString} from './utils/utils';
 import {enableCommentMode, getComments} from './common/components/comments/comments.actions';
 import {commentsData} from './common/components/comments/comments.reducer';
 import {Intervention} from './common/models/intervention.types';
+import {Store} from 'redux';
+import {connectStore} from './common/mixins/connect-store-mixin';
 
 const MOCKUP_STATUSES = [
   ['draft', 'Draft'],
@@ -36,7 +39,7 @@ const MOCKUP_STATUSES = [
  * @customElement
  */
 @customElement('intervention-tabs')
-export class InterventionTabs extends LitElement {
+export class InterventionTabs extends connectStore(LitElement) {
   static get styles() {
     return [
       elevationStyles,
@@ -128,21 +131,19 @@ export class InterventionTabs extends LitElement {
       </intervention-page-content-header>
 
       <div class="page-content">
-        ${this.store
-          ? html`
-              <intervention-details ?hidden="${!this.isActiveTab(this.activeTab, 'details')}"> </intervention-details>
-              <intervention-overview ?hidden="${!this.isActiveTab(this.activeTab, 'overview')}">
-              </intervention-overview>
-              <intervention-results ?hidden="${!this.isActiveTab(this.activeTab, 'results')}"> </intervention-results>
-              <intervention-timing ?hidden="${!this.isActiveTab(this.activeTab, 'timing')}"> </intervention-timing>
-              <intervention-management ?hidden="${!this.isActiveTab(this.activeTab, 'management')}">
-              </intervention-management>
-              <intervention-attachments ?hidden="${!this.isActiveTab(this.activeTab, 'attachments')}">
-              </intervention-attachments>
-              <intervention-reports ?hidden="${!this.isActiveTab(this.activeTab, 'reports')}"></intervention-reports>
-              <intervention-progress ?hidden="${!this.isActiveTab(this.activeTab, 'progress')}"></intervention-progress>
-            `
-          : html`<etools-loading id="intervention-tabs" loading-text="Loading..." active></etools-loading>`}
+        ${this.intervention.cancel_justification
+          ? html`<cancel-justification .justification=${this.intervention.cancel_justification}></cancel-justification>`
+          : ''}
+        <intervention-details ?hidden="${!this.isActiveTab(this.activeTab, 'details')}"> </intervention-details>
+        <intervention-overview ?hidden="${!this.isActiveTab(this.activeTab, 'overview')}"></intervention-overview>
+        <intervention-results ?hidden="${!this.isActiveTab(this.activeTab, 'results')}"> </intervention-results>
+        <intervention-timing ?hidden="${!this.isActiveTab(this.activeTab, 'timing')}"> </intervention-timing>
+        <intervention-management ?hidden="${!this.isActiveTab(this.activeTab, 'management')}">
+        </intervention-management>
+        <intervention-attachments ?hidden="${!this.isActiveTab(this.activeTab, 'attachments')}">
+        </intervention-attachments>
+        <intervention-reports ?hidden="${!this.isActiveTab(this.activeTab, 'reports')}"></intervention-reports>
+        <intervention-progress ?hidden="${!this.isActiveTab(this.activeTab, 'progress')}"></intervention-progress>
       </div>
     `;
   }
@@ -193,24 +194,6 @@ export class InterventionTabs extends LitElement {
   @property()
   availableActions: string[] = [];
 
-  _storeUnsubscribe!: () => void;
-  _store!: AnyObject;
-
-  @property({type: Object})
-  get store() {
-    return this._store;
-  }
-
-  set store(parentAppReduxStore: any) {
-    setStore(parentAppReduxStore);
-    parentAppReduxStore.addReducers({
-      commentsData
-    });
-    this._storeUnsubscribe = getStore().subscribe(() => this.stateChanged(getStore().getState()));
-    this.stateChanged(getStore().getState());
-    this._store = parentAppReduxStore;
-  }
-
   @property({type: Boolean})
   isUnicefUser = false;
 
@@ -222,10 +205,14 @@ export class InterventionTabs extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     this._showInterventionPageLoadingMessage();
+    getStoreAsync().then((store: Store<RootState>) => {
+      (store as any).addReducers({
+        commentsData
+      });
+    });
   }
 
   disconnectedCallback() {
-    this._storeUnsubscribe();
     super.disconnectedCallback();
   }
 
@@ -245,11 +232,12 @@ export class InterventionTabs extends LitElement {
           this.intervention = cloneDeep(currentIntervention);
         }
       }
-      if (currentInterventionId !== String(get(this.intervention, 'id'))) {
-        if (!isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)) {
-          getStore().dispatch(getIntervention(currentInterventionId));
-          getStore().dispatch(getComments(currentInterventionId));
-        }
+      if (
+        currentInterventionId !== String(get(this.intervention, 'id')) &&
+        !isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)
+      ) {
+        getStore().dispatch(getIntervention(currentInterventionId));
+        getStore().dispatch(getComments(currentInterventionId));
       }
       if (!isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)) {
         this._routeDetails = cloneDeep(state.app!.routeDetails);
@@ -344,16 +332,13 @@ export class InterventionTabs extends LitElement {
     if (element.checked === this.commentMode) {
       return;
     }
-    this.commentMode = element.checked;
-    getStore().dispatch(enableCommentMode(this.commentMode));
-    // add/remove `comment_mode` param in url based on selection and refresh page
-    history.pushState(window.history.state, '', this.computeNewPath());
+    history.pushState(window.history.state, '', this.computeNewPath(element.checked));
     window.dispatchEvent(new CustomEvent('popstate'));
   }
 
-  computeNewPath() {
-    const queryParams = this._routeDetails!.queryParams || {};
-    if (this.commentMode) {
+  computeNewPath(commentMode: boolean) {
+    const queryParams = {...(this._routeDetails!.queryParams || {})};
+    if (commentMode) {
       queryParams['comment_mode'] = 'true';
     } else {
       delete queryParams['comment_mode'];

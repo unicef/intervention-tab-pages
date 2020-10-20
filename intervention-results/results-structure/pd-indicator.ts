@@ -68,9 +68,20 @@ export class PdIndicator extends CommentsMixin(LitElement) {
           --blue-background: #b6d5f1;
           --blue-background-dark: #a4c4e1;
           display: block;
-          --list-row-wrapper_-_background-color: var(--blue-background);
           --list-row-wrapper_-_align-items: stretch;
           --list-row-collapse-wrapper_-_margin-bottom: 0px;
+          --list-row-wrapper: {
+            background-color: var(--blue-background) !important;
+            border: 1px solid var(--main-border-color) !important;
+            border-bottom: none !important;
+          }
+        }
+        :host(:last-child) etools-data-table-row {
+          --list-row-wrapper: {
+            background-color: var(--blue-background) !important;
+            border: 1px solid var(--main-border-color) !important;
+            border-bottom: 1px solid var(--main-border-color) !important;
+          }
         }
         .indicatorType {
           font-weight: 600;

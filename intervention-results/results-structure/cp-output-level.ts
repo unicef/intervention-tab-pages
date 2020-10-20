@@ -7,9 +7,10 @@ import '@polymer/iron-icons';
 import './modals/cp-output-dialog';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
 
 @customElement('cp-output-level')
-export class CpOutputLevel extends LitElement {
+export class CpOutputLevel extends EtoolsCurrency(LitElement) {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
@@ -36,6 +37,7 @@ export class CpOutputLevel extends LitElement {
   }
 
   @property() interventionId!: number;
+  @property() currency!: string | undefined;
   @property() resultLink!: ExpectedResult;
   @property({type: Boolean, reflect: true, attribute: 'show-cpo-level'}) showCPOLevel = false;
   @property({type: Boolean}) showIndicators = true;
@@ -69,7 +71,7 @@ export class CpOutputLevel extends LitElement {
                 ${this.resultLink.cp_output
                   ? html`
                       <div class="flex-1 flex-fix">
-                        <div class="heading">Country Program output</div>
+                        <div class="heading">Country Program Output</div>
                         <div class="data">${this.resultLink.cp_output_name}</div>
                       </div>
 
@@ -77,16 +79,16 @@ export class CpOutputLevel extends LitElement {
                         <div class="heading">Ram Indicators</div>
                         <div class="data">
                           ${this.resultLink.ram_indicator_names.length
-                            ? this.resultLink.ram_indicator_names.map(
-                                (name: string) => html`<div class="truncate">${name}</div>`
-                              )
+                            ? this.resultLink.ram_indicator_names.map((name: string) => html`<div>${name}</div>`)
                             : '-'}
                         </div>
                       </div>
 
                       <div class="flex-none" ?hidden="${!this.showActivities}">
                         <div class="heading">Total Cash Budget</div>
-                        <div class="data">TODO 1234</div>
+                        <div class="data">
+                          ${this.currency} ${this.displayCurrencyAmount(this.resultLink.total, '0.00')}
+                        </div>
                       </div>
 
                       <div class="hover-block">

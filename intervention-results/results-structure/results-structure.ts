@@ -30,7 +30,7 @@ import './modals/cp-output-dialog';
 import '@polymer/paper-item';
 import '@polymer/paper-listbox';
 import {getEndpoint} from '../../utils/endpoint-helper';
-import {RootState} from '../../common/models/globals.types';
+import {IdAndName, RootState} from '../../common/models/globals.types';
 import {openDialog} from '../../utils/dialog';
 import CONSTANTS from '../../common/constants';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
@@ -44,6 +44,7 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import ContentPanelMixin from '../../common/mixins/content-panel-mixin';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
+import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
 
 const RESULT_VIEW = 'result_view';
 const BUDGET_VIEW = 'budget_view';
@@ -53,7 +54,7 @@ const COMBINED_VIEW = 'combined_view';
  * @customElement
  */
 @customElement('results-structure')
-export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement)) {
+export class ResultsStructure extends CommentsMixin(ContentPanelMixin(EtoolsCurrency(LitElement))) {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
@@ -188,7 +189,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           --list-row-wrapper-padding: 5px 12px 5px 0;
           --list-row-collapse-wrapper: {
             padding: 0 !important;
-            border-bottom: 1px solid var(--main-border-color) !important;
+            border-bottom: none !important;
           }
           --list-row-wrapper: {
             background-color: var(--secondary-background-color) !important;
@@ -287,8 +288,9 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
               .interventionId="${this.interventionId}"
               .showIndicators="${this.showIndicators}"
               .showActivities="${this.showActivities}"
+              .currency="${this.intervention.planned_budget.currency}"
               .readonly="${!this.permissions.edit.result_links || this.commentMode}"
-              @add-pd="${() => this.openPdOutputDialog({}, result.cp_output, result.cp_output_name)}"
+              @add-pd="${() => this.openPdOutputDialog({}, result.cp_output)}"
               @edit-cp-output="${() => this.openCpOutputDialog(result)}"
               @delete-cp-output="${() => this.openDeleteCpOutputDialog(result.id)}"
             >
@@ -303,20 +305,23 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                   >
                     <div slot="row-data" class="layout-horizontal align-items-center editable-row">
                       <div class="flex-1 flex-fix">
-                        <div class="heading">Program Document output</div>
+                        <div class="heading">Program Document Output</div>
                         <div class="data bold-data">${pdOutput.name}</div>
                       </div>
 
                       <div class="flex-none" ?hidden="${!this.showActivities}">
                         <div class="heading">Total Cash Budget</div>
-                        <div class="data">TODO 123</div>
+                        <div class="data">
+                          ${this.intervention.planned_budget.currency}
+                          ${this.displayCurrencyAmount(pdOutput.total, '0.00')}
+                        </div>
                       </div>
 
                       <div class="hover-block">
                         <paper-icon-button
                           icon="icons:create"
                           ?hidden="${!this.permissions.edit.result_links}"
-                          @click="${() => this.openPdOutputDialog(pdOutput, result.cp_output, result.cp_output_name)}"
+                          @click="${() => this.openPdOutputDialog(pdOutput, result.cp_output)}"
                         ></paper-icon-button>
                         <paper-icon-button
                           icon="icons:delete"
@@ -352,7 +357,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         ${!this.resultLinks.length ? html` <div class="no-results">There are no results added.</div> ` : ''}
 
         <div
-          ?hidden="${this.isUnicefUser || this.commentMode}"
+          ?hidden="${this.isUnicefUser || this.commentMode || !this.permissions.edit.result_links}"
           class="add-pd white row-h align-items-center"
           @click="${() => this.openPdOutputDialog()}"
         >
@@ -395,12 +400,14 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
   }
 
   openPdOutputDialog(): void;
-  openPdOutputDialog(pdOutput: Partial<ResultLinkLowerResult>, cpOutput: number, cpoName: string): void;
-  openPdOutputDialog(pdOutput?: Partial<ResultLinkLowerResult>, cpOutput?: number, cpoName?: string): void {
-    const currentOutputExists = Boolean(this.cpOutputs.find(({id}: CpOutput) => id === cpOutput));
-    const cpOutputs: CpOutput[] = currentOutputExists
-      ? this.cpOutputs
-      : [{id: cpOutput, name: cpoName} as CpOutput, ...this.cpOutputs];
+  openPdOutputDialog(pdOutput: Partial<ResultLinkLowerResult>, cpOutput: number): void;
+  openPdOutputDialog(pdOutput?: Partial<ResultLinkLowerResult>, cpOutput?: number): void {
+    const cpOutputs: IdAndName<number>[] = this.intervention.result_links
+      .map(({cp_output: id, cp_output_name: name}: ExpectedResult) => ({
+        id,
+        name
+      }))
+      .filter(({id}: IdAndName<number>) => id);
     openDialog<any>({
       dialog: 'pd-output-dialog',
       dialogData: {

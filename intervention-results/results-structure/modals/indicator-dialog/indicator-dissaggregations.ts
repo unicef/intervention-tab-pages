@@ -76,7 +76,6 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
                     @etools-selected-item-changed="${(event: CustomEvent) =>
                       this._onDisaggregationSelected(event, index)}"
                     disable-on-focus-handling
-                    fit-into="etools-dialog"
                   >
                   </etools-dropdown>
                 </div>

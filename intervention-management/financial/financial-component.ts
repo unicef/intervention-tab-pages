@@ -67,6 +67,12 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
         .padd-top {
           padding-top: 8px;
         }
+        .extra-padd-top {
+          padding-top: 16px !important;
+        }
+        .padd-bott {
+          padding-bottom: 16px !important;
+        }
       </style>
       <etools-content-panel
         show-expand-btn
@@ -77,10 +83,10 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
         <div class="layout-horizontal padd-top">
           <div class="w100">
-            <label class="paper-label">Cash Transfer modality(ies)</label>
+            <label class="paper-label">Cash Transfer Modality(ies)</label>
           </div>
         </div>
-        <div class="layout-horizontal row-padding-v">
+        <div class="layout-horizontal row-padding-v padd-bott">
           ${this.cashTransferModalities.map(
             (option: LabelAndValue) =>
               html`<div class="col col-3">
@@ -94,9 +100,9 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
               </div>`
           )}
         </div>
-        <div class="layout-horizontal row-padding-v">
+        <div class="layout-horizontal row-padding-v extra-padd-top">
           <div class="w100">
-            <label class="paper-label">Headquarters contribution (automatic 7% for INGO)</label>
+            <label class="paper-label">Headquarters Contribution (automatic 7% for INGO)</label>
           </div>
         </div>
         <div class="layout-horizontal">
@@ -112,27 +118,25 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
             ${this.data.hq_support_cost}
           </div>
         </div>
-        <div class="layout-horizontal row-padding-v">
-          <div class="w100">
-            <label class="paper-label">Document currency</label>
-          </div>
-        </div>
-        <div class="layout-horizontal">
+        <div class="layout-horizontal extra-padd-top">
           <div class="col col-3">
             <etools-dropdown
               id="currencyDd"
               option-value="value"
               option-label="label"
+              label="Document currency"
               placeholder="&#8212;"
               .options="${this.currencies}"
               .selected="${this.data.planned_budget.currency}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_budget)}"
               @etools-selected-item-changed="${({detail}: CustomEvent) => {
+                if (detail === undefined || detail.selectedItem === null) {
+                  return;
+                }
                 this.data.planned_budget.currency = detail.selectedItem ? detail.selectedItem.value : '';
                 this.requestUpdate();
               }}"
               trigger-value-change-event
-              no-label-float
             >
             </etools-dropdown>
           </div>

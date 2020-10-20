@@ -178,8 +178,8 @@ export interface LabelAndValue {
   value: string;
 }
 
-export interface IdAndName {
-  id: string;
+export interface IdAndName<T = string> {
+  id: T;
   name: string;
 }
 
