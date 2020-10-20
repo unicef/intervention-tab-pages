@@ -212,7 +212,7 @@ export class Intervention {
   id: number | null = null;
   agreement?: number;
   document_type?: string;
-  country_programmes?: number;
+  country_programmes?: [];
   number?: string;
   reference_number_year?: string | null = null;
   prc_review_attachment?: number | string;
