@@ -20,6 +20,7 @@ import {ActivityTimeFrames} from './activity-timeframes';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {validateRequiredFields} from '../../../../utils/validation-helper';
 import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
+import '../../../../common/layout/etools-warn-message';
 
 @customElement('activity-data-dialog')
 export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitElement) {
@@ -33,6 +34,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
   @property() useInputLevel = false;
   @property() readonly: boolean | undefined = false;
   quarters: ActivityTimeFrames[] = [];
+  warnMessages: string[] = ['Activity Timeframes will be available after Start and End date are set.'];
 
   set dialogData({activityId, pdOutputId, interventionId, quarters, readonly}: any) {
     this.quarters = quarters;
@@ -191,7 +193,6 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
           >
             Use Input-level
           </paper-toggle-button>
-
           <activity-items-table
             ?hidden="${!this.useInputLevel}"
             .activityItems="${this.editedData.items || []}"
@@ -201,7 +202,6 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
               this.requestUpdate();
             }}"
           ></activity-items-table>
-
           <activity-time-frames
             .quarters="${this.quarters}"
             .selectedTimeFrames="${this.editedData.time_frames || []}"
@@ -211,6 +211,9 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
               this.requestUpdate();
             }}"
           ></activity-time-frames>
+          ${!this.quarters.length
+            ? html`<etools-warn-message-lit .messages="${this.warnMessages}"> </etools-warn-message-lit>`
+            : html``}
         </div>
       </etools-dialog>
     `;
