@@ -104,7 +104,7 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
         return html`<span class="placeholder">—</span>`;
       } else {
         return selsectedUsers.map((u: any) => {
-          return html`<div class="w100">${this.renderNameEmailPhone(u)}</div>`;
+          return html`<div class="w100 pad-2">${this.renderNameEmailPhone(u)}</div>`;
         });
       }
     }
