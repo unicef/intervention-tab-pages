@@ -87,7 +87,10 @@ export class ActivityTimeFrames extends LitElement {
   protected render(): TemplateResult {
     return html`
       <label class="paper-label layout-horizontal center-align" required>Activity Times (click to select/deselect)</label>
-      <div class="layout-horizontal center-align layout-wrap col-12">
+      <div class="layout-horizontal center-align layout-wrap col-12">     
+        ${!this._timeFrames.length
+          ? html`Activity Timeframes will be available after Start and End date are set.`
+          : html``}
         ${this._timeFrames.map(
           ([year, frames]: any, index: number) => html`
             <div class="layout-horizontal center-align layout-wrap time-frame-container">

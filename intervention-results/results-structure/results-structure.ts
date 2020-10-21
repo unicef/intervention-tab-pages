@@ -189,7 +189,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(EtoolsCurr
           --list-row-wrapper-padding: 5px 12px 5px 0;
           --list-row-collapse-wrapper: {
             padding: 0 !important;
-            border-bottom: 1px solid var(--main-border-color) !important;
+            border-bottom: none !important;
           }
           --list-row-wrapper: {
             background-color: var(--secondary-background-color) !important;
@@ -361,7 +361,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(EtoolsCurr
         ${!this.resultLinks.length ? html` <div class="no-results">There are no results added.</div> ` : ''}
 
         <div
-          ?hidden="${this.isUnicefUser || this.commentMode}"
+          ?hidden="${this.isUnicefUser || this.commentMode || !this.permissions.edit.result_links}"
           class="add-pd white row-h align-items-center"
           @click="${() => this.openPdOutputDialog()}"
         >
