@@ -93,28 +93,16 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
           >
           </paper-icon-button>
         </div>
-        ${this.isUnicefUser
-          ? html`<etools-table
-              .columns="${this.columns}"
-              .items="${this.supply_items}"
-              @edit-item="${this.editSupplyItem}"
-              @delete-item="${this.confirmDeleteSupplyItem}"
-              .getChildRowTemplateMethod="${this.getChildRowTemplate.bind(this)}"
-              .extraCSS="${this.getTableStyle()}"
-              .showEdit=${this.permissions.edit.supply_items}
-              .showDelete=${this.permissions.edit.supply_items}
-            >
-            </etools-table>`
-          : html`<etools-table
-              .columns="${this.columns}"
-              .items="${this.supply_items}"
-              @edit-item="${this.editSupplyItem}"
-              @delete-item="${this.confirmDeleteSupplyItem}"
-              .extraCSS="${this.getTableStyle()}"
-              .showEdit=${this.permissions.edit.supply_items}
-              .showDelete=${this.permissions.edit.supply_items}
-            >
-            </etools-table>`}
+        <etools-table
+          .columns="${this.columns}"
+          .items="${this.supply_items}"
+          @edit-item="${this.editSupplyItem}"
+          @delete-item="${this.confirmDeleteSupplyItem}"
+          .getChildRowTemplateMethod="${this.getChildRowTemplate.bind(this)}"
+          .extraCSS="${this.getTableStyle()}"
+          .showEdit=${this.permissions.edit.supply_items}
+          .showDelete=${this.permissions.edit.supply_items}
+        >
       </etools-content-panel>
     `;
   }
@@ -164,15 +152,20 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
     childRow.showExpanded = false;
     const resultLink = this.intervention.result_links.find((result: ExpectedResult) => result.id === item.result);
     const output = resultLink ? resultLink.cp_output_name : '';
+    // hide CP Output for Partner User, and preserve layout
     childRow.rowHTML = html`
       <td></td>
-      <td class="ptb-0">
-        <div class="child-row-inner-container">
-          <label class="paper-label">Cp Outputs</label><br />
-            <label>${output || '—'}</label><br />
-        </div>
-      </td>
-      <td colspan="4" class="ptb-0">
+      ${
+        this.isUnicefUser
+          ? html`<td class="ptb-0">
+              <div class="child-row-inner-container">
+                <label class="paper-label">Cp Outputs</label><br />
+                <label>${output || '—'}</label><br />
+              </div>
+            </td>`
+          : html``
+      }
+      <td colspan="${this.isUnicefUser ? '4' : '5'}" class="ptb-0">
         <div class="child-row-inner-container">
           <label class="paper-label">Other Mentions</label><br />
           <label>${item.other_mentions || '—'}</label>
