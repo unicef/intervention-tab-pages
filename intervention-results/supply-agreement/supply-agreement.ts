@@ -94,6 +94,7 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
           </paper-icon-button>
         </div>
         <etools-table
+          ?hidden="${!this.supply_items?.length}"
           .columns="${this.columns}"
           .items="${this.supply_items}"
           @edit-item="${this.editSupplyItem}"
@@ -102,7 +103,10 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
           .extraCSS="${this.getTableStyle()}"
           .showEdit=${this.permissions.edit.supply_items}
           .showDelete=${this.permissions.edit.supply_items}
-        >
+        ></etools-table>
+        <div class="row-h" ?hidden="${this.supply_items?.length}">
+          <p>There are no supply agreements added.</p>
+        </div>
       </etools-content-panel>
     `;
   }
