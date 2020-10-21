@@ -288,5 +288,9 @@ export const sharedStylesContent = `
   etools-dropdown-multi, etools-dropdown {
     --esmm-dropdown-menu-position: fixed !important;
   }
+
+  .pad-2 {
+    padding: 2px 0;
+  }
 `;
 export const sharedStyles = html`${unsafeCSS(sharedStylesContent)}`;
