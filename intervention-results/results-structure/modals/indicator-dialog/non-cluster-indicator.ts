@@ -203,6 +203,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                       @value-changed="${({detail}: CustomEvent) => {
                         this.indicator.baseline.v = detail.value;
                         this._baselineChanged(this.indicator.baseline.v);
+                        this.resetValidations();
                       }}"
                     >
                     </paper-input>`
@@ -242,6 +243,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                   @value-changed="${({detail}: CustomEvent) => {
                     this.indicator.target.v = detail.value;
                     this._targetChanged(this.indicator.target.v);
+                    this.resetValidations();
                   }}"
                 >
                 </paper-input>
