@@ -92,26 +92,28 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
           </etools-currency-amount-input>
         </div>
       </div>
-
-      <div class="layout-horizontal">
-        <div class="col col-8">
-          <etools-dropdown
-            class="cp-out"
-            label="CP Output"
-            placeholder="&#8212;"
-            .options="${this.cpOutputs}"
-            option-label="cp_output_name"
-            option-value="id"
-            .selected="${this.data.result}"
-
-            trigger-value-change-event
-            @etools-selected-item-changed="${({detail}: CustomEvent) => {
-              this.selectedItemChanged(detail, 'result');
-            }}"
-          >
-          </etools-dropdown>
-        </div>
-      </div>
+      ${
+        this.isUnicefUser
+          ? html`<div class="layout-horizontal">
+              <div class="col col-8">
+                <etools-dropdown
+                  class="cp-out"
+                  label="CP Output"
+                  placeholder="&#8212;"
+                  .options="${this.cpOutputs}"
+                  option-label="cp_output_name"
+                  option-value="id"
+                  .selected="${this.data.result}"
+                  trigger-value-change-event
+                  @etools-selected-item-changed="${({detail}: CustomEvent) => {
+                    this.selectedItemChanged(detail, 'result');
+                  }}"
+                >
+                </etools-dropdown>
+              </div>
+            </div>`
+          : html``
+      }
 
       <div class="layout-horizontal">
         <div class="col col-12">
@@ -149,13 +151,17 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
   @property({type: Object})
   cpOutputs: ExpectedResult[] = [];
 
-  set dialogData({data, interventionId, result_links}: any) {
+  @property({type: Boolean})
+  isUnicefUser = false;
+
+  set dialogData({data, interventionId, result_links, isUnicefUser}: any) {
     this.cpOutputs = (result_links || []).filter((x: ExpectedResult) => !!x.cp_output_name);
     this.data = data;
     this.isNewRecord = !this.data.id;
     this.interventionId = interventionId;
     this.dialogTitle = this.isNewRecord ? 'Add  Supply Agreement' : 'Edit Supply Agreement';
     this.confirmBtnTxt = this.isNewRecord ? 'Add' : 'Save';
+    this.isUnicefUser = isUnicefUser;
   }
 
   onClose(): void {

@@ -26,6 +26,7 @@ import {getIntervention} from '../../common/actions';
 import '../../common/layout/are-you-sure';
 import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
+import {isUnicefUser} from '../../common/selectors';
 
 const customStyles = html`
   <style>
@@ -92,7 +93,6 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
           >
           </paper-icon-button>
         </div>
-
         <etools-table
           .columns="${this.columns}"
           .items="${this.supply_items}"
@@ -103,7 +103,6 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
           .showEdit=${this.permissions.edit.supply_items}
           .showDelete=${this.permissions.edit.supply_items}
         >
-        </etools-table>
       </etools-content-panel>
     `;
   }
@@ -145,20 +144,28 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
   @property({type: Object})
   permissions!: {edit: {supply_items?: boolean}};
 
+  @property({type: Boolean})
+  isUnicefUser = false;
+
   getChildRowTemplate(item: any): EtoolsTableChildRow {
     const childRow = {} as EtoolsTableChildRow;
     childRow.showExpanded = false;
     const resultLink = this.intervention.result_links.find((result: ExpectedResult) => result.id === item.result);
     const output = resultLink ? resultLink.cp_output_name : '';
+    // hide CP Output for Partner User, and preserve layout
     childRow.rowHTML = html`
       <td></td>
-      <td class="ptb-0">
-        <div class="child-row-inner-container">
-          <label class="paper-label">Cp Outputs</label><br />
-            <label>${output || '—'}</label><br />
-        </div>
-      </td>
-      <td colspan="4" class="ptb-0">
+      ${
+        this.isUnicefUser
+          ? html`<td class="ptb-0">
+              <div class="child-row-inner-container">
+                <label class="paper-label">Cp Outputs</label><br />
+                <label>${output || '—'}</label><br />
+              </div>
+            </td>`
+          : html``
+      }
+      <td colspan="${this.isUnicefUser ? '4' : '5'}" class="ptb-0">
         <div class="child-row-inner-container">
           <label class="paper-label">Other Mentions</label><br />
           <label>${item.other_mentions || '—'}</label>
@@ -186,13 +193,15 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
     }
     this.supply_items = selectSupplyAgreement(state);
     this.permissions = selectSupplyAgreementPermissions(state);
-
     this.supply_items.map((item: AnyObject) => {
       item.total_price = this.addCurrencyAmountDelimiter(item.total_price);
       item.unit_number = Number(item.unit_number);
       item.unit_price = this.addCurrencyAmountDelimiter(item.unit_price);
       return item;
     });
+    if (state.user && state.user.data) {
+      this.isUnicefUser = isUnicefUser(state);
+    }
     super.stateChanged(state);
   }
 
@@ -249,7 +258,8 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
       dialogData: {
         data: item,
         interventionId: this.intervention.id,
-        result_links: this.intervention.result_links
+        result_links: this.intervention.result_links,
+        isUnicefUser: this.isUnicefUser
       }
     });
   }
