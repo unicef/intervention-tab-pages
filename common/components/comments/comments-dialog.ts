@@ -124,7 +124,7 @@ export class CommentsDialog extends connectStore(LitElement) {
             }}"
             @keydown="${(event: KeyboardEvent) => this.onKeydown(event)}"
           ></paper-textarea>
-          <paper-button class="send-btn" @click="${() => this.addComment()}">Send</paper-button>
+          <paper-button class="send-btn" @click="${() => this.addComment()}">Post</paper-button>
           <paper-button class="cancel-btn" @click="${() => this.onClose()}">Close</paper-button>
         </div>
       </etools-dialog>

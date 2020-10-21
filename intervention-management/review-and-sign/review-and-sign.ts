@@ -198,7 +198,7 @@ export class InterventionReviewAndSign extends CommentsMixin(
             <!-- Signed By Partner Authorized Officer -->
             <etools-dropdown
               id="signedByAuthorizedOfficer"
-              label="Signed By Partner Authorized Officer"
+              label="Signed by Partner Authorized Officer"
               placeholder="&#8212;"
               .options="${this.getCleanEsmmOptions(this.agreementAuthorizedOfficers)}"
               .selected="${this.data.partner_authorized_officer_signatory}"
@@ -326,6 +326,18 @@ export class InterventionReviewAndSign extends CommentsMixin(
                   </div>`
               : html``
           }
+        </div>
+        <div class="layout-horizontal row-padding-v">
+          <div class="col col-6">
+            <!-- TERMINATION DOC -->
+            <etools-upload
+              id="terminationDoc"
+              label="Termination Notice"
+              .hidden="${!this.data.termination_doc_attachment}"
+              .fileUrl="${this.data.termination_doc_attachment}"
+              readonly
+            >
+          </div>
         </div>
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
       </etools-content-panel>

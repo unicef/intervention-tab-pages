@@ -119,10 +119,11 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
           <paper-input
             class="validate-input flex-1"
             label="Activity Name"
-            placeholder="Enter Activity Name"
+            placeholder="&#8212;"
             .value="${this.editedData.name}"
             @value-changed="${({detail}: CustomEvent) => this.updateModelValue('name', detail.value)}"
             required
+            auto-validate
             ?invalid="${this.errors.name}"
             .errorMessage="${(this.errors.name && this.errors.name[0]) || 'This field is required'}"
             ?readonly="${this.readonly}"
@@ -133,7 +134,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
           <paper-textarea
             class="validate-input flex-1"
             label="Other Notes"
-            placeholder="Enter Other Notes"
+            placeholder="&#8212;"
             .value="${this.editedData.context_details}"
             @value-changed="${({detail}: CustomEvent) => this.updateModelValue('context_details', detail.value)}"
             ?invalid="${this.errors.context_details}"

@@ -290,5 +290,8 @@ export const sharedStylesContent = `
     content: '—';
     color: var(--secondary-text-color);
   }
+  etools-dropdown-multi, etools-dropdown {
+    --esmm-dropdown-menu-position: fixed !important;
+  }
 `;
 export const sharedStyles = html`${unsafeCSS(sharedStylesContent)}`;
