@@ -19,6 +19,7 @@ import get from 'lodash-es/get';
 import '@unicef-polymer/etools-upload/etools-upload';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
+import {AsyncAction} from '../../common/types/types';
 
 /**
  * @customElement
@@ -202,7 +203,7 @@ export class InterventionDates extends CommentsMixin(ComponentBaseMixin(FrNumber
     }
 
     return getStore()
-      .dispatch(patchIntervention(this.data))
+      .dispatch<AsyncAction>(patchIntervention(this.data))
       .then(() => {
         this.editMode = false;
       });

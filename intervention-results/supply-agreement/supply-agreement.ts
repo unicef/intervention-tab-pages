@@ -27,6 +27,7 @@ import '../../common/layout/are-you-sure';
 import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {isUnicefUser} from '../../common/selectors';
+import {AsyncAction} from '../../common/types/types';
 
 const customStyles = html`
   <style>
@@ -249,7 +250,7 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
       method: 'DELETE'
     })
       .then((_resp: any) => {
-        getStore().dispatch(getIntervention());
+        getStore().dispatch<AsyncAction>(getIntervention());
       })
       .catch((err: any) => {
         fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
