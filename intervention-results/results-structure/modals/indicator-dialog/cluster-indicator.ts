@@ -411,6 +411,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
     }
     if (!indicator || !indicator.id) {
       this.isNewIndicator = true;
+      this.resetValidations();
     } else {
       this.isNewIndicator = false;
       if (indicator.cluster_indicator_id) {
