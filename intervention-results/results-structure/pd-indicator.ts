@@ -275,12 +275,10 @@ export class PdIndicator extends CommentsMixin(LitElement) {
   }
 
   _canDeactivate(): boolean {
-    // refactor this after status draft comes as development
-    // if in developemnt status, can be deleted
+    // TODO: refactor this after status draft comes as development
     if (this.interventionStatus === 'draft' || this.interventionStatus === 'development') {
       return false;
     }
-    // can be de-activated if active and not read only
     if (this.indicator.is_active && !this.readonly) {
       return true;
     }
@@ -288,8 +286,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
   }
 
   _canDelete(): boolean {
-    // for delete button to be active, we need intervention to be in development status and have correct permission
-    // refactor this after status draft comes as development
+    // TODO: refactor this after status draft comes as development
     if ((this.interventionStatus === 'draft' || this.interventionStatus === 'development') && !this.readonly) {
       return true;
     }

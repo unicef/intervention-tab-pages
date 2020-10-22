@@ -215,7 +215,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
     });
 
     if (confirmed) {
-      this.deactivateIndicator(indicatorId);
+      this.deleteIndicator(indicatorId);
     }
   }
 
