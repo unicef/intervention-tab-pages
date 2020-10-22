@@ -33,6 +33,7 @@ import {selectFundReservationPermissions} from './fund-reservations.selectors';
 import {isUnicefUser} from '../../common/selectors';
 import ContentPanelMixin from '../../common/mixins/content-panel-mixin';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
+import {AsyncAction} from '../../common/types/types';
 
 /**
  * @customElement
@@ -362,7 +363,7 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
   _triggerPdFrsUpdate(newFrsDetails: FrsDetails) {
     const frsIDs = (newFrsDetails.frs || []).map((fr) => fr.id);
     this.frsDialogEl.closeDialog();
-    getStore().dispatch(patchIntervention({frs: frsIDs}));
+    getStore().dispatch<AsyncAction>(patchIntervention({frs: frsIDs}));
   }
 
   thereAreFrs(_frsDetails: any) {

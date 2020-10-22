@@ -136,16 +136,18 @@ class PartnerReportingRequirements extends connectStore(PolymerElement) {
                 hidden$="[[_hideRepReqEditBtn(isReadonly, hrUnicefRequirementsCount)]]"
               ></paper-icon-button>
             </div>
-            <div
-              name="humanitarianCluster"
-              title="Humanitarian Reports - Cluster"
-              class="nav-menu-item"
-              selected$="[[isSelected('humanitarianCluster', selectedReportType)]]"
-              hidden$="[[!isUnicefUser]]"
-              on-click="selectType"
-            >
-              Humanitarian Reports - Cluster ([[hrClusterRequirementsCount]])
-            </div>
+            <template is="dom-if" if="[[isUnicefUser]]">
+              <div
+                name="humanitarianCluster"
+                title="Humanitarian Reports - Cluster"
+                class="nav-menu-item"
+                selected$="[[isSelected('humanitarianCluster', selectedReportType)]]"
+                on-click="selectType"
+              >
+                Humanitarian Reports - Cluster ([[hrClusterRequirementsCount]])
+              </div>
+            </template>
+
             <div
               name="special"
               title="Special Report"

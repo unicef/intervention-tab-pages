@@ -77,6 +77,15 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           ${layoutVertical}
           ${layoutCenter}
         }
+
+        .row-h {
+          padding-top: 16px !important;
+          padding-bottom: 0px !important;
+        }
+
+        .last-item {
+          padding-bottom: 24px !important;
+        }
       </style>
 
       <div class="row-h flex-c">
@@ -336,6 +345,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           >Unknown</paper-checkbox
         >
       </div>
+
       <!-- Baseline & Target -->
       <div class="row-h flex-c">
         <paper-textarea
@@ -350,7 +360,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         >
         </paper-textarea>
       </div>
-      <div class="row-h flex-c">
+      <div class="last-item row-h flex-c">
         <etools-dropdown-multi
           id="locationsDropdw"
           label="Locations"

@@ -26,6 +26,7 @@ import {commentsData} from './common/components/comments/comments.reducer';
 import {Intervention} from './common/models/intervention.types';
 import {Store} from 'redux';
 import {connectStore} from './common/mixins/connect-store-mixin';
+import {AsyncAction} from './common/types/types';
 
 const MOCKUP_STATUSES = [
   ['draft', 'Draft'],
@@ -236,8 +237,8 @@ export class InterventionTabs extends connectStore(LitElement) {
         currentInterventionId !== String(get(this.intervention, 'id')) &&
         !isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)
       ) {
-        getStore().dispatch(getIntervention(currentInterventionId));
-        getStore().dispatch(getComments(currentInterventionId));
+        getStore().dispatch<AsyncAction>(getIntervention(currentInterventionId));
+        getStore().dispatch<AsyncAction>(getComments(currentInterventionId));
       }
       if (!isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)) {
         this._routeDetails = cloneDeep(state.app!.routeDetails);

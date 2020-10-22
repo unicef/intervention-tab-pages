@@ -35,6 +35,7 @@ import {formatDate} from '../../utils/date-utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
+import {AsyncAction} from '../../common/types/types';
 
 /**
  * @customElement
@@ -547,7 +548,7 @@ export class InterventionReviewAndSign extends CommentsMixin(
     }
 
     return getStore()
-      .dispatch(patchIntervention(this.data))
+      .dispatch<AsyncAction>(patchIntervention(this.data))
       .then(() => {
         this.editMode = false;
       });

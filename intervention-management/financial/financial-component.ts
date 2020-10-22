@@ -26,6 +26,7 @@ import {isJsonStrMatch} from '../../utils/utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
+import {AsyncAction} from '../../common/types/types';
 
 /**
  * @customElement
@@ -214,7 +215,7 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
       return Promise.resolve(false);
     }
     return getStore()
-      .dispatch(patchIntervention(this.cleanUp(this.data)))
+      .dispatch<AsyncAction>(patchIntervention(this.cleanUp(this.data)))
       .then(() => {
         this.editMode = false;
       });
