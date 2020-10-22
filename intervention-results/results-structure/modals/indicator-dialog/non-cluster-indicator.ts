@@ -68,7 +68,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         .add-locations {
           padding-right: 0;
           align-items: flex-end;
-          padding-top: 20px;
+          padding-top: 20px !important;
         }
 
         .all-locations {
