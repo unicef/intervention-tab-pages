@@ -60,6 +60,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
 
   private indicatorSectionOptions!: Section[];
   private indicatorLocationOptions!: LocationObject[];
+  private interventionStatus!: string;
 
   protected render(): TemplateResult {
     // language=HTML
@@ -103,6 +104,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
             .disaggregations="${this.disaggregations}"
             .locationNames="${this.getLocationNames(indicator.locations)}"
             .sectionClusterNames="${this.getSectionAndCluster(indicator.section, indicator.cluster_name)}"
+            .interventionStatus="${this.interventionStatus}"
             .readonly="${this.readonly}"
             ?hidden="${this._hideIndicator(indicator, this.showInactiveIndicators)}"
             ?cluster-indicator="${indicator.cluster_indicator_id}"
@@ -110,6 +112,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
             @open-edit-indicator-dialog="${(e: CustomEvent) =>
               this.openIndicatorDialog(e.detail.indicator, e.detail.readonly)}"
             @open-deactivate-confirmation="${(e: CustomEvent) => this.openDeactivationDialog(e.detail.indicatorId)}"
+            @open-delete-confirmation="${(e: CustomEvent) => this.openDeletionDialog(e.detail.indicatorId)}"
           ></pd-indicator>
         `
       )}
@@ -145,6 +148,9 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
     }
     if (!isJsonStrMatch(this.interventionSections, intervention.sections)) {
       this.interventionSections = intervention.sections;
+    }
+    if (!isJsonStrMatch(this.interventionStatus, intervention.status)) {
+      this.interventionStatus = intervention.status;
     }
   }
 
@@ -188,6 +194,39 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
       body: {
         is_active: false
       }
+    })
+      .then((_resp: any) => {
+        // TODO - use relatedIntervention
+        getStore().dispatch<AsyncAction>(getIntervention());
+      })
+      .catch((err: any) => {
+        fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
+      });
+  }
+
+  async openDeletionDialog(indicatorId: string) {
+    const confirmed = await openDialog({
+      dialog: 'are-you-sure',
+      dialogData: {
+        content: 'Are you sure you want to delete this indicator?',
+        confirmBtnText: 'Delete'
+      }
+    }).then(({confirmed}) => {
+      return confirmed;
+    });
+
+    if (confirmed) {
+      this.deactivateIndicator(indicatorId);
+    }
+  }
+
+  deleteIndicator(indicatorId: string) {
+    const endpoint = getEndpoint(interventionEndpoints.getEditDeleteIndicator, {
+      id: indicatorId
+    });
+    sendRequest({
+      method: 'DELETE',
+      endpoint: endpoint
     })
       .then((_resp: any) => {
         // TODO - use relatedIntervention
