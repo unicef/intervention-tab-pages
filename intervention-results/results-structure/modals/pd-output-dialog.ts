@@ -91,7 +91,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
           <paper-input
             class="validate-input flex-1"
             label="PD Output Name"
-            placeholder="Enter PD Output Name"
+            placeholder="&#8212;"
             .value="${this.editedData.name}"
             @value-changed="${({detail}: CustomEvent) => this.updateModelValue('name', detail.value)}"
             required
@@ -111,7 +111,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
                   ?trigger-value-change-event="${!this.loadingInProcess}"
                   .selected="${this.editedData.cp_output}"
                   label="CP Output"
-                  placeholder="Select CP Output"
+                  placeholder="&#8212;"
                   .options="${this.cpOutputs}"
                   option-label="name"
                   option-value="id"

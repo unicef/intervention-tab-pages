@@ -16,13 +16,15 @@ import {PdUnicefDetailsPermissions} from './pdUnicefDetails.models';
 import {Permission} from '../../common/models/intervention.types';
 import {getStore} from '../../utils/redux-store-access';
 import {patchIntervention} from '../../common/actions';
-import {AnyObject, RootState} from '../../common/models/globals.types';
+import {AnyObject, RootState, CpStructure} from '../../common/models/globals.types';
 import {isJsonStrMatch, areEqual} from '../../utils/utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
+import orderBy from 'lodash-es/orderBy';
 import {AsyncAction} from '../../common/types/types';
+
 
 /**
  * @customElement
@@ -48,6 +50,9 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
         }
         .placeholder {
           color: var(--secondary-text-color);
+        }
+        .padd-top {
+          padding-top: 17px;
         }
       </style>
 
@@ -136,7 +141,10 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
               trigger-value-change-event
             >
             </etools-dropdown-multi>
-            <div ?hidden="${!this.isReadonly(this.editMode, this.permissions.edit.unicef_focal_points)}">
+            <div
+              class="padd-top"
+              ?hidden="${!this.isReadonly(this.editMode, this.permissions.edit.unicef_focal_points)}"
+            >
               <label for="focalPointInput" class="paper-label">Unicef Focal Points</label>
               <div id="focalPointDetails">
                 ${this.renderReadonlyFocalPoints(
@@ -146,7 +154,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
               </div>
             </div>
           </div>
-          <div class="col col-8" ?hidden="${!this.isUnicefUser}">
+          <div class="col col-4" ?hidden="${!this.isUnicefUser}">
             <etools-dropdown
               id="budgetOwnerInput"
               label="Unicef Budget Owner"
@@ -163,7 +171,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
             >
             </etools-dropdown>
 
-            <div ?hidden="${!this.isReadonly(this.editMode, this.permissions.edit.budget_owner)}">
+            <div class="padd-top" ?hidden="${!this.isReadonly(this.editMode, this.permissions.edit.budget_owner)}">
               <label for="budgetOwnerInput" class="paper-label">Unicef Budget Owner</label>
               <div id="budgetOwnerDetails">
                 ${this.renderReadonlyBudgetOwner(
@@ -173,11 +181,38 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
               </div>
             </div>
           </div>
+          <div class="col col-4" ?hidden="${!this.isUnicefUser}">
+            <etools-dropdown-multi
+              id="cpStructures"
+              label="CP Structures"
+              .options="${this.cpStructures}"
+              class="row-padding-v"
+              option-label="name"
+              option-value="id"
+              .selectedValues="${this.data.country_programmes}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.country_programmes)}"
+              ?required="${this.permissions.required.country_programmes}"
+              @etools-selected-items-changed="${({detail}: CustomEvent) =>
+                this.selectedItemChanged(detail, 'country_programmes')}"
+              trigger-value-change-event
+            >
+            </etools-dropdown-multi>
+          </div>
         </div>
 
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
       </etools-content-panel>
     `;
+  }
+
+  private _cpStructures: CpStructure[] = [];
+  @property({type: Array})
+  get cpStructures() {
+    return this._cpStructures;
+  }
+
+  set cpStructures(cps) {
+    this._cpStructures = orderBy<CpStructure>(cps, ['future', 'active', 'special'], ['desc', 'desc', 'asc']);
   }
 
   @property({type: Object})
@@ -229,6 +264,9 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
     }
     if (get(state, 'commonData.offices.length')) {
       this.office_list = [...state.commonData!.offices];
+    }
+    if (!isJsonStrMatch(this.cpStructures, state.commonData!.countryProgrammes)) {
+      this.cpStructures = [...state.commonData!.countryProgrammes];
     }
     // TO DO
     // check if already saved records exists on loaded data, if not they will be added

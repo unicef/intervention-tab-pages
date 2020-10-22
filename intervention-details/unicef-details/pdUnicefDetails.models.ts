@@ -13,6 +13,7 @@ export class PdUnicefDetails extends ModelsBase {
   cluster_names: AnyObject[] = [];
   unicef_focal_points: AnyObject[] = [];
   budget_owner: AnyObject[] = [];
+  country_programmes: [] = [];
 }
 
 export class PdUnicefDetailsPermissions extends ModelsBase {
@@ -24,4 +25,5 @@ export class PdUnicefDetailsPermissions extends ModelsBase {
   sections = true;
   unicef_focal_points = true;
   budget_owner = true;
+  country_programmes = true;
 }
