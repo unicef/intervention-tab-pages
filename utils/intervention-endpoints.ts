@@ -29,6 +29,7 @@ export interface EtoolsEndpoints {
   supplyAgreementAdd: EtoolsEndpoint;
   supplyAgreementEdit: EtoolsEndpoint;
   attachmentsUpload: EtoolsEndpoint;
+  supplyItemsUpload: EtoolsEndpoint;
   interventionAmendmentAdd: EtoolsEndpoint;
   frNumbersDetails: EtoolsEndpoint;
   comments: EtoolsEndpoint;
@@ -121,6 +122,9 @@ export const interventionEndpoints: EtoolsEndpoints = {
   },
   attachmentsUpload: {
     url: '/api/v2/attachments/upload/'
+  },
+  supplyItemsUpload: {
+    template: '/api/pmp/v3/interventions/<%=interventionId%>/supply/upload/'
   },
   interventionAmendmentAdd: {
     template: '/api/v2/interventions/<%=intervId%>/amendments/'
