@@ -249,7 +249,7 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
       endpoint: endpoint,
       method: 'DELETE'
     })
-      .then((_resp: any) => {
+      .then(() => {
         getStore().dispatch<AsyncAction>(getIntervention());
       })
       .catch((err: any) => {

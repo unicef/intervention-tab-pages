@@ -195,8 +195,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
         is_active: false
       }
     })
-      .then((_resp: any) => {
-        // TODO - use relatedIntervention
+      .then(() => {
         getStore().dispatch<AsyncAction>(getIntervention());
       })
       .catch((err: any) => {
@@ -228,8 +227,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
       method: 'DELETE',
       endpoint: endpoint
     })
-      .then((_resp: any) => {
-        // TODO - use relatedIntervention
+      .then(() => {
         getStore().dispatch<AsyncAction>(getIntervention());
       })
       .catch((err: any) => {

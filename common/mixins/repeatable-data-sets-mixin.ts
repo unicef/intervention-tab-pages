@@ -90,7 +90,7 @@ function RepeatableDataSetsMixin<T extends Constructor<LitElement>>(baseClass: T
         endpoint: deleteEndpoint,
         body: {}
       })
-        .then((_resp: any) => {
+        .then(() => {
           this._handleDeleteResponse();
         })
         .catch((error: any) => {
