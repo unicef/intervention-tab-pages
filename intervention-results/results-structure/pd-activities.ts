@@ -14,6 +14,7 @@ import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-pa
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
+import {AsyncAction} from '../../common/types/types';
 
 @customElement('pd-activities')
 export class PdActivities extends CommentsMixin(LitElement) {
@@ -238,7 +239,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
       endpoint: endpoint
     })
       .then((_resp: any) => {
-        getStore().dispatch(getIntervention());
+        getStore().dispatch<AsyncAction>(getIntervention());
       })
       .catch((err: any) => {
         fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});

@@ -10,6 +10,7 @@ import {getStore} from '../../../utils/redux-store-access';
 import {getIntervention} from '../../../common/actions';
 import {fireEvent} from '../../../utils/fire-custom-event';
 import {validateRequiredFields} from '../../../utils/validation-helper';
+import {AsyncAction} from '../../../common/types/types';
 
 @customElement('pd-output-dialog')
 export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElement) {
@@ -160,7 +161,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
     })
       .then(() =>
         getStore()
-          .dispatch(getIntervention(String(this.interventionId)))
+          .dispatch<AsyncAction>(getIntervention(String(this.interventionId)))
           .catch(() => Promise.resolve())
       )
       .then(() => {

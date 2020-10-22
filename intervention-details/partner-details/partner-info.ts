@@ -27,6 +27,7 @@ import {PartnerStaffMember} from '../../common/models/partner.types';
 import {MinimalAgreement} from '../../common/models/agreement.types';
 import {RootState} from '../../common/models/globals.types';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
+import {AsyncAction} from '../../common/types/types';
 
 /**
  * @customElement
@@ -228,7 +229,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
     }
 
     return getStore()
-      .dispatch(patchIntervention(this.data))
+      .dispatch<AsyncAction>(patchIntervention(this.data))
       .then(() => {
         this.editMode = false;
       });
