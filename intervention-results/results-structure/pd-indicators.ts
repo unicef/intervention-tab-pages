@@ -149,7 +149,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
     if (!isJsonStrMatch(this.interventionSections, intervention.sections)) {
       this.interventionSections = intervention.sections;
     }
-    if (!isJsonStrMatch(this.interventionStatus, intervention.status)) {
+    if (this.interventionStatus !== intervention.status) {
       this.interventionStatus = intervention.status;
     }
   }
