@@ -15,7 +15,7 @@ import {getStore, getStoreAsync} from './utils/redux-store-access';
 import {selectAvailableActions, currentPage, currentSubpage, isUnicefUser} from './common/selectors';
 import {elevationStyles} from './common/styles/elevation-styles';
 import {RouteDetails, RootState} from './common/models/globals.types';
-import {getIntervention} from './common/actions';
+import {getIntervention, updateCurrentIntervention} from './common/actions';
 import {sharedStyles} from './common/styles/shared-styles-lit';
 import {isJsonStrMatch} from './utils/utils';
 import {pageContentHeaderSlottedStyles} from './common/layout/page-content-header/page-content-header-slotted-styles';
@@ -187,7 +187,7 @@ export class InterventionTabs extends connectStore(LitElement) {
   activeTab = 'details';
 
   @property({type: Object})
-  intervention!: Intervention;
+  intervention!: Intervention | null;
 
   @property({type: Boolean})
   commentMode = false;
@@ -262,37 +262,39 @@ export class InterventionTabs extends connectStore(LitElement) {
     } else if (this._routeDetails) {
       this._routeDetails = null;
       fireEvent(this, 'scroll-up');
+      this.intervention = null;
+      getStore().dispatch(updateCurrentIntervention(null));
     }
   }
 
   showPerformedActionsStatus() {
     return (
-      ['draft', 'development'].includes(this.intervention.status) &&
-      (this.intervention.partner_accepted ||
-        this.intervention.unicef_accepted ||
-        (!this.intervention.unicef_court && !!this.intervention.date_sent_to_partner) ||
-        (this.intervention.unicef_court && !!this.intervention.date_draft_by_partner))
+      ['draft', 'development'].includes(this.intervention!.status) &&
+      (this.intervention!.partner_accepted ||
+        this.intervention!.unicef_accepted ||
+        (!this.intervention!.unicef_court && !!this.intervention!.date_sent_to_partner) ||
+        (this.intervention!.unicef_court && !!this.intervention!.date_draft_by_partner))
     );
   }
 
   getPerformedAction() {
-    if (!['draft', 'development'].includes(this.intervention.status)) {
+    if (!['draft', 'development'].includes(this.intervention!.status)) {
       return '';
     }
-    if (this.intervention.partner_accepted && this.intervention.unicef_accepted) {
+    if (this.intervention!.partner_accepted && this.intervention!.unicef_accepted) {
       return 'IP & Unicef Accepted';
     }
-    if (!this.intervention.partner_accepted && this.intervention.unicef_accepted) {
+    if (!this.intervention!.partner_accepted && this.intervention!.unicef_accepted) {
       return 'Unicef Accepted';
     }
-    if (this.intervention.partner_accepted && !this.intervention.unicef_accepted) {
+    if (this.intervention!.partner_accepted && !this.intervention!.unicef_accepted) {
       return 'IP Accepted';
     }
-    if (!this.intervention.unicef_court && !!this.intervention.date_sent_to_partner) {
+    if (!this.intervention!.unicef_court && !!this.intervention!.date_sent_to_partner) {
       return 'Sent to Partner';
     }
 
-    if (this.intervention.unicef_court && !!this.intervention.date_draft_by_partner) {
+    if (this.intervention!.unicef_court && !!this.intervention!.date_draft_by_partner) {
       return 'Sent to Unicef';
     }
     return '';
@@ -320,7 +322,7 @@ export class InterventionTabs extends connectStore(LitElement) {
 
       const stringParams: string = buildUrlQueryString(this._routeDetails!.queryParams || {});
       const newPath =
-        `interventions/${this.intervention.id}/${newTabName}` + (stringParams !== '' ? `?${stringParams}` : '');
+        `interventions/${this.intervention!.id}/${newTabName}` + (stringParams !== '' ? `?${stringParams}` : '');
       history.pushState(window.history.state, '', newPath);
       // Don't know why I have to specifically trigger popstate,
       // history.pushState should do that by default (?)

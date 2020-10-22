@@ -5,8 +5,8 @@ import {Intervention, PlannedBudget} from './models/intervention.types';
 import {SHOW_TOAST} from './actionsConstants';
 import {AnyObject} from './models/globals.types';
 
-export const updateCurrentIntervention = (intervention: AnyObject) => {
-  if (!intervention.planned_budget) {
+export const updateCurrentIntervention = (intervention: AnyObject | null) => {
+  if (intervention && !intervention.planned_budget) {
     intervention.planned_budget = new PlannedBudget();
   }
   return {
