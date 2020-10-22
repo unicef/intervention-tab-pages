@@ -289,8 +289,8 @@ export const sharedStylesContent = `
     --esmm-dropdown-menu-position: fixed !important;
   }
 
-  .pad-2 {
-    padding: 2px 0;
+  .padd-between:not(:last-child) {
+    padding-bottom: 6px;
   }
 `;
 export const sharedStyles = html`${unsafeCSS(sharedStylesContent)}`;

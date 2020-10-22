@@ -217,7 +217,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
       return html`—`;
     } else {
       return authOfficers.map((authOfficer) => {
-        return html`<div class="w100 pad-2">${this.renderNameEmailPhone(authOfficer)}</div>`;
+        return html`<div class="w100 padd-between">${this.renderNameEmailPhone(authOfficer)}</div>`;
       });
     }
   }
