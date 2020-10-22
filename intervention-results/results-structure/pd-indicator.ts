@@ -143,12 +143,12 @@ export class PdIndicator extends CommentsMixin(LitElement) {
             ></paper-icon-button>
             <paper-icon-button
               icon="icons:block"
-              ?hidden="${this._canDeactivate()}"
+              ?hidden="${!this._canDeactivate()}"
               @click="${() => this.openDeactivationDialog(String(this.indicator.id))}"
             ></paper-icon-button>
             <paper-icon-button
               icon="icons:delete"
-              ?hidden="${this._canDelete()}"
+              ?hidden="${!this._canDelete()}"
               @click="${() => this.openDeletionDialog(String(this.indicator.id))}"
             ></paper-icon-button>
           </div>
@@ -276,18 +276,23 @@ export class PdIndicator extends CommentsMixin(LitElement) {
 
   _canDeactivate(): boolean {
     // refactor this after status draft comes as development
+    // if in developemnt status, can be deleted
     if (this.interventionStatus === 'draft' || this.interventionStatus === 'development') {
+      return false;
+    }
+    // can be de-activated if active and not read only
+    if (this.indicator.is_active && !this.readonly) {
       return true;
     }
-    return !this.indicator.is_active || this.readonly;
+    return false;
   }
 
   _canDelete(): boolean {
     // for delete button to be active, we need intervention to be in development status and have correct permission
     // refactor this after status draft comes as development
     if ((this.interventionStatus === 'draft' || this.interventionStatus === 'development') && !this.readonly) {
-      return false;
+      return true;
     }
-    return true;
+    return false;
   }
 }
