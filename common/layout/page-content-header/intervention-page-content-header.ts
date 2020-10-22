@@ -72,6 +72,15 @@ export class InterventionPageContentHeader extends LitElement {
           }
         }
 
+        @media (max-width: 1100px) {
+          .content-header-row {
+            flex-direction: column;
+          }
+          .content-header-row div:last-child {
+            margin-top: 20px;
+          }
+        }
+
         @media (max-width: 576px) {
           :host {
             padding: 0 5px;

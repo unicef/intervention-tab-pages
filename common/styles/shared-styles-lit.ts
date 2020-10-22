@@ -293,5 +293,9 @@ export const sharedStylesContent = `
   etools-dropdown-multi, etools-dropdown {
     --esmm-dropdown-menu-position: fixed !important;
   }
+
+  .padd-between:not(:last-child) {
+    padding-bottom: 6px;
+  }
 `;
 export const sharedStyles = html`${unsafeCSS(sharedStylesContent)}`;

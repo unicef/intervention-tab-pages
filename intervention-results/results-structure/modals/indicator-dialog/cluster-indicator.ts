@@ -36,6 +36,15 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
           padding: 0 8px 0 8px;
           margin-bottom: 10px;
         }
+
+        .row-h {
+          padding-top: 16px !important;
+          padding-bottom: 0px !important;
+        }
+
+        .last-item {
+          padding-bottom: 24px !important;
+        }
       </style>
       ${!this.isNewIndicator
         ? html`
@@ -290,7 +299,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
           </label>
         </div>
       </div>
-      <div class="row-h flex-c">
+      <div class="last-item row-h flex-c">
         <etools-dropdown-multi
           id="locationsDropdw"
           label="Locations"
@@ -402,6 +411,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
     }
     if (!indicator || !indicator.id) {
       this.isNewIndicator = true;
+      this.resetValidations();
     } else {
       this.isNewIndicator = false;
       if (indicator.cluster_indicator_id) {

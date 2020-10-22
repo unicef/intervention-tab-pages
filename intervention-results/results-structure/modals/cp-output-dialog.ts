@@ -10,6 +10,7 @@ import {getIntervention} from '../../../common/actions';
 import {fireEvent} from '../../../utils/fire-custom-event';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
+import {AsyncAction} from '../../../common/types/types';
 
 @customElement('cp-output-dialog')
 export class CpOutputDialog extends LitElement {
@@ -85,7 +86,7 @@ export class CpOutputDialog extends LitElement {
                   ?trigger-value-change-event="${!this.loadingInProcess}"
                   .selected="${this.selectedCpOutput}"
                   label="CP Output"
-                  placeholder="Select CP Output"
+                  placeholder="&#8212;"
                   .options="${this.cpOutputs}"
                   option-label="name"
                   option-value="id"
@@ -106,7 +107,7 @@ export class CpOutputDialog extends LitElement {
             ?trigger-value-change-event="${!this.loadingInProcess}"
             .selectedValues="${this.selectedIndicators}"
             label="Ram Indicators"
-            placeholder="Select Ram Indicators"
+            placeholder="&#8212;"
             .options="${this.indicators}"
             option-label="name"
             option-value="id"
@@ -160,7 +161,7 @@ export class CpOutputDialog extends LitElement {
     })
       .then(() =>
         getStore()
-          .dispatch(getIntervention(String(this.interventionId)))
+          .dispatch<AsyncAction>(getIntervention(String(this.interventionId)))
           .catch(() => Promise.resolve())
       )
       .then(() => {

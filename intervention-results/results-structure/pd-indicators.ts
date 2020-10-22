@@ -23,6 +23,7 @@ import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import './pd-indicator';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {connectStore} from '../../common/mixins/connect-store-mixin';
+import {AsyncAction} from '../../common/types/types';
 
 @customElement('pd-indicators')
 export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)) {
@@ -187,7 +188,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
     })
       .then((_resp: any) => {
         // TODO - use relatedIntervention
-        getStore().dispatch(getIntervention());
+        getStore().dispatch<AsyncAction>(getIntervention());
       })
       .catch((err: any) => {
         fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});

@@ -45,6 +45,7 @@ import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import ContentPanelMixin from '../../common/mixins/content-panel-mixin';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
+import {AsyncAction} from '../../common/types/types';
 
 const RESULT_VIEW = 'result_view';
 const BUDGET_VIEW = 'budget_view';
@@ -450,21 +451,33 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(EtoolsCurr
       method: 'DELETE',
       endpoint: endpoint
     }).then((_resp: any) => {
-      getStore().dispatch(getIntervention());
+      getStore().dispatch<AsyncAction>(getIntervention());
     });
   }
 
   openCpOutputDialog(resultLink?: ExpectedResult): void {
-    const existedCpOutputs = new Set(this.resultLinks.map(({cp_output}: ExpectedResult) => cp_output));
     openDialog({
       dialog: 'cp-output-dialog',
       dialogData: {
         resultLink,
-        cpOutputs: this.cpOutputs.filter(({id}: CpOutput) => !existedCpOutputs.has(id)),
+        cpOutputs: this.filterOutAlreadySelectedAndByCPStructure(),
         interventionId: this.interventionId
       }
     });
     this.openContentPanel();
+  }
+
+  filterOutAlreadySelectedAndByCPStructure() {
+    const alreadyUsedCpOs = new Set(this.resultLinks.map(({cp_output}: ExpectedResult) => cp_output));
+    const cpStructures = this.intervention.country_programmes?.map((c: string) => Number(c));
+
+    return this.cpOutputs.filter(({id, country_programme}: CpOutput) => {
+      let conditionFulfilled = !alreadyUsedCpOs.has(id);
+      if (cpStructures && cpStructures.length) {
+        conditionFulfilled = conditionFulfilled && cpStructures.includes(Number(country_programme));
+      }
+      return conditionFulfilled;
+    });
   }
 
   async openDeleteCpOutputDialog(resultLinkId: number) {
