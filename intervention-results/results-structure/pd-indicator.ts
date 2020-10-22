@@ -76,7 +76,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
             border-bottom: none !important;
           }
         }
-        etools-data-table-row:last-child {
+        :host(:last-child) etools-data-table-row {
           --list-row-wrapper: {
             background-color: var(--blue-background) !important;
             border: 1px solid var(--main-border-color) !important;

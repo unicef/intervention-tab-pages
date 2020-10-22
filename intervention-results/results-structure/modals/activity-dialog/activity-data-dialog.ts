@@ -191,7 +191,6 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
           >
             Use Input-level
           </paper-toggle-button>
-
           <activity-items-table
             ?hidden="${!this.useInputLevel}"
             .activityItems="${this.editedData.items || []}"
@@ -201,7 +200,6 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
               this.requestUpdate();
             }}"
           ></activity-items-table>
-
           <activity-time-frames
             .quarters="${this.quarters}"
             .selectedTimeFrames="${this.editedData.time_frames || []}"

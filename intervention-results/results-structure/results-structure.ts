@@ -45,6 +45,7 @@ import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import ContentPanelMixin from '../../common/mixins/content-panel-mixin';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
+import {AsyncAction} from '../../common/types/types';
 
 const RESULT_VIEW = 'result_view';
 const BUDGET_VIEW = 'budget_view';
@@ -447,7 +448,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(EtoolsCurr
       method: 'DELETE',
       endpoint: endpoint
     }).then((_resp: any) => {
-      getStore().dispatch(getIntervention());
+      getStore().dispatch<AsyncAction>(getIntervention());
     });
   }
 

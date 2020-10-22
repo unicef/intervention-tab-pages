@@ -38,3 +38,5 @@ export interface IAttachment {
   modified: string;
   uploaded_by: null;
 }
+
+export type AsyncAction = any;

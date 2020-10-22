@@ -10,6 +10,7 @@ import {getIntervention} from '../../../common/actions';
 import {fireEvent} from '../../../utils/fire-custom-event';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
+import {AsyncAction} from '../../../common/types/types';
 
 @customElement('cp-output-dialog')
 export class CpOutputDialog extends LitElement {
@@ -160,7 +161,7 @@ export class CpOutputDialog extends LitElement {
     })
       .then(() =>
         getStore()
-          .dispatch(getIntervention(String(this.interventionId)))
+          .dispatch<AsyncAction>(getIntervention(String(this.interventionId)))
           .catch(() => Promise.resolve())
       )
       .then(() => {

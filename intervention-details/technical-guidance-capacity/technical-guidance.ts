@@ -15,6 +15,7 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
+import {AsyncAction} from '../../common/types/types';
 
 /**
  * @customElement
@@ -143,7 +144,7 @@ export class TechnicalGuidance extends CommentsMixin(ComponentBaseMixin(LitEleme
       return Promise.resolve(false);
     }
     return getStore()
-      .dispatch(patchIntervention(this.data))
+      .dispatch<AsyncAction>(patchIntervention(this.data))
       .then(() => {
         this.editMode = false;
       });

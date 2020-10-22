@@ -23,6 +23,8 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import orderBy from 'lodash-es/orderBy';
+import {AsyncAction} from '../../common/types/types';
+
 
 /**
  * @customElement
@@ -319,7 +321,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
     }
 
     return getStore()
-      .dispatch(patchIntervention(this.data))
+      .dispatch<AsyncAction>(patchIntervention(this.data))
       .then(() => {
         this.editMode = false;
       });

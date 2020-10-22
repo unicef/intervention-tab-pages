@@ -21,6 +21,7 @@ import {fireEvent} from '../../utils/fire-custom-event';
 import {getIntervention} from '../../common/actions';
 import {InterventionAmendment} from '../../common/models/intervention.types';
 import {LabelAndValue, AnyObject} from '../../common/models/globals.types';
+import {AsyncAction} from '../../common/types/types';
 
 /**
  * @customElement
@@ -275,7 +276,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
 
   _handleResponse(_response: InterventionAmendment) {
     // @dci if use `updateCurrentIntervention` permissions are not updated
-    getStore().dispatch(getIntervention(this.intervention.id));
+    getStore().dispatch<AsyncAction>(getIntervention(this.intervention.id));
     // this.intervention.amendments.push(response);
     // getStore().dispatch(updateCurrentIntervention(this.intervention));
     this.onClose();
