@@ -1,7 +1,7 @@
 import {LitElement, property, html} from 'lit-element';
 import {Constructor, AnyObject, MinimalUser} from '../models/globals.types';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {areEqual} from '../../utils/utils';
+import {areEqual, filterByIds} from '../../utils/utils';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {validateRequiredFields} from '../../utils/validation-helper';
 import {formatDate} from '../../utils/date-utils';
@@ -95,10 +95,14 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
         : html` <paper-icon-button @click="${this.allowEdit}" icon="create"> </paper-icon-button> `;
     }
 
-    renderReadonlyUserDetails(selectedUsers: MinimalUser[]) {
+    renderReadonlyUserDetails(selectedUsers: any[], allUsers?: any[]) {
       if (isEmpty(selectedUsers)) {
         return html`<span class="placeholder">—</span>`;
       }
+      if (!isEmpty(allUsers)) {
+        selectedUsers = filterByIds(allUsers!, selectedUsers);
+      }
+
       return selectedUsers.map((u: any) => {
         return html`<div class="w100 padd-between">${this.renderNameEmailPhone(u)}</div>`;
       });
