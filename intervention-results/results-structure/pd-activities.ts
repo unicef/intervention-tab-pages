@@ -238,7 +238,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
       method: 'DELETE',
       endpoint: endpoint
     })
-      .then((_resp: any) => {
+      .then(() => {
         getStore().dispatch<AsyncAction>(getIntervention());
       })
       .catch((err: any) => {

@@ -450,7 +450,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(EtoolsCurr
     _sendRequest({
       method: 'DELETE',
       endpoint: endpoint
-    }).then((_resp: any) => {
+    }).then(() => {
       getStore().dispatch<AsyncAction>(getIntervention());
     });
   }
