@@ -1,5 +1,6 @@
 import {ModelsBase} from '../../common/models/models.base';
 import {InterventionPermissionsFields, Intervention} from '../../common/models/intervention.types';
+import {AnyObject} from '../../common/models/globals.types';
 
 export class ReviewData extends ModelsBase {
   constructor(intervention: Intervention) {
@@ -19,7 +20,7 @@ export class ReviewData extends ModelsBase {
   partner_authorized_officer_signatory = '';
   signed_by_partner_date = '';
   signed_by_unicef_date = '';
-  unicef_signatory = '';
+  unicef_signatory: AnyObject = {};
   days_from_submission_to_signed = '';
   days_from_review_to_signed = '';
   termination_doc_attachment = '';

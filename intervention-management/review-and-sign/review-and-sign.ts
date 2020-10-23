@@ -273,12 +273,12 @@ export class InterventionReviewAndSign extends CommentsMixin(
               .options="${this.getCleanEsmmOptions(this.signedByUnicefUsers)}"
               option-value="id"
               option-label="name"
-              .selected="${this.data.unicef_signatory}"
+              .selected="${this.data.unicef_signatory?.id}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.unicef_signatory)}"
               auto-validate
               error-message="Please select UNICEF user"
               @etools-selected-item-changed="${({detail}: CustomEvent) =>
-                this.selectedItemChanged(detail, 'unicef_signatory')}"
+                this.selectedUserChanged(detail, 'unicef_signatory')}"
               trigger-value-change-event
             >
             </etools-dropdown>

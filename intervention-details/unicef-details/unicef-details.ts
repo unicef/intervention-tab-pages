@@ -1,4 +1,4 @@
-import {LitElement, html, property, customElement, TemplateResult} from 'lit-element';
+import {LitElement, html, property, customElement} from 'lit-element';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
@@ -12,19 +12,18 @@ import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {selectPdUnicefDetails, selectPdUnicefDetailsPermissions} from './pdUnicefDetails.selectors';
-import {PdUnicefDetailsPermissions} from './pdUnicefDetails.models';
+import {PdUnicefDetailsPermissions, PdUnicefDetails} from './pdUnicefDetails.models';
 import {Permission} from '../../common/models/intervention.types';
 import {getStore} from '../../utils/redux-store-access';
 import {patchIntervention} from '../../common/actions';
-import {AnyObject, RootState, CpStructure} from '../../common/models/globals.types';
-import {isJsonStrMatch, areEqual} from '../../utils/utils';
+import {AnyObject, RootState, CpStructure, MinimalUser} from '../../common/models/globals.types';
+import {isJsonStrMatch} from '../../utils/utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import orderBy from 'lodash-es/orderBy';
 import {AsyncAction} from '../../common/types/types';
-
 
 /**
  * @customElement
@@ -133,11 +132,11 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
               .options="${this.users_list}"
               option-label="name"
               option-value="id"
-              .selectedValues="${this.data.unicef_focal_points}"
+              .selectedItems="${this.data.unicef_focal_points}"
               ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.unicef_focal_points)}"
               ?required="${this.permissions.required.unicef_focal_points}"
               @etools-selected-items-changed="${({detail}: CustomEvent) =>
-                this.selectedItemsChanged(detail, 'unicef_focal_points')}"
+                this.selectedUsersChanged(detail, 'unicef_focal_points')}"
               trigger-value-change-event
             >
             </etools-dropdown-multi>
@@ -147,8 +146,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
             >
               <label for="focalPointInput" class="paper-label">Unicef Focal Points</label>
               <div id="focalPointDetails">
-                ${this.renderReadonlyFocalPoints(
-                  this.users_list,
+                ${this.renderReadonlyUserDetails(
                   this.originalData?.unicef_focal_points ? this.originalData?.unicef_focal_points! : []
                 )}
               </div>
@@ -162,11 +160,11 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
               class="row-padding-v"
               option-label="name"
               option-value="id"
-              .selected="${this.data.budget_owner}"
+              .selected="${this.data.budget_owner.id}"
               ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.budget_owner)}"
               ?required="${this.permissions.required.budget_owner}"
               @etools-selected-item-changed="${({detail}: CustomEvent) =>
-                this.selectedItemChanged(detail, 'budget_owner')}"
+                this.selectedUserChanged(detail, 'budget_owner')}"
               trigger-value-change-event
             >
             </etools-dropdown>
@@ -174,8 +172,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
             <div class="padd-top" ?hidden="${!this.isReadonly(this.editMode, this.permissions.edit.budget_owner)}">
               <label for="budgetOwnerInput" class="paper-label">Unicef Budget Owner</label>
               <div id="budgetOwnerDetails">
-                ${this.renderReadonlyBudgetOwner(
-                  this.users_list,
+                ${this.renderReadonlyUserDetails(
                   this.originalData?.budget_owner ? [this.originalData?.budget_owner!] : []
                 )}
               </div>
@@ -281,39 +278,6 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
   getClusterText(clusters: string[]) {
     return (clusters || []).join(', ');
   }
-  /**
-   * Optimization to avoid multiple calls to filter through the long users array
-   */
-  previousBudgetOwnerIds: string[] = [];
-  previousBudgeOwnerDisplay: TemplateResult | TemplateResult[] = html`<span class="placeholder">—</span>`;
-  renderReadonlyBudgetOwner(users: AnyObject[], selectedIds: string[]) {
-    if (users == undefined) {
-      return html`<span class="placeholder">—</span>`;
-    }
-    if (areEqual(this.previousBudgetOwnerIds, selectedIds)) {
-      return this.previousBudgeOwnerDisplay;
-    }
-    this.previousBudgetOwnerIds = selectedIds;
-    this.previousBudgeOwnerDisplay = this.renderReadonlyUserDetails(users, selectedIds);
-    return this.previousBudgeOwnerDisplay;
-  }
-
-  /**
-   * Optimization to avoid multiple calls to filter through the long users array
-   */
-  previousFocalPointsIds: string[] = [];
-  previousFocalPointsDisplay: TemplateResult | TemplateResult[] = html`<span class="placeholder">—</span>`;
-  renderReadonlyFocalPoints(users: AnyObject[], selectedIds: string[]) {
-    if (users == undefined) {
-      return html`<span class="placeholder">—</span>`;
-    }
-    if (areEqual(this.previousFocalPointsIds, selectedIds)) {
-      return this.previousFocalPointsDisplay;
-    }
-    this.previousFocalPointsIds = selectedIds;
-    this.previousFocalPointsDisplay = this.renderReadonlyUserDetails(users, selectedIds);
-    return this.previousFocalPointsDisplay;
-  }
 
   saveData() {
     if (!this.validate()) {
@@ -321,9 +285,16 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
     }
 
     return getStore()
-      .dispatch<AsyncAction>(patchIntervention(this.data))
+      .dispatch<AsyncAction>(patchIntervention(this.formatUserFields(this.data)))
       .then(() => {
         this.editMode = false;
       });
+  }
+
+  private formatUserFields(data: PdUnicefDetails) {
+    const dataToSave: AnyObject = cloneDeep(data);
+    dataToSave.budget_owner = data.budget_owner.id;
+    dataToSave.unicef_focal_points = data.unicef_focal_points.map((u: any) => u.id);
+    return dataToSave;
   }
 }
