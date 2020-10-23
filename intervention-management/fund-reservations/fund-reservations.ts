@@ -76,7 +76,7 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
         }
 
         .warning {
-          padding: 24px;
+          padding: 32px 24px;
         }
 
         .warning,

@@ -75,6 +75,9 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
         .totalContainer {
           text-align: center;
         }
+        p {
+          margin-top: 24px;
+        }
       </style>
 
       <etools-content-panel
@@ -96,7 +99,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
 
         <div class="pv-container">${this.renderVisitsTemplate(this.data)}</div>
 
-        <div .class="row-h ${this._getNoPVMsgPadding(this.data?.length)}" ?hidden="${!isEmpty(this.data)}">
+        <div ?hidden="${!isEmpty(this.data)}">
           <p>There are no planned visits added.</p>
         </div>
 
