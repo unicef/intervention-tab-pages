@@ -79,9 +79,9 @@ export class FinalReview extends CommentsMixin(LitElement) {
             <div class="date">${this.reviewDate}</div>
           </div>
           <div ?hidden="${!this.attachment}">
-            <a href="${this.attachment?.attachment_file}" target="_blank">
+            <a href="${this.attachment?.attachment_document}" target="_blank">
               <iron-icon icon="file-download"></iron-icon>
-              <span>${getFileNameFromURL(this.attachment?.attachment_file)}</span>
+              <span>${getFileNameFromURL(this.attachment?.attachment_document)}</span>
             </a>
           </div>
         </div>
