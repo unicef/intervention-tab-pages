@@ -1,5 +1,5 @@
 import {LitElement, property, html} from 'lit-element';
-import {Constructor, AnyObject, MinimalUser} from '../models/globals.types';
+import {Constructor, AnyObject} from '../models/globals.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {areEqual, filterByIds} from '../../utils/utils';
 import {fireEvent} from '../../utils/fire-custom-event';

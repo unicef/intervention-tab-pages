@@ -16,7 +16,7 @@ import {PdUnicefDetailsPermissions, PdUnicefDetails} from './pdUnicefDetails.mod
 import {Permission} from '../../common/models/intervention.types';
 import {getStore} from '../../utils/redux-store-access';
 import {patchIntervention} from '../../common/actions';
-import {AnyObject, RootState, CpStructure, MinimalUser} from '../../common/models/globals.types';
+import {AnyObject, RootState, CpStructure} from '../../common/models/globals.types';
 import {isJsonStrMatch} from '../../utils/utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import cloneDeep from 'lodash-es/cloneDeep';
