@@ -34,7 +34,7 @@ export class ActivityItemRow extends LitElement {
       ? html`
           ${ActivityItemsTableInlineStyles}
           <div class="grid-row">
-            <div class="grid-cell ${!this.lastItem ? 'border' : ''}">
+            <div class="grid-cell ${!this.lastItem || !this.readonly ? 'border' : ''}">
               <paper-textarea
                 .value="${this.activityItem.name || ''}"
                 no-label-float
@@ -47,7 +47,7 @@ export class ActivityItemRow extends LitElement {
                 @click="${() => (this.invalid = false)}"
               ></paper-textarea>
             </div>
-            <div class="grid-cell center ${!this.lastItem ? 'border' : ''}">
+            <div class="grid-cell center ${!this.lastItem || !this.readonly ? 'border' : ''}">
               <etools-currency-amount-input
                 .value="${this.activityItem.cso_cash || 0}"
                 no-label-float
@@ -56,7 +56,7 @@ export class ActivityItemRow extends LitElement {
                 @blur="${() => this.onBlur()}"
               ></etools-currency-amount-input>
             </div>
-            <div class="grid-cell center ${!this.lastItem ? 'border' : ''}">
+            <div class="grid-cell center ${!this.lastItem || !this.readonly ? 'border' : ''}">
               <etools-currency-amount-input
                 .value="${this.activityItem.unicef_cash || 0}"
                 no-label-float
@@ -71,7 +71,7 @@ export class ActivityItemRow extends LitElement {
                 </div>`
               : html`<div class="${!this.lastItem ? 'border' : ''}"></div>`}
 
-            <div class="grid-cell end ${!this.lastItem ? 'border' : ''}">
+            <div class="grid-cell end ${!this.lastItem && this.readonly ? 'border' : ''}">
               ${getTotal(this.activityItem.cso_cash || 0, this.activityItem.unicef_cash || 0)}
             </div>
           </div>
