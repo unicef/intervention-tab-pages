@@ -1,4 +1,15 @@
-import {customElement, LitElement, html, TemplateResult, property, CSSResultArray, css, query} from 'lit-element';
+import {
+  customElement,
+  LitElement,
+  html,
+  TemplateResult,
+  property,
+  CSSResultArray,
+  css,
+  query,
+  PropertyValues,
+  queryAll
+} from 'lit-element';
 import {fireEvent} from '../../../utils/fire-custom-event';
 import '@unicef-polymer/etools-dialog';
 import '@polymer/paper-input/paper-textarea';
@@ -12,6 +23,8 @@ import {InterventionComment} from '../../types/types';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {GenericObject, RootState} from '../../models/globals.types';
 import {connectStore} from '../../mixins/connect-store-mixin';
+import {PaperTextareaElement} from '@polymer/paper-input/paper-textarea';
+import {setTextareasMaxHeight} from '../../../utils/textarea-max-rows-helper';
 
 @customElement('comments-dialog')
 export class CommentsDialog extends connectStore(LitElement) {
@@ -53,6 +66,7 @@ export class CommentsDialog extends connectStore(LitElement) {
   @property() commentsDialogTitle = '';
   @property() dialogOpened = true;
   @property() comments: (InterventionComment & {loadingError?: boolean})[] = [];
+  @queryAll('paper-textarea') textareas!: PaperTextareaElement[];
 
   set dialogData({interventionId, relatedTo, relatedToDescription}: any) {
     this.interventionId = interventionId;
@@ -129,6 +143,11 @@ export class CommentsDialog extends connectStore(LitElement) {
         </div>
       </etools-dialog>
     `;
+  }
+
+  protected firstUpdated(_changedProperties: PropertyValues): void {
+    super.firstUpdated(_changedProperties);
+    setTextareasMaxHeight(this.textareas);
   }
 
   stateChanged(state: RootState): void {
@@ -263,20 +282,17 @@ export class CommentsDialog extends connectStore(LitElement) {
   }
 
   onKeydown(event: KeyboardEvent): void {
-    if (event.key === 'Backspace') {
-      this.dialogElement.notifyResize();
-    }
+    this.dialogElement.notifyResize();
     if (event.key !== 'Enter') {
       return;
     }
     if (event.ctrlKey) {
       this.newMessageText += '\n';
-      this.performUpdate();
+      this.requestUpdate();
     } else {
       event.preventDefault();
       this.addComment();
     }
-    this.dialogElement.notifyResize();
   }
 
   private scrollDown(): void {

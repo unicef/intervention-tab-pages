@@ -25,6 +25,7 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {getIntervention} from '../../common/actions';
 import {currentInterventionPermissions} from '../../common/selectors';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
+import {AsyncAction} from '../../common/types/types';
 
 const customStyles = html`
   <style>
@@ -186,8 +187,8 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       .catch((error: any) => {
         parseRequestErrorsAndShowAsToastMsgs(error, this);
       })
-      .then((_resp: any) => {
-        getStore().dispatch(getIntervention(String(this.interventionId)));
+      .then(() => {
+        getStore().dispatch<AsyncAction>(getIntervention(String(this.interventionId)));
       });
   }
 }

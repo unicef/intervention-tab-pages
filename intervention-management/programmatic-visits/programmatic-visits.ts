@@ -21,6 +21,7 @@ import {fireEvent} from '../../utils/fire-custom-event';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
+import {AsyncAction} from '../../common/types/types';
 
 /**
  * @customElement
@@ -440,7 +441,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
       return Promise.resolve(false);
     }
     return getStore()
-      .dispatch(patchIntervention({planned_visits: this.data}))
+      .dispatch<AsyncAction>(patchIntervention({planned_visits: this.data}))
       .then(() => {
         this.editMode = false;
       });

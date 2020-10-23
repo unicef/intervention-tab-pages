@@ -27,6 +27,7 @@ import {PartnerStaffMember} from '../../common/models/partner.types';
 import {MinimalAgreement} from '../../common/models/agreement.types';
 import {RootState} from '../../common/models/globals.types';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
+import {AsyncAction} from '../../common/types/types';
 
 /**
  * @customElement
@@ -217,7 +218,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
       return html`—`;
     } else {
       return authOfficers.map((authOfficer) => {
-        return html`<div class="w100">${this.renderNameEmailPhone(authOfficer)}</div>`;
+        return html`<div class="w100 padd-between">${this.renderNameEmailPhone(authOfficer)}</div>`;
       });
     }
   }
@@ -228,7 +229,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
     }
 
     return getStore()
-      .dispatch(patchIntervention(this.data))
+      .dispatch<AsyncAction>(patchIntervention(this.data))
       .then(() => {
         this.editMode = false;
       });

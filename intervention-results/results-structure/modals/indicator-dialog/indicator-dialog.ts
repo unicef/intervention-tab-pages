@@ -11,7 +11,7 @@ import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
-import {AnyObject, Section, User, LocationObject} from '../../../../common/models/globals.types';
+import {AnyObject, Section, LocationObject, EtoolsUserModel} from '../../../../common/models/globals.types';
 import {Indicator} from '../../../../common/models/intervention.types';
 import EtoolsDialog from '@unicef-polymer/etools-dialog';
 import SaveIndicatorMixin from './mixins/save-indicator-mixin';
@@ -228,7 +228,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   interventionStatus!: string;
 
   @property({type: Object})
-  currentUser!: User;
+  currentUser!: EtoolsUserModel | null;
 
   @query('etools-dialog')
   indicatorDialog!: EtoolsDialog;
@@ -249,7 +249,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
     this.llResultId = data.llResultId;
     this.prpServerOn = data.prpServerOn;
     this.currentUser = getStore().getState().user.data;
-    this.interventionStatus = getStore().getState().interventions.current.status;
+    this.interventionStatus = getStore().getState().interventions.current?.status || '';
     this.readonly = data.readonly;
 
     if (!this.data.id) {
@@ -260,7 +260,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
       this.disaggregations = this._convertToArrayOfObj(this.data.disaggregation);
     }
     this.isEditRecord = !!(this.data && this.data.id);
-    this.disableConfirmBtn = this.isEditRecord && this.isCluster && !this.currentUser.is_unicef_user;
+    this.disableConfirmBtn = this.isEditRecord && this.isCluster && !this.currentUser?.is_unicef_user;
     this.setTitle();
   }
 
@@ -319,7 +319,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   }
 
   _clusterToggleIsDisabled() {
-    if (this.isEditRecord || !this.currentUser.is_unicef_user) {
+    if (this.isEditRecord || !this.currentUser?.is_unicef_user) {
       return true;
     }
     return !this.prpServerOn;
@@ -378,7 +378,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
     this.indicatorDialog.notifyResize();
   }
 
-  _hideAddDisaggreations(isCluster: boolean, currentUser: User) {
-    return isCluster || !userIsPme(currentUser) || !currentUser.is_unicef_user;
+  _hideAddDisaggreations(isCluster: boolean, currentUser: EtoolsUserModel | null) {
+    return isCluster || !userIsPme(currentUser) || !currentUser?.is_unicef_user;
   }
 }

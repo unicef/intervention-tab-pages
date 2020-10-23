@@ -1,4 +1,4 @@
-import {LitElement, html, property, customElement} from 'lit-element';
+import {LitElement, html, property, customElement, query} from 'lit-element';
 import '@unicef-polymer/etools-content-panel/etools-content-panel.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@unicef-polymer/etools-table/etools-table';
@@ -22,11 +22,13 @@ import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {getIntervention} from '../../common/actions';
+import {getIntervention, updateCurrentIntervention} from '../../common/actions';
 import '../../common/layout/are-you-sure';
 import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {isUnicefUser} from '../../common/selectors';
+import {AsyncAction} from '../../common/types/types';
+import {EtoolsUpload} from '@unicef-polymer/etools-upload/etools-upload';
 
 const customStyles = html`
   <style>
@@ -70,6 +72,10 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
         .pad-right {
           padding-right: 6px;
         }
+        div[slot='panel-btns'] {
+          display: flex;
+          align-items: center;
+        }
       </style>
 
       <etools-content-panel
@@ -92,6 +98,13 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
             icon="add-box"
           >
           </paper-icon-button>
+          <paper-icon-button
+            ?hidden="${!this.permissions.edit.supply_items || this.uploadInProcess}"
+            @click="${() => this.uploader?._openFileChooser()}"
+            icon="file-upload"
+          >
+          </paper-icon-button>
+          <etools-loading ?active="${this.uploadInProcess}" no-overlay loading-text></etools-loading>
         </div>
         <etools-table
           ?hidden="${!this.supply_items?.length}"
@@ -108,6 +121,18 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
           <p>There are no supply agreements added.</p>
         </div>
       </etools-content-panel>
+
+      <etools-upload
+        hidden
+        accept=".csv"
+        .endpointInfo="${{
+          endpoint: getEndpoint(interventionEndpoints.supplyItemsUpload, {interventionId: this.intervention.id}).url,
+          rawFilePropertyName: 'supply_items_file',
+          rejectWithRequest: true
+        }}"
+        @upload-finished="${(event: CustomEvent) => this.onUploadFinished(event.detail)}"
+        @upload-started="${() => (this.uploadInProcess = true)}"
+      ></etools-upload>
     `;
   }
 
@@ -150,6 +175,12 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
 
   @property({type: Boolean})
   isUnicefUser = false;
+
+  @property()
+  uploadInProcess: boolean = false;
+
+  @query('etools-upload')
+  uploader!: EtoolsUpload & {_openFileChooser(): void};
 
   getChildRowTemplate(item: any): EtoolsTableChildRow {
     const childRow = {} as EtoolsTableChildRow;
@@ -248,12 +279,34 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
       endpoint: endpoint,
       method: 'DELETE'
     })
-      .then((_resp: any) => {
-        getStore().dispatch(getIntervention());
+      .then(() => {
+        getStore().dispatch<AsyncAction>(getIntervention());
       })
       .catch((err: any) => {
         fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
       });
+  }
+
+  onUploadFinished({success, error}: any) {
+    this.uploadInProcess = false;
+    if (success) {
+      getStore().dispatch(updateCurrentIntervention(success));
+      fireEvent(this, 'toast', {text: 'Supplies uploaded successfuly'});
+    } else {
+      const message = this.getUploadError(error);
+      fireEvent(this, 'toast', {text: `Can not upload supplies: ${message}`});
+    }
+  }
+
+  getUploadError(error: any): string {
+    const defaultMessage: string = error?.error?.message || 'Unknown error';
+    const errorResponse: string = error?.request?.xhr?.responseText || '';
+    try {
+      const response: AnyObject = JSON.parse(errorResponse);
+      return Object.values(response).join('; ');
+    } catch (e) {
+      return defaultMessage;
+    }
   }
 
   private openSupplyDialog(item: InterventionSupplyItem) {

@@ -20,7 +20,7 @@ export class ReasonPopup extends LitElement {
     return html`
       <style>
         .container {
-          padding: 10px 20px;
+          padding: 15px 20px;
         }
         paper-textarea {
           --paper-input-container-input: {
