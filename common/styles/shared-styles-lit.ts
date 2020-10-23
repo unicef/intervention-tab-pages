@@ -285,7 +285,8 @@ export const sharedStylesContent = `
     content: '—';
     color: var(--secondary-text-color);
   }
-  etools-dropdown-multi, etools-dropdown {
+
+  etools-dialog {
     --esmm-dropdown-menu-position: fixed !important;
   }
 
