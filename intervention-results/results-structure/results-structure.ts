@@ -193,7 +193,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(EtoolsCurr
             border-bottom: none !important;
           }
           --list-row-wrapper: {
-            background-color: var(--secondary-background-color) !important;
+            background-color: var(--secondary-background-color);
             min-height: 55px;
             border-bottom: 1px solid var(--main-border-color) !important;
           }
@@ -217,6 +217,9 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(EtoolsCurr
         .add-cp {
           opacity: 0.84;
           margin-left: 6px;
+        }
+        .editable-row .hover-block {
+          background-color: rgb(230, 230, 230);
         }
       </style>
 

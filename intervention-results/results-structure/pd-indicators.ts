@@ -83,9 +83,6 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
             padding-top: 0px;
           }
         }
-        .editable-row .hover-block {
-          background-color: var(--blue-background) !important;
-        }
       </style>
 
       <div class="row-h align-items-center header">

@@ -33,6 +33,9 @@ export class PdIndicator extends CommentsMixin(LitElement) {
             margin-right: 16px !important;
           }
         }
+        .editable-row .hover-block {
+          background-color: rgb(189, 211, 230);
+        }
         :host([high-frequency-indicator]) etools-data-table-row {
           --icon-wrapper: {
             background: var(--indicator-blue)
@@ -72,14 +75,14 @@ export class PdIndicator extends CommentsMixin(LitElement) {
           --list-row-wrapper_-_align-items: stretch;
           --list-row-collapse-wrapper_-_margin-bottom: 0px;
           --list-row-wrapper: {
-            background-color: var(--blue-background) !important;
+            background-color: var(--blue-background);
             border: 1px solid var(--main-border-color) !important;
             border-bottom: none !important;
           }
         }
         :host(:last-child) etools-data-table-row {
           --list-row-wrapper: {
-            background-color: var(--blue-background) !important;
+            background-color: var(--blue-background);
             border: 1px solid var(--main-border-color) !important;
             border-bottom: 1px solid var(--main-border-color) !important;
           }
@@ -95,9 +98,6 @@ export class PdIndicator extends CommentsMixin(LitElement) {
           max-height: 220px;
           overflow: auto;
         }
-        .hover-block {
-          background-color: var(--blue-background) !important;
-        }
         etools-data-table-row {
           --list-row-collapse-wrapper: {
             padding: 0;
@@ -109,6 +109,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
         }
       </style>
       <etools-data-table-row
+        secondary-bg-on-hover
         related-to="indicator-${this.indicator.id}"
         related-to-description="Indicator - ${this.indicator.indicator?.title}"
         comments-container
