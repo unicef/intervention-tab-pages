@@ -1,5 +1,5 @@
 import {LitElement, property, html} from 'lit-element';
-import {Constructor, AnyObject} from '../models/globals.types';
+import {Constructor, AnyObject, User} from '../models/globals.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {areEqual, filterByIds} from '../../utils/utils';
 import {fireEvent} from '../../utils/fire-custom-event';
@@ -199,6 +199,28 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
       }
       // @ts-ignore
       return CONSTANTS.DOCUMENT_TYPES_LONG[value.toUpperCase()];
+    }
+
+    /**
+     * check if already saved users exists on loaded data, if not they will be added
+     * (they might be missing if changed country)
+     */
+    handleUsersNoLongerAssignedToCurrentCountry(availableUsers: User[], savedUsers?: User[]) {
+      if (!(savedUsers && savedUsers.length > 0 && availableUsers && availableUsers.length > 0)) {
+        return;
+      }
+
+      let changed = false;
+      savedUsers.forEach((savedUsr) => {
+        if (availableUsers.findIndex((x) => x.id === savedUsr.id) < 0) {
+          availableUsers.push(savedUsr);
+          changed = true;
+        }
+      });
+      if (changed) {
+        availableUsers.sort((a, b) => (a.name < b.name ? -1 : 1));
+      }
+      return changed;
     }
   }
   return ComponentBaseClass;

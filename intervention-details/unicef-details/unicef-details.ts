@@ -16,7 +16,7 @@ import {PdUnicefDetailsPermissions, PdUnicefDetails} from './pdUnicefDetails.mod
 import {Permission} from '../../common/models/intervention.types';
 import {getStore} from '../../utils/redux-store-access';
 import {patchIntervention} from '../../common/actions';
-import {AnyObject, RootState, CpStructure} from '../../common/models/globals.types';
+import {AnyObject, RootState, CpStructure, User} from '../../common/models/globals.types';
 import {isJsonStrMatch} from '../../utils/utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import cloneDeep from 'lodash-es/cloneDeep';
@@ -24,6 +24,7 @@ import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import orderBy from 'lodash-es/orderBy';
 import {AsyncAction} from '../../common/types/types';
+import {isEmpty} from 'lodash-es';
 
 /**
  * @customElement
@@ -219,7 +220,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
   isUnicefUser = false;
 
   @property({type: Array})
-  users_list!: AnyObject[];
+  users_list!: User[];
 
   @property({type: Array})
   office_list!: AnyObject[];
@@ -265,14 +266,26 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
     if (!isJsonStrMatch(this.cpStructures, state.commonData!.countryProgrammes)) {
       this.cpStructures = [...state.commonData!.countryProgrammes];
     }
-    // TO DO
-    // check if already saved records exists on loaded data, if not they will be added
-    // (they might be missing if changed country)
-    // handleItemsNoLongerAssignedToCurrentCountry(
-    //   this.focal_point_list,
-    //   this.pdUnicefDetails.details.unicef_focal_points
-    // );
-    // this.focal_point_list = [...this.focal_point_list];
+    if (this.isUnicefUser) { // Partner user can not edit these fields
+      const changed = this.handleUsersNoLongerAssignedToCurrentCountry(
+        this.users_list,
+        this.getUsersAssignedToCurrentPD()
+      );
+      if (changed) {
+        this.users_list = [...this.users_list];
+      }
+    }
+  }
+
+  getUsersAssignedToCurrentPD() {
+    const savedUsers = [];
+    if (this.data.budget_owner) {
+      savedUsers.push(this.data.budget_owner);
+    }
+    if (!isEmpty(this.data.unicef_focal_points)) {
+      savedUsers.push(this.data.unicef_focal_points);
+    }
+    return savedUsers.flat();
   }
 
   getClusterText(clusters: string[]) {
