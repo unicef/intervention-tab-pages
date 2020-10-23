@@ -111,6 +111,9 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
   }
 
   stateChanged(state: any): void {
+    if (!state.interventions.current) {
+      return;
+    }
     this.attachments = state.interventions?.current.attachments || [];
     this.interventionStatus = state.interventions?.current.status || '';
     this.canEdit = state.interventions?.current.permissions.edit.attachments || false;
