@@ -18,6 +18,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
   @property({type: Boolean}) readonly!: boolean;
   @property({type: Array}) locationNames: {name: string; adminLevel: string}[] = [];
   @property({type: String}) sectionClusterNames = '';
+  @property({type: String}) interventionStatus = '';
 
   render() {
     return html`
@@ -142,8 +143,13 @@ export class PdIndicator extends CommentsMixin(LitElement) {
             ></paper-icon-button>
             <paper-icon-button
               icon="icons:block"
-              ?hidden="${!this.indicator.is_active || this.readonly}"
+              ?hidden="${!this._canDeactivate()}"
               @click="${() => this.openDeactivationDialog(String(this.indicator.id))}"
+            ></paper-icon-button>
+            <paper-icon-button
+              icon="icons:delete"
+              ?hidden="${!this._canDelete()}"
+              @click="${() => this.openDeletionDialog(String(this.indicator.id))}"
             ></paper-icon-button>
           </div>
         </div>
@@ -199,6 +205,9 @@ export class PdIndicator extends CommentsMixin(LitElement) {
   }
   openIndicatorDialog(indicator: Indicator, readonly: boolean) {
     fireEvent(this, 'open-edit-indicator-dialog', {indicator: indicator, readonly: readonly});
+  }
+  openDeletionDialog(indicatorId: string) {
+    fireEvent(this, 'open-delete-confirmation', {indicatorId: indicatorId});
   }
 
   // Both unit and displayType are used because of inconsitencies in the db.
@@ -263,5 +272,24 @@ export class PdIndicator extends CommentsMixin(LitElement) {
 
   _clusterIndIsRatio(item: any) {
     return item.d && parseInt(item.d) !== 1 && parseInt(item.d) !== 100;
+  }
+
+  _canDeactivate(): boolean {
+    // TODO: refactor this after status draft comes as development
+    if (this.interventionStatus === 'draft' || this.interventionStatus === 'development') {
+      return false;
+    }
+    if (this.indicator.is_active && !this.readonly) {
+      return true;
+    }
+    return false;
+  }
+
+  _canDelete(): boolean {
+    // TODO: refactor this after status draft comes as development
+    if ((this.interventionStatus === 'draft' || this.interventionStatus === 'development') && !this.readonly) {
+      return true;
+    }
+    return false;
   }
 }

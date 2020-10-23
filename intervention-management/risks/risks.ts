@@ -187,7 +187,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       .catch((error: any) => {
         parseRequestErrorsAndShowAsToastMsgs(error, this);
       })
-      .then((_resp: any) => {
+      .then(() => {
         getStore().dispatch<AsyncAction>(getIntervention(String(this.interventionId)));
       });
   }
