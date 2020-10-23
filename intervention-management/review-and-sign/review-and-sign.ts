@@ -548,9 +548,15 @@ export class InterventionReviewAndSign extends CommentsMixin(
     }
 
     return getStore()
-      .dispatch<AsyncAction>(patchIntervention(this.data))
+      .dispatch<AsyncAction>(patchIntervention(this.formatUserData(this.data)))
       .then(() => {
         this.editMode = false;
       });
+  }
+
+  private formatUserData(data: ReviewData) {
+    const dataToSave: any = cloneDeep(data);
+    dataToSave.unicef_signatory = data.unicef_signatory?.id;
+    return dataToSave;
   }
 }

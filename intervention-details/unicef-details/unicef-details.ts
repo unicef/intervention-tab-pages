@@ -132,7 +132,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
               .options="${this.users_list}"
               option-label="name"
               option-value="id"
-              .selectedItems="${this.data.unicef_focal_points}"
+              .selectedValues="${this.data.unicef_focal_points.map((u: any) => u.id)}"
               ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.unicef_focal_points)}"
               ?required="${this.permissions.required.unicef_focal_points}"
               @etools-selected-items-changed="${({detail}: CustomEvent) =>
@@ -160,7 +160,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
               class="row-padding-v"
               option-label="name"
               option-value="id"
-              .selected="${this.data.budget_owner.id}"
+              .selected="${this.data.budget_owner?.id}"
               ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.budget_owner)}"
               ?required="${this.permissions.required.budget_owner}"
               @etools-selected-item-changed="${({detail}: CustomEvent) =>
@@ -293,7 +293,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
 
   private formatUserFields(data: PdUnicefDetails) {
     const dataToSave: AnyObject = cloneDeep(data);
-    dataToSave.budget_owner = data.budget_owner.id;
+    dataToSave.budget_owner = data.budget_owner?.id;
     dataToSave.unicef_focal_points = data.unicef_focal_points.map((u: any) => u.id);
     return dataToSave;
   }
