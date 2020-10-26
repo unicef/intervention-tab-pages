@@ -115,7 +115,7 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
     }
 
     selectedItemChanged(detail: any, key: string, optionValue = 'id') {
-      if (!detail.selectedItem) {
+      if (detail.selectedItem === undefined) {
         return;
       }
       const newValue = detail.selectedItem[optionValue];
@@ -127,7 +127,7 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
     }
 
     selectedUserChanged(detail: any, key: string) {
-      if (!detail.selectedItem) {
+      if (detail.selectedItem === undefined) {
         return;
       }
       const newValue = detail.selectedItem;

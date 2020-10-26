@@ -192,7 +192,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.country_programmes)}"
               ?required="${this.permissions.required.country_programmes}"
               @etools-selected-items-changed="${({detail}: CustomEvent) =>
-                this.selectedItemChanged(detail, 'country_programmes')}"
+                this.selectedItemsChanged(detail, 'country_programmes')}"
               trigger-value-change-event
             >
             </etools-dropdown-multi>
