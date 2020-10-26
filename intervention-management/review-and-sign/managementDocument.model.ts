@@ -1,6 +1,6 @@
 import {ModelsBase} from '../../common/models/models.base';
 import {InterventionPermissionsFields, Intervention} from '../../common/models/intervention.types';
-import {AnyObject, MinimalUser} from '../../common/models/globals.types';
+import {MinimalUser} from '../../common/models/globals.types';
 
 export class ReviewData extends ModelsBase {
   constructor(intervention: Intervention) {

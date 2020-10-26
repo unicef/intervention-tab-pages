@@ -1,5 +1,5 @@
 import {LitElement, property, html} from 'lit-element';
-import {Constructor, AnyObject, User} from '../models/globals.types';
+import {Constructor, AnyObject, MinimalUser} from '../models/globals.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {areEqual, filterByIds} from '../../utils/utils';
 import {fireEvent} from '../../utils/fire-custom-event';
@@ -205,7 +205,7 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
      * check if already saved users exist on loaded data, if not they will be added
      * (they might be missing if changed country)
      */
-    handleUsersNoLongerAssignedToCurrentCountry(availableUsers: User[], savedUsers?: User[]) {
+    handleUsersNoLongerAssignedToCurrentCountry(availableUsers: AnyObject[], savedUsers?: MinimalUser[]) {
       if (!(savedUsers && savedUsers.length > 0 && availableUsers && availableUsers.length > 0)) {
         return false;
       }

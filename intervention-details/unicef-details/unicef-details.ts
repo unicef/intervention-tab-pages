@@ -300,13 +300,13 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
     }
 
     return getStore()
-      .dispatch<AsyncAction>(patchIntervention(this.formatUserFields(this.data)))
+      .dispatch<AsyncAction>(patchIntervention(this.formatUsersData(this.data)))
       .then(() => {
         this.editMode = false;
       });
   }
 
-  private formatUserFields(data: PdUnicefDetails) {
+  private formatUsersData(data: PdUnicefDetails) {
     const dataToSave: AnyObject = cloneDeep(data);
     dataToSave.budget_owner = data.budget_owner?.id;
     dataToSave.unicef_focal_points = data.unicef_focal_points.map((u: any) => u.id);
