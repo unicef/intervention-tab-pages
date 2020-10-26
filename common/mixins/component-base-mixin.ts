@@ -202,12 +202,12 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
     }
 
     /**
-     * check if already saved users exists on loaded data, if not they will be added
+     * check if already saved users exist on loaded data, if not they will be added
      * (they might be missing if changed country)
      */
     handleUsersNoLongerAssignedToCurrentCountry(availableUsers: User[], savedUsers?: User[]) {
       if (!(savedUsers && savedUsers.length > 0 && availableUsers && availableUsers.length > 0)) {
-        return;
+        return false;
       }
 
       let changed = false;

@@ -25,6 +25,7 @@ import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import orderBy from 'lodash-es/orderBy';
 import {AsyncAction} from '../../common/types/types';
 import isEmpty from 'lodash-es/isEmpty';
+import uniqBy from 'lodash-es/uniqBy';
 
 /**
  * @customElement
@@ -286,7 +287,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
     if (!isEmpty(this.data.unicef_focal_points)) {
       savedUsers.push(this.data.unicef_focal_points);
     }
-    return savedUsers.flat();
+    return uniqBy(savedUsers.flat(), 'id');
   }
 
   getClusterText(clusters: string[]) {
