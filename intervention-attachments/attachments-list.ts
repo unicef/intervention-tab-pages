@@ -8,11 +8,19 @@ import './intervention-attachment-dialog';
 import {sharedStyles} from '../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../common/styles/grid-layout-styles-lit';
 import {openDialog} from '../utils/dialog';
-import {ReviewAttachment} from '../common/models/intervention.types';
+import {ReviewAttachment, Intervention} from '../common/models/intervention.types';
 import {AttachmentsListStyles} from './attachments-list.styles';
 import {IdAndName} from '../common/models/globals.types';
-import {getFileNameFromURL} from '../utils/utils';
+import {getFileNameFromURL, cloneDeep} from '../utils/utils';
 import {CommentsMixin} from '../common/components/comments/comments-mixin';
+import '../common/layout/are-you-sure';
+import {interventionEndpoints} from '../utils/intervention-endpoints';
+import {getEndpoint} from '../utils/endpoint-helper';
+import {sendRequest} from '@unicef-polymer/etools-ajax';
+import {getStore} from '../utils/redux-store-access';
+import {updateCurrentIntervention} from '../common/actions';
+import {pageIsNotCurrentlyActive} from '../utils/common-methods';
+import get from 'lodash-es/get';
 
 @customElement('attachments-list')
 export class AttachmentsList extends CommentsMixin(LitElement) {
@@ -20,10 +28,11 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
     return [gridLayoutStylesLit];
   }
   @property() attachments: ReviewAttachment[] = [];
-  @property() interventionStatus!: string;
   @property() showInvalid = true;
   @property() canEdit = true;
   @property() fileTypes: IdAndName[] = [];
+  @property({type: String}) deleteConfirmationMessage = 'Are you sure you want to delete this attachment?';
+  private intervention!: Intervention;
 
   protected render(): TemplateResult {
     return html`
@@ -95,6 +104,11 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
                           icon="create"
                           @click="${() => this.openAttachmentDialog(attachment)}"
                         ></paper-icon-button>
+                        <paper-icon-button
+                          ?hidden="${!this.canEdit || !this.canDeleteAttachments()}"
+                          icon="delete"
+                          @click="${() => this.openDeleteConfirmation(attachment)}"
+                        ></paper-icon-button>
                       </div>
                     </div>
                   </etools-data-table-row>
@@ -111,12 +125,17 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
   }
 
   stateChanged(state: any): void {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'attachments')) {
+      return;
+    }
     if (!state.interventions.current) {
       return;
     }
+
+    this.intervention = cloneDeep(state.interventions.current);
     this.attachments = state.interventions?.current.attachments || [];
-    this.interventionStatus = state.interventions?.current.status || '';
-    this.canEdit = state.interventions?.current.permissions.edit.attachments || false;
+    this.canEdit = this.intervention.permissions!.edit.attachments || false;
+
     this.fileTypes = state.commonData.fileTypes || [];
     super.stateChanged(state);
   }
@@ -134,10 +153,52 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
     return attachmentType ? attachmentType.name : '—';
   }
 
+  async openDeleteConfirmation(attachment: ReviewAttachment) {
+    const confirmed = await openDialog({
+      dialog: 'are-you-sure',
+      dialogData: {
+        content: this.deleteConfirmationMessage,
+        confirmBtnText: 'Yes'
+      }
+    }).then(({confirmed}) => {
+      return confirmed;
+    });
+    if (confirmed) {
+      this.deleteAttachment(attachment);
+    }
+  }
+
+  deleteAttachment(attachment: ReviewAttachment) {
+    const endpoint = getEndpoint(interventionEndpoints.updatePdAttachment, {
+      id: attachment.intervention,
+      attachment_id: attachment.id
+    });
+
+    sendRequest({
+      endpoint,
+      method: 'DELETE'
+    })
+      .then(() => {
+        getStore().dispatch(updateCurrentIntervention(this.removeDeletedAttachment(this.intervention, attachment.id)));
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
+  }
+
+  removeDeletedAttachment(intervention: Intervention, attachmentId: number) {
+    intervention.attachments = intervention.attachments.filter((attach) => attach.id !== attachmentId);
+    return intervention;
+  }
+
   canEditAttachments() {
     return (
-      this.interventionStatus !== CONSTANTS.STATUSES.Closed.toLowerCase() &&
-      this.interventionStatus !== CONSTANTS.STATUSES.Terminated.toLowerCase()
+      this.intervention.status !== CONSTANTS.STATUSES.Closed.toLowerCase() &&
+      this.intervention.status !== CONSTANTS.STATUSES.Terminated.toLowerCase()
     );
+  }
+
+  canDeleteAttachments() {
+    return this.intervention.status === CONSTANTS.STATUSES.Draft.toLowerCase();
   }
 }
