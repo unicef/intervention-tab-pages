@@ -24,7 +24,7 @@ import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import orderBy from 'lodash-es/orderBy';
 import {AsyncAction} from '../../common/types/types';
-import {isEmpty} from 'lodash-es';
+import isEmpty from 'lodash-es/isEmpty';
 
 /**
  * @customElement
@@ -266,14 +266,15 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
     if (!isJsonStrMatch(this.cpStructures, state.commonData!.countryProgrammes)) {
       this.cpStructures = [...state.commonData!.countryProgrammes];
     }
+
+    const pdUsers = this.getUsersAssignedToCurrentPD();
     if (this.isUnicefUser) { // Partner user can not edit these fields
-      const changed = this.handleUsersNoLongerAssignedToCurrentCountry(
-        this.users_list,
-        this.getUsersAssignedToCurrentPD()
-      );
+      const changed = this.handleUsersNoLongerAssignedToCurrentCountry(this.users_list, pdUsers);
       if (changed) {
         this.users_list = [...this.users_list];
       }
+    } else {
+      this.users_list = pdUsers;
     }
   }
 
