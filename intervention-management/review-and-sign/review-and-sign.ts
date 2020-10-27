@@ -12,7 +12,6 @@ import '@unicef-polymer/etools-date-time/datepicker-lite';
 import DatePickerLite from '@unicef-polymer/etools-date-time/datepicker-lite';
 
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
-import MissingDropdownOptionsMixin from '../../common/mixins/missing-dropdown-options-mixin';
 import UploadMixin from '../../common/mixins/uploads-mixin';
 import CONSTANTS from '../../common/constants';
 import {sectionContentStylesPolymer} from '../../common/styles/content-section-styles-polymer';
@@ -22,7 +21,7 @@ import {getStore} from '../../utils/redux-store-access';
 import {isJsonStrMatch} from '../../utils/utils';
 
 import {Permission} from '../../common/models/intervention.types';
-import {MinimalUser, RootState} from '../../common/models/globals.types';
+import {MinimalUser, RootState, User} from '../../common/models/globals.types';
 import {selectReviewData, selectReviewDataPermissions} from './managementDocument.selectors';
 import {ReviewDataPermission, ReviewData} from './managementDocument.model';
 import {getEndpoint} from '../../utils/endpoint-helper';
@@ -40,13 +39,10 @@ import {AsyncAction} from '../../common/types/types';
 /**
  * @customElement
  * @appliesMixin CommonMixin
- * @appliesMixin MissingDropdownOptionsMixin
  * @appliesMixin UploadsMixin
  */
 @customElement('review-and-sign')
-export class InterventionReviewAndSign extends CommentsMixin(
-  ComponentBaseMixin(MissingDropdownOptionsMixin(UploadMixin(LitElement)))
-) {
+export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(UploadMixin(LitElement))) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -201,7 +197,7 @@ export class InterventionReviewAndSign extends CommentsMixin(
               id="signedByAuthorizedOfficer"
               label="Signed by Partner Authorized Officer"
               placeholder="&#8212;"
-              .options="${this.getCleanEsmmOptions(this.agreementAuthorizedOfficers)}"
+              .options="${this.agreementAuthorizedOfficers}"
               .selected="${this.data.partner_authorized_officer_signatory}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.partner_authorized_officer_signatory)}"
               ?required="${this.permissions.required.partner_authorized_officer_signatory}"
@@ -270,15 +266,15 @@ export class InterventionReviewAndSign extends CommentsMixin(
               id="signedByUnicef"
               label="Signed by UNICEF"
               placeholder="&#8212;"
-              .options="${this.getCleanEsmmOptions(this.signedByUnicefUsers)}"
+              .options="${this.signedByUnicefUsers}"
               option-value="id"
               option-label="name"
-              .selected="${this.data.unicef_signatory}"
+              .selected="${this.data.unicef_signatory?.id}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.unicef_signatory)}"
               auto-validate
               error-message="Please select UNICEF user"
               @etools-selected-item-changed="${({detail}: CustomEvent) =>
-                this.selectedItemChanged(detail, 'unicef_signatory')}"
+                this.selectedUserChanged(detail, 'unicef_signatory')}"
               trigger-value-change-event
             >
             </etools-dropdown>
@@ -355,7 +351,7 @@ export class InterventionReviewAndSign extends CommentsMixin(
   permissions!: Permission<ReviewDataPermission>;
 
   @property({type: Array})
-  signedByUnicefUsers!: MinimalUser[];
+  signedByUnicefUsers!: User[] | MinimalUser[];
 
   @property({type: Array})
   agreementAuthorizedOfficers!: any;
@@ -372,6 +368,9 @@ export class InterventionReviewAndSign extends CommentsMixin(
   @property({type: String})
   uploadEndpoint: string = getEndpoint(interventionEndpoints.attachmentsUpload).url;
 
+  @property({type: Boolean})
+  isUnicefUser = false;
+
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'management')) {
       return;
@@ -380,8 +379,9 @@ export class InterventionReviewAndSign extends CommentsMixin(
     if (!isJsonStrMatch(this.signedByUnicefUsers, state.commonData!.unicefUsersData)) {
       this.signedByUnicefUsers = cloneDeep(state.commonData!.unicefUsersData);
     }
-    // review it
-    this.signedByUnicefUsers = cloneDeep(state.commonData!.unicefUsersData);
+    if (state.user && state.user.data) {
+      this.isUnicefUser = state.user.data.is_unicef_user;
+    }
 
     if (state.interventions.current) {
       this.data = selectReviewData(state);
@@ -402,6 +402,16 @@ export class InterventionReviewAndSign extends CommentsMixin(
         this.agreementAuthorizedOfficers = this.getAuthorizedOfficersList(agreementData);
       }
       super.stateChanged(state);
+
+      const pdUsers = this.data.unicef_signatory ? [this.data.unicef_signatory] : [];
+      if (this.isUnicefUser) { // Partner user can not edit this field
+        const changed = this.handleUsersNoLongerAssignedToCurrentCountry(this.signedByUnicefUsers as User[], pdUsers);
+        if (changed) {
+          this.signedByUnicefUsers = [...this.signedByUnicefUsers];
+        }
+      } else {
+        this.signedByUnicefUsers = pdUsers;
+      }
     }
   }
 
@@ -423,10 +433,6 @@ export class InterventionReviewAndSign extends CommentsMixin(
 
   connectedCallback() {
     super.connectedCallback();
-    // @lajos: review this, not sure we will use it anymore
-    this.setDropdownMissingOptionsAjaxDetails(this.shadowRoot?.querySelector('#signedByUnicef'), 'unicefUsers', {
-      dropdown: true
-    });
   }
 
   _resetPrcFieldsValidations() {
@@ -548,9 +554,15 @@ export class InterventionReviewAndSign extends CommentsMixin(
     }
 
     return getStore()
-      .dispatch<AsyncAction>(patchIntervention(this.data))
+      .dispatch<AsyncAction>(patchIntervention(this.formatUserData(this.data)))
       .then(() => {
         this.editMode = false;
       });
+  }
+
+  private formatUserData(data: ReviewData) {
+    const dataToSave: any = cloneDeep(data);
+    dataToSave.unicef_signatory = data.unicef_signatory?.id;
+    return dataToSave;
   }
 }

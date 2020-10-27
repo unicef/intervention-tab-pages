@@ -46,10 +46,10 @@ export class ActivityItemsTable extends LitElement {
             @item-changed="${({detail}: CustomEvent) => this.updateActivityItem(index, detail)}"
             @remove-item="${() => this.updateActivityItem(index, null)}"
             .readonly="${this.readonly}"
+            .lastItem="${this.isLastItem(index)}"
           ></activity-item-row>`
       )}
-
-      <iron-icon icon="add" @click="${() => this.addNew()}"></iron-icon>
+      ${!this.readonly ? html`<iron-icon icon="add" @click="${() => this.addNew()}"></iron-icon>` : html``}
     `;
   }
 
@@ -80,5 +80,12 @@ export class ActivityItemsTable extends LitElement {
       valid = valid && row.validate();
     });
     return valid;
+  }
+
+  isLastItem(currentIndex: number): boolean {
+    if (this.activityItems.length == currentIndex + 1) {
+      return true;
+    }
+    return false;
   }
 }

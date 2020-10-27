@@ -37,10 +37,12 @@ export class ActivityTimeFrames extends LitElement {
           margin: 5px;
           height: 42px;
           border-radius: 10px;
-          cursor: pointer;
         }
         .time-frame.selected {
           background: rgba(185, 215, 195, 0.69);
+        }
+        .time-frame.editable {
+          cursor: pointer !important;
         }
         .frame-divider {
           height: 20px;
@@ -100,7 +102,10 @@ export class ActivityTimeFrames extends LitElement {
                 ${frames.map(
                   (frame: ActivityTime, index: number) => html`
                     <div
-                      class="time-frame${this.selectedTimeFrames?.includes(frame.id) ? ' selected' : ''}"
+                      class="time-frame${this.selectedTimeFrames?.includes(frame.id) ? ' selected' : ''} ${!this
+                        .readonly
+                        ? ' editable'
+                        : ''}"
                       @click="${() => this.toggleFrame(frame.id)}"
                     >
                       <div class="title">${frame.name}</div>

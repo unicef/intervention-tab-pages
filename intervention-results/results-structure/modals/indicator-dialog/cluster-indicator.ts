@@ -391,18 +391,30 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
 
   connectedCallback() {
     super.connectedCallback();
-
-    this.fireRequest('getResponsePlans', {})
-      .then((response: any) => {
-        this.responsePlans = response;
-      })
-      .catch((error: any) => {
-        fireEvent(this, 'show-toast', {
-          error: {response: error.message || error.response}
-        });
-      });
+    this.waitForReduxDataToLoad().then(() =>
+      this.fireRequest('getResponsePlans', {})
+        .then((response: any) => {
+          this.responsePlans = response;
+        })
+        .catch((error: any) => {
+          fireEvent(this, 'show-toast', {
+            error: {response: error.message || error.response}
+          });
+        })
+    );
 
     this.resetValidations();
+  }
+
+  public waitForReduxDataToLoad() {
+    return new Promise((resolve) => {
+      const check = setInterval(() => {
+        if (this.currentUser && !isEmpty(this.prpCountries)) {
+          clearInterval(check);
+          resolve(true);
+        }
+      }, 50);
+    });
   }
 
   indicatorChanged(indicator: any) {
