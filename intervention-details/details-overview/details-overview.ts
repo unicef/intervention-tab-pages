@@ -54,7 +54,7 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
             </div>
             <div class="flex-3">
               <span>
-                <label class="paper-label">CFEI/DSR Reference Number</label>
+                <label class="paper-label">UNPP CFEI/DSR Ref Number</label>
               </span>
             </div>
             <div class="flex-1">

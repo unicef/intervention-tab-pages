@@ -60,6 +60,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
 
   private indicatorSectionOptions!: Section[];
   private indicatorLocationOptions!: LocationObject[];
+  private interventionStatus!: string;
 
   protected render(): TemplateResult {
     // language=HTML
@@ -82,9 +83,6 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
             padding-top: 0px;
           }
         }
-        .editable-row .hover-block {
-          background-color: var(--blue-background) !important;
-        }
       </style>
 
       <div class="row-h align-items-center header">
@@ -103,6 +101,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
             .disaggregations="${this.disaggregations}"
             .locationNames="${this.getLocationNames(indicator.locations)}"
             .sectionClusterNames="${this.getSectionAndCluster(indicator.section, indicator.cluster_name)}"
+            .interventionStatus="${this.interventionStatus}"
             .readonly="${this.readonly}"
             ?hidden="${this._hideIndicator(indicator, this.showInactiveIndicators)}"
             ?cluster-indicator="${indicator.cluster_indicator_id}"
@@ -110,6 +109,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
             @open-edit-indicator-dialog="${(e: CustomEvent) =>
               this.openIndicatorDialog(e.detail.indicator, e.detail.readonly)}"
             @open-deactivate-confirmation="${(e: CustomEvent) => this.openDeactivationDialog(e.detail.indicatorId)}"
+            @open-delete-confirmation="${(e: CustomEvent) => this.openDeletionDialog(e.detail.indicatorId)}"
           ></pd-indicator>
         `
       )}
@@ -145,6 +145,9 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
     }
     if (!isJsonStrMatch(this.interventionSections, intervention.sections)) {
       this.interventionSections = intervention.sections;
+    }
+    if (this.interventionStatus !== intervention.status) {
+      this.interventionStatus = intervention.status;
     }
   }
 
@@ -189,8 +192,39 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
         is_active: false
       }
     })
-      .then((_resp: any) => {
-        // TODO - use relatedIntervention
+      .then(() => {
+        getStore().dispatch<AsyncAction>(getIntervention());
+      })
+      .catch((err: any) => {
+        fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
+      });
+  }
+
+  async openDeletionDialog(indicatorId: string) {
+    const confirmed = await openDialog({
+      dialog: 'are-you-sure',
+      dialogData: {
+        content: 'Are you sure you want to delete this indicator?',
+        confirmBtnText: 'Delete'
+      }
+    }).then(({confirmed}) => {
+      return confirmed;
+    });
+
+    if (confirmed) {
+      this.deleteIndicator(indicatorId);
+    }
+  }
+
+  deleteIndicator(indicatorId: string) {
+    const endpoint = getEndpoint(interventionEndpoints.getEditDeleteIndicator, {
+      id: indicatorId
+    });
+    sendRequest({
+      method: 'DELETE',
+      endpoint: endpoint
+    })
+      .then(() => {
         getStore().dispatch<AsyncAction>(getIntervention());
       })
       .catch((err: any) => {

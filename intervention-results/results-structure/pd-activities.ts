@@ -53,14 +53,13 @@ export class PdActivities extends CommentsMixin(LitElement) {
       <style>
         ${sharedStyles} etools-data-table-row {
           --list-bg-color: var(--green-background);
-          --list-second-bg-color: var(--green-background);
           --list-row-collapse-wrapper: {
             padding: 0 !important;
             background-color: var(--green-background-dark);
             border-top: 1px solid var(--main-border-color);
           }
           --list-row-wrapper: {
-            background-color: var(--green-background) !important;
+            background-color: var(--green-background);
             min-height: 55px;
             border: 1px solid var(--main-border-color) !important;
             border-bottom: none !important;
@@ -71,11 +70,11 @@ export class PdActivities extends CommentsMixin(LitElement) {
           }
         }
         .editable-row .hover-block {
-          background-color: var(--green-background) !important;
+          background-color: rgb(199, 212, 200);
         }
         etools-data-table-row:last-child {
           --list-row-wrapper: {
-            background-color: var(--green-background) !important;
+            background-color: var(--green-background);
             min-height: 55px;
             border: 1px solid var(--main-border-color) !important;
             border-bottom: 1px solid var(--main-border-color) !important;
@@ -97,6 +96,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
       ${this.activities.map(
         (activity: InterventionActivity) => html`
           <etools-data-table-row
+            secondary-bg-on-hover
             related-to="activity-${activity.id}"
             related-to-description=" Activity - ${activity.name}"
             comments-container
@@ -238,7 +238,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
       method: 'DELETE',
       endpoint: endpoint
     })
-      .then((_resp: any) => {
+      .then(() => {
         getStore().dispatch<AsyncAction>(getIntervention());
       })
       .catch((err: any) => {

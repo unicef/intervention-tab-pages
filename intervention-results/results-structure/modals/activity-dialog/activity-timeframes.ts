@@ -30,8 +30,6 @@ export class ActivityTimeFrames extends LitElement {
           height: 37px;
         }
         .time-frame {
-          display: flex;
-          flex-direction: column;
           align-items: center;
           justify-content: center;
           padding: 5px;
@@ -66,6 +64,14 @@ export class ActivityTimeFrames extends LitElement {
           width: 100%;
           max-width: inherit;
         }
+        .time-frame-container {
+          flex-wrap: wrap;
+        }
+        .light-gray-container {
+          background-color: #f9f9f9;
+          border-radius: 5px;
+          margin: 5px;
+        }
       `
     ];
   }
@@ -81,15 +87,17 @@ export class ActivityTimeFrames extends LitElement {
 
   protected render(): TemplateResult {
     return html`
-      <label class="paper-label" required>Activity Times (click to select/deselect)</label>
-      <div class="layout-horizontal center-align">
+      <label class="paper-label layout-horizontal center-align" required
+        >Activity Times (click to select/deselect)</label
+      >
+      <div class="layout-horizontal center-align time-frame-container">
         ${!this._timeFrames.length
           ? html`Activity Timeframes will be available after Start and End date are set.`
           : html``}
         ${this._timeFrames.map(
-          ([year, frames]: any, index: number) => html`
-            <div>
-              <div class="layout-horizontal center-align title year">${year}</div>
+          ([year, frames]: any) => html`
+            <div class="light-gray-container">
+              <div class="layout-horizontal center-align title year row-h">${year}</div>
               <div class="layout-horizontal center-align">
                 ${frames.map(
                   (frame: ActivityTime, index: number) => html`
@@ -108,7 +116,6 @@ export class ActivityTimeFrames extends LitElement {
                 )}
               </div>
             </div>
-            <div class="year-divider" ?hidden="${index + 1 === this._timeFrames.length}"></div>
           `
         )}
       </div>

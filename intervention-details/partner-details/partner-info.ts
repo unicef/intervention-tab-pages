@@ -121,7 +121,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
             ${this.isReadonly(this.editMode, this.permissions?.edit.partner_focal_points)
               ? html`<label for="focalPointsDetails" class="paper-label">Partner Focal Points</label>
                   <div id="focalPointsDetails">
-                    ${this.renderReadonlyUserDetails(this.partnerStaffMembers, this.data?.partner_focal_points!)}
+                    ${this.renderReadonlyUserDetails(this.data?.partner_focal_points!, this.partnerStaffMembers)}
                   </div>`
               : html``}
           </div>

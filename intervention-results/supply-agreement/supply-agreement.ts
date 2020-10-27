@@ -93,18 +93,18 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
             >
           </span>
           <paper-icon-button
-            ?hidden="${!this.permissions.edit.supply_items}"
-            @click="${() => this.addSupplyItem()}"
-            icon="add-box"
-          >
-          </paper-icon-button>
-          <paper-icon-button
             ?hidden="${!this.permissions.edit.supply_items || this.uploadInProcess}"
             @click="${() => this.uploader?._openFileChooser()}"
             icon="file-upload"
           >
           </paper-icon-button>
           <etools-loading ?active="${this.uploadInProcess}" no-overlay loading-text></etools-loading>
+          <paper-icon-button
+            ?hidden="${!this.permissions.edit.supply_items}"
+            @click="${() => this.addSupplyItem()}"
+            icon="add-box"
+          >
+          </paper-icon-button>
         </div>
         <etools-table
           ?hidden="${!this.supply_items?.length}"
@@ -279,7 +279,7 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
       endpoint: endpoint,
       method: 'DELETE'
     })
-      .then((_resp: any) => {
+      .then(() => {
         getStore().dispatch<AsyncAction>(getIntervention());
       })
       .catch((err: any) => {

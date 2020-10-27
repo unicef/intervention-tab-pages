@@ -18,6 +18,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
   @property({type: Boolean}) readonly!: boolean;
   @property({type: Array}) locationNames: {name: string; adminLevel: string}[] = [];
   @property({type: String}) sectionClusterNames = '';
+  @property({type: String}) interventionStatus = '';
 
   render() {
     return html`
@@ -31,6 +32,9 @@ export class PdIndicator extends CommentsMixin(LitElement) {
             padding: 0 0 !important;
             margin-right: 16px !important;
           }
+        }
+        .editable-row .hover-block {
+          background-color: rgb(189, 211, 230);
         }
         :host([high-frequency-indicator]) etools-data-table-row {
           --icon-wrapper: {
@@ -71,14 +75,14 @@ export class PdIndicator extends CommentsMixin(LitElement) {
           --list-row-wrapper_-_align-items: stretch;
           --list-row-collapse-wrapper_-_margin-bottom: 0px;
           --list-row-wrapper: {
-            background-color: var(--blue-background) !important;
+            background-color: var(--blue-background);
             border: 1px solid var(--main-border-color) !important;
             border-bottom: none !important;
           }
         }
         :host(:last-child) etools-data-table-row {
           --list-row-wrapper: {
-            background-color: var(--blue-background) !important;
+            background-color: var(--blue-background);
             border: 1px solid var(--main-border-color) !important;
             border-bottom: 1px solid var(--main-border-color) !important;
           }
@@ -94,9 +98,6 @@ export class PdIndicator extends CommentsMixin(LitElement) {
           max-height: 220px;
           overflow: auto;
         }
-        .hover-block {
-          background-color: var(--blue-background) !important;
-        }
         etools-data-table-row {
           --list-row-collapse-wrapper: {
             padding: 0;
@@ -108,6 +109,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
         }
       </style>
       <etools-data-table-row
+        secondary-bg-on-hover
         related-to="indicator-${this.indicator.id}"
         related-to-description="Indicator - ${this.indicator.indicator?.title}"
         comments-container
@@ -142,8 +144,13 @@ export class PdIndicator extends CommentsMixin(LitElement) {
             ></paper-icon-button>
             <paper-icon-button
               icon="icons:block"
-              ?hidden="${!this.indicator.is_active || this.readonly}"
+              ?hidden="${!this._canDeactivate()}"
               @click="${() => this.openDeactivationDialog(String(this.indicator.id))}"
+            ></paper-icon-button>
+            <paper-icon-button
+              icon="icons:delete"
+              ?hidden="${!this._canDelete()}"
+              @click="${() => this.openDeletionDialog(String(this.indicator.id))}"
             ></paper-icon-button>
           </div>
         </div>
@@ -200,6 +207,9 @@ export class PdIndicator extends CommentsMixin(LitElement) {
   openIndicatorDialog(indicator: Indicator, readonly: boolean) {
     fireEvent(this, 'open-edit-indicator-dialog', {indicator: indicator, readonly: readonly});
   }
+  openDeletionDialog(indicatorId: string) {
+    fireEvent(this, 'open-delete-confirmation', {indicatorId: indicatorId});
+  }
 
   // Both unit and displayType are used because of inconsitencies in the db.
   getIndicatorDisplayType(indicator: Indicator) {
@@ -229,8 +239,11 @@ export class PdIndicator extends CommentsMixin(LitElement) {
   getDisaggregation(disaggregationId: string | number): TemplateResult {
     const disaggreg: Disaggregation | null =
       this.disaggregations.find(({id}: Disaggregation) => String(id) === String(disaggregationId)) || null;
-    const values: string =
+    let values: string =
       (disaggreg && disaggreg.disaggregation_values.map(({value}: DisaggregationValue) => value).join(', ')) || '';
+    if (!values) {
+      values = '—';
+    }
     return disaggreg && values
       ? html` <div class="details-list-item"><b>${disaggreg.name}</b>: ${values}</div> `
       : html``;
@@ -263,5 +276,24 @@ export class PdIndicator extends CommentsMixin(LitElement) {
 
   _clusterIndIsRatio(item: any) {
     return item.d && parseInt(item.d) !== 1 && parseInt(item.d) !== 100;
+  }
+
+  _canDeactivate(): boolean {
+    // TODO: refactor this after status draft comes as development
+    if (this.interventionStatus === 'draft' || this.interventionStatus === 'development') {
+      return false;
+    }
+    if (this.indicator.is_active && !this.readonly) {
+      return true;
+    }
+    return false;
+  }
+
+  _canDelete(): boolean {
+    // TODO: refactor this after status draft comes as development
+    if ((this.interventionStatus === 'draft' || this.interventionStatus === 'development') && !this.readonly) {
+      return true;
+    }
+    return false;
   }
 }

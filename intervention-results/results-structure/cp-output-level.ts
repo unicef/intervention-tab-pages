@@ -30,7 +30,7 @@ export class CpOutputLevel extends EtoolsCurrency(LitElement) {
           color: var(--error-color);
         }
         .editable-row .hover-block {
-          background-color: #ffffff !important;
+          background-color: rgb(240, 240, 240);
         }
       `
     ];
@@ -50,7 +50,6 @@ export class CpOutputLevel extends EtoolsCurrency(LitElement) {
       <style>
         ${sharedStyles} etools-data-table-row {
           overflow: hidden;
-          --list-second-bg-color: var(--secondary-background-color) !important;
           --list-row-wrapper-padding: 5px 12px 5px 0;
           --list-row-collapse-wrapper: {
             padding: 0 !important;
