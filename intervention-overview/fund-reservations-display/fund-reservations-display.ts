@@ -321,11 +321,7 @@ export class FundReservationsDisplay extends EtoolsCurrency(FrNumbersConsistency
   }
 
   renderPdCurrency() {
-    if (
-      this.intervention!.planned_budget.currency === undefined ||
-      this.intervention!.planned_budget.currency === null ||
-      this.intervention!.planned_budget.currency === ``
-    ) {
+    if (!this.intervention!.planned_budget.currency) {
       return html`<span class="placeholder">—</span>`;
     } else {
       return html`<span id="pd-currency">${this.intervention!.planned_budget.currency}</span>`;
