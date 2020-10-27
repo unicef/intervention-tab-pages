@@ -118,7 +118,7 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
       if (detail.selectedItem === undefined) {
         return;
       }
-      const newValue = detail.selectedItem[optionValue];
+      const newValue = detail.selectedItem ? detail.selectedItem[optionValue] : null;
       if (areEqual(this.data[key], newValue)) {
         return;
       }
