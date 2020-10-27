@@ -237,7 +237,13 @@ export class InterventionTabs extends connectStore(LitElement) {
         currentInterventionId !== String(get(this.intervention, 'id')) &&
         !isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)
       ) {
-        getStore().dispatch<AsyncAction>(getIntervention(currentInterventionId));
+        getStore()
+          .dispatch<AsyncAction>(getIntervention(currentInterventionId))
+          .catch((err: any) => {
+            if (err.message === '404') {
+              this.goToPageNotFound();
+            }
+          });
         getStore().dispatch<AsyncAction>(getComments(currentInterventionId));
       }
       if (!isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)) {
@@ -324,10 +330,13 @@ export class InterventionTabs extends connectStore(LitElement) {
       const newPath =
         `interventions/${this.intervention!.id}/${newTabName}` + (stringParams !== '' ? `?${stringParams}` : '');
       history.pushState(window.history.state, '', newPath);
-      // Don't know why I have to specifically trigger popstate,
-      // history.pushState should do that by default (?)
       window.dispatchEvent(new CustomEvent('popstate'));
     }
+  }
+
+  goToPageNotFound() {
+    history.pushState(window.history.state, '', 'page-not-found');
+    window.dispatchEvent(new CustomEvent('popstate'));
   }
 
   commentModeChange(e: CustomEvent) {
