@@ -1,4 +1,5 @@
 import {Risk} from '../../intervention-management/risks/risk.models';
+import {MinimalUser} from './globals.types';
 
 export interface ExpectedResult {
   id: number;
@@ -221,6 +222,7 @@ export class Intervention {
   status = '';
   start = '';
   end = '';
+  budget_owner?: MinimalUser;
   submitted_to_prc = false;
   submission_date_prc?: string;
   review_date_prc?: string;
@@ -228,8 +230,8 @@ export class Intervention {
   submission_date?: string;
   signed_by_unicef_date?: string;
   signed_by_partner_date?: string;
-  unicef_signatory?: string;
-  unicef_focal_points: [] = [];
+  unicef_signatory?: MinimalUser;
+  unicef_focal_points: MinimalUser[] = [];
   partner?: string;
   partner_focal_points: [] = [];
   partner_vendor = '';
