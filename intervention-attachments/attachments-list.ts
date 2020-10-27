@@ -8,7 +8,7 @@ import './intervention-attachment-dialog';
 import {sharedStyles} from '../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../common/styles/grid-layout-styles-lit';
 import {openDialog} from '../utils/dialog';
-import {ReviewAttachment, Intervention} from '../common/models/intervention.types';
+import {InterventionAttachment, Intervention} from '../common/models/intervention.types';
 import {AttachmentsListStyles} from './attachments-list.styles';
 import {IdAndName} from '../common/models/globals.types';
 import {getFileNameFromURL, cloneDeep} from '../utils/utils';
@@ -27,7 +27,7 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
   static get styles(): CSSResultArray {
     return [gridLayoutStylesLit];
   }
-  @property() attachments: ReviewAttachment[] = [];
+  @property() attachments: InterventionAttachment[] = [];
   @property() showInvalid = true;
   @property() canEdit = true;
   @property() fileTypes: IdAndName[] = [];
@@ -83,14 +83,14 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
                     ?hidden="${!attachment.active && !this.showInvalid}"
                   >
                     <div slot="row-data" class="p-relative layout-horizontal editable-row">
-                      <span class="col-data col-2">${prettyDate(attachment.created) || '-'}</span>
-                      <span class="col-data col-3">${this.getAttachmentType(attachment.type)}</span>
+                      <span class="col-data col-2">${prettyDate(String(attachment.created)) || '-'}</span>
+                      <span class="col-data col-3">${this.getAttachmentType(attachment.type!)}</span>
                       <span class="col-data col-6">
                         <iron-icon icon="attachment" class="attachment"></iron-icon>
                         <span class="break-word file-label">
                           <!-- target="_blank" is there for IE -->
                           <a href="${attachment.attachment_document || attachment.attachment}" target="_blank" download>
-                            ${getFileNameFromURL(attachment.attachment_document || attachment.attachment)}
+                            ${getFileNameFromURL(String(attachment.attachment_document || attachment.attachment))}
                           </a>
                         </span>
                       </span>
@@ -133,14 +133,14 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
     }
 
     this.intervention = cloneDeep(state.interventions.current);
-    this.attachments = state.interventions?.current.attachments || [];
+    this.attachments = this.intervention.attachments || [];
     this.canEdit = this.intervention.permissions!.edit.attachments || false;
 
     this.fileTypes = state.commonData.fileTypes || [];
     super.stateChanged(state);
   }
 
-  openAttachmentDialog(attachment?: ReviewAttachment): void {
+  openAttachmentDialog(attachment?: InterventionAttachment): void {
     openDialog({
       dialog: 'intervention-attachment-dialog',
       dialogData: {attachment}
@@ -153,7 +153,7 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
     return attachmentType ? attachmentType.name : '—';
   }
 
-  async openDeleteConfirmation(attachment: ReviewAttachment) {
+  async openDeleteConfirmation(attachment: InterventionAttachment) {
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
@@ -168,7 +168,7 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
     }
   }
 
-  deleteAttachment(attachment: ReviewAttachment) {
+  deleteAttachment(attachment: InterventionAttachment) {
     const endpoint = getEndpoint(interventionEndpoints.updatePdAttachment, {
       id: attachment.intervention,
       attachment_id: attachment.id
@@ -179,7 +179,7 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
       method: 'DELETE'
     })
       .then(() => {
-        getStore().dispatch(updateCurrentIntervention(this.removeDeletedAttachment(this.intervention, attachment.id)));
+        getStore().dispatch(updateCurrentIntervention(this.removeDeletedAttachment(this.intervention, attachment.id!)));
       })
       .catch((error: any) => {
         console.log(error);
