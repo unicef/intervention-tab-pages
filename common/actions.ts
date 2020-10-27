@@ -4,6 +4,7 @@ import {interventionEndpoints} from '../utils/intervention-endpoints';
 import {Intervention, PlannedBudget} from './models/intervention.types';
 import {SHOW_TOAST} from './actionsConstants';
 import {AnyObject} from './models/globals.types';
+import {sendRequest} from '@unicef-polymer/etools-ajax';
 
 export const updateCurrentIntervention = (intervention: AnyObject | null) => {
   if (intervention && !intervention.planned_budget) {
@@ -19,11 +20,17 @@ export const getIntervention = (interventionId?: string) => (dispatch: any, getS
   if (!interventionId) {
     interventionId = getState().app.routeDetails.params.interventionId;
   }
-  return _sendRequest({
+  return sendRequest({
     endpoint: getEndpoint(interventionEndpoints.intervention, {interventionId: interventionId})
-  }).then((intervention: Intervention) => {
-    dispatch(updateCurrentIntervention(intervention));
-  });
+  })
+    .then((intervention: Intervention) => {
+      dispatch(updateCurrentIntervention(intervention));
+    })
+    .catch((err: any) => {
+      if (err.status === 404) {
+        throw new Error('404');
+      }
+    });
 };
 
 export const showToast = (message: string, showCloseBtn = true) => {
