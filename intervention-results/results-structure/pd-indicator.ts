@@ -239,8 +239,11 @@ export class PdIndicator extends CommentsMixin(LitElement) {
   getDisaggregation(disaggregationId: string | number): TemplateResult {
     const disaggreg: Disaggregation | null =
       this.disaggregations.find(({id}: Disaggregation) => String(id) === String(disaggregationId)) || null;
-    const values: string =
+    let values: string =
       (disaggreg && disaggreg.disaggregation_values.map(({value}: DisaggregationValue) => value).join(', ')) || '';
+    if (!values) {
+      values = '—';
+    }
     return disaggreg && values
       ? html` <div class="details-list-item"><b>${disaggreg.name}</b>: ${values}</div> `
       : html``;
