@@ -31,7 +31,7 @@ export class InterventionDates extends CommentsMixin(ComponentBaseMixin(FrNumber
   }
 
   render() {
-    if (!this.data) {
+    if (!this.data || !this.permissions) {
       return html`<style>
           ${sharedStyles}
         </style>

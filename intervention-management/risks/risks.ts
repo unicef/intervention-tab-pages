@@ -48,7 +48,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   }
 
   render() {
-    if (!this.data) {
+    if (!this.data || this.data.constructor == Object) {
       return html`<style>
           ${sharedStyles}
         </style>

@@ -47,7 +47,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
     return [gridLayoutStylesLit, buttonsStyles];
   }
   render() {
-    if (!this.data) {
+    if (!this.data || !this.permissions) {
       return html` <style>
           ${sharedStyles}
         </style>
