@@ -31,6 +31,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
   @property() loadingInProcess = false;
   @property() isEditDialog = true;
   @property() useInputLevel = false;
+  @property({type: String}) spinnerText = 'Loading...';
   @property() readonly: boolean | undefined = false;
   quarters: ActivityTimeFrames[] = [];
 
@@ -52,6 +53,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
       this.data = data;
       this.useInputLevel = Boolean(data.items.length);
       this.loadingInProcess = false;
+      this.spinnerText = 'Saving data...';
     });
   }
 
@@ -108,6 +110,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
         keep-dialog-open
         ?opened="${this.dialogOpened}"
         ?show-spinner="${this.loadingInProcess}"
+        spinner-text="${this.spinnerText}"
         dialog-title="Activity Data"
         @confirm-btn-clicked="${() => this.processRequest()}"
         @close="${this.onClose}"
