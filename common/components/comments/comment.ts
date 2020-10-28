@@ -49,7 +49,11 @@ export class CommentElement extends LitElement {
           ? html`<div class="deleted-message">Message was deleted</div> `
           : html`
               <div class="message">${this.comment.text}</div>
-              <div class="actions" ?hidden="${(!this.comment.id && !this.comment.loadingError) || !this.myComment}">
+              <div
+                class="actions"
+                ?hidden="${(!this.comment.id && !this.comment.loadingError) ||
+                (!this.myComment && this.comment.state !== 'resolved')}"
+              >
                 <!--      Resolve action        -->
                 <div
                   @click="${() => this.resolve()}"
@@ -65,7 +69,7 @@ export class CommentElement extends LitElement {
                   Resolve${this.comment.state === 'resolved' ? 'd' : ''}
                 </div>
                 <!--      Delete action        -->
-                <div @click="${() => this.delete()}">
+                <div ?hidden="${!this.myComment}" @click="${() => this.delete()}">
                   <etools-loading no-overlay ?active="${this.deleting}" loading-text=""></etools-loading>
                   <iron-icon ?hidden="${this.deleting}" class="delete" icon="cancel"></iron-icon> Delete
                 </div>
