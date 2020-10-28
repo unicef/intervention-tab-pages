@@ -6,8 +6,10 @@ export const InterventionActionsStyles: CSSResult = css`
     display: flex;
     flex-direction: row;
     --green-color: #009688;
+    --light-green-color: #00b3a1;
     --back-color: #233944;
     --cancel-color: #828282;
+    --paper-icon-button_-_height: 36px;
   }
 
   .main-button {
@@ -53,10 +55,13 @@ export const InterventionActionsStyles: CSSResult = css`
   }
 
   paper-menu-button {
-    padding: 8px 2px;
+    padding: 8px 4px;
   }
 
   paper-button {
     z-index: 10;
+  }
+  .option-button {
+    border-left: 1px solid var(--light-green-color);
   }
 `;
