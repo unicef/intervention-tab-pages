@@ -249,7 +249,9 @@ export class InterventionTabs extends connectStore(LitElement) {
       if (!isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)) {
         this._routeDetails = cloneDeep(state.app!.routeDetails);
         this.commentMode = !!(this._routeDetails.queryParams || {})['comment_mode'];
-        getStore().dispatch(enableCommentMode(this.commentMode));
+        setTimeout(() => {
+          getStore().dispatch(enableCommentMode(this.commentMode));
+        }, 10);
         fireEvent(this, 'scroll-up');
       }
       this.availableActions = selectAvailableActions(state);
