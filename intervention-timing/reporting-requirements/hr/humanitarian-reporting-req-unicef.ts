@@ -7,13 +7,13 @@ import './edit-hru-dialog.js';
 import './hru-list.js';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
 import FrontendPaginationMixin from '../mixins/frontend-pagination-mixin';
-import {ExpectedResult} from '../../../common/models/intervention.types';
 import {gridLayoutStylesPolymer} from '../../../common/styles/grid-layout-styles-polymer';
 import {buttonsStylesPolymer} from '../styles/buttons-styles-polymer';
 import {property} from '@polymer/decorators';
 import {EditHruDialog} from './edit-hru-dialog.js';
 import {HruListEl} from './hru-list.js';
 import {sharedStylesPolymer} from '../../../common/styles/shared-styles-polymer';
+import { ExpectedResult } from '@unicef-polymer/etools-types';
 
 /**
  * @customElement

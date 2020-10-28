@@ -2,9 +2,8 @@ import {LitElement, html, TemplateResult, CSSResultArray, css, customElement, pr
 import {ResultStructureStyles} from './results-structure.styles';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import '@polymer/iron-icons';
-import {Indicator, Intervention} from '../../common/models/intervention.types';
 import {getStore} from '../../utils/redux-store-access';
-import {Disaggregation, LocationObject, Section, RootState} from '../../common/models/globals.types';
+import {RootState} from '../../common/types/store.types';
 import './modals/indicator-dialog/indicator-dialog';
 import get from 'lodash-es/get';
 import {filterByIds, isJsonStrMatch} from '../../utils/utils';
@@ -23,7 +22,8 @@ import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import './pd-indicator';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {connectStore} from '../../common/mixins/connect-store-mixin';
-import {AsyncAction} from '../../common/types/types';
+import {AsyncAction, Disaggregation, LocationObject, Section} from '@unicef-polymer/etools-types';
+import {Indicator, Intervention} from '@unicef-polymer/etools-types';
 
 @customElement('pd-indicators')
 export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)) {

@@ -1,5 +1,5 @@
 import {createSelector} from 'reselect';
-import {Intervention} from './models/intervention.types';
+import {Intervention} from '@unicef-polymer/etools-types';
 
 export const currentSubpage = (state: any) => state.app!.routeDetails?.subRouteName;
 export const currentPage = (state: any) => state.app!.routeDetails?.routeName;

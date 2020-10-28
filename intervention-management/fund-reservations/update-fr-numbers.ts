@@ -12,7 +12,6 @@ import {buttonsStyles} from '../../common/styles/button-styles';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {PaperInputElement} from '@polymer/paper-input/paper-input';
 import {PaperDialogElement} from '@polymer/paper-dialog/paper-dialog';
-import {AnyObject} from '../../common/models/globals.types';
 import {
   layoutVertical,
   layoutFlex,
@@ -20,6 +19,7 @@ import {
   layoutWrap,
   layoutHorizontal
 } from '../../common/styles/flex-layout-styles';
+import {AnyObject} from '@unicef-polymer/etools-types';
 
 /**
  * @customElement

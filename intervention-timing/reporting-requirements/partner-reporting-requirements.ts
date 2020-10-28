@@ -21,14 +21,14 @@ import {HumanitarianReportingReqUnicefEl} from './hr/humanitarian-reporting-req-
 import {QuarterlyReportingRequirementsEL} from './qpr/quarterly-reporting-requirements';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {AnyObject, RootState} from '../../common/models/globals.types';
+import {RootState} from '../../common/types/store.types';
 import {ReportingRequirementsPermissions} from './reportingRequirementsPermissions.models';
-import {Permission} from '../../common/models/intervention.types';
 import {selectReportingRequirementsPermissions} from './reportingRequirementsPermissions.selectors';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {isUnicefUser} from '../../common/selectors';
 import {computed} from '@polymer/decorators/lib/decorators';
 import {connectStore} from '../../common/mixins/connect-store-mixin';
+import {AnyObject, Permission} from '@unicef-polymer/etools-types';
 
 /**
  * @polymer
@@ -273,11 +273,11 @@ class PartnerReportingRequirements extends connectStore(PolymerElement) {
   }
 
   _openQprEditDialog() {
-    (this.$.qpr as QuarterlyReportingRequirementsEL).openQuarterlyRepRequirementsDialog();
+    ((this.$.qpr as unknown) as QuarterlyReportingRequirementsEL).openQuarterlyRepRequirementsDialog();
   }
 
   _openHruEditDialog() {
-    (this.$.hru as HumanitarianReportingReqUnicefEl).openUnicefHumanitarianRepReqDialog();
+    ((this.$.hru as unknown) as HumanitarianReportingReqUnicefEl).openUnicefHumanitarianRepReqDialog();
   }
 
   _hideRepReqEditBtn(readonly: boolean, qprCount: number) {

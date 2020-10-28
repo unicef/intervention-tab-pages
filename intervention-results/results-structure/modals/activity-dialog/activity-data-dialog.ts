@@ -1,6 +1,5 @@
 import {CSSResultArray, customElement, html, LitElement, property, TemplateResult} from 'lit-element';
 import {DataMixin} from '../../../../common/mixins/data-mixin';
-import {InterventionActivity, InterventionActivityItem} from '../../../../common/models/intervention.types';
 import '@unicef-polymer/etools-currency-amount-input';
 import '@polymer/paper-input/paper-textarea';
 import '@polymer/paper-toggle-button';
@@ -20,6 +19,7 @@ import {ActivityTimeFrames} from './activity-timeframes';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {validateRequiredFields} from '../../../../utils/validation-helper';
 import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
+import {InterventionActivity, InterventionActivityItem} from '@unicef-polymer/etools-types';
 
 @customElement('activity-data-dialog')
 export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitElement) {

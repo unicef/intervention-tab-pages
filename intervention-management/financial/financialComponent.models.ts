@@ -1,7 +1,8 @@
 import {createSelector} from 'reselect';
-import {Intervention, Permission, InterventionPermissionsFields} from '../../common/models/intervention.types';
 import {FinancialComponentData, FinancialComponentPermissions} from './financialComponent.selectors';
 import {currentInterventionPermissions, currentIntervention} from '../../common/selectors';
+import {Permission} from '@unicef-polymer/etools-types';
+import {InterventionPermissionsFields, Intervention} from '@unicef-polymer/etools-types';
 
 export const selectFinancialComponent = createSelector(currentIntervention, (intervention: Intervention) => {
   return new FinancialComponentData(intervention);

@@ -1,4 +1,4 @@
-import {RootState} from '../common/models/globals.types';
+import {RootState} from '../common/types/store.types';
 import {Store} from 'redux';
 
 let store: Store<RootState>;

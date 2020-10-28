@@ -20,21 +20,20 @@ import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {getStore} from '../../utils/redux-store-access';
 import {isJsonStrMatch} from '../../utils/utils';
 
-import {Permission} from '../../common/models/intervention.types';
-import {MinimalUser, RootState, User} from '../../common/models/globals.types';
+import {RootState, User} from '../../common/types/store.types';
 import {selectReviewData, selectReviewDataPermissions} from './managementDocument.selectors';
 import {ReviewDataPermission, ReviewData} from './managementDocument.model';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {isEmpty, cloneDeep} from 'lodash-es';
-import {MinimalAgreement} from '../../common/models/agreement.types';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {patchIntervention} from '../../common/actions';
 import {formatDate} from '../../utils/date-utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AsyncAction} from '../../common/types/types';
+import {AsyncAction, MinimalUser, Permission} from '@unicef-polymer/etools-types';
+import {MinimalAgreement} from '@unicef-polymer/etools-types';
 
 /**
  * @customElement

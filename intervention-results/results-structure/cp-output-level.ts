@@ -1,13 +1,13 @@
 import {css, CSSResultArray, customElement, html, LitElement, property, TemplateResult} from 'lit-element';
 import {ResultStructureStyles} from './results-structure.styles';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {ExpectedResult} from '../../common/models/intervention.types';
 import '@unicef-polymer/etools-data-table';
 import '@polymer/iron-icons';
 import './modals/cp-output-dialog';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
+import {ExpectedResult} from '@unicef-polymer/etools-types';
 
 @customElement('cp-output-level')
 export class CpOutputLevel extends EtoolsCurrency(LitElement) {

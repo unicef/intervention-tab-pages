@@ -6,7 +6,7 @@ import {elevationStyles} from '../../common/styles/elevation-styles';
 import {InterventionOverview} from './interventionOverview.models';
 import {selectInterventionOverview} from './interventionOverview.selectors';
 import {layoutFlex} from '../../common/styles/flex-layout-styles';
-import {RootState} from '../../common/models/globals.types';
+import {RootState} from '../../common/types/store.types';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';

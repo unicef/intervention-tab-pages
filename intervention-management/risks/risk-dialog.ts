@@ -10,12 +10,12 @@ import {getStore} from '../../utils/redux-store-access';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {validateRequiredFields} from '../../utils/validation-helper';
-import {Intervention} from '../../common/models/intervention.types';
-import {LabelAndValue} from '../../common/models/globals.types';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {updateCurrentIntervention} from '../../common/actions';
+import {LabelAndValue} from '@unicef-polymer/etools-types';
+import {Intervention} from '@unicef-polymer/etools-types';
 
 /**
  * @customElement

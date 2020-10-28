@@ -18,11 +18,12 @@ import {
   selectProgrammeManagementActivityPermissions
 } from './effectiveEfficientProgrammeMgmt.selectors';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
-import {AnyObject, RootState} from '../../common/models/globals.types';
+import {RootState} from '../../common/types/store.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {ProgrammeManagement} from './effectiveEfficientProgrammeMgmt.models';
 import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
+import {AnyObject} from '@unicef-polymer/etools-types';
 
 const customStyles = html`
   <style>

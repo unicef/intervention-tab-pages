@@ -5,19 +5,18 @@ import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-inpu
 import {elevationStyles} from '../common/styles/elevation-styles';
 import {gridLayoutStylesLit} from '../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../common/styles/shared-styles-lit';
-import {Intervention, CpOutput, ExpectedResult, ManagementBudget} from '../common/models/intervention.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {prettyDate} from '../utils/date-utils';
 import {isJsonStrMatch} from '../utils/utils';
 import './fund-reservations-display/fund-reservations-display';
 import './monitoring-visits-list/monitoring-visits-list-2';
-import {MinimalAgreement} from '../common/models/agreement.types';
 import {pageIsNotCurrentlyActive} from '../utils/common-methods';
-import {AnyObject, RootState} from '../common/models/globals.types';
+import {RootState} from '../common/types/store.types';
 import {fireEvent} from '../utils/fire-custom-event';
-import {StaticPartner} from '../common/models/partner.types';
 import {connectStore} from '../common/mixins/connect-store-mixin';
+import {AnyObject, CpOutput, StaticPartner, ManagementBudget} from '@unicef-polymer/etools-types';
+import {ExpectedResult, MinimalAgreement, Intervention} from '@unicef-polymer/etools-types';
 
 /**
  * @customElement

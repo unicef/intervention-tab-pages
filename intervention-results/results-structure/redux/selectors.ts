@@ -1,5 +1,5 @@
 import {createSelector} from 'reselect';
-import {Disaggregation} from '../../../common/models/globals.types';
+import {Disaggregation} from '../../../common/types/store.types';
 
 const disaggregationsSelector = (state: any) => state.commonData!.disaggregations;
 

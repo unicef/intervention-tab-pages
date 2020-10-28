@@ -19,7 +19,7 @@ import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {property} from '@polymer/decorators';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
-import {AnyObject} from '../../../common/models/globals.types';
+import {AnyObject} from '@unicef-polymer/etools-types';
 
 /**
  * @polymer

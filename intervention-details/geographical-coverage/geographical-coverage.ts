@@ -8,20 +8,19 @@ import {buttonsStyles} from '../../common/styles/button-styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {getStore} from '../../utils/redux-store-access';
 import {LocationsPermissions} from './geographicalCoverage.models';
-import {Permission} from '../../common/models/intervention.types';
 import {selectLocationsPermissions} from './geographicalCoverage.selectors';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {patchIntervention} from '../../common/actions';
 import {isJsonStrMatch} from '../../utils/utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
-import {LocationObject, RootState, AnyObject} from '../../common/models/globals.types';
+import {RootState} from '../../common/types/store.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import isEmpty from 'lodash-es/isEmpty';
 import get from 'lodash-es/get';
 import {openDialog} from '../../utils/dialog';
 import {layoutCenter, layoutVertical} from '../../common/styles/flex-layout-styles';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AsyncAction} from '../../common/types/types';
+import {AnyObject, AsyncAction, LocationObject, Permission} from '@unicef-polymer/etools-types';
 
 /**
  * @customElement

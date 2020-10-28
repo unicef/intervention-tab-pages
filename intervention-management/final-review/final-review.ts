@@ -3,11 +3,11 @@ import './final-review-popup';
 import {openDialog} from '../../utils/dialog';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {selectFinalReviewAttachment, selectInterventionId} from './final-review.selectors';
-import {ReviewAttachment} from '../../common/models/intervention.types';
 import {currentInterventionPermissions} from '../../common/selectors';
 import get from 'lodash-es/get';
 import {getFileNameFromURL} from '../../utils/utils';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
+import {ReviewAttachment} from '@unicef-polymer/etools-types/attachments.types';
 declare const moment: any;
 
 @customElement('final-review')

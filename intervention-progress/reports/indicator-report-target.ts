@@ -2,7 +2,7 @@ import '@polymer/iron-flex-layout/iron-flex-layout.js';
 import UtilsMixin from '../../common/mixins/utils-mixin';
 import {PolymerElement, html} from '@polymer/polymer';
 import {property} from '@polymer/decorators';
-import {GenericObject} from '../../common/models/globals.types';
+import {GenericObject} from '@unicef-polymer/etools-types';
 
 /**
  * @polymer
@@ -89,7 +89,7 @@ class IndicatorReportTarget extends UtilsMixin(PolymerElement) {
   }
 
   @property({type: Object})
-  target!: GenericObject<any>;
+  target!: GenericObject;
 
   @property({type: String})
   cumulativeProgress = '-';

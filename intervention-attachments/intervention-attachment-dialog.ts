@@ -2,17 +2,17 @@ import {LitElement, html, TemplateResult, property, customElement, CSSResultArra
 import {fireEvent} from '../utils/fire-custom-event';
 import {getEndpoint} from '../utils/endpoint-helper';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
-import {ReviewAttachment} from '../common/models/intervention.types';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import '@unicef-polymer/etools-upload/etools-upload.js';
 import '@polymer/paper-checkbox';
 import '@unicef-polymer/etools-dialog';
-import {GenericObject, IdAndName} from '../common/models/globals.types';
 import {getStore} from '../utils/redux-store-access';
 import {updateCurrentIntervention} from '../common/actions';
 import {validateRequiredFields} from '../utils/validation-helper';
 import {sharedStyles} from '../common/styles/shared-styles-lit';
 import {connectStore} from '../common/mixins/connect-store-mixin';
+import {ReviewAttachment} from '@unicef-polymer/etools-types/attachments.types';
+import {IdAndName, GenericObject} from '@unicef-polymer/etools-types';
 
 @customElement('intervention-attachment-dialog')
 export class InterventionAttachmentDialog extends connectStore(LitElement) {

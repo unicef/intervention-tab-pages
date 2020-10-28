@@ -10,7 +10,7 @@ import {logError} from '@unicef-polymer/etools-behaviors/etools-logging.js';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
 import isEmpty from 'lodash-es/isEmpty';
-import {AnyObject} from '../../common/models/globals.types';
+import {AnyObject} from '@unicef-polymer/etools-types';
 declare const moment: any;
 
 /**

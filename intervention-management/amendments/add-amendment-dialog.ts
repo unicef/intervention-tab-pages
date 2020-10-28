@@ -19,9 +19,7 @@ import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {getIntervention} from '../../common/actions';
-import {InterventionAmendment} from '../../common/models/intervention.types';
-import {LabelAndValue, AnyObject} from '../../common/models/globals.types';
-import {AsyncAction} from '../../common/types/types';
+import {AnyObject, AsyncAction, InterventionAmendment, LabelAndValue} from '@unicef-polymer/etools-types';
 
 /**
  * @customElement
