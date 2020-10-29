@@ -378,6 +378,7 @@ export class InterventionOverview extends connectStore(LitElement) {
       this.interventionCpOutputs = [];
       return;
     }
+
     let interventionCpOutputs: string[] = [];
     const uniqueIds = [...new Set(this.resultLinks.map((item) => item.cp_output))];
     if (Array.isArray(this.cpOutputs) && this.cpOutputs.length > 0) {
