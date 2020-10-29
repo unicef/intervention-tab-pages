@@ -105,6 +105,8 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
           }
         }
       </style>
+
+      <!-- ATTENTION spinner-text property binding WORKS WITHOUT '.'  -->
       <etools-dialog
         size="md"
         keep-dialog-open
