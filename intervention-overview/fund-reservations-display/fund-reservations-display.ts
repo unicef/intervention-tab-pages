@@ -94,7 +94,8 @@ export class FundReservationsDisplay extends EtoolsCurrency(FrNumbersConsistency
           (fr: AnyObject) => html`
             <etools-data-table-row>
               <div slot="row-data" class="layout-horizontal">
-                <span class="col-data col-2">${fr.fr_number}
+                <span class="col-data col-2"
+                  >${fr.fr_number}
                   <a title="See more details" class="pl-5" target="_blank" href="${this.getFRNumberLink(fr.fr_number)}">
                     <iron-icon icon="pmp-custom-icons:external-icon"></iron-icon>
                   </a>
@@ -321,10 +322,7 @@ export class FundReservationsDisplay extends EtoolsCurrency(FrNumbersConsistency
   }
 
   renderPdCurrency() {
-    if (!this.intervention!.planned_budget.currency) {
-      return html`<span class="placeholder">—</span>`;
-    } else {
-      return html`<span id="pd-currency">${this.intervention!.planned_budget.currency}</span>`;
-    }
+    const currency = this.intervention!.planned_budget.currency;
+    return html`<span id="pd-currency">${currency ? currency : '—'}</span>`;
   }
 }
