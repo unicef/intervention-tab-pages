@@ -14,7 +14,7 @@ import get from 'lodash-es/get';
 import {getStore, getStoreAsync} from './utils/redux-store-access';
 import {selectAvailableActions, currentPage, currentSubpage, isUnicefUser} from './common/selectors';
 import {elevationStyles} from './common/styles/elevation-styles';
-import {RouteDetails, RootState} from './common/models/globals.types';
+import {RootState} from './common/types/store.types';
 import {getIntervention, updateCurrentIntervention} from './common/actions';
 import {sharedStyles} from './common/styles/shared-styles-lit';
 import {isJsonStrMatch} from './utils/utils';
@@ -23,10 +23,10 @@ import {fireEvent} from './utils/fire-custom-event';
 import {buildUrlQueryString} from './utils/utils';
 import {enableCommentMode, getComments} from './common/components/comments/comments.actions';
 import {commentsData} from './common/components/comments/comments.reducer';
-import {Intervention} from './common/models/intervention.types';
 import {Store} from 'redux';
 import {connectStore} from './common/mixins/connect-store-mixin';
-import {AsyncAction} from './common/types/types';
+import {Intervention} from '@unicef-polymer/etools-types';
+import {AsyncAction, RouteDetails} from '@unicef-polymer/etools-types';
 
 const MOCKUP_STATUSES = [
   ['draft', 'Draft'],
@@ -237,12 +237,18 @@ export class InterventionTabs extends connectStore(LitElement) {
         currentInterventionId !== String(get(this.intervention, 'id')) &&
         !isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)
       ) {
-        getStore().dispatch<AsyncAction>(getIntervention(currentInterventionId));
+        getStore()
+          .dispatch<AsyncAction>(getIntervention(currentInterventionId))
+          .catch((err: any) => {
+            if (err.message === '404') {
+              this.goToPageNotFound();
+            }
+          });
         getStore().dispatch<AsyncAction>(getComments(currentInterventionId));
       }
       if (!isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)) {
         this._routeDetails = cloneDeep(state.app!.routeDetails);
-        this.commentMode = !!(this._routeDetails.queryParams || {})['comment_mode'];
+        this.commentMode = !!(this._routeDetails?.queryParams || {})['comment_mode'];
         getStore().dispatch(enableCommentMode(this.commentMode));
         fireEvent(this, 'scroll-up');
       }
@@ -324,10 +330,13 @@ export class InterventionTabs extends connectStore(LitElement) {
       const newPath =
         `interventions/${this.intervention!.id}/${newTabName}` + (stringParams !== '' ? `?${stringParams}` : '');
       history.pushState(window.history.state, '', newPath);
-      // Don't know why I have to specifically trigger popstate,
-      // history.pushState should do that by default (?)
       window.dispatchEvent(new CustomEvent('popstate'));
     }
+  }
+
+  goToPageNotFound() {
+    history.pushState(window.history.state, '', 'page-not-found');
+    window.dispatchEvent(new CustomEvent('popstate'));
   }
 
   commentModeChange(e: CustomEvent) {

@@ -1,5 +1,4 @@
 import {LitElement, property, html} from 'lit-element';
-import {Constructor, AnyObject} from '../models/globals.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {areEqual, filterByIds} from '../../utils/utils';
 import {fireEvent} from '../../utils/fire-custom-event';
@@ -8,6 +7,7 @@ import {formatDate} from '../../utils/date-utils';
 import isEmpty from 'lodash-es/isEmpty';
 import CONSTANTS from '../constants';
 import ContentPanelMixin from './content-panel-mixin';
+import {AnyObject, Constructor, MinimalUser} from '@unicef-polymer/etools-types';
 
 function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class ComponentBaseClass extends ContentPanelMixin(baseClass) {
@@ -95,18 +95,17 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
         : html` <paper-icon-button @click="${this.allowEdit}" icon="create"> </paper-icon-button> `;
     }
 
-    renderReadonlyUserDetails(users: AnyObject[], ids: string[]) {
-      if (users == undefined) {
+    renderReadonlyUserDetails(selectedUsers: any[], allUsers?: any[]) {
+      if (isEmpty(selectedUsers)) {
         return html`<span class="placeholder">—</span>`;
       }
-      const selsectedUsers = filterByIds(users, ids);
-      if (isEmpty(selsectedUsers)) {
-        return html`<span class="placeholder">—</span>`;
-      } else {
-        return selsectedUsers.map((u: any) => {
-          return html`<div class="w100 padd-between">${this.renderNameEmailPhone(u)}</div>`;
-        });
+      if (!isEmpty(allUsers)) {
+        selectedUsers = filterByIds(allUsers!, selectedUsers);
       }
+
+      return selectedUsers.map((u: any) => {
+        return html`<div class="w100 padd-between">${this.renderNameEmailPhone(u)}</div>`;
+      });
     }
 
     renderNameEmailPhone(item: any) {
@@ -116,10 +115,34 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
     }
 
     selectedItemChanged(detail: any, key: string, optionValue = 'id') {
-      if (!detail.selectedItem) {
+      if (detail.selectedItem === undefined) {
         return;
       }
-      const newValue = detail.selectedItem[optionValue];
+      const newValue = detail.selectedItem ? detail.selectedItem[optionValue] : null;
+      if (areEqual(this.data[key], newValue)) {
+        return;
+      }
+      this.data[key] = newValue;
+      this.requestUpdate();
+    }
+
+    selectedUserChanged(detail: any, key: string) {
+      if (detail.selectedItem === undefined) {
+        return;
+      }
+      const newValue = detail.selectedItem;
+      if (areEqual(this.data[key], newValue)) {
+        return;
+      }
+      this.data[key] = newValue;
+      this.requestUpdate();
+    }
+
+    selectedUsersChanged(detail: any, key: string) {
+      if (detail.selectedItems === undefined) {
+        return;
+      }
+      const newValue = detail.selectedItems;
       if (areEqual(this.data[key], newValue)) {
         return;
       }
@@ -176,6 +199,28 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
       }
       // @ts-ignore
       return CONSTANTS.DOCUMENT_TYPES_LONG[value.toUpperCase()];
+    }
+
+    /**
+     * check if already saved users exist on loaded data, if not they will be added
+     * (they might be missing if changed country)
+     */
+    handleUsersNoLongerAssignedToCurrentCountry(availableUsers: AnyObject[], savedUsers?: MinimalUser[]) {
+      if (!(savedUsers && savedUsers.length > 0 && availableUsers && availableUsers.length > 0)) {
+        return false;
+      }
+
+      let changed = false;
+      savedUsers.forEach((savedUsr) => {
+        if (availableUsers.findIndex((x) => x.id === savedUsr.id) < 0) {
+          availableUsers.push(savedUsr);
+          changed = true;
+        }
+      });
+      if (changed) {
+        availableUsers.sort((a, b) => (a.name < b.name ? -1 : 1));
+      }
+      return changed;
     }
   }
   return ComponentBaseClass;

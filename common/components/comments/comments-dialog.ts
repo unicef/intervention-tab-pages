@@ -19,12 +19,12 @@ import {getEndpoint} from '../../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {getStore} from '../../../utils/redux-store-access';
 import {addComment, updateComment} from './comments.actions';
-import {InterventionComment} from '../../types/types';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
-import {GenericObject, RootState} from '../../models/globals.types';
+import {RootState} from '../../types/store.types';
 import {connectStore} from '../../mixins/connect-store-mixin';
 import {PaperTextareaElement} from '@polymer/paper-input/paper-textarea';
 import {setTextareasMaxHeight} from '../../../utils/textarea-max-rows-helper';
+import {InterventionComment, GenericObject} from '@unicef-polymer/etools-types';
 
 @customElement('comments-dialog')
 export class CommentsDialog extends connectStore(LitElement) {

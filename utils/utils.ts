@@ -2,7 +2,7 @@ import isArray from 'lodash-es/isArray';
 import isObject from 'lodash-es/isObject';
 import isEmpty from 'lodash-es/isEmpty';
 import {formatDate} from './date-utils';
-import {AnyObject} from '../common/models/globals.types';
+import {AnyObject} from '@unicef-polymer/etools-types';
 
 export const isJsonStrMatch = (a: any, b: any) => {
   return JSON.stringify(a) === JSON.stringify(b);

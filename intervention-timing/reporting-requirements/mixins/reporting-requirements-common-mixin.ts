@@ -6,8 +6,8 @@ import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {PolymerElement} from '@polymer/polymer';
 import {property} from '@polymer/decorators';
-import {Constructor} from '../../../common/models/globals.types';
 import {isEmptyObject} from '../../../utils/utils';
+import {Constructor} from '@unicef-polymer/etools-types';
 
 /**
  * @polymer

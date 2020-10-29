@@ -2,7 +2,7 @@ import {LitElement, html, property, customElement} from 'lit-element';
 import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../../../common/styles/button-styles';
-import {AnyObject} from '../../../../common/models/globals.types';
+import {AnyObject} from '@unicef-polymer/etools-types';
 
 /**
  * @customElement

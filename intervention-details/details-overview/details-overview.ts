@@ -6,7 +6,7 @@ import {elevationStyles} from '../../common/styles/elevation-styles';
 import {InterventionOverview} from './interventionOverview.models';
 import {selectInterventionOverview} from './interventionOverview.selectors';
 import {layoutFlex} from '../../common/styles/flex-layout-styles';
-import {RootState} from '../../common/models/globals.types';
+import {RootState} from '../../common/types/store.types';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
@@ -54,7 +54,7 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
             </div>
             <div class="flex-3">
               <span>
-                <label class="paper-label">CFEI/DSR Reference Number</label>
+                <label class="paper-label">UNPP CFEI/DSR Ref Number</label>
               </span>
             </div>
             <div class="flex-1">

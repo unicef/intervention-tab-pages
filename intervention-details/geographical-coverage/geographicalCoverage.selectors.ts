@@ -1,7 +1,8 @@
 import {createSelector} from 'reselect';
-import {Permission, InterventionPermissionsFields} from '../../common/models/intervention.types';
 import {currentInterventionPermissions} from '../../common/selectors';
 import {LocationsPermissions} from './geographicalCoverage.models';
+import {Permission} from '@unicef-polymer/etools-types';
+import {InterventionPermissionsFields} from '@unicef-polymer/etools-types';
 
 export const selectLocationsPermissions = createSelector(
   currentInterventionPermissions,

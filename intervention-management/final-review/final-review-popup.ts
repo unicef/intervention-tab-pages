@@ -3,11 +3,11 @@ import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {Intervention, ReviewAttachment} from '../../common/models/intervention.types';
 import '@unicef-polymer/etools-upload/etools-upload';
 import {getStore} from '../../utils/redux-store-access';
 import {updateCurrentIntervention} from '../../common/actions';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {ReviewAttachment, Intervention} from '@unicef-polymer/etools-types';
 
 @customElement('final-review-popup')
 export class FinalReviewPopup extends LitElement {

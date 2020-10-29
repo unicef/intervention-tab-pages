@@ -1,5 +1,4 @@
 import {LitElement, html, property, customElement} from 'lit-element';
-import {Permission} from '../../common/models/intervention.types';
 import {selectPartnerDetails, selectPartnerDetailsPermissions} from './partnerInfo.selectors';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-input/paper-input';
@@ -23,11 +22,10 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {isJsonStrMatch} from '../../utils/utils';
 import isEmpty from 'lodash-es/isEmpty';
-import {PartnerStaffMember} from '../../common/models/partner.types';
-import {MinimalAgreement} from '../../common/models/agreement.types';
-import {RootState} from '../../common/models/globals.types';
+import {RootState} from '../../common/types/store.types';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AsyncAction} from '../../common/types/types';
+import {AsyncAction, Permission, PartnerStaffMember} from '@unicef-polymer/etools-types';
+import {MinimalAgreement} from '@unicef-polymer/etools-types';
 
 /**
  * @customElement
@@ -121,7 +119,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
             ${this.isReadonly(this.editMode, this.permissions?.edit.partner_focal_points)
               ? html`<label for="focalPointsDetails" class="paper-label">Partner Focal Points</label>
                   <div id="focalPointsDetails">
-                    ${this.renderReadonlyUserDetails(this.partnerStaffMembers, this.data?.partner_focal_points!)}
+                    ${this.renderReadonlyUserDetails(this.data?.partner_focal_points!, this.partnerStaffMembers)}
                   </div>`
               : html``}
           </div>

@@ -21,6 +21,10 @@ import {getStore} from '../utils/redux-store-access';
 import {updateCurrentIntervention} from '../common/actions';
 import {pageIsNotCurrentlyActive} from '../utils/common-methods';
 import get from 'lodash-es/get';
+import {AttachmentsListStyles} from './attachments-list.styles';
+import {getFileNameFromURL} from '../utils/utils';
+import {CommentsMixin} from '../common/components/comments/comments-mixin';
+import {IdAndName, ReviewAttachment} from '@unicef-polymer/etools-types';
 
 @customElement('attachments-list')
 export class AttachmentsList extends CommentsMixin(LitElement) {

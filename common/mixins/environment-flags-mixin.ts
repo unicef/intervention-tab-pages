@@ -1,5 +1,5 @@
 import {LitElement, property} from 'lit-element';
-import {Constructor, EnvFlags} from '../models/globals.types';
+import {EnvFlags, Constructor} from '@unicef-polymer/etools-types';
 
 /**
  * @polymer

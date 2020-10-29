@@ -1,9 +1,9 @@
 import {LitElement, html, css, TemplateResult, CSSResultArray, customElement, property} from 'lit-element';
 import {ActivityItemsTableStyles} from './acivity-items-table.styles';
-import {InterventionActivityItem} from '../../../../common/models/intervention.types';
 import {fireEvent} from '../../../../utils/fire-custom-event';
 import {ActivityItemRow} from './activity-item-row';
 import './activity-item-row';
+import {InterventionActivityItem} from '@unicef-polymer/etools-types';
 
 @customElement('activity-items-table')
 export class ActivityItemsTable extends LitElement {
@@ -46,10 +46,10 @@ export class ActivityItemsTable extends LitElement {
             @item-changed="${({detail}: CustomEvent) => this.updateActivityItem(index, detail)}"
             @remove-item="${() => this.updateActivityItem(index, null)}"
             .readonly="${this.readonly}"
+            .lastItem="${this.isLastItem(index)}"
           ></activity-item-row>`
       )}
-
-      <iron-icon icon="add" @click="${() => this.addNew()}"></iron-icon>
+      ${!this.readonly ? html`<iron-icon icon="add" @click="${() => this.addNew()}"></iron-icon>` : html``}
     `;
   }
 
@@ -80,5 +80,12 @@ export class ActivityItemsTable extends LitElement {
       valid = valid && row.validate();
     });
     return valid;
+  }
+
+  isLastItem(currentIndex: number): boolean {
+    if (this.activityItems.length == currentIndex + 1) {
+      return true;
+    }
+    return false;
   }
 }

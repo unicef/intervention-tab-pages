@@ -1,7 +1,6 @@
 import {Reducer} from 'redux';
-import {GenericObject} from '../../models/globals.types';
-import {InterventionComment} from '../../types/types';
 import {ADD_COMMENT, ENABLE_COMMENT_MODE, SET_COMMENTS, UPDATE_COMMENT} from './comments.actions';
+import {InterventionComment, GenericObject} from '@unicef-polymer/etools-types';
 
 export type CommentsCollection = GenericObject<InterventionComment[]>;
 export type CommentsState = {

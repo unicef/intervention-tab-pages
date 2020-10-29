@@ -9,13 +9,13 @@ import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown.
 import {LitElement, html, property, customElement} from 'lit-element';
 import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
 import RepeatableDataSetsMixin from '../../../../common/mixins/repeatable-data-sets-mixin';
-import {AnyObject, Disaggregation} from '../../../../common/models/globals.types';
 import {flaggedSortedDisaggregs} from '../../redux/selectors';
 import {getStore} from '../../../../utils/redux-store-access';
 import {repeatableDataSetsStyles} from '../../../../common/styles/repeatable-data-sets-styles';
 import {buttonsStyles} from '../../../../common/styles/button-styles';
 import {fireEvent} from '../../../../utils/fire-custom-event';
 import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
+import {AnyObject, Disaggregation} from '@unicef-polymer/etools-types';
 
 /**
  * @customElement

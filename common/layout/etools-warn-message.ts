@@ -1,5 +1,5 @@
 import {LitElement, html, property, customElement} from 'lit-element';
-import {AnyObject} from '../models/globals.types';
+import {AnyObject} from '@unicef-polymer/etools-types';
 
 export class WarnMessage {
   public msg = '';

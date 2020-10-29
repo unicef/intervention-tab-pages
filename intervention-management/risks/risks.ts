@@ -13,8 +13,7 @@ import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {Risk} from './risk.models';
-import {RootState, LabelAndValue, AnyObject} from '../../common/models/globals.types';
+import {RootState} from '../../common/types/store.types';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
 import {selectRisks} from './risk.selectors';
@@ -25,7 +24,7 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {getIntervention} from '../../common/actions';
 import {currentInterventionPermissions} from '../../common/selectors';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AsyncAction} from '../../common/types/types';
+import {AnyObject, AsyncAction, LabelAndValue, RiskData} from '@unicef-polymer/etools-types';
 
 const customStyles = html`
   <style>
@@ -100,7 +99,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   }
 
   @property({type: Object})
-  data!: Risk[];
+  data!: RiskData[];
 
   @property({type: Array})
   riskTypes!: LabelAndValue[];

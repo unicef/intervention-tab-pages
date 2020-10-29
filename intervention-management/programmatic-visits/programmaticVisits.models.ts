@@ -1,4 +1,8 @@
-import {InterventionPermissionsFields, Intervention, PlannedVisit} from '../../common/models/intervention.types';
+import {
+  InterventionPermissionsFields,
+  Intervention,
+  PlannedVisit
+} from '@unicef-polymer/etools-types';
 import {ModelsBase} from '../../common/models/models.base';
 
 export class PlannedVisits extends ModelsBase {

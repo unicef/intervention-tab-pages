@@ -1,7 +1,8 @@
 import {createSelector} from 'reselect';
-import {Intervention, Permission, InterventionPermissionsFields} from '../../common/models/intervention.types';
 import {PlannedVisits, PlannedVisitsPermissions} from './programmaticVisits.models';
 import {currentIntervention, currentInterventionPermissions} from '../../common/selectors';
+import {Permission} from '@unicef-polymer/etools-types';
+import {InterventionPermissionsFields, Intervention} from '@unicef-polymer/etools-types';
 
 export const selectPlannedVisits = createSelector(currentIntervention, (intervention: Intervention) => {
   return new PlannedVisits(intervention);

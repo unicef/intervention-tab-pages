@@ -5,12 +5,12 @@ import EndpointsLitMixin from '../../../../common/mixins/endpoints-mixin-lit';
 import {PaperInputElement} from '@polymer/paper-input/paper-input';
 import {html, LitElement, property, customElement} from 'lit-element';
 import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
-import {Indicator} from '../../../../common/models/intervention.types';
 import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 import {fireEvent} from '../../../../utils/fire-custom-event';
-import {AnyObject} from '../../../../common/models/globals.types';
 import isEmpty from 'lodash-es/isEmpty';
 import {connectStore} from '../../../../common/mixins/connect-store-mixin';
+import {AnyObject} from '@unicef-polymer/etools-types';
+import {Indicator} from '@unicef-polymer/etools-types';
 
 /**
  * @customElement
@@ -391,18 +391,30 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
 
   connectedCallback() {
     super.connectedCallback();
-
-    this.fireRequest('getResponsePlans', {})
-      .then((response: any) => {
-        this.responsePlans = response;
-      })
-      .catch((error: any) => {
-        fireEvent(this, 'show-toast', {
-          error: {response: error.message || error.response}
-        });
-      });
+    this.waitForReduxDataToLoad().then(() =>
+      this.fireRequest('getResponsePlans', {})
+        .then((response: any) => {
+          this.responsePlans = response;
+        })
+        .catch((error: any) => {
+          fireEvent(this, 'show-toast', {
+            error: {response: error.message || error.response}
+          });
+        })
+    );
 
     this.resetValidations();
+  }
+
+  public waitForReduxDataToLoad() {
+    return new Promise((resolve) => {
+      const check = setInterval(() => {
+        if (this.currentUser && !isEmpty(this.prpCountries)) {
+          clearInterval(check);
+          resolve(true);
+        }
+      }, 50);
+    });
   }
 
   indicatorChanged(indicator: any) {

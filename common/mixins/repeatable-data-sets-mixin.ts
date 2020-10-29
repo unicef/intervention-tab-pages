@@ -1,10 +1,10 @@
 import {LitElement, property} from 'lit-element';
-import {Constructor, AnyObject} from '../models/globals.types';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {cloneDeep} from '../../utils/utils';
 import '../../common/layout/are-you-sure';
 import {openDialog} from '../../utils/dialog';
+import {AnyObject, Constructor} from '@unicef-polymer/etools-types';
 
 function RepeatableDataSetsMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class RepeatableDataSetsClass extends baseClass {

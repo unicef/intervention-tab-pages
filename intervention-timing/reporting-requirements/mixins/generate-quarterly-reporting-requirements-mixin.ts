@@ -2,7 +2,7 @@ declare const moment: any;
 import {convertDate} from '../../../utils/date-utils';
 import {PolymerElement} from '@polymer/polymer';
 import {property} from '@polymer/decorators';
-import {Constructor} from '../../../common/models/globals.types';
+import {Constructor} from '@unicef-polymer/etools-types';
 
 /**
  * @polymer

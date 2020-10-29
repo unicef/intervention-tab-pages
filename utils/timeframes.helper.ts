@@ -1,5 +1,4 @@
-import {InterventionActivityTimeframe} from '../common/models/intervention.types';
-import {GenericObject} from '../common/models/globals.types';
+import {InterventionActivityTimeframe, GenericObject} from '@unicef-polymer/etools-types';
 
 export type ActivityTime = {
   start: Date;

@@ -8,7 +8,6 @@ import '../../styles/shared-styles-lit';
 import {sharedStyles} from '../../styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../styles/grid-layout-styles-lit';
 import {formatDate} from '../../../utils/date-utils';
-import {AnyObject} from '../../models/globals.types';
 import {validateRequiredFields} from '../../../utils/validation-helper';
 import ComponentBaseMixin from '../../mixins/component-base-mixin';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
@@ -16,6 +15,7 @@ import {fireEvent} from '../../../utils/fire-custom-event';
 import {openDialog} from '../../../utils/dialog';
 import EnvironmentFlagsMixin from '../../mixins/environment-flags-mixin';
 import {getStore} from '../../../utils/redux-store-access';
+import {AnyObject} from '@unicef-polymer/etools-types';
 declare const moment: any;
 
 /**

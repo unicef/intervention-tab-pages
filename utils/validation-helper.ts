@@ -1,6 +1,6 @@
 import {LitElement} from 'lit-element';
 import {PolymerElement} from '@polymer/polymer';
-import {AnyObject} from '../common/models/globals.types';
+import {AnyObject} from '@unicef-polymer/etools-types';
 
 type ValidatableElement = (LitElement | PolymerElement) & {validate(): boolean};
 

@@ -1,6 +1,6 @@
+import {Intervention, InterventionPermissionsFields} from '@unicef-polymer/etools-types';
 import {ModelsBase} from '../../common/models/models.base';
-import {InterventionPermissionsFields, Intervention} from '../../common/models/intervention.types';
-import {AnyObject} from '../../common/models/globals.types';
+import {AnyObject} from '@unicef-polymer/etools-types';
 
 export class PdUnicefDetails extends ModelsBase {
   constructor(intervention: Intervention) {
@@ -12,7 +12,7 @@ export class PdUnicefDetails extends ModelsBase {
   sections: AnyObject[] = [];
   cluster_names: AnyObject[] = [];
   unicef_focal_points: AnyObject[] = [];
-  budget_owner: AnyObject[] = [];
+  budget_owner: AnyObject = {};
   country_programmes: [] = [];
 }
 

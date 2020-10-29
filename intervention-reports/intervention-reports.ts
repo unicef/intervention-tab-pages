@@ -14,7 +14,7 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
 import '../common/layout/status/intervention-report-status';
 import {isEmptyObject, isJsonStrMatch} from '../utils/utils';
 import {fireEvent} from '../utils/fire-custom-event';
-import {GenericObject, RootState, User} from '../common/models/globals.types';
+import {RootState} from '../common/types/store.types';
 import {gridLayoutStylesPolymer} from '../common/styles/grid-layout-styles-polymer';
 import CommonMixin from '../common/mixins/common-mixin';
 import EndpointsMixin from '../common/mixins/endpoints-mixin';
@@ -22,6 +22,7 @@ import PaginationMixin from '../common/mixins/pagination-mixin';
 import {pageIsNotCurrentlyActive} from '../utils/common-methods';
 import get from 'lodash-es/get';
 import {connectStore} from '../common/mixins/connect-store-mixin';
+import {GenericObject, User} from '@unicef-polymer/etools-types';
 
 /**
  * @polymer
@@ -232,7 +233,12 @@ class InterventionReports extends connectStore(PaginationMixin(CommonMixin(Endpo
     _page: string,
     qParamsData: any
   ) {
-    if (isEmptyObject(currentUser) || this._queryParamsNotInitialized(qParamsData) || isEmptyObject(prpCountries) || !interventionId) {
+    if (
+      isEmptyObject(currentUser) ||
+      this._queryParamsNotInitialized(qParamsData) ||
+      isEmptyObject(prpCountries) ||
+      !interventionId
+    ) {
       return;
     }
 
