@@ -11,8 +11,7 @@ import {openDialog} from '../utils/dialog';
 import {AttachmentsListStyles} from './attachments-list.styles';
 import {getFileNameFromURL} from '../utils/utils';
 import {CommentsMixin} from '../common/components/comments/comments-mixin';
-import {ReviewAttachment} from '@unicef-polymer/etools-types/attachments.types';
-import {IdAndName} from '@unicef-polymer/etools-types';
+import {IdAndName, ReviewAttachment} from '@unicef-polymer/etools-types';
 
 @customElement('attachments-list')
 export class AttachmentsList extends CommentsMixin(LitElement) {

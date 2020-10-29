@@ -24,8 +24,7 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {getIntervention} from '../../common/actions';
 import {currentInterventionPermissions} from '../../common/selectors';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AnyObject, AsyncAction, LabelAndValue} from '@unicef-polymer/etools-types';
-import {Risk} from './risk.models';
+import {AnyObject, AsyncAction, LabelAndValue, RiskData} from '@unicef-polymer/etools-types';
 
 const customStyles = html`
   <style>
@@ -100,7 +99,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   }
 
   @property({type: Object})
-  data!: Risk[];
+  data!: RiskData[];
 
   @property({type: Array})
   riskTypes!: LabelAndValue[];

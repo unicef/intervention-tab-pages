@@ -8,7 +8,6 @@ import './modals/indicator-dialog/indicator-dialog';
 import get from 'lodash-es/get';
 import {filterByIds, isJsonStrMatch} from '../../utils/utils';
 import EnvironmentFlagsMixin from '../../common/mixins/environment-flags-mixin';
-import {IndicatorDialogData} from './modals/indicator-dialog/types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import '../../common/layout/are-you-sure';
 import {getEndpoint} from '../../utils/endpoint-helper';
@@ -22,8 +21,15 @@ import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import './pd-indicator';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {connectStore} from '../../common/mixins/connect-store-mixin';
-import {AsyncAction, Disaggregation, LocationObject, Section} from '@unicef-polymer/etools-types';
-import {Indicator, Intervention} from '@unicef-polymer/etools-types';
+import {
+  AsyncAction,
+  Disaggregation,
+  IndicatorDialogData,
+  LocationObject,
+  Section,
+  Indicator,
+  Intervention
+} from '@unicef-polymer/etools-types';
 
 @customElement('pd-indicators')
 export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)) {

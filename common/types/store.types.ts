@@ -1,4 +1,18 @@
 import {CommentsCollection} from '../components/comments/comments.reducer';
+import {
+  AnyObject,
+  Disaggregation,
+  EnvFlags,
+  LabelAndValue,
+  LocationObject,
+  MinimalAgreement,
+  RouteDetails,
+  Intervention,
+  CpOutput,
+  Section,
+  GenericObject,
+  EtoolsUser
+} from '@unicef-polymer/etools-types';
 
 export interface AppState {
   routeDetails: RouteDetails;
@@ -19,7 +33,7 @@ export interface AgreementsState {
 }
 
 export interface UserState {
-  data: EtoolsUserModel | null;
+  data: EtoolsUser | null;
   permissions: AnyObject | null;
 }
 

@@ -11,8 +11,7 @@ import {updateCurrentIntervention} from '../common/actions';
 import {validateRequiredFields} from '../utils/validation-helper';
 import {sharedStyles} from '../common/styles/shared-styles-lit';
 import {connectStore} from '../common/mixins/connect-store-mixin';
-import {ReviewAttachment} from '@unicef-polymer/etools-types/attachments.types';
-import {IdAndName, GenericObject} from '@unicef-polymer/etools-types';
+import {IdAndName, GenericObject, ReviewAttachment} from '@unicef-polymer/etools-types';
 
 @customElement('intervention-attachment-dialog')
 export class InterventionAttachmentDialog extends connectStore(LitElement) {

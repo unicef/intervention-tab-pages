@@ -20,7 +20,7 @@ import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {getStore} from '../../utils/redux-store-access';
 import {isJsonStrMatch} from '../../utils/utils';
 
-import {RootState, User} from '../../common/types/store.types';
+import {RootState} from '../../common/types/store.types';
 import {selectReviewData, selectReviewDataPermissions} from './managementDocument.selectors';
 import {ReviewDataPermission, ReviewData} from './managementDocument.model';
 import {getEndpoint} from '../../utils/endpoint-helper';
@@ -32,7 +32,7 @@ import {formatDate} from '../../utils/date-utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AsyncAction, MinimalUser, Permission} from '@unicef-polymer/etools-types';
+import {AsyncAction, MinimalUser, Permission, User} from '@unicef-polymer/etools-types';
 import {MinimalAgreement} from '@unicef-polymer/etools-types';
 
 /**
@@ -403,7 +403,8 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
       super.stateChanged(state);
 
       const pdUsers = this.data.unicef_signatory ? [this.data.unicef_signatory] : [];
-      if (this.isUnicefUser) { // Partner user can not edit this field
+      if (this.isUnicefUser) {
+        // Partner user can not edit this field
         const changed = this.handleUsersNoLongerAssignedToCurrentCountry(this.signedByUnicefUsers as User[], pdUsers);
         if (changed) {
           this.signedByUnicefUsers = [...this.signedByUnicefUsers];

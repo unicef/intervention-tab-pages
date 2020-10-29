@@ -7,8 +7,7 @@ import '@unicef-polymer/etools-upload/etools-upload';
 import {getStore} from '../../utils/redux-store-access';
 import {updateCurrentIntervention} from '../../common/actions';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {ReviewAttachment} from '@unicef-polymer/etools-types/attachments.types';
-import {Intervention} from '@unicef-polymer/etools-types/intervention.classes';
+import {ReviewAttachment, Intervention} from '@unicef-polymer/etools-types';
 
 @customElement('final-review-popup')
 export class FinalReviewPopup extends LitElement {

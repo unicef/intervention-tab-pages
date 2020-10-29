@@ -1,5 +1,5 @@
 import {createSelector} from 'reselect';
-import {Disaggregation} from '../../../common/types/store.types';
+import {Disaggregation} from '@unicef-polymer/etools-types';
 
 const disaggregationsSelector = (state: any) => state.commonData!.disaggregations;
 

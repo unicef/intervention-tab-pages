@@ -38,8 +38,15 @@ import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import ContentPanelMixin from '../../common/mixins/content-panel-mixin';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
-import {ExpectedResult, Intervention, ResultLinkLowerResult} from '@unicef-polymer/etools-types/intervention.classes';
-import {AsyncAction, InterventionQuarter, CpOutput, IdAndName} from '@unicef-polymer/etools-types';
+import {
+  AsyncAction,
+  InterventionQuarter,
+  CpOutput,
+  IdAndName,
+  ExpectedResult,
+  Intervention,
+  ResultLinkLowerResult
+} from '@unicef-polymer/etools-types';
 
 const RESULT_VIEW = 'result_view';
 const BUDGET_VIEW = 'budget_view';

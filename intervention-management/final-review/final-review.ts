@@ -7,7 +7,7 @@ import {currentInterventionPermissions} from '../../common/selectors';
 import get from 'lodash-es/get';
 import {getFileNameFromURL} from '../../utils/utils';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {ReviewAttachment} from '@unicef-polymer/etools-types/attachments.types';
+import {ReviewAttachment} from '@unicef-polymer/etools-types';
 declare const moment: any;
 
 @customElement('final-review')
