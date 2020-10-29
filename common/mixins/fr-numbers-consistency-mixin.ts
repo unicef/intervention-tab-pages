@@ -1,7 +1,7 @@
 import {LitElement, property} from 'lit-element';
 import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
-import {Fr, FrsDetails, Intervention, ListItemIntervention} from '../models/intervention.types';
-import {Constructor} from '../models/globals.types';
+import {Constructor, InterventionListData} from '@unicef-polymer/etools-types';
+import {Fr, FrsDetails, Intervention} from '@unicef-polymer/etools-types';
 
 function FrNumbersConsistencyMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class FrNumbersConsistencyClass extends EtoolsCurrency(baseClass) {
@@ -136,7 +136,7 @@ function FrNumbersConsistencyMixin<T extends Constructor<LitElement>>(baseClass:
     ) {
       if (
         intervention.status === 'closed' ||
-        (!skipEmptyListCheck && this.emptyFrsList(intervention, interventionIsFromWhere))
+        (!skipEmptyListCheck && this.emptyFrsList(intervention as any, interventionIsFromWhere as any))
       ) {
         return true;
       }
@@ -196,14 +196,15 @@ function FrNumbersConsistencyMixin<T extends Constructor<LitElement>>(baseClass:
       return !!active;
     }
 
-    emptyFrsList(intervention: Intervention | ListItemIntervention, interventionIsFromWhere: string) {
+    emptyFrsList(intervention: Intervention, interventionIsFromWhere: 'interventionDetails'): boolean;
+    emptyFrsList(intervention: InterventionListData, interventionIsFromWhere: 'interventionsList'): boolean;
+    emptyFrsList(intervention: any, interventionIsFromWhere: string) {
       // * The intervention object from interventions-list
       // has different properties than the one on intervention-details
       switch (interventionIsFromWhere) {
         case 'interventionDetails':
           return !intervention || !intervention.frs_details || intervention.frs_details.frs.length === 0;
         case 'interventionsList':
-          // @ts-ignore
           return !intervention.frs_earliest_start_date || !intervention.frs_latest_end_date;
         default:
           return true;

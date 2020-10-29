@@ -1,7 +1,8 @@
 import {createSelector} from 'reselect';
-import {Intervention, Permission, InterventionPermissionsFields} from '../../common/models/intervention.types';
 import {DocumentDetails, DocumentDetailsPermissions} from './documentDetails.models';
 import {currentIntervention, currentInterventionPermissions} from '../../common/selectors';
+import {Permission} from '@unicef-polymer/etools-types';
+import {InterventionPermissionsFields, Intervention} from '@unicef-polymer/etools-types';
 
 export const selectDocumentDetails = createSelector(currentIntervention, (intervention: Intervention) => {
   return new DocumentDetails(intervention);

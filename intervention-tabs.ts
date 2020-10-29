@@ -14,7 +14,7 @@ import get from 'lodash-es/get';
 import {getStore, getStoreAsync} from './utils/redux-store-access';
 import {selectAvailableActions, currentPage, currentSubpage, isUnicefUser} from './common/selectors';
 import {elevationStyles} from './common/styles/elevation-styles';
-import {RouteDetails, RootState} from './common/models/globals.types';
+import {RootState} from './common/types/store.types';
 import {getIntervention, updateCurrentIntervention} from './common/actions';
 import {sharedStyles} from './common/styles/shared-styles-lit';
 import {isJsonStrMatch} from './utils/utils';
@@ -23,10 +23,10 @@ import {fireEvent} from './utils/fire-custom-event';
 import {buildUrlQueryString} from './utils/utils';
 import {enableCommentMode, getComments} from './common/components/comments/comments.actions';
 import {commentsData} from './common/components/comments/comments.reducer';
-import {Intervention} from './common/models/intervention.types';
 import {Store} from 'redux';
 import {connectStore} from './common/mixins/connect-store-mixin';
-import {AsyncAction} from './common/types/types';
+import {Intervention} from '@unicef-polymer/etools-types';
+import {AsyncAction, RouteDetails} from '@unicef-polymer/etools-types';
 
 const MOCKUP_STATUSES = [
   ['draft', 'Draft'],
@@ -248,8 +248,10 @@ export class InterventionTabs extends connectStore(LitElement) {
       }
       if (!isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)) {
         this._routeDetails = cloneDeep(state.app!.routeDetails);
-        this.commentMode = !!(this._routeDetails.queryParams || {})['comment_mode'];
-        getStore().dispatch(enableCommentMode(this.commentMode));
+        this.commentMode = !!(this._routeDetails?.queryParams || {})['comment_mode'];
+        setTimeout(() => {
+          getStore().dispatch(enableCommentMode(this.commentMode));
+        }, 10);
         fireEvent(this, 'scroll-up');
       }
       this.availableActions = selectAvailableActions(state);

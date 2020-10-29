@@ -1,6 +1,5 @@
 import {CSSResultArray, customElement, html, LitElement, property, TemplateResult} from 'lit-element';
 import {DataMixin} from '../../../../common/mixins/data-mixin';
-import {InterventionActivity, InterventionActivityItem} from '../../../../common/models/intervention.types';
 import '@unicef-polymer/etools-currency-amount-input';
 import '@polymer/paper-input/paper-textarea';
 import '@polymer/paper-toggle-button';
@@ -20,6 +19,7 @@ import {ActivityTimeFrames} from './activity-timeframes';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {validateRequiredFields} from '../../../../utils/validation-helper';
 import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
+import {InterventionActivity, InterventionActivityItem} from '@unicef-polymer/etools-types';
 
 @customElement('activity-data-dialog')
 export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitElement) {
@@ -31,6 +31,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
   @property() loadingInProcess = false;
   @property() isEditDialog = true;
   @property() useInputLevel = false;
+  @property({type: String}) spinnerText = 'Loading...';
   @property() readonly: boolean | undefined = false;
   quarters: ActivityTimeFrames[] = [];
 
@@ -52,6 +53,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
       this.data = data;
       this.useInputLevel = Boolean(data.items.length);
       this.loadingInProcess = false;
+      this.spinnerText = 'Saving data...';
     });
   }
 
@@ -103,11 +105,14 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
           }
         }
       </style>
+
+      <!-- ATTENTION spinner-text property binding WORKS WITHOUT '.'  -->
       <etools-dialog
         size="md"
         keep-dialog-open
         ?opened="${this.dialogOpened}"
         ?show-spinner="${this.loadingInProcess}"
+        spinner-text="${this.spinnerText}"
         dialog-title="Activity Data"
         @confirm-btn-clicked="${() => this.processRequest()}"
         @close="${this.onClose}"

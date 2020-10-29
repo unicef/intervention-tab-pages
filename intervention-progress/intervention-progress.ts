@@ -27,7 +27,7 @@ import {gridLayoutStylesPolymer} from '../common/styles/grid-layout-styles-polym
 
 import {isEmptyObject} from '../utils/utils';
 import {fireEvent} from '../utils/fire-custom-event';
-import {GenericObject, AnyObject, RootState} from '../common/models/globals.types';
+import {RootState} from '../common/types/store.types';
 import {pageIsNotCurrentlyActive} from '../utils/common-methods';
 
 import {
@@ -45,6 +45,7 @@ import {pmpCustomIcons} from './styles/pmp-icons';
 import {frWarningsStylesPolymer} from '../common/styles/fr-warnings-styles';
 import get from 'lodash-es/get';
 import {connectStore} from '../common/mixins/connect-store-mixin';
+import {AnyObject, GenericObject} from '@unicef-polymer/etools-types';
 declare const moment: any;
 
 /**
@@ -324,16 +325,16 @@ class InterventionProgress extends connectStore(
   pdProgress!: number;
 
   @property({type: Object, observer: '_progressDataObjChanged'})
-  progress: GenericObject<any> | null = null;
+  progress: GenericObject | null = null;
 
   @property({type: Object, computed: '_computeLatestAcceptedPr(progress)'})
-  latestAcceptedPr!: GenericObject<any>;
+  latestAcceptedPr!: GenericObject;
 
   @property({type: Array})
-  indicatorReports: GenericObject<any>[] = [];
+  indicatorReports: GenericObject[] = [];
 
   @property({type: Object})
-  prpCountries!: GenericObject<any>[];
+  prpCountries!: GenericObject[];
 
   static get observers() {
     return [

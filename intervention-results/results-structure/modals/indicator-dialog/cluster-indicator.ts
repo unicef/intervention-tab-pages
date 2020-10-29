@@ -5,12 +5,12 @@ import EndpointsLitMixin from '../../../../common/mixins/endpoints-mixin-lit';
 import {PaperInputElement} from '@polymer/paper-input/paper-input';
 import {html, LitElement, property, customElement} from 'lit-element';
 import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
-import {Indicator} from '../../../../common/models/intervention.types';
 import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 import {fireEvent} from '../../../../utils/fire-custom-event';
-import {AnyObject} from '../../../../common/models/globals.types';
 import isEmpty from 'lodash-es/isEmpty';
 import {connectStore} from '../../../../common/mixins/connect-store-mixin';
+import {AnyObject} from '@unicef-polymer/etools-types';
+import {Indicator} from '@unicef-polymer/etools-types';
 
 /**
  * @customElement

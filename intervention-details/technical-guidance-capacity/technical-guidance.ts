@@ -4,8 +4,7 @@ import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {Permission} from '../../common/models/intervention.types';
-import {RootState} from '../../common/models/globals.types';
+import {RootState} from '../../common/types/store.types';
 import {TechnicalDetails, TechnicalDetailsPermissions} from './technicalGuidance.models';
 import {selectTechnicalDetails, selectTechnicalDetailsPermissions} from './technicalGuidance.selectors';
 import {patchIntervention} from '../../common/actions';
@@ -15,7 +14,7 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AsyncAction} from '../../common/types/types';
+import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
 
 /**
  * @customElement

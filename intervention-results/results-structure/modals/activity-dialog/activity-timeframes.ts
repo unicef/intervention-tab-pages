@@ -1,8 +1,8 @@
 import {LitElement, html, TemplateResult, CSSResultArray, css, property, customElement} from 'lit-element';
 import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
-import {InterventionActivityTimeframe} from '../../../../common/models/intervention.types';
 import {ActivityTime, groupByYear, serializeTimeFrameData} from '../../../../utils/timeframes.helper';
 import {fireEvent} from '../../../../utils/fire-custom-event';
+import {InterventionActivityTimeframe} from '@unicef-polymer/etools-types';
 
 @customElement('activity-time-frames')
 export class ActivityTimeFrames extends LitElement {

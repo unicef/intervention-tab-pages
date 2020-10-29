@@ -4,15 +4,15 @@ import {elevationStyles} from '../../common/styles/elevation-styles';
 import {BudgetSummary} from './budgetSummary.models';
 import {selectBudgetSummary} from './budgetSummary.selectors';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
-import {RootState} from '../../common/models/globals.types';
+import {RootState} from '../../common/types/store.types';
 import get from 'lodash-es/get';
 import FrNumbersConsistencyMixin from '../../common/mixins/fr-numbers-consistency-mixin';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import {frWarningsStyles} from '../../common/styles/fr-warnings-styles';
-import {Intervention, FrsDetails} from '../../common/models/intervention.types';
 import {customIcons} from '../../common/styles/custom-icons';
 import {InfoElementStyles} from '../../common/styles/info-element-styles';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
+import {FrsDetails, Intervention} from '@unicef-polymer/etools-types';
 
 /**
  * @customElement
@@ -23,6 +23,12 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
     return [gridLayoutStylesLit, elevationStyles, frWarningsStyles];
   }
   render() {
+    if (!this.budgetSummary) {
+      return html`<style>
+          ${customIcons} ${InfoElementStyles}
+        </style>
+        <etools-loading loading-text="Loading..." active></etools-loading>`;
+    }
     // language=HTML
     return html`
       ${customIcons} ${InfoElementStyles}

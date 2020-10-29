@@ -1,9 +1,8 @@
 import {_sendRequest} from '../utils/request-helper';
 import {getEndpoint} from '../utils/endpoint-helper';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
-import {Intervention, PlannedBudget} from './models/intervention.types';
 import {SHOW_TOAST} from './actionsConstants';
-import {AnyObject} from './models/globals.types';
+import {AnyObject, PlannedBudget, Intervention} from '@unicef-polymer/etools-types';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 
 export const updateCurrentIntervention = (intervention: AnyObject | null) => {

@@ -18,10 +18,10 @@ import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
 import {property} from '@polymer/decorators';
-import {AnyObject} from '../../../common/models/globals.types';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {QprListEl} from './qpr-list.js';
 import {fireEvent} from '../../../utils/fire-custom-event';
+import {AnyObject} from '@unicef-polymer/etools-types';
 
 /**
  * @polymer

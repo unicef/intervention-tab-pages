@@ -1,4 +1,4 @@
-import {InterventionPermissionsFields, Intervention} from '../../common/models/intervention.types';
+import {Intervention, InterventionPermissionsFields} from '@unicef-polymer/etools-types';
 import {ModelsBase} from '../../common/models/models.base';
 
 export class ProgrammeManagement extends ModelsBase {

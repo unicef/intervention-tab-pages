@@ -12,21 +12,19 @@ import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import cloneDeep from 'lodash-es/cloneDeep';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
-import {Permission} from '../../common/models/intervention.types';
-import {RootState} from '../../common/models/globals.types';
+import {RootState} from '../../common/types/store.types';
 import {getStore} from '../../utils/redux-store-access';
 import './financialComponent.models';
 import './financialComponent.selectors';
 import {FinancialComponentData, FinancialComponentPermissions} from './financialComponent.selectors';
 import {selectFinancialComponentPermissions, selectFinancialComponent} from './financialComponent.models';
 import {patchIntervention} from '../../common/actions';
-import {LabelAndValue} from '../../common/models/globals.types';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import {isJsonStrMatch} from '../../utils/utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AsyncAction} from '../../common/types/types';
+import {AsyncAction, LabelAndValue, Permission} from '@unicef-polymer/etools-types';
 
 /**
  * @customElement
@@ -38,7 +36,7 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
   }
   render() {
     // language=HTML
-    if (!this.data) {
+    if (!this.data || !this.cashTransferModalities) {
       return html`<style>
           ${sharedStyles}
         </style>

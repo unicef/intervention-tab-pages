@@ -1,5 +1,5 @@
+import {Intervention, InterventionPermissionsFields} from '@unicef-polymer/etools-types';
 import {ModelsBase} from '../../common/models/models.base';
-import {InterventionPermissionsFields, Intervention} from '../../common/models/intervention.types';
 
 export class GenderEquityRating extends ModelsBase {
   constructor(intervention: Intervention) {

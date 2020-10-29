@@ -1,12 +1,12 @@
 import {LitElement, html, customElement, property, TemplateResult} from 'lit-element';
 import '@unicef-polymer/etools-data-table/etools-data-table';
-import {Disaggregation, DisaggregationValue} from '../../common/models/globals.types';
-import {Indicator} from '../../common/models/intervention.types';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {ResultStructureStyles} from './results-structure.styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
+import {Disaggregation, DisaggregationValue} from '@unicef-polymer/etools-types';
+import {Indicator} from '@unicef-polymer/etools-types';
 
 @customElement('pd-indicator')
 export class PdIndicator extends CommentsMixin(LitElement) {

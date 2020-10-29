@@ -20,21 +20,20 @@ import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {getStore} from '../../utils/redux-store-access';
 import {isJsonStrMatch} from '../../utils/utils';
 
-import {Permission} from '../../common/models/intervention.types';
-import {MinimalUser, RootState, User} from '../../common/models/globals.types';
+import {RootState} from '../../common/types/store.types';
 import {selectReviewData, selectReviewDataPermissions} from './managementDocument.selectors';
 import {ReviewDataPermission, ReviewData} from './managementDocument.model';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {isEmpty, cloneDeep} from 'lodash-es';
-import {MinimalAgreement} from '../../common/models/agreement.types';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {patchIntervention} from '../../common/actions';
 import {formatDate} from '../../utils/date-utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AsyncAction} from '../../common/types/types';
+import {AsyncAction, MinimalUser, Permission, User} from '@unicef-polymer/etools-types';
+import {MinimalAgreement} from '@unicef-polymer/etools-types';
 
 /**
  * @customElement
@@ -47,7 +46,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
     return [gridLayoutStylesLit, buttonsStyles];
   }
   render() {
-    if (!this.data) {
+    if (!this.data || !this.permissions) {
       return html` <style>
           ${sharedStyles}
         </style>
@@ -404,7 +403,8 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
       super.stateChanged(state);
 
       const pdUsers = this.data.unicef_signatory ? [this.data.unicef_signatory] : [];
-      if (this.isUnicefUser) { // Partner user can not edit this field
+      if (this.isUnicefUser) {
+        // Partner user can not edit this field
         const changed = this.handleUsersNoLongerAssignedToCurrentCountry(this.signedByUnicefUsers as User[], pdUsers);
         if (changed) {
           this.signedByUnicefUsers = [...this.signedByUnicefUsers];

@@ -1,5 +1,4 @@
 import {LitElement, property, html} from 'lit-element';
-import {Constructor, AnyObject, MinimalUser} from '../models/globals.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {areEqual, filterByIds} from '../../utils/utils';
 import {fireEvent} from '../../utils/fire-custom-event';
@@ -8,6 +7,7 @@ import {formatDate} from '../../utils/date-utils';
 import isEmpty from 'lodash-es/isEmpty';
 import CONSTANTS from '../constants';
 import ContentPanelMixin from './content-panel-mixin';
+import {AnyObject, Constructor, MinimalUser} from '@unicef-polymer/etools-types';
 
 function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class ComponentBaseClass extends ContentPanelMixin(baseClass) {

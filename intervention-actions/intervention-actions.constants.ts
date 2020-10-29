@@ -1,4 +1,4 @@
-import {GenericObject} from '../common/models/globals.types';
+import {GenericObject} from '@unicef-polymer/etools-types';
 
 const EXPORT_COMMENTS = 'download_comments';
 const EXPORT_CSV = 'export';

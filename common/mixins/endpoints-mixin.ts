@@ -3,9 +3,10 @@ import {isJsonStrMatch} from '../../utils/utils';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging.js';
 import {PolymerElement} from '@polymer/polymer';
 import {property} from '@polymer/decorators';
-import {Constructor, User, AnyObject, RootState} from '../../common/models/globals.types';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {tokenEndpointsHost, tokenStorageKeys, getTokenEndpoints} from '../../config/config';
+import {AnyObject, Constructor, User} from '@unicef-polymer/etools-types';
+import {RootState} from '../types/store.types';
 
 /**
  * @polymer

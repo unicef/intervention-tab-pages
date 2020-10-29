@@ -9,8 +9,8 @@ import {gridLayoutStylesPolymer} from '../../../common/styles/grid-layout-styles
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
 import {property} from '@polymer/decorators';
 import {IconsActionsEl} from '../../../common/layout/icons-actions';
-import {AnyObject} from '../../../common/models/globals.types';
 import {isEmptyObject} from '../../../utils/utils';
+import {AnyObject} from '@unicef-polymer/etools-types';
 
 /**
  * @polymer

@@ -1,16 +1,14 @@
 import {LitElement, html, TemplateResult, property, customElement} from 'lit-element';
-import {ResultIndicator} from '../../../common/models/intervention.types';
 import '@unicef-polymer/etools-dialog';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {getEndpoint} from '../../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {getStore} from '../../../utils/redux-store-access';
-import {GenericObject} from '../../../common/models/globals.types';
 import {getIntervention} from '../../../common/actions';
 import {fireEvent} from '../../../utils/fire-custom-event';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
-import {AsyncAction} from '../../../common/types/types';
+import {AsyncAction, ResultIndicator, GenericObject} from '@unicef-polymer/etools-types';
 
 @customElement('cp-output-dialog')
 export class CpOutputDialog extends LitElement {

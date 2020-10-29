@@ -1,7 +1,14 @@
 import {PolymerElement} from '@polymer/polymer';
 import {property} from '@polymer/decorators';
-import {Constructor, Paginator} from '../models/globals.types';
 import CONSTANTS from '../../common/constants';
+import {Constructor} from '@unicef-polymer/etools-types';
+
+class Paginator {
+  page = 1;
+  page_size = 10;
+  count: number | null = null;
+  visible_range: string[] | number[] = [];
+}
 
 function PaginationMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
   class PaginationClass extends baseClass {

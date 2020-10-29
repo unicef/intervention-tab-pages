@@ -10,8 +10,7 @@ import {buttonsStyles} from '../../common/styles/button-styles';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {EtoolsTableColumn, EtoolsTableColumnType, EtoolsTableChildRow} from '@unicef-polymer/etools-table/etools-table';
 import './supply-agreement-dialog';
-import {AnyObject, RootState} from '../../common/models/globals.types';
-import {InterventionSupplyItem, Intervention, ExpectedResult} from '../../common/models/intervention.types';
+import {RootState} from '../../common/types/store.types';
 import {openDialog} from '../../utils/dialog';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
@@ -27,8 +26,9 @@ import '../../common/layout/are-you-sure';
 import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {isUnicefUser} from '../../common/selectors';
-import {AsyncAction} from '../../common/types/types';
 import {EtoolsUpload} from '@unicef-polymer/etools-upload/etools-upload';
+import {AnyObject, AsyncAction, InterventionSupplyItem} from '@unicef-polymer/etools-types';
+import {Intervention, ExpectedResult} from '@unicef-polymer/etools-types';
 
 const customStyles = html`
   <style>
@@ -177,7 +177,7 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
   isUnicefUser = false;
 
   @property()
-  uploadInProcess: boolean = false;
+  uploadInProcess = false;
 
   @query('etools-upload')
   uploader!: EtoolsUpload & {_openFileChooser(): void};

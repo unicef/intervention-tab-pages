@@ -8,13 +8,13 @@ import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {frWarningsStyles} from '../../common/styles/fr-warnings-styles';
 import {_layoutVertical, _layoutEnd} from '../../common/styles/flex-layout-styles';
-import {Intervention, FrsDetails} from '../../common/models/intervention.types';
 import {customIcons} from '../../common/styles/custom-icons';
 import {prettyDate} from '../../utils/date-utils';
 import '../../common/mixins/fr-numbers-consistency-mixin';
 import FrNumbersConsistencyMixin from '../../common/mixins/fr-numbers-consistency-mixin';
-import {AnyObject} from '../../common/models/globals.types';
 import isEmpty from 'lodash-es/isEmpty';
+import {AnyObject} from '@unicef-polymer/etools-types';
+import {Intervention, FrsDetails} from '@unicef-polymer/etools-types';
 
 /**
  * @customElement
@@ -94,7 +94,8 @@ export class FundReservationsDisplay extends EtoolsCurrency(FrNumbersConsistency
           (fr: AnyObject) => html`
             <etools-data-table-row>
               <div slot="row-data" class="layout-horizontal">
-                <span class="col-data col-2">${fr.fr_number}
+                <span class="col-data col-2"
+                  >${fr.fr_number}
                   <a title="See more details" class="pl-5" target="_blank" href="${this.getFRNumberLink(fr.fr_number)}">
                     <iron-icon icon="pmp-custom-icons:external-icon"></iron-icon>
                   </a>
@@ -244,7 +245,7 @@ export class FundReservationsDisplay extends EtoolsCurrency(FrNumbersConsistency
             </span>
             <span class="col-data col-2 right-align unicef-cash-col">
               <iron-label for="pd-currency">PD Currency</iron-label>
-              <span id="pd-currency">${this.intervention.planned_budget.currency}</span>
+              ${this.renderPdCurrency()}
             </span>
             <span class="col-data col-2 right-align unicef-cash-col">
               <iron-label for="unicef-cash">UNICEF Cash</iron-label>
@@ -318,5 +319,10 @@ export class FundReservationsDisplay extends EtoolsCurrency(FrNumbersConsistency
 
   getFRNumberLink(frNumber: string) {
     return `https://mappsprd.unicef.org:44300/sap/bc/ui5_ui5/sap/zhact_etools_fr/index.html?Belnr=${frNumber}`;
+  }
+
+  renderPdCurrency() {
+    const currency = this.intervention!.planned_budget.currency;
+    return html`<span id="pd-currency">${currency ? currency : '—'}</span>`;
   }
 }

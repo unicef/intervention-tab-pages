@@ -9,17 +9,16 @@ import {buttonsStyles} from '../../common/styles/button-styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {selectDocumentDetails, selectDocumentDetailsPermissions} from './documentDetails.selectors';
-import {Permission} from '../../common/models/intervention.types';
 import {DocumentDetailsPermissions, DocumentDetails} from './documentDetails.models';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {getStore} from '../../utils/redux-store-access';
 import {patchIntervention} from '../../common/actions';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {RootState} from '../../common/models/globals.types';
+import {RootState} from '../../common/types/store.types';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AsyncAction} from '../../common/types/types';
+import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
 
 /**
  * @customElement

@@ -1,11 +1,5 @@
-export interface EtoolsEndpoint {
-  url?: string;
-  template?: string;
-  exp?: any;
-  cachingKey?: string;
-  cacheTableName?: string;
-  token?: string;
-}
+import {EtoolsEndpoint} from '@unicef-polymer/etools-types';
+
 export interface EtoolsEndpoints {
   intervention: EtoolsEndpoint;
   interventionAction: EtoolsEndpoint;
