@@ -41,7 +41,7 @@ export class ActivityTimeframes extends CommentsMixin(LitElement) {
         ${!timeFrames.length
           ? html`
               <div class="align-items-baseline">
-                <p>Activity Timeframes will be available after Start and End Date are selected and saved.</p>
+                <p>Activity Timeframes will be available after Start and End Date are set.</p>
               </div>
             `
           : ''}

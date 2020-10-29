@@ -245,7 +245,7 @@ export class FundReservationsDisplay extends EtoolsCurrency(FrNumbersConsistency
             </span>
             <span class="col-data col-2 right-align unicef-cash-col">
               <iron-label for="pd-currency">PD Currency</iron-label>
-              <span id="pd-currency">${this.intervention.planned_budget.currency}</span>
+              ${this.renderPdCurrency()}
             </span>
             <span class="col-data col-2 right-align unicef-cash-col">
               <iron-label for="unicef-cash">UNICEF Cash</iron-label>
@@ -319,5 +319,10 @@ export class FundReservationsDisplay extends EtoolsCurrency(FrNumbersConsistency
 
   getFRNumberLink(frNumber: string) {
     return `https://mappsprd.unicef.org:44300/sap/bc/ui5_ui5/sap/zhact_etools_fr/index.html?Belnr=${frNumber}`;
+  }
+
+  renderPdCurrency() {
+    const currency = this.intervention!.planned_budget.currency;
+    return html`<span id="pd-currency">${currency ? currency : '—'}</span>`;
   }
 }
