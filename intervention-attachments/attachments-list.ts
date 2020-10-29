@@ -8,21 +8,30 @@ import './intervention-attachment-dialog';
 import {sharedStyles} from '../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../common/styles/grid-layout-styles-lit';
 import {openDialog} from '../utils/dialog';
+import {InterventionAttachment, Intervention, IdAndName, AsyncAction} from '@unicef-polymer/etools-types';
 import {AttachmentsListStyles} from './attachments-list.styles';
-import {getFileNameFromURL} from '../utils/utils';
+import {getFileNameFromURL, cloneDeep} from '../utils/utils';
 import {CommentsMixin} from '../common/components/comments/comments-mixin';
-import {IdAndName, ReviewAttachment} from '@unicef-polymer/etools-types';
+import '../common/layout/are-you-sure';
+import {interventionEndpoints} from '../utils/intervention-endpoints';
+import {getEndpoint} from '../utils/endpoint-helper';
+import {sendRequest} from '@unicef-polymer/etools-ajax';
+import {getStore} from '../utils/redux-store-access';
+import {getIntervention} from '../common/actions';
+import {pageIsNotCurrentlyActive} from '../utils/common-methods';
+import get from 'lodash-es/get';
 
 @customElement('attachments-list')
 export class AttachmentsList extends CommentsMixin(LitElement) {
   static get styles(): CSSResultArray {
     return [gridLayoutStylesLit];
   }
-  @property() attachments: ReviewAttachment[] = [];
-  @property() interventionStatus!: string;
+  @property() attachments: InterventionAttachment[] = [];
   @property() showInvalid = true;
   @property() canEdit = true;
   @property() fileTypes: IdAndName[] = [];
+  @property({type: String}) deleteConfirmationMessage = 'Are you sure you want to delete this attachment?';
+  private intervention!: Intervention;
 
   protected render(): TemplateResult {
     return html`
@@ -73,14 +82,14 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
                     ?hidden="${!attachment.active && !this.showInvalid}"
                   >
                     <div slot="row-data" class="p-relative layout-horizontal editable-row">
-                      <span class="col-data col-2">${prettyDate(attachment.created) || '-'}</span>
-                      <span class="col-data col-3">${this.getAttachmentType(attachment.type)}</span>
+                      <span class="col-data col-2">${prettyDate(String(attachment.created)) || '-'}</span>
+                      <span class="col-data col-3">${this.getAttachmentType(attachment.type!)}</span>
                       <span class="col-data col-6">
                         <iron-icon icon="attachment" class="attachment"></iron-icon>
                         <span class="break-word file-label">
                           <!-- target="_blank" is there for IE -->
                           <a href="${attachment.attachment_document || attachment.attachment}" target="_blank" download>
-                            ${getFileNameFromURL(attachment.attachment_document || attachment.attachment)}
+                            ${getFileNameFromURL(String(attachment.attachment_document || attachment.attachment))}
                           </a>
                         </span>
                       </span>
@@ -93,6 +102,11 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
                           ?hidden="${!this.canEdit || !this.canEditAttachments()}"
                           icon="create"
                           @click="${() => this.openAttachmentDialog(attachment)}"
+                        ></paper-icon-button>
+                        <paper-icon-button
+                          ?hidden="${!this.canEdit || !this.canDeleteAttachments()}"
+                          icon="delete"
+                          @click="${() => this.openDeleteConfirmation(attachment)}"
                         ></paper-icon-button>
                       </div>
                     </div>
@@ -110,17 +124,22 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
   }
 
   stateChanged(state: any): void {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'attachments')) {
+      return;
+    }
     if (!state.interventions.current) {
       return;
     }
-    this.attachments = state.interventions?.current.attachments || [];
-    this.interventionStatus = state.interventions?.current.status || '';
-    this.canEdit = state.interventions?.current.permissions.edit.attachments || false;
+
+    this.intervention = cloneDeep(state.interventions.current);
+    this.attachments = this.intervention.attachments || [];
+    this.canEdit = this.intervention.permissions!.edit.attachments || false;
+
     this.fileTypes = state.commonData.fileTypes || [];
     super.stateChanged(state);
   }
 
-  openAttachmentDialog(attachment?: ReviewAttachment): void {
+  openAttachmentDialog(attachment?: InterventionAttachment): void {
     openDialog({
       dialog: 'intervention-attachment-dialog',
       dialogData: {attachment}
@@ -133,10 +152,47 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
     return attachmentType ? attachmentType.name : '—';
   }
 
+  async openDeleteConfirmation(attachment: InterventionAttachment) {
+    const confirmed = await openDialog({
+      dialog: 'are-you-sure',
+      dialogData: {
+        content: this.deleteConfirmationMessage,
+        confirmBtnText: 'Yes'
+      }
+    }).then(({confirmed}) => {
+      return confirmed;
+    });
+    if (confirmed) {
+      this.deleteAttachment(attachment);
+    }
+  }
+
+  deleteAttachment(attachment: InterventionAttachment) {
+    const endpoint = getEndpoint(interventionEndpoints.updatePdAttachment, {
+      id: attachment.intervention,
+      attachment_id: attachment.id
+    });
+
+    sendRequest({
+      endpoint,
+      method: 'DELETE'
+    })
+      .then(() => {
+        getStore().dispatch<AsyncAction>(getIntervention(String(this.intervention.id)));
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
+  }
+
   canEditAttachments() {
     return (
-      this.interventionStatus !== CONSTANTS.STATUSES.Closed.toLowerCase() &&
-      this.interventionStatus !== CONSTANTS.STATUSES.Terminated.toLowerCase()
+      this.intervention.status !== CONSTANTS.STATUSES.Closed.toLowerCase() &&
+      this.intervention.status !== CONSTANTS.STATUSES.Terminated.toLowerCase()
     );
+  }
+
+  canDeleteAttachments() {
+    return this.intervention.status === CONSTANTS.STATUSES.Draft.toLowerCase();
   }
 }
