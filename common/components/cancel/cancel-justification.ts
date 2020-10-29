@@ -14,6 +14,12 @@ export class CancelJustification extends LitElement {
         ${sharedStyles} :host {
           display: block;
           margin-bottom: 24px;
+          --ecp-header-title: {
+            font-weight: 500;
+            font-size: 18px;
+            text-align: left;
+            margin-left: 80px;
+          }
         }
 
         etools-content-panel.cancellation-tab .cancellation-title {
@@ -50,12 +56,11 @@ export class CancelJustification extends LitElement {
           height: 70px !important;
         }
       </style>
-      <etools-content-panel class="cancellation-tab" panel-title="">
+      <etools-content-panel class="cancellation-tab" panel-title="Cancellation Note">
         <div slot="panel-btns" class="bookmark">
           <iron-icon icon="bookmark"></iron-icon>
         </div>
 
-        <div class="cancellation-title">Cancellation Note</div>
         <div class="cancellation-text">${this.justification}</div>
       </etools-content-panel>
     `;
