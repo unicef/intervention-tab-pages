@@ -8,9 +8,8 @@ import './intervention-attachment-dialog';
 import {sharedStyles} from '../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../common/styles/grid-layout-styles-lit';
 import {openDialog} from '../utils/dialog';
-import {InterventionAttachment, Intervention} from '../common/models/intervention.types';
+import {InterventionAttachment, Intervention, IdAndName} from '@unicef-polymer/etools-types';
 import {AttachmentsListStyles} from './attachments-list.styles';
-import {IdAndName} from '../common/models/globals.types';
 import {getFileNameFromURL, cloneDeep} from '../utils/utils';
 import {CommentsMixin} from '../common/components/comments/comments-mixin';
 import '../common/layout/are-you-sure';
@@ -21,10 +20,6 @@ import {getStore} from '../utils/redux-store-access';
 import {updateCurrentIntervention} from '../common/actions';
 import {pageIsNotCurrentlyActive} from '../utils/common-methods';
 import get from 'lodash-es/get';
-import {AttachmentsListStyles} from './attachments-list.styles';
-import {getFileNameFromURL} from '../utils/utils';
-import {CommentsMixin} from '../common/components/comments/comments-mixin';
-import {IdAndName, ReviewAttachment} from '@unicef-polymer/etools-types';
 
 @customElement('attachments-list')
 export class AttachmentsList extends CommentsMixin(LitElement) {
