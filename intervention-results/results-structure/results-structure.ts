@@ -180,6 +180,12 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(EtoolsCurr
   private cpOutputs: CpOutput[] = [];
 
   render() {
+    if (!this.intervention || !this.permissions || !this.resultLinks) {
+      return html`<style>
+          ${sharedStyles}
+        </style>
+        <etools-loading loading-text="Loading..." active></etools-loading>`;
+    }
     // language=HTML
     return html`
       <style>

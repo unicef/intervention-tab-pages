@@ -23,6 +23,12 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
     return [gridLayoutStylesLit, elevationStyles, frWarningsStyles];
   }
   render() {
+    if (!this.budgetSummary) {
+      return html`<style>
+          ${customIcons} ${InfoElementStyles}
+        </style>
+        <etools-loading loading-text="Loading..." active></etools-loading>`;
+    }
     // language=HTML
     return html`
       ${customIcons} ${InfoElementStyles}

@@ -36,7 +36,7 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
   }
   render() {
     // language=HTML
-    if (!this.data) {
+    if (!this.data || !this.cashTransferModalities) {
       return html`<style>
           ${sharedStyles}
         </style>
