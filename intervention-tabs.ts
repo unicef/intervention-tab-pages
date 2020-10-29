@@ -248,7 +248,7 @@ export class InterventionTabs extends connectStore(LitElement) {
       }
       if (!isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)) {
         this._routeDetails = cloneDeep(state.app!.routeDetails);
-        this.commentMode = !!(this._routeDetails.queryParams || {})['comment_mode'];
+        this.commentMode = !!(this._routeDetails?.queryParams || {})['comment_mode'];
         setTimeout(() => {
           getStore().dispatch(enableCommentMode(this.commentMode));
         }, 10);
