@@ -5,7 +5,6 @@ import {sharedStyles} from '../../styles/shared-styles-lit';
  * @customElement
  */
 export class CancelJustification extends LitElement {
-
   @property() justification!: string;
 
   render() {

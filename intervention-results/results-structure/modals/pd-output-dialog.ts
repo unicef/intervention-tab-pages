@@ -1,5 +1,4 @@
 import {LitElement, html, TemplateResult, property, customElement} from 'lit-element';
-import {CpOutput, ResultLinkLowerResult} from '../../../common/models/intervention.types';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {getEndpoint} from '../../../utils/endpoint-helper';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
@@ -10,7 +9,8 @@ import {getStore} from '../../../utils/redux-store-access';
 import {getIntervention} from '../../../common/actions';
 import {fireEvent} from '../../../utils/fire-custom-event';
 import {validateRequiredFields} from '../../../utils/validation-helper';
-import {AsyncAction} from '../../../common/types/types';
+import {AsyncAction, CpOutput} from '@unicef-polymer/etools-types';
+import {ResultLinkLowerResult} from '@unicef-polymer/etools-types';
 
 @customElement('pd-output-dialog')
 export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElement) {

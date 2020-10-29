@@ -5,7 +5,6 @@ import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
 import {LitElement} from 'lit-element';
 import {getEndpoint} from '../../../../../utils/endpoint-helper';
-import {Constructor} from '../../../../../common/models/globals.types';
 import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown';
 import {interventionEndpoints} from '../../../../../utils/intervention-endpoints';
 import {NonClusterIndicatorEl} from '../non-cluster-indicator';
@@ -13,6 +12,7 @@ import {ClusterIndicatorEl} from '../cluster-indicator';
 import {IndicatorDisaggregations} from '../indicator-dissaggregations';
 import {getStore} from '../../../../../utils/redux-store-access';
 import {updateCurrentIntervention} from '../../../../../common/actions';
+import {Constructor} from '@unicef-polymer/etools-types';
 
 /**
  * @mixinFunction

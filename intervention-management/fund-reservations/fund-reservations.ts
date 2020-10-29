@@ -10,7 +10,6 @@ import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {getStore} from '../../utils/redux-store-access';
 
 import FrNumbersConsistencyMixin from '../../common/mixins/fr-numbers-consistency-mixin';
-import {FrsDetails, Fr, Intervention} from '../../common/models/intervention.types';
 import {customIcons} from '../../common/styles/custom-icons';
 import {frWarningsStyles} from '../../common/styles/fr-warnings-styles';
 import {logWarn} from '@unicef-polymer/etools-behaviors/etools-logging';
@@ -20,7 +19,7 @@ import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {getArraysDiff} from '../../utils/array-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {AnyObject, RootState} from '../../common/models/globals.types';
+import {RootState} from '../../common/types/store.types';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {fireEvent} from '../../utils/fire-custom-event';
@@ -28,12 +27,12 @@ import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {patchIntervention} from '../../common/actions';
 import {isJsonStrMatch} from '../../utils/utils';
 import {FundReservationsPermissions} from './fund-reservations.models';
-import {Permission} from '../../common/models/intervention.types';
 import {selectFundReservationPermissions} from './fund-reservations.selectors';
 import {isUnicefUser} from '../../common/selectors';
 import ContentPanelMixin from '../../common/mixins/content-panel-mixin';
+import {AnyObject, AsyncAction, Permission} from '@unicef-polymer/etools-types';
+import {Intervention, FrsDetails, Fr} from '@unicef-polymer/etools-types';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AsyncAction} from '../../common/types/types';
 
 /**
  * @customElement

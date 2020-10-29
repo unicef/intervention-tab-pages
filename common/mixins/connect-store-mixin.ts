@@ -1,6 +1,7 @@
-import {Constructor, RootState} from '../models/globals.types';
 import {getStoreAsync} from '../../utils/redux-store-access';
 import {Store, Unsubscribe} from 'redux';
+import {Constructor} from '@unicef-polymer/etools-types';
+import {RootState} from '../types/store.types';
 
 interface CustomElement {
   connectedCallback?(): void;

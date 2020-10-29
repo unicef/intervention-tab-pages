@@ -1,7 +1,7 @@
 import {logWarn} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {LitElement, property} from 'lit-element';
-import {Constructor} from '../../../../../common/models/globals.types';
-import {Indicator} from '../../../../../common/models/intervention.types';
+import {Constructor} from '@unicef-polymer/etools-types';
+import {Indicator} from '@unicef-polymer/etools-types';
 
 /**
  * @polymer

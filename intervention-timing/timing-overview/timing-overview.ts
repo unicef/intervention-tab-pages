@@ -6,7 +6,7 @@ import {elevationStyles} from '../../common/styles/elevation-styles';
 import {TimingOverviewData} from './timingOverview.models';
 import {selectTimingOverview} from './timingOverview.selectors';
 import {formatDateShortMonth} from '../../utils/date-utils';
-import {RootState} from '../../common/models/globals.types';
+import {RootState} from '../../common/types/store.types';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
 import {InfoElementStyles} from '../../common/styles/info-element-styles';

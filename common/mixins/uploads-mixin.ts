@@ -1,7 +1,7 @@
 import {LitElement, property} from 'lit-element';
-import {Constructor} from '../models/globals.types';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {Constructor} from '@unicef-polymer/etools-types';
 /**
  * @polymer
  * @mixinFunction

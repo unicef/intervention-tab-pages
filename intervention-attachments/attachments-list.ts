@@ -8,11 +8,10 @@ import './intervention-attachment-dialog';
 import {sharedStyles} from '../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../common/styles/grid-layout-styles-lit';
 import {openDialog} from '../utils/dialog';
-import {ReviewAttachment} from '../common/models/intervention.types';
 import {AttachmentsListStyles} from './attachments-list.styles';
-import {IdAndName} from '../common/models/globals.types';
 import {getFileNameFromURL} from '../utils/utils';
 import {CommentsMixin} from '../common/components/comments/comments-mixin';
+import {IdAndName, ReviewAttachment} from '@unicef-polymer/etools-types';
 
 @customElement('attachments-list')
 export class AttachmentsList extends CommentsMixin(LitElement) {

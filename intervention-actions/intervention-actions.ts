@@ -1,5 +1,4 @@
 import {CSSResultArray, LitElement, TemplateResult, html, property, customElement} from 'lit-element';
-import {GenericObject} from '../common/models/globals.types';
 import {arrowLeftIcon} from '../common/styles/app-icons';
 import '@polymer/paper-button';
 import '@polymer/paper-menu-button';
@@ -16,10 +15,11 @@ import '../common/components/intervention/pd-termination';
 import {InterventionActionsStyles} from './intervention-actions.styles';
 import {ACTIONS_WITH_INPUT, BACK_ACTIONS, CANCEL, EXPORT_ACTIONS, namesMap} from './intervention-actions.constants';
 import {PaperMenuButton} from '@polymer/paper-menu-button/paper-menu-button';
-import {Intervention} from '../common/models/intervention.types';
 import {updateCurrentIntervention} from '../common/actions';
 import {getStore} from '../utils/redux-store-access';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {GenericObject} from '@unicef-polymer/etools-types';
+import {Intervention} from '@unicef-polymer/etools-types';
 
 @customElement('intervention-actions')
 export class InterventionActions extends LitElement {
@@ -203,7 +203,7 @@ export class InterventionActions extends LitElement {
         return null;
       }
       if (action === 'cancel') {
-        return {cancel_justification: response.comment}
+        return {cancel_justification: response.comment};
       }
       return null;
     });

@@ -1,8 +1,8 @@
 import {customElement, LitElement, html, TemplateResult, property, CSSResultArray, css} from 'lit-element';
-import {InterventionActivityItem} from '../../../../common/models/intervention.types';
 import {getTotal} from './get-total.helper';
 import {ActivityItemsTableInlineStyles, ActivityItemsTableStyles} from './acivity-items-table.styles';
 import {fireEvent} from '../../../../utils/fire-custom-event';
+import {InterventionActivityItem} from '@unicef-polymer/etools-types';
 
 @customElement('activity-item-row')
 export class ActivityItemRow extends LitElement {

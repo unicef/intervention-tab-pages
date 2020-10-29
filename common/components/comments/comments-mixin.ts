@@ -1,10 +1,10 @@
-import {Constructor, RootState} from '../../models/globals.types';
+import {RootState} from '../../types/store.types';
 import {LitElement} from 'lit-element';
 import {CommentsCollection} from './comments.reducer';
-import {InterventionComment} from '../../types/types';
 import {openDialog} from '../../../utils/dialog';
 import './comments-dialog';
 import {connectStore} from '../../mixins/connect-store-mixin';
+import {Constructor, InterventionComment} from '@unicef-polymer/etools-types';
 
 type MetaData = CommentElementMeta & {
   oldStyles: string;

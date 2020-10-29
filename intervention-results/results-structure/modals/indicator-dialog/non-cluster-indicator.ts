@@ -10,9 +10,9 @@ import {LitElement, html, property, customElement} from 'lit-element';
 import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../../../common/styles/button-styles';
-import {Indicator} from '../../../../common/models/intervention.types';
 import {PaperCheckboxElement} from '@polymer/paper-checkbox/paper-checkbox.js';
 import {layoutCenter, layoutVertical} from '../../../../common/styles/flex-layout-styles';
+import {Indicator} from '@unicef-polymer/etools-types';
 
 /**
  * @customElement

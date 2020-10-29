@@ -2,7 +2,7 @@
 // @lajos bellow 2 imported from PMP
 import {prettyDate} from '../../utils/date-utils';
 import {PolymerElement} from '@polymer/polymer';
-import {Constructor, AnyObject} from '../models/globals.types';
+import {AnyObject, Constructor} from '@unicef-polymer/etools-types';
 
 /**
  * @polymer

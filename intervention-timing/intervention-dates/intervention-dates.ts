@@ -6,8 +6,7 @@ import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {Permission} from '../../common/models/intervention.types';
-import {RootState} from '../../common/models/globals.types';
+import {RootState} from '../../common/types/store.types';
 import {ProgrammeDocDates, InterventionDatesPermissions} from './interventionDates.models';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {selectInterventionDates, selectInterventionDatesPermissions} from './interventionDates.selectors';
@@ -19,7 +18,7 @@ import get from 'lodash-es/get';
 import '@unicef-polymer/etools-upload/etools-upload';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AsyncAction} from '../../common/types/types';
+import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
 
 /**
  * @customElement
