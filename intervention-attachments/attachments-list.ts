@@ -8,7 +8,7 @@ import './intervention-attachment-dialog';
 import {sharedStyles} from '../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../common/styles/grid-layout-styles-lit';
 import {openDialog} from '../utils/dialog';
-import {InterventionAttachment, Intervention, IdAndName} from '@unicef-polymer/etools-types';
+import {InterventionAttachment, Intervention, IdAndName, AsyncAction} from '@unicef-polymer/etools-types';
 import {AttachmentsListStyles} from './attachments-list.styles';
 import {getFileNameFromURL, cloneDeep} from '../utils/utils';
 import {CommentsMixin} from '../common/components/comments/comments-mixin';
@@ -17,7 +17,7 @@ import {interventionEndpoints} from '../utils/intervention-endpoints';
 import {getEndpoint} from '../utils/endpoint-helper';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {getStore} from '../utils/redux-store-access';
-import {updateCurrentIntervention} from '../common/actions';
+import {getIntervention} from '../common/actions';
 import {pageIsNotCurrentlyActive} from '../utils/common-methods';
 import get from 'lodash-es/get';
 
@@ -178,16 +178,11 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
       method: 'DELETE'
     })
       .then(() => {
-        getStore().dispatch(updateCurrentIntervention(this.removeDeletedAttachment(this.intervention, attachment.id!)));
+        getStore().dispatch<AsyncAction>(getIntervention(String(this.intervention.id)));
       })
       .catch((error: any) => {
         console.log(error);
       });
-  }
-
-  removeDeletedAttachment(intervention: Intervention, attachmentId: number) {
-    intervention.attachments = intervention.attachments.filter((attach) => attach.id !== attachmentId);
-    return intervention;
   }
 
   canEditAttachments() {
