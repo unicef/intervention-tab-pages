@@ -11,14 +11,11 @@ import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
-import {AnyObject, Section, LocationObject, EtoolsUserModel} from '../../../../common/models/globals.types';
-import {Indicator} from '../../../../common/models/intervention.types';
 import EtoolsDialog from '@unicef-polymer/etools-dialog';
 import SaveIndicatorMixin from './mixins/save-indicator-mixin';
 import IndicatorDialogTabsMixin from './mixins/indicator-dialog-tabs-mixin';
 import {fireEvent} from '../../../../utils/fire-custom-event';
 import {getStore} from '../../../../utils/redux-store-access';
-import {IndicatorDialogData} from './types';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {userIsPme} from '../../../../common/user-permissions';
 import ComponentBaseMixin from '../../../../common/mixins/component-base-mixin';
@@ -28,6 +25,8 @@ import './indicator-dissaggregations';
 import './non-cluster-indicator';
 import './cluster-indicator';
 import './cluster-indicator-disaggregations';
+import {Indicator, IndicatorDialogData} from '@unicef-polymer/etools-types';
+import {AnyObject, EtoolsUser, LocationObject, Section} from '@unicef-polymer/etools-types';
 
 @customElement('indicator-dialog')
 export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin(ComponentBaseMixin(LitElement))) {
@@ -228,7 +227,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   interventionStatus!: string;
 
   @property({type: Object})
-  currentUser!: EtoolsUserModel | null;
+  currentUser!: EtoolsUser | null;
 
   @query('etools-dialog')
   indicatorDialog!: EtoolsDialog;
@@ -378,7 +377,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
     this.indicatorDialog.notifyResize();
   }
 
-  _hideAddDisaggreations(isCluster: boolean, currentUser: EtoolsUserModel | null) {
+  _hideAddDisaggreations(isCluster: boolean, currentUser: EtoolsUser | null) {
     return isCluster || !userIsPme(currentUser) || !currentUser?.is_unicef_user;
   }
 }

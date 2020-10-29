@@ -13,17 +13,16 @@ import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {selectPdUnicefDetails, selectPdUnicefDetailsPermissions} from './pdUnicefDetails.selectors';
 import {PdUnicefDetailsPermissions, PdUnicefDetails} from './pdUnicefDetails.models';
-import {Permission} from '../../common/models/intervention.types';
 import {getStore} from '../../utils/redux-store-access';
 import {patchIntervention} from '../../common/actions';
-import {AnyObject, RootState, CpStructure, User} from '../../common/models/globals.types';
+import {RootState} from '../../common/types/store.types';
 import {isJsonStrMatch} from '../../utils/utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import orderBy from 'lodash-es/orderBy';
-import {AsyncAction} from '../../common/types/types';
+import {AnyObject, CountryProgram, Permission, AsyncAction, User} from '@unicef-polymer/etools-types';
 import isEmpty from 'lodash-es/isEmpty';
 import uniqBy from 'lodash-es/uniqBy';
 
@@ -204,14 +203,14 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
     `;
   }
 
-  private _cpStructures: CpStructure[] = [];
+  private _cpStructures: CountryProgram[] = [];
   @property({type: Array})
   get cpStructures() {
     return this._cpStructures;
   }
 
   set cpStructures(cps) {
-    this._cpStructures = orderBy<CpStructure>(cps, ['future', 'active', 'special'], ['desc', 'desc', 'asc']);
+    this._cpStructures = orderBy<CountryProgram>(cps, ['future', 'active', 'special'], ['desc', 'desc', 'asc']);
   }
 
   @property({type: Object})
@@ -269,7 +268,8 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
     }
 
     const pdUsers = this.getUsersAssignedToCurrentPD();
-    if (this.isUnicefUser) { // Partner user can not edit these fields
+    if (this.isUnicefUser) {
+      // Partner user can not edit these fields
       const changed = this.handleUsersNoLongerAssignedToCurrentCountry(this.users_list, pdUsers);
       if (changed) {
         this.users_list = [...this.users_list];

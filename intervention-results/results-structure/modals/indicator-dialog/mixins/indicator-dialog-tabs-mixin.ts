@@ -1,7 +1,13 @@
-// import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin';
-
-import {EtoolsTab, Constructor} from '../../../../../common/models/globals.types';
 import {property, LitElement} from 'lit-element';
+import {Constructor} from '@unicef-polymer/etools-types';
+
+interface EtoolsTab {
+  tab: string;
+  tabLabel: string;
+  hidden?: boolean;
+  showTabCounter?: boolean;
+  counter?: number;
+}
 
 /**
  * @polymer

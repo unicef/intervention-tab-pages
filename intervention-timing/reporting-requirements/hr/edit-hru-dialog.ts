@@ -22,9 +22,10 @@ import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {property} from '@polymer/decorators';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
-import {AnyObject, RootState} from '../../../common/models/globals.types';
+import {RootState} from '../../../common/types/store.types';
 import {isEmptyObject} from '../../../utils/utils';
 import {connectStore} from '../../../common/mixins/connect-store-mixin';
+import {AnyObject} from '@unicef-polymer/etools-types';
 
 /**
  * @polymer

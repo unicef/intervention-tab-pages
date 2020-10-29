@@ -3,7 +3,6 @@ import {ResultStructureStyles} from './results-structure.styles';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import '@polymer/iron-icons';
 import './modals/activity-dialog/activity-data-dialog';
-import {InterventionActivity, InterventionQuarter} from '../../common/models/intervention.types';
 import {openDialog} from '../../utils/dialog';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
@@ -14,7 +13,7 @@ import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-pa
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AsyncAction} from '../../common/types/types';
+import {AsyncAction, InterventionActivity, InterventionQuarter} from '@unicef-polymer/etools-types';
 
 @customElement('pd-activities')
 export class PdActivities extends CommentsMixin(LitElement) {

@@ -6,8 +6,8 @@ import '@polymer/paper-icon-button/paper-icon-button';
 
 // @lajos TO DO refactor
 import {property} from '@polymer/decorators';
-import {AnyObject} from '../models/globals.types';
 import {fireEvent} from '../../utils/fire-custom-event';
+import {AnyObject} from '@unicef-polymer/etools-types';
 
 /**
  * @polymer

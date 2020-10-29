@@ -1,7 +1,8 @@
 import {createSelector} from 'reselect';
 import {PartnerInfo, PartnerInfoPermissions} from './partnerInfo.models';
-import {Intervention, Permission, InterventionPermissionsFields} from '../../common/models/intervention.types';
 import {currentIntervention, currentInterventionPermissions} from '../../common/selectors';
+import {Permission} from '@unicef-polymer/etools-types';
+import {InterventionPermissionsFields, Intervention} from '@unicef-polymer/etools-types';
 
 export const selectPartnerDetails = createSelector(currentIntervention, (intervention: Intervention) => {
   return new PartnerInfo(intervention);

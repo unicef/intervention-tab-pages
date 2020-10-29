@@ -1,6 +1,6 @@
 import {LitElement, PropertyDeclarations} from 'lit-element';
 import {cloneDeep} from '../../utils/utils';
-import {GenericObject} from '../models/globals.types';
+import {GenericObject} from '@unicef-polymer/etools-types';
 
 type Constructor<T> = new (...args: any[]) => T;
 
@@ -10,7 +10,7 @@ export const DataMixin = <B extends Constructor<LitElement>>() => <T>(superclass
     /* eslint-enable @typescript-eslint/typedef,@typescript-eslint/explicit-function-return-type */
     editedData: Partial<T> = {};
     originalData!: T | null;
-    errors: GenericObject<any> = {};
+    errors: GenericObject = {};
 
     static get properties(): PropertyDeclarations {
       // @ts-ignore

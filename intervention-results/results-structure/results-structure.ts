@@ -11,13 +11,6 @@ import {
   selectResultLinksPermissions
 } from './results-structure.selectors';
 import {ResultStructureStyles} from './results-structure.styles';
-import {
-  CpOutput,
-  ExpectedResult,
-  InterventionQuarter,
-  ResultLinkLowerResult,
-  Intervention
-} from '../../common/models/intervention.types';
 import '@unicef-polymer/etools-data-table';
 import '@unicef-polymer/etools-content-panel';
 import '@polymer/paper-toggle-button/paper-toggle-button';
@@ -30,7 +23,7 @@ import './modals/cp-output-dialog';
 import '@polymer/paper-item';
 import '@polymer/paper-listbox';
 import {getEndpoint} from '../../utils/endpoint-helper';
-import {IdAndName, RootState} from '../../common/models/globals.types';
+import {RootState} from '../../common/types/store.types';
 import {openDialog} from '../../utils/dialog';
 import CONSTANTS from '../../common/constants';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
@@ -45,7 +38,15 @@ import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import ContentPanelMixin from '../../common/mixins/content-panel-mixin';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
-import {AsyncAction} from '../../common/types/types';
+import {
+  AsyncAction,
+  InterventionQuarter,
+  CpOutput,
+  IdAndName,
+  ExpectedResult,
+  Intervention,
+  ResultLinkLowerResult
+} from '@unicef-polymer/etools-types';
 
 const RESULT_VIEW = 'result_view';
 const BUDGET_VIEW = 'budget_view';

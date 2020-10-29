@@ -1,5 +1,9 @@
+import {
+  Intervention,
+  InterventionPermissionsFields,
+  PlannedBudget
+} from '@unicef-polymer/etools-types';
 import {ModelsBase} from '../../common/models/models.base';
-import {InterventionPermissionsFields, Intervention, PlannedBudget} from '../../common/models/intervention.types';
 
 export class FinancialComponentData extends ModelsBase {
   constructor(intervention: Intervention) {

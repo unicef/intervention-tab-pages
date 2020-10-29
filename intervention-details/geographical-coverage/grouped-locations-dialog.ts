@@ -3,8 +3,8 @@ import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import get from 'lodash-es/get';
-import {LocationObject} from '../../common/models/globals.types';
 import {fireEvent} from '../../utils/fire-custom-event';
+import {LocationObject} from '@unicef-polymer/etools-types';
 
 class GroupedLocations {
   adminLevelLocation: LocationObject | null = null;

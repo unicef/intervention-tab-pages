@@ -2,7 +2,7 @@ import {LitElement, html, property, customElement} from 'lit-element';
 import '@polymer/paper-tabs/paper-tabs';
 import '@polymer/paper-tabs/paper-tab';
 import {layoutHorizontal, layoutStartJustified} from '../styles/flex-layout-styles';
-import {AnyObject} from '../models/globals.types';
+import {AnyObject} from '@unicef-polymer/etools-types';
 
 /**
  * @LitElement

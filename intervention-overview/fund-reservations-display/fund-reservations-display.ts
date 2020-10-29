@@ -8,13 +8,13 @@ import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {frWarningsStyles} from '../../common/styles/fr-warnings-styles';
 import {_layoutVertical, _layoutEnd} from '../../common/styles/flex-layout-styles';
-import {Intervention, FrsDetails} from '../../common/models/intervention.types';
 import {customIcons} from '../../common/styles/custom-icons';
 import {prettyDate} from '../../utils/date-utils';
 import '../../common/mixins/fr-numbers-consistency-mixin';
 import FrNumbersConsistencyMixin from '../../common/mixins/fr-numbers-consistency-mixin';
-import {AnyObject} from '../../common/models/globals.types';
 import isEmpty from 'lodash-es/isEmpty';
+import {AnyObject} from '@unicef-polymer/etools-types';
+import {Intervention, FrsDetails} from '@unicef-polymer/etools-types';
 
 /**
  * @customElement
@@ -94,7 +94,8 @@ export class FundReservationsDisplay extends EtoolsCurrency(FrNumbersConsistency
           (fr: AnyObject) => html`
             <etools-data-table-row>
               <div slot="row-data" class="layout-horizontal">
-                <span class="col-data col-2">${fr.fr_number}
+                <span class="col-data col-2"
+                  >${fr.fr_number}
                   <a title="See more details" class="pl-5" target="_blank" href="${this.getFRNumberLink(fr.fr_number)}">
                     <iron-icon icon="pmp-custom-icons:external-icon"></iron-icon>
                   </a>

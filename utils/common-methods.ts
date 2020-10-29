@@ -1,4 +1,4 @@
-import {AnyObject} from '../common/models/globals.types';
+import {AnyObject} from '@unicef-polymer/etools-types';
 
 export const handleItemsNoLongerAssignedToCurrentCountry = (availableItems: AnyObject[], savedItems?: AnyObject[]) => {
   if (savedItems && savedItems.length > 0 && availableItems && availableItems.length > 0) {
