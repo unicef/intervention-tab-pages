@@ -104,6 +104,12 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(EtoolsCurr
         .pdOtputMargin {
           margin: 0 4px;
         }
+        .pdOtputMargin.unicef-user .editable-row .hover-block {
+          background-color: rgb(230, 230, 230);
+        }
+        .pdOtputMargin.partner .editable-row .hover-block {
+          background-color: rgb(240, 240, 240);
+        }
         #showInactive {
           margin-right: 8px;
         }
@@ -225,9 +231,6 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(EtoolsCurr
           opacity: 0.84;
           margin-left: 6px;
         }
-        .editable-row .hover-block {
-          background-color: rgb(230, 230, 230);
-        }
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Results Structure (${this.noOfPdOutputs})">
@@ -313,7 +316,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(EtoolsCurr
                 (pdOutput: ResultLinkLowerResult) => html`
                   <etools-data-table-row
                     details-opened
-                    class="pdOtputMargin"
+                    class="pdOtputMargin ${this.isUnicefUser ? 'unicef-user' : 'partner'}"
                     related-to="pd-output-${pdOutput.id}"
                     related-to-description=" PD Output - ${pdOutput.name}"
                     comments-container
