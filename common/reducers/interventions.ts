@@ -1,4 +1,4 @@
-import {UPDATE_CURRENT_INTERVENTION} from '../../../../../../redux/actionsContants';
+import {UPDATE_CURRENT_INTERVENTION} from '../actionsConstants';
 import {Intervention} from '@unicef-polymer/etools-types';
 
 export interface InterventionsState {
