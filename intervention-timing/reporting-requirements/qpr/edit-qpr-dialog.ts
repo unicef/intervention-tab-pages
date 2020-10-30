@@ -2,8 +2,7 @@
 import {PolymerElement, html} from '@polymer/polymer';
 import '@polymer/iron-label/iron-label';
 import '@polymer/paper-button/paper-button';
-
-import '@unicef-polymer/etools-dialog/etools-dialog.js';
+import '@unicef-polymer/etools-dialog/etools-dialog';
 
 import {prepareDatepickerDate} from '../../../utils/date-utils';
 // import EndpointsMixin from '../mixins/endpoints-mixin';
@@ -182,22 +181,38 @@ class EditQprDialog extends PolymerElement {
     return !!foundQpr;
   }
 
+  _validateDataBeforeAdd() {
+    if (!this._editedQprDatesSet.due_date || !this._editedQprDatesSet.start_date || !this._editedQprDatesSet.end_date) {
+      fireEvent(this, 'toast', {
+        text: 'Start, end & due dates are required.',
+        showCloseBtn: true
+      });
+      return false;
+    }
+    if (this._duplicateDueDate(this._editedQprDatesSet.due_date)) {
+      fireEvent(this, 'toast', {
+        text: 'Requirement dates not added, selected Due Date is already in the list.',
+        showCloseBtn: true
+      });
+      return false;
+    }
+    return true;
+  }
+
   _updateQprData(e: CustomEvent) {
-    if (e.detail.confirmed) {
-      if (this._duplicateDueDate(this._editedQprDatesSet.due_date)) {
-        fireEvent(this, 'toast', {
-          text: 'Requirement dates not added, selected Due Date is already in the list.',
-          showCloseBtn: true
-        });
-        return;
-      }
-      if (this._qprDatesSetEditedIndex < 0) {
-        // add
-        this.push('qprData', this._editedQprDatesSet);
-      } else {
-        // edit
-        this.splice('qprData', this._qprDatesSetEditedIndex, 1, this._editedQprDatesSet);
-      }
+    if (!e.detail.confirmed) {
+      return;
+    }
+    if (!this._validateDataBeforeAdd()) {
+      return;
+    }
+
+    if (this._qprDatesSetEditedIndex < 0) {
+      // add
+      this.push('qprData', this._editedQprDatesSet);
+    } else {
+      // edit
+      this.splice('qprData', this._qprDatesSetEditedIndex, 1, this._editedQprDatesSet);
     }
     this.set('_qprDatesSetEditedIndex', -1);
   }

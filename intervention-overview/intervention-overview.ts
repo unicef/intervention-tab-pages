@@ -27,7 +27,7 @@ export class InterventionOverview extends connectStore(LitElement) {
     return [gridLayoutStylesLit, elevationStyles];
   }
   render() {
-    if (!this.interventionCpOutputs || !this.intervention || !this.interventionAgreement) {
+    if ((this.isUnicefUser && !this.interventionCpOutputs) || !this.intervention || !this.interventionAgreement) {
       return html`<style>
           ${sharedStyles}
         </style>
@@ -91,17 +91,19 @@ export class InterventionOverview extends connectStore(LitElement) {
       </style>
 
       <div class="page-content elevation" elevation="1" id="top-container">
-        <div class="row-h flex-c">
-          <div class="col col-12 block">
-            <iron-label for="cp_outputs_list" class="label-secondary-color"> Cp Output(s) </iron-label>
-            <br />
-            <div class="content" id="cp_outputs_list">
-              ${this.interventionCpOutputs.length
-                ? this.interventionCpOutputs.map((cpOut: string) => html`<strong>${cpOut}</strong><br />`)
-                : html`&#8212;`}
-            </div>
-          </div>
-        </div>
+        ${this.isUnicefUser
+          ? html` <div class="row-h flex-c">
+              <div class="col col-12 block">
+                <iron-label for="cp_outputs_list" class="label-secondary-color"> Cp Output(s) </iron-label>
+                <br />
+                <div class="content" id="cp_outputs_list">
+                  ${this.interventionCpOutputs.length
+                    ? this.interventionCpOutputs.map((cpOut: string) => html`<strong>${cpOut}</strong><br />`)
+                    : html`&#8212;`}
+                </div>
+              </div>
+            </div>`
+          : ``}
 
         <div class="row-h flex-c">
           <div class="col col-12 block">
@@ -260,7 +262,7 @@ export class InterventionOverview extends connectStore(LitElement) {
   cpOutputs!: CpOutput[];
 
   @property({type: Array})
-  interventionCpOutputs: string[] = [];
+  interventionCpOutputs!: string[];
 
   @property({type: Array})
   sections!: AnyObject[];
@@ -294,9 +296,6 @@ export class InterventionOverview extends connectStore(LitElement) {
         agreements.find((item: MinimalAgreement) => item.id === this.intervention.agreement) ||
         ({} as MinimalAgreement);
     }
-    if (!isJsonStrMatch(this.cpOutputs, state.commonData!.cpOutputs)) {
-      this.cpOutputs = [...state.commonData!.cpOutputs];
-    }
     if (!isJsonStrMatch(this.sections, state.commonData!.sections)) {
       this.sections = [...state.commonData!.sections];
     }
@@ -308,11 +307,16 @@ export class InterventionOverview extends connectStore(LitElement) {
     if (this.sections && this.intervention) {
       this._parseSections(this.sections.length, this.intervention.sections.length);
     }
-    if (this.cpOutputs && this.resultLinks) {
-      this._parseCpOutputs(this.cpOutputs.length, this.resultLinks.length);
-    }
     if (state.user && state.user.data) {
       this.isUnicefUser = state.user.data.is_unicef_user;
+    }
+    if (this.isUnicefUser) {
+      if (!isJsonStrMatch(this.cpOutputs, state.commonData!.cpOutputs)) {
+        this.cpOutputs = [...state.commonData!.cpOutputs];
+      }
+      if (this.cpOutputs && this.resultLinks) {
+        this._parseCpOutputs(this.cpOutputs.length, this.resultLinks.length);
+      }
     }
   }
 

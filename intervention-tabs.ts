@@ -35,6 +35,7 @@ const MOCKUP_STATUSES = [
   ['terminated', 'Terminated'],
   ['closed', 'Closed']
 ];
+
 /**
  * @LitElement
  * @customElement
@@ -84,10 +85,10 @@ export class InterventionTabs extends connectStore(LitElement) {
         }
         .flag {
           color: #ffffff;
-          background-color: #75c8ff;
+          background-color: #56ccf2;
           padding: 5px 20px;
           width: 100%;
-          border-radius: 7%;
+          border-radius: 8px 8px;
         }
         div[slot='tabs'] {
           width: 100%;

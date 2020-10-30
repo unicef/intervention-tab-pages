@@ -298,5 +298,11 @@ export const sharedStylesContent = `
   .padd-between:not(:last-child) {
     padding-bottom: 6px;
   }
+
+  .lifted-up-icon {
+    bottom: 0.4rem;
+    --iron-icon-width: 14px;
+    --iron-icon-height: 14px;
+  }
 `;
 export const sharedStyles = html`${unsafeCSS(sharedStylesContent)}`;
