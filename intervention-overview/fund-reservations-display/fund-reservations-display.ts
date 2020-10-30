@@ -97,7 +97,7 @@ export class FundReservationsDisplay extends EtoolsCurrency(FrNumbersConsistency
                 <span class="col-data col-2"
                   >${fr.fr_number}
                   <a title="See more details" class="pl-5" target="_blank" href="${this.getFRNumberLink(fr.fr_number)}">
-                    <iron-icon icon="pmp-custom-icons:external-icon"></iron-icon>
+                    <iron-icon class="lifted-up-icon" icon="pmp-custom-icons:external-icon"></iron-icon>
                   </a>
                 </span>
                 <span class="col-data col-2 right-align">${prettyDate(fr.start_date)}</span>
