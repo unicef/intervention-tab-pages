@@ -184,7 +184,7 @@ class EditQprDialog extends PolymerElement {
   _validateDataBeforeAdd() {
     if (!this._editedQprDatesSet.due_date || !this._editedQprDatesSet.start_date || !this._editedQprDatesSet.end_date) {
       fireEvent(this, 'toast', {
-        text: 'Requirement dates are required.',
+        text: 'Start, end & due dates are required.',
         showCloseBtn: true
       });
       return false;
@@ -199,7 +199,10 @@ class EditQprDialog extends PolymerElement {
     return true;
   }
 
-  _updateQprData() {
+  _updateQprData(e: CustomEvent) {
+    if (!e.detail.confirmed) {
+      return;
+    }
     if (!this._validateDataBeforeAdd()) {
       return;
     }
