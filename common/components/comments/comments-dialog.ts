@@ -86,6 +86,7 @@ export class CommentsDialog extends connectStore(LitElement) {
   private deletingCollection: Set<number> = new Set();
   private newMessageText = '';
   private currentUser: any;
+  private dialogHeight?: number;
   @query('etools-dialog') private dialogElement!: EtoolsDialog;
 
   protected render(): TemplateResult {
@@ -136,6 +137,7 @@ export class CommentsDialog extends connectStore(LitElement) {
               this.newMessageText = detail.value;
               this.requestUpdate();
             }}"
+            @keyup="${(event: KeyboardEvent) => this.onKeyup(event)}"
             @keydown="${(event: KeyboardEvent) => this.onKeydown(event)}"
           ></paper-textarea>
           <paper-button class="send-btn" @click="${() => this.addComment()}">Post</paper-button>
@@ -230,6 +232,7 @@ export class CommentsDialog extends connectStore(LitElement) {
       if (!comment) {
         // scroll down if comment is new
         this.scrollDown();
+        this.dialogElement.notifyResize();
       }
     });
     // take existing comment
@@ -281,23 +284,38 @@ export class CommentsDialog extends connectStore(LitElement) {
     this.addComment({...commentForRetry});
   }
 
-  onKeydown(event: KeyboardEvent): void {
-    this.dialogElement.notifyResize();
+  onKeyup(event: KeyboardEvent): void {
     if (event.key !== 'Enter') {
+      this.updateHeight();
       return;
     }
     if (event.ctrlKey) {
       this.newMessageText += '\n';
       this.requestUpdate();
+      this.updateHeight();
     } else {
-      event.preventDefault();
       this.addComment();
+    }
+  }
+
+  onKeydown(event: KeyboardEvent): void {
+    if (event.key === 'Enter' && !event.ctrlKey) {
+      event.preventDefault();
     }
   }
 
   private scrollDown(): void {
     if (this.dialogElement) {
       this.dialogElement.scrollDown();
+    }
+  }
+
+  private updateHeight(): void {
+    const children = this.dialogElement?.shadowRoot?.children as any;
+    const height: number = children?.dialog?.offsetHeight || 0;
+    if (height !== this.dialogHeight) {
+      this.dialogElement.notifyResize();
+      this.dialogHeight = height;
     }
   }
 }
