@@ -40,7 +40,7 @@ export const showToast = (message: string, showCloseBtn = true) => {
   };
 };
 
-export const updatePrpCountries = (PRPCountryData: AnyObject[]) => {
+export const setPrpCountries = (PRPCountryData: AnyObject[]) => {
   return {
     type: 'UPDATE_PRP_COUNTRIES',
     PRPCountryData
