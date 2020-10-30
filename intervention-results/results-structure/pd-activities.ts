@@ -7,7 +7,7 @@ import {openDialog} from '../../utils/dialog';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {getStore} from '../../utils/redux-store-access';
-import {getIntervention} from '../../common/interventions';
+import {getIntervention} from '../../common/actions';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';

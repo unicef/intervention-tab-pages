@@ -11,7 +11,7 @@ import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {getStore} from '../../utils/redux-store-access';
-import {updateCurrentIntervention} from '../../common/interventions';
+import {updateCurrentIntervention} from '../../common/actions';
 
 /**
  * @customElement

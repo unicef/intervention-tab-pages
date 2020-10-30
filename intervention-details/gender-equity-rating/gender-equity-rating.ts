@@ -13,7 +13,7 @@ import {selectGenderEquityRating, selectGenderEquityRatingPermissions} from './g
 import {GenderEquityRatingPermissions, GenderEquityRating} from './genderEquityRating.models';
 import {getStore} from '../../utils/redux-store-access';
 import {RootState} from '../../common/types/store.types';
-import {patchIntervention} from '../../common/interventions';
+import {patchIntervention} from '../../common/actions';
 import {isJsonStrMatch} from '../../utils/utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import cloneDeep from 'lodash-es/cloneDeep';

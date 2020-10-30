@@ -17,7 +17,7 @@ import {interventionEndpoints} from '../utils/intervention-endpoints';
 import {getEndpoint} from '../utils/endpoint-helper';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {getStore} from '../utils/redux-store-access';
-import {getIntervention} from '../common/interventions';
+import {getIntervention} from '../common/actions';
 import {pageIsNotCurrentlyActive} from '../utils/common-methods';
 import get from 'lodash-es/get';
 

@@ -14,7 +14,7 @@ import {getStore} from '../../../../utils/redux-store-access';
 import './activity-timeframes';
 import {fireEvent} from '../../../../utils/fire-custom-event';
 import {ActivityItemsTable} from './activity-items-table';
-import {updateCurrentIntervention} from '../../../../common/interventions';
+import {updateCurrentIntervention} from '../../../../common/actions';
 import {ActivityTimeFrames} from './activity-timeframes';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {validateRequiredFields} from '../../../../utils/validation-helper';

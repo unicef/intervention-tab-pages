@@ -14,7 +14,7 @@ import {PaperInputElement} from '@polymer/paper-input/paper-input';
 import {selectPlannedVisits, selectPlannedVisitsPermissions} from './programmaticVisits.selectors';
 import {selectInterventionDates} from '../../intervention-timing/intervention-dates/interventionDates.selectors';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {patchIntervention} from '../../common/interventions';
+import {patchIntervention} from '../../common/actions';
 import RepeatableDataSetsMixin from '../../common/mixins/repeatable-data-sets-mixin';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';

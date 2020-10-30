@@ -21,7 +21,7 @@ import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {getIntervention, updateCurrentIntervention} from '../../common/interventions';
+import {getIntervention, updateCurrentIntervention} from '../../common/actions';
 import '../../common/layout/are-you-sure';
 import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
