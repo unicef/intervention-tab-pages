@@ -12,7 +12,7 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import {selectInterventionDates, selectInterventionDatesPermissions} from './interventionDates.selectors';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {getStore} from '../../utils/redux-store-access';
-import {patchIntervention} from '../../common/actions';
+import {patchIntervention} from '../../common/interventions';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
 import '@unicef-polymer/etools-upload/etools-upload';
