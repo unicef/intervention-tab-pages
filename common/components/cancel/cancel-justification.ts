@@ -22,19 +22,13 @@ export class CancelJustification extends LitElement {
           }
         }
 
-        etools-content-panel.cancellation-tab .cancellation-title {
-          font-weight: 500;
-          font-size: 19px;
-          text-transform: uppercase;
-          margin: 15px 0 26px;
-          padding-left: 80px;
-        }
-
-        etools-content-panel.cancellation-tab .cancellation-text {
+        .cancellation-text {
           font-size: 17px;
           white-space: pre-wrap;
           color: var(--primary-text-color);
           padding-left: 80px;
+          padding-top: 16px;
+          padding-bottom: 12px;
         }
 
         div[slot='panel-btns'].bookmark {
@@ -52,8 +46,8 @@ export class CancelJustification extends LitElement {
         }
 
         div[slot='panel-btns'].bookmark iron-icon {
-          width: 70px !important;
-          height: 70px !important;
+          width: 60px !important;
+          height: 60px !important;
         }
       </style>
       <etools-content-panel class="cancellation-tab" panel-title="Cancellation Note">
