@@ -35,6 +35,7 @@ const MOCKUP_STATUSES = [
   ['terminated', 'Terminated'],
   ['closed', 'Closed']
 ];
+
 /**
  * @LitElement
  * @customElement
