@@ -15,7 +15,7 @@ import '../common/components/intervention/pd-termination';
 import {InterventionActionsStyles} from './intervention-actions.styles';
 import {ACTIONS_WITH_INPUT, BACK_ACTIONS, CANCEL, EXPORT_ACTIONS, namesMap} from './intervention-actions.constants';
 import {PaperMenuButton} from '@polymer/paper-menu-button/paper-menu-button';
-import {updateCurrentIntervention} from '../common/actions';
+import {updateCurrentIntervention} from '../common/interventions';
 import {getStore} from '../utils/redux-store-access';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {GenericObject} from '@unicef-polymer/etools-types';

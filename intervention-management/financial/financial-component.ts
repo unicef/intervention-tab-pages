@@ -18,7 +18,7 @@ import './financialComponent.models';
 import './financialComponent.selectors';
 import {FinancialComponentData, FinancialComponentPermissions} from './financialComponent.selectors';
 import {selectFinancialComponentPermissions, selectFinancialComponent} from './financialComponent.models';
-import {patchIntervention} from '../../common/actions';
+import {patchIntervention} from '../../common/interventions';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import {isJsonStrMatch} from '../../utils/utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
