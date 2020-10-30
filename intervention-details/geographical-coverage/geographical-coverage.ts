@@ -10,7 +10,7 @@ import {getStore} from '../../utils/redux-store-access';
 import {LocationsPermissions} from './geographicalCoverage.models';
 import {selectLocationsPermissions} from './geographicalCoverage.selectors';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
-import {patchIntervention} from '../../common/interventions';
+import {patchIntervention} from '../../common/actions/interventions';
 import {isJsonStrMatch} from '../../utils/utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {RootState} from '../../common/types/store.types';

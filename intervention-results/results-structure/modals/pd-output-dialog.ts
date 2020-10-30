@@ -6,7 +6,7 @@ import {DataMixin} from '../../../common/mixins/data-mixin';
 import {getDifference} from '../../../common/mixins/objects-diff';
 import '@unicef-polymer/etools-dialog';
 import {getStore} from '../../../utils/redux-store-access';
-import {getIntervention} from '../../../common/interventions';
+import {getIntervention} from '../../../common/actions/interventions';
 import {fireEvent} from '../../../utils/fire-custom-event';
 import {validateRequiredFields} from '../../../utils/validation-helper';
 import {AsyncAction, CpOutput} from '@unicef-polymer/etools-types';

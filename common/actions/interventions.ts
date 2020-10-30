@@ -1,7 +1,7 @@
-import {_sendRequest} from '../utils/request-helper';
-import {getEndpoint} from '../utils/endpoint-helper';
-import {interventionEndpoints} from '../utils/intervention-endpoints';
-import {SHOW_TOAST} from './actionsConstants';
+import {_sendRequest} from '../../utils/request-helper';
+import {getEndpoint} from '../../utils/endpoint-helper';
+import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {SHOW_TOAST} from '../actionsConstants';
 import {AnyObject, PlannedBudget, Intervention} from '@unicef-polymer/etools-types';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 

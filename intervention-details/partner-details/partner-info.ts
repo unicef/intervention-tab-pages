@@ -15,7 +15,7 @@ import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {patchIntervention} from '../../common/interventions';
+import {patchIntervention} from '../../common/actions/interventions';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';

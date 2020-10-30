@@ -2,7 +2,7 @@ import {LitElement, customElement} from 'lit-element';
 // eslint-disable-next-line max-len
 import EndpointsLitMixin from '../../../../intervention-tab-pages/common/mixins/endpoints-mixin-lit';
 import {getStore} from '../../../utils/redux-store-access';
-import {updatePrpCountries} from '../../interventions';
+import {updatePrpCountries} from '../../actions/interventions';
 import get from 'lodash-es/get';
 
 @customElement('prp-country-data')

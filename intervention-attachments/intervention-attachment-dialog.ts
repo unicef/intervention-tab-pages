@@ -7,7 +7,7 @@ import '@unicef-polymer/etools-upload/etools-upload.js';
 import '@polymer/paper-checkbox';
 import '@unicef-polymer/etools-dialog';
 import {getStore} from '../utils/redux-store-access';
-import {updateCurrentIntervention} from '../common/interventions';
+import {updateCurrentIntervention} from '../common/actions/interventions';
 import {validateRequiredFields} from '../utils/validation-helper';
 import {sharedStyles} from '../common/styles/shared-styles-lit';
 import {connectStore} from '../common/mixins/connect-store-mixin';

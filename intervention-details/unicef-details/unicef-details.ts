@@ -14,7 +14,7 @@ import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {selectPdUnicefDetails, selectPdUnicefDetailsPermissions} from './pdUnicefDetails.selectors';
 import {PdUnicefDetailsPermissions, PdUnicefDetails} from './pdUnicefDetails.models';
 import {getStore} from '../../utils/redux-store-access';
-import {patchIntervention} from '../../common/interventions';
+import {patchIntervention} from '../../common/actions/interventions';
 import {RootState} from '../../common/types/store.types';
 import {isJsonStrMatch} from '../../utils/utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';

@@ -13,7 +13,7 @@ import '../../common/layout/are-you-sure';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
-import {getIntervention} from '../../common/interventions';
+import {getIntervention} from '../../common/actions/interventions';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {openDialog} from '../../utils/dialog';

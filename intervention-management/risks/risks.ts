@@ -21,7 +21,7 @@ import './risk-dialog';
 import '../../common/layout/are-you-sure';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {getIntervention} from '../../common/interventions';
+import {getIntervention} from '../../common/actions/interventions';
 import {currentInterventionPermissions} from '../../common/selectors';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, LabelAndValue, RiskData} from '@unicef-polymer/etools-types';

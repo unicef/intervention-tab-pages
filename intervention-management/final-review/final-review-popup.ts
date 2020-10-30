@@ -5,7 +5,7 @@ import {fireEvent} from '../../utils/fire-custom-event';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import '@unicef-polymer/etools-upload/etools-upload';
 import {getStore} from '../../utils/redux-store-access';
-import {updateCurrentIntervention} from '../../common/interventions';
+import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {ReviewAttachment, Intervention} from '@unicef-polymer/etools-types';
 
