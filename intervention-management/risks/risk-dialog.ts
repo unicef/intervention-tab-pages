@@ -57,6 +57,7 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
               .selected="${this.originalData.risk_type}"
               option-value="value"
               option-label="label"
+              auto-validate
               required
               @etools-selected-item-changed="${({detail}: CustomEvent) =>
                 this.selectedItemChanged(detail, 'risk_type', 'value')}"
@@ -70,6 +71,7 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
               label="Proposed Mitigation Measures"
               always-float-label
               type="text"
+              auto-validate
               placeholder="—"
               required
               error-message="This field is required"
