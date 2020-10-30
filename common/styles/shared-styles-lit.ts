@@ -300,7 +300,7 @@ export const sharedStylesContent = `
   }
 
   .lifted-up-icon {
-    bottom: 35%;
+    bottom: 0.4rem;
     --iron-icon-width: 14px;
     --iron-icon-height: 14px;
   }
