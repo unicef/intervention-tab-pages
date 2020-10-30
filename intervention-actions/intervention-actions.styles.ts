@@ -9,7 +9,6 @@ export const InterventionActionsStyles: CSSResult = css`
     --light-green-color: #00b3a1;
     --back-color: #233944;
     --cancel-color: #828282;
-    --paper-icon-button_-_height: 36px;
   }
 
   .main-button {
@@ -55,13 +54,15 @@ export const InterventionActionsStyles: CSSResult = css`
   }
 
   paper-menu-button {
-    padding: 8px 4px;
+    padding: 8px 2px;
   }
 
   paper-button {
     z-index: 10;
   }
   .option-button {
+    margin-left: 10px;
+    height: 36px;
     border-left: 1px solid var(--light-green-color);
   }
 `;
