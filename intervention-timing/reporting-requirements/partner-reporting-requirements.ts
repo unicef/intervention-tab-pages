@@ -237,7 +237,7 @@ class PartnerReportingRequirements extends connectStore(PolymerElement) {
   specialRequirementsCount = 0;
 
   @property({type: Object})
-  editMode!: Permission<ReportingRequirementsPermissions>;
+  reportingRequirementsPermissions!: Permission<ReportingRequirementsPermissions>;
 
   @property({type: Object})
   intervention!: AnyObject;
@@ -248,9 +248,13 @@ class PartnerReportingRequirements extends connectStore(PolymerElement) {
   @property({type: Boolean})
   commentsMode!: boolean;
 
-  @computed('commentsMode', 'editMode')
+  @computed('commentsMode', 'reportingRequirementsPermissions')
   get isReadonly(): boolean {
-    return this.commentsMode || !this.editMode;
+    return (
+      this.commentsMode ||
+      !this.reportingRequirementsPermissions ||
+      !this.reportingRequirementsPermissions.edit.reporting_requirements
+    );
   }
 
   stateChanged(state: RootState) {
@@ -262,8 +266,7 @@ class PartnerReportingRequirements extends connectStore(PolymerElement) {
     }
     this.isUnicefUser = isUnicefUser(state);
 
-    // @lajos TO DO: get correct values for bellow
-    this.editMode = selectReportingRequirementsPermissions(state);
+    this.reportingRequirementsPermissions = selectReportingRequirementsPermissions(state);
     const currentIntervention = get(state, 'interventions.current');
     this.intervention = cloneDeep(currentIntervention);
     this.interventionId = this.intervention.id;
