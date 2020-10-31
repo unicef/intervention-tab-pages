@@ -12,7 +12,7 @@ import {selectDocumentDetails, selectDocumentDetailsPermissions} from './documen
 import {DocumentDetailsPermissions, DocumentDetails} from './documentDetails.models';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {getStore} from '../../utils/redux-store-access';
-import {patchIntervention} from '../../common/actions';
+import {patchIntervention} from '../../common/actions/interventions';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {RootState} from '../../common/types/store.types';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';

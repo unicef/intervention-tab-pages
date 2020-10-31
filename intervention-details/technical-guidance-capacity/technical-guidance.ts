@@ -7,7 +7,7 @@ import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {RootState} from '../../common/types/store.types';
 import {TechnicalDetails, TechnicalDetailsPermissions} from './technicalGuidance.models';
 import {selectTechnicalDetails, selectTechnicalDetailsPermissions} from './technicalGuidance.selectors';
-import {patchIntervention} from '../../common/actions';
+import {patchIntervention} from '../../common/actions/interventions';
 import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-loading/etools-loading';
 import cloneDeep from 'lodash-es/cloneDeep';

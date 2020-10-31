@@ -13,7 +13,7 @@ import {validateRequiredFields} from '../../utils/validation-helper';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {updateCurrentIntervention} from '../../common/actions';
+import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {LabelAndValue} from '@unicef-polymer/etools-types';
 import {Intervention} from '@unicef-polymer/etools-types';
 

@@ -24,7 +24,7 @@ import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
-import {patchIntervention} from '../../common/actions';
+import {patchIntervention} from '../../common/actions/interventions';
 import {isJsonStrMatch} from '../../utils/utils';
 import {FundReservationsPermissions} from './fund-reservations.models';
 import {selectFundReservationPermissions} from './fund-reservations.selectors';

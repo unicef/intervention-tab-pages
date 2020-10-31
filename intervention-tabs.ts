@@ -15,7 +15,7 @@ import {getStore, getStoreAsync} from './utils/redux-store-access';
 import {selectAvailableActions, currentPage, currentSubpage, isUnicefUser} from './common/selectors';
 import {elevationStyles} from './common/styles/elevation-styles';
 import {RootState} from './common/types/store.types';
-import {getIntervention, updateCurrentIntervention} from './common/actions';
+import {getIntervention, updateCurrentIntervention} from './common/actions/interventions';
 import {sharedStyles} from './common/styles/shared-styles-lit';
 import {isJsonStrMatch} from './utils/utils';
 import {pageContentHeaderSlottedStyles} from './common/layout/page-content-header/page-content-header-slotted-styles';
@@ -27,6 +27,7 @@ import {Store} from 'redux';
 import {connectStore} from './common/mixins/connect-store-mixin';
 import {Intervention} from '@unicef-polymer/etools-types';
 import {AsyncAction, RouteDetails} from '@unicef-polymer/etools-types';
+import {interventions} from './common/reducers/interventions';
 
 const MOCKUP_STATUSES = [
   ['draft', 'Draft'],
@@ -209,7 +210,8 @@ export class InterventionTabs extends connectStore(LitElement) {
     this._showInterventionPageLoadingMessage();
     getStoreAsync().then((store: Store<RootState>) => {
       (store as any).addReducers({
-        commentsData
+        commentsData,
+        interventions
       });
     });
   }
