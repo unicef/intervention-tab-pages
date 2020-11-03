@@ -1,7 +1,7 @@
-import {html} from '@polymer/polymer/polymer-element.js';
+import {css, unsafeCSS} from 'lit-element';
 
-// language=HTML
-export const sectionContentStylesPolymer = html` <style>
+// language=CSS
+export const sectionContentStyles = `
   .content-section + .content-section,
   .content-section + * + .content-section,
   .content-section:not(:first-of-type) {
@@ -19,4 +19,9 @@ export const sectionContentStylesPolymer = html` <style>
       }
     }
   }
-</style>`;
+`;
+
+// language=CSS
+export const sectionContentStylesLit = css`
+  ${unsafeCSS(sectionContentStyles)}
+`;
