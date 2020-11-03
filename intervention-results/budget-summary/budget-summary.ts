@@ -13,6 +13,7 @@ import {customIcons} from '../../common/styles/custom-icons';
 import {InfoElementStyles} from '../../common/styles/info-element-styles';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {FrsDetails, Intervention} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 
 /**
  * @customElement
@@ -39,7 +40,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
         comment-description="Budget Summary"
       >
         <div class="data-column">
-          <label class="paper-label">Budget Currency</label>
+          <label class="paper-label">${translate('INTERVENTION_RESULTS.BUDGET_CURRENCY')}</label>
           <div>
             <etools-info-tooltip
               class="fr-nr-warn currency-mismatch"
@@ -58,34 +59,34 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
         </div>
 
         <div class="data-column">
-          <label class="paper-label">Budget HQ Rate</label>
+          <label class="paper-label">${translate('INTERVENTION_RESULTS.BUDGET_HQ_RATE')}</label>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.hq_support_cost)}">
             ${this.roundPercentage(this.budgetSummary.hq_support_cost)}
           </div>
         </div>
 
         <div class="data-column">
-          <label class="paper-label">% Prgm Effectiveness</label>
+          <label class="paper-label">${translate('INTERVENTION_RESULTS.PRGM_EFFECTIVENESS')}</label>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.programme_effectiveness)}">
             ${this.roundPercentage(this.budgetSummary.programme_effectiveness)}
           </div>
         </div>
         <div class="data-column">
-          <label class="paper-label">Total CSO Contrib</label>
+          <label class="paper-label">${translate('INTERVENTION_RESULTS.TOTAL_CSO_CONTRIB')}</label>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.partner_contribution_local)}">
             ${this.displayCurrencyAmount(this.budgetSummary.partner_contribution_local, '0.00')}
           </div>
         </div>
 
         <div class="data-column">
-          <label class="paper-label">Total Unicef Contrib</label>
+          <label class="paper-label">${translate('INTERVENTION_RESULTS.TOTAL_UNICEF_CONTRIB')}</label>
           <div class="input-label" ?empty="${!this.budgetSummary.total_unicef_contribution_local}">
             ${this.displayCurrencyAmount(this.budgetSummary.total_unicef_contribution_local, '0.00')}
           </div>
         </div>
 
         <div class="data-column">
-          <label class="paper-label">Total Unicef Cash</label>
+          <label class="paper-label">${translate('INTERVENTION_RESULTS.TOTAL_UNICEF_CASH')}</label>
           <div>
             <etools-info-tooltip
               class="fr-nr-warn"
@@ -103,28 +104,28 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
         </div>
 
         <div class="data-column">
-          <label class="paper-label">Total Supply</label>
+          <label class="paper-label">${translate('INTERVENTION_RESULTS.TOTAL_SUPPLY')}</label>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.in_kind_amount_local)}">
             ${this.displayCurrencyAmount(this.budgetSummary.in_kind_amount_local, '0.00')}
           </div>
         </div>
 
         <div class="data-column">
-          <label class="paper-label">% Partner Contrib</label>
+          <label class="paper-label">${translate('INTERVENTION_RESULTS.PARTNER_CONTRIB')}</label>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.partner_contribution_percent)}">
             ${this.roundPercentage(this.budgetSummary.partner_contribution_percent)}
           </div>
         </div>
 
         <div class="data-column">
-          <label class="paper-label">Total Cash Amt</label>
+          <label class="paper-label">${translate('INTERVENTION_RESULTS.TOTAL_CASH_AMT')}</label>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.total_cash_local)}">
             ${this.displayCurrencyAmount(this.budgetSummary.total_cash_local)}
           </div>
         </div>
 
         <div class="data-column">
-          <label class="paper-label">Total Amt (Cash + Supply)</label>
+          <label class="paper-label">${translate('INTERVENTION_RESULTS.TOTAL_AMT')}</label>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.total_local)}">
             ${this.displayCurrencyAmount(this.budgetSummary.total_local)}
           </div>

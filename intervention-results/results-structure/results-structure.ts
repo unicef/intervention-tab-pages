@@ -47,6 +47,7 @@ import {
   Intervention,
   ResultLinkLowerResult
 } from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 
 const RESULT_VIEW = 'result_view';
 const BUDGET_VIEW = 'budget_view';
@@ -164,19 +165,19 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(EtoolsCurr
 
   viewTabs = [
     {
-      name: 'Result view',
+      name: translate('INTERVENTION_RESULTS.RESULT_VIEW'),
       type: RESULT_VIEW,
       showIndicators: true,
       showActivities: false
     },
     {
-      name: 'Combined view',
+      name: translate('INTERVENTION_RESULTS.COMBINED_VIEW'),
       type: COMBINED_VIEW,
       showIndicators: true,
       showActivities: true
     },
     {
-      name: 'Budget view',
+      name: translate('INTERVENTION_RESULTS.BUDGET_VIEW'),
       type: BUDGET_VIEW,
       showIndicators: false,
       showActivities: true
@@ -233,15 +234,16 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(EtoolsCurr
         }
       </style>
 
+      <!-- TODO: format translation-->
       <etools-content-panel show-expand-btn panel-title="Results Structure (${this.noOfPdOutputs})">
         <div slot="panel-btns" class="layout-horizontal align-items-center">
           <paper-button
-            title="Export results"
+            title=${translate('INTERVENTION_RESULTS.EXPORT_RESULTS')}
             class="primary export-res-btn"
             ?hidden="${!this.showExportResults(this.interventionStatus, this.resultLinks)}"
             @click="${this.exportExpectedResults}"
           >
-            Export
+            ${translate('INTERVENTION_RESULTS.EXPORT')}
           </paper-button>
           <div
             class="separator"
@@ -258,12 +260,12 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(EtoolsCurr
             ?checked="${this.showInactiveIndicators}"
             @iron-change=${this.inactiveChange}
           >
-            Show Inactive
+            ${translate('INTERVENTION_RESULTS.SHOW_INACTIVE')}
           </paper-toggle-button>
 
           <paper-menu-button id="view-menu-button" close-on-activate horizontal-align="right">
             <paper-button slot="dropdown-trigger" class="dropdown-trigger">
-              View
+              ${translate('INTERVENTION_RESULTS.VIEW')}
               <iron-icon icon="expand-more"></iron-icon>
             </paper-button>
             <paper-listbox slot="dropdown-content" attr-for-selected="name" .selected="${this.viewType}">
@@ -323,12 +325,12 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(EtoolsCurr
                   >
                     <div slot="row-data" class="layout-horizontal align-items-center editable-row">
                       <div class="flex-1 flex-fix">
-                        <div class="heading">Program Document Output</div>
+                        <div class="heading">${translate('INTERVENTION_RESULTS.PROGRAM_DOCUMENT_OUTPUT')}</div>
                         <div class="data bold-data">${pdOutput.name}</div>
                       </div>
 
                       <div class="flex-none" ?hidden="${!this.showActivities}">
-                        <div class="heading">Total Cash Budget</div>
+                        <div class="heading">${translate('INTERVENTION_RESULTS.TOTAL_CASH_BUDGET')}</div>
                         <div class="data">
                           ${this.intervention.planned_budget.currency}
                           ${this.displayCurrencyAmount(pdOutput.total, '0.00')}
@@ -372,14 +374,16 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(EtoolsCurr
             </cp-output-level>
           `
         )}
-        ${!this.resultLinks.length ? html` <div class="no-results">There are no results added.</div> ` : ''}
+        ${!this.resultLinks.length
+          ? html` <div class="no-results">${translate('INTERVENTION_RESULTS.NO_RESULTS_ADDED')}</div> `
+          : ''}
 
         <div
           ?hidden="${this.isUnicefUser || this.commentMode || !this.permissions.edit.result_links}"
           class="add-pd white row-h align-items-center"
           @click="${() => this.openPdOutputDialog()}"
         >
-          <iron-icon icon="add-box"></iron-icon>Add PD Output
+          <iron-icon icon="add-box"></iron-icon>${translate('INTERVENTION_RESULTS.ADD_PD_OUTPUT')}
         </div>
       </etools-content-panel>
     `;
@@ -441,8 +445,8 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(EtoolsCurr
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
-        content: 'Are you sure you want to remove this PD Output?',
-        confirmBtnText: 'Yes'
+        content: translate('INTERVENTION_RESULTS.REMOVE_PD_MSG'),
+        confirmBtnText: translate('INTERVENTION_RESULTS.CONFIRM_BTN_TXT')
       }
     }).then(({confirmed}) => {
       return confirmed;
@@ -494,8 +498,8 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(EtoolsCurr
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
-        content: 'Are you sure you want to remove this CP Output?',
-        confirmBtnText: 'Yes'
+        content: translate('INTERVENTION_RESULTS.REMOVE_CP_OUTPUT_MSG'),
+        confirmBtnText: translate('INTERVENTION_RESULTS.CONFIRM_BTN_TXT')
       }
     }).then(({confirmed}) => {
       return confirmed;
