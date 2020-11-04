@@ -16,7 +16,8 @@ import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@polymer/paper-input/paper-input';
 import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-currency-amount-input';
-import { ExpectedResult } from '@unicef-polymer/etools-types';
+import {ExpectedResult} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 
 /**
  * @customElement
@@ -60,9 +61,9 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
            class="w100"
             value="${this.data.title}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'title')}"
-            label="Title"
+            label=${translate('GENERAL.TITLE')}
             type="text"
-            placeholder="Enter title"
+            placeholder=${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT_DIALOG.ENTER_TITLE')}
             required
           >
         </div>
@@ -73,9 +74,9 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
           <paper-input
             value="${this.data.unit_number ? this.data.unit_number : ''}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unit_number')}"
-            label="Number of Units"
+            label=${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.NUMBER_UNITS')}
             allowed-pattern="[0-9]"
-            placeholder="Enter number of units"
+            placeholder=${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT_DIALOG.ENTER_NUMBER_UNITS')}
             required
           >
           </paper-input>
@@ -83,8 +84,8 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
         <div class="col col-4">
           <etools-currency-amount-input
             id="unicefCash"
-            label="Price / Unit"
-            placeholder="Enter price / unit"
+            label=${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.PRICE_UNIT')}
+            placeholder=${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT_DIALOG.ENTER_PRICE_UNIT')}
             required
             .value="${this.data.unit_price ? this.data.unit_price : ''}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unit_price')}"
@@ -98,7 +99,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
               <div class="col col-8">
                 <etools-dropdown
                   class="cp-out"
-                  label="CP Output"
+                  label=${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT_DIALOG.CP_OUTPUT')}
                   placeholder="&#8212;"
                   .options="${this.cpOutputs}"
                   option-label="cp_output_name"
@@ -119,7 +120,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
         <div class="col col-12">
           <paper-textarea
             id="otherMentions"
-            label="Other Mentions"
+            label=${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.OTHER_MENTIONS')}
             always-float-label
             placeholder="—"
             .value="${this.data.other_mentions}"
@@ -159,8 +160,12 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
     this.data = data;
     this.isNewRecord = !this.data.id;
     this.interventionId = interventionId;
-    this.dialogTitle = this.isNewRecord ? 'Add  Supply Agreement' : 'Edit Supply Agreement';
-    this.confirmBtnTxt = this.isNewRecord ? 'Add' : 'Save';
+    this.dialogTitle = this.isNewRecord
+      ? ((translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT_DIALOG.ADD_SUPPLY_AGREEMENT') as unknown) as string)
+      : ((translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT_DIALOG.EDIT_SUPPLY_AGREEMENT') as unknown) as string);
+    this.confirmBtnTxt = this.isNewRecord
+      ? ((translate('GENERAL.ADD') as unknown) as string)
+      : ((translate('GENERAL.SAVE') as unknown) as string);
     this.isUnicefUser = isUnicefUser;
   }
 

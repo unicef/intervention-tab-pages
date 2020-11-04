@@ -12,6 +12,7 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {getStore} from '../../utils/redux-store-access';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
+import {translate} from 'lit-translate';
 
 /**
  * @customElement
@@ -43,8 +44,8 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         id="activityDialog"
         size="md"
         keep-dialog-open
-        dialog-title="Edit activity"
-        ok-btn-text="Save"
+        dialog-title=${translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.ACTIVITY_DIALOG.EDIT_ACTIVITY')}
+        ok-btn-text=${translate('GENERAL.SAVE')}
         ?opened="${this.dialogOpened}"
         ?show-spinner="${this.loadingInProcess}"
         @close="${() => this.onClose()}"
@@ -54,7 +55,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
           <paper-input
             readonly
             id="title"
-            label="Title"
+            label=${translate('GENERAL.TITLE')}
             always-float-label
             placeholder="—"
             .value="${this.originalData.title}"
@@ -65,7 +66,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         <div class="row-padding-v">
           <paper-textarea
             id="description"
-            label="Description"
+            label=${translate('GENERAL.DESCRIPTION')}
             readonly
             always-float-label
             placeholder="—"
@@ -77,7 +78,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
           <div class="col col-6">
             <etools-currency-amount-input
               id="unicefCash"
-              label="UNICEF Cash"
+              label=${translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.UNICEF_CASH')}
               .value="${this.originalData.unicef_cash}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, this.getPropertyName('unicef'))}"
             >
@@ -86,7 +87,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
           <div class="col col-6">
             <etools-currency-amount-input
               id="partnerContribution"
-              label="Partner Contribution"
+              label=${translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.PARTNER_CONTRIBUTION')}
               .value="${this.originalData.partner_contribution}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, this.getPropertyName('partner'))}"
             >
@@ -127,7 +128,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
       })
       .catch(() => {
         this.loadingInProcess = false;
-        fireEvent(this, 'toast', {text: 'An error occurred. Try again.'});
+        fireEvent(this, 'toast', {text: translate('GENERAL.ERR_OCCURRED')});
       });
   }
 

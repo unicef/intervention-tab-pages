@@ -89,7 +89,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
         opened
         @close="${this.onClose}"
         @confirm-btn-clicked="${this._validateAndSaveIndicator}"
-        ok-btn-text="Save"
+        ok-btn-text=${translate('GENERAL.SAVE')}
         keep-dialog-open
         .disableConfirmBtn="${this.disableConfirmBtn}"
         .hideConfirmBtn="${this.readonly}"
@@ -166,7 +166,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
           <div class="row-padding" name="disaggregations">
             <div ?hidden="${this._hideAddDisaggreations(this.isCluster, this.currentUser)}" class="createDisaggreg">
               ${translate('INDICATOR_DIALOG.IF_NO_DISAGGREG_GROUPS')}
-              <a href="/pmp/settings" target="_blank">here</a>.
+              <a href="/pmp/settings" target="_blank">${translate('INDICATOR_DIALOG.HERE')}</a>.
             </div>
             ${!this.isCluster
               ? html` <indicator-dissaggregations
