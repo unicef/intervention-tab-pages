@@ -91,9 +91,10 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
             label="Price / Unit"
             placeholder="Enter price / unit"
             .value="${this.data.unit_price ? this.data.unit_price : ''}"
-            @blur="${() => this.validateCurrency()}"
+            @focus="${() => (this.autoValidate = true)}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unit_price')}"
             required
+            .autoValidate="${this.autoValidate}"
           >
           </etools-currency-amount-input>
         </div>
@@ -160,6 +161,9 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
   @property({type: Boolean})
   isUnicefUser = false;
 
+  @property({type: Boolean})
+  autoValidate = false;
+
   set dialogData({data, interventionId, result_links, isUnicefUser}: any) {
     this.cpOutputs = (result_links || []).filter((x: ExpectedResult) => !!x.cp_output_name);
     this.data = data;
@@ -176,15 +180,6 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
 
   validate() {
     return validateRequiredFields(this);
-  }
-
-  validateCurrency() {
-    let isValid = true;
-    const element = this.shadowRoot!.querySelector('#unicefCash') as EtoolsCurrencyAmountInput;
-    if (element && !element.validate()) {
-      isValid = false;
-    }
-    return isValid;
   }
 
   onSaveClick() {
