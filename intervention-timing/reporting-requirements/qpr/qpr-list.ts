@@ -49,13 +49,13 @@ class QprList extends CommonMixin(ReportingReqPastDatesCheckMixin(PolymerElement
             <span class="col-data col-3">[[getDateDisplayValue(item.end_date)]]</span>
             <span class="col-data col-3">[[getDateDisplayValue(item.due_date)]]</span>
             <span class="col-data flex-c actions">
-              <icons-actions-2
+              <icons-actions
                 hidden$="[[!_canEdit(editMode, inAmendment, item.due_date, item.id)]]"
                 data-args$="[[index]]"
                 on-edit="_editQprReq"
                 on-delete="_deleteQprReq"
               >
-              </icons-actions-2>
+              </icons-actions>
             </span>
           </div>
         </etools-data-table-row>

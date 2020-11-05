@@ -13,7 +13,7 @@ import {AnyObject} from '@unicef-polymer/etools-types';
  * @polymer
  * @customElement
  */
-class IconsActions2 extends PolymerElement {
+class IconsActions extends PolymerElement {
   static get template() {
     return html`
       <style>
@@ -28,9 +28,14 @@ class IconsActions2 extends PolymerElement {
           -ms-flex-direction: row;
           -webkit-flex-direction: row;
           flex-direction: row;
+          -ms-flex-align: center;
+          -webkit-align-items: center;
+          align-items: center;
           background-color: var(--list-second-bg-color);
           position: absolute;
           right: 0;
+          top: 0;
+          bottom: 0;
 
           @apply --icons-actions;
         }
@@ -71,6 +76,6 @@ class IconsActions2 extends PolymerElement {
   }
 }
 
-window.customElements.define('icons-actions-2', IconsActions2);
+window.customElements.define('icons-actions', IconsActions);
 
-export {IconsActions2 as IconsActionsEl};
+export {IconsActions as IconsActionsEl};
