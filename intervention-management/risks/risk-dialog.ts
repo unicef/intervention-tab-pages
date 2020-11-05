@@ -16,6 +16,7 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {LabelAndValue} from '@unicef-polymer/etools-types';
 import {Intervention} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 
 /**
  * @customElement
@@ -52,7 +53,7 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
           <div class="col col-4">
             <etools-dropdown
               id="type"
-              label="Type"
+              label=${translate('INTERVENTION_MANAGEMENT.RISKS.TYPE')}
               .options="${this.riskTypes}"
               .selected="${this.originalData.risk_type}"
               option-value="value"
@@ -68,13 +69,13 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
           <div class="col col-8">
             <paper-textarea
               id="mitigationMeasures"
-              label="Proposed Mitigation Measures"
+              label=${translate('INTERVENTION_MANAGEMENT.RISKS.PROPOSED_MITIGATION_MEASURES')}
               always-float-label
               type="text"
               auto-validate
               placeholder="—"
               required
-              error-message="This field is required"
+              error-message=${translate('GENERAL.REQUIRED_FIELD')}
               .value="${this.originalData.mitigation_measures}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'mitigation_measures')}"
             >
@@ -104,7 +105,9 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
     this.endpoint = getEndpoint(interventionEndpoints.intervention, {interventionId});
     this.permissions = permissions;
     this.riskTypes = riskTypes;
-    this.riskDialogTitle = item.id ? 'Edit risk' : 'Add risk';
+    this.riskDialogTitle = item.id
+      ? ((translate('INTERVENTION_MANAGEMENT.RISKS.RISK_DIALOG.EDIT_RISK') as unknown) as string)
+      : ((translate('INTERVENTION_MANAGEMENT.RISKS.RISK_DIALOG.ADD_RISK') as unknown) as string);
   }
 
   protected onClose(): void {

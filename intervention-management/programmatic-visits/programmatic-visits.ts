@@ -22,6 +22,7 @@ import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {PlannedVisit} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 
 /**
  * @customElement
@@ -82,9 +83,9 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
 
       <etools-content-panel
         show-expand-btn
-        panel-title="Programmatic Visits"
+        panel-title=${translate('INTERVENTION_MANAGEMENT.PROGRAMATIC_VISITS.PROGRAMATIC_VISITS')}
         comment-element="programmatic-visits"
-        comment-description="Programmatic Visits"
+        comment-description=${translate('INTERVENTION_MANAGEMENT.PROGRAMATIC_VISITS.PROGRAMATIC_VISITS')}
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
@@ -93,14 +94,14 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
             class="secondary-btn ${this._getAddBtnPadding(this.data?.length)}"
             @click="${this._addNewPlannedVisit}"
           >
-            ADD YEAR
+            ${translate('INTERVENTION_MANAGEMENT.PROGRAMATIC_VISITS.ADD_YEAR')}
           </paper-button>
         </div>
 
         <div class="pv-container">${this.renderVisitsTemplate(this.data)}</div>
 
         <div ?hidden="${!isEmpty(this.data)}">
-          <p>There are no planned visits added.</p>
+          <p>${translate('INTERVENTION_MANAGEMENT.PROGRAMATIC_VISITS.NO_PLANNED_VISITS')}</p>
         </div>
 
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
@@ -196,12 +197,12 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
                   <etools-dropdown
                     .id="year_${index}"
                     class="year"
-                    label="Year"
+                    label=${translate('INTERVENTION_MANAGEMENT.PROGRAMATIC_VISITS.YEAR')}
                     placeholder="&#8212;"
                     .selected="${item.year}"
                     .options="${this.years}"
                     ?required=${this.editMode}
-                    error-message="Required"
+                    error-message=${translate('GENERAL.REQUIRED_FIELD')}
                     trigger-value-change-event
                     @etools-selected-item-changed="${(e: CustomEvent) => this._yearChanged(e, index)}"
                     ?readonly="${!this.editMode}"
@@ -212,14 +213,14 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
                 <div class="col col-1">
                   <paper-input
                     .id="visit_${index}_q1"
-                    label="Quarter 1"
+                    label=${translate('INTERVENTION_MANAGEMENT.PROGRAMATIC_VISITS.QUARTER_1')}
                     .value="${item.programmatic_q1}"
                     type="number"
                     min="0"
                     allowed-pattern="[0-9.]"
                     placeholder="&#8212;"
                     ?required="${item.year && this.editMode}"
-                    error-message="Required"
+                    error-message=${translate('GENERAL.REQUIRED_FIELD')}
                     auto-validate
                     @value-changed="${(e: CustomEvent) => this.inputChanged(e, index, 'q1')}"
                     ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_visits)}"
@@ -229,14 +230,14 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
                 <div class="col col-1">
                   <paper-input
                     .id="visit_${index}_q2"
-                    label="Quarter 2"
+                    label=${translate('INTERVENTION_MANAGEMENT.PROGRAMATIC_VISITS.QUARTER_2')}
                     .value="${item.programmatic_q2}"
                     type="number"
                     min="0"
                     allowed-pattern="[0-9.]"
                     placeholder="&#8212;"
                     ?required="${item.year && this.editMode}"
-                    error-message="Required"
+                    error-message=${translate('GENERAL.REQUIRED_FIELD')}
                     auto-validate
                     @value-changed="${(e: CustomEvent) => this.inputChanged(e, index, 'q2')}"
                     ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_visits)}"
@@ -246,14 +247,14 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
                 <div class="col col-1">
                   <paper-input
                     .id="visit_${index}_q3"
-                    label="Quarter 3"
+                    label=${translate('INTERVENTION_MANAGEMENT.PROGRAMATIC_VISITS.QUARTER_3')}
                     .value="${item.programmatic_q3}"
                     type="number"
                     min="0"
                     allowed-pattern="[0-9.]"
                     placeholder="&#8212;"
                     ?required="${item.year && this.editMode}"
-                    error-message="Required"
+                    error-message=${translate('GENERAL.REQUIRED_FIELD')}
                     auto-validate
                     @value-changed="${(e: CustomEvent) => this.inputChanged(e, index, 'q3')}"
                     ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_visits)}"
@@ -263,14 +264,14 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
                 <div class="col col-1">
                   <paper-input
                     .id="visit_${index}_q4"
-                    label="Quarter 4"
+                    label=${translate('INTERVENTION_MANAGEMENT.PROGRAMATIC_VISITS.QUARTER_4')}
                     .value="${item.programmatic_q4}"
                     type="number"
                     min="0"
                     allowed-pattern="[0-9.]"
                     placeholder="&#8212;"
                     ?required="${item.year && this.editMode}"
-                    error-message="Required"
+                    error-message=${translate('GENERAL.REQUIRED_FIELD')}
                     auto-validate
                     @value-changed="${(e: CustomEvent) => this.inputChanged(e, index, 'q4')}"
                     ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_visits)}"
@@ -280,7 +281,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
                 <div class="col col-1 totalContainer">
                   <paper-input
                     id="totalComp"
-                    label="TOTAL"
+                    label=${translate('GENERAL.TOTAL_C')}
                     readonly
                     class="row-second-bg"
                     no-placeholder
@@ -302,7 +303,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
                     item.programmatic_q4
                   )}"
                 >
-                  <div class="error-msg">Total has to be greater than 0</div>
+                  <div class="error-msg">${translate('INTERVENTION_MANAGEMENT.PROGRAMATIC_VISITS.TOTAL_ERR')}</div>
                 </div>
               </div>
             </div>
@@ -347,7 +348,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
 
     if (this.isAlreadySelected(yearSelected, index, 'year')) {
       fireEvent(this, 'toast', {
-        text: 'Year already selected on other planned visit item.',
+        text: translate('INTERVENTION_MANAGEMENT.PROGRAMATIC_VISITS.YEAR_SELECTED_ERR'),
         showCloseBtn: true
       });
       this._clearSelectedYear(index);
@@ -422,7 +423,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
   _addNewPlannedVisit() {
     if (!this.validate()) {
       fireEvent(this, 'toast', {
-        text: 'Already added planned visit data is not valid yet',
+        text: translate('INTERVENTION_MANAGEMENT.PROGRAMATIC_VISITS.ALREADY_ADDED_PLANNED_VISIT'),
         showCloseBtn: true
       });
       return;

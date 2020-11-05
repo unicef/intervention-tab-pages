@@ -20,6 +20,7 @@ import {getStore} from '../utils/redux-store-access';
 import {getIntervention} from '../common/actions/interventions';
 import {pageIsNotCurrentlyActive} from '../utils/common-methods';
 import get from 'lodash-es/get';
+import {translate} from 'lit-translate';
 
 @customElement('attachments-list')
 export class AttachmentsList extends CommentsMixin(LitElement) {
@@ -30,7 +31,9 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
   @property() showInvalid = true;
   @property() canEdit = true;
   @property() fileTypes: IdAndName[] = [];
-  @property({type: String}) deleteConfirmationMessage = 'Are you sure you want to delete this attachment?';
+  @property({type: String}) deleteConfirmationMessage = (translate(
+    'INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.DELETE_ATTACHMENTS_PROMPT'
+  ) as unknown) as string;
   private intervention!: Intervention;
 
   protected render(): TemplateResult {
@@ -44,7 +47,7 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
         class="content-section"
         .panelTitle="Attachments (${this.attachments.length})"
         comment-element="attachments"
-        comment-description="Attachments"
+        comment-description=${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.ATTACHMENTS')}
       >
         <div slot="panel-btns" class="layout-horizontal">
           <paper-toggle-button
@@ -53,13 +56,13 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
             @iron-change="${(event: CustomEvent) =>
               (this.showInvalid = (event.currentTarget as HTMLInputElement).checked)}"
           >
-            Show invalid
+            ${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.SHOW_INVALID')}
           </paper-toggle-button>
 
           <paper-icon-button
             icon="add-box"
             ?hidden="${!this.canEdit}"
-            title="Add"
+            title=${translate('GENERAL.ADD')}
             @click="${() => this.openAttachmentDialog()}"
           >
           </paper-icon-button>
@@ -68,10 +71,18 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
         ${this.attachments.length
           ? html`
               <etools-data-table-header no-collapse no-title>
-                <etools-data-table-column class="col-2"> Date Uploaded </etools-data-table-column>
-                <etools-data-table-column class="col-3"> Document Type </etools-data-table-column>
-                <etools-data-table-column class="col-6"> Document </etools-data-table-column>
-                <etools-data-table-column class="col-1 center-align"> Invalid </etools-data-table-column>
+                <etools-data-table-column class="col-2"
+                  >${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.DATE_UPLOADED')}</etools-data-table-column
+                >
+                <etools-data-table-column class="col-3"
+                  >${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.DOC_TYPE')}</etools-data-table-column
+                >
+                <etools-data-table-column class="col-6"
+                  >${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.DOC')}</etools-data-table-column
+                >
+                <etools-data-table-column class="col-1 center-align"
+                  >${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.INVALID')}</etools-data-table-column
+                >
               </etools-data-table-header>
 
               ${this.attachments.map(
@@ -116,7 +127,7 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
             `
           : html`
               <div class="row-h">
-                <p>There are no attachments added.</p>
+                <p>${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.NO_ATTACHMENTS_ADDED')}</p>
               </div>
             `}
       </etools-content-panel>
@@ -157,7 +168,7 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
       dialog: 'are-you-sure',
       dialogData: {
         content: this.deleteConfirmationMessage,
-        confirmBtnText: 'Yes'
+        confirmBtnText: translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.CONFIRM_BTN_TEXT')
       }
     }).then(({confirmed}) => {
       return confirmed;

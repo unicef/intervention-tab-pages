@@ -17,6 +17,7 @@ import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {openDialog} from '../../utils/dialog';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, LabelAndValue, Permission} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 
 /**
  * @customElement
@@ -58,14 +59,14 @@ export class PdAmendments extends CommentsMixin(LitElement) {
 
       <etools-content-panel
         show-expand-btn
-        panel-title="Amendments"
+        panel-title=${translate('INTERVENTION_MANAGEMENT.AMENDMENTS.AMENDMENTS')}
         comment-element="amendments"
-        comment-description="Amendments"
+        comment-description=${translate('INTERVENTION_MANAGEMENT.AMENDMENTS.AMENDMENTS')}
       >
         <div slot="panel-btns">
           <paper-icon-button
             icon="add-box"
-            title="Add Amendment"
+            title=${translate('INTERVENTION_MANAGEMENT.AMENDMENTS.ADD_AMENDMENT')}
             hidden
             @click="${() => this._showAddAmendmentDialog()}"
           >
@@ -73,12 +74,24 @@ export class PdAmendments extends CommentsMixin(LitElement) {
         </div>
         <div class="p-relative" id="amendments-wrapper">
           <etools-data-table-header id="listHeader" no-collapse no-title ?hidden="${!this.amendments.length}">
-            <etools-data-table-column class="col-1"> Ref # </etools-data-table-column>
-            <etools-data-table-column class="col-2"> Signed Date </etools-data-table-column>
-            <etools-data-table-column class="col-3"> Amendment Types </etools-data-table-column>
-            <etools-data-table-column class="col-2"> Signed Amendment </etools-data-table-column>
-            <etools-data-table-column class="flex-c"> Internal / PRC Reviews </etools-data-table-column>
-            <etools-data-table-column class="flex-c"> Other Info </etools-data-table-column>
+            <etools-data-table-column class="col-1"
+              >${translate('INTERVENTION_MANAGEMENT.AMENDMENTS.REF')}</etools-data-table-column
+            >
+            <etools-data-table-column class="col-2"
+              >${translate('INTERVENTION_MANAGEMENT.AMENDMENTS.SIGNED_DATE')}</etools-data-table-column
+            >
+            <etools-data-table-column class="col-3"
+              >${translate('INTERVENTION_MANAGEMENT.AMENDMENTS.AMENDMENT_TYPES')}</etools-data-table-column
+            >
+            <etools-data-table-column class="col-2"
+              >${translate('INTERVENTION_MANAGEMENT.AMENDMENTS.SIGNED_AMENDMENT')}</etools-data-table-column
+            >
+            <etools-data-table-column class="flex-c"
+              >${translate('INTERVENTION_MANAGEMENT.AMENDMENTS.INTERNAL_PRC_REVIEWS')}</etools-data-table-column
+            >
+            <etools-data-table-column class="flex-c"
+              >${translate('INTERVENTION_MANAGEMENT.AMENDMENTS.OTHER_INFO')}</etools-data-table-column
+            >
           </etools-data-table-header>
 
           ${this.amendments.map(
@@ -121,7 +134,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
             `
           )}
           <div class="row-h" ?hidden=${this.amendments.length}>
-            <p>There are no amendments added.</p>
+            <p>${translate('INTERVENTION_MANAGEMENT.AMENDMENTS.NO_AMENDMENTS_ADDED')}</p>
           </div>
         </div>
       </etools-content-panel> `;

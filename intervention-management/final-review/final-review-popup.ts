@@ -8,6 +8,7 @@ import {getStore} from '../../utils/redux-store-access';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {ReviewAttachment, Intervention} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 
 @customElement('final-review-popup')
 export class FinalReviewPopup extends LitElement {
@@ -43,10 +44,10 @@ export class FinalReviewPopup extends LitElement {
         keep-dialog-open
         ?opened="${this.dialogOpened}"
         ?show-spinner="${this.savingInProcess}"
-        dialog-title="Final Partnership Review Attachment"
+        dialog-title=${translate('INTERVENTION_MANAGEMENT.FINAL_REVIEW.FINAL_REVIEW_POP.FINAL_PARTNERSHIP_REV_ATT')}
         @confirm-btn-clicked="${() => this.processRequest()}"
         @close="${this.onClose}"
-        .okBtnText="Save"
+        .okBtnText=${translate('GENERAL.SAVE')}
         no-padding
       >
         <div class="container layout vertical">
@@ -73,7 +74,7 @@ export class FinalReviewPopup extends LitElement {
     // validate if file is selected for new attachments
     if (!this.data.attachment) {
       fireEvent(this, 'toast', {
-        text: 'Please, select correct file',
+        text: translate('INTERVENTION_MANAGEMENT.FINAL_REVIEW.FINAL_REVIEW_POP.CORRECT_FILE_ERR'),
         showCloseBtn: false
       });
       return;

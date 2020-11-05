@@ -20,6 +20,7 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
 import {fireEvent} from '../../utils/fire-custom-event';
 import {getIntervention} from '../../common/actions/interventions';
 import {AnyObject, AsyncAction, InterventionAmendment, LabelAndValue} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 
 /**
  * @customElement
@@ -49,7 +50,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
         size="md"
         ?opened="${this.dialogOpened}"
         ok-btn-text="Save"
-        dialog-title="Add Amendment"
+        dialog-title=${translate('INTERVENTION_MANAGEMENT.AMENDMENTS.ADD_AMENDMENT')}
         @close="${() => this.onClose()}"
         @confirm-btn-clicked="${() => this._validateAndSaveAmendment()}"
         ?show-spinner="${this.savingInProcess}"
@@ -60,13 +61,13 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
           <!-- Signed Date -->
           <datepicker-lite
             id="signed-date"
-            label="Signed Date"
+            label=${translate('INTERVENTION_MANAGEMENT.AMENDMENTS.SIGNED_DATE')}
             .value="${this.data.signed_date}"
             max-date="${this.getCurrentDate()}"
             fire-date-has-changed
             @date-has-changed="${(e: CustomEvent) =>
               this.valueChanged({value: formatDate(e.detail.date, 'YYYY-MM-DD')}, 'signed_date')}"
-            max-date-error-msg="Date can not be in the future"
+            max-date-error-msg=${translate('INTERVENTION_MANAGEMENT.AMENDMENTS.AMENDMENT_DIALOG.MAX_DATE_ERR')}
             auto-validate
             required
             selected-date-display-format="D MMM YYYY"
@@ -77,7 +78,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
           <!-- Amendment Type -->
           <etools-dropdown-multi
             id="amendment-types"
-            label="Amendment Types"
+            label=${translate('INTERVENTION_MANAGEMENT.AMENDMENTS.AMENDMENT_TYPES')}
             placeholder="&#8212;"
             .options="${this.filteredAmendmentTypes}"
             .selectedValues="${this.data.types}"
@@ -85,7 +86,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
             required
             option-label="label"
             option-value="value"
-            error-message="Type is required"
+            error-message=${translate('INTERVENTION_MANAGEMENT.AMENDMENTS.AMENDMENT_DIALOG.TYPE_ERR')}
             trigger-value-change-event
             @etools-selected-items-changed="${({detail}: CustomEvent) => {
               this.selectedItemsChanged(detail, 'types', 'value');
@@ -102,11 +103,11 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
           <paper-input
             id="other"
             placeholder="&#8212;"
-            label="Other"
+            label=${translate('INTERVENTION_MANAGEMENT.AMENDMENTS.AMENDMENT_DIALOG.OTHER')}
             invalid
             ?required="${this.showOtherInput}"
             auto-validate
-            error-message="This is required"
+            error-message=${translate('GENERAL.REQUIRED_FIELD')}
             .value="${this.data.other_description}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'other_description')}"
           >
@@ -116,7 +117,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
           <!-- Signed Agreement -->
           <etools-upload
             id="signed-agreement-upload"
-            label="Signed Amendment"
+            label=${translate('INTERVENTION_MANAGEMENT.AMENDMENTS.SIGNED_AMENDMENT')}
             accept=".doc,.docx,.pdf,.jpg,.png"
             .fileUrl="${this.data.signed_amendment_attachment}"
             .uploadEndpoint="${this.uploadEndpoint}"
@@ -124,14 +125,14 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
             required
             auto-validate
             .uploadInProgress="${this.amdUploadInProgress}"
-            error-message="Attachment required"
+            error-message=${translate('INTERVENTION_MANAGEMENT.AMENDMENTS.AMENDMENT_DIALOG.ATTACHMENT_REQUIRED')}
           >
           </etools-upload>
         </div>
         <div class="row-h flex-c">
           <etools-upload
             id="prc-review-upload"
-            label="Internal / PRC Reviews"
+            label=${translate('INTERVENTION_MANAGEMENT.AMENDMENTS.INTERNAL_PRC_REVIEWS')}
             accept=".doc,.docx,.pdf,.jpg,.png"
             .fileUrl="${this.data.internal_prc_review}"
             .uploadEndpoint="${this.uploadEndpoint}"
@@ -210,31 +211,34 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
     types.forEach((amdType: string) => {
       switch (amdType) {
         case 'admin_error':
-          messages.push('Corrections in the programme document due to typos or administrative error.');
+          messages.push(
+            (translate('INTERVENTION_MANAGEMENT.AMENDMENTS.AMENDMENT_DIALOG.ADMIN_ERR_MSG') as unknown) as string
+          );
           break;
         case 'budget_lte_20':
           messages.push(
-            'Changes to the budget of activities resulting in a change in the UNICEF contribution ≤20% of ' +
-              'previously approved cash and/or supplies, with or without changes to the programme results.'
+            (translate('INTERVENTION_MANAGEMENT.AMENDMENTS.AMENDMENT_DIALOG.BUDGET_LTE_20_MSG') as unknown) as string
           );
           break;
         case 'budget_gt_20':
           messages.push(
-            'Changes to the budget of activities resulting in a change in the UNICEF contribution >20% of ' +
-              'previously approved cash and/or supplies, with or without changes to the programme results.'
+            (translate('INTERVENTION_MANAGEMENT.AMENDMENTS.AMENDMENT_DIALOG.BUDGET_GT_20_MSG') as unknown) as string
           );
           break;
         case 'no_cost':
-          messages.push('No cost extension');
+          messages.push(
+            (translate('INTERVENTION_MANAGEMENT.AMENDMENTS.AMENDMENT_DIALOG.NO_COST_EXTENSION_MSG') as unknown) as string
+          );
           break;
         case 'change':
           messages.push(
-            'Changes to planned results, population or geographical coverage of the programme with no ' +
-              'change in UNICEF contribution.'
+            (translate('INTERVENTION_MANAGEMENT.AMENDMENTS.AMENDMENT_DIALOG.CHANGE_MSG') as unknown) as string
           );
           break;
         case 'other':
-          messages.push('Other');
+          messages.push(
+            (translate('INTERVENTION_MANAGEMENT.AMENDMENTS.AMENDMENT_DIALOG.OTHER_MSG') as unknown) as string
+          );
           break;
       }
     });

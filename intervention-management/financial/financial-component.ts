@@ -25,6 +25,7 @@ import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, LabelAndValue, Permission} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 
 /**
  * @customElement
@@ -75,14 +76,16 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
       </style>
       <etools-content-panel
         show-expand-btn
-        panel-title="Financial"
+        panel-title=${translate('INTERVENTION_MANAGEMENT.FINANCIAL_COMPONENT.FINANCIAL')}
         comment-element="financial"
-        comment-description="Financial"
+        comment-description=${translate('INTERVENTION_MANAGEMENT.FINANCIAL_COMPONENT.FINANCIAL')}
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
         <div class="layout-horizontal padd-top">
           <div class="w100">
-            <label class="paper-label">Cash Transfer Modality(ies)</label>
+            <label class="paper-label"
+              >${translate('INTERVENTION_MANAGEMENT.FINANCIAL_COMPONENT.CASH_TRANSFER_MOD')}</label
+            >
           </div>
         </div>
         <div class="layout-horizontal row-padding-v padd-bott">
@@ -101,7 +104,9 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
         </div>
         <div class="layout-horizontal row-padding-v extra-padd-top">
           <div class="w100">
-            <label class="paper-label">Headquarters Contribution (automatic 7% for INGO)</label>
+            <label class="paper-label"
+              >${translate('INTERVENTION_MANAGEMENT.FINANCIAL_COMPONENT.HEADQUARTERS_CONTRIBUTION')}</label
+            >
           </div>
         </div>
         <div class="layout-horizontal">
@@ -123,7 +128,7 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
               id="currencyDd"
               option-value="value"
               option-label="label"
-              label="Document currency"
+              label=${translate('INTERVENTION_MANAGEMENT.FINANCIAL_COMPONENT.DOCUMENT_CURRENCY')}
               placeholder="&#8212;"
               .options="${this.currencies}"
               .selected="${this.data.planned_budget.currency}"
