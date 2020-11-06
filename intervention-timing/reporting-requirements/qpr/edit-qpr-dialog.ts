@@ -88,8 +88,9 @@ class EditQprDialog extends PolymerElement {
         dialog-title="Edit Standard Quarterly Report Requirements"
         opened="{{addOrModifyQprDialogOpened}}"
         no-padding
-        on-close="_updateQprData"
+        on-confirm-btn-clicked="_updateQprData"
         ok-btn-text="Save"
+        keep-dialog-open
       >
         <div class="row-h" hidden$="[[_hideEditedIndexInfo(_qprDatesSetEditedIndex)]]">
           You are editing ID [[_getEditedQprDatesSetId(_qprDatesSetEditedIndex)]]
@@ -199,10 +200,7 @@ class EditQprDialog extends PolymerElement {
     return true;
   }
 
-  _updateQprData(e: CustomEvent) {
-    if (!e.detail.confirmed) {
-      return;
-    }
+  _updateQprData() {
     if (!this._validateDataBeforeAdd()) {
       return;
     }
@@ -215,6 +213,7 @@ class EditQprDialog extends PolymerElement {
       this.splice('qprData', this._qprDatesSetEditedIndex, 1, this._editedQprDatesSet);
     }
     this.set('_qprDatesSetEditedIndex', -1);
+    this.set('addOrModifyQprDialogOpened', false);
   }
 
   _editQprDatesSet(e: CustomEvent) {
