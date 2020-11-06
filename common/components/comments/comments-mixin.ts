@@ -102,10 +102,14 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
     private startCommentMode(): void {
       const elements: NodeListOf<HTMLElement> = this.shadowRoot!.querySelectorAll(
-        '[comment-element], [comments-container]'
+        '[comment-element], [comments-container], #activitiesDetails'
       );
+
       this.metaDataCollection = Array.from(elements)
         .map((element: HTMLElement) => {
+          if (element.id == 'activitiesDetails') {
+            return this.createMataData(element, '', '');
+          }
           if (element.hasAttribute('comments-container')) {
             return this.getMetaFromContainer(element);
           }
@@ -116,8 +120,12 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         .flat()
         .filter((meta: MetaData | null) => meta !== null) as MetaData[];
       this.metaDataCollection.forEach((meta: MetaData) => {
-        this.updateCounterAndColor(meta);
-        this.registerListener(meta);
+        if (meta.relatedTo) {
+          this.updateCounterAndColor(meta);
+          this.registerListener(meta);
+        } else {
+          this.updateBorder(meta);
+        }
       });
     }
 
@@ -132,8 +140,12 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
     private createMataData(element: HTMLElement, relatedTo: string, relatedToDescription: string): MetaData {
       const oldStyles: string = element.style.cssText;
-      const counter: HTMLElement = this.createCounter();
-      const overlay: HTMLElement = this.createOverlay();
+      let borderOnly = true;
+      if (relatedTo) {
+        borderOnly = false;
+      }
+      const counter: HTMLElement = this.createCounter(borderOnly);
+      const overlay: HTMLElement = this.createOverlay(borderOnly);
       element.append(overlay);
       return {
         element,
@@ -145,8 +157,11 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
       };
     }
 
-    private createCounter(): HTMLElement {
+    private createCounter(borderOnly = false): HTMLElement {
       const element: HTMLElement = document.createElement('div');
+      if (borderOnly) {
+        return element;
+      }
       element.style.cssText = `
         position: absolute;
         top: -7px;
@@ -166,8 +181,11 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
       return element;
     }
 
-    private createOverlay(): HTMLElement {
+    private createOverlay(borderOnly = false): HTMLElement {
       const element: HTMLElement = document.createElement('div');
+      if (borderOnly) {
+        return element;
+      }
       element.style.cssText = `
         position: absolute;
         top: 0;
@@ -190,19 +208,39 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
     private updateCounterAndColor(meta: MetaData): void {
       const comments: InterventionComment[] = this.comments[meta.relatedTo] || [];
       const borderColor = comments.length ? '#FF4545' : '#81D763';
-      meta.element.style.cssText = `
+      if (meta.relatedTo.includes('activity-')) {
+        meta.element.style.cssText = `
         position: relative;
-        border-top: 2px solid ${borderColor} !important;
         border-bottom: 2px solid ${borderColor} !important;
         border-left: 2px solid ${borderColor} !important;
         border-right: 2px solid ${borderColor} !important;
       `;
+      } else {
+        meta.element.style.cssText = `
+          position: relative;
+          border-top: 2px solid ${borderColor} !important;
+          border-bottom: 2px solid ${borderColor} !important;
+          border-left: 2px solid ${borderColor} !important;
+          border-right: 2px solid ${borderColor} !important;
+        `;
+      }
+
+      if (meta.relatedTo) {
+        return;
+      }
       meta.counter.innerText = `${comments.length}`;
       if (comments.length) {
         meta.element.append(meta.counter);
       } else {
         meta.counter.remove();
       }
+    }
+
+    private updateBorder(meta: MetaData): void {
+      meta.element.style.cssText = `
+        position: relative;
+        border-bottom: 2px solid #81D763 !important;
+      `;
     }
 
     private registerListener(meta: MetaData): void {

@@ -142,7 +142,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
             </div>
 
             <!--    Indicator row collapsible Details    -->
-            <div slot="row-data-details" class="row-h">
+            <div slot="row-data-details" class="row-h" id="activitiesDetails">
               <!--    Locations    -->
               <div class="details-container">
                 <div class="text details-heading">Time Periods</div>
