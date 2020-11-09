@@ -24,6 +24,7 @@ import {ProgrammeManagement} from './effectiveEfficientProgrammeMgmt.models';
 import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 
 const customStyles = html`
   <style>
@@ -75,12 +76,13 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(
 
       <etools-content-panel
         show-expand-btn
-        panel-title="Effective and Efficient Programme Management"
+        panel-title=${translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.EFFECTIVE_EFFICIENT_PROG_MGM')}
         comment-element="programme-management"
-        comment-description="Effective and Efficient Programme Management"
+        comment-description=${translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.EFFECTIVE_EFFICIENT_PROG_MGM')}
       >
         <div slot="panel-btns">
-          <label class="paper-label font-bold pad-right">TOTAL:</label
+          <label class="paper-label font-bold pad-right"
+            >${translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.TOTAL')}</label
           ><label class="font-bold-12">${this.data.currency} ${this.total_amount}</label>
         </div>
 
@@ -112,22 +114,22 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(
   @property({type: Array})
   columns: EtoolsTableColumn[] = [
     {
-      label: 'Item (all prices in PD currency)',
+      label: (translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.ITEM_PD_CURRENCY') as unknown) as string,
       name: 'title',
       type: EtoolsTableColumnType.Text
     },
     {
-      label: 'Unicef Cash',
+      label: (translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.UNICEF_CASH') as unknown) as string,
       name: 'unicef_cash',
       type: EtoolsTableColumnType.Number
     },
     {
-      label: 'Partner Contribution',
+      label: (translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.PARTNER_CONTRIBUTION') as unknown) as string,
       name: 'partner_contribution',
       type: EtoolsTableColumnType.Number
     },
     {
-      label: 'Total',
+      label: (translate('GENERAL.TOTAL') as unknown) as string,
       name: 'total',
       cssClass: 'right-a',
       type: EtoolsTableColumnType.Number
@@ -167,30 +169,24 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(
     this.total_amount = this.addCurrencyAmountDelimiter(data.total) || '0';
     return [
       {
-        title: 'In-country management and support staff',
-        description:
-          'Contribution for In-country management and support staff prorated to their contribution to the' +
-          ' programme (representation, planning, coordination, logistics, administration, finance)',
+        title: translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.TITLE_1'),
+        description: translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.DESCRIPTION_1'),
         unicef_cash: this.addCurrencyAmountDelimiter(data.act1_unicef),
         partner_contribution: this.addCurrencyAmountDelimiter(data.act1_partner),
         total: this.addCurrencyAmountDelimiter(data.act1_total),
         index: 1
       },
       {
-        title: 'Operational costs',
-        description:
-          'Contribution for Operational costs prorated to their contribution to the programme (office space,' +
-          ' equipment, office supplies, maintenance)',
+        title: translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.TITLE_2'),
+        description: translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.DESCRIPTION_2'),
         unicef_cash: this.addCurrencyAmountDelimiter(data.act2_unicef),
         partner_contribution: this.addCurrencyAmountDelimiter(data.act2_partner),
         total: this.addCurrencyAmountDelimiter(data.act2_total),
         index: 2
       },
       {
-        title: 'Planning, monitoring, evaluation and communication',
-        description:
-          'Contribution for Planning, monitoring, evaluation and communication, prorated to their' +
-          ' contribution to the programme (venue, travels, etc.)',
+        title: translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.TITLE_3'),
+        description: translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.DESCRIPTION_3'),
         unicef_cash: this.addCurrencyAmountDelimiter(data.act3_unicef),
         partner_contribution: this.addCurrencyAmountDelimiter(data.act3_partner),
         total: this.addCurrencyAmountDelimiter(data.act3_total),
@@ -222,7 +218,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(
     childRow.rowHTML = html`
       <td colspan="7">
         <div class="child-row-inner-container">
-          <label class="paper-label">Description</label><br />
+          <label class="paper-label">${translate('GENERAL.DESCRIPTION')}</label><br />
           <label>${item.description}</label>
         </div>
       </td>

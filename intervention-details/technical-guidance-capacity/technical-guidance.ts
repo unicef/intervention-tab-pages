@@ -15,6 +15,7 @@ import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 
 /**
  * @customElement
@@ -43,16 +44,16 @@ export class TechnicalGuidance extends CommentsMixin(ComponentBaseMixin(LitEleme
 
       <etools-content-panel
         show-expand-btn
-        panel-title="Technical Guidance, Capacity Development, Miscellaneous"
+        panel-title=${translate('INTERVENTION_DETAILS.TECHNICAL_GUIDANCE_CAPACITY_MISCELLANEOUS')}
         comment-element="technical-guidance"
-        comment-description="Technical Guidance, Capacity Development, Miscellaneous"
+        comment-description=${translate('INTERVENTION_DETAILS.TECHNICAL_GUIDANCE_CAPACITY_MISCELLANEOUS')}
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="row-padding-v">
           <paper-textarea
             id="technicalGuidance"
-            label="Technical Guidance"
+            label=${translate('INTERVENTION_DETAILS.TECHNICAL_GUIDANCE')}
             always-float-label
             placeholder="—"
             .value="${this.data.technical_guidance}"
@@ -66,7 +67,7 @@ export class TechnicalGuidance extends CommentsMixin(ComponentBaseMixin(LitEleme
         <div class="row-padding-v">
           <paper-textarea
             id="capacityDevelopment"
-            label="Capacity Development"
+            label=${translate('INTERVENTION_DETAILS.CAPACITY_DEVELOPMENT')}
             type="text"
             always-float-label
             placeholder="—"
@@ -81,7 +82,7 @@ export class TechnicalGuidance extends CommentsMixin(ComponentBaseMixin(LitEleme
         <div class="row-padding-v">
           <paper-textarea
             id="otherPartnersInvolved"
-            label="Other Partners Involved"
+            label=${translate('INTERVENTION_DETAILS.OTHER_PARTNERS_INVOLVED')}
             type="text"
             always-float-label
             placeholder="—"
@@ -96,7 +97,7 @@ export class TechnicalGuidance extends CommentsMixin(ComponentBaseMixin(LitEleme
         <div class="row-padding-v">
           <paper-textarea
             id="otherInformation"
-            label="Other Information"
+            label=${translate('INTERVENTION_DETAILS.OTHER_INFORMATION')}
             type="text"
             always-float-label
             placeholder="—"

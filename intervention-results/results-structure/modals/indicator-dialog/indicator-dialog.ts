@@ -27,6 +27,7 @@ import './cluster-indicator';
 import './cluster-indicator-disaggregations';
 import {Indicator, IndicatorDialogData} from '@unicef-polymer/etools-types';
 import {AnyObject, EtoolsUser, LocationObject, Section} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 
 @customElement('indicator-dialog')
 export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin(ComponentBaseMixin(LitElement))) {
@@ -83,12 +84,12 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
       <etools-dialog
         id="indicatorDialog"
         size="lg"
-        dialog-title="Indicator"
+        dialog-title=${translate('INDICATOR_DIALOG.INDICATOR')}
         no-padding
         opened
         @close="${this.onClose}"
         @confirm-btn-clicked="${this._validateAndSaveIndicator}"
-        ok-btn-text="Save"
+        ok-btn-text=${translate('GENERAL.SAVE')}
         keep-dialog-open
         .disableConfirmBtn="${this.disableConfirmBtn}"
         .hideConfirmBtn="${this.readonly}"
@@ -113,7 +114,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
               <div class="col col-4">
                 <etools-dropdown
                   id="sectionDropdw"
-                  label="Section"
+                  label=${translate('INDICATOR_DIALOG.SECTION')}
                   .selected="${this.data?.section}"
                   placeholder="&#8212;"
                   .options="${this.sectionOptions}"
@@ -121,7 +122,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
                   option-value="id"
                   required
                   auto-validate
-                  error-message="Please select section(s)"
+                  error-message=${translate('INDICATOR_DIALOG.PLEASE_SELECT_SECTIONS')}
                   disable-on-focus-handling
                   fit-into="etools-dialog"
                   ?readonly="${this.readonly}"
@@ -138,7 +139,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
                 ?checked="${this.isCluster}"
                 @iron-change="${(e: CustomEvent) => this.isClusterChanged(e)}"
               ></paper-toggle-button>
-              Cluster Indicator
+              ${translate('INDICATOR_DIALOG.CLUSTER_INDICATOR')}
             </div>
             <div class="indicator-content${this.isCluster ? ' cluster' : ''}">
               ${!this.isCluster
@@ -164,8 +165,8 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
           </div>
           <div class="row-padding" name="disaggregations">
             <div ?hidden="${this._hideAddDisaggreations(this.isCluster, this.currentUser)}" class="createDisaggreg">
-              If disaggregation groups that you need are not pre-defined yet, you can create them
-              <a href="/pmp/settings" target="_blank">here</a>.
+              ${translate('INDICATOR_DIALOG.IF_NO_DISAGGREG_GROUPS')}
+              <a href="/pmp/settings" target="_blank">${translate('INDICATOR_DIALOG.HERE')}</a>.
             </div>
             ${!this.isCluster
               ? html` <indicator-dissaggregations

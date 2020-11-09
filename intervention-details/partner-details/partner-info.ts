@@ -26,6 +26,7 @@ import {RootState} from '../../common/types/store.types';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission, PartnerStaffMember} from '@unicef-polymer/etools-types';
 import {MinimalAgreement} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 
 /**
  * @customElement
@@ -52,7 +53,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
         show-expand-btn
         panel-title="Partner Details"
         comment-element="partner-details"
-        comment-description="Partner Details"
+        comment-description=${translate('INTERVENTION_DETAILS.PARTNER_DETAILS')}
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
@@ -60,7 +61,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
           <div class="col col-7">
             <paper-input
               class="w100"
-              label="Partner Organization"
+              label=${translate('INTERVENTION_DETAILS.PARTNER_ORGANIZATION')}
               .value="${this.data?.partner}"
               required
               readonly
@@ -71,7 +72,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
           <div class="col col-5">
             <etools-dropdown
               id="agreements"
-              label="Agreements"
+              label=${translate('INTERVENTION_DETAILS.AGREEMENTS')}
               .options="${this.partnerAgreements}"
               .selected="${this.data?.agreement}"
               option-value="id"
@@ -89,7 +90,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
           <div class="col col-7">
             <paper-input
               class="w100"
-              label="Partner Vendor Number"
+              label=${translate('INTERVENTION_DETAILS.PARTNER_VENDOR_NUMBER')}
               .value="${this.data?.partner_vendor}"
               readonly
               always-float-label
@@ -97,14 +98,16 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
             </paper-input>
           </div>
           <div class="col col-5 layout-vertical">
-            <label for="agreementAuthOff" class="paper-label">Agreement Authorized Officers</label>
+            <label for="agreementAuthOff" class="paper-label"
+              >${translate('INTERVENTION_DETAILS.AGREEMENT_AUTHORIZED_OFFICERS')}</label
+            >
             <div id="agreementAuthOff">${this.renderAgreementAuthorizedOfficers(this.agreementAuthorizedOfficers)}</div>
           </div>
         </div>
         <div class="row-padding-v">
           <div class="col col-7 layout-vertical">
             <etools-dropdown-multi
-              label="Partner Focal Points"
+              label=${translate('INTERVENTION_DETAILS.PARTNER_FOCAL_POINTS')}
               .selectedValues="${cloneDeep(this.data?.partner_focal_points)}"
               .options="${this.partnerStaffMembers}"
               option-label="name"
