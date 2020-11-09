@@ -41,6 +41,7 @@ export class InterventionOverview extends connectStore(LitElement) {
         ${sharedStyles} :host {
           width: 100%;
           --ecp-content-padding: 0px;
+          --ecp-content_-_padding: 0;
           --paper-input-container-underline-disabled_-_display: none;
         }
 

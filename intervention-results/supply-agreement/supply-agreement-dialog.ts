@@ -18,6 +18,7 @@ import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-currency-amount-input';
 import {ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {EtoolsCurrencyAmountInput} from '@unicef-polymer/etools-currency-amount-input';
 
 /**
  * @customElement
@@ -58,12 +59,14 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
       <div class="layout-horizontal">
         <div class="col col-12">
           <paper-input
-           class="w100"
+            class="w100"
             value="${this.data.title}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'title')}"
             label=${translate('GENERAL.TITLE')}
             type="text"
             placeholder=${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT_DIALOG.ENTER_TITLE')}
+            error-message="This field is required"
+            auto-validate
             required
           >
         </div>
@@ -77,7 +80,9 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
             label=${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.NUMBER_UNITS')}
             allowed-pattern="[0-9]"
             placeholder=${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT_DIALOG.ENTER_NUMBER_UNITS')}
+            error-message="This field is required"
             required
+            auto-validate
           >
           </paper-input>
         </div>
@@ -88,7 +93,9 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
             placeholder=${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT_DIALOG.ENTER_PRICE_UNIT')}
             required
             .value="${this.data.unit_price ? this.data.unit_price : ''}"
+            @focus="${() => (this.autoValidate = true)}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unit_price')}"
+            .autoValidate="${this.autoValidate}"
           >
           </etools-currency-amount-input>
         </div>
@@ -154,6 +161,9 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
 
   @property({type: Boolean})
   isUnicefUser = false;
+
+  @property({type: Boolean})
+  autoValidate = false;
 
   set dialogData({data, interventionId, result_links, isUnicefUser}: any) {
     this.cpOutputs = (result_links || []).filter((x: ExpectedResult) => !!x.cp_output_name);
