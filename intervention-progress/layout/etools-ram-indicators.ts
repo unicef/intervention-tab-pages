@@ -10,6 +10,7 @@ import {property} from '@polymer/decorators';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import CommonMixin from '../../common/mixins/common-mixin';
 
 /**
  * @polymer
@@ -17,7 +18,7 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
  * @mixinFunction
  * @appliesMixin EndpointsMixin
  */
-class EtoolsRamIndicators extends PolymerElement {
+class EtoolsRamIndicators extends CommonMixin(PolymerElement) {
   static get is() {
     return 'etools-ram-indicators';
   }
@@ -49,7 +50,7 @@ class EtoolsRamIndicators extends PolymerElement {
       <etools-loading active="[[loading]]">Loading...</etools-loading>
 
       <iron-label>
-        <span id="label">RAM Indicators</span>
+        <span id="label">[[_translate('INTERVENTION_REPORTS.RAM_INDICATORS')]]</span>
         <div id="ram-indicators" iron-label-target>
           <template is="dom-if" if="[[_noRamIndicators(ramIndicators.length)]]">
             <span id="no-ram-indicators">&#8212;</span>
@@ -115,7 +116,7 @@ class EtoolsRamIndicators extends PolymerElement {
       .catch((error: any) => {
         if (error.status === 404) {
           fireEvent(this, 'toast', {
-            text: 'PMP is not synced with PRP',
+            text: "_translate('INTERVENTION_REPORTS.DUE_DATE')",
             showCloseBtn: true
           });
         } else {

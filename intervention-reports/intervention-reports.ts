@@ -75,7 +75,7 @@ class InterventionReports extends connectStore(PaginationMixin(CommonMixin(Endpo
       <div id="list" class="paper-material" elevation="1">
         <template is="dom-if" if="[[!reports.length]]">
           <div class="row-h">
-            <p>There are no reports yet.</p>
+            <p>[[_translate('INTERVENTION_REPORTS.NO_REPORTS_YET')]]</p>
           </div>
         </template>
 
@@ -86,20 +86,32 @@ class InterventionReports extends connectStore(PaginationMixin(CommonMixin(Endpo
             label="[[paginator.visible_range.0]]-[[paginator.visible_range.1]]
                                       of [[paginator.count]] results to show"
           >
-            <etools-data-table-column class="col-2"> Report # </etools-data-table-column>
-            <etools-data-table-column class="flex-c"> Partner </etools-data-table-column>
-            <etools-data-table-column class="flex-c"> Report Status </etools-data-table-column>
-            <etools-data-table-column class="flex-c"> Due Date </etools-data-table-column>
-            <etools-data-table-column class="flex-c"> Reporting Period </etools-data-table-column>
+            <etools-data-table-column class="col-2"
+              >[[_translate('INTERVENTION_REPORTS.REPORT_NUM')]]</etools-data-table-column
+            >
+            <etools-data-table-column class="flex-c"
+              >[[_translate('INTERVENTION_REPORTS.PARTNER')]]</etools-data-table-column
+            >
+            <etools-data-table-column class="flex-c"
+              >[[_translate('INTERVENTION_REPORTS.REPORT_STATUS')]]</etools-data-table-column
+            >
+            <etools-data-table-column class="flex-c"
+              >[[_translate('INTERVENTION_REPORTS.DUE_DATE')]]</etools-data-table-column
+            >
+            <etools-data-table-column class="flex-c"
+              >[[_translate('INTERVENTION_REPORTS.REPORTING_PERIOD')]]</etools-data-table-column
+            >
             <template is="dom-if" if="[[!noPdSsfaRef]]" restamp>
-              <etools-data-table-column class="col-2"> PD/SPD ref.# </etools-data-table-column>
+              <etools-data-table-column class="col-2"
+                >[[_translate('INTERVENTION_REPORTS.PD_SPD_REF_NUM')]]</etools-data-table-column
+              >
             </template>
           </etools-data-table-header>
 
           <template is="dom-repeat" items="[[reports]]" as="report" on-dom-change="_listDataChanged">
             <etools-data-table-row low-resolution-layout="[[lowResolutionLayout]]">
               <div slot="row-data">
-                <span class="col-data col-2" data-col-header-label="Report #">
+                <span class="col-data col-2" data-col-header-label="[[_translate('INTERVENTION_REPORTS.REPORT_NUM')]]">
                   <span id$="tooltip-trigger-[[report.id]]" class="tooltip-trigger">
                     <a
                       class="view-report"
@@ -110,14 +122,14 @@ class InterventionReports extends connectStore(PaginationMixin(CommonMixin(Endpo
                     </a>
                     <span hidden$="[[_canViewReport(report.status)]]">[[_getReportTitle(report)]]</span>
                     <template is="dom-if" if="[[report.is_final]]">
-                      <span class="final-badge">final</span>
+                      <span class="final-badge">[[_translate('INTERVENTION_REPORTS.FINAL')]]</span>
                     </template>
                   </span>
                   <paper-tooltip for$="tooltip-trigger-[[report.id]]" position="right" fit-to-visible-bounds>
                     [[report.programme_document.title]]
                   </paper-tooltip>
                 </span>
-                <span class="col-data flex-c" data-col-header-label="Partner">
+                <span class="col-data flex-c" data-col-header-label="[[_translate('INTERVENTION_REPORTS.PARTNER')]]">
                   <span id$="tooltip-partner-[[report.id]]" class="tooltip-trigger">
                     [[_displayOrDefault(report.partner_name)]]
                   </span>
@@ -126,17 +138,26 @@ class InterventionReports extends connectStore(PaginationMixin(CommonMixin(Endpo
                     [[report.partner_vendor_number]]
                   </paper-tooltip>
                 </span>
-                <span class="col-data flex-c" data-col-header-label="Report Status">
+                <span
+                  class="col-data flex-c"
+                  data-col-header-label="[[_translate('INTERVENTION_REPORTS.REPORT_STATUS')]]"
+                >
                   <intervention-report-status status="[[report.status]]"></intervention-report-status>
                 </span>
-                <span class="col-data flex-c" data-col-header-label="Due Date">
+                <span class="col-data flex-c" data-col-header-label="[[_translate('INTERVENTION_REPORTS.DUE_DATE')]]">
                   [[_displayOrDefault(report.due_date)]]
                 </span>
-                <span class="col-data flex-c" data-col-header-label="Reporting Period">
+                <span
+                  class="col-data flex-c"
+                  data-col-header-label="[[_translate('INTERVENTION_REPORTS.REPORTING_PERIOD')]]"
+                >
                   [[getDisplayValue(report.reporting_period)]]
                 </span>
                 <template is="dom-if" if="[[!noPdSsfaRef]]" restamp>
-                  <span class="col-data col-2" data-col-header-label="PD/SPD ref.#">
+                  <span
+                    class="col-data col-2"
+                    data-col-header-label="[[_translate('INTERVENTION_REPORTS.PD_SPD_REF_NUM')]]"
+                  >
                     <a
                       class="pd-ref truncate"
                       href$="interventions/[[report.programme_document.external_id]]/details"
@@ -150,7 +171,7 @@ class InterventionReports extends connectStore(PaginationMixin(CommonMixin(Endpo
 
               <div slot="row-data-details">
                 <div class="row-details-content">
-                  <span class="rdc-title flex-c">UNICEF Focal Points</span>
+                  <span class="rdc-title flex-c">[[_translate('INTERVENTION_REPORTS.UNICEF_FOCAL_POINTS')]]</span>
                   <span>[[getDisplayValue(report.unicef_focal_points)]]</span>
                 </div>
               </div>
