@@ -409,7 +409,9 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(EtoolsCurr
     const element: HTMLElement = container.shadowRoot!.querySelector('#wrapper') as HTMLElement;
     const relatedTo: string = container.getAttribute('related-to') as string;
     const relatedToDescription = container.getAttribute('related-to-description') as string;
-    return [{element, relatedTo, relatedToDescription}];
+    // we do not use row index for this component
+    const rowIndex = 'undefined';
+    return [{element, relatedTo, relatedToDescription, rowIndex}];
   }
 
   updateTableView(indicators: boolean, activities: boolean): void {

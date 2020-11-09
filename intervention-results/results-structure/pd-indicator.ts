@@ -19,6 +19,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
   @property({type: Array}) locationNames: {name: string; adminLevel: string}[] = [];
   @property({type: String}) sectionClusterNames = '';
   @property({type: String}) interventionStatus = '';
+  @property({type: Number}) rowIndex!: boolean;
 
   render() {
     return html`
@@ -113,6 +114,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
         related-to="indicator-${this.indicator.id}"
         related-to-description="Indicator - ${this.indicator.indicator?.title}"
         comments-container
+        row-index=${this.rowIndex}
       >
         <div slot="row-data" class="layout-horizontal align-items-center editable-row">
           <!--    Indicator name    -->
@@ -156,7 +158,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
         </div>
 
         <!--    Indicator row collapsible Details    -->
-        <div slot="row-data-details" class="row-h">
+        <div slot="row-data-details" class="row-h" id="resultsStructureExtendedRow">
           <!--    Locations    -->
           <div class="details-container-locations">
             <div class="text details-heading">Locations</div>
@@ -199,7 +201,8 @@ export class PdIndicator extends CommentsMixin(LitElement) {
     const element: HTMLElement = container.shadowRoot!.querySelector('#wrapper') as HTMLElement;
     const relatedTo: string = container.getAttribute('related-to') as string;
     const relatedToDescription = container.getAttribute('related-to-description') as string;
-    return [{element, relatedTo, relatedToDescription}];
+    const rowIndex = container.getAttribute('row-index') as string;
+    return [{element, relatedTo, relatedToDescription, rowIndex}];
   }
   openDeactivationDialog(indicatorId: string) {
     fireEvent(this, 'open-deactivate-confirmation', {indicatorId: indicatorId});

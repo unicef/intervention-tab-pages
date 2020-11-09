@@ -38,7 +38,9 @@ export class InterventionTiming extends CommentsMixin(LitElement) {
     return Array.from(container.shadowRoot!.querySelectorAll('.nav-menu-item')).map((element: any) => {
       const relatedTo: string = element.getAttribute('name') as string;
       const relatedToDescription = element.getAttribute('title') as string;
-      return {element, relatedTo, relatedToDescription};
+      // we do not have row index for this component
+      const rowIndex = 'undefined';
+      return {element, relatedTo, relatedToDescription, rowIndex};
     });
   }
 }

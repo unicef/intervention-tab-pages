@@ -101,7 +101,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
       </div>
 
       ${this.indicators.map(
-        (indicator: Indicator) => html`
+        (indicator: Indicator, index: number) => html`
           <pd-indicator
             .indicator="${indicator}"
             .disaggregations="${this.disaggregations}"
@@ -109,6 +109,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
             .sectionClusterNames="${this.getSectionAndCluster(indicator.section, indicator.cluster_name)}"
             .interventionStatus="${this.interventionStatus}"
             .readonly="${this.readonly}"
+            .rowIndex=${index}
             ?hidden="${this._hideIndicator(indicator, this.showInactiveIndicators)}"
             ?cluster-indicator="${indicator.cluster_indicator_id}"
             ?high-frequency-indicator="${indicator.is_high_frequency}"

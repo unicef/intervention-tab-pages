@@ -93,9 +93,10 @@ export class PdActivities extends CommentsMixin(LitElement) {
       </div>
 
       ${this.activities.map(
-        (activity: InterventionActivity) => html`
+        (activity: InterventionActivity, index: number) => html`
           <etools-data-table-row
             secondary-bg-on-hover
+            row-index=${index}
             related-to="activity-${activity.id}"
             related-to-description=" Activity - ${activity.name}"
             comments-container
@@ -142,7 +143,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
             </div>
 
             <!--    Indicator row collapsible Details    -->
-            <div slot="row-data-details" class="row-h" id="activitiesDetails">
+            <div slot="row-data-details" class="row-h" id="resultsStructureExtendedRow">
               <!--    Locations    -->
               <div class="details-container">
                 <div class="text details-heading">Time Periods</div>
@@ -178,7 +179,8 @@ export class PdActivities extends CommentsMixin(LitElement) {
     const element: HTMLElement = container.shadowRoot!.querySelector('#wrapper') as HTMLElement;
     const relatedTo: string = container.getAttribute('related-to') as string;
     const relatedToDescription = container.getAttribute('related-to-description') as string;
-    return [{element, relatedTo, relatedToDescription}];
+    const rowIndex = container.getAttribute('row-index') as string;
+    return [{element, relatedTo, relatedToDescription, rowIndex}];
   }
 
   formatCurrency(value: string | number): string {

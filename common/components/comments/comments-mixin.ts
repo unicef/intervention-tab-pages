@@ -16,6 +16,7 @@ export type CommentElementMeta = {
   relatedTo: string;
   relatedToDescription: string;
   element: HTMLElement;
+  rowIndex: string;
 };
 
 /**
@@ -102,12 +103,12 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
     private startCommentMode(): void {
       const elements: NodeListOf<HTMLElement> = this.shadowRoot!.querySelectorAll(
-        '[comment-element], [comments-container], #activitiesDetails'
+        '[comment-element], [comments-container], #resultsStructureExtendedRow'
       );
 
       this.metaDataCollection = Array.from(elements)
         .map((element: HTMLElement) => {
-          if (element.id == 'activitiesDetails') {
+          if (element.id == 'resultsStructureExtendedRow') {
             return this.createMataData(element, '', '');
           }
           if (element.hasAttribute('comments-container')) {
@@ -138,7 +139,12 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
       }
     }
 
-    private createMataData(element: HTMLElement, relatedTo: string, relatedToDescription: string): MetaData {
+    private createMataData(
+      element: HTMLElement,
+      relatedTo: string,
+      relatedToDescription: string,
+      rowIndex = 'null'
+    ): MetaData {
       const oldStyles: string = element.style.cssText;
       let borderOnly = true;
       if (relatedTo) {
@@ -153,7 +159,8 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         overlay,
         oldStyles,
         relatedTo,
-        relatedToDescription
+        relatedToDescription,
+        rowIndex
       };
     }
 
@@ -200,15 +207,17 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
     }
 
     private getMetaFromContainer(container: HTMLElement): MetaData[] {
-      return this.getSpecialElements(container).map(({element, relatedTo, relatedToDescription}: CommentElementMeta) =>
-        this.createMataData(element, relatedTo, relatedToDescription)
+      return this.getSpecialElements(
+        container
+      ).map(({element, relatedTo, relatedToDescription, rowIndex}: CommentElementMeta) =>
+        this.createMataData(element, relatedTo, relatedToDescription, rowIndex)
       );
     }
 
     private updateCounterAndColor(meta: MetaData): void {
       const comments: InterventionComment[] = this.comments[meta.relatedTo] || [];
       const borderColor = comments.length ? '#FF4545' : '#81D763';
-      if (meta.relatedTo.includes('activity-')) {
+      if ((meta.relatedTo.includes('activity-') || meta.relatedTo.includes('indicator-')) && meta.rowIndex !== '0') {
         meta.element.style.cssText = `
         position: relative;
         border-bottom: 2px solid ${borderColor} !important;
