@@ -77,7 +77,7 @@ export class MonitoringVisitsList extends LitElement {
                 </div>
               </etools-data-table-row>
             `
-          )};
+          )}
           ${this.tpmActivities.map(
             (visit: AnyObject) => html`
               <etools-data-table-row no-collapse>
@@ -114,7 +114,7 @@ export class MonitoringVisitsList extends LitElement {
         >
           <p>There are no activities.</p>
         </div>
-      </div>`;
+      </div>`
   }
 
   @property({type: String})
