@@ -3,6 +3,7 @@
 import {prettyDate} from '../../utils/date-utils';
 import {PolymerElement} from '@polymer/polymer';
 import {AnyObject, Constructor} from '@unicef-polymer/etools-types';
+import {get} from 'lit-translate';
 
 /**
  * @polymer
@@ -78,6 +79,10 @@ function CommonMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
         }
       }
       return field;
+    }
+
+    _translate(textKey: string) {
+      return get(textKey);
     }
   }
 

@@ -21,6 +21,7 @@ import {openDialog} from '../../utils/dialog';
 import {layoutCenter, layoutVertical} from '../../common/styles/flex-layout-styles';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, LocationObject, Permission} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 
 /**
  * @customElement
@@ -79,7 +80,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
 
       <etools-content-panel
         show-expand-btn
-        panel-title="Geographical Coverage"
+        panel-title=${translate('INTERVENTION_DETAILS.GEOGRAPHICAL_COVERAGE')}
         comment-element="geographical-coverage"
         comment-description="Geographical Coverage"
       >
@@ -88,7 +89,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         <div class="flex-c layout-horizontal row-padding-v">
           <etools-dropdown-multi
             id="locations"
-            label="Location(s)"
+            label=${translate('INTERVENTION_DETAILS.LOCATIONS')}
             placeholder="&#8212;"
             .options="${this.allLocations}"
             .selectedValues="${this.data.flat_locations}"
@@ -96,7 +97,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
             ?required="${this.permissions.required.flat_locations}"
             option-label="name"
             option-value="id"
-            error-message="Please select locations"
+            error-message=${translate('INTERVENTION_DETAILS.LOCATIONS_ERR')}
             disable-on-focus-handling
             trigger-value-change-event
             @etools-selected-items-changed="${({detail}: CustomEvent) =>
@@ -108,10 +109,10 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
               class="secondary-btn see-locations right-align"
               @click="${this.openLocationsDialog}"
               ?hidden="${this._isEmpty(this.data.flat_locations)}"
-              title="See all locations"
+              title=${translate('INTERVENTION_DETAILS.SEE_ALL_LOCATIONS')}
             >
               <iron-icon icon="add"></iron-icon>
-              See all
+              ${translate('INTERVENTION_DETAILS.SEE_ALL')}
             </paper-button>
           </div>
         </div>

@@ -8,6 +8,7 @@ import get from 'lodash-es/get';
 import {getFileNameFromURL} from '../../utils/utils';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {ReviewAttachment} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 declare const moment: any;
 
 @customElement('final-review')
@@ -66,16 +67,16 @@ export class FinalReview extends CommentsMixin(LitElement) {
     return html`
       <etools-content-panel
         show-expand-btn
-        panel-title="Final Partnership Review"
+        panel-title=${translate('INTERVENTION_MANAGEMENT.FINAL_REVIEW.FINAL_PARTNERSHIP_REVIEW')}
         comment-element="final-partnership-review"
-        comment-description="Final Partnership Review"
+        comment-description=${translate('INTERVENTION_MANAGEMENT.FINAL_REVIEW.FINAL_PARTNERSHIP_REVIEW')}
       >
         <div slot="panel-btns" ?hidden="${!this.canEdit}">
           <paper-icon-button @click="${() => this.openPopup()}" icon="create"> </paper-icon-button>
         </div>
         <div class="container">
           <div>
-            <div class="label">Date Review Performed</div>
+            <div class="label">${translate('INTERVENTION_MANAGEMENT.FINAL_REVIEW.DATE_REVIEW_PERFORMED')}</div>
             <div class="date">${this.reviewDate}</div>
           </div>
           <div ?hidden="${!this.attachment}">

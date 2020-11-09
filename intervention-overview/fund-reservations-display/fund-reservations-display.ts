@@ -15,6 +15,7 @@ import FrNumbersConsistencyMixin from '../../common/mixins/fr-numbers-consistenc
 import isEmpty from 'lodash-es/isEmpty';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {Intervention, FrsDetails} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 
 /**
  * @customElement
@@ -77,7 +78,7 @@ export class FundReservationsDisplay extends EtoolsCurrency(FrNumbersConsistency
       </style>
 
       <div class="row-h" ?hidden="${this.frsDetails.frs.length}">
-        <p>There are no fund reservations added for this intervention.</p>
+        <p>${translate('INTERVENTION_OVERVIEW.NO_FUND_RESERVATIONS')}</p>
       </div>
 
       <div class="list-container" ?hidden="${this._noFrs(this.frsDetails)}">

@@ -33,6 +33,7 @@ import ContentPanelMixin from '../../common/mixins/content-panel-mixin';
 import {AnyObject, AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {Intervention, FrsDetails, Fr} from '@unicef-polymer/etools-types';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
+import {translate} from 'lit-translate';
 
 /**
  * @customElement
@@ -86,9 +87,9 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
 
       <etools-content-panel
         show-expand-btn
-        panel-title="Fund Reservations"
+        panel-title=${translate('INTERVENTION_MANAGEMENT.FUND_RESERVATIONS.FUND_RESERVATIONS')}
         comment-element="fund-reservations"
-        comment-description="Fund Reservations"
+        comment-description=${translate('INTERVENTION_MANAGEMENT.FUND_RESERVATIONS.FUND_RESERVATIONS')}
       >
         <paper-icon-button
           slot="panel-btns"
@@ -204,10 +205,10 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
 
     this._frsInconsistenciesConfirmationHandler = this._frsInconsistenciesConfirmationHandler.bind(this);
     this.frsConfirmationsDialog = createDynamicDialog({
-      title: 'Fund Reservation Warning',
+      title: (translate('INTERVENTION_MANAGEMENT.FUND_RESERVATIONS.FR_WARNING') as unknown) as string,
       size: 'md',
-      okBtnText: 'Yes',
-      cancelBtnText: 'No',
+      okBtnText: (translate('INTERVENTION_MANAGEMENT.FUND_RESERVATIONS.OK_BTN') as unknown) as string,
+      cancelBtnText: (translate('INTERVENTION_MANAGEMENT.FUND_RESERVATIONS.CANCEL_BTN') as unknown) as string,
       closeCallback: this._frsInconsistenciesConfirmationHandler,
       content: this._frsConfirmationsDialogMessage
     });
@@ -350,7 +351,9 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
   _frsDetailsErrorHandler(responseErr: any) {
     this.frsDialogEl.stopSpinner();
     const toastMsg =
-      responseErr && responseErr.error ? responseErr.error : 'Can not add/update FR numbers. Please try again later!';
+      responseErr && responseErr.error
+        ? responseErr.error
+        : ((translate('INTERVENTION_MANAGEMENT.FUND_RESERVATIONS.ADD_UPDATE_FR_NUMBER_ERR') as unknown) as string);
     // show the invalid frs warning
     fireEvent(this, 'toast', {
       text: toastMsg,
@@ -378,9 +381,9 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
   }
 
   _getNoFrsWarningText(interventionId: string) {
-    let msg = 'There are no fund reservations numbers added.';
+    let msg = (translate('INTERVENTION_MANAGEMENT.FUND_RESERVATIONS.NO_FR_NUM_ADDED') as unknown) as string;
     if (!interventionId) {
-      msg = 'You can not add FR Numbers. The PD/SPD needs to be saved first.';
+      msg = (translate('INTERVENTION_MANAGEMENT.FUND_RESERVATIONS.CAN_NOT_ADD_FR_NUM') as unknown) as string;
     }
     return msg;
   }

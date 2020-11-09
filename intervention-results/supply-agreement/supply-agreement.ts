@@ -29,6 +29,7 @@ import {isUnicefUser} from '../../common/selectors';
 import {EtoolsUpload} from '@unicef-polymer/etools-upload/etools-upload';
 import {AnyObject, AsyncAction, InterventionSupplyItem} from '@unicef-polymer/etools-types';
 import {Intervention, ExpectedResult} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 
 const customStyles = html`
   <style>
@@ -80,13 +81,15 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
 
       <etools-content-panel
         show-expand-btn
-        panel-title="Supply Agreement"
+        panel-title=${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.SUPPLY_AGREEMENT')}
         comment-element="supply-agreement"
-        comment-description="Supply Agreement"
+        comment-description=${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.SUPPLY_AGREEMENT')}
       >
         <div slot="panel-btns">
           <span class="mr-20">
-            <label class="paper-label font-bold pad-right">TOTAL SUPPLY BUDGET: </label>
+            <label class="paper-label font-bold pad-right"
+              >${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.TOTAL_SUPPLY_BUDGET')}
+            </label>
             <label class="font-bold-12"
               >${this.intervention.planned_budget.currency}
               ${this.displayCurrencyAmount(this.intervention.planned_budget.in_kind_amount_local)}</label
@@ -118,7 +121,7 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
           .showDelete=${this.permissions.edit.supply_items}
         ></etools-table>
         <div class="row-h" ?hidden="${this.supply_items?.length}">
-          <p>There are no supply agreements added.</p>
+          <p>${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.NO_SUPPLY_AGREEMENTS')}</p>
         </div>
       </etools-content-panel>
 
@@ -145,25 +148,25 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
   @property({type: Array})
   columns: EtoolsTableColumn[] = [
     {
-      label: 'Item (all prices in PD Currency)',
+      label: (translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.ITEM_ALL_PRICES') as unknown) as string,
       name: 'title',
       type: EtoolsTableColumnType.Text,
       cssClass: 'col_title'
     },
     {
-      label: 'Number of Units',
+      label: (translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.NUMBER_UNITS') as unknown) as string,
       name: 'unit_number',
       type: EtoolsTableColumnType.Number,
       cssClass: 'col_nowrap'
     },
     {
-      label: 'Price / Unit',
+      label: (translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.PRICE_UNIT') as unknown) as string,
       name: 'unit_price',
       type: EtoolsTableColumnType.Number,
       cssClass: 'col_nowrap'
     },
     {
-      label: 'Total Price',
+      label: (translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.TOTAL_PRICE') as unknown) as string,
       name: 'total_price',
       cssClass: 'col_nowrap',
       type: EtoolsTableColumnType.Number
@@ -194,7 +197,8 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
         this.isUnicefUser
           ? html`<td class="ptb-0">
               <div class="child-row-inner-container">
-                <label class="paper-label">Cp Outputs</label><br />
+                <label class="paper-label">${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.CP_OUTPUTS')}</label
+                ><br />
                 <label>${output || '—'}</label><br />
               </div>
             </td>`
@@ -202,7 +206,7 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
       }
       <td colspan="${this.isUnicefUser ? '4' : '5'}" class="ptb-0">
         <div class="child-row-inner-container">
-          <label class="paper-label">Other Mentions</label><br />
+          <label class="paper-label">${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.OTHER_MENTIONS')}</label><br />
           <label>${item.other_mentions || '—'}</label>
           </paper-input>
         </div>
@@ -257,8 +261,8 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
-        content: 'Are you sure you want to delete this Supply Agreement item?',
-        confirmBtnText: 'Delete'
+        content: translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.DELETE_SUPPLY_PROMPT'),
+        confirmBtnText: translate('GENERAL.DELETE')
       }
     }).then(({confirmed}) => {
       return confirmed;
@@ -291,7 +295,7 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
     this.uploadInProcess = false;
     if (success) {
       getStore().dispatch(updateCurrentIntervention(success));
-      fireEvent(this, 'toast', {text: 'Supplies uploaded successfuly'});
+      fireEvent(this, 'toast', {text: translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.SUPPLIES_UPLOADED')});
     } else {
       const message = this.getUploadError(error);
       fireEvent(this, 'toast', {text: `Can not upload supplies: ${message}`});

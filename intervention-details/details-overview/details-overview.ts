@@ -11,6 +11,7 @@ import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
+import {translate} from 'lit-translate';
 
 /**
  * @customElement
@@ -49,22 +50,22 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
           <div class="layout-horizontal">
             <div class="flex-2">
               <span>
-                <label class="paper-label">Document Type</label>
+                <label class="paper-label">${translate('INTERVENTION_DETAILS.DOCUMENT_TYPE')}</label>
               </span>
             </div>
             <div class="flex-3">
               <span>
-                <label class="paper-label">UNPP CFEI/DSR Ref Number</label>
+                <label class="paper-label">${translate('INTERVENTION_DETAILS.UNPP_CFEI_DSR')}</label>
               </span>
             </div>
             <div class="flex-1">
               <span>
-                <label class="paper-label">Humanitarian</label>
+                <label class="paper-label">${translate('INTERVENTION_DETAILS.HUMANITARIAN')}</label>
               </span>
             </div>
             <div class="flex-1">
               <span>
-                <label class="paper-label">Contingency</label>
+                <label class="paper-label">${translate('INTERVENTION_DETAILS.CONTINGENCY')}</label>
               </span>
             </div>
           </div>

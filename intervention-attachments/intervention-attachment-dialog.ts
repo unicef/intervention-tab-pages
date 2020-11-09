@@ -12,6 +12,7 @@ import {validateRequiredFields} from '../utils/validation-helper';
 import {sharedStyles} from '../common/styles/shared-styles-lit';
 import {connectStore} from '../common/mixins/connect-store-mixin';
 import {IdAndName, GenericObject, ReviewAttachment} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 
 @customElement('intervention-attachment-dialog')
 export class InterventionAttachmentDialog extends connectStore(LitElement) {
@@ -67,10 +68,10 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
         size="md"
         keep-dialog-open
         ?opened="${this.dialogOpened}"
-        dialog-title="Attachment"
+        dialog-title=${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.INT_ATT_DIALOG.ATTACHMENT')}
         @confirm-btn-clicked="${() => this.processRequest()}"
         @close="${this.onClose}"
-        ok-btn-text="Save"
+        ok-btn-text=${translate('GENERAL.SAVE')}
         no-padding
       >
         <etools-loading ?active="${this.savingInProcess}"></etools-loading>
@@ -82,8 +83,8 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
               this.updateField('type', detail.selectedItem && detail.selectedItem.id)}"
             ?trigger-value-change-event="${!this.savingInProcess}"
             .selected="${this.data?.type}"
-            label="Document Type"
-            placeholder="Select Document Type"
+            label=${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.INT_ATT_DIALOG.SELECT_DOC_TYPE')}
+            placeholder=${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.INT_ATT_DIALOG.SELECT_DOC_TYPE')}
             .options="${this.fileTypes}"
             option-label="name"
             option-value="id"
@@ -91,14 +92,14 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
             dynamic-align
             required
             ?invalid="${this.errors.type}"
-            .errorMessage="${(this.errors.type && this.errors.type[0]) || 'This field is required'}"
+            .errorMessage="${(this.errors.type && this.errors.type[0]) || translate('GENERAL.REQUIRED_FIELD')}"
             @focus="${() => this.resetFieldError('type')}"
             @click="${() => this.resetFieldError('type')}"
           ></etools-dropdown>
 
           <!-- Attachment -->
           <etools-upload
-            label="Attachment"
+            label=${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.INT_ATT_DIALOG.ATTACHMENT')}
             accept=".doc,.docx,.pdf,.jpg,.png"
             .showDeleteBtn="${false}"
             ?readonly="${this.data.id}"
@@ -117,7 +118,7 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
               ?checked="${!this.data?.active}"
               @checked-changed="${(e: CustomEvent) => this.updateField('active', !e.detail.value)}"
             >
-              Invalid
+              ${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.INVALID')}
             </paper-checkbox>
           </etools-form-element-wrapper>
         </div>

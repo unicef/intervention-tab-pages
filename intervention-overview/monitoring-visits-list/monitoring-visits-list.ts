@@ -11,6 +11,7 @@ import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
 import isEmpty from 'lodash-es/isEmpty';
 import {AnyObject} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 declare const moment: any;
 
 /**
@@ -112,7 +113,7 @@ export class MonitoringVisitsList extends LitElement {
           class="row-h"
           ?hidden="${!this._hideMonitoringVisits(this.monitoringVisits.length, this.tpmActivities.length)}"
         >
-          <p>There are no activities.</p>
+          <p>${translate('INTERVENTION_OVERVIEW.NO_ACTIVITIES')}</p>
         </div>
       </div>`
   }

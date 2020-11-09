@@ -25,6 +25,7 @@ import {getIntervention} from '../../common/actions/interventions';
 import {currentInterventionPermissions} from '../../common/selectors';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, LabelAndValue, RiskData} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 
 const customStyles = html`
   <style>
@@ -70,7 +71,12 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           padding: 20px;
         }
       </style>
-      <etools-content-panel show-expand-btn panel-title="Risks" comment-element="risks" comment-description="Risks">
+      <etools-content-panel
+        show-expand-btn
+        panel-title=${translate('INTERVENTION_MANAGEMENT.RISKS.RISKS')}
+        comment-element="risks"
+        comment-description=${translate('INTERVENTION_MANAGEMENT.RISKS.RISKS')}
+      >
         <div slot="panel-btns">
           <paper-icon-button
             ?hidden="${!this.canEditAtLeastOneField}"
@@ -92,7 +98,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         >
         </etools-table>
         <div class="row-h" ?hidden="${this.data?.length}">
-          <p>There are no risks added.</p>
+          <p>${translate('INTERVENTION_MANAGEMENT.RISKS.NO_RISK_ADDED')}</p>
         </div>
       </etools-content-panel>
     `;
@@ -110,7 +116,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   @property({type: Array})
   columns: EtoolsTableColumn[] = [
     {
-      label: 'Type',
+      label: (translate('INTERVENTION_MANAGEMENT.RISKS.TYPE') as unknown) as string,
       name: 'risk_type',
       type: EtoolsTableColumnType.Custom,
       customMethod: (item: any, _key: string, customData: AnyObject) => {
@@ -120,7 +126,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       cssClass: 'col_type'
     },
     {
-      label: 'Proposed Mitigation Measures',
+      label: (translate('INTERVENTION_MANAGEMENT.RISKS.PROPOSED_MITIGATION_MEASURES') as unknown) as string,
       name: 'mitigation_measures',
       type: EtoolsTableColumnType.Text,
       cssClass: 'col_measures'
@@ -165,8 +171,8 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
-        content: 'Are you sure you want to delete this Risk item?',
-        confirmBtnText: 'Delete'
+        content: (translate('INTERVENTION_MANAGEMENT.RISKS.DELETE_RISK_PROMPT') as unknown) as string,
+        confirmBtnText: (translate('GENERAL.DELETE') as unknown) as string
       }
     }).then(({confirmed}) => {
       return confirmed;

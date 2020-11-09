@@ -187,12 +187,12 @@ class InterventionProgress extends connectStore(
                 >
                 </etools-form-element-wrapper>
                 <iron-icon icon="pmp-custom-icons:not-equal" slot="custom-icon"></iron-icon>
-                <span slot="message">Disbursement amounts in multiple currencies.</span>
+                <span slot="message">[[_translate('INTERVENTION_REPORTS.DISBURSEMENT_AMOUNTS')]]</span>
               </etools-info-tooltip>
 
               <etools-form-element-wrapper
                 class="col-6"
-                label="UNICEF Cash"
+                label="[[_translate('INTERVENTION_REPORTS.UNICEF_CASH')]]"
                 value="[[progress.unicef_budget_cash_currency]]
                         [[displayCurrencyAmount(progress.unicef_budget_cash, '0', 0)]]"
               >
@@ -213,15 +213,15 @@ class InterventionProgress extends connectStore(
                 icon-first
                 hide-tooltip="[[!multipleCurrenciesWereUsed(progress.disbursement_percent, progress)]]"
               >
-                <span slot="field">N/A %</span>
+                <span slot="field">[[_translate('INTERVENTION_REPORTS.NA_%')]]</span>
                 <iron-icon slot="custom-icon" icon="pmp-custom-icons:not-equal"></iron-icon>
-                <span slot="message">FR currency does not match PD/SPD currency.</span>
+                <span slot="message">[[_translate('INTERVENTION_REPORTS.FR_CURRENCY_NOT_MATCH')]]</span>
               </etools-info-tooltip>
             </template>
           </div>
           <div class="col col-3">
             <etools-form-element-wrapper
-              label="Overall PD/SPD Rating by UNICEF"
+              label="[[_translate('INTERVENTION_REPORTS.OVERALL_PD_SPD_RATING')]]"
               value="[[_getOverallPdStatusDate(latestAcceptedPr.review_date)]]"
               no-placeholder
             >
@@ -234,13 +234,16 @@ class InterventionProgress extends connectStore(
         </div>
       </div>
 
-      <etools-content-panel class="content-section" panel-title="Results reported">
+      <etools-content-panel
+        class="content-section"
+        panel-title="[[_translate('INTERVENTION_REPORTS.RESULTS_REPORTED')]]"
+      >
         <div class="row-h" hidden$="[[!_emptyList(progress.details.cp_outputs)]]">
-          <p>There are no results to show.</p>
+          <p>[[_translate('INTERVENTION_REPORTS.NO_RESULTS')]]</p>
         </div>
         <template is="dom-repeat" items="[[progress.details.cp_outputs]]">
           <div class="row-v row-second-bg">
-            <strong>CP Output: [[item.title]]</strong>
+            <strong>[[_translate('INTERVENTION_REPORTS.CP_OUTPUT')]] [[item.title]]</strong>
           </div>
 
           <!-- RAM indicators display -->
@@ -251,13 +254,17 @@ class InterventionProgress extends connectStore(
           ></etools-ram-indicators>
 
           <div class="row-h" hidden$="[[!_emptyList(item.ll_outputs)]]">
-            <p>There are no PD Outputs.</p>
+            <p>[[_translate('INTERVENTION_REPORTS.NO_PD_OUTPUTS')]]</p>
           </div>
 
           <div class="lower-results-table" hidden$="[[_emptyList(item.ll_outputs)]]">
             <etools-data-table-header id="listHeader" no-title>
-              <etools-data-table-column class="col-9"> PD Outputs </etools-data-table-column>
-              <etools-data-table-column class="col-3"> Current progress (Last Reported on) </etools-data-table-column>
+              <etools-data-table-column class="col-9"
+                >[[_translate('INTERVENTION_REPORTS.PD_OUTPUTS')]]</etools-data-table-column
+              >
+              <etools-data-table-column class="col-3"
+                >[[_translate('INTERVENTION_REPORTS.CURRENT_PROGRESS')]]</etools-data-table-column
+              >
             </etools-data-table-header>
 
             <template is="dom-repeat" items="[[item.ll_outputs]]" as="lowerResult">
@@ -274,7 +281,7 @@ class InterventionProgress extends connectStore(
                 <div slot="row-data-details">
                   <div class="row-details-content flex-c">
                     <div class="row-h" hidden$="[[_countIndicatorReports(lowerResult.id)]]">
-                      No indicators on this PD Output
+                      [[_translate('INTERVENTION_REPORTS.NO_INDICATORS')]]
                     </div>
                     <template is="dom-repeat" items="[[_getIndicatorsReports(lowerResult.id)]]" as="indicatorReport">
                       <div class="row-h indicator-report">
