@@ -20,6 +20,7 @@ export class CpOutputDialog extends LitElement {
   @property() selectedCpOutput?: number;
   @property() errors: GenericObject<any> = {};
   @property() cpOutputs: any[] = [];
+  @property({type: String}) spinnerText!: string;
 
   cpOutputId!: number;
   cpOutputName!: string;
@@ -71,6 +72,7 @@ export class CpOutputDialog extends LitElement {
         @confirm-btn-clicked="${() => this.processRequest()}"
         @close="${this.onClose}"
         ?show-spinner="${this.loadingInProcess}"
+        spinner-text="${this.spinnerText}"
         ok-btn-text="Save"
         no-padding
       >
@@ -142,7 +144,7 @@ export class CpOutputDialog extends LitElement {
       this.performUpdate();
       return;
     }
-
+    this.spinnerText = 'Saving data...';
     this.loadingInProcess = true;
     const endpoint = this.cpOutputId
       ? getEndpoint(interventionEndpoints.resultLinkGetDelete, {result_link: this.resultLinkId})
@@ -180,6 +182,7 @@ export class CpOutputDialog extends LitElement {
     if (!cpOutputId) {
       return;
     }
+    this.spinnerText = 'Loading...';
     this.loadingInProcess = true;
     sendRequest({
       endpoint: getEndpoint(interventionEndpoints.ramIndicators, {id: cpOutputId})
