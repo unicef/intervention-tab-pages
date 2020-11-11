@@ -313,13 +313,14 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(EtoolsCurr
               @delete-cp-output="${() => this.openDeleteCpOutputDialog(result.id)}"
             >
               ${result.ll_results.map(
-                (pdOutput: ResultLinkLowerResult) => html`
+                (pdOutput: ResultLinkLowerResult, index: number) => html`
                   <etools-data-table-row
                     details-opened
                     class="pdOtputMargin ${this.isUnicefUser ? 'unicef-user' : 'partner'}"
                     related-to="pd-output-${pdOutput.id}"
                     related-to-description=" PD Output - ${pdOutput.name}"
                     comments-container
+                    row-index=${index}
                   >
                     <div slot="row-data" class="layout-horizontal align-items-center editable-row">
                       <div class="flex-1 flex-fix">

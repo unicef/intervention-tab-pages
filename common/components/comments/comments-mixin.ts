@@ -121,12 +121,8 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         .flat()
         .filter((meta: MetaData | null) => meta !== null) as MetaData[];
       this.metaDataCollection.forEach((meta: MetaData) => {
-        if (meta.relatedTo) {
-          this.updateCounterAndColor(meta);
-          this.registerListener(meta);
-        } else {
-          this.updateBorder(meta);
-        }
+        this.updateCounterAndColor(meta);
+        this.registerListener(meta);
       });
     }
 
@@ -217,6 +213,13 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
     private updateCounterAndColor(meta: MetaData): void {
       const comments: InterventionComment[] = this.comments[meta.relatedTo] || [];
       const borderColor = comments.length ? '#FF4545' : '#81D763';
+      meta.element.style.cssText = `
+          position: relative;
+          border-top: 2px solid ${borderColor} !important;
+          border-bottom: 2px solid ${borderColor} !important;
+          border-left: 2px solid ${borderColor} !important;
+          border-right: 2px solid ${borderColor} !important;
+        `;
       if ((meta.relatedTo.includes('activity-') || meta.relatedTo.includes('indicator-')) && meta.rowIndex !== '0') {
         meta.element.style.cssText = `
         position: relative;
@@ -224,19 +227,17 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         border-left: 2px solid ${borderColor} !important;
         border-right: 2px solid ${borderColor} !important;
       `;
-      } else {
-        meta.element.style.cssText = `
-          position: relative;
-          border-top: 2px solid ${borderColor} !important;
-          border-bottom: 2px solid ${borderColor} !important;
-          border-left: 2px solid ${borderColor} !important;
-          border-right: 2px solid ${borderColor} !important;
-        `;
       }
 
-      if (meta.relatedTo) {
-        return;
+      if (meta.relatedTo.includes('pd-output-') && meta.rowIndex != undefined && meta.rowIndex !== '0') {
+        meta.element.style.cssText = `
+        position: relative;
+        border-bottom: 2px solid ${borderColor} !important;
+        border-left: 2px solid ${borderColor} !important;
+        border-right: 2px solid ${borderColor} !important;
+      `;
       }
+
       meta.counter.innerText = `${comments.length}`;
       if (comments.length) {
         meta.element.append(meta.counter);
