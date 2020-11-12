@@ -11,7 +11,7 @@ import '@unicef-polymer/etools-data-table/etools-data-table';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
 
-import './layout/etools-form-element-wrapper';
+import '../common/layout/etools-form-element-wrapper';
 import './layout/etools-progress-bar';
 import './layout/etools-ram-indicators';
 import '../common/layout/status/intervention-report-status';
@@ -165,11 +165,11 @@ class InterventionProgress extends connectStore(
       <div id="progress-summary" class="content-section paper-material" elevation="1">
         <div class="row-h">
           <div class="layout-vertical col-4">
-            <etools-form-element-wrapper-2
+            <etools-form-element-wrapper
               label="PD Duration"
               value="[[_getPdDuration(progress.start_date, progress.end_date)]]"
             >
-            </etools-form-element-wrapper-2>
+            </etools-form-element-wrapper>
             <etools-progress-bar value="[[pdProgress]]" no-decimals></etools-progress-bar>
           </div>
           <div class="layout-vertical col-5">
@@ -180,23 +180,23 @@ class InterventionProgress extends connectStore(
                 icon-first
                 hide-tooltip="[[!multipleCurrenciesWereUsed(progress.disbursement, progress)]]"
               >
-                <etools-form-element-wrapper-2
+                <etools-form-element-wrapper
                   slot="field"
                   label="Cash Transfered"
                   value="[[progress.disbursement_currency]] [[displayCurrencyAmount(progress.disbursement, '0', 0)]]"
                 >
-                </etools-form-element-wrapper-2>
+                </etools-form-element-wrapper>
                 <iron-icon icon="pmp-custom-icons:not-equal" slot="custom-icon"></iron-icon>
                 <span slot="message">[[_translate('INTERVENTION_REPORTS.DISBURSEMENT_AMOUNTS')]]</span>
               </etools-info-tooltip>
 
-              <etools-form-element-wrapper-2
+              <etools-form-element-wrapper
                 class="col-6"
                 label="[[_translate('INTERVENTION_REPORTS.UNICEF_CASH')]]"
                 value="[[progress.unicef_budget_cash_currency]]
                         [[displayCurrencyAmount(progress.unicef_budget_cash, '0', 0)]]"
               >
-              </etools-form-element-wrapper-2>
+              </etools-form-element-wrapper>
             </div>
 
             <etools-progress-bar
@@ -220,7 +220,7 @@ class InterventionProgress extends connectStore(
             </template>
           </div>
           <div class="col col-3">
-            <etools-form-element-wrapper-2
+            <etools-form-element-wrapper
               label="[[_translate('INTERVENTION_REPORTS.OVERALL_PD_SPD_RATING')]]"
               value="[[_getOverallPdStatusDate(latestAcceptedPr.review_date)]]"
               no-placeholder
@@ -229,7 +229,7 @@ class InterventionProgress extends connectStore(
                 status="[[latestAcceptedPr.review_overall_status]]"
                 slot="prefix"
               ></intervention-report-status>
-            </etools-form-element-wrapper-2>
+            </etools-form-element-wrapper>
           </div>
         </div>
       </div>

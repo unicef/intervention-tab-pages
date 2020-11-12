@@ -1,14 +1,14 @@
 import {PolymerElement, html} from '@polymer/polymer';
 import '@polymer/paper-input/paper-input-container';
 
-import {sharedStylesPolymer} from '../../common/styles/shared-styles-polymer';
+import {sharedStylesPolymer} from '../styles/shared-styles-polymer';
 import {property} from '@polymer/decorators';
 
 /**
  * @polymer
  * @customElement
  */
-class EtoolsFormElementWrapper2 extends PolymerElement {
+class EtoolsFormElementWrapper extends PolymerElement {
   static get template() {
     return html`
       ${sharedStylesPolymer()}
@@ -115,4 +115,4 @@ class EtoolsFormElementWrapper2 extends PolymerElement {
   }
 }
 
-window.customElements.define('etools-form-element-wrapper-2', EtoolsFormElementWrapper2);
+window.customElements.define('etools-form-element-wrapper', EtoolsFormElementWrapper);
