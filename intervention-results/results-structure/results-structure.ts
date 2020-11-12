@@ -320,7 +320,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(EtoolsCurr
                     related-to="pd-output-${pdOutput.id}"
                     related-to-description=" PD Output - ${pdOutput.name}"
                     comments-container
-                    row-index=${index}
+                    row-index="${!pdOutput.activities.length ? index + _index : index}"
                   >
                     <div slot="row-data" class="layout-horizontal align-items-center editable-row">
                       <div class="flex-1 flex-fix">
@@ -411,7 +411,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(EtoolsCurr
     const relatedTo: string = container.getAttribute('related-to') as string;
     const relatedToDescription = container.getAttribute('related-to-description') as string;
     // we do not use row index for this component
-    const rowIndex = 'undefined';
+    const rowIndex = container.getAttribute('row-index') as string;
     return [{element, relatedTo, relatedToDescription, rowIndex}];
   }
 

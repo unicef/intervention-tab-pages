@@ -223,18 +223,27 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
       if ((meta.relatedTo.includes('activity-') || meta.relatedTo.includes('indicator-')) && meta.rowIndex !== '0') {
         meta.element.style.cssText = `
         position: relative;
+        border-left: 2px solid ${borderColor} !important;
+        border-right: 2px solid ${borderColor} !important;
+      `;
+      }
+      if (meta.relatedTo.includes('pd-output-')) {
+        console.log(meta.rowIndex);
+      }
+      if (meta.relatedTo.includes('pd-output-') && meta.rowIndex != undefined && meta.rowIndex != '0') {
+        meta.element.style.cssText = `
+        position: relative;
         border-bottom: 2px solid ${borderColor} !important;
         border-left: 2px solid ${borderColor} !important;
         border-right: 2px solid ${borderColor} !important;
       `;
       }
 
-      if (meta.relatedTo.includes('pd-output-') && meta.rowIndex != undefined && meta.rowIndex !== '0') {
+      if (!meta.relatedTo) {
+        // if no meta data, opened activit or indicator row
         meta.element.style.cssText = `
         position: relative;
         border-bottom: 2px solid ${borderColor} !important;
-        border-left: 2px solid ${borderColor} !important;
-        border-right: 2px solid ${borderColor} !important;
       `;
       }
 
@@ -244,13 +253,6 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
       } else {
         meta.counter.remove();
       }
-    }
-
-    private updateBorder(meta: MetaData): void {
-      meta.element.style.cssText = `
-        position: relative;
-        border-bottom: 2px solid #81D763 !important;
-      `;
     }
 
     private registerListener(meta: MetaData): void {
