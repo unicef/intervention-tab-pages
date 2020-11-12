@@ -59,7 +59,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
 
       <etools-content-panel
         show-expand-btn
-        panel-title="Unicef Details"
+        panel-title="${translate('INTERVENTION_DETAILS.UNICEF_DETAILS')}"
         comment-element="unicef-details"
         comment-description=${translate('INTERVENTION_DETAILS.UNICEF_DETAILS')}
       >

@@ -20,6 +20,7 @@ import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-pa
 import {validateRequiredFields} from '../../../../utils/validation-helper';
 import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 import {InterventionActivity, InterventionActivityItem} from '@unicef-polymer/etools-types';
+import {translate, get} from 'lit-translate';
 
 @customElement('activity-data-dialog')
 export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitElement) {
@@ -113,24 +114,25 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
         ?opened="${this.dialogOpened}"
         ?show-spinner="${this.loadingInProcess}"
         spinner-text="${this.spinnerText}"
-        dialog-title="Activity Data"
+        dialog-title=${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.ACTIVITY_DATA')}
         @confirm-btn-clicked="${() => this.processRequest()}"
         @close="${this.onClose}"
-        ok-btn-text="Save"
+        ok-btn-text=${translate('GENERAL.SAVE')}
+        cancel-btn-text=${translate('GENERAL.CANCEL')}
         .hideConfirmBtn="${this.readonly}"
         no-padding
       >
         <div class="container layout vertical">
           <paper-input
             class="validate-input flex-1"
-            label="Activity Name"
+            label=${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.ACTIVITY_NAME')}
             placeholder="&#8212;"
             .value="${this.editedData.name}"
             @value-changed="${({detail}: CustomEvent) => this.updateModelValue('name', detail.value)}"
             required
             auto-validate
             ?invalid="${this.errors.name}"
-            .errorMessage="${(this.errors.name && this.errors.name[0]) || 'This field is required'}"
+            .errorMessage="${(this.errors.name && this.errors.name[0]) || translate('GENERAL.REQUIRED_FIELD')}"
             ?readonly="${this.readonly}"
             @focus="${() => this.resetFieldError('name')}"
             @click="${() => this.resetFieldError('name')}"
@@ -138,7 +140,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
 
           <paper-textarea
             class="validate-input flex-1"
-            label="Other Notes"
+            label=${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.OTHER_NOTES')}
             placeholder="&#8212;"
             .value="${this.editedData.context_details}"
             @value-changed="${({detail}: CustomEvent) => this.updateModelValue('context_details', detail.value)}"
@@ -154,7 +156,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
               ? html`
                   <etools-currency-amount-input
                     class="col-2"
-                    label="CSO Cash Budget"
+                    label=${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.CSO_CASH_BUDGET')}
                     ?readonly="${this.readonly}"
                     .value="${this.editedData.cso_cash}"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue('cso_cash', detail.value)}"
@@ -162,7 +164,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
 
                   <etools-currency-amount-input
                     class="col-2"
-                    label="Unicef Cash Budget"
+                    label=${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.UNICEF_CASH_BUDGET')}
                     ?readonly="${this.readonly}"
                     .value="${this.editedData.unicef_cash}"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue('unicef_cash', detail.value)}"
@@ -172,19 +174,24 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
                   <paper-input
                     readonly
                     class="col-2 total-input"
-                    label="CSO Cash Budget"
+                    label=${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.CSO_CASH_BUDGET')}
                     .value="${this.getSumValue('cso_cash')}"
                   ></paper-input>
                   <paper-input
                     readonly
                     class="col-2 total-input"
-                    label="Unicef Cash Budget"
+                    label=${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.UNICEF_CASH_BUDGET')}
                     .value="${this.getSumValue('unicef_cash')}"
                   ></paper-input>
                 `}
 
             <div class="flex-auto layout-horizontal total">
-              <paper-input readonly class="col-4" label="Total" .value="${this.getTotalValue()}"></paper-input>
+              <paper-input
+                readonly
+                class="col-4"
+                label=${translate('GENERAL.TOTAL')}
+                .value="${this.getTotalValue()}"
+              ></paper-input>
             </div>
           </div>
 
@@ -279,11 +286,11 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
       }
     );
     if (!this.validateActivityItems()) {
-      fireEvent(this, 'toast', {text: 'Please fill all Activity Items names'});
+      fireEvent(this, 'toast', {text: get('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.FILL_ALL_ACTIVITY_ITEMS')});
       return;
     }
     if (!this.validateActivityTimeFrames()) {
-      fireEvent(this, 'toast', {text: 'Please select an Activity time frame.'});
+      fireEvent(this, 'toast', {text: get('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.FILL_ACTIVITY_TIME')});
       return;
     }
     this.loadingInProcess = true;

@@ -2,9 +2,9 @@ import {LitElement, html, property, customElement, query} from 'lit-element';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
-import get from 'lodash-es/get';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {LocationObject} from '@unicef-polymer/etools-types';
+import {translate, get} from 'lit-translate';
 
 class GroupedLocations {
   adminLevelLocation: LocationObject | null = null;
@@ -72,14 +72,15 @@ export class GroupedLocationsDialog extends LitElement {
       <etools-dialog
         id="groupedLocDialog"
         size="md"
-        dialog-title="Locations PD/SPD Covers"
+        dialog-title=${translate('INTERVENTION_DETAILS.GROUPED_LOCATIONS.LOCATIONS_PD_COVERS')}
         hide-confirm-btn
         ?opened="${this.dialogOpened}"
+        cancel-btn-text=${translate('GENERAL.CANCEL')}
         @close="${() => this.onClose()}"
       >
         <etools-dropdown
           id="adminLevelsDropdw"
-          label="Group Locations By"
+          label=${translate('INTERVENTION_DETAILS.GROUPED_LOCATIONS.GROUP_LOCATIONS_BY')}
           .selected="${this.adminLevel}"
           placeholder="&#8212;"
           .options="${this.adminLevels}"
@@ -255,7 +256,8 @@ export class GroupedLocationsDialog extends LitElement {
     }
 
     if (locationsUnableToGroup && locationsUnableToGroup.length) {
-      this.message = 'Locations unable to group: ' + locationsUnableToGroup.join(', ');
+      this.message =
+        get('INTERVENTION_DETAILS.GROUPED_LOCATIONS.LOCATIONS_UNABLE_TO_GROUP') + locationsUnableToGroup.join(', ');
     }
 
     this.groupedLocations = groupedLocations;
