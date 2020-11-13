@@ -43,7 +43,8 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
         id="riskDialog"
         size="md"
         ?opened="${this.dialogOpened}"
-        ok-btn-text="Save"
+        ok-btn-text=${translate('GENERAL.SAVE')}
+        cancel-btn-text=${translate('GENERAL.CANCEL')}
         dialog-title="${this.riskDialogTitle}"
         ?show-spinner="${this.savingInProcess}"
         @close="${() => this.onClose()}"

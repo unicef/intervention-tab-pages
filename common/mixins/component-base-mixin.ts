@@ -8,6 +8,7 @@ import isEmpty from 'lodash-es/isEmpty';
 import CONSTANTS from '../constants';
 import ContentPanelMixin from './content-panel-mixin';
 import {AnyObject, Constructor, MinimalUser} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 
 function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class ComponentBaseClass extends ContentPanelMixin(baseClass) {
@@ -83,8 +84,8 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
         ? html``
         : html`
             <div class="layout-horizontal right-align row-padding-v">
-              <paper-button class="default" @click="${this.cancel}"> Cancel </paper-button>
-              <paper-button class="primary" @click="${this.save}"> Save </paper-button>
+              <paper-button class="default" @click="${this.cancel}">${translate('GENERAL.CANCEL')}</paper-button>
+              <paper-button class="primary" @click="${this.save}"> ${translate('GENERAL.SAVE')} </paper-button>
             </div>
           `;
     }

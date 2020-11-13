@@ -1,6 +1,7 @@
 import {html, LitElement, customElement, property} from 'lit-element';
 import '@unicef-polymer/etools-dialog/etools-dialog';
 import {fireEvent} from '../../utils/fire-custom-event';
+import {translate, get} from 'lit-translate';
 
 @customElement('are-you-sure')
 export class AreYouSure extends LitElement {
@@ -18,6 +19,7 @@ export class AreYouSure extends LitElement {
         opened
         theme="confirmation"
         .okBtnText="${this.confirmBtnText}"
+        cancel-btn-text=${translate('GENERAL.CANCEL')}
         @close="${(e: CustomEvent) => this.handleDialogClosed(e)}"
         @confirm-btn-clicked="${(e: CustomEvent) => this.handleDialogClosed(e)}"
       >
@@ -26,7 +28,7 @@ export class AreYouSure extends LitElement {
   }
 
   @property({type: String})
-  content = 'Are you sure you want to delete this item?';
+  content = get('ARE_YOU_SURE.ARE_YOU_SURE_PROMPT');
 
   @property({type: String})
   confirmBtnText = 'OK';
