@@ -11,6 +11,7 @@ import {getStore} from '../../utils/redux-store-access';
 
 import FrNumbersConsistencyMixin from '../../common/mixins/fr-numbers-consistency-mixin';
 import {customIcons} from '../../common/styles/custom-icons';
+import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {frWarningsStyles} from '../../common/styles/fr-warnings-styles';
 import {logWarn} from '@unicef-polymer/etools-behaviors/etools-logging';
 import './update-fr-numbers';
@@ -54,7 +55,7 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
     return html`
       ${customIcons}
       <style>
-        :host {
+        ${sharedStyles}:host {
           display: block;
           width: 100%;
           -webkit-box-sizing: border-box;
