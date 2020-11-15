@@ -199,7 +199,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
               label=${translate('INTERVENTION_MANAGEMENT.REVIEW_AND_SIGN.SIGNED_PARTNER_AUTH_OFFICER')}
               placeholder="&#8212;"
               .options="${this.agreementAuthorizedOfficers}"
-              .selected="${this.originalData.partner_authorized_officer_signatory?.id}"
+              .selected="${this.data.partner_authorized_officer_signatory?.id}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.partner_authorized_officer_signatory)}"
               ?required="${this.permissions.required.partner_authorized_officer_signatory}"
               auto-validate
