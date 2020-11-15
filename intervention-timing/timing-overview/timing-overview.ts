@@ -50,8 +50,8 @@ export class TimingOverview extends CommentsMixin(LitElement) {
           <label class="paper-label"
             >${translate('INTERVENTION_TIMING.TIMING_OVERVIEW.DATE_FIRST_DRAFT_PARTNER')}</label
           >
-          <div class="input-label" ?empty="${!this.timingOverview.date_draft_by_partner}">
-            ${formatDateShortMonth(this.timingOverview.date_draft_by_partner)}
+          <div class="input-label" ?empty="${!this.timingOverview.submission_date}">
+            ${formatDateShortMonth(this.timingOverview.submission_date)}
           </div>
         </div>
 
