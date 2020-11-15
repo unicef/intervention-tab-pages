@@ -120,7 +120,9 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
             >
             </etools-dropdown-multi>
             ${this.isReadonly(this.editMode, this.permissions?.edit.partner_focal_points)
-              ? html`<label for="focalPointsDetails" class="paper-label">Partner Focal Points</label>
+              ? html`<label for="focalPointsDetails" class="paper-label"
+                    >${translate('INTERVENTION_DETAILS.PARTNER_FOCAL_POINTS')}</label
+                  >
                   <div id="focalPointsDetails">
                     ${this.renderReadonlyUserDetails(
                       this.originalData?.partner_focal_points ? this.originalData?.partner_focal_points : []

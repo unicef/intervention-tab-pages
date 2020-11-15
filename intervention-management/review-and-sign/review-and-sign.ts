@@ -192,14 +192,14 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
             : html``
         }
         <div class="layout-horizontal row-padding-v">
-          <div class="col col-6">
+          <div class="col col-6 layout-vertical">
             <!-- Signed By Partner Authorized Officer -->
             <etools-dropdown
               id="signedByAuthorizedOfficer"
               label=${translate('INTERVENTION_MANAGEMENT.REVIEW_AND_SIGN.SIGNED_PARTNER_AUTH_OFFICER')}
               placeholder="&#8212;"
               .options="${this.agreementAuthorizedOfficers}"
-              .selected="${(this.originalData.partner_authorized_officer_signatory as MinimalUser)?.id}"
+              .selected="${this.originalData.partner_authorized_officer_signatory?.id}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.partner_authorized_officer_signatory)}"
               ?required="${this.permissions.required.partner_authorized_officer_signatory}"
               auto-validate
@@ -209,8 +209,23 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
               @etools-selected-item-changed="${({detail}: CustomEvent) =>
                 this.selectedUserChanged(detail, 'partner_authorized_officer_signatory')}"
               trigger-value-change-event
+              ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.partner_authorized_officer_signatory)}"
             >
             </etools-dropdown>
+            ${
+              this.isReadonly(this.editMode, this.permissions?.edit.partner_authorized_officer_signatory)
+                ? html`<label for="partnerAuth" class="paper-label">
+                      ${translate('INTERVENTION_MANAGEMENT.REVIEW_AND_SIGN.SIGNED_PARTNER_AUTH_OFFICER')}
+                    </label>
+                    <div id="partnerAuth">
+                      ${this.renderReadonlyUserDetails(
+                        this.originalData?.partner_authorized_officer_signatory
+                          ? [this.originalData?.partner_authorized_officer_signatory]
+                          : []
+                      )}
+                    </div>`
+                : html``
+            }
           </div>
           <div class="col col-3">
             <!-- Signed by Partner Date -->
@@ -265,7 +280,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
         </div>
         </div>
         <div class="layout-horizontal row-padding-v">
-          <div class="col col-6">
+          <div class="col col-6 layout-vertical">
             <!-- Signed by UNICEF -->
             <etools-dropdown
               id="signedByUnicef"
@@ -281,8 +296,21 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
               @etools-selected-item-changed="${({detail}: CustomEvent) =>
                 this.selectedUserChanged(detail, 'unicef_signatory')}"
               trigger-value-change-event
+              ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.unicef_signatory)}"
             >
             </etools-dropdown>
+            ${
+              this.isReadonly(this.editMode, this.permissions?.edit.unicef_signatory)
+                ? html`<label for="unicefSignatory" class="paper-label"
+                      >${translate('INTERVENTION_MANAGEMENT.REVIEW_AND_SIGN.SIGNED_UNICEF')}</label
+                    >
+                    <div id="unicefSignatory">
+                      ${this.renderReadonlyUserDetails(
+                        this.originalData?.unicef_signatory ? [this.originalData?.unicef_signatory] : []
+                      )}
+                    </div>`
+                : html``
+            }
           </div>
         </div>
         <div class="layout-horizontal row-padding-v">
@@ -435,10 +463,9 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
       return null;
     }
     return agreementData.authorized_officers!.map((officer: any) => {
-      return {
-        id: typeof officer.id === 'string' ? parseInt(officer.id, 10) : officer.id,
-        name: officer.first_name + ' ' + officer.last_name
-      };
+      officer.id = typeof officer.id === 'string' ? parseInt(officer.id, 10) : officer.id;
+      officer.name = officer.first_name + ' ' + officer.last_name;
+      return officer;
     });
   }
 
