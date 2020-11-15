@@ -227,7 +227,9 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
           break;
         case 'no_cost':
           messages.push(
-            (translate('INTERVENTION_MANAGEMENT.AMENDMENTS.AMENDMENT_DIALOG.NO_COST_EXTENSION_MSG') as unknown) as string
+            (translate(
+              'INTERVENTION_MANAGEMENT.AMENDMENTS.AMENDMENT_DIALOG.NO_COST_EXTENSION_MSG'
+            ) as unknown) as string
           );
           break;
         case 'change':

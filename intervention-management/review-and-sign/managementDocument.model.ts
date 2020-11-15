@@ -16,7 +16,7 @@ export class ReviewData extends ModelsBase {
   frs_details = [];
   signed_pd_attachment: string | null = null;
   status = '';
-  partner_authorized_officer_signatory = '';
+  partner_authorized_officer_signatory: MinimalUser | null = null;
   signed_by_partner_date = '';
   signed_by_unicef_date = '';
   unicef_signatory: MinimalUser | null = null;

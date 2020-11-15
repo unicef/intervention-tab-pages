@@ -24,7 +24,7 @@ import {isJsonStrMatch} from '../../utils/utils';
 import isEmpty from 'lodash-es/isEmpty';
 import {RootState} from '../../common/types/store.types';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AsyncAction, Permission, PartnerStaffMember} from '@unicef-polymer/etools-types';
+import {AsyncAction, Permission, PartnerStaffMember, AnyObject} from '@unicef-polymer/etools-types';
 import {MinimalAgreement} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 
@@ -108,21 +108,23 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
           <div class="col col-7 layout-vertical">
             <etools-dropdown-multi
               label=${translate('INTERVENTION_DETAILS.PARTNER_FOCAL_POINTS')}
-              .selectedValues="${cloneDeep(this.data?.partner_focal_points)}"
+              .selectedValues="${this.data?.partner_focal_points?.map((f: any) => f.id)}"
               .options="${this.partnerStaffMembers}"
               option-label="name"
               option-value="id"
               ?required=${this.permissions?.required.partner_focal_points}
               trigger-value-change-event
               @etools-selected-items-changed="${({detail}: CustomEvent) =>
-                this.selectedItemsChanged(detail, 'partner_focal_points')}"
+                this.selectedUsersChanged(detail, 'partner_focal_points')}"
               ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.partner_focal_points)}"
             >
             </etools-dropdown-multi>
             ${this.isReadonly(this.editMode, this.permissions?.edit.partner_focal_points)
               ? html`<label for="focalPointsDetails" class="paper-label">Partner Focal Points</label>
                   <div id="focalPointsDetails">
-                    ${this.renderReadonlyUserDetails(this.data?.partner_focal_points!, this.partnerStaffMembers)}
+                    ${this.renderReadonlyUserDetails(
+                      this.originalData?.partner_focal_points ? this.originalData?.partner_focal_points : []
+                    )}
                   </div>`
               : html``}
           </div>
@@ -230,9 +232,14 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
     }
 
     return getStore()
-      .dispatch<AsyncAction>(patchIntervention(this.data))
+      .dispatch<AsyncAction>(patchIntervention(this.formatUsersData(this.data)))
       .then(() => {
         this.editMode = false;
       });
+  }
+  private formatUsersData(data: PartnerInfo) {
+    const dataToSave: AnyObject = cloneDeep(data);
+    dataToSave.partner_focal_points = data.partner_focal_points.map((u: any) => u.id);
+    return dataToSave;
   }
 }
