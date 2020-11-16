@@ -18,7 +18,6 @@ import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-currency-amount-input';
 import {ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {EtoolsCurrencyAmountInput} from '@unicef-polymer/etools-currency-amount-input';
 
 /**
  * @customElement

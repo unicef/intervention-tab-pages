@@ -1,4 +1,4 @@
-import {Intervention, InterventionPermissionsFields} from '@unicef-polymer/etools-types';
+import {Intervention, InterventionPermissionsFields, MinimalUser} from '@unicef-polymer/etools-types';
 import {ModelsBase} from '../../common/models/models.base';
 
 export class PartnerInfo extends ModelsBase {
@@ -9,7 +9,7 @@ export class PartnerInfo extends ModelsBase {
   partner_id: number | null = null;
   partner = '';
   partner_vendor = '';
-  partner_focal_points: string[] = [];
+  partner_focal_points: MinimalUser[] = [];
   agreement: number | null = null;
 }
 
