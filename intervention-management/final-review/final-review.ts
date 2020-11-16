@@ -9,6 +9,7 @@ import {getFileNameFromURL} from '../../utils/utils';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {ReviewAttachment} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {sharedStyles} from '../../common/styles/shared-styles-lit';
 declare const moment: any;
 
 @customElement('final-review')
@@ -65,6 +66,9 @@ export class FinalReview extends CommentsMixin(LitElement) {
 
   protected render(): TemplateResult {
     return html`
+      <style>
+        ${sharedStyles}
+      </style>
       <etools-content-panel
         show-expand-btn
         panel-title=${translate('INTERVENTION_MANAGEMENT.FINAL_REVIEW.FINAL_PARTNERSHIP_REVIEW')}

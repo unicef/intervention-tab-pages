@@ -29,6 +29,7 @@ import {isUnicefUser} from '../../common/selectors';
 import {computed} from '@polymer/decorators/lib/decorators';
 import {connectStore} from '../../common/mixins/connect-store-mixin';
 import {AnyObject, Permission} from '@unicef-polymer/etools-types';
+import {sharedStylesPolymer} from '../../common/styles/shared-styles-polymer';
 
 /**
  * @polymer
@@ -37,7 +38,7 @@ import {AnyObject, Permission} from '@unicef-polymer/etools-types';
 class PartnerReportingRequirements extends connectStore(PolymerElement) {
   static get template() {
     return html`
-      ${gridLayoutStylesPolymer()}${sectionContentStylesPolymer}
+      ${sharedStylesPolymer()}${gridLayoutStylesPolymer()}${sectionContentStylesPolymer}
       <style>
         :host {
           display: block;
