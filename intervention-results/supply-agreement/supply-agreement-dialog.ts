@@ -39,6 +39,9 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
             display: block;
           }
         }
+        paper-input {
+          width: 100%;
+        }
       </style>
 
       <etools-dialog
@@ -72,7 +75,6 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
       </div>
       <div class="layout-horizontal">
         <div class="col col-4">
-          </paper-input>
           <paper-input
             value="${this.data.unit_number ? this.data.unit_number : ''}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unit_number')}"
@@ -95,6 +97,16 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
             @focus="${() => (this.autoValidate = true)}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unit_price')}"
             .autoValidate="${this.autoValidate}"
+          >
+          </etools-currency-amount-input>
+        </div>
+        <div class="col col-4">
+          <etools-currency-amount-input
+            id="unicefProductNumber"
+            label=${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.UNICEF_PRODUCT_NUMBER')}
+            placeholder=${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT_DIALOG.ENTER_UNICEF_PRODUCT_NUMBER')}
+            .value="${this.data.unicef_product_number ? this.data.unicef_product_number : ''}"
+            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unicef_product_number')}"
           >
           </etools-currency-amount-input>
         </div>
