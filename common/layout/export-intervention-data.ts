@@ -100,6 +100,12 @@ export class ExportInterventionData extends LitElement {
     if (_type == 'download_comments') {
       url = getEndpoint(interventionEndpoints.downloadComment, {interventionId: this.interventionId}).url;
       window.open(url, '_blank');
+      return;
+    }
+    if (_type == 'generate_pdf') {
+      url = getEndpoint(interventionEndpoints.downloadPDPdf, {interventionId: this.interventionId}).url;
+      window.open(url, '_blank');
+      return;
     } else {
       // TODO: Export not implemented yet
       // url = getEndpoint(interventionEndpoints.intervention, {interventionId: this.interventionId}).url;
