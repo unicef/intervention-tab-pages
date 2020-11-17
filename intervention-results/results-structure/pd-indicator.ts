@@ -78,6 +78,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
             background-color: var(--blue-background);
             border: 1px solid var(--main-border-color) !important;
             border-bottom: none !important;
+            margin-bottom: -2px;
           }
         }
         :host(:last-child) etools-data-table-row {
