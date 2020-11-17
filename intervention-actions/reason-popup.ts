@@ -23,6 +23,7 @@ export class ReasonPopup extends LitElement {
           padding: 15px 20px;
         }
         paper-textarea {
+          outline: none;
           --paper-input-container-input: {
             display: block;
           }
