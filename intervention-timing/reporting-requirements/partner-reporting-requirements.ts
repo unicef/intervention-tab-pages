@@ -61,10 +61,10 @@ class PartnerReportingRequirements extends connectStore(PolymerElement) {
         }
 
         .nav-menu {
-          @apply --layout-vertical;
           background: var(--primary-background-color);
-          padding: 8px 0 8px 0;
           min-width: 290px;
+          margin-top: 7px;
+          margin-bottom: 8px;
         }
 
         .nav-menu-item {
@@ -77,6 +77,7 @@ class PartnerReportingRequirements extends connectStore(PolymerElement) {
           font-weight: bold;
           text-transform: capitalize;
           cursor: pointer;
+          height: 47px;
         }
 
         .nav-menu-item[selected] {
@@ -98,11 +99,6 @@ class PartnerReportingRequirements extends connectStore(PolymerElement) {
           color: var(--primary-text-color);
           margin-left: 16px;
         }
-
-        .nav-menu-item.qpr {
-          @apply --layout-horizontal;
-          @apply --layout-justified;
-        }
       </style>
       <etools-content-panel show-expand-btn class="content-section" panel-title="Partner Reporting Requirements">
         <div class="flex-c layout-horizontal">
@@ -110,7 +106,7 @@ class PartnerReportingRequirements extends connectStore(PolymerElement) {
             <div
               name="qtyProgress"
               title="Quarterly Progress Reports"
-              class="nav-menu-item qpr"
+              class="nav-menu-item"
               selected$="[[isSelected('qtyProgress', selectedReportType)]]"
               on-click="selectType"
             >
