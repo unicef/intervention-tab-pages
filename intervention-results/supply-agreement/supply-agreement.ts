@@ -175,7 +175,7 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
       label: (translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.UNICEF_PRODUCT_NUMBER') as unknown) as string,
       name: 'unicef_product_number',
       cssClass: 'col_nowrap',
-      type: EtoolsTableColumnType.Number
+      type: EtoolsTableColumnType.Text
     }
   ];
 
