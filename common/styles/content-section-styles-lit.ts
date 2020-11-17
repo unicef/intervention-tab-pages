@@ -1,8 +1,7 @@
-import {html} from '@polymer/polymer/polymer-element.js';
+import {css, unsafeCSS} from 'lit-element';
 
-// language=HTML
-export const sectionContentStylesPolymer = html` <style>
-  .content-section + .content-section,
+export const contentSectionStyles = `
+.content-section + .content-section,
   .content-section + * + .content-section,
   .content-section:not(:first-of-type) {
     margin-top: 24px;
@@ -19,4 +18,9 @@ export const sectionContentStylesPolymer = html` <style>
       }
     }
   }
-</style>`;
+`;
+
+// language=CSS
+export const contentSectionStylesLit = css`
+  ${unsafeCSS(contentSectionStyles)}
+`;

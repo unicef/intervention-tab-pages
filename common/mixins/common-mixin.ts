@@ -1,14 +1,14 @@
 // import {dedupingMixin} from '@polymer/polymer/lib/utils/mixin';
-// @lajos bellow 2 imported from PMP
 import {prettyDate} from '../../utils/date-utils';
-import {PolymerElement} from '@polymer/polymer';
+import {LitElement} from 'lit-element';
 import {AnyObject, Constructor} from '@unicef-polymer/etools-types';
+
 
 /**
  * @polymer
  * @mixinFunction
  */
-function CommonMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
+function CommonMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class CommonClass extends baseClass {
     /**
      * Prepare and return the string value we have to display on the interface.
@@ -69,12 +69,12 @@ function CommonMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
       if (!useValidate) {
         useValidate = false;
       }
-      const field = this.shadowRoot!.querySelector(selector) as PolymerElement & {validate(): boolean};
+      const field = this.shadowRoot!.querySelector(selector) as HTMLElement & {validate(): boolean, invalid: boolean};
       if (field) {
         if (useValidate) {
           field.validate();
         } else {
-          field.set('invalid', false);
+          field.invalid = false;
         }
       }
       return field;

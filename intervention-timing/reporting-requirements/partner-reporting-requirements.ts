@@ -12,8 +12,8 @@ import './qpr/quarterly-reporting-requirements';
 import './hr/humanitarian-reporting-req-unicef';
 import './hr/humanitarian-reporting-req-cluster';
 import './srr/special-reporting-requirements';
-import {gridLayoutStylesContent} from '../../common/styles/grid-layout-styles-lit';
-import {sectionContentStylesLit} from '../../common/styles/content-section-styles-polymer';
+import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
+import {contentSectionStylesLit} from '../../common/styles/content-section-styles-lit';
 
 import {HumanitarianReportingReqUnicefEl} from './hr/humanitarian-reporting-req-unicef';
 import {QuarterlyReportingRequirementsEL} from './qpr/quarterly-reporting-requirements';
@@ -24,9 +24,9 @@ import {ReportingRequirementsPermissions} from './reportingRequirementsPermissio
 import {selectReportingRequirementsPermissions} from './reportingRequirementsPermissions.selectors';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {isUnicefUser} from '../../common/selectors';
-import {computed} from '@polymer/decorators/lib/decorators';
 import {connectStore} from '../../common/mixins/connect-store-mixin';
 import {AnyObject, Permission} from '@unicef-polymer/etools-types';
+// import {openDialog} from '../../utils/dialog';
 
 /**
  * @polymer
@@ -37,7 +37,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
   render() {
     return html`
       <style>
-        ${gridLayoutStylesContent}${sectionContentStylesLit} :host {
+        ${contentSectionStylesLit}${gridLayoutStylesLit}:host {
           display: block;
           margin-bottom: 24px;
           width: 100%;
@@ -100,24 +100,6 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
           @apply --layout-horizontal;
           @apply --layout-justified;
         }
-
-        .content-section + .content-section,
-        .content-section + * + .content-section,
-        .content-section:not(:first-of-type) {
-          margin-top: 24px;
-        }
-        etools-error-messages-box + .content-section {
-          margin-top: 0;
-        }
-
-        @media print {
-          .content-section {
-            border: 1px solid var(--list-divider-color);
-            --paper-material-elevation-1: {
-              box-shadow: none;
-            }
-          }
-        }
       </style>
       <etools-content-panel show-expand-btn class="content-section" panel-title="Partner Reporting Requirements">
         <div class="flex-c layout-horizontal">
@@ -126,8 +108,8 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
               name="qtyProgress"
               title="Quarterly Progress Reports"
               class="nav-menu-item qpr"
-              .selected="${this.isSelected('qtyProgress')}"
-              @click="${this.selectType}"
+              ?selected="${this.isSelected('qtyProgress')}"
+              @click="${() => this.selectType('qtyProgress')}"
             >
               <span>Quarterly Progress Reports (${this.qprRequirementsCount})</span>
               <paper-icon-button
@@ -136,42 +118,6 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
                 @click="${this._openQprEditDialog}"
                 ?hidden="${!this._hideRepReqEditBtn(this.isReadonly, this.qprRequirementsCount)}"
               ></paper-icon-button>
-            </div>
-            <div
-              name="humanitarianUnicef"
-              title="Humanitarian Reports - UNICEF"
-              class="nav-menu-item"
-              .selected="${this.isSelected('humanitarianUnicef')}"
-              @click="${this.selectType}"
-            >
-              <span>Humanitarian Reports - UNICEF (${this.hrUnicefRequirementsCount})</span>
-              <paper-icon-button
-                class="edit-rep-req"
-                icon="create"
-                on-click="_openHruEditDialog"
-                ?hidden="${this._hideRepReqEditBtn(this.isReadonly, this.hrUnicefRequirementsCount)}"
-              ></paper-icon-button>
-            </div>
-            ${this.isUnicefUser
-              ? html`<div
-                  name="humanitarianCluster"
-                  title="Humanitarian Reports - Cluster"
-                  class="nav-menu-item"
-                  .selected="${this.isSelected('humanitarianCluster')}"
-                  @click="selectType"
-                >
-                  Humanitarian Reports - Cluster (${this.hrClusterRequirementsCount})
-                </div>`
-              : html``}
-
-            <div
-              name="special"
-              title="Special Report"
-              class="nav-menu-item"
-              .selected="${this.isSelected('special')}"
-              @click="${this.selectType}"
-            >
-              Special Report (${this.specialRequirementsCount})
             </div>
           </div>
           <div class="flex-c reporting-req-data">
@@ -184,37 +130,35 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
               <quarterly-reporting-requirements
                 id="qpr"
                 name="qtyProgress"
-                intervention-id="${this.interventionId}"
-                intervention-start="${this.interventionStart}"
-                intervention-end="${this.interventionEnd}"
-                requirements-count="${this.qprRequirementsCount}"
-                edit-mode="${!this.isReadonly}"
+                .interventionId="${this.interventionId}"
+                .interventionStart="${this.interventionStart}"
+                .interventionEnd="${this.interventionEnd}"
+                .requirementsCount="${this.qprRequirementsCount}"
+                .editMode="${!this.isReadonly}"
               >
               </quarterly-reporting-requirements>
-
               <humanitarian-reporting-req-unicef
                 id="hru"
                 name="humanitarianUnicef"
-                intervention-id="${this.interventionId}"
-                intervention-start="${this.interventionStart}"
-                requirements-count="${this.hrUnicefRequirementsCount}"
-                expected-results="${this.expectedResults}"
-                edit-mode="${!this.isReadonly}"
+                .interventionId="${this.interventionId}"
+                .interventionStart="${this.interventionStart}"
+                .requirementsCount="${this.hrUnicefRequirementsCount}"
+                .expectedResults="${this.expectedResults}"
+                .editMode="${!this.isReadonly}"
               >
               </humanitarian-reporting-req-unicef>
-
               <humanitarian-reporting-req-cluster
                 name="humanitarianCluster"
-                intervention-id="${this.interventionId}"
-                requirements-count="${this.hrClusterRequirementsCount}"
-                expected-results="${this.expectedResults}"
+                .interventionId="${this.interventionId}"
+                .requirementsCount="${this.hrClusterRequirementsCount}"
+                .expectedResults="${this.expectedResults}"
               >
               </humanitarian-reporting-req-cluster>
 
               <special-reporting-requirements
                 name="special"
-                intervention-id="${this.interventionId}"
-                requirements-count="${this.specialRequirementsCount}"
+                .interventionId="${this.interventionId}"
+                .requirementsCount="${this.specialRequirementsCount}"
               >
               </special-reporting-requirements>
             </iron-pages>
@@ -301,7 +245,11 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
   }
 
   _openQprEditDialog() {
-    this.qrrDialogEl.openQuarterlyRepRequirementsDialog();
+    // this.qrrDialogEl.openQuarterlyRepRequirementsDialog();
+    // this.qrrDialogEl.openQuarterlyRepRequirementsDialog();
+    // openDialog({
+    //   dialog: 'quarterly-reporting-requirements'
+    // });
   }
 
   _openHruEditDialog() {
@@ -311,16 +259,14 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
   _hideRepReqEditBtn(readonly: boolean, qprCount: number) {
     console.log('qprCount', qprCount);
     console.log('readonly', readonly);
-    console.log(qprCount === 0 || readonly);
     return qprCount === 0 || readonly;
   }
 
-  selectType(event: MouseEvent): void {
+  selectType(selectedTab: string): void {
     if (this.commentsMode) {
       return;
     }
-    const tab: string = (event.currentTarget as HTMLElement).getAttribute('name') as string;
-    this.selectedReportType = tab;
+    this.selectedReportType = selectedTab;
   }
 
   isSelected(type: string): boolean {

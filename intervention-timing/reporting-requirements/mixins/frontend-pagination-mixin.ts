@@ -1,8 +1,7 @@
-import {PolymerElement} from '@polymer/polymer';
-import {property} from '@polymer/decorators';
+import {LitElement, property} from 'lit-element';
 import {Constructor} from '@unicef-polymer/etools-types';
 
-function FrontendPaginationMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
+function FrontendPaginationMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class FrontendPaginationClass extends baseClass {
     @property({type: Object})
     pagination = {
@@ -15,12 +14,13 @@ function FrontendPaginationMixin<T extends Constructor<PolymerElement>>(baseClas
     dataItems!: [];
 
     public _pageSizeChanged(ev: CustomEvent) {
-      this.set('pagination.pageNumber', 1);
-      this.set('pagination.pageSize', parseInt(ev.detail.value));
+      this.pagination.pageNumber = 1;
+      this.pagination.pageSize = parseInt(ev.detail.value);
     }
 
     public _pageNumberChanged(ev: CustomEvent) {
-      this.set('pagination.pageNumber', parseInt(ev.detail.value));
+      // this.set('pagination.pageNumber', parseInt(ev.detail.value));
+      this.pagination.pageNumber = parseInt(ev.detail.value);
     }
 
     public _paginationChanged(pageNumber: number, pageSize: number, listData: any) {

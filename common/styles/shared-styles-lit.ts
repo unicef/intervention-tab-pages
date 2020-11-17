@@ -230,7 +230,7 @@ export const sharedStylesContent = `
     padding-right: 16px;
   }
 
-  *[slot="row-data"] {
+  *[slot="row-data"] {get()
     margin-top: 12px;
     margin-bottom: 12px;
     width: 100%;

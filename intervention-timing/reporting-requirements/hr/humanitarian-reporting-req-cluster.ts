@@ -1,11 +1,9 @@
-/* eslint-disable lit/no-legacy-template-syntax */
-import {PolymerElement, html} from '@polymer/polymer';
+import {LitElement, html, property, customElement} from 'lit-element';
 import uniq from 'lodash-es/uniq';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import CommonMixin from '../../../common/mixins/common-mixin';
-import EndpointsMixin from '../../../common/mixins/endpoints-mixin';
+import EndpointsMixinLit from '../../../common/mixins/endpoints-mixin-lit';
 import {gridLayoutStylesPolymer} from '../../../common/styles/grid-layout-styles-polymer';
-import {property} from '@polymer/decorators';
 import {isEmptyObject} from '../../../utils/utils';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
@@ -18,8 +16,9 @@ import {ExpectedResult, ResultLinkLowerResult} from '@unicef-polymer/etools-type
  * @appliesMixin EndpointsMixin
  * @appliesMixin CommonMixin
  */
-class HumanitarianReportingReqCluster extends CommonMixin(EndpointsMixin(PolymerElement)) {
-  static get template() {
+@customElement('humanitarian-reporting-req-cluster')
+export class HumanitarianReportingReqCluster extends CommonMixin(EndpointsMixinLit(LitElement)) {
+  render() {
     return html`
       ${gridLayoutStylesPolymer()}
       <style include="data-table-styles">
@@ -32,16 +31,16 @@ class HumanitarianReportingReqCluster extends CommonMixin(EndpointsMixin(Polymer
         }
       </style>
 
-      <div class="flex-c" hidden$="[[!reportingRequirements.length]]">
+      <div class="flex-c" ?hidden="${!this.reportingRequirements.length}">
         <etools-data-table-header no-collapse no-title class="w100">
           <etools-data-table-column class="col-2">Frequency</etools-data-table-column>
           <etools-data-table-column class="flex-c">Due Dates</etools-data-table-column>
         </etools-data-table-header>
-        <template is="dom-repeat" items="{{reportingRequirements}}">
+        <template is="dom-repeat" items="${this.reportingRequirements}">
           <etools-data-table-row no-collapse>
             <div slot="row-data">
-              <span class="col-data col-2">[[getFrequencyForDisplay(item.frequency)]]</span>
-              <span class="col-data flex-c">[[getDatesForDisplay(item.cs_dates)]]</span>
+              <span class="col-data col-2">${this.getFrequencyForDisplay(this.item.frequency)}</span>
+              <span class="col-data flex-c">${this.getDatesForDisplay(item.cs_dates)}</span>
             </div>
           </etools-data-table-row>
         </template>
@@ -99,7 +98,8 @@ class HumanitarianReportingReqCluster extends CommonMixin(EndpointsMixin(Polymer
       }
     )
       .then((response: any) => {
-        this.set('reportingRequirements', response);
+        // this.set('reportingRequirements', response);
+        this.reportingRequirements = response;
       })
       .catch((error: any) => {
         logError('Failed to get hr cluster requirements from API!', 'humanitarian-reporting-req-cluster', error);
@@ -127,7 +127,8 @@ class HumanitarianReportingReqCluster extends CommonMixin(EndpointsMixin(Polymer
   }
 
   reportingRequirementsChanged(repReq: any) {
-    this.set('requirementsCount', isEmptyObject(repReq) ? 0 : repReq.length);
+    // this.set('requirementsCount', isEmptyObject(repReq) ? 0 : repReq.length);
+    this.requirementsCount = isEmptyObject(repReq) ? 0 : repReq.length;
   }
 
   getDatesForDisplay(dates: []) {
@@ -164,5 +165,3 @@ class HumanitarianReportingReqCluster extends CommonMixin(EndpointsMixin(Polymer
     return isEmptyObject(list);
   }
 }
-
-window.customElements.define('humanitarian-reporting-req-cluster', HumanitarianReportingReqCluster);

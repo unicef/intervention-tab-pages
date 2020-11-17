@@ -1,5 +1,4 @@
-/* eslint-disable lit/no-legacy-template-syntax */
-import {PolymerElement, html} from '@polymer/polymer';
+import {LitElement, html, property, customElement} from 'lit-element';
 import '@polymer/paper-button/paper-button';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 
@@ -15,7 +14,6 @@ import CONSTANTS from '../../../common/constants';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {property} from '@polymer/decorators';
 import {AddEditSpecialRepReqEl} from './add-edit-special-rep-req';
 import EtoolsDialog from '@unicef-polymer/etools-dialog';
 import {getEndpoint} from '../../../utils/endpoint-helper';
@@ -28,8 +26,9 @@ import {interventionEndpoints} from '../../../utils/intervention-endpoints';
  * @appliesMixin CommonMixin
  * @appliesMixin ReportingRequirementsCommonMixin
  */
-class SpecialReportingRequirements extends CommonMixin(ReportingRequirementsCommonMixin(PolymerElement)) {
-  static get template() {
+@customElement('special-reporting-requirements')
+export class SpecialReportingRequirements extends CommonMixin(ReportingRequirementsCommonMixin(LitElement)) {
+  render() {
     return html`
       ${reportingRequirementsListStyles}${gridLayoutStylesPolymer()}${buttonsStylesPolymer()}
       <style include="data-table-styles">
@@ -38,7 +37,7 @@ class SpecialReportingRequirements extends CommonMixin(ReportingRequirementsComm
         }
       </style>
 
-      <div class="row-h" hidden$="[[!_empty(reportingRequirements, reportingRequirements.length)]]">
+      <div class="row-h" ?hidden="${!this._empty(this.reportingRequirements, this.reportingRequirements.length)}">
         There are no special reporting requirements set.
       </div>
 
@@ -46,21 +45,21 @@ class SpecialReportingRequirements extends CommonMixin(ReportingRequirementsComm
         <paper-button class="secondary-btn" on-click="_openAddDialog"> ADD REQUIREMENTS </paper-button>
       </div>
 
-      <div class="flex-c" hidden$="[[_empty(reportingRequirements, reportingRequirements.length)]]">
+      <div class="flex-c" ?hidden="${this._empty(this.reportingRequirements, this.reportingRequirements.length)}">
         <etools-data-table-header no-collapse no-title>
           <etools-data-table-column class="col-1 right-align index-col">ID</etools-data-table-column>
           <etools-data-table-column class="col-3">Due Date</etools-data-table-column>
           <etools-data-table-column class="flex-6">Reporting Requirements</etools-data-table-column>
           <etools-data-table-column class="flex-c"></etools-data-table-column>
         </etools-data-table-header>
-        <template is="dom-repeat" items="[[reportingRequirements]]">
+        <template is="dom-repeat" items="${this.reportingRequirements}">
           <etools-data-table-row no-collapse secondary-bg-on-hover>
             <div slot="row-data">
-              <span class="col-data col-1 right-align index-col">[[_getIndex(index, reportingRequirements)]]</span>
-              <span class="col-data col-3">[[getDateDisplayValue(item.due_date)]]</span>
-              <span class="col-data col-6">[[item.description]]</span>
+              <span class="col-data col-1 right-align index-col">${this._getIndex(this.index, this.reportingRequirements)}</span>
+              <span class="col-data col-3">${this.getDateDisplayValue(item.due_date)}</span>
+              <span class="col-data col-6">${item.description}</span>
               <span class="col-data flex-c actions">
-                <icons-actions-2 item$="[[item]]" on-edit="_onEdit" on-delete="_onDelete"> </icons-actions-2>
+                <icons-actions-2 item$="${item}" @edit="${this._onEdit}" @delete="${this._onDelete}"> </icons-actions-2>
               </span>
             </div>
           </etools-data-table-row>
@@ -126,7 +125,8 @@ class SpecialReportingRequirements extends CommonMixin(ReportingRequirementsComm
         // @ts-ignore
         const itemToDelete = JSON.parse(e.target.getAttribute('item'));
         const index = this._getIndexById(itemToDelete.id);
-        this.set('_itemToDeleteIndex', index);
+        // this.set('_itemToDeleteIndex', index);
+        this._itemToDeleteIndex = index;
       }
       this._deleteConfirmationDialog.opened = true;
     }
@@ -134,7 +134,7 @@ class SpecialReportingRequirements extends CommonMixin(ReportingRequirementsComm
 
   _onDeleteConfirmation(e: CustomEvent) {
     if (!e.detail.confirmed) {
-      this.set('_itemToDeleteIndex', -1);
+      this._itemToDeleteIndex = -1;
       return;
     }
 
@@ -148,7 +148,8 @@ class SpecialReportingRequirements extends CommonMixin(ReportingRequirementsComm
         endpoint: endpoint
       })
         .then(() => {
-          this.splice('reportingRequirements', this._itemToDeleteIndex, 1);
+          // this.splice('reportingRequirements', this._itemToDeleteIndex, 1);
+          this.reportingRequirements.splice(this._itemToDeleteIndex, 1);
         })
         .catch((error: any) => {
           logError('Failed to delete special report requirement!', 'special-reporting-requirements', error);
@@ -156,7 +157,8 @@ class SpecialReportingRequirements extends CommonMixin(ReportingRequirementsComm
         })
         .then(() => {
           // delete complete, reset _itemToDeleteIndex
-          this.set('_itemToDeleteIndex', -1);
+          // this.set('_itemToDeleteIndex', -1);
+          this._itemToDeleteIndex = -1;
         });
     }
   }
@@ -230,11 +232,11 @@ class SpecialReportingRequirements extends CommonMixin(ReportingRequirementsComm
     const index = this._getIndexById(savedReqItem.id);
     if (index > -1) {
       // edit
-      this.splice('reportingRequirements', index, 1, savedReqItem);
+      // this.splice('reportingRequirements', index, 1, savedReqItem);
+      this.reportingRequirements.splice(index, 1, savedReqItem);
     } else {
-      this.push('reportingRequirements', savedReqItem);
+      // this.push('reportingRequirements', savedReqItem);
+      this.reportingRequirements.push(savedReqItem);
     }
   }
 }
-
-window.customElements.define('special-reporting-requirements', SpecialReportingRequirements);

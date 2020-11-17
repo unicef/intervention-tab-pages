@@ -1,18 +1,15 @@
-/* eslint-disable lit/no-legacy-template-syntax */
-import {PolymerElement, html} from '@polymer/polymer';
+import {LitElement, html, property, customElement} from 'lit-element';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
 import CONSTANTS from '../../../common/constants';
-import {gridLayoutStylesPolymer} from '../../../common/styles/grid-layout-styles-polymer';
-import {buttonsStylesPolymer} from '../styles/buttons-styles-polymer';
 import GenerateQuarterlyReportingRequirementsMixin from '../mixins/generate-quarterly-reporting-requirements-mixin';
 
 import '@polymer/paper-button/paper-button.js';
 import {fireEvent} from '../../../utils/fire-custom-event';
 
-import './edit-qpr-dialog.js';
-import './qpr-list.js';
-import {property} from '@polymer/decorators';
-import {EditQprDialogEl} from './edit-qpr-dialog.js';
+import './edit-qpr-dialog';
+import './qpr-list';
+import {EditQprDialogEl} from './edit-qpr-dialog';
+import {AnyObject} from '@unicef-polymer/etools-types';
 
 /**
  * @polymer
@@ -21,26 +18,27 @@ import {EditQprDialogEl} from './edit-qpr-dialog.js';
  * @appliesMixin ReportingRequirementsCommonMixin
  * @appliesMixin GenerateQuarterlyReportingRequirementsMixin
  */
-class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRequirementsMixin(
-  ReportingRequirementsCommonMixin(PolymerElement)
+
+@customElement('quarterly-reporting-requirements')
+export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRequirementsMixin(
+  ReportingRequirementsCommonMixin(LitElement)
 ) {
-  static get template() {
+  render() {
     return html`
-      ${gridLayoutStylesPolymer()}${buttonsStylesPolymer()}
       <style>
         *[hidden] {
           display: none !important;
         }
       </style>
 
-      <div class="flex-c" hidden$="[[_empty(reportingRequirements)]]">
-        <qpr-list qpr-data="[[reportingRequirements]]"></qpr-list>
+      <div class="flex-c" ?hidden="${this._empty(this.reportingRequirements)}">
+        <qpr-list .qprData="${this.reportingRequirements}"></qpr-list>
       </div>
 
-      <div hidden$="[[!_empty(reportingRequirements)]]">
+      <div ?hidden="${!this._empty(this.reportingRequirements)}">
         <div class="row-h">There are no quarterly reporting requirements set.</div>
-        <div class="row-h" hidden$="[[!editMode]]">
-          <paper-button class="secondary-btn" on-click="openQuarterlyRepRequirementsDialog">
+        <div class="row-h" ?hidden="${!this.editMode}">
+          <paper-button class="secondary-btn" @click="${this.openQuarterlyRepRequirementsDialog}">
             Add Requirements
           </paper-button>
         </div>
@@ -60,8 +58,10 @@ class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRequireme
   @property({type: Boolean})
   editMode!: boolean;
 
-  ready() {
-    super.ready();
+  @property() dialogOpened = true;
+
+  connectedCallback() {
+    super.connectedCallback();
     this._createEditQprDialog();
   }
 
@@ -71,7 +71,7 @@ class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRequireme
   }
 
   _createEditQprDialog() {
-    this.editQprDialog = document.createElement('edit-qpr-dialog') as any;
+    this.editQprDialog = document.createElement('edit-qpr-dialog') as EditQprDialogEl;
     this._onReportingRequirementsSaved = this._onReportingRequirementsSaved.bind(this);
     this.editQprDialog.addEventListener('reporting-requirements-saved', this._onReportingRequirementsSaved as any);
     document.querySelector('body')!.appendChild(this.editQprDialog);
@@ -92,14 +92,14 @@ class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRequireme
       });
       return;
     }
-    let qprData = [];
+    let qprData: AnyObject[] = [];
     if (this.requirementsCount === 0) {
       qprData = this.generateQPRData(this.interventionStart, this.interventionEnd);
     } else {
       qprData = JSON.parse(JSON.stringify(this.reportingRequirements));
     }
-    this.editQprDialog.set('qprData', qprData);
-    this.editQprDialog.set('interventionId', this.interventionId);
+    this.editQprDialog.qprData = qprData;
+    this.editQprDialog.interventionId = this.interventionId;
     this.editQprDialog.openQprDialog();
   }
 
@@ -108,5 +108,4 @@ class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRequireme
   }
 }
 
-window.customElements.define('quarterly-reporting-requirements', QuarterlyReportingRequirements);
 export {QuarterlyReportingRequirements as QuarterlyReportingRequirementsEL};

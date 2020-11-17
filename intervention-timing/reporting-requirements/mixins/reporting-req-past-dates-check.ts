@@ -1,5 +1,4 @@
-import {PolymerElement} from '@polymer/polymer';
-import {property} from '@polymer/decorators';
+import {LitElement, property} from 'lit-element';
 import {Constructor} from '@unicef-polymer/etools-types';
 
 declare const moment: any;
@@ -10,7 +9,7 @@ declare const moment: any;
  * @polymer
  * @mixinFunction
  */
-function ReportingReqPastDatesCheckMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
+function ReportingReqPastDatesCheckMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class ReportingReqPastDatesCheckClass extends baseClass {
     @property({type: Boolean})
     inAmendment!: boolean;

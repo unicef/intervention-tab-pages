@@ -1,7 +1,6 @@
-import {html} from '@polymer/polymer/polymer-element.js';
+import {css, unsafeCSS} from 'lit-element';
 
-export const reportingRequirementsListStyles = html`
-  <style>
+export const reportingRequirementsListStyles = `
     *[hidden] {
       display: none !important;
     }
@@ -35,5 +34,9 @@ export const reportingRequirementsListStyles = html`
     etools-data-table-row:hover icons-actions {
       visibility: visible;
     }
-  </style>
+  `;
+
+// language=CSS
+export const reportingRequirementsListStylesLit = css`
+  ${unsafeCSS(reportingRequirementsListStyles)}
 `;
