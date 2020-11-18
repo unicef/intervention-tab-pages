@@ -63,7 +63,7 @@ class PartnerReportingRequirements extends connectStore(PolymerElement) {
         .nav-menu {
           background: var(--primary-background-color);
           min-width: 290px;
-          margin-top: 8px;
+          margin-top: 9px;
           margin-bottom: 8px;
         }
 
@@ -77,7 +77,7 @@ class PartnerReportingRequirements extends connectStore(PolymerElement) {
           font-weight: bold;
           text-transform: capitalize;
           cursor: pointer;
-          height: 47px;
+          height: 48px;
         }
 
         .nav-menu-item[selected] {
@@ -92,7 +92,7 @@ class PartnerReportingRequirements extends connectStore(PolymerElement) {
           font-size: 14px;
           font-weight: bold;
           text-transform: capitalize;
-          margin-bottom: 2px;
+          outline-offset: -1px;
         }
         /* ------------------------------- */
 

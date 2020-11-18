@@ -190,10 +190,18 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
     private updateCounterAndColor(meta: MetaData): void {
       const comments: InterventionComment[] = this.comments[meta.relatedTo] || [];
       const borderColor = comments.length ? '#FF4545' : '#81D763';
+      let cssMargin = '';
+      if (
+        meta.relatedTo.includes('activity-') ||
+        meta.relatedTo.includes('indicator-') ||
+        meta.relatedTo.includes('pd-output-')
+      ) {
+        cssMargin = 'margin: 2px;';
+      }
       meta.element.style.cssText = `
         position: relative;
         outline: 2px solid ${borderColor};
-        margin: 2px;
+        ${cssMargin}
       `;
       meta.counter.innerText = `${comments.length}`;
       if (comments.length) {
