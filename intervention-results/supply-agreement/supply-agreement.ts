@@ -210,7 +210,7 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
             </td>`
           : html``
       }
-      <td colspan="${this.isUnicefUser ? '4' : '5'}" class="ptb-0">
+      <td colspan="${this.isUnicefUser ? '5' : '6'}" class="ptb-0">
         <div class="child-row-inner-container">
           <label class="paper-label">${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.OTHER_MENTIONS')}</label><br />
           <label>${item.other_mentions || '—'}</label>
