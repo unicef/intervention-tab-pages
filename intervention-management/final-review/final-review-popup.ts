@@ -9,12 +9,14 @@ import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {ReviewAttachment, Intervention} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {formatDate} from '../../utils/date-utils';
 
 @customElement('final-review-popup')
 export class FinalReviewPopup extends LitElement {
   @property() savingInProcess = false;
   @property() dialogOpened = true;
   @property() data = {} as Partial<ReviewAttachment>;
+  @property() date = null;
   private endpoint!: EtoolsRequestEndpoint;
 
   set dialogData(data: any) {
@@ -24,13 +26,14 @@ export class FinalReviewPopup extends LitElement {
     const {attachment, interventionId} = data;
     this.endpoint = getEndpoint(interventionEndpoints.intervention, {interventionId});
     this.data = attachment ? {...attachment} : {attachment: null};
+    this.date = data.date || null;
   }
 
   protected render(): TemplateResult {
     return html`
       <style>
-        .file-upload-container {
-          padding: 0 12px;
+        .control-container {
+          padding: 0 24px;
         }
         etools-dialog {
           --etools-dialog-scrollable: {
@@ -51,7 +54,21 @@ export class FinalReviewPopup extends LitElement {
         no-padding
       >
         <div class="container layout vertical">
-          <div class="file-upload-container">
+          <div class="control-container">
+            <!-- Document Submission Date -->
+            <datepicker-lite
+              id="submissionDateField"
+              label=${translate('INTERVENTION_MANAGEMENT.FINAL_REVIEW.DATE_REVIEW_PERFORMED')}
+              .value="${this.date}"
+              selected-date-display-format="D MMM YYYY"
+              required
+              fire-date-has-changed
+              @date-has-changed="${(e: CustomEvent) => (this.date = formatDate(e.detail.date, 'YYYY-MM-DD'))}"
+              error-message=${translate('INTERVENTION_MANAGEMENT.REVIEW_AND_SIGN.DOC_DATE_REQUIRED')}
+            >
+
+          </div>
+          <div class="control-container">
             <etools-upload
               .showDeleteBtn="${false}"
               .fileUrl="${this.data && this.data.attachment}"
@@ -66,15 +83,21 @@ export class FinalReviewPopup extends LitElement {
 
   protected fileSelected({success}: {success?: any; error?: string}): void {
     if (success) {
-      this.data.attachment = success.id || null;
+      this.data.id = success.id || null;
     }
   }
 
   processRequest(): void {
     // validate if file is selected for new attachments
-    if (!this.data.attachment) {
+    if (!this.data.id) {
       fireEvent(this, 'toast', {
         text: translate('INTERVENTION_MANAGEMENT.FINAL_REVIEW.FINAL_REVIEW_POP.CORRECT_FILE_ERR'),
+        showCloseBtn: false
+      });
+      return;
+    } else if (!this.date) {
+      fireEvent(this, 'toast', {
+        text: translate('INTERVENTION_MANAGEMENT.FINAL_REVIEW.FINAL_REVIEW_POP.DATE_REQUIRED'),
         showCloseBtn: false
       });
       return;
@@ -85,7 +108,8 @@ export class FinalReviewPopup extends LitElement {
     sendRequest({
       endpoint: this.endpoint,
       body: {
-        final_partnership_review: this.data.attachment
+        final_partnership_review: this.data.id,
+        date_partnership_review_performed: this.date
       },
       method: 'PATCH'
     })
