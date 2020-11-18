@@ -3,7 +3,7 @@ import uniq from 'lodash-es/uniq';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import CommonMixin from '../../../common/mixins/common-mixin';
 import EndpointsMixinLit from '../../../common/mixins/endpoints-mixin-lit';
-import {gridLayoutStylesPolymer} from '../../../common/styles/grid-layout-styles-polymer';
+import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
 import {isEmptyObject} from '../../../utils/utils';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
@@ -13,14 +13,18 @@ import {ExpectedResult, ResultLinkLowerResult} from '@unicef-polymer/etools-type
  * @customElement
  * @polymer
  * @mixinFunction
- * @appliesMixin EndpointsMixin
+ * @appliesMixin EndpointsMixinLit
  * @appliesMixin CommonMixin
  */
+
+// @DAN: EndpointsMixinLit
 @customElement('humanitarian-reporting-req-cluster')
 export class HumanitarianReportingReqCluster extends CommonMixin(EndpointsMixinLit(LitElement)) {
+  static get styles() {
+    return [gridLayoutStylesLit];
+  }
   render() {
     return html`
-      ${gridLayoutStylesPolymer()}
       <style include="data-table-styles">
         :host {
           display: block;
@@ -36,22 +40,23 @@ export class HumanitarianReportingReqCluster extends CommonMixin(EndpointsMixinL
           <etools-data-table-column class="col-2">Frequency</etools-data-table-column>
           <etools-data-table-column class="flex-c">Due Dates</etools-data-table-column>
         </etools-data-table-header>
-        <template is="dom-repeat" items="${this.reportingRequirements}">
-          <etools-data-table-row no-collapse>
+        ${this.reportingRequirements.forEach(
+          (item: any) => html` <etools-data-table-row no-collapse>
             <div slot="row-data">
-              <span class="col-data col-2">${this.getFrequencyForDisplay(this.item.frequency)}</span>
+              <span class="col-data col-2">${this.getFrequencyForDisplay(item.frequency)}</span>
               <span class="col-data flex-c">${this.getDatesForDisplay(item.cs_dates)}</span>
             </div>
-          </etools-data-table-row>
-        </template>
-      </div>
+          </etools-data-table-row>`
+        )}
 
-      <div class="row-h" hidden$="[[!_empty(reportingRequirements)]]">
-        There are no cluster humanitarian report requirements set.
+        <div class="row-h" hidden$="[[!_empty(reportingRequirements)]]">
+          There are no cluster humanitarian report requirements set.
+        </div>
       </div>
     `;
   }
 
+  // @DAN
   @property({
     type: Array,
     observer: HumanitarianReportingReqCluster.prototype.reportingRequirementsChanged
@@ -65,13 +70,15 @@ export class HumanitarianReportingReqCluster extends CommonMixin(EndpointsMixinL
   })
   interventionId!: string;
 
-  @property({type: Number, notify: true})
+  // @DAN does not refelct in parent component
+  @property({type: Number})
   requirementsCount = 0;
 
   @property({type: Array})
   expectedResults!: [];
 
   ready() {
+    // @DAN
     super.ready();
   }
 

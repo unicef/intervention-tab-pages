@@ -1,6 +1,6 @@
 /* eslint-disable lit/no-legacy-template-syntax */
-import {PolymerElement, html} from '@polymer/polymer';
-import {gridLayoutStylesPolymer} from '../../../common/styles/grid-layout-styles-polymer';
+import {LitElement, html, property, customElement} from 'lit-element';
+import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
 // @lajos bellow 2 where imported from PMP
 // import EndpointsMixin from '../mixins/endpoints-mixin';
 import {getEndpoint} from '../../../utils/endpoint-helper';
@@ -17,7 +17,6 @@ import {fireEvent} from '../../../utils/fire-custom-event';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {property} from '@polymer/decorators';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {AnyObject} from '@unicef-polymer/etools-types';
 
@@ -26,11 +25,13 @@ import {AnyObject} from '@unicef-polymer/etools-types';
  * @customElement
  * @mixinFunction
  */
-class AddEditSpecialRepReq extends PolymerElement {
-  static get template() {
-    // language=HTML
+@customElement('add-edit-special-rep-req')
+export class AddEditSpecialRepReq extends LitElement {
+  static get styles() {
+    return [gridLayoutStylesLit];
+  }
+  render() {
     return html`
-      ${gridLayoutStylesPolymer()}
       <style>
         :host {
           display: block;
@@ -52,9 +53,9 @@ class AddEditSpecialRepReq extends PolymerElement {
       <etools-dialog
         id="addEditDialog"
         size="lg"
-        opened="{{opened}}"
+        ?opened="${this.opened}"
         dialog-title="Add/Edit Special Reporting Requirements"
-        on-confirm-btn-clicked="_save"
+        @confirm-btn-clicked="${this._save}"
         ok-btn-text="Save"
         keep-dialog-open
       >
@@ -63,15 +64,16 @@ class AddEditSpecialRepReq extends PolymerElement {
             <iron-label for="startDate"> Report Due Date </iron-label>
             <calendar-lite
               id="startDate"
-              date="[[prepareDatepickerDate(item.due_date)]]"
-              pretty-date="{{item.due_date}}"
+              date="${this.prepareDatepickerDate(this.item.due_date)}"
+              pretty-date="${this.item.due_date}"
               format="YYYY-MM-DD"
               hide-header
             ></calendar-lite>
           </div>
         </div>
         <div class="row-h">
-          <paper-input label="Reporting Requirement" placeholder="&#8212;" value="{{item.description}}"> </paper-input>
+          <paper-input label="Reporting Requirement" placeholder="&#8212;" value="${this.item.description}">
+          </paper-input>
         </div>
       </etools-dialog>
     `;
@@ -138,6 +140,4 @@ class AddEditSpecialRepReq extends PolymerElement {
     return prepareDatepickerDate(dateStr);
   }
 }
-
-window.customElements.define('add-edit-special-rep-req', AddEditSpecialRepReq);
 export {AddEditSpecialRepReq as AddEditSpecialRepReqEl};

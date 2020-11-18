@@ -6,8 +6,8 @@ import './edit-hru-dialog.js';
 import './hru-list.js';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
 import FrontendPaginationMixin from '../mixins/frontend-pagination-mixin';
-import {gridLayoutStylesPolymer} from '../../../common/styles/grid-layout-styles-polymer';
-import {buttonsStylesPolymer} from '../styles/buttons-styles-polymer';
+import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
+import {buttonsStylesLitContent} from '../styles/buttons-styles-polymer';
 import {EditHruDialog} from './edit-hru-dialog.js';
 import {HruListEl} from './hru-list.js';
 import {sharedStylesPolymer} from '../../../common/styles/shared-styles-polymer';
@@ -24,9 +24,12 @@ import {ExpectedResult} from '@unicef-polymer/etools-types';
 export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
   ReportingRequirementsCommonMixin(LitElement)
 ) {
+  static get styles() {
+    return [gridLayoutStylesLit, buttonsStylesLitContent];
+  }
   render() {
     return html`
-      ${gridLayoutStylesPolymer()}${sharedStylesPolymer()}${buttonsStylesPolymer()}
+      ${sharedStylesPolymer()}
       <style>
         :host {
           display: block;
@@ -75,6 +78,7 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
   @property({type: Boolean})
   editMode!: boolean;
 
+  // @DAN
   // static get observers() {
   //   return [
   //     'setTotalResults(interventionId, reportingRequirements)',
@@ -83,6 +87,7 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
   // }
 
   ready() {
+    // @DAN
     super.ready();
     this._createEditHruDialog();
     (this.$.hruList as HruListEl).set('hruMainEl', this);
@@ -137,10 +142,14 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
     if (this.requirementsCount > 0) {
       hruData = JSON.parse(JSON.stringify(this.reportingRequirements));
     }
-    this.editHruDialog.set('hruData', hruData);
-    this.editHruDialog.set('selectedDate', null);
-    this.editHruDialog.set('interventionId', this.interventionId);
-    this.editHruDialog.set('interventionStart', this.interventionStart);
+    // this.editHruDialog.set('hruData', hruData);
+    // this.editHruDialog.set('selectedDate', null);
+    // this.editHruDialog.set('interventionId', this.interventionId);
+    // this.editHruDialog.set('interventionStart', this.interventionStart);
+    this.editHruDialog.hruData = hruData;
+    this.editHruDialog.selectedDate = null;
+    this.editHruDialog.interventionId = this.interventionId;
+    this.editHruDialog.interventionStart = this.interventionStart;
     this.editHruDialog.openDialog();
   }
 

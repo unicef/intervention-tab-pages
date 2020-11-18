@@ -32,7 +32,7 @@ function ReportingRequirementsCommonMixin<T extends Constructor<LitElement>>(bas
     get interventionId() {
       return this._interventionId;
     }
-
+    // @DAN
     // static get observers() {
     //   return ['_countReportingReq(reportingRequirements.length)'];
     // } move to element

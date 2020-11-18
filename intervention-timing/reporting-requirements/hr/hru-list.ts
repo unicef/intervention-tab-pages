@@ -1,13 +1,11 @@
-/* eslint-disable lit/no-legacy-template-syntax */
-import {PolymerElement, html} from '@polymer/polymer';
+import {LitElement, html, property, customElement} from 'lit-element';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import '../../../common/layout/icons-actions';
 import CommonMixin from '../../../common/mixins/common-mixin';
 import {fireEvent} from '../../../utils/fire-custom-event';
 import ReportingReqPastDatesCheckMixin from '../mixins/reporting-req-past-dates-check';
-import {gridLayoutStylesPolymer} from '../../../common/styles/grid-layout-styles-polymer';
+import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
-import {property} from '@polymer/decorators';
 import {IconsActionsEl} from '../../../common/layout/icons-actions';
 import {isEmptyObject} from '../../../utils/utils';
 import {AnyObject} from '@unicef-polymer/etools-types';
@@ -18,11 +16,15 @@ import {AnyObject} from '@unicef-polymer/etools-types';
  * @appliesMixin CommonMixin
  * @appliesMixin ReportingReqPastDatesCheckMixin
  */
-class HruList extends CommonMixin(ReportingReqPastDatesCheckMixin(PolymerElement)) {
-  static get template() {
-    // language=HTML
+
+@customElement('hru-list')
+export class HruList extends CommonMixin(ReportingReqPastDatesCheckMixin(LitElement)) {
+  static get styles() {
+    return [gridLayoutStylesLit];
+  }
+  render() {
     return html`
-      ${reportingRequirementsListStyles}${gridLayoutStylesPolymer()}
+      ${reportingRequirementsListStyles}
       <style include="data-table-styles">
         :host([with-scroll]) {
           max-height: 400px;
@@ -38,26 +40,26 @@ class HruList extends CommonMixin(ReportingReqPastDatesCheckMixin(PolymerElement
         <etools-data-table-column class="flex-c">Report End Date</etools-data-table-column>
         <etools-data-table-column class="col-1"></etools-data-table-column>
       </etools-data-table-header>
-      <template is="dom-repeat" items="[[hruData]]">
-        <etools-data-table-row
+      ${this.hruData.forEach(
+        (item: any, index) => html` <etools-data-table-row
           no-collapse
-          secondary-bg-on-hover$="[[_canEdit(editMode, inAmendment, item.due_date, item.id)]]"
+          ?secondary-bg-on-hover="${this._canEdit(this.editMode, this.inAmendment, item.due_date, item.id)}"
         >
-          <div slot="row-data" style$="[[_uneditableStyles(inAmendment, item.due_date, item.id)]]">
-            <span class="col-data col-1 right-align index-col">[[_getIndex(index, hruData)]]</span>
-            <span class="col-data flex-c">[[getDateDisplayValue(item.end_date)]]</span>
+          <div slot="row-data" style="${this._uneditableStyles(this.inAmendment, item.due_date, item.id)}">
+            <span class="col-data col-1 right-align index-col">${this._getIndex(index, this.hruData)}</span>
+            <span class="col-data flex-c">${this.getDateDisplayValue(item.end_date)}</span>
             <span class="col-data col-1 actions">
               <icons-actions-2
-                hidden$="[[!_canEdit(editMode, inAmendment, item.due_date, item.id)]]"
-                data-args$="[[index]]"
-                on-delete="_deleteHruReq"
-                show-edit="[[_listItemEditable]]"
+                ?hidden="${!this._canEdit(this.editMode, this.inAmendment, item.due_date, item.id)}"
+                .data-args="${index}"
+                @delete="${this._deleteHruReq}"
+                showEdit="${this._listItemEditable}"
               >
               </icons-actions-2>
             </span>
           </div>
-        </etools-data-table-row>
-      </template>
+        </etools-data-table-row>`
+      )}
     `;
   }
 
@@ -68,7 +70,7 @@ class HruList extends CommonMixin(ReportingReqPastDatesCheckMixin(PolymerElement
   _listItemEditable = false;
 
   @property({type: Object})
-  hruMainEl!: PolymerElement & {_getIndex(idx: any): number | string};
+  hruMainEl!: LitElement & {_getIndex(idx: any): number | string};
 
   @property({type: Boolean})
   usePaginationIndex = false;
@@ -76,9 +78,10 @@ class HruList extends CommonMixin(ReportingReqPastDatesCheckMixin(PolymerElement
   @property({type: Boolean})
   disableSorting = false;
 
-  static get observers() {
-    return ['_sortReportingReq(hruData, hruData.length)'];
-  }
+  // @DAN-> refactor static observers
+  // static get observers() {
+  //   return ['_sortReportingReq(hruData, hruData.length)'];
+  // }
 
   _sortReportingReq(data: any) {
     if (this.disableSorting) {
@@ -110,7 +113,5 @@ class HruList extends CommonMixin(ReportingReqPastDatesCheckMixin(PolymerElement
     });
   }
 }
-
-window.customElements.define('hru-list', HruList);
 
 export {HruList as HruListEl};

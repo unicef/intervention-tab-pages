@@ -7,8 +7,8 @@ import '../../../common/layout/icons-actions';
 import './add-edit-special-rep-req';
 import CommonMixin from '../../../common/mixins/common-mixin';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
-import {gridLayoutStylesPolymer} from '../../../common/styles/grid-layout-styles-polymer';
-import {buttonsStylesPolymer} from '../styles/buttons-styles-polymer';
+import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
+import {buttonsStylesLitContent} from '../styles/buttons-styles-polymer';
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
 import CONSTANTS from '../../../common/constants';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
@@ -28,9 +28,12 @@ import {interventionEndpoints} from '../../../utils/intervention-endpoints';
  */
 @customElement('special-reporting-requirements')
 export class SpecialReportingRequirements extends CommonMixin(ReportingRequirementsCommonMixin(LitElement)) {
+  static get styles() {
+    return [gridLayoutStylesLit, buttonsStylesLitContent];
+  }
   render() {
     return html`
-      ${reportingRequirementsListStyles}${gridLayoutStylesPolymer()}${buttonsStylesPolymer()}
+      ${reportingRequirementsListStyles}
       <style include="data-table-styles">
         etools-data-table-row {
           --icons-actions_-_background-color: transparent !important;
@@ -52,18 +55,20 @@ export class SpecialReportingRequirements extends CommonMixin(ReportingRequireme
           <etools-data-table-column class="flex-6">Reporting Requirements</etools-data-table-column>
           <etools-data-table-column class="flex-c"></etools-data-table-column>
         </etools-data-table-header>
-        <template is="dom-repeat" items="${this.reportingRequirements}">
-          <etools-data-table-row no-collapse secondary-bg-on-hover>
+        ${this.reportingRequirements.forEach(
+          (item: any, index) => html` <etools-data-table-row no-collapse secondary-bg-on-hover>
             <div slot="row-data">
-              <span class="col-data col-1 right-align index-col">${this._getIndex(this.index, this.reportingRequirements)}</span>
+              <span class="col-data col-1 right-align index-col"
+                >${this._getIndex(index, this.reportingRequirements)}</span
+              >
               <span class="col-data col-3">${this.getDateDisplayValue(item.due_date)}</span>
               <span class="col-data col-6">${item.description}</span>
               <span class="col-data flex-c actions">
                 <icons-actions-2 item$="${item}" @edit="${this._onEdit}" @delete="${this._onDelete}"> </icons-actions-2>
               </span>
             </div>
-          </etools-data-table-row>
-        </template>
+          </etools-data-table-row>`
+        )}
       </div>
     `;
   }

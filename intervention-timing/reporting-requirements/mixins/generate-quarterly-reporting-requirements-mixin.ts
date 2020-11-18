@@ -30,7 +30,6 @@ function GenerateQuarterlyReportingRequirementsMixin<T extends Constructor<LitEl
      * @returns {Array}
      */
     generateQPRData(pdStartDateStr: any, pdEndDateStr: any) {
-      console.log('generate ');
       const qprData = [];
       let start = String(pdStartDateStr);
       let end = this._generateEndDate(start, pdEndDateStr);

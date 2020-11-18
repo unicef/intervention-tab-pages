@@ -1,4 +1,3 @@
-/* eslint-disable lit/no-legacy-template-syntax */
 import {LitElement, html, property, query, customElement} from 'lit-element';
 import '@polymer/iron-label/iron-label';
 import '@polymer/paper-button/paper-button';
@@ -11,8 +10,8 @@ import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import './qpr-list.js';
 import CONSTANTS from '../../../common/constants';
 import '@unicef-polymer/etools-date-time/calendar-lite.js';
-import {gridLayoutStylesPolymer} from '../../../common/styles/grid-layout-styles-polymer';
-import {buttonsStylesPolymer} from '../styles/buttons-styles-polymer';
+import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
+import {buttonsStylesLitContent} from '../styles/buttons-styles-polymer';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
@@ -27,9 +26,11 @@ import {AnyObject} from '@unicef-polymer/etools-types';
  */
 @customElement('edit-qpr-dialog')
 export class EditQprDialog extends LitElement {
+  static get styles() {
+    return [gridLayoutStylesLit, buttonsStylesLitContent];
+  }
   render() {
     return html`
-      ${gridLayoutStylesPolymer()}${buttonsStylesPolymer()}
       <style>
         *[hidden] {
           display: none !important;
@@ -174,6 +175,7 @@ export class EditQprDialog extends LitElement {
   }
 
   _addNewQpr() {
+    // @DAN: check these, and similar with this
     // this.set('_editedQprDatesSet', Object.assign({}, this._qprDatesSetModel));
     // this.set('addOrModifyQprDialogOpened', true);
     this._editedQprDatesSet = Object.assign({}, this._qprDatesSetModel);
@@ -250,7 +252,6 @@ export class EditQprDialog extends LitElement {
   }
 
   _getEditedQprDatesSetId(index: number) {
-    console.log('error here');
     // return (this.shadowRoot!.querySelector(`#qpr-list`) as QprListEl).getIndex(index, this.qprData.length);
     if (!this.qprData) {
       return;

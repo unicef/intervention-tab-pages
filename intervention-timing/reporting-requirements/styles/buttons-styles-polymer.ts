@@ -1,3 +1,4 @@
+import {css, unsafeCSS} from 'lit-element';
 import '@polymer/iron-flex-layout/iron-flex-layout.js';
 import {
   _layoutVertical,
@@ -6,7 +7,7 @@ import {
   _layoutCenterJustified
 } from '../../../common/styles/flex-layout-styles';
 
-// language=HTML
+// language=CSS
 const buttonsStylesPolymerContent = `
   :host > * {
     --primary-button-default: {
@@ -97,11 +98,7 @@ const buttonsStylesPolymerContent = `
     font-weight: bold;
   }
 `;
-
-export const buttonsStylesPolymer = () => {
-  const template = document.createElement('template');
-  template.innerHTML = `<style>
-    ${buttonsStylesPolymerContent}
-   </style>`;
-  return template;
-};
+// language=CSS
+export const buttonsStylesLitContent = css`
+  ${unsafeCSS(buttonsStylesPolymerContent)}
+`;

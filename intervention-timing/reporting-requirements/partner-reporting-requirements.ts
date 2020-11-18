@@ -10,8 +10,8 @@ import '@unicef-polymer/etools-content-panel/etools-content-panel';
 
 import './qpr/quarterly-reporting-requirements';
 import './hr/humanitarian-reporting-req-unicef';
-import './hr/humanitarian-reporting-req-cluster';
-import './srr/special-reporting-requirements';
+// import './hr/humanitarian-reporting-req-cluster';
+// import './srr/special-reporting-requirements';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {contentSectionStylesLit} from '../../common/styles/content-section-styles-lit';
 

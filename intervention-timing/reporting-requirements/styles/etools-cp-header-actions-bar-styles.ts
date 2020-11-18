@@ -1,8 +1,7 @@
-import {html} from '@polymer/polymer/polymer-element.js';
+import {css, unsafeCSS} from 'lit-element';
 
-// language=HTML
-export const etoolsCpHeaderActionsBarStyles = html` <style>
-  .cp-header-actions-bar {
+export const etoolsCpHeaderActionsBarStyles = `
+    .cp-header-actions-bar {
     @apply --layout-horizontal;
   }
 
@@ -22,4 +21,9 @@ export const etoolsCpHeaderActionsBarStyles = html` <style>
     padding-right: 10px;
     margin: 6px 0 6px 10px;
   }
-</style>`;
+  `;
+
+// language=CSS
+export const etoolsCpHeaderActionsBarStylesLit = css`
+  ${unsafeCSS(etoolsCpHeaderActionsBarStyles)}
+`;

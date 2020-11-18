@@ -82,7 +82,7 @@ export class QprList extends CommonMixin(ReportingReqPastDatesCheckMixin(LitElem
   @property({type: Boolean})
   preventPastDateEdit = false;
 
-  _interventionId!: string;
+  _interventionId!: number;
 
   set interventionId(interventionId) {
     this._interventionId = interventionId;
