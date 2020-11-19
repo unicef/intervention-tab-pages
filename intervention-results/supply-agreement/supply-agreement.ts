@@ -239,7 +239,6 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
     this.supply_items = selectSupplyAgreement(state);
     this.permissions = selectSupplyAgreementPermissions(state);
     this.supply_items.map((item: AnyObject) => {
-      // TODO: change placeholder on unicef_product_number
       item.total_price = this.addCurrencyAmountDelimiter(item.total_price);
       item.unit_number = Number(item.unit_number);
       item.unit_price = this.addCurrencyAmountDelimiter(item.unit_price);
