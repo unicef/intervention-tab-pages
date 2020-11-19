@@ -86,11 +86,14 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
   //   ];
   // }
 
-  ready() {
-    // @DAN
-    super.ready();
+  connectedCallback() {
+    super.connectedCallback();
     this._createEditHruDialog();
-    (this.$.hruList as HruListEl).set('hruMainEl', this);
+
+    const hruListEl = this.shadowRoot!.querySelector('hruList') as HruListEl;
+    if (hruListEl) {
+      hruListEl.hruMainEl = this;
+    }
   }
 
   disconnectedCallback() {

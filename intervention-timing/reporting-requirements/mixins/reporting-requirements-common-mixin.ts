@@ -15,8 +15,15 @@ import {Constructor} from '@unicef-polymer/etools-types';
  */
 function ReportingRequirementsCommonMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class ReportingRequirementsCommon extends baseClass {
-    @property({type: Array})
-    reportingRequirements: [] = [];
+    _reportingRequirements: [] = [];
+
+    get reportingRequirements() {
+      return this._reportingRequirements;
+    }
+    set reportingRequirements(reportingRequirements) {
+      this._reportingRequirements = reportingRequirements;
+      this._countReportingReq(reportingRequirements.length);
+    }
 
     @property({type: Number})
     requirementsCount = 0;
@@ -32,10 +39,6 @@ function ReportingRequirementsCommonMixin<T extends Constructor<LitElement>>(bas
     get interventionId() {
       return this._interventionId;
     }
-    // @DAN
-    // static get observers() {
-    //   return ['_countReportingReq(reportingRequirements.length)'];
-    // } move to element
 
     _getEndpointObj(id: number, type: string) {
       if (type === CONSTANTS.REQUIREMENTS_REPORT_TYPE.SPECIAL) {
