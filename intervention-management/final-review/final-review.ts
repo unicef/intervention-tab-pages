@@ -59,7 +59,7 @@ export class FinalReview extends CommentsMixin(LitElement) {
   @property() canEdit = false;
 
   get reviewDate(): string {
-    return this.attachment ? moment(this.attachment.created).format('DD MMM YYYY') : '-';
+    return this.attachment ? moment(this.attachment.created).format('DD MMM YYYY') : '—';
   }
 
   private interventionId: number | null = null;

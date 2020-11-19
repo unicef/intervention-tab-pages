@@ -122,9 +122,9 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
       ${!this.indicators.length
         ? html`
             <div class="layout-horizontal empty-row">
-              <div class="text flex-auto">-</div>
-              <div class="text number-data flex-none">-</div>
-              <div class="text number-data flex-none">-</div>
+              <div class="text flex-auto">—</div>
+              <div class="text number-data flex-none">—</div>
+              <div class="text number-data flex-none">—</div>
             </div>
           `
         : ''}

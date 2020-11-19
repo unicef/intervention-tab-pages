@@ -163,11 +163,11 @@ export class PdActivities extends CommentsMixin(LitElement) {
       ${!this.activities.length
         ? html`
             <div class="layout-horizontal empty-row">
-              <div class="text flex-auto">-</div>
-              <div class="text number-data flex-none">-</div>
-              <div class="text number-data flex-none">-</div>
-              <div class="text number-data flex-none">-</div>
-              <div class="text number-data flex-none">-</div>
+              <div class="text flex-auto">—</div>
+              <div class="text number-data flex-none">—</div>
+              <div class="text number-data flex-none">—</div>
+              <div class="text number-data flex-none">—</div>
+              <div class="text number-data flex-none">—</div>
             </div>
           `
         : ''}

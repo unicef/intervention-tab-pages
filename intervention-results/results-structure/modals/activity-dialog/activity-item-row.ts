@@ -38,7 +38,7 @@ export class ActivityItemRow extends LitElement {
               <paper-textarea
                 .value="${this.activityItem.name || ''}"
                 no-label-float
-                placeholder="Enter description"
+                placeholder="—"
                 ?invalid="${this.invalid}"
                 ?readonly="${this.readonly}"
                 @value-changed="${({detail}: CustomEvent) => this.updateField('name', detail.value)}"
