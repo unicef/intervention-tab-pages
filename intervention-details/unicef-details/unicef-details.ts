@@ -25,6 +25,7 @@ import orderBy from 'lodash-es/orderBy';
 import {AnyObject, CountryProgram, Permission, AsyncAction, User} from '@unicef-polymer/etools-types';
 import isEmpty from 'lodash-es/isEmpty';
 import uniqBy from 'lodash-es/uniqBy';
+import {translate} from 'lit-translate';
 
 /**
  * @customElement
@@ -60,14 +61,14 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
         show-expand-btn
         panel-title="Unicef Details"
         comment-element="unicef-details"
-        comment-description="Unicef Details"
+        comment-description=${translate('INTERVENTION_DETAILS.UNICEF_DETAILS')}
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="layout-horizontal">
           <div class="col col-4">
             <span>
-              <label class="paper-label">Document Type</label>
+              <label class="paper-label">${translate('INTERVENTION_DETAILS.DOCUMENT_TYPE')}</label>
             </span>
           </div>
         </div>
@@ -80,7 +81,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
           <div class="col col-4">
             <etools-dropdown-multi
               id="officeInput"
-              label="Unicef Offices"
+              label=${translate('INTERVENTION_DETAILS.UNICEF_OFFICES')}
               class="row-padding-v"
               .options="${this.office_list}"
               option-label="name"
@@ -97,7 +98,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
           <div class="col col-4">
             <etools-dropdown-multi
               id="sectionInput"
-              label="Unicef Sections"
+              label=${translate('INTERVENTION_DETAILS.UNICEF_SECTIONS')}
               class="row-padding-v"
               .options="${this.section_list}"
               option-label="name"
@@ -114,7 +115,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
           <div class="col col-4">
             <paper-textarea
               id="title"
-              label="Clusters"
+              label=${translate('INTERVENTION_DETAILS.CLUSTERS')}
               class="w100"
               always-float-label
               placeholder="—"
@@ -128,7 +129,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
           <div class="col col-4">
             <etools-dropdown-multi
               id="focalPointInput"
-              label="Unicef Focal Points"
+              label=${translate('INTERVENTION_DETAILS.UNICEF_FOCAL_POINTS')}
               class="row-padding-v"
               .options="${this.users_list}"
               option-label="name"
@@ -156,7 +157,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
           <div class="col col-4" ?hidden="${!this.isUnicefUser}">
             <etools-dropdown
               id="budgetOwnerInput"
-              label="Unicef Budget Owner"
+              label=${translate('INTERVENTION_DETAILS.UNICEF_BUDGET_OWNER')}
               .options="${this.users_list}"
               class="row-padding-v"
               option-label="name"
@@ -171,7 +172,9 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
             </etools-dropdown>
 
             <div class="padd-top" ?hidden="${!this.isReadonly(this.editMode, this.permissions.edit.budget_owner)}">
-              <label for="budgetOwnerInput" class="paper-label">Unicef Budget Owner</label>
+              <label for="budgetOwnerInput" class="paper-label"
+                >${translate('INTERVENTION_DETAILS.UNICEF_BUDGET_OWNER')}</label
+              >
               <div id="budgetOwnerDetails">
                 ${this.renderReadonlyUserDetails(
                   this.originalData?.budget_owner ? [this.originalData?.budget_owner!] : []
@@ -182,7 +185,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
           <div class="col col-4" ?hidden="${!this.isUnicefUser}">
             <etools-dropdown-multi
               id="cpStructures"
-              label="CP Structures"
+              label=${translate('INTERVENTION_DETAILS.CP_STRUCTURES')}
               .options="${this.cpStructures}"
               class="row-padding-v"
               option-label="name"

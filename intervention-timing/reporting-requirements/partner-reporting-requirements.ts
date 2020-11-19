@@ -27,6 +27,7 @@ import {isUnicefUser} from '../../common/selectors';
 import {connectStore} from '../../common/mixins/connect-store-mixin';
 import {AnyObject, Permission} from '@unicef-polymer/etools-types';
 // import {openDialog} from '../../utils/dialog';
+import {sharedStylesPolymer} from '../../common/styles/shared-styles-polymer';
 
 /**
  * @polymer

@@ -11,6 +11,7 @@ import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
 import {InfoElementStyles} from '../../common/styles/info-element-styles';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
+import {translate} from 'lit-translate';
 
 /**
  * @customElement
@@ -32,56 +33,58 @@ export class TimingOverview extends CommentsMixin(LitElement) {
       ${InfoElementStyles}
       <section class="elevation table" elevation="1" comment-element="timing-overview" comment-description="Overview">
         <div class="data-column">
-          <label class="paper-label">Date Created</label>
+          <label class="paper-label">${translate('INTERVENTION_TIMING.TIMING_OVERVIEW.DATE_CREATED')}</label>
           <div class="input-label" ?empty="${!this.timingOverview.created}">
             ${formatDateShortMonth(this.timingOverview.created)}
           </div>
         </div>
 
         <div class="data-column">
-          <label class="paper-label">Date First Sent to Partner</label>
+          <label class="paper-label">${translate('INTERVENTION_TIMING.TIMING_OVERVIEW.DATE_FIRST_SENT_PARTNER')}</label>
           <div class="input-label" ?empty="${!this.timingOverview.date_sent_to_partner}">
             ${formatDateShortMonth(this.timingOverview.date_sent_to_partner)}
           </div>
         </div>
 
         <div class="data-column">
-          <label class="paper-label">Date First Draft by Partner</label>
-          <div class="input-label" ?empty="${!this.timingOverview.date_draft_by_partner}">
-            ${formatDateShortMonth(this.timingOverview.date_draft_by_partner)}
+          <label class="paper-label"
+            >${translate('INTERVENTION_TIMING.TIMING_OVERVIEW.DATE_FIRST_DRAFT_PARTNER')}</label
+          >
+          <div class="input-label" ?empty="${!this.timingOverview.submission_date}">
+            ${formatDateShortMonth(this.timingOverview.submission_date)}
           </div>
         </div>
 
         <div class="data-column">
-          <label class="paper-label">PRC Submission Date</label>
+          <label class="paper-label">${translate('INTERVENTION_TIMING.TIMING_OVERVIEW.PRC_SUBMISSION_DATE')}</label>
           <div class="input-label" ?empty="${!this.timingOverview.submission_date_prc}">
             ${formatDateShortMonth(this.timingOverview.submission_date_prc)}
           </div>
         </div>
 
         <div class="data-column">
-          <label class="paper-label">PRC Review Date</label>
+          <label class="paper-label">${translate('INTERVENTION_TIMING.TIMING_OVERVIEW.PRC_REVIEW_DATE')}</label>
           <div class="input-label" ?empty="${!this.timingOverview.review_date_prc}">
             ${formatDateShortMonth(this.timingOverview.review_date_prc)}
           </div>
         </div>
 
         <div class="data-column">
-          <label class="paper-label">Date Partner Signed</label>
+          <label class="paper-label">${translate('INTERVENTION_TIMING.TIMING_OVERVIEW.DATE_PARTNER_SIGNED')}</label>
           <div class="input-label" ?empty="${!this.timingOverview.signed_by_partner_date}">
             ${formatDateShortMonth(this.timingOverview.signed_by_partner_date)}
           </div>
         </div>
 
         <div class="data-column">
-          <label class="paper-label">Date Unicef Signed</label>
+          <label class="paper-label">${translate('INTERVENTION_TIMING.TIMING_OVERVIEW.DATE_UNICEF_SIGNED')}</label>
           <div class="input-label" ?empty="${!this.timingOverview.signed_by_unicef_date}">
             ${formatDateShortMonth(this.timingOverview.signed_by_unicef_date)}
           </div>
         </div>
 
         <div class="data-column">
-          <label class="paper-label">Date Last Amended</label>
+          <label class="paper-label">${translate('INTERVENTION_TIMING.TIMING_OVERVIEW.DATE_LAST_AMENDED')}</label>
           <div class="input-label" empty></div>
         </div>
       </section>

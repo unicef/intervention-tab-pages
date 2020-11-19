@@ -11,8 +11,9 @@ import {
   InterventionActivity,
   GenericObject,
   InterventionQuarter,
-  InterventionActivityTimeframe,
+  InterventionActivityTimeframe
 } from '@unicef-polymer/etools-types';
+import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {Intervention, ResultLinkLowerResult, ExpectedResult} from '@unicef-polymer/etools-types';
 
 @customElement('activity-timeframes')
@@ -32,6 +33,9 @@ export class ActivityTimeframes extends CommentsMixin(LitElement) {
     const timeFrames: GroupedActivityTime[] = this.getTimeFrames();
     const mappedActivities: GenericObject<InterventionActivity[]> = this.getActivities();
     return html`
+      <style>
+        ${sharedStyles}
+      </style>
       <etools-content-panel
         show-expand-btn
         panel-title="Activity Timeframes"

@@ -11,13 +11,14 @@ import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
 import isEmpty from 'lodash-es/isEmpty';
 import {AnyObject} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 declare const moment: any;
 
 /**
  * @customElement
  */
-@customElement('monitoring-visits-list-2')
-export class MonitoringVisitsList2 extends LitElement {
+@customElement('monitoring-visits-list')
+export class MonitoringVisitsList extends LitElement {
   static get styles() {
     return [gridLayoutStylesLit];
   }
@@ -77,7 +78,7 @@ export class MonitoringVisitsList2 extends LitElement {
                 </div>
               </etools-data-table-row>
             `
-          )};
+          )}
           ${this.tpmActivities.map(
             (visit: AnyObject) => html`
               <etools-data-table-row no-collapse>
@@ -112,9 +113,9 @@ export class MonitoringVisitsList2 extends LitElement {
           class="row-h"
           ?hidden="${!this._hideMonitoringVisits(this.monitoringVisits.length, this.tpmActivities.length)}"
         >
-          <p>There are no activities.</p>
+          <p>${translate('INTERVENTION_OVERVIEW.NO_ACTIVITIES')}</p>
         </div>
-      </div>`;
+      </div>`
   }
 
   @property({type: String})

@@ -62,12 +62,12 @@ export class QprList extends CommonMixin(ReportingReqPastDatesCheckMixin(LitElem
               <span class="col-data col-3">${this.getDateDisplayValue(item.end_date)}</span>
               <span class="col-data col-3">${this.getDateDisplayValue(item.due_date)}</span>
               <span class="col-data flex-c actions">
-                <icons-actions-2
+                <icons-actions
                   ?hidden="${!this._canEdit(this.editMode, this.inAmendment, item.due_date, item.id)}"
                   @edit="${this._editQprReq(index)}"
                   @delete="${this._deleteQprReq(index)}"
                 >
-                </icons-actions-2>
+                </icons-actions>
               </span>
             </div>
           </etools-data-table-row>

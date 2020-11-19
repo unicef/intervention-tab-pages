@@ -2,6 +2,7 @@
 import {prettyDate} from '../../utils/date-utils';
 import {LitElement} from 'lit-element';
 import {AnyObject, Constructor} from '@unicef-polymer/etools-types';
+import {get} from 'lit-translate';
 
 
 /**
@@ -78,6 +79,10 @@ function CommonMixin<T extends Constructor<LitElement>>(baseClass: T) {
         }
       }
       return field;
+    }
+
+    _translate(textKey: string) {
+      return get(textKey);
     }
   }
 

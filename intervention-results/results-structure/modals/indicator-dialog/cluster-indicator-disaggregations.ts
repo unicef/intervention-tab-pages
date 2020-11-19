@@ -3,6 +3,7 @@ import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../../../common/styles/button-styles';
 import {AnyObject} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 
 /**
  * @customElement
@@ -36,13 +37,13 @@ export class ClusterIndicatorDisaggregations extends LitElement {
             <div class="row-h ">
               <div class="col col-4">
                 <div class="layout-vertical">
-                  <label class="paper-label">Disaggregate By</label>
+                  <label class="paper-label">${translate('INDICATOR_DIALOG.DISAGREG_BY')}</label>
                   <label class="input-label" empty="${!item.name}">${item.name}</label>
                 </div>
               </div>
               <div class="col col-8">
                 <div class="layout-vertical">
-                  <label class="paper-label">Disaggregation Groups</label>
+                  <label class="paper-label">${translate('INDICATOR_DIALOG.DISAGREG_GROUPS')}</label>
                   <label class="input-label" empty="${!item.choices}">${this._getGroupNames(item.choices)}</label>
                 </div>
               </div>
@@ -52,7 +53,7 @@ export class ClusterIndicatorDisaggregations extends LitElement {
       </div>
 
       <div class="row-h" ?hidden="${!this._noDisaggregations(this.disaggregations, this.disaggregations.length)}">
-        <p>There are no disaggregations added.</p>
+        <p>${translate('INDICATOR_DIALOG.NO_DISAGREG_ADDED')}</p>
       </div>
     `;
   }

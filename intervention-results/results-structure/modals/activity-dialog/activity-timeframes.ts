@@ -3,6 +3,7 @@ import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-
 import {ActivityTime, groupByYear, serializeTimeFrameData} from '../../../../utils/timeframes.helper';
 import {fireEvent} from '../../../../utils/fire-custom-event';
 import {InterventionActivityTimeframe} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 
 @customElement('activity-time-frames')
 export class ActivityTimeFrames extends LitElement {
@@ -88,11 +89,11 @@ export class ActivityTimeFrames extends LitElement {
   protected render(): TemplateResult {
     return html`
       <label class="paper-label layout-horizontal center-align" required
-        >Activity Times (click to select/deselect)</label
+        >${translate('INTERVENTION_TIMING.ACTIVITY_TIMEFRAMES.ACTIVITY_TIMES')}</label
       >
       <div class="layout-horizontal center-align time-frame-container">
         ${!this._timeFrames.length
-          ? html`Activity Timeframes will be available after Start and End date are set.`
+          ? html`${translate('INTERVENTION_TIMING.ACTIVITY_TIMEFRAMES.ACTIVITY_TIMES_MSG')}`
           : html``}
         ${this._timeFrames.map(
           ([year, frames]: any) => html`

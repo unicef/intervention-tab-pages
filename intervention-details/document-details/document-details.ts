@@ -19,6 +19,7 @@ import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 
 /**
  * @customElement
@@ -56,7 +57,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
         <div class="row-padding-v">
           <paper-textarea
             id="title"
-            label="Title"
+            label=${translate('INTERVENTION_DETAILS.TITLE')}
             always-float-label
             placeholder="—"
             .autoValidate="${this.autoValidate}"
@@ -72,7 +73,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
         <div class="row-padding-v">
           <paper-textarea
             id="context"
-            label="Context"
+            label=${translate('INTERVENTION_DETAILS.CONTEXT')}
             always-float-label
             type="text"
             placeholder="—"
@@ -87,7 +88,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
         <div class="row-padding-v">
           <paper-textarea
             id="implementation-strategy"
-            label="Implementation Strategy"
+            label=${translate('INTERVENTION_DETAILS.IMPLEMENTATION_STRATEGY')}
             always-float-label
             placeholder="—"
             .value="${this.data.implementation_strategy}"
@@ -101,7 +102,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
         <div class="row-padding-v">
           <paper-textarea
             id="ip_program_contribution"
-            label="Partner Non-Financial Contribution"
+            label=${translate('INTERVENTION_DETAILS.PARTNER_NON_FINANCIAL_CONTRIBUTION')}
             always-float-label
             placeholder="—"
             .value="${this.data.ip_program_contribution}"

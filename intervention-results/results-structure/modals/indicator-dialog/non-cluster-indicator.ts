@@ -13,6 +13,7 @@ import {buttonsStyles} from '../../../../common/styles/button-styles';
 import {PaperCheckboxElement} from '@polymer/paper-checkbox/paper-checkbox.js';
 import {layoutCenter, layoutVertical} from '../../../../common/styles/flex-layout-styles';
 import {Indicator} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 
 /**
  * @customElement
@@ -57,7 +58,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         }
 
         .no-left-padding {
-          padding-left: 0px !important;
+          padding-left: 0 !important;
         }
 
         .dash-separator {
@@ -79,7 +80,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
 
         .row-h {
           padding-top: 16px !important;
-          padding-bottom: 0px !important;
+          padding-bottom: 0 !important;
         }
 
         .last-item {
@@ -89,7 +90,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
 
       <div class="row-h flex-c">
         <div class="layout-vertical">
-          <label class="paper-label">Type </label>
+          <label class="paper-label">${translate('INDICATOR_DIALOG.TYPE')}</label>
           <div class="radioGroup">
             <paper-radio-group
               .disabled="${this.readonly}"
@@ -103,14 +104,16 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
               }}"
             >
               <paper-radio-button ?disabled="${this.isReadonly()}" class="no-left-padding" name="number"
-                >Quantity / Scale
+                >${translate('INDICATOR_DIALOG.QUANTITY_SCALE')}
               </paper-radio-button>
-              <paper-radio-button ?disabled="${this.isReadonly()}" name="percentage">Percent/Ratio</paper-radio-button>
+              <paper-radio-button ?disabled="${this.isReadonly()}" name="percentage"
+                >${translate('INDICATOR_DIALOG.PERCENT_RATIO')}</paper-radio-button
+              >
             </paper-radio-group>
           </div>
         </div>
         <div class="layout-vertical" ?hidden="${this._unitIsNumeric(this.indicator!.indicator!.unit)}">
-          <label class="paper-label">Display Type </label>
+          <label class="paper-label">${translate('INDICATOR_DIALOG.DISPLAY_TYPE')}</label>
           <div class="radioGroup">
             <paper-radio-group
               .selected="${this.indicator!.indicator!.display_type}"
@@ -121,9 +124,11 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
               }}"
             >
               <paper-radio-button ?disabled="${this.isReadonly()}" class="no-left-padding" name="percentage"
-                >Percentage
+                >${translate('INDICATOR_DIALOG.PERCENTAGE')}
               </paper-radio-button>
-              <paper-radio-button ?disabled="${this.isReadonly()}" name="ratio"> Ratio </paper-radio-button>
+              <paper-radio-button ?disabled="${this.isReadonly()}" name="ratio"
+                >${translate('INDICATOR_DIALOG.RATIO')}</paper-radio-button
+              >
             </paper-radio-group>
           </div>
         </div>
@@ -132,10 +137,10 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         <paper-input
           id="titleEl"
           required
-          label="Indicator"
+          label=${translate('INDICATOR_DIALOG.INDICATOR')}
           .value="${this.indicator!.indicator!.title}"
           placeholder="&#8212;"
-          error-message="Please add a title"
+          error-message=${translate('INDICATOR_DIALOG.ADD_TITLE_ERR')}
           auto-validate
           ?readonly="${this.isReadonly()}"
           @value-changed="${({detail}: CustomEvent) => {
@@ -153,7 +158,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         <div class="col col-3">
           <paper-input
             id="numeratorLbl"
-            label="Numerator Label"
+            label=${translate('INDICATOR_DIALOG.NUMERATOR_LABEL')}
             .value="${this.indicator.numerator_label}"
             placeholder="&#8212;"
             ?readonly="${this.readonly}"
@@ -166,7 +171,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         <div class="col col-3">
           <paper-input
             id="denomitorLbl"
-            label="Denominator Label"
+            label=${translate('INDICATOR_DIALOG.DENOMINATOR_LABEL')}
             .value="${this.indicator.denominator_label}"
             placeholder="&#8212;"
             ?readonly="${this.readonly}"
@@ -183,12 +188,12 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                 ${this._unitIsNumeric(this.indicator!.indicator!.unit)
                   ? html` <paper-input
                       id="baselineNumeric"
-                      label="Baseline"
+                      label=${translate('INDICATOR_DIALOG.BASELINE')}
                       .value="${this.indicator.baseline.v}"
                       allowed-pattern="[0-9.,]"
                       .pattern="${this.numberPattern}"
                       auto-validate
-                      error-message="Invalid number"
+                      error-message=${translate('INDICATOR_DIALOG.INVALID_NUMBER')}
                       placeholder="&#8212;"
                       ?disabled="${this.baselineIsUnknown || this.readonly}"
                       @value-changed="${({detail}: CustomEvent) => {
@@ -200,12 +205,12 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                 ${!this._unitIsNumeric(this.indicator!.indicator!.unit)
                   ? html` <paper-input
                       id="baselineNonNumeric"
-                      label="Baseline"
+                      label=${translate('INDICATOR_DIALOG.BASELINE')}
                       .value="${this.indicator.baseline.v}"
                       allowed-pattern="[0-9]"
                       .pattern="${this.digitsPattern}"
                       auto-validate
-                      error-message="Invalid number"
+                      error-message=${translate('INDICATOR_DIALOG.INVALID_NUMBER')}
                       placeholder="&#8212;"
                       ?disabled="${this.baselineIsUnknown || this.readonly}"
                       @value-changed="${({detail}: CustomEvent) => {
@@ -219,7 +224,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
               </div>
               <div class="col col-3">
                 <paper-input
-                  label="Target"
+                  label=${translate('INDICATOR_DIALOG.TARGET')}
                   id="targetElForNumericUnit"
                   .value="${this.indicator.target.v}"
                   placeholder="&#8212;"
@@ -227,7 +232,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                   required
                   .pattern="${this.numberPattern}"
                   auto-validate
-                  error-message="Please add a valid target"
+                  error-message=${translate('INDICATOR_DIALOG.VALID_TARGET_ERR')}
                   ?readonly="${this.readonly}"
                   @value-changed="${({detail}: CustomEvent) => {
                     this.indicator.target.v = detail.value;
@@ -237,7 +242,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                 >
                 </paper-input>
                 <paper-input
-                  label="Target"
+                  label=${translate('INDICATOR_DIALOG.TARGET')}
                   id="targetElForNonNumericUnit"
                   .value="${this.indicator.target.v}"
                   placeholder="&#8212;"
@@ -245,7 +250,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                   required
                   .pattern="${this.digitsPattern}"
                   auto-validate
-                  error-message="Please add a valid target"
+                  error-message=${translate('INDICATOR_DIALOG.VALID_TARGET_ERR')}
                   ?readonly="${this.readonly}"
                   ?hidden="${this._unitIsNumeric(this.indicator!.indicator!.unit)}"
                   @value-changed="${({detail}: CustomEvent) => {
@@ -261,13 +266,13 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           ? html` <div class="col-3 layout-horizontal">
                 <paper-input
                   id="baselineNumerator"
-                  label="Baseline"
+                  label=${translate('INDICATOR_DIALOG.BASELINE')}
                   .value="${this.indicator.baseline.v}"
                   allowed-pattern="[0-9]"
                   .pattern="${this.digitsNotStartingWith0Pattern}"
                   auto-validate
-                  error-message="Invalid"
-                  placeholder="Numerator"
+                  error-message=${translate('INDICATOR_DIALOG.INVALID_ERR')}
+                  placeholder=${translate('INDICATOR_DIALOG.NUMERATOR')}
                   ?disabled="${this.baselineIsUnknown || this.readonly}"
                   @value-changed="${({detail}: CustomEvent) => {
                     this.indicator.baseline.v = detail.value;
@@ -282,8 +287,8 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                   allowed-pattern="[0-9]"
                   .pattern="${this.digitsNotStartingWith0Pattern}"
                   auto-validate
-                  error-message="Invalid"
-                  placeholder="Denominator"
+                  error-message=${translate('INDICATOR_DIALOG.INVALID_ERR')}
+                  placeholder=${translate('INDICATOR_DIALOG.DENOMINATOR')}
                   ?disabled="${this.baselineIsUnknown || this.readonly}"
                   @value-changed="${({detail}: CustomEvent) => {
                     this.indicator.baseline.d = detail.value;
@@ -293,15 +298,15 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
               </div>
               <div class="col col-3">
                 <paper-input
-                  label="Target"
+                  label=${translate('INDICATOR_DIALOG.TARGET')}
                   id="targetNumerator"
                   .value="${this.indicator.target.v}"
                   allowed-pattern="[0-9]"
                   .pattern="${this.digitsNotStartingWith0Pattern}"
                   auto-validate
                   required
-                  error-message="Invalid"
-                  placeholder="Numerator"
+                  error-message=${translate('INDICATOR_DIALOG.INVALID_ERR')}
+                  placeholder=${translate('INDICATOR_DIALOG.NUMERATOR')}
                   ?readonly="${this.readonly}"
                   @value-changed="${({detail}: CustomEvent) => {
                     this.indicator.target.v = detail.value;
@@ -317,8 +322,8 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                   allowed-pattern="[0-9]"
                   .pattern="${this.digitsNotStartingWith0Pattern}"
                   auto-validate
-                  error-message="Empty or < 1"
-                  placeholder="Denominator"
+                  error-message=${translate('INDICATOR_DIALOG.TARGET_DENOMINATOR_ERR')}
+                  placeholder=${translate('INDICATOR_DIALOG.DENOMINATOR')}
                   ?readonly="${this.isReadonlyDenominator(this.interventionStatus, this.indicator.id) || this.readonly}"
                   @value-changed="${({detail}: CustomEvent) => {
                     this.indicator.target.d = detail.value;
@@ -333,7 +338,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
             ?disabled="${this.readonly}"
             @iron-change="${this.isHighFrequencyChanged}"
           >
-            High Frequency Humanitarian Indicator
+            ${translate('INDICATOR_DIALOG.HIGH_FREQ_HUM_IND')}
           </paper-toggle-button>
         </div>
       </div>
@@ -343,14 +348,14 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           ?disabled="${this.readonly}"
           @checked-changed="${({target}: CustomEvent) =>
             this.baselineIsUnknownChanged(Boolean((target as PaperCheckboxElement).checked))}"
-          >Unknown</paper-checkbox
+          >${translate('INDICATOR_DIALOG.UNKNOWN')}</paper-checkbox
         >
       </div>
 
       <!-- Baseline & Target -->
       <div class="row-h flex-c">
         <paper-textarea
-          label="Means of Verification"
+          label=${translate('INDICATOR_DIALOG.MEANS_OF_VERIFICATION')}
           type="text"
           .value="${this.indicator.means_of_verification}"
           ?readonly="${this.readonly}"
@@ -364,7 +369,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
       <div class="last-item row-h flex-c">
         <etools-dropdown-multi
           id="locationsDropdw"
-          label="Locations"
+          label=${translate('INDICATOR_DIALOG.LOCATIONS')}
           placeholder="&#8212;"
           .selectedValues="${this.indicator.locations}"
           .options="${this.locationOptions}"
@@ -372,7 +377,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           option-value="id"
           required
           auto-validate
-          error-message="Please select locations"
+          error-message=${translate('INDICATOR_DIALOG.LOCATIONS_ERR')}
           disable-on-focus-handling
           fit-into="etools-dialog"
           ?readonly="${this.readonly}"
@@ -388,9 +393,9 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
             class="secondary-btn add-locations"
             ?hidden="${this.readonly}"
             @click="${this._addAllLocations}"
-            title="Add all locations"
+            title=${translate('INDICATOR_DIALOG.ADD_ALL_LOCATIONS')}
           >
-            Add all
+            ${translate('INDICATOR_DIALOG.ADD_ALL')}
           </paper-button>
         </div>
       </div>

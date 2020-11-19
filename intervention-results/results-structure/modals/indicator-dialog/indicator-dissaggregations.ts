@@ -16,6 +16,7 @@ import {buttonsStyles} from '../../../../common/styles/button-styles';
 import {fireEvent} from '../../../../utils/fire-custom-event';
 import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 import {AnyObject, Disaggregation} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 
 /**
  * @customElement
@@ -66,7 +67,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
                 <div class="col col-4">
                   <etools-dropdown
                     id="disaggregate_by_${index}"
-                    label="Disaggregate By"
+                    label=${translate('INDICATOR_DIALOG.DISAGGREGATE_BY')}
                     .options="${this.preDefinedDisaggregtions}"
                     .selected="${item.disaggregId}"
                     option-value="id"
@@ -83,7 +84,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
                   <paper-input
                     id="disaggregationGroups_${index}"
                     readonly
-                    label="Disaggregation Groups"
+                    label=${translate('INDICATOR_DIALOG.DISAGGREGATION_GROUPS')}
                     placeholder="&#8212;"
                   ></paper-input>
                 </div>
@@ -94,7 +95,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
       </div>
 
       <div class="row-padding-v" ?hidden="${!this._isEmptyList(this.data, this.data.length)}">
-        <p>There are no disaggregations added.</p>
+        <p>${translate('INDICATOR_DIALOG.NO_DISAGGREGATIONS_ADDED')}</p>
       </div>
 
       <div class="row-padding-v">
@@ -102,8 +103,8 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
           class="secondary-btn"
           @click="${this._addNewDisaggregation}"
           ?hidden="${this._maxDisaggregations(this.data.length) || this.readonly}"
-          title="Add Disaggregation"
-          >ADD DISAGGREGATION
+          title=${translate('INDICATOR_DIALOG.ADD_DISAGGREGATION')}
+          >${translate('INDICATOR_DIALOG.ADD_DISAGREG')}
         </paper-button>
       </div>
     `;
@@ -152,7 +153,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
       this.shadowRoot!.querySelector<EtoolsDropdownEl>('#disaggregate_by_' + index)!.selected = null;
       this._clearDisagregGroups(index);
       fireEvent(this, 'show-toast', {
-        error: {response: 'Disaggregation already selected'}
+        error: {response: translate('INDICATOR_DIALOG.DISAGREG_ALREADY_SELECTED')}
       });
       this.data[index].disaggregId = null;
     } else {

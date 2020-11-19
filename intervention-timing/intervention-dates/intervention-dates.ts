@@ -19,6 +19,7 @@ import '@unicef-polymer/etools-upload/etools-upload';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 
 /**
  * @customElement
@@ -50,9 +51,9 @@ export class InterventionDates extends CommentsMixin(ComponentBaseMixin(FrNumber
 
       <etools-content-panel
         show-expand-btn
-        panel-title="Programme Document Dates"
+        panel-title=${translate('INTERVENTION_TIMING.INTERVENTION_DATES.PROGRAMME_DOC_DATES')}
         comment-element="programme-document-dates"
-        comment-description="Programme Document Dates"
+        comment-description=${translate('INTERVENTION_TIMING.INTERVENTION_DATES.PROGRAMME_DOC_DATES')}
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
         <div class="layout-horizontal row-padding-v">
@@ -68,11 +69,11 @@ export class InterventionDates extends CommentsMixin(ComponentBaseMixin(FrNumber
               <datepicker-lite
                 slot="field"
                 id="intStart"
-                label="Start Date"
+                label=${translate('INTERVENTION_TIMING.INTERVENTION_DATES.START_DATE')}
                 .value="${this.data.start}"
                 ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.start)}"
                 ?required="${this.permissions.required.start}"
-                error-message="Please select start date"
+                error-message=${translate('INTERVENTION_TIMING.INTERVENTION_DATES.SELECT_START_DATE')}
                 auto-validate
                 selected-date-display-format="D MMM YYYY"
                 fire-date-has-changed
@@ -96,11 +97,11 @@ export class InterventionDates extends CommentsMixin(ComponentBaseMixin(FrNumber
               <datepicker-lite
                 slot="field"
                 id="intEnd"
-                label="End Date"
+                label=${translate('INTERVENTION_TIMING.INTERVENTION_DATES.END_DATE')}
                 .value="${this.data.end}"
                 ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.end)}"
                 ?required="${this.permissions.required.end}"
-                error-message="Please select end date"
+                error-message=${translate('INTERVENTION_TIMING.INTERVENTION_DATES.SELECT_END_DATE')}
                 auto-validate
                 selected-date-display-format="D MMM YYYY"
                 fire-date-has-changed
@@ -117,7 +118,7 @@ export class InterventionDates extends CommentsMixin(ComponentBaseMixin(FrNumber
           ?hidden="${this.hideActivationLetter(this.data.status, this.data.contingency_pd)}"
         >
           <etools-upload
-            label="Activation Letter"
+            label=${translate('INTERVENTION_TIMING.INTERVENTION_DATES.ACTIVATION_LETTER')}
             id="activationLetterUpload"
             .fileUrl="${this.data.activation_letter_attachment}"
             .uploadEndpoint="${this.uploadEndpoint}"

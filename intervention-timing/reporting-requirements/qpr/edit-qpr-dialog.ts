@@ -89,8 +89,9 @@ export class EditQprDialog extends LitElement {
         dialog-title="Edit Standard Quarterly Report Requirements"
         ?opened="${this.addOrModifyQprDialogOpened}"
         no-padding
-        @close="${this._updateQprData}"
+        @confirm-btn-clicked="${this._updateQprData}"
         ok-btn-text="Save"
+        keep-dialog-open
       >
         <div class="row-h" ?hidden="${this._hideEditedIndexInfo(this._qprDatesSetEditedIndex)}">
           You are editing ID ${this._getEditedQprDatesSetId(this._qprDatesSetEditedIndex)}
@@ -209,10 +210,7 @@ export class EditQprDialog extends LitElement {
     return true;
   }
 
-  _updateQprData(e: CustomEvent) {
-    if (!e.detail.confirmed) {
-      return;
-    }
+  _updateQprData() {
     if (!this._validateDataBeforeAdd()) {
       // this.set('addOrModifyQprDialogOpened', true);
       this.addOrModifyQprDialogOpened = true;
@@ -229,8 +227,11 @@ export class EditQprDialog extends LitElement {
       // this.splice('qprData', this._qprDatesSetEditedIndex, 1, this._editedQprDatesSet);
       this.qprData.splice(this._qprDatesSetEditedIndex, 1, this._editedQprDatesSet);
     }
+
     // this.set('_qprDatesSetEditedIndex', -1);
     this._qprDatesSetEditedIndex = -1;
+    this.addOrModifyQprDialogOpened = false;
+
   }
 
   _editQprDatesSet(e: CustomEvent) {

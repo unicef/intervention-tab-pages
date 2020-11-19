@@ -48,7 +48,7 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
         size="md"
         ?hidden="${this.warningOpened}"
         ok-btn-text="Terminate"
-        dialog-title="Terminate PD/SSFA"
+        dialog-title="Terminate PD/SPD"
         @confirm-btn-clicked="${this._triggerPdTermination}"
         ?disable-confirm-btn="${this.uploadInProgress}"
         ?disable-dismiss-btn="${this.uploadInProgress}"
@@ -131,7 +131,7 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
     this.interventionId = interventionId;
   }
 
-  warnMessages: string[] = ['Once you hit save, the PD/SSFA will be Terminated and this action can not be reversed'];
+  warnMessages: string[] = ['Once you hit save, the PD/SPD will be Terminated and this action can not be reversed'];
 
   _getMaxDate() {
     return moment(Date.now()).add(30, 'd').toDate();
@@ -169,7 +169,7 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
         dialog: 'are-you-sure',
         dialogData: {
           content:
-            'Please make sure that the reporting requirements for the PD/SSFA are updated with the correct dates',
+            'Please make sure that the reporting requirements for the PD/SPD are updated with the correct dates',
           confirmBtnText: 'Terminate'
         }
       }).then(({confirmed}) => {

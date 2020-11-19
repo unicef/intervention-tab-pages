@@ -64,7 +64,7 @@ export class SpecialReportingRequirements extends CommonMixin(ReportingRequireme
               <span class="col-data col-3">${this.getDateDisplayValue(item.due_date)}</span>
               <span class="col-data col-6">${item.description}</span>
               <span class="col-data flex-c actions">
-                <icons-actions-2 item$="${item}" @edit="${this._onEdit}" @delete="${this._onDelete}"> </icons-actions-2>
+                <icons-actions item$="${item}" @edit="${this._onEdit}" @delete="${this._onDelete}"> </icons-actions>
               </span>
             </div>
           </etools-data-table-row>`
