@@ -119,7 +119,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
           <div class="text flex-auto">
             ${this.getIndicatorDisplayType(this.indicator)} ${this.addInactivePrefix(this.indicator)}
             ${(this.indicator.indicator ? this.indicator.indicator.title : this.indicator.cluster_indicator_title) ||
-            '-'}
+            '—'}
           </div>
 
           <!--    Baseline    -->
@@ -187,7 +187,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
             <div class="details-text">
               ${this.indicator.disaggregation.length
                 ? this.indicator.disaggregation.map((disaggregation: string) => this.getDisaggregation(disaggregation))
-                : '-'}
+                : '—'}
             </div>
           </div>
         </div>

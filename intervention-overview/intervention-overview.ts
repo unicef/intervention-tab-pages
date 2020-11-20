@@ -10,7 +10,7 @@ import get from 'lodash-es/get';
 import {prettyDate} from '../utils/date-utils';
 import {isJsonStrMatch} from '../utils/utils';
 import './fund-reservations-display/fund-reservations-display';
-import './monitoring-visits-list/monitoring-visits-list-2';
+import './monitoring-visits-list/monitoring-visits-list';
 import {pageIsNotCurrentlyActive} from '../utils/common-methods';
 import {RootState} from '../common/types/store.types';
 import {fireEvent} from '../utils/fire-custom-event';
@@ -251,12 +251,12 @@ export class InterventionOverview extends connectStore(LitElement) {
               class="content-section"
               panel-title=${translate('INTERVENTION_OVERVIEW.MONITORING_ACTIVITIES')}
             >
-              <monitoring-visits-list-2
+              <monitoring-visits-list
                 .interventionId="${this.intervention.id}"
                 .partnerId="${this.intervention.partner_id}"
                 showTpmVisits
               >
-              </monitoring-visits-list-2>
+              </monitoring-visits-list>
             </etools-content-panel>
           `
         : html``}

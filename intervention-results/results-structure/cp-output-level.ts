@@ -82,7 +82,7 @@ export class CpOutputLevel extends EtoolsCurrency(LitElement) {
                         <div class="data">
                           ${this.resultLink.ram_indicator_names.length
                             ? this.resultLink.ram_indicator_names.map((name: string) => html`<div>${name}</div>`)
-                            : '-'}
+                            : '—'}
                         </div>
                       </div>
 

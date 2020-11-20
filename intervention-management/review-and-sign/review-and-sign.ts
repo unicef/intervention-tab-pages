@@ -35,6 +35,7 @@ import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, MinimalUser, Permission, User} from '@unicef-polymer/etools-types';
 import {MinimalAgreement} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {getDifference} from '../../common/mixins/objects-diff';
 
 /**
  * @customElement
@@ -191,23 +192,40 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
             : html``
         }
         <div class="layout-horizontal row-padding-v">
-          <div class="col col-6">
+          <div class="col col-6 layout-vertical">
             <!-- Signed By Partner Authorized Officer -->
             <etools-dropdown
               id="signedByAuthorizedOfficer"
               label=${translate('INTERVENTION_MANAGEMENT.REVIEW_AND_SIGN.SIGNED_PARTNER_AUTH_OFFICER')}
               placeholder="&#8212;"
               .options="${this.agreementAuthorizedOfficers}"
-              .selected="${this.data.partner_authorized_officer_signatory}"
+              .selected="${this.data.partner_authorized_officer_signatory?.id}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.partner_authorized_officer_signatory)}"
               ?required="${this.permissions.required.partner_authorized_officer_signatory}"
               auto-validate
+              option-value="id"
+              option-label="name"
               error-message=${translate('INTERVENTION_MANAGEMENT.REVIEW_AND_SIGN.PARTNER_AUTH_OFFICER_ERR')}
               @etools-selected-item-changed="${({detail}: CustomEvent) =>
-                this.selectedItemChanged(detail, 'partner_authorized_officer_signatory', 'value')}"
+                this.selectedUserChanged(detail, 'partner_authorized_officer_signatory')}"
               trigger-value-change-event
+              ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.partner_authorized_officer_signatory)}"
             >
             </etools-dropdown>
+            ${
+              this.isReadonly(this.editMode, this.permissions?.edit.partner_authorized_officer_signatory)
+                ? html`<label for="partnerAuth" class="paper-label">
+                      ${translate('INTERVENTION_MANAGEMENT.REVIEW_AND_SIGN.SIGNED_PARTNER_AUTH_OFFICER')}
+                    </label>
+                    <div id="partnerAuth">
+                      ${this.renderReadonlyUserDetails(
+                        this.originalData?.partner_authorized_officer_signatory
+                          ? [this.originalData?.partner_authorized_officer_signatory]
+                          : []
+                      )}
+                    </div>`
+                : html``
+            }
           </div>
           <div class="col col-3">
             <!-- Signed by Partner Date -->
@@ -262,7 +280,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
         </div>
         </div>
         <div class="layout-horizontal row-padding-v">
-          <div class="col col-6">
+          <div class="col col-6 layout-vertical">
             <!-- Signed by UNICEF -->
             <etools-dropdown
               id="signedByUnicef"
@@ -278,8 +296,21 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
               @etools-selected-item-changed="${({detail}: CustomEvent) =>
                 this.selectedUserChanged(detail, 'unicef_signatory')}"
               trigger-value-change-event
+              ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.unicef_signatory)}"
             >
             </etools-dropdown>
+            ${
+              this.isReadonly(this.editMode, this.permissions?.edit.unicef_signatory)
+                ? html`<label for="unicefSignatory" class="paper-label"
+                      >${translate('INTERVENTION_MANAGEMENT.REVIEW_AND_SIGN.SIGNED_UNICEF')}</label
+                    >
+                    <div id="unicefSignatory">
+                      ${this.renderReadonlyUserDetails(
+                        this.originalData?.unicef_signatory ? [this.originalData?.unicef_signatory] : []
+                      )}
+                    </div>`
+                : html``
+            }
           </div>
         </div>
         <div class="layout-horizontal row-padding-v">
@@ -402,6 +433,15 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
       if (!isEmpty(agreements)) {
         const agreementData = this.filterAgreementsById(agreements!, this.data.agreement);
         this.agreementAuthorizedOfficers = this.getAuthorizedOfficersList(agreementData);
+        const changed = this.handleUsersNoLongerAssignedToCurrentCountry(
+          this.agreementAuthorizedOfficers as User[],
+          this.data.partner_authorized_officer_signatory
+            ? [this.data.partner_authorized_officer_signatory as MinimalUser]
+            : []
+        );
+        if (changed) {
+          this.agreementAuthorizedOfficers = [...this.agreementAuthorizedOfficers];
+        }
       }
       super.stateChanged(state);
 
@@ -423,10 +463,9 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
       return null;
     }
     return agreementData.authorized_officers!.map((officer: any) => {
-      return {
-        value: typeof officer.id === 'string' ? parseInt(officer.id, 10) : officer.id,
-        label: officer.first_name + ' ' + officer.last_name
-      };
+      officer.id = typeof officer.id === 'string' ? parseInt(officer.id, 10) : officer.id;
+      officer.name = officer.first_name + ' ' + officer.last_name;
+      return officer;
     });
   }
 
@@ -557,7 +596,10 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
     }
 
     return getStore()
-      .dispatch<AsyncAction>(patchIntervention(this.formatUserData(this.data)))
+      .dispatch<AsyncAction>(
+        // @ts-ignore
+        patchIntervention(this.formatUserData(getDifference<ReviewData>(this.originalData, this.data)))
+      )
       .then(() => {
         this.editMode = false;
       });
@@ -566,6 +608,8 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
   private formatUserData(data: ReviewData) {
     const dataToSave: any = cloneDeep(data);
     dataToSave.unicef_signatory = data.unicef_signatory?.id;
+    // eslint-disable-next-line max-len
+    dataToSave.partner_authorized_officer_signatory = data.partner_authorized_officer_signatory?.id;
     return dataToSave;
   }
 }

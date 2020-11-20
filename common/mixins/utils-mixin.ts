@@ -13,7 +13,7 @@ function UtilsMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
     }
 
     _formatNumber(val: any, placeholder: any, decimals: any, thousandsPoint: any, decimalsPoint?: any) {
-      placeholder = placeholder ? placeholder : '-';
+      placeholder = placeholder ? placeholder : '—';
 
       let nr: any = Number(val);
       if (isNaN(nr)) {
@@ -98,12 +98,12 @@ function UtilsMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
       switch (displayType) {
         case 'percentage': {
           const val = percentize ? Math.floor(value * 100) : value;
-          return this._formatNumber(val, '-', 2, ',') + '%';
+          return this._formatNumber(val, '—', 2, ',') + '%';
         }
         case 'ratio':
-          return this._formatNumber(value, '-', 2, ',') + ':1';
+          return this._formatNumber(value, '—', 2, ',') + ':1';
         case 'number':
-          return this._formatNumber(value, '-', 0, ',');
+          return this._formatNumber(value, '—', 0, ',');
         default:
           return value;
       }

@@ -85,7 +85,7 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
             ?trigger-value-change-event="${!this.savingInProcess}"
             .selected="${this.data?.type}"
             label=${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.INT_ATT_DIALOG.SELECT_DOC_TYPE')}
-            placeholder=${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.INT_ATT_DIALOG.SELECT_DOC_TYPE')}
+            placeholder="—"
             .options="${this.fileTypes}"
             option-label="name"
             option-value="id"

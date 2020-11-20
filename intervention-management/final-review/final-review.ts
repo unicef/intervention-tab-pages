@@ -2,13 +2,14 @@ import {LitElement, html, TemplateResult, customElement, CSSResultArray, css, pr
 import './final-review-popup';
 import {openDialog} from '../../utils/dialog';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
-import {selectFinalReviewAttachment, selectInterventionId} from './final-review.selectors';
+import {selectFinalReviewAttachment, selectFinalReviewDate, selectInterventionId} from './final-review.selectors';
 import {currentInterventionPermissions} from '../../common/selectors';
 import get from 'lodash-es/get';
 import {getFileNameFromURL} from '../../utils/utils';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {ReviewAttachment} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {sharedStyles} from '../../common/styles/shared-styles-lit';
 declare const moment: any;
 
 @customElement('final-review')
@@ -55,16 +56,20 @@ export class FinalReview extends CommentsMixin(LitElement) {
   }
 
   @property() attachment: ReviewAttachment | null = null;
+  @property() date: string | null = null;
   @property() canEdit = false;
 
   get reviewDate(): string {
-    return this.attachment ? moment(this.attachment.created).format('DD MMM YYYY') : '-';
+    return this.date ? moment(this.date).format('DD MMM YYYY') : '-';
   }
 
   private interventionId: number | null = null;
 
   protected render(): TemplateResult {
     return html`
+      <style>
+        ${sharedStyles}
+      </style>
       <etools-content-panel
         show-expand-btn
         panel-title=${translate('INTERVENTION_MANAGEMENT.FINAL_REVIEW.FINAL_PARTNERSHIP_REVIEW')}
@@ -96,6 +101,7 @@ export class FinalReview extends CommentsMixin(LitElement) {
     }
 
     this.attachment = selectFinalReviewAttachment(state);
+    this.date = selectFinalReviewDate(state);
     this.interventionId = selectInterventionId(state);
     this.canEdit = Boolean(currentInterventionPermissions(state)?.edit.final_partnership_review);
     super.stateChanged(state);
@@ -106,7 +112,8 @@ export class FinalReview extends CommentsMixin(LitElement) {
       dialog: 'final-review-popup',
       dialogData: {
         interventionId: this.interventionId,
-        attachment: this.attachment
+        attachment: this.attachment,
+        date: this.date
       }
     });
   }

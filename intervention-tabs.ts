@@ -284,7 +284,7 @@ export class InterventionTabs extends connectStore(LitElement) {
       (this.intervention!.partner_accepted ||
         this.intervention!.unicef_accepted ||
         (!this.intervention!.unicef_court && !!this.intervention!.date_sent_to_partner) ||
-        (this.intervention!.unicef_court && !!this.intervention!.date_draft_by_partner))
+        (this.intervention!.unicef_court && !!this.intervention!.submission_date))
     );
   }
 
@@ -305,7 +305,7 @@ export class InterventionTabs extends connectStore(LitElement) {
       return 'Sent to Partner';
     }
 
-    if (this.intervention!.unicef_court && !!this.intervention!.date_draft_by_partner) {
+    if (this.intervention!.unicef_court && !!this.intervention!.submission_date) {
       return 'Sent to Unicef';
     }
     return '';

@@ -11,7 +11,7 @@ export class TimingOverviewData extends ModelsBase {
   }
   created = '';
   date_sent_to_partner = '';
-  date_draft_by_partner = '';
+  submission_date = '';
   submission_date_prc = '';
   review_date_prc = '';
   signed_by_partner_date = '';

@@ -17,8 +17,8 @@ declare const moment: any;
 /**
  * @customElement
  */
-@customElement('monitoring-visits-list-2')
-export class MonitoringVisitsList2 extends LitElement {
+@customElement('monitoring-visits-list')
+export class MonitoringVisitsList extends LitElement {
   static get styles() {
     return [gridLayoutStylesLit];
   }
@@ -78,7 +78,7 @@ export class MonitoringVisitsList2 extends LitElement {
                 </div>
               </etools-data-table-row>
             `
-          )};
+          )}
           ${this.tpmActivities.map(
             (visit: AnyObject) => html`
               <etools-data-table-row no-collapse>
@@ -115,7 +115,7 @@ export class MonitoringVisitsList2 extends LitElement {
         >
           <p>${translate('INTERVENTION_OVERVIEW.NO_ACTIVITIES')}</p>
         </div>
-      </div>`;
+      </div>`
   }
 
   @property({type: String})
