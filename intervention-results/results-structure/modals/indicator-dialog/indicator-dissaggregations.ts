@@ -16,7 +16,7 @@ import {buttonsStyles} from '../../../../common/styles/button-styles';
 import {fireEvent} from '../../../../utils/fire-custom-event';
 import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 import {AnyObject, Disaggregation} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 
 /**
  * @customElement
@@ -153,7 +153,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
       this.shadowRoot!.querySelector<EtoolsDropdownEl>('#disaggregate_by_' + index)!.selected = null;
       this._clearDisagregGroups(index);
       fireEvent(this, 'show-toast', {
-        error: {response: translate('INDICATOR_DIALOG.DISAGREG_ALREADY_SELECTED')}
+        error: {response: getTranslation('INDICATOR_DIALOG.DISAGREG_ALREADY_SELECTED')}
       });
       this.data[index].disaggregId = null;
     } else {
