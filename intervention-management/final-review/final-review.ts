@@ -10,7 +10,6 @@ import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {ReviewAttachment} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {fireEvent} from '../../utils/fire-custom-event';
 declare const moment: any;
 
 @customElement('final-review')
