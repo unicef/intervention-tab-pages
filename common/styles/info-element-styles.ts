@@ -10,7 +10,7 @@ export const InfoElementStyles = html`
     section.table {
       display: flex;
       position: relative;
-      justify-content: space-between;
+      justify-content: flex-start;
       padding: 0 24px;
       flex-wrap: wrap;
     }
