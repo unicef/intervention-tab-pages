@@ -100,6 +100,28 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
           >
           </etools-currency-amount-input>
         </div>
+      </div>
+      <div class="layout-horizontal">
+      ${
+        this.isUnicefUser
+          ? html`<div class="col col-8">
+              <etools-dropdown
+                class="cp-out"
+                label=${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT_DIALOG.CP_OUTPUT')}
+                placeholder="&#8212;"
+                .options="${this.cpOutputs}"
+                option-label="cp_output_name"
+                option-value="id"
+                .selected="${this.data.result}"
+                trigger-value-change-event
+                @etools-selected-item-changed="${({detail}: CustomEvent) => {
+                  this.selectedItemChanged(detail, 'result');
+                }}"
+              >
+              </etools-dropdown>
+            </div>`
+          : html``
+      }
         <div class="col col-4">
           <paper-input
             id="unicefProductNumber"
@@ -109,32 +131,8 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unicef_product_number')}"
           >
           </paper-input>
-
         </div>
       </div>
-      ${
-        this.isUnicefUser
-          ? html`<div class="layout-horizontal">
-              <div class="col col-8">
-                <etools-dropdown
-                  class="cp-out"
-                  label=${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT_DIALOG.CP_OUTPUT')}
-                  placeholder="&#8212;"
-                  .options="${this.cpOutputs}"
-                  option-label="cp_output_name"
-                  option-value="id"
-                  .selected="${this.data.result}"
-                  trigger-value-change-event
-                  @etools-selected-item-changed="${({detail}: CustomEvent) => {
-                    this.selectedItemChanged(detail, 'result');
-                  }}"
-                >
-                </etools-dropdown>
-              </div>
-            </div>`
-          : html``
-      }
-
       <div class="layout-horizontal">
         <div class="col col-12">
           <paper-textarea
