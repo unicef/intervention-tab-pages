@@ -14,7 +14,7 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, InterventionActivity, InterventionQuarter} from '@unicef-polymer/etools-types';
-import {translate, get} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 
 @customElement('pd-activities')
 export class PdActivities extends CommentsMixin(LitElement) {
@@ -224,8 +224,8 @@ export class PdActivities extends CommentsMixin(LitElement) {
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
-        content: get('INTERVENTION_RESULTS.RESULTS_STRUCTURE.CSO_CASH'),
-        confirmBtnText: get('GENERAL.DELETE')
+        content: getTranslation('INTERVENTION_RESULTS.RESULTS_STRUCTURE.CSO_CASH'),
+        confirmBtnText: getTranslation('GENERAL.DELETE')
       }
     }).then(({confirmed}) => {
       return confirmed;
