@@ -118,7 +118,9 @@ export class CpOutputLevel extends EtoolsCurrency(LitElement) {
                 <slot></slot>
 
                 <div class="add-pd row-h align-items-center" ?hidden="${!this.resultLink.cp_output || this.readonly}">
-                  <iron-icon icon="add-box" @click="${() => this.addPD()}"></iron-icon>Add PD Output
+                  <iron-icon icon="add-box" @click="${() => this.addPD()}"></iron-icon>${translate(
+                    'INTERVENTION_RESULTS.RESULTS_STRUCTURE.ADD_PD_OUTPUT'
+                  )}
                 </div>
               </div>
             </etools-data-table-row>

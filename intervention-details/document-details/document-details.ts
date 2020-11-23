@@ -48,7 +48,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
 
       <etools-content-panel
         show-expand-btn
-        panel-title="Document Details"
+        panel-title=${translate('INTERVENTION_DETAILS.DOCUMENT_DETAILS')}
         comment-element="document-details"
         comment-description="Document Details"
       >

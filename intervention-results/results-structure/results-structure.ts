@@ -47,7 +47,7 @@ import {
   Intervention,
   ResultLinkLowerResult
 } from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 
 const RESULT_VIEW = 'result_view';
 const BUDGET_VIEW = 'budget_view';
@@ -235,7 +235,9 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(EtoolsCurr
       </style>
 
       <!-- TODO: format translation-->
-      <etools-content-panel show-expand-btn panel-title="Results Structure (${this.noOfPdOutputs})">
+      <etools-content-panel show-expand-btn panel-title=${getTranslation(
+        'INTERVENTION_RESULTS.RESULTS_STRUCTURE.RESULTS_STRUCTURE'
+      ) + "(" + this.noOfPdOutputs + ")"}>
         <div slot="panel-btns" class="layout-horizontal align-items-center">
           <paper-button
             title=${translate('INTERVENTION_RESULTS.EXPORT_RESULTS')}
