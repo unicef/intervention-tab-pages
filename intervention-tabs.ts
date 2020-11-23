@@ -28,7 +28,7 @@ import {connectStore} from './common/mixins/connect-store-mixin';
 import {Intervention} from '@unicef-polymer/etools-types';
 import {AsyncAction, RouteDetails} from '@unicef-polymer/etools-types';
 import {interventions} from './common/reducers/interventions';
-import {get as getTranslation} from 'lit-translate';
+import {get as getTranslation, translate} from 'lit-translate';
 
 const MOCKUP_STATUSES = [
   ['draft', 'Draft'],
@@ -104,7 +104,7 @@ export class InterventionTabs extends connectStore(LitElement) {
         <span slot="page-title">${this.intervention.number}</span>
         <div slot="mode">
           <paper-toggle-button id="commentMode" ?checked="${this.commentMode}" @iron-change="${this.commentModeChange}"
-            >Comment Mode</paper-toggle-button
+            >${translate('GENERAL.COMMENT_MODE')}</paper-toggle-button
           >
         </div>
 
