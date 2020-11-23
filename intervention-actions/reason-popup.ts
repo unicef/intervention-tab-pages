@@ -51,7 +51,7 @@ export class ReasonPopup extends LitElement {
             .value="${this.reason}"
             required
             label="${this.label}"
-            placeholder="Enter ${this.label}"
+            placeholder="—"
             @value-changed="${({detail}: CustomEvent) => (this.reason = detail.value)}"
             @focus="${() => (this.error = '')}"
             ?invalid="${Boolean(this.error)}"

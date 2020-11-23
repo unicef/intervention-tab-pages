@@ -66,7 +66,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'title')}"
             label=${translate('GENERAL.TITLE')}
             type="text"
-            placeholder=${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT_DIALOG.ENTER_TITLE')}
+            placeholder="—"
             error-message="This field is required"
             auto-validate
             required
@@ -80,7 +80,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unit_number')}"
             label=${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.NUMBER_UNITS')}
             allowed-pattern="[0-9]"
-            placeholder=${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT_DIALOG.ENTER_NUMBER_UNITS')}
+            placeholder="—"
             error-message="This field is required"
             required
             auto-validate
@@ -91,7 +91,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
           <etools-currency-amount-input
             id="unicefCash"
             label=${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.PRICE_UNIT')}
-            placeholder=${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT_DIALOG.ENTER_PRICE_UNIT')}
+            placeholder="—"
             required
             .value="${this.data.unit_price ? this.data.unit_price : ''}"
             @focus="${() => (this.autoValidate = true)}"
@@ -104,7 +104,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
           <paper-input
             id="unicefProductNumber"
             label=${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.UNICEF_PRODUCT_NUMBER')}
-            placeholder=${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT_DIALOG.ENTER_UNICEF_PRODUCT_NUMBER')}
+            placeholder="—"
             .value="${this.data.unicef_product_number ? this.data.unicef_product_number : ''}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unicef_product_number')}"
           >
