@@ -15,6 +15,7 @@ import {
 } from '@unicef-polymer/etools-types';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {Intervention, ResultLinkLowerResult, ExpectedResult} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 
 @customElement('activity-timeframes')
 export class ActivityTimeframes extends CommentsMixin(LitElement) {
@@ -38,14 +39,14 @@ export class ActivityTimeframes extends CommentsMixin(LitElement) {
       </style>
       <etools-content-panel
         show-expand-btn
-        panel-title="Activity Timeframes"
+        panel-title=${translate('INTERVENTION_TIMING.ACTIVITY_TIMEFRAMES.ACTIVITY_TIMEFRAMES')}
         comment-element="activity-timeframes"
-        comment-description="Activity Timeframes"
+        comment-description=${translate('INTERVENTION_TIMING.ACTIVITY_TIMEFRAMES.ACTIVITY_TIMEFRAMES')}
       >
         ${!timeFrames.length
           ? html`
               <div class="align-items-baseline">
-                <p>Activity Timeframes will be available after Start and End Date are set.</p>
+                <p>${translate('INTERVENTION_TIMING.ACTIVITY_TIMEFRAMES.ACTIVITY_TIMES_MSG')}</p>
               </div>
             `
           : ''}
@@ -66,7 +67,9 @@ export class ActivityTimeframes extends CommentsMixin(LitElement) {
                       </div>
 
                       <div class="activities-container ${index === frames.length - 1 ? 'hide-border' : ''}">
-                        <div class="no-activities" ?hidden="${mappedActivities[id].length}">- No Activities</div>
+                        <div class="no-activities" ?hidden="${mappedActivities[id].length}">
+                          - ${translate('INTERVENTION_TIMING.ACTIVITY_TIMEFRAMES.NO_ACTIVITIES')}
+                        </div>
                         ${mappedActivities[id].map(
                           ({name: activityName}: InterventionActivity) => html`
                             <div class="activity-name">Activity ${activityName}</div>

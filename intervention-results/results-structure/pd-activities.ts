@@ -14,6 +14,7 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, InterventionActivity, InterventionQuarter} from '@unicef-polymer/etools-types';
+import {translate, get as getTranslation} from 'lit-translate';
 
 @customElement('pd-activities')
 export class PdActivities extends CommentsMixin(LitElement) {
@@ -83,13 +84,17 @@ export class PdActivities extends CommentsMixin(LitElement) {
 
       <div class="row-h align-items-center header">
         <div class="heading flex-auto">
-          PD Activities
+          ${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.PD_ACTIVITIES')}
           <iron-icon icon="add-box" @click="${() => this.openDialog()}" ?hidden="${this.readonly}"></iron-icon>
         </div>
-        <div class="heading number-data flex-none">CSO Cash</div>
-        <div class="heading number-data flex-none">UNICEF Cash</div>
-        <div class="heading number-data flex-none">Total</div>
-        <div class="heading number-data flex-none">%Partner</div>
+        <div class="heading number-data flex-none">${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.CSO_CASH')}</div>
+        <div class="heading number-data flex-none">
+          ${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.UNICEF_CASH')}
+        </div>
+        <div class="heading number-data flex-none">${translate('GENERAL.TOTAL')}</div>
+        <div class="heading number-data flex-none">
+          ${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.PERCENT_PARTNER')}
+        </div>
       </div>
 
       ${this.activities.map(
@@ -145,7 +150,9 @@ export class PdActivities extends CommentsMixin(LitElement) {
             <div slot="row-data-details" class="row-h">
               <!--    Locations    -->
               <div class="details-container">
-                <div class="text details-heading">Time Periods</div>
+                <div class="text details-heading">
+                  ${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.TIME_PERIODS')}
+                </div>
                 <div class="details-text">
                   <b>${this.getQuartersNames(activity.time_frames)}</b>
                 </div>
@@ -153,7 +160,9 @@ export class PdActivities extends CommentsMixin(LitElement) {
 
               <!--    Section and Cluster    -->
               <div class="details-container full">
-                <div class="text details-heading">Other Notes</div>
+                <div class="text details-heading">
+                  ${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.OTHER_NOTES')}
+                </div>
                 <div class="details-text">${activity.context_details || '-'}</div>
               </div>
             </div>
@@ -215,8 +224,8 @@ export class PdActivities extends CommentsMixin(LitElement) {
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
-        content: 'Are you sure you want to delete this activity?',
-        confirmBtnText: 'Delete'
+        content: getTranslation('INTERVENTION_RESULTS.RESULTS_STRUCTURE.CSO_CASH'),
+        confirmBtnText: getTranslation('GENERAL.DELETE')
       }
     }).then(({confirmed}) => {
       return confirmed;

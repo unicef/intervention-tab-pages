@@ -8,6 +8,7 @@ import {fireEvent} from '../../utils/fire-custom-event';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
 import {ExpectedResult} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 
 @customElement('cp-output-level')
 export class CpOutputLevel extends EtoolsCurrency(LitElement) {
@@ -70,12 +71,14 @@ export class CpOutputLevel extends EtoolsCurrency(LitElement) {
                 ${this.resultLink.cp_output
                   ? html`
                       <div class="flex-1 flex-fix">
-                        <div class="heading">Country Program Output</div>
+                        <div class="heading">
+                          ${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.COUNTRY_PROGRAME_OUTPUT')}
+                        </div>
                         <div class="data">${this.resultLink.cp_output_name}</div>
                       </div>
 
                       <div class="flex-1 flex-fix" ?hidden="${!this.showIndicators}">
-                        <div class="heading">Ram Indicators</div>
+                        <div class="heading">${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.RAM_INDICATORS')}</div>
                         <div class="data">
                           ${this.resultLink.ram_indicator_names.length
                             ? this.resultLink.ram_indicator_names.map((name: string) => html`<div>${name}</div>`)
@@ -84,7 +87,7 @@ export class CpOutputLevel extends EtoolsCurrency(LitElement) {
                       </div>
 
                       <div class="flex-none" ?hidden="${!this.showActivities}">
-                        <div class="heading">Total Cash Budget</div>
+                        <div class="heading">${translate('INTERVENTION_RESULTS.TOTAL_CASH_BUDGET')}</div>
                         <div class="data">
                           ${this.currency} ${this.displayCurrencyAmount(this.resultLink.total, '0.00')}
                         </div>
@@ -106,7 +109,7 @@ export class CpOutputLevel extends EtoolsCurrency(LitElement) {
                   : html`
                       <!--      If PD is unassociated with CP Output      -->
                       <div class="flex-1 flex-fix data alert">
-                        Unassociated to CP Output! Please associate before moving forward
+                        ${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.UNASSOCIATED_TO_CP_OUTPUT')}
                       </div>
                     `}
               </div>
@@ -115,7 +118,9 @@ export class CpOutputLevel extends EtoolsCurrency(LitElement) {
                 <slot></slot>
 
                 <div class="add-pd row-h align-items-center" ?hidden="${!this.resultLink.cp_output || this.readonly}">
-                  <iron-icon icon="add-box" @click="${() => this.addPD()}"></iron-icon>Add PD Output
+                  <iron-icon icon="add-box" @click="${() => this.addPD()}"></iron-icon>${translate(
+                    'INTERVENTION_RESULTS.RESULTS_STRUCTURE.ADD_PD_OUTPUT'
+                  )}
                 </div>
               </div>
             </etools-data-table-row>
