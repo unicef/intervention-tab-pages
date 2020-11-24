@@ -8,7 +8,7 @@ import {getStore} from '../../utils/redux-store-access';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {ReviewAttachment, Intervention} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 import {formatDate} from '../../utils/date-utils';
 
 @customElement('final-review-popup')
@@ -91,13 +91,13 @@ export class FinalReviewPopup extends LitElement {
     // validate if file is selected for new attachments
     if (!this.data.id) {
       fireEvent(this, 'toast', {
-        text: translate('INTERVENTION_MANAGEMENT.FINAL_REVIEW.FINAL_REVIEW_POP.CORRECT_FILE_ERR'),
+        text: getTranslation('INTERVENTION_MANAGEMENT.FINAL_REVIEW.FINAL_REVIEW_POP.CORRECT_FILE_ERR'),
         showCloseBtn: false
       });
       return;
     } else if (!this.date) {
       fireEvent(this, 'toast', {
-        text: translate('INTERVENTION_MANAGEMENT.FINAL_REVIEW.FINAL_REVIEW_POP.DATE_REQUIRED'),
+        text: getTranslation('INTERVENTION_MANAGEMENT.FINAL_REVIEW.FINAL_REVIEW_POP.DATE_REQUIRED'),
         showCloseBtn: false
       });
       return;

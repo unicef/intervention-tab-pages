@@ -22,7 +22,7 @@ import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {PlannedVisit} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 
 /**
  * @customElement
@@ -348,7 +348,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
 
     if (this.isAlreadySelected(yearSelected, index, 'year')) {
       fireEvent(this, 'toast', {
-        text: translate('INTERVENTION_MANAGEMENT.PROGRAMATIC_VISITS.YEAR_SELECTED_ERR'),
+        text: getTranslation('INTERVENTION_MANAGEMENT.PROGRAMATIC_VISITS.YEAR_SELECTED_ERR'),
         showCloseBtn: true
       });
       this._clearSelectedYear(index);
@@ -423,7 +423,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
   _addNewPlannedVisit() {
     if (!this.validate()) {
       fireEvent(this, 'toast', {
-        text: translate('INTERVENTION_MANAGEMENT.PROGRAMATIC_VISITS.ALREADY_ADDED_PLANNED_VISIT'),
+        text: getTranslation('INTERVENTION_MANAGEMENT.PROGRAMATIC_VISITS.ALREADY_ADDED_PLANNED_VISIT'),
         showCloseBtn: true
       });
       return;
