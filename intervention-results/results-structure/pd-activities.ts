@@ -224,7 +224,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
-        content: getTranslation('INTERVENTION_RESULTS.RESULTS_STRUCTURE.CSO_CASH'),
+        content: getTranslation('INTERVENTION_RESULTS.RESULTS_STRUCTURE.DELETE_ACTIVITY_PROMPT'),
         confirmBtnText: getTranslation('GENERAL.DELETE')
       }
     }).then(({confirmed}) => {
