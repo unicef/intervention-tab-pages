@@ -40,7 +40,7 @@ export class SpecialReportingRequirements extends CommonMixin(ReportingRequireme
         }
       </style>
 
-      <div class="row-h" ?hidden="${!this._empty(this.reportingRequirements, this.reportingRequirements.length)}">
+      <div class="row-h" ?hidden="${!this._empty(this.reportingRequirements)}">
         There are no special reporting requirements set.
       </div>
 
@@ -48,7 +48,7 @@ export class SpecialReportingRequirements extends CommonMixin(ReportingRequireme
         <paper-button class="secondary-btn" on-click="_openAddDialog"> ADD REQUIREMENTS </paper-button>
       </div>
 
-      <div class="flex-c" ?hidden="${this._empty(this.reportingRequirements, this.reportingRequirements.length)}">
+      <div class="flex-c" ?hidden="${this._empty(this.reportingRequirements)}">
         <etools-data-table-header no-collapse no-title>
           <etools-data-table-column class="col-1 right-align index-col">ID</etools-data-table-column>
           <etools-data-table-column class="col-3">Due Date</etools-data-table-column>
@@ -58,9 +58,7 @@ export class SpecialReportingRequirements extends CommonMixin(ReportingRequireme
         ${this.reportingRequirements.forEach(
           (item: any, index) => html` <etools-data-table-row no-collapse secondary-bg-on-hover>
             <div slot="row-data">
-              <span class="col-data col-1 right-align index-col"
-                >${this._getIndex(index, this.reportingRequirements)}</span
-              >
+              <span class="col-data col-1 right-align index-col">${this._getIndex(index)}</span>
               <span class="col-data col-3">${this.getDateDisplayValue(item.due_date)}</span>
               <span class="col-data col-6">${item.description}</span>
               <span class="col-data flex-c actions">
@@ -82,8 +80,8 @@ export class SpecialReportingRequirements extends CommonMixin(ReportingRequireme
   @property({type: Number})
   _itemToDeleteIndex = -1;
 
-  ready() {
-    super.ready();
+  connectedCallback() {
+    super.connectedCallback();
     this._createAddEditDialog();
     this._createDeleteConfirmationsDialog();
     this._addEventListeners();

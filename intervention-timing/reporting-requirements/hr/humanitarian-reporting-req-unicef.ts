@@ -42,7 +42,7 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
       <div ?hidden="${!this._empty(this.reportingRequirements)}">
         <div class="row-h">There are no humanitarian report requirements set.</div>
         <div class="row-h" ?hidden="${!this._showAdd(this.expectedResults, this.editMode)}">
-          <paper-button class="secondary-btn" @click="${this.openUnicefHumanitarianRepReqDialog()}">
+          <paper-button class="secondary-btn" @click="${this.openUnicefHumanitarianRepReqDialog}">
             ADD REQUIREMENTS
           </paper-button>
         </div>
@@ -102,10 +102,12 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
   }
 
   _createEditHruDialog() {
-    this._reportingRequirementsSaved = this._reportingRequirementsSaved.bind(this);
-    this.editHruDialog = document.createElement('edit-hru-dialog') as any;
-    this.editHruDialog.addEventListener('reporting-requirements-saved', this._reportingRequirementsSaved as any);
-    document.querySelector('body')!.appendChild(this.editHruDialog);
+    if (this.reportingRequirements) {
+      this._reportingRequirementsSaved = this._reportingRequirementsSaved.bind(this);
+      this.editHruDialog = document.createElement('edit-hru-dialog') as any;
+      this.editHruDialog.addEventListener('reporting-requirements-saved', this._reportingRequirementsSaved as any);
+      document.querySelector('body')!.appendChild(this.editHruDialog);
+    }
   }
 
   _removeEditHruDialog() {
@@ -145,12 +147,8 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
     if (this.requirementsCount > 0) {
       hruData = JSON.parse(JSON.stringify(this.reportingRequirements));
     }
-    // this.editHruDialog.set('hruData', hruData);
-    // this.editHruDialog.set('selectedDate', null);
-    // this.editHruDialog.set('interventionId', this.interventionId);
-    // this.editHruDialog.set('interventionStart', this.interventionStart);
     this.editHruDialog.hruData = hruData;
-    this.editHruDialog.selectedDate = null;
+    this.editHruDialog.selectedDate = '';
     this.editHruDialog.interventionId = this.interventionId;
     this.editHruDialog.interventionStart = this.interventionStart;
     this.editHruDialog.openDialog();
@@ -160,7 +158,6 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
     if (typeof interventionId === 'undefined' || typeof reportingRequirements === 'undefined') {
       return;
     }
-    // this.set('pagination.totalResults', reportingRequirements.length);
     this.pagination.totalResults = reportingRequirements.length;
   }
 

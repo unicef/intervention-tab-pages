@@ -107,7 +107,7 @@ export class AddEditSpecialRepReq extends LitElement {
   }
 
   _save() {
-    const dialog = this.$.addEditDialog as EtoolsDialog;
+    const dialog = this.shadowRoot!.querySelector(`#addEditDialog`) as EtoolsDialog;
     dialog.startSpinner();
 
     const endpoint = this._getEndpoint();

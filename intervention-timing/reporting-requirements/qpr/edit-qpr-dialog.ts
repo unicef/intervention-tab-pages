@@ -74,7 +74,6 @@ export class EditQprDialog extends LitElement {
           id="qprList"
           with-scroll
           .qprData="${this.qprData}"
-          edit-mode
           .inAmendment="${this.inAmendment}"
           @edit-qpr="${this._editQprDatesSet}"
           @delete-qpr="${this._deleteQprDatesSet}"
@@ -142,9 +141,6 @@ export class EditQprDialog extends LitElement {
   @property({type: Boolean})
   inAmendment!: boolean;
 
-  @property({type: Array})
-  qprData: AnyObject[] = [];
-
   @property({type: Boolean})
   addOrModifyQprDialogOpened = false;
 
@@ -164,8 +160,16 @@ export class EditQprDialog extends LitElement {
   @query('#editQprDialog')
   editQprDialog!: EtoolsDialog;
 
-  @query('#qprList')
-  qprList!: QprListEl;
+  _qprData!: any;
+
+  set qprData(qprData) {
+    this._qprData = qprData;
+  }
+
+  @property({type: Array})
+  get qprData() {
+    return this._qprData;
+  }
 
   openQprDialog() {
     (this.editQprDialog as EtoolsDialog).opened = true;
@@ -176,9 +180,7 @@ export class EditQprDialog extends LitElement {
   }
 
   _addNewQpr() {
-    // @DAN: check these, and similar with this
-    // this.set('_editedQprDatesSet', Object.assign({}, this._qprDatesSetModel));
-    // this.set('addOrModifyQprDialogOpened', true);
+    console.log('addnew qpr');
     this._editedQprDatesSet = Object.assign({}, this._qprDatesSetModel);
     this.addOrModifyQprDialogOpened = true;
   }
@@ -212,39 +214,30 @@ export class EditQprDialog extends LitElement {
 
   _updateQprData() {
     if (!this._validateDataBeforeAdd()) {
-      // this.set('addOrModifyQprDialogOpened', true);
+      console.log('validatebefore');
       this.addOrModifyQprDialogOpened = true;
       return;
     }
-    // this.set('addOrModifyQprDialogOpened', false);
     this.addOrModifyQprDialogOpened = false;
     if (this._qprDatesSetEditedIndex < 0) {
       // add
-      // this.push('qprData', this._editedQprDatesSet);
       this.qprData.push(this._editedQprDatesSet);
     } else {
       // edit
-      // this.splice('qprData', this._qprDatesSetEditedIndex, 1, this._editedQprDatesSet);
       this.qprData.splice(this._qprDatesSetEditedIndex, 1, this._editedQprDatesSet);
     }
-
-    // this.set('_qprDatesSetEditedIndex', -1);
     this._qprDatesSetEditedIndex = -1;
     this.addOrModifyQprDialogOpened = false;
-
   }
 
   _editQprDatesSet(e: CustomEvent) {
-    // this.set('_qprDatesSetEditedIndex', e.detail.index);
+    console.log(e);
     this._qprDatesSetEditedIndex = e.detail.index;
-    // this.set('_editedQprDatesSet', Object.assign({}, this.qprData[this._qprDatesSetEditedIndex]));
     this._editedQprDatesSet = Object.assign({}, this.qprData[this._qprDatesSetEditedIndex]);
-    // this.set('addOrModifyQprDialogOpened', true);
     this.addOrModifyQprDialogOpened = true;
   }
 
   _deleteQprDatesSet(e: CustomEvent) {
-    // this.splice('qprData', e.detail.index, 1);
     this.qprData.splice(e.detail.index, 1);
   }
 
@@ -253,11 +246,11 @@ export class EditQprDialog extends LitElement {
   }
 
   _getEditedQprDatesSetId(index: number) {
-    // return (this.shadowRoot!.querySelector(`#qpr-list`) as QprListEl).getIndex(index, this.qprData.length);
-    if (!this.qprData) {
-      return;
+    const dialog = this.shadowRoot!.querySelector(`#qpr-list`) as QprListEl;
+    if (dialog) {
+      return dialog.getIndex(index, this.qprData.length);
     }
-    return (this.qprList as QprListEl).getIndex(index, this.qprData.length);
+    return;
   }
 
   _saveModifiedQprData() {

@@ -119,10 +119,6 @@ export class EditHruDialog extends connectStore(LitElement) {
       </etools-dialog>
     `;
   }
-
-  @property({type: Number})
-  interventionId!: number;
-
   @property({type: Date})
   interventionStart!: Date | string;
 
@@ -136,7 +132,7 @@ export class EditHruDialog extends connectStore(LitElement) {
   minDate!: Date;
 
   @property({type: String})
-  selectedDate!: string | null;
+  selectedDate!: string;
 
   @property({type: Array})
   hruData: AnyObject[] = [];
@@ -147,10 +143,22 @@ export class EditHruDialog extends connectStore(LitElement) {
   @property({type: Boolean})
   datePickerOpen = false;
 
-  // refactor this
-  static get observers() {
-    return ['intervDataChanged(interventionStart, interventionId)'];
+  _interventionId!: number;
+
+  set interventionId(interventionId) {
+    this._interventionId = interventionId;
+    this.intervDataChanged();
   }
+
+  @property({type: String})
+  get interventionId() {
+    return this._interventionId;
+  }
+
+  // // refactor this
+  // static get observers() {
+  //   return ['intervDataChanged(interventionStart, interventionId)'];
+  // }
 
   stateChanged(_state: RootState) {
     // @lajos in ammendment will be used!
@@ -192,11 +200,13 @@ export class EditHruDialog extends connectStore(LitElement) {
 
   openDialog() {
     this._setDefaultStartDate();
-    (this.$.editHruDialog as EtoolsDialog).opened = true;
+    const dialog = this.shadowRoot!.querySelector(`#editHruDialog`) as EtoolsDialog;
+    dialog.opened = true;
   }
 
   closeDialog() {
-    (this.$.editHruDialog as EtoolsDialog).opened = false;
+    const dialog = this.shadowRoot!.querySelector(`#editHruDialog`) as EtoolsDialog;
+    dialog.opened = false;
   }
 
   _empty(listLength: number) {
@@ -244,7 +254,7 @@ export class EditHruDialog extends connectStore(LitElement) {
 
     // @DAN
     // this.set('hruData.0.start_date', startDate);
-    // this.ruData.0.start_date = startDate;
+    this.hruData[0].start_date = startDate;
 
     this._calculateStartDateForTheRestOfItems();
   }
@@ -252,9 +262,9 @@ export class EditHruDialog extends connectStore(LitElement) {
   _calculateStartDateForTheRestOfItems() {
     let i;
     for (i = 1; i < this.hruData.length; i++) {
-      // this.hruData.i.start_date = this._computeStartDate(i);
       // @DAN
-      this.set('hruData.' + i + '.start_date', this._computeStartDate(i));
+      // this.set('hruData.' + i + '.start_date', this._computeStartDate(i));
+      this.hruData[i].start_date = this._computeStartDate(i);
     }
   }
 
@@ -270,7 +280,7 @@ export class EditHruDialog extends connectStore(LitElement) {
       intervId: this.interventionId,
       reportType: CONSTANTS.REQUIREMENTS_REPORT_TYPE.HR
     });
-    const dialog = this.$.editHruDialog as EtoolsDialog;
+    const dialog = this.shadowRoot!.querySelector(`#editHruDialog`) as EtoolsDialog;
     dialog.startSpinner();
     sendRequest({
       method: 'POST',

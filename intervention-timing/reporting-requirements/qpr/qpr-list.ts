@@ -25,7 +25,7 @@ export class QprList extends CommonMixin(ReportingReqPastDatesCheckMixin(LitElem
     return [gridLayoutStylesLit];
   }
   render() {
-    if (!this.qprData.reporting_requirements) {
+    if (!this.qprData) {
       return;
     }
     return html`
@@ -48,16 +48,14 @@ export class QprList extends CommonMixin(ReportingReqPastDatesCheckMixin(LitElem
         <etools-data-table-column class="flex-c"></etools-data-table-column>
       </etools-data-table-header>
 
-      ${this.qprData.reporting_requirements.map(
+      ${this.qprData.map(
         (item: any, index: number) => html`
           <etools-data-table-row
             no-collapse
             ?secondary-bg-on-hover="${this._canEdit(this.editMode, this.inAmendment, item.due_date, item.id)}"
           >
             <div slot="row-data" style="${this._uneditableStyles(this.inAmendment, item.due_date, item.id)}">
-              <span class="col-data col-1 right-align index-col"
-                >${this.getIndex(index, this.qprData.reporting_requirements.length)}</span
-              >
+              <span class="col-data col-1 right-align index-col">${this.getIndex(index, this.qprData.length)}</span>
               <span class="col-data col-3">${this.getDateDisplayValue(item.start_date)}</span>
               <span class="col-data col-3">${this.getDateDisplayValue(item.end_date)}</span>
               <span class="col-data col-3">${this.getDateDisplayValue(item.due_date)}</span>
@@ -77,7 +75,7 @@ export class QprList extends CommonMixin(ReportingReqPastDatesCheckMixin(LitElem
   }
 
   @property({type: Array})
-  qprData: any = {reporting_requirements: []};
+  qprData: any = [];
 
   @property({type: Boolean})
   preventPastDateEdit = false;
@@ -86,7 +84,7 @@ export class QprList extends CommonMixin(ReportingReqPastDatesCheckMixin(LitElem
 
   set interventionId(interventionId) {
     this._interventionId = interventionId;
-    this._sortReportingReq(this._qprData,this._qprData.length);
+    this._sortReportingReq(this.qprData);
   }
 
   @property({type: String})
@@ -94,13 +92,7 @@ export class QprList extends CommonMixin(ReportingReqPastDatesCheckMixin(LitElem
     return this._interventionId;
   }
 
-  static get observers() {
-    return ['_sortReportingReq(qprData, qprData.length)'];
-  }
-
   getIndex(index: number, dataItemsLength: number) {
-    console.log('get index');
-    console.log(dataItemsLength);
     if (+index + 1 === dataItemsLength) {
       return 'FINAL';
     }

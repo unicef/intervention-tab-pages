@@ -7,6 +7,7 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
 import {LitElement, property} from 'lit-element';
 import {isEmptyObject} from '../../../utils/utils';
 import {Constructor} from '@unicef-polymer/etools-types';
+import {fireEvent} from '../../../../../../utils/fire-custom-event';
 
 /**
  * @polymer
@@ -21,8 +22,12 @@ function ReportingRequirementsCommonMixin<T extends Constructor<LitElement>>(bas
       return this._reportingRequirements;
     }
     set reportingRequirements(reportingRequirements) {
-      this._reportingRequirements = reportingRequirements;
-      this._countReportingReq(reportingRequirements.length);
+      if (reportingRequirements.reporting_requirements) {
+        this._reportingRequirements = reportingRequirements.reporting_requirements;
+      } else {
+        this._reportingRequirements = reportingRequirements;
+      }
+      this._countReportingReq(this._reportingRequirements.length);
     }
 
     @property({type: Number})
@@ -66,7 +71,6 @@ function ReportingRequirementsCommonMixin<T extends Constructor<LitElement>>(bas
           this.reportingRequirements = CONSTANTS.REQUIREMENTS_REPORT_TYPE.SPECIAL
             ? response
             : response.reporting_requirements;
-          console.log('here mutherfucker');
           this._countReportingReq(this.reportingRequirements.length);
         })
         .catch((error: any) => {
@@ -77,10 +81,12 @@ function ReportingRequirementsCommonMixin<T extends Constructor<LitElement>>(bas
 
     _countReportingReq(length: number) {
       const l = typeof length === 'number' ? length : 0;
-      this.requirementsCount = 1;
+      this.requirementsCount = l;
+      fireEvent(this, 'count-changed', {
+        count: this.requirementsCount
+      });
       // @ts-ignore *Defined in the component
       if (typeof this._sortRequirementsAsc === 'function' && l > 0) {
-        console.log('do the stuff');
         // @ts-ignore *Defined in the component
         this._sortRequirementsAsc();
       }
@@ -91,7 +97,6 @@ function ReportingRequirementsCommonMixin<T extends Constructor<LitElement>>(bas
     }
 
     _empty(list: []) {
-      console.log(list);
       return isEmptyObject(list);
     }
 

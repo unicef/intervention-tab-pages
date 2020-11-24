@@ -8,7 +8,7 @@ import {AnyObject, Constructor, User} from '@unicef-polymer/etools-types';
 import {RootState} from '../types/store.types';
 
 function EndpointsLitMixin<T extends Constructor<LitElement>>(baseClass: T) {
-  class EndpointsMixinLitClass extends baseClass {
+  class EndpointsLitClass extends baseClass {
     @property({type: Object})
     prpCountries!: AnyObject[];
 
@@ -224,7 +224,7 @@ function EndpointsLitMixin<T extends Constructor<LitElement>>(baseClass: T) {
       return defer.promise;
     }
   }
-  return EndpointsMixinLitClass;
+  return EndpointsLitClass;
 }
 
 export default EndpointsLitMixin;

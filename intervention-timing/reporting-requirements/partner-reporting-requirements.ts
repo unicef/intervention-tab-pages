@@ -10,10 +10,10 @@ import '@unicef-polymer/etools-content-panel/etools-content-panel';
 
 import './qpr/quarterly-reporting-requirements';
 import './hr/humanitarian-reporting-req-unicef';
-// import './hr/humanitarian-reporting-req-cluster';
-// import './srr/special-reporting-requirements';
+import './hr/humanitarian-reporting-req-cluster';
+import './srr/special-reporting-requirements';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {contentSectionStylesLit} from '../../common/styles/content-section-styles-lit';
+import {sectionContentStylesPolymer} from '../../common/styles/content-section-styles-polymer';
 
 import {HumanitarianReportingReqUnicefEl} from './hr/humanitarian-reporting-req-unicef';
 import {QuarterlyReportingRequirementsEL} from './qpr/quarterly-reporting-requirements';
@@ -26,7 +26,6 @@ import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {isUnicefUser} from '../../common/selectors';
 import {connectStore} from '../../common/mixins/connect-store-mixin';
 import {AnyObject, Permission} from '@unicef-polymer/etools-types';
-// import {openDialog} from '../../utils/dialog';
 import {sharedStylesPolymer} from '../../common/styles/shared-styles-polymer';
 
 /**
@@ -35,10 +34,14 @@ import {sharedStylesPolymer} from '../../common/styles/shared-styles-polymer';
  */
 @customElement('partner-reporting-requirements')
 export class PartnerReportingRequirements extends connectStore(LitElement) {
+  static get styles() {
+    return [gridLayoutStylesLit];
+  }
   render() {
     return html`
+      ${sharedStylesPolymer()}${sectionContentStylesPolymer}
       <style>
-        ${contentSectionStylesLit}${gridLayoutStylesLit}:host {
+        :host {
           display: block;
           margin-bottom: 24px;
           width: 100%;
@@ -110,15 +113,51 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
               title="Quarterly Progress Reports"
               class="nav-menu-item qpr"
               ?selected="${this.isSelected('qtyProgress')}"
-              @click="${() => this.selectType('qtyProgress')}"
+              @click="${this.selectType}"
             >
               <span>Quarterly Progress Reports (${this.qprRequirementsCount})</span>
               <paper-icon-button
                 class="edit-rep-req"
                 icon="create"
                 @click="${this._openQprEditDialog}"
-                ?hidden="${!this._hideRepReqEditBtn(this.isReadonly, this.qprRequirementsCount)}"
+                ?hidden="${this._hideRepReqEditBtn(this.isReadonly, this.qprRequirementsCount)}"
               ></paper-icon-button>
+            </div>
+            <div
+              name="humanitarianUnicef"
+              title="Humanitarian Reports - UNICEF"
+              class="nav-menu-item"
+              ?selected="${this.isSelected('humanitarianUnicef')}"
+              @click="${this.selectType}"
+            >
+              <span>Humanitarian Reports - UNICEF (${this.hrUnicefRequirementsCount})</span>
+              <paper-icon-button
+                class="edit-rep-req"
+                icon="create"
+                @click="${this._openHruEditDialog}"
+                ?hidden="${this._hideRepReqEditBtn(this.isReadonly, this.hrUnicefRequirementsCount)}"
+              ></paper-icon-button>
+            </div>
+            ${this.isUnicefUser
+              ? html` <div
+                  name="humanitarianCluster"
+                  title="Humanitarian Reports - Cluster"
+                  class="nav-menu-item"
+                  ?selected="${this.isSelected('humanitarianCluster')}"
+                  @click="${this.selectType}"
+                >
+                  Humanitarian Reports - Cluster (${this.hrClusterRequirementsCount})
+                </div>`
+              : html``}
+
+            <div
+              name="special"
+              title="Special Report"
+              class="nav-menu-item"
+              ?selected="${this.isSelected('special')}"
+              @click="${this.selectType}"
+            >
+              Special Report (${this.specialRequirementsCount})
             </div>
           </div>
           <div class="flex-c reporting-req-data">
@@ -136,8 +175,10 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
                 .interventionEnd="${this.interventionEnd}"
                 .requirementsCount="${this.qprRequirementsCount}"
                 .editMode="${!this.isReadonly}"
+                @count-changed=${(e: CustomEvent) => this.updateQPRCount(e.detail)}
               >
               </quarterly-reporting-requirements>
+
               <humanitarian-reporting-req-unicef
                 id="hru"
                 name="humanitarianUnicef"
@@ -146,13 +187,16 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
                 .requirementsCount="${this.hrUnicefRequirementsCount}"
                 .expectedResults="${this.expectedResults}"
                 .editMode="${!this.isReadonly}"
+                @count-changed=${(e: CustomEvent) => this.updateHRUCount(e.detail)}
               >
               </humanitarian-reporting-req-unicef>
+
               <humanitarian-reporting-req-cluster
                 name="humanitarianCluster"
                 .interventionId="${this.interventionId}"
                 .requirementsCount="${this.hrClusterRequirementsCount}"
                 .expectedResults="${this.expectedResults}"
+                @count-changed=${(e: CustomEvent) => this.updateHRCCount(e.detail)}
               >
               </humanitarian-reporting-req-cluster>
 
@@ -209,12 +253,6 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
   @property({type: Boolean})
   commentsMode!: boolean;
 
-  @property({type: Object})
-  qrrDialogEl!: QuarterlyReportingRequirementsEL;
-
-  @property({type: Object})
-  hrrDialogEl!: HumanitarianReportingReqUnicefEl;
-
   @property({type: Boolean})
   isReadonly!: boolean;
 
@@ -237,6 +275,24 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
     this.isReadonly = this._isReadOnly();
   }
 
+  updateQPRCount(value: any) {
+    if (value) {
+      this.qprRequirementsCount = value.count;
+    }
+  }
+
+  updateHRUCount(value: any) {
+    if (value) {
+      this.hrUnicefRequirementsCount = value.count;
+    }
+  }
+
+  updateHRCCount(value: any) {
+    if (value) {
+      this.hrClusterRequirementsCount = value.count;
+    }
+  }
+
   _isReadOnly() {
     return (
       this.commentsMode ||
@@ -246,28 +302,25 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
   }
 
   _openQprEditDialog() {
-    // this.qrrDialogEl.openQuarterlyRepRequirementsDialog();
-    // this.qrrDialogEl.openQuarterlyRepRequirementsDialog();
-    // openDialog({
-    //   dialog: 'quarterly-reporting-requirements'
-    // });
+    const dialog = this.shadowRoot!.querySelector(`#qpr`) as QuarterlyReportingRequirementsEL;
+    dialog.openQuarterlyRepRequirementsDialog();
   }
 
   _openHruEditDialog() {
-    this.hrrDialogEl.openUnicefHumanitarianRepReqDialog();
+    const dialog = this.shadowRoot!.querySelector(`#hru`) as HumanitarianReportingReqUnicefEl;
+    dialog.openUnicefHumanitarianRepReqDialog();
   }
 
   _hideRepReqEditBtn(readonly: boolean, qprCount: number) {
-    console.log('qprCount', qprCount);
-    console.log('readonly', readonly);
     return qprCount === 0 || readonly;
   }
 
-  selectType(selectedTab: string): void {
+  selectType(event: MouseEvent): void {
     if (this.commentsMode) {
       return;
     }
-    this.selectedReportType = selectedTab;
+    const tab: string = (event.currentTarget as HTMLElement).getAttribute('name') as string;
+    this.selectedReportType = tab;
   }
 
   isSelected(type: string): boolean {

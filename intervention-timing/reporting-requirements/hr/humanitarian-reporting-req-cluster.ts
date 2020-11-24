@@ -8,6 +8,7 @@ import {isEmptyObject} from '../../../utils/utils';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {ExpectedResult, ResultLinkLowerResult} from '@unicef-polymer/etools-types';
+import {fireEvent} from '../../../../../../utils/fire-custom-event';
 
 /**
  * @customElement
@@ -24,6 +25,7 @@ export class HumanitarianReportingReqCluster extends CommonMixin(EndpointsMixinL
     return [gridLayoutStylesLit];
   }
   render() {
+    console.log(this.reportingRequirements);
     return html`
       <style include="data-table-styles">
         :host {
@@ -48,8 +50,9 @@ export class HumanitarianReportingReqCluster extends CommonMixin(EndpointsMixinL
             </div>
           </etools-data-table-row>`
         )}
+        </div>
 
-        <div class="row-h" hidden$="[[!_empty(reportingRequirements)]]">
+        <div class="row-h" ?hidden="${!this._empty(this.reportingRequirements)}">
           There are no cluster humanitarian report requirements set.
         </div>
       </div>
@@ -57,32 +60,54 @@ export class HumanitarianReportingReqCluster extends CommonMixin(EndpointsMixinL
   }
 
   // @DAN
-  @property({
-    type: Array,
-    observer: HumanitarianReportingReqCluster.prototype.reportingRequirementsChanged
-  })
-  reportingRequirements!: [];
+  // @property({
+  //   type: Array,
+  //   observer: HumanitarianReportingReqCluster.prototype.reportingRequirementsChanged
+  // })
+  // reportingRequirements!: [];
 
-  @property({
-    type: String,
-    // @ts-ignore
-    observer: HumanitarianReportingReqCluster.prototype.interventionIdChanged
-  })
-  interventionId!: string;
+  // @property({
+  //   type: String,
+  //   // @ts-ignore
+  //   observer: HumanitarianReportingReqCluster.prototype.interventionIdChanged
+  // })
+  // interventionId!: string;
 
-  // @DAN does not refelct in parent component
+  _reportingRequirements!: [];
+
+  set reportingRequirements(reportingRequirements) {
+    this._reportingRequirements = reportingRequirements;
+    this.reportingRequirementsChanged(this._reportingRequirements);
+  }
+
+  @property({type: String})
+  get reportingRequirements() {
+    return this._reportingRequirements;
+  }
+
+  _interventionId!: number;
+
+  set interventionId(interventionId) {
+    this._interventionId = interventionId;
+    this.interventionIdChanged(this._interventionId);
+  }
+
+  @property({type: String})
+  get interventionId() {
+    return this._interventionId;
+  }
+
   @property({type: Number})
   requirementsCount = 0;
 
   @property({type: Array})
   expectedResults!: [];
 
-  ready() {
-    // @DAN
-    super.ready();
+  connectedCallback() {
+    super.connectedCallback();
   }
 
-  interventionIdChanged(newId: string, _oldId: string) {
+  interventionIdChanged(newId: number) {
     if (!newId) {
       this.reportingRequirements = [];
       return;
@@ -136,6 +161,9 @@ export class HumanitarianReportingReqCluster extends CommonMixin(EndpointsMixinL
   reportingRequirementsChanged(repReq: any) {
     // this.set('requirementsCount', isEmptyObject(repReq) ? 0 : repReq.length);
     this.requirementsCount = isEmptyObject(repReq) ? 0 : repReq.length;
+    fireEvent(this, 'count-changed', {
+      count: this.requirementsCount
+    });
   }
 
   getDatesForDisplay(dates: []) {
@@ -169,6 +197,7 @@ export class HumanitarianReportingReqCluster extends CommonMixin(EndpointsMixinL
   }
 
   _empty(list: []) {
+    console.log(isEmptyObject(list));
     return isEmptyObject(list);
   }
 }

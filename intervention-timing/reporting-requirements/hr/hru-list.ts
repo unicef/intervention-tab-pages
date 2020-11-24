@@ -46,7 +46,7 @@ export class HruList extends CommonMixin(ReportingReqPastDatesCheckMixin(LitElem
           ?secondary-bg-on-hover="${this._canEdit(this.editMode, this.inAmendment, item.due_date, item.id)}"
         >
           <div slot="row-data" style="${this._uneditableStyles(this.inAmendment, item.due_date, item.id)}">
-            <span class="col-data col-1 right-align index-col">${this._getIndex(index, this.hruData)}</span>
+            <span class="col-data col-1 right-align index-col">${this._getIndex(index)}</span>
             <span class="col-data flex-c">${this.getDateDisplayValue(item.end_date)}</span>
             <span class="col-data col-1 actions">
               <icons-actions
@@ -82,6 +82,18 @@ export class HruList extends CommonMixin(ReportingReqPastDatesCheckMixin(LitElem
   // static get observers() {
   //   return ['_sortReportingReq(hruData, hruData.length)'];
   // }
+
+  _interventionId!: number;
+
+  set interventionId(interventionId) {
+    this._interventionId = interventionId;
+    this._sortReportingReq(this.hruData);
+  }
+
+  @property({type: String})
+  get interventionId() {
+    return this._interventionId;
+  }
 
   _sortReportingReq(data: any) {
     if (this.disableSorting) {

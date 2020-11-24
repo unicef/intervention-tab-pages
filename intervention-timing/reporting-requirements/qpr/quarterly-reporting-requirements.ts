@@ -9,7 +9,6 @@ import {fireEvent} from '../../../utils/fire-custom-event';
 import './edit-qpr-dialog';
 import './qpr-list';
 import {EditQprDialogEl} from './edit-qpr-dialog';
-import {AnyObject} from '@unicef-polymer/etools-types';
 
 /**
  * @polymer
@@ -71,10 +70,12 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
   }
 
   _createEditQprDialog() {
-    this.editQprDialog = document.createElement('edit-qpr-dialog') as EditQprDialogEl;
-    this._onReportingRequirementsSaved = this._onReportingRequirementsSaved.bind(this);
-    this.editQprDialog.addEventListener('reporting-requirements-saved', this._onReportingRequirementsSaved as any);
-    document.querySelector('body')!.appendChild(this.editQprDialog);
+    if (this.reportingRequirements) {
+      this.editQprDialog = document.createElement('edit-qpr-dialog') as EditQprDialogEl;
+      this._onReportingRequirementsSaved = this._onReportingRequirementsSaved.bind(this);
+      this.editQprDialog.addEventListener('reporting-requirements-saved', this._onReportingRequirementsSaved as any);
+      document.querySelector('body')!.appendChild(this.editQprDialog);
+    }
   }
 
   _removeEditQprDialog() {
@@ -92,7 +93,7 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
       });
       return;
     }
-    let qprData: AnyObject[] = [];
+    let qprData: [];
     if (this.requirementsCount === 0) {
       qprData = this.generateQPRData(this.interventionStart, this.interventionEnd);
     } else {
