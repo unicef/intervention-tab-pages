@@ -98,6 +98,7 @@ export class CommentsDialog extends connectStore(LitElement) {
           }
         }
         paper-textarea {
+          outline: none;
           flex: auto;
           --paper-input-container-input: {
             display: block;

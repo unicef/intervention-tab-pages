@@ -68,7 +68,9 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(EtoolsCurr
         etools-content-panel {
           --ecp-content-padding: 0;
           --ecp-content_-_padding: 0;
+          --epc-header_-_z-index: 1;
         }
+
         iron-icon[icon='create'] {
           margin-left: 50px;
         }
