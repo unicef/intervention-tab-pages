@@ -20,9 +20,9 @@ import CommonMixin from '../common/mixins/common-mixin';
 import EndpointsMixin from '../common/mixins/endpoints-mixin';
 import PaginationMixin from '../common/mixins/pagination-mixin';
 import {pageIsNotCurrentlyActive} from '../utils/common-methods';
-import get from 'lodash-es/get';
 import {connectStore} from '../common/mixins/connect-store-mixin';
 import {GenericObject, User} from '@unicef-polymer/etools-types';
+import {get} from '../utils/lodash-alternative';
 
 /**
  * @polymer

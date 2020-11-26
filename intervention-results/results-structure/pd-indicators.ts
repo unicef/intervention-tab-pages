@@ -5,10 +5,8 @@ import '@polymer/iron-icons';
 import {getStore} from '../../utils/redux-store-access';
 import {RootState} from '../../common/types/store.types';
 import './modals/indicator-dialog/indicator-dialog';
-import get from 'lodash-es/get';
-import {filterByIds, isJsonStrMatch} from '../../utils/utils';
+import {filterByIds, isJsonStrMatch, cloneDeep} from '../../utils/utils';
 import EnvironmentFlagsMixin from '../../common/mixins/environment-flags-mixin';
-import cloneDeep from 'lodash-es/cloneDeep';
 import '../../common/layout/are-you-sure';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
@@ -31,6 +29,7 @@ import {
   Indicator,
   Intervention
 } from '@unicef-polymer/etools-types';
+import {get} from '../../utils/lodash-alternative';
 
 @customElement('pd-indicators')
 export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)) {

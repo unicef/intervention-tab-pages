@@ -2,7 +2,6 @@ import {LitElement, html, property, customElement, query} from 'lit-element';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
-import get from 'lodash-es/get';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {LocationObject} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';

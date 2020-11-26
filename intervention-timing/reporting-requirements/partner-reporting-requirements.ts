@@ -19,8 +19,6 @@ import {sectionContentStylesPolymer} from '../../common/styles/content-section-s
 import {property} from '@polymer/decorators';
 import {HumanitarianReportingReqUnicefEl} from './hr/humanitarian-reporting-req-unicef';
 import {QuarterlyReportingRequirementsEL} from './qpr/quarterly-reporting-requirements';
-import get from 'lodash-es/get';
-import cloneDeep from 'lodash-es/cloneDeep';
 import {RootState} from '../../common/types/store.types';
 import {ReportingRequirementsPermissions} from './reportingRequirementsPermissions.models';
 import {selectReportingRequirementsPermissions} from './reportingRequirementsPermissions.selectors';
@@ -30,6 +28,7 @@ import {computed} from '@polymer/decorators/lib/decorators';
 import {connectStore} from '../../common/mixins/connect-store-mixin';
 import {AnyObject, Permission} from '@unicef-polymer/etools-types';
 import {sharedStylesPolymer} from '../../common/styles/shared-styles-polymer';
+import {get} from '../../utils/lodash-alternative';
 
 /**
  * @polymer

@@ -5,7 +5,6 @@ import {BudgetSummary} from './budgetSummary.models';
 import {selectBudgetSummary} from './budgetSummary.selectors';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {RootState} from '../../common/types/store.types';
-import get from 'lodash-es/get';
 import FrNumbersConsistencyMixin from '../../common/mixins/fr-numbers-consistency-mixin';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import {frWarningsStyles} from '../../common/styles/fr-warnings-styles';
@@ -14,6 +13,7 @@ import {InfoElementStyles} from '../../common/styles/info-element-styles';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {FrsDetails, Intervention} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {get} from '../../utils/lodash-alternative';
 
 /**
  * @customElement

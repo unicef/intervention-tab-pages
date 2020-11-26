@@ -8,10 +8,10 @@ import {selectTimingOverview} from './timingOverview.selectors';
 import {formatDateShortMonth} from '../../utils/date-utils';
 import {RootState} from '../../common/types/store.types';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
-import get from 'lodash-es/get';
 import {InfoElementStyles} from '../../common/styles/info-element-styles';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {translate} from 'lit-translate';
+import {get} from '../../utils/lodash-alternative';
 
 /**
  * @customElement

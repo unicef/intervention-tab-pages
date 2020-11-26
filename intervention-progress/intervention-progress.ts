@@ -43,9 +43,9 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
 import {property} from '@polymer/decorators';
 import {pmpCustomIcons} from './styles/pmp-icons';
 import {frWarningsStylesPolymer} from '../common/styles/fr-warnings-styles';
-import get from 'lodash-es/get';
 import {connectStore} from '../common/mixins/connect-store-mixin';
 import {AnyObject, GenericObject} from '@unicef-polymer/etools-types';
+import {get} from '../utils/lodash-alternative';
 declare const moment: any;
 
 /**

@@ -1,7 +1,6 @@
-import isObject from 'lodash-es/isObject';
-import isEmpty from 'lodash-es/isEmpty';
 import {formatDate} from './date-utils';
 import {AnyObject} from '@unicef-polymer/etools-types';
+import {isEmpty, isObject} from './lodash-alternative';
 
 export const isJsonStrMatch = (a: any, b: any) => {
   return JSON.stringify(a) === JSON.stringify(b);
@@ -14,8 +13,13 @@ export const isEmptyObject = (a: any) => {
   if (Array.isArray(a) && a.length === 0) {
     return true;
   }
+  if (a instanceof Date) {
+    return false;
+  }
   return isObject(a) && Object.keys(a).length === 0;
 };
+
+
 
 export const cloneDeep = (obj: any) => {
   return JSON.parse(JSON.stringify(obj));

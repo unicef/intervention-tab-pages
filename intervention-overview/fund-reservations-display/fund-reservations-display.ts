@@ -12,10 +12,10 @@ import {customIcons} from '../../common/styles/custom-icons';
 import {prettyDate} from '../../utils/date-utils';
 import '../../common/mixins/fr-numbers-consistency-mixin';
 import FrNumbersConsistencyMixin from '../../common/mixins/fr-numbers-consistency-mixin';
-import isEmpty from 'lodash-es/isEmpty';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {Intervention, FrsDetails} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {isEmpty} from '../../utils/lodash-alternative';
 
 /**
  * @customElement

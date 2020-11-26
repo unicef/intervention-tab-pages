@@ -21,12 +21,10 @@ import {getEndpoint} from '../../utils/endpoint-helper';
 import {getArraysDiff} from '../../utils/array-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {RootState} from '../../common/types/store.types';
-import get from 'lodash-es/get';
-import cloneDeep from 'lodash-es/cloneDeep';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {patchIntervention} from '../../common/actions/interventions';
-import {isJsonStrMatch} from '../../utils/utils';
+import {isJsonStrMatch, cloneDeep} from '../../utils/utils';
 import {FundReservationsPermissions} from './fund-reservations.models';
 import {selectFundReservationPermissions} from './fund-reservations.selectors';
 import {isUnicefUser} from '../../common/selectors';
@@ -35,6 +33,7 @@ import {AnyObject, AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {Intervention, FrsDetails, Fr} from '@unicef-polymer/etools-types';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {translate} from 'lit-translate';
+import {get} from '../../utils/lodash-alternative';
 
 /**
  * @customElement

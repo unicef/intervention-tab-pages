@@ -8,18 +8,18 @@ import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {RootState} from '../../common/types/store.types';
 import {ProgrammeDocDates, InterventionDatesPermissions} from './interventionDates.models';
-import cloneDeep from 'lodash-es/cloneDeep';
 import {selectInterventionDates, selectInterventionDatesPermissions} from './interventionDates.selectors';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {getStore} from '../../utils/redux-store-access';
 import {patchIntervention} from '../../common/actions/interventions';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
-import get from 'lodash-es/get';
 import '@unicef-polymer/etools-upload/etools-upload';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {get} from '../../utils/lodash-alternative';
+import {cloneDeep} from '../../utils/utils';
 
 /**
  * @customElement

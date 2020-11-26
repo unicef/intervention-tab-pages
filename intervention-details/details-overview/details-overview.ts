@@ -8,10 +8,10 @@ import {selectInterventionOverview} from './interventionOverview.selectors';
 import {layoutFlex} from '../../common/styles/flex-layout-styles';
 import {RootState} from '../../common/types/store.types';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
-import get from 'lodash-es/get';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {translate} from 'lit-translate';
+import {get} from '../../utils/lodash-alternative';
 
 /**
  * @customElement

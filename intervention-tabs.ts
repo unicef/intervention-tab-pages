@@ -9,15 +9,13 @@ import './common/layout/status/etools-status';
 import './intervention-actions/intervention-actions';
 import './common/components/prp-country-data/prp-country-data';
 import {customElement, LitElement, html, property, css} from 'lit-element';
-import cloneDeep from 'lodash-es/cloneDeep';
-import get from 'lodash-es/get';
 import {getStore, getStoreAsync} from './utils/redux-store-access';
 import {selectAvailableActions, currentPage, currentSubpage, isUnicefUser} from './common/selectors';
 import {elevationStyles} from './common/styles/elevation-styles';
 import {RootState} from './common/types/store.types';
 import {getIntervention, updateCurrentIntervention} from './common/actions/interventions';
 import {sharedStyles} from './common/styles/shared-styles-lit';
-import {isJsonStrMatch} from './utils/utils';
+import {isJsonStrMatch, cloneDeep} from './utils/utils';
 import {pageContentHeaderSlottedStyles} from './common/layout/page-content-header/page-content-header-slotted-styles';
 import {fireEvent} from './utils/fire-custom-event';
 import {buildUrlQueryString} from './utils/utils';
@@ -29,6 +27,7 @@ import {Intervention} from '@unicef-polymer/etools-types';
 import {AsyncAction, RouteDetails} from '@unicef-polymer/etools-types';
 import {interventions} from './common/reducers/interventions';
 import {get as getTranslation, translate} from 'lit-translate';
+import {get} from './utils/lodash-alternative';
 
 const MOCKUP_STATUSES = [
   ['draft', 'Draft'],
@@ -229,7 +228,7 @@ export class InterventionTabs extends connectStore(LitElement) {
     if (currentPage(state) === 'interventions' && currentSubpage(state) !== 'list') {
       this.activeTab = currentSubpage(state) as string;
       this.isUnicefUser = isUnicefUser(state);
-      const currentInterventionId = get(state, 'app.routeDetails.params.interventionId');
+      const currentInterventionId = (get(state, 'app.routeDetails.params.interventionId') as unknown) as string;
       const currentIntervention = get(state, 'interventions.current');
 
       if (currentIntervention) {
@@ -248,7 +247,7 @@ export class InterventionTabs extends connectStore(LitElement) {
               this.goToPageNotFound();
             }
           });
-        getStore().dispatch<AsyncAction>(getComments(currentInterventionId));
+        getStore().dispatch<AsyncAction>(getComments(Number(currentInterventionId)));
       }
       if (!isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)) {
         this._routeDetails = cloneDeep(state.app!.routeDetails);

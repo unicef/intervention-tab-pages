@@ -13,8 +13,6 @@ import './supply-agreement-dialog';
 import {RootState} from '../../common/types/store.types';
 import {openDialog} from '../../utils/dialog';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
-import get from 'lodash-es/get';
-import cloneDeep from 'lodash-es/cloneDeep';
 import {selectSupplyAgreement, selectSupplyAgreementPermissions} from './supplyAgreement.selectors';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {getEndpoint} from '../../utils/endpoint-helper';
@@ -30,6 +28,8 @@ import {EtoolsUpload} from '@unicef-polymer/etools-upload/etools-upload';
 import {AnyObject, AsyncAction, InterventionSupplyItem} from '@unicef-polymer/etools-types';
 import {Intervention, ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
+import {cloneDeep} from '../../utils/utils';
+import {get} from '../../utils/lodash-alternative';
 
 const customStyles = html`
   <style>

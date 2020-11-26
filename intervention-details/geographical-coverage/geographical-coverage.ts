@@ -11,17 +11,15 @@ import {LocationsPermissions} from './geographicalCoverage.models';
 import {selectLocationsPermissions} from './geographicalCoverage.selectors';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {patchIntervention} from '../../common/actions/interventions';
-import {isJsonStrMatch} from '../../utils/utils';
+import {isJsonStrMatch, cloneDeep} from '../../utils/utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {RootState} from '../../common/types/store.types';
-import cloneDeep from 'lodash-es/cloneDeep';
-import isEmpty from 'lodash-es/isEmpty';
-import get from 'lodash-es/get';
 import {openDialog} from '../../utils/dialog';
 import {layoutCenter, layoutVertical} from '../../common/styles/flex-layout-styles';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, LocationObject, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {get, isEmpty} from '../../utils/lodash-alternative';
 
 /**
  * @customElement
@@ -151,7 +149,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
     if (!isJsonStrMatch(this.adminLevels, state.commonData!.locationTypes)) {
       this.adminLevels = [...state.commonData!.locationTypes];
     }
-    this.data = {flat_locations: get(state, 'interventions.current.flat_locations')};
+    this.data = {flat_locations: get(state, 'interventions.current.flat_locations') as string[]};
     this.originalData = cloneDeep(this.data);
     this.setPermissions(state);
     super.stateChanged(state);

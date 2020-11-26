@@ -18,24 +18,23 @@ import {sectionContentStylesPolymer} from '../../common/styles/content-section-s
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {getStore} from '../../utils/redux-store-access';
-import {isJsonStrMatch} from '../../utils/utils';
+import {isJsonStrMatch, cloneDeep} from '../../utils/utils';
 
 import {RootState} from '../../common/types/store.types';
 import {selectReviewData, selectReviewDataPermissions} from './managementDocument.selectors';
 import {ReviewDataPermission, ReviewData} from './managementDocument.model';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {isEmpty, cloneDeep} from 'lodash-es';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {patchIntervention} from '../../common/actions/interventions';
 import {formatDate} from '../../utils/date-utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
-import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, MinimalUser, Permission, User} from '@unicef-polymer/etools-types';
 import {MinimalAgreement} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {getDifference} from '../../common/mixins/objects-diff';
+import {get, isEmpty} from '../../utils/lodash-alternative';
 
 /**
  * @customElement

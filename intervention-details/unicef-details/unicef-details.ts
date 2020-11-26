@@ -16,16 +16,13 @@ import {PdUnicefDetailsPermissions, PdUnicefDetails} from './pdUnicefDetails.mod
 import {getStore} from '../../utils/redux-store-access';
 import {patchIntervention} from '../../common/actions/interventions';
 import {RootState} from '../../common/types/store.types';
-import {isJsonStrMatch} from '../../utils/utils';
+import {isJsonStrMatch, cloneDeep} from '../../utils/utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
-import cloneDeep from 'lodash-es/cloneDeep';
-import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import orderBy from 'lodash-es/orderBy';
 import {AnyObject, CountryProgram, Permission, AsyncAction, User} from '@unicef-polymer/etools-types';
-import isEmpty from 'lodash-es/isEmpty';
-import uniqBy from 'lodash-es/uniqBy';
 import {translate} from 'lit-translate';
+import {get, isEmpty} from '../../utils/lodash-alternative';
 
 /**
  * @customElement
@@ -290,7 +287,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
     if (!isEmpty(this.data.unicef_focal_points)) {
       savedUsers.push(this.data.unicef_focal_points);
     }
-    return uniqBy(savedUsers.flat(), 'id');
+    return [...new Set(savedUsers.flat())];
   }
 
   getClusterText(clusters: string[]) {

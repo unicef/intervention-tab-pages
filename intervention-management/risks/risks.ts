@@ -15,7 +15,6 @@ import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {RootState} from '../../common/types/store.types';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
-import get from 'lodash-es/get';
 import {selectRisks} from './risk.selectors';
 import './risk-dialog';
 import '../../common/layout/are-you-sure';
@@ -26,6 +25,7 @@ import {currentInterventionPermissions} from '../../common/selectors';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, LabelAndValue, RiskData} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {get} from '../../utils/lodash-alternative';
 
 const customStyles = html`
   <style>

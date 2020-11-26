@@ -3,7 +3,7 @@ import {LitElement, customElement} from 'lit-element';
 import EndpointsLitMixin from '../../../../intervention-tab-pages/common/mixins/endpoints-mixin-lit';
 import {getStore} from '../../../utils/redux-store-access';
 import {setPrpCountries} from '../../actions/interventions';
-import get from 'lodash-es/get';
+import {get} from '../../../utils/lodash-alternative';
 
 @customElement('prp-country-data')
 export class PrpCountryData extends EndpointsLitMixin(LitElement) {

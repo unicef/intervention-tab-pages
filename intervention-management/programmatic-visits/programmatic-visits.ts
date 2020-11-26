@@ -5,7 +5,6 @@ import {buttonsStyles} from '../../common/styles/button-styles';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {repeatableDataSetsStyles} from '../../common/styles/repeatable-data-sets-styles';
-import isEmpty from 'lodash-es/isEmpty';
 import {layoutCenterJustified, layoutVertical} from '../../common/styles/flex-layout-styles';
 import {RootState} from '../../common/types/store.types';
 import {PlannedVisitsPermissions} from './programmaticVisits.models';
@@ -13,16 +12,16 @@ import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown'
 import {PaperInputElement} from '@polymer/paper-input/paper-input';
 import {selectPlannedVisits, selectPlannedVisitsPermissions} from './programmaticVisits.selectors';
 import {selectInterventionDates} from '../../intervention-timing/intervention-dates/interventionDates.selectors';
-import cloneDeep from 'lodash-es/cloneDeep';
 import {patchIntervention} from '../../common/actions/interventions';
 import RepeatableDataSetsMixin from '../../common/mixins/repeatable-data-sets-mixin';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
-import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {PlannedVisit} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
+import {isEmpty, get} from '../../utils/lodash-alternative';
+import {cloneDeep} from '../../utils/utils';
 
 /**
  * @customElement

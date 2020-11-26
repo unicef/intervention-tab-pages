@@ -10,12 +10,12 @@ import {selectTechnicalDetails, selectTechnicalDetailsPermissions} from './techn
 import {patchIntervention} from '../../common/actions/interventions';
 import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-loading/etools-loading';
-import cloneDeep from 'lodash-es/cloneDeep';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
-import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {cloneDeep} from '../../utils/utils';
+import {get} from '../../utils/lodash-alternative';
 
 /**
  * @customElement

@@ -6,11 +6,9 @@ import '@unicef-polymer/etools-data-table/etools-data-table';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import './add-amendment-dialog';
-import get from 'lodash-es/get';
-import cloneDeep from 'lodash-es/cloneDeep';
 import {RootState} from '../../common/types/store.types';
 import {prettyDate} from '../../utils/date-utils';
-import {getFileNameFromURL, isJsonStrMatch} from '../../utils/utils';
+import {getFileNameFromURL, isJsonStrMatch, cloneDeep} from '../../utils/utils';
 import {selectAmendmentsPermissions} from './pd-amendments.selectors';
 import {PdAmendmentPermissions} from './pd-amendments.models';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
@@ -18,6 +16,7 @@ import {openDialog} from '../../utils/dialog';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, LabelAndValue, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {get} from '../../utils/lodash-alternative';
 
 /**
  * @customElement

@@ -5,10 +5,8 @@ import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-inpu
 import {elevationStyles} from '../common/styles/elevation-styles';
 import {gridLayoutStylesLit} from '../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../common/styles/shared-styles-lit';
-import cloneDeep from 'lodash-es/cloneDeep';
-import get from 'lodash-es/get';
 import {prettyDate} from '../utils/date-utils';
-import {isJsonStrMatch} from '../utils/utils';
+import {isJsonStrMatch, cloneDeep} from '../utils/utils';
 import './fund-reservations-display/fund-reservations-display';
 import './monitoring-visits-list/monitoring-visits-list';
 import {pageIsNotCurrentlyActive} from '../utils/common-methods';
@@ -18,6 +16,7 @@ import {connectStore} from '../common/mixins/connect-store-mixin';
 import {AnyObject, CpOutput, StaticPartner, ManagementBudget} from '@unicef-polymer/etools-types';
 import {ExpectedResult, MinimalAgreement, Intervention} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {get} from '../utils/lodash-alternative';
 
 /**
  * @customElement

@@ -29,11 +29,9 @@ import CONSTANTS from '../../common/constants';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import '../../common/layout/are-you-sure';
-import get from 'lodash-es/get';
 import {getIntervention, updateCurrentIntervention} from '../../common/actions/interventions';
 import {_sendRequest} from '../../utils/request-helper';
 import {isUnicefUser, currentIntervention} from '../../common/selectors';
-import cloneDeep from 'lodash-es/cloneDeep';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import ContentPanelMixin from '../../common/mixins/content-panel-mixin';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
@@ -48,6 +46,8 @@ import {
   ResultLinkLowerResult
 } from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
+import {cloneDeep} from '../../utils/utils';
+import {get} from '../../utils/lodash-alternative';
 
 const RESULT_VIEW = 'result_view';
 const BUDGET_VIEW = 'budget_view';

@@ -10,7 +10,6 @@ import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import cloneDeep from 'lodash-es/cloneDeep';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {RootState} from '../../common/types/store.types';
 import {getStore} from '../../utils/redux-store-access';
@@ -20,12 +19,12 @@ import {FinancialComponentData, FinancialComponentPermissions} from './financial
 import {selectFinancialComponentPermissions, selectFinancialComponent} from './financialComponent.models';
 import {patchIntervention} from '../../common/actions/interventions';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
-import {isJsonStrMatch} from '../../utils/utils';
+import {isJsonStrMatch, cloneDeep} from '../../utils/utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
-import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, LabelAndValue, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {get} from '../../utils/lodash-alternative';
 
 /**
  * @customElement

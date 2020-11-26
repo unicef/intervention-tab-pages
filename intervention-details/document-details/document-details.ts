@@ -13,13 +13,13 @@ import {DocumentDetailsPermissions, DocumentDetails} from './documentDetails.mod
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {getStore} from '../../utils/redux-store-access';
 import {patchIntervention} from '../../common/actions/interventions';
-import cloneDeep from 'lodash-es/cloneDeep';
 import {RootState} from '../../common/types/store.types';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
-import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {cloneDeep} from '../../utils/utils';
+import {get} from '../../utils/lodash-alternative';
 
 /**
  * @customElement

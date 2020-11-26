@@ -19,8 +19,8 @@ import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {getStore} from '../utils/redux-store-access';
 import {getIntervention} from '../common/actions/interventions';
 import {pageIsNotCurrentlyActive} from '../utils/common-methods';
-import get from 'lodash-es/get';
 import {translate} from 'lit-translate';
+import {get} from '../utils/lodash-alternative';
 
 @customElement('attachments-list')
 export class AttachmentsList extends CommentsMixin(LitElement) {

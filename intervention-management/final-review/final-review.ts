@@ -4,12 +4,12 @@ import {openDialog} from '../../utils/dialog';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {selectFinalReviewAttachment, selectFinalReviewDate, selectInterventionId} from './final-review.selectors';
 import {currentInterventionPermissions} from '../../common/selectors';
-import get from 'lodash-es/get';
 import {getFileNameFromURL} from '../../utils/utils';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {ReviewAttachment} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {get} from '../../utils/lodash-alternative';
 declare const moment: any;
 
 @customElement('final-review')

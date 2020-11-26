@@ -12,21 +12,19 @@ import {PartnerInfo, PartnerInfoPermissions} from './partnerInfo.models';
 import {getStore} from '../../utils/redux-store-access';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import get from 'lodash-es/get';
-import cloneDeep from 'lodash-es/cloneDeep';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {patchIntervention} from '../../common/actions/interventions';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
-import {isJsonStrMatch} from '../../utils/utils';
-import isEmpty from 'lodash-es/isEmpty';
+import {isJsonStrMatch, cloneDeep} from '../../utils/utils';
 import {RootState} from '../../common/types/store.types';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission, PartnerStaffMember, AnyObject} from '@unicef-polymer/etools-types';
 import {MinimalAgreement} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {get, isEmpty} from '../../utils/lodash-alternative';
 
 /**
  * @customElement
@@ -177,7 +175,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
   async setPartnerDetailsAndPopulateDropdowns(state: any) {
     const newPartnerDetails = selectPartnerDetails(state);
 
-    const agreements = get(state, 'agreements.list');
+    const agreements = get(state, 'agreements.list') as MinimalAgreement[];
     if (!isEmpty(agreements)) {
       this.partnerAgreements = this.filterAgreementsByPartner(agreements, newPartnerDetails.partner_id!);
     }
@@ -196,7 +194,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
   }
 
   partnerIdHasChanged(newPartnerDetails: PartnerInfo) {
-    return get(this.data, 'partner_id') !== newPartnerDetails.partner_id;
+    return String(get(this.data, 'partner_id')) !== String(newPartnerDetails.partner_id);
   }
 
   getAllPartnerStaffMembers(partnerId: number) {

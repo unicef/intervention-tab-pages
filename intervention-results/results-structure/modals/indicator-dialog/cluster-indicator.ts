@@ -7,11 +7,11 @@ import {html, LitElement, property, customElement} from 'lit-element';
 import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 import {fireEvent} from '../../../../utils/fire-custom-event';
-import isEmpty from 'lodash-es/isEmpty';
 import {connectStore} from '../../../../common/mixins/connect-store-mixin';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {Indicator} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {isEmpty} from '../../../../utils/lodash-alternative';
 
 /**
  * @customElement

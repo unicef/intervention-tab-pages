@@ -10,8 +10,7 @@ import {buttonsStyles} from '../../common/styles/button-styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {elevationStyles} from '../../common/styles/elevation-styles';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
-import get from 'lodash-es/get';
-import {isJsonStrMatch} from '../../utils/utils';
+import {isJsonStrMatch, cloneDeep} from '../../utils/utils';
 import {openDialog} from '../../utils/dialog';
 import {
   selectProgrammeManagement,
@@ -19,12 +18,12 @@ import {
 } from './effectiveEfficientProgrammeMgmt.selectors';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {RootState} from '../../common/types/store.types';
-import cloneDeep from 'lodash-es/cloneDeep';
 import {ProgrammeManagement} from './effectiveEfficientProgrammeMgmt.models';
 import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {get} from '../../utils/lodash-alternative';
 
 const customStyles = html`
   <style>

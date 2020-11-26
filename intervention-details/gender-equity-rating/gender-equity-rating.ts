@@ -14,13 +14,12 @@ import {GenderEquityRatingPermissions, GenderEquityRating} from './genderEquityR
 import {getStore} from '../../utils/redux-store-access';
 import {RootState} from '../../common/types/store.types';
 import {patchIntervention} from '../../common/actions/interventions';
-import {isJsonStrMatch} from '../../utils/utils';
+import {isJsonStrMatch, cloneDeep} from '../../utils/utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
-import cloneDeep from 'lodash-es/cloneDeep';
-import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {get} from '../../utils/lodash-alternative';
 
 /**
  * @customElement
