@@ -25,7 +25,6 @@ export class HumanitarianReportingReqCluster extends CommonMixin(EndpointsMixinL
     return [gridLayoutStylesLit];
   }
   render() {
-    console.log(this.reportingRequirements);
     return html`
       <style include="data-table-styles">
         :host {
@@ -197,7 +196,6 @@ export class HumanitarianReportingReqCluster extends CommonMixin(EndpointsMixinL
   }
 
   _empty(list: []) {
-    console.log(isEmptyObject(list));
     return isEmptyObject(list);
   }
 }

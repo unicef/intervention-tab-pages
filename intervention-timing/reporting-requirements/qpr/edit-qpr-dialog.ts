@@ -70,15 +70,7 @@ export class EditQprDialog extends LitElement {
           <paper-button class="secondary-btn" @click="${this._addNewQpr}"> Add Requirement </paper-button>
         </div>
 
-        <qpr-list
-          id="qprList"
-          with-scroll
-          .qprData="${this.qprData}"
-          .inAmendment="${this.inAmendment}"
-          @edit-qpr="${this._editQprDatesSet}"
-          @delete-qpr="${this._deleteQprDatesSet}"
-          always-show-row-actions
-        ></qpr-list>
+        <qpr-list id="qprList" with-scroll .qprData="${this.qprData}" always-show-row-actions></qpr-list>
       </etools-dialog>
 
       <!-- add or edit a QPR row -->
@@ -137,9 +129,6 @@ export class EditQprDialog extends LitElement {
 
   @property({type: Number})
   interventionId!: number;
-
-  @property({type: Boolean})
-  inAmendment!: boolean;
 
   @property({type: Boolean})
   addOrModifyQprDialogOpened = false;
@@ -227,11 +216,11 @@ export class EditQprDialog extends LitElement {
       this.qprData.splice(this._qprDatesSetEditedIndex, 1, this._editedQprDatesSet);
     }
     this._qprDatesSetEditedIndex = -1;
+    console.log('herer');
     this.addOrModifyQprDialogOpened = false;
   }
 
   _editQprDatesSet(e: CustomEvent) {
-    console.log(e);
     this._qprDatesSetEditedIndex = e.detail.index;
     this._editedQprDatesSet = Object.assign({}, this.qprData[this._qprDatesSetEditedIndex]);
     this.addOrModifyQprDialogOpened = true;

@@ -43,14 +43,14 @@ export class HruList extends CommonMixin(ReportingReqPastDatesCheckMixin(LitElem
       ${this.hruData.forEach(
         (item: any, index) => html` <etools-data-table-row
           no-collapse
-          ?secondary-bg-on-hover="${this._canEdit(this.editMode, this.inAmendment, item.due_date, item.id)}"
+          ?secondary-bg-on-hover="${this._canEdit(this.editMode)}"
         >
-          <div slot="row-data" style="${this._uneditableStyles(this.inAmendment, item.due_date, item.id)}">
+          <div slot="row-data">
             <span class="col-data col-1 right-align index-col">${this._getIndex(index)}</span>
             <span class="col-data flex-c">${this.getDateDisplayValue(item.end_date)}</span>
             <span class="col-data col-1 actions">
               <icons-actions
-                ?hidden="${!this._canEdit(this.editMode, this.inAmendment, item.due_date, item.id)}"
+                ?hidden="${!this._canEdit(this.editMode)}"
                 .data-args="${index}"
                 @delete="${this._deleteHruReq}"
                 showEdit="${this._listItemEditable}"

@@ -110,7 +110,6 @@ export class EditHruDialog extends connectStore(LitElement) {
               .hruData="${this.hruData}"
               ?hidden="${this._empty(this.hruData.length)}"
               edit-mode
-              in-amendment="${this.inAmendment}"
               @delete-hru="${this._deleteHruDate}"
             >
             </hru-list>
@@ -121,9 +120,6 @@ export class EditHruDialog extends connectStore(LitElement) {
   }
   @property({type: Date})
   interventionStart!: Date | string;
-
-  @property({type: Boolean})
-  inAmendment!: boolean;
 
   @property({type: Date})
   repStartDate!: Date | string;
@@ -153,18 +149,6 @@ export class EditHruDialog extends connectStore(LitElement) {
   @property({type: String})
   get interventionId() {
     return this._interventionId;
-  }
-
-  // // refactor this
-  // static get observers() {
-  //   return ['intervDataChanged(interventionStart, interventionId)'];
-  // }
-
-  stateChanged(_state: RootState) {
-    // @lajos in ammendment will be used!
-    this.inAmendment = false;
-    // original:
-    // this.inAmendment = state.pageData!.in_amendment;
   }
 
   intervDataChanged() {

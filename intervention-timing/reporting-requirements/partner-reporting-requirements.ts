@@ -26,7 +26,7 @@ import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {isUnicefUser} from '../../common/selectors';
 import {connectStore} from '../../common/mixins/connect-store-mixin';
 import {AnyObject, Permission} from '@unicef-polymer/etools-types';
-import {sharedStylesPolymer} from '../../common/styles/shared-styles-polymer';
+import {sharedStyles} from '../../common/styles/shared-styles-lit';
 
 /**
  * @polymer
@@ -39,9 +39,9 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
   }
   render() {
     return html`
-      ${sharedStylesPolymer()}${sectionContentStylesPolymer}
+      ${sectionContentStylesPolymer}
       <style>
-        :host {
+        ${sharedStyles} :host {
           display: block;
           margin-bottom: 24px;
           width: 100%;
@@ -138,17 +138,19 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
                 ?hidden="${this._hideRepReqEditBtn(this.isReadonly, this.hrUnicefRequirementsCount)}"
               ></paper-icon-button>
             </div>
-            ${this.isUnicefUser
-              ? html` <div
-                  name="humanitarianCluster"
-                  title="Humanitarian Reports - Cluster"
-                  class="nav-menu-item"
-                  ?selected="${this.isSelected('humanitarianCluster')}"
-                  @click="${this.selectType}"
-                >
-                  Humanitarian Reports - Cluster (${this.hrClusterRequirementsCount})
-                </div>`
-              : html``}
+            ${
+              this.isUnicefUser
+                ? html` <div
+                    name="humanitarianCluster"
+                    title="Humanitarian Reports - Cluster"
+                    class="nav-menu-item"
+                    ?selected="${this.isSelected('humanitarianCluster')}"
+                    @click="${this.selectType}"
+                  >
+                    Humanitarian Reports - Cluster (${this.hrClusterRequirementsCount})
+                  </div>`
+                : html``
+            }
 
             <div
               name="special"
@@ -200,11 +202,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
               >
               </humanitarian-reporting-req-cluster>
 
-              <special-reporting-requirements
-                name="special"
-                .interventionId="${this.interventionId}"
-                .requirementsCount="${this.specialRequirementsCount}"
-              >
+
               </special-reporting-requirements>
             </iron-pages>
           </div>
@@ -302,6 +300,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
   }
 
   _openQprEditDialog() {
+    console.log('Open Dialog');
     const dialog = this.shadowRoot!.querySelector(`#qpr`) as QuarterlyReportingRequirementsEL;
     dialog.openQuarterlyRepRequirementsDialog();
   }

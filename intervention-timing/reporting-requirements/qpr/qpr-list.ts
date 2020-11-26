@@ -8,6 +8,7 @@ import CommonMixin from '../../../common/mixins/common-mixin';
 import ReportingReqPastDatesCheckMixin from '../mixins/reporting-req-past-dates-check';
 import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
 import {reportingRequirementsListStylesLit} from '../styles/reporting-requirements-lists-styles';
+import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
 import {fireEvent} from '../../../utils/fire-custom-event';
 // import {IconsActionsEl} from '../../../common/layout/icons-actions';
 import {isEmptyObject} from '../../../utils/utils';
@@ -30,7 +31,7 @@ export class QprList extends CommonMixin(ReportingReqPastDatesCheckMixin(LitElem
     }
     return html`
       <style include="data-table-styles">
-        ${sharedStyles}${reportingRequirementsListStylesLit} etools-data-table-row {
+        ${sharedStyles}${reportingRequirementsListStyles} etools-data-table-row {
           --icons-actions_-_background-color: transparent !important;
         }
         *[slot='row-data'] .col-data {
@@ -50,22 +51,15 @@ export class QprList extends CommonMixin(ReportingReqPastDatesCheckMixin(LitElem
 
       ${this.qprData.map(
         (item: any, index: number) => html`
-          <etools-data-table-row
-            no-collapse
-            ?secondary-bg-on-hover="${this._canEdit(this.editMode, this.inAmendment, item.due_date, item.id)}"
-          >
-            <div slot="row-data" style="${this._uneditableStyles(this.inAmendment, item.due_date, item.id)}">
+          <etools-data-table-row no-collapse ?secondary-bg-on-hover="${this._canEdit(this.editMode)}">
+            <div slot="row-data" class="editable-row">
               <span class="col-data col-1 right-align index-col">${this.getIndex(index, this.qprData.length)}</span>
               <span class="col-data col-3">${this.getDateDisplayValue(item.start_date)}</span>
               <span class="col-data col-3">${this.getDateDisplayValue(item.end_date)}</span>
               <span class="col-data col-3">${this.getDateDisplayValue(item.due_date)}</span>
-              <span class="col-data flex-c actions">
-                <icons-actions
-                  ?hidden="${!this._canEdit(this.editMode, this.inAmendment, item.due_date, item.id)}"
-                  @edit="${this._editQprReq(index)}"
-                  @delete="${this._deleteQprReq(index)}"
-                >
-                </icons-actions>
+              <div class="hover-block">
+                <paper-icon-button icon="icons:create" @click="${() => this._editQprReq(index)}"></paper-icon-button>
+                <paper-icon-button icon="icons:delete" @click="${() => this._deleteQprReq(index)}"></paper-icon-button>
               </span>
             </div>
           </etools-data-table-row>
