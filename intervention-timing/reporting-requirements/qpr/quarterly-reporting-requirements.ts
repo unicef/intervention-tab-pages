@@ -61,12 +61,14 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
 
   connectedCallback() {
     super.connectedCallback();
+    this.addEventListener('edit-qpr', this.editQPR as any);
     this._createEditQprDialog();
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     this._removeEditQprDialog();
+    this.removeEventListener('edit-qpr', this.editQPR as any);
   }
 
   _createEditQprDialog() {
@@ -83,6 +85,10 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
       this.editQprDialog.removeEventListener('reporting-requirements-saved', this._onReportingRequirementsSaved as any);
       document.querySelector('body')!.removeChild(this.editQprDialog);
     }
+  }
+
+  editQPR(value: CustomEvent) {
+    this.editQprDialog._editQprDatesSet(value, this.reportingRequirements);
   }
 
   openQuarterlyRepRequirementsDialog() {

@@ -169,7 +169,6 @@ export class EditQprDialog extends LitElement {
   }
 
   _addNewQpr() {
-    console.log('addnew qpr');
     this._editedQprDatesSet = Object.assign({}, this._qprDatesSetModel);
     this.addOrModifyQprDialogOpened = true;
   }
@@ -203,7 +202,6 @@ export class EditQprDialog extends LitElement {
 
   _updateQprData() {
     if (!this._validateDataBeforeAdd()) {
-      console.log('validatebefore');
       this.addOrModifyQprDialogOpened = true;
       return;
     }
@@ -216,13 +214,18 @@ export class EditQprDialog extends LitElement {
       this.qprData.splice(this._qprDatesSetEditedIndex, 1, this._editedQprDatesSet);
     }
     this._qprDatesSetEditedIndex = -1;
-    console.log('herer');
     this.addOrModifyQprDialogOpened = false;
   }
 
-  _editQprDatesSet(e: CustomEvent) {
+  _editQprDatesSet(e: CustomEvent, qprData: any) {
+    if (!this.qprData) {
+      this.qprData = qprData;
+    }
     this._qprDatesSetEditedIndex = e.detail.index;
+    console.log(this._qprDatesSetEditedIndex);
+    console.log(this.qprData);
     this._editedQprDatesSet = Object.assign({}, this.qprData[this._qprDatesSetEditedIndex]);
+    console.log(this._editedQprDatesSet);
     this.addOrModifyQprDialogOpened = true;
   }
 

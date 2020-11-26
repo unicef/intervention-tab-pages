@@ -300,7 +300,6 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
   }
 
   _openQprEditDialog() {
-    console.log('Open Dialog');
     const dialog = this.shadowRoot!.querySelector(`#qpr`) as QuarterlyReportingRequirementsEL;
     dialog.openQuarterlyRepRequirementsDialog();
   }
