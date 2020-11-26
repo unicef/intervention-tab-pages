@@ -237,9 +237,13 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(EtoolsCurr
       </style>
 
       <!-- TODO: format translation-->
-      <etools-content-panel show-expand-btn panel-title=${getTranslation(
-        'INTERVENTION_RESULTS.RESULTS_STRUCTURE.RESULTS_STRUCTURE'
-      ) + "(" + this.noOfPdOutputs + ")"}>
+      <etools-content-panel
+        show-expand-btn
+        panel-title=${getTranslation('INTERVENTION_RESULTS.RESULTS_STRUCTURE.RESULTS_STRUCTURE') +
+        '(' +
+        this.noOfPdOutputs +
+        ')'}
+      >
         <div slot="panel-btns" class="layout-horizontal align-items-center">
           <paper-button
             title=${translate('INTERVENTION_RESULTS.EXPORT_RESULTS')}

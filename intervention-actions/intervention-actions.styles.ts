@@ -63,6 +63,6 @@ export const InterventionActionsStyles: CSSResult = css`
   .option-button {
     margin-left: 14px;
     height: 36px;
-    border-left: 1px solid var(--light-green-color);
+    border-left: 2px solid rgba(255, 255, 255, 0.12);
   }
 `;

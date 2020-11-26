@@ -13,7 +13,7 @@ import {property} from '@polymer/decorators';
 import {EditHruDialog} from './edit-hru-dialog.js';
 import {HruListEl} from './hru-list.js';
 import {sharedStylesPolymer} from '../../../common/styles/shared-styles-polymer';
-import { ExpectedResult } from '@unicef-polymer/etools-types';
+import {ExpectedResult} from '@unicef-polymer/etools-types';
 
 /**
  * @customElement

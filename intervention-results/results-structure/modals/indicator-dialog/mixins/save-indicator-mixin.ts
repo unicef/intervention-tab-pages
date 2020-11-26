@@ -1,6 +1,3 @@
-// import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin';
-import pick from 'lodash-es/pick';
-import keys from 'lodash-es/keys';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
 import {LitElement} from 'lit-element';
@@ -13,6 +10,7 @@ import {IndicatorDisaggregations} from '../indicator-dissaggregations';
 import {getStore} from '../../../../../utils/redux-store-access';
 import {updateCurrentIntervention} from '../../../../../common/actions/interventions';
 import {Constructor} from '@unicef-polymer/etools-types';
+import {pick} from '../../../../../utils/lodash-alternative';
 
 /**
  * @mixinFunction
@@ -167,7 +165,7 @@ function SaveIndicatorMixin<T extends Constructor<LitElement>>(baseClass: T) {
     _getIndicatorBody() {
       const body = this._getIndicatorModelForSave();
       const indicatorData = this.collectIndicatorData();
-      Object.assign(body, pick(indicatorData, keys(body)));
+      Object.assign(body, pick(indicatorData, Object.keys(body)));
 
       this._prepareBaselineAndTarget(body);
 
