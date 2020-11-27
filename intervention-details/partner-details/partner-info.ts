@@ -27,6 +27,34 @@ import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission, PartnerStaffMember, AnyObject} from '@unicef-polymer/etools-types';
 import {MinimalAgreement} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import '@vaadin/vaadin-text-field';
+import '@vaadin/vaadin-combo-box';
+
+// <paper-input
+// class="w100"
+// label=${translate('INTERVENTION_DETAILS.PARTNER_ORGANIZATION')}
+// .value="${this.data?.partner}"
+// required
+// readonly
+// always-float-label
+// >
+// </paper-input>
+
+
+// <etools-dropdown
+// id="agreements"
+// label=${translate('INTERVENTION_DETAILS.AGREEMENTS')}
+// .options="${this.partnerAgreements}"
+//   .selected="${this.data?.agreement}"
+// option-value="id"
+// option-label="agreement_number_status"
+// trigger-value-change-event
+// @etools-selected-item-changed="${({detail}: CustomEvent) => this.selectedAgreementChanged(detail)}"
+//   ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.agreement)}"
+//   required
+// auto-validate
+// >
+// </etools-dropdown>
 
 /**
  * @customElement
@@ -59,43 +87,31 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
 
         <div class="row-padding-v layout-horizontal">
           <div class="col col-7">
-            <paper-input
+            <vaadin-text-field
               class="w100"
               label=${translate('INTERVENTION_DETAILS.PARTNER_ORGANIZATION')}
               .value="${this.data?.partner}"
               required
-              readonly
-              always-float-label
-            >
-            </paper-input>
+            </vaadin-text-field>
           </div>
           <div class="col col-5">
-            <etools-dropdown
-              id="agreements"
-              label=${translate('INTERVENTION_DETAILS.AGREEMENTS')}
-              .options="${this.partnerAgreements}"
-              .selected="${this.data?.agreement}"
-              option-value="id"
-              option-label="agreement_number_status"
-              trigger-value-change-event
-              @etools-selected-item-changed="${({detail}: CustomEvent) => this.selectedAgreementChanged(detail)}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.agreement)}"
-              required
-              auto-validate
-            >
-            </etools-dropdown>
+            <vaadin-combo-box 
+              id="agreements" 
+              label=${translate('INTERVENTION_DETAILS.AGREEMENTS')} 
+              .items="${this.partnerAgreements}"
+              item-label-path="agreement_number_status"
+              item-value-path="agreement_number">
+            </vaadin-combo-box>
+            
           </div>
         </div>
         <div class="row-padding-v layout-horizontal">
           <div class="col col-7">
-            <paper-input
-              class="w100"
-              label=${translate('INTERVENTION_DETAILS.PARTNER_VENDOR_NUMBER')}
-              .value="${this.data?.partner_vendor}"
-              readonly
-              always-float-label
-            >
-            </paper-input>
+            <vaadin-text-field 
+              class="w100" 
+              label=${translate('INTERVENTION_DETAILS.PARTNER_VENDOR_NUMBER')} 
+              .value="${this.data?.partner_vendor}">
+            </vaadin-text-field>
           </div>
           <div class="col col-5 layout-vertical">
             <label for="agreementAuthOff" class="paper-label"
@@ -119,16 +135,18 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
               ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.partner_focal_points)}"
             >
             </etools-dropdown-multi>
-            ${this.isReadonly(this.editMode, this.permissions?.edit.partner_focal_points)
-              ? html`<label for="focalPointsDetails" class="paper-label"
-                    >${translate('INTERVENTION_DETAILS.PARTNER_FOCAL_POINTS')}</label
-                  >
-                  <div id="focalPointsDetails">
-                    ${this.renderReadonlyUserDetails(
-                      this.originalData?.partner_focal_points ? this.originalData?.partner_focal_points : []
-                    )}
-                  </div>`
-              : html``}
+            ${
+              this.isReadonly(this.editMode, this.permissions?.edit.partner_focal_points)
+                ? html`<label for="focalPointsDetails" class="paper-label"
+                      >${translate('INTERVENTION_DETAILS.PARTNER_FOCAL_POINTS')}</label
+                    >
+                    <div id="focalPointsDetails">
+                      ${this.renderReadonlyUserDetails(
+                        this.originalData?.partner_focal_points ? this.originalData?.partner_focal_points : []
+                      )}
+                    </div>`
+                : html``
+            }
           </div>
         </div>
 

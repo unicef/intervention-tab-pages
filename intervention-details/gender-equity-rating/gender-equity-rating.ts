@@ -21,6 +21,8 @@ import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import '@vaadin/vaadin-radio-button';
+import '@vaadin/vaadin-text-field/vaadin-text-area';
 
 /**
  * @customElement
@@ -71,24 +73,21 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
           <div class="w100">
             <label class="paper-label">${translate('INTERVENTION_DETAILS.GENDER_RATING')}</label>
           </div>
-          <paper-radio-group
-            selected="${this.data.gender_rating}"
-            @selected-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'gender_rating')}"
-          >
-            ${this._getRatingRadioButtonsTemplate(this.ratings, this.permissions.edit.gender_rating)}
-          </paper-radio-group>
+          
+          <vaadin-radio-group label=${translate('INTERVENTION_DETAILS.GENDER_RATING')} theme="horizontal">
+            <vaadin-radio-button>None</vaadin-radio-button>
+            <vaadin-radio-button>Marginal</vaadin-radio-button>
+            <vaadin-radio-button>Significant</vaadin-radio-button>
+            <vaadin-radio-button>Principal</vaadin-radio-button>
+          </vaadin-radio-group>
           <div class="col col-12 pl-none">
-            <paper-textarea
-              label=${translate('INTERVENTION_DETAILS.GENDER_NARATIVE')}
-              always-float-label
+            <vaadin-text-area 
               class="w100"
-              placeholder="&#8212;"
-              max-rows="4"
-              .value="${this.data.gender_narrative}"
-              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'gender_narrative')}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.gender_narrative)}"
-            >
-            </paper-textarea>
+              label=${translate('INTERVENTION_DETAILS.GENDER_NARATIVE')} 
+              placeholder="&#8212;" 
+              .value="${this.data.gender_narrative}">
+            </vaadin-text-area>
+            
           </div>
         </div>
         <div class="row-padding-v pb-20">
