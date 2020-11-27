@@ -20,7 +20,7 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import '@vaadin/vaadin-date-picker/vaadin-date-picker';
+import '@vaadin/vaadin-date-picker';
 
 /**
  * @customElement
@@ -67,13 +67,16 @@ export class InterventionDates extends CommentsMixin(ComponentBaseMixin(FrNumber
               form-field-align
               ?hide-tooltip="${!this.frsConsistencyWarningIsActive(this._frsStartConsistencyWarning)}"
             >
-<!--    TODO: check date-picker          -->
-              <vaadin-date-picker label="date">
-              </vaadin-date-picker>
-             
               <iron-icon icon="pmp-custom-icons:not-equal" slot="custom-icon"></iron-icon>
               <span slot="message">${this._frsStartConsistencyWarning}</span>
             </etools-info-tooltip>
+            <!--    TODO: check date-picker          -->
+            <vaadin-date-picker
+              label=${translate('INTERVENTION_TIMING.INTERVENTION_DATES.START_DATE')}
+              .value="${this.data.start}"
+              ?required="${this.permissions.required.end}"
+              clear-button-visible>
+            </vaadin-date-picker>
           </div>
 
           <!-- End date -->
@@ -85,23 +88,15 @@ export class InterventionDates extends CommentsMixin(ComponentBaseMixin(FrNumber
               form-field-align
               ?hide-tooltip="${!this.frsConsistencyWarningIsActive(this._frsEndConsistencyWarning)}"
             >
-              <datepicker-lite
-                slot="field"
-                id="intEnd"
-                label=${translate('INTERVENTION_TIMING.INTERVENTION_DATES.END_DATE')}
-                .value="${this.data.end}"
-                ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.end)}"
-                ?required="${this.permissions.required.end}"
-                error-message=${translate('INTERVENTION_TIMING.INTERVENTION_DATES.SELECT_END_DATE')}
-                auto-validate
-                selected-date-display-format="D MMM YYYY"
-                fire-date-has-changed
-                @date-has-changed="${({detail}: CustomEvent) => this.dateHasChanged(detail, 'end')}"
-              >
-              </datepicker-lite>
               <iron-icon icon="pmp-custom-icons:not-equal" slot="custom-icon"></iron-icon>
               <span slot="message">${this._frsEndConsistencyWarning}</span>
             </etools-info-tooltip>
+            <vaadin-date-picker
+              id="intEnd"
+              label=${translate('INTERVENTION_TIMING.INTERVENTION_DATES.END_DATE')}
+              .value="${this.data.end}"
+              clear-button-visible>
+            </vaadin-date-picker>
           </div>
         </div>
         <div

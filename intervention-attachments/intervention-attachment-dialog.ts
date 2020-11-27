@@ -13,6 +13,49 @@ import {sharedStyles} from '../common/styles/shared-styles-lit';
 import {connectStore} from '../common/mixins/connect-store-mixin';
 import {IdAndName, GenericObject, ReviewAttachment} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import '@vaadin/vaadin-upload';
+import '@vaadin/vaadin-combo-box';
+
+
+
+// <etools-upload
+// label=${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.INT_ATT_DIALOG.ATTACHMENT')}
+//   accept=".doc,.docx,.pdf,.jpg,.png"
+//     .showDeleteBtn="${false}"
+//     ?readonly="${this.data.id}"
+//     required
+//       .fileUrl="${this.data && (this.data.attachment || this.data.attachment_document)}"
+//       .uploadEndpoint="${interventionEndpoints.attachmentsUpload.url!}"
+// @upload-finished="${(event: CustomEvent) => this.fileSelected(event.detail)}"
+//   ?invalid="${this.errors.attachment_document}"
+//     .errorMessage="${this.errors.attachment_document && this.errors.attachment_document[0]}"
+//   @focus="${() => this.resetFieldError('attachment_document')}"
+// @click="${() => this.resetFieldError('attachment_document')}"
+//   ></etools-upload>
+
+
+
+// <etools-dropdown
+// class="validate-input flex-1"
+// @etools-selected-item-changed="${({detail}: CustomEvent) =>
+// this.updateField('type', detail.selectedItem && detail.selectedItem.id)}"
+//   ?trigger-value-change-event="${!this.savingInProcess}"
+//     .selected="${this.data?.type}"
+//   label=${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.INT_ATT_DIALOG.SELECT_DOC_TYPE')}
+//     placeholder="—"
+//       .options="${this.fileTypes}"
+// option-label="name"
+// option-value="id"
+// allow-outside-scroll
+// dynamic-align
+// required
+//   ?invalid="${this.errors.type}"
+//     .errorMessage="${(this.errors.type && this.errors.type[0]) || translate('GENERAL.REQUIRED_FIELD')}"
+//   @focus="${() => this.resetFieldError('type')}"
+// @click="${() => this.resetFieldError('type')}"
+//   ></etools-dropdown>
+
+
 
 @customElement('intervention-attachment-dialog')
 export class InterventionAttachmentDialog extends connectStore(LitElement) {
@@ -78,41 +121,13 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
         <etools-loading ?active="${this.savingInProcess}"></etools-loading>
         <div class="container">
           <!-- Document Type -->
-          <etools-dropdown
-            class="validate-input flex-1"
-            @etools-selected-item-changed="${({detail}: CustomEvent) =>
-              this.updateField('type', detail.selectedItem && detail.selectedItem.id)}"
-            ?trigger-value-change-event="${!this.savingInProcess}"
-            .selected="${this.data?.type}"
-            label=${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.INT_ATT_DIALOG.SELECT_DOC_TYPE')}
-            placeholder="—"
-            .options="${this.fileTypes}"
-            option-label="name"
-            option-value="id"
-            allow-outside-scroll
-            dynamic-align
-            required
-            ?invalid="${this.errors.type}"
-            .errorMessage="${(this.errors.type && this.errors.type[0]) || translate('GENERAL.REQUIRED_FIELD')}"
-            @focus="${() => this.resetFieldError('type')}"
-            @click="${() => this.resetFieldError('type')}"
-          ></etools-dropdown>
+          
+          
 
           <!-- Attachment -->
-          <etools-upload
-            label=${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.INT_ATT_DIALOG.ATTACHMENT')}
-            accept=".doc,.docx,.pdf,.jpg,.png"
-            .showDeleteBtn="${false}"
-            ?readonly="${this.data.id}"
-            required
-            .fileUrl="${this.data && (this.data.attachment || this.data.attachment_document)}"
-            .uploadEndpoint="${interventionEndpoints.attachmentsUpload.url!}"
-            @upload-finished="${(event: CustomEvent) => this.fileSelected(event.detail)}"
-            ?invalid="${this.errors.attachment_document}"
-            .errorMessage="${this.errors.attachment_document && this.errors.attachment_document[0]}"
-            @focus="${() => this.resetFieldError('attachment_document')}"
-            @click="${() => this.resetFieldError('attachment_document')}"
-          ></etools-upload>
+          <vaadin-upload accept="application/pdf" max-file-size="1000000">
+          </vaadin-upload>
+          
 
           <etools-form-element-wrapper no-placeholder>
             <paper-checkbox
