@@ -291,6 +291,12 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
     }
   }
 
+  updateSRRCount(value: any) {
+    if (value) {
+      this.hrClusterRequirementsCount = value.count;
+    }
+  }
+
   _isReadOnly() {
     return (
       this.commentsMode ||
@@ -318,6 +324,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
       return;
     }
     const tab: string = (event.currentTarget as HTMLElement).getAttribute('name') as string;
+    console.log(tab);
     this.selectedReportType = tab;
   }
 

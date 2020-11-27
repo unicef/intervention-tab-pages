@@ -106,9 +106,9 @@ export class QprList extends CommonMixin(ReportingReqPastDatesCheckMixin(LitElem
     });
   }
 
-  _editQprReq(index: number) {
+  _editQprReq(e: CustomEvent) {
     fireEvent(this, 'edit-qpr', {
-      index: index
+      index: (e.target as any).getAttribute('data-args')
     });
   }
 

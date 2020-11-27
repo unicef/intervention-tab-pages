@@ -167,6 +167,7 @@ export class SpecialReportingRequirements extends CommonMixin(ReportingRequireme
   }
 
   _createAddEditDialog() {
+    console.log('here');
     this.addEditDialog = document.createElement('add-edit-special-rep-req') as AddEditSpecialRepReqEl;
     this._onSpecialReportingRequirementsSaved = this._onSpecialReportingRequirementsSaved.bind(this);
     this.addEditDialog.addEventListener(

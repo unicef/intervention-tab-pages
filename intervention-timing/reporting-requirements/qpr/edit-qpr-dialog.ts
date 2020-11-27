@@ -70,7 +70,13 @@ export class EditQprDialog extends LitElement {
           <paper-button class="secondary-btn" @click="${this._addNewQpr}"> Add Requirement </paper-button>
         </div>
 
-        <qpr-list id="qprList" with-scroll .qprData="${this.qprData}" always-show-row-actions></qpr-list>
+        <qpr-list
+          id="qprList"
+          with-scroll
+          .qprData="${this.qprData}"
+          always-show-row-actions
+          @edit-qpr="_editQprDatesSet"
+        ></qpr-list>
       </etools-dialog>
 
       <!-- add or edit a QPR row -->
@@ -80,9 +86,9 @@ export class EditQprDialog extends LitElement {
         dialog-title="Edit Standard Quarterly Report Requirements"
         ?opened="${this.addOrModifyQprDialogOpened}"
         no-padding
-        @confirm-btn-clicked="${this._updateQprData}"
-        ok-btn-text="Save"
+        @confirm-btn-clicked="${() => this._updateQprData()}"
         keep-dialog-open
+        ok-btn-text="Save"
       >
         <div class="row-h" ?hidden="${this._hideEditedIndexInfo(this._qprDatesSetEditedIndex)}">
           You are editing ID ${this._getEditedQprDatesSetId(this._qprDatesSetEditedIndex)}
@@ -162,10 +168,12 @@ export class EditQprDialog extends LitElement {
 
   openQprDialog() {
     (this.editQprDialog as EtoolsDialog).opened = true;
+    this.addEventListener('edit-qpr', this._editQprDatesSet as any);
   }
 
   closeQprDialog() {
     (this.editQprDialog as EtoolsDialog).opened = false;
+    this.removeEventListener('edit-qpr', this._editQprDatesSet as any);
   }
 
   _addNewQpr() {
@@ -222,8 +230,6 @@ export class EditQprDialog extends LitElement {
       this.qprData = qprData;
     }
     this._qprDatesSetEditedIndex = e.detail.index;
-    console.log(this._qprDatesSetEditedIndex);
-    console.log(this.qprData);
     this._editedQprDatesSet = Object.assign({}, this.qprData[this._qprDatesSetEditedIndex]);
     console.log(this._editedQprDatesSet);
     this.addOrModifyQprDialogOpened = true;
