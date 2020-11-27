@@ -87,7 +87,7 @@ export class InterventionTabs extends connectStore(LitElement) {
         }
         .flag {
           color: #ffffff;
-          background-color: #56ccf2;
+          background-color: #52c2e6;
           padding: 5px 20px;
           width: 100%;
           border-radius: 8px 8px;
