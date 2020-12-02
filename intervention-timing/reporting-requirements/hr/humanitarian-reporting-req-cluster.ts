@@ -123,7 +123,7 @@ class HumanitarianReportingReqCluster extends CommonMixin(EndpointsMixin(Polymer
       });
     });
 
-    return uniq(clusterIndicIds);
+    return [...new Set(clusterIndicIds)];
   }
 
   reportingRequirementsChanged(repReq: any) {
