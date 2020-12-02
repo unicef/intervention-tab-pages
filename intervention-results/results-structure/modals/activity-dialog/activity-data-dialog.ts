@@ -20,7 +20,7 @@ import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-pa
 import {validateRequiredFields} from '../../../../utils/validation-helper';
 import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 import {InterventionActivity, InterventionActivityItem} from '@unicef-polymer/etools-types';
-import {translate, get as getTranslation} from 'lit-translate';
+import {translate} from 'lit-translate';
 
 @customElement('activity-data-dialog')
 export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitElement) {
@@ -287,12 +287,14 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
     );
     if (!this.validateActivityItems()) {
       fireEvent(this, 'toast', {
-        text: getTranslation('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.FILL_ALL_ACTIVITY_ITEMS')
+        text: (translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.FILL_ALL_ACTIVITY_ITEMS') as unknown) as string
       });
       return;
     }
     if (!this.validateActivityTimeFrames()) {
-      fireEvent(this, 'toast', {text: getTranslation('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.FILL_ACTIVITY_TIME')});
+      fireEvent(this, 'toast', {
+        text: (translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.FILL_ACTIVITY_TIME') as unknown) as string
+      });
       return;
     }
     this.loadingInProcess = true;

@@ -12,7 +12,7 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {getStore} from '../../utils/redux-store-access';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
-import {translate, get as getTranslation} from 'lit-translate';
+import {translate} from 'lit-translate';
 
 /**
  * @customElement
@@ -129,7 +129,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
       })
       .catch(() => {
         this.loadingInProcess = false;
-        fireEvent(this, 'toast', {text: getTranslation('GENERAL.ERR_OCCURRED')});
+        fireEvent(this, 'toast', {text: (translate('GENERAL.ERR_OCCURRED') as unknown) as string});
       });
   }
 
