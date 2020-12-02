@@ -6,12 +6,12 @@ import '@polymer/iron-icons';
 import './modals/cp-output-dialog';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
+import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 
 @customElement('cp-output-level')
-export class CpOutputLevel extends EtoolsCurrency(LitElement) {
+export class CpOutputLevel extends LitElement {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
@@ -88,9 +88,7 @@ export class CpOutputLevel extends EtoolsCurrency(LitElement) {
 
                       <div class="flex-none" ?hidden="${!this.showActivities}">
                         <div class="heading">${translate('INTERVENTION_RESULTS.TOTAL_CASH_BUDGET')}</div>
-                        <div class="data">
-                          ${this.currency} ${this.displayCurrencyAmount(this.resultLink.total, '0.00')}
-                        </div>
+                        <div class="data">${this.currency} ${displayCurrencyAmount(this.resultLink.total, '0.00')}</div>
                       </div>
 
                       <div class="hover-block">

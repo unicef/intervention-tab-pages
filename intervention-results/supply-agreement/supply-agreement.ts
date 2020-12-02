@@ -23,7 +23,10 @@ import {fireEvent} from '../../utils/fire-custom-event';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {getIntervention, updateCurrentIntervention} from '../../common/actions/interventions';
 import '../../common/layout/are-you-sure';
-import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
+import {
+  addCurrencyAmountDelimiter,
+  displayCurrencyAmount
+} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {isUnicefUser} from '../../common/selectors';
 import {EtoolsUpload} from '@unicef-polymer/etools-upload/etools-upload';
@@ -48,7 +51,7 @@ const customStyles = html`
 `;
 
 @customElement('supply-agreements')
-export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixin(LitElement))) {
+export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -92,7 +95,7 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
             </label>
             <label class="font-bold-12"
               >${this.intervention.planned_budget.currency}
-              ${this.displayCurrencyAmount(this.intervention.planned_budget.in_kind_amount_local)}</label
+              ${displayCurrencyAmount(this.intervention.planned_budget.in_kind_amount_local!)}</label
             >
           </span>
           <paper-icon-button
@@ -241,9 +244,9 @@ export class FollowUpPage extends CommentsMixin(EtoolsCurrency(ComponentBaseMixi
     this.supply_items = selectSupplyAgreement(state);
     this.permissions = selectSupplyAgreementPermissions(state);
     this.supply_items.map((item: AnyObject) => {
-      item.total_price = this.addCurrencyAmountDelimiter(item.total_price);
+      item.total_price = addCurrencyAmountDelimiter(item.total_price);
       item.unit_number = Number(item.unit_number);
-      item.unit_price = this.addCurrencyAmountDelimiter(item.unit_price);
+      item.unit_price = addCurrencyAmountDelimiter(item.unit_price);
       return item;
     });
     if (state.user && state.user.data) {
