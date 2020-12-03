@@ -28,6 +28,7 @@ import {connectStore} from './common/mixins/connect-store-mixin';
 import {Intervention} from '@unicef-polymer/etools-types';
 import {AsyncAction, RouteDetails} from '@unicef-polymer/etools-types';
 import {interventions} from './common/reducers/interventions';
+import {get as getTranslation, translate} from 'lit-translate';
 
 const MOCKUP_STATUSES = [
   ['draft', 'Draft'],
@@ -86,7 +87,7 @@ export class InterventionTabs extends connectStore(LitElement) {
         }
         .flag {
           color: #ffffff;
-          background-color: #56ccf2;
+          background-color: #52c2e6;
           padding: 5px 20px;
           width: 100%;
           border-radius: 8px 8px;
@@ -103,7 +104,7 @@ export class InterventionTabs extends connectStore(LitElement) {
         <span slot="page-title">${this.intervention.number}</span>
         <div slot="mode">
           <paper-toggle-button id="commentMode" ?checked="${this.commentMode}" @iron-change="${this.commentModeChange}"
-            >Comment Mode</paper-toggle-button
+            >${translate('GENERAL.COMMENT_MODE')}</paper-toggle-button
           >
         </div>
 
@@ -155,32 +156,32 @@ export class InterventionTabs extends connectStore(LitElement) {
   pageTabs = [
     {
       tab: 'overview',
-      tabLabel: 'Overview',
+      tabLabel: getTranslation('INTERVENTION_TABS.OVERVIEW_TAB'),
       hidden: false
     },
     {
       tab: 'details',
-      tabLabel: 'Details',
+      tabLabel: getTranslation('INTERVENTION_TABS.DETAILS_TAB'),
       hidden: false
     },
     {
       tab: 'results',
-      tabLabel: 'Results',
+      tabLabel: getTranslation('INTERVENTION_TABS.RESULTS_TAB'),
       hidden: false
     },
     {
       tab: 'timing',
-      tabLabel: 'Timing',
+      tabLabel: getTranslation('INTERVENTION_TABS.TIMING_TAB'),
       hidden: false
     },
     {
       tab: 'management',
-      tabLabel: 'Management',
+      tabLabel: getTranslation('INTERVENTION_TABS.MANAGEMENT_TAB'),
       hidden: false
     },
     {
       tab: 'attachments',
-      tabLabel: 'Attachments',
+      tabLabel: getTranslation('INTERVENTION_TABS.ATTACHMENTS_TAB'),
       hidden: false
     }
   ];
@@ -267,8 +268,12 @@ export class InterventionTabs extends connectStore(LitElement) {
         !envFlags.prp_mode_off &&
         !this.pageTabs.find((x) => x.tab === 'progress')
       ) {
-        this.pageTabs.push({tab: 'progress', tabLabel: 'Progress', hidden: false});
-        this.pageTabs.push({tab: 'reports', tabLabel: 'Reports', hidden: false});
+        this.pageTabs.push({
+          tab: 'progress',
+          tabLabel: getTranslation('INTERVENTION_TABS.PROGRESS_TAB'),
+          hidden: false
+        });
+        this.pageTabs.push({tab: 'reports', tabLabel: getTranslation('INTERVENTION_TABS.REPORTS_TAB'), hidden: false});
       }
     } else if (this._routeDetails) {
       this._routeDetails = null;

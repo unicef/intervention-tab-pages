@@ -62,10 +62,10 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
         }
 
         .nav-menu {
-          @apply --layout-vertical;
           background: var(--primary-background-color);
-          padding: 8px 0 8px 0;
           min-width: 290px;
+          margin-top: 9px;
+          margin-bottom: 8px;
         }
 
         .nav-menu-item {
@@ -78,6 +78,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
           font-weight: bold;
           text-transform: capitalize;
           cursor: pointer;
+          height: 45px;
         }
 
         .nav-menu-item[selected] {
@@ -98,11 +99,6 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
         .edit-rep-req {
           color: var(--primary-text-color);
           margin-left: 16px;
-        }
-
-        .nav-menu-item.qpr {
-          @apply --layout-horizontal;
-          @apply --layout-justified;
         }
       </style>
       <etools-content-panel show-expand-btn class="content-section" panel-title="Partner Reporting Requirements">

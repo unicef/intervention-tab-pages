@@ -20,6 +20,7 @@ import {getStore} from '../utils/redux-store-access';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {GenericObject} from '@unicef-polymer/etools-types';
 import {Intervention} from '@unicef-polymer/etools-types';
+import {get as getTranslation} from 'lit-translate';
 
 @customElement('intervention-actions')
 export class InterventionActions extends LitElement {
@@ -113,32 +114,32 @@ export class InterventionActions extends LitElement {
     let btn = '';
     switch (action) {
       case 'signature':
-        btn = 'Send';
-        message = 'Are you sure you want to send for signature?';
+        btn = getTranslation('INTERVENTION_ACTIONS.SEND');
+        message = getTranslation('INTERVENTION_ACTIONS.SEND_FOR_SIGNATURE');
         break;
       case 'accept_review':
-        btn = 'Send';
-        message = 'Are you sure you want to send for Accept & Review?';
+        btn = getTranslation('INTERVENTION_ACTIONS.SEND');
+        message = getTranslation('INTERVENTION_ACTIONS.SEND_FOR_ACCEPT_REVIEW');
         break;
       case 'cancel':
-        btn = 'Yes';
-        message = 'Are you sure you want to ' + action + ' ?';
+        btn = getTranslation('GENERAL.YES');
+        message = getTranslation('INTERVENTION_ACTIONS.CANCEL_PROMPT');
         break;
       case 'send_to_partner':
-        btn = 'Yes';
-        message = 'Are you sure you want to send to partner?';
+        btn = getTranslation('GENERAL.YES');
+        message = getTranslation('INTERVENTION_ACTIONS.SEND_TO_PARTNER_PROMPT');
         break;
       case 'send_to_unicef':
-        btn = 'Yes';
-        message = 'Are you sure you want to send to unicef?';
+        btn = getTranslation('GENERAL.YES');
+        message = getTranslation('INTERVENTION_ACTIONS.SEND_TO_UNICEF_PROMPT');
         break;
       case 'terminate':
-        btn = 'Continue';
-        message = 'Are you sure you want to ' + action + ' ?';
+        btn = getTranslation('INTERVENTION_ACTIONS.CONTINUE');
+        message = getTranslation('INTERVENTION_ACTIONS.TERMINATE_PROMPT');
         break;
       default:
         btn = action;
-        message = 'Are you sure you want to ' + action + ' ?';
+        message = getTranslation('INTERVENTION_ACTIONS.ARE_YOU_SURE_PROMPT') + action + ' ?';
     }
     const confirmed = await openDialog({
       dialog: 'are-you-sure',

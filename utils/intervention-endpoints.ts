@@ -163,7 +163,7 @@ export const interventionEndpoints: EtoolsEndpoints = {
     token: 'prp'
   },
   expectedResultsExport: {
-    template: '/api/v2/reports/interventions/results/<%=intervention_id%>/?format=docx_table'
+    template: '/api/reports/v3/interventions/results/<%=intervention_id%>/?format=docx_table'
   },
   riskDelete: {
     template: '/api/pmp/v3/interventions/<%=interventionId%>/risks/<%=riskId%>'

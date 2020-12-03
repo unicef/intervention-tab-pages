@@ -51,7 +51,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
 
       <etools-content-panel
         show-expand-btn
-        panel-title="Partner Details"
+        panel-title="${translate('INTERVENTION_DETAILS.PARTNER_DETAILS')}"
         comment-element="partner-details"
         comment-description=${translate('INTERVENTION_DETAILS.PARTNER_DETAILS')}
       >

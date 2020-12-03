@@ -1,6 +1,6 @@
 import {LitElement, customElement, html, property} from 'lit-element';
 import '@polymer/iron-label/iron-label';
-import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
+import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import '@polymer/iron-icons/iron-icons';
@@ -21,7 +21,7 @@ import {translate} from 'lit-translate';
  * @customElement
  */
 @customElement('fund-reservations-display')
-export class FundReservationsDisplay extends EtoolsCurrency(FrNumbersConsistencyMixin(LitElement)) {
+export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElement) {
   static get styles() {
     return [gridLayoutStylesLit, frWarningsStyles];
   }
@@ -120,9 +120,7 @@ export class FundReservationsDisplay extends EtoolsCurrency(FrNumbersConsistency
                     </span>
                   </etools-info-tooltip>
                 </span>
-                <span class="col-data col-2 right-align"
-                  >${this.displayCurrencyAmount(fr.total_amt_local, '0.00')}</span
-                >
+                <span class="col-data col-2 right-align">${displayCurrencyAmount(fr.total_amt_local, '0.00')}</span>
                 <span class="col-data col-2 right-align">
                   <etools-info-tooltip
                     class="fr-nr-warn currency-mismatch"
@@ -140,7 +138,7 @@ export class FundReservationsDisplay extends EtoolsCurrency(FrNumbersConsistency
                   </etools-info-tooltip>
                 </span>
                 <span class="col-data col-2 right-align"
-                  >${this.displayCurrencyAmount(fr.outstanding_amt_local, '0.00')}</span
+                  >${displayCurrencyAmount(fr.outstanding_amt_local, '0.00')}</span
                 >
               </div>
               <div slot="row-data-details">
@@ -251,7 +249,7 @@ export class FundReservationsDisplay extends EtoolsCurrency(FrNumbersConsistency
             <span class="col-data col-2 right-align unicef-cash-col">
               <iron-label for="unicef-cash">UNICEF Cash</iron-label>
               <span id="unicef-cash"
-                >${this.displayCurrencyAmount(this.intervention.planned_budget.unicef_cash_local, 0.0)}</span
+                >${displayCurrencyAmount(this.intervention.planned_budget.unicef_cash_local!, '0.0')}</span
               >
             </span>
             <span class="col-data col-4"></span>

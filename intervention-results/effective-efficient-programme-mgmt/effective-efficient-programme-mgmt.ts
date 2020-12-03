@@ -21,7 +21,7 @@ import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {RootState} from '../../common/types/store.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {ProgrammeManagement} from './effectiveEfficientProgrammeMgmt.models';
-import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
+import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
@@ -40,9 +40,7 @@ const customStyles = html`
  * @customElement
  */
 @customElement('effective-and-efficient-programme-management')
-export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(
-  EtoolsCurrency(ComponentBaseMixin(LitElement))
-) {
+export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles, elevationStyles];
   }
@@ -166,30 +164,30 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(
   }
 
   formatData(data: ProgrammeManagement) {
-    this.total_amount = this.addCurrencyAmountDelimiter(data.total) || '0';
+    this.total_amount = addCurrencyAmountDelimiter(data.total) || '0';
     return [
       {
         title: translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.TITLE_1'),
         description: translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.DESCRIPTION_1'),
-        unicef_cash: this.addCurrencyAmountDelimiter(data.act1_unicef),
-        partner_contribution: this.addCurrencyAmountDelimiter(data.act1_partner),
-        total: this.addCurrencyAmountDelimiter(data.act1_total),
+        unicef_cash: addCurrencyAmountDelimiter(data.act1_unicef),
+        partner_contribution: addCurrencyAmountDelimiter(data.act1_partner),
+        total: addCurrencyAmountDelimiter(data.act1_total),
         index: 1
       },
       {
         title: translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.TITLE_2'),
         description: translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.DESCRIPTION_2'),
-        unicef_cash: this.addCurrencyAmountDelimiter(data.act2_unicef),
-        partner_contribution: this.addCurrencyAmountDelimiter(data.act2_partner),
-        total: this.addCurrencyAmountDelimiter(data.act2_total),
+        unicef_cash: addCurrencyAmountDelimiter(data.act2_unicef),
+        partner_contribution: addCurrencyAmountDelimiter(data.act2_partner),
+        total: addCurrencyAmountDelimiter(data.act2_total),
         index: 2
       },
       {
         title: translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.TITLE_3'),
         description: translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.DESCRIPTION_3'),
-        unicef_cash: this.addCurrencyAmountDelimiter(data.act3_unicef),
-        partner_contribution: this.addCurrencyAmountDelimiter(data.act3_partner),
-        total: this.addCurrencyAmountDelimiter(data.act3_total),
+        unicef_cash: addCurrencyAmountDelimiter(data.act3_unicef),
+        partner_contribution: addCurrencyAmountDelimiter(data.act3_partner),
+        total: addCurrencyAmountDelimiter(data.act3_total),
         index: 3
       }
     ];

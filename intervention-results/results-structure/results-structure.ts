@@ -37,7 +37,7 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import ContentPanelMixin from '../../common/mixins/content-panel-mixin';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
+import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {
   AsyncAction,
   InterventionQuarter,
@@ -47,7 +47,8 @@ import {
   Intervention,
   ResultLinkLowerResult
 } from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
+
 
 const RESULT_VIEW = 'result_view';
 const BUDGET_VIEW = 'budget_view';
@@ -57,7 +58,7 @@ const COMBINED_VIEW = 'combined_view';
  * @customElement
  */
 @customElement('results-structure')
-export class ResultsStructure extends CommentsMixin(ContentPanelMixin(EtoolsCurrency(LitElement))) {
+export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement)) {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
@@ -68,7 +69,9 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(EtoolsCurr
         etools-content-panel {
           --ecp-content-padding: 0;
           --ecp-content_-_padding: 0;
+          --epc-header_-_z-index: 1;
         }
+
         iron-icon[icon='create'] {
           margin-left: 50px;
         }
@@ -235,7 +238,13 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(EtoolsCurr
       </style>
 
       <!-- TODO: format translation-->
-      <etools-content-panel show-expand-btn panel-title="Results Structure (${this.noOfPdOutputs})">
+      <etools-content-panel
+        show-expand-btn
+        panel-title=${getTranslation('INTERVENTION_RESULTS.RESULTS_STRUCTURE.RESULTS_STRUCTURE') +
+        '(' +
+        this.noOfPdOutputs +
+        ')'}
+      >
         <div slot="panel-btns" class="layout-horizontal align-items-center">
           <paper-button
             title=${translate('INTERVENTION_RESULTS.EXPORT_RESULTS')}
@@ -332,8 +341,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(EtoolsCurr
                       <div class="flex-none" ?hidden="${!this.showActivities}">
                         <div class="heading">${translate('INTERVENTION_RESULTS.TOTAL_CASH_BUDGET')}</div>
                         <div class="data">
-                          ${this.intervention.planned_budget.currency}
-                          ${this.displayCurrencyAmount(pdOutput.total, '0.00')}
+                          ${this.intervention.planned_budget.currency} ${displayCurrencyAmount(pdOutput.total, '0.00')}
                         </div>
                       </div>
 

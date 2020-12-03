@@ -21,6 +21,7 @@ import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import './pd-indicator';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {connectStore} from '../../common/mixins/connect-store-mixin';
+import {translate, get as getTranslation} from 'lit-translate';
 import {
   AsyncAction,
   Disaggregation,
@@ -93,11 +94,11 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
 
       <div class="row-h align-items-center header">
         <div class="heading flex-auto">
-          PD Indicators
+          ${translate('INTERVENTION_RESULTS.PD_INDICATORS')}
           <iron-icon icon="add-box" @click="${() => this.openIndicatorDialog()}" ?hidden="${this.readonly}"></iron-icon>
         </div>
-        <div class="heading number-data flex-none">Baseline</div>
-        <div class="heading number-data flex-none">Target</div>
+        <div class="heading number-data flex-none">${translate('INTERVENTION_RESULTS.BASELINE')}</div>
+        <div class="heading number-data flex-none">${translate('INTERVENTION_RESULTS.TARGET')}</div>
       </div>
 
       ${this.indicators.map(
@@ -122,9 +123,9 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
       ${!this.indicators.length
         ? html`
             <div class="layout-horizontal empty-row">
-              <div class="text flex-auto">-</div>
-              <div class="text number-data flex-none">-</div>
-              <div class="text number-data flex-none">-</div>
+              <div class="text flex-auto">—</div>
+              <div class="text number-data flex-none">—</div>
+              <div class="text number-data flex-none">—</div>
             </div>
           `
         : ''}
@@ -175,8 +176,8 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
-        content: 'This is an irreversible action, are you sure you want to deactivate this indicator?',
-        confirmBtnText: 'Deactivate'
+        content: getTranslation('INTERVENTION_RESULTS.DEACTIVATE_PROMPT'),
+        confirmBtnText: getTranslation('INTERVENTION_RESULTS.DEACTIVATE')
       }
     }).then(({confirmed}) => {
       return confirmed;
@@ -210,8 +211,8 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
-        content: 'Are you sure you want to delete this indicator?',
-        confirmBtnText: 'Delete'
+        content: getTranslation('INTERVENTION_RESULTS.DELETE_PROMPT'),
+        confirmBtnText: getTranslation('GENERAL.DELETE')
       }
     }).then(({confirmed}) => {
       return confirmed;

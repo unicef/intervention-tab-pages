@@ -20,6 +20,7 @@ import {
   layoutHorizontal
 } from '../../common/styles/flex-layout-styles';
 import {AnyObject} from '@unicef-polymer/etools-types';
+import {translate, get as getTranslation} from 'lit-translate';
 
 /**
  * @customElement
@@ -74,7 +75,7 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
       <etools-dialog
         id="frsDialog"
         size="md"
-        dialog-title="Add/Update FR Numbers"
+        dialog-title=${translate('INTERVENTION_MANAGEMENT.FUND_RESERVATIONS.FR_DIALOG.ADD_UPDATE_FR_NUMBERS')}
         ok-btn-text="Add/Update"
         ?disable-confirm-btn="${this.disableConfirmBtn}"
         @confirm-btn-clicked="${() => this._checkFrNumbers()}"
@@ -107,7 +108,7 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
                     placeholder="&#8212;"
                     allowed-pattern="[0-9]"
                     required
-                    error-message="Please fill FR Number or remove the field"
+                    error-message=${translate('INTERVENTION_MANAGEMENT.FUND_RESERVATIONS.FR_DIALOG.FILL_FR_NUMBER')}
                     @value-changed="${({detail}: CustomEvent) => this._frNrValueChanged(item, detail)}"
                   >
                   </paper-input>
@@ -118,13 +119,13 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
         )}
 
         <div class="${(this.data || []).length ? 'hidden' : 'row-h'}">
-          There are no fund reservations numbers added.
+          ${translate('INTERVENTION_MANAGEMENT.FUND_RESERVATIONS.FR_DIALOG.NO_FUND_RESERVATIONS_ADDED')}
         </div>
 
         <div class="row-h">
           <paper-button class="secondary-btn" @click="${() => this._addNewFundReservation()}">
             <iron-icon icon="add"></iron-icon>
-            Add FR Number
+            ${translate('INTERVENTION_MANAGEMENT.FUND_RESERVATIONS.FR_DIALOG.ADD_FR_NUM')}
           </paper-button>
         </div>
       </etools-dialog>
@@ -137,7 +138,7 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
   editMode = true;
 
   @property({type: String})
-  deleteConfirmationMessage = 'Are you sure you want to delete this FR Number?';
+  deleteConfirmationMessage = getTranslation('INTERVENTION_MANAGEMENT.FUND_RESERVATIONS.FR_DIALOG.DELETE_FR_PROMPT');
 
   @property({type: Boolean})
   disableConfirmBtn = true;

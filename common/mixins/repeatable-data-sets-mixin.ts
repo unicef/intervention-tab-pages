@@ -5,23 +5,24 @@ import {cloneDeep} from '../../utils/utils';
 import '../../common/layout/are-you-sure';
 import {openDialog} from '../../utils/dialog';
 import {AnyObject, Constructor} from '@unicef-polymer/etools-types';
+import {get as getTranslation} from 'lit-translate';
 
 function RepeatableDataSetsMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class RepeatableDataSetsClass extends baseClass {
     @property({type: String})
-    deleteConfirmationTitle = 'Delete confirmation';
+    deleteConfirmationTitle = getTranslation('ARE_YOU_SURE.DELETE_CONFIRMATION');
 
     @property({type: String})
-    deleteConfirmationMessage = 'Are you sure you want to delete this item?';
+    deleteConfirmationMessage = getTranslation('ARE_YOU_SURE.ARE_YOU_SURE_PROMPT');
 
     @property({type: String})
-    deleteActionLoadingMsg = 'Deleting items from server...';
+    deleteActionLoadingMsg = getTranslation('ARE_YOU_SURE.DELETE_FROM_SERVER');
 
     @property({type: String})
     deleteLoadingSource = 'delete-data-set';
 
     @property({type: String})
-    deleteActionDefaultErrMsg = 'Deleting items from server action has failed!';
+    deleteActionDefaultErrMsg = getTranslation('ARE_YOU_SURE.DELETE_FAILED');
 
     @property({type: Array})
     data!: any[];
@@ -44,7 +45,7 @@ function RepeatableDataSetsMixin<T extends Constructor<LitElement>>(baseClass: T
         dialog: 'are-you-sure',
         dialogData: {
           content: this.deleteConfirmationMessage,
-          confirmBtnText: 'Yes'
+          confirmBtnText: getTranslation('GENERAL.YES')
         }
       }).then(({confirmed}) => {
         return confirmed;
