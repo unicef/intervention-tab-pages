@@ -101,7 +101,6 @@ function ReportingRequirementsCommonMixin<T extends Constructor<LitElement>>(bas
     }
 
     _onReportingRequirementsSaved(e: CustomEvent) {
-      // this.set('reportingRequirements', e.detail);
       this.reportingRequirements = e.detail;
     }
   }

@@ -65,7 +65,7 @@ export class EditHruDialog extends connectStore(LitElement) {
         id="editHruDialog"
         size="lg"
         dialog-title="Add/Edit Dates for Humanitarian Report - UNICEF"
-        @confirm-btn-clicked="_saveHurData"
+        @confirm-btn-clicked="${this._saveHurData}"
         ok-btn-text="Save"
         keep-dialog-open
         ?hidden="${this.datePickerOpen}"

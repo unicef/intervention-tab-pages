@@ -22,18 +22,6 @@ export const reportingRequirementsListStyles = `
     .actions {
       position: relative;
     }
-
-    icons-actions {
-      --icons-actions: {
-        background-color: transparent;
-      }
-      visibility: hidden;
-    }
-
-    :host([always-show-row-actions]) icons-actions,
-    etools-data-table-row:hover icons-actions {
-      visibility: visible;
-    }
   `;
 
 // language=CSS

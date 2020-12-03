@@ -1,7 +1,5 @@
 import {LitElement, html, property, customElement} from 'lit-element';
 import '@unicef-polymer/etools-data-table/etools-data-table.js';
-
-import '../../../common/layout/icons-actions';
 import '../mixins/reporting-req-past-dates-check';
 import '../styles/reporting-requirements-lists-styles';
 import CommonMixin from '../../../common/mixins/common-mixin';
@@ -10,7 +8,6 @@ import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit
 // import {reportingRequirementsListStylesLit} from '../styles/reporting-requirements-lists-styles';
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
 import {fireEvent} from '../../../utils/fire-custom-event';
-// import {IconsActionsEl} from '../../../common/layout/icons-actions';
 import {isEmptyObject} from '../../../utils/utils';
 import {sharedStyles} from '../../../common/styles/shared-styles-lit';
 
@@ -31,10 +28,7 @@ export class QprList extends CommonMixin(ReportingReqPastDatesCheckMixin(LitElem
     }
     return html`
       <style include="data-table-styles">
-        ${sharedStyles}${reportingRequirementsListStyles} etools-data-table-row {
-          --icons-actions_-_background-color: transparent !important;
-        }
-        *[slot='row-data'] .col-data {
+        ${sharedStyles}${reportingRequirementsListStyles} *[slot='row-data'] .col-data {
           display: inline-flex;
           line-height: 24px;
           align-items: center;
@@ -50,20 +44,24 @@ export class QprList extends CommonMixin(ReportingReqPastDatesCheckMixin(LitElem
       </etools-data-table-header>
 
       ${this.qprData.map(
-        (item: any, index: number) => html`
-          <etools-data-table-row no-collapse ?secondary-bg-on-hover="${this._canEdit(this.editMode)}">
-            <div slot="row-data" class="editable-row">
-              <span class="col-data col-1 right-align index-col">${this.getIndex(index, this.qprData.length)}</span>
-              <span class="col-data col-3">${this.getDateDisplayValue(item.start_date)}</span>
-              <span class="col-data col-3">${this.getDateDisplayValue(item.end_date)}</span>
-              <span class="col-data col-3">${this.getDateDisplayValue(item.due_date)}</span>
-              <div class="hover-block">
-                <paper-icon-button icon="icons:create" @click="${() => this._editQprReq(index)}"></paper-icon-button>
-                <paper-icon-button icon="icons:delete" @click="${() => this._deleteQprReq(index)}"></paper-icon-button>
-              </span>
-            </div>
-          </etools-data-table-row>
-        `
+        (item: any, index: number) =>
+          html`
+            <etools-data-table-row no-collapse ?secondary-bg-on-hover="${this._canEdit(this.editMode)}">
+              <div slot="row-data" class="layout-horizontal editable-row">
+                <div class="col-data col-1 right-align index-col">${this.getIndex(index, this.qprData.length)}</div>
+                <div class="col-data col-3">${this.getDateDisplayValue(item.start_date)}</div>
+                <div class="col-data col-3">${this.getDateDisplayValue(item.end_date)}</div>
+                <div class="col-data col-3">${this.getDateDisplayValue(item.due_date)}</div>
+                <div class="col-data flex-c actions">
+                  <paper-icon-button icon="icons:create" @click="${() => this._editQprReq(index)}"></paper-icon-button>
+                  <paper-icon-button
+                    icon="icons:delete"
+                    @click="${() => this._deleteQprReq(index)}"
+                  ></paper-icon-button>
+                </div>
+              </div>
+            </etools-data-table-row>
+          `
       )}
     `;
   }
@@ -106,9 +104,9 @@ export class QprList extends CommonMixin(ReportingReqPastDatesCheckMixin(LitElem
     });
   }
 
-  _editQprReq(e: CustomEvent) {
+  _editQprReq(index: number) {
     fireEvent(this, 'edit-qpr', {
-      index: (e.target as any).getAttribute('data-args')
+      index: index
     });
   }
 

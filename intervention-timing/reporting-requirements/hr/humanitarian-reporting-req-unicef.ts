@@ -10,8 +10,8 @@ import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit
 import {buttonsStylesLitContent} from '../styles/buttons-styles-polymer';
 import {EditHruDialog} from './edit-hru-dialog.js';
 import {HruListEl} from './hru-list.js';
-import {sharedStylesPolymer} from '../../../common/styles/shared-styles-polymer';
 import {ExpectedResult} from '@unicef-polymer/etools-types';
+import {sharedStyles} from '../../../common/styles/shared-styles-lit';
 
 /**
  * @customElement
@@ -29,7 +29,6 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
   }
   render() {
     return html`
-      ${sharedStylesPolymer()}
       <style>
         :host {
           display: block;
@@ -78,6 +77,18 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
   @property({type: Boolean})
   editMode!: boolean;
 
+  _interventionId!: number;
+
+  set interventionId(interventionId) {
+    this._interventionId = interventionId;
+    this.setTotalResults(this.interventionId, this.reportingRequirements);
+  }
+
+  @property({type: String})
+  get interventionId() {
+    return this._interventionId;
+  }
+
   // @DAN
   // static get observers() {
   //   return [
@@ -119,8 +130,6 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
 
   _reportingRequirementsSaved(e: CustomEvent) {
     this._onReportingRequirementsSaved(e);
-    // reset page number
-    // this.set('pagination.pageNumber', 1);
     this.pagination.pageNumber = 1;
   }
 
@@ -154,7 +163,7 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
     this.editHruDialog.openDialog();
   }
 
-  setTotalResults(interventionId: string, reportingRequirements: any) {
+  setTotalResults(interventionId: number, reportingRequirements: any) {
     if (typeof interventionId === 'undefined' || typeof reportingRequirements === 'undefined') {
       return;
     }

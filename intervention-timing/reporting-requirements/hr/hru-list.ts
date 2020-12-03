@@ -24,9 +24,8 @@ export class HruList extends CommonMixin(ReportingReqPastDatesCheckMixin(LitElem
   }
   render() {
     return html`
-      ${reportingRequirementsListStyles}
       <style include="data-table-styles">
-        :host([with-scroll]) {
+        ${reportingRequirementsListStyles}:host([with-scroll]) {
           max-height: 400px;
           overflow-y: auto;
         }
@@ -40,15 +39,15 @@ export class HruList extends CommonMixin(ReportingReqPastDatesCheckMixin(LitElem
         <etools-data-table-column class="flex-c">Report End Date</etools-data-table-column>
         <etools-data-table-column class="col-1"></etools-data-table-column>
       </etools-data-table-header>
-      ${this.hruData.forEach(
+      ${this.hruData.map(
         (item: any, index) => html` <etools-data-table-row
           no-collapse
           ?secondary-bg-on-hover="${this._canEdit(this.editMode)}"
         >
-          <div slot="row-data">
-            <span class="col-data col-1 right-align index-col">${this._getIndex(index)}</span>
-            <span class="col-data flex-c">${this.getDateDisplayValue(item.end_date)}</span>
-            <span class="col-data col-1 actions">
+          <div slot="row-data" class="layout-horizontal">
+            <div class="col-data col-1 right-align index-col">${this._getIndex(index)}</div>
+            <div class="col-data flex-c">${this.getDateDisplayValue(item.end_date)}</div>
+            <div class="col-data col-1 actions">
               <icons-actions
                 ?hidden="${!this._canEdit(this.editMode)}"
                 .data-args="${index}"
@@ -56,7 +55,7 @@ export class HruList extends CommonMixin(ReportingReqPastDatesCheckMixin(LitElem
                 showEdit="${this._listItemEditable}"
               >
               </icons-actions>
-            </span>
+            </div>
           </div>
         </etools-data-table-row>`
       )}

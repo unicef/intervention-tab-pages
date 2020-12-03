@@ -138,19 +138,17 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
                 ?hidden="${this._hideRepReqEditBtn(this.isReadonly, this.hrUnicefRequirementsCount)}"
               ></paper-icon-button>
             </div>
-            ${
-              this.isUnicefUser
-                ? html` <div
-                    name="humanitarianCluster"
-                    title="Humanitarian Reports - Cluster"
-                    class="nav-menu-item"
-                    ?selected="${this.isSelected('humanitarianCluster')}"
-                    @click="${this.selectType}"
-                  >
-                    Humanitarian Reports - Cluster (${this.hrClusterRequirementsCount})
-                  </div>`
-                : html``
-            }
+            ${this.isUnicefUser
+              ? html` <div
+                  name="humanitarianCluster"
+                  title="Humanitarian Reports - Cluster"
+                  class="nav-menu-item"
+                  ?selected="${this.isSelected('humanitarianCluster')}"
+                  @click="${this.selectType}"
+                >
+                  Humanitarian Reports - Cluster (${this.hrClusterRequirementsCount})
+                </div>`
+              : html``}
 
             <div
               name="special"
@@ -202,7 +200,12 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
               >
               </humanitarian-reporting-req-cluster>
 
-
+              <special-reporting-requirements
+                name="special"
+                .interventionId="${this.interventionId}"
+                .requirementsCount="${this.specialRequirementsCount}"
+                @count-changed=${(e: CustomEvent) => this.updateSRRCount(e.detail)}
+              >
               </special-reporting-requirements>
             </iron-pages>
           </div>
@@ -293,7 +296,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
 
   updateSRRCount(value: any) {
     if (value) {
-      this.hrClusterRequirementsCount = value.count;
+      this.specialRequirementsCount = value.count;
     }
   }
 
@@ -324,7 +327,6 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
       return;
     }
     const tab: string = (event.currentTarget as HTMLElement).getAttribute('name') as string;
-    console.log(tab);
     this.selectedReportType = tab;
   }
 

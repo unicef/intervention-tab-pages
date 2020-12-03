@@ -19,6 +19,7 @@ import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {QprListEl} from './qpr-list.js';
 import {fireEvent} from '../../../utils/fire-custom-event';
 import {AnyObject} from '@unicef-polymer/etools-types';
+import moment from 'moment';
 
 /**
  * @polymer
@@ -60,9 +61,9 @@ export class EditQprDialog extends LitElement {
         size="lg"
         dialog-title="Edit Quarterly Progress Reporting Requirements"
         ?hidden="${this.addOrModifyQprDialogOpened}"
-        @confirm-btn-clicked="${this._saveModifiedQprData}"
+        @confirm-btn-clicked="${() => this._saveModifiedQprData()}"
+        @close="${() => this.closeQprDialog()}"
         ok-btn-text="Save"
-        keep-dialog-open
         spinner-text="Saving..."
       >
         <div class="layout-horizontal">
@@ -70,13 +71,7 @@ export class EditQprDialog extends LitElement {
           <paper-button class="secondary-btn" @click="${this._addNewQpr}"> Add Requirement </paper-button>
         </div>
 
-        <qpr-list
-          id="qprList"
-          with-scroll
-          .qprData="${this.qprData}"
-          always-show-row-actions
-          @edit-qpr="_editQprDatesSet"
-        ></qpr-list>
+        <qpr-list id="qprList" with-scroll .qprData="${this.qprData}" always-show-row-actions></qpr-list>
       </etools-dialog>
 
       <!-- add or edit a QPR row -->
@@ -87,6 +82,7 @@ export class EditQprDialog extends LitElement {
         ?opened="${this.addOrModifyQprDialogOpened}"
         no-padding
         @confirm-btn-clicked="${() => this._updateQprData()}"
+        @close="${() => this.handleDialogClosed()}"
         keep-dialog-open
         ok-btn-text="Save"
       >
@@ -99,9 +95,9 @@ export class EditQprDialog extends LitElement {
             <iron-label for="startDate"> Start Date </iron-label>
             <calendar-lite
               id="startDate"
-              date="${this.prepareDatepickerDate(this._editedQprDatesSet!.start_date)}"
-              pretty-date="${this._editedQprDatesSet!.start_date}"
+              pretty-date="${this._editedQprDatesSet!.start_date ? this._editedQprDatesSet!.start_date : ''}"
               format="YYYY-MM-DD"
+              @date-changed="${({detail}: CustomEvent) => this.changed(detail.value, 'start_date')}"
               hide-header
             >
             </calendar-lite>
@@ -110,9 +106,9 @@ export class EditQprDialog extends LitElement {
             <iron-label for="endDate"> End Date </iron-label>
             <calendar-lite
               id="endDate"
-              date="${this.prepareDatepickerDate(this._editedQprDatesSet!.end_date)}"
-              pretty-date="${this._editedQprDatesSet!.end_date}"
+              pretty-date="${this._editedQprDatesSet!.end_date ? this._editedQprDatesSet!.end_date : ''}"
               format="YYYY-MM-DD"
+              @date-changed="${({detail}: CustomEvent) => this.changed(detail.value, 'end_date')}"
               hide-header
             >
             </calendar-lite>
@@ -121,9 +117,9 @@ export class EditQprDialog extends LitElement {
             <iron-label for="dueDate"> Due Date </iron-label>
             <calendar-lite
               id="dueDate"
-              date="${this.prepareDatepickerDate(this._editedQprDatesSet!.due_date)}"
-              pretty-date="${this._editedQprDatesSet!.due_date}"
+              pretty-date="${this._editedQprDatesSet!.due_date ? this._editedQprDatesSet!.due_date : ''}"
               format="YYYY-MM-DD"
+              @date-changed="${({detail}: CustomEvent) => this.changed(detail.value, 'due_date')}"
               hide-header
             >
             </calendar-lite>
@@ -164,6 +160,17 @@ export class EditQprDialog extends LitElement {
   @property({type: Array})
   get qprData() {
     return this._qprData;
+  }
+
+  changed(value: string, item: string) {
+    if (this._editedQprDatesSet) {
+      const newDate = moment(new Date(value)).format('YYYY-MM-DD');
+      this._editedQprDatesSet[item] = newDate;
+    }
+  }
+
+  handleDialogClosed() {
+    this.addOrModifyQprDialogOpened = false;
   }
 
   openQprDialog() {
@@ -223,6 +230,7 @@ export class EditQprDialog extends LitElement {
     }
     this._qprDatesSetEditedIndex = -1;
     this.addOrModifyQprDialogOpened = false;
+    this.requestUpdate();
   }
 
   _editQprDatesSet(e: CustomEvent, qprData: any) {
@@ -231,12 +239,11 @@ export class EditQprDialog extends LitElement {
     }
     this._qprDatesSetEditedIndex = e.detail.index;
     this._editedQprDatesSet = Object.assign({}, this.qprData[this._qprDatesSetEditedIndex]);
-    console.log(this._editedQprDatesSet);
     this.addOrModifyQprDialogOpened = true;
   }
 
-  _deleteQprDatesSet(e: CustomEvent) {
-    this.qprData.splice(e.detail.index, 1);
+  _deleteQprDatesSet(index: number) {
+    this.qprData.splice(index, 1);
   }
 
   _hideEditedIndexInfo(index: number) {
@@ -252,6 +259,7 @@ export class EditQprDialog extends LitElement {
   }
 
   _saveModifiedQprData() {
+    console.log('saveDATA');
     const endpoint = getEndpoint(interventionEndpoints.reportingRequirements, {
       intervId: this.interventionId,
       reportType: CONSTANTS.REQUIREMENTS_REPORT_TYPE.QPR
@@ -276,7 +284,16 @@ export class EditQprDialog extends LitElement {
   }
 
   prepareDatepickerDate(dateStr: string) {
-    return prepareDatepickerDate(dateStr);
+    const date = prepareDatepickerDate(dateStr);
+    if (date === null) {
+      const now = moment(new Date()).format('YYYY-MM-DD');
+      this._editedQprDatesSet.start_date = now;
+      this._editedQprDatesSet.end_date = now;
+      this._editedQprDatesSet.due_date = now;
+      return prepareDatepickerDate(now);
+    } else {
+      return date;
+    }
   }
 }
 

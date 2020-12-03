@@ -19,6 +19,7 @@ import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {AnyObject} from '@unicef-polymer/etools-types';
+import moment from 'moment';
 
 /**
  * @polymer
@@ -64,15 +65,21 @@ export class AddEditSpecialRepReq extends LitElement {
             <iron-label for="startDate"> Report Due Date </iron-label>
             <calendar-lite
               id="startDate"
-              date="${this.prepareDatepickerDate(this.item.due_date)}"
-              pretty-date="${this.item.due_date}"
+              pretty-date="${this.item.due_date ? this.item.due_date : ''}"
               format="YYYY-MM-DD"
+              @date-changed="${({detail}: CustomEvent) =>
+                (this.item.due_date = moment(new Date(detail.value)).format('YYYY-MM-DD'))}"
               hide-header
             ></calendar-lite>
           </div>
         </div>
         <div class="row-h">
-          <paper-input label="Reporting Requirement" placeholder="&#8212;" value="${this.item.description}">
+          <paper-input
+            label="Reporting Requirement"
+            placeholder="&#8212;"
+            value="${this.item.description ? this.item.description : ''}"
+            @value-changed="${({detail}: CustomEvent) => (this.item.description = detail.value)}"
+          >
           </paper-input>
         </div>
       </etools-dialog>
@@ -121,6 +128,7 @@ export class AddEditSpecialRepReq extends LitElement {
         fireEvent(this, 'reporting-requirements-saved', response);
         dialog.stopSpinner();
         this.opened = false;
+        this.requestUpdate();
       })
       .catch((error: any) => {
         dialog.stopSpinner();
@@ -137,6 +145,13 @@ export class AddEditSpecialRepReq extends LitElement {
   }
 
   prepareDatepickerDate(dateStr: string) {
+    const date = prepareDatepickerDate(dateStr);
+    if (date === null) {
+      const now = moment(new Date()).format('YYYY-MM-DD');
+      return prepareDatepickerDate(now);
+    } else {
+      return date;
+    }
     return prepareDatepickerDate(dateStr);
   }
 }

@@ -18,6 +18,7 @@ import {AddEditSpecialRepReqEl} from './add-edit-special-rep-req';
 import EtoolsDialog from '@unicef-polymer/etools-dialog';
 import {getEndpoint} from '../../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
+import {sharedStyles} from '../../../common/styles/shared-styles-lit';
 
 /**
  * @customElement
@@ -33,10 +34,14 @@ export class SpecialReportingRequirements extends CommonMixin(ReportingRequireme
   }
   render() {
     return html`
-      ${reportingRequirementsListStyles}
       <style include="data-table-styles">
-        etools-data-table-row {
+        ${sharedStyles}${reportingRequirementsListStyles}etools-data-table-row {
           --icons-actions_-_background-color: transparent !important;
+        }
+        *[slot='row-data'] .col-data {
+          display: inline-flex;
+          line-height: 24px;
+          align-items: center;
         }
       </style>
 
@@ -45,7 +50,7 @@ export class SpecialReportingRequirements extends CommonMixin(ReportingRequireme
       </div>
 
       <div class="row-h">
-        <paper-button class="secondary-btn" on-click="_openAddDialog"> ADD REQUIREMENTS </paper-button>
+        <paper-button class="secondary-btn" @click="${this._openAddDialog}"> ADD REQUIREMENTS </paper-button>
       </div>
 
       <div class="flex-c" ?hidden="${this._empty(this.reportingRequirements)}">
@@ -55,15 +60,16 @@ export class SpecialReportingRequirements extends CommonMixin(ReportingRequireme
           <etools-data-table-column class="flex-6">Reporting Requirements</etools-data-table-column>
           <etools-data-table-column class="flex-c"></etools-data-table-column>
         </etools-data-table-header>
-        ${this.reportingRequirements.forEach(
-          (item: any, index) => html` <etools-data-table-row no-collapse secondary-bg-on-hover>
-            <div slot="row-data">
-              <span class="col-data col-1 right-align index-col">${this._getIndex(index)}</span>
-              <span class="col-data col-3">${this.getDateDisplayValue(item.due_date)}</span>
-              <span class="col-data col-6">${item.description}</span>
-              <span class="col-data flex-c actions">
-                <icons-actions item$="${item}" @edit="${this._onEdit}" @delete="${this._onDelete}"> </icons-actions>
-              </span>
+        ${this.reportingRequirements.map(
+          (item: any, index: number) => html` <etools-data-table-row no-collapse secondary-bg-on-hover>
+            <div slot="row-data" class="layout-horizontal editable-row">
+              <div class="col-data col-1 right-align index-col">${this._getIndex(index)}</div>
+              <div class="col-data col-3">${this.getDateDisplayValue(item.due_date)}</div>
+              <div class="col-data col-6">${item.description}</div>
+              <div class="col-data flex-c actions">
+                <paper-icon-button icon="icons:create" @click="${() => this._onEdit(index)}"></paper-icon-button>
+                <paper-icon-button icon="icons:delete" @click="${() => this._onDelete(index)}"></paper-icon-button>
+              </div>
             </div>
           </etools-data-table-row>`
         )}
@@ -107,29 +113,20 @@ export class SpecialReportingRequirements extends CommonMixin(ReportingRequireme
     this._removeDeleteConfirmationsDialog();
   }
 
-  _onEdit(e: CustomEvent) {
-    e.stopPropagation();
-    this._setDialogData(e);
+  _onEdit(index: number) {
+    this._setDialogData(index);
     this.addEditDialog.opened = true;
   }
 
-  _setDialogData(e: CustomEvent) {
+  _setDialogData(index: number) {
     this.addEditDialog.interventionId = this.interventionId;
-    if (e.target !== null) {
-      // @ts-ignore
-      this.addEditDialog.item = JSON.parse(e.target.getAttribute('item'));
-    }
+    this.addEditDialog.item = this.reportingRequirements[index];
   }
 
-  _onDelete(e: CustomEvent) {
-    e.stopPropagation();
+  _onDelete(itemIndex: number) {
     if (this._deleteConfirmationDialog) {
-      if (e.target !== null) {
-        // @ts-ignore
-        const itemToDelete = JSON.parse(e.target.getAttribute('item'));
-        const index = this._getIndexById(itemToDelete.id);
-        // this.set('_itemToDeleteIndex', index);
-        this._itemToDeleteIndex = index;
+      if (itemIndex !== null) {
+        this._itemToDeleteIndex = itemIndex;
       }
       this._deleteConfirmationDialog.opened = true;
     }
@@ -160,22 +157,22 @@ export class SpecialReportingRequirements extends CommonMixin(ReportingRequireme
         })
         .then(() => {
           // delete complete, reset _itemToDeleteIndex
-          // this.set('_itemToDeleteIndex', -1);
           this._itemToDeleteIndex = -1;
         });
     }
   }
 
   _createAddEditDialog() {
-    console.log('here');
-    this.addEditDialog = document.createElement('add-edit-special-rep-req') as AddEditSpecialRepReqEl;
-    this._onSpecialReportingRequirementsSaved = this._onSpecialReportingRequirementsSaved.bind(this);
-    this.addEditDialog.addEventListener(
-      'reporting-requirements-saved',
-      this._onSpecialReportingRequirementsSaved as any
-    );
+    if (this.reportingRequirements) {
+      this.addEditDialog = document.createElement('add-edit-special-rep-req') as AddEditSpecialRepReqEl;
+      this._onSpecialReportingRequirementsSaved = this._onSpecialReportingRequirementsSaved.bind(this);
+      this.addEditDialog.addEventListener(
+        'reporting-requirements-saved',
+        this._onSpecialReportingRequirementsSaved as any
+      );
 
-    document.querySelector('body')!.appendChild(this.addEditDialog);
+      document.querySelector('body')!.appendChild(this.addEditDialog);
+    }
   }
 
   _removeAddEditDialog() {
@@ -237,9 +234,11 @@ export class SpecialReportingRequirements extends CommonMixin(ReportingRequireme
     if (index > -1) {
       // edit
       // this.splice('reportingRequirements', index, 1, savedReqItem);
+      // @ts-ignore
       this.reportingRequirements.splice(index, 1, savedReqItem);
     } else {
       // this.push('reportingRequirements', savedReqItem);
+      // @ts-ignore
       this.reportingRequirements.push(savedReqItem);
     }
   }
