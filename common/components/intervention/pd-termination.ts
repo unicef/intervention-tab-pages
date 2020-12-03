@@ -168,8 +168,7 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
       openDialog({
         dialog: 'are-you-sure',
         dialogData: {
-          content:
-            'Please make sure that the reporting requirements for the PD/SPD are updated with the correct dates',
+          content: 'Please make sure that the reporting requirements for the PD/SPD are updated with the correct dates',
           confirmBtnText: 'Terminate'
         }
       }).then(({confirmed}) => {

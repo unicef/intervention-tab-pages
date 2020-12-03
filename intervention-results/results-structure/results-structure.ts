@@ -49,7 +49,6 @@ import {
 } from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 
-
 const RESULT_VIEW = 'result_view';
 const BUDGET_VIEW = 'budget_view';
 const COMBINED_VIEW = 'combined_view';
