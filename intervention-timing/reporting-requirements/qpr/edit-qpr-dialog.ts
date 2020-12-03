@@ -72,7 +72,13 @@ export class EditQprDialog extends LitElement {
           <paper-button class="secondary-btn" @click="${this._addNewQpr}"> Add Requirement </paper-button>
         </div>
 
-        <qpr-list id="qprList" with-scroll .qprData="${this.qprData}" always-show-row-actions></qpr-list>
+        <qpr-list
+          id="qprList"
+          with-scroll
+          .qprData="${this.qprData}"
+          always-show-row-actions
+          ?editMode="${true}"
+        ></qpr-list>
       </etools-dialog>
 
       <!-- add or edit a QPR row -->

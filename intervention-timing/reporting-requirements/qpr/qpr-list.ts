@@ -29,11 +29,6 @@ export class QprList extends CommonMixin(ReportingReqPastDatesCheckMixin(LitElem
     return html`
       <style>
         ${sharedStyles} ${dataTableStylesLit}
-        *[slot="row-data"] {
-          margin-top: 6px;
-          margin-bottom: 6px;
-          width: 100%;
-        }
       </style>
 
       <etools-data-table-header no-collapse no-title>
@@ -54,9 +49,14 @@ export class QprList extends CommonMixin(ReportingReqPastDatesCheckMixin(LitElem
                 <div class="col-data col-3">${this.getDateDisplayValue(item.end_date)}</div>
                 <div class="col-data col-3">${this.getDateDisplayValue(item.due_date)}</div>
                 <div class="col-data flex-c actions">
-                  <paper-icon-button icon="icons:create" @click="${() => this._editQprReq(index)}"></paper-icon-button>
+                  <paper-icon-button
+                    icon="icons:create"
+                    @click="${() => this._editQprReq(index)}"
+                    ?hidden="${!this.editMode}"
+                  ></paper-icon-button>
                   <paper-icon-button
                     icon="icons:delete"
+                    ?hidden="${!this.editMode}"
                     @click="${() => this._deleteQprReq(index)}"
                   ></paper-icon-button>
                 </div>
