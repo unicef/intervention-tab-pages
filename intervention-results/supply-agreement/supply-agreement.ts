@@ -32,7 +32,7 @@ import {isUnicefUser} from '../../common/selectors';
 import {EtoolsUpload} from '@unicef-polymer/etools-upload/etools-upload';
 import {AnyObject, AsyncAction, InterventionSupplyItem} from '@unicef-polymer/etools-types';
 import {Intervention, ExpectedResult} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 
 const customStyles = html`
   <style>
@@ -307,7 +307,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
     if (success) {
       getStore().dispatch(updateCurrentIntervention(success));
       fireEvent(this, 'toast', {
-        text: (translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.SUPPLIES_UPLOADED') as unknown) as string
+        text: getTranslation('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.SUPPLIES_UPLOADED')
       });
     } else {
       const message = this.getUploadError(error);
