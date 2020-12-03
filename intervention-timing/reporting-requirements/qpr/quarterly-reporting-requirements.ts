@@ -10,6 +10,7 @@ import './edit-qpr-dialog';
 import './qpr-list';
 import {EditQprDialogEl} from './edit-qpr-dialog';
 import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '../../../common/styles/button-styles';
 
 /**
  * @polymer
@@ -24,7 +25,7 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
   ReportingRequirementsCommonMixin(LitElement)
 ) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [gridLayoutStylesLit, buttonsStyles];
   }
   render() {
     return html`

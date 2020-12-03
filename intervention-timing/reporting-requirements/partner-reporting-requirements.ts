@@ -26,6 +26,7 @@ import {isUnicefUser} from '../../common/selectors';
 import {connectStore} from '../../common/mixins/connect-store-mixin';
 import {AnyObject, Permission} from '@unicef-polymer/etools-types';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {buttonsStyles} from '../../common/styles/button-styles';
 
 /**
  * @polymer
@@ -34,7 +35,7 @@ import {sharedStyles} from '../../common/styles/shared-styles-lit';
 @customElement('partner-reporting-requirements')
 export class PartnerReportingRequirements extends connectStore(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [gridLayoutStylesLit, buttonsStyles];
   }
   render() {
     return html`
