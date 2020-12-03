@@ -38,7 +38,7 @@ export class EditHruDialog extends connectStore(LitElement) {
   render() {
     return html`
       ${requiredFieldStarredStylesPolymer}
-      <style include="data-table-styles">
+      <style>
         *[hidden] {
           display: none !important;
         }

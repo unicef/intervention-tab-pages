@@ -5,11 +5,11 @@ import '../styles/reporting-requirements-lists-styles';
 import CommonMixin from '../../../common/mixins/common-mixin';
 import ReportingReqPastDatesCheckMixin from '../mixins/reporting-req-past-dates-check';
 import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
-// import {reportingRequirementsListStylesLit} from '../styles/reporting-requirements-lists-styles';
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
 import {fireEvent} from '../../../utils/fire-custom-event';
 import {isEmptyObject} from '../../../utils/utils';
 import {sharedStyles} from '../../../common/styles/shared-styles-lit';
+import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
 
 /**
  * @polymer
@@ -20,18 +20,19 @@ import {sharedStyles} from '../../../common/styles/shared-styles-lit';
 @customElement('qpr-list')
 export class QprList extends CommonMixin(ReportingReqPastDatesCheckMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [gridLayoutStylesLit, reportingRequirementsListStyles];
   }
   render() {
     if (!this.qprData) {
       return;
     }
     return html`
-      <style include="data-table-styles">
-        ${sharedStyles}${reportingRequirementsListStyles} *[slot='row-data'] .col-data {
-          display: inline-flex;
-          line-height: 24px;
-          align-items: center;
+      <style>
+        ${sharedStyles} ${dataTableStylesLit}
+        *[slot="row-data"] {
+          margin-top: 6px;
+          margin-bottom: 6px;
+          width: 100%;
         }
       </style>
 

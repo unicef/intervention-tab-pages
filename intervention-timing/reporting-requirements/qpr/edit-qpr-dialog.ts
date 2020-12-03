@@ -64,6 +64,7 @@ export class EditQprDialog extends LitElement {
         @confirm-btn-clicked="${() => this._saveModifiedQprData()}"
         @close="${() => this.closeQprDialog()}"
         ok-btn-text="Save"
+        keep-dialog-open
         spinner-text="Saving..."
       >
         <div class="layout-horizontal">
