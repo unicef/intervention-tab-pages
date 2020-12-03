@@ -192,10 +192,8 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
       const borderColor = comments.length ? '#FF4545' : '#81D763';
       meta.element.style.cssText = `
         position: relative;
-        border-top: 2px solid ${borderColor} !important;
-        border-bottom: 2px solid ${borderColor} !important;
-        border-left: 2px solid ${borderColor} !important;
-        border-right: 2px solid ${borderColor} !important;
+        outline: 2px solid ${borderColor};
+        margin: 2px;
       `;
       meta.counter.innerText = `${comments.length}`;
       if (comments.length) {
