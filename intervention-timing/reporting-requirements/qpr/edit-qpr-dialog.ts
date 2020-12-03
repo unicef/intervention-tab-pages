@@ -78,6 +78,7 @@ export class EditQprDialog extends LitElement {
           .qprData="${this.qprData}"
           always-show-row-actions
           ?editMode="${true}"
+          @delete-qpr="${(event: CustomEvent) => this._deleteQprDatesSet(event)}"
         ></qpr-list>
       </etools-dialog>
 
@@ -158,16 +159,8 @@ export class EditQprDialog extends LitElement {
   @query('#editQprDialog')
   editQprDialog!: EtoolsDialog;
 
-  _qprData!: any;
-
-  set qprData(qprData) {
-    this._qprData = qprData;
-  }
-
   @property({type: Array})
-  get qprData() {
-    return this._qprData;
-  }
+  qprData!: any[];
 
   changed(value: string, item: string) {
     if (this._editedQprDatesSet) {
@@ -249,8 +242,9 @@ export class EditQprDialog extends LitElement {
     this.addOrModifyQprDialogOpened = true;
   }
 
-  _deleteQprDatesSet(index: number) {
-    this.qprData.splice(index, 1);
+  _deleteQprDatesSet(event: CustomEvent) {
+    // Forcing ui update
+    this.qprData = [...this.qprData.filter((_item: AnalyserNode, index: number) => index !== event.detail.index)];
   }
 
   _hideEditedIndexInfo(index: number) {
