@@ -10,7 +10,6 @@ import './hru-list.js';
 import CONSTANTS from '../../../common/constants';
 import {fireEvent} from '../../../utils/fire-custom-event';
 import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
-import {buttonsStylesLitContent} from '../styles/buttons-styles-polymer';
 import {requiredFieldStarredStylesPolymer} from '../../../common/styles/required-field-styles';
 import {prepareDatepickerDate, convertDate} from '../../../utils/date-utils';
 // this was refactored
@@ -20,10 +19,10 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
-import {RootState} from '../../../common/types/store.types';
 import {isEmptyObject} from '../../../utils/utils';
 import {connectStore} from '../../../common/mixins/connect-store-mixin';
 import {AnyObject} from '@unicef-polymer/etools-types';
+import {buttonsStyles} from '../../../common/styles/button-styles.js';
 
 /**
  * @polymer
@@ -34,7 +33,7 @@ import {AnyObject} from '@unicef-polymer/etools-types';
 @customElement('edit-hru-dialog')
 export class EditHruDialog extends connectStore(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStylesLitContent];
+    return [gridLayoutStylesLit, buttonsStyles];
   }
   render() {
     return html`

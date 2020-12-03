@@ -8,7 +8,6 @@ import './add-edit-special-rep-req';
 import CommonMixin from '../../../common/mixins/common-mixin';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
 import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
-import {buttonsStylesLitContent} from '../styles/buttons-styles-polymer';
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
 import CONSTANTS from '../../../common/constants';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
@@ -19,6 +18,7 @@ import EtoolsDialog from '@unicef-polymer/etools-dialog';
 import {getEndpoint} from '../../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {sharedStyles} from '../../../common/styles/shared-styles-lit';
+import {buttonsStyles} from '../../../common/styles/button-styles';
 
 /**
  * @customElement
@@ -30,7 +30,7 @@ import {sharedStyles} from '../../../common/styles/shared-styles-lit';
 @customElement('special-reporting-requirements')
 export class SpecialReportingRequirements extends CommonMixin(ReportingRequirementsCommonMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStylesLitContent];
+    return [gridLayoutStylesLit, buttonsStyles];
   }
   render() {
     return html`

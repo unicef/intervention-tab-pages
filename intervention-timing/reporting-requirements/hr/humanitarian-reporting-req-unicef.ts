@@ -7,11 +7,11 @@ import './hru-list.js';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
 import FrontendPaginationMixin from '../mixins/frontend-pagination-mixin';
 import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
-import {buttonsStylesLitContent} from '../styles/buttons-styles-polymer';
 import {EditHruDialog} from './edit-hru-dialog.js';
 import {HruListEl} from './hru-list.js';
 import {ExpectedResult} from '@unicef-polymer/etools-types';
 import {sharedStyles} from '../../../common/styles/shared-styles-lit';
+import {buttonsStyles} from '../../../common/styles/button-styles';
 
 /**
  * @customElement
@@ -25,7 +25,7 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
   ReportingRequirementsCommonMixin(LitElement)
 ) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStylesLitContent];
+    return [gridLayoutStylesLit, buttonsStyles];
   }
   render() {
     return html`
