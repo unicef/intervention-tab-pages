@@ -14,7 +14,7 @@ import DatePickerLite from '@unicef-polymer/etools-date-time/datepicker-lite';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import UploadMixin from '../../common/mixins/uploads-mixin';
 import CONSTANTS from '../../common/constants';
-import {sectionContentStylesPolymer} from '../../common/styles/content-section-styles-polymer';
+import {sectionContentStyles} from '../../common/styles/content-section-styles-polymer';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {getStore} from '../../utils/redux-store-access';
@@ -56,7 +56,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
     }
     return html`
       <style>
-        ${sectionContentStylesPolymer}${sharedStyles}:host {
+        ${sectionContentStyles}${sharedStyles}:host {
           @apply --layout-vertical;
           width: 100%;
           display: block;

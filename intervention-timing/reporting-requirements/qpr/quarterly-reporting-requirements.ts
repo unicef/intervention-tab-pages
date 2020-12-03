@@ -9,6 +9,7 @@ import {fireEvent} from '../../../utils/fire-custom-event';
 import './edit-qpr-dialog';
 import './qpr-list';
 import {EditQprDialogEl} from './edit-qpr-dialog';
+import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
 
 /**
  * @polymer
@@ -22,6 +23,9 @@ import {EditQprDialogEl} from './edit-qpr-dialog';
 export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRequirementsMixin(
   ReportingRequirementsCommonMixin(LitElement)
 ) {
+  static get styles() {
+    return [gridLayoutStylesLit];
+  }
   render() {
     return html`
       <style>

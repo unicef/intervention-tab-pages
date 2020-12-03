@@ -21,7 +21,7 @@ import CommonMixin from '../common/mixins/common-mixin';
 import UtilsMixin from '../common/mixins/utils-mixin';
 import EndpointsMixin from '../common/mixins/endpoints-mixin';
 
-import {sectionContentStylesPolymer} from '../common/styles/content-section-styles-polymer';
+import {sectionContentStyles} from '../common/styles/content-section-styles-polymer';
 import {sharedStylesPolymer} from '../common/styles/shared-styles-polymer';
 import {gridLayoutStylesPolymer} from '../common/styles/grid-layout-styles-polymer';
 
@@ -61,7 +61,7 @@ class InterventionProgress extends connectStore(
 ) {
   static get template() {
     return html`
-      ${gridLayoutStylesPolymer()} ${sharedStylesPolymer()} ${sectionContentStylesPolymer} ${pmpCustomIcons}
+      ${gridLayoutStylesPolymer()} ${sharedStylesPolymer()} ${sectionContentStyles} ${pmpCustomIcons}
       ${frWarningsStylesPolymer()}
       <style include="data-table-styles paper-material-styles">
         #progress-summary etools-progress-bar {

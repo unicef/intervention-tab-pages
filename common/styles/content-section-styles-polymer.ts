@@ -1,7 +1,7 @@
-import {html} from '@polymer/polymer/polymer-element.js';
+import {html} from 'lit-element';
 
 // language=HTML
-export const sectionContentStylesPolymer = html` <style>
+export const sectionContentStyles = html` <style>
   .content-section + .content-section,
   .content-section + * + .content-section,
   .content-section:not(:first-of-type) {

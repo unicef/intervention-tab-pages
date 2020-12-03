@@ -11,7 +11,6 @@ import './qpr-list.js';
 import CONSTANTS from '../../../common/constants';
 import '@unicef-polymer/etools-date-time/calendar-lite.js';
 import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
-import {buttonsStylesLitContent} from '../styles/buttons-styles-polymer';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
@@ -20,6 +19,7 @@ import {QprListEl} from './qpr-list.js';
 import {fireEvent} from '../../../utils/fire-custom-event';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import moment from 'moment';
+import {buttonsStyles} from '../../../common/styles/button-styles';
 
 /**
  * @polymer
@@ -28,7 +28,7 @@ import moment from 'moment';
 @customElement('edit-qpr-dialog')
 export class EditQprDialog extends LitElement {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStylesLitContent];
+    return [gridLayoutStylesLit, buttonsStyles];
   }
   render() {
     return html`

@@ -1,5 +1,4 @@
 import {LitElement, customElement, html, property} from 'lit-element';
-import '@polymer/polymer/polymer-element';
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-selector/iron-selector';
 import '@polymer/iron-pages/iron-pages';
@@ -13,7 +12,7 @@ import './hr/humanitarian-reporting-req-unicef';
 import './hr/humanitarian-reporting-req-cluster';
 import './srr/special-reporting-requirements';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {sectionContentStylesPolymer} from '../../common/styles/content-section-styles-polymer';
+import {sectionContentStyles} from '../../common/styles/content-section-styles-polymer';
 
 import {HumanitarianReportingReqUnicefEl} from './hr/humanitarian-reporting-req-unicef';
 import {QuarterlyReportingRequirementsEL} from './qpr/quarterly-reporting-requirements';
@@ -39,7 +38,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
   }
   render() {
     return html`
-      ${sectionContentStylesPolymer}
+      ${sectionContentStyles}
       <style>
         ${sharedStyles} :host {
           display: block;
