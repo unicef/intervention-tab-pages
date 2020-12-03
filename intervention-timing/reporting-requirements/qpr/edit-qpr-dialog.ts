@@ -221,13 +221,15 @@ export class EditQprDialog extends LitElement {
       return;
     }
     this.addOrModifyQprDialogOpened = false;
+    const auxQprData = [...this.qprData];
     if (this._qprDatesSetEditedIndex < 0) {
       // add
-      this.qprData.push(this._editedQprDatesSet);
+      auxQprData.push(this._editedQprDatesSet);
     } else {
       // edit
-      this.qprData.splice(this._qprDatesSetEditedIndex, 1, this._editedQprDatesSet);
+      auxQprData.splice(this._qprDatesSetEditedIndex, 1, this._editedQprDatesSet);
     }
+    this.qprData = [...auxQprData];
     this._qprDatesSetEditedIndex = -1;
     this.addOrModifyQprDialogOpened = false;
     this.requestUpdate();
