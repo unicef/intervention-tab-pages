@@ -21,5 +21,10 @@ export const reportingRequirementsListStyles = css`
 
   .actions {
     position: relative;
+    visibility: hidden;
+  }
+
+  etools-data-table-row:hover .actions {
+    visibility: visible;
   }
 `;

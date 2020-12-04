@@ -53,8 +53,7 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
       </div>
 
       <div class="flex-c" ?hidden="${this._empty(this.reportingRequirements)}">
-        <hru-list id="hruList" class="flex-c" .hruData="${this.dataItems}" disable-sorting use-pagination-index>
-        </hru-list>
+        <hru-list id="hruList" .hruData="${this.dataItems}" disable-sorting use-pagination-index> </hru-list>
         <etools-data-table-footer
           .pageSize="${this.pagination.pageSize}"
           .pageNumberr="${this.pagination.pageNumber}"
