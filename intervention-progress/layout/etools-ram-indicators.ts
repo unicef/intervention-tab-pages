@@ -116,7 +116,7 @@ class EtoolsRamIndicators extends CommonMixin(PolymerElement) {
       .catch((error: any) => {
         if (error.status === 404) {
           fireEvent(this, 'toast', {
-            text: "_translate('INTERVENTION_REPORTS.DUE_DATE')",
+            text: this._translate('INTERVENTION_REPORTS.DUE_DATE'),
             showCloseBtn: true
           });
         } else {

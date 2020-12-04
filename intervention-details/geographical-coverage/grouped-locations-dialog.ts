@@ -5,7 +5,7 @@ import {buttonsStyles} from '../../common/styles/button-styles';
 import get from 'lodash-es/get';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {LocationObject} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 
 class GroupedLocations {
   adminLevelLocation: LocationObject | null = null;
@@ -258,7 +258,7 @@ export class GroupedLocationsDialog extends LitElement {
 
     if (locationsUnableToGroup && locationsUnableToGroup.length) {
       this.message =
-        ((translate('INTERVENTION_DETAILS.GROUPED_LOCATIONS.LOCATIONS_UNABLE_TO_GROUP') as unknown) as string) +
+        getTranslation('INTERVENTION_DETAILS.GROUPED_LOCATIONS.LOCATIONS_UNABLE_TO_GROUP') +
         locationsUnableToGroup.join(', ');
     }
 
