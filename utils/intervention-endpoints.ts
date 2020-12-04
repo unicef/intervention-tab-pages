@@ -173,7 +173,7 @@ export const interventionEndpoints: EtoolsEndpoints = {
     template: '/api/pmp/v3/interventions/<%=id%>/attachments/'
   },
   interventionReview: {
-    template: '/api/pmp/v3/interventions/<%=interventionId%>/review/<%=id%>/'
+    template: '/api/pmp/interventions/<%=interventionId%>/review/<%=id%>/'
   },
   updatePdAttachment: {
     template: '/api/pmp/v3/interventions/<%=id%>/attachments/<%=attachment_id%>/'
