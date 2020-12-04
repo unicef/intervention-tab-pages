@@ -306,7 +306,9 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
     this.uploadInProcess = false;
     if (success) {
       getStore().dispatch(updateCurrentIntervention(success));
-      fireEvent(this, 'toast', {text: getTranslation('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.SUPPLIES_UPLOADED')});
+      fireEvent(this, 'toast', {
+        text: getTranslation('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.SUPPLIES_UPLOADED')
+      });
     } else {
       const message = this.getUploadError(error);
       fireEvent(this, 'toast', {text: `Can not upload supplies: ${message}`});

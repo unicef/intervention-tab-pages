@@ -28,7 +28,7 @@ import {connectStore} from './common/mixins/connect-store-mixin';
 import {Intervention} from '@unicef-polymer/etools-types';
 import {AsyncAction, RouteDetails} from '@unicef-polymer/etools-types';
 import {interventions} from './common/reducers/interventions';
-import {get as getTranslation, translate} from 'lit-translate';
+import {translate} from 'lit-translate';
 
 const MOCKUP_STATUSES = [
   ['draft', 'Draft'],
@@ -156,32 +156,32 @@ export class InterventionTabs extends connectStore(LitElement) {
   pageTabs = [
     {
       tab: 'overview',
-      tabLabel: getTranslation('INTERVENTION_TABS.OVERVIEW_TAB'),
+      tabLabel: (translate('INTERVENTION_TABS.OVERVIEW_TAB') as unknown) as string,
       hidden: false
     },
     {
       tab: 'details',
-      tabLabel: getTranslation('INTERVENTION_TABS.DETAILS_TAB'),
+      tabLabel: (translate('INTERVENTION_TABS.DETAILS_TAB') as unknown) as string,
       hidden: false
     },
     {
       tab: 'results',
-      tabLabel: getTranslation('INTERVENTION_TABS.RESULTS_TAB'),
+      tabLabel: (translate('INTERVENTION_TABS.RESULTS_TAB') as unknown) as string,
       hidden: false
     },
     {
       tab: 'timing',
-      tabLabel: getTranslation('INTERVENTION_TABS.TIMING_TAB'),
+      tabLabel: (translate('INTERVENTION_TABS.TIMING_TAB') as unknown) as string,
       hidden: false
     },
     {
       tab: 'management',
-      tabLabel: getTranslation('INTERVENTION_TABS.MANAGEMENT_TAB'),
+      tabLabel: (translate('INTERVENTION_TABS.MANAGEMENT_TAB') as unknown) as string,
       hidden: false
     },
     {
       tab: 'attachments',
-      tabLabel: getTranslation('INTERVENTION_TABS.ATTACHMENTS_TAB'),
+      tabLabel: (translate('INTERVENTION_TABS.ATTACHMENTS_TAB') as unknown) as string,
       hidden: false
     }
   ];
@@ -270,10 +270,14 @@ export class InterventionTabs extends connectStore(LitElement) {
       ) {
         this.pageTabs.push({
           tab: 'progress',
-          tabLabel: getTranslation('INTERVENTION_TABS.PROGRESS_TAB'),
+          tabLabel: (translate('INTERVENTION_TABS.PROGRESS_TAB') as unknown) as string,
           hidden: false
         });
-        this.pageTabs.push({tab: 'reports', tabLabel: getTranslation('INTERVENTION_TABS.REPORTS_TAB'), hidden: false});
+        this.pageTabs.push({
+          tab: 'reports',
+          tabLabel: (translate('INTERVENTION_TABS.REPORTS_TAB') as unknown) as string,
+          hidden: false
+        });
       }
     } else if (this._routeDetails) {
       this._routeDetails = null;

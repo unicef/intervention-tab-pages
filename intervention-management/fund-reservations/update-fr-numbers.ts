@@ -20,7 +20,7 @@ import {
   layoutHorizontal
 } from '../../common/styles/flex-layout-styles';
 import {AnyObject} from '@unicef-polymer/etools-types';
-import {translate, get as getTranslation} from 'lit-translate';
+import {translate} from 'lit-translate';
 
 /**
  * @customElement
@@ -138,7 +138,9 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
   editMode = true;
 
   @property({type: String})
-  deleteConfirmationMessage = getTranslation('INTERVENTION_MANAGEMENT.FUND_RESERVATIONS.FR_DIALOG.DELETE_FR_PROMPT');
+  deleteConfirmationMessage = (translate(
+    'INTERVENTION_MANAGEMENT.FUND_RESERVATIONS.FR_DIALOG.DELETE_FR_PROMPT'
+  ) as unknown) as string;
 
   @property({type: Boolean})
   disableConfirmBtn = true;
