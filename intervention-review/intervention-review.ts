@@ -13,6 +13,9 @@ import {getEndpoint} from '../utils/endpoint-helper';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {updateCurrentIntervention} from '../common/actions/interventions';
+import '@unicef-polymer/etools-content-panel/etools-content-panel';
+import '@polymer/paper-button/paper-button';
+import '@polymer/paper-checkbox/paper-checkbox';
 declare const moment: any;
 
 const Types: GenericObject<string> = {
@@ -121,6 +124,7 @@ export class InterventionReviewTab extends connect(getStore())(LitElement) {
     if (!state.interventions.current) {
       return;
     }
+    // TODO -see how the list is sorted in order to display latest
     this.review = state.interventions.current.reviews[0] || null;
     this.currentReviewState = this.review?.overall_approval || false;
     this.interventionId = state.interventions.current.id;
