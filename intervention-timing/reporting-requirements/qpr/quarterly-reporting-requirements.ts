@@ -98,7 +98,7 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
       });
       return;
     }
-    let qprData: [];
+    let qprData: any[];
     if (this.requirementsCount === 0) {
       qprData = this.generateQPRData(this.interventionStart, this.interventionEnd);
     } else {

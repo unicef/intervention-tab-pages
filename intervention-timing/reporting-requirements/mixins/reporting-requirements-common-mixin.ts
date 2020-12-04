@@ -22,11 +22,7 @@ function ReportingRequirementsCommonMixin<T extends Constructor<LitElement>>(bas
       return this._reportingRequirements;
     }
     set reportingRequirements(reportingRequirements) {
-      if (reportingRequirements.reporting_requirements) {
-        this._reportingRequirements = reportingRequirements.reporting_requirements;
-      } else {
-        this._reportingRequirements = reportingRequirements;
-      }
+      this._reportingRequirements = reportingRequirements;
       this._countReportingReq(this._reportingRequirements.length);
     }
 
@@ -68,9 +64,8 @@ function ReportingRequirementsCommonMixin<T extends Constructor<LitElement>>(bas
       const endpoint = this._getEndpointObj(newId, type);
       sendRequest({method: 'GET', endpoint: endpoint})
         .then((response: any) => {
-          this.reportingRequirements = CONSTANTS.REQUIREMENTS_REPORT_TYPE.SPECIAL
-            ? response
-            : response.reporting_requirements;
+          this.reportingRequirements =
+            CONSTANTS.REQUIREMENTS_REPORT_TYPE.SPECIAL == type ? response : response.reporting_requirements;
           this._countReportingReq(this.reportingRequirements.length);
         })
         .catch((error: any) => {
