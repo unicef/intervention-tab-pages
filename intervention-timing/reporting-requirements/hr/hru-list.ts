@@ -43,7 +43,7 @@ export class HruList extends CommonMixin(ReportingReqPastDatesCheckMixin(LitElem
       ${this.hruData.map(
         (item: any, index) => html` <etools-data-table-row
           no-collapse
-          ?secondary-bg-on-hover="${this._canEdit(this.editMode)}"
+          ?secondary-bg-on-hover="${!this._canEdit(this.editMode)}"
         >
           <div slot="row-data" class="layout-horizontal editable-row">
             <div class="col-data col-1 right-align index-col">${this._getIndex(index)}</div>
@@ -51,7 +51,7 @@ export class HruList extends CommonMixin(ReportingReqPastDatesCheckMixin(LitElem
             <div class="col-data col-1 actions">
               <paper-icon-button
                 icon="icons:delete"
-                ?hidden="${this.editMode}"
+                ?hidden="${!this.editMode}"
                 @click="${() => this._deleteHruReq(index)}"
               ></paper-icon-button>
             </div>
