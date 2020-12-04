@@ -131,7 +131,6 @@ export class InterventionReviewTab extends connect(getStore())(LitElement) {
     if (!state.interventions.current) {
       return;
     }
-    // TODO -see how the list is sorted in order to display latest
     this.review = state.interventions.current.reviews[0] || null;
     this.currentReviewState = this.review?.overall_approval || false;
     this.interventionId = state.interventions.current.id;
