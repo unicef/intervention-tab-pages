@@ -1,4 +1,4 @@
-import { IDialogResponse, IDialog } from "@unicef-polymer/etools-types";
+import {IDialogResponse, IDialog} from '@unicef-polymer/etools-types';
 
 // you need to fire 'dialog-closed' event on dialog close!
 export function openDialog<D, R = any>({dialog, dialogData, readonly}: IDialog<D>): Promise<IDialogResponse<R>> {

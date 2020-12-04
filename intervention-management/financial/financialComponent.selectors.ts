@@ -1,8 +1,4 @@
-import {
-  Intervention,
-  InterventionPermissionsFields,
-  PlannedBudget
-} from '@unicef-polymer/etools-types';
+import {Intervention, InterventionPermissionsFields, PlannedBudget} from '@unicef-polymer/etools-types';
 import {ModelsBase} from '../../common/models/models.base';
 
 export class FinancialComponentData extends ModelsBase {

@@ -26,4 +26,4 @@ export const getStoreAsync = () => {
     storePromise = new Promise((resolve: () => any) => (storeResolver = resolve));
   }
   return storePromise;
-}
+};
