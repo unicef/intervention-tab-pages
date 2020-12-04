@@ -63,6 +63,7 @@ export class InterventionReviewTab extends connect(getStore())(LitElement) {
     ];
   }
   @property() currentReviewState = false;
+  @property() allowEdit = false;
   @property() review: InterventionReview | null = null;
   private interventionId: number | null = null;
 
@@ -74,7 +75,11 @@ export class InterventionReviewTab extends connect(getStore())(LitElement) {
     // language=HTML
     return html`
       <etools-content-panel class="content-section" panel-title="Intervention Review">
-        <div class="layout-horizontal row-padding-v">
+        <div slot="panel-btns">
+          <paper-icon-button @click="${() => (this.allowEdit = true)}" icon="create"> </paper-icon-button>
+        </div>
+
+        <div class="row-padding-v">
           <div ?hidden="${this.review}">${translate('INTERVENTION_REVIEWS.EMPTY_REVIEW')}</div>
 
           <div ?hidden="${!this.review}" class="container layout-horizontal">
@@ -88,17 +93,18 @@ export class InterventionReviewTab extends connect(getStore())(LitElement) {
             </div>
             <paper-checkbox
               ?checked="${this.currentReviewState}"
+              ?disabled="${!this.allowEdit}"
               @checked-changed="${(e: CustomEvent) => this.updateField(e.detail.value)}"
             >
               ${translate('INTERVENTION_REVIEWS.OVERALL_APPROVAL')}
             </paper-checkbox>
-            <paper-button
-              ?hidden="${this.currentReviewState === this.review?.overall_approval}"
-              class="primary"
-              @click="${() => this.save()}"
-            >
-              Save
+          </div>
+
+          <div class="layout-horizontal right-align" ?hidden="${!this.allowEdit}">
+            <paper-button class="default" @click="${() => this.cancel()}">
+              ${translate('GENERAL.CANCEL')}
             </paper-button>
+            <paper-button class="primary" @click="${() => this.save()}"> ${translate('GENERAL.SAVE')} </paper-button>
           </div>
         </div>
       </etools-content-panel>
@@ -119,6 +125,7 @@ export class InterventionReviewTab extends connect(getStore())(LitElement) {
 
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'review')) {
+      this.cancel();
       return;
     }
     if (!state.interventions.current) {
@@ -148,6 +155,7 @@ export class InterventionReviewTab extends connect(getStore())(LitElement) {
     })
       .then(({intervention}: any) => {
         getStore().dispatch(updateCurrentIntervention(intervention));
+        this.allowEdit = false;
       })
       .catch(() => {
         fireEvent(this, 'toast', {text: 'Can not save approval. Try again later'});
@@ -158,5 +166,10 @@ export class InterventionReviewTab extends connect(getStore())(LitElement) {
           loadingSource: 'intervention-review'
         });
       });
+  }
+
+  cancel() {
+    this.allowEdit = false;
+    this.currentReviewState = this.review?.overall_approval || false;
   }
 }
