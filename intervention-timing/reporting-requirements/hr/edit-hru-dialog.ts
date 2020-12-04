@@ -96,19 +96,19 @@ export class EditHruDialog extends connectStore(LitElement) {
             >
             </calendar-lite>
 
-            <paper-button id="add-selected-date" class="secondary-btn" on-click="_addToList">
+            <paper-button id="add-selected-date" class="secondary-btn" @click="${() => this._addToList()}">
               Add Selected Date to List
             </paper-button>
           </div>
           <div class="col col-6">
-            <div class="row-h" hidden$="[[!_empty(hruData.length)]]">No dates added.</div>
+            <div class="row-h" ?hidden="${!this._empty(this.hruData.length)}">No dates added.</div>
             <hru-list
               id="hruList"
               class="flex-c"
               with-scroll
               .hruData="${this.hruData}"
               ?hidden="${this._empty(this.hruData.length)}"
-              edit-mode
+              ?editMode="${true}"
               @delete-hru="${this._deleteHruDate}"
             >
             </hru-list>
@@ -234,9 +234,6 @@ export class EditHruDialog extends connectStore(LitElement) {
     if (isEmptyObject(this.hruData)) {
       return;
     }
-
-    // @DAN
-    // this.set('hruData.0.start_date', startDate);
     this.hruData[0].start_date = startDate;
 
     this._calculateStartDateForTheRestOfItems();
@@ -245,8 +242,6 @@ export class EditHruDialog extends connectStore(LitElement) {
   _calculateStartDateForTheRestOfItems() {
     let i;
     for (i = 1; i < this.hruData.length; i++) {
-      // @DAN
-      // this.set('hruData.' + i + '.start_date', this._computeStartDate(i));
       this.hruData[i].start_date = this._computeStartDate(i);
     }
   }

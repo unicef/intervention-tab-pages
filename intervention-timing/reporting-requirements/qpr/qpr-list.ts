@@ -42,7 +42,7 @@ export class QprList extends CommonMixin(ReportingReqPastDatesCheckMixin(LitElem
       ${this.qprData.map(
         (item: any, index: number) =>
           html`
-            <etools-data-table-row no-collapse ?secondary-bg-on-hover="${this._canEdit(this.editMode)}">
+            <etools-data-table-row no-collapse ?secondary-bg-on-hover="${!this._canEdit(this.editMode)}">
               <div slot="row-data" class="layout-horizontal editable-row">
                 <div class="col-data col-1 right-align index-col">${this.getIndex(index, this.qprData.length)}</div>
                 <div class="col-data col-3">${this.getDateDisplayValue(item.start_date)}</div>

@@ -6,9 +6,10 @@ import {fireEvent} from '../../../utils/fire-custom-event';
 import ReportingReqPastDatesCheckMixin from '../mixins/reporting-req-past-dates-check';
 import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
-import {IconsActionsEl} from '../../../common/layout/icons-actions';
 import {isEmptyObject} from '../../../utils/utils';
 import {AnyObject} from '@unicef-polymer/etools-types';
+import {sharedStyles} from '../../../common/styles/shared-styles-lit';
+import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
 
 /**
  * @polymer
@@ -20,17 +21,17 @@ import {AnyObject} from '@unicef-polymer/etools-types';
 @customElement('hru-list')
 export class HruList extends CommonMixin(ReportingReqPastDatesCheckMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [gridLayoutStylesLit, reportingRequirementsListStyles];
   }
   render() {
+    if (!this.hruData) {
+      return;
+    }
     return html`
-      <style include="data-table-styles">
-        ${reportingRequirementsListStyles}:host([with-scroll]) {
+      <style>
+        ${sharedStyles} ${dataTableStylesLit}:host([with-scroll]) {
           max-height: 400px;
           overflow-y: auto;
-        }
-        etools-data-table-row {
-          --icons-actions_-_background-color: transparent !important;
         }
       </style>
 
@@ -44,17 +45,15 @@ export class HruList extends CommonMixin(ReportingReqPastDatesCheckMixin(LitElem
           no-collapse
           ?secondary-bg-on-hover="${this._canEdit(this.editMode)}"
         >
-          <div slot="row-data" class="layout-horizontal">
+          <div slot="row-data" class="layout-horizontal editable-row">
             <div class="col-data col-1 right-align index-col">${this._getIndex(index)}</div>
             <div class="col-data flex-c">${this.getDateDisplayValue(item.end_date)}</div>
             <div class="col-data col-1 actions">
-              <icons-actions
-                ?hidden="${!this._canEdit(this.editMode)}"
-                .data-args="${index}"
-                @delete="${this._deleteHruReq}"
-                showEdit="${this._listItemEditable}"
-              >
-              </icons-actions>
+              <paper-icon-button
+                icon="icons:delete"
+                ?hidden="${this.editMode}"
+                @click="${() => this._deleteHruReq(index)}"
+              ></paper-icon-button>
             </div>
           </div>
         </etools-data-table-row>`
@@ -76,11 +75,6 @@ export class HruList extends CommonMixin(ReportingReqPastDatesCheckMixin(LitElem
 
   @property({type: Boolean})
   disableSorting = false;
-
-  // @DAN-> refactor static observers
-  // static get observers() {
-  //   return ['_sortReportingReq(hruData, hruData.length)'];
-  // }
 
   _interventionId!: number;
 
@@ -118,9 +112,9 @@ export class HruList extends CommonMixin(ReportingReqPastDatesCheckMixin(LitElem
     return parseInt(index, 10) + 1;
   }
 
-  _deleteHruReq(e: CustomEvent) {
+  _deleteHruReq(index: number) {
     fireEvent(this, 'delete-hru', {
-      index: (e.target as IconsActionsEl).getAttribute('data-args')
+      index: index
     });
   }
 }

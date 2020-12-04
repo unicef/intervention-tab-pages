@@ -10,7 +10,6 @@ import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit
 import {EditHruDialog} from './edit-hru-dialog.js';
 import {HruListEl} from './hru-list.js';
 import {ExpectedResult} from '@unicef-polymer/etools-types';
-import {sharedStyles} from '../../../common/styles/shared-styles-lit';
 import {buttonsStyles} from '../../../common/styles/button-styles';
 
 /**
@@ -28,6 +27,9 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
     return [gridLayoutStylesLit, buttonsStyles];
   }
   render() {
+    if (this.reportingRequirements.length) {
+      this._paginationChanged(this.pagination.pageNumber, this.pagination.pageSize, this.reportingRequirements);
+    }
     return html`
       <style>
         :host {
@@ -51,14 +53,14 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
       </div>
 
       <div class="flex-c" ?hidden="${this._empty(this.reportingRequirements)}">
-        <hru-list id="hruList" class="flex-c" hru-data="${this.dataItems}" disable-sorting use-pagination-index>
+        <hru-list id="hruList" class="flex-c" .hruData="${this.dataItems}" disable-sorting use-pagination-index>
         </hru-list>
         <etools-data-table-footer
-          page-size="${this.pagination.pageSize}"
-          page-number="${this.pagination.pageNumber}"
-          total-results="${this.pagination.totalResults}"
-          on-page-size-changed="${this._pageSizeChanged}"
-          on-page-number-changed="${this._pageNumberChanged}"
+          .pageSize="${this.pagination.pageSize}"
+          .pageNumberr="${this.pagination.pageNumber}"
+          .totalResults="${this.pagination.totalResults}"
+          @page-size-changed="${this._pageSizeChanged}"
+          @page-number-changed="${this._pageNumberChanged}"
         >
         </etools-data-table-footer>
       </div>
@@ -77,30 +79,12 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
   @property({type: Boolean})
   editMode!: boolean;
 
-  _interventionId!: number;
-
-  set interventionId(interventionId) {
-    this._interventionId = interventionId;
-    this.setTotalResults(this.interventionId, this.reportingRequirements);
-  }
-
-  @property({type: String})
-  get interventionId() {
-    return this._interventionId;
-  }
-
-  // @DAN
-  // static get observers() {
-  //   return [
-  //     'setTotalResults(interventionId, reportingRequirements)',
-  //     '_paginationChanged(pagination.pageNumber, pagination.pageSize, reportingRequirements)'
-  //   ];
-  // }
-
   connectedCallback() {
     super.connectedCallback();
     this._createEditHruDialog();
-
+    if (this.reportingRequirements) {
+      this._paginationChanged(1, 10, this.reportingRequirements);
+    }
     const hruListEl = this.shadowRoot!.querySelector('hruList') as HruListEl;
     if (hruListEl) {
       hruListEl.hruMainEl = this;
