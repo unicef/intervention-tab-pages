@@ -8,6 +8,7 @@ import {LitElement, property} from 'lit-element';
 import {isEmptyObject} from '../../../utils/utils';
 import {Constructor} from '@unicef-polymer/etools-types';
 import {fireEvent} from '../../../utils/fire-custom-event';
+import {prettyDate} from '../../../utils/date-utils';
 
 /**
  * @polymer
@@ -97,6 +98,11 @@ function ReportingRequirementsCommonMixin<T extends Constructor<LitElement>>(bas
 
     _onReportingRequirementsSaved(e: CustomEvent) {
       this.reportingRequirements = e.detail;
+    }
+
+    getDateDisplayValue(dateString: string) {
+      const formatedDate = prettyDate(dateString);
+      return formatedDate ? formatedDate : '-';
     }
   }
   return ReportingRequirementsCommon;

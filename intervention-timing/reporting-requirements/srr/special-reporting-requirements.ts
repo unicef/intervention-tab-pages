@@ -19,7 +19,6 @@ import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {sharedStyles} from '../../../common/styles/shared-styles-lit';
 import {buttonsStyles} from '../../../common/styles/button-styles';
 import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
-import {prettyDate} from '../../../utils/date-utils';
 
 /**
  * @customElement
@@ -235,10 +234,5 @@ export class SpecialReportingRequirements extends ReportingRequirementsCommonMix
     }
     this.reportingRequirements = [...reportingRequirementsOriginal];
     this.requestUpdate();
-  }
-
-  getDateDisplayValue(dateString: string) {
-    const formatedDate = prettyDate(dateString);
-    return formatedDate ? formatedDate : '-';
   }
 }

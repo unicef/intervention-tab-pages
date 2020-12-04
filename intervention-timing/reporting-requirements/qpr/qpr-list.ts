@@ -3,22 +3,22 @@ import '@unicef-polymer/etools-data-table/etools-data-table.js';
 import '../mixins/reporting-req-past-dates-check';
 import '../styles/reporting-requirements-lists-styles';
 import ReportingReqPastDatesCheckMixin from '../mixins/reporting-req-past-dates-check';
+import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
 import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
 import {fireEvent} from '../../../utils/fire-custom-event';
 import {isEmptyObject} from '../../../utils/utils';
 import {sharedStyles} from '../../../common/styles/shared-styles-lit';
 import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
-import {prettyDate} from '../../../utils/date-utils';
 
 /**
  * @polymer
  * @customElement
- * @appliesMixin CommonMixin
+ * @appliesMixin ReportingRequirementsCommonMixin
  * @appliesMixin ReportingReqPastDatesCheckMixin
  */
 @customElement('qpr-list')
-export class QprList extends ReportingReqPastDatesCheckMixin(LitElement) {
+export class QprList extends ReportingRequirementsCommonMixin(ReportingReqPastDatesCheckMixin(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, reportingRequirementsListStyles];
   }
@@ -115,11 +115,6 @@ export class QprList extends ReportingReqPastDatesCheckMixin(LitElement) {
     fireEvent(this, 'delete-qpr', {
       index: index
     });
-  }
-
-  getDateDisplayValue(dateString: string) {
-    const formatedDate = prettyDate(dateString);
-    return formatedDate ? formatedDate : '-';
   }
 }
 
