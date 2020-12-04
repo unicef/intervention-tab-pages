@@ -8,7 +8,7 @@ import {isEmptyObject} from '../../../utils/utils';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {ExpectedResult, ResultLinkLowerResult} from '@unicef-polymer/etools-types';
-import {fireEvent} from '../../../../../../utils/fire-custom-event';
+import {fireEvent} from '../../../utils/fire-custom-event';
 
 /**
  * @customElement

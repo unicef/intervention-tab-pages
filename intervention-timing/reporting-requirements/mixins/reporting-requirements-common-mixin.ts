@@ -7,7 +7,7 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
 import {LitElement, property} from 'lit-element';
 import {isEmptyObject} from '../../../utils/utils';
 import {Constructor} from '@unicef-polymer/etools-types';
-import {fireEvent} from '../../../../../../utils/fire-custom-event';
+import {fireEvent} from '../../../utils/fire-custom-event';
 
 /**
  * @polymer
@@ -16,7 +16,7 @@ import {fireEvent} from '../../../../../../utils/fire-custom-event';
  */
 function ReportingRequirementsCommonMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class ReportingRequirementsCommon extends baseClass {
-    _reportingRequirements: [] = [];
+    _reportingRequirements: any[] = [];
 
     get reportingRequirements() {
       return this._reportingRequirements;
@@ -96,7 +96,7 @@ function ReportingRequirementsCommonMixin<T extends Constructor<LitElement>>(bas
       return index + 1;
     }
 
-    _empty(list: []) {
+    _empty(list: any[]) {
       return isEmptyObject(list);
     }
 

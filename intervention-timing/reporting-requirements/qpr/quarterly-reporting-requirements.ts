@@ -112,6 +112,13 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
   _getReportType() {
     return CONSTANTS.REQUIREMENTS_REPORT_TYPE.QPR;
   }
+
+  _sortRequirementsAsc() {
+    this.reportingRequirements.sort((a: string, b: string) => {
+      // @ts-ignore
+      return new Date(a.due_date) - new Date(b.due_date);
+    });
+  }
 }
 
 export {QuarterlyReportingRequirements as QuarterlyReportingRequirementsEL};

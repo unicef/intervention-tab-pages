@@ -32,6 +32,9 @@ export class AddEditSpecialRepReq extends LitElement {
     return [gridLayoutStylesLit];
   }
   render() {
+    if (!this.item) {
+      return;
+    }
     return html`
       <style>
         :host {
@@ -128,7 +131,6 @@ export class AddEditSpecialRepReq extends LitElement {
         fireEvent(this, 'reporting-requirements-saved', response);
         dialog.stopSpinner();
         this.opened = false;
-        this.requestUpdate();
       })
       .catch((error: any) => {
         dialog.stopSpinner();

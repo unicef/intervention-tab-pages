@@ -19,6 +19,7 @@ import {getEndpoint} from '../../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {sharedStyles} from '../../../common/styles/shared-styles-lit';
 import {buttonsStyles} from '../../../common/styles/button-styles';
+import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
 
 /**
  * @customElement
@@ -30,19 +31,12 @@ import {buttonsStyles} from '../../../common/styles/button-styles';
 @customElement('special-reporting-requirements')
 export class SpecialReportingRequirements extends CommonMixin(ReportingRequirementsCommonMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [gridLayoutStylesLit, buttonsStyles, reportingRequirementsListStyles];
   }
   render() {
     return html`
-      <style include="data-table-styles">
-        ${sharedStyles}${reportingRequirementsListStyles}etools-data-table-row {
-          --icons-actions_-_background-color: transparent !important;
-        }
-        *[slot='row-data'] .col-data {
-          display: inline-flex;
-          line-height: 24px;
-          align-items: center;
-        }
+      <style>
+        ${sharedStyles} ${dataTableStylesLit}
       </style>
 
       <div class="row-h" ?hidden="${!this._empty(this.reportingRequirements)}">
@@ -148,7 +142,6 @@ export class SpecialReportingRequirements extends CommonMixin(ReportingRequireme
         endpoint: endpoint
       })
         .then(() => {
-          // this.splice('reportingRequirements', this._itemToDeleteIndex, 1);
           this.reportingRequirements.splice(this._itemToDeleteIndex, 1);
         })
         .catch((error: any) => {
@@ -231,15 +224,15 @@ export class SpecialReportingRequirements extends CommonMixin(ReportingRequireme
   _onSpecialReportingRequirementsSaved(e: CustomEvent) {
     const savedReqItem = e.detail;
     const index = this._getIndexById(savedReqItem.id);
+    const reportingRequirementsOriginal = [...this.reportingRequirements];
     if (index > -1) {
       // edit
-      // this.splice('reportingRequirements', index, 1, savedReqItem);
-      // @ts-ignore
-      this.reportingRequirements.splice(index, 1, savedReqItem);
+      reportingRequirementsOriginal.splice(index, 1, savedReqItem);
     } else {
-      // this.push('reportingRequirements', savedReqItem);
-      // @ts-ignore
-      this.reportingRequirements.push(savedReqItem);
+      // add
+      reportingRequirementsOriginal.push(savedReqItem);
     }
+    this.reportingRequirements = [...reportingRequirementsOriginal];
+    this.requestUpdate();
   }
 }
