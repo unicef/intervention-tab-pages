@@ -1,8 +1,7 @@
 import {LitElement, html, property, customElement} from 'lit-element';
 import {uniqBy} from 'lodash-es';
 import '@unicef-polymer/etools-data-table/etools-data-table';
-import CommonMixin from '../../../common/mixins/common-mixin';
-import EndpointsMixinLit from '../../../common/mixins/endpoints-mixin-lit';
+import EndpointsLitMixin  from '../../../common/mixins/endpoints-mixin-lit';
 import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
 import {isEmptyObject} from '../../../utils/utils';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
@@ -10,6 +9,7 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
 import {ExpectedResult, ResultLinkLowerResult} from '@unicef-polymer/etools-types';
 import {fireEvent} from '../../../utils/fire-custom-event';
 import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
+import {prettyDate} from '../../../utils/date-utils';
 
 /**
  * @customElement
@@ -19,9 +19,8 @@ import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-s
  * @appliesMixin CommonMixin
  */
 
-// @DAN: EndpointsMixinLit
 @customElement('humanitarian-reporting-req-cluster')
-export class HumanitarianReportingReqCluster extends CommonMixin(EndpointsMixinLit(LitElement)) {
+export class HumanitarianReportingReqCluster extends EndpointsLitMixin (LitElement) {
   static get styles() {
     return [gridLayoutStylesLit];
   }
@@ -183,5 +182,10 @@ export class HumanitarianReportingReqCluster extends CommonMixin(EndpointsMixinL
 
   _empty(list: []) {
     return isEmptyObject(list);
+  }
+
+  getDateDisplayValue(dateString: string) {
+    const formatedDate = prettyDate(dateString);
+    return formatedDate ? formatedDate : '-';
   }
 }

@@ -1,7 +1,6 @@
 import {LitElement, html, property, customElement} from 'lit-element';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import '../../../common/layout/icons-actions';
-import CommonMixin from '../../../common/mixins/common-mixin';
 import {fireEvent} from '../../../utils/fire-custom-event';
 import ReportingReqPastDatesCheckMixin from '../mixins/reporting-req-past-dates-check';
 import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
@@ -10,16 +9,16 @@ import {isEmptyObject} from '../../../utils/utils';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {sharedStyles} from '../../../common/styles/shared-styles-lit';
 import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
+import {prettyDate} from '../../../utils/date-utils';
 
 /**
  * @polymer
  * @customElement
- * @appliesMixin CommonMixin
  * @appliesMixin ReportingReqPastDatesCheckMixin
  */
 
 @customElement('hru-list')
-export class HruList extends CommonMixin(ReportingReqPastDatesCheckMixin(LitElement)) {
+export class HruList extends ReportingReqPastDatesCheckMixin(LitElement) {
   static get styles() {
     return [gridLayoutStylesLit, reportingRequirementsListStyles];
   }
@@ -116,6 +115,11 @@ export class HruList extends CommonMixin(ReportingReqPastDatesCheckMixin(LitElem
     fireEvent(this, 'delete-hru', {
       index: index
     });
+  }
+
+  getDateDisplayValue(dateString: string) {
+    const formatedDate = prettyDate(dateString);
+    return formatedDate ? formatedDate : '-';
   }
 }
 

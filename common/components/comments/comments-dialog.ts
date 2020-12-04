@@ -233,7 +233,6 @@ export class CommentsDialog extends connectStore(LitElement) {
       if (!comment) {
         // scroll down if comment is new
         this.scrollDown();
-        console.log(this.dialogElement);
         this.dialogElement.notifyResize();
       }
     });
