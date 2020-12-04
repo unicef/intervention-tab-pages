@@ -131,7 +131,7 @@ export class SpecialReportingRequirements extends CommonMixin(ReportingRequireme
       this._itemToDeleteIndex = -1;
       return;
     }
-
+    const reportingRequirementsOriginal = this.reportingRequirements;
     if (this._itemToDeleteIndex > -1) {
       const itemToDelete = this.reportingRequirements[this._itemToDeleteIndex] as any;
       const endpoint = getEndpoint(interventionEndpoints.specialReportingRequirementsUpdate, {
@@ -142,7 +142,9 @@ export class SpecialReportingRequirements extends CommonMixin(ReportingRequireme
         endpoint: endpoint
       })
         .then(() => {
-          this.reportingRequirements.splice(this._itemToDeleteIndex, 1);
+          reportingRequirementsOriginal.splice(this._itemToDeleteIndex, 1);
+          this.reportingRequirements = [...reportingRequirementsOriginal];
+          this.requestUpdate();
         })
         .catch((error: any) => {
           logError('Failed to delete special report requirement!', 'special-reporting-requirements', error);

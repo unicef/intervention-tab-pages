@@ -262,7 +262,6 @@ export class EditQprDialog extends LitElement {
   }
 
   _saveModifiedQprData() {
-    console.log('saveDATA');
     const endpoint = getEndpoint(interventionEndpoints.reportingRequirements, {
       intervId: this.interventionId,
       reportType: CONSTANTS.REQUIREMENTS_REPORT_TYPE.QPR
