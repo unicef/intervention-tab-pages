@@ -9,6 +9,7 @@ import {fireEvent} from '../../../utils/fire-custom-event';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
 import {AsyncAction, ResultIndicator, GenericObject} from '@unicef-polymer/etools-types';
+import {translate, get as getTranslation} from 'lit-translate';
 
 @customElement('cp-output-dialog')
 export class CpOutputDialog extends LitElement {
@@ -45,7 +46,13 @@ export class CpOutputDialog extends LitElement {
   }
 
   get dialogTitle(): string {
-    return this.cpOutputName ? `Indicators for CP Output: ${this.cpOutputName}` : 'Add CP Output';
+    let title = '';
+    if (this.cpOutputName) {
+      title = getTranslation('INTERVENTION_RESULTS.CP_OUTPUT_DIALOG.INDICATORS_FOR_CP_OUTPUT') + this.cpOutputName;
+    } else {
+      title = getTranslation('INTERVENTION_RESULTS.CP_OUTPUT_DIALOG.ADD_CP_OUTPUT');
+    }
+    return title;
   }
 
   protected render(): TemplateResult {
@@ -73,7 +80,8 @@ export class CpOutputDialog extends LitElement {
         @close="${this.onClose}"
         ?show-spinner="${this.loadingInProcess}"
         spinner-text="${this.spinnerText}"
-        ok-btn-text="Save"
+        ok-btn-text=${translate('GENERAL.SAVE')}
+        cancel-btn-text=${translate('GENERAL.CANCEL')}
         no-padding
       >
         <div class="container layout vertical">
@@ -85,7 +93,7 @@ export class CpOutputDialog extends LitElement {
                     this.onCpOutputSelected(detail.selectedItem && detail.selectedItem.id)}"
                   ?trigger-value-change-event="${!this.loadingInProcess}"
                   .selected="${this.selectedCpOutput}"
-                  label="CP Output"
+                  label=${translate('INTERVENTION_RESULTS.CP_OUTPUT_DIALOG.CP_OUTPUT')}
                   placeholder="&#8212;"
                   .options="${this.cpOutputs}"
                   option-label="name"
@@ -106,7 +114,7 @@ export class CpOutputDialog extends LitElement {
               this.onIndicatorsSelected(detail.selectedItems)}"
             ?trigger-value-change-event="${!this.loadingInProcess}"
             .selectedValues="${this.selectedIndicators}"
-            label="Ram Indicators"
+            label=${translate('INTERVENTION_RESULTS.CP_OUTPUT_DIALOG.RAM_INDICATORS')}
             placeholder="&#8212;"
             .options="${this.indicators}"
             option-label="name"
@@ -140,11 +148,11 @@ export class CpOutputDialog extends LitElement {
 
   processRequest() {
     if (!this.cpOutputId && !this.selectedCpOutput) {
-      this.errors.cp_output = ['Field is required'];
+      this.errors.cp_output = [getTranslation('GENERAL.REQUIRED_FIELD')];
       this.performUpdate();
       return;
     }
-    this.spinnerText = 'Saving data...';
+    this.spinnerText = getTranslation('GENERAL.SAVING_DATA');
     this.loadingInProcess = true;
     const endpoint = this.cpOutputId
       ? getEndpoint(interventionEndpoints.resultLinkGetDelete, {result_link: this.resultLinkId})
@@ -170,7 +178,7 @@ export class CpOutputDialog extends LitElement {
       .catch((error) => {
         this.loadingInProcess = false;
         this.errors = (error && error.response) || {};
-        fireEvent(this, 'toast', {text: 'Can not save indicators!'});
+        fireEvent(this, 'toast', {text: getTranslation('INTERVENTION_RESULTS.CP_OUTPUT_DIALOG.CAN_NOT_SAVE_IND')});
       });
   }
 
@@ -182,7 +190,7 @@ export class CpOutputDialog extends LitElement {
     if (!cpOutputId) {
       return;
     }
-    this.spinnerText = 'Loading...';
+    this.spinnerText = getTranslation('GENERAL.LOADING');
     this.loadingInProcess = true;
     sendRequest({
       endpoint: getEndpoint(interventionEndpoints.ramIndicators, {id: cpOutputId})
