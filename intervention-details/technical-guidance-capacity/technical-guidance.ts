@@ -16,6 +16,7 @@ import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import '@material/mwc-textfield';
 
 /**
  * @customElement
@@ -51,62 +52,83 @@ export class TechnicalGuidance extends CommentsMixin(ComponentBaseMixin(LitEleme
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="row-padding-v">
-          <paper-textarea
+          <mwc-textfield
             id="technicalGuidance"
             label=${translate('INTERVENTION_DETAILS.TECHNICAL_GUIDANCE')}
             always-float-label
             placeholder="—"
             .value="${this.data.technical_guidance}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.technical_guidance)}"
+            ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.technical_guidance)}"
             ?required="${this.permissions.required.technical_guidance}"
-            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'technical_guidance')}"
+            @input="${(detail: any) => {
+              const path = detail.composedPath();
+              const input = path[0];
+              const value = input;
+              this.valueChanged(value, 'technical_guidance');
+            }}"
+            outlined
           >
-          </paper-textarea>
+          </mwc-textfield>
         </div>
 
         <div class="row-padding-v">
-          <paper-textarea
+          <mwc-textfield
             id="capacityDevelopment"
             label=${translate('INTERVENTION_DETAILS.CAPACITY_DEVELOPMENT')}
             type="text"
             always-float-label
-            placeholder="—"
+            .placeholder="—"
             .value="${this.data.capacity_development}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.capacity_development)}"
+            ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.capacity_development)}"
             ?required="${this.permissions.required.capacity_development}"
-            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'capacity_development')}"
+            @input="${(detail: any) => {
+              const path = detail.composedPath();
+              const input = path[0];
+              const value = input;
+              this.valueChanged(value, 'capacity_development');
+            }}"
           >
-          </paper-textarea>
+          </mwc-textfield>
         </div>
 
         <div class="row-padding-v">
-          <paper-textarea
+          <mwc-textfield
             id="otherPartnersInvolved"
             label=${translate('INTERVENTION_DETAILS.OTHER_PARTNERS_INVOLVED')}
             type="text"
             always-float-label
             placeholder="—"
             .value="${this.data.other_partners_involved}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.other_partners_involved)}"
+            ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.other_partners_involved)}"
             ?required="${this.permissions.required.other_partners_involved}"
-            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'other_partners_involved')}"
+            @input="${(detail: any) => {
+              const path = detail.composedPath();
+              const input = path[0];
+              const value = input;
+              this.valueChanged(value, 'other_partners_involved');
+            }}"
           >
-          </paper-textarea>
+          </mwc-textfield>
         </div>
 
         <div class="row-padding-v">
-          <paper-textarea
+          <mwc-textfield
             id="otherInformation"
             label=${translate('INTERVENTION_DETAILS.OTHER_INFORMATION')}
             type="text"
             always-float-label
-            placeholder="—"
+            .placeholder="—"
             .value="${this.data.other_info}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.other_info)}"
+            ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.other_info)}"
             ?required="${this.permissions.required.other_info}"
-            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'other_info')}"
+            @input="${(detail: any) => {
+              const path = detail.composedPath();
+              const input = path[0];
+              const value = input;
+              this.valueChanged(value, 'other_info');
+            }}"
           >
-          </paper-textarea>
+          </mwc-textfield>
         </div>
 
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
@@ -133,6 +155,7 @@ export class TechnicalGuidance extends CommentsMixin(ComponentBaseMixin(LitEleme
       return;
     }
     this.data = selectTechnicalDetails(state);
+    console.log(this.data.other_info);
     this.originalData = cloneDeep(this.data);
     this.permissions = selectTechnicalDetailsPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
