@@ -20,7 +20,7 @@ import {getStore} from '../utils/redux-store-access';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {GenericObject} from '@unicef-polymer/etools-types';
 import {Intervention} from '@unicef-polymer/etools-types';
-import {get as getTranslation} from 'lit-translate';
+import {translate} from 'lit-translate';
 
 @customElement('intervention-actions')
 export class InterventionActions extends LitElement {
@@ -114,32 +114,32 @@ export class InterventionActions extends LitElement {
     let btn = '';
     switch (action) {
       case 'signature':
-        btn = getTranslation('INTERVENTION_ACTIONS.SEND');
-        message = getTranslation('INTERVENTION_ACTIONS.SEND_FOR_SIGNATURE');
+        btn = (translate('INTERVENTION_ACTIONS.SEND') as unknown) as string;
+        message = (translate('INTERVENTION_ACTIONS.SEND_FOR_SIGNATURE') as unknown) as string;
         break;
       case 'accept_review':
-        btn = getTranslation('INTERVENTION_ACTIONS.SEND');
-        message = getTranslation('INTERVENTION_ACTIONS.SEND_FOR_ACCEPT_REVIEW');
+        btn = (translate('INTERVENTION_ACTIONS.SEND') as unknown) as string;
+        message = (translate('INTERVENTION_ACTIONS.SEND_FOR_ACCEPT_REVIEW') as unknown) as string;
         break;
       case 'cancel':
-        btn = getTranslation('GENERAL.YES');
-        message = getTranslation('INTERVENTION_ACTIONS.CANCEL_PROMPT');
+        btn = (translate('GENERAL.YES') as unknown) as string;
+        message = (translate('INTERVENTION_ACTIONS.CANCEL_PROMPT') as unknown) as string;
         break;
       case 'send_to_partner':
-        btn = getTranslation('GENERAL.YES');
-        message = getTranslation('INTERVENTION_ACTIONS.SEND_TO_PARTNER_PROMPT');
+        btn = (translate('GENERAL.YES') as unknown) as string;
+        message = (translate('INTERVENTION_ACTIONS.SEND_TO_PARTNER_PROMPT') as unknown) as string;
         break;
       case 'send_to_unicef':
-        btn = getTranslation('GENERAL.YES');
-        message = getTranslation('INTERVENTION_ACTIONS.SEND_TO_UNICEF_PROMPT');
+        btn = (translate('GENERAL.YES') as unknown) as string;
+        message = (translate('INTERVENTION_ACTIONS.SEND_TO_UNICEF_PROMPT') as unknown) as string;
         break;
       case 'terminate':
-        btn = getTranslation('INTERVENTION_ACTIONS.CONTINUE');
-        message = getTranslation('INTERVENTION_ACTIONS.TERMINATE_PROMPT');
+        btn = (translate('INTERVENTION_ACTIONS.CONTINUE') as unknown) as string;
+        message = (translate('INTERVENTION_ACTIONS.TERMINATE_PROMPT') as unknown) as string;
         break;
       default:
         btn = action;
-        message = getTranslation('INTERVENTION_ACTIONS.ARE_YOU_SURE_PROMPT') + action + ' ?';
+        message = ((translate('INTERVENTION_ACTIONS.ARE_YOU_SURE_PROMPT') as unknown) as string) + action + ' ?';
     }
     const confirmed = await openDialog({
       dialog: 'are-you-sure',

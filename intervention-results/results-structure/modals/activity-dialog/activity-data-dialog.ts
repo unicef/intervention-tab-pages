@@ -292,7 +292,9 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
       return;
     }
     if (!this.validateActivityTimeFrames()) {
-      fireEvent(this, 'toast', {text: getTranslation('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.FILL_ACTIVITY_TIME')});
+      fireEvent(this, 'toast', {
+        text: getTranslation('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.FILL_ACTIVITY_TIME')
+      });
       return;
     }
     this.loadingInProcess = true;
