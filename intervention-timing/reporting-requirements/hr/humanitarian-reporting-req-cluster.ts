@@ -1,6 +1,5 @@
 /* eslint-disable lit/no-legacy-template-syntax */
 import {PolymerElement, html} from '@polymer/polymer';
-import uniq from 'lodash-es/uniq';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import CommonMixin from '../../../common/mixins/common-mixin';
 import EndpointsMixin from '../../../common/mixins/endpoints-mixin';
@@ -123,7 +122,7 @@ class HumanitarianReportingReqCluster extends CommonMixin(EndpointsMixin(Polymer
       });
     });
 
-    return uniq(clusterIndicIds);
+    return [...new Set(clusterIndicIds)];
   }
 
   reportingRequirementsChanged(repReq: any) {
