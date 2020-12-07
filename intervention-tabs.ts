@@ -328,7 +328,11 @@ export class InterventionTabs extends connectStore(LitElement) {
       return 'Sent to Partner';
     }
 
-    if (this.intervention!.unicef_court && !!this.intervention!.submission_date) {
+    if (
+      this.intervention!.unicef_court &&
+      !!this.intervention!.submission_date &&
+      !!this.intervention!.date_sent_to_partner
+    ) {
       return 'Sent to Unicef';
     }
     return '';
