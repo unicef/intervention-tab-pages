@@ -304,5 +304,15 @@ export const sharedStylesContent = `
     --iron-icon-width: 14px;
     --iron-icon-height: 14px;
   }
+    mwc-textfield {
+      --mdc-theme-primary: var(--primary-color);
+      --mdc-text-field-outlined-idle-border-color: var(--secondary-text-color);
+      --mdc-text-field-label-ink-color: var(--secondary-text-color);
+
+    }
+
+    mwc-textfield.mdc-text-field__input{
+display: block;
+    }
 `;
 export const sharedStyles = html`${unsafeCSS(sharedStylesContent)}`;
