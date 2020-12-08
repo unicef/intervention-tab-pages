@@ -52,6 +52,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
         ?show-spinner="${this.requestInProcess}"
         dialog-title="${this.dialogTitle}"
         ok-btn-text="${this.confirmBtnTxt}"
+        cancel-btn-text=${translate('GENERAL.CANCEL')}
         keep-dialog-open
         ?disable-confirm-btn="${this.requestInProcess}"
         @confirm-btn-clicked="${this.onSaveClick}"
@@ -67,7 +68,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
             label=${translate('GENERAL.TITLE')}
             type="text"
             placeholder="—"
-            error-message="This field is required"
+            error-message=${translate('GENERAL.REQUIRED_FIELD')}
             auto-validate
             required
           >
@@ -81,7 +82,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
             label=${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.NUMBER_UNITS')}
             allowed-pattern="[0-9]"
             placeholder="—"
-            error-message="This field is required"
+            error-message=${translate('GENERAL.REQUIRED_FIELD')}
             required
             auto-validate
           >
