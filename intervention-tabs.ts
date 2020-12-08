@@ -311,7 +311,9 @@ export class InterventionTabs extends connectStore(LitElement) {
       (this.intervention!.partner_accepted ||
         this.intervention!.unicef_accepted ||
         (!this.intervention!.unicef_court && !!this.intervention!.date_sent_to_partner) ||
-        (this.intervention!.unicef_court && !!this.intervention!.submission_date))
+        (this.intervention!.unicef_court &&
+          !!this.intervention!.submission_date &&
+          !!this.intervention!.date_sent_to_partner))
     );
   }
 
