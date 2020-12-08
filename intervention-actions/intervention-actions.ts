@@ -34,7 +34,7 @@ export class InterventionActions extends LitElement {
 
   private actionsNamesMap = new Proxy(namesMap, {
     get(target: GenericObject<string>, property: string): string {
-      return target[property] || property.replace('_', '');
+      return target[property] || property.replace('_', ' ');
     }
   });
 
@@ -138,10 +138,10 @@ export class InterventionActions extends LitElement {
         message = (translate('INTERVENTION_ACTIONS.TERMINATE_PROMPT') as unknown) as string;
         break;
       default:
-        btn = action;
+        btn = action.replace('_', ' ');
         message =
           ((translate('INTERVENTION_ACTIONS.ARE_YOU_SURE_PROMPT') as unknown) as string) +
-          action.replace('-', '') +
+          action.replace('_', ' ') +
           ' ?';
     }
     const confirmed = await openDialog({
