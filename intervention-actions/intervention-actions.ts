@@ -138,8 +138,11 @@ export class InterventionActions extends LitElement {
         message = getTranslation('INTERVENTION_ACTIONS.TERMINATE_PROMPT');
         break;
       default:
-        btn = action.replace('_', ' ');
-        message = getTranslation('INTERVENTION_ACTIONS.ARE_YOU_SURE_PROMPT') + action.replace('_', ' ') + ' ?';
+        btn = this.actionsNamesMap[action];
+        message =
+          getTranslation('INTERVENTION_ACTIONS.ARE_YOU_SURE_PROMPT') +
+          this.actionsNamesMap[action]?.toLowerCase() +
+          ' ?';
     }
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
