@@ -28,7 +28,7 @@ import {connectStore} from './common/mixins/connect-store-mixin';
 import {Intervention} from '@unicef-polymer/etools-types';
 import {AsyncAction, RouteDetails} from '@unicef-polymer/etools-types';
 import {interventions} from './common/reducers/interventions';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 
 const MOCKUP_STATUSES = [
   ['draft', 'Draft'],
@@ -295,7 +295,11 @@ export class InterventionTabs extends connectStore(LitElement) {
     const interventionStatus = get(state, 'interventions.current.status');
     const isDraft = !interventionStatus || interventionStatus === 'draft';
     if (tabIndex === -1 && unicefUser && !isDraft) {
-      this.pageTabs.splice(5, 0, {tab: 'review', tabLabel: 'Review', hidden: false});
+      this.pageTabs.splice(5, 0, {
+        tab: 'review',
+        tabLabel: getTranslation('INTERVENTION_REVIEWS.REVIEW_TAB'),
+        hidden: false
+      });
     } else if (tabIndex !== -1 && (!unicefUser || isDraft)) {
       this.pageTabs.splice(tabIndex, 1);
     }
