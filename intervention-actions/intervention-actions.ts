@@ -20,7 +20,7 @@ import {getStore} from '../utils/redux-store-access';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {GenericObject} from '@unicef-polymer/etools-types';
 import {Intervention} from '@unicef-polymer/etools-types';
-import {translate, get as getTranslation} from 'lit-translate';
+import {get as getTranslation} from 'lit-translate';
 
 @customElement('intervention-actions')
 export class InterventionActions extends LitElement {

@@ -132,7 +132,7 @@ export class CommentsDialog extends connectStore(LitElement) {
           <paper-textarea
             max-rows="3"
             no-label-float
-            placeholder="—"
+            placeholder="Enter Message Here"
             .value="${this.newMessageText}"
             @value-changed="${({detail}: CustomEvent) => {
               this.newMessageText = detail.value;
