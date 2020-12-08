@@ -11,6 +11,7 @@ import {fireEvent} from '../../../utils/fire-custom-event';
 import {validateRequiredFields} from '../../../utils/validation-helper';
 import {AsyncAction, CpOutput} from '@unicef-polymer/etools-types';
 import {ResultLinkLowerResult} from '@unicef-polymer/etools-types';
+import {translate, get as getTranslation} from 'lit-translate';
 
 @customElement('pd-output-dialog')
 export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElement) {
@@ -70,19 +71,25 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
         keep-dialog-open
         ?opened="${this.dialogOpened}"
         ?show-spinner="${this.loadingInProcess}"
-        dialog-title="${this.isEditDialog ? 'Edit' : 'Add'} PD Output"
+        dialog-title="${this.isEditDialog ? translate('GENERAL.EDIT') : translate('GENERAL.ADD')} ${translate(
+          'INTERVENTION_RESULTS.PD_OUTPUT_DIALOG.PD_OUTPUT'
+        )}"
         @confirm-btn-clicked="${() => this.processRequest()}"
         @close="${this.onClose}"
-        .okBtnText="Save"
+        ok-btn-text=${translate('GENERAL.SAVE')}
+        cancel-btn-text=${translate('GENERAL.CANCEL')}
         no-padding
       >
         <div class="unassociated-warning" ?hidden="${!this.unassociated || this.hideCpOutputs}">
-          <div><iron-icon icon="warning"></iron-icon> Please associate PD with CP Output before moving forward</div>
+          <div>
+            <iron-icon icon="warning"></iron-icon>${translate('INTERVENTION_RESULTS.PD_OUTPUT_DIALOG.ASSOCIATE_PROMPT')}
+          </div>
           ${!this.cpOutputs.length
             ? html`
                 <div>
-                  <br /><iron-icon icon="warning"></iron-icon> You have to add a CP Output to the Results Structure and
-                  then you will be able to associate it to the PD Output
+                  <br /><iron-icon icon="warning"></iron-icon> ${translate(
+                    'INTERVENTION_RESULTS.PD_OUTPUT_DIALOG.ASSOCIATE_MSG'
+                  )}
                 </div>
               `
             : ''}
@@ -90,13 +97,13 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
         <div class="container layout vertical">
           <paper-input
             class="validate-input flex-1"
-            label="PD Output Name"
+            label=${translate('INTERVENTION_RESULTS.PD_OUTPUT_DIALOG.PD_OUTPUT_NAME')}
             placeholder="&#8212;"
             .value="${this.editedData.name}"
             @value-changed="${({detail}: CustomEvent) => this.updateModelValue('name', detail.value)}"
             required
             ?invalid="${this.errors.name}"
-            .errorMessage="${(this.errors.name && this.errors.name[0]) || 'This field is required'}"
+            .errorMessage="${(this.errors.name && this.errors.name[0]) || translate('GENERAL.REQUIRED_FIELD')}"
             @focus="${() => this.resetFieldError('name')}"
             @click="${() => this.resetFieldError('name')}"
           ></paper-input>
@@ -119,7 +126,8 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
                   dynamic-align
                   required
                   ?invalid="${this.errors.cp_output}"
-                  .errorMessage="${(this.errors.cp_output && this.errors.cp_output[0]) || 'This field is required'}"
+                  .errorMessage="${(this.errors.cp_output && this.errors.cp_output[0]) ||
+                  translate('GENERAL.REQUIRED_FIELD')}"
                   @focus="${() => this.resetFieldError('cp_output')}"
                   @click="${() => this.resetFieldError('cp_output')}"
                 ></etools-dropdown>
@@ -170,7 +178,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
       .catch((error) => {
         this.loadingInProcess = false;
         this.errors = (error && error.response) || {};
-        fireEvent(this, 'toast', {text: 'Can not save PD Output!'});
+        fireEvent(this, 'toast', {text: getTranslation('INTERVENTION_RESULTS.PD_OUTPUT_DIALOG.ERR_SAVE_PD_OUTPUT')});
       });
   }
 }

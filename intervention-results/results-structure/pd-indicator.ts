@@ -7,6 +7,7 @@ import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {Disaggregation, DisaggregationValue} from '@unicef-polymer/etools-types';
 import {Indicator} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 
 @customElement('pd-indicator')
 export class PdIndicator extends CommentsMixin(LitElement) {
@@ -159,7 +160,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
         <div slot="row-data-details" class="row-h">
           <!--    Locations    -->
           <div class="details-container-locations">
-            <div class="text details-heading">Locations</div>
+            <div class="text details-heading">${translate('INTERVENTION_RESULTS.PD_INDICATOR.LOCATIONS')}</div>
             <div class="details-text">
               ${this.locationNames.length
                 ? this.locationNames.map(
@@ -177,13 +178,13 @@ export class PdIndicator extends CommentsMixin(LitElement) {
 
           <!--    Section and Cluster    -->
           <div class="details-container">
-            <div class="text details-heading">Section/Cluster</div>
+            <div class="text details-heading">${translate('INTERVENTION_RESULTS.PD_INDICATOR.SECTION_CLUSTER')}</div>
             <div class="details-text">${this.sectionClusterNames}</div>
           </div>
 
           <!--    Disaggregations    -->
           <div class="details-container">
-            <div class="text details-heading">Disaggregation</div>
+            <div class="text details-heading">${translate('INTERVENTION_RESULTS.PD_INDICATOR.DISAGGREGATION')}</div>
             <div class="details-text">
               ${this.indicator.disaggregation.length
                 ? this.indicator.disaggregation.map((disaggregation: string) => this.getDisaggregation(disaggregation))

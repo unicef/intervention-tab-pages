@@ -76,7 +76,8 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
         id="frsDialog"
         size="md"
         dialog-title=${translate('INTERVENTION_MANAGEMENT.FUND_RESERVATIONS.FR_DIALOG.ADD_UPDATE_FR_NUMBERS')}
-        ok-btn-text="Add/Update"
+        ok-btn-text=${translate('GENERAL.ADD_UPDATE')}
+        cancel-btn-text=${translate('GENERAL.CANCEL')}
         ?disable-confirm-btn="${this.disableConfirmBtn}"
         @confirm-btn-clicked="${() => this._checkFrNumbers()}"
         no-padding
@@ -103,7 +104,7 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
                   <!-- FR Number -->
                   <paper-input
                     .id="fr-nr-${index}"
-                    label="FR Number"
+                    label=${translate('INTERVENTION_MANAGEMENT.FUND_RESERVATIONS.FR_DIALOG.FR_NUMBER')}
                     .value="${item.fr_number}"
                     placeholder="&#8212;"
                     allowed-pattern="[0-9]"
