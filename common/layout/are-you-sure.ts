@@ -1,7 +1,7 @@
 import {html, LitElement, customElement, property} from 'lit-element';
 import '@unicef-polymer/etools-dialog/etools-dialog';
 import {fireEvent} from '../../utils/fire-custom-event';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 
 @customElement('are-you-sure')
 export class AreYouSure extends LitElement {
@@ -28,7 +28,7 @@ export class AreYouSure extends LitElement {
   }
 
   @property({type: String})
-  content = (translate('ARE_YOU_SURE.ARE_YOU_SURE_PROMPT') as unknown) as string;
+  content = getTranslation('ARE_YOU_SURE.ARE_YOU_SURE_PROMPT');
 
   @property({type: String})
   confirmBtnText = 'OK';

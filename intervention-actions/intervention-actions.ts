@@ -20,7 +20,7 @@ import {getStore} from '../utils/redux-store-access';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {GenericObject} from '@unicef-polymer/etools-types';
 import {Intervention} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 
 @customElement('intervention-actions')
 export class InterventionActions extends LitElement {
@@ -117,6 +117,18 @@ export class InterventionActions extends LitElement {
         btn = (translate('INTERVENTION_ACTIONS.SEND') as unknown) as string;
         message = (translate('INTERVENTION_ACTIONS.SEND_FOR_SIGNATURE') as unknown) as string;
         break;
+      case 'accept':
+        btn = (translate('INTERVENTION_ACTIONS.ACCEPT') as unknown) as string;
+        message = (translate('INTERVENTION_ACTIONS.ACCEPT_PROMPT') as unknown) as string;
+        break;
+      case 'unlock':
+        btn = (translate('INTERVENTION_ACTIONS.UNLOCK') as unknown) as string;
+        message = (translate('INTERVENTION_ACTIONS.UNLOCK_PROMPT') as unknown) as string;
+        break;
+      case 'review':
+        btn = (translate('INTERVENTION_ACTIONS.REVIEW') as unknown) as string;
+        message = (translate('INTERVENTION_ACTIONS.REVIEW_PROMPT') as unknown) as string;
+        break;
       case 'accept_review':
         btn = (translate('INTERVENTION_ACTIONS.SEND') as unknown) as string;
         message = (translate('INTERVENTION_ACTIONS.SEND_FOR_ACCEPT_REVIEW') as unknown) as string;
@@ -139,7 +151,7 @@ export class InterventionActions extends LitElement {
         break;
       default:
         btn = action;
-        message = ((translate('INTERVENTION_ACTIONS.ARE_YOU_SURE_PROMPT') as unknown) as string) + action + ' ?';
+        message = getTranslation('INTERVENTION_ACTIONS.ARE_YOU_SURE_PROMPT') + action + ' ?';
     }
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
