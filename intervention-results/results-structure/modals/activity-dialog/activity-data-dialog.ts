@@ -199,9 +199,9 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
             ?disabled="${this.readonly}"
             ?checked="${this.useInputLevel}"
             @iron-change="${this.inputLevelChange}"
-            class="col-3"
+            class="col-5"
           >
-            Use Input-level
+            ${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.USE_INPUT_LEVEL')}
           </paper-toggle-button>
           <activity-items-table
             ?hidden="${!this.useInputLevel}"
