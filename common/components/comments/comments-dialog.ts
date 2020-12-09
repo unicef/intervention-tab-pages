@@ -25,6 +25,7 @@ import {connectStore} from '../../mixins/connect-store-mixin';
 import {PaperTextareaElement} from '@polymer/paper-input/paper-textarea';
 import {setTextareasMaxHeight} from '../../../utils/textarea-max-rows-helper';
 import {InterventionComment, GenericObject} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 
 @customElement('comments-dialog')
 export class CommentsDialog extends connectStore(LitElement) {
@@ -132,7 +133,7 @@ export class CommentsDialog extends connectStore(LitElement) {
           <paper-textarea
             max-rows="3"
             no-label-float
-            placeholder="—"
+            placeholder="${translate('GENERAL.ENTER_MESSAGE_HERE')}"
             .value="${this.newMessageText}"
             @value-changed="${({detail}: CustomEvent) => {
               this.newMessageText = detail.value;

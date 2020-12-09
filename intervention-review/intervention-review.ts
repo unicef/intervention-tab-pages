@@ -74,7 +74,10 @@ export class InterventionReviewTab extends connect(getStore())(LitElement) {
   render() {
     // language=HTML
     return html`
-      <etools-content-panel class="content-section" panel-title="Intervention Review">
+      <etools-content-panel
+        class="content-section"
+        panel-title="${translate('INTERVENTION_REVIEWS.INTERVENTION_REVIEW')}"
+      >
         <div slot="panel-btns">
           <paper-icon-button @click="${() => (this.allowEdit = true)}" icon="create"> </paper-icon-button>
         </div>
