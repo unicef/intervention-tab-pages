@@ -4,6 +4,7 @@ import {fireEvent} from '../../../../utils/fire-custom-event';
 import {ActivityItemRow} from './activity-item-row';
 import './activity-item-row';
 import {InterventionActivityItem} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 
 @customElement('activity-items-table')
 export class ActivityItemsTable extends LitElement {
@@ -32,11 +33,19 @@ export class ActivityItemsTable extends LitElement {
     // language=html
     return html`
       <div class="grid-row header border">
-        <div class="grid-cell header-cell">Item Description</div>
-        <div class="grid-cell header-cell center">CSO Contrib</div>
-        <div class="grid-cell header-cell center">Unicef Cash</div>
+        <div class="grid-cell header-cell">
+          ${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.ITEM_DESCRIPTION')}
+        </div>
+        <div class="grid-cell header-cell center">
+          ${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.CSO_CONTRIB')}
+        </div>
+        <div class="grid-cell header-cell center">
+          ${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.UNICEF_CASH')}
+        </div>
         <div class="grid-cell header-cell"></div>
-        <div class="grid-cell header-cell end">Total Cash</div>
+        <div class="grid-cell header-cell end">
+          ${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.TOTAL_CASH')}
+        </div>
       </div>
 
       ${this.activityItems.map(
