@@ -1,4 +1,4 @@
-import {LitElement, html, TemplateResult, CSSResultArray, css, customElement, property} from 'lit-element';
+import {LitElement, html, TemplateResult, CSSResultArray, css, customElement, property, PropertyValues} from 'lit-element';
 import {ResultStructureStyles} from './results-structure.styles';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import '@polymer/iron-icons';
@@ -31,6 +31,7 @@ import {
   Indicator,
   Intervention
 } from '@unicef-polymer/etools-types';
+import {callClickOnSpacePush} from '../../utils/common-methods';
 
 @customElement('pd-indicators')
 export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)) {
@@ -95,7 +96,13 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
       <div class="row-h align-items-center header">
         <div class="heading flex-auto">
           ${translate('INTERVENTION_RESULTS.PD_INDICATORS')}
-          <iron-icon icon="add-box" @click="${() => this.openIndicatorDialog()}" ?hidden="${this.readonly}"></iron-icon>
+          <iron-icon
+            class="add-box"
+            icon="add-box"
+            tabindex="0"
+            @click="${() => this.openIndicatorDialog()}"
+            ?hidden="${this.readonly}"
+          ></iron-icon>
         </div>
         <div class="heading number-data flex-none">${translate('INTERVENTION_RESULTS.BASELINE')}</div>
         <div class="heading number-data flex-none">${translate('INTERVENTION_RESULTS.TARGET')}</div>
@@ -144,6 +151,12 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
      */
     this.computeAvailableOptionsForIndicators(get(state, 'interventions.current'));
     this.envFlagsStateChanged(state);
+  }
+
+  firstUpdated(changedProperties: PropertyValues): void {
+    super.firstUpdated(changedProperties);
+
+    this.shadowRoot!.querySelectorAll('#view-toggle-button, iron-icon').forEach((el) => callClickOnSpacePush(el));
   }
 
   computeAvailableOptionsForIndicators(intervention: Intervention) {

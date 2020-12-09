@@ -1,8 +1,18 @@
-import {customElement, LitElement, html, TemplateResult, property, CSSResultArray, css} from 'lit-element';
+import {
+  customElement,
+  LitElement,
+  html,
+  TemplateResult,
+  property,
+  CSSResultArray,
+  css,
+  PropertyValues
+} from 'lit-element';
 import {getTotal} from './get-total.helper';
 import {ActivityItemsTableInlineStyles, ActivityItemsTableStyles} from './acivity-items-table.styles';
 import {fireEvent} from '../../../../utils/fire-custom-event';
 import {InterventionActivityItem} from '@unicef-polymer/etools-types';
+import {callClickOnSpacePush} from '../../../../utils/common-methods';
 
 @customElement('activity-item-row')
 export class ActivityItemRow extends LitElement {
@@ -39,6 +49,7 @@ export class ActivityItemRow extends LitElement {
                 .value="${this.activityItem.name || ''}"
                 no-label-float
                 placeholder="—"
+                id="activityName"
                 ?invalid="${this.invalid}"
                 ?readonly="${this.readonly}"
                 @value-changed="${({detail}: CustomEvent) => this.updateField('name', detail.value)}"
@@ -67,7 +78,13 @@ export class ActivityItemRow extends LitElement {
             </div>
             ${!this.readonly
               ? html`<div>
-                  <iron-icon icon="close" ?hidden="${this.readonly}" @click="${() => this.onRemove()}"></iron-icon>
+                  <iron-icon
+                    id="btnRemove"
+                    icon="close"
+                    tabindex="0"
+                    ?hidden="${this.readonly}"
+                    @click="${() => this.onRemove()}"
+                  ></iron-icon>
                 </div>`
               : html`<div class="${!this.lastItem ? 'border' : ''}"></div>`}
 
@@ -77,6 +94,12 @@ export class ActivityItemRow extends LitElement {
           </div>
         `
       : html``;
+  }
+
+  firstUpdated(changedProperties: PropertyValues): void {
+    super.firstUpdated(changedProperties);
+
+    callClickOnSpacePush(this.shadowRoot!.querySelector('#btnRemove'));
   }
 
   updateField(field: keyof InterventionActivityItem, value: any): void {

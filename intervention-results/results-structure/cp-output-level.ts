@@ -1,4 +1,13 @@
-import {css, CSSResultArray, customElement, html, LitElement, property, TemplateResult} from 'lit-element';
+import {
+  css,
+  CSSResultArray,
+  customElement,
+  html,
+  LitElement,
+  property,
+  PropertyValues,
+  TemplateResult
+} from 'lit-element';
 import {ResultStructureStyles} from './results-structure.styles';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import '@unicef-polymer/etools-data-table';
@@ -9,6 +18,7 @@ import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {callClickOnSpacePush} from '../../utils/common-methods';
 
 @customElement('cp-output-level')
 export class CpOutputLevel extends LitElement {
@@ -116,7 +126,7 @@ export class CpOutputLevel extends LitElement {
                 <slot></slot>
 
                 <div class="add-pd row-h align-items-center" ?hidden="${!this.resultLink.cp_output || this.readonly}">
-                  <iron-icon icon="add-box" @click="${() => this.addPD()}"></iron-icon>${translate(
+                  <iron-icon icon="add-box" tabindex="0" @click="${() => this.addPD()}"></iron-icon>${translate(
                     'INTERVENTION_RESULTS.RESULTS_STRUCTURE.ADD_PD_OUTPUT'
                   )}
                 </div>
@@ -125,6 +135,12 @@ export class CpOutputLevel extends LitElement {
           `
         : html`<slot></slot>`}
     `;
+  }
+
+  firstUpdated(changedProperties: PropertyValues): void {
+    super.firstUpdated(changedProperties);
+
+    this.shadowRoot!.querySelectorAll('iron-icon').forEach((el) => callClickOnSpacePush(el));
   }
 
   openEditCpOutputPopup(): void {

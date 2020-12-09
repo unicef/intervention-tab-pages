@@ -3,6 +3,7 @@ import {DataMixin} from '../../../../common/mixins/data-mixin';
 import '@unicef-polymer/etools-currency-amount-input';
 import '@polymer/paper-input/paper-textarea';
 import '@polymer/paper-toggle-button';
+import '@unicef-polymer/etools-dialog';
 import './activity-items-table';
 import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
 import {formatCurrency, getTotal} from './get-total.helper';
@@ -173,12 +174,14 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
               : html`
                   <paper-input
                     readonly
+                    tabindex="-1"
                     class="col-2 total-input"
                     label=${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.CSO_CASH_BUDGET')}
                     .value="${this.getSumValue('cso_cash')}"
                   ></paper-input>
                   <paper-input
                     readonly
+                    tabindex="-1"
                     class="col-2 total-input"
                     label=${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.UNICEF_CASH_BUDGET')}
                     .value="${this.getSumValue('unicef_cash')}"
@@ -188,6 +191,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
             <div class="flex-auto layout-horizontal total">
               <paper-input
                 readonly
+                tabindex="-1"
                 class="col-4"
                 label=${translate('GENERAL.TOTAL')}
                 .value="${this.getTotalValue()}"
