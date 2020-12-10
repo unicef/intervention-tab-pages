@@ -17,6 +17,7 @@ import {fireEvent} from '../../../../utils/fire-custom-event';
 import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 import {AnyObject, Disaggregation} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
+import {callClickOnSpacePush} from '../../../../utils/common-methods';
 
 /**
  * @customElement
@@ -84,6 +85,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
                   <paper-input
                     id="disaggregationGroups_${index}"
                     readonly
+                    tabindex="-1"
                     label=${translate('INDICATOR_DIALOG.DISAGGREGATION_GROUPS')}
                     placeholder="&#8212;"
                   ></paper-input>
@@ -178,6 +180,20 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
     fireEvent(this, 'update-tab-counter', {count: this.data.length});
   }
 
+  _mapSpaceToClick() {
+    setTimeout(() => {
+      this.shadowRoot!.querySelectorAll('etools-dropdown').forEach((el, index) => {
+        const paperEl = el.shadowRoot!.querySelector('paper-input');
+        if (paperEl) {
+          callClickOnSpacePush(paperEl);
+          if (index === 0) {
+            paperEl.focus();
+          }
+        }
+      }, 200);
+    });
+  }
+
   public _getItemModelObject(addNull: any) {
     if (addNull) {
       return null;
@@ -204,6 +220,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
 
     const newObj = this._getItemModelObject(addNull);
     this.data = [...this.data, newObj];
+    this._mapSpaceToClick();
   }
 
   /**
