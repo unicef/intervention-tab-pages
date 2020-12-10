@@ -141,7 +141,7 @@ export const interventionEndpoints: EtoolsEndpoints = {
     template: '/api/comments/v1/partners/intervention/<%=interventionId%>/csv/'
   },
   lowerResultsDelete: {
-    template: '/api/v2/reports/lower_results/<%=lower_result_id%>/'
+    template: '/api/pmp/v3/interventions/<%=interventionId%>/pd-outputs/<%=lower_result_id%>/'
   },
   createIndicator: {
     template: '/api/pmp/v3/interventions/lower-results/<%=id%>/indicators/'
