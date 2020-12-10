@@ -1,5 +1,5 @@
 import {getStore} from '../../utils/redux-store-access';
-import {css, html, CSSResultArray, customElement, LitElement, property, PropertyValues} from 'lit-element';
+import {css, html, CSSResultArray, customElement, LitElement, property} from 'lit-element';
 import {repeat} from 'lit-html/directives/repeat';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
@@ -392,7 +392,9 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           class="add-pd white row-h align-items-center"
           @click="${() => this.openPdOutputDialog()}"
         >
-          <iron-icon icon="add-box" tabindex="0"></iron-icon>${translate('INTERVENTION_RESULTS.ADD_PD_OUTPUT')}
+          <paper-icon-button icon="add-box"></paper-icon-button>${translate(
+            'INTERVENTION_RESULTS.ADD_PD_OUTPUT'
+          )}
         </div>
       </etools-content-panel>
     `;

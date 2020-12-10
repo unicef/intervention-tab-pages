@@ -11,6 +11,7 @@ import {
 import {ResultStructureStyles} from './results-structure.styles';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import '@unicef-polymer/etools-data-table';
+import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/iron-icons';
 import './modals/cp-output-dialog';
 import {fireEvent} from '../../utils/fire-custom-event';
@@ -126,9 +127,8 @@ export class CpOutputLevel extends LitElement {
                 <slot></slot>
 
                 <div class="add-pd row-h align-items-center" ?hidden="${!this.resultLink.cp_output || this.readonly}">
-                  <iron-icon icon="add-box" tabindex="0" @click="${() => this.addPD()}"></iron-icon>${translate(
-                    'INTERVENTION_RESULTS.RESULTS_STRUCTURE.ADD_PD_OUTPUT'
-                  )}
+                  <paper-icon-button icon="add-box" @click="${() => this.addPD()}"></paper-icon-button>
+                  ${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.ADD_PD_OUTPUT')}
                 </div>
               </div>
             </etools-data-table-row>

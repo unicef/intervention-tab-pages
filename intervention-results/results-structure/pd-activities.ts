@@ -1,6 +1,7 @@
 import {LitElement, html, TemplateResult, CSSResultArray, css, customElement, property} from 'lit-element';
 import {ResultStructureStyles} from './results-structure.styles';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
+import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/iron-icons';
 import './modals/activity-dialog/activity-data-dialog';
 import {openDialog} from '../../utils/dialog';
@@ -86,12 +87,11 @@ export class PdActivities extends CommentsMixin(LitElement) {
       <div class="row-h align-items-center header">
         <div class="heading flex-auto">
           ${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.PD_ACTIVITIES')}
-          <iron-icon
+          <paper-icon-button
             icon="add-box"
-            tabindex="0"
-            @click="${() => this.openDialog()}"
             ?hidden="${this.readonly}"
-          ></iron-icon>
+            @click="${() => this.openDialog()}"
+          ></paper-icon-button>
         </div>
         <div class="heading number-data flex-none">${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.CSO_CASH')}</div>
         <div class="heading number-data flex-none">
