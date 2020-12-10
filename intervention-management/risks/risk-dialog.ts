@@ -73,7 +73,7 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
               label=${translate('INTERVENTION_MANAGEMENT.RISKS.PROPOSED_MITIGATION_MEASURES')}
               always-float-label
               type="text"
-              auto-validate
+              .autoValidate="${this.autoValidate}"
               placeholder="—"
               required
               error-message=${translate('GENERAL.REQUIRED_FIELD')}
@@ -95,7 +95,21 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
 
   @property() riskDialogTitle = '';
 
+  @property({type: Boolean}) autoValidate = false;
+
   private endpoint!: EtoolsRequestEndpoint;
+
+  firstUpdated() {
+    this._handlePaperTextareaAutovalidateError();
+  }
+
+  /**
+   * This will prevent a console error "Uncaught TypeError: Cannot read property 'textarea' of undefined"
+   * The error occurs only on first load/ hard refresh and on paper-textareas that have auto-validate
+   */
+  _handlePaperTextareaAutovalidateError() {
+    this.autoValidate = true;
+  }
 
   set dialogData(data: any) {
     if (!data) {
