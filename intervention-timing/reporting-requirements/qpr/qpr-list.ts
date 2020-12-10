@@ -2,8 +2,8 @@ import {LitElement, html, property, customElement} from 'lit-element';
 import '@unicef-polymer/etools-data-table/etools-data-table.js';
 import '../mixins/reporting-req-past-dates-check';
 import '../styles/reporting-requirements-lists-styles';
-import CommonMixin from '../../../common/mixins/common-mixin';
 import ReportingReqPastDatesCheckMixin from '../mixins/reporting-req-past-dates-check';
+import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
 import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
 import {fireEvent} from '../../../utils/fire-custom-event';
@@ -14,11 +14,11 @@ import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-s
 /**
  * @polymer
  * @customElement
- * @appliesMixin CommonMixin
+ * @appliesMixin ReportingRequirementsCommonMixin
  * @appliesMixin ReportingReqPastDatesCheckMixin
  */
 @customElement('qpr-list')
-export class QprList extends CommonMixin(ReportingReqPastDatesCheckMixin(LitElement)) {
+export class QprList extends ReportingRequirementsCommonMixin(ReportingReqPastDatesCheckMixin(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, reportingRequirementsListStyles];
   }

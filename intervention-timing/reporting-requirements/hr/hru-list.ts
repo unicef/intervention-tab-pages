@@ -1,9 +1,9 @@
 import {LitElement, html, property, customElement} from 'lit-element';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import '../../../common/layout/icons-actions';
-import CommonMixin from '../../../common/mixins/common-mixin';
 import {fireEvent} from '../../../utils/fire-custom-event';
 import ReportingReqPastDatesCheckMixin from '../mixins/reporting-req-past-dates-check';
+import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
 import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
 import {isEmptyObject} from '../../../utils/utils';
@@ -14,12 +14,12 @@ import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-s
 /**
  * @polymer
  * @customElement
- * @appliesMixin CommonMixin
  * @appliesMixin ReportingReqPastDatesCheckMixin
+ * @appliesMixin ReportingRequirementsCommonMixin
  */
 
 @customElement('hru-list')
-export class HruList extends CommonMixin(ReportingReqPastDatesCheckMixin(LitElement)) {
+export class HruList extends ReportingReqPastDatesCheckMixin(ReportingRequirementsCommonMixin(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, reportingRequirementsListStyles];
   }

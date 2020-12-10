@@ -1,7 +1,7 @@
 import {LitElement, html, property, customElement} from 'lit-element';
 import '@unicef-polymer/etools-data-table/etools-data-table';
-import CommonMixin from '../../../common/mixins/common-mixin';
-import EndpointsMixinLit from '../../../common/mixins/endpoints-mixin-lit';
+import EndpointsLitMixin from '../../../common/mixins/endpoints-mixin-lit';
+import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
 import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
 import {isEmptyObject} from '../../../utils/utils';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
@@ -15,12 +15,11 @@ import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-s
  * @polymer
  * @mixinFunction
  * @appliesMixin EndpointsMixinLit
- * @appliesMixin CommonMixin
+ * @appliesMixin ReportingRequirementsCommonMixin
  */
 
-// @DAN: EndpointsMixinLit
 @customElement('humanitarian-reporting-req-cluster')
-export class HumanitarianReportingReqCluster extends CommonMixin(EndpointsMixinLit(LitElement)) {
+export class HumanitarianReportingReqCluster extends EndpointsLitMixin(ReportingRequirementsCommonMixin(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit];
   }

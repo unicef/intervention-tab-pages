@@ -5,7 +5,6 @@ import '@unicef-polymer/etools-data-table/etools-data-table';
 import {createDynamicDialog} from '@unicef-polymer/etools-dialog/dynamic-dialog';
 import '../../../common/layout/icons-actions';
 import './add-edit-special-rep-req';
-import CommonMixin from '../../../common/mixins/common-mixin';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
 import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
@@ -25,11 +24,10 @@ import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-s
  * @customElement
  * @polymer
  * @mixinFunction
- * @appliesMixin CommonMixin
  * @appliesMixin ReportingRequirementsCommonMixin
  */
 @customElement('special-reporting-requirements')
-export class SpecialReportingRequirements extends CommonMixin(ReportingRequirementsCommonMixin(LitElement)) {
+export class SpecialReportingRequirements extends ReportingRequirementsCommonMixin(LitElement) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles, reportingRequirementsListStyles];
   }
