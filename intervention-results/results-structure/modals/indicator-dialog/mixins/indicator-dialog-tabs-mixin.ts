@@ -1,5 +1,6 @@
 import {property, LitElement} from 'lit-element';
 import {Constructor} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 
 interface EtoolsTab {
   tab: string;
@@ -19,11 +20,11 @@ function IndicatorDialogTabsMixin<T extends Constructor<LitElement>>(baseClass: 
     indicatorDataTabs: EtoolsTab[] = [
       {
         tab: 'details',
-        tabLabel: 'Details'
+        tabLabel: (translate('INTERVENTION_TABS.DETAILS_TAB') as unknown) as string
       },
       {
         tab: 'disaggregations',
-        tabLabel: 'Disaggregations',
+        tabLabel: (translate('INTERVENTION_TABS.DISAGGREGATIONS_TAB') as unknown) as string,
         showTabCounter: true,
         counter: 0
       }

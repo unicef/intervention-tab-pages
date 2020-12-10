@@ -45,7 +45,8 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
 
       <etools-content-panel
         class="content-section"
-        .panelTitle="Attachments (${this.attachments.length})"
+        .panelTitle="${((translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.ATTACHMENTS') as unknown) as string)
+           } (${this.attachments.length})"
         comment-element="attachments"
         comment-description=${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.ATTACHMENTS')}
       >

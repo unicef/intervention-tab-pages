@@ -47,6 +47,7 @@ export interface EtoolsEndpoints {
   getPRPCountries: EtoolsEndpoint;
   downloadComment: EtoolsEndpoint;
   downloadPDPdf: EtoolsEndpoint;
+  interventionReview: EtoolsEndpoint;
 }
 
 export const interventionEndpoints: EtoolsEndpoints = {
@@ -170,6 +171,9 @@ export const interventionEndpoints: EtoolsEndpoints = {
   },
   pdAttachments: {
     template: '/api/pmp/v3/interventions/<%=id%>/attachments/'
+  },
+  interventionReview: {
+    template: '/api/pmp/v3/interventions/<%=interventionId%>/reviews/<%=id%>/'
   },
   updatePdAttachment: {
     template: '/api/pmp/v3/interventions/<%=id%>/attachments/<%=attachment_id%>/'

@@ -146,7 +146,9 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
               class="padd-top"
               ?hidden="${!this.isReadonly(this.editMode, this.permissions.edit.unicef_focal_points)}"
             >
-              <label for="focalPointInput" class="paper-label">Unicef Focal Points</label>
+              <label for="focalPointInput" class="paper-label"
+                >${translate('INTERVENTION_DETAILS.UNICEF_FOCAL_POINTS')}</label
+              >
               <div id="focalPointDetails">
                 ${this.renderReadonlyUserDetails(
                   this.originalData?.unicef_focal_points ? this.originalData?.unicef_focal_points! : []

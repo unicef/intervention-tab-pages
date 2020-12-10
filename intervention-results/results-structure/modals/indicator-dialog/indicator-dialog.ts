@@ -27,7 +27,7 @@ import './cluster-indicator';
 import './cluster-indicator-disaggregations';
 import {Indicator, IndicatorDialogData} from '@unicef-polymer/etools-types';
 import {AnyObject, EtoolsUser, LocationObject, Section} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 
 @customElement('indicator-dialog')
 export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin(ComponentBaseMixin(LitElement))) {
@@ -90,6 +90,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
         @close="${this.onClose}"
         @confirm-btn-clicked="${this._validateAndSaveIndicator}"
         ok-btn-text=${translate('GENERAL.SAVE')}
+        cancel-btn-text=${translate('GENERAL.CANCEL')}
         keep-dialog-open
         .disableConfirmBtn="${this.disableConfirmBtn}"
         .hideConfirmBtn="${this.readonly}"
@@ -222,7 +223,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   disableConfirmBtn = false;
 
   @property({type: String})
-  spinnerText = 'Saving...';
+  spinnerText = getTranslation('GENERAL.SAVING_DATA');
 
   @property({type: String})
   interventionStatus!: string;
@@ -326,7 +327,9 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   }
 
   setTitle() {
-    const title = this.isEditRecord ? 'Edit Indicator' : 'Add Indicator';
+    const title = this.isEditRecord
+      ? getTranslation('INDICATOR_DIALOG.EDIT_INDICATOR')
+      : getTranslation('INDICATOR_DIALOG.ADD_INDICATOR');
     setTimeout(() => {
       this.indicatorDialog.dialogTitle = title;
     });

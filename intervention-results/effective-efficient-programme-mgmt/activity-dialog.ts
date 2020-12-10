@@ -46,6 +46,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         keep-dialog-open
         dialog-title=${translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.ACTIVITY_DIALOG.EDIT_ACTIVITY')}
         ok-btn-text=${translate('GENERAL.SAVE')}
+        cancel-btn-text=${translate('GENERAL.CANCEL')}
         ?opened="${this.dialogOpened}"
         ?show-spinner="${this.loadingInProcess}"
         @close="${() => this.onClose()}"

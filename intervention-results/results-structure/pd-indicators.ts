@@ -21,7 +21,7 @@ import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import './pd-indicator';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {connectStore} from '../../common/mixins/connect-store-mixin';
-import {translate, get as getTranslation} from 'lit-translate';
+import {translate} from 'lit-translate';
 import {
   AsyncAction,
   Disaggregation,
@@ -176,8 +176,8 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
-        content: getTranslation('INTERVENTION_RESULTS.DEACTIVATE_PROMPT'),
-        confirmBtnText: getTranslation('INTERVENTION_RESULTS.DEACTIVATE')
+        content: (translate('INTERVENTION_RESULTS.DEACTIVATE_PROMPT') as unknown) as string,
+        confirmBtnText: (translate('INTERVENTION_RESULTS.DEACTIVATE') as unknown) as string
       }
     }).then(({confirmed}) => {
       return confirmed;
@@ -211,8 +211,8 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
-        content: getTranslation('INTERVENTION_RESULTS.DELETE_PROMPT'),
-        confirmBtnText: getTranslation('GENERAL.DELETE')
+        content: (translate('INTERVENTION_RESULTS.DELETE_PROMPT') as unknown) as string,
+        confirmBtnText: (translate('GENERAL.DELETE') as unknown) as string
       }
     }).then(({confirmed}) => {
       return confirmed;

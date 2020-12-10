@@ -166,7 +166,7 @@ class InterventionProgress extends connectStore(
         <div class="row-h">
           <div class="layout-vertical col-4">
             <etools-form-element-wrapper
-              label="PD Duration"
+              label="[[_translate('INTERVENTION_REPORTS.PD_DURATION')]]"
               value="[[_getPdDuration(progress.start_date, progress.end_date)]]"
             >
             </etools-form-element-wrapper>
@@ -182,7 +182,7 @@ class InterventionProgress extends connectStore(
               >
                 <etools-form-element-wrapper
                   slot="field"
-                  label="Cash Transfered"
+                  label="[[_translate('INTERVENTION_REPORTS.CASH_TRANSFERED')]]"
                   value="[[progress.disbursement_currency]] [[displayCurrencyAmount(progress.disbursement, '0', 0)]]"
                 >
                 </etools-form-element-wrapper>

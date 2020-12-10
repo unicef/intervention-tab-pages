@@ -28,7 +28,7 @@ import {connectStore} from './common/mixins/connect-store-mixin';
 import {Intervention} from '@unicef-polymer/etools-types';
 import {AsyncAction, RouteDetails} from '@unicef-polymer/etools-types';
 import {interventions} from './common/reducers/interventions';
-import {get as getTranslation, translate} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 
 const MOCKUP_STATUSES = [
   ['draft', 'Draft'],
@@ -144,6 +144,7 @@ export class InterventionTabs extends connectStore(LitElement) {
         <intervention-timing ?hidden="${!this.isActiveTab(this.activeTab, 'timing')}"> </intervention-timing>
         <intervention-management ?hidden="${!this.isActiveTab(this.activeTab, 'management')}">
         </intervention-management>
+        <intervention-review ?hidden="${!this.isActiveTab(this.activeTab, 'review')}"></intervention-review>
         <intervention-attachments ?hidden="${!this.isActiveTab(this.activeTab, 'attachments')}">
         </intervention-attachments>
         <intervention-reports ?hidden="${!this.isActiveTab(this.activeTab, 'reports')}"></intervention-reports>
@@ -156,32 +157,32 @@ export class InterventionTabs extends connectStore(LitElement) {
   pageTabs = [
     {
       tab: 'overview',
-      tabLabel: getTranslation('INTERVENTION_TABS.OVERVIEW_TAB'),
+      tabLabel: (translate('INTERVENTION_TABS.OVERVIEW_TAB') as unknown) as string,
       hidden: false
     },
     {
       tab: 'details',
-      tabLabel: getTranslation('INTERVENTION_TABS.DETAILS_TAB'),
+      tabLabel: (translate('INTERVENTION_TABS.DETAILS_TAB') as unknown) as string,
       hidden: false
     },
     {
       tab: 'results',
-      tabLabel: getTranslation('INTERVENTION_TABS.RESULTS_TAB'),
+      tabLabel: (translate('INTERVENTION_TABS.RESULTS_TAB') as unknown) as string,
       hidden: false
     },
     {
       tab: 'timing',
-      tabLabel: getTranslation('INTERVENTION_TABS.TIMING_TAB'),
+      tabLabel: (translate('INTERVENTION_TABS.TIMING_TAB') as unknown) as string,
       hidden: false
     },
     {
       tab: 'management',
-      tabLabel: getTranslation('INTERVENTION_TABS.MANAGEMENT_TAB'),
+      tabLabel: (translate('INTERVENTION_TABS.MANAGEMENT_TAB') as unknown) as string,
       hidden: false
     },
     {
       tab: 'attachments',
-      tabLabel: getTranslation('INTERVENTION_TABS.ATTACHMENTS_TAB'),
+      tabLabel: (translate('INTERVENTION_TABS.ATTACHMENTS_TAB') as unknown) as string,
       hidden: false
     }
   ];
@@ -259,6 +260,7 @@ export class InterventionTabs extends connectStore(LitElement) {
         fireEvent(this, 'scroll-up');
       }
       this.availableActions = selectAvailableActions(state);
+      this.checkReviewTab(state);
 
       // Progress, Reports tabs are visible only for unicef users if flag prp_mode_off it's not ON
       const envFlags = get(state, 'commonData.envFlags');
@@ -270,10 +272,14 @@ export class InterventionTabs extends connectStore(LitElement) {
       ) {
         this.pageTabs.push({
           tab: 'progress',
-          tabLabel: getTranslation('INTERVENTION_TABS.PROGRESS_TAB'),
+          tabLabel: (translate('INTERVENTION_TABS.PROGRESS_TAB') as unknown) as string,
           hidden: false
         });
-        this.pageTabs.push({tab: 'reports', tabLabel: getTranslation('INTERVENTION_TABS.REPORTS_TAB'), hidden: false});
+        this.pageTabs.push({
+          tab: 'reports',
+          tabLabel: (translate('INTERVENTION_TABS.REPORTS_TAB') as unknown) as string,
+          hidden: false
+        });
       }
     } else if (this._routeDetails) {
       this._routeDetails = null;
@@ -283,13 +289,31 @@ export class InterventionTabs extends connectStore(LitElement) {
     }
   }
 
+  checkReviewTab(state: RootState): void {
+    const tabIndex = this.pageTabs.findIndex((x) => x.tab === 'review');
+    const unicefUser = get(state, 'user.data.is_unicef_user');
+    const interventionStatus = get(state, 'interventions.current.status');
+    const isDraft = !interventionStatus || interventionStatus === 'draft';
+    if (tabIndex === -1 && unicefUser && !isDraft) {
+      this.pageTabs.splice(5, 0, {
+        tab: 'review',
+        tabLabel: getTranslation('INTERVENTION_REVIEWS.REVIEW_TAB'),
+        hidden: false
+      });
+    } else if (tabIndex !== -1 && (!unicefUser || isDraft)) {
+      this.pageTabs.splice(tabIndex, 1);
+    }
+  }
+
   showPerformedActionsStatus() {
     return (
       ['draft', 'development'].includes(this.intervention!.status) &&
       (this.intervention!.partner_accepted ||
         this.intervention!.unicef_accepted ||
         (!this.intervention!.unicef_court && !!this.intervention!.date_sent_to_partner) ||
-        (this.intervention!.unicef_court && !!this.intervention!.submission_date))
+        (this.intervention!.unicef_court &&
+          !!this.intervention!.submission_date &&
+          !!this.intervention!.date_sent_to_partner))
     );
   }
 
@@ -310,7 +334,11 @@ export class InterventionTabs extends connectStore(LitElement) {
       return 'Sent to Partner';
     }
 
-    if (this.intervention!.unicef_court && !!this.intervention!.submission_date) {
+    if (
+      this.intervention!.unicef_court &&
+      !!this.intervention!.submission_date &&
+      !!this.intervention!.date_sent_to_partner
+    ) {
       return 'Sent to Unicef';
     }
     return '';

@@ -34,7 +34,7 @@ export class InterventionActions extends LitElement {
 
   private actionsNamesMap = new Proxy(namesMap, {
     get(target: GenericObject<string>, property: string): string {
-      return target[property] || property;
+      return target[property] || property.replace('_', ' ');
     }
   });
 
@@ -138,8 +138,11 @@ export class InterventionActions extends LitElement {
         message = getTranslation('INTERVENTION_ACTIONS.TERMINATE_PROMPT');
         break;
       default:
-        btn = action;
-        message = getTranslation('INTERVENTION_ACTIONS.ARE_YOU_SURE_PROMPT') + action + ' ?';
+        btn = this.actionsNamesMap[action];
+        message =
+          getTranslation('INTERVENTION_ACTIONS.ARE_YOU_SURE_PROMPT') +
+          this.actionsNamesMap[action]?.toLowerCase() +
+          ' ?';
     }
     const confirmed = await openDialog({
       dialog: 'are-you-sure',

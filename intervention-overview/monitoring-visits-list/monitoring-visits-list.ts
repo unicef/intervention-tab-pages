@@ -115,7 +115,7 @@ export class MonitoringVisitsList extends LitElement {
         >
           <p>${translate('INTERVENTION_OVERVIEW.NO_ACTIVITIES')}</p>
         </div>
-      </div>`
+      </div>`;
   }
 
   @property({type: String})
