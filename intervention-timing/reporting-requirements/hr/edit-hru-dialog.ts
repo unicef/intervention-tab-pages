@@ -89,13 +89,12 @@ export class EditHruDialog extends connectStore(LitElement) {
           <div class="col layout-vertical col-6">
             <calendar-lite
               id="datepicker"
-              date="${prepareDatepickerDate(this.selectedDate)}"
-              pretty-date="${this.selectedDate}"
+              pretty-date="${this.selectedDate ? prepareDatepickerDate(this.selectedDate) : ''}"
+              @date-changed="${({detail}: CustomEvent) => this.changed(detail.value)}"
               format="YYYY-MM-DD"
               hide-header
             >
             </calendar-lite>
-
             <paper-button id="add-selected-date" class="secondary-btn" @click="${() => this._addToList()}">
               Add Selected Date to List
             </paper-button>
@@ -212,10 +211,12 @@ export class EditHruDialog extends connectStore(LitElement) {
       });
       return;
     }
-    this.hruData.push({
+    const auxHruData = [...this.hruData];
+    auxHruData.push({
       end_date: moment(this.selectedDate).format('YYYY-MM-DD'),
       due_date: this._oneDayAfterEndDate(this.selectedDate)
     });
+    this.hruData = [...auxHruData];
   }
 
   _oneDayAfterEndDate(endDt: string) {
@@ -277,7 +278,7 @@ export class EditHruDialog extends connectStore(LitElement) {
       });
   }
 
-  prepareDatepickerDate(dateStr: string) {
-    return prepareDatepickerDate(dateStr);
+  changed(value: string) {
+    this.selectedDate = moment(new Date(value)).format('YYYY-MM-DD');
   }
 }
