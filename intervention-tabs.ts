@@ -260,8 +260,8 @@ export class InterventionTabs extends connectStore(LitElement) {
         fireEvent(this, 'scroll-up');
       }
       this.availableActions = selectAvailableActions(state);
+      console.log('update state');
       this.checkReviewTab(state);
-
       // Progress, Reports tabs are visible only for unicef users if flag prp_mode_off it's not ON
       const envFlags = get(state, 'commonData.envFlags');
       if (
@@ -292,16 +292,12 @@ export class InterventionTabs extends connectStore(LitElement) {
   checkReviewTab(state: RootState): void {
     const tabIndex = this.pageTabs.findIndex((x) => x.tab === 'review');
     const unicefUser = get(state, 'user.data.is_unicef_user');
-    const interventionStatus = get(state, 'interventions.current.status');
-    const isDraft = !interventionStatus || interventionStatus === 'draft';
-    if (tabIndex === -1 && unicefUser && !isDraft) {
+    if (tabIndex === -1 && unicefUser) {
       this.pageTabs.splice(5, 0, {
         tab: 'review',
         tabLabel: getTranslation('INTERVENTION_REVIEWS.REVIEW_TAB'),
         hidden: false
       });
-    } else if (tabIndex !== -1 && (!unicefUser || isDraft)) {
-      this.pageTabs.splice(tabIndex, 1);
     }
   }
 
