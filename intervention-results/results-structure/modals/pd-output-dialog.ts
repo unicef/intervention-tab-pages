@@ -80,7 +80,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
         cancel-btn-text=${translate('GENERAL.CANCEL')}
         no-padding
       >
-        <div class="unassociated-warning" ?hidden="${!this.unassociated || this.hideCpOutputs}">
+        <div class="unassociated-warning" ?hidden="${!this.unassociated}">
           <div>
             <iron-icon icon="warning"></iron-icon>${translate('INTERVENTION_RESULTS.PD_OUTPUT_DIALOG.ASSOCIATE_PROMPT')}
           </div>
