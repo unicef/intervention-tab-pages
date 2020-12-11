@@ -99,7 +99,8 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
 
   private endpoint!: EtoolsRequestEndpoint;
 
-  firstUpdated() {
+  firstUpdated(_changedProperties: any) {
+    super.firstUpdated(_changedProperties);
     this._handlePaperTextareaAutovalidateError();
   }
 
