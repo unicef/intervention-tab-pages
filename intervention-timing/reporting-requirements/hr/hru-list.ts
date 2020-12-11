@@ -68,7 +68,7 @@ export class HruList extends ReportingReqPastDatesCheckMixin(ReportingRequiremen
   _listItemEditable = false;
 
   @property({type: Object})
-  hruMainEl!: LitElement & {_getIndex(idx: any): number | string};
+  hruMainEl!: LitElement & {_getIndex(idx: any): number};
 
   @property({type: Boolean})
   usePaginationIndex = false;
@@ -105,11 +105,11 @@ export class HruList extends ReportingReqPastDatesCheckMixin(ReportingRequiremen
     });
   }
 
-  _getIndex(index: any) {
+  _getIndex(index: number) {
     if (this.usePaginationIndex) {
       return this.hruMainEl._getIndex(index);
     }
-    return parseInt(index, 10) + 1;
+    return index + 1;
   }
 
   _deleteHruReq(index: number) {

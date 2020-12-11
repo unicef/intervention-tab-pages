@@ -11,7 +11,7 @@ import CONSTANTS from '../../../common/constants';
 import {fireEvent} from '../../../utils/fire-custom-event';
 import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
 import {requiredFieldStarredStylesPolymer} from '../../../common/styles/required-field-styles';
-import {prepareDatepickerDate, convertDate} from '../../../utils/date-utils';
+import {convertDate} from '../../../utils/date-utils';
 // this was refactored
 // import EndpointsMixin from '../mixins/endpoints-mixin';
 import {getEndpoint} from '../../../utils/endpoint-helper';
@@ -89,7 +89,7 @@ export class EditHruDialog extends connectStore(LitElement) {
           <div class="col layout-vertical col-6">
             <calendar-lite
               id="datepicker"
-              pretty-date="${this.selectedDate ? prepareDatepickerDate(this.selectedDate) : ''}"
+              pretty-date="${this.selectedDate ? this.selectedDate : ''}"
               @date-changed="${({detail}: CustomEvent) => this.changed(detail.value)}"
               format="YYYY-MM-DD"
               hide-header
