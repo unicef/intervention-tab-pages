@@ -305,7 +305,7 @@ export const sharedStylesContent = `
     --iron-icon-height: 14px;
   }
 
-  *:focus:not(paper-icon-button) {
+  *:focus:not(paper-icon-button):not(paper-radio-button) {
     outline: 0;
     box-shadow: var(--paper-material-elevation-3_-_box-shadow);
   }
