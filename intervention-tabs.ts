@@ -261,7 +261,6 @@ export class InterventionTabs extends connectStore(LitElement) {
       }
       this.availableActions = selectAvailableActions(state);
       this.checkReviewTab(state);
-
       // Progress, Reports tabs are visible only for unicef users if flag prp_mode_off it's not ON
       const envFlags = get(state, 'commonData.envFlags');
       if (
@@ -294,15 +293,17 @@ export class InterventionTabs extends connectStore(LitElement) {
     const unicefUser = get(state, 'user.data.is_unicef_user');
     const interventionStatus = get(state, 'interventions.current.status');
     const isDraft = !interventionStatus || interventionStatus === 'draft';
+    const originalPageTabs = this.pageTabs;
     if (tabIndex === -1 && unicefUser && !isDraft) {
-      this.pageTabs.splice(5, 0, {
+      originalPageTabs.splice(5, 0, {
         tab: 'review',
         tabLabel: getTranslation('INTERVENTION_REVIEWS.REVIEW_TAB'),
         hidden: false
       });
     } else if (tabIndex !== -1 && (!unicefUser || isDraft)) {
-      this.pageTabs.splice(tabIndex, 1);
+      originalPageTabs.splice(tabIndex, 1);
     }
+    this.pageTabs = [...originalPageTabs];
   }
 
   showPerformedActionsStatus() {
