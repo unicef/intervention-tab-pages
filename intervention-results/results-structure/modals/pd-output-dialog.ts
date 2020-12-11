@@ -21,6 +21,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
 
   @property() cpOutputs: CpOutput[] = [];
   @property() hideCpOutputs = false;
+  @property() isUnicefUser = false;
 
   interventionId!: number;
 
@@ -28,12 +29,13 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
     return Boolean(this.editedData.id && !this.editedData.cp_output);
   }
 
-  set dialogData({pdOutput, cpOutputs, hideCpOutputs, interventionId}: any) {
+  set dialogData({pdOutput, cpOutputs, hideCpOutputs, interventionId, isUnicefUser}: any) {
     this.data = pdOutput || {};
     this.cpOutputs = cpOutputs || [];
     this.hideCpOutputs = hideCpOutputs || !pdOutput || pdOutput.cp_output;
     this.isEditDialog = Boolean(pdOutput && pdOutput.id);
     this.interventionId = interventionId;
+    this.isUnicefUser = isUnicefUser;
   }
 
   protected render(): TemplateResult {
@@ -74,13 +76,13 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
         dialog-title="${this.isEditDialog ? translate('GENERAL.EDIT') : translate('GENERAL.ADD')} ${translate(
           'INTERVENTION_RESULTS.PD_OUTPUT_DIALOG.PD_OUTPUT'
         )}"
-        @confirm-btn-clicked="${() => this.processRequest()}"
+        @confirm-btn-clicked="${() => this.preCheck()}"
         @close="${this.onClose}"
         ok-btn-text=${translate('GENERAL.SAVE')}
         cancel-btn-text=${translate('GENERAL.CANCEL')}
         no-padding
       >
-        <div class="unassociated-warning" ?hidden="${!this.unassociated}">
+        <div class="unassociated-warning" ?hidden="${!this.unassociated || this.hideCpOutputs}">
           <div>
             <iron-icon icon="warning"></iron-icon>${translate('INTERVENTION_RESULTS.PD_OUTPUT_DIALOG.ASSOCIATE_PROMPT')}
           </div>
@@ -141,10 +143,17 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
     fireEvent(this, 'dialog-closed', {confirmed: false});
   }
 
-  processRequest(): void {
-    if (this.unassociated || this.loadingInProcess) {
+  preCheck(): void {
+    if (!this.isUnicefUser || !this.loadingInProcess) {
+      this.processRequest();
+    } else if (!this.unassociated || !this.loadingInProcess) {
+      this.processRequest();
+    } else {
       return;
     }
+  }
+
+  processRequest(): void {
     if (!validateRequiredFields(this)) {
       return;
     }
