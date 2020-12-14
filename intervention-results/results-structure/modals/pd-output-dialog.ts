@@ -144,12 +144,12 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
   }
 
   preCheck(): void {
-    if (!this.isUnicefUser || !this.loadingInProcess) {
-      this.processRequest();
-    } else if (!this.unassociated || !this.loadingInProcess) {
-      this.processRequest();
-    } else {
+    if (this.loadingInProcess) {
       return;
+    }
+
+    if (!this.isUnicefUser || !this.unassociated) {
+      this.processRequest();
     }
   }
 
