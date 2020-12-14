@@ -555,6 +555,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
     if (e.detail.success) {
       const response = e.detail.success;
       this.data.signed_pd_attachment = response.id;
+      this.requestUpdate();
     }
   }
 
