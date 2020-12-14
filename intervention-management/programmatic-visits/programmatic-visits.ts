@@ -283,6 +283,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
                     id="totalComp"
                     label=${translate('GENERAL.TOTAL_C')}
                     readonly
+                    tabindex="-1"
                     class="row-second-bg"
                     no-placeholder
                     .value="${this._getTotal(

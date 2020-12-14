@@ -1,7 +1,17 @@
-import {css, CSSResultArray, customElement, html, LitElement, property, TemplateResult} from 'lit-element';
+import {
+  css,
+  CSSResultArray,
+  customElement,
+  html,
+  LitElement,
+  property,
+  PropertyValues,
+  TemplateResult
+} from 'lit-element';
 import {ResultStructureStyles} from './results-structure.styles';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import '@unicef-polymer/etools-data-table';
+import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/iron-icons';
 import './modals/cp-output-dialog';
 import {fireEvent} from '../../utils/fire-custom-event';
@@ -9,6 +19,7 @@ import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {callClickOnSpacePush} from '../../utils/common-methods';
 
 @customElement('cp-output-level')
 export class CpOutputLevel extends LitElement {
@@ -116,15 +127,20 @@ export class CpOutputLevel extends LitElement {
                 <slot></slot>
 
                 <div class="add-pd row-h align-items-center" ?hidden="${!this.resultLink.cp_output || this.readonly}">
-                  <iron-icon icon="add-box" @click="${() => this.addPD()}"></iron-icon>${translate(
-                    'INTERVENTION_RESULTS.RESULTS_STRUCTURE.ADD_PD_OUTPUT'
-                  )}
+                  <paper-icon-button icon="add-box" @click="${() => this.addPD()}"></paper-icon-button>
+                  ${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.ADD_PD_OUTPUT')}
                 </div>
               </div>
             </etools-data-table-row>
           `
         : html`<slot></slot>`}
     `;
+  }
+
+  firstUpdated(changedProperties: PropertyValues): void {
+    super.firstUpdated(changedProperties);
+
+    this.shadowRoot!.querySelectorAll('iron-icon').forEach((el) => callClickOnSpacePush(el));
   }
 
   openEditCpOutputPopup(): void {
