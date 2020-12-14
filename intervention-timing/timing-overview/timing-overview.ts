@@ -5,7 +5,7 @@ import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {elevationStyles} from '../../common/styles/elevation-styles';
 import {TimingOverviewData} from './timingOverview.models';
 import {selectTimingOverview} from './timingOverview.selectors';
-import {formatDateShortMonth} from '../../utils/date-utils';
+import {formatDate} from '../../utils/date-utils';
 import {RootState} from '../../common/types/store.types';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
@@ -35,14 +35,14 @@ export class TimingOverview extends CommentsMixin(LitElement) {
         <div class="data-column">
           <label class="paper-label">${translate('INTERVENTION_TIMING.TIMING_OVERVIEW.DATE_CREATED')}</label>
           <div class="input-label" ?empty="${!this.timingOverview.created}">
-            ${formatDateShortMonth(this.timingOverview.created)}
+            ${formatDate(this.timingOverview.created)}
           </div>
         </div>
 
         <div class="data-column">
           <label class="paper-label">${translate('INTERVENTION_TIMING.TIMING_OVERVIEW.DATE_FIRST_SENT_PARTNER')}</label>
           <div class="input-label" ?empty="${!this.timingOverview.date_sent_to_partner}">
-            ${formatDateShortMonth(this.timingOverview.date_sent_to_partner)}
+            ${formatDate(this.timingOverview.date_sent_to_partner)}
           </div>
         </div>
 
@@ -51,35 +51,35 @@ export class TimingOverview extends CommentsMixin(LitElement) {
             >${translate('INTERVENTION_TIMING.TIMING_OVERVIEW.DATE_FIRST_DRAFT_PARTNER')}</label
           >
           <div class="input-label" ?empty="${!this.timingOverview.submission_date}">
-            ${formatDateShortMonth(this.timingOverview.submission_date)}
+            ${formatDate(this.timingOverview.submission_date)}
           </div>
         </div>
 
         <div class="data-column">
           <label class="paper-label">${translate('INTERVENTION_TIMING.TIMING_OVERVIEW.PRC_SUBMISSION_DATE')}</label>
           <div class="input-label" ?empty="${!this.timingOverview.submission_date_prc}">
-            ${formatDateShortMonth(this.timingOverview.submission_date_prc)}
+            ${formatDate(this.timingOverview.submission_date_prc)}
           </div>
         </div>
 
         <div class="data-column">
           <label class="paper-label">${translate('INTERVENTION_TIMING.TIMING_OVERVIEW.PRC_REVIEW_DATE')}</label>
           <div class="input-label" ?empty="${!this.timingOverview.review_date_prc}">
-            ${formatDateShortMonth(this.timingOverview.review_date_prc)}
+            ${formatDate(this.timingOverview.review_date_prc)}
           </div>
         </div>
 
         <div class="data-column">
           <label class="paper-label">${translate('INTERVENTION_TIMING.TIMING_OVERVIEW.DATE_PARTNER_SIGNED')}</label>
           <div class="input-label" ?empty="${!this.timingOverview.signed_by_partner_date}">
-            ${formatDateShortMonth(this.timingOverview.signed_by_partner_date)}
+            ${formatDate(this.timingOverview.signed_by_partner_date)}
           </div>
         </div>
 
         <div class="data-column">
           <label class="paper-label">${translate('INTERVENTION_TIMING.TIMING_OVERVIEW.DATE_UNICEF_SIGNED')}</label>
           <div class="input-label" ?empty="${!this.timingOverview.signed_by_unicef_date}">
-            ${formatDateShortMonth(this.timingOverview.signed_by_unicef_date)}
+            ${formatDate(this.timingOverview.signed_by_unicef_date)}
           </div>
         </div>
 
