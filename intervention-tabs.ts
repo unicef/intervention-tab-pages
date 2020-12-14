@@ -260,7 +260,6 @@ export class InterventionTabs extends connectStore(LitElement) {
         fireEvent(this, 'scroll-up');
       }
       this.availableActions = selectAvailableActions(state);
-      console.log('update state');
       this.checkReviewTab(state);
       // Progress, Reports tabs are visible only for unicef users if flag prp_mode_off it's not ON
       const envFlags = get(state, 'commonData.envFlags');
