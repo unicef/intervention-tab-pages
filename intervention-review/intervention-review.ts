@@ -138,14 +138,8 @@ export class InterventionReviewTab extends connect(getStore())(LitElement) {
     this.review = state.interventions.current.reviews[0] || null;
     this.currentReviewState = this.review?.overall_approval || false;
     this.interventionId = state.interventions.current.id;
-    // disable edit on draft status
-    const interventionStatus = get(state, 'interventions.current.status');
-    const isDraft = !interventionStatus || interventionStatus === 'draft';
-    if (!isDraft) {
-      this.canEditReview = true;
-    } else {
-      this.canEditReview = false;
-    }
+    console.log(state.interventions.current.permissions);
+    this.canEditReview = state.interventions.current.permissions!.edit.reviews || false;
   }
 
   save(): void {
