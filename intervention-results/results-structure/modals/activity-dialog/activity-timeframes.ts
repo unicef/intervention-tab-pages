@@ -1,9 +1,19 @@
-import {LitElement, html, TemplateResult, CSSResultArray, css, property, customElement} from 'lit-element';
+import {
+  LitElement,
+  html,
+  TemplateResult,
+  CSSResultArray,
+  css,
+  property,
+  customElement,
+  PropertyValues
+} from 'lit-element';
 import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
 import {ActivityTime, groupByYear, serializeTimeFrameData} from '../../../../utils/timeframes.helper';
 import {fireEvent} from '../../../../utils/fire-custom-event';
 import {InterventionActivityTimeframe} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {callClickOnSpacePush} from '../../../../utils/common-methods';
 
 @customElement('activity-time-frames')
 export class ActivityTimeFrames extends LitElement {
@@ -73,6 +83,11 @@ export class ActivityTimeFrames extends LitElement {
           border-radius: 5px;
           margin: 5px;
         }
+        *:focus {
+          outline: 0;
+          box-shadow: rgba(0, 0, 0, 0.14) 0px 2px 2px 0px, rgba(0, 0, 0, 0.12) 0px 1px 5px 0px, rgba(0, 0, 0, 0.2) 0px 3px 1px -2px;
+          box-sizing: border-box;
+        }
       `
     ];
   }
@@ -103,6 +118,7 @@ export class ActivityTimeFrames extends LitElement {
                 ${frames.map(
                   (frame: ActivityTime, index: number) => html`
                     <div
+                      tabindex="${this.readonly ? -1 : 0}"
                       class="time-frame${this.selectedTimeFrames?.includes(frame.id) ? ' selected' : ''} ${!this
                         .readonly
                         ? ' editable'
@@ -121,6 +137,14 @@ export class ActivityTimeFrames extends LitElement {
         )}
       </div>
     `;
+  }
+
+  firstUpdated(changedProperties: PropertyValues): void {
+    super.firstUpdated(changedProperties);
+
+    this.shadowRoot!.querySelectorAll('.time-frame').forEach((el) => {
+      callClickOnSpacePush(el);
+    });
   }
 
   toggleFrame(frameId: number): void {
