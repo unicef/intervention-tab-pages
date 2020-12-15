@@ -62,7 +62,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
           }
           --list-row-wrapper: {
             background-color: var(--green-background);
-            min-height: 55px;
+            min-height: 48px;
             border: 1px solid var(--main-border-color) !important;
             border-bottom: none !important;
           }
@@ -77,7 +77,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
         etools-data-table-row:last-child {
           --list-row-wrapper: {
             background-color: var(--green-background);
-            min-height: 55px;
+            min-height: 48px;
             border: 1px solid var(--main-border-color) !important;
             border-bottom: 1px solid var(--main-border-color) !important;
           }
