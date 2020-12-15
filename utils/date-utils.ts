@@ -162,18 +162,9 @@ export function datesAreEqual(date1: any, date2: any) {
   );
 }
 
-export function formatDate(date: Date, format: string) {
+export function formatDate(date: Date | string, format?: string) {
   if (!date) {
     return null;
   }
-  return moment(date).format(format);
-}
-
-export function formatDateShortMonth(date: string) {
-  if (!date || date === '') {
-    return null;
-  }
-  const months = getShortStrMonths();
-  const newDate = new Date(date);
-  return newDate.getDate() + ' ' + months[newDate.getMonth()] + ' ' + newDate.getFullYear();
+  return moment(date).format(format ? format : 'D MMM YYYY');
 }
