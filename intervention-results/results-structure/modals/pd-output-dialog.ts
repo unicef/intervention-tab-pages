@@ -126,6 +126,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
                   option-value="id"
                   allow-outside-scroll
                   dynamic-align
+                  auto-validate
                   required
                   ?invalid="${this.errors.cp_output}"
                   .errorMessage="${(this.errors.cp_output && this.errors.cp_output[0]) ||
@@ -148,7 +149,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
       return;
     }
 
-    if (!this.isUnicefUser || !this.unassociated) {
+    if (!validateRequiredFields(this) || !this.isUnicefUser || !this.unassociated) {
       this.processRequest();
     }
   }
