@@ -149,7 +149,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
       return;
     }
 
-    if (!validateRequiredFields(this) || !this.isUnicefUser || !this.unassociated) {
+    if (validateRequiredFields(this)) {
       this.processRequest();
     }
   }
