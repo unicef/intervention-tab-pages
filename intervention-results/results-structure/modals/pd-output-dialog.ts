@@ -74,7 +74,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
         dialog-title="${this.isEditDialog ? translate('GENERAL.EDIT') : translate('GENERAL.ADD')} ${translate(
           'INTERVENTION_RESULTS.PD_OUTPUT_DIALOG.PD_OUTPUT'
         )}"
-        @confirm-btn-clicked="${() => this.preCheck()}"
+        @confirm-btn-clicked="${() => this.processRequest()}"
         @close="${this.onClose}"
         ok-btn-text=${translate('GENERAL.SAVE')}
         cancel-btn-text=${translate('GENERAL.CANCEL')}
@@ -143,17 +143,10 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
     fireEvent(this, 'dialog-closed', {confirmed: false});
   }
 
-  preCheck(): void {
+  processRequest(): void {
     if (this.loadingInProcess) {
       return;
     }
-
-    if (validateRequiredFields(this)) {
-      this.processRequest();
-    }
-  }
-
-  processRequest(): void {
     if (!validateRequiredFields(this)) {
       return;
     }
