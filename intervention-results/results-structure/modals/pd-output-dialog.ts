@@ -21,7 +21,6 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
 
   @property() cpOutputs: CpOutput[] = [];
   @property() hideCpOutputs = false;
-  @property() isUnicefUser = false;
 
   interventionId!: number;
 
@@ -29,13 +28,12 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
     return Boolean(this.editedData.id && !this.editedData.cp_output);
   }
 
-  set dialogData({pdOutput, cpOutputs, hideCpOutputs, interventionId, isUnicefUser}: any) {
+  set dialogData({pdOutput, cpOutputs, hideCpOutputs, interventionId}: any) {
     this.data = pdOutput || {};
     this.cpOutputs = cpOutputs || [];
     this.hideCpOutputs = hideCpOutputs || !pdOutput || pdOutput.cp_output;
     this.isEditDialog = Boolean(pdOutput && pdOutput.id);
     this.interventionId = interventionId;
-    this.isUnicefUser = isUnicefUser;
   }
 
   protected render(): TemplateResult {
@@ -104,6 +102,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
             .value="${this.editedData.name}"
             @value-changed="${({detail}: CustomEvent) => this.updateModelValue('name', detail.value)}"
             required
+            auto-validate
             ?invalid="${this.errors.name}"
             .errorMessage="${(this.errors.name && this.errors.name[0]) || translate('GENERAL.REQUIRED_FIELD')}"
             @focus="${() => this.resetFieldError('name')}"

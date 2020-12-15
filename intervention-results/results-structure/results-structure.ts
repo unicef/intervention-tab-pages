@@ -455,8 +455,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         pdOutput: pdOutput ? {...pdOutput, cp_output: cpOutput} : undefined,
         cpOutputs,
         hideCpOutputs: !this.isUnicefUser,
-        interventionId: this.interventionId,
-        isUnicefUser: this.isUnicefUser
+        interventionId: this.interventionId
       }
     });
   }
