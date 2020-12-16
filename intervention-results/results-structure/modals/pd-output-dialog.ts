@@ -102,6 +102,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
             .value="${this.editedData.name}"
             @value-changed="${({detail}: CustomEvent) => this.updateModelValue('name', detail.value)}"
             required
+            auto-validate
             ?invalid="${this.errors.name}"
             .errorMessage="${(this.errors.name && this.errors.name[0]) || translate('GENERAL.REQUIRED_FIELD')}"
             @focus="${() => this.resetFieldError('name')}"
@@ -124,6 +125,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
                   option-value="id"
                   allow-outside-scroll
                   dynamic-align
+                  auto-validate
                   required
                   ?invalid="${this.errors.cp_output}"
                   .errorMessage="${(this.errors.cp_output && this.errors.cp_output[0]) ||
@@ -142,7 +144,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
   }
 
   processRequest(): void {
-    if (this.unassociated || this.loadingInProcess) {
+    if (this.loadingInProcess) {
       return;
     }
     if (!validateRequiredFields(this)) {
