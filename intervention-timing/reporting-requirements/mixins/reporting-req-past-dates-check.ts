@@ -1,5 +1,4 @@
-import {PolymerElement} from '@polymer/polymer';
-import {property} from '@polymer/decorators';
+import {LitElement, property} from 'lit-element';
 import {Constructor} from '@unicef-polymer/etools-types';
 
 declare const moment: any;
@@ -10,17 +9,10 @@ declare const moment: any;
  * @polymer
  * @mixinFunction
  */
-function ReportingReqPastDatesCheckMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
+function ReportingReqPastDatesCheckMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class ReportingReqPastDatesCheckClass extends baseClass {
     @property({type: Boolean})
-    inAmendment!: boolean;
-
-    @property({type: Boolean})
     editMode = false;
-
-    _uneditableStyles(inAmendment: boolean, dueDate: any, id: number) {
-      return this._noInAmendmentPastDatesEdit(inAmendment, dueDate, id) ? this._getUneditableStyles() : '';
-    }
 
     _getUneditableStyles() {
       return 'color: var(--secondary-text-color)';
@@ -32,12 +24,8 @@ function ReportingReqPastDatesCheckMixin<T extends Constructor<PolymerElement>>(
       return moment(dueD).isBefore(now);
     }
 
-    _canEdit(editMode: boolean, inAmendment: boolean, dueDate: string, id: number) {
-      return editMode && !this._noInAmendmentPastDatesEdit(inAmendment, dueDate, id);
-    }
-
-    _noInAmendmentPastDatesEdit(inAmendment: boolean, dueDate: string, id: number) {
-      return inAmendment && this._pastDueDate(dueDate) && id > 0;
+    _canEdit(editMode: boolean) {
+      return !editMode;
     }
   }
   return ReportingReqPastDatesCheckClass;

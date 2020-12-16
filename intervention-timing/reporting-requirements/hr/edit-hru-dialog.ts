@@ -1,5 +1,4 @@
-/* eslint-disable lit/no-legacy-template-syntax */
-import {PolymerElement, html} from '@polymer/polymer';
+import {LitElement, html, property, customElement} from 'lit-element';
 import '@polymer/paper-button/paper-button.js';
 declare const moment: any;
 import '@unicef-polymer/etools-dialog/etools-dialog';
@@ -10,33 +9,36 @@ import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import './hru-list.js';
 import CONSTANTS from '../../../common/constants';
 import {fireEvent} from '../../../utils/fire-custom-event';
-import {gridLayoutStylesPolymer} from '../../../common/styles/grid-layout-styles-polymer';
-import {buttonsStylesPolymer} from '../styles/buttons-styles-polymer';
+import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
 import {requiredFieldStarredStylesPolymer} from '../../../common/styles/required-field-styles';
-import {prepareDatepickerDate, convertDate} from '../../../utils/date-utils';
+import {convertDate} from '../../../utils/date-utils';
 // this was refactored
 // import EndpointsMixin from '../mixins/endpoints-mixin';
 import {getEndpoint} from '../../../utils/endpoint-helper';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
-import {property} from '@polymer/decorators';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
-import {RootState} from '../../../common/types/store.types';
 import {isEmptyObject} from '../../../utils/utils';
 import {connectStore} from '../../../common/mixins/connect-store-mixin';
 import {AnyObject} from '@unicef-polymer/etools-types';
+import {buttonsStyles} from '../../../common/styles/button-styles.js';
 
 /**
  * @polymer
  * @customElement
  * @appliesMixin EndpointsMixin
  */
-class EditHruDialog extends connectStore(PolymerElement) {
-  static get template() {
+
+@customElement('edit-hru-dialog')
+export class EditHruDialog extends connectStore(LitElement) {
+  static get styles() {
+    return [gridLayoutStylesLit, buttonsStyles];
+  }
+  render() {
     return html`
-      ${requiredFieldStarredStylesPolymer}${gridLayoutStylesPolymer()}${buttonsStylesPolymer()}
-      <style include="data-table-styles">
+      ${requiredFieldStarredStylesPolymer}
+      <style>
         *[hidden] {
           display: none !important;
         }
@@ -62,21 +64,21 @@ class EditHruDialog extends connectStore(PolymerElement) {
         id="editHruDialog"
         size="lg"
         dialog-title="Add/Edit Dates for Humanitarian Report - UNICEF"
-        on-confirm-btn-clicked="_saveHurData"
+        @confirm-btn-clicked="${this._saveHurData}"
         ok-btn-text="Save"
         keep-dialog-open
-        hidden$="[[datePickerOpen]]"
+        ?hidden="${this.datePickerOpen}"
         spinner-text="Saving..."
       >
         <div class="start-date">
           <datepicker-lite
             id="dtPickerStDate"
             label="Select Start Date"
-            value="{{repStartDate}}"
+            .value="${this.repStartDate}"
             required
-            min-date="[[minDate]]"
+            min-date="${this.minDate}"
             auto-validate
-            open="{{datePickerOpen}}"
+            open="${this.datePickerOpen}"
             selected-date-display-format="D MMM YYYY"
           >
           </datepicker-lite>
@@ -87,28 +89,26 @@ class EditHruDialog extends connectStore(PolymerElement) {
           <div class="col layout-vertical col-6">
             <calendar-lite
               id="datepicker"
-              date="[[prepareDatepickerDate(selectedDate)]]"
-              pretty-date="{{selectedDate}}"
+              pretty-date="${this.selectedDate ? this.selectedDate : ''}"
+              @date-changed="${({detail}: CustomEvent) => this.changed(detail.value)}"
               format="YYYY-MM-DD"
               hide-header
             >
             </calendar-lite>
-
-            <paper-button id="add-selected-date" class="secondary-btn" on-click="_addToList">
+            <paper-button id="add-selected-date" class="secondary-btn" @click="${() => this._addToList()}">
               Add Selected Date to List
             </paper-button>
           </div>
           <div class="col col-6">
-            <div class="row-h" hidden$="[[!_empty(hruData.length)]]">No dates added.</div>
+            <div class="row-h" ?hidden="${!this._empty(this.hruData.length)}">No dates added.</div>
             <hru-list
               id="hruList"
               class="flex-c"
               with-scroll
-              hru-data="[[hruData]]"
-              hidden$="[[_empty(hruData.length)]]"
-              edit-mode
-              in-amendment="[[inAmendment]]"
-              on-delete-hru="_deleteHruDate"
+              .hruData="${this.hruData}"
+              ?hidden="${this._empty(this.hruData.length)}"
+              ?editMode="${true}"
+              @delete-hru="${this._deleteHruDate}"
             >
             </hru-list>
           </div>
@@ -116,15 +116,8 @@ class EditHruDialog extends connectStore(PolymerElement) {
       </etools-dialog>
     `;
   }
-
-  @property({type: Number})
-  interventionId!: number;
-
   @property({type: Date})
   interventionStart!: Date | string;
-
-  @property({type: Boolean})
-  inAmendment!: boolean;
 
   @property({type: Date})
   repStartDate!: Date | string;
@@ -144,15 +137,16 @@ class EditHruDialog extends connectStore(PolymerElement) {
   @property({type: Boolean})
   datePickerOpen = false;
 
-  static get observers() {
-    return ['intervDataChanged(interventionStart, interventionId)'];
+  _interventionId!: number;
+
+  set interventionId(interventionId) {
+    this._interventionId = interventionId;
+    this.intervDataChanged();
   }
 
-  stateChanged(_state: RootState) {
-    // @lajos in ammendment will be used!
-    this.inAmendment = false;
-    // original:
-    // this.inAmendment = state.pageData!.in_amendment;
+  @property({type: String})
+  get interventionId() {
+    return this._interventionId;
   }
 
   intervDataChanged() {
@@ -188,11 +182,13 @@ class EditHruDialog extends connectStore(PolymerElement) {
 
   openDialog() {
     this._setDefaultStartDate();
-    (this.$.editHruDialog as EtoolsDialog).opened = true;
+    const dialog = this.shadowRoot!.querySelector(`#editHruDialog`) as EtoolsDialog;
+    dialog.opened = true;
   }
 
   closeDialog() {
-    (this.$.editHruDialog as EtoolsDialog).opened = false;
+    const dialog = this.shadowRoot!.querySelector(`#editHruDialog`) as EtoolsDialog;
+    dialog.opened = false;
   }
 
   _empty(listLength: number) {
@@ -215,10 +211,12 @@ class EditHruDialog extends connectStore(PolymerElement) {
       });
       return;
     }
-    this.push('hruData', {
+    const auxHruData = [...this.hruData];
+    auxHruData.push({
       end_date: moment(this.selectedDate).format('YYYY-MM-DD'),
       due_date: this._oneDayAfterEndDate(this.selectedDate)
     });
+    this.hruData = [...auxHruData];
   }
 
   _oneDayAfterEndDate(endDt: string) {
@@ -226,7 +224,9 @@ class EditHruDialog extends connectStore(PolymerElement) {
   }
 
   _deleteHruDate(e: CustomEvent) {
-    this.splice('hruData', e.detail.index, 1);
+    const auxHruData = this.hruData;
+    auxHruData.splice(e.detail.index, 1);
+    this.hruData = [...auxHruData];
   }
 
   _hideEditedIndexInfo(index: number) {
@@ -237,8 +237,7 @@ class EditHruDialog extends connectStore(PolymerElement) {
     if (isEmptyObject(this.hruData)) {
       return;
     }
-
-    this.set('hruData.0.start_date', startDate);
+    this.hruData[0].start_date = startDate;
 
     this._calculateStartDateForTheRestOfItems();
   }
@@ -246,7 +245,7 @@ class EditHruDialog extends connectStore(PolymerElement) {
   _calculateStartDateForTheRestOfItems() {
     let i;
     for (i = 1; i < this.hruData.length; i++) {
-      this.set('hruData.' + i + '.start_date', this._computeStartDate(i));
+      this.hruData[i].start_date = this._computeStartDate(i);
     }
   }
 
@@ -258,12 +257,11 @@ class EditHruDialog extends connectStore(PolymerElement) {
 
   _saveHurData() {
     this.updateStartDates(this.repStartDate);
-    // @lajos TO BE REFACTORED and checked
     const endpoint = getEndpoint(interventionEndpoints.reportingRequirements, {
       intervId: this.interventionId,
       reportType: CONSTANTS.REQUIREMENTS_REPORT_TYPE.HR
     });
-    const dialog = this.$.editHruDialog as EtoolsDialog;
+    const dialog = this.shadowRoot!.querySelector(`#editHruDialog`) as EtoolsDialog;
     dialog.startSpinner();
     sendRequest({
       method: 'POST',
@@ -282,11 +280,7 @@ class EditHruDialog extends connectStore(PolymerElement) {
       });
   }
 
-  prepareDatepickerDate(dateStr: string) {
-    return prepareDatepickerDate(dateStr);
+  changed(value: string) {
+    this.selectedDate = moment(new Date(value)).format('YYYY-MM-DD');
   }
 }
-
-window.customElements.define('edit-hru-dialog', EditHruDialog);
-
-export {EditHruDialog};
