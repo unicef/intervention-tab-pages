@@ -138,7 +138,6 @@ export class InterventionReviewTab extends connect(getStore())(LitElement) {
     this.review = state.interventions.current.reviews[0] || null;
     this.currentReviewState = this.review?.overall_approval || false;
     this.interventionId = state.interventions.current.id;
-    console.log(state.interventions.current.permissions);
     this.canEditReview = state.interventions.current.permissions!.edit.reviews || false;
   }
 
