@@ -55,6 +55,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         <div class="row-padding-v">
           <paper-input
             readonly
+            tabindex="-1"
             id="title"
             label=${translate('GENERAL.TITLE')}
             always-float-label
@@ -69,6 +70,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
             id="description"
             label=${translate('GENERAL.DESCRIPTION')}
             readonly
+            tabindex="-1"
             always-float-label
             placeholder="—"
             .value="${this.originalData.description}"

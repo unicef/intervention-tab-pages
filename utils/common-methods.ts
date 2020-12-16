@@ -18,3 +18,16 @@ export const handleItemsNoLongerAssignedToCurrentCountry = (availableItems: AnyO
 export const pageIsNotCurrentlyActive = (routeDetails: any, routeName: string, subRouteName: string) => {
   return !(routeDetails && routeDetails.routeName === routeName && routeDetails.subRouteName === subRouteName);
 };
+
+export const callClickOnSpacePush = (htmlElement: any) => {
+  if (htmlElement && htmlElement.addEventListener) {
+    htmlElement.addEventListener('keyup', function (event: KeyboardEvent) {
+      if (event.key === ' ' && !event.ctrlKey) {
+        // Cancel the default action, if needed
+        event.preventDefault();
+        // Trigger the button element with a click
+        htmlElement.click();
+      }
+    });
+  }
+};

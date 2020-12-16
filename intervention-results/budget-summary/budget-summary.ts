@@ -74,7 +74,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
         <div class="data-column">
           <label class="paper-label">${translate('INTERVENTION_RESULTS.TOTAL_CSO_CONTRIB')}</label>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.partner_contribution_local)}">
-            ${this.displayCurrencyAmount(this.budgetSummary.partner_contribution_local, '0.00')}
+           ${this.roundPercentage(this.budgetSummary.partner_contribution_percent)} (${this.displayCurrencyAmount(this.budgetSummary.partner_contribution_local, '0.00')})
           </div>
         </div>
 
@@ -107,13 +107,6 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
           <label class="paper-label">${translate('INTERVENTION_RESULTS.TOTAL_SUPPLY')}</label>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.in_kind_amount_local)}">
             ${this.displayCurrencyAmount(this.budgetSummary.in_kind_amount_local, '0.00')}
-          </div>
-        </div>
-
-        <div class="data-column">
-          <label class="paper-label">${translate('INTERVENTION_RESULTS.PARTNER_CONTRIB')}</label>
-          <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.partner_contribution_percent)}">
-            ${this.roundPercentage(this.budgetSummary.partner_contribution_percent)}
           </div>
         </div>
 

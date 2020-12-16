@@ -1,6 +1,7 @@
 import {LitElement, html, TemplateResult, CSSResultArray, css, customElement, property} from 'lit-element';
 import {ResultStructureStyles} from './results-structure.styles';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
+import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/iron-icons';
 import './modals/activity-dialog/activity-data-dialog';
 import {openDialog} from '../../utils/dialog';
@@ -15,6 +16,7 @@ import {getEndpoint} from '../../utils/endpoint-helper';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, InterventionActivity, InterventionQuarter} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {callClickOnSpacePush} from '../../utils/common-methods';
 
 @customElement('pd-activities')
 export class PdActivities extends CommentsMixin(LitElement) {
@@ -85,7 +87,11 @@ export class PdActivities extends CommentsMixin(LitElement) {
       <div class="row-h align-items-center header">
         <div class="heading flex-auto">
           ${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.PD_ACTIVITIES')}
-          <iron-icon icon="add-box" @click="${() => this.openDialog()}" ?hidden="${this.readonly}"></iron-icon>
+          <paper-icon-button
+            icon="add-box"
+            ?hidden="${this.readonly}"
+            @click="${() => this.openDialog()}"
+          ></paper-icon-button>
         </div>
         <div class="heading number-data flex-none">${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.CSO_CASH')}</div>
         <div class="heading number-data flex-none">
@@ -181,6 +187,12 @@ export class PdActivities extends CommentsMixin(LitElement) {
           `
         : ''}
     `;
+  }
+
+  firstUpdated(): void {
+    super.firstUpdated();
+
+    this.shadowRoot!.querySelectorAll('iron-icon').forEach((el) => callClickOnSpacePush(el));
   }
 
   getSpecialElements(container: HTMLElement): CommentElementMeta[] {
