@@ -64,6 +64,7 @@ export class InterventionReviewTab extends connect(getStore())(LitElement) {
   }
   @property() currentReviewState = false;
   @property() allowEdit = false;
+  @property() canEditReview = false;
   @property() review: InterventionReview | null = null;
   private interventionId: number | null = null;
 
@@ -137,6 +138,7 @@ export class InterventionReviewTab extends connect(getStore())(LitElement) {
     this.review = state.interventions.current.reviews[0] || null;
     this.currentReviewState = this.review?.overall_approval || false;
     this.interventionId = state.interventions.current.id;
+    this.canEditReview = state.interventions.current.permissions!.edit.reviews || false;
   }
 
   save(): void {

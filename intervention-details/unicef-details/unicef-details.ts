@@ -120,6 +120,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
               always-float-label
               placeholder="—"
               .value="${this.getClusterText(this.data.cluster_names)}"
+              tabindex="-1"
               readonly
             >
             </paper-textarea>

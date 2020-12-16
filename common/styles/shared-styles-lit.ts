@@ -304,5 +304,11 @@ export const sharedStylesContent = `
     --iron-icon-width: 14px;
     --iron-icon-height: 14px;
   }
+
+  *:focus:not(paper-icon-button):not(paper-radio-button) {
+    outline: 0;
+    box-shadow: var(--paper-material-elevation-3_-_box-shadow);
+  }
+
 `;
 export const sharedStyles = html`${unsafeCSS(sharedStylesContent)}`;

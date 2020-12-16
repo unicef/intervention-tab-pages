@@ -48,7 +48,7 @@ import {
   ResultLinkLowerResult
 } from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-
+import {callClickOnSpacePush} from '../../utils/common-methods';
 
 const RESULT_VIEW = 'result_view';
 const BUDGET_VIEW = 'budget_view';
@@ -293,6 +293,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
               <div
                 class="view-toggle-button layout-horizontal align-items-center"
                 ?active="${tab.type === this.viewType}"
+                tabindex="0"
                 @click="${() => this.updateTableView(tab.showIndicators, tab.showActivities)}"
               >
                 ${tab.name}
@@ -302,6 +303,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           <paper-icon-button
             class="add-cp"
             icon="add-box"
+            tabindex="0"
             ?hidden="${!this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
             @click="${() => this.openCpOutputDialog()}"
           ></paper-icon-button>
@@ -390,7 +392,9 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           class="add-pd white row-h align-items-center"
           @click="${() => this.openPdOutputDialog()}"
         >
-          <iron-icon icon="add-box"></iron-icon>${translate('INTERVENTION_RESULTS.ADD_PD_OUTPUT')}
+          <paper-icon-button icon="add-box"></paper-icon-button>${translate(
+            'INTERVENTION_RESULTS.ADD_PD_OUTPUT'
+          )}
         </div>
       </etools-content-panel>
     `;
@@ -398,6 +402,14 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
 
   connectedCallback(): void {
     super.connectedCallback();
+  }
+
+  firstUpdated(): void {
+    super.firstUpdated();
+
+    this.shadowRoot!.querySelectorAll('#view-toggle-button, .add-cp, iron-icon').forEach((el) =>
+      callClickOnSpacePush(el)
+    );
   }
 
   stateChanged(state: RootState) {

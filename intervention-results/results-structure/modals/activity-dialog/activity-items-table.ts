@@ -1,9 +1,20 @@
-import {LitElement, html, css, TemplateResult, CSSResultArray, customElement, property} from 'lit-element';
+import {
+  LitElement,
+  html,
+  css,
+  TemplateResult,
+  CSSResultArray,
+  customElement,
+  property,
+  PropertyValues
+} from 'lit-element';
 import {ActivityItemsTableStyles} from './acivity-items-table.styles';
 import {fireEvent} from '../../../../utils/fire-custom-event';
 import {ActivityItemRow} from './activity-item-row';
 import './activity-item-row';
 import {InterventionActivityItem} from '@unicef-polymer/etools-types';
+import {callClickOnSpacePush} from '../../../../utils/common-methods';
+import {PaperTextareaElement} from '@polymer/paper-input/paper-textarea';
 import {translate} from 'lit-translate';
 
 @customElement('activity-items-table')
@@ -58,8 +69,16 @@ export class ActivityItemsTable extends LitElement {
             .lastItem="${this.isLastItem(index)}"
           ></activity-item-row>`
       )}
-      ${!this.readonly ? html`<iron-icon icon="add" @click="${() => this.addNew()}"></iron-icon>` : html``}
+      ${!this.readonly
+        ? html`<iron-icon id="btnAddItem" icon="add" tabIndex="0" @click="${() => this.addNew()}"></iron-icon>`
+        : html``}
     `;
+  }
+
+  firstUpdated(changedProperties: PropertyValues): void {
+    super.firstUpdated(changedProperties);
+
+    callClickOnSpacePush(this.shadowRoot!.querySelector('#btnAddItem'));
   }
 
   addNew(): void {
@@ -71,11 +90,25 @@ export class ActivityItemsTable extends LitElement {
         name: ''
       }
     ];
+    this.setFocusOnFirstActivity();
+  }
+
+  setFocusOnFirstActivity() {
+    setTimeout(() => {
+      const activityRows = this.shadowRoot!.querySelectorAll('activity-item-row');
+      if (activityRows.length) {
+        const activityNameEl = activityRows[0].shadowRoot!.querySelector('#activityName') as PaperTextareaElement;
+        if (activityNameEl) {
+          activityNameEl.focus();
+        }
+      }
+    }, 200);
   }
 
   updateActivityItem(index: number, item: Partial<InterventionActivityItem> | null): void {
     if (item === null) {
       this.activityItems.splice(index, 1);
+      this.setFocusOnFirstActivity();
     } else {
       this.activityItems.splice(index, 1, item);
     }
