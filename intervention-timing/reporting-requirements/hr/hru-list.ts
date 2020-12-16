@@ -38,7 +38,7 @@ export class HruList extends ReportingReqPastDatesCheckMixin(ReportingRequiremen
       <etools-data-table-header no-collapse no-title>
         <etools-data-table-column class="col-1 right-align index-col">ID</etools-data-table-column>
         <etools-data-table-column class="flex-c">Report End Date</etools-data-table-column>
-        <etools-data-table-column class="col-1"></etools-data-table-column>
+        <etools-data-table-column class="col-2"></etools-data-table-column>
       </etools-data-table-header>
       ${this.hruData.map(
         (item: any, index) => html` <etools-data-table-row
@@ -48,7 +48,7 @@ export class HruList extends ReportingReqPastDatesCheckMixin(ReportingRequiremen
           <div slot="row-data" class="layout-horizontal editable-row">
             <div class="col-data col-1 right-align index-col">${this._getIndex(index)}</div>
             <div class="col-data flex-c">${this.getDateDisplayValue(item.end_date)}</div>
-            <div class="col-data col-1 actions">
+            <div class="col-data col-2 actions">
               <paper-icon-button
                 icon="icons:delete"
                 ?hidden="${!this.editMode}"

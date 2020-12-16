@@ -224,7 +224,9 @@ export class EditHruDialog extends connectStore(LitElement) {
   }
 
   _deleteHruDate(e: CustomEvent) {
-    this.hruData.splice(e.detail.index, 1);
+    const auxHruData = this.hruData;
+    auxHruData.splice(e.detail.index, 1);
+    this.hruData = [...auxHruData];
   }
 
   _hideEditedIndexInfo(index: number) {
