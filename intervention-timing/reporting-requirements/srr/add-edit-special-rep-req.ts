@@ -20,6 +20,7 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import moment from 'moment';
+import {translate} from 'lit-translate';
 
 /**
  * @polymer
@@ -58,14 +59,19 @@ export class AddEditSpecialRepReq extends LitElement {
         id="addEditDialog"
         size="lg"
         ?opened="${this.opened}"
-        dialog-title="Add/Edit Special Reporting Requirements"
+        dialog-title=${translate(
+          'INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.ADD_EDIT_SPECIAL_REPORTING_REQUIREMENTS'
+        )}
         @confirm-btn-clicked="${this._save}"
-        ok-btn-text="Save"
+        ok-btn-text=${translate('GENERAL.SAVE')}
+        cancel-btn-text=${translate('GENERAL.CANCEL')}
         keep-dialog-open
       >
         <div class="row-h">
           <div class="col layout-vertical col-5">
-            <iron-label for="startDate"> Report Due Date </iron-label>
+            <iron-label for="startDate"
+              >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.REPORT_DUE_DATE')}</iron-label
+            >
             <calendar-lite
               id="startDate"
               pretty-date="${this.item.due_date ? this.item.due_date : ''}"
@@ -78,7 +84,7 @@ export class AddEditSpecialRepReq extends LitElement {
         </div>
         <div class="row-h">
           <paper-input
-            label="Reporting Requirement"
+            label=${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.REPORTING_REQUIREMENT')}
             placeholder="&#8212;"
             value="${this.item.description ? this.item.description : ''}"
             @value-changed="${({detail}: CustomEvent) => (this.item.description = detail.value)}"
