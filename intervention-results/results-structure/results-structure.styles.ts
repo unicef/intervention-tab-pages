@@ -39,6 +39,8 @@ export const ResultStructureStyles: CSSResult = css`
     border-bottom: none;
     padding-left: 56px !important;
     padding-right: 12px !important;
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
   }
   div[slot='row-data'] {
     width: 100%;
@@ -56,7 +58,7 @@ export const ResultStructureStyles: CSSResult = css`
   }
   .add-pd {
     width: 100%;
-    height: 57px;
+    height: 48px;
     background-color: var(--secondary-background-color);
     font-size: 12px;
     color: var(--secondary-text-color);
@@ -85,10 +87,20 @@ export const ResultStructureStyles: CSSResult = css`
     position: relative;
   }
   .editable-row.fixed-height {
-    height: 55px;
+    height: 48px;
     align-items: center;
   }
-
+  div[slot='row-data'] {
+    margin: 0px;
+    min-height: 48px;
+  }
+  div[slot='row-data'] > div {
+    line-height: 48px;
+  }
+  .higher-slot {
+    margin: 0px;
+    min-height: 65px !important;
+  }
   .empty-row {
     padding: 16px 12px 16px 56px;
     border-bottom: 1px solid var(--main-border-color);

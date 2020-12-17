@@ -62,7 +62,7 @@ export class CpOutputLevel extends LitElement {
       <style>
         ${sharedStyles} etools-data-table-row {
           overflow: hidden;
-          --list-row-wrapper-padding: 5px 12px 5px 0;
+          --list-row-wrapper-padding: 0 12px 0 0;
           --list-row-collapse-wrapper: {
             padding: 0 !important;
             margin-bottom: 10px;
@@ -73,11 +73,14 @@ export class CpOutputLevel extends LitElement {
             border-bottom: none !important;
           }
         }
+        .higher-slot .heading {
+          margin-top: 12px;
+        }
       </style>
       ${this.showCPOLevel && this.resultLink
         ? html`
             <etools-data-table-row secondary-bg-on-hover details-opened>
-              <div slot="row-data" class="layout-horizontal editable-row">
+              <div slot="row-data" class="layout-horizontal editable-row higher-slot">
                 <!--      If PD is associated with CP Output      -->
                 ${this.resultLink.cp_output
                   ? html`
