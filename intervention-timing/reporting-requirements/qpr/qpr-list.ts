@@ -1,33 +1,34 @@
-/* eslint-disable lit/no-legacy-template-syntax */
-import {PolymerElement, html} from '@polymer/polymer';
+import {LitElement, html, property, customElement} from 'lit-element';
 import '@unicef-polymer/etools-data-table/etools-data-table.js';
-
-import '../../../common/layout/icons-actions';
 import '../mixins/reporting-req-past-dates-check';
 import '../styles/reporting-requirements-lists-styles';
-import CommonMixin from '../../../common/mixins/common-mixin';
 import ReportingReqPastDatesCheckMixin from '../mixins/reporting-req-past-dates-check';
-import {gridLayoutStylesPolymer} from '../../../common/styles/grid-layout-styles-polymer';
+import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
+import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
 import {fireEvent} from '../../../utils/fire-custom-event';
-import {property} from '@polymer/decorators';
-import {IconsActionsEl} from '../../../common/layout/icons-actions';
 import {isEmptyObject} from '../../../utils/utils';
+import {sharedStyles} from '../../../common/styles/shared-styles-lit';
+import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
 
 /**
  * @polymer
  * @customElement
- * @appliesMixin CommonMixin
+ * @appliesMixin ReportingRequirementsCommonMixin
  * @appliesMixin ReportingReqPastDatesCheckMixin
  */
-class QprList extends CommonMixin(ReportingReqPastDatesCheckMixin(PolymerElement)) {
-  static get template() {
+@customElement('qpr-list')
+export class QprList extends ReportingRequirementsCommonMixin(ReportingReqPastDatesCheckMixin(LitElement)) {
+  static get styles() {
+    return [gridLayoutStylesLit, reportingRequirementsListStyles];
+  }
+  render() {
+    if (!this.qprData) {
+      return;
+    }
     return html`
-      ${reportingRequirementsListStyles}${gridLayoutStylesPolymer()}
-      <style include="data-table-styles">
-        etools-data-table-row {
-          --icons-actions_-_background-color: transparent !important;
-        }
+      <style>
+        ${sharedStyles} ${dataTableStylesLit}
       </style>
 
       <etools-data-table-header no-collapse no-title>
@@ -38,39 +39,50 @@ class QprList extends CommonMixin(ReportingReqPastDatesCheckMixin(PolymerElement
         <etools-data-table-column class="flex-c"></etools-data-table-column>
       </etools-data-table-header>
 
-      <template is="dom-repeat" items="[[qprData]]">
-        <etools-data-table-row
-          no-collapse
-          secondary-bg-on-hover$="[[_canEdit(editMode, inAmendment, item.due_date, item.id)]]"
-        >
-          <div slot="row-data" style$="[[_uneditableStyles(inAmendment, item.due_date, item.id)]]">
-            <span class="col-data col-1 right-align index-col">[[getIndex(index, qprData.length)]]</span>
-            <span class="col-data col-3">[[getDateDisplayValue(item.start_date)]]</span>
-            <span class="col-data col-3">[[getDateDisplayValue(item.end_date)]]</span>
-            <span class="col-data col-3">[[getDateDisplayValue(item.due_date)]]</span>
-            <span class="col-data flex-c actions">
-              <icons-actions
-                hidden$="[[!_canEdit(editMode, inAmendment, item.due_date, item.id)]]"
-                data-args$="[[index]]"
-                on-edit="_editQprReq"
-                on-delete="_deleteQprReq"
-              >
-              </icons-actions>
-            </span>
-          </div>
-        </etools-data-table-row>
-      </template>
+      ${this.qprData.map(
+        (item: any, index: number) =>
+          html`
+            <etools-data-table-row no-collapse ?secondary-bg-on-hover="${!this._canEdit(this.editMode)}">
+              <div slot="row-data" class="layout-horizontal editable-row">
+                <div class="col-data col-1 right-align index-col">${this.getIndex(index, this.qprData.length)}</div>
+                <div class="col-data col-3">${this.getDateDisplayValue(item.start_date)}</div>
+                <div class="col-data col-3">${this.getDateDisplayValue(item.end_date)}</div>
+                <div class="col-data col-3">${this.getDateDisplayValue(item.due_date)}</div>
+                <div class="col-data flex-c actions">
+                  <paper-icon-button
+                    icon="icons:create"
+                    @click="${() => this._editQprReq(index)}"
+                    ?hidden="${!this.editMode}"
+                  ></paper-icon-button>
+                  <paper-icon-button
+                    icon="icons:delete"
+                    ?hidden="${!this.editMode}"
+                    @click="${() => this._deleteQprReq(index)}"
+                  ></paper-icon-button>
+                </div>
+              </div>
+            </etools-data-table-row>
+          `
+      )}
     `;
   }
 
   @property({type: Array})
-  qprData: [] = [];
+  qprData: any = [];
 
   @property({type: Boolean})
   preventPastDateEdit = false;
 
-  static get observers() {
-    return ['_sortReportingReq(qprData, qprData.length)'];
+  _interventionId!: number;
+
+  set interventionId(interventionId) {
+    this._interventionId = interventionId;
+    this._sortReportingReq(this.qprData);
+  }
+
+  @property({type: String})
+  get interventionId() {
+    return this._interventionId;
   }
 
   getIndex(index: number, dataItemsLength: number) {
@@ -93,18 +105,17 @@ class QprList extends CommonMixin(ReportingReqPastDatesCheckMixin(PolymerElement
     });
   }
 
-  _editQprReq(e: CustomEvent) {
+  _editQprReq(index: number) {
     fireEvent(this, 'edit-qpr', {
-      index: (e.target as IconsActionsEl).getAttribute('data-args')
+      index: index
     });
   }
 
-  _deleteQprReq(e: CustomEvent) {
+  _deleteQprReq(index: number) {
     fireEvent(this, 'delete-qpr', {
-      index: (e.target as IconsActionsEl).getAttribute('data-args')
+      index: index
     });
   }
 }
 
-window.customElements.define('qpr-list', QprList);
 export {QprList as QprListEl};

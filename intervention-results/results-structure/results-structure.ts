@@ -204,14 +204,14 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           margin-bottom: 24px;
         }
         etools-data-table-row {
-          --list-row-wrapper-padding: 5px 12px 5px 0;
+          --list-row-wrapper-padding: 0 12px 0 0;
           --list-row-collapse-wrapper: {
             padding: 0 !important;
             border-bottom: none !important;
           }
           --list-row-wrapper: {
             background-color: var(--secondary-background-color);
-            min-height: 55px;
+            min-height: 48px;
             border-bottom: 1px solid var(--main-border-color) !important;
           }
         }
@@ -333,7 +333,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                     related-to-description=" PD Output - ${pdOutput.name}"
                     comments-container
                   >
-                    <div slot="row-data" class="layout-horizontal align-items-center editable-row">
+                    <div slot="row-data" class="layout-horizontal align-items-center editable-row higher-slot">
                       <div class="flex-1 flex-fix">
                         <div class="heading">${translate('INTERVENTION_RESULTS.PROGRAM_DOCUMENT_OUTPUT')}</div>
                         <div class="data bold-data">${pdOutput.name}</div>
@@ -478,7 +478,8 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
 
   deletePDOutputFromPD(lower_result_id: number) {
     const endpoint = getEndpoint(interventionEndpoints.lowerResultsDelete, {
-      lower_result_id
+      lower_result_id,
+      intervention_id: this.interventionId
     });
     _sendRequest({
       method: 'DELETE',

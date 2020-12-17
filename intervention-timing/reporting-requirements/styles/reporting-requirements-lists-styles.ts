@@ -1,39 +1,30 @@
-import {html} from '@polymer/polymer/polymer-element.js';
+import {css} from 'lit-element';
 
-export const reportingRequirementsListStyles = html`
-  <style>
-    *[hidden] {
-      display: none !important;
-    }
+export const reportingRequirementsListStyles = css`
+  *[hidden] {
+    display: none !important;
+  }
 
-    :host {
-      display: block;
-    }
+  :host {
+    display: block;
+  }
 
-    :host([with-scroll]) {
-      max-height: 351px;
-      overflow-y: auto;
-    }
+  :host([with-scroll]) {
+    max-height: 351px;
+    overflow-y: auto;
+  }
 
-    .col-data.index-col,
-    etools-data-table-column.index-col {
-      padding-right: 48px !important;
-    }
+  .col-data.index-col,
+  etools-data-table-column.index-col {
+    padding-right: 48px !important;
+  }
 
-    .actions {
-      position: relative;
-    }
+  .actions {
+    position: relative;
+    visibility: hidden;
+  }
 
-    icons-actions {
-      --icons-actions: {
-        background-color: transparent;
-      }
-      visibility: hidden;
-    }
-
-    :host([always-show-row-actions]) icons-actions,
-    etools-data-table-row:hover icons-actions {
-      visibility: visible;
-    }
-  </style>
+  etools-data-table-row:hover .actions {
+    visibility: visible;
+  }
 `;

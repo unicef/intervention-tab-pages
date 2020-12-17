@@ -93,7 +93,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
             border-top: 1px solid var(--main-border-color);
           }
           --list-row-wrapper: {
-            min-height: 55px;
+            min-height: 48px;
             border: 1px solid var(--main-border-color) !important;
             border-bottom: none !important;
             align-items: stretch;

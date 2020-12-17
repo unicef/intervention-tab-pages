@@ -1,14 +1,13 @@
 declare const moment: any;
 import {convertDate} from '../../../utils/date-utils';
-import {PolymerElement} from '@polymer/polymer';
-import {property} from '@polymer/decorators';
+import {LitElement, property} from 'lit-element';
 import {Constructor} from '@unicef-polymer/etools-types';
 
 /**
  * @polymer
  * @mixinFunction
  */
-function GenerateQuarterlyReportingRequirementsMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
+function GenerateQuarterlyReportingRequirementsMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class GenerateQuarterlyRepReqClass extends baseClass {
     @property({type: Number})
     DUE_DATE_DAYS_TO_ADD = 30;

@@ -1,5 +1,4 @@
 // import {dedupingMixin} from '@polymer/polymer/lib/utils/mixin';
-// @lajos bellow 2 imported from PMP
 import {prettyDate} from '../../utils/date-utils';
 import {PolymerElement} from '@polymer/polymer';
 import {AnyObject, Constructor} from '@unicef-polymer/etools-types';
