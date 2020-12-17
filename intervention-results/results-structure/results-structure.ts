@@ -478,7 +478,8 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
 
   deletePDOutputFromPD(lower_result_id: number) {
     const endpoint = getEndpoint(interventionEndpoints.lowerResultsDelete, {
-      lower_result_id
+      lower_result_id,
+      intervention_id: this.interventionId
     });
     _sendRequest({
       method: 'DELETE',
