@@ -61,7 +61,10 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
         <div class="data-column">
           <label class="paper-label">${translate('INTERVENTION_RESULTS.BUDGET_HQ_RATE')}</label>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.hq_support_cost)}">
-            ${this.roundPercentage(this.budgetSummary.hq_support_cost)}
+            ${this.roundPercentage(this.budgetSummary.hq_support_cost)}(${this.displayCurrencyAmount(
+              this.budgetSummary.total_hq_cash_local,
+              '0.00'
+            )})
           </div>
         </div>
 
@@ -74,7 +77,8 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
         <div class="data-column">
           <label class="paper-label">${translate('INTERVENTION_RESULTS.TOTAL_CSO_CONTRIB')}</label>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.partner_contribution_local)}">
-           ${this.roundPercentage(this.budgetSummary.partner_contribution_percent)} (${this.displayCurrencyAmount(this.budgetSummary.partner_contribution_local, '0.00')})
+            ${this.roundPercentage(this.budgetSummary.partner_contribution_percent)}
+            (${this.displayCurrencyAmount(this.budgetSummary.partner_contribution_local, '0.00')})
           </div>
         </div>
 
@@ -150,6 +154,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
       return;
     }
     this.budgetSummary = selectBudgetSummary(state);
+    console.log(this.budgetSummary);
     this.intervention = state.interventions.current;
     this.frsDetails = this.intervention.frs_details;
     const warn = this.checkFrsAndUnicefCashAmountsConsistency(
