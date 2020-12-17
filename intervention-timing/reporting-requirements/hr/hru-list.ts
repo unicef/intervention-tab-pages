@@ -1,63 +1,63 @@
-/* eslint-disable lit/no-legacy-template-syntax */
-import {PolymerElement, html} from '@polymer/polymer';
+import {LitElement, html, property, customElement} from 'lit-element';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import '../../../common/layout/icons-actions';
-import CommonMixin from '../../../common/mixins/common-mixin';
 import {fireEvent} from '../../../utils/fire-custom-event';
 import ReportingReqPastDatesCheckMixin from '../mixins/reporting-req-past-dates-check';
-import {gridLayoutStylesPolymer} from '../../../common/styles/grid-layout-styles-polymer';
+import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
+import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
-import {property} from '@polymer/decorators';
-import {IconsActionsEl} from '../../../common/layout/icons-actions';
 import {isEmptyObject} from '../../../utils/utils';
 import {AnyObject} from '@unicef-polymer/etools-types';
+import {sharedStyles} from '../../../common/styles/shared-styles-lit';
+import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
 
 /**
  * @polymer
  * @customElement
- * @appliesMixin CommonMixin
  * @appliesMixin ReportingReqPastDatesCheckMixin
+ * @appliesMixin ReportingRequirementsCommonMixin
  */
-class HruList extends CommonMixin(ReportingReqPastDatesCheckMixin(PolymerElement)) {
-  static get template() {
-    // language=HTML
+
+@customElement('hru-list')
+export class HruList extends ReportingReqPastDatesCheckMixin(ReportingRequirementsCommonMixin(LitElement)) {
+  static get styles() {
+    return [gridLayoutStylesLit, reportingRequirementsListStyles];
+  }
+  render() {
+    if (!this.hruData) {
+      return;
+    }
     return html`
-      ${reportingRequirementsListStyles}${gridLayoutStylesPolymer()}
-      <style include="data-table-styles">
-        :host([with-scroll]) {
+      <style>
+        ${sharedStyles} ${dataTableStylesLit}:host([with-scroll]) {
           max-height: 400px;
           overflow-y: auto;
-        }
-        etools-data-table-row {
-          --icons-actions_-_background-color: transparent !important;
         }
       </style>
 
       <etools-data-table-header no-collapse no-title>
         <etools-data-table-column class="col-1 right-align index-col">ID</etools-data-table-column>
         <etools-data-table-column class="flex-c">Report End Date</etools-data-table-column>
-        <etools-data-table-column class="col-1"></etools-data-table-column>
+        <etools-data-table-column class="col-2"></etools-data-table-column>
       </etools-data-table-header>
-      <template is="dom-repeat" items="[[hruData]]">
-        <etools-data-table-row
+      ${this.hruData.map(
+        (item: any, index) => html` <etools-data-table-row
           no-collapse
-          secondary-bg-on-hover$="[[_canEdit(editMode, inAmendment, item.due_date, item.id)]]"
+          ?secondary-bg-on-hover="${!this._canEdit(this.editMode)}"
         >
-          <div slot="row-data" style$="[[_uneditableStyles(inAmendment, item.due_date, item.id)]]">
-            <span class="col-data col-1 right-align index-col">[[_getIndex(index, hruData)]]</span>
-            <span class="col-data flex-c">[[getDateDisplayValue(item.end_date)]]</span>
-            <span class="col-data col-1 actions">
-              <icons-actions
-                hidden$="[[!_canEdit(editMode, inAmendment, item.due_date, item.id)]]"
-                data-args$="[[index]]"
-                on-delete="_deleteHruReq"
-                show-edit="[[_listItemEditable]]"
-              >
-              </icons-actions>
-            </span>
+          <div slot="row-data" class="layout-horizontal editable-row">
+            <div class="col-data col-1 right-align index-col">${this._getIndex(index)}</div>
+            <div class="col-data flex-c">${this.getDateDisplayValue(item.end_date)}</div>
+            <div class="col-data col-2 actions">
+              <paper-icon-button
+                icon="icons:delete"
+                ?hidden="${!this.editMode}"
+                @click="${() => this._deleteHruReq(index)}"
+              ></paper-icon-button>
+            </div>
           </div>
-        </etools-data-table-row>
-      </template>
+        </etools-data-table-row>`
+      )}
     `;
   }
 
@@ -68,7 +68,7 @@ class HruList extends CommonMixin(ReportingReqPastDatesCheckMixin(PolymerElement
   _listItemEditable = false;
 
   @property({type: Object})
-  hruMainEl!: PolymerElement & {_getIndex(idx: any): number | string};
+  hruMainEl!: LitElement & {_getIndex(idx: any): number};
 
   @property({type: Boolean})
   usePaginationIndex = false;
@@ -76,8 +76,16 @@ class HruList extends CommonMixin(ReportingReqPastDatesCheckMixin(PolymerElement
   @property({type: Boolean})
   disableSorting = false;
 
-  static get observers() {
-    return ['_sortReportingReq(hruData, hruData.length)'];
+  _interventionId!: number;
+
+  set interventionId(interventionId) {
+    this._interventionId = interventionId;
+    this._sortReportingReq(this.hruData);
+  }
+
+  @property({type: String})
+  get interventionId() {
+    return this._interventionId;
   }
 
   _sortReportingReq(data: any) {
@@ -97,20 +105,18 @@ class HruList extends CommonMixin(ReportingReqPastDatesCheckMixin(PolymerElement
     });
   }
 
-  _getIndex(index: any) {
+  _getIndex(index: number) {
     if (this.usePaginationIndex) {
       return this.hruMainEl._getIndex(index);
     }
-    return parseInt(index, 10) + 1;
+    return index + 1;
   }
 
-  _deleteHruReq(e: CustomEvent) {
+  _deleteHruReq(index: number) {
     fireEvent(this, 'delete-hru', {
-      index: (e.target as IconsActionsEl).getAttribute('data-args')
+      index: index
     });
   }
 }
-
-window.customElements.define('hru-list', HruList);
 
 export {HruList as HruListEl};
