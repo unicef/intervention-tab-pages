@@ -32,6 +32,11 @@ export const sharedStylesContent = `
     text-decoration: none;
   }
 
+  a:focus {
+    outline: 0;
+    box-shadow: var(--paper-material-elevation-3_-_box-shadow);
+  }
+
   section {
     background-color: var(--primary-background-color);
   }
