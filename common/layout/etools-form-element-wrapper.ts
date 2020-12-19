@@ -1,8 +1,8 @@
 import {PolymerElement, html} from '@polymer/polymer';
 import '@polymer/paper-input/paper-input-container';
 
-import {sharedStylesPolymer} from '../styles/shared-styles-polymer';
 import {property} from '@polymer/decorators';
+import {sharedStylesPolymer} from '../styles/shared-styles-lit';
 
 /**
  * @polymer

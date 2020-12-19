@@ -22,7 +22,6 @@ import UtilsMixin from '../common/mixins/utils-mixin';
 import EndpointsMixin from '../common/mixins/endpoints-mixin';
 
 import {sectionContentStylesPoly} from '../common/styles/content-section-styles-polymer';
-import {sharedStylesPolymer} from '../common/styles/shared-styles-polymer';
 import {gridLayoutStylesPolymer} from '../common/styles/grid-layout-styles-polymer';
 
 import {isEmptyObject} from '../utils/utils';
@@ -46,6 +45,7 @@ import {frWarningsStylesPolymer} from '../common/styles/fr-warnings-styles';
 import get from 'lodash-es/get';
 import {connectStore} from '../common/mixins/connect-store-mixin';
 import {AnyObject, GenericObject} from '@unicef-polymer/etools-types';
+import {sharedStylesPolymer} from '../common/styles/shared-styles-lit';
 declare const moment: any;
 
 /**
