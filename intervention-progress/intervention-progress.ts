@@ -63,7 +63,7 @@ class InterventionProgress extends connectStore(
     return html`
       ${gridLayoutStylesPolymer()} ${sharedStylesPolymer()} ${sectionContentStylesPoly} ${pmpCustomIcons}
       ${frWarningsStylesPolymer()}
-      <style include="paper-material-styles">
+      <style include="data-table-styles paper-material-styles">
         #progress-summary etools-progress-bar {
           margin-top: 16px;
         }
