@@ -136,7 +136,8 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
             placeholder="&#8212;"
             label="HQ Contribution"
             .value="${this.data.total_hq_cash_local}"
-            @value-changed="${(e: CustomEvent) => this.updateCalc(e)}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_budget)}"
+            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'total_hq_cash_local')}"
           >
           </paper-input>
         </div>
@@ -211,6 +212,9 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
     }
     this.data = selectFinancialComponent(state);
     this.originalData = cloneDeep(this.data);
+    this.percentContrib =
+      Number(this.data.total_unicef_cash_local_wo_hq) +
+      Number(this.data.total_unicef_cash_local_wo_hq) * (0.01 * Number(this.data.hq_support_cost));
     super.stateChanged(state);
   }
 
@@ -223,17 +227,6 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
       return;
     }
     this.data = {...this.data, hq_support_cost: e.detail.value} as FinancialComponentData;
-  }
-
-  updateCalc(e: CustomEvent) {
-    if (!e.detail) {
-      return;
-    }
-    // hq_rate = hq_support_cost???
-    // total_unicef_cash_local_wo_hq + total_unicef_cash_local_wo_hq * (0.01 * hq_rate)
-    this.percentContrib =
-      Number(this.data.total_unicef_cash_local_wo_hq) +
-      Number(this.data.total_unicef_cash_local_wo_hq) * (0.01 * Number(this.data.hq_support_cost));
   }
 
   updateData(value: any, checkValue: string) {
