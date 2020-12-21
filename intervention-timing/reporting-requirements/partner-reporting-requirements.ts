@@ -1,4 +1,4 @@
-import {LitElement, customElement, html, property} from 'lit-element';
+import {LitElement, customElement, html, property, PropertyValues} from 'lit-element';
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-selector/iron-selector';
 import '@polymer/iron-pages/iron-pages';
@@ -27,6 +27,7 @@ import {connectStore} from '../../common/mixins/connect-store-mixin';
 import {AnyObject, Permission} from '@unicef-polymer/etools-types';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
+import {callClickOnSpacePush} from '../../utils/common-methods';
 
 /**
  * @polymer
@@ -110,6 +111,8 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
               class="nav-menu-item qpr"
               ?selected="${this.isSelected('qtyProgress')}"
               @click="${this.selectType}"
+              tabindex="0"
+              id="clickable"
             >
               <span>Quarterly Progress Reports (${this.qprRequirementsCount})</span>
               <paper-icon-button
@@ -125,6 +128,8 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
               class="nav-menu-item"
               ?selected="${this.isSelected('humanitarianUnicef')}"
               @click="${this.selectType}"
+              tabindex="0"
+              id="clickable"
             >
               <span>Humanitarian Reports - UNICEF (${this.hrUnicefRequirementsCount})</span>
               <paper-icon-button
@@ -141,6 +146,8 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
                   class="nav-menu-item"
                   ?selected="${this.isSelected('humanitarianCluster')}"
                   @click="${this.selectType}"
+                  tabindex="0"
+                  id="clickable"
                 >
                   Humanitarian Reports - Cluster (${this.hrClusterRequirementsCount})
                 </div>`
@@ -152,6 +159,8 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
               class="nav-menu-item"
               ?selected="${this.isSelected('special')}"
               @click="${this.selectType}"
+              tabindex="0"
+              id="clickable"
             >
               Special Report (${this.specialRequirementsCount})
             </div>
@@ -208,6 +217,12 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
         </div>
       </etools-content-panel>
     `;
+  }
+
+  firstUpdated(changedProperties: PropertyValues): void {
+    super.firstUpdated(changedProperties);
+
+    this.shadowRoot!.querySelectorAll('#clickable').forEach((el) => callClickOnSpacePush(el));
   }
 
   @property({type: String})
