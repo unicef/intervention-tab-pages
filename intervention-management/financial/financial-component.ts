@@ -125,7 +125,7 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
         </div>
         <div class="layout-horizontal extra-padd-top">
           <label class="paper-label"
-            >This is what 7% of the total UNICEF cash contribution is: ${this.percentContrib}. Please now review and
+            >This is what 7% of the total UNICEF cash contribution is: ${this.unicefCashContrib}. Please now review and
             enter actual final number.</label
           >
         </div>
@@ -188,7 +188,7 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
   cashTransferModalities!: LabelAndValue[];
 
   @property({type: Number})
-  percentContrib = 0;
+  unicefCashContrib = 0;
 
   connectedCallback() {
     super.connectedCallback();
@@ -212,7 +212,7 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
     }
     this.data = selectFinancialComponent(state);
     this.originalData = cloneDeep(this.data);
-    this.percentContrib =
+    this.unicefCashContrib =
       Number(this.data.total_unicef_cash_local_wo_hq) +
       Number(this.data.total_unicef_cash_local_wo_hq) * (0.01 * Number(this.data.hq_support_cost));
     super.stateChanged(state);
