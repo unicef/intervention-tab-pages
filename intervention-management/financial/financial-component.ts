@@ -5,6 +5,7 @@ import '@polymer/paper-radio-group';
 import '@polymer/paper-checkbox';
 import '@unicef-polymer/etools-loading/etools-loading';
 import '@polymer/paper-input/paper-textarea';
+import '@polymer/paper-input/paper-input';
 import '@polymer/paper-slider/paper-slider.js';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {buttonsStyles} from '../../common/styles/button-styles';
@@ -123,6 +124,23 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
           </div>
         </div>
         <div class="layout-horizontal extra-padd-top">
+          <label class="paper-label"
+            >This is what 7% of the total UNICEF cash contribution is: ${this.percentContrib}. Please now review and
+            enter actual final number.</label
+          >
+        </div>
+        <div class="layout-horizontal">
+          <paper-input
+            id="hqContrib"
+            allowed-pattern="[0-9]"
+            placeholder="&#8212;"
+            label="HQ Contribution"
+            .value="${this.data.total_hq_cash_local}"
+            @value-changed="${(e: CustomEvent) => this.updateCalc(e)}"
+          >
+          </paper-input>
+        </div>
+        <div class="layout-horizontal extra-padd-top">
           <div class="col col-3">
             <etools-dropdown
               id="currencyDd"
@@ -168,6 +186,9 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
   @property({type: Array})
   cashTransferModalities!: LabelAndValue[];
 
+  @property({type: Number})
+  percentContrib = 0;
+
   connectedCallback() {
     super.connectedCallback();
   }
@@ -202,6 +223,17 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
       return;
     }
     this.data = {...this.data, hq_support_cost: e.detail.value} as FinancialComponentData;
+  }
+
+  updateCalc(e: CustomEvent) {
+    if (!e.detail) {
+      return;
+    }
+    // hq_rate = hq_support_cost???
+    // total_unicef_cash_local_wo_hq + total_unicef_cash_local_wo_hq * (0.01 * hq_rate)
+    this.percentContrib =
+      Number(this.data.total_unicef_cash_local_wo_hq) +
+      Number(this.data.total_unicef_cash_local_wo_hq) * (0.01 * Number(this.data.hq_support_cost));
   }
 
   updateData(value: any, checkValue: string) {
