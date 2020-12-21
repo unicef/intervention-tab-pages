@@ -46,7 +46,7 @@ import {frWarningsStylesPolymer} from '../common/styles/fr-warnings-styles';
 import get from 'lodash-es/get';
 import {connectStore} from '../common/mixins/connect-store-mixin';
 import {AnyObject, GenericObject} from '@unicef-polymer/etools-types';
-declare const moment: any;
+declare const dayjs: any;
 
 /**
  * @polymer
@@ -537,7 +537,7 @@ class InterventionProgress extends connectStore(
 
   _convertToDisplayFormat(strDt: string) {
     // eslint-disable-next-line new-cap
-    return moment(EdgeAcceptableDateParse(strDt)).format('D MMM YYYY');
+    return dayjs(EdgeAcceptableDateParse(strDt)).format('D MMM YYYY');
   }
 
   getProgressPercentage(progress_percentage: number, displayType: string) {

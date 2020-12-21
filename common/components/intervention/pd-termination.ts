@@ -16,7 +16,7 @@ import {openDialog} from '../../../utils/dialog';
 import EnvironmentFlagsMixin from '../../mixins/environment-flags-mixin';
 import {getStore} from '../../../utils/redux-store-access';
 import {AnyObject} from '@unicef-polymer/etools-types';
-declare const moment: any;
+declare const dayjs: any;
 
 /**
  * @LitElement
@@ -134,7 +134,7 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
   warnMessages: string[] = ['Once you hit save, the PD/SPD will be Terminated and this action can not be reversed'];
 
   _getMaxDate() {
-    return moment(Date.now()).add(30, 'd').toDate();
+    return dayjs(Date.now()).add(30, 'd').toDate();
   }
 
   validate() {
