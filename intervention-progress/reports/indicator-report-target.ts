@@ -1,21 +1,22 @@
 import '@polymer/iron-flex-layout/iron-flex-layout.js';
 import UtilsMixin from '../../common/mixins/utils-mixin';
-import {PolymerElement, html} from '@polymer/polymer';
-import {property} from '@polymer/decorators';
+import {LitElement, html, property, customElement} from 'lit-element';
 import {GenericObject} from '@unicef-polymer/etools-types';
 import CommonMixin from '../../common/mixins/common-mixin';
+import {translate} from 'lit-translate';
 
 /**
  * @polymer
  * @customElement
  * @appliesMixin UtilsMixin
  */
-class IndicatorReportTarget extends UtilsMixin(CommonMixin(PolymerElement)) {
-  static get is() {
-    return 'indicator-report-target';
-  }
+@customElement('indicator-report-target')
+export class IndicatorReportTarget extends UtilsMixin(CommonMixin(LitElement)) {
+  // static get is() {
+  //   return 'indicator-report-target';
+  // }
 
-  static get template() {
+  render() {
     return html`
       <style>
         :host {
@@ -71,19 +72,21 @@ class IndicatorReportTarget extends UtilsMixin(CommonMixin(PolymerElement)) {
       </style>
 
       <div class="target-row">
-        <span>[[_translate('INTERVENTION_REPORTS.TARGET')]]</span>
-        <span title$="[[_getTargetValue(displayType, target)]]"> [[_getTargetValue(displayType, target)]] </span>
-      </div>
-      <div class="target-row">
-        <span>[[_translate('INTERVENTION_REPORTS.TOTAL_CUMULATIVE')]]</span>
-        <span title$="[[_getCumulativeProgress(displayType, cumulativeProgress)]]">
-          [[_getCumulativeProgress(displayType, cumulativeProgress)]]
+        <span>${translate('INTERVENTION_REPORTS.TARGET')}</span>
+        <span title="${this._getTargetValue(this.displayType, this.target)}">
+          ${this._getTargetValue(this.displayType, this.target)}
         </span>
       </div>
       <div class="target-row">
-        <span>[[_translate('INTERVENTION_REPORTS.ACHIEVEMENT_IN_REPORTING_PERIOD')]]</span>
-        <span title$="[[_getAchievement(displayType, achievement)]]"
-          >[[_getAchievement(displayType, achievement)]]</span
+        <span>${translate('INTERVENTION_REPORTS.TOTAL_CUMULATIVE')}</span>
+        <span title="${this._getCumulativeProgress(this.displayType, this.cumulativeProgress)}">
+          ${this._getCumulativeProgress(this.displayType, this.cumulativeProgress)}
+        </span>
+      </div>
+      <div class="target-row">
+        <span>${translate('INTERVENTION_REPORTS.ACHIEVEMENT_IN_REPORTING_PERIOD')}</span>
+        <span title="${this._getAchievement(this.displayType, this.achievement)}"
+          >${this._getAchievement(this.displayType, this.achievement)}</span
         >
       </div>
     `;
@@ -98,7 +101,7 @@ class IndicatorReportTarget extends UtilsMixin(CommonMixin(PolymerElement)) {
   @property({type: String})
   achievement = '-';
 
-  @property({type: Boolean, reflectToAttribute: true})
+  @property({type: Boolean})
   bold = false;
 
   @property({type: String})
@@ -125,4 +128,4 @@ class IndicatorReportTarget extends UtilsMixin(CommonMixin(PolymerElement)) {
   }
 }
 
-window.customElements.define(IndicatorReportTarget.is, IndicatorReportTarget);
+// window.customElements.define(IndicatorReportTarget.is, IndicatorReportTarget);

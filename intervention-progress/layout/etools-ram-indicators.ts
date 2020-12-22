@@ -1,4 +1,4 @@
-import {PolymerElement, html} from '@polymer/polymer';
+import {LitElement, html, property, customElement} from 'lit-element';
 import '@polymer/iron-label/iron-label';
 import '@unicef-polymer/etools-loading/etools-loading.js';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging.js';
@@ -6,24 +6,25 @@ import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {Debouncer} from '@polymer/polymer/lib/utils/debounce';
 import {timeOut} from '@polymer/polymer/lib/utils/async';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
-import {property} from '@polymer/decorators';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import CommonMixin from '../../common/mixins/common-mixin';
+import {translate} from 'lit-translate';
 
 /**
- * @polymer
+ * LitElement
  * @customElement
  * @mixinFunction
  * @appliesMixin EndpointsMixin
  */
-class EtoolsRamIndicators extends CommonMixin(PolymerElement) {
-  static get is() {
-    return 'etools-ram-indicators';
-  }
+@customElement('etools-ram-indicator')
+export class EtoolsRamIndicators extends CommonMixin(LitElement) {
+  // static get is() {
+  //   return 'etools-ram-indicators';
+  // }
 
-  static get template() {
+  render() {
     return html`
       <style>
         :host {
@@ -47,28 +48,37 @@ class EtoolsRamIndicators extends CommonMixin(PolymerElement) {
         }
       </style>
 
-      <etools-loading active="[[loading]]">Loading...</etools-loading>
+      <etools-loading ?active="${this.loading}">Loading...</etools-loading>
 
       <iron-label>
-        <span id="label">[[_translate('INTERVENTION_REPORTS.RAM_INDICATORS')]]</span>
+        <span id="label">${translate('INTERVENTION_REPORTS.RAM_INDICATORS')}</span>
         <div id="ram-indicators" iron-label-target>
-          <template is="dom-if" if="[[_noRamIndicators(ramIndicators.length)]]">
-            <span id="no-ram-indicators">&#8212;</span>
-          </template>
-          <template is="dom-if" if="[[!_noRamIndicators(ramIndicators.length)]]">
-            <ul id="ram-indicators-list">
-              <template is="dom-repeat" items="[[ramIndicators]]" as="ramIndName">
-                <li>[[ramIndName]]</li>
-              </template>
-            </ul>
-          </template>
+          ${this._noRamIndicators(this.ramIndicators.length)
+            ? html`<span id="no-ram-indicators">&#8212;</span>`
+            : html``}
+          ${!this._noRamIndicators(this.ramIndicators.length)
+            ? html`<ul id="ram-indicators-list">
+                ${this.ramIndicators.map((ramIndName) => {
+                  html`<li>${ramIndName}</li>`;
+                })}
+              </ul>`
+            : html``}
         </div>
       </iron-label>
     `;
   }
 
+  _interventionId!: number;
+
+  set interventionId(interventionId) {
+    this._interventionId = interventionId;
+    this._getRamIndicatorsData(this._interventionId, this.cpId);
+  }
+
   @property({type: Number})
-  interventionId!: number;
+  get interventionId() {
+    return this._interventionId;
+  }
 
   @property({type: Number})
   cpId!: number;
@@ -81,12 +91,13 @@ class EtoolsRamIndicators extends CommonMixin(PolymerElement) {
 
   private _debounceRamIndRequest!: Debouncer;
 
-  static get observers() {
-    return ['_getRamIndicatorsData(interventionId, cpId)'];
-  }
+  // static get observers() {
+  //   return ['_getRamIndicatorsData(interventionId, cpId)'];
+  // }
 
   _getRamIndicatorsData(interventionId: number, cpId: number) {
     // Debounce to make sure the request is called only after both params are updated
+    // TO DO: refactor
     this._debounceRamIndRequest = Debouncer.debounce(this._debounceRamIndRequest, timeOut.after(100), () => {
       const validIds = interventionId > 0 && cpId > 0;
       if (!validIds) {
@@ -139,4 +150,4 @@ class EtoolsRamIndicators extends CommonMixin(PolymerElement) {
   }
 }
 
-window.customElements.define(EtoolsRamIndicators.is, EtoolsRamIndicators);
+// window.customElements.define(EtoolsRamIndicators.is, EtoolsRamIndicators);
