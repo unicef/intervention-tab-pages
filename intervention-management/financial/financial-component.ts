@@ -213,7 +213,6 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
     this.data = selectFinancialComponent(state);
     this.originalData = cloneDeep(this.data);
     this.unicefCashContrib =
-      Number(this.data.total_unicef_cash_local_wo_hq) +
       Number(this.data.total_unicef_cash_local_wo_hq) * (0.01 * Number(this.data.hq_support_cost));
     super.stateChanged(state);
   }
