@@ -185,11 +185,11 @@ export class InterventionProgress extends connectStore(EndpointsLitMixin(EtoolsC
                 class="fr-nr-warn col-6"
                 custom-icon
                 icon-first
-                ?hide-tooltip="${!this.multipleCurrenciesWereUsed(this.progress.disbursement, this.progress)}"
+                ?hideTooltip="${!this.multipleCurrenciesWereUsed(this.progress.disbursement, this.progress)}"
               >
                 <etools-form-element-wrapper
                   slot="field"
-                  label="[[_translate('INTERVENTION_REPORTS.CASH_TRANSFERED')]]"
+                  label="${translate('INTERVENTION_REPORTS.CASH_TRANSFERED')}"
                   .value="${this.progress.disbursement_currency} ${displayCurrencyAmount(
                     this.progress.disbursement,
                     '0',
@@ -221,11 +221,11 @@ export class InterventionProgress extends connectStore(EndpointsLitMixin(EtoolsC
                 class="currency-mismatch col-6"
                 custom-icon
                 icon-first
-                hide-tooltip="[[!multipleCurrenciesWereUsed(progress.disbursement_percent, progress)]]"
+                ?hideTooltip="${!this.multipleCurrenciesWereUsed(this.progress.disbursement_percent, this.progress)}"
               >
-                <span slot="field">[[_translate('INTERVENTION_REPORTS.NA_%')]]</span>
+                <span slot="field">${translate('INTERVENTION_REPORTS.NA_%')}</span>
                 <iron-icon slot="custom-icon" icon="pmp-custom-icons:not-equal"></iron-icon>
-                <span slot="message">[[_translate('INTERVENTION_REPORTS.FR_CURRENCY_NOT_MATCH')]]</span>
+                <span slot="message">${translate('INTERVENTION_REPORTS.FR_CURRENCY_NOT_MATCH')}</span>
               </etools-info-tooltip>`
               : ``}
             }
@@ -342,19 +342,43 @@ export class InterventionProgress extends connectStore(EndpointsLitMixin(EtoolsC
     `;
   }
 
-  @property({type: Number})
-  interventionId!: number;
+  _interventionId!: string;
+
+  set interventionId(interventionId) {
+    this._interventionId = interventionId;
+    this._requestProgressData(this._interventionId, this.prpCountries, this.currentUser);
+  }
+
+  @property({type: String})
+  get interventionId() {
+    return this._interventionId;
+  }
 
   @property({
-    type: Number,
-    computed: '_getTimeProgress(progress.start_date, progress.end_date)'
+    type: Number
+    // computed: '_getTimeProgress(progress.start_date, progress.end_date)'
   })
   pdProgress!: number;
 
-  @property({type: Object, observer: '_progressDataObjChanged'})
-  progress: GenericObject | null = null;
+  // @property({type: Object, observer: '_progressDataObjChanged'})
+  // progress: GenericObject | null = null;
 
-  @property({type: Object, computed: '_computeLatestAcceptedPr(progress)'})
+  _progress: GenericObject = {};
+
+  set progress(progress) {
+    this._progress = progress;
+    this._progressDataObjChanged(this._progress);
+  }
+
+  @property({type: String})
+  get progress() {
+    return this._progress;
+  }
+
+  @property({
+    type: Object
+    // computed: '_computeLatestAcceptedPr(progress)'
+  })
   latestAcceptedPr!: GenericObject;
 
   @property({type: Array})
@@ -363,12 +387,12 @@ export class InterventionProgress extends connectStore(EndpointsLitMixin(EtoolsC
   @property({type: Object})
   prpCountries!: GenericObject[];
 
-  static get observers() {
-    return [
-      // `prpCountries` and `currentUser` are defined in endpoint mixin
-      '_requestProgressData(interventionId, prpCountries, currentUser)'
-    ];
-  }
+  // static get observers() {
+  //   return [
+  //     // `prpCountries` and `currentUser` are defined in endpoint mixin
+  //     '_requestProgressData(interventionId, prpCountries, currentUser)'
+  //   ];
+  // }
 
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'progress')) {
