@@ -125,8 +125,8 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
         </div>
         <div class="layout-horizontal extra-padd-top">
           <label class="paper-label"
-            >This is what 7% of the total UNICEF cash contribution is: ${this.unicefCashContrib}. Please now review and
-            enter actual final number.</label
+            >This is ${this.data.hq_support_cost} of the total UNICEF cash contribution:
+            ${this.autoCalculatedHqContrib}. Please now review and enter actual final number.</label
           >
         </div>
         <div class="layout-horizontal">
@@ -135,7 +135,7 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
             allowed-pattern="[0-9]"
             placeholder="&#8212;"
             label="HQ Contribution"
-            .value="${this.data.total_hq_cash_local}"
+            .value="${this.data.planned_budget.total_hq_cash_local}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_budget)}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'total_hq_cash_local')}"
           >
@@ -188,7 +188,7 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
   cashTransferModalities!: LabelAndValue[];
 
   @property({type: Number})
-  unicefCashContrib = 0;
+  autoCalculatedHqContrib = 0;
 
   connectedCallback() {
     super.connectedCallback();
@@ -210,10 +210,18 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
     if (!isJsonStrMatch(this.cashTransferModalities, state.commonData!.cashTransferModalities)) {
       this.cashTransferModalities = [...state.commonData!.cashTransferModalities];
     }
+    // const financialCompData = selectFinancialComponent(state);
+    // if (!isJsonStrMatch(this.originalData, financialCompData)) {
+    //   this.data = cloneDeep(financialCompData);
+    //   this.originalData = cloneDeep(financialCompData);
+    // }
+    // console.log('this.data', this.data);
+    console.log('state has changed');
+    // console.log(this.data.planned_budget.total_hq_cash_local);
     this.data = selectFinancialComponent(state);
     this.originalData = cloneDeep(this.data);
-    this.unicefCashContrib =
-      Number(this.data.total_unicef_cash_local_wo_hq) * (0.01 * Number(this.data.hq_support_cost));
+    this.autoCalculatedHqContrib =
+      Number(this.data.planned_budget.total_unicef_cash_local_wo_hq) * (0.01 * Number(this.data.hq_support_cost));
     super.stateChanged(state);
   }
 
@@ -228,7 +236,18 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
     this.data = {...this.data, hq_support_cost: e.detail.value} as FinancialComponentData;
   }
 
+  // updateHq(e: CustomEvent) {
+  //   if (!e.detail) {
+  //     return;
+  //   }
+  //   this.data.planned_budget = {...this.data.planned_budget, total_hq_cash_local: e.detail.value};
+  // }
+
   updateData(value: any, checkValue: string) {
+    // const index = this.data.cash_transfer_modalities.indexOf('direct');
+    // if (index > -1) {
+    //   this.data.cash_transfer_modalities.splice(index, 1);
+    // }
     if (value == false) {
       this.data.cash_transfer_modalities = this.data.cash_transfer_modalities.filter((el: string) => el !== checkValue);
     } else if (this.data.cash_transfer_modalities.indexOf(checkValue) === -1) {

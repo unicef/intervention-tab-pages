@@ -51,6 +51,7 @@ export const patchIntervention = (interventionChunck: any, interventionId?: stri
   dispatch: any,
   getState: any
 ) => {
+  console.log('interventionChunck saved', interventionChunck);
   if (!interventionId) {
     interventionId = getState().app.routeDetails.params.interventionId;
   }
@@ -59,6 +60,7 @@ export const patchIntervention = (interventionChunck: any, interventionId?: stri
     body: interventionChunck,
     method: 'PATCH'
   }).then((intervention: Intervention) => {
+    console.log('response', intervention);
     dispatch(updateCurrentIntervention(intervention));
   });
 };
