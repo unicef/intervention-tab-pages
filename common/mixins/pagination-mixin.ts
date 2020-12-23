@@ -1,5 +1,4 @@
-import {PolymerElement} from '@polymer/polymer';
-import {property} from '@polymer/decorators';
+import {LitElement, property} from 'lit-element';
 import CONSTANTS from '../../common/constants';
 import {Constructor} from '@unicef-polymer/etools-types';
 
@@ -10,14 +9,14 @@ class Paginator {
   visible_range: string[] | number[] = [];
 }
 
-function PaginationMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
+function PaginationMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class PaginationClass extends baseClass {
-    @property({type: Object, notify: true})
+    @property({type: Object})
     paginator = new Paginator();
-
-    static get observers() {
-      return ['_pageInsidePaginationRange(paginator.page, paginator.count)', 'resetPageNumber(paginator.page_size)'];
-    }
+    // TODO: fix observers
+    // static get observers() {
+    //   return ['_pageInsidePaginationRange(paginator.page, paginator.count)', 'resetPageNumber(paginator.page_size)'];
+    // }
 
     pageSizeChanged(e: CustomEvent) {
       this.resetPageNumber();
@@ -39,19 +38,19 @@ function PaginationMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
       if (reqResponse && reqResponse.count) {
         const count = parseInt(reqResponse.count, 10);
         if (!isNaN(count)) {
-          this.set('paginator.count', count);
+          this.paginator.count = count;
           return;
         }
       }
-      this.set('paginator.count', 0);
+      this.paginator.count = 0;
     }
 
     setPageSize(size: number) {
-      this.set('paginator.page_size', size);
+      this.paginator.page_size = size;
     }
 
     setPageNumber(page: number) {
-      this.set('paginator.page', page);
+      this.paginator.page = page;
     }
 
     resetPageNumber() {
