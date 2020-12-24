@@ -1,20 +1,14 @@
+import {customElement, LitElement, property, html} from 'lit-element';
 import '@polymer/iron-flex-layout/iron-flex-layout.js';
 import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/iron-icons/image-icons.js';
-import {PolymerElement, html} from '@polymer/polymer';
-import {property} from '@polymer/decorators/lib/decorators';
 
 /**
- * @polymer
  * @customElement
- * @extends {Polymer.Element}
  */
-class InterventionReportStatus extends PolymerElement {
-  static get is() {
-    return 'intervention-report-status';
-  }
-
-  static get template() {
+@customElement('intervention-report-status')
+export class InterventionReportStatus extends LitElement {
+  render() {
     return html`
       <style>
         :host {
@@ -55,12 +49,8 @@ class InterventionReportStatus extends PolymerElement {
         }
       </style>
 
-      <template is="dom-if" if="[[!noIcon]]">
-        <iron-icon icon$="[[icon]]"></iron-icon>
-      </template>
-      <template is="dom-if" if="[[!noLabel]]">
-        <span id="label">[[label]]</span>
-      </template>
+      <iron-icon ?hidden="${this.noIcon}" .icon="${this.icon}"></iron-icon>
+      <span id="label" ?hidden="${this.noLabel}">${this.label}</span>
       <slot></slot>
     `;
   }
@@ -74,21 +64,41 @@ class InterventionReportStatus extends PolymerElement {
   @property({type: Boolean})
   noIcon = false;
 
-  @property({
-    type: String,
-    computed: '_computeStatusType(status)',
-    reflectToAttribute: true
-  })
-  statusType!: string;
+  _statusType!: string;
 
-  @property({
-    type: String,
-    computed: '_computeLabel(status, final, reportType)'
-  })
-  label!: string;
+  set statusType(statusType: string) {
+    this._statusType = statusType;
+    this._computeStatusType(this.status);
+  }
 
-  @property({type: String, computed: '_computeIcon(statusType)'})
-  icon!: string;
+  @property({type: String})
+  get statusType() {
+    return this._statusType;
+  }
+
+  _label!: string;
+
+  set label(label: string) {
+    this._label = label;
+    this._computeLabel(this.status, this.final, this.reportType);
+  }
+
+  @property({type: String})
+  get label() {
+    return this._label;
+  }
+
+  _icon!: string;
+
+  set icon(icon: string) {
+    this._icon = icon;
+    this._computeIcon(this._statusType);
+  }
+
+  @property({type: String})
+  get icon() {
+    return this._icon;
+  }
 
   @property({type: Boolean})
   final = false;
@@ -129,7 +139,7 @@ class InterventionReportStatus extends PolymerElement {
     }
   }
 
-  _computeLabel(status: string, final: string, reportType: string) {
+  _computeLabel(status: string, final: boolean, reportType: string) {
     switch (status) {
       case '1':
         return 'Nothing due';
@@ -182,5 +192,3 @@ class InterventionReportStatus extends PolymerElement {
     }
   }
 }
-
-window.customElements.define(InterventionReportStatus.is, InterventionReportStatus);
