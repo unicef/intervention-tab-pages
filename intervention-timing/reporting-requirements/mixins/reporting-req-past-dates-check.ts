@@ -1,7 +1,7 @@
 import {LitElement, property} from 'lit-element';
 import {Constructor} from '@unicef-polymer/etools-types';
 
-declare const moment: any;
+declare const dayjs: any;
 // import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin';
 
 /**
@@ -19,9 +19,9 @@ function ReportingReqPastDatesCheckMixin<T extends Constructor<LitElement>>(base
     }
 
     _pastDueDate(dueDate: string) {
-      const now = moment().format('YYYY-MM-DD');
-      const dueD = moment(new Date(dueDate)).format('YYYY-MM-DD');
-      return moment(dueD).isBefore(now);
+      const now = dayjs().format('YYYY-MM-DD');
+      const dueD = dayjs(new Date(dueDate)).format('YYYY-MM-DD');
+      return dayjs(dueD).isBefore(now);
     }
 
     _canEdit(editMode: boolean) {

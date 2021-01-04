@@ -11,6 +11,7 @@ import {EditHruDialog} from './edit-hru-dialog.js';
 import {HruListEl} from './hru-list.js';
 import {ExpectedResult} from '@unicef-polymer/etools-types';
 import {buttonsStyles} from '../../../common/styles/button-styles';
+import {translate, get as getTranslation} from 'lit-translate';
 
 /**
  * @customElement
@@ -41,14 +42,16 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
       </style>
 
       <div ?hidden="${!this._empty(this.reportingRequirements)}">
-        <div class="row-h">There are no humanitarian report requirements set.</div>
+        <div class="row-h">
+          ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.NO_HUMANITARIAN_REPORT')}
+        </div>
         <div class="row-h" ?hidden="${!this._showAdd(this.expectedResults, this.editMode)}">
           <paper-button class="secondary-btn" @click="${this.openUnicefHumanitarianRepReqDialog}">
-            ADD REQUIREMENTS
+            ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.ADD_REQUIREMENTS')}
           </paper-button>
         </div>
         <div class="row-h" ?hidden="${this._thereAreHFIndicators(this.expectedResults)}">
-          Can be modified only if there are High Frequency Humanitarian Indicators defined.
+          ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.CAN_BE_MODIFIED_PROMPT')}
         </div>
       </div>
 
@@ -130,7 +133,7 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
   openUnicefHumanitarianRepReqDialog() {
     if (!this.interventionStart) {
       fireEvent(this, 'toast', {
-        text: 'You have to fill PD Start Date first!',
+        text: getTranslation('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.FILL_START_DATE'),
         showCloseBtn: true
       });
       return;

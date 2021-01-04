@@ -12,7 +12,7 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
 import isEmpty from 'lodash-es/isEmpty';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-declare const moment: any;
+declare const dayjs: any;
 
 /**
  * @customElement
@@ -181,7 +181,7 @@ export class MonitoringVisitsList extends LitElement {
     this.showLoading = true;
     const monitoringVisitsEndpoint = getEndpoint(interventionEndpoints.monitoringVisits, {
       id: interventionOrPartnerId,
-      year: moment().year()
+      year: dayjs().year()
     });
 
     sendRequest({
@@ -220,11 +220,11 @@ export class MonitoringVisitsList extends LitElement {
     }
     const endpoint = this.interventionId
       ? getEndpoint(interventionEndpoints.interventionTPMActivities, {
-          year: moment().year(),
+          year: dayjs().year(),
           interventionId: this.interventionId
         })
       : getEndpoint(interventionEndpoints.partnerTPMActivities, {
-          year: moment().year(),
+          year: dayjs().year(),
           partnerId: this.partnerId
         });
 

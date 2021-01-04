@@ -101,7 +101,7 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
           <!-- Attachment -->
           <etools-upload
             label=${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.INT_ATT_DIALOG.ATTACHMENT')}
-            accept=".doc,.docx,.pdf,.jpg,.png"
+            accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt"
             .showDeleteBtn="${false}"
             ?readonly="${this.data.id}"
             required
