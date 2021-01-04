@@ -21,8 +21,7 @@ import CommonMixin from '../common/mixins/common-mixin';
 import UtilsMixin from '../common/mixins/utils-mixin';
 import EndpointsMixin from '../common/mixins/endpoints-mixin';
 
-import {sectionContentStyles} from '../common/styles/content-section-styles-polymer';
-import {sharedStylesPolymer} from '../common/styles/shared-styles-polymer';
+import {sectionContentStylesPoly} from '../common/styles/content-section-styles-polymer';
 import {gridLayoutStylesPolymer} from '../common/styles/grid-layout-styles-polymer';
 
 import {isEmptyObject} from '../utils/utils';
@@ -47,6 +46,7 @@ import get from 'lodash-es/get';
 import {connectStore} from '../common/mixins/connect-store-mixin';
 import {AnyObject, GenericObject} from '@unicef-polymer/etools-types';
 declare const dayjs: any;
+import {sharedStylesPolymer} from '../common/styles/shared-styles-lit';
 
 /**
  * @polymer
@@ -61,7 +61,7 @@ class InterventionProgress extends connectStore(
 ) {
   static get template() {
     return html`
-      ${gridLayoutStylesPolymer()} ${sharedStylesPolymer()} ${sectionContentStyles} ${pmpCustomIcons}
+      ${gridLayoutStylesPolymer()} ${sharedStylesPolymer()} ${sectionContentStylesPoly} ${pmpCustomIcons}
       ${frWarningsStylesPolymer()}
       <style include="data-table-styles paper-material-styles">
         #progress-summary etools-progress-bar {
