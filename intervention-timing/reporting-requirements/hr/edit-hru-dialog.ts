@@ -1,6 +1,6 @@
 import {LitElement, html, property, customElement} from 'lit-element';
 import '@polymer/paper-button/paper-button.js';
-declare const moment: any;
+declare const dayjs: any;
 import '@unicef-polymer/etools-dialog/etools-dialog';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import '@unicef-polymer/etools-date-time/calendar-lite';
@@ -162,7 +162,7 @@ export class EditHruDialog extends connectStore(LitElement) {
     }
     const stDt = this.interventionStart instanceof Date ? this.interventionStart : convertDate(this.interventionStart);
     if (stDt) {
-      return moment(stDt).add(-1, 'days').toDate();
+      return dayjs(stDt).add(-1, 'days').toDate();
     }
     return null;
   }
@@ -216,14 +216,14 @@ export class EditHruDialog extends connectStore(LitElement) {
     }
     const auxHruData = [...this.hruData];
     auxHruData.push({
-      end_date: moment(this.selectedDate).format('YYYY-MM-DD'),
+      end_date: dayjs(this.selectedDate).format('YYYY-MM-DD'),
       due_date: this._oneDayAfterEndDate(this.selectedDate)
     });
     this.hruData = [...auxHruData];
   }
 
   _oneDayAfterEndDate(endDt: string) {
-    return moment(endDt).add(1, 'days').format('YYYY-MM-DD');
+    return dayjs(endDt).add(1, 'days').format('YYYY-MM-DD');
   }
 
   _deleteHruDate(e: CustomEvent) {
@@ -253,7 +253,7 @@ export class EditHruDialog extends connectStore(LitElement) {
   }
 
   _computeStartDate(i: number) {
-    return moment(this.hruData[i - 1].end_date)
+    return dayjs(this.hruData[i - 1].end_date)
       .add(1, 'days')
       .format('YYYY-MM-DD');
   }
@@ -284,6 +284,6 @@ export class EditHruDialog extends connectStore(LitElement) {
   }
 
   changed(value: string) {
-    this.selectedDate = moment(new Date(value)).format('YYYY-MM-DD');
+    this.selectedDate = dayjs(new Date(value)).format('YYYY-MM-DD');
   }
 }

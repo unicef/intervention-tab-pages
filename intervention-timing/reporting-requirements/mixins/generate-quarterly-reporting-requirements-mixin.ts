@@ -1,4 +1,4 @@
-declare const moment: any;
+declare const dayjs: any;
 import {convertDate} from '../../../utils/date-utils';
 import {LitElement, property} from 'lit-element';
 import {Constructor} from '@unicef-polymer/etools-types';
@@ -54,32 +54,33 @@ function GenerateQuarterlyReportingRequirementsMixin<T extends Constructor<LitEl
     }
 
     _generatedEndIsBeforePdEnd(endDateStr: string, pdEndStr: string) {
-      return moment(endDateStr).isBefore(pdEndStr);
+      return dayjs(endDateStr).isBefore(pdEndStr);
     }
 
     _generateEndDate(startStr: string, pdEndStr: string) {
-      const d = moment.utc(convertDate(startStr));
+      let d = dayjs.utc(convertDate(startStr));
       let month = d.get('M');
       if (d.get('D') <= 15) {
         month += 2;
       } else {
         month += 3;
       }
-      d.set('M', month);
-      d.endOf('month');
+      d = d.set('M', month);
+      d = d.endOf('month');
 
       if (d.isAfter(pdEndStr)) {
-        return moment.utc(convertDate(pdEndStr));
+        return dayjs.utc(convertDate(pdEndStr));
       }
+
       return d;
     }
 
-    _generateDueDate(momentEndDate: any) {
-      return moment(momentEndDate).add(this.DUE_DATE_DAYS_TO_ADD, 'd');
+    _generateDueDate(endDate: any) {
+      return dayjs(endDate).add(this.DUE_DATE_DAYS_TO_ADD, 'd');
     }
 
-    _getNextStartDateStr(momentEndDate: any) {
-      return moment(momentEndDate).add(1, 'd').format(this.datesFormat);
+    _getNextStartDateStr(endDate: any) {
+      return dayjs(endDate).add(1, 'd').format(this.datesFormat);
     }
   }
   return GenerateQuarterlyRepReqClass;

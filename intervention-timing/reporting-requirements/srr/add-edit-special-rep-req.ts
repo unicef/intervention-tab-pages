@@ -19,7 +19,7 @@ import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {AnyObject} from '@unicef-polymer/etools-types';
-import moment from 'moment';
+declare const dayjs: any;
 import {translate} from 'lit-translate';
 
 /**
@@ -77,7 +77,7 @@ export class AddEditSpecialRepReq extends LitElement {
               pretty-date="${this.item.due_date ? this.item.due_date : ''}"
               format="YYYY-MM-DD"
               @date-changed="${({detail}: CustomEvent) =>
-                (this.item.due_date = moment(new Date(detail.value)).format('YYYY-MM-DD'))}"
+                (this.item.due_date = dayjs(new Date(detail.value)).format('YYYY-MM-DD'))}"
               hide-header
             ></calendar-lite>
           </div>
@@ -155,7 +155,7 @@ export class AddEditSpecialRepReq extends LitElement {
   prepareDatepickerDate(dateStr: string) {
     const date = prepareDatepickerDate(dateStr);
     if (date === null) {
-      const now = moment(new Date()).format('YYYY-MM-DD');
+      const now = dayjs(new Date()).format('YYYY-MM-DD');
       return prepareDatepickerDate(now);
     } else {
       return date;

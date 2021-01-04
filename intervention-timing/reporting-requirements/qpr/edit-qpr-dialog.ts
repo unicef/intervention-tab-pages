@@ -18,7 +18,7 @@ import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {QprListEl} from './qpr-list.js';
 import {fireEvent} from '../../../utils/fire-custom-event';
 import {AnyObject} from '@unicef-polymer/etools-types';
-import moment from 'moment';
+declare const dayjs: any;
 import {buttonsStyles} from '../../../common/styles/button-styles';
 import {translate, get as getTranslation} from 'lit-translate';
 
@@ -180,7 +180,7 @@ export class EditQprDialog extends LitElement {
 
   changed(value: string, item: string) {
     if (this._editedQprDatesSet) {
-      const newDate = moment(new Date(value)).format('YYYY-MM-DD');
+      const newDate = dayjs(new Date(value)).format('YYYY-MM-DD');
       this._editedQprDatesSet[item] = newDate;
     }
   }
@@ -304,7 +304,7 @@ export class EditQprDialog extends LitElement {
   prepareDatepickerDate(dateStr: string) {
     const date = prepareDatepickerDate(dateStr);
     if (date === null) {
-      const now = moment(new Date()).format('YYYY-MM-DD');
+      const now = dayjs(new Date()).format('YYYY-MM-DD');
       this._editedQprDatesSet.start_date = now;
       this._editedQprDatesSet.end_date = now;
       this._editedQprDatesSet.due_date = now;
