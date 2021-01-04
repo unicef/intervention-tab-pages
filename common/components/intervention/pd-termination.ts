@@ -73,7 +73,7 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
           <etools-upload
             id="terminationNotice"
             label="Termination Notice"
-            accept=".doc,.docx,.pdf,.jpg,.png"
+            accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt"
             .fileUrl="${this.termination.attachment_notice}"
             .uploadEndpoint="${this.uploadEndpoint}"
             @upload-finished="${this._uploadFinished}"

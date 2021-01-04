@@ -179,7 +179,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
                   <etools-upload
                     id="reviewDocUpload"
                     label=${translate('INTERVENTION_MANAGEMENT.REVIEW_AND_SIGN.PRC_REVIEW_DOC')}
-                    accept=".doc,.docx,.pdf,.jpg,.png"
+                    accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt"
                     .fileUrl="${this.data.prc_review_attachment}"
                     .uploadEndpoint="${this.uploadEndpoint}"
                     @upload-finished="${this._prcRevDocUploadFinished}"
@@ -328,7 +328,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
             <etools-upload
               id="signedIntervFile"
               label=${translate('INTERVENTION_MANAGEMENT.REVIEW_AND_SIGN.SIGNED_PD_SPD')}
-              accept=".doc,.docx,.pdf,.jpg,.png"
+              accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt"
               .fileUrl="${this.data.signed_pd_attachment}"
               .uploadEndpoint="${this.uploadEndpoint}"
               @upload-finished="${this._signedPDUploadFinished}"
