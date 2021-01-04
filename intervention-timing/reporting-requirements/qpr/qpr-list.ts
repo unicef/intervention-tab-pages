@@ -10,6 +10,7 @@ import {fireEvent} from '../../../utils/fire-custom-event';
 import {isEmptyObject} from '../../../utils/utils';
 import {sharedStyles} from '../../../common/styles/shared-styles-lit';
 import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
+import {translate} from 'lit-translate';
 
 /**
  * @polymer
@@ -33,9 +34,15 @@ export class QprList extends ReportingRequirementsCommonMixin(ReportingReqPastDa
 
       <etools-data-table-header no-collapse no-title>
         <etools-data-table-column class="col-1 right-align index-col">ID</etools-data-table-column>
-        <etools-data-table-column class="col-3">Start Date</etools-data-table-column>
-        <etools-data-table-column class="col-3">End Date</etools-data-table-column>
-        <etools-data-table-column class="col-3">Due Date</etools-data-table-column>
+        <etools-data-table-column class="col-3"
+          >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.START_DATE')}</etools-data-table-column
+        >
+        <etools-data-table-column class="col-3"
+          >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.END_DATE')}</etools-data-table-column
+        >
+        <etools-data-table-column class="col-3"
+          >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.DUE_DATE')}</etools-data-table-column
+        >
         <etools-data-table-column class="flex-c"></etools-data-table-column>
       </etools-data-table-header>
 

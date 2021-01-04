@@ -12,12 +12,11 @@ export type ActivityTime = {
 export type GroupedActivityTime = [string, ActivityTime[]];
 
 // @ts-ignore
-const moment = window.moment;
-
+const dayjs = window.dayjs;
 export function serializeTimeFrameData(data: InterventionActivityTimeframe[]): ActivityTime[] {
   return (data || []).map((frame: InterventionActivityTimeframe) => {
-    const start = moment(frame.start);
-    const end = moment(frame.end);
+    const start = dayjs(frame.start);
+    const end = dayjs(frame.end);
     return {
       start: start.toDate(),
       end: end.toDate(),

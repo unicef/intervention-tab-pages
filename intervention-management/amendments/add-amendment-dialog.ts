@@ -118,7 +118,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
           <etools-upload
             id="signed-agreement-upload"
             label=${translate('INTERVENTION_MANAGEMENT.AMENDMENTS.SIGNED_AMENDMENT')}
-            accept=".doc,.docx,.pdf,.jpg,.png"
+            accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt"
             .fileUrl="${this.data.signed_amendment_attachment}"
             .uploadEndpoint="${this.uploadEndpoint}"
             @upload-finished="${this._amendmentUploadFinished}"
@@ -133,7 +133,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
           <etools-upload
             id="prc-review-upload"
             label=${translate('INTERVENTION_MANAGEMENT.AMENDMENTS.INTERNAL_PRC_REVIEWS')}
-            accept=".doc,.docx,.pdf,.jpg,.png"
+            accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt"
             .fileUrl="${this.data.internal_prc_review}"
             .uploadEndpoint="${this.uploadEndpoint}"
             .uploadInProgress="${this.prcUploadInProgress}"

@@ -124,7 +124,6 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
                   required
                   auto-validate
                   error-message=${translate('INDICATOR_DIALOG.PLEASE_SELECT_SECTIONS')}
-                  disable-on-focus-handling
                   fit-into="etools-dialog"
                   ?readonly="${this.readonly}"
                   trigger-value-change-event

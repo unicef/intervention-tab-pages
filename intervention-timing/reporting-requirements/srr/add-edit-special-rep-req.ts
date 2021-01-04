@@ -19,7 +19,8 @@ import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {AnyObject} from '@unicef-polymer/etools-types';
-import moment from 'moment';
+declare const dayjs: any;
+import {translate} from 'lit-translate';
 
 /**
  * @polymer
@@ -58,27 +59,32 @@ export class AddEditSpecialRepReq extends LitElement {
         id="addEditDialog"
         size="lg"
         ?opened="${this.opened}"
-        dialog-title="Add/Edit Special Reporting Requirements"
+        dialog-title=${translate(
+          'INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.ADD_EDIT_SPECIAL_REPORTING_REQUIREMENTS'
+        )}
         @confirm-btn-clicked="${this._save}"
-        ok-btn-text="Save"
+        ok-btn-text=${translate('GENERAL.SAVE')}
+        cancel-btn-text=${translate('GENERAL.CANCEL')}
         keep-dialog-open
       >
         <div class="row-h">
           <div class="col layout-vertical col-5">
-            <iron-label for="startDate"> Report Due Date </iron-label>
+            <iron-label for="startDate"
+              >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.REPORT_DUE_DATE')}</iron-label
+            >
             <calendar-lite
               id="startDate"
               pretty-date="${this.item.due_date ? this.item.due_date : ''}"
               format="YYYY-MM-DD"
               @date-changed="${({detail}: CustomEvent) =>
-                (this.item.due_date = moment(new Date(detail.value)).format('YYYY-MM-DD'))}"
+                (this.item.due_date = dayjs(new Date(detail.value)).format('YYYY-MM-DD'))}"
               hide-header
             ></calendar-lite>
           </div>
         </div>
         <div class="row-h">
           <paper-input
-            label="Reporting Requirement"
+            label=${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.REPORTING_REQUIREMENT')}
             placeholder="&#8212;"
             value="${this.item.description ? this.item.description : ''}"
             @value-changed="${({detail}: CustomEvent) => (this.item.description = detail.value)}"
@@ -149,7 +155,7 @@ export class AddEditSpecialRepReq extends LitElement {
   prepareDatepickerDate(dateStr: string) {
     const date = prepareDatepickerDate(dateStr);
     if (date === null) {
-      const now = moment(new Date()).format('YYYY-MM-DD');
+      const now = dayjs(new Date()).format('YYYY-MM-DD');
       return prepareDatepickerDate(now);
     } else {
       return date;

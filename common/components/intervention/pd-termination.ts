@@ -16,7 +16,7 @@ import {openDialog} from '../../../utils/dialog';
 import EnvironmentFlagsMixin from '../../mixins/environment-flags-mixin';
 import {getStore} from '../../../utils/redux-store-access';
 import {AnyObject} from '@unicef-polymer/etools-types';
-declare const moment: any;
+declare const dayjs: any;
 
 /**
  * @LitElement
@@ -73,7 +73,7 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
           <etools-upload
             id="terminationNotice"
             label="Termination Notice"
-            accept=".doc,.docx,.pdf,.jpg,.png"
+            accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt"
             .fileUrl="${this.termination.attachment_notice}"
             .uploadEndpoint="${this.uploadEndpoint}"
             @upload-finished="${this._uploadFinished}"
@@ -134,7 +134,7 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
   warnMessages: string[] = ['Once you hit save, the PD/SPD will be Terminated and this action can not be reversed'];
 
   _getMaxDate() {
-    return moment(Date.now()).add(30, 'd').toDate();
+    return dayjs(Date.now()).add(30, 'd').toDate();
   }
 
   validate() {

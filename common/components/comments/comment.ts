@@ -3,7 +3,7 @@ import '@polymer/iron-icons';
 import {fireEvent} from '../../../utils/fire-custom-event';
 import {CommentStyles} from './comment.styles';
 import {InterventionComment} from '@unicef-polymer/etools-types';
-declare const moment: any;
+declare const dayjs: any;
 
 @customElement('comment-element')
 export class CommentElement extends LitElement {
@@ -22,7 +22,7 @@ export class CommentElement extends LitElement {
   }
 
   get date(): string {
-    const date = moment(this.comment.date);
+    const date = dayjs(this.comment.date);
     return `${date.format('MMM DD YYYY')} at ${date.format('HH:mm')}`;
   }
 
