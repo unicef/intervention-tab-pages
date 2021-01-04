@@ -85,9 +85,9 @@ export class EtoolsFormElementWrapper extends LitElement {
 
   _required!: boolean;
 
-  set required(required: boolean, req: any) {
+  set required(required: boolean) {
     this._required = required;
-    this._requiredChanged(req);
+    this._requiredChanged(required);
   }
 
   get required() {

@@ -65,6 +65,8 @@ export class InterventionReportStatus extends LitElement {
   noIcon = false;
 
   _statusType!: string;
+  _label!: string;
+  _icon!: string;
 
   set statusType(statusType: string) {
     this._statusType = statusType;
@@ -76,8 +78,6 @@ export class InterventionReportStatus extends LitElement {
     return this._statusType;
   }
 
-  _label!: string;
-
   set label(label: string) {
     this._label = label;
     this._computeLabel(this.status, this.final, this.reportType);
@@ -87,8 +87,6 @@ export class InterventionReportStatus extends LitElement {
   get label() {
     return this._label;
   }
-
-  _icon!: string;
 
   set icon(icon: string) {
     this._icon = icon;
