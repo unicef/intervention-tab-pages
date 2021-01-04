@@ -87,7 +87,6 @@ export class GroupedLocationsDialog extends LitElement {
           .options="${this.adminLevels}"
           option-label="name"
           option-value="name"
-          disable-on-focus-handling
           trigger-value-change-event
           @etools-selected-item-changed="${this.adminLevelChanged}"
         >

@@ -19,6 +19,7 @@ import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {sharedStyles} from '../../../common/styles/shared-styles-lit';
 import {buttonsStyles} from '../../../common/styles/button-styles';
 import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
+import {translate, get as getTranslation} from 'lit-translate';
 
 /**
  * @customElement
@@ -38,18 +39,26 @@ export class SpecialReportingRequirements extends ReportingRequirementsCommonMix
       </style>
 
       <div class="row-h" ?hidden="${!this._empty(this.reportingRequirements)}">
-        There are no special reporting requirements set.
+        ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.NO_SPECIAL_REPORTING_REQUIREMENTS')}
       </div>
 
       <div class="row-h">
-        <paper-button class="secondary-btn" @click="${this._openAddDialog}"> ADD REQUIREMENTS </paper-button>
+        <paper-button class="secondary-btn" @click="${this._openAddDialog}"
+          >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.ADD_REQUIREMENTS')}</paper-button
+        >
       </div>
 
       <div class="flex-c" ?hidden="${this._empty(this.reportingRequirements)}">
         <etools-data-table-header no-collapse no-title>
           <etools-data-table-column class="col-1 right-align index-col">ID</etools-data-table-column>
-          <etools-data-table-column class="col-3">Due Date</etools-data-table-column>
-          <etools-data-table-column class="flex-6">Reporting Requirements</etools-data-table-column>
+          <etools-data-table-column class="col-3"
+            >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.DUE_DATE')}</etools-data-table-column
+          >
+          <etools-data-table-column class="flex-6"
+            >${translate(
+              'INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.REPORTING_REQUIREMENT'
+            )}</etools-data-table-column
+          >
           <etools-data-table-column class="flex-c"></etools-data-table-column>
         </etools-data-table-header>
         ${this.reportingRequirements.map(
@@ -181,12 +190,14 @@ export class SpecialReportingRequirements extends ReportingRequirementsCommonMix
   _createDeleteConfirmationsDialog() {
     this._onDeleteConfirmation = this._onDeleteConfirmation.bind(this);
     const confirmationMSg = document.createElement('span');
-    confirmationMSg.innerText = 'Are you sure you want to delete this Special Reporting Requirement?';
+    confirmationMSg.innerText = getTranslation(
+      'INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.DELETE_SPECIAL_REPORTING_REQUIREMENT_PROMPT'
+    );
     const confirmationDialogConf = {
-      title: 'Delete Special Reporting Requirement',
+      title: getTranslation('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.DEL_SPECIAL_REPORTING_REQUIREMENT'),
       size: 'md',
-      okBtnText: 'Yes',
-      cancelBtnText: 'No',
+      okBtnText: getTranslation('GENERAL.YES'),
+      cancelBtnText: getTranslation('GENERAL.NO'),
       closeCallback: this._onDeleteConfirmation,
       content: confirmationMSg
     };

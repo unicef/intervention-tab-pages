@@ -10,6 +10,7 @@ import {isEmptyObject} from '../../../utils/utils';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {sharedStyles} from '../../../common/styles/shared-styles-lit';
 import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
+import {translate} from 'lit-translate';
 
 /**
  * @polymer
@@ -37,7 +38,9 @@ export class HruList extends ReportingReqPastDatesCheckMixin(ReportingRequiremen
 
       <etools-data-table-header no-collapse no-title>
         <etools-data-table-column class="col-1 right-align index-col">ID</etools-data-table-column>
-        <etools-data-table-column class="flex-c">Report End Date</etools-data-table-column>
+        <etools-data-table-column class="flex-c"
+          >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.REPORT_END_DATE')}</etools-data-table-column
+        >
         <etools-data-table-column class="col-2"></etools-data-table-column>
       </etools-data-table-header>
       ${this.hruData.map(
