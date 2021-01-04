@@ -28,6 +28,7 @@ import {AnyObject, Permission} from '@unicef-polymer/etools-types';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {callClickOnSpacePush} from '../../utils/common-methods';
+import {translate} from 'lit-translate';
 
 /**
  * @polymer
@@ -102,19 +103,26 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
           margin-left: 16px;
         }
       </style>
-      <etools-content-panel show-expand-btn class="content-section" panel-title="Partner Reporting Requirements">
+      <etools-content-panel
+        show-expand-btn
+        class="content-section"
+        panel-title=${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.PARTNER_REPORTING_REQUIREMENTS')}
+      >
         <div class="flex-c layout-horizontal">
           <div class="reports-menu nav-menu">
             <div
               name="qtyProgress"
-              title="Quarterly Progress Reports"
+              title=${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.QUARTERLY_PROGRESS_REPORTS')}
               class="nav-menu-item qpr"
               ?selected="${this.isSelected('qtyProgress')}"
               @click="${this.selectType}"
               tabindex="0"
               id="clickable"
             >
-              <span>Quarterly Progress Reports (${this.qprRequirementsCount})</span>
+              <span
+                >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.QUARTERLY_PROGRESS_REPORTS')}
+                (${this.qprRequirementsCount})</span
+              >
               <paper-icon-button
                 class="edit-rep-req"
                 icon="create"
@@ -124,14 +132,17 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
             </div>
             <div
               name="humanitarianUnicef"
-              title="Humanitarian Reports - UNICEF"
+              title=${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.HUMANITARIAN_REPORTS_UNICEF')}
               class="nav-menu-item"
               ?selected="${this.isSelected('humanitarianUnicef')}"
               @click="${this.selectType}"
               tabindex="0"
               id="clickable"
             >
-              <span>Humanitarian Reports - UNICEF (${this.hrUnicefRequirementsCount})</span>
+              <span
+                >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.HUMANITARIAN_REPORTS_UNICEF')}
+                (${this.hrUnicefRequirementsCount})</span
+              >
               <paper-icon-button
                 class="edit-rep-req"
                 icon="create"
@@ -142,27 +153,29 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
             ${this.isUnicefUser
               ? html` <div
                   name="humanitarianCluster"
-                  title="Humanitarian Reports - Cluster"
+                  title=${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.HUMANITARIAN_REPORTS_CLUSTER')}
                   class="nav-menu-item"
                   ?selected="${this.isSelected('humanitarianCluster')}"
                   @click="${this.selectType}"
                   tabindex="0"
                   id="clickable"
                 >
-                  Humanitarian Reports - Cluster (${this.hrClusterRequirementsCount})
+                  ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.HUMANITARIAN_REPORTS_CLUSTER')}
+                  (${this.hrClusterRequirementsCount})
                 </div>`
               : html``}
 
             <div
               name="special"
-              title="Special Report"
+              title=${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.SPECIAL_REPORT')}
               class="nav-menu-item"
               ?selected="${this.isSelected('special')}"
               @click="${this.selectType}"
               tabindex="0"
               id="clickable"
             >
-              Special Report (${this.specialRequirementsCount})
+              ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.SPECIAL_REPORT')}
+              (${this.specialRequirementsCount})
             </div>
           </div>
           <div class="flex-c reporting-req-data">

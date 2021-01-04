@@ -23,6 +23,7 @@ import {isEmptyObject} from '../../../utils/utils';
 import {connectStore} from '../../../common/mixins/connect-store-mixin';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {buttonsStyles} from '../../../common/styles/button-styles.js';
+import {translate, get as getTranslation} from 'lit-translate';
 
 /**
  * @polymer
@@ -63,17 +64,17 @@ export class EditHruDialog extends connectStore(LitElement) {
       <etools-dialog
         id="editHruDialog"
         size="lg"
-        dialog-title="Add/Edit Dates for Humanitarian Report - UNICEF"
+        dialog-title=${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.EDIT_DATES_HUMANITARIAN_REPORT')}
         @confirm-btn-clicked="${this._saveHurData}"
-        ok-btn-text="Save"
+        ok-btn-text=${translate('GENERAL.SAVE')}
         keep-dialog-open
         ?hidden="${this.datePickerOpen}"
-        spinner-text="Saving..."
+        spinner-text=${translate('GENERAL.SAVING_DATA')}
       >
         <div class="start-date">
           <datepicker-lite
             id="dtPickerStDate"
-            label="Select Start Date"
+            label=${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.SELECT_START_DATE')}
             .value="${this.repStartDate}"
             required
             min-date="${this.minDate}"
@@ -83,7 +84,7 @@ export class EditHruDialog extends connectStore(LitElement) {
           >
           </datepicker-lite>
         </div>
-        <div>Use the date picker to select end dates of humanitarian report requirements.</div>
+        <div>${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.HUMANITARIAN_REPORT_PROMPT')}</div>
 
         <div class="layout-horizontal row-padding-v">
           <div class="col layout-vertical col-6">
@@ -96,11 +97,13 @@ export class EditHruDialog extends connectStore(LitElement) {
             >
             </calendar-lite>
             <paper-button id="add-selected-date" class="secondary-btn" @click="${() => this._addToList()}">
-              Add Selected Date to List
+              ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.ADD_SELECTED_DATE')}
             </paper-button>
           </div>
           <div class="col col-6">
-            <div class="row-h" ?hidden="${!this._empty(this.hruData.length)}">No dates added.</div>
+            <div class="row-h" ?hidden="${!this._empty(this.hruData.length)}">
+              ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.NO_DATES_ADDED')}
+            </div>
             <hru-list
               id="hruList"
               class="flex-c"
@@ -198,7 +201,7 @@ export class EditHruDialog extends connectStore(LitElement) {
   _addToList() {
     if (!this.selectedDate) {
       fireEvent(this, 'toast', {
-        text: 'Please select a date.',
+        text: getTranslation('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.PLEASE_SELECT_DATE'),
         showCloseBtn: true
       });
       return;
@@ -206,7 +209,7 @@ export class EditHruDialog extends connectStore(LitElement) {
     const alreadySelected = this.hruData.find((d: any) => d.end_date === this.selectedDate);
     if (alreadySelected) {
       fireEvent(this, 'toast', {
-        text: 'This date is already added to the list.',
+        text: getTranslation('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.DATE_ALREADY_ADDED'),
         showCloseBtn: true
       });
       return;
