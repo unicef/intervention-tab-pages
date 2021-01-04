@@ -62,8 +62,9 @@ declare const moment: any;
  * @customElement
  */
 @customElement('intervention-progress')
-// @Lajos -> after mixin is migrated -> retest
-export class InterventionProgress extends connectStore(EndpointsLitMixin(EtoolsCurrency(LitElement))) {
+export class InterventionProgress extends connectStore(
+  UtilsMixin(CommonMixin(EndpointsLitMixin(EtoolsCurrency(LitElement))))
+) {
   static get styles() {
     return [contentSectionStylesLit, gridLayoutStylesLit, elevationStyles, frWarningsStyles];
   }
@@ -315,13 +316,13 @@ export class InterventionProgress extends connectStore(EndpointsLitMixin(EtoolsC
                                 class="print-inline"
                                 .displayType="${indicatorReport.reportable.blueprint.display_type}"
                                 .target="${indicatorReport.reportable.target}"
-                                .cumulativeProgress="${_ternary(
+                                .cumulativeProgress="${this._ternary(
                                   indicatorReport.reportable.blueprint.display_type,
                                   'number',
                                   indicatorReport.reportable.achieved.v,
                                   indicatorReport.reportable.achieved.c
                                 )}"
-                                .achievement="${_ternary(
+                                .achievement="${this._ternary(
                                   indicatorReport.reportable.blueprint.display_type,
                                   'number',
                                   indicatorReport.total.v,
@@ -346,6 +347,7 @@ export class InterventionProgress extends connectStore(EndpointsLitMixin(EtoolsC
 
   set interventionId(interventionId) {
     this._interventionId = interventionId;
+    // `prpCountries` and `currentUser` are defined in endpoint mixin
     this._requestProgressData(this._interventionId, this.prpCountries, this.currentUser);
   }
 
