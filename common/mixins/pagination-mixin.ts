@@ -13,10 +13,18 @@ function PaginationMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class PaginationClass extends baseClass {
     @property({type: Object})
     paginator = new Paginator();
-    // TODO: fix observers
-    // static get observers() {
-    //   return ['_pageInsidePaginationRange(paginator.page, paginator.count)', 'resetPageNumber(paginator.page_size)'];
-    // }
+
+    _count!: number;
+
+    set count(count: number) {
+      this._count = count;
+      this.paginator.count = this._count;
+      this._pageInsidePaginationRange(this.paginator.page, this.paginator.count);
+    }
+
+    get count() {
+      return this._count;
+    }
 
     pageSizeChanged(e: CustomEvent) {
       this.resetPageNumber();
@@ -51,6 +59,7 @@ function PaginationMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
     setPageNumber(page: number) {
       this.paginator.page = page;
+      this._pageInsidePaginationRange(this.paginator.page, this._count);
     }
 
     resetPageNumber() {
@@ -62,16 +71,15 @@ function PaginationMixin<T extends Constructor<LitElement>>(baseClass: T) {
       this.setPageSize(urlParams.size ? parseInt(urlParams.size) : CONSTANTS.DEFAULT_LIST_SIZE);
     }
 
-    _pageInsidePaginationRange(page: number, totalResults: string) {
+    _pageInsidePaginationRange(page: number, totalResults: number) {
       if (page < 1) {
         this.resetPageNumber();
       }
-      const total = parseInt(totalResults, 10);
-      if (isNaN(total)) {
+      if (isNaN(totalResults)) {
         return;
       }
 
-      const lastPageNr = this._getLastPageNr(this.paginator.page_size, total);
+      const lastPageNr = this._getLastPageNr(this.paginator.page_size, totalResults);
       if (page > lastPageNr) {
         // page is bigger than last page number (possible by modifying url page param)
         // set page to last available page
