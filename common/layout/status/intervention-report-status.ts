@@ -55,22 +55,33 @@ export class InterventionReportStatus extends LitElement {
     `;
   }
 
-  @property({type: String})
-  status!: string;
-
   @property({type: Boolean})
   noLabel = false;
 
   @property({type: Boolean})
   noIcon = false;
 
-  _statusType!: string;
-  _label!: string;
+  label!: string;
   _icon!: string;
+  _status!: string;
+  _statusType!: string;
+  _final = false;
+  _reportType!: string;
+
+  set status(status: string) {
+    this._status = status;
+    this._computeStatusType(this._status);
+    this._computeLabel(this._status, this._final, this._reportType);
+  }
+
+  @property({type: String})
+  get status() {
+    return this._status;
+  }
 
   set statusType(statusType: string) {
     this._statusType = statusType;
-    this._computeStatusType(this.status);
+    this._computeIcon(this._statusType);
   }
 
   @property({type: String})
@@ -78,19 +89,9 @@ export class InterventionReportStatus extends LitElement {
     return this._statusType;
   }
 
-  set label(label: string) {
-    this._label = label;
-    this._computeLabel(this.status, this.final, this.reportType);
-  }
-
-  @property({type: String})
-  get label() {
-    return this._label;
-  }
-
   set icon(icon: string) {
     this._icon = icon;
-    this._computeIcon(this._statusType);
+    this._computeIcon(this.statusType);
   }
 
   @property({type: String})
@@ -98,15 +99,29 @@ export class InterventionReportStatus extends LitElement {
     return this._icon;
   }
 
+  set final(final: boolean) {
+    this._final = final;
+    this._computeLabel(this._status, this._final, this._reportType);
+  }
+
   @property({type: Boolean})
-  final = false;
+  get final() {
+    return this._final;
+  }
+
+  set reportType(reportType: string) {
+    this._reportType = reportType;
+    this._computeLabel(this._status, this._final, this._reportType);
+  }
 
   @property({type: String})
-  reportType = '';
+  get reportType() {
+    return this._reportType;
+  }
 
   _computeStatusType(status: null | undefined | string) {
     if (status === null || typeof status === 'undefined') {
-      return 'no-status';
+      this._statusType = 'no-status';
     }
     switch (status) {
       case '1':
@@ -114,33 +129,33 @@ export class InterventionReportStatus extends LitElement {
       case 'OnT':
       case 'Com':
       case 'Acc':
-        return 'success';
+        return (this._statusType = 'success');
       case 'Sub':
-        return 'submitted';
+        return (this._statusType = 'submitted');
       case '2':
       case 'Ove':
       case 'Sen':
-        return 'error';
+        return (this._statusType = 'error');
       case '3':
       case 'Due':
       case 'NoP':
       case 'Ong':
-        return 'neutral';
+        return (this._statusType = 'neutral');
       case 'Rej':
       case 'Con':
       case 'Pla':
-        return 'warning';
+        return (this._statusType = 'warning');
       case 'NoS':
-        return 'no-status';
+        return (this._statusType = 'no-status');
       default:
-        return 'default';
+        return (this._statusType = 'default');
     }
   }
 
   _computeLabel(status: string, final: boolean, reportType: string) {
     switch (status) {
       case '1':
-        return 'Nothing due';
+        return (this.label = 'Nothing due');
       case '2':
       case 'Ove':
         return 'Overdue';
@@ -152,13 +167,13 @@ export class InterventionReportStatus extends LitElement {
       case 'Rej':
         return 'Rejected';
       case 'Met':
-        return final ? 'Met results as planned' : 'Met';
+        return (this.label = final ? 'Met results as planned' : 'Met');
       case 'OnT':
         return 'On Track';
       case 'NoP':
         return 'No Progress';
       case 'Con':
-        return final ? 'Constrained (partially met result)' : 'Constrained';
+        return (this.label = final ? 'Constrained (partially met result)' : 'Constrained');
       case 'Ong':
         return 'Ongoing';
       case 'Pla':
@@ -170,7 +185,7 @@ export class InterventionReportStatus extends LitElement {
       case 'Sen':
         return 'Sent Back';
       case 'Acc':
-        return reportType !== 'HR' ? 'Accepted' : 'Received';
+        return (this.label = reportType !== 'HR' ? 'Accepted' : 'Received');
       default:
         return 'No Status';
     }
@@ -179,14 +194,14 @@ export class InterventionReportStatus extends LitElement {
   _computeIcon(type: string) {
     switch (type) {
       case 'success':
-        return 'icons:check-circle';
+        return (this._icon = 'icons:check-circle');
       case 'submitted':
-        return 'icons:assignment-turned-in';
+        return (this._icon = 'icons:assignment-turned-in');
       case 'error':
       case 'warning':
-        return 'icons:error';
+        return (this._icon = 'icons:error');
       default:
-        return 'image:lens';
+        return (this._icon = 'image:lens');
     }
   }
 }
