@@ -5,7 +5,7 @@ import {Constructor} from '@unicef-polymer/etools-types';
 class Paginator {
   page = 1;
   page_size = 10;
-  count: number | null = null;
+  count = 0;
   visible_range: string[] | number[] = [];
 }
 
@@ -13,18 +13,6 @@ function PaginationMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class PaginationClass extends baseClass {
     @property({type: Object})
     paginator = new Paginator();
-
-    _count!: number;
-
-    set count(count: number) {
-      this._count = count;
-      this.paginator.count = this._count;
-      this._pageInsidePaginationRange(this.paginator.page, this.paginator.count);
-    }
-
-    get count() {
-      return this._count;
-    }
 
     pageSizeChanged(e: CustomEvent) {
       this.resetPageNumber();
@@ -46,20 +34,21 @@ function PaginationMixin<T extends Constructor<LitElement>>(baseClass: T) {
       if (reqResponse && reqResponse.count) {
         const count = parseInt(reqResponse.count, 10);
         if (!isNaN(count)) {
-          this.paginator.count = count;
+          Object.assign({}, this.paginator, {count: count});
           return;
         }
+        this._pageInsidePaginationRange(this.paginator.page, this.paginator.count);
       }
-      this.paginator.count = 0;
+      Object.assign({}, this.paginator, {count: 0});
     }
 
     setPageSize(size: number) {
-      this.paginator.page_size = size;
+      Object.assign({}, this.paginator, {page_size: size});
     }
 
     setPageNumber(page: number) {
-      this.paginator.page = page;
-      this._pageInsidePaginationRange(this.paginator.page, this._count);
+      Object.assign({}, this.paginator, {page: page});
+      this._pageInsidePaginationRange(this.paginator.page, this.paginator.count);
     }
 
     resetPageNumber() {
