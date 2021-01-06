@@ -138,7 +138,7 @@
       "OTHER_NOTES": "Alte Note",
       "DELETE_ACTIVITY_PROMPT": "Sunteti sigur ca doriti sa stergeti aceasta activitate?",
       "COUNTRY_PROGRAME_OUTPUT": "Rezultat CP",
-      "RAM_INDICATORS": "Indicatori Ram",
+      "RAM_INDICATORS": "Indicatori RAM",
       "UNASSOCIATED_TO_CP_OUTPUT": "Neasociat cu un resultat CP! Va rugam sa asociati inainte de a continua",
       "ADD_PD_OUTPUT": "Adauga Rezultat al PD-ului/Rezultat PD",
       "PD_ACTIVITIES": "Activitati PD"
@@ -215,7 +215,7 @@
       "INDICATORS_FOR_CP_OUTPUT": "Indicatori pentru Realizari CP:",
       "ADD_CP_OUTPUT": "Adauga Realizari CP",
       "CP_OUTPUT": "Realizari CP",
-      "RAM_INDICATORS": "Indicatori Ram",
+      "RAM_INDICATORS": "Indicatori RAM",
       "CAN_NOT_SAVE_IND": "Nu se pot salva indicatorii!"
     },
     "PD_OUTPUT_DIALOG": {
