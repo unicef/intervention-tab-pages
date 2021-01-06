@@ -16,7 +16,7 @@ import {updateCurrentIntervention} from '../common/actions/interventions';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-checkbox/paper-checkbox';
-declare const dayjs: any;
+import {formatDate} from '../utils/date-utils';
 
 const Types: GenericObject<string> = {
   prc: 'PRC Review',
@@ -69,7 +69,7 @@ export class InterventionReviewTab extends connect(getStore())(LitElement) {
   private interventionId: number | null = null;
 
   get reviewCreatedDate(): string {
-    return this.review ? dayjs(this.review.created).format('DD MMM YYYY') : '-';
+    return this.review ? formatDate(this.review.created, 'DD MMM YYYY') : '-';
   }
 
   render() {

@@ -1,11 +1,5 @@
 import {logWarn} from '@unicef-polymer/etools-behaviors/etools-logging.js';
 declare const dayjs: any;
-declare const dayjs_plugin_isSameOrBefore: any;
-declare const dayjs_plugin_isBetween: any;
-
-dayjs.extend(dayjs_plugin_isSameOrBefore);
-dayjs.extend(dayjs_plugin_isBetween);
-
 
 export function prettyDate(dateString: string, format?: string, placeholder?: string) {
   const date = convertDate(dateString);
@@ -171,6 +165,10 @@ export function datesAreEqual(date1: any, date2: any) {
 export function formatDate(date: Date | string, format?: string) {
   if (!date) {
     return null;
+  }
+
+  if (typeof date === 'string') {
+    date = date.substring(0, 10);
   }
   return dayjs(date).format(format ? format : 'D MMM YYYY');
 }
