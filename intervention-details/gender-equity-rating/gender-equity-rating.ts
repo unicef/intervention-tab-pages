@@ -87,6 +87,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
               .value="${this.data.gender_narrative}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'gender_narrative')}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.gender_narrative)}"
+              maxlength="5000"
             >
             </paper-textarea>
           </div>
@@ -111,6 +112,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
               .value="${this.data.sustainability_narrative}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'sustainability_narrative')}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.sustainability_narrative)}"
+              maxlength="5000"
             >
             </paper-textarea>
           </div>
@@ -135,6 +137,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
               .value="${this.data.equity_narrative}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'equity_narrative')}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.equity_narrative)}"
+              maxlength="5000"
             >
             </paper-textarea>
           </div>
