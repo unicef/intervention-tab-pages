@@ -35,7 +35,6 @@ import {AnyObject, AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {Intervention, FrsDetails, Fr} from '@unicef-polymer/etools-types';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {translate} from 'lit-translate';
-import {indexOf} from 'lodash-es';
 
 /**
  * @customElement
