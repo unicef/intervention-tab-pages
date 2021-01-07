@@ -65,6 +65,7 @@ export class AddEditSpecialRepReq extends LitElement {
         @confirm-btn-clicked="${this._save}"
         ok-btn-text=${translate('GENERAL.SAVE')}
         cancel-btn-text=${translate('GENERAL.CANCEL')}
+        @close="${() => this.onClose()}"
         keep-dialog-open
       >
         <div class="row-h">
@@ -161,6 +162,10 @@ export class AddEditSpecialRepReq extends LitElement {
       return date;
     }
     return prepareDatepickerDate(dateStr);
+  }
+
+  onClose(): void {
+    this.opened = false;
   }
 }
 export {AddEditSpecialRepReq as AddEditSpecialRepReqEl};
