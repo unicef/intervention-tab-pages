@@ -18,7 +18,7 @@ import {getEndpoint} from '../utils/endpoint-helper';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {getStore} from '../utils/redux-store-access';
 import {getIntervention} from '../common/actions/interventions';
-import {pageIsNotCurrentlyActive} from '../utils/common-methods';
+import {callClickOnEnterPush, pageIsNotCurrentlyActive} from '../utils/common-methods';
 import get from 'lodash-es/get';
 import {translate} from 'lit-translate';
 
@@ -45,8 +45,9 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
 
       <etools-content-panel
         class="content-section"
-        .panelTitle="${((translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.ATTACHMENTS') as unknown) as string)
-           } (${this.attachments.length})"
+        .panelTitle="${(translate(
+          'INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.ATTACHMENTS'
+        ) as unknown) as string} (${this.attachments.length})"
         comment-element="attachments"
         comment-description=${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.ATTACHMENTS')}
       >
@@ -133,6 +134,12 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
             `}
       </etools-content-panel>
     `;
+  }
+
+  firstUpdated(): void {
+    super.firstUpdated();
+
+    this.shadowRoot!.querySelectorAll('a').forEach((el) => callClickOnEnterPush(el));
   }
 
   stateChanged(state: any): void {

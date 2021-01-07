@@ -294,6 +294,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                 class="view-toggle-button layout-horizontal align-items-center"
                 ?active="${tab.type === this.viewType}"
                 tabindex="0"
+                id="clickable"
                 @click="${() => this.updateTableView(tab.showIndicators, tab.showActivities)}"
               >
                 ${tab.name}
@@ -392,9 +393,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           class="add-pd white row-h align-items-center"
           @click="${() => this.openPdOutputDialog()}"
         >
-          <paper-icon-button icon="add-box"></paper-icon-button>${translate(
-            'INTERVENTION_RESULTS.ADD_PD_OUTPUT'
-          )}
+          <paper-icon-button icon="add-box"></paper-icon-button>${translate('INTERVENTION_RESULTS.ADD_PD_OUTPUT')}
         </div>
       </etools-content-panel>
     `;
@@ -407,7 +406,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
   firstUpdated(): void {
     super.firstUpdated();
 
-    this.shadowRoot!.querySelectorAll('#view-toggle-button, .add-cp, iron-icon').forEach((el) =>
+    this.shadowRoot!.querySelectorAll('#view-toggle-button, .add-cp, iron-icon, #clickable').forEach((el) =>
       callClickOnSpacePush(el)
     );
   }
