@@ -35,6 +35,7 @@ import {AnyObject, AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {Intervention, FrsDetails, Fr} from '@unicef-polymer/etools-types';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {translate} from 'lit-translate';
+import {indexOf} from 'lodash-es';
 
 /**
  * @customElement
@@ -351,10 +352,14 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
    */
   _frsDetailsErrorHandler(responseErr: any) {
     this.frsDialogEl.stopSpinner();
-    const toastMsg =
+    let toastMsg =
       responseErr && responseErr.error
         ? responseErr.error
         : ((translate('INTERVENTION_MANAGEMENT.FUND_RESERVATIONS.ADD_UPDATE_FR_NUMBER_ERR') as unknown) as string);
+    if (toastMsg.includes('HTTPConnection')) {
+      const index = toastMsg.indexOf('HTTPConnection');
+      toastMsg = toastMsg.slice(0, index);
+    }
     // show the invalid frs warning
     fireEvent(this, 'toast', {
       text: toastMsg,
