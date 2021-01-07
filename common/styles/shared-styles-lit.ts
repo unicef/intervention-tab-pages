@@ -310,7 +310,7 @@ export const sharedStylesContent = `
     --iron-icon-height: 14px;
   }
 
-  *:focus:not(paper-icon-button):not(paper-radio-button):not(paper-checkbox):not(paper-toggle-button) {
+  *:focus:not(paper-icon-button):not(paper-radio-button):not(paper-checkbox):not(paper-toggle-button):not(paper-input):not(paper-textarea) {
     outline: 0;
     box-shadow: var(--paper-material-elevation-3_-_box-shadow);
   }
