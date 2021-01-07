@@ -137,8 +137,8 @@
       "TIME_PERIODS": "Time Periods",
       "OTHER_NOTES": "Other Notes",
       "DELETE_ACTIVITY_PROMPT": "Are you sure you want to delete this activity?",
-      "COUNTRY_PROGRAME_OUTPUT": "Country Program Output",
-      "RAM_INDICATORS": "Ram Indicators",
+      "COUNTRY_PROGRAME_OUTPUT": "Country Programme Output",
+      "RAM_INDICATORS": "RAM Indicators",
       "UNASSOCIATED_TO_CP_OUTPUT": "Unassociated to CP Output! Please associate before moving forward",
       "ADD_PD_OUTPUT": "Add PD Output",
       "PD_ACTIVITIES": "PD Activities"
@@ -147,7 +147,7 @@
     "EXPORT": "Export",
     "SHOW_INACTIVE": "Show Inactive",
     "VIEW": "View",
-    "PROGRAM_DOCUMENT_OUTPUT": "Program Document Output",
+    "PROGRAM_DOCUMENT_OUTPUT": "Programme Document Output",
     "TOTAL_CASH_BUDGET": "Total Cash Budget",
     "NO_RESULTS_ADDED": "There are no results added.",
     "ADD_PD_OUTPUT": "Add PD Output",
@@ -215,7 +215,7 @@
       "INDICATORS_FOR_CP_OUTPUT": "Indicators for CP Output:",
       "ADD_CP_OUTPUT": "Add CP Output",
       "CP_OUTPUT": "CP Output",
-      "RAM_INDICATORS": "Ram Indicators",
+      "RAM_INDICATORS": "RAM Indicators",
       "CAN_NOT_SAVE_IND": "Can not save indicators!"
     },
     "PD_OUTPUT_DIALOG": {
