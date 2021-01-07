@@ -27,7 +27,7 @@ import {RootState} from '../../common/types/store.types';
 import {openDialog} from '../../utils/dialog';
 import CONSTANTS from '../../common/constants';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {callClickOnSpacePush, callClickOnEnterPush, pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import '../../common/layout/are-you-sure';
 import get from 'lodash-es/get';
 import {getIntervention, updateCurrentIntervention} from '../../common/actions/interventions';
@@ -48,7 +48,6 @@ import {
   ResultLinkLowerResult
 } from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {callClickOnSpacePush} from '../../utils/common-methods';
 
 const RESULT_VIEW = 'result_view';
 const BUDGET_VIEW = 'budget_view';
@@ -406,9 +405,10 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
   firstUpdated(): void {
     super.firstUpdated();
 
-    this.shadowRoot!.querySelectorAll('#view-toggle-button, .add-cp, iron-icon, #clickable').forEach((el) =>
+    this.shadowRoot!.querySelectorAll('#view-toggle-button, .add-cp, iron-icon').forEach((el) =>
       callClickOnSpacePush(el)
     );
+    this.shadowRoot!.querySelectorAll('#clickable').forEach((el) => callClickOnEnterPush(el));
   }
 
   stateChanged(state: RootState) {
