@@ -166,6 +166,5 @@ export function formatDate(date: Date | string, format?: string) {
   if (!date) {
     return null;
   }
-
   return dayjs(date).format(format ? format : 'D MMM YYYY');
 }
