@@ -5,8 +5,6 @@ import '@polymer/paper-tooltip/paper-tooltip';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import '@polymer/iron-media-query/iron-media-query';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
-import {Debouncer} from '@polymer/polymer/lib/utils/debounce';
-import {timeOut} from '@polymer/polymer/lib/utils/async';
 import {abortRequestByKey} from '@unicef-polymer/etools-ajax/etools-iron-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 
@@ -213,15 +211,30 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
       // this.queryParams.status.length
     );
   }
-  // static get observers() {
-  //   return [
-  //     '_loadReportsData(prpCountries, interventionId, currentUser, paginator.page_size,' +
-  //       ' paginator.page, queryParams.*, queryParams.status.length)'
-  //   ];
-  // }
+
   @property({type: Number})
   get interventionId() {
     return this._interventionId;
+  }
+
+  _queryParams!: GenericObject;
+
+  set queryParams(queryParams) {
+    this._queryParams = queryParams;
+    this._loadReportsData(
+      this.prpCountries,
+      this.interventionId,
+      this.currentUser,
+      this.paginator.page_size,
+      this.paginator.page,
+      queryParams
+      // this.queryParams.status.length
+    );
+  }
+
+  @property({type: Object})
+  get queryParams() {
+    return this._queryParams;
   }
 
   @property({type: Array})
@@ -229,12 +242,6 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
 
   @property({type: Boolean})
   noPdSsfaRef = false;
-
-  @property({type: Object})
-  queryParams!: GenericObject<any>;
-
-  @property({type: Number})
-  debounceInterval = 100;
 
   @property({type: Boolean})
   waitQueryParamsInit!: boolean;
@@ -247,8 +254,6 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
 
   @property({type: Boolean})
   lowResolutionLayout = false;
-
-  private _loadReportsDataDebouncer!: Debouncer;
 
   connectedCallback() {
     super.connectedCallback();
@@ -265,6 +270,17 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
     }
     this.interventionId = get(state, 'app.routeDetails.params.interventionId');
     this.endStateChanged(state);
+    setTimeout(() => {
+      this._loadReportsData(
+        this.prpCountries,
+        this.interventionId,
+        this.currentUser,
+        this.paginator.page_size,
+        this.paginator.page,
+        this.queryParams
+        // this.queryParams.status.length
+      );
+    }, 10);
   }
 
   _loadReportsData(
@@ -284,53 +300,47 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
       return;
     }
 
-    this._loadReportsDataDebouncer = Debouncer.debounce(
-      this._loadReportsDataDebouncer,
-      timeOut.after(this.debounceInterval),
-      () => {
-        const params = this._prepareReqParamsObj(interventionId);
+    const params = this._prepareReqParamsObj(interventionId);
 
-        if (isJsonStrMatch(this._lastParamsUsed, params) || (this.noPdSsfaRef && !params.programme_document_ext)) {
-          return;
+    if (isJsonStrMatch(this._lastParamsUsed, params) || (this.noPdSsfaRef && !params.programme_document_ext)) {
+      return;
+    }
+
+    this._lastParamsUsed = Object.assign({}, params);
+
+    fireEvent(this, 'global-loading', {
+      message: 'Loading...',
+      active: true,
+      loadingSource: 'reports-list'
+    });
+
+    // abort previous req and then fire a new one with updated params
+    abortRequestByKey(this._endpointName);
+
+    this.fireRequest('reports', {}, {params: params}, this._endpointName)
+      .then((response: any) => {
+        if (response) {
+          this.reports = [...response.results];
+          this.updatePaginatorTotalResults(response);
         }
-
-        this._lastParamsUsed = Object.assign({}, params);
-
         fireEvent(this, 'global-loading', {
-          message: 'Loading...',
-          active: true,
+          active: false,
           loadingSource: 'reports-list'
         });
+      })
+      .catch((error: any) => {
+        if (error.status === 0) {
+          // req aborted
+          return;
+        }
+        logError('Reports list data request failed!', 'reports-list', error);
 
-        // abort previous req and then fire a new one with updated params
-        abortRequestByKey(this._endpointName);
-
-        this.fireRequest('reports', {}, {params: params}, this._endpointName)
-          .then((response: any) => {
-            if (response) {
-              this.reports = [...response.results];
-              this.updatePaginatorTotalResults(response);
-            }
-            fireEvent(this, 'global-loading', {
-              active: false,
-              loadingSource: 'reports-list'
-            });
-          })
-          .catch((error: any) => {
-            if (error.status === 0) {
-              // req aborted
-              return;
-            }
-            logError('Reports list data request failed!', 'reports-list', error);
-
-            parseRequestErrorsAndShowAsToastMsgs(error, this);
-            fireEvent(this, 'global-loading', {
-              active: false,
-              loadingSource: 'reports-list'
-            });
-          });
-      }
-    );
+        parseRequestErrorsAndShowAsToastMsgs(error, this);
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: 'reports-list'
+        });
+      });
   }
 
   _prepareReqParamsObj(interventionId: number) {
