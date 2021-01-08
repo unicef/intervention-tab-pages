@@ -167,8 +167,5 @@ export function formatDate(date: Date | string, format?: string) {
     return null;
   }
 
-  if (typeof date === 'string') {
-    date = date.substring(0, 10);
-  }
   return dayjs(date).format(format ? format : 'D MMM YYYY');
 }
