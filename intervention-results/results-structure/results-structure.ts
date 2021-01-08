@@ -27,7 +27,7 @@ import {RootState} from '../../common/types/store.types';
 import {openDialog} from '../../utils/dialog';
 import CONSTANTS from '../../common/constants';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {callClickOnSpacePush, callClickOnEnterPush, pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import '../../common/layout/are-you-sure';
 import get from 'lodash-es/get';
 import {getIntervention, updateCurrentIntervention} from '../../common/actions/interventions';
@@ -48,7 +48,6 @@ import {
   ResultLinkLowerResult
 } from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {callClickOnSpacePush} from '../../utils/common-methods';
 
 const RESULT_VIEW = 'result_view';
 const BUDGET_VIEW = 'budget_view';
@@ -294,6 +293,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                 class="view-toggle-button layout-horizontal align-items-center"
                 ?active="${tab.type === this.viewType}"
                 tabindex="0"
+                id="clickable"
                 @click="${() => this.updateTableView(tab.showIndicators, tab.showActivities)}"
               >
                 ${tab.name}
@@ -392,9 +392,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           class="add-pd white row-h align-items-center"
           @click="${() => this.openPdOutputDialog()}"
         >
-          <paper-icon-button icon="add-box"></paper-icon-button>${translate(
-            'INTERVENTION_RESULTS.ADD_PD_OUTPUT'
-          )}
+          <paper-icon-button icon="add-box"></paper-icon-button>${translate('INTERVENTION_RESULTS.ADD_PD_OUTPUT')}
         </div>
       </etools-content-panel>
     `;
@@ -410,6 +408,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     this.shadowRoot!.querySelectorAll('#view-toggle-button, .add-cp, iron-icon').forEach((el) =>
       callClickOnSpacePush(el)
     );
+    this.shadowRoot!.querySelectorAll('#clickable').forEach((el) => callClickOnEnterPush(el));
   }
 
   stateChanged(state: RootState) {

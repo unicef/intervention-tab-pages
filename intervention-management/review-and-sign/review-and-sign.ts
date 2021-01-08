@@ -29,7 +29,7 @@ import {isEmpty, cloneDeep} from 'lodash-es';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {patchIntervention} from '../../common/actions/interventions';
 import {formatDate} from '../../utils/date-utils';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {callClickOnSpacePush, pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, MinimalUser, Permission, User} from '@unicef-polymer/etools-types';
@@ -106,7 +106,6 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
               label=${translate('INTERVENTION_MANAGEMENT.REVIEW_AND_SIGN.DOC_SUB_DATE')}
               .value="${this.data.submission_date}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.submission_date)}"
-              tabindex="${this.isReadonly(this.editMode, this.permissions.edit.submission_date) ? -1 : 0}"
               selected-date-display-format="D MMM YYYY"
               ?required="${this.permissions.required.submission_date}"
               max-date="${this.getCurrentDate()}"
@@ -147,7 +146,6 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
                     label=${translate('INTERVENTION_MANAGEMENT.REVIEW_AND_SIGN.SUBMISSION_DATE_PRC')}
                     .value="${this.data.submission_date_prc}"
                     ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.submission_date_prc)}"
-                    tabindex="${this.isReadonly(this.editMode, this.permissions.edit.submission_date_prc) ? -1 : 0}"
                     ?required="${this.data.prc_review_attachment}"
                     fire-date-has-changed
                     @date-has-changed="${(e: CustomEvent) =>
@@ -164,7 +162,6 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
                     label=${translate('INTERVENTION_MANAGEMENT.REVIEW_AND_SIGN.REVIEW_DATE_PRC')}
                     .value="${this.data.review_date_prc}"
                     ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.review_date_prc)}"
-                    tabindex="${this.isReadonly(this.editMode, this.permissions.edit.review_date_prc) ? -1 : 0}"
                     ?required="${this.data.prc_review_attachment}"
                     fire-date-has-changed
                     @date-has-changed="${(e: CustomEvent) =>
@@ -204,9 +201,6 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
               .options="${this.agreementAuthorizedOfficers}"
               .selected="${this.data.partner_authorized_officer_signatory?.id}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.partner_authorized_officer_signatory)}"
-              tabindex="${
-                this.isReadonly(this.editMode, this.permissions.edit.partner_authorized_officer_signatory) ? -1 : 0
-              }"
               ?required="${this.permissions.required.partner_authorized_officer_signatory}"
               auto-validate
               option-value="id"
@@ -241,7 +235,6 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
               .value="${this.data.signed_by_partner_date}"
               ?required="${this.permissions.required.signed_by_partner_date}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.signed_by_partner_date)}"
-              tabindex="${this.isReadonly(this.editMode, this.permissions.edit.signed_by_partner_date) ? -1 : 0}"
               fire-date-has-changed
               @date-has-changed="${(e: CustomEvent) =>
                 this.valueChanged({value: formatDate(e.detail.date, 'YYYY-MM-DD')}, 'signed_by_partner_date')}"
@@ -272,7 +265,6 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
               label=${translate('INTERVENTION_MANAGEMENT.REVIEW_AND_SIGN.SIGNED_UNICEF_DATE')}
               .value="${this.data.signed_by_unicef_date}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.signed_by_unicef_date)}"
-              tabindex="${this.isReadonly(this.editMode, this.permissions.edit.signed_by_unicef_date) ? -1 : 0}"
               ?required="${this.permissions.required.signed_by_unicef_date}"
               fire-date-has-changed
               @date-has-changed="${(e: CustomEvent) =>
@@ -299,7 +291,6 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
               option-label="name"
               .selected="${this.data.unicef_signatory?.id}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.unicef_signatory)}"
-              tabindex="${this.isReadonly(this.editMode, this.permissions.edit.unicef_signatory) ? -1 : 0}"
               auto-validate
               error-message=${translate('INTERVENTION_MANAGEMENT.REVIEW_AND_SIGN.UNICEF_USER_ERR')}
               @etools-selected-item-changed="${({detail}: CustomEvent) =>

@@ -1,7 +1,7 @@
 import {LitElement, html, TemplateResult, customElement, CSSResultArray, css, property} from 'lit-element';
 import './final-review-popup';
 import {openDialog} from '../../utils/dialog';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {callClickOnEnterPush, pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {selectFinalReviewAttachment, selectFinalReviewDate, selectInterventionId} from './final-review.selectors';
 import {currentInterventionPermissions} from '../../common/selectors';
 import get from 'lodash-es/get';
@@ -98,6 +98,12 @@ export class FinalReview extends CommentsMixin(LitElement) {
         </div>
       </etools-content-panel>
     `;
+  }
+
+  firstUpdated(): void {
+    super.firstUpdated();
+
+    this.shadowRoot!.querySelectorAll('a').forEach((el) => callClickOnEnterPush(el));
   }
 
   stateChanged(state: any): void {

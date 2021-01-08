@@ -96,9 +96,6 @@ export class EditHruDialog extends connectStore(LitElement) {
               hide-header
             >
             </calendar-lite>
-            <paper-button id="add-selected-date" class="secondary-btn" @click="${() => this._addToList()}">
-              ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.ADD_SELECTED_DATE')}
-            </paper-button>
           </div>
           <div class="col col-6">
             <div class="row-h" ?hidden="${!this._empty(this.hruData.length)}">
@@ -114,6 +111,13 @@ export class EditHruDialog extends connectStore(LitElement) {
               @delete-hru="${this._deleteHruDate}"
             >
             </hru-list>
+          </div>
+        </div>
+        <div class="layout-horizontal row-padding-v">
+          <div class="col layout-vertical col-3">
+            <paper-button id="add-selected-date" class="secondary-btn" @click="${() => this._addToList()}">
+              ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.ADD_SELECTED_DATE')}
+            </paper-button>
           </div>
         </div>
       </etools-dialog>
