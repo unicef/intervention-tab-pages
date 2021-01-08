@@ -140,6 +140,7 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
     super.firstUpdated();
     // By default an <a> element with an href attribute can be activated by the Enter key.
     // TODO - here for an unknown reason it doesn't work, post poning for later investigation and ideas
+    // NOTE - approach present in other places also
     this.shadowRoot!.querySelectorAll('a').forEach((el) => callClickOnEnterPush(el));
   }
 
