@@ -356,20 +356,16 @@ export class InterventionProgress extends connectStore(
     return this._interventionId;
   }
 
-  @property({
-    type: Number
-    // computed: '_getTimeProgress(progress.start_date, progress.end_date)'
-  })
-  pdProgress!: number;
-
-  // @property({type: Object, observer: '_progressDataObjChanged'})
-  // progress: GenericObject | null = null;
+  @property({type: Number})
+  pdProgress!: number | null;
 
   _progress: GenericObject = {};
 
   set progress(progress) {
     this._progress = progress;
     this._progressDataObjChanged(this._progress);
+    this._setTimeProgress(this.progress.start_date, this.progress.end_date);
+    this._computeLatestAcceptedPr(this.progress);
   }
 
   @property({type: String})
@@ -377,10 +373,7 @@ export class InterventionProgress extends connectStore(
     return this._progress;
   }
 
-  @property({
-    type: Object
-    // computed: '_computeLatestAcceptedPr(progress)'
-  })
+  @property({type: Object})
   latestAcceptedPr!: GenericObject;
 
   @property({type: Array})
@@ -458,7 +451,7 @@ export class InterventionProgress extends connectStore(
   }
 
   _computeLatestAcceptedPr(progress: any) {
-    return progress && progress.latest_accepted_pr ? progress.latest_accepted_pr : null;
+    this.latestAcceptedPr = progress && progress.latest_accepted_pr ? progress.latest_accepted_pr : null;
   }
 
   _progressDataObjChanged(progress: any) {
@@ -552,9 +545,9 @@ export class InterventionProgress extends connectStore(
     return start + ' - ' + end;
   }
 
-  _getTimeProgress(start: string, end: string) {
+  _setTimeProgress(start: string, end: string) {
     if (!start && !end) {
-      return;
+      this.pdProgress = null;
     }
     const today = new Date();
     // eslint-disable-next-line new-cap
@@ -565,16 +558,16 @@ export class InterventionProgress extends connectStore(
       if (dateIsBetween(startDt, endDt, today)) {
         const intervalTotalDays = dateDiff(startDt, endDt);
         const intervalDaysCompleted = dateDiff(startDt, today);
-        return (intervalDaysCompleted * 100) / intervalTotalDays;
+        this.pdProgress = (intervalDaysCompleted * 100) / intervalTotalDays;
       }
     } catch (err) {
       logWarn('Time progress compute error', 'intervention-progress', err);
     }
     // if end date is valid and is past date or today's date, progress should be 100%
     if (isValidDate(endDt) && (dateIsAfter(today, endDt) || datesAreEqual(today, endDt))) {
-      return 100;
+      this.pdProgress = 100;
     }
-    return 0;
+    this.pdProgress = 0;
   }
 
   _getOverallPdStatusDate(date: string) {

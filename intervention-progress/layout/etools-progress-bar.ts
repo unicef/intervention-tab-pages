@@ -71,28 +71,32 @@ export class EtoolsProgressBar extends LitElement {
   @property({type: Number})
   value = 0;
 
-  @property({
-    type: Number
-    // computed: '_getProgress(value)'
-  })
-  progressValue!: number;
+  _progressValue: Number = 0;
+
+  set progressValue(progressValue) {
+    this._progressValue = this._getProgress(progressValue);
+  }
+
+  @property({type: Number})
+  get progressValue() {
+    return this._progressValue;
+  }
 
   @property({type: Boolean})
   noDecimals = false;
 
-  // TO DO
-  // _getProgress(value: any) {
-  //   value = parseFloat(parseFloat(value).toFixed(2));
-  //   if (isNaN(value)) {
-  //     return 0;
-  //   }
-  //   // value = (value > 100) ? 100 : value; // cannot be bigger than 100
-  //   value = value < 0 ? 0 : value; // cannot be less that 0
+  _getProgress(value: any) {
+    value = parseFloat(parseFloat(value).toFixed(2));
+    if (isNaN(value)) {
+      return 0;
+    }
+    // value = (value > 100) ? 100 : value; // cannot be bigger than 100
+    value = value < 0 ? 0 : value; // cannot be less that 0
 
-  //   this.updateStyles({'--etools-progress-width-on-print': value + '%'});
+    this.updateStyles({'--etools-progress-width-on-print': value + '%'});
 
-  //   return value;
-  // }
+    return value;
+  }
 
   /**
    * Secondary progress is used only to show a delimited at the end of the active progress.
@@ -108,5 +112,3 @@ export class EtoolsProgressBar extends LitElement {
     return parseFloat(value).toFixed(this.noDecimals ? 0 : 2);
   }
 }
-
-// window.customElements.define(EtoolsProgressBar.is, EtoolsProgressBar);
