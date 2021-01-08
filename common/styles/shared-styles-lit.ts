@@ -252,7 +252,10 @@ export const sharedStylesContent = `
   }
 
   .editable-row .hover-block {
-    display: none;
+    opacity: 0;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
     position: absolute;
     top: 0;
     right: 0;
@@ -268,9 +271,11 @@ export const sharedStylesContent = `
   }
 
   .editable-row:hover > .hover-block {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
+      opacity: 1;
+  }
+
+  .editable-row:focus-within .hover-block {
+    opacity: 1;
   }
 
   etools-data-table-row {
