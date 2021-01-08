@@ -98,6 +98,7 @@ function ReportingRequirementsCommonMixin<T extends Constructor<LitElement>>(bas
 
     _onReportingRequirementsSaved(e: CustomEvent) {
       this.reportingRequirements = e.detail;
+      this.requestUpdate();
     }
 
     getDateDisplayValue(dateString: string) {
