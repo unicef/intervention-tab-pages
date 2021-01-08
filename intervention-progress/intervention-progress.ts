@@ -398,6 +398,9 @@ export class InterventionProgress extends connectStore(
       this.interventionId = currentInterventionId;
     }
     this.endStateChanged(state);
+    setTimeout(() => {
+      this._requestProgressData(this.interventionId, this.prpCountries, this.currentUser);
+    }, 10);
   }
 
   connectedCallback() {
