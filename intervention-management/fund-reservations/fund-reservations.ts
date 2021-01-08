@@ -351,11 +351,14 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
    */
   _frsDetailsErrorHandler(responseErr: any) {
     this.frsDialogEl.stopSpinner();
-    const toastMsg =
+    let toastMsg =
       responseErr && responseErr.error
         ? responseErr.error
         : ((translate('INTERVENTION_MANAGEMENT.FUND_RESERVATIONS.ADD_UPDATE_FR_NUMBER_ERR') as unknown) as string);
     // show the invalid frs warning
+    if (toastMsg.includes('PD/SSFA')) {
+      toastMsg = toastMsg.replace('PD/SSFA', 'PD/SPD');
+    }
     fireEvent(this, 'toast', {
       text: toastMsg,
       showCloseBtn: true
