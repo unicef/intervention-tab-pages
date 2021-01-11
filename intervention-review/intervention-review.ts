@@ -2,7 +2,6 @@ import {LitElement, customElement, html, property, CSSResultArray, css} from 'li
 import {fireEvent} from '../utils/fire-custom-event';
 import {translate} from 'lit-translate';
 import {getStore} from '../utils/redux-store-access';
-import {connect} from 'pwa-helpers/connect-mixin';
 import {RootState} from '../common/types/store.types';
 import {pageIsNotCurrentlyActive} from '../utils/common-methods';
 import {GenericObject, InterventionReview} from '@unicef-polymer/etools-types';
@@ -17,6 +16,7 @@ import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-checkbox/paper-checkbox';
 import {formatDate} from '../utils/date-utils';
+import {connectStore} from '../common/mixins/connect-store-mixin';
 
 const Types: GenericObject<string> = {
   prc: 'PRC Review',
@@ -28,7 +28,7 @@ const Types: GenericObject<string> = {
  * @customElement
  */
 @customElement('intervention-review')
-export class InterventionReviewTab extends connect(getStore())(LitElement) {
+export class InterventionReviewTab extends connectStore(LitElement) {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
