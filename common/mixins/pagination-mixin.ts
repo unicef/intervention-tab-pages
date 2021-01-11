@@ -5,7 +5,7 @@ import {Constructor} from '@unicef-polymer/etools-types';
 class Paginator {
   page = 1;
   page_size = 10;
-  count = 0;
+  count: number | null = null;
   visible_range: string[] | number[] = [];
 }
 
@@ -17,7 +17,7 @@ function PaginationMixin<T extends Constructor<LitElement>>(baseClass: T) {
     // TODO: check if the setter is still needed or pageSizeChanged will suffice
     set pageSize(pageSize: number) {
       this.resetPageNumber();
-      Object.assign({}, this.paginator, {page_size: pageSize});
+      this.paginator = Object.assign({}, this.paginator, {page_size: pageSize});
     }
 
     pageSizeChanged(e: CustomEvent) {
@@ -40,20 +40,21 @@ function PaginationMixin<T extends Constructor<LitElement>>(baseClass: T) {
       if (reqResponse && reqResponse.count) {
         const count = parseInt(reqResponse.count, 10);
         if (!isNaN(count)) {
-          Object.assign({}, this.paginator, {count: count});
+          this.paginator = Object.assign({}, this.paginator, {count: count});
+          this._pageInsidePaginationRange(this.paginator.page, this.paginator.count);
           return;
         }
-        this._pageInsidePaginationRange(this.paginator.page, this.paginator.count);
       }
-      Object.assign({}, this.paginator, {count: 0});
+      this.paginator = Object.assign({}, this.paginator, {count: 0});
+      this._pageInsidePaginationRange(this.paginator.page, this.paginator.count);
     }
 
     setPageSize(size: number) {
-      Object.assign({}, this.paginator, {page_size: size});
+      this.paginator = Object.assign({}, this.paginator, {page_size: size});
     }
 
     setPageNumber(page: number) {
-      Object.assign({}, this.paginator, {page: page});
+      this.paginator = Object.assign({}, this.paginator, {page: page});
       this._pageInsidePaginationRange(this.paginator.page, this.paginator.count);
     }
 
@@ -66,15 +67,15 @@ function PaginationMixin<T extends Constructor<LitElement>>(baseClass: T) {
       this.setPageSize(urlParams.size ? parseInt(urlParams.size) : CONSTANTS.DEFAULT_LIST_SIZE);
     }
 
-    _pageInsidePaginationRange(page: number, totalResults: number) {
+    _pageInsidePaginationRange(page: number, total: number | null) {
       if (page < 1) {
         this.resetPageNumber();
       }
-      if (isNaN(totalResults)) {
+      if (total === null) {
         return;
       }
 
-      const lastPageNr = this._getLastPageNr(this.paginator.page_size, totalResults);
+      const lastPageNr = this._getLastPageNr(this.paginator.page_size, total);
       if (page > lastPageNr) {
         // page is bigger than last page number (possible by modifying url page param)
         // set page to last available page
