@@ -42,7 +42,7 @@ export class SpecialReportingRequirements extends ReportingRequirementsCommonMix
         ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.NO_SPECIAL_REPORTING_REQUIREMENTS')}
       </div>
 
-      <div class="row-h">
+      <div class="row-h" ?hidden="${!this.editMode}">
         <paper-button class="secondary-btn" @click="${this._openAddDialog}"
           >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.ADD_REQUIREMENTS')}</paper-button
         >
@@ -77,6 +77,9 @@ export class SpecialReportingRequirements extends ReportingRequirementsCommonMix
       </div>
     `;
   }
+
+  @property({type: Boolean})
+  editMode!: boolean;
 
   @property({type: Object})
   addEditDialog!: AddEditSpecialRepReqEl;

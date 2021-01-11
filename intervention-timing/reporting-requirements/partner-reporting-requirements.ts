@@ -222,6 +222,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
                 name="special"
                 .interventionId="${this.interventionId}"
                 .requirementsCount="${this.specialRequirementsCount}"
+                .editMode="${!this.isReadonly}"
                 @count-changed=${(e: CustomEvent) => this.updateSRRCount(e.detail)}
               >
               </special-reporting-requirements>
