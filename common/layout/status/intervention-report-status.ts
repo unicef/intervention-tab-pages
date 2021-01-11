@@ -91,7 +91,6 @@ export class InterventionReportStatus extends LitElement {
 
   set icon(icon: string) {
     this._icon = icon;
-    this._computeIcon(this.statusType);
   }
 
   @property({type: String})
@@ -123,72 +122,97 @@ export class InterventionReportStatus extends LitElement {
     if (status === null || typeof status === 'undefined') {
       this._statusType = 'no-status';
     }
+    let stat = '';
     switch (status) {
       case '1':
       case 'Met':
       case 'OnT':
       case 'Com':
       case 'Acc':
-        return (this._statusType = 'success');
+        stat = 'success';
+        break;
       case 'Sub':
-        return (this._statusType = 'submitted');
+        stat = 'submitted';
+        break;
       case '2':
       case 'Ove':
       case 'Sen':
-        return (this._statusType = 'error');
+        stat = 'error';
+        break;
       case '3':
       case 'Due':
       case 'NoP':
       case 'Ong':
-        return (this._statusType = 'neutral');
+        stat = 'neutral';
+        break;
       case 'Rej':
       case 'Con':
       case 'Pla':
-        return (this._statusType = 'warning');
+        stat = 'warning';
+        break;
       case 'NoS':
-        return (this._statusType = 'no-status');
+        stat = 'no-status';
+        break;
       default:
-        return (this._statusType = 'default');
+        stat = 'default';
     }
+    this._statusType = stat;
   }
 
   _computeLabel(status: string, final: boolean, reportType: string) {
+    let label = '';
     switch (status) {
       case '1':
-        return (this.label = 'Nothing due');
+        label = 'Nothing due';
+        break;
       case '2':
       case 'Ove':
-        return 'Overdue';
+        label = 'Overdue';
+        break;
       case '3':
       case 'Due':
-        return 'Due';
+        label = 'Due';
+        break;
       case 'Sub':
-        return 'Submitted';
+        label = 'Submitted';
+        break;
       case 'Rej':
-        return 'Rejected';
+        label = 'Rejected';
+        break;
       case 'Met':
-        return (this.label = final ? 'Met results as planned' : 'Met');
+        label = final ? 'Met results as planned' : 'Met';
+        break;
       case 'OnT':
-        return 'On Track';
+        label = 'On Track';
+        break;
       case 'NoP':
-        return 'No Progress';
+        label = 'No Progress';
+        break;
       case 'Con':
-        return (this.label = final ? 'Constrained (partially met result)' : 'Constrained');
+        label = final ? 'Constrained (partially met result)' : 'Constrained';
+        break;
       case 'Ong':
-        return 'Ongoing';
+        label = 'Ongoing';
+        break;
       case 'Pla':
-        return 'Planned';
+        label = 'Planned';
+        break;
       case 'Com':
-        return 'Completed';
+        label = 'Completed';
+        break;
       case 'NoS':
-        return 'No Status';
+        label = 'No Status';
+        break;
       case 'Sen':
-        return 'Sent Back';
+        label = 'Sent Back';
+        break;
       case 'Acc':
-        return (this.label = reportType !== 'HR' ? 'Accepted' : 'Received');
+        label = reportType !== 'HR' ? 'Accepted' : 'Received';
+        break;
       default:
-        return 'No Status';
+        label = 'No Status';
     }
+    this.label = label;
   }
 
   _computeIcon(type: string) {
