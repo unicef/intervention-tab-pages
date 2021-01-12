@@ -1,5 +1,4 @@
-/* eslint-disable lit/no-legacy-template-syntax */
-import {PolymerElement, html} from '@polymer/polymer';
+import {LitElement, html, property, customElement} from 'lit-element';
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-flex-layout/iron-flex-layout';
 import '@polymer/paper-styles/element-styles/paper-material-styles';
@@ -19,11 +18,13 @@ import './reports/indicator-report-target';
 
 import CommonMixin from '../common/mixins/common-mixin';
 import UtilsMixin from '../common/mixins/utils-mixin';
-import EndpointsMixin from '../common/mixins/endpoints-mixin';
+import EndpointsLitMixin from '../common/mixins/endpoints-mixin-lit';
 
-import {sectionContentStyles} from '../common/styles/content-section-styles-polymer';
-import {sharedStylesPolymer} from '../common/styles/shared-styles-polymer';
-import {gridLayoutStylesPolymer} from '../common/styles/grid-layout-styles-polymer';
+import {contentSectionStylesLit} from '../common/styles/content-section-styles-lit';
+import {sharedStyles} from '../common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../common/styles/grid-layout-styles-lit';
+import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
+import {elevationStyles} from '../common/styles/elevation-styles';
 
 import {isEmptyObject} from '../utils/utils';
 import {fireEvent} from '../utils/fire-custom-event';
@@ -40,12 +41,19 @@ import {
 } from '../utils/date-utils';
 import {logError, logWarn} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {property} from '@polymer/decorators';
 import {pmpCustomIcons} from './styles/pmp-icons';
-import {frWarningsStylesPolymer} from '../common/styles/fr-warnings-styles';
+import {frWarningsStyles} from '../common/styles/fr-warnings-styles';
 import get from 'lodash-es/get';
 import {connectStore} from '../common/mixins/connect-store-mixin';
 import {AnyObject, GenericObject} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
+import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {
+  layoutEndJustified,
+  layoutFlex,
+  layoutHorizontal,
+  layoutStartJustified
+} from '../common/styles/flex-layout-styles';
 declare const moment: any;
 
 /**
@@ -56,15 +64,21 @@ declare const moment: any;
  * @appliesMixin CommonMixin
  * @appliesMixin UtilsMixin
  */
-class InterventionProgress extends connectStore(
-  EndpointsMixin(UtilsMixin(CommonMixin(EtoolsCurrency(PolymerElement))))
+/**
+ * @customElement
+ */
+@customElement('intervention-progress')
+export class InterventionProgress extends connectStore(
+  UtilsMixin(CommonMixin(EndpointsLitMixin(EtoolsCurrency(LitElement))))
 ) {
-  static get template() {
+  static get styles() {
+    return [contentSectionStylesLit, gridLayoutStylesLit, elevationStyles, frWarningsStyles];
+  }
+  render() {
     return html`
-      ${gridLayoutStylesPolymer()} ${sharedStylesPolymer()} ${sectionContentStyles} ${pmpCustomIcons}
-      ${frWarningsStylesPolymer()}
-      <style include="data-table-styles paper-material-styles">
-        #progress-summary etools-progress-bar {
+      ${pmpCustomIcons}
+      <style>
+        ${sharedStyles}${dataTableStylesLit} #progress-summary etools-progress-bar {
           margin-top: 16px;
         }
 
@@ -100,12 +114,12 @@ class InterventionProgress extends connectStore(
         }
 
         .report-progress-bar {
-          @apply --layout-flex;
+          ${layoutFlex}
           --etools-progress-bar-width: 100%;
         }
 
         .progress-details {
-          @apply --layout-end-justified;
+          ${layoutEndJustified}
           padding-top: 0;
         }
 
@@ -122,7 +136,7 @@ class InterventionProgress extends connectStore(
 
         @media print {
           .indicator-report {
-            @apply --layout-horizontal;
+            ${layoutHorizontal}
           }
 
           .indicator-report .col-data {
@@ -148,7 +162,7 @@ class InterventionProgress extends connectStore(
           }
 
           .progress-details {
-            @apply --layout-start-justified;
+            ${layoutStartJustified}
           }
         }
 
@@ -166,11 +180,11 @@ class InterventionProgress extends connectStore(
         <div class="row-h">
           <div class="layout-vertical col-4">
             <etools-form-element-wrapper
-              label="[[_translate('INTERVENTION_REPORTS.PD_DURATION')]]"
-              value="[[_getPdDuration(progress.start_date, progress.end_date)]]"
+              label="${translate('INTERVENTION_REPORTS.PD_DURATION')}"
+              .value="${this._getPdDuration(this.progress.start_date, this.progress.end_date)}"
             >
             </etools-form-element-wrapper>
-            <etools-progress-bar value="[[pdProgress]]" no-decimals></etools-progress-bar>
+            <etools-progress-bar value="${this.pdProgress}" no-decimals></etools-progress-bar>
           </div>
           <div class="layout-vertical col-5">
             <div class="layout-horizontal" id="cash-progress">
@@ -178,55 +192,59 @@ class InterventionProgress extends connectStore(
                 class="fr-nr-warn col-6"
                 custom-icon
                 icon-first
-                hide-tooltip="[[!multipleCurrenciesWereUsed(progress.disbursement, progress)]]"
+                ?hideTooltip="${!this.multipleCurrenciesWereUsed(this.progress.disbursement, this.progress)}"
               >
                 <etools-form-element-wrapper
                   slot="field"
-                  label="[[_translate('INTERVENTION_REPORTS.CASH_TRANSFERED')]]"
-                  value="[[progress.disbursement_currency]] [[displayCurrencyAmount(progress.disbursement, '0', 0)]]"
+                  label="${translate('INTERVENTION_REPORTS.CASH_TRANSFERED')}"
+                  .value="${this.progress.disbursement_currency} ${displayCurrencyAmount(
+                    this.progress.disbursement,
+                    '0',
+                    0
+                  )}"
                 >
                 </etools-form-element-wrapper>
                 <iron-icon icon="pmp-custom-icons:not-equal" slot="custom-icon"></iron-icon>
-                <span slot="message">[[_translate('INTERVENTION_REPORTS.DISBURSEMENT_AMOUNTS')]]</span>
+                <span slot="message">${translate('INTERVENTION_REPORTS.DISBURSEMENT_AMOUNTS')}</span>
               </etools-info-tooltip>
 
               <etools-form-element-wrapper
                 class="col-6"
-                label="[[_translate('INTERVENTION_REPORTS.UNICEF_CASH')]]"
-                value="[[progress.unicef_budget_cash_currency]]
-                        [[displayCurrencyAmount(progress.unicef_budget_cash, '0', 0)]]"
+                label="${translate('INTERVENTION_REPORTS.UNICEF_CASH')}"
+                .value="${this.progress.unicef_budget_cash_currency}
+                        ${displayCurrencyAmount(this.progress.unicef_budget_cash, '0', 0)}"
               >
               </etools-form-element-wrapper>
             </div>
 
             <etools-progress-bar
-              value="[[progress.disbursement_percent]]"
+              .value="${this.progress.disbursement_percent}"
               no-decimals
-              hidden$="[[multipleCurrenciesWereUsed(progress.disbursement_percent, progress)]]"
+              ?hidden="${this.multipleCurrenciesWereUsed(this.progress.disbursement_percent, this.progress)}"
             >
             </etools-progress-bar>
-
-            <template is="dom-if" if="[[multipleCurrenciesWereUsed(progress.disbursement_percent, progress)]]">
-              <etools-info-tooltip
+            ${this.multipleCurrenciesWereUsed(this.progress.disbursement_percent, this.progress)
+              ? `<etools-info-tooltip
                 class="currency-mismatch col-6"
                 custom-icon
                 icon-first
-                hide-tooltip="[[!multipleCurrenciesWereUsed(progress.disbursement_percent, progress)]]"
+                ?hideTooltip="${!this.multipleCurrenciesWereUsed(this.progress.disbursement_percent, this.progress)}"
               >
-                <span slot="field">[[_translate('INTERVENTION_REPORTS.NA_%')]]</span>
+                <span slot="field">${translate('INTERVENTION_REPORTS.NA_%')}</span>
                 <iron-icon slot="custom-icon" icon="pmp-custom-icons:not-equal"></iron-icon>
-                <span slot="message">[[_translate('INTERVENTION_REPORTS.FR_CURRENCY_NOT_MATCH')]]</span>
-              </etools-info-tooltip>
-            </template>
+                <span slot="message">${translate('INTERVENTION_REPORTS.FR_CURRENCY_NOT_MATCH')}</span>
+              </etools-info-tooltip>`
+              : ``}
+            }
           </div>
           <div class="col col-3">
             <etools-form-element-wrapper
-              label="[[_translate('INTERVENTION_REPORTS.OVERALL_PD_SPD_RATING')]]"
-              value="[[_getOverallPdStatusDate(latestAcceptedPr.review_date)]]"
+              label="${translate('INTERVENTION_REPORTS.OVERALL_PD_SPD_RATING')}"
+              .value="${this._getOverallPdStatusDate(this.latestAcceptedPr.review_date)}"
               no-placeholder
             >
               <intervention-report-status
-                status="[[latestAcceptedPr.review_overall_status]]"
+                status="${this.latestAcceptedPr.review_overall_status}"
                 slot="prefix"
               ></intervention-report-status>
             </etools-form-element-wrapper>
@@ -234,107 +252,134 @@ class InterventionProgress extends connectStore(
         </div>
       </div>
 
-      <etools-content-panel
-        class="content-section"
-        panel-title="[[_translate('INTERVENTION_REPORTS.RESULTS_REPORTED')]]"
-      >
-        <div class="row-h" hidden$="[[!_emptyList(progress.details.cp_outputs)]]">
-          <p>[[_translate('INTERVENTION_REPORTS.NO_RESULTS')]]</p>
+      <etools-content-panel class="content-section" panel-title="${translate('INTERVENTION_REPORTS.RESULTS_REPORTED')}">
+        <div class="row-h" ?hidden="${!this._emptyList(this.progress.details.cp_outputs)}">
+          <p>${translate('INTERVENTION_REPORTS.NO_RESULTS')}</p>
         </div>
-        <template is="dom-repeat" items="[[progress.details.cp_outputs]]">
-          <div class="row-v row-second-bg">
-            <strong>[[_translate('INTERVENTION_REPORTS.CP_OUTPUT')]] [[item.title]]</strong>
-          </div>
+        ${this.progress.details.cp_outputs.map(
+          (item: any) => html`
+            <div class="row-v row-second-bg">
+              <strong>${translate('INTERVENTION_REPORTS.CP_OUTPUT')}${item.title}</strong>
+            </div>
 
-          <!-- RAM indicators display -->
-          <etools-ram-indicators
-            class="row-h"
-            intervention-id="[[interventionId]]"
-            cp-id="[[item.external_cp_output_id]]"
-          ></etools-ram-indicators>
+            <!-- RAM indicators display -->
+            <etools-ram-indicators
+              class="row-h"
+              interventionId="${this.interventionId}"
+              cpId="${item.external_cp_output_id}"
+            ></etools-ram-indicators>
 
-          <div class="row-h" hidden$="[[!_emptyList(item.ll_outputs)]]">
-            <p>[[_translate('INTERVENTION_REPORTS.NO_PD_OUTPUTS')]]</p>
-          </div>
+            <div class="row-h" ?hidden="${!this._emptyList(item.ll_outputs)}">
+              <p>${translate('INTERVENTION_REPORTS.NO_PD_OUTPUTS')}</p>
+            </div>
 
-          <div class="lower-results-table" hidden$="[[_emptyList(item.ll_outputs)]]">
-            <etools-data-table-header id="listHeader" no-title>
-              <etools-data-table-column class="col-9"
-                >[[_translate('INTERVENTION_REPORTS.PD_OUTPUTS')]]</etools-data-table-column
-              >
-              <etools-data-table-column class="col-3"
-                >[[_translate('INTERVENTION_REPORTS.CURRENT_PROGRESS')]]</etools-data-table-column
-              >
-            </etools-data-table-header>
+            <div class="lower-results-table" ?hidden="${this._emptyList(item.ll_outputs)}">
+              <etools-data-table-header id="listHeader" no-title>
+                <etools-data-table-column class="col-9"
+                  >${translate('INTERVENTION_REPORTS.PD_OUTPUTS')}</etools-data-table-column
+                >
+                <etools-data-table-column class="col-3"
+                  >${translate('INTERVENTION_REPORTS.CURRENT_PROGRESS')}</etools-data-table-column
+                >
+              </etools-data-table-header>
 
-            <template is="dom-repeat" items="[[item.ll_outputs]]" as="lowerResult">
-              <etools-data-table-row>
-                <div slot="row-data">
-                  <span class="col-data col-9"> [[lowerResult.title]] </span>
-                  <span class="col-data col-3">
-                    <intervention-report-status
-                      status="[[_getLowerResultStatus(lowerResult.id)]]"
-                    ></intervention-report-status>
-                    <span class="lower-result-status-date">[[_getLowerResultStatusDate(lowerResult.id)]]</span>
-                  </span>
-                </div>
-                <div slot="row-data-details">
-                  <div class="row-details-content flex-c">
-                    <div class="row-h" hidden$="[[_countIndicatorReports(lowerResult.id)]]">
-                      [[_translate('INTERVENTION_REPORTS.NO_INDICATORS')]]
-                    </div>
-                    <template is="dom-repeat" items="[[_getIndicatorsReports(lowerResult.id)]]" as="indicatorReport">
-                      <div class="row-h indicator-report">
-                        <div class="col-data col-9">
-                          [[_ternary(indicatorReport.reportable.blueprint.unit, 'number', '#', '%')]]
-                          [[indicatorReport.reportable.blueprint.title]]
-                        </div>
-                        <div class="col-data col-3 progress-bar">
-                          <etools-progress-bar
-                            class="report-progress-bar"
-                            value="[[getProgressPercentage(indicatorReport.reportable.total_against_target,
-                                        indicatorReport.reportable.blueprint.display_type)]]"
-                          >
-                          </etools-progress-bar>
-                        </div>
-                      </div>
-                      <div class="row-h progress-details">
-                        <div class="layout-vertical col-5 target-details">
-                          <indicator-report-target
-                            class="print-inline"
-                            display-type="[[indicatorReport.reportable.blueprint.display_type]]"
-                            target="[[indicatorReport.reportable.target]]"
-                            cumulative-progress="[[_ternary(indicatorReport.reportable.blueprint.display_type, 'number',
-                              indicatorReport.reportable.achieved.v, indicatorReport.reportable.achieved.c)]]"
-                            achievement="[[_ternary(indicatorReport.reportable.blueprint.display_type, 'number',
-                              indicatorReport.total.v, indicatorReport.total.c)]]"
-                          ></indicator-report-target>
-                        </div>
-                      </div>
-                    </template>
+              ${item.ll_outputs.map(
+                (lowerResult: any) => html`<etools-data-table-row>
+                  <div slot="row-data">
+                    <span class="col-data col-9"> ${lowerResult.title} </span>
+                    <span class="col-data col-3">
+                      <intervention-report-status
+                        status="${this._getLowerResultStatus(lowerResult.id)}"
+                      ></intervention-report-status>
+                      <span class="lower-result-status-date">${this._getLowerResultStatusDate(lowerResult.id)}</span>
+                    </span>
                   </div>
-                </div>
-              </etools-data-table-row>
-            </template>
-          </div>
-        </template>
+                  <div slot="row-data-details">
+                    <div class="row-details-content flex-c">
+                      <div class="row-h" ?hidden="${this._countIndicatorReports(lowerResult.id)}">
+                        ${translate('INTERVENTION_REPORTS.NO_INDICATORS')}
+                      </div>
+                      ${this._getIndicatorsReports(lowerResult.id).map(
+                        (indicatorReport: any) => html`<div class="row-h indicator-report">
+                            <div class="col-data col-9">
+                              ${this._ternary(indicatorReport.reportable.blueprint.unit, 'number', '#', '%')}
+                              ${indicatorReport.reportable.blueprint.title}
+                            </div>
+                            <div class="col-data col-3 progress-bar">
+                              <etools-progress-bar
+                                class="report-progress-bar"
+                                value="${this.getProgressPercentage(
+                                  indicatorReport.reportable.total_against_target,
+                                  indicatorReport.reportable.blueprint.display_type
+                                )}"
+                              >
+                              </etools-progress-bar>
+                            </div>
+                          </div>
+                          <div class="row-h progress-details">
+                            <div class="layout-vertical col-5 target-details">
+                              <indicator-report-target
+                                class="print-inline"
+                                .displayType="${indicatorReport.reportable.blueprint.display_type}"
+                                .target="${indicatorReport.reportable.target}"
+                                .cumulativeProgress="${this._ternary(
+                                  indicatorReport.reportable.blueprint.display_type,
+                                  'number',
+                                  indicatorReport.reportable.achieved.v,
+                                  indicatorReport.reportable.achieved.c
+                                )}"
+                                .achievement="${this._ternary(
+                                  indicatorReport.reportable.blueprint.display_type,
+                                  'number',
+                                  indicatorReport.total.v,
+                                  indicatorReport.total.c
+                                )}"
+                              ></indicator-report-target>
+                            </div>
+                          </div>`
+                      )}
+                    </div>
+                  </div>
+                </etools-data-table-row>`
+              )}
+            </div>
+          `
+        )}
       </etools-content-panel>
     `;
   }
 
+  _interventionId!: string;
+
+  set interventionId(interventionId) {
+    this._interventionId = interventionId;
+    // `prpCountries` and `currentUser` are defined in endpoint mixin
+    this._requestProgressData(this._interventionId, this.prpCountries, this.currentUser);
+  }
+
+  @property({type: String})
+  get interventionId() {
+    return this._interventionId;
+  }
+
   @property({type: Number})
-  interventionId!: number;
+  pdProgress!: number | null;
 
-  @property({
-    type: Number,
-    computed: '_getTimeProgress(progress.start_date, progress.end_date)'
-  })
-  pdProgress!: number;
+  _progress: GenericObject = {};
 
-  @property({type: Object, observer: '_progressDataObjChanged'})
-  progress: GenericObject | null = null;
+  set progress(progress) {
+    this._progress = progress;
+    this._progressDataObjChanged(this._progress);
+    this._setTimeProgress(this.progress.start_date, this.progress.end_date);
+    this._computeLatestAcceptedPr(this.progress);
+  }
 
-  @property({type: Object, computed: '_computeLatestAcceptedPr(progress)'})
+  @property({type: String})
+  get progress() {
+    return this._progress;
+  }
+
+  @property({type: Object})
   latestAcceptedPr!: GenericObject;
 
   @property({type: Array})
@@ -343,12 +388,12 @@ class InterventionProgress extends connectStore(
   @property({type: Object})
   prpCountries!: GenericObject[];
 
-  static get observers() {
-    return [
-      // `prpCountries` and `currentUser` are defined in endpoint mixin
-      '_requestProgressData(interventionId, prpCountries, currentUser)'
-    ];
-  }
+  // static get observers() {
+  //   return [
+  //     // `prpCountries` and `currentUser` are defined in endpoint mixin
+  //     '_requestProgressData(interventionId, prpCountries, currentUser)'
+  //   ];
+  // }
 
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'progress')) {
@@ -359,6 +404,9 @@ class InterventionProgress extends connectStore(
       this.interventionId = currentInterventionId;
     }
     this.endStateChanged(state);
+    setTimeout(() => {
+      this._requestProgressData(this.interventionId, this.prpCountries, this.currentUser);
+    }, 10);
   }
 
   connectedCallback() {
@@ -391,7 +439,7 @@ class InterventionProgress extends connectStore(
 
     this.fireRequest('interventionProgress', {pdId: id})
       .then((response: any) => {
-        this.set('progress', response);
+        this.progress = response;
         fireEvent(this, 'global-loading', {
           active: false,
           loadingSource: 'pd-progress'
@@ -412,12 +460,12 @@ class InterventionProgress extends connectStore(
   }
 
   _computeLatestAcceptedPr(progress: any) {
-    return progress && progress.latest_accepted_pr ? progress.latest_accepted_pr : null;
+    this.latestAcceptedPr = progress && progress.latest_accepted_pr ? progress.latest_accepted_pr : null;
   }
 
   _progressDataObjChanged(progress: any) {
     if (!progress) {
-      this.set('indicatorReports', []);
+      this.indicatorReports = [];
       return;
     }
     if (!this._emptyList(progress.details.cp_outputs)) {
@@ -442,7 +490,7 @@ class InterventionProgress extends connectStore(
     indicatorReportData.reports = progressIndicatorReports.filter(function (report: any) {
       return report.reportable_object_id === lowerResultId;
     });
-    this.push('indicatorReports', indicatorReportData);
+    this.indicatorReports.push(indicatorReportData);
   }
 
   _countIndicatorReports(lowerResultId: any) {
@@ -506,8 +554,9 @@ class InterventionProgress extends connectStore(
     return start + ' - ' + end;
   }
 
-  _getTimeProgress(start: string, end: string) {
+  _setTimeProgress(start: string, end: string) {
     if (!start && !end) {
+      this.pdProgress = null;
       return;
     }
     const today = new Date();
@@ -519,16 +568,18 @@ class InterventionProgress extends connectStore(
       if (dateIsBetween(startDt, endDt, today)) {
         const intervalTotalDays = dateDiff(startDt, endDt);
         const intervalDaysCompleted = dateDiff(startDt, today);
-        return (intervalDaysCompleted * 100) / intervalTotalDays;
+        this.pdProgress = (intervalDaysCompleted * 100) / intervalTotalDays;
+        return;
       }
     } catch (err) {
       logWarn('Time progress compute error', 'intervention-progress', err);
     }
     // if end date is valid and is past date or today's date, progress should be 100%
     if (isValidDate(endDt) && (dateIsAfter(today, endDt) || datesAreEqual(today, endDt))) {
-      return 100;
+      this.pdProgress = 100;
+      return;
     }
-    return 0;
+    this.pdProgress = 0;
   }
 
   _getOverallPdStatusDate(date: string) {
@@ -547,5 +598,3 @@ class InterventionProgress extends connectStore(
     return progress_percentage * 100;
   }
 }
-
-window.customElements.define('intervention-progress', InterventionProgress);

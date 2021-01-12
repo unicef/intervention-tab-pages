@@ -1,23 +1,23 @@
-import {PolymerElement, html} from '@polymer/polymer';
+import {LitElement, html, property, customElement} from 'lit-element';
 import '@polymer/iron-flex-layout/iron-flex-layout';
 import '@polymer/paper-progress/paper-progress';
-import {property} from '@polymer/decorators';
+import {layoutCenter, layoutHorizontal} from '../../common/styles/flex-layout-styles';
 
 /**
- * @polymer
- * @customElement
+ * LitElement
  */
-class EtoolsProgressBar extends PolymerElement {
-  static get is() {
-    return 'etools-progress-bar';
-  }
+@customElement('etools-progress-bar')
+export class EtoolsProgressBar extends LitElement {
+  // static get is() {
+  //   return 'etools-progress-bar';
+  // }
 
-  static get template() {
+  render() {
     return html`
       <style>
         :host {
-          @apply --layout-horizontal;
-          @apply --layout-center;
+          ${layoutHorizontal}
+          ${layoutCenter}
 
           --paper-progress-active-color: var(--primary-color);
           --paper-progress-secondary-color: var(--primary-background-color);
@@ -57,26 +57,38 @@ class EtoolsProgressBar extends PolymerElement {
           paper-progress::after {
             z-index: 1;
             border-bottom: 10px solid var(--primary-color);
-            width: var(--etools-progress-width-on-print, 0%);
+            width: ${this.progressWidthOnPrint};
           }
         }
       </style>
       <paper-progress
-        value="[[progressValue]]"
-        secondary-progress="[[_getSecondaryProgress(progressValue)]]"
+        .value="${this.progressValue}"
+        secondaryPprogress="${this._getSecondaryProgress(this.progressValue)}"
       ></paper-progress>
-      <span id="progress-percent">[[_prepareDisplayedValue(progressValue)]] %</span>
+      <span id="progress-percent">${this._prepareDisplayedValue(this.progressValue)} %</span>
     `;
   }
 
   @property({type: Number})
-  value = 0;
+  progressValue = 0;
 
-  @property({type: Number, computed: '_getProgress(value)'})
-  progressValue!: number;
+  _value: Number = 0;
+
+  set value(value) {
+    this._value = value;
+    this.progressValue = this._getProgress(value);
+  }
+
+  @property({type: Number})
+  get value() {
+    return this._value;
+  }
 
   @property({type: Boolean})
   noDecimals = false;
+
+  @property({type: String})
+  progressWidthOnPrint = '0%';
 
   _getProgress(value: any) {
     value = parseFloat(parseFloat(value).toFixed(2));
@@ -85,9 +97,7 @@ class EtoolsProgressBar extends PolymerElement {
     }
     // value = (value > 100) ? 100 : value; // cannot be bigger than 100
     value = value < 0 ? 0 : value; // cannot be less that 0
-
-    this.updateStyles({'--etools-progress-width-on-print': value + '%'});
-
+    this.progressWidthOnPrint = value + '%';
     return value;
   }
 
@@ -101,9 +111,7 @@ class EtoolsProgressBar extends PolymerElement {
     return value > 0 && value < 100 ? value + 1 : 0;
   }
 
-  _prepareDisplayedValue(value: string) {
+  _prepareDisplayedValue(value: any) {
     return parseFloat(value).toFixed(this.noDecimals ? 0 : 2);
   }
 }
-
-window.customElements.define(EtoolsProgressBar.is, EtoolsProgressBar);
