@@ -1,6 +1,7 @@
 import {LitElement, html, property, customElement} from 'lit-element';
 import '@polymer/iron-flex-layout/iron-flex-layout';
 import '@polymer/paper-progress/paper-progress';
+import {layoutCenter, layoutHorizontal} from '../../common/styles/flex-layout-styles';
 
 /**
  * LitElement
@@ -15,8 +16,8 @@ export class EtoolsProgressBar extends LitElement {
     return html`
       <style>
         :host {
-          @apply --layout-horizontal;
-          @apply --layout-center;
+          ${layoutHorizontal}
+          ${layoutCenter}
 
           --paper-progress-active-color: var(--primary-color);
           --paper-progress-secondary-color: var(--primary-background-color);
@@ -93,7 +94,8 @@ export class EtoolsProgressBar extends LitElement {
     }
     // value = (value > 100) ? 100 : value; // cannot be bigger than 100
     value = value < 0 ? 0 : value; // cannot be less that 0
-    //replace bellow ${varValue}
+    //
+    // TO DO: replace bellow ${varValue}
     this.updateStyles({'--etools-progress-width-on-print': value + '%'});
 
     return value;

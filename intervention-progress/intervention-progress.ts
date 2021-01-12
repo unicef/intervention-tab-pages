@@ -6,7 +6,7 @@ import '@polymer/polymer/lib/elements/dom-repeat';
 import '@polymer/polymer/lib/elements/dom-if';
 
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import '@unicef-polymer/etools-data-table';
+import '@unicef-polymer/etools-data-table/etools-data-table';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
 
@@ -48,6 +48,12 @@ import {connectStore} from '../common/mixins/connect-store-mixin';
 import {AnyObject, GenericObject} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {
+  layoutEndJustified,
+  layoutFlex,
+  layoutHorizontal,
+  layoutStartJustified
+} from '../common/styles/flex-layout-styles';
 declare const moment: any;
 
 /**
@@ -108,12 +114,12 @@ export class InterventionProgress extends connectStore(
         }
 
         .report-progress-bar {
-          @apply --layout-flex;
+          ${layoutFlex}
           --etools-progress-bar-width: 100%;
         }
 
         .progress-details {
-          @apply --layout-end-justified;
+          ${layoutEndJustified}
           padding-top: 0;
         }
 
@@ -130,7 +136,7 @@ export class InterventionProgress extends connectStore(
 
         @media print {
           .indicator-report {
-            @apply --layout-horizontal;
+            ${layoutHorizontal}
           }
 
           .indicator-report .col-data {
@@ -156,7 +162,7 @@ export class InterventionProgress extends connectStore(
           }
 
           .progress-details {
-            @apply --layout-start-justified;
+            ${layoutStartJustified}
           }
         }
 

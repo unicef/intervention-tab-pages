@@ -3,8 +3,6 @@ import '@polymer/iron-label/iron-label';
 import '@unicef-polymer/etools-loading/etools-loading.js';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging.js';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {Debouncer} from '@polymer/polymer/lib/utils/debounce';
-import {timeOut} from '@polymer/polymer/lib/utils/async';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {getEndpoint} from '../../utils/endpoint-helper';
@@ -67,13 +65,13 @@ export class EtoolsRamIndicators extends CommonMixin(LitElement) {
       </iron-label>
     `;
   }
-
   _interventionId!: number;
 
   set interventionId(interventionId) {
     this._interventionId = interventionId;
-    //if still false
-    this._getRamIndicatorsData(this._interventionId, this.cpId);
+    if (!this.loading) {
+      this._getRamIndicatorsData(this._interventionId, this.cpId);
+    }
   }
 
   @property({type: Number})
@@ -81,8 +79,19 @@ export class EtoolsRamIndicators extends CommonMixin(LitElement) {
     return this._interventionId;
   }
 
+  _cpId!: number;
+
+  set cpId(cpId) {
+    this._cpId = cpId;
+    if (!this.loading) {
+      this._getRamIndicatorsData(this.interventionId, this._cpId);
+    }
+  }
+
   @property({type: Number})
-  cpId!: number;
+  get cpId() {
+    return this._cpId;
+  }
 
   @property({type: Array})
   ramIndicators: any[] = [];
@@ -90,39 +99,28 @@ export class EtoolsRamIndicators extends CommonMixin(LitElement) {
   @property({type: Boolean})
   loading = false;
 
-  // static get observers() {
-  //   return ['_getRamIndicatorsData(interventionId, cpId)'];
-  // }
-
   _getRamIndicatorsData(interventionId: number, cpId: number) {
-    // Debounce to make sure the request is called only after both params are updated
-    // TO DO: refactor
-    this._debounceRamIndRequest = Debouncer.debounce(this._debounceRamIndRequest, timeOut.after(100), () => {
-      const validIds = interventionId > 0 && cpId > 0;
-      if (!validIds) {
-        return;
-      }
+    // Initially was inside a debouncer!
+    const validIds = interventionId > 0 && cpId > 0;
+    if (!validIds) {
+      return;
+    }
 
-      this._requestRamIndicatorsData({
-        intervention_id: interventionId,
-        cp_output_id: cpId
-      });
-      //set to false;
+    this._requestRamIndicatorsData({
+      intervention_id: interventionId,
+      cp_output_id: cpId
     });
   }
 
   _requestRamIndicatorsData(reqPayload: any) {
-    this.set('loading', true);
+    this.loading = true;
     sendRequest({
       method: 'GET',
       endpoint: getEndpoint(interventionEndpoints.cpOutputRamIndicators, reqPayload)
     })
       .then((resp: any) => {
-        this.set('loading', false);
-        this.set(
-          'ramIndicators',
-          resp.ram_indicators.map((ri: any) => ri.indicator_name)
-        );
+        this.loading = false;;
+        this.ramIndicators = resp.ram_indicators.map((ri: any) => ri.indicator_name);
       })
       .catch((error: any) => {
         if (error.status === 404) {
@@ -141,7 +139,7 @@ export class EtoolsRamIndicators extends CommonMixin(LitElement) {
           'etools-ram-indicators',
           error
         );
-        this.set('loading', false);
+        this.loading = false;
       });
   }
 
@@ -149,5 +147,3 @@ export class EtoolsRamIndicators extends CommonMixin(LitElement) {
     return typeof l !== 'number' || l === 0;
   }
 }
-
-// window.customElements.define(EtoolsRamIndicators.is, EtoolsRamIndicators);

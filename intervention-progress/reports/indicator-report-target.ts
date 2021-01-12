@@ -4,6 +4,7 @@ import {LitElement, html, property, customElement} from 'lit-element';
 import {GenericObject} from '@unicef-polymer/etools-types';
 import CommonMixin from '../../common/mixins/common-mixin';
 import {translate} from 'lit-translate';
+import {layoutEndJustified, layoutHorizontal} from '../../common/styles/flex-layout-styles';
 
 /**
  * @polymer
@@ -24,8 +25,8 @@ export class IndicatorReportTarget extends UtilsMixin(CommonMixin(LitElement)) {
         }
 
         .target-row {
-          @apply --layout-horizontal;
-          @apply --layout-end-justified;
+          ${layoutHorizontal}
+          ${layoutEndJustified}
           color: var(--secondary-text-color);
           width: 100%;
           text-align: right;
