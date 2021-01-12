@@ -72,6 +72,7 @@ export class EtoolsRamIndicators extends CommonMixin(LitElement) {
 
   set interventionId(interventionId) {
     this._interventionId = interventionId;
+    //if still false
     this._getRamIndicatorsData(this._interventionId, this.cpId);
   }
 
@@ -88,8 +89,6 @@ export class EtoolsRamIndicators extends CommonMixin(LitElement) {
 
   @property({type: Boolean})
   loading = false;
-
-  private _debounceRamIndRequest!: Debouncer;
 
   // static get observers() {
   //   return ['_getRamIndicatorsData(interventionId, cpId)'];
@@ -108,6 +107,7 @@ export class EtoolsRamIndicators extends CommonMixin(LitElement) {
         intervention_id: interventionId,
         cp_output_id: cpId
       });
+      //set to false;
     });
   }
 

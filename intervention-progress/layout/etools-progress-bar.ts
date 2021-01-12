@@ -69,17 +69,18 @@ export class EtoolsProgressBar extends LitElement {
   }
 
   @property({type: Number})
-  value = 0;
+  progressValue = 0;
 
-  _progressValue: Number = 0;
+  _value: Number = 0;
 
-  set progressValue(progressValue) {
-    this._progressValue = this._getProgress(progressValue);
+  set value(value) {
+    this._value = value;
+    this.progressValue = this._getProgress(value);
   }
 
   @property({type: Number})
-  get progressValue() {
-    return this._progressValue;
+  get value() {
+    return this._value;
   }
 
   @property({type: Boolean})
@@ -92,7 +93,7 @@ export class EtoolsProgressBar extends LitElement {
     }
     // value = (value > 100) ? 100 : value; // cannot be bigger than 100
     value = value < 0 ? 0 : value; // cannot be less that 0
-
+    //replace bellow ${varValue}
     this.updateStyles({'--etools-progress-width-on-print': value + '%'});
 
     return value;

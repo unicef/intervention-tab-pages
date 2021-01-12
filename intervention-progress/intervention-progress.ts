@@ -551,6 +551,7 @@ export class InterventionProgress extends connectStore(
   _setTimeProgress(start: string, end: string) {
     if (!start && !end) {
       this.pdProgress = null;
+      return;
     }
     const today = new Date();
     // eslint-disable-next-line new-cap
@@ -562,6 +563,7 @@ export class InterventionProgress extends connectStore(
         const intervalTotalDays = dateDiff(startDt, endDt);
         const intervalDaysCompleted = dateDiff(startDt, today);
         this.pdProgress = (intervalDaysCompleted * 100) / intervalTotalDays;
+        return;
       }
     } catch (err) {
       logWarn('Time progress compute error', 'intervention-progress', err);
@@ -569,6 +571,7 @@ export class InterventionProgress extends connectStore(
     // if end date is valid and is past date or today's date, progress should be 100%
     if (isValidDate(endDt) && (dateIsAfter(today, endDt) || datesAreEqual(today, endDt))) {
       this.pdProgress = 100;
+      return;
     }
     this.pdProgress = 0;
   }
