@@ -1,20 +1,14 @@
+import {customElement, LitElement, property, html} from 'lit-element';
 import '@polymer/iron-flex-layout/iron-flex-layout.js';
 import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/iron-icons/image-icons.js';
-import {PolymerElement, html} from '@polymer/polymer';
-import {property} from '@polymer/decorators/lib/decorators';
 
 /**
- * @polymer
  * @customElement
- * @extends {Polymer.Element}
  */
-class InterventionReportStatus extends PolymerElement {
-  static get is() {
-    return 'intervention-report-status';
-  }
-
-  static get template() {
+@customElement('intervention-report-status')
+export class InterventionReportStatus extends LitElement {
+  render() {
     return html`
       <style>
         :host {
@@ -55,18 +49,11 @@ class InterventionReportStatus extends PolymerElement {
         }
       </style>
 
-      <template is="dom-if" if="[[!noIcon]]">
-        <iron-icon icon$="[[icon]]"></iron-icon>
-      </template>
-      <template is="dom-if" if="[[!noLabel]]">
-        <span id="label">[[label]]</span>
-      </template>
+      <iron-icon ?hidden="${this.noIcon}" .icon="${this.icon}"></iron-icon>
+      <span id="label" ?hidden="${this.noLabel}">${this.label}</span>
       <slot></slot>
     `;
   }
-
-  @property({type: String})
-  status!: string;
 
   @property({type: Boolean})
   noLabel = false;
@@ -74,113 +61,172 @@ class InterventionReportStatus extends PolymerElement {
   @property({type: Boolean})
   noIcon = false;
 
-  @property({
-    type: String,
-    computed: '_computeStatusType(status)',
-    reflectToAttribute: true
-  })
-  statusType!: string;
-
-  @property({
-    type: String,
-    computed: '_computeLabel(status, final, reportType)'
-  })
   label!: string;
+  _icon!: string;
+  _status!: string;
+  _statusType!: string;
+  _final = false;
+  _reportType!: string;
 
-  @property({type: String, computed: '_computeIcon(statusType)'})
-  icon!: string;
-
-  @property({type: Boolean})
-  final = false;
+  set status(status: string) {
+    this._status = status;
+    this._computeStatusType(this._status);
+    this._computeLabel(this._status, this._final, this._reportType);
+  }
 
   @property({type: String})
-  reportType = '';
+  get status() {
+    return this._status;
+  }
+
+  set statusType(statusType: string) {
+    this._statusType = statusType;
+    this._computeIcon(this._statusType);
+  }
+
+  @property({type: String})
+  get statusType() {
+    return this._statusType;
+  }
+
+  set icon(icon: string) {
+    this._icon = icon;
+  }
+
+  @property({type: String})
+  get icon() {
+    return this._icon;
+  }
+
+  set final(final: boolean) {
+    this._final = final;
+    this._computeLabel(this._status, this._final, this._reportType);
+  }
+
+  @property({type: Boolean})
+  get final() {
+    return this._final;
+  }
+
+  set reportType(reportType: string) {
+    this._reportType = reportType;
+    this._computeLabel(this._status, this._final, this._reportType);
+  }
+
+  @property({type: String})
+  get reportType() {
+    return this._reportType;
+  }
 
   _computeStatusType(status: null | undefined | string) {
     if (status === null || typeof status === 'undefined') {
-      return 'no-status';
+      this._statusType = 'no-status';
+      return;
     }
+    let stat = '';
     switch (status) {
       case '1':
       case 'Met':
       case 'OnT':
       case 'Com':
       case 'Acc':
-        return 'success';
+        stat = 'success';
+        break;
       case 'Sub':
-        return 'submitted';
+        stat = 'submitted';
+        break;
       case '2':
       case 'Ove':
       case 'Sen':
-        return 'error';
+        stat = 'error';
+        break;
       case '3':
       case 'Due':
       case 'NoP':
       case 'Ong':
-        return 'neutral';
+        stat = 'neutral';
+        break;
       case 'Rej':
       case 'Con':
       case 'Pla':
-        return 'warning';
+        stat = 'warning';
+        break;
       case 'NoS':
-        return 'no-status';
+        stat = 'no-status';
+        break;
       default:
-        return 'default';
+        stat = 'default';
     }
+    this._statusType = stat;
   }
 
-  _computeLabel(status: string, final: string, reportType: string) {
+  _computeLabel(status: string, final: boolean, reportType: string) {
+    let label = '';
     switch (status) {
       case '1':
-        return 'Nothing due';
+        label = 'Nothing due';
+        break;
       case '2':
       case 'Ove':
-        return 'Overdue';
+        label = 'Overdue';
+        break;
       case '3':
       case 'Due':
-        return 'Due';
+        label = 'Due';
+        break;
       case 'Sub':
-        return 'Submitted';
+        label = 'Submitted';
+        break;
       case 'Rej':
-        return 'Rejected';
+        label = 'Rejected';
+        break;
       case 'Met':
-        return final ? 'Met results as planned' : 'Met';
+        label = final ? 'Met results as planned' : 'Met';
+        break;
       case 'OnT':
-        return 'On Track';
+        label = 'On Track';
+        break;
       case 'NoP':
-        return 'No Progress';
+        label = 'No Progress';
+        break;
       case 'Con':
-        return final ? 'Constrained (partially met result)' : 'Constrained';
+        label = final ? 'Constrained (partially met result)' : 'Constrained';
+        break;
       case 'Ong':
-        return 'Ongoing';
+        label = 'Ongoing';
+        break;
       case 'Pla':
-        return 'Planned';
+        label = 'Planned';
+        break;
       case 'Com':
-        return 'Completed';
+        label = 'Completed';
+        break;
       case 'NoS':
-        return 'No Status';
+        label = 'No Status';
+        break;
       case 'Sen':
-        return 'Sent Back';
+        label = 'Sent Back';
+        break;
       case 'Acc':
-        return reportType !== 'HR' ? 'Accepted' : 'Received';
+        label = reportType !== 'HR' ? 'Accepted' : 'Received';
+        break;
       default:
-        return 'No Status';
+        label = 'No Status';
     }
+    this.label = label;
   }
 
   _computeIcon(type: string) {
     switch (type) {
       case 'success':
-        return 'icons:check-circle';
+        return (this._icon = 'icons:check-circle');
       case 'submitted':
-        return 'icons:assignment-turned-in';
+        return (this._icon = 'icons:assignment-turned-in');
       case 'error':
       case 'warning':
-        return 'icons:error';
+        return (this._icon = 'icons:error');
       default:
-        return 'image:lens';
+        return (this._icon = 'image:lens');
     }
   }
 }
-
-window.customElements.define(InterventionReportStatus.is, InterventionReportStatus);

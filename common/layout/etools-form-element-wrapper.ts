@@ -1,17 +1,16 @@
-import {PolymerElement, html} from '@polymer/polymer';
+import {LitElement, html, property, customElement} from 'lit-element';
 import '@polymer/paper-input/paper-input-container';
-
-import {sharedStylesPolymer} from '../styles/shared-styles-polymer';
-import {property} from '@polymer/decorators';
+import {SharedStylesLit} from '../../../../../styles/shared-styles-lit';
+import {_layoutHorizontal} from '../styles/flex-layout-styles';
 
 /**
- * @polymer
  * @customElement
  */
-class EtoolsFormElementWrapper extends PolymerElement {
-  static get template() {
+@customElement('etools-form-element-wrapper')
+export class EtoolsFormElementWrapper extends LitElement {
+  render() {
     return html`
-      ${sharedStylesPolymer()}
+      ${SharedStylesLit}
       <style>
         :host {
           width: 100%;
@@ -38,7 +37,7 @@ class EtoolsFormElementWrapper extends PolymerElement {
         }
 
         .paper-input-input {
-          @apply --layout-horizontal;
+          ${_layoutHorizontal}
           display: inline-block;
           word-wrap: break-word;
         }
@@ -56,14 +55,16 @@ class EtoolsFormElementWrapper extends PolymerElement {
         }
       </style>
       <paper-input-container
-        always-float-label="[[alwaysFloatLabel]]"
-        no-label-float="[[noLabelFloat]]"
-        required$="[[required]]"
+        ?always-float-label="${this.alwaysFloatLabel}"
+        ?no-label-float="${this.noLabelFloat}"
+        ?required="${this.required}"
       >
-        <label hidden$="[[!label]]" slot="label">[[label]]</label>
+        <label ?hidden="${!this.label}" slot="label">${this.label}</label>
         <slot name="prefix" slot="prefix"></slot>
         <div slot="input" class="paper-input-input">
-          <span class$="input-value [[_getPlaceholderClass(value)]]"> [[_getDisplayValue(value)]] </span>
+          <span .class="input-value ${this._getPlaceholderClass(this.value)}"
+            >${this._getDisplayValue(this.value)}</span
+          >
           <slot></slot>
         </div>
       </paper-input-container>
@@ -82,12 +83,16 @@ class EtoolsFormElementWrapper extends PolymerElement {
   @property({type: Boolean})
   noLabelFloat!: boolean;
 
-  @property({
-    type: Boolean,
-    reflectToAttribute: true,
-    observer: '_requiredChanged'
-  })
-  required!: boolean;
+  _required!: boolean;
+
+  set required(required: boolean) {
+    this._required = required;
+    this._requiredChanged(required);
+  }
+
+  get required() {
+    return this._required;
+  }
 
   @property({type: Boolean})
   noPlaceholder = false;
@@ -114,5 +119,3 @@ class EtoolsFormElementWrapper extends PolymerElement {
       : '—';
   }
 }
-
-window.customElements.define('etools-form-element-wrapper', EtoolsFormElementWrapper);
