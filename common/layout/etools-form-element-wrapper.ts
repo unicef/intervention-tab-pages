@@ -1,6 +1,6 @@
 import {LitElement, html, property, customElement} from 'lit-element';
 import '@polymer/paper-input/paper-input-container';
-import {SharedStylesLit} from '../../../../../styles/shared-styles-lit';
+import {sharedStyles} from '../styles/shared-styles-lit';
 import {_layoutHorizontal} from '../styles/flex-layout-styles';
 
 /**
@@ -10,7 +10,7 @@ import {_layoutHorizontal} from '../styles/flex-layout-styles';
 export class EtoolsFormElementWrapper extends LitElement {
   render() {
     return html`
-      ${SharedStylesLit}
+      ${sharedStyles}
       <style>
         :host {
           width: 100%;
@@ -101,7 +101,7 @@ export class EtoolsFormElementWrapper extends LitElement {
     if (typeof req === 'undefined') {
       return;
     }
-    this.updateStyles();
+    //@todo this.updateStyles();
   }
 
   _getPlaceholderClass(value: string) {
