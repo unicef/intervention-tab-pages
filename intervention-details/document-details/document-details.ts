@@ -66,6 +66,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.title)}"
             ?required="${this.permissions.required.title}"
             error-message="This field is required"
+            maxlength="5000"
           >
           </paper-textarea>
         </div>
@@ -81,6 +82,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'context')}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.context)}"
             ?required="${this.permissions.required.context}"
+            maxlength="5000"
           >
           </paper-textarea>
         </div>
@@ -95,6 +97,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'implementation_strategy')}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.implementation_strategy)}"
             ?required="${this.permissions.required.implementation_strategy}"
+            maxlength="5000"
           >
           </paper-textarea>
         </div>
@@ -109,6 +112,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'ip_program_contribution')}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.ip_program_contribution)}"
             ?required="${this.permissions.required.ip_program_contribution}"
+            maxlength="5000"
           >
           </paper-textarea>
         </div>

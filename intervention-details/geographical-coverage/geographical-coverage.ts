@@ -98,7 +98,6 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
             option-label="name"
             option-value="id"
             error-message=${translate('INTERVENTION_DETAILS.LOCATIONS_ERR')}
-            disable-on-focus-handling
             trigger-value-change-event
             @etools-selected-items-changed="${({detail}: CustomEvent) =>
               this.selectedItemsChanged(detail, 'flat_locations')}"

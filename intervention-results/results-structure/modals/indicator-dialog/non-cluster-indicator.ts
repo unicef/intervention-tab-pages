@@ -69,7 +69,6 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         .add-locations {
           padding-right: 0;
           align-items: flex-end;
-          padding-top: 20px !important;
         }
 
         .all-locations {
@@ -378,7 +377,6 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           required
           auto-validate
           error-message=${translate('INDICATOR_DIALOG.LOCATIONS_ERR')}
-          disable-on-focus-handling
           fit-into="etools-dialog"
           ?readonly="${this.readonly}"
           trigger-value-change-event

@@ -162,6 +162,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
               id="budgetOwnerInput"
               label=${translate('INTERVENTION_DETAILS.UNICEF_BUDGET_OWNER')}
               .options="${this.users_list}"
+              enable-none-option
               class="row-padding-v"
               option-label="name"
               option-value="id"
@@ -314,7 +315,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
 
   private formatUsersData(data: PdUnicefDetails) {
     const dataToSave: AnyObject = cloneDeep(data);
-    dataToSave.budget_owner = data.budget_owner?.id;
+    dataToSave.budget_owner = data.budget_owner ? data.budget_owner.id : null;
     dataToSave.unicef_focal_points = data.unicef_focal_points.map((u: any) => u.id);
     return dataToSave;
   }

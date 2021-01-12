@@ -18,8 +18,9 @@ import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {QprListEl} from './qpr-list.js';
 import {fireEvent} from '../../../utils/fire-custom-event';
 import {AnyObject} from '@unicef-polymer/etools-types';
-import moment from 'moment';
+declare const dayjs: any;
 import {buttonsStyles} from '../../../common/styles/button-styles';
+import {translate, get as getTranslation} from 'lit-translate';
 
 /**
  * @polymer
@@ -59,17 +60,22 @@ export class EditQprDialog extends LitElement {
       <etools-dialog
         id="editQprDialog"
         size="lg"
-        dialog-title="Edit Quarterly Progress Reporting Requirements"
+        dialog-title=${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.EDIT_QPR_REQUIREMENTS')}
         ?hidden="${this.addOrModifyQprDialogOpened}"
         @confirm-btn-clicked="${() => this._saveModifiedQprData()}"
         @close="${() => this.closeQprDialog()}"
-        ok-btn-text="Save"
+        ok-btn-text=${translate('GENERAL.SAVE')}
+        cancel-btn-text=${translate('GENERAL.CANCEL')}
         keep-dialog-open
-        spinner-text="Saving..."
+        spinner-text=${translate('GENERAL.SAVING_DATA')}
       >
         <div class="layout-horizontal">
-          <span id="qpr-edit-info">All dates in the future can be edited before saving. | Or</span>
-          <paper-button class="secondary-btn" @click="${this._addNewQpr}"> Add Requirement </paper-button>
+          <span id="qpr-edit-info"
+            >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.ALL_DATES_IN_FUTURE')}</span
+          >
+          <paper-button class="secondary-btn" @click="${this._addNewQpr}"
+            >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.ADD_REQUIREMENT')}</paper-button
+          >
         </div>
 
         <qpr-list
@@ -86,21 +92,27 @@ export class EditQprDialog extends LitElement {
       <etools-dialog
         id="addOrModifyQprDialog"
         size="lg"
-        dialog-title="Edit Standard Quarterly Report Requirements"
+        dialog-title=${translate(
+          'INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.EDIT_STANDARD_QUARTERLY_REPORT_REQUIREMENTS'
+        )}
         ?opened="${this.addOrModifyQprDialogOpened}"
         no-padding
         @confirm-btn-clicked="${() => this._updateQprData()}"
         @close="${() => this.handleDialogClosed()}"
         keep-dialog-open
-        ok-btn-text="Save"
+        ok-btn-text=${translate('GENERAL.SAVE')}
+        cancel-btn-text=${translate('GENERAL.CANCEL')}
       >
         <div class="row-h" ?hidden="${this._hideEditedIndexInfo(this._qprDatesSetEditedIndex)}">
-          You are editing ID ${this._getEditedQprDatesSetId(this._qprDatesSetEditedIndex)}
+          ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.EDITING_ID')}
+          ${this._getEditedQprDatesSetId(this._qprDatesSetEditedIndex)}
         </div>
 
         <div class="row-h">
           <div class="col layout-vertical">
-            <iron-label for="startDate"> Start Date </iron-label>
+            <iron-label for="startDate"
+              >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.START_DATE')}</iron-label
+            >
             <calendar-lite
               id="startDate"
               pretty-date="${this._editedQprDatesSet!.start_date ? this._editedQprDatesSet!.start_date : ''}"
@@ -111,7 +123,9 @@ export class EditQprDialog extends LitElement {
             </calendar-lite>
           </div>
           <div class="col layout-vertical">
-            <iron-label for="endDate"> End Date </iron-label>
+            <iron-label for="endDate"
+              >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.END_DATE')}</iron-label
+            >
             <calendar-lite
               id="endDate"
               pretty-date="${this._editedQprDatesSet!.end_date ? this._editedQprDatesSet!.end_date : ''}"
@@ -122,7 +136,9 @@ export class EditQprDialog extends LitElement {
             </calendar-lite>
           </div>
           <div class="col layout-vertical">
-            <iron-label for="dueDate"> Due Date </iron-label>
+            <iron-label for="dueDate"
+              >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.DUE_DATE')}</iron-label
+            >
             <calendar-lite
               id="dueDate"
               pretty-date="${this._editedQprDatesSet!.due_date ? this._editedQprDatesSet!.due_date : ''}"
@@ -164,7 +180,7 @@ export class EditQprDialog extends LitElement {
 
   changed(value: string, item: string) {
     if (this._editedQprDatesSet) {
-      const newDate = moment(new Date(value)).format('YYYY-MM-DD');
+      const newDate = dayjs(new Date(value)).format('YYYY-MM-DD');
       this._editedQprDatesSet[item] = newDate;
     }
   }
@@ -200,14 +216,14 @@ export class EditQprDialog extends LitElement {
   _validateDataBeforeAdd() {
     if (!this._editedQprDatesSet.due_date || !this._editedQprDatesSet.start_date || !this._editedQprDatesSet.end_date) {
       fireEvent(this, 'toast', {
-        text: 'Start, end & due dates are required.',
+        text: getTranslation('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.DATES_REQUIRED'),
         showCloseBtn: true
       });
       return false;
     }
     if (this._duplicateDueDate(this._editedQprDatesSet.due_date)) {
       fireEvent(this, 'toast', {
-        text: 'Requirement dates not added, selected Due Date is already in the list.',
+        text: getTranslation('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.REQUIREMENT_DATES_NOT_ADDED'),
         showCloseBtn: true
       });
       return false;
@@ -288,7 +304,7 @@ export class EditQprDialog extends LitElement {
   prepareDatepickerDate(dateStr: string) {
     const date = prepareDatepickerDate(dateStr);
     if (date === null) {
-      const now = moment(new Date()).format('YYYY-MM-DD');
+      const now = dayjs(new Date()).format('YYYY-MM-DD');
       this._editedQprDatesSet.start_date = now;
       this._editedQprDatesSet.end_date = now;
       this._editedQprDatesSet.due_date = now;

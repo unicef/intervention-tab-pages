@@ -11,6 +11,7 @@ import './qpr-list';
 import {EditQprDialogEl} from './edit-qpr-dialog';
 import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../../common/styles/button-styles';
+import {translate, get as getTranslation} from 'lit-translate';
 
 /**
  * @polymer
@@ -40,10 +41,12 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
       </div>
 
       <div ?hidden="${!this._empty(this.reportingRequirements)}">
-        <div class="row-h">There are no quarterly reporting requirements set.</div>
+        <div class="row-h">
+          ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.NO_QUARTERLY_REPORTING_REQUIREMENTS')}
+        </div>
         <div class="row-h" ?hidden="${!this.editMode}">
           <paper-button class="secondary-btn" @click="${this.openQuarterlyRepRequirementsDialog}">
-            Add Requirements
+            ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.ADD_REQUIREMENTS')}
           </paper-button>
         </div>
       </div>
@@ -93,7 +96,7 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
   openQuarterlyRepRequirementsDialog() {
     if (!this.interventionStart || !this.interventionEnd) {
       fireEvent(this, 'toast', {
-        text: 'You have to fill PD Start Date and End Date first!',
+        text: getTranslation('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.QUARTERLY_REPORT_PROMPT'),
         showCloseBtn: true
       });
       return;

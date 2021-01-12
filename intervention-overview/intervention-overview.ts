@@ -1,4 +1,4 @@
-import {LitElement, customElement, html, property} from 'lit-element';
+import {LitElement, customElement, html, property, PropertyValues} from 'lit-element';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import '@polymer/iron-label/iron-label';
 import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
@@ -11,7 +11,7 @@ import {prettyDate} from '../utils/date-utils';
 import {isJsonStrMatch} from '../utils/utils';
 import './fund-reservations-display/fund-reservations-display';
 import './monitoring-visits-list/monitoring-visits-list';
-import {pageIsNotCurrentlyActive} from '../utils/common-methods';
+import {callClickOnEnterPush, pageIsNotCurrentlyActive} from '../utils/common-methods';
 import {RootState} from '../common/types/store.types';
 import {fireEvent} from '../utils/fire-custom-event';
 import {connectStore} from '../common/mixins/connect-store-mixin';
@@ -24,6 +24,7 @@ import {translate} from 'lit-translate';
  */
 @customElement('intervention-overview')
 export class InterventionOverview extends connectStore(LitElement) {
+
   static get styles() {
     return [gridLayoutStylesLit, elevationStyles];
   }
@@ -121,7 +122,7 @@ export class InterventionOverview extends connectStore(LitElement) {
               <strong>${this.interventionAgreement.agreement_type}</strong>
               with
               ${this.isUnicefUser
-                ? html` <a href="/pmp/partners/${this.intervention.partner_id}/details">
+                ? html` <a target="_blank" href="/pmp/partners/${this.intervention.partner_id}/details">
                     <strong class="blue">${this.intervention.partner}</strong>
                   </a>`
                 : html`<strong class="blue">${this.intervention.partner}</strong>`}
@@ -261,6 +262,12 @@ export class InterventionOverview extends connectStore(LitElement) {
           `
         : html``}
     `;
+  }
+
+  firstUpdated(changedProperties: PropertyValues): void {
+    super.firstUpdated(changedProperties);
+
+    this.shadowRoot!.querySelectorAll('a').forEach((el) => callClickOnEnterPush(el));
   }
 
   @property({type: Object})

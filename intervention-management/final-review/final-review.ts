@@ -1,7 +1,7 @@
 import {LitElement, html, TemplateResult, customElement, CSSResultArray, css, property} from 'lit-element';
 import './final-review-popup';
 import {openDialog} from '../../utils/dialog';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {callClickOnEnterPush, pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {selectFinalReviewAttachment, selectFinalReviewDate, selectInterventionId} from './final-review.selectors';
 import {currentInterventionPermissions} from '../../common/selectors';
 import get from 'lodash-es/get';
@@ -10,7 +10,7 @@ import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {ReviewAttachment} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
-declare const moment: any;
+declare const dayjs: any;
 
 @customElement('final-review')
 export class FinalReview extends CommentsMixin(LitElement) {
@@ -51,6 +51,11 @@ export class FinalReview extends CommentsMixin(LitElement) {
         *[hidden] {
           display: none !important;
         }
+        a:focus {
+          outline: 0;
+          box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12),
+          0 3px 5px -1px rgba(0, 0, 0, 0.4) !important;
+        }
       `
     ];
   }
@@ -60,7 +65,7 @@ export class FinalReview extends CommentsMixin(LitElement) {
   @property() canEdit = false;
 
   get reviewDate(): string {
-    return this.date ? moment(this.date).format('DD MMM YYYY') : '-';
+    return this.date ? dayjs(this.date).format('DD MMM YYYY') : '-';
   }
 
   private interventionId: number | null = null;
@@ -93,6 +98,12 @@ export class FinalReview extends CommentsMixin(LitElement) {
         </div>
       </etools-content-panel>
     `;
+  }
+
+  firstUpdated(): void {
+    super.firstUpdated();
+
+    this.shadowRoot!.querySelectorAll('a').forEach((el) => callClickOnEnterPush(el));
   }
 
   stateChanged(state: any): void {
