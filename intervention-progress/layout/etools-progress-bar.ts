@@ -57,7 +57,7 @@ export class EtoolsProgressBar extends LitElement {
           paper-progress::after {
             z-index: 1;
             border-bottom: 10px solid var(--primary-color);
-            width: var(--etools-progress-width-on-print, 0%);
+            width: ${this.progressWidthOnPrint};
           }
         }
       </style>
@@ -87,6 +87,9 @@ export class EtoolsProgressBar extends LitElement {
   @property({type: Boolean})
   noDecimals = false;
 
+  @property({type: String})
+  progressWidthOnPrint = '0%';
+
   _getProgress(value: any) {
     value = parseFloat(parseFloat(value).toFixed(2));
     if (isNaN(value)) {
@@ -94,10 +97,7 @@ export class EtoolsProgressBar extends LitElement {
     }
     // value = (value > 100) ? 100 : value; // cannot be bigger than 100
     value = value < 0 ? 0 : value; // cannot be less that 0
-    //
-    // TO DO: replace bellow ${varValue}
-    this.updateStyles({'--etools-progress-width-on-print': value + '%'});
-
+    this.progressWidthOnPrint = value + '%';
     return value;
   }
 
