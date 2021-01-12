@@ -121,6 +121,7 @@ export class InterventionReportStatus extends LitElement {
   _computeStatusType(status: null | undefined | string) {
     if (status === null || typeof status === 'undefined') {
       this._statusType = 'no-status';
+      return;
     }
     let stat = '';
     switch (status) {
