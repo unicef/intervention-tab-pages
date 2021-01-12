@@ -38,7 +38,8 @@ export class IndicatorReportTarget extends UtilsMixin(CommonMixin(LitElement)) {
           display: inline-block;
           width: 70px;
           margin-left: 8px;
-          @apply --indicator-report-row-value;
+          // TO DO: not found, remove
+          // @apply --indicator-report-row-value;
         }
 
         :host([bold]) .target-row {
