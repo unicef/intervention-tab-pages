@@ -312,8 +312,8 @@ export const sharedStylesContent = `
 
   .secondary-btn:focus {
     outline: 0;
-    box-shadow:  0 0 10px 10px rgba(170, 165, 165, 0.4) !important;
-    background-color: rgba(170, 165, 165, 0.4);
+    box-shadow:  0 0 10px 10px rgba(170, 165, 165, 0.2) !important;
+    background-color: rgba(170, 165, 165, 0.2);
   }
 
   *:focus:not(paper-icon-button):not(paper-radio-button):not(paper-checkbox):not(paper-toggle-button):not(paper-input):not(paper-textarea) {
@@ -323,8 +323,8 @@ export const sharedStylesContent = `
 
   a:focus {
     outline: 0;
-    box-shadow:  0 0 10px 10px rgba(170, 165, 165, 0.4) !important;
-    background-color: rgba(170, 165, 165, 0.4);
+    box-shadow:  0 0 10px 10px rgba(170, 165, 165, 0.2) !important;
+    background-color: rgba(170, 165, 165, 0.2);
   }
 `;
 export const sharedStyles = html`${unsafeCSS(sharedStylesContent)}`;
