@@ -206,8 +206,12 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
               option-value="id"
               option-label="name"
               error-message=${translate('INTERVENTION_MANAGEMENT.REVIEW_AND_SIGN.PARTNER_AUTH_OFFICER_ERR')}
-              @etools-selected-item-changed="${({detail}: CustomEvent) =>
-                this.selectedUserChanged(detail, 'partner_authorized_officer_signatory')}"
+              @etools-selected-item-changed="${({detail}: CustomEvent) => {
+                if (!detail.selectedItem) {
+                  return;
+                }
+                this.selectedUserChanged(detail, 'partner_authorized_officer_signatory');
+              }}"
               trigger-value-change-event
               ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.partner_authorized_officer_signatory)}"
             >
@@ -293,8 +297,12 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.unicef_signatory)}"
               auto-validate
               error-message=${translate('INTERVENTION_MANAGEMENT.REVIEW_AND_SIGN.UNICEF_USER_ERR')}
-              @etools-selected-item-changed="${({detail}: CustomEvent) =>
-                this.selectedUserChanged(detail, 'unicef_signatory')}"
+              @etools-selected-item-changed="${({detail}: CustomEvent) => {
+                if (!detail.selectedItem) {
+                  return;
+                }
+                this.selectedUserChanged(detail, 'unicef_signatory');
+              }}"
               trigger-value-change-event
               ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.unicef_signatory)}"
             >
