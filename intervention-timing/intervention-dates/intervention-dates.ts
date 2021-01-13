@@ -29,7 +29,7 @@ import {
 import {translate, get as getTranslation} from 'lit-translate';
 import {fireEvent} from '../../utils/fire-custom-event';
 import ReportingRequirementsCommonMixin from '../reporting-requirements/mixins/reporting-requirements-common-mixin';
-import CONSTANTS from '../../common/constants';
+
 /**
  * @customElement
  */
@@ -166,7 +166,8 @@ export class InterventionDates extends CommentsMixin(
   @property({type: Object})
   permissions!: Permission<InterventionDatesPermissions>;
 
-  @property() intervention: Intervention | null = null;
+  @property({type: Boolean})
+  requirementsSet = false;
 
   warningRequired = false;
 
@@ -178,14 +179,11 @@ export class InterventionDates extends CommentsMixin(
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'timing')) {
       return;
     }
-    this.intervention = state.interventions.current;
     if (!state.interventions.current) {
       return;
     }
     this.data = selectInterventionDates(state);
-    this.intervention = state.interventions.current;
-    this.checkIfWarningRequired();
-    this._interventionIdChanged(this.intervention.id as number, CONSTANTS.REQUIREMENTS_REPORT_TYPE.QPR);
+    this.checkIfWarningRequired(state.interventions.current);
     this.originalData = cloneDeep(this.data);
     this.permissions = selectInterventionDatesPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
@@ -216,12 +214,14 @@ export class InterventionDates extends CommentsMixin(
     );
   }
 
-  private checkIfWarningRequired() {
-    if (!this.intervention) {
+  private checkIfWarningRequired(intervention: Intervention) {
+    this.warningRequired = false;
+    if (this.requirementsSet) {
+      this.warningRequired = true;
       return;
     }
     // get activities array
-    const pdOutputs: ResultLinkLowerResult[] = this.intervention.result_links
+    const pdOutputs: ResultLinkLowerResult[] = intervention.result_links
       .map(({ll_results}: ExpectedResult) => ll_results)
       .flat();
     const activities: InterventionActivity[] = pdOutputs
@@ -233,9 +233,6 @@ export class InterventionDates extends CommentsMixin(
         return;
       }
     });
-    if (this.reportingRequirements.length) {
-      this.warningRequired = true;
-    }
   }
 
   saveData() {

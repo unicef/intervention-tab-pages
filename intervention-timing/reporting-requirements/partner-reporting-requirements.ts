@@ -29,6 +29,7 @@ import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {callClickOnSpacePush} from '../../utils/common-methods';
 import {translate} from 'lit-translate';
+import {fireEvent} from '../../utils/fire-custom-event';
 
 /**
  * @polymer
@@ -304,24 +305,36 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
   updateQPRCount(value: any) {
     if (value) {
       this.qprRequirementsCount = value.count;
+      if (value.count) {
+        fireEvent(this, 'update-requirements');
+      }
     }
   }
 
   updateHRUCount(value: any) {
     if (value) {
       this.hrUnicefRequirementsCount = value.count;
+      if (value.count) {
+        fireEvent(this, 'update-requirements');
+      }
     }
   }
 
   updateHRCCount(value: any) {
     if (value) {
       this.hrClusterRequirementsCount = value.count;
+      if (value.count) {
+        fireEvent(this, 'update-requirements');
+      }
     }
   }
 
   updateSRRCount(value: any) {
     if (value) {
       this.specialRequirementsCount = value.count;
+      if (value.count) {
+        fireEvent(this, 'update-requirements');
+      }
     }
   }
 
