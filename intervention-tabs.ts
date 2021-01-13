@@ -317,10 +317,10 @@ export class InterventionTabs extends connectStore(LitElement) {
       return '';
     }
     if (this.intervention!.partner_accepted && this.intervention!.unicef_accepted) {
-      return 'IP & Unicef Accepted';
+      return 'IP & UNICEF Accepted';
     }
     if (!this.intervention!.partner_accepted && this.intervention!.unicef_accepted) {
-      return 'Unicef Accepted';
+      return 'UNICEF Accepted';
     }
     if (this.intervention!.partner_accepted && !this.intervention!.unicef_accepted) {
       return 'IP Accepted';
@@ -334,7 +334,7 @@ export class InterventionTabs extends connectStore(LitElement) {
       !!this.intervention!.submission_date &&
       !!this.intervention!.date_sent_to_partner
     ) {
-      return 'Sent to Unicef';
+      return 'Sent to UNICEF';
     }
     return '';
   }
