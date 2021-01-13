@@ -14,7 +14,6 @@ function PaginationMixin<T extends Constructor<LitElement>>(baseClass: T) {
     @property({type: Object})
     paginator = new Paginator();
 
-    // TODO: check if the setter is still needed or pageSizeChanged will suffice
     set pageSize(pageSize: number) {
       this.resetPageNumber();
       this.paginator = Object.assign({}, this.paginator, {page_size: pageSize});
