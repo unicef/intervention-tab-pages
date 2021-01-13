@@ -139,7 +139,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
                         ${this._displayOrDefault(report.partner_name)}
                       </span>
 
-                      <paper-tooltip for$="tooltip-partner-${report.id}" position="right" fit-to-visible-bounds>
+                      <paper-tooltip for="tooltip-partner-${report.id}" position="right" fit-to-visible-bounds>
                         ${report.partner_vendor_number}
                       </paper-tooltip>
                     </span>

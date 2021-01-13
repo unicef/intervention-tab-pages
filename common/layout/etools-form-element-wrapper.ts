@@ -82,26 +82,11 @@ export class EtoolsFormElementWrapper extends LitElement {
   @property({type: Boolean})
   noLabelFloat!: boolean;
 
-  _required!: boolean;
-
-  set required(required: boolean) {
-    this._required = required;
-    this._requiredChanged(required);
-  }
-
-  get required() {
-    return this._required;
-  }
+  @property({type: Boolean})
+  required!: boolean;
 
   @property({type: Boolean})
   noPlaceholder = false;
-
-  _requiredChanged(req: any) {
-    if (typeof req === 'undefined') {
-      return;
-    }
-    //@todo this.updateStyles();
-  }
 
   _getPlaceholderClass(value: string) {
     const cssclass = typeof value === 'string' && value.trim() !== '' ? '' : this.noPlaceholder ? '' : 'placeholder';
