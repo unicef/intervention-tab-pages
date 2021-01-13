@@ -55,13 +55,15 @@ function ReportingRequirementsCommonMixin<T extends Constructor<LitElement>>(bas
       });
     }
 
-    _interventionIdChanged(newId: number) {
+    _interventionIdChanged(newId: number, type = '') {
       if (!newId) {
         this.reportingRequirements = [];
         return;
       }
-      // @ts-ignore *Defined in the component
-      const type = this._getReportType();
+      if (type === '') {
+        // @ts-ignore *Defined in the component
+        type = this._getReportType();
+      }
       const endpoint = this._getEndpointObj(newId, type);
       sendRequest({method: 'GET', endpoint: endpoint})
         .then((response: any) => {

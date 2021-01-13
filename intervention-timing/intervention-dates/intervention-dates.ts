@@ -18,14 +18,25 @@ import get from 'lodash-es/get';
 import '@unicef-polymer/etools-upload/etools-upload';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
-
+import {
+  AsyncAction,
+  ExpectedResult,
+  Intervention,
+  InterventionActivity,
+  Permission,
+  ResultLinkLowerResult
+} from '@unicef-polymer/etools-types';
+import {translate, get as getTranslation} from 'lit-translate';
+import {fireEvent} from '../../utils/fire-custom-event';
+import ReportingRequirementsCommonMixin from '../reporting-requirements/mixins/reporting-requirements-common-mixin';
+import CONSTANTS from '../../common/constants';
 /**
  * @customElement
  */
 @customElement('intervention-dates')
-export class InterventionDates extends CommentsMixin(ComponentBaseMixin(FrNumbersConsistencyMixin(LitElement))) {
+export class InterventionDates extends CommentsMixin(
+  ComponentBaseMixin(FrNumbersConsistencyMixin(ReportingRequirementsCommonMixin(LitElement)))
+) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -155,6 +166,10 @@ export class InterventionDates extends CommentsMixin(ComponentBaseMixin(FrNumber
   @property({type: Object})
   permissions!: Permission<InterventionDatesPermissions>;
 
+  @property() intervention: Intervention | null = null;
+
+  warningRequired = false;
+
   connectedCallback() {
     super.connectedCallback();
   }
@@ -163,10 +178,14 @@ export class InterventionDates extends CommentsMixin(ComponentBaseMixin(FrNumber
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'timing')) {
       return;
     }
+    this.intervention = state.interventions.current;
     if (!state.interventions.current) {
       return;
     }
     this.data = selectInterventionDates(state);
+    this.intervention = state.interventions.current;
+    this.checkIfWarningRequired();
+    this._interventionIdChanged(this.intervention.id as number, CONSTANTS.REQUIREMENTS_REPORT_TYPE.QPR);
     this.originalData = cloneDeep(this.data);
     this.permissions = selectInterventionDatesPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
@@ -197,6 +216,28 @@ export class InterventionDates extends CommentsMixin(ComponentBaseMixin(FrNumber
     );
   }
 
+  private checkIfWarningRequired() {
+    if (!this.intervention) {
+      return;
+    }
+    // get activities array
+    const pdOutputs: ResultLinkLowerResult[] = this.intervention.result_links
+      .map(({ll_results}: ExpectedResult) => ll_results)
+      .flat();
+    const activities: InterventionActivity[] = pdOutputs
+      .map(({activities}: ResultLinkLowerResult) => activities)
+      .flat();
+    activities.forEach((activity: InterventionActivity) => {
+      if (activity.time_frames.length) {
+        this.warningRequired = true;
+        return;
+      }
+    });
+    if (this.reportingRequirements.length) {
+      this.warningRequired = true;
+    }
+  }
+
   saveData() {
     if (!this.validate()) {
       return Promise.resolve(false);
@@ -205,6 +246,11 @@ export class InterventionDates extends CommentsMixin(ComponentBaseMixin(FrNumber
     return getStore()
       .dispatch<AsyncAction>(patchIntervention(this.data))
       .then(() => {
+        if (this.warningRequired) {
+          fireEvent(this, 'toast', {
+            text: getTranslation('INTERVENTION_TIMING.INTERVENTION_DATES.SAVE_WARNING')
+          });
+        }
         this.editMode = false;
       });
   }
