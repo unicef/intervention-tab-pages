@@ -162,6 +162,7 @@ export class InterventionOverview extends connectStore(LitElement) {
                 placeholder="&#8212;"
                 no-label-float
                 disabled
+                tabindex="-1"
               >
               </etools-currency-amount-input>
             </div>
@@ -189,6 +190,7 @@ export class InterventionOverview extends connectStore(LitElement) {
                 placeholder="&#8212;"
                 no-label-float
                 disabled
+                tabindex="-1"
               >
               </etools-currency-amount-input>
             </div>
@@ -202,6 +204,7 @@ export class InterventionOverview extends connectStore(LitElement) {
                 placeholder="&#8212;"
                 no-label-float
                 disabled
+                tabindex="-1"
               >
               </etools-currency-amount-input>
             </div>
@@ -215,6 +218,7 @@ export class InterventionOverview extends connectStore(LitElement) {
                 placeholder="&#8212;"
                 no-label-float
                 disabled
+                tabindex="-1"
               >
               </etools-currency-amount-input>
             </div>
