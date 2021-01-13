@@ -78,7 +78,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
         }
       </style>
       <iron-media-query query="(max-width: 767px)" query-matches="${this.lowResolutionLayout}"></iron-media-query>
-      <div id="list" class="paper-material" elevation="1">
+      <div id="list" class="paper-material elevation" elevation="1">
         ${!this.reports.length
           ? html` <div class="row-h">
               <p>${translate('INTERVENTION_REPORTS.NO_REPORTS_YET')}</p>

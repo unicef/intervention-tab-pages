@@ -10,9 +10,8 @@ import {_layoutHorizontal} from '../styles/flex-layout-styles';
 export class EtoolsFormElementWrapper extends LitElement {
   render() {
     return html`
-      ${sharedStyles}
       <style>
-        :host {
+          ${sharedStyles} :host {
           width: 100%;
 
           max-width: var(--etools-form-element-wrapper-max-width, none);

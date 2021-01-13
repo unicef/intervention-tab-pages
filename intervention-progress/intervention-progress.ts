@@ -175,7 +175,7 @@ export class InterventionProgress extends connectStore(
         }
       </style>
 
-      <div id="progress-summary" class="content-section paper-material" elevation="1">
+      <div id="progress-summary" class="content-section paper-material elevation" elevation="1">
         <div class="row-h">
           <div class="layout-vertical col-4">
             <etools-form-element-wrapper
@@ -183,7 +183,7 @@ export class InterventionProgress extends connectStore(
               .value="${this._getPdDuration(this.progress.start_date, this.progress.end_date)}"
             >
             </etools-form-element-wrapper>
-            <etools-progress-bar value="${this.pdProgress}" no-decimals></etools-progress-bar>
+            <etools-progress-bar value="${this.pdProgress}" noDecimals></etools-progress-bar>
           </div>
           <div class="layout-vertical col-5">
             <div class="layout-horizontal" id="cash-progress">
@@ -191,12 +191,12 @@ export class InterventionProgress extends connectStore(
                 class="fr-nr-warn col-6"
                 custom-icon
                 icon-first
-                ?hideTooltip="${!this.multipleCurrenciesWereUsed(this.progress.disbursement, this.progress)}"
+                .hideTooltip="${!this.multipleCurrenciesWereUsed(this.progress.disbursement, this.progress)}"
               >
                 <etools-form-element-wrapper
                   slot="field"
                   label="${translate('INTERVENTION_REPORTS.CASH_TRANSFERED')}"
-                  .value="${this.progress.disbursement_currency} ${displayCurrencyAmount(
+                  .value="${this._getPropertyText(this.progress.disbursement_currency)} ${displayCurrencyAmount(
                     this.progress.disbursement,
                     '0',
                     0
@@ -210,15 +210,15 @@ export class InterventionProgress extends connectStore(
               <etools-form-element-wrapper
                 class="col-6"
                 label="${translate('INTERVENTION_REPORTS.UNICEF_CASH')}"
-                .value="${this.progress.unicef_budget_cash_currency}
+                .value="${this._getPropertyText(this.progress.unicef_budget_cash_currency)}
                         ${displayCurrencyAmount(this.progress.unicef_budget_cash, '0', 0)}"
               >
               </etools-form-element-wrapper>
             </div>
 
             <etools-progress-bar
-              .value="${this.progress.disbursement_percent}"
-              no-decimals
+              .value="${this._getPropertyText(this.progress.disbursement_percent)}"
+              noDecimals
               ?hidden="${this.multipleCurrenciesWereUsed(this.progress.disbursement_percent, this.progress)}"
             >
             </etools-progress-bar>
@@ -227,23 +227,22 @@ export class InterventionProgress extends connectStore(
                 class="currency-mismatch col-6"
                 custom-icon
                 icon-first
-                ?hideTooltip="${!this.multipleCurrenciesWereUsed(this.progress.disbursement_percent, this.progress)}"
+                .hideTooltip="${!this.multipleCurrenciesWereUsed(this.progress.disbursement_percent, this.progress)}"
               >
                 <span slot="field">${translate('INTERVENTION_REPORTS.NA_%')}</span>
                 <iron-icon slot="custom-icon" icon="pmp-custom-icons:not-equal"></iron-icon>
                 <span slot="message">${translate('INTERVENTION_REPORTS.FR_CURRENCY_NOT_MATCH')}</span>
               </etools-info-tooltip>`
               : ``}
-            }
           </div>
           <div class="col col-3">
             <etools-form-element-wrapper
               label="${translate('INTERVENTION_REPORTS.OVERALL_PD_SPD_RATING')}"
-              .value="${this._getOverallPdStatusDate(this.latestAcceptedPr.review_date)}"
-              no-placeholder
+              .value="${this._getOverallPdStatusDate(this.latestAcceptedPr)}"
+              noPlaceholder
             >
               <intervention-report-status
-                status="${this.latestAcceptedPr.review_overall_status}"
+                status="${this.latestAcceptedPr ? this.latestAcceptedPr.review_overall_status : ''}"
                 slot="prefix"
               ></intervention-report-status>
             </etools-form-element-wrapper>
@@ -252,10 +251,10 @@ export class InterventionProgress extends connectStore(
       </div>
 
       <etools-content-panel class="content-section" panel-title="${translate('INTERVENTION_REPORTS.RESULTS_REPORTED')}">
-        <div class="row-h" ?hidden="${!this._emptyList(this.progress.details.cp_outputs)}">
+        <div class="row-h" ?hidden="${this.progress.details ? !this._emptyList(this.progress.details.cp_outputs) : false}">
           <p>${translate('INTERVENTION_REPORTS.NO_RESULTS')}</p>
         </div>
-        ${this.progress.details.cp_outputs.map(
+        ${(this.progress.details ? this.progress.details.cp_outputs : []).map(
           (item: any) => html`
             <div class="row-v row-second-bg">
               <strong>${translate('INTERVENTION_REPORTS.CP_OUTPUT')}${item.title}</strong>
@@ -387,12 +386,7 @@ export class InterventionProgress extends connectStore(
   @property({type: Object})
   prpCountries!: GenericObject[];
 
-  // static get observers() {
-  //   return [
-  //     // `prpCountries` and `currentUser` are defined in endpoint mixin
-  //     '_requestProgressData(interventionId, prpCountries, currentUser)'
-  //   ];
-  // }
+  requestInProgress = false;
 
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'progress')) {
@@ -426,7 +420,7 @@ export class InterventionProgress extends connectStore(
   }
 
   _requestProgressData(id: string, prpCountries: any, currentUser: AnyObject) {
-    if (!id || isEmptyObject(prpCountries) || isEmptyObject(currentUser)) {
+    if (!id || isEmptyObject(prpCountries) || isEmptyObject(currentUser) || this.requestInProgress) {
       return;
     }
 
@@ -435,7 +429,7 @@ export class InterventionProgress extends connectStore(
       active: true,
       loadingSource: 'pd-progress'
     });
-
+    this.requestInProgress = true;
     this.fireRequest('interventionProgress', {pdId: id})
       .then((response: any) => {
         this.progress = response;
@@ -451,7 +445,8 @@ export class InterventionProgress extends connectStore(
           active: false,
           loadingSource: 'pd-progress'
         });
-      });
+      })
+      .finally(() => this.requestInProgress = false);
   }
 
   _emptyList(dataSet: any) {
@@ -476,6 +471,10 @@ export class InterventionProgress extends connectStore(
         }
       });
     }
+  }
+
+  _getPropertyText(prop: any) {
+    return prop ? prop : '';
   }
 
   _prepareindicatorReportsData(lowerResultId: any, progressIndicatorReports: any) {
@@ -581,8 +580,8 @@ export class InterventionProgress extends connectStore(
     this.pdProgress = 0;
   }
 
-  _getOverallPdStatusDate(date: string) {
-    return date ? '(' + this._convertToDisplayFormat(date) + ')' : '';
+  _getOverallPdStatusDate(latestAcceptedPr: GenericObject) {
+    return latestAcceptedPr && latestAcceptedPr.review_date ? '(' + this._convertToDisplayFormat(latestAcceptedPr.review_date) + ')' : '';
   }
 
   _convertToDisplayFormat(strDt: string) {
