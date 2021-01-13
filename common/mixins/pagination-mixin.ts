@@ -29,6 +29,10 @@ function PaginationMixin<T extends Constructor<LitElement>>(baseClass: T) {
       this.setPageNumber(parseInt(e.detail.value, 10));
     }
 
+    visibleRangeChanged(e: CustomEvent) {
+      this.paginator = Object.assign({}, this.paginator, {visible_range: e.detail.value});
+    }
+
     getRequestPaginationParams() {
       return {
         page: this.paginator.page,

@@ -77,7 +77,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
           position: relative;
         }
       </style>
-      <iron-media-query query="(max-width: 767px)" query-matches="${this.lowResolutionLayout}"></iron-media-query>
+      <iron-media-query query="(max-width: 767px)" @query-matches-changed="${this.resolutionChanged}"></iron-media-query>
       <div id="list" class="paper-material elevation" elevation="1">
         ${!this.reports.length
           ? html` <div class="row-h">
@@ -111,7 +111,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
                   : html``}
               </etools-data-table-header>
               ${this.reports.map(
-                (report: any) => html` <etools-data-table-row low-resolution-layout="${this.lowResolutionLayout}">
+                (report: any) => html` <etools-data-table-row lowResolutionLayout="${this.lowResolutionLayout}">
                   <div slot="row-data">
                     <span
                       class="col-data col-2"
@@ -186,9 +186,10 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
               <etools-data-table-footer
                 .lowResolutionLayout="${this.lowResolutionLayout}"
                 .pageSize="${this.paginator.page_size}"
-                .pageMumber="${this.paginator.page}"
+                .pageNumber="${this.paginator.page}"
                 .totalResults="${this.paginator.count}"
                 .visibleRange="${this.paginator.visible_range}"
+                @visible-range-changed="${this.visibleRangeChanged}"
                 @page-size-changed="${this.pageSizeChanged}"
                 @page-number-changed="${this.pageNumberChanged}"
               >
@@ -208,7 +209,6 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
       this.paginator.page_size,
       this.paginator.page,
       this.queryParams
-      // this.queryParams.status.length
     );
   }
 
@@ -228,7 +228,6 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
       this.paginator.page_size,
       this.paginator.page,
       queryParams
-      // this.queryParams.status.length
     );
   }
 
@@ -278,7 +277,6 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
         this.paginator.page_size,
         this.paginator.page,
         this.queryParams
-        // this.queryParams.status.length
       );
     }, 10);
   }
@@ -384,6 +382,10 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
 
   _getReportTitle(report: any) {
     return report.report_type + report.report_number;
+  }
+
+  resolutionChanged(e: CustomEvent) {
+    this.lowResolutionLayout = e.detail.value;
   }
 
   // TODO: this is the same function from lists common mixin, but we do not need that entire functionality here
