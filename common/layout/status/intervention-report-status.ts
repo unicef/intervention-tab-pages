@@ -22,25 +22,25 @@ export class InterventionReportStatus extends LitElement {
           margin-top: -2px;
         }
 
-        :host([status-type='default']) iron-icon {
+        iron-icon[status-type='default'] {
           color: var(--primary-color);
         }
 
-        :host([status-type='submitted']) iron-icon,
-        :host([status-type='success']) iron-icon {
+        iron-icon[status-type='submitted'],
+        iron-icon[status-type='success'] {
           color: var(--success-color);
         }
 
-        :host([status-type='no-status']) iron-icon,
-        :host([status-type='error']) iron-icon {
+        iron-icon[status-type='no-status'],
+        iron-icon[status-type='error'] {
           color: var(--dark-error-color);
         }
 
-        :host([status-type='neutral']) iron-icon {
+        iron-icon[status-type='neutral'] {
           color: var(--secondary-text-color);
         }
 
-        :host([status-type='warning']) iron-icon {
+        iron-icon[status-type='warning'] {
           color: var(--warning-color);
         }
 
@@ -49,7 +49,7 @@ export class InterventionReportStatus extends LitElement {
         }
       </style>
 
-      <iron-icon ?hidden="${this.noIcon}" .icon="${this.icon}"></iron-icon>
+      <iron-icon ?hidden="${this.noIcon}" status-type="${this.statusType}" .icon="${this.icon}"></iron-icon>
       <span id="label" ?hidden="${this.noLabel}">${this.label}</span>
       <slot></slot>
     `;
@@ -61,8 +61,12 @@ export class InterventionReportStatus extends LitElement {
   @property({type: Boolean})
   noIcon = false;
 
+  @property({type: String})
+  icon!: string;
+
+  @property({type: String})
   label!: string;
-  _icon!: string;
+
   _status!: string;
   _statusType!: string;
   _final = false;
@@ -70,8 +74,8 @@ export class InterventionReportStatus extends LitElement {
 
   set status(status: string) {
     this._status = status;
-    this._computeStatusType(this._status);
-    this._computeLabel(this._status, this._final, this._reportType);
+    this._computeStatusType(this.status);
+    this._computeLabel(this.status, this.final, this.reportType);
   }
 
   @property({type: String})
@@ -81,7 +85,7 @@ export class InterventionReportStatus extends LitElement {
 
   set statusType(statusType: string) {
     this._statusType = statusType;
-    this._computeIcon(this._statusType);
+    this._computeIcon(this.statusType);
   }
 
   @property({type: String})
@@ -89,18 +93,9 @@ export class InterventionReportStatus extends LitElement {
     return this._statusType;
   }
 
-  set icon(icon: string) {
-    this._icon = icon;
-  }
-
-  @property({type: String})
-  get icon() {
-    return this._icon;
-  }
-
   set final(final: boolean) {
     this._final = final;
-    this._computeLabel(this._status, this._final, this._reportType);
+    this._computeLabel(this.status, this.final, this.reportType);
   }
 
   @property({type: Boolean})
@@ -110,7 +105,7 @@ export class InterventionReportStatus extends LitElement {
 
   set reportType(reportType: string) {
     this._reportType = reportType;
-    this._computeLabel(this._status, this._final, this._reportType);
+    this._computeLabel(this.status, this.final, this.reportType);
   }
 
   @property({type: String})
@@ -120,7 +115,7 @@ export class InterventionReportStatus extends LitElement {
 
   _computeStatusType(status: null | undefined | string) {
     if (status === null || typeof status === 'undefined') {
-      this._statusType = 'no-status';
+      this.statusType = 'no-status';
       return;
     }
     let stat = '';
@@ -157,7 +152,7 @@ export class InterventionReportStatus extends LitElement {
       default:
         stat = 'default';
     }
-    this._statusType = stat;
+    this.statusType = stat;
   }
 
   _computeLabel(status: string, final: boolean, reportType: string) {
@@ -219,14 +214,14 @@ export class InterventionReportStatus extends LitElement {
   _computeIcon(type: string) {
     switch (type) {
       case 'success':
-        return (this._icon = 'icons:check-circle');
+        return (this.icon = 'icons:check-circle');
       case 'submitted':
-        return (this._icon = 'icons:assignment-turned-in');
+        return (this.icon = 'icons:assignment-turned-in');
       case 'error':
       case 'warning':
-        return (this._icon = 'icons:error');
+        return (this.icon = 'icons:error');
       default:
-        return (this._icon = 'image:lens');
+        return (this.icon = 'image:lens');
     }
   }
 }
