@@ -81,6 +81,11 @@ export class InterventionProgress extends connectStore(
           margin-top: 16px;
         }
 
+        :host {
+          --ecp-content-padding: 0;
+          --ecp-content_-_padding: 0;
+        }
+
         #cash-progress etools-form-element-wrapper {
           width: 140px;
         }
