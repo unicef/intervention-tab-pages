@@ -111,7 +111,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
                   : html``}
               </etools-data-table-header>
               ${this.reports.map(
-                (report: any) => html` <etools-data-table-row lowResolutionLayout="${this.lowResolutionLayout}">
+                (report: any) => html` <etools-data-table-row .lowResolutionLayout="${this.lowResolutionLayout}">
                   <div slot="row-data">
                     <span
                       class="col-data col-2"
