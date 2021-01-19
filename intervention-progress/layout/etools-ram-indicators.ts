@@ -1,29 +1,28 @@
-import {PolymerElement, html} from '@polymer/polymer';
+import {LitElement, html, property, customElement} from 'lit-element';
 import '@polymer/iron-label/iron-label';
 import '@unicef-polymer/etools-loading/etools-loading.js';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging.js';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {Debouncer} from '@polymer/polymer/lib/utils/debounce';
-import {timeOut} from '@polymer/polymer/lib/utils/async';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
-import {property} from '@polymer/decorators';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import CommonMixin from '../../common/mixins/common-mixin';
+import {translate} from 'lit-translate';
 
 /**
- * @polymer
+ * LitElement
  * @customElement
  * @mixinFunction
  * @appliesMixin EndpointsMixin
  */
-class EtoolsRamIndicators extends CommonMixin(PolymerElement) {
-  static get is() {
-    return 'etools-ram-indicators';
-  }
+@customElement('etools-ram-indicator')
+export class EtoolsRamIndicators extends CommonMixin(LitElement) {
+  // static get is() {
+  //   return 'etools-ram-indicators';
+  // }
 
-  static get template() {
+  render() {
     return html`
       <style>
         :host {
@@ -47,31 +46,52 @@ class EtoolsRamIndicators extends CommonMixin(PolymerElement) {
         }
       </style>
 
-      <etools-loading active="[[loading]]">Loading...</etools-loading>
+      <etools-loading ?active="${this.loading}">Loading...</etools-loading>
 
       <iron-label>
-        <span id="label">[[_translate('INTERVENTION_REPORTS.RAM_INDICATORS')]]</span>
+        <span id="label">${translate('INTERVENTION_REPORTS.RAM_INDICATORS')}</span>
         <div id="ram-indicators" iron-label-target>
-          <template is="dom-if" if="[[_noRamIndicators(ramIndicators.length)]]">
-            <span id="no-ram-indicators">&#8212;</span>
-          </template>
-          <template is="dom-if" if="[[!_noRamIndicators(ramIndicators.length)]]">
-            <ul id="ram-indicators-list">
-              <template is="dom-repeat" items="[[ramIndicators]]" as="ramIndName">
-                <li>[[ramIndName]]</li>
-              </template>
-            </ul>
-          </template>
+          ${this._noRamIndicators(this.ramIndicators.length)
+            ? html`<span id="no-ram-indicators">&#8212;</span>`
+            : html``}
+          ${!this._noRamIndicators(this.ramIndicators.length)
+            ? html`<ul id="ram-indicators-list">
+                ${this.ramIndicators.map((ramIndName) => {
+                  html`<li>${ramIndName}</li>`;
+                })}
+              </ul>`
+            : html``}
         </div>
       </iron-label>
     `;
   }
+  _interventionId!: number;
+
+  set interventionId(interventionId) {
+    this._interventionId = interventionId;
+    if (!this.loading) {
+      this._getRamIndicatorsData(this._interventionId, this.cpId);
+    }
+  }
 
   @property({type: Number})
-  interventionId!: number;
+  get interventionId() {
+    return this._interventionId;
+  }
+
+  _cpId!: number;
+
+  set cpId(cpId) {
+    this._cpId = cpId;
+    if (!this.loading) {
+      this._getRamIndicatorsData(this.interventionId, this._cpId);
+    }
+  }
 
   @property({type: Number})
-  cpId!: number;
+  get cpId() {
+    return this._cpId;
+  }
 
   @property({type: Array})
   ramIndicators: any[] = [];
@@ -79,39 +99,28 @@ class EtoolsRamIndicators extends CommonMixin(PolymerElement) {
   @property({type: Boolean})
   loading = false;
 
-  private _debounceRamIndRequest!: Debouncer;
-
-  static get observers() {
-    return ['_getRamIndicatorsData(interventionId, cpId)'];
-  }
-
   _getRamIndicatorsData(interventionId: number, cpId: number) {
-    // Debounce to make sure the request is called only after both params are updated
-    this._debounceRamIndRequest = Debouncer.debounce(this._debounceRamIndRequest, timeOut.after(100), () => {
-      const validIds = interventionId > 0 && cpId > 0;
-      if (!validIds) {
-        return;
-      }
+    // Initially was inside a debouncer!
+    const validIds = interventionId > 0 && cpId > 0;
+    if (!validIds) {
+      return;
+    }
 
-      this._requestRamIndicatorsData({
-        intervention_id: interventionId,
-        cp_output_id: cpId
-      });
+    this._requestRamIndicatorsData({
+      intervention_id: interventionId,
+      cp_output_id: cpId
     });
   }
 
   _requestRamIndicatorsData(reqPayload: any) {
-    this.set('loading', true);
+    this.loading = true;
     sendRequest({
       method: 'GET',
       endpoint: getEndpoint(interventionEndpoints.cpOutputRamIndicators, reqPayload)
     })
       .then((resp: any) => {
-        this.set('loading', false);
-        this.set(
-          'ramIndicators',
-          resp.ram_indicators.map((ri: any) => ri.indicator_name)
-        );
+        this.loading = false;;
+        this.ramIndicators = resp.ram_indicators.map((ri: any) => ri.indicator_name);
       })
       .catch((error: any) => {
         if (error.status === 404) {
@@ -130,7 +139,7 @@ class EtoolsRamIndicators extends CommonMixin(PolymerElement) {
           'etools-ram-indicators',
           error
         );
-        this.set('loading', false);
+        this.loading = false;
       });
   }
 
@@ -138,5 +147,3 @@ class EtoolsRamIndicators extends CommonMixin(PolymerElement) {
     return typeof l !== 'number' || l === 0;
   }
 }
-
-window.customElements.define(EtoolsRamIndicators.is, EtoolsRamIndicators);
