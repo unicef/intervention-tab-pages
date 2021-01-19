@@ -13,7 +13,7 @@ import {prettyDate} from '../../utils/date-utils';
 import {getFileNameFromURL, isJsonStrMatch} from '../../utils/utils';
 import {selectAmendmentsPermissions} from './pd-amendments.selectors';
 import {PdAmendmentPermissions} from './pd-amendments.models';
-import {callClickOnEnterPush, pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {openDialog} from '../../utils/dialog';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, LabelAndValue, Permission} from '@unicef-polymer/etools-types';
@@ -138,12 +138,6 @@ export class PdAmendments extends CommentsMixin(LitElement) {
           </div>
         </div>
       </etools-content-panel> `;
-  }
-
-  firstUpdated(): void {
-    super.firstUpdated();
-
-    this.shadowRoot!.querySelectorAll('a').forEach((el) => callClickOnEnterPush(el));
   }
 
   @property({type: Array})
