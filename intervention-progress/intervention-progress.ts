@@ -94,10 +94,8 @@ export class InterventionProgress extends connectStore(
           margin-right: 24px;
         }
 
-        etools-data-table-row {
-          --list-row-collapse-wrapper: {
-            padding: 0;
-          }
+        etools-data-table-row::part(list-row-collapse-wrapper) {
+          padding: 0;
         }
 
         .lower-result-status-date {
