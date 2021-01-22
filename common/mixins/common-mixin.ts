@@ -1,4 +1,3 @@
-// import {dedupingMixin} from '@polymer/polymer/lib/utils/mixin';
 import {prettyDate} from '../../utils/date-utils';
 import {LitElement} from 'lit-element';
 import {AnyObject, Constructor} from '@unicef-polymer/etools-types';
@@ -55,26 +54,6 @@ function CommonMixin<T extends Constructor<LitElement>>(baseClass: T) {
         return '';
       }
       return url.split('?').shift()!.split('/').pop();
-    }
-
-    /**
-     * TODO: move this method in another mixin
-     * Reset field validation
-     */
-    fieldValidationReset(selector: string, useValidate?: boolean) {
-      if (!useValidate) {
-        useValidate = false;
-      }
-      const field = this.shadowRoot!.querySelector(selector) as LitElement & {validate(): boolean};
-      if (field) {
-        if (useValidate) {
-          field.validate();
-        } else {
-          // TODO: check if sets to false
-          field.setAttribute('invalid', 'false');
-        }
-      }
-      return field;
     }
 
     _translate(textKey: string) {

@@ -18,7 +18,7 @@ import {getEndpoint} from '../utils/endpoint-helper';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {getStore} from '../utils/redux-store-access';
 import {getIntervention} from '../common/actions/interventions';
-import {callClickOnEnterPush, pageIsNotCurrentlyActive} from '../utils/common-methods';
+import {pageIsNotCurrentlyActive} from '../utils/common-methods';
 import get from 'lodash-es/get';
 import {translate} from 'lit-translate';
 
@@ -134,14 +134,6 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
             `}
       </etools-content-panel>
     `;
-  }
-
-  firstUpdated(): void {
-    super.firstUpdated();
-    // By default an <a> element with an href attribute can be activated by the Enter key.
-    // TODO - here for an unknown reason it doesn't work, post poning for later investigation and ideas
-    // NOTE - approach present in other places also
-    this.shadowRoot!.querySelectorAll('a').forEach((el) => callClickOnEnterPush(el));
   }
 
   stateChanged(state: any): void {
