@@ -1,7 +1,6 @@
 /* eslint-disable lit/no-legacy-template-syntax */
 import {LitElement, property, html, customElement} from 'lit-element';
 import '@polymer/iron-icons/iron-icons';
-import '@polymer/iron-flex-layout/iron-flex-layout';
 import '@polymer/paper-icon-button/paper-icon-button';
 
 // @lajos TO DO refactor

@@ -1,5 +1,4 @@
 import {LitElement, html, property, customElement} from 'lit-element';
-import '@polymer/iron-flex-layout/iron-flex-layout';
 import '@polymer/paper-progress/paper-progress';
 import {layoutCenter, layoutHorizontal} from '../../common/styles/flex-layout-styles';
 

@@ -1,6 +1,5 @@
 import {LitElement, html, property, customElement} from 'lit-element';
 import '@polymer/iron-icons/iron-icons';
-import '@polymer/iron-flex-layout/iron-flex-layout';
 import '@polymer/paper-styles/element-styles/paper-material-styles';
 
 import '@unicef-polymer/etools-content-panel/etools-content-panel';

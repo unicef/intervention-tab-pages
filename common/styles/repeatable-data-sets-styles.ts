@@ -1,5 +1,4 @@
 import {html} from 'lit-element';
-import '@polymer/iron-flex-layout/iron-flex-layout.js';
 
 import {actionIconBtnsStyles} from './action-icon-btns-styles';
 import {

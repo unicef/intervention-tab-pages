@@ -1,4 +1,3 @@
-import '@polymer/iron-flex-layout/iron-flex-layout.js';
 import UtilsMixin from '../../common/mixins/utils-mixin';
 import {LitElement, html, property, customElement} from 'lit-element';
 import {GenericObject} from '@unicef-polymer/etools-types';

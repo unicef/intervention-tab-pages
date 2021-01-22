@@ -1,6 +1,5 @@
 import {customElement, LitElement, html, property} from 'lit-element';
 import '@polymer/iron-icons/iron-icons';
-import '@polymer/iron-flex-layout/iron-flex-layout';
 import '@polymer/paper-input/paper-input';
 import '@polymer/paper-checkbox';
 
@@ -57,7 +56,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
     return html`
       <style>
         ${sectionContentStyles}${sharedStyles}:host {
-          @apply --layout-vertical;
+          flex-direction: column;
           width: 100%;
           display: block;
           margin-bottom: 24px;
@@ -69,8 +68,8 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
           width: 100%;
         }
         paper-checkbox {
-          @apply --layout-horizontal;
-          @apply --layout-center;
+          flex-direction: row;
+          align-items: center;
           min-height: 24px;
           margin-left: 0px;
         }
