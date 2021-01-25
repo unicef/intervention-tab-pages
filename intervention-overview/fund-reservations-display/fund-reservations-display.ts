@@ -1,4 +1,4 @@
-import {LitElement, customElement, html, property, PropertyValues} from 'lit-element';
+import {LitElement, customElement, html, property} from 'lit-element';
 import '@polymer/iron-label/iron-label';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
@@ -16,7 +16,6 @@ import isEmpty from 'lodash-es/isEmpty';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {Intervention, FrsDetails} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {callClickOnEnterPush} from '../../utils/common-methods';
 
 /**
  * @customElement
@@ -258,12 +257,6 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
         </etools-data-table-row>
       </div>
     `;
-  }
-
-  firstUpdated(changedProperties: PropertyValues): void {
-    super.firstUpdated(changedProperties);
-
-    this.shadowRoot!.querySelectorAll('a').forEach((el) => callClickOnEnterPush(el));
   }
 
   _intervention: Intervention | null = null;

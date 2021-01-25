@@ -1,4 +1,4 @@
-import {LitElement, customElement, html, property, PropertyValues} from 'lit-element';
+import {LitElement, customElement, html, property} from 'lit-element';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import '@polymer/iron-label/iron-label';
 import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
@@ -11,7 +11,7 @@ import {prettyDate} from '../utils/date-utils';
 import {isJsonStrMatch} from '../utils/utils';
 import './fund-reservations-display/fund-reservations-display';
 import './monitoring-visits-list/monitoring-visits-list';
-import {callClickOnEnterPush, pageIsNotCurrentlyActive} from '../utils/common-methods';
+import {pageIsNotCurrentlyActive} from '../utils/common-methods';
 import {RootState} from '../common/types/store.types';
 import {fireEvent} from '../utils/fire-custom-event';
 import {connectStore} from '../common/mixins/connect-store-mixin';
@@ -266,12 +266,6 @@ export class InterventionOverview extends connectStore(LitElement) {
           `
         : html``}
     `;
-  }
-
-  firstUpdated(changedProperties: PropertyValues): void {
-    super.firstUpdated(changedProperties);
-
-    this.shadowRoot!.querySelectorAll('a').forEach((el) => callClickOnEnterPush(el));
   }
 
   @property({type: Object})

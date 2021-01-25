@@ -237,12 +237,11 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         }
       </style>
 
-      <!-- TODO: format translation-->
       <etools-content-panel
         show-expand-btn
-        panel-title="${(translate(
+        panel-title="${translate(
           'INTERVENTION_RESULTS.RESULTS_STRUCTURE.RESULTS_STRUCTURE'
-        ) as unknown) as string} (${this.noOfPdOutputs})"
+        )} (${this.noOfPdOutputs})"
       >
         <div slot="panel-btns" class="layout-horizontal align-items-center">
           <paper-button
