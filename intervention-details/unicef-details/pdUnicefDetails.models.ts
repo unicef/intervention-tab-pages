@@ -7,7 +7,6 @@ export class PdUnicefDetails extends ModelsBase {
     super();
     this.setObjProperties(intervention);
   }
-  document_type = '';
   offices: AnyObject[] = [];
   sections: AnyObject[] = [];
   cluster_names: AnyObject[] = [];
