@@ -471,19 +471,6 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
     return false;
   }
 
-  // TODO
-  // _readonlyChanged(newVal: boolean, oldVal: boolean) {
-  //   if (newVal !== oldVal) {
-  //     this.updateStyles();
-  //   }
-  // }
-
-  // _baselineUnknownChanged(isUnknown: boolean) {
-  //   if (isUnknown) {
-  //     this.set('indicator.baseline', {v: null, d: 1});
-  //   }
-  // }
-
   _typeChanged() {
     this.resetValidations();
   }

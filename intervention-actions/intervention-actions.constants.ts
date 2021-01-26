@@ -12,10 +12,8 @@ const SIGN = 'sign';
 
 const ACCEPT = 'accept';
 const REVIEW = 'review';
-const SIGNATURE = 'signature';
 export const CANCEL = 'cancel';
 export const TERMINATE = 'terminate';
-const ACCEPT_REVIEW = 'accept_review';
 const REJECT_REVIEW = 'reject_review';
 
 export const EXPORT_ACTIONS = [EXPORT_CSV, EXPORT_PDF, EXPORT_COMMENTS];
@@ -30,9 +28,7 @@ export const namesMap: GenericObject<string> = {
   [SEND_TO_UNICEF]: getTranslation('INTERVENTION_ACTIONS.SEND_TO_UNICEF'),
   [UNLOCK]: getTranslation('INTERVENTION_ACTIONS.UNLOCK'),
   [ACCEPT]: getTranslation('INTERVENTION_ACTIONS.ACCEPT'),
-  [ACCEPT_REVIEW]: 'Accept & Review', // TODO - see if this is still used
   [REVIEW]: getTranslation('INTERVENTION_ACTIONS.REVIEW'),
-  [SIGNATURE]: 'Ready for Signature', // TODO - see if this is still used
   [CANCEL]: getTranslation('GENERAL.CANCEL'),
   [TERMINATE]: getTranslation('INTERVENTION_ACTIONS.TERMINATE'),
   [REJECT_REVIEW]: getTranslation('INTERVENTION_ACTIONS.REJECT_REVIEW'),

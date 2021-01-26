@@ -202,18 +202,19 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           display: block;
           margin-bottom: 24px;
         }
-        etools-data-table-row {
-          --list-row-wrapper-padding: 0 12px 0 0;
-          --list-row-collapse-wrapper: {
-            padding: 0 !important;
-            border-bottom: none !important;
-          }
-          --list-row-wrapper: {
-            background-color: var(--secondary-background-color);
-            min-height: 48px;
-            border-bottom: 1px solid var(--main-border-color) !important;
-          }
+
+        etools-data-table-row::part(list-row-wrapper) {
+          padding: 0 12px 0 0;
+          background-color: var(--secondary-background-color);
+          min-height: 48px;
+          border-bottom: 1px solid var(--main-border-color) !important;
         }
+
+        etools-data-table-row::part(list-row-collapse-wrapper) {
+          padding: 0 !important;
+          border-bottom: none !important;
+        }
+
         .export-res-btn {
           height: 28px;
         }
@@ -236,12 +237,11 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         }
       </style>
 
-      <!-- TODO: format translation-->
       <etools-content-panel
         show-expand-btn
-        panel-title="${(translate(
+        panel-title="${translate(
           'INTERVENTION_RESULTS.RESULTS_STRUCTURE.RESULTS_STRUCTURE'
-        ) as unknown) as string} (${this.noOfPdOutputs})"
+        )} (${this.noOfPdOutputs})"
       >
         <div slot="panel-btns" class="layout-horizontal align-items-center">
           <paper-button

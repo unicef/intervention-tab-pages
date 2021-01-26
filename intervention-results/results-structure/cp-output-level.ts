@@ -63,16 +63,18 @@ export class CpOutputLevel extends LitElement {
         ${sharedStyles} etools-data-table-row {
           overflow: hidden;
           --list-row-wrapper-padding: 0 12px 0 0;
-          --list-row-collapse-wrapper: {
-            padding: 0 !important;
-            margin-bottom: 10px;
-            border: 1px solid var(--main-border-color) !important;
-            border-bottom: 1px solid var(--main-border-color) !important;
-          }
-          --list-row-wrapper: {
-            border-bottom: none !important;
-          }
         }
+
+        etools-data-table-row::part(list-row-collapse-wrapper) {
+          padding: 0 !important;
+          margin-bottom: 10px;
+          border: 1px solid var(--main-border-color) !important;
+          border-bottom: 1px solid var(--main-border-color) !important;
+        }
+        etools-data-table-row::part(list-row-wrapper) {
+          border-bottom: none !important;
+        }
+
         .higher-slot .heading {
           margin-top: 12px;
         }

@@ -23,6 +23,7 @@ import get from 'lodash-es/get';
 import {connectStore} from '../common/mixins/connect-store-mixin';
 import {GenericObject, User} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {currentIntervention} from '../common/selectors';
 
 /**
  * @polymer
@@ -37,6 +38,7 @@ import {translate} from 'lit-translate';
  */
 @customElement('intervention-reports')
 export class InterventionReports extends connectStore(PaginationMixin(CommonMixin(EndpointsMixin(LitElement)))) {
+
   static get styles() {
     return [gridLayoutStylesLit, elevationStyles];
   }
@@ -254,6 +256,8 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
   @property({type: Boolean})
   lowResolutionLayout = false;
 
+  interventionStatus!: string;
+
   connectedCallback() {
     super.connectedCallback();
     // Disable loading message for tab load, triggered by parent element on stamp or by tap event on tabs
@@ -269,6 +273,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
     }
     this.interventionId = get(state, 'app.routeDetails.params.interventionId');
     this.endStateChanged(state);
+    this.interventionStatus = currentIntervention(state)?.status;
     setTimeout(() => {
       this._loadReportsData(
         this.prpCountries,
@@ -293,7 +298,8 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
       isEmptyObject(currentUser) ||
       this._queryParamsNotInitialized(qParamsData) ||
       isEmptyObject(prpCountries) ||
-      !interventionId
+      !interventionId ||
+      ['draft', 'development'].includes(this.interventionStatus)
     ) {
       return;
     }

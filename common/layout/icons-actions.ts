@@ -1,9 +1,6 @@
-/* eslint-disable lit/no-legacy-template-syntax */
 import {LitElement, property, html, customElement} from 'lit-element';
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/paper-icon-button/paper-icon-button';
-
-// @lajos TO DO refactor
 import {fireEvent} from '../../utils/fire-custom-event';
 import {AnyObject} from '@unicef-polymer/etools-types';
 
@@ -34,9 +31,6 @@ export class IconsActions extends LitElement {
           right: 0;
           top: 0;
           bottom: 0;
-
-          /*TODO: check if still in use */
-          @apply --icons-actions;
         }
 
         paper-icon-button {

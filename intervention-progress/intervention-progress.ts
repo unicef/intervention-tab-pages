@@ -46,6 +46,7 @@ import {AnyObject, GenericObject} from '@unicef-polymer/etools-types';
 
 import {translate} from 'lit-translate';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {currentIntervention} from '../common/selectors';
 declare const dayjs: any;
 
 /**
@@ -87,10 +88,8 @@ export class InterventionProgress extends connectStore(
           margin-right: 24px;
         }
 
-        etools-data-table-row {
-          --list-row-collapse-wrapper: {
-            padding: 0;
-          }
+        etools-data-table-row::part(list-row-collapse-wrapper) {
+          padding: 0;
         }
 
         .lower-result-status-date {
@@ -251,7 +250,10 @@ export class InterventionProgress extends connectStore(
       </div>
 
       <etools-content-panel class="content-section" panel-title="${translate('INTERVENTION_REPORTS.RESULTS_REPORTED')}">
-        <div class="row-h" ?hidden="${this.progress.details ? !this._emptyList(this.progress.details.cp_outputs) : false}">
+        <div
+          class="row-h"
+          ?hidden="${this.progress.details ? !this._emptyList(this.progress.details.cp_outputs) : false}"
+        >
           <p>${translate('INTERVENTION_REPORTS.NO_RESULTS')}</p>
         </div>
         ${(this.progress.details ? this.progress.details.cp_outputs : []).map(
@@ -388,6 +390,8 @@ export class InterventionProgress extends connectStore(
 
   requestInProgress = false;
 
+  interventionStatus!: string;
+
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'progress')) {
       return;
@@ -396,6 +400,7 @@ export class InterventionProgress extends connectStore(
     if (currentInterventionId) {
       this.interventionId = currentInterventionId;
     }
+    this.interventionStatus = currentIntervention(state)?.status;
     this.endStateChanged(state);
     setTimeout(() => {
       this._requestProgressData(this.interventionId, this.prpCountries, this.currentUser);
@@ -420,7 +425,13 @@ export class InterventionProgress extends connectStore(
   }
 
   _requestProgressData(id: string, prpCountries: any, currentUser: AnyObject) {
-    if (!id || isEmptyObject(prpCountries) || isEmptyObject(currentUser) || this.requestInProgress) {
+    if (
+      !id ||
+      isEmptyObject(prpCountries) ||
+      isEmptyObject(currentUser) ||
+      this.requestInProgress ||
+      ['draft', 'development'].includes(this.interventionStatus)
+    ) {
       return;
     }
 
@@ -446,7 +457,7 @@ export class InterventionProgress extends connectStore(
           loadingSource: 'pd-progress'
         });
       })
-      .finally(() => this.requestInProgress = false);
+      .finally(() => (this.requestInProgress = false));
   }
 
   _emptyList(dataSet: any) {
@@ -581,7 +592,9 @@ export class InterventionProgress extends connectStore(
   }
 
   _getOverallPdStatusDate(latestAcceptedPr: GenericObject) {
-    return latestAcceptedPr && latestAcceptedPr.review_date ? '(' + this._convertToDisplayFormat(latestAcceptedPr.review_date) + ')' : '';
+    return latestAcceptedPr && latestAcceptedPr.review_date
+      ? '(' + this._convertToDisplayFormat(latestAcceptedPr.review_date) + ')'
+      : '';
   }
 
   _convertToDisplayFormat(strDt: string) {
