@@ -1,8 +1,8 @@
 import {logWarn} from '@unicef-polymer/etools-behaviors/etools-logging.js';
-import {PolymerElement} from '@polymer/polymer';
+import {LitElement} from 'lit-element';
 import {Constructor} from '@unicef-polymer/etools-types';
 
-function UtilsMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
+function UtilsMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class UtilsClass extends baseClass {
     _equals(a: any, b: any) {
       return a === b;

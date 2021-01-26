@@ -1,8 +1,8 @@
 import '@polymer/iron-iconset-svg/iron-iconset-svg.js';
-import {html} from '@polymer/polymer';
+import {html, TemplateResult} from 'lit-element';
 /* eslint-disable max-len */
 
-export const pmpMainIcons = html`
+export const pmpMainIcons: TemplateResult = html`
   <iron-iconset-svg name="pmp-main-icons" size="36">
     <svg>
       <defs>
@@ -65,7 +65,7 @@ export const pmpMainIcons = html`
   </iron-iconset-svg>
 `;
 
-export const pmpCustomIcons = html`
+export const pmpCustomIcons: TemplateResult = html`
   <iron-iconset-svg name="pmp-custom-icons" size="24">
     <svg>
       <defs>

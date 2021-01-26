@@ -1,20 +1,16 @@
-/* eslint-disable lit/no-legacy-template-syntax */
-import {PolymerElement, html} from '@polymer/polymer';
+import {LitElement, property, html, customElement} from 'lit-element';
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-flex-layout/iron-flex-layout';
 import '@polymer/paper-icon-button/paper-icon-button';
-
-// @lajos TO DO refactor
-import {property} from '@polymer/decorators';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {AnyObject} from '@unicef-polymer/etools-types';
 
 /**
- * @polymer
  * @customElement
  */
-class IconsActions extends PolymerElement {
-  static get template() {
+@customElement('icons-actions')
+export class IconsActions extends LitElement {
+  render() {
     return html`
       <style>
         [hidden] {
@@ -36,8 +32,6 @@ class IconsActions extends PolymerElement {
           right: 0;
           top: 0;
           bottom: 0;
-
-          @apply --icons-actions;
         }
 
         paper-icon-button {
@@ -45,9 +39,13 @@ class IconsActions extends PolymerElement {
         }
       </style>
 
-      <paper-icon-button hidden$="[[!showEdit]]" icon="create" on-tap="_onEdit"></paper-icon-button>
-      <paper-icon-button hidden$="[[!showDelete]]" icon="delete" on-tap="_onDelete"></paper-icon-button>
-      <paper-icon-button hidden$="[[!showDeactivate]]" icon="block" on-tap="_onDeactivate"></paper-icon-button>
+      <paper-icon-button ?hidden="${!this.showEdit}" icon="create" @click="${this._onEdit}"></paper-icon-button>
+      <paper-icon-button ?hidden="${!this.showDelete}" icon="delete" @click="${this._onDelete}"></paper-icon-button>
+      <paper-icon-button
+        ?hidden="${!this.showDeactivate}"
+        icon="block"
+        @click="${this._onDeactivate}"
+      ></paper-icon-button>
     `;
   }
 
@@ -75,7 +73,3 @@ class IconsActions extends PolymerElement {
     fireEvent(this, 'deactivate');
   }
 }
-
-window.customElements.define('icons-actions', IconsActions);
-
-export {IconsActions as IconsActionsEl};

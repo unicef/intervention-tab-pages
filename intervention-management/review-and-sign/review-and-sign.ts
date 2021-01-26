@@ -29,7 +29,7 @@ import {isEmpty, cloneDeep} from 'lodash-es';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {patchIntervention} from '../../common/actions/interventions';
 import {formatDate} from '../../utils/date-utils';
-import {callClickOnSpacePush, pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, MinimalUser, Permission, User} from '@unicef-polymer/etools-types';
