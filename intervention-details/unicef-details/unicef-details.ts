@@ -65,18 +65,6 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
-        <div class="layout-horizontal">
-          <div class="col col-4">
-            <span>
-              <label class="paper-label">${translate('INTERVENTION_DETAILS.DOCUMENT_TYPE')}</label>
-            </span>
-          </div>
-        </div>
-        <div class="layout-horizontal">
-          <label class="input-label" ?empty="${!this.data.document_type}">
-            ${this.getDocumentLongName(this.data.document_type)}
-          </label>
-        </div>
         <div class="layout-horizontal row-padding-v">
           <div class="col col-4">
             <etools-dropdown-multi
