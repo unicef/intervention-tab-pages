@@ -67,9 +67,8 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         ${sharedStyles} :host {
           display: block;
           margin-bottom: 24px;
-          --ecp-content-padding: 0;
-          --ecp-content_-_padding: 0;
         }
+
         .mr-20 {
           margin-right: 20px;
         }

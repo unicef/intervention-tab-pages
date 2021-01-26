@@ -50,6 +50,10 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         paper-radio-button:first-child {
           padding-left: 0px !important;
         }
+
+        etools-content-panel::part(ecp-content) {
+          padding: 8px 24px 16px 24px;
+        }
       </style>
 
       <etools-content-panel

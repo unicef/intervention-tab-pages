@@ -60,9 +60,8 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         ${sharedStyles} :host {
           display: block;
           margin-bottom: 24px;
-          --ecp-content-padding: 0;
-          --ecp-content_-_padding: 0;
         }
+
         #mitigationMeasures {
           width: 100%;
         }
