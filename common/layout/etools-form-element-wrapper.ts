@@ -1,7 +1,6 @@
 import {LitElement, html, property, customElement} from 'lit-element';
 import '@polymer/paper-input/paper-input-container';
 import {sharedStyles} from '../styles/shared-styles-lit';
-import {_layoutHorizontal} from '../styles/flex-layout-styles';
 
 /**
  * @customElement
@@ -36,7 +35,8 @@ export class EtoolsFormElementWrapper extends LitElement {
         }
 
         .paper-input-input {
-          ${_layoutHorizontal}
+          display: flex;
+          flex-direction: row;
           display: inline-block;
           word-wrap: break-word;
         }

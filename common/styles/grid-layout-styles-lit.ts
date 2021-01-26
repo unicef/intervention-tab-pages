@@ -1,5 +1,4 @@
 import {css, unsafeCSS} from 'lit-element';
-import {_layoutHorizontal, _layoutVertical, _layoutFlex, _layoutWrap} from './flex-layout-styles';
 
 export const gridLayoutStylesContent = `
 *[hidden] {
@@ -19,16 +18,18 @@ export const gridLayoutStylesContent = `
 }
 
 .layout-horizontal {
-  ${_layoutHorizontal}
+  display: flex;
+  flex-direction: row;
 }
 
 .layout-vertical,
 .col.layout-vertical {
-  ${_layoutVertical}
+  display: flex;
+  flex-direction: column;
 }
 
 .layout-wrap {
-  ${_layoutWrap};
+  flex-wrap: wrap;
 }
 
 .row-padding {
@@ -54,16 +55,19 @@ export const gridLayoutStylesContent = `
 }
 
 .row-h {
-  ${_layoutHorizontal}
+  display: flex;
+  flex-direction: row;
 }
 
 .row-v {
-  ${_layoutVertical};
+  display: flex;
+  flex-direction: column;
 }
 
 .flex-c {
   /* flex container */
-  ${_layoutFlex}
+  flex: 1;
+  flex-basis: 0.000000001px;
 }
 
 .row-h,
@@ -112,7 +116,8 @@ export const gridLayoutStylesContent = `
 }
 
 .right-align {
-  ${_layoutHorizontal}
+  display: flex;
+  flex-direction: row;
   justify-content: flex-end;
   align-items: center;
   text-align: right;
@@ -128,7 +133,8 @@ export const gridLayoutStylesContent = `
 }
 
 .col {
-  ${_layoutHorizontal}
+  display: flex;
+  flex-direction: row;
   box-sizing: border-box;
 }
 

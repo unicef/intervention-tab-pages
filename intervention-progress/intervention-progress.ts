@@ -46,12 +46,6 @@ import {AnyObject, GenericObject} from '@unicef-polymer/etools-types';
 
 import {translate} from 'lit-translate';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
-import {
-  layoutEndJustified,
-  layoutFlex,
-  layoutHorizontal,
-  layoutStartJustified
-} from '../common/styles/flex-layout-styles';
 declare const dayjs: any;
 
 /**
@@ -117,12 +111,13 @@ export class InterventionProgress extends connectStore(
         }
 
         .report-progress-bar {
-          ${layoutFlex}
+          flex: 1;
+          flex-basis: 0.000000001px;
           --etools-progress-bar-width: 100%;
         }
 
         .progress-details {
-          ${layoutEndJustified}
+          justify-content: flex-end;
           padding-top: 0;
         }
 
@@ -139,7 +134,8 @@ export class InterventionProgress extends connectStore(
 
         @media print {
           .indicator-report {
-            ${layoutHorizontal}
+            display: flex;
+            flex-direction: row;
           }
 
           .indicator-report .col-data {
@@ -165,7 +161,7 @@ export class InterventionProgress extends connectStore(
           }
 
           .progress-details {
-            ${layoutStartJustified}
+            justify-content: flex-start;
           }
         }
 

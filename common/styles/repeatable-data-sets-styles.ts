@@ -1,14 +1,6 @@
 import {html} from 'lit-element';
 
 import {actionIconBtnsStyles} from './action-icon-btns-styles';
-import {
-  layoutCenterJustified,
-  layoutEndJustified,
-  layoutFlex,
-  layoutHorizontal,
-  layoutVertical,
-  layoutWrap
-} from './flex-layout-styles';
 
 // language=HTML
 export const repeatableDataSetsStyles = html` ${actionIconBtnsStyles}
@@ -23,18 +15,22 @@ export const repeatableDataSetsStyles = html` ${actionIconBtnsStyles}
     }
 
     .item-actions-container {
-      ${layoutHorizontal}
+      display: flex;
+      flex-direction: row;
     }
 
     .item-actions-container .actions {
-      ${layoutVertical}
-      ${layoutCenterJustified}
-      ${layoutWrap}
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex-wrap: wrap;
     }
 
     .item-container .item-content {
-      ${layoutVertical}
-      ${layoutFlex}
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      flex-basis: 0.000000001px;
       margin-left: 10px;
       border-left: 1px solid var(--darker-divider-color);
     }
@@ -44,8 +40,9 @@ export const repeatableDataSetsStyles = html` ${actionIconBtnsStyles}
     }
 
     #bottom-actions {
-      ${layoutHorizontal}
-      ${layoutEndJustified}
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
       overflow: visible;
       padding-top: 15px;
       padding-bottom: 25px;
@@ -66,8 +63,9 @@ export const repeatableDataSetsStylesV2 = html` <style>
   }
 
   .item-actions-container:before {
-    ${layoutVertical}
-    ${layoutCenterJustified}
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     position: absolute;
     top: -32px;
     right: -12px;

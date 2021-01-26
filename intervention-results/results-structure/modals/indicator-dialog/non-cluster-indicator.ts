@@ -11,7 +11,6 @@ import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../../../common/styles/button-styles';
 import {PaperCheckboxElement} from '@polymer/paper-checkbox/paper-checkbox.js';
-import {layoutCenter, layoutVertical} from '../../../../common/styles/flex-layout-styles';
 import {Indicator} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 
@@ -73,8 +72,9 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
 
         .all-locations {
           margin: auto;
-          ${layoutVertical}
-          ${layoutCenter}
+          display: flex;
+          flex-direction: column;
+          align-items: center;
         }
 
         .row-h {
