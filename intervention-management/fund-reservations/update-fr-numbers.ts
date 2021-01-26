@@ -12,13 +12,6 @@ import {buttonsStyles} from '../../common/styles/button-styles';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {PaperInputElement} from '@polymer/paper-input/paper-input';
 import {PaperDialogElement} from '@polymer/paper-dialog/paper-dialog';
-import {
-  layoutVertical,
-  layoutFlex,
-  layoutCenterJustified,
-  layoutWrap,
-  layoutHorizontal
-} from '../../common/styles/flex-layout-styles';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 
@@ -54,16 +47,20 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
           padding: 0 0 16px 24px;
         }
         .item-actions-container {
-          ${layoutHorizontal}
+          display: flex;
+          flex-direction: row;
         }
         .item-actions-container .actions {
-          ${layoutVertical}
-          ${layoutCenterJustified}
-          ${layoutWrap}
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          flex-wrap: wrap;
         }
         .item-container .item-content {
-          ${layoutVertical}
-          ${layoutFlex}
+          display: flex;
+          flex-direction: column;
+          flex: 1;
+          flex-basis: 0.000000001px;
           margin-left: 10px;
           border-left: 1px solid var(--darker-divider-color);
         }
