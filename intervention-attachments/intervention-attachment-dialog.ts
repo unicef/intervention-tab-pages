@@ -29,7 +29,7 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
         etools-upload {
           margin-top: 14px;
         }
-        etools-form-element-wrapper {
+        paper-checkbox {
           display: block;
           margin-top: 18px;
         }
@@ -114,14 +114,12 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
             @click="${() => this.resetFieldError('attachment_document')}"
           ></etools-upload>
 
-          <etools-form-element-wrapper no-placeholder>
-            <paper-checkbox
-              ?checked="${!this.data?.active}"
-              @checked-changed="${(e: CustomEvent) => this.updateField('active', !e.detail.value)}"
-            >
-              ${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.INVALID')}
-            </paper-checkbox>
-          </etools-form-element-wrapper>
+          <paper-checkbox
+            ?checked="${!this.data?.active}"
+            @checked-changed="${(e: CustomEvent) => this.updateField('active', !e.detail.value)}"
+          >
+            ${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.INVALID')}
+          </paper-checkbox>
         </div>
       </etools-dialog>
     `;
