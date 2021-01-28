@@ -62,3 +62,10 @@ export const patchIntervention = (interventionChunck: any, interventionId?: stri
     dispatch(updateCurrentIntervention(intervention));
   });
 };
+
+export const updatePartnerReportingRequirements = (reportingRequirements: AnyObject | null) => {
+  return {
+    type: 'UPDATE_CURRENT_INTERVENTION',
+    prr: reportingRequirements
+  };
+};

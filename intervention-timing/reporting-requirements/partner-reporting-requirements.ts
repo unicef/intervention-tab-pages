@@ -291,7 +291,6 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
       return;
     }
     this.isUnicefUser = isUnicefUser(state);
-
     this.reportingRequirementsPermissions = selectReportingRequirementsPermissions(state);
     const currentIntervention = get(state, 'interventions.current');
     this.intervention = cloneDeep(currentIntervention);
@@ -305,9 +304,6 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
   updateQPRCount(value: any) {
     if (value) {
       this.qprRequirementsCount = value.count;
-      if (value.count) {
-        fireEvent(this, 'update-requirements');
-      }
     }
   }
 

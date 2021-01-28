@@ -1,4 +1,4 @@
-import {LitElement, customElement, html, property} from 'lit-element';
+import {LitElement, customElement, html} from 'lit-element';
 import './reporting-requirements/partner-reporting-requirements';
 import './intervention-dates/intervention-dates';
 import './timing-overview/timing-overview';
@@ -16,19 +16,15 @@ export class InterventionTiming extends CommentsMixin(LitElement) {
     return html`
       <style></style>
       <timing-overview></timing-overview>
-      <intervention-dates .requirementsSet=${this.requirementsSet}></intervention-dates>
+      <intervention-dates></intervention-dates>
       <activity-timeframes></activity-timeframes>
       <partner-reporting-requirements
         class="content-section"
         .commentsMode="${this.commentMode}"
         comments-container
-        @update-requirements=${() => this.requirementsExist()}
       ></partner-reporting-requirements>
     `;
   }
-
-  @property({type: Boolean})
-  requirementsSet = false;
 
   connectedCallback() {
     super.connectedCallback();
@@ -37,10 +33,6 @@ export class InterventionTiming extends CommentsMixin(LitElement) {
       active: false,
       loadingSource: 'interv-page'
     });
-  }
-
-  requirementsExist() {
-    this.requirementsSet = true;
   }
 
   getSpecialElements(container: HTMLElement): CommentElementMeta[] {

@@ -25,7 +25,8 @@ export interface AppState {
 }
 
 export interface InterventionsState {
-  current: Intervention | null;
+  current: Intervention | null,
+  prr: any | null
 }
 
 export interface AgreementsState {

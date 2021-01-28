@@ -166,9 +166,6 @@ export class InterventionDates extends CommentsMixin(
   @property({type: Object})
   permissions!: Permission<InterventionDatesPermissions>;
 
-  @property({type: Boolean})
-  requirementsSet = false;
-
   warningRequired = false;
 
   connectedCallback() {
@@ -182,8 +179,9 @@ export class InterventionDates extends CommentsMixin(
     if (!state.interventions.current) {
       return;
     }
+    console.log(state.interventions.prr);
     this.data = selectInterventionDates(state);
-    this.checkIfWarningRequired(state.interventions.current);
+    this.checkIfWarningRequired(state.interventions.current, state.interventions.prr);
     this.originalData = cloneDeep(this.data);
     this.permissions = selectInterventionDatesPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
@@ -214,9 +212,10 @@ export class InterventionDates extends CommentsMixin(
     );
   }
 
-  private checkIfWarningRequired(intervention: Intervention) {
+  private checkIfWarningRequired(intervention: Intervention, partnerReportingRequirements: any) {
     this.warningRequired = false;
-    if (this.requirementsSet) {
+    // check Partern Reporting Requirements
+    if (partnerReportingRequirements) {
       this.warningRequired = true;
       return;
     }
