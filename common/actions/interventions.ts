@@ -63,9 +63,9 @@ export const patchIntervention = (interventionChunck: any, interventionId?: stri
   });
 };
 
-export const updatePartnerReportingRequirements = (reportingRequirements: AnyObject | null) => {
+export const updatePartnerReportingRequirements = (newReportingRequirements: AnyObject | null) => {
   return {
-    type: 'UPDATE_CURRENT_INTERVENTION',
-    prr: reportingRequirements
+    type: 'UPDATE_PARTNER_REPORTING_REQUIREMENTS',
+    prr: newReportingRequirements
   };
 };

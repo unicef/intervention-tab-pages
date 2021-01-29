@@ -21,7 +21,7 @@ export const interventions = (state = INITIAL_STATE, action: any) => {
     case UPDATE_PARTNER_REPORTING_REQUIREMENTS:
       return {
         ...state,
-        prr: action
+        prr: action.prr
       };
     default:
       return state;

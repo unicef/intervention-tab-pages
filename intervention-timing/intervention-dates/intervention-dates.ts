@@ -179,7 +179,6 @@ export class InterventionDates extends CommentsMixin(
     if (!state.interventions.current) {
       return;
     }
-    console.log(state.interventions.prr);
     this.data = selectInterventionDates(state);
     this.checkIfWarningRequired(state.interventions.current, state.interventions.prr);
     this.originalData = cloneDeep(this.data);
@@ -216,8 +215,12 @@ export class InterventionDates extends CommentsMixin(
     this.warningRequired = false;
     // check Partern Reporting Requirements
     if (partnerReportingRequirements) {
-      this.warningRequired = true;
-      return;
+      Object.keys(partnerReportingRequirements).map(reportingRequirement => {
+        if (reportingRequirement.length) {
+          this.warningRequired = true;
+          return;
+        }
+      });
     }
     // get activities array
     const pdOutputs: ResultLinkLowerResult[] = intervention.result_links
