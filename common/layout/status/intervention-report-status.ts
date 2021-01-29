@@ -1,5 +1,4 @@
 import {customElement, LitElement, property, html} from 'lit-element';
-import '@polymer/iron-flex-layout/iron-flex-layout.js';
 import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/iron-icons/image-icons.js';
 

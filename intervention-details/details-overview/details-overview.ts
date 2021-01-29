@@ -5,7 +5,6 @@ import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {elevationStyles} from '../../common/styles/elevation-styles';
 import {InterventionOverview} from './interventionOverview.models';
 import {selectInterventionOverview} from './interventionOverview.selectors';
-import {layoutFlex} from '../../common/styles/flex-layout-styles';
 import {RootState} from '../../common/types/store.types';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
@@ -37,7 +36,8 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
         }
         .container-width {
           width: 70%;
-          ${layoutFlex}
+          flex: 1;
+          flex-basis: 0.000000001px;
         }
         @media (max-width: 900px) {
           .container-width {

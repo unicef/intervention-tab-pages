@@ -6,7 +6,6 @@ import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {repeatableDataSetsStyles} from '../../common/styles/repeatable-data-sets-styles';
 import isEmpty from 'lodash-es/isEmpty';
-import {layoutCenterJustified, layoutVertical} from '../../common/styles/flex-layout-styles';
 import {RootState} from '../../common/types/store.types';
 import {PlannedVisitsPermissions} from './programmaticVisits.models';
 import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown';
@@ -60,8 +59,9 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
         .error-msg {
           color: var(--error-color);
           font-size: 12px;
-          ${layoutVertical}
-          ${layoutCenterJustified}
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
         }
 
         .padd-left-when-items {

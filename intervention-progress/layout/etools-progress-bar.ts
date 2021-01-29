@@ -1,7 +1,5 @@
 import {LitElement, html, property, customElement} from 'lit-element';
-import '@polymer/iron-flex-layout/iron-flex-layout';
 import '@polymer/paper-progress/paper-progress';
-import {layoutCenter, layoutHorizontal} from '../../common/styles/flex-layout-styles';
 
 /**
  * LitElement
@@ -16,8 +14,9 @@ export class EtoolsProgressBar extends LitElement {
     return html`
       <style>
         :host {
-          ${layoutHorizontal}
-          ${layoutCenter}
+          display: flex;
+          flex-direction: row;
+          align-items: center;
 
           --paper-progress-active-color: var(--primary-color);
           --paper-progress-secondary-color: var(--primary-background-color);

@@ -1,5 +1,4 @@
 import {html, htmlLiteral} from '@polymer/polymer/lib/utils/html-tag.js';
-import '@polymer/iron-flex-layout/iron-flex-layout.js';
 import {ROOT_PATH} from '../../config/config';
 
 const baseUrlData: ReadonlyArray<string> = [ROOT_PATH];
