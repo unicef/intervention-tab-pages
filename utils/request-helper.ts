@@ -6,9 +6,6 @@ export const _sendRequest = (etoolsReqConfig: EtoolsRequestConfig, _requestKey?:
   return sendRequest(etoolsReqConfig, _requestKey, _checkProgress)
     .then((response: any) => response)
     .catch((error: any) => {
-      if (error.status === 401) {
-        // TODO
-      }
       fireEvent(document.body, 'toast', {
         text: formatServerErrorAsText(error),
         showCloseBtn: true

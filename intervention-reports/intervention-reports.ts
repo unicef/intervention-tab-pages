@@ -3,6 +3,7 @@ import {LitElement, customElement, html, property} from 'lit-element';
 import '@polymer/paper-styles/element-styles/paper-material-styles';
 import '@polymer/paper-tooltip/paper-tooltip';
 import '@unicef-polymer/etools-data-table/etools-data-table';
+import '@unicef-polymer/etools-data-table/etools-data-table-row'
 import '@polymer/iron-media-query/iron-media-query';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {abortRequestByKey} from '@unicef-polymer/etools-ajax/etools-iron-request';
@@ -394,10 +395,8 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
     this.lowResolutionLayout = e.detail.value;
   }
 
-  // TODO: this is the same function from lists common mixin, but we do not need that entire functionality here
-  // refactor in near future
   _listDataChanged() {
-    const rows = this.shadowRoot!.querySelectorAll('etools-data-table-row') as any; // TODO: etools-data-table typings
+    const rows = this.shadowRoot!.querySelectorAll('etools-data-table-row');
     if (rows && rows.length) {
       for (let i = 0; i < rows.length; i++) {
         if (rows[i].detailsOpened) {
