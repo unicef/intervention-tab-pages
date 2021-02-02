@@ -24,6 +24,7 @@ import {connectStore} from '../../../common/mixins/connect-store-mixin';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {buttonsStyles} from '../../../common/styles/button-styles.js';
 import {translate, get as getTranslation} from 'lit-translate';
+import {sharedStyles} from '../../../common/styles/shared-styles-lit.js';
 
 /**
  * @polymer
@@ -40,7 +41,7 @@ export class EditHruDialog extends connectStore(LitElement) {
     return html`
       ${requiredFieldStarredStylesPolymer}
       <style>
-        *[hidden] {
+        ${sharedStyles}*[hidden] {
           display: none !important;
         }
 

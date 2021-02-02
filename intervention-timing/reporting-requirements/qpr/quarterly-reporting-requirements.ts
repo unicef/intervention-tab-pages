@@ -12,6 +12,7 @@ import {EditQprDialogEl} from './edit-qpr-dialog';
 import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../../common/styles/button-styles';
 import {translate, get as getTranslation} from 'lit-translate';
+import {sharedStyles} from '../../../common/styles/shared-styles-lit';
 
 /**
  * @polymer
@@ -31,7 +32,7 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
   render() {
     return html`
       <style>
-        *[hidden] {
+        ${sharedStyles}*[hidden] {
           display: none !important;
         }
       </style>
