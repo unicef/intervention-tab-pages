@@ -19,7 +19,6 @@ export class InterventionPageContentHeader extends LitElement {
           flex-direction: column;
           justify-content: flex-start;
           flex: 1;
-          flex-basis: 0.000000001px;
 
           background-color: var(--primary-background-color);
           padding: 0;
@@ -104,7 +103,6 @@ export class InterventionPageContentHeader extends LitElement {
           flex-direction: row
           justify-content: space-between;
           flex: 1;
-          flex-basis: 0.000000001px;
           align-items: center;
         }
         .flex-block {

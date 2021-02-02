@@ -111,7 +111,6 @@ export class InterventionProgress extends connectStore(
 
         .report-progress-bar {
           flex: 1;
-          flex-basis: 0.000000001px;
           --etools-progress-bar-width: 100%;
         }
 
