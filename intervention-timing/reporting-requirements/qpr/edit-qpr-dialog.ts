@@ -21,6 +21,7 @@ import {AnyObject} from '@unicef-polymer/etools-types';
 declare const dayjs: any;
 import {buttonsStyles} from '../../../common/styles/button-styles';
 import {translate, get as getTranslation} from 'lit-translate';
+import {sharedStyles} from '../../../common/styles/shared-styles-lit';
 
 /**
  * @polymer
@@ -34,7 +35,7 @@ export class EditQprDialog extends LitElement {
   render() {
     return html`
       <style>
-        *[hidden] {
+        ${sharedStyles}*[hidden] {
           display: none !important;
         }
 
