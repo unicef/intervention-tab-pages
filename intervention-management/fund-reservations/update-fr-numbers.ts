@@ -60,7 +60,6 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
           display: flex;
           flex-direction: column;
           flex: 1;
-          flex-basis: 0.000000001px;
           margin-left: 10px;
           border-left: 1px solid var(--darker-divider-color);
         }

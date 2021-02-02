@@ -67,7 +67,6 @@ export const gridLayoutStylesContent = `
 .flex-c {
   /* flex container */
   flex: 1;
-  flex-basis: 0.000000001px;
 }
 
 .row-h,

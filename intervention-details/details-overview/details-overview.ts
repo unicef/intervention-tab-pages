@@ -37,7 +37,6 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
         .container-width {
           width: 70%;
           flex: 1;
-          flex-basis: 0.000000001px;
         }
         @media (max-width: 900px) {
           .container-width {
