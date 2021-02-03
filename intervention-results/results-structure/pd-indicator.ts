@@ -28,7 +28,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
           --indicator-blue: #a4c4e1;
           --indicator-green: #c4d7c6;
         }
-        :host etools-data-table-row::part(icon-wrapper) {
+        etools-data-table-row::part(icon-wrapper) {
           padding: 0 0 !important;
           margin-right: 16px !important;
         }
