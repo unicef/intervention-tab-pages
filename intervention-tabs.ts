@@ -71,7 +71,7 @@ export class InterventionTabs extends connectStore(LitElement) {
       <style>
         :host {
           --ecp-header-bg: #ffffff;
-          --epc-header-color: var(--primary-text-color);
+          --ecp-header-color: var(--primary-text-color);
         }
 
         ${sharedStyles} etools-status {

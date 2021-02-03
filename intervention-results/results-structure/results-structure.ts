@@ -65,7 +65,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
       ResultStructureStyles,
       buttonsStyles,
       css`
-        etools-content-panel::part(epc-header) {
+        etools-content-panel::part(ecp-header) {
           z-index: 1;
         }
 
@@ -222,7 +222,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           margin: 6px 0 6px 10px;
         }
 
-        etools-content-panel::part(epc-header) {
+        etools-content-panel::part(ecp-header) {
           position: relative;
           z-index: 1000;
           border-bottom: 1px groove var(--dark-divider-color);

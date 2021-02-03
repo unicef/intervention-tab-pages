@@ -240,7 +240,7 @@ export const sharedStylesContent = `
     display: none !important;
   }
 
-  etools-content-panel::part(epc-header) {
+  etools-content-panel::part(ecp-header) {
       background-color: var(--primary-background-color);
       border-bottom: 1px groove var(--dark-divider-color);
   }
