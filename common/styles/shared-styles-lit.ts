@@ -322,7 +322,7 @@ export const sharedStylesContent = `
     background-color: rgba(170, 165, 165, 0.2);
   }
 
-  *:focus:not(paper-icon-button):not(paper-radio-button):not(paper-checkbox):not(paper-toggle-button):not(paper-input):not(paper-textarea) {
+  *:focus:not(paper-icon-button):not(paper-radio-button):not(paper-checkbox):not(paper-toggle-button):not(paper-input):not(paper-textarea):not(paper-slider) {
     outline: 0;
     box-shadow: var(--paper-material-elevation-3_-_box-shadow);
   }

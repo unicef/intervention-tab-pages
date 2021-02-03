@@ -1,11 +1,4 @@
 import {LitElement, html, property, customElement} from 'lit-element';
-import {
-  layoutVertical,
-  layoutStartJustified,
-  layoutFlex,
-  layoutHorizontal,
-  layoutCenter
-} from '../../styles/flex-layout-styles';
 
 /**
  * @LitElement
@@ -22,9 +15,10 @@ export class InterventionPageContentHeader extends LitElement {
         }
 
         :host {
-          ${layoutVertical}
-          ${layoutStartJustified}
-          ${layoutFlex}
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          flex: 1;
 
           background-color: var(--primary-background-color);
           padding: 0;
@@ -44,11 +38,12 @@ export class InterventionPageContentHeader extends LitElement {
           min-height: 114px;
         }
         .content-header-row {
-          ${layoutHorizontal}
-          ${layoutStartJustified}
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-start;
         }
         .title-row {
-          ${layoutCenter}
+          align-items: center;
           margin: 15px 0 0;
           padding: 0 24px;
         }
@@ -74,6 +69,7 @@ export class InterventionPageContentHeader extends LitElement {
 
         @media (max-width: 1100px) {
           .content-header-row {
+            display: flex;
             flex-direction: column;
           }
           .content-header-row div:last-child {
@@ -103,15 +99,17 @@ export class InterventionPageContentHeader extends LitElement {
           white-space: nowrap;
         }
         .cont {
-          ${layoutHorizontal}
+          display: flex;
+          flex-direction: row
           justify-content: space-between;
-          ${layoutFlex}
-          ${layoutCenter}
+          flex: 1;
+          align-items: center;
         }
         .flex-block {
           flex: 1;
           min-width: 0;
-          ${layoutHorizontal}
+          display: flex;
+          flex-direction: row
         }
         .none-flex {
           flex: none;

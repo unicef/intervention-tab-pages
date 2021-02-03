@@ -200,18 +200,19 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           display: block;
           margin-bottom: 24px;
         }
-        etools-data-table-row {
-          --list-row-wrapper-padding: 0 12px 0 0;
-          --list-row-collapse-wrapper: {
-            padding: 0 !important;
-            border-bottom: none !important;
-          }
-          --list-row-wrapper: {
-            background-color: var(--secondary-background-color);
-            min-height: 48px;
-            border-bottom: 1px solid var(--main-border-color) !important;
-          }
+
+        etools-data-table-row::part(list-row-wrapper) {
+          padding: 0 12px 0 0;
+          background-color: var(--secondary-background-color);
+          min-height: 48px;
+          border-bottom: 1px solid var(--main-border-color) !important;
         }
+
+        etools-data-table-row::part(list-row-collapse-wrapper) {
+          padding: 0 !important;
+          border-bottom: none !important;
+        }
+
         .export-res-btn {
           height: 28px;
         }

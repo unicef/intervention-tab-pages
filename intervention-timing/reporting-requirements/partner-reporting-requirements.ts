@@ -2,7 +2,6 @@ import {LitElement, customElement, html, property, PropertyValues} from 'lit-ele
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-selector/iron-selector';
 import '@polymer/iron-pages/iron-pages';
-import '@polymer/iron-flex-layout/iron-flex-layout';
 import '@polymer/paper-item/paper-item';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';

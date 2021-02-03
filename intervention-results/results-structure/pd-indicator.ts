@@ -28,66 +28,63 @@ export class PdIndicator extends CommentsMixin(LitElement) {
           --indicator-blue: #a4c4e1;
           --indicator-green: #c4d7c6;
         }
-        :host etools-data-table-row {
-          --icon-wrapper: {
-            padding: 0 0 !important;
-            margin-right: 16px !important;
-          }
+        :host etools-data-table-row::part(icon-wrapper) {
+          padding: 0 0 !important;
+          margin-right: 16px !important;
         }
         .editable-row .hover-block {
           background-color: rgb(189, 211, 230);
         }
-        :host([high-frequency-indicator]) etools-data-table-row {
-          --icon-wrapper: {
-            background: var(--indicator-blue)
-              linear-gradient(
-                135deg,
-                #066ac7 12.5%,
-                #a4c4e1 12.5%,
-                #a4c4e1 50%,
-                #066ac7 50%,
-                #066ac7 62.5%,
-                #a4c4e1 62.5%,
-                #a4c4e1 100%
-              )
-              center/5.66px 5.66px;
-          }
+
+        etools-data-table-row::part(list-row-wrapper):hover {
+          background-color: rgb(189, 211, 230);
         }
-        :host([cluster-indicator]) etools-data-table-row {
-          --icon-wrapper: {
-            background: var(--indicator-green)
-              linear-gradient(
-                135deg,
-                #066ac7 12.5%,
-                #c4d7c6 12.5%,
-                #c4d7c6 50%,
-                #066ac7 50%,
-                #066ac7 62.5%,
-                #c4d7c6 62.5%,
-                #c4d7c6 100%
-              )
-              center/5.66px 5.66px;
-          }
+
+        :host([high-frequency-indicator]) etools-data-table-row::part(icon-wrapper) {
+          background: var(--indicator-blue)
+            linear-gradient(
+              135deg,
+              #066ac7 12.5%,
+              #a4c4e1 12.5%,
+              #a4c4e1 50%,
+              #066ac7 50%,
+              #066ac7 62.5%,
+              #a4c4e1 62.5%,
+              #a4c4e1 100%
+            )
+            center/5.66px 5.66px;
+        }
+        :host([cluster-indicator]) etools-data-table-row::part(icon-wrapper) {
+          background: var(--indicator-green)
+            linear-gradient(
+              135deg,
+              #066ac7 12.5%,
+              #c4d7c6 12.5%,
+              #c4d7c6 50%,
+              #066ac7 50%,
+              #066ac7 62.5%,
+              #c4d7c6 62.5%,
+              #c4d7c6 100%
+            )
+            center/5.66px 5.66px;
         }
         etools-data-table-row {
           --blue-background: #b6d5f1;
           --blue-background-dark: #a4c4e1;
           display: block;
-          --list-row-wrapper_-_align-items: stretch;
-          --list-row-collapse-wrapper_-_margin-bottom: 0px;
-          --list-row-wrapper: {
-            background-color: var(--blue-background);
-            border: 1px solid var(--main-border-color) !important;
-            border-bottom: none !important;
-          }
         }
-        :host(:last-child) etools-data-table-row {
-          --list-row-wrapper: {
-            background-color: var(--blue-background);
-            border: 1px solid var(--main-border-color) !important;
-            border-bottom: 1px solid var(--main-border-color) !important;
-          }
+
+        etools-data-table-row::part(list-row-collapse-wrapper) {
+          margin-bottom: 0;
         }
+
+        etools-data-table-row::part(list-row-wrapper) {
+          align-items: stretch;
+          background-color: var(--blue-background);
+          border: 1px solid var(--main-border-color) !important;
+          border-bottom: none !important;
+        }
+
         .indicatorType {
           font-weight: 600;
           font-size: 16px;
@@ -99,11 +96,9 @@ export class PdIndicator extends CommentsMixin(LitElement) {
           max-height: 220px;
           overflow: auto;
         }
-        etools-data-table-row {
-          --list-row-collapse-wrapper: {
-            padding: 0;
-            margin: 0;
-          }
+        etools-data-table-row::part(list-row-collapse-wrapper) {
+          padding: 0;
+          margin: 0;
         }
         .font-bold {
           font-weight: bold;
