@@ -8,11 +8,11 @@ import {fireEvent} from '../../../utils/fire-custom-event';
 
 import './edit-qpr-dialog';
 import './qpr-list';
-import {EditQprDialogEl} from './edit-qpr-dialog';
 import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../../common/styles/button-styles';
 import {translate, get as getTranslation} from 'lit-translate';
 import {sharedStyles} from '../../../common/styles/shared-styles-lit';
+import {openDialog} from '../../../utils/dialog';
 
 /**
  * @polymer
@@ -60,39 +60,11 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
   @property({type: String})
   interventionEnd!: string;
 
-  @property({type: Object})
-  editQprDialog!: EditQprDialogEl;
-
   @property({type: Boolean})
   editMode!: boolean;
 
   @property() dialogOpened = true;
 
-  connectedCallback() {
-    super.connectedCallback();
-    this._createEditQprDialog();
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    this._removeEditQprDialog();
-  }
-
-  _createEditQprDialog() {
-    if (this.reportingRequirements) {
-      this.editQprDialog = document.createElement('edit-qpr-dialog') as EditQprDialogEl;
-      this._onReportingRequirementsSaved = this._onReportingRequirementsSaved.bind(this);
-      this.editQprDialog.addEventListener('reporting-requirements-saved', this._onReportingRequirementsSaved as any);
-      document.querySelector('body')!.appendChild(this.editQprDialog);
-    }
-  }
-
-  _removeEditQprDialog() {
-    if (this.editQprDialog) {
-      this.editQprDialog.removeEventListener('reporting-requirements-saved', this._onReportingRequirementsSaved as any);
-      document.querySelector('body')!.removeChild(this.editQprDialog);
-    }
-  }
 
   openQuarterlyRepRequirementsDialog() {
     if (!this.interventionStart || !this.interventionEnd) {
@@ -108,9 +80,19 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
     } else {
       qprData = JSON.parse(JSON.stringify(this.reportingRequirements));
     }
-    this.editQprDialog.qprData = qprData;
-    this.editQprDialog.interventionId = this.interventionId;
-    this.editQprDialog.openQprDialog();
+
+    openDialog({
+      dialog: 'edit-qpr-dialog',
+      dialogData: {
+        qprData: qprData,
+        interventionId: this.interventionId
+      }
+    }).then(({confirmed, response}) => {
+      if (!confirmed || !response) {
+        return;
+      }
+      this._onReportingRequirementsSaved(response);
+    });
   }
 
   _getReportType() {
