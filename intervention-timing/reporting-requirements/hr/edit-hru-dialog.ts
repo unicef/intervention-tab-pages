@@ -12,8 +12,6 @@ import {fireEvent} from '../../../utils/fire-custom-event';
 import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
 import {requiredFieldStarredStylesPolymer} from '../../../common/styles/required-field-styles';
 import {convertDate} from '../../../utils/date-utils';
-// this was refactored
-// import EndpointsMixin from '../mixins/endpoints-mixin';
 import {getEndpoint} from '../../../utils/endpoint-helper';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
@@ -69,7 +67,9 @@ export class EditHruDialog extends connectStore(LitElement) {
         @confirm-btn-clicked="${this._saveHurData}"
         ok-btn-text=${translate('GENERAL.SAVE')}
         keep-dialog-open
+        opened
         ?hidden="${this.datePickerOpen}"
+        @close="${() => this._onClose()}"
         spinner-text=${translate('GENERAL.SAVING_DATA')}
       >
         <div class="start-date">
@@ -157,6 +157,16 @@ export class EditHruDialog extends connectStore(LitElement) {
     return this._interventionId;
   }
 
+  set dialogData(data: any) {
+    const {hruData, selectedDate, interventionId, interventionStart}: any = data;
+    this.hruData = hruData;
+    this.selectedDate = selectedDate;
+    this.interventionId = interventionId;
+    this.interventionStart = interventionStart;
+
+    this._setDefaultStartDate();
+  }
+
   intervDataChanged() {
     this.minDate = this._getMinDate();
   }
@@ -188,15 +198,8 @@ export class EditHruDialog extends connectStore(LitElement) {
     return this.hruData[0].start_date;
   }
 
-  openDialog() {
-    this._setDefaultStartDate();
-    const dialog = this.shadowRoot!.querySelector(`#editHruDialog`) as EtoolsDialog;
-    dialog.opened = true;
-  }
-
-  closeDialog() {
-    const dialog = this.shadowRoot!.querySelector(`#editHruDialog`) as EtoolsDialog;
-    dialog.opened = false;
+  _onClose(): void {
+    fireEvent(this, 'dialog-closed', {confirmed: false});
   }
 
   _empty(listLength: number) {
@@ -277,9 +280,8 @@ export class EditHruDialog extends connectStore(LitElement) {
       body: {reporting_requirements: this.hruData}
     })
       .then((response: any) => {
-        fireEvent(this, 'reporting-requirements-saved', response.reporting_requirements);
         dialog.stopSpinner();
-        this.closeDialog();
+        fireEvent(this, 'dialog-closed', {confirmed: true, response: response.reporting_requirements});
       })
       .catch((error: any) => {
         logError('Failed to save/update HR data!', 'edit-hru-dialog', error);
