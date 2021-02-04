@@ -252,6 +252,10 @@ export const sharedStylesContent = `
       font-weight: 500;
   }
 
+  etools-content-panel::part(ecp-content) {
+      padding: 0;
+  }
+
   .editable-row .hover-block {
     opacity: 0;
     display: flex;
