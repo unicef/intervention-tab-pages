@@ -164,7 +164,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
                   ></etools-currency-amount-input>
 
                   <etools-currency-amount-input
-                    class="col-2"
+                    class="col-3"
                     label=${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.UNICEF_CASH_BUDGET')}
                     ?readonly="${this.readonly}"
                     .value="${this.editedData.unicef_cash}"
