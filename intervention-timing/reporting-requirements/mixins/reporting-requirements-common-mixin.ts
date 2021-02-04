@@ -71,7 +71,6 @@ function ReportingRequirementsCommonMixin<T extends Constructor<LitElement>>(bas
             CONSTANTS.REQUIREMENTS_REPORT_TYPE.SPECIAL == type ? response : response.reporting_requirements;
           this._countReportingReq(this.reportingRequirements.length);
           this.updateReportingRequirements(response, type);
-
         })
         .catch((error: any) => {
           logError('Failed to get qpr data from API!', 'reporting-requirements-common-mixin', error);
@@ -111,25 +110,23 @@ function ReportingRequirementsCommonMixin<T extends Constructor<LitElement>>(bas
     }
 
     updateReportingRequirements(reportingRequirements: any, type: string) {
-      let requirements = getStore().getState().interventions.prr;
-      if (!requirements) {
-        requirements = {};
-      }
+      const requirements = getStore().getState().interventions.partnerReportingRequirements;
+
       switch (type) {
         case CONSTANTS.REQUIREMENTS_REPORT_TYPE.SPECIAL: {
           requirements.special = reportingRequirements;
           break;
         }
         case CONSTANTS.REQUIREMENTS_REPORT_TYPE.QPR: {
-          requirements.qpr = reportingRequirements;
+          requirements.qpr = reportingRequirements.reporting_requirements;
           break;
         }
-          case CONSTANTS.REQUIREMENTS_REPORT_TYPE.HR: {
-          requirements.hr = reportingRequirements;
+        case CONSTANTS.REQUIREMENTS_REPORT_TYPE.HR: {
+          requirements.hr = reportingRequirements.reporting_requirements;
           break;
         }
-          case CONSTANTS.REQUIREMENTS_REPORT_TYPE.SR: {
-          requirements.SR = reportingRequirements;
+        case CONSTANTS.REQUIREMENTS_REPORT_TYPE.SR: {
+          requirements.sr = reportingRequirements;
           break;
         }
       }

@@ -11,7 +11,8 @@ import {
   CpOutput,
   Section,
   GenericObject,
-  EtoolsUser
+  EtoolsUser,
+  PartnerReportingRequirements
 } from '@unicef-polymer/etools-types';
 
 export interface AppState {
@@ -25,8 +26,8 @@ export interface AppState {
 }
 
 export interface InterventionsState {
-  current: Intervention | null,
-  prr: any | null
+  current: Intervention | null;
+  partnerReportingRequirements: PartnerReportingRequirements;
 }
 
 export interface AgreementsState {

@@ -1,14 +1,14 @@
 import {UPDATE_CURRENT_INTERVENTION, UPDATE_PARTNER_REPORTING_REQUIREMENTS} from '../actionsConstants';
-import {Intervention} from '@unicef-polymer/etools-types';
+import {Intervention, PartnerReportingRequirements} from '@unicef-polymer/etools-types';
 
 export interface InterventionsState {
   current: Intervention | null;
-  prr: any | null
+  partnerReportingRequirements: PartnerReportingRequirements;
 }
 
 const INITIAL_STATE: InterventionsState = {
   current: null,
-  prr: null
+  partnerReportingRequirements: {special: [], qpr: [], hr: [], sr: []}
 };
 
 export const interventions = (state = INITIAL_STATE, action: any) => {
@@ -21,7 +21,7 @@ export const interventions = (state = INITIAL_STATE, action: any) => {
     case UPDATE_PARTNER_REPORTING_REQUIREMENTS:
       return {
         ...state,
-        prr: action.prr
+        partnerReportingRequirements: action.partnerReportingRequirements
       };
     default:
       return state;

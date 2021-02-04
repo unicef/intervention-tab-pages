@@ -2,7 +2,7 @@ import {_sendRequest} from '../../utils/request-helper';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {SHOW_TOAST} from '../actionsConstants';
-import {AnyObject, PlannedBudget, Intervention} from '@unicef-polymer/etools-types';
+import {AnyObject, PlannedBudget, Intervention, PartnerReportingRequirements} from '@unicef-polymer/etools-types';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 
 export const updateCurrentIntervention = (intervention: AnyObject | null) => {
@@ -63,9 +63,9 @@ export const patchIntervention = (interventionChunck: any, interventionId?: stri
   });
 };
 
-export const updatePartnerReportingRequirements = (newReportingRequirements: AnyObject | null) => {
+export const updatePartnerReportingRequirements = (newReportingRequirements: PartnerReportingRequirements) => {
   return {
     type: 'UPDATE_PARTNER_REPORTING_REQUIREMENTS',
-    prr: newReportingRequirements
+    partnerReportingRequirements: newReportingRequirements
   };
 };

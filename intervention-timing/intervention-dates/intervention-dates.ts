@@ -23,6 +23,7 @@ import {
   ExpectedResult,
   Intervention,
   InterventionActivity,
+  PartnerReportingRequirements,
   Permission,
   ResultLinkLowerResult
 } from '@unicef-polymer/etools-types';
@@ -180,7 +181,7 @@ export class InterventionDates extends CommentsMixin(
       return;
     }
     this.data = selectInterventionDates(state);
-    this.checkIfWarningRequired(state.interventions.current, state.interventions.prr);
+    this.checkIfWarningRequired(state.interventions.current, state.interventions.partnerReportingRequirements);
     this.originalData = cloneDeep(this.data);
     this.permissions = selectInterventionDatesPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
@@ -211,17 +212,21 @@ export class InterventionDates extends CommentsMixin(
     );
   }
 
-  private checkIfWarningRequired(intervention: Intervention, partnerReportingRequirements: any) {
+  private checkIfWarningRequired(
+    intervention: Intervention,
+    partnerReportingRequirements: PartnerReportingRequirements
+  ) {
     this.warningRequired = false;
-    // check Partern Reporting Requirements
+    // check Partner Reporting Requirements
     if (partnerReportingRequirements) {
-      Object.keys(partnerReportingRequirements).map(reportingRequirement => {
-        if (reportingRequirement.length) {
+      Object.entries(partnerReportingRequirements).forEach(([_key, value]) => {
+        if (value.length) {
           this.warningRequired = true;
           return;
         }
       });
     }
+
     // get activities array
     const pdOutputs: ResultLinkLowerResult[] = intervention.result_links
       .map(({ll_results}: ExpectedResult) => ll_results)
