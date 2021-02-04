@@ -42,8 +42,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
     // language=HTML
     return html`
       <style>
-        ${sharedStyles} ${repeatableDataSetsStyles}
-        :host {
+        ${sharedStyles} ${repeatableDataSetsStyles} :host {
           display: block;
           margin-bottom: 24px;
         }
@@ -78,6 +77,10 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
         }
         p {
           margin-top: 24px;
+        }
+
+        etools-content-panel::part(ecp-content) {
+          padding: 8px 24px 16px 24px;
         }
       </style>
 

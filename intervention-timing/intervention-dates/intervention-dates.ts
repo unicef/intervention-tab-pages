@@ -47,6 +47,10 @@ export class InterventionDates extends CommentsMixin(ComponentBaseMixin(FrNumber
         datepicker-lite {
           min-width: 200px;
         }
+
+        etools-content-panel::part(ecp-content) {
+          padding: 8px 24px 16px 24px;
+        }
       </style>
 
       <etools-content-panel

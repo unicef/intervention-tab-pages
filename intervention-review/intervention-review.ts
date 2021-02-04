@@ -17,6 +17,7 @@ import '@polymer/paper-button/paper-button';
 import '@polymer/paper-checkbox/paper-checkbox';
 import {formatDate} from '../utils/date-utils';
 import {connectStore} from '../common/mixins/connect-store-mixin';
+import {sharedStyles} from '../common/styles/shared-styles-lit';
 
 const Types: GenericObject<string> = {
   prc: 'PRC Review',
@@ -34,6 +35,7 @@ export class InterventionReviewTab extends connectStore(LitElement) {
     return [
       gridLayoutStylesLit,
       buttonsStyles,
+      sharedStyles,
       css`
         *[hidden] {
           display: none;
@@ -58,6 +60,10 @@ export class InterventionReviewTab extends connectStore(LitElement) {
         .info-block {
           margin-right: 1.5rem;
           min-width: 110px;
+        }
+
+        etools-content-panel::part(ecp-content) {
+          padding: 8px 24px 16px 24px;
         }
       `
     ];

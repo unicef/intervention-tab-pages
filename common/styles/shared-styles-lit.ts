@@ -1,4 +1,4 @@
-import {html, unsafeCSS} from 'lit-element';
+import {css, unsafeCSS} from 'lit-element';
 // language=css
 export const sharedStylesContent = `
   :host {
@@ -240,10 +240,20 @@ export const sharedStylesContent = `
     display: none !important;
   }
 
-  etools-content-panel {
-    --epc-header: {
-     border-bottom: 1px solid var(--dark-divider-color) !important;
-    }
+  etools-content-panel::part(ecp-header) {
+      background-color: var(--primary-background-color);
+      border-bottom: 1px groove var(--dark-divider-color);
+  }
+
+  etools-content-panel::part(ecp-header-title) {
+      padding: 0 24px 0 0;
+      text-align: left;
+      font-size: 18px;
+      font-weight: 500;
+  }
+
+  etools-content-panel::part(ecp-content) {
+      padding: 0;
   }
 
   .editable-row .hover-block {
@@ -327,7 +337,10 @@ export const sharedStylesContent = `
     background-color: rgba(170, 165, 165, 0.2);
   }
 `;
-export const sharedStyles = html`${unsafeCSS(sharedStylesContent)}`;
+// export const sharedStyles = html`${unsafeCSS(sharedStylesContent)}`;
+export const sharedStyles = css`
+  ${unsafeCSS(sharedStylesContent)}
+`;
 
 export const sharedStylesPolymer = () => {
   const template = document.createElement('template');

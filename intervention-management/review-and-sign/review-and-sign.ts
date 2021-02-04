@@ -62,6 +62,9 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
           display: block;
           margin-bottom: 24px;
         }
+
+        
+        
         paper-input-container{
           margin-left: 0px;
         }
@@ -88,6 +91,10 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
         }
         .content-wrapper {
           padding: 0;
+        }
+
+        etools-content-panel::part(ecp-content) {
+          padding: 8px 24px 16px 24px;
         }
       </style>
       <etools-content-panel

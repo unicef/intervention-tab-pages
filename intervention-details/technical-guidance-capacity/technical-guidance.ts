@@ -40,6 +40,10 @@ export class TechnicalGuidance extends CommentsMixin(ComponentBaseMixin(LitEleme
           display: block;
           margin-bottom: 24px;
         }
+
+        etools-content-panel::part(ecp-content) {
+          padding: 8px 24px 16px 24px;
+        }
       </style>
 
       <etools-content-panel
