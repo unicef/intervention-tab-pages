@@ -77,6 +77,10 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         #locations {
           max-width: 100%;
         }
+
+        etools-content-panel::part(ecp-content) {
+          padding: 8px 24px 16px 24px;
+        }
       </style>
 
       <etools-content-panel

@@ -55,6 +55,10 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
         .padd-top {
           padding-top: 17px;
         }
+
+        etools-content-panel::part(ecp-content) {
+          padding: 8px 24px 16px 24px;
+        }
       </style>
 
       <etools-content-panel

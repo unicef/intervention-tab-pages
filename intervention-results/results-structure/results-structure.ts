@@ -65,10 +65,8 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
       ResultStructureStyles,
       buttonsStyles,
       css`
-        etools-content-panel {
-          --ecp-content-padding: 0;
-          --ecp-content_-_padding: 0;
-          --epc-header_-_z-index: 1;
+        etools-content-panel::part(ecp-header) {
+          z-index: 1;
         }
 
         iron-icon[icon='create'] {
@@ -224,13 +222,13 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           padding-right: 10px;
           margin: 6px 0 6px 10px;
         }
-        etools-content-panel {
-          --epc-header: {
-            position: relative;
-            z-index: 1000;
-            border-bottom: 1px groove var(--dark-divider-color);
-          }
+
+        etools-content-panel::part(ecp-header) {
+          position: relative;
+          z-index: 1000;
+          border-bottom: 1px groove var(--dark-divider-color);
         }
+
         .add-cp {
           opacity: 0.84;
           margin-left: 6px;

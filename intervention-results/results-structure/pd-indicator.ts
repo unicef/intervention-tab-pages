@@ -28,13 +28,18 @@ export class PdIndicator extends CommentsMixin(LitElement) {
           --indicator-blue: #a4c4e1;
           --indicator-green: #c4d7c6;
         }
-        :host etools-data-table-row::part(icon-wrapper) {
+        etools-data-table-row::part(icon-wrapper) {
           padding: 0 0 !important;
           margin-right: 16px !important;
         }
         .editable-row .hover-block {
           background-color: rgb(189, 211, 230);
         }
+
+        etools-data-table-row::part(list-row-wrapper):hover {
+          background-color: rgb(189, 211, 230);
+        }
+
         :host([high-frequency-indicator]) etools-data-table-row::part(icon-wrapper) {
           background: var(--indicator-blue)
             linear-gradient(
@@ -80,11 +85,6 @@ export class PdIndicator extends CommentsMixin(LitElement) {
           border-bottom: none !important;
         }
 
-        :host(:last-child) etools-data-table-row::part(list-row-wrapper) {
-          background-color: var(--blue-background);
-          border: 1px solid var(--main-border-color) !important;
-          border-bottom: 1px solid var(--main-border-color) !important;
-        }
         .indicatorType {
           font-weight: 600;
           font-size: 16px;

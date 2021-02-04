@@ -61,9 +61,8 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         :host {
           display: block;
           margin-bottom: 24px;
-          --ecp-content-padding: 0;
-          --ecp-content_-_padding: 0;
         }
+
         etools-table {
           padding-top: 0;
         }

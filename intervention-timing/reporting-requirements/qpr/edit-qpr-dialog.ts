@@ -4,7 +4,6 @@ import '@polymer/paper-button/paper-button';
 import '@unicef-polymer/etools-dialog/etools-dialog';
 
 import {prepareDatepickerDate} from '../../../utils/date-utils';
-// import EndpointsMixin from '../mixins/endpoints-mixin';
 import {getEndpoint} from '../../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import './qpr-list.js';
@@ -21,6 +20,7 @@ import {AnyObject} from '@unicef-polymer/etools-types';
 declare const dayjs: any;
 import {buttonsStyles} from '../../../common/styles/button-styles';
 import {translate, get as getTranslation} from 'lit-translate';
+import {sharedStyles} from '../../../common/styles/shared-styles-lit';
 
 /**
  * @polymer
@@ -34,7 +34,7 @@ export class EditQprDialog extends LitElement {
   render() {
     return html`
       <style>
-        *[hidden] {
+        ${sharedStyles}*[hidden] {
           display: none !important;
         }
 
@@ -67,6 +67,7 @@ export class EditQprDialog extends LitElement {
         ok-btn-text=${translate('GENERAL.SAVE')}
         cancel-btn-text=${translate('GENERAL.CANCEL')}
         keep-dialog-open
+        opened
         spinner-text=${translate('GENERAL.SAVING_DATA')}
       >
         <div class="layout-horizontal">
@@ -178,6 +179,14 @@ export class EditQprDialog extends LitElement {
   @property({type: Array})
   qprData!: any[];
 
+  set dialogData(data: any) {
+    const {qprData, interventionId}: any = data;
+    this.qprData = qprData;
+    this.interventionId = interventionId;
+
+    this.addEventListener('edit-qpr', this._editQprDatesSet as any);
+  }
+
   changed(value: string, item: string) {
     if (this._editedQprDatesSet) {
       const newDate = dayjs(new Date(value)).format('YYYY-MM-DD');
@@ -189,14 +198,9 @@ export class EditQprDialog extends LitElement {
     this.addOrModifyQprDialogOpened = false;
   }
 
-  openQprDialog() {
-    (this.editQprDialog as EtoolsDialog).opened = true;
-    this.addEventListener('edit-qpr', this._editQprDatesSet as any);
-  }
-
   closeQprDialog() {
-    (this.editQprDialog as EtoolsDialog).opened = false;
     this.removeEventListener('edit-qpr', this._editQprDatesSet as any);
+    fireEvent(this, 'dialog-closed', {confirmed: false});
   }
 
   _addNewQpr() {
@@ -290,9 +294,9 @@ export class EditQprDialog extends LitElement {
       body: {reporting_requirements: this.qprData}
     })
       .then((response: any) => {
-        fireEvent(this, 'reporting-requirements-saved', response.reporting_requirements);
         dialog.stopSpinner();
-        this.closeQprDialog();
+        this.removeEventListener('edit-qpr', this._editQprDatesSet as any);
+        fireEvent(this, 'dialog-closed', {confirmed: true, response: response.reporting_requirements});
       })
       .catch((error: any) => {
         logError('Failed to save/update qpr data!', 'edit-qpr-dialog', error);

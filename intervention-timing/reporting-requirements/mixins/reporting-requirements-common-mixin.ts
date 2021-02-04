@@ -99,8 +99,8 @@ function ReportingRequirementsCommonMixin<T extends Constructor<LitElement>>(bas
       return isEmptyObject(list);
     }
 
-    _onReportingRequirementsSaved(e: CustomEvent) {
-      this.reportingRequirements = e.detail;
+    _onReportingRequirementsSaved(reportingRequirements: any[]) {
+      this.reportingRequirements = reportingRequirements;
       this.requestUpdate();
     }
 

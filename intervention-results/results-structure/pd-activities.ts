@@ -76,21 +76,9 @@ export class PdActivities extends CommentsMixin(LitElement) {
         .editable-row .hover-block {
           background-color: rgb(199, 212, 200);
         }
-        /*TODO: check if this breaks anything*/
-        /*etools-data-table-row:last-child {*/
-        /*  --list-row-wrapper: {*/
-        /*    background-color: var(--green-background);*/
-        /*    min-height: 48px;*/
-        /*    border: 1px solid var(--main-border-color) !important;*/
-        /*    border-bottom: 1px solid var(--main-border-color) !important;*/
-        /*  }*/
-        /*}*/
 
-        :host(:last-child) etools-data-table-row::part(list-row-wrapper) {
-          background-color: var(--green-background);
-          min-height: 48px;
-          border: 1px solid var(--main-border-color) !important;
-          border-bottom: 1px solid var(--main-border-color) !important;
+        etools-data-table-row::part(list-row-wrapper):hover {
+          background-color: rgb(199, 212, 200);
         }
       </style>
 

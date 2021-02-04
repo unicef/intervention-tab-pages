@@ -52,11 +52,6 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
           box-sizing: border-box;
         }
 
-        etools-content-panel {
-          --ecp-content-padding: 0;
-          --ecp-content_-_padding: 0;
-        }
-
         /* ------------------------------- */
 
         .reporting-req-data {
