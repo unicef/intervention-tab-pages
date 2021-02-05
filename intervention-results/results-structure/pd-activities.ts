@@ -57,18 +57,18 @@ export class PdActivities extends CommentsMixin(LitElement) {
           --list-bg-color: var(--green-background);
         }
 
-        etools-data-table-row::part(list-row-collapse-wrapper) {
+        etools-data-table-row::part(edt-list-row-collapse-wrapper) {
           padding: 0 !important;
           background-color: var(--green-background-dark);
           border-top: 1px solid var(--main-border-color);
         }
-        etools-data-table-row::part(list-row-wrapper) {
+        etools-data-table-row::part(edt-list-row-wrapper) {
           background-color: var(--green-background);
           min-height: 48px;
           border: 1px solid var(--main-border-color) !important;
           border-bottom: none !important;
         }
-        etools-data-table-row::part(icon-wrapper) {
+        etools-data-table-row::part(edt-icon-wrapper) {
           padding: 0 0 !important;
           margin-right: 16px !important;
         }
@@ -77,7 +77,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
           background-color: rgb(199, 212, 200);
         }
 
-        etools-data-table-row::part(list-row-wrapper):hover {
+        etools-data-table-row::part(edt-list-row-wrapper):hover {
           background-color: rgb(199, 212, 200);
         }
       </style>
