@@ -1,5 +1,6 @@
 import {UPDATE_CURRENT_INTERVENTION, UPDATE_PARTNER_REPORTING_REQUIREMENTS} from '../actionsConstants';
-import {Intervention, PartnerReportingRequirements} from '@unicef-polymer/etools-types';
+import {Intervention} from '@unicef-polymer/etools-types';
+import {PartnerReportingRequirements} from '../types/store.types';
 
 export interface InterventionsState {
   current: Intervention | null;

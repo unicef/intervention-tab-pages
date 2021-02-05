@@ -2,8 +2,9 @@ import {_sendRequest} from '../../utils/request-helper';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {SHOW_TOAST} from '../actionsConstants';
-import {AnyObject, PlannedBudget, Intervention, PartnerReportingRequirements} from '@unicef-polymer/etools-types';
+import {AnyObject, PlannedBudget, Intervention} from '@unicef-polymer/etools-types';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
+import {PartnerReportingRequirements} from '../types/store.types';
 
 export const updateCurrentIntervention = (intervention: AnyObject | null) => {
   if (intervention && !intervention.planned_budget) {

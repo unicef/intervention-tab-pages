@@ -6,7 +6,7 @@ import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {RootState} from '../../common/types/store.types';
+import {PartnerReportingRequirements, RootState} from '../../common/types/store.types';
 import {ProgrammeDocDates, InterventionDatesPermissions} from './interventionDates.models';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {selectInterventionDates, selectInterventionDatesPermissions} from './interventionDates.selectors';
@@ -23,7 +23,6 @@ import {
   ExpectedResult,
   Intervention,
   InterventionActivity,
-  PartnerReportingRequirements,
   Permission,
   ResultLinkLowerResult
 } from '@unicef-polymer/etools-types';
