@@ -93,6 +93,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           <div class="radioGroup">
             <paper-radio-group
               .disabled="${this.readonly}"
+              tabindex="${this.readonly ? -1 : 0}"
               .selected="${this.indicator!.indicator!.unit}"
               @selected-changed="${({detail}: CustomEvent) => {
                 this.indicator!.indicator!.unit = detail.value;
@@ -102,16 +103,24 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                 this.requestUpdate();
               }}"
             >
-              <paper-radio-button ?disabled="${this.isReadonly()}" class="no-left-padding" name="number"
+              <paper-radio-button
+                ?disabled="${this.isReadonly()}"
+                class="no-left-padding"
+                name="number"
+                tabindex="${this.readonly ? -1 : 0}"
                 >${translate('INDICATOR_DIALOG.QUANTITY_SCALE')}
               </paper-radio-button>
-              <paper-radio-button ?disabled="${this.isReadonly()}" name="percentage"
+              <paper-radio-button
+                ?disabled="${this.isReadonly()}"
+                name="percentage"
+                tabindex="${this.readonly ? -1 : 0}"
                 >${translate('INDICATOR_DIALOG.PERCENT_RATIO')}</paper-radio-button
               >
             </paper-radio-group>
           </div>
         </div>
         <div class="layout-vertical" ?hidden="${this._unitIsNumeric(this.indicator!.indicator!.unit)}">
+          tabindex="${this.readonly ? -1 : 0}"
           <label class="paper-label">${translate('INDICATOR_DIALOG.DISPLAY_TYPE')}</label>
           <div class="radioGroup">
             <paper-radio-group
@@ -122,10 +131,14 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                 this.requestUpdate();
               }}"
             >
-              <paper-radio-button ?disabled="${this.isReadonly()}" class="no-left-padding" name="percentage"
+              <paper-radio-button
+                ?disabled="${this.isReadonly()}"
+                class="no-left-padding"
+                name="percentage"
+                tabindex="${this.readonly ? -1 : 0}"
                 >${translate('INDICATOR_DIALOG.PERCENTAGE')}
               </paper-radio-button>
-              <paper-radio-button ?disabled="${this.isReadonly()}" name="ratio"
+              <paper-radio-button ?disabled="${this.isReadonly()}" name="ratio" tabindex="${this.readonly ? -1 : 0}"
                 >${translate('INDICATOR_DIALOG.RATIO')}</paper-radio-button
               >
             </paper-radio-group>
@@ -148,6 +161,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
             }
             this.indicator!.indicator!.title = detail.value;
           }}"
+          tabindex="${this.readonly ? -1 : 0}"
         >
         </paper-input>
       </div>
@@ -164,6 +178,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
             @value-changed="${({detail}: CustomEvent) => {
               this.indicator.numerator_label = detail.value;
             }}"
+            tabindex="${this.readonly ? -1 : 0}"
           >
           </paper-input>
         </div>
@@ -177,6 +192,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
             @value-changed="${({detail}: CustomEvent) => {
               this.indicator.denominator_label = detail.value;
             }}"
+            tabindex="${this.readonly ? -1 : 0}"
           >
           </paper-input>
         </div>
@@ -198,6 +214,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                       @value-changed="${({detail}: CustomEvent) => {
                         this.indicator.baseline.v = detail.value;
                       }}"
+                      tabindex="${this.readonly ? -1 : 0}"
                     >
                     </paper-input>`
                   : html``}
@@ -217,6 +234,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                         this._baselineChanged(this.indicator.baseline.v);
                         this.resetValidations();
                       }}"
+                      tabindex="${this.readonly ? -1 : 0}"
                     >
                     </paper-input>`
                   : html``}
@@ -238,6 +256,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                     this._targetChanged(this.indicator.target.v);
                   }}"
                   ?hidden="${!this._unitIsNumeric(this.indicator!.indicator!.unit)}"
+                  tabindex="${this.readonly ? -1 : 0}"
                 >
                 </paper-input>
                 <paper-input
@@ -257,6 +276,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                     this._targetChanged(this.indicator.target.v);
                     this.resetValidations();
                   }}"
+                  tabindex="${this.readonly ? -1 : 0}"
                 >
                 </paper-input>
               </div>`
@@ -277,6 +297,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                     this.indicator.baseline.v = detail.value;
                     this._baselineChanged(this.indicator.baseline.v);
                   }}"
+                  tabindex="${this.readonly ? -1 : 0}"
                 >
                 </paper-input>
                 <div class="layout-horizontal bottom-aligned dash-separator">/</div>
@@ -292,6 +313,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                   @value-changed="${({detail}: CustomEvent) => {
                     this.indicator.baseline.d = detail.value;
                   }}"
+                  tabindex="${this.readonly ? -1 : 0}"
                 >
                 </paper-input>
               </div>
@@ -311,6 +333,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                     this.indicator.target.v = detail.value;
                     this._targetChanged(this.indicator.target.v);
                   }}"
+                  tabindex="${this.readonly ? -1 : 0}"
                 >
                 </paper-input>
                 <div class="layout-horizontal bottom-aligned dash-separator">/</div>
@@ -327,6 +350,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                   @value-changed="${({detail}: CustomEvent) => {
                     this.indicator.target.d = detail.value;
                   }}"
+                  tabindex="${this.readonly ? -1 : 0}"
                 >
                 </paper-input>
               </div>`
@@ -336,6 +360,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
             ?checked="${this.indicator.is_high_frequency}"
             ?disabled="${this.readonly}"
             @iron-change="${this.isHighFrequencyChanged}"
+            tabindex="${this.readonly ? -1 : 0}"
           >
             ${translate('INDICATOR_DIALOG.HIGH_FREQ_HUM_IND')}
           </paper-toggle-button>
@@ -345,6 +370,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         <paper-checkbox
           ?checked="${this.baselineIsUnknown}"
           ?disabled="${this.readonly}"
+          tabindex="${this.readonly ? -1 : 0}"
           @checked-changed="${({target}: CustomEvent) =>
             this.baselineIsUnknownChanged(Boolean((target as PaperCheckboxElement).checked))}"
           >${translate('INDICATOR_DIALOG.UNKNOWN')}</paper-checkbox
@@ -362,6 +388,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           @value-changed="${({detail}: CustomEvent) => {
             this.indicator.means_of_verification = detail.value;
           }}"
+          tabindex="${this.readonly ? -1 : 0}"
         >
         </paper-textarea>
       </div>
@@ -384,6 +411,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
             const newIds = detail.selectedItems.map((i: any) => i.id);
             this.indicator.locations = newIds;
           }}"
+          tabindex="${this.readonly ? -1 : 0}"
         >
         </etools-dropdown-multi>
         <div class="all-locations">
