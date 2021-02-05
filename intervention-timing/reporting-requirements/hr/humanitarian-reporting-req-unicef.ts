@@ -12,6 +12,7 @@ import {ExpectedResult} from '@unicef-polymer/etools-types';
 import {buttonsStyles} from '../../../common/styles/button-styles';
 import {translate, get as getTranslation} from 'lit-translate';
 import {openDialog} from '../../../utils/dialog';
+import {sharedStyles} from '../../../common/styles/shared-styles-lit';
 
 /**
  * @customElement
@@ -33,7 +34,7 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
     }
     return html`
       <style>
-        :host {
+        ${sharedStyles}:host {
           display: block;
         }
         *[hidden] {
