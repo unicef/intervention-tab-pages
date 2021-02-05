@@ -83,7 +83,10 @@ export class ActivityTimeFrames extends LitElement {
           border-radius: 5px;
           margin: 5px;
         }
-        *:focus {
+        .notEditable {
+          outline: 0;
+        }
+        .editable:focus {
           outline: 0;
           box-shadow: rgba(0, 0, 0, 0.14) 0px 2px 2px 0px, rgba(0, 0, 0, 0.12) 0px 1px 5px 0px, rgba(0, 0, 0, 0.2) 0px 3px 1px -2px;
           box-sizing: border-box;
@@ -122,7 +125,7 @@ export class ActivityTimeFrames extends LitElement {
                       class="time-frame${this.selectedTimeFrames?.includes(frame.id) ? ' selected' : ''} ${!this
                         .readonly
                         ? ' editable'
-                        : ''}"
+                        : ' notEditable'}"
                       @click="${() => this.toggleFrame(frame.id)}"
                     >
                       <div class="title">${frame.name}</div>
