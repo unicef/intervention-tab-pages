@@ -107,13 +107,13 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                 ?disabled="${this.isReadonly()}"
                 class="no-left-padding"
                 name="number"
-                tabindex="${this.readonly ? -1 : 0}"
+                tabindex="${this.isReadonly() ? -1 : 0}"
                 >${translate('INDICATOR_DIALOG.QUANTITY_SCALE')}
               </paper-radio-button>
               <paper-radio-button
                 ?disabled="${this.isReadonly()}"
                 name="percentage"
-                tabindex="${this.readonly ? -1 : 0}"
+                tabindex="${this.isReadonly() ? -1 : 0}"
                 >${translate('INDICATOR_DIALOG.PERCENT_RATIO')}</paper-radio-button
               >
             </paper-radio-group>
@@ -135,7 +135,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                 ?disabled="${this.isReadonly()}"
                 class="no-left-padding"
                 name="percentage"
-                tabindex="${this.readonly ? -1 : 0}"
+                tabindex="${this.isReadonly() ? -1 : 0}"
                 >${translate('INDICATOR_DIALOG.PERCENTAGE')}
               </paper-radio-button>
               <paper-radio-button ?disabled="${this.isReadonly()}" name="ratio" tabindex="${this.readonly ? -1 : 0}"
