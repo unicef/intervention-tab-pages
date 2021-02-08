@@ -138,7 +138,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                 tabindex="${this.isReadonly() ? -1 : 0}"
                 >${translate('INDICATOR_DIALOG.PERCENTAGE')}
               </paper-radio-button>
-              <paper-radio-button ?disabled="${this.isReadonly()}" name="ratio" tabindex="${this.readonly ? -1 : 0}"
+              <paper-radio-button ?disabled="${this.isReadonly()}" name="ratio" tabindex="${this.isReadonly() ? -1 : 0}"
                 >${translate('INDICATOR_DIALOG.RATIO')}</paper-radio-button
               >
             </paper-radio-group>
@@ -161,7 +161,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
             }
             this.indicator!.indicator!.title = detail.value;
           }}"
-          tabindex="${this.readonly ? -1 : 0}"
+          tabindex="${this.isReadonly() ? -1 : 0}"
         >
         </paper-input>
       </div>
