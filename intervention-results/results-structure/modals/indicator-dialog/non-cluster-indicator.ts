@@ -93,7 +93,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           <div class="radioGroup">
             <paper-radio-group
               .disabled="${this.readonly}"
-              tabindex="${this.readonly ? -1 : 0}"
+              tabindex="${this.readonly ? '-1' : '0'}"
               .selected="${this.indicator!.indicator!.unit}"
               @selected-changed="${({detail}: CustomEvent) => {
                 this.indicator!.indicator!.unit = detail.value;

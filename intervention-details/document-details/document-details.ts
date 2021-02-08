@@ -68,6 +68,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             .value="${this.data.title}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'title')}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.title)}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions.edit.title) ? '-1' : '0'}"
             ?required="${this.permissions.required.title}"
             error-message="This field is required"
             maxlength="5000"
@@ -85,6 +86,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             .value="${this.data.context}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'context')}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.context)}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions.edit.context) ? '-1' : '0'}"
             ?required="${this.permissions.required.context}"
             maxlength="5000"
           >
@@ -100,6 +102,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             .value="${this.data.implementation_strategy}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'implementation_strategy')}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.implementation_strategy)}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions.edit.implementation_strategy) ? '-1' : '0'}"
             ?required="${this.permissions.required.implementation_strategy}"
             maxlength="5000"
           >
@@ -115,6 +118,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             .value="${this.data.ip_program_contribution}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'ip_program_contribution')}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.ip_program_contribution)}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions.edit.ip_program_contribution) ? '-1' : '0'}"
             ?required="${this.permissions.required.ip_program_contribution}"
             maxlength="5000"
           >
