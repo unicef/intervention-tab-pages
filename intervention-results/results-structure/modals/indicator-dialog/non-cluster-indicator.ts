@@ -138,7 +138,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                 tabindex="${this.isReadonly() ? -1 : 0}"
                 >${translate('INDICATOR_DIALOG.PERCENTAGE')}
               </paper-radio-button>
-              <paper-radio-button ?disabled="${this.isReadonly()}" name="ratio" tabindex="${this.readonly ? -1 : 0}"
+              <paper-radio-button ?disabled="${this.isReadonly()}" name="ratio" tabindex="${this.isReadonly() ? -1 : 0}"
                 >${translate('INDICATOR_DIALOG.RATIO')}</paper-radio-button
               >
             </paper-radio-group>
@@ -161,7 +161,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
             }
             this.indicator!.indicator!.title = detail.value;
           }}"
-          tabindex="${this.readonly ? -1 : 0}"
+          tabindex="${this.isReadonly() ? -1 : 0}"
         >
         </paper-input>
       </div>
@@ -214,7 +214,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                       @value-changed="${({detail}: CustomEvent) => {
                         this.indicator.baseline.v = detail.value;
                       }}"
-                      tabindex="${this.readonly ? -1 : 0}"
+                      tabindex="${this.baselineIsUnknown || this.readonly ? -1 : 0}"
                     >
                     </paper-input>`
                   : html``}
@@ -234,7 +234,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                         this._baselineChanged(this.indicator.baseline.v);
                         this.resetValidations();
                       }}"
-                      tabindex="${this.readonly ? -1 : 0}"
+                      tabindex="${this.baselineIsUnknown || this.readonly ? -1 : 0}"
                     >
                     </paper-input>`
                   : html``}
@@ -297,7 +297,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                     this.indicator.baseline.v = detail.value;
                     this._baselineChanged(this.indicator.baseline.v);
                   }}"
-                  tabindex="${this.readonly ? -1 : 0}"
+                  tabindex="${this.baselineIsUnknown || this.readonly ? -1 : 0}"
                 >
                 </paper-input>
                 <div class="layout-horizontal bottom-aligned dash-separator">/</div>
@@ -313,7 +313,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                   @value-changed="${({detail}: CustomEvent) => {
                     this.indicator.baseline.d = detail.value;
                   }}"
-                  tabindex="${this.readonly ? -1 : 0}"
+                  tabindex="${this.baselineIsUnknown || this.readonly ? -1 : 0}"
                 >
                 </paper-input>
               </div>
@@ -350,7 +350,9 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                   @value-changed="${({detail}: CustomEvent) => {
                     this.indicator.target.d = detail.value;
                   }}"
-                  tabindex="${this.readonly ? -1 : 0}"
+                  tabindex="${this.isReadonlyDenominator(this.interventionStatus, this.indicator.id) || this.readonly
+                    ? -1
+                    : 0}"
                 >
                 </paper-input>
               </div>`
