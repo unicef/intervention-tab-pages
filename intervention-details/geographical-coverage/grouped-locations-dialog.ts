@@ -6,6 +6,7 @@ import get from 'lodash-es/get';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {LocationObject} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
+import {sharedStyles} from '../../common/styles/shared-styles-lit';
 
 class GroupedLocations {
   adminLevelLocation: LocationObject | null = null;
@@ -25,15 +26,14 @@ export class GroupedLocationsDialog extends LitElement {
     // language=HTML
     return html`
       <style>
+        ${sharedStyles}
         [hidden] {
           display: none !important;
         }
 
-        etools-dialog {
-          --etools-dialog-scrollable: {
-            min-height: 300px;
-            font-size: 16px;
-          }
+        etools-dialog::part(ed-scrollable) {
+          min-height: 300px;
+          font-size: 16px;
         }
 
         .adminLevelLoc {

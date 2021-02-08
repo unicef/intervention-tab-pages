@@ -336,6 +336,10 @@ export const sharedStylesContent = `
     box-shadow:  0 0 10px 10px rgba(170, 165, 165, 0.2) !important;
     background-color: rgba(170, 165, 165, 0.2);
   }
+
+  etools-dialog::part(ed-title) {
+      border-bottom: solid 1px var(--dark-divider-color);
+  }
 `;
 // export const sharedStyles = html`${unsafeCSS(sharedStylesContent)}`;
 export const sharedStyles = css`
