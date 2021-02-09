@@ -227,7 +227,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
                     auto-validate
                     @value-changed="${(e: CustomEvent) => this.inputChanged(e, index, 'q1')}"
                     ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_visits)}"
-                    tabindex="${item.year && this.editMode ? '0' : '-1'}"
+                    tabindex="${this.isReadonly(this.editMode, this.permissions.edit.planned_visits) ? '0' : '-1'}"
                   >
                   </paper-input>
                 </div>
@@ -245,7 +245,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
                     auto-validate
                     @value-changed="${(e: CustomEvent) => this.inputChanged(e, index, 'q2')}"
                     ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_visits)}"
-                    tabindex="${item.year && this.editMode ? '0' : '-1'}"
+                    tabindex="${this.isReadonly(this.editMode, this.permissions.edit.planned_visits) ? '0' : '-1'}"
                   >
                   </paper-input>
                 </div>
@@ -263,7 +263,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
                     auto-validate
                     @value-changed="${(e: CustomEvent) => this.inputChanged(e, index, 'q3')}"
                     ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_visits)}"
-                    tabindex="${item.year && this.editMode ? '0' : '-1'}"
+                    tabindex="${this.isReadonly(this.editMode, this.permissions.edit.planned_visits) ? '0' : '-1'}"
                   >
                   </paper-input>
                 </div>
@@ -281,7 +281,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
                     auto-validate
                     @value-changed="${(e: CustomEvent) => this.inputChanged(e, index, 'q4')}"
                     ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_visits)}"
-                    tabindex="${item.year && this.editMode ? '0' : '-1'}"
+                    tabindex="${this.isReadonly(this.editMode, this.permissions.edit.planned_visits) ? '0' : '-1'}"
                   >
                   </paper-input>
                 </div>
