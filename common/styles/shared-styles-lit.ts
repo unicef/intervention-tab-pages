@@ -320,15 +320,15 @@ export const sharedStylesContent = `
     --iron-icon-height: 14px;
   }
 
+  *:focus:not(paper-icon-button):not(paper-radio-button):not(paper-checkbox):not(paper-toggle-button):not(paper-input):not(paper-textarea):not(paper-slider):not(etools-dropdown-multi):not(etools-dropdown):not(datepicker-lite) {
+    outline: 0;
+    box-shadow: var(--paper-material-elevation-3_-_box-shadow);
+  }
+
   .secondary-btn:focus {
     outline: 0;
     box-shadow:  0 0 10px 10px rgba(170, 165, 165, 0.2) !important;
     background-color: rgba(170, 165, 165, 0.2);
-  }
-
-  *:focus:not(paper-icon-button):not(paper-radio-button):not(paper-checkbox):not(paper-toggle-button):not(paper-input):not(paper-textarea):not(paper-slider) {
-    outline: 0;
-    box-shadow: var(--paper-material-elevation-3_-_box-shadow);
   }
 
   a:focus {
