@@ -83,7 +83,7 @@ export class InterventionProgress extends connectStore(
           margin-right: 24px;
         }
 
-        etools-data-table-row::part(list-row-collapse-wrapper) {
+        etools-data-table-row::part(edt-list-row-collapse-wrapper) {
           padding: 0;
         }
 
