@@ -65,13 +65,13 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
     // language=html
     return html`
       <style>
-        ${sharedStyles}etools-dialog {
-          --etools-dialog-scrollable: {
-            margin-top: 0 !important;
-          }
-          --etools-dialog-button-styles: {
-            margin-top: 0 !important;
-          }
+        ${sharedStyles}
+        etools-dialog::part(ed-scrollable) {
+          margin-top: 0 !important;
+        }
+
+        etools-dialog::part(ed-button-styles) {
+          margin-top: 0;
         }
         .container {
           padding: 12px 24px;
