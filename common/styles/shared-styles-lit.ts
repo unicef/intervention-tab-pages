@@ -236,6 +236,10 @@ export const sharedStylesContent = `
     width: 100%;
   }
 
+  *[slot="row-data"] .col-data {
+    height: 24px;
+  }
+
   .hidden {
     display: none !important;
   }
