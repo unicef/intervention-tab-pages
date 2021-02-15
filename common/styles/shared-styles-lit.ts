@@ -236,7 +236,7 @@ export const sharedStylesContent = `
     width: 100%;
   }
 
-  *[slot="row-data"] .col-data {
+  .col-data.actions {
     height: 24px;
   }
 
