@@ -274,7 +274,7 @@ export class EditQprDialog extends LitElement {
   }
 
   _getEditedQprDatesSetId(index: number) {
-    const dialog = this.shadowRoot!.querySelector(`#qpr-list`) as QprListEl;
+    const dialog = this.shadowRoot!.querySelector(`#qprList`) as QprListEl;
     if (dialog) {
       return dialog.getIndex(index, this.qprData.length);
     }
