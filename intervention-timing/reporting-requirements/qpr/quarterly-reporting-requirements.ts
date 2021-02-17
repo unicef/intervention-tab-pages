@@ -65,7 +65,6 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
 
   @property() dialogOpened = true;
 
-
   openQuarterlyRepRequirementsDialog() {
     if (!this.interventionStart || !this.interventionEnd) {
       fireEvent(this, 'toast', {

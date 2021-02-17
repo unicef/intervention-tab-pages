@@ -55,8 +55,7 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
   protected render(): TemplateResult {
     return html`
       <style>
-        ${sharedStyles}
-        etools-dialog::part(ed-scrollable) {
+        ${sharedStyles} etools-dialog::part(ed-scrollable) {
           margin-top: 0 !important;
         }
 

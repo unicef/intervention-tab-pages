@@ -116,7 +116,7 @@ export class SpecialReportingRequirements extends ReportingRequirementsCommonMix
     openDialog({
       dialog: 'add-edit-special-rep-req',
       dialogData: {
-        item: typeof(index) === 'undefined' ? {} : this.reportingRequirements[index!],
+        item: typeof index === 'undefined' ? {} : this.reportingRequirements[index!],
         interventionId: this.interventionId
       }
     }).then(({confirmed, response}) => {

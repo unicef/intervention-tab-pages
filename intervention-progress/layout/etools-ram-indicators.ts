@@ -119,7 +119,7 @@ export class EtoolsRamIndicators extends CommonMixin(LitElement) {
       endpoint: getEndpoint(interventionEndpoints.cpOutputRamIndicators, reqPayload)
     })
       .then((resp: any) => {
-        this.loading = false;;
+        this.loading = false;
         this.ramIndicators = resp.ram_indicators.map((ri: any) => ri.indicator_name);
       })
       .catch((error: any) => {

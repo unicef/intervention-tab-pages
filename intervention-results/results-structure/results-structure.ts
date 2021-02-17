@@ -1,3 +1,4 @@
+/* eslint-disable lit-a11y/click-events-have-key-events */
 import {getStore} from '../../utils/redux-store-access';
 import {css, html, CSSResultArray, customElement, LitElement, property} from 'lit-element';
 import {repeat} from 'lit-html/directives/repeat';
@@ -237,9 +238,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
 
       <etools-content-panel
         show-expand-btn
-        panel-title="${translate(
-          'INTERVENTION_RESULTS.RESULTS_STRUCTURE.RESULTS_STRUCTURE'
-        )} (${this.noOfPdOutputs})"
+        panel-title="${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.RESULTS_STRUCTURE')} (${this.noOfPdOutputs})"
       >
         <div slot="panel-btns" class="layout-horizontal align-items-center">
           <paper-button

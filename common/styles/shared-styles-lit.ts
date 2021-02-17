@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import {css, unsafeCSS} from 'lit-element';
 // language=css
 export const sharedStylesContent = `

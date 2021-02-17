@@ -20,7 +20,7 @@ export class EtoolsTabs extends LitElement {
         }
 
         paper-tab[disabled] {
-          opacity: .3;
+          opacity: 0.3;
         }
 
         *[disabled] {

@@ -1,7 +1,6 @@
 import {logWarn} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {LitElement, property} from 'lit-element';
 import {Constructor} from '@unicef-polymer/etools-types';
-import {Indicator} from '@unicef-polymer/etools-types';
 
 /**
  * @polymer
@@ -9,6 +8,8 @@ import {Indicator} from '@unicef-polymer/etools-types';
  */
 function IndicatorsCommonMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class IndicatorsCommonClass extends baseClass {
+    [x: string]: any;
+
     @property({type: String}) // allow only decimals separator `.` or `,`. ex: 1000,00 or 1000.00
     numberPattern = '(^\\d+(\\.?\\d+)?$)|(^\\d+(,?\\d+)?$)';
 
@@ -17,9 +18,6 @@ function IndicatorsCommonMixin<T extends Constructor<LitElement>>(baseClass: T) 
 
     @property({type: String})
     digitsPattern = '^\\d+';
-
-    @property({type: Object})
-    indicator!: Indicator;
 
     _baselineChanged(baselineV?: string | number | null) {
       if (!this.indicator || this._isEmptyExcept0(baselineV)) {

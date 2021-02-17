@@ -23,17 +23,17 @@ export const resetRequiredFields = (element: LitElement | PolymerElement) => {
 };
 
 export const fieldValidationReset = (element: LitElement | PolymerElement, selector: string, useValidate?: boolean) => {
-      if (!useValidate) {
-        useValidate = false;
-      }
-      const field = element.shadowRoot!.querySelector(selector) as LitElement & {validate(): boolean};
-      if (field) {
-        if (useValidate) {
-          field.validate();
-        } else {
-          // TODO: check if sets to false
-          field.setAttribute('invalid', 'false');
-        }
-      }
-      return field;
+  if (!useValidate) {
+    useValidate = false;
+  }
+  const field = element.shadowRoot!.querySelector(selector) as LitElement & {validate(): boolean};
+  if (field) {
+    if (useValidate) {
+      field.validate();
+    } else {
+      // TODO: check if sets to false
+      field.setAttribute('invalid', 'false');
     }
+  }
+  return field;
+};

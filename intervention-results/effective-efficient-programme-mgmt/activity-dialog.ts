@@ -33,7 +33,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         .layout-horizontal {
           overflow: hidden;
         }
-        
+
         etools-dialog::part(ed-scrollable) {
           margin-top: 0 !important;
         }

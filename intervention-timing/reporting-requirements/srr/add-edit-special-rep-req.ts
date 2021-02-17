@@ -166,6 +166,5 @@ export class AddEditSpecialRepReq extends LitElement {
   _onClose(): void {
     fireEvent(this, 'dialog-closed', {confirmed: false});
   }
-
 }
 export {AddEditSpecialRepReq as AddEditSpecialRepReqEl};
