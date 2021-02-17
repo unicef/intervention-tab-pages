@@ -35,7 +35,6 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
       <style>
         :host {
           display: block;
-          box-shadow: none;
         }
         *[hidden] {
           display: none !important;

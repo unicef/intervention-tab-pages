@@ -32,10 +32,7 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
   render() {
     return html`
       <style>
-        ${sharedStyles} :host {
-          box-shadow: none;
-        }
-        *[hidden] {
+        ${sharedStyles} *[hidden] {
           display: none !important;
         }
       </style>

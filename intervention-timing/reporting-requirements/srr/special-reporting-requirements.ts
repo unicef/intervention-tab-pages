@@ -36,9 +36,6 @@ export class SpecialReportingRequirements extends ReportingRequirementsCommonMix
     return html`
       <style>
         ${sharedStyles} ${dataTableStylesLit}
-        :host {
-          box-shadow: none;
-        }
       </style>
 
       <div class="row-h" ?hidden="${!this._empty(this.reportingRequirements)}">
