@@ -86,9 +86,8 @@ export class ActivityTimeFrames extends LitElement {
         }
         *:focus {
           outline: 0;
-          box-shadow: rgba(0, 0, 0, 0.14) 0px 2px 2px 0px, rgba(0, 0, 0, 0.12) 0px 1px 5px 0px,
-            rgba(0, 0, 0, 0.2) 0px 3px 1px -2px;
-          box-sizing: border-box;
+          box-shadow: 0 0 5px 5px rgba(170, 165, 165, 0.3);
+          background-color: rgba(170, 165, 165, 0.3);
         }
       `
     ];

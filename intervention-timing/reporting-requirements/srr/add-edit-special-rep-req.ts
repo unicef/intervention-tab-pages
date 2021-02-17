@@ -1,6 +1,7 @@
 /* eslint-disable lit/no-legacy-template-syntax */
 import {LitElement, html, property, customElement} from 'lit-element';
 import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
+import {sharedStyles} from '../../../common/styles/shared-styles-lit';
 import {getEndpoint} from '../../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {prepareDatepickerDate} from '../../../utils/date-utils';
@@ -35,7 +36,7 @@ export class AddEditSpecialRepReq extends LitElement {
     }
     return html`
       <style>
-        :host {
+        ${sharedStyles}:host {
           display: block;
         }
 
