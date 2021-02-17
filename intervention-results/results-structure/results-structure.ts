@@ -99,6 +99,10 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         .view-toggle-button[active] {
           background-color: #009688;
         }
+        .view-toggle-button:focus {
+          outline: 0;
+          box-shadow: var(--paper-material-elevation-3_-_box-shadow);
+        }
         .no-results {
           padding: 24px;
         }
