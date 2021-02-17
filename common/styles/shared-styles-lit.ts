@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import {css, unsafeCSS} from 'lit-element';
 // language=css
 export const sharedStylesContent = `
@@ -319,11 +318,6 @@ export const sharedStylesContent = `
     bottom: 0.4rem;
     --iron-icon-width: 14px;
     --iron-icon-height: 14px;
-  }
-
-  *:focus:not(paper-icon-button):not(paper-radio-button):not(paper-checkbox):not(paper-toggle-button):not(paper-input):not(paper-textarea):not(paper-slider):not(etools-dropdown-multi):not(etools-dropdown):not(datepicker-lite) {
-    outline: 0;
-    box-shadow: var(--paper-material-elevation-3_-_box-shadow);
   }
 
   .secondary-btn:focus {
