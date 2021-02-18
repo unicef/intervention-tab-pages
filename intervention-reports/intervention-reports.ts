@@ -38,7 +38,6 @@ import {currentIntervention} from '../common/selectors';
  */
 @customElement('intervention-reports')
 export class InterventionReports extends connectStore(PaginationMixin(CommonMixin(EndpointsMixin(LitElement)))) {
-
   static get styles() {
     return [gridLayoutStylesLit, elevationStyles];
   }
@@ -79,7 +78,10 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
           position: relative;
         }
       </style>
-      <iron-media-query query="(max-width: 767px)" @query-matches-changed="${this.resolutionChanged}"></iron-media-query>
+      <iron-media-query
+        query="(max-width: 767px)"
+        @query-matches-changed="${this.resolutionChanged}"
+      ></iron-media-query>
       <div id="list" class="paper-material elevation" elevation="1">
         ${!this.reports.length
           ? html` <div class="row-h">

@@ -71,7 +71,7 @@ export class EtoolsProgressBar extends LitElement {
   @property({type: Number})
   progressValue = 0;
 
-  _value: Number = 0;
+  _value = 0;
 
   set value(value) {
     this._value = value;

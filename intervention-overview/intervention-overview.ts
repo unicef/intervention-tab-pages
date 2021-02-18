@@ -24,7 +24,6 @@ import {translate} from 'lit-translate';
  */
 @customElement('intervention-overview')
 export class InterventionOverview extends connectStore(LitElement) {
-
   static get styles() {
     return [gridLayoutStylesLit, elevationStyles];
   }

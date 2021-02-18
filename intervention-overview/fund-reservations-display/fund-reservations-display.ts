@@ -31,8 +31,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
     return html`
       ${customIcons}
       <style>
-        ${sharedStyles}
-        :host {
+        ${sharedStyles} :host {
           --list-column-label: {
             margin-right: 0;
           }
@@ -43,7 +42,8 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
           }
           --list-bg-color: var(--light-theme-background-color);
         }
-        #plannedUnicefCash, #totalsRow {
+        #plannedUnicefCash,
+        #totalsRow {
           --list-row-wrapper-padding: 0 24px 0 56px;
         }
         #plannedUnicefCash {

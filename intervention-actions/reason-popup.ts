@@ -2,7 +2,7 @@ import {customElement, html, LitElement, property, TemplateResult} from 'lit-ele
 import {fireEvent} from '../utils/fire-custom-event';
 import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-dialog/etools-dialog';
-import { sharedStyles } from "../common/styles/shared-styles-lit";
+import {sharedStyles} from '../common/styles/shared-styles-lit';
 
 @customElement('reason-popup')
 export class ReasonPopup extends LitElement {
@@ -20,8 +20,7 @@ export class ReasonPopup extends LitElement {
   render(): TemplateResult | void {
     return html`
       <style>
-        ${sharedStyles}
-        .container {
+        ${sharedStyles} .container {
           padding: 15px 20px;
         }
         paper-textarea {

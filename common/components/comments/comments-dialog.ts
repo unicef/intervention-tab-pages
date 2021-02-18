@@ -26,7 +26,7 @@ import {PaperTextareaElement} from '@polymer/paper-input/paper-textarea';
 import {setTextareasMaxHeight} from '../../../utils/textarea-max-rows-helper';
 import {InterventionComment, GenericObject} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import { sharedStyles } from "../../styles/shared-styles-lit";
+import {sharedStyles} from '../../styles/shared-styles-lit';
 
 @customElement('comments-dialog')
 export class CommentsDialog extends connectStore(LitElement) {
@@ -94,8 +94,7 @@ export class CommentsDialog extends connectStore(LitElement) {
   protected render(): TemplateResult {
     return html`
       <style>
-        ${sharedStyles}
-        etools-dialog::part(ed-scrollable) {
+        ${sharedStyles} etools-dialog::part(ed-scrollable) {
           margin-top: 0 !important;
         }
         paper-textarea {

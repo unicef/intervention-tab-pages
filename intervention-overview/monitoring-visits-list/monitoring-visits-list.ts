@@ -1,3 +1,4 @@
+/* eslint-disable lit-a11y/anchor-is-valid */
 import {LitElement, customElement, html, property} from 'lit-element';
 import '@unicef-polymer/etools-loading/etools-loading.js';
 import '@unicef-polymer/etools-data-table/etools-data-table';

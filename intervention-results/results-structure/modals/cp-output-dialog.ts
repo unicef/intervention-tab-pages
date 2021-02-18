@@ -60,8 +60,7 @@ export class CpOutputDialog extends LitElement {
     // language=html
     return html`
       <style>
-        ${sharedStyles}
-        etools-dialog::part(ed-scrollable) {
+        ${sharedStyles} etools-dialog::part(ed-scrollable) {
           margin-top: 0 !important;
         }
 
