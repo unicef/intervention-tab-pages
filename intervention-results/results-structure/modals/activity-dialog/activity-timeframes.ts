@@ -84,10 +84,12 @@ export class ActivityTimeFrames extends LitElement {
           border-radius: 5px;
           margin: 5px;
         }
-        *:focus {
+
+        .time-frame:focus:not(:focus-visible) {
           outline: 0;
-          box-shadow: 0 0 5px 5px rgba(170, 165, 165, 0.3);
-          background-color: rgba(170, 165, 165, 0.3);
+        }
+        .time-frame:focus-visible {
+          outline: black solid 1px;
         }
       `
     ];
@@ -120,7 +122,7 @@ export class ActivityTimeFrames extends LitElement {
                   (frame: ActivityTime, index: number) => html`
                     <div
                       tabindex="${this.readonly ? -1 : 0}"
-                      class="time-frame${this.selectedTimeFrames?.includes(frame.id) ? ' selected' : ''} ${!this
+                      class="time-frame ${this.selectedTimeFrames?.includes(frame.id) ? ' selected' : ''} ${!this
                         .readonly
                         ? ' editable'
                         : ''}"
