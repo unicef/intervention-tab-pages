@@ -65,13 +65,12 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
     // language=html
     return html`
       <style>
-        ${sharedStyles}etools-dialog {
-          --etools-dialog-scrollable: {
-            margin-top: 0 !important;
-          }
-          --etools-dialog-button-styles: {
-            margin-top: 0 !important;
-          }
+        ${sharedStyles} etools-dialog::part(ed-scrollable) {
+          margin-top: 0 !important;
+        }
+
+        etools-dialog::part(ed-button-styles) {
+          margin-top: 0;
         }
         .container {
           padding: 12px 24px;
@@ -156,7 +155,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
             ${!this.useInputLevel
               ? html`
                   <etools-currency-amount-input
-                    class="col-2"
+                    class="col-3"
                     label=${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.CSO_CASH_BUDGET')}
                     ?readonly="${this.readonly}"
                     .value="${this.editedData.cso_cash}"
@@ -164,7 +163,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
                   ></etools-currency-amount-input>
 
                   <etools-currency-amount-input
-                    class="col-2"
+                    class="col-3"
                     label=${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.UNICEF_CASH_BUDGET')}
                     ?readonly="${this.readonly}"
                     .value="${this.editedData.unicef_cash}"
@@ -175,14 +174,14 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
                   <paper-input
                     readonly
                     tabindex="-1"
-                    class="col-2 total-input"
+                    class="col-3 total-input"
                     label=${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.CSO_CASH_BUDGET')}
                     .value="${this.getSumValue('cso_cash')}"
                   ></paper-input>
                   <paper-input
                     readonly
                     tabindex="-1"
-                    class="col-2 total-input"
+                    class="col-3 total-input"
                     label=${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.UNICEF_CASH_BUDGET')}
                     .value="${this.getSumValue('unicef_cash')}"
                   ></paper-input>

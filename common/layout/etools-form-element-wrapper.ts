@@ -10,7 +10,7 @@ export class EtoolsFormElementWrapper extends LitElement {
   render() {
     return html`
       <style>
-          ${sharedStyles} :host {
+        ${sharedStyles} :host {
           width: 100%;
 
           max-width: var(--etools-form-element-wrapper-max-width, none);

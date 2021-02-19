@@ -66,7 +66,8 @@ export const sharedStylesContent = `
   etools-dropdown-multi[readonly],
   datepicker-lite[readonly],
   paper-input[readonly],
-  paper-textarea[readonly] {
+  paper-textarea[readonly],
+  etools-currency-amount-input[readonly] {
     --paper-input-container-underline: {
       display: none;
     }
@@ -236,6 +237,10 @@ export const sharedStylesContent = `
     width: 100%;
   }
 
+  .col-data.actions {
+    height: 24px;
+  }
+
   .hidden {
     display: none !important;
   }
@@ -326,15 +331,14 @@ export const sharedStylesContent = `
     background-color: rgba(170, 165, 165, 0.2);
   }
 
-  *:focus:not(paper-icon-button):not(paper-radio-button):not(paper-checkbox):not(paper-toggle-button):not(paper-input):not(paper-textarea):not(paper-slider) {
-    outline: 0;
-    box-shadow: var(--paper-material-elevation-3_-_box-shadow);
-  }
-
   a:focus {
     outline: 0;
     box-shadow:  0 0 10px 10px rgba(170, 165, 165, 0.2) !important;
     background-color: rgba(170, 165, 165, 0.2);
+  }
+
+  etools-dialog::part(ed-title) {
+      border-bottom: solid 1px var(--dark-divider-color);
   }
 `;
 // export const sharedStyles = html`${unsafeCSS(sharedStylesContent)}`;

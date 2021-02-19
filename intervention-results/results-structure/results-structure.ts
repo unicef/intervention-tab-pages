@@ -1,3 +1,4 @@
+/* eslint-disable lit-a11y/click-events-have-key-events */
 import {getStore} from '../../utils/redux-store-access';
 import {css, html, CSSResultArray, customElement, LitElement, property} from 'lit-element';
 import {repeat} from 'lit-html/directives/repeat';
@@ -99,6 +100,10 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         .view-toggle-button[active] {
           background-color: #009688;
         }
+        .view-toggle-button:focus {
+          outline: 0;
+          box-shadow: var(--paper-material-elevation-3_-_box-shadow);
+        }
         .no-results {
           padding: 24px;
         }
@@ -106,7 +111,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           margin: 0 4px;
         }
         .pdOtputMargin.unicef-user .editable-row .hover-block {
-          background-color: rgb(230, 230, 230);
+          background-color: rgb(240, 240, 240);
         }
         .pdOtputMargin.partner .editable-row .hover-block {
           background-color: rgb(240, 240, 240);
@@ -201,14 +206,14 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           margin-bottom: 24px;
         }
 
-        etools-data-table-row::part(list-row-wrapper) {
+        etools-data-table-row::part(edt-list-row-wrapper) {
           padding: 0 12px 0 0;
           background-color: var(--secondary-background-color);
           min-height: 48px;
           border-bottom: 1px solid var(--main-border-color) !important;
         }
 
-        etools-data-table-row::part(list-row-collapse-wrapper) {
+        etools-data-table-row::part(edt-list-row-collapse-wrapper) {
           padding: 0 !important;
           border-bottom: none !important;
         }
@@ -237,9 +242,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
 
       <etools-content-panel
         show-expand-btn
-        panel-title="${translate(
-          'INTERVENTION_RESULTS.RESULTS_STRUCTURE.RESULTS_STRUCTURE'
-        )} (${this.noOfPdOutputs})"
+        panel-title="${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.RESULTS_STRUCTURE')} (${this.noOfPdOutputs})"
       >
         <div slot="panel-btns" class="layout-horizontal align-items-center">
           <paper-button
@@ -311,6 +314,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           (result: ExpectedResult) => result.id,
           (result, _index) => html`
             <cp-output-level
+               index="${_index}"
               ?show-cpo-level="${this.isUnicefUser}"
               .resultLink="${result}"
               .interventionId="${this.interventionId}"

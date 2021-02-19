@@ -35,8 +35,8 @@ export class CpOutputLevel extends LitElement {
         :host([show-cpo-level]) {
           border-top: 1px solid var(--main-border-color);
         }
-        :host(:first-child) {
-          border-top: none;
+        :host([index="0"]) {
+          border-top: none !important;
         }
         .alert {
           color: var(--error-color);
@@ -65,13 +65,13 @@ export class CpOutputLevel extends LitElement {
           --list-row-wrapper-padding: 0 12px 0 0;
         }
 
-        etools-data-table-row::part(list-row-collapse-wrapper) {
+        etools-data-table-row::part(edt-list-row-collapse-wrapper) {
           padding: 0 !important;
           margin-bottom: 10px;
           border: 1px solid var(--main-border-color) !important;
           border-bottom: 1px solid var(--main-border-color) !important;
         }
-        etools-data-table-row::part(list-row-wrapper) {
+        etools-data-table-row::part(edt-list-row-wrapper) {
           border-bottom: none !important;
         }
 

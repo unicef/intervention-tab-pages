@@ -28,7 +28,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
           --indicator-blue: #a4c4e1;
           --indicator-green: #c4d7c6;
         }
-        etools-data-table-row::part(icon-wrapper) {
+        etools-data-table-row::part(edt-icon-wrapper) {
           padding: 0 0 !important;
           margin-right: 16px !important;
         }
@@ -36,11 +36,11 @@ export class PdIndicator extends CommentsMixin(LitElement) {
           background-color: rgb(189, 211, 230);
         }
 
-        etools-data-table-row::part(list-row-wrapper):hover {
+        etools-data-table-row::part(edt-list-row-wrapper):hover {
           background-color: rgb(189, 211, 230);
         }
 
-        :host([high-frequency-indicator]) etools-data-table-row::part(icon-wrapper) {
+        :host([high-frequency-indicator]) etools-data-table-row::part(edt-icon-wrapper) {
           background: var(--indicator-blue)
             linear-gradient(
               135deg,
@@ -54,7 +54,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
             )
             center/5.66px 5.66px;
         }
-        :host([cluster-indicator]) etools-data-table-row::part(icon-wrapper) {
+        :host([cluster-indicator]) etools-data-table-row::part(edt-icon-wrapper) {
           background: var(--indicator-green)
             linear-gradient(
               135deg,
@@ -74,11 +74,11 @@ export class PdIndicator extends CommentsMixin(LitElement) {
           display: block;
         }
 
-        etools-data-table-row::part(list-row-collapse-wrapper) {
+        etools-data-table-row::part(edt-list-row-collapse-wrapper) {
           margin-bottom: 0;
         }
 
-        etools-data-table-row::part(list-row-wrapper) {
+        etools-data-table-row::part(edt-list-row-wrapper) {
           align-items: stretch;
           background-color: var(--blue-background);
           border: 1px solid var(--main-border-color) !important;
@@ -96,7 +96,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
           max-height: 220px;
           overflow: auto;
         }
-        etools-data-table-row::part(list-row-collapse-wrapper) {
+        etools-data-table-row::part(edt-list-row-collapse-wrapper) {
           padding: 0;
           margin: 0;
         }

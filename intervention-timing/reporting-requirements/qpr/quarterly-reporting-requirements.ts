@@ -32,7 +32,7 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
   render() {
     return html`
       <style>
-        ${sharedStyles}*[hidden] {
+        ${sharedStyles} *[hidden] {
           display: none !important;
         }
       </style>
@@ -64,7 +64,6 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
   editMode!: boolean;
 
   @property() dialogOpened = true;
-
 
   openQuarterlyRepRequirementsDialog() {
     if (!this.interventionStart || !this.interventionEnd) {
