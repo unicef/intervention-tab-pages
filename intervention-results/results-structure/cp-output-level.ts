@@ -53,7 +53,7 @@ export class CpOutputLevel extends LitElement {
           color: var(--primary-color);
         }
         #ram-list {
-          padding-inline-start: 18px;
+          padding-inline-start: 19px;
           margin: 2px;
           list-style: circle;
         }
