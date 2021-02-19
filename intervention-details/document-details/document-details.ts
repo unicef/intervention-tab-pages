@@ -67,7 +67,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             .autoValidate="${this.autoValidate}"
             .value="${this.data.title}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'title')}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.title)}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit?.title)}"
             ?required="${this.permissions.required.title}"
             error-message="This field is required"
             maxlength="5000"
