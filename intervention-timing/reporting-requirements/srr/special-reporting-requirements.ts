@@ -221,6 +221,7 @@ export class SpecialReportingRequirements extends ReportingRequirementsCommonMix
       reportingRequirementsOriginal.push(savedReqItem);
     }
     this.reportingRequirements = [...reportingRequirementsOriginal];
+    this.updateReportingRequirements(this.reportingRequirements, CONSTANTS.REQUIREMENTS_REPORT_TYPE.SR);
     this.requestUpdate();
   }
 }

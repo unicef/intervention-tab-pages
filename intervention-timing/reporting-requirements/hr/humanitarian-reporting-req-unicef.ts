@@ -92,6 +92,7 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
   _reportingRequirementsSaved(reportingRequirements: any[]) {
     this._onReportingRequirementsSaved(reportingRequirements);
     this.pagination.pageNumber = 1;
+    this.updateReportingRequirements(reportingRequirements, CONSTANTS.REQUIREMENTS_REPORT_TYPE.HR);
   }
 
   _sortRequirementsAsc() {

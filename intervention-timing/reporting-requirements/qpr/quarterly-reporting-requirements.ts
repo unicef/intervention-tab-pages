@@ -91,6 +91,7 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
         return;
       }
       this._onReportingRequirementsSaved(response);
+      this.updateReportingRequirements(response, CONSTANTS.REQUIREMENTS_REPORT_TYPE.QPR);
     });
   }
 

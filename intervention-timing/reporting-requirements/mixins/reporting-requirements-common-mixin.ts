@@ -118,11 +118,11 @@ function ReportingRequirementsCommonMixin<T extends Constructor<LitElement>>(bas
           break;
         }
         case CONSTANTS.REQUIREMENTS_REPORT_TYPE.QPR: {
-          requirements.qpr = reportingRequirements.reporting_requirements;
+          requirements.qpr = reportingRequirements.reporting_requirements || reportingRequirements;
           break;
         }
         case CONSTANTS.REQUIREMENTS_REPORT_TYPE.HR: {
-          requirements.hr = reportingRequirements.reporting_requirements;
+          requirements.hr = reportingRequirements.reporting_requirements || reportingRequirements;
           break;
         }
         case CONSTANTS.REQUIREMENTS_REPORT_TYPE.SR: {

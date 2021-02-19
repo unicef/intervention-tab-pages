@@ -219,30 +219,25 @@ export class InterventionDates extends CommentsMixin(
     intervention: Intervention,
     partnerReportingRequirements: PartnerReportingRequirements
   ) {
-    this.warningRequired = false;
-    // check Partner Reporting Requirements
-    if (partnerReportingRequirements) {
-      Object.entries(partnerReportingRequirements).forEach(([_key, value]) => {
-        if (value.length) {
-          this.warningRequired = true;
-          return;
-        }
-      });
-    }
+    this.warningRequired =
+      this.thereArePDOutputActivitiesWithTimeframes(intervention.result_links) ||
+      this.thereArePartnerReportingRequirements(partnerReportingRequirements);
+  }
 
-    // get activities array
-    const pdOutputs: ResultLinkLowerResult[] = intervention.result_links
-      .map(({ll_results}: ExpectedResult) => ll_results)
-      .flat();
+  private thereArePartnerReportingRequirements(partnerReportingRequirements: PartnerReportingRequirements) {
+    if (partnerReportingRequirements) {
+      return Object.entries(partnerReportingRequirements).some(([_key, value]) => !!value.length);
+    }
+    return false;
+  }
+
+  private thereArePDOutputActivitiesWithTimeframes(result_links: ExpectedResult[]) {
+    const pdOutputs: ResultLinkLowerResult[] = result_links.map(({ll_results}: ExpectedResult) => ll_results).flat();
     const activities: InterventionActivity[] = pdOutputs
       .map(({activities}: ResultLinkLowerResult) => activities)
       .flat();
-    activities.forEach((activity: InterventionActivity) => {
-      if (activity.time_frames.length) {
-        this.warningRequired = true;
-        return;
-      }
-    });
+
+    return activities.some((activity: InterventionActivity) => !!activity.time_frames.length);
   }
 
   saveData() {
@@ -255,7 +250,8 @@ export class InterventionDates extends CommentsMixin(
       .then(() => {
         if (this.warningRequired) {
           fireEvent(this, 'toast', {
-            text: getTranslation('INTERVENTION_TIMING.INTERVENTION_DATES.SAVE_WARNING')
+            text: getTranslation('INTERVENTION_TIMING.INTERVENTION_DATES.SAVE_WARNING'),
+            showCloseBtn: true
           });
         }
         this.editMode = false;
