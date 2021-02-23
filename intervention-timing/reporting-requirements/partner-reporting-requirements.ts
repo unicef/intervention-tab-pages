@@ -285,7 +285,6 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
       return;
     }
     this.isUnicefUser = isUnicefUser(state);
-
     this.reportingRequirementsPermissions = selectReportingRequirementsPermissions(state);
     const currentIntervention = get(state, 'interventions.current');
     this.intervention = cloneDeep(currentIntervention);

@@ -291,7 +291,8 @@
       "SELECT_START_DATE": "Va rugam selectati data de inceput",
       "END_DATE": "Data Final",
       "SELECT_END_DATE": "Va rugam selectati data final",
-      "ACTIVATION_LETTER": "Scrisoare de Activare"
+      "ACTIVATION_LETTER": "Scrisoare de Activare",
+      "SAVE_WARNING": "Fii sigur sa verifici si sa actualizezi Realizarile Activitatilor PD si Cerintele de Raportare ale Partenerului dupa fiecare schimbare de data."
     },
     "ACTIVITY_TIMEFRAMES": {
       "ACTIVITY_TIMEFRAMES": "Perioade de activitate",

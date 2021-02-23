@@ -20,6 +20,7 @@ import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-inpu
 import {ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {callClickOnSpacePush} from '../../utils/common-methods';
+import {PaperButtonElement} from '@polymer/paper-button';
 
 @customElement('cp-output-level')
 export class CpOutputLevel extends LitElement {
@@ -35,7 +36,7 @@ export class CpOutputLevel extends LitElement {
         :host([show-cpo-level]) {
           border-top: 1px solid var(--main-border-color);
         }
-        :host([index="0"]) {
+        :host([index='0']) {
           border-top: none !important;
         }
         .alert {
@@ -43,6 +44,18 @@ export class CpOutputLevel extends LitElement {
         }
         .editable-row .hover-block {
           background-color: rgb(240, 240, 240);
+        }
+        .show-more-btn {
+          margin: 0;
+          padding: 0;
+          min-width: 15px;
+          font-weight: bold;
+          color: var(--primary-color);
+        }
+        #ram-list {
+          padding-inline-start: 19px;
+          margin: 2px;
+          list-style: circle;
         }
       `
     ];
@@ -96,9 +109,16 @@ export class CpOutputLevel extends LitElement {
                       <div class="flex-1 flex-fix" ?hidden="${!this.showIndicators}">
                         <div class="heading">${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.RAM_INDICATORS')}</div>
                         <div class="data">
-                          ${this.resultLink.ram_indicator_names.length
-                            ? this.resultLink.ram_indicator_names.map((name: string) => html`<div>${name}</div>`)
-                            : '—'}
+                          <ul id="ram-list">
+                            ${this.resultLink.ram_indicator_names.length
+                              ? this.resultLink.ram_indicator_names.map(
+                                  (name: string, index: number) =>
+                                    html`<li>
+                                      ${this.first60Chars(name, index)}${this.from61sthCharOnwards(name, index)}
+                                    </li>`
+                                )
+                              : '—'}
+                          </ul>
                         </div>
                       </div>
 
@@ -146,6 +166,34 @@ export class CpOutputLevel extends LitElement {
     super.firstUpdated(changedProperties);
 
     this.shadowRoot!.querySelectorAll('iron-icon').forEach((el) => callClickOnSpacePush(el));
+  }
+
+  first60Chars(name: string, index: number) {
+    if (name.length <= 60) {
+      return name;
+    }
+    return html`${name.substring(0, 60)}<paper-button
+        class="show-more-btn"
+        id="show-more"
+        @click="${(event: CustomEvent) => this.showMore(event, index)}"
+        >...</paper-button
+      >`;
+  }
+
+  from61sthCharOnwards(name: string, index: number) {
+    if (name.length <= 60) {
+      return '';
+    }
+    return html`<span id="more-${index}" hidden aria-hidden>${name.substring(60, name.length)}</span>`;
+  }
+
+  private showMore(event: CustomEvent, index: number) {
+    const paperBtn = event.target as PaperButtonElement;
+    paperBtn.setAttribute('hidden', '');
+    const firstparent = paperBtn.parentElement;
+    const span = firstparent?.querySelector('#more-' + index);
+    span?.removeAttribute('hidden');
+    span?.removeAttribute('aria-hidden');
   }
 
   openEditCpOutputPopup(): void {

@@ -9,6 +9,8 @@ import {isEmptyObject} from '../../../utils/utils';
 import {Constructor} from '@unicef-polymer/etools-types';
 import {fireEvent} from '../../../utils/fire-custom-event';
 import {prettyDate} from '../../../utils/date-utils';
+import {updatePartnerReportingRequirements} from '../../../common/actions/interventions';
+import {getStore} from '../../../utils/redux-store-access';
 
 /**
  * @polymer
@@ -68,6 +70,7 @@ function ReportingRequirementsCommonMixin<T extends Constructor<LitElement>>(bas
           this.reportingRequirements =
             CONSTANTS.REQUIREMENTS_REPORT_TYPE.SPECIAL == type ? response : response.reporting_requirements;
           this._countReportingReq(this.reportingRequirements.length);
+          this.updateReportingRequirements(response, type);
         })
         .catch((error: any) => {
           logError('Failed to get qpr data from API!', 'reporting-requirements-common-mixin', error);
@@ -104,6 +107,30 @@ function ReportingRequirementsCommonMixin<T extends Constructor<LitElement>>(bas
     getDateDisplayValue(dateString: string) {
       const formatedDate = prettyDate(dateString);
       return formatedDate ? formatedDate : '-';
+    }
+
+    updateReportingRequirements(reportingRequirements: any, type: string) {
+      const requirements = getStore().getState().interventions.partnerReportingRequirements;
+
+      switch (type) {
+        case CONSTANTS.REQUIREMENTS_REPORT_TYPE.SPECIAL: {
+          requirements.special = reportingRequirements;
+          break;
+        }
+        case CONSTANTS.REQUIREMENTS_REPORT_TYPE.QPR: {
+          requirements.qpr = reportingRequirements.reporting_requirements || reportingRequirements;
+          break;
+        }
+        case CONSTANTS.REQUIREMENTS_REPORT_TYPE.HR: {
+          requirements.hr = reportingRequirements.reporting_requirements || reportingRequirements;
+          break;
+        }
+        case CONSTANTS.REQUIREMENTS_REPORT_TYPE.SR: {
+          requirements.sr = reportingRequirements;
+          break;
+        }
+      }
+      getStore().dispatch(updatePartnerReportingRequirements(requirements));
     }
   }
   return ReportingRequirementsCommon;

@@ -4,6 +4,7 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {SHOW_TOAST} from '../actionsConstants';
 import {AnyObject, PlannedBudget, Intervention} from '@unicef-polymer/etools-types';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
+import {PartnerReportingRequirements} from '../types/store.types';
 
 export const updateCurrentIntervention = (intervention: AnyObject | null) => {
   if (intervention && !intervention.planned_budget) {
@@ -61,4 +62,11 @@ export const patchIntervention = (interventionChunck: any, interventionId?: stri
   }).then((intervention: Intervention) => {
     dispatch(updateCurrentIntervention(intervention));
   });
+};
+
+export const updatePartnerReportingRequirements = (newReportingRequirements: PartnerReportingRequirements) => {
+  return {
+    type: 'UPDATE_PARTNER_REPORTING_REQUIREMENTS',
+    partnerReportingRequirements: newReportingRequirements
+  };
 };
