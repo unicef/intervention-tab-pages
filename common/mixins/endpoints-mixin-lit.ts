@@ -16,10 +16,10 @@ function EndpointsLitMixin<T extends Constructor<LitElement>>(baseClass: T) {
     currentUser!: User;
 
     endStateChanged(state: RootState) {
-      if (!isJsonStrMatch(state.commonData!.PRPCountryData!, this.prpCountries)) {
+      if (state.commonData && !isJsonStrMatch(state.commonData!.PRPCountryData!, this.prpCountries)) {
         this.prpCountries = [...state.commonData!.PRPCountryData!];
       }
-      if (!isJsonStrMatch(state.user.data, this.currentUser)) {
+      if (state.user && !isJsonStrMatch(state.user.data, this.currentUser)) {
         this.currentUser = JSON.parse(JSON.stringify(state.user.data));
       }
     }
