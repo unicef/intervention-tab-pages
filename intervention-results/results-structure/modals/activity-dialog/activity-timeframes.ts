@@ -89,7 +89,8 @@ export class ActivityTimeFrames extends LitElement {
           outline: 0;
         }
         .time-frame:focus-visible {
-          outline: black solid 1px;
+          outline: 0;
+          box-shadow: 0 0 5px 5px rgba(170, 165, 165, 0.3);
         }
       `
     ];

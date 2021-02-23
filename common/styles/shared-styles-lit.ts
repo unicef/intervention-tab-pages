@@ -213,7 +213,8 @@ export const sharedStylesContent = `
   }
 
   paper-radio-group:focus,
-  paper-textarea[focused] {
+  paper-textarea[focused],
+  .nav-menu-item {
     outline: none;
   }
 
