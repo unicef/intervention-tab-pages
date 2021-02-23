@@ -314,7 +314,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           (result: ExpectedResult) => result.id,
           (result, _index) => html`
             <cp-output-level
-               index="${_index}"
+              index="${_index}"
               ?show-cpo-level="${this.isUnicefUser}"
               .resultLink="${result}"
               .interventionId="${this.interventionId}"
