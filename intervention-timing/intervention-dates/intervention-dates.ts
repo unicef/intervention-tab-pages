@@ -184,7 +184,7 @@ export class InterventionDates extends CommentsMixin(
       return;
     }
     this.data = selectInterventionDates(state);
-    this.checkIfWarningRequired(state.interventions.current, state.interventions.partnerReportingRequirements);
+    this.checkIfWarningRequired(state.interventions.partnerReportingRequirements);
     this.originalData = cloneDeep(this.data);
     this.permissions = selectInterventionDatesPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
@@ -215,13 +215,9 @@ export class InterventionDates extends CommentsMixin(
     );
   }
 
-  private checkIfWarningRequired(
-    intervention: Intervention,
-    partnerReportingRequirements: PartnerReportingRequirements
-  ) {
-    this.warningRequired =
-      this.thereArePDOutputActivitiesWithTimeframes(intervention.result_links) ||
-      this.thereArePartnerReportingRequirements(partnerReportingRequirements);
+  private checkIfWarningRequired(partnerReportingRequirements: PartnerReportingRequirements) {
+    // Existence of PD Output activities with timeframes are validated on BK
+    this.warningRequired = this.thereArePartnerReportingRequirements(partnerReportingRequirements);
   }
 
   private thereArePartnerReportingRequirements(partnerReportingRequirements: PartnerReportingRequirements) {
@@ -229,15 +225,6 @@ export class InterventionDates extends CommentsMixin(
       return Object.entries(partnerReportingRequirements).some(([_key, value]) => !!value.length);
     }
     return false;
-  }
-
-  private thereArePDOutputActivitiesWithTimeframes(result_links: ExpectedResult[]) {
-    const pdOutputs: ResultLinkLowerResult[] = result_links.map(({ll_results}: ExpectedResult) => ll_results).flat();
-    const activities: InterventionActivity[] = pdOutputs
-      .map(({activities}: ResultLinkLowerResult) => activities)
-      .flat();
-
-    return activities.some((activity: InterventionActivity) => !!activity.time_frames.length);
   }
 
   saveData() {

@@ -292,7 +292,7 @@
       "END_DATE": "End Date",
       "SELECT_END_DATE": "Please select end date",
       "ACTIVATION_LETTER": "Activation Letter",
-      "SAVE_WARNING": "Make sure you verify and update PD Output Activities and Partner Reporting Requirements after any start/end date changes."
+      "SAVE_WARNING": "Make sure you verify and update Partner Reporting Requirements after any start/end date changes."
     },
     "ACTIVITY_TIMEFRAMES": {
       "ACTIVITY_TIMEFRAMES": "Activity Timeframes",
