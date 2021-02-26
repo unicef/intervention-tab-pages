@@ -338,6 +338,10 @@ export const sharedStylesContent = `
     background-color: rgba(170, 165, 165, 0.2);
   }
 
+  *[disabled] {
+    outline: 0;
+  }
+
   etools-dialog::part(ed-title) {
       border-bottom: solid 1px var(--dark-divider-color);
   }
