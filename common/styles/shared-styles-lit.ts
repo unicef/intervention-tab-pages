@@ -213,7 +213,8 @@ export const sharedStylesContent = `
   }
 
   paper-radio-group:focus,
-  paper-textarea[focused] {
+  paper-textarea[focused],
+  .nav-menu-item {
     outline: none;
   }
 
@@ -335,6 +336,10 @@ export const sharedStylesContent = `
     outline: 0;
     box-shadow:  0 0 10px 10px rgba(170, 165, 165, 0.2) !important;
     background-color: rgba(170, 165, 165, 0.2);
+  }
+
+  *[disabled] {
+    outline: 0;
   }
 
   etools-dialog::part(ed-title) {
