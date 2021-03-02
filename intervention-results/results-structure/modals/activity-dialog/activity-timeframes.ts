@@ -88,7 +88,13 @@ export class ActivityTimeFrames extends LitElement {
         .time-frame:focus:not(:focus-visible) {
           outline: 0;
         }
+        .time-frame:focus:not(.focus-visible) {
+          outline: 0;
+        }
         .time-frame:focus-visible {
+          outline: black solid 1px;
+        }
+        .time-frame.focus-visible {
           outline: black solid 1px;
         }
       `
@@ -148,6 +154,10 @@ export class ActivityTimeFrames extends LitElement {
     this.shadowRoot!.querySelectorAll('.time-frame').forEach((el) => {
       callClickOnSpacePush(el);
     });
+
+    if (window.applyFocusVisiblePolyfill != null) {
+      window.applyFocusVisiblePolyfill(this.shadowRoot);
+    }
   }
 
   toggleFrame(frameId: number): void {
