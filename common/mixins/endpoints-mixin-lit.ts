@@ -6,6 +6,7 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {tokenEndpointsHost, tokenStorageKeys, getTokenEndpoints} from '../../config/config';
 import {AnyObject, Constructor, User} from '@unicef-polymer/etools-types';
 import {RootState} from '../types/store.types';
+import get from 'lodash-es/get';
 
 function EndpointsLitMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class EndpointsMixinLitClass extends baseClass {
@@ -16,10 +17,13 @@ function EndpointsLitMixin<T extends Constructor<LitElement>>(baseClass: T) {
     currentUser!: User;
 
     endStateChanged(state: RootState) {
-      if (state.commonData && !isJsonStrMatch(state.commonData!.PRPCountryData!, this.prpCountries)) {
+      if (
+        get(state, 'commonData.PRPCountryData') &&
+        !isJsonStrMatch(state.commonData!.PRPCountryData!, this.prpCountries)
+      ) {
         this.prpCountries = [...state.commonData!.PRPCountryData!];
       }
-      if (state.user && !isJsonStrMatch(state.user.data, this.currentUser)) {
+      if (get(state, 'user.data') && !isJsonStrMatch(state.user.data, this.currentUser)) {
         this.currentUser = JSON.parse(JSON.stringify(state.user.data));
       }
     }
