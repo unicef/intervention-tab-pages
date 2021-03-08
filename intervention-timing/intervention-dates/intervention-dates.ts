@@ -29,6 +29,10 @@ import {
 import {translate, get as getTranslation} from 'lit-translate';
 import {fireEvent} from '../../utils/fire-custom-event';
 import ReportingRequirementsCommonMixin from '../reporting-requirements/mixins/reporting-requirements-common-mixin';
+import {DuetDatePicker} from '@duetds/date-picker/custom-element';
+customElements.define('duet-date-picker', DuetDatePicker);
+import {duetDateAdapter, getDuetLocalization} from '../../../../../utils/duet-date-picker/duet-datepicker-utils';
+import {materialUIifyDuetDatePicker} from '../../../../../utils/duet-date-picker/duet-datepicker-style';
 
 /**
  * @customElement
@@ -38,7 +42,7 @@ export class InterventionDates extends CommentsMixin(
   ComponentBaseMixin(FrNumbersConsistencyMixin(ReportingRequirementsCommonMixin(LitElement)))
 ) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [gridLayoutStylesLit, buttonsStyles, materialUIifyDuetDatePicker];
   }
 
   render() {
@@ -82,7 +86,7 @@ export class InterventionDates extends CommentsMixin(
               ?hide-tooltip="${!this.frsConsistencyWarningIsActive(this._frsStartConsistencyWarning)}"
             >
               <datepicker-lite
-                slot="field"
+
                 id="intStart"
                 label=${translate('INTERVENTION_TIMING.INTERVENTION_DATES.START_DATE')}
                 .value="${this.data.start}"
@@ -95,6 +99,18 @@ export class InterventionDates extends CommentsMixin(
                 @date-has-changed="${({detail}: CustomEvent) => this.dateHasChanged(detail, 'start')}"
               >
               </datepicker-lite>
+              <label slot="field" for="date">${translate('INTERVENTION_TIMING.INTERVENTION_DATES.START_DATE')}</label>
+              <duet-date-picker
+                slot="field"
+                required
+                identifier="start"
+                .dateAdapter="${duetDateAdapter}"
+                .localization="${getDuetLocalization(getStore().getState().activeLanguage.activeLanguage)}"
+                .value="${this.data.start}"
+                @duetChange="${({detail}: CustomEvent) => this.dateHasChanged(detail, 'start')}"
+              >
+              </duet-date-picker>
+
               <iron-icon icon="pmp-custom-icons:not-equal" slot="custom-icon"></iron-icon>
               <span slot="message">${this._frsStartConsistencyWarning}</span>
             </etools-info-tooltip>
