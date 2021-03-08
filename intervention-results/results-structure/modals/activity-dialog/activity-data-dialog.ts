@@ -90,6 +90,9 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
           --paper-input-container-color: transparent;
           --paper-input-container-focus-color: transparent;
         }
+        .general-total {
+          min-width: 155px;
+        }
         paper-textarea {
           --paper-input-container-input: {
             display: block;
@@ -191,7 +194,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
               <paper-input
                 readonly
                 tabindex="-1"
-                class="col-4"
+                class="col-6 general-total"
                 label=${translate('GENERAL.TOTAL')}
                 .value="${this.getTotalValue()}"
               ></paper-input>
