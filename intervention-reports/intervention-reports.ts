@@ -16,7 +16,7 @@ import {gridLayoutStylesLit} from '../common/styles/grid-layout-styles-lit';
 import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
 import {elevationStyles} from '../common/styles/elevation-styles';
 import CommonMixin from '../common/mixins/common-mixin';
-import EndpointsMixin from '../common/mixins/endpoints-mixin';
+import EndpointsLitMixin from '../common/mixins/endpoints-mixin-lit';
 import PaginationMixin from '../common/mixins/pagination-mixin';
 import {pageIsNotCurrentlyActive} from '../utils/common-methods';
 import get from 'lodash-es/get';
@@ -37,7 +37,7 @@ import {currentIntervention} from '../common/selectors';
  * @customElement
  */
 @customElement('intervention-reports')
-export class InterventionReports extends connectStore(PaginationMixin(CommonMixin(EndpointsMixin(LitElement)))) {
+export class InterventionReports extends connectStore(PaginationMixin(CommonMixin(EndpointsLitMixin(LitElement)))) {
   static get styles() {
     return [gridLayoutStylesLit, elevationStyles];
   }
