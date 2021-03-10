@@ -12,7 +12,7 @@ import {
   selectResultLinksPermissions
 } from './results-structure.selectors';
 import {ResultStructureStyles} from './results-structure.styles';
-import '@unicef-polymer/etools-data-table';
+import '@unicef-polymer/etools-data-table/etools-data-table';
 import '@unicef-polymer/etools-content-panel';
 import '@polymer/paper-toggle-button/paper-toggle-button';
 import '@polymer/paper-icon-button/paper-icon-button';

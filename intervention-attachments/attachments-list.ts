@@ -2,7 +2,7 @@ import {LitElement, html, TemplateResult, property, customElement, CSSResultArra
 import {prettyDate} from '../utils/date-utils';
 import CONSTANTS from '../common/constants';
 import '@unicef-polymer/etools-content-panel';
-import '@unicef-polymer/etools-data-table';
+import '@unicef-polymer/etools-data-table/etools-data-table';
 import '@polymer/iron-icons';
 import './intervention-attachment-dialog';
 import {sharedStyles} from '../common/styles/shared-styles-lit';

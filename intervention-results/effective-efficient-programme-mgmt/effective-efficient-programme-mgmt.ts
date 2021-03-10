@@ -121,7 +121,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
       type: EtoolsTableColumnType.Number
     },
     {
-      label: (translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.PARTNER_CONTRIBUTION') as unknown) as string,
+      label: (translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.PARTNER_CASH') as unknown) as string,
       name: 'partner_contribution',
       type: EtoolsTableColumnType.Number
     },
