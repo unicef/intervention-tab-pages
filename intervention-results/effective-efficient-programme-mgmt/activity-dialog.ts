@@ -79,19 +79,19 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         <div class="layout-horizontal">
           <div class="col col-6">
             <etools-currency-amount-input
-              id="unicefCash"
-              label=${translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.UNICEF_CASH')}
-              .value="${this.originalData.unicef_cash}"
-              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, this.getPropertyName('unicef'))}"
+              id="partnerContribution"
+              label=${translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.PARTNER_CASH')}
+              .value="${this.originalData.partner_contribution}"
+              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, this.getPropertyName('partner'))}"
             >
             </etools-currency-amount-input>
           </div>
           <div class="col col-6">
             <etools-currency-amount-input
-              id="partnerContribution"
-              label=${translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.PARTNER_CASH')}
-              .value="${this.originalData.partner_contribution}"
-              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, this.getPropertyName('partner'))}"
+              id="unicefCash"
+              label=${translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.UNICEF_CASH')}
+              .value="${this.originalData.unicef_cash}"
+              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, this.getPropertyName('unicef'))}"
             >
             </etools-currency-amount-input>
           </div>
