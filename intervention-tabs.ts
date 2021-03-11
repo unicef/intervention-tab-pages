@@ -313,16 +313,16 @@ export class InterventionTabs extends connectStore(LitElement) {
       return '';
     }
     if (this.intervention!.partner_accepted && this.intervention!.unicef_accepted) {
-      return 'IP & UNICEF Accepted';
+      return translate('PERFORMED_ACTIONS_STATUS.PARTNER_AND_UNICEF_ACCEPTED');
     }
     if (!this.intervention!.partner_accepted && this.intervention!.unicef_accepted) {
-      return 'UNICEF Accepted';
+      return translate('PERFORMED_ACTIONS_STATUS.UNICEF_ACCEPTED');
     }
     if (this.intervention!.partner_accepted && !this.intervention!.unicef_accepted) {
-      return 'Partner Accepted';
+      return translate('PERFORMED_ACTIONS_STATUS.PARTNER_ACCEPTED');
     }
     if (!this.intervention!.unicef_court && !!this.intervention!.date_sent_to_partner) {
-      return 'Sent to Partner';
+      return translate('PERFORMED_ACTIONS_STATUS.SENT_TO_PARTNER');
     }
 
     if (
@@ -330,7 +330,7 @@ export class InterventionTabs extends connectStore(LitElement) {
       !!this.intervention!.submission_date &&
       !!this.intervention!.date_sent_to_partner
     ) {
-      return 'Sent to UNICEF';
+      return translate('PERFORMED_ACTIONS_STATUS.SENT_TO_UNICEF');
     }
     return '';
   }
