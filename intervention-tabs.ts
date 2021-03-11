@@ -319,7 +319,7 @@ export class InterventionTabs extends connectStore(LitElement) {
       return 'UNICEF Accepted';
     }
     if (this.intervention!.partner_accepted && !this.intervention!.unicef_accepted) {
-      return 'IP Accepted';
+      return 'Partner Accepted';
     }
     if (!this.intervention!.unicef_court && !!this.intervention!.date_sent_to_partner) {
       return 'Sent to Partner';
