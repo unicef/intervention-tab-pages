@@ -187,7 +187,7 @@
       "UNICEF_CASH": "UNICEF Cash",
       "TOTAL_CASH": "Total Cash"
     },
-    "SUPPLY_AGREEMENT": {
+    "UNICEF_SUPPLY_CONTRIBUTION": {
       "NUMBER_UNITS": "Number of Units",
       "ITEM_ALL_PRICES": "Item (all prices in PD Currency)",
       "PRICE_UNIT": "Price / Unit",
@@ -195,15 +195,15 @@
       "CP_OUTPUTS": "Cp Outputs",
       "OTHER_MENTIONS": "Other Mentions",
       "DELETE_SUPPLY_PROMPT": "Are you sure you want to delete this Supply Agreement item?",
-      "SUPPLY_AGREEMENT": "Supply Agreement",
+      "UNICEF_SUPPLY_CONTRIBUTION": "UNICEF Supply Contribution (Planned)",
       "TOTAL_SUPPLY_BUDGET": "TOTAL SUPPLY BUDGET:",
-      "NO_SUPPLY_AGREEMENTS": "There are no supply agreements added.",
+      "NO_SUPPLY_CONTRIBUTION": "No planned UNICEF supply contribution has been added.",
       "SUPPLIES_UPLOADED": "Supplies uploaded successfully",
       "UNICEF_PRODUCT_NUMBER": "UNICEF Product Number"
     },
-    "SUPPLY_AGREEMENT_DIALOG": {
-      "ADD_SUPPLY_AGREEMENT": "Add Supply Agreement",
-      "EDIT_SUPPLY_AGREEMENT": "Edit Supply Agreement",
+    "SUPPLY_CONTRIBUTION_DIALOG": {
+      "ADD_SUPPLY_CONTRIBUTION": "Add Supply Contribution",
+      "EDIT_SUPPLY_CONTRIBUTION": "Edit Supply Contribution",
       "CP_OUTPUT": "CP Output"
     },
     "PD_INDICATOR": {
