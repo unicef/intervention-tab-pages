@@ -36,10 +36,9 @@ export class PdAmendments extends CommentsMixin(LitElement) {
           -webkit-box-sizing: border-box;
           -moz-box-sizing: border-box;
           box-sizing: border-box;
-          --ecp-content-padding: 0;
-          --ecp-content_-_padding: 0;
           margin-bottom: 24px;
         }
+
         .attachment {
           color: var(--dark-icon-color);
           margin-right: 8px;

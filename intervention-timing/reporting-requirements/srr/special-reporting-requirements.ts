@@ -12,7 +12,6 @@ import CONSTANTS from '../../../common/constants';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {AddEditSpecialRepReqEl} from './add-edit-special-rep-req';
 import EtoolsDialog from '@unicef-polymer/etools-dialog';
 import {getEndpoint} from '../../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
@@ -20,6 +19,7 @@ import {sharedStyles} from '../../../common/styles/shared-styles-lit';
 import {buttonsStyles} from '../../../common/styles/button-styles';
 import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
 import {translate, get as getTranslation} from 'lit-translate';
+import {openDialog} from '../../../utils/dialog';
 
 /**
  * @customElement
@@ -42,7 +42,7 @@ export class SpecialReportingRequirements extends ReportingRequirementsCommonMix
         ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.NO_SPECIAL_REPORTING_REQUIREMENTS')}
       </div>
 
-      <div class="row-h">
+      <div class="row-h" ?hidden="${!this.editMode}">
         <paper-button class="secondary-btn" @click="${this._openAddDialog}"
           >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.ADD_REQUIREMENTS')}</paper-button
         >
@@ -78,8 +78,8 @@ export class SpecialReportingRequirements extends ReportingRequirementsCommonMix
     `;
   }
 
-  @property({type: Object})
-  addEditDialog!: AddEditSpecialRepReqEl;
+  @property({type: Boolean})
+  editMode!: boolean;
 
   @property({type: Object})
   _deleteConfirmationDialog!: EtoolsDialog;
@@ -89,7 +89,6 @@ export class SpecialReportingRequirements extends ReportingRequirementsCommonMix
 
   connectedCallback() {
     super.connectedCallback();
-    this._createAddEditDialog();
     this._createDeleteConfirmationsDialog();
     this._addEventListeners();
   }
@@ -110,18 +109,26 @@ export class SpecialReportingRequirements extends ReportingRequirementsCommonMix
   disconnectedCallback() {
     super.disconnectedCallback();
     this._removeEventListeners();
-    this._removeAddEditDialog();
     this._removeDeleteConfirmationsDialog();
   }
 
-  _onEdit(index: number) {
-    this._setDialogData(index);
-    this.addEditDialog.opened = true;
+  _onEdit(index?: number) {
+    openDialog({
+      dialog: 'add-edit-special-rep-req',
+      dialogData: {
+        item: typeof index === 'undefined' ? {} : this.reportingRequirements[index!],
+        interventionId: this.interventionId
+      }
+    }).then(({confirmed, response}) => {
+      if (!confirmed || !response) {
+        return;
+      }
+      this._onSpecialReportingRequirementsSaved(response);
+    });
   }
 
-  _setDialogData(index: number) {
-    this.addEditDialog.interventionId = this.interventionId;
-    this.addEditDialog.item = this.reportingRequirements[index];
+  _openAddDialog() {
+    this._onEdit();
   }
 
   _onDelete(itemIndex: number) {
@@ -164,29 +171,6 @@ export class SpecialReportingRequirements extends ReportingRequirementsCommonMix
     }
   }
 
-  _createAddEditDialog() {
-    if (this.reportingRequirements) {
-      this.addEditDialog = document.createElement('add-edit-special-rep-req') as AddEditSpecialRepReqEl;
-      this._onSpecialReportingRequirementsSaved = this._onSpecialReportingRequirementsSaved.bind(this);
-      this.addEditDialog.addEventListener(
-        'reporting-requirements-saved',
-        this._onSpecialReportingRequirementsSaved as any
-      );
-
-      document.querySelector('body')!.appendChild(this.addEditDialog);
-    }
-  }
-
-  _removeAddEditDialog() {
-    if (this.addEditDialog) {
-      this.addEditDialog.removeEventListener(
-        'reporting-requirements-saved',
-        this._onSpecialReportingRequirementsSaved as any
-      );
-      document.querySelector('body')!.removeChild(this.addEditDialog);
-    }
-  }
-
   _createDeleteConfirmationsDialog() {
     this._onDeleteConfirmation = this._onDeleteConfirmation.bind(this);
     const confirmationMSg = document.createElement('span');
@@ -211,12 +195,6 @@ export class SpecialReportingRequirements extends ReportingRequirementsCommonMix
     }
   }
 
-  _openAddDialog() {
-    this.addEditDialog.item = {};
-    this.addEditDialog.interventionId = this.interventionId;
-    this.addEditDialog.opened = true;
-  }
-
   _sortRequirementsAsc() {
     this.reportingRequirements.sort((a: string, b: string) => {
       // @ts-ignore
@@ -232,8 +210,7 @@ export class SpecialReportingRequirements extends ReportingRequirementsCommonMix
     return this.reportingRequirements.findIndex((r: any) => r.id === id);
   }
 
-  _onSpecialReportingRequirementsSaved(e: CustomEvent) {
-    const savedReqItem = e.detail;
+  _onSpecialReportingRequirementsSaved(savedReqItem: any) {
     const index = this._getIndexById(savedReqItem.id);
     const reportingRequirementsOriginal = [...this.reportingRequirements];
     if (index > -1) {
@@ -244,6 +221,7 @@ export class SpecialReportingRequirements extends ReportingRequirementsCommonMix
       reportingRequirementsOriginal.push(savedReqItem);
     }
     this.reportingRequirements = [...reportingRequirementsOriginal];
+    this.updateReportingRequirements(this.reportingRequirements, CONSTANTS.REQUIREMENTS_REPORT_TYPE.SR);
     this.requestUpdate();
   }
 }

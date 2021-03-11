@@ -74,7 +74,8 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
         <div class="data-column">
           <label class="paper-label">${translate('INTERVENTION_RESULTS.TOTAL_CSO_CONTRIB')}</label>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.partner_contribution_local)}">
-           ${this.roundPercentage(this.budgetSummary.partner_contribution_percent)} (${this.displayCurrencyAmount(this.budgetSummary.partner_contribution_local, '0.00')})
+            ${this.roundPercentage(this.budgetSummary.partner_contribution_percent)}
+            (${this.displayCurrencyAmount(this.budgetSummary.partner_contribution_local, '0.00')})
           </div>
         </div>
 

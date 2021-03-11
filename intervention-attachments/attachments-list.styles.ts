@@ -5,11 +5,13 @@ export const AttachmentsListStyles = html`
   <style>
     :host {
       display: block;
-      --ecp-content: {
-        padding: 0;
-        overflow: hidden;
-      }
     }
+
+    etools-content-panel::part(ecp-content) {
+      padding: 0;
+      overflow: hidden;
+    }
+
     .attachment {
       margin-right: 8px;
     }

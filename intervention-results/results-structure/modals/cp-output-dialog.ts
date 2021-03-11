@@ -10,6 +10,7 @@ import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
 import {AsyncAction, ResultIndicator, GenericObject} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
+import {sharedStyles} from '../../../common/styles/shared-styles-lit';
 
 @customElement('cp-output-dialog')
 export class CpOutputDialog extends LitElement {
@@ -59,14 +60,14 @@ export class CpOutputDialog extends LitElement {
     // language=html
     return html`
       <style>
-        etools-dialog {
-          --etools-dialog-scrollable: {
-            margin-top: 0 !important;
-          }
-          --etools-dialog-button-styles: {
-            margin-top: 0 !important;
-          }
+        ${sharedStyles} etools-dialog::part(ed-scrollable) {
+          margin-top: 0 !important;
         }
+
+        etools-dialog::part(ed-button-styles) {
+          margin-top: 0;
+        }
+
         .container {
           padding: 12px 24px;
         }

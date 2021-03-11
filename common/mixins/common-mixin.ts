@@ -1,14 +1,9 @@
-// import {dedupingMixin} from '@polymer/polymer/lib/utils/mixin';
 import {prettyDate} from '../../utils/date-utils';
-import {PolymerElement} from '@polymer/polymer';
+import {LitElement} from 'lit-element';
 import {AnyObject, Constructor} from '@unicef-polymer/etools-types';
 import {get} from 'lit-translate';
 
-/**
- * @polymer
- * @mixinFunction
- */
-function CommonMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
+function CommonMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class CommonClass extends baseClass {
     /**
      * Prepare and return the string value we have to display on the interface.
@@ -59,25 +54,6 @@ function CommonMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
         return '';
       }
       return url.split('?').shift()!.split('/').pop();
-    }
-
-    /**
-     * TODO: move this method in another mixin
-     * Reset field validation
-     */
-    fieldValidationReset(selector: string, useValidate?: boolean) {
-      if (!useValidate) {
-        useValidate = false;
-      }
-      const field = this.shadowRoot!.querySelector(selector) as PolymerElement & {validate(): boolean};
-      if (field) {
-        if (useValidate) {
-          field.validate();
-        } else {
-          field.set('invalid', false);
-        }
-      }
-      return field;
     }
 
     _translate(textKey: string) {

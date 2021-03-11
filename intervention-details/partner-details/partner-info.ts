@@ -47,6 +47,10 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
         .placeholder {
           color: var(--secondary-text-color);
         }
+
+        etools-content-panel::part(ecp-content) {
+          padding: 8px 24px 16px 24px;
+        }
       </style>
 
       <etools-content-panel

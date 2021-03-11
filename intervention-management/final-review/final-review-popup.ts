@@ -35,10 +35,9 @@ export class FinalReviewPopup extends LitElement {
         .control-container {
           padding: 0 24px;
         }
-        etools-dialog {
-          --etools-dialog-scrollable: {
-            margin-top: 0 !important;
-          }
+        
+        etools-dialog::part(ed-scrollable) {
+          margin-top: 0 !important;
         }
       </style>
 

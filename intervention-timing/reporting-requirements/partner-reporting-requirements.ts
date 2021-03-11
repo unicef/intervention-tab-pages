@@ -1,8 +1,8 @@
+/* eslint-disable lit-a11y/click-events-have-key-events */
 import {LitElement, customElement, html, property, PropertyValues} from 'lit-element';
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-selector/iron-selector';
 import '@polymer/iron-pages/iron-pages';
-import '@polymer/iron-flex-layout/iron-flex-layout';
 import '@polymer/paper-item/paper-item';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
@@ -52,11 +52,6 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
           box-sizing: border-box;
         }
 
-        etools-content-panel {
-          --ecp-content-padding: 0;
-          --ecp-content_-_padding: 0;
-        }
-
         /* ------------------------------- */
 
         .reporting-req-data {
@@ -95,6 +90,12 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
           font-size: 14px;
           font-weight: bold;
           text-transform: capitalize;
+        }
+        .nav-menu-item:focus-visible {
+          outline: 0;
+          box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12),
+            0 3px 5px -1px rgba(0, 0, 0, 0.4);
+          background-color: rgba(170, 165, 165, 0.2);
         }
         /* ------------------------------- */
 
@@ -222,6 +223,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
                 name="special"
                 .interventionId="${this.interventionId}"
                 .requirementsCount="${this.specialRequirementsCount}"
+                .editMode="${!this.isReadonly}"
                 @count-changed=${(e: CustomEvent) => this.updateSRRCount(e.detail)}
               >
               </special-reporting-requirements>
@@ -289,7 +291,6 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
       return;
     }
     this.isUnicefUser = isUnicefUser(state);
-
     this.reportingRequirementsPermissions = selectReportingRequirementsPermissions(state);
     const currentIntervention = get(state, 'interventions.current');
     this.intervention = cloneDeep(currentIntervention);

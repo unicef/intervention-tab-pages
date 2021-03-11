@@ -70,16 +70,8 @@ export class InterventionTabs extends connectStore(LitElement) {
     return html`
       <style>
         :host {
-          --ecp-header-title_-_text-align: left;
-          --ecp-content_-_padding: 8px 24px 16px 24px;
           --ecp-header-bg: #ffffff;
-          --epc-header-color: var(--primary-text-color);
-          --ecp-header-title: {
-            padding: 0 24px 0 0;
-            text-align: left;
-            font-size: 18px;
-            font-weight: 500;
-          }
+          --ecp-header-color: var(--primary-text-color);
         }
 
         ${sharedStyles} etools-status {
@@ -94,6 +86,10 @@ export class InterventionTabs extends connectStore(LitElement) {
         }
         div[slot='tabs'] {
           width: 100%;
+        }
+
+        etools-content-panel::part(ecp-content) {
+          padding: 8px 24px 16px 24px;
         }
       </style>
 
@@ -317,10 +313,10 @@ export class InterventionTabs extends connectStore(LitElement) {
       return '';
     }
     if (this.intervention!.partner_accepted && this.intervention!.unicef_accepted) {
-      return 'IP & Unicef Accepted';
+      return 'IP & UNICEF Accepted';
     }
     if (!this.intervention!.partner_accepted && this.intervention!.unicef_accepted) {
-      return 'Unicef Accepted';
+      return 'UNICEF Accepted';
     }
     if (this.intervention!.partner_accepted && !this.intervention!.unicef_accepted) {
       return 'IP Accepted';
@@ -334,7 +330,7 @@ export class InterventionTabs extends connectStore(LitElement) {
       !!this.intervention!.submission_date &&
       !!this.intervention!.date_sent_to_partner
     ) {
-      return 'Sent to Unicef';
+      return 'Sent to UNICEF';
     }
     return '';
   }

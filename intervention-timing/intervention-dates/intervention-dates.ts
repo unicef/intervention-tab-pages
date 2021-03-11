@@ -6,7 +6,7 @@ import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {RootState} from '../../common/types/store.types';
+import {PartnerReportingRequirements, RootState} from '../../common/types/store.types';
 import {ProgrammeDocDates, InterventionDatesPermissions} from './interventionDates.models';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {selectInterventionDates, selectInterventionDatesPermissions} from './interventionDates.selectors';
@@ -18,14 +18,25 @@ import get from 'lodash-es/get';
 import '@unicef-polymer/etools-upload/etools-upload';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {
+  AsyncAction,
+  ExpectedResult,
+  Intervention,
+  InterventionActivity,
+  Permission,
+  ResultLinkLowerResult
+} from '@unicef-polymer/etools-types';
+import {translate, get as getTranslation} from 'lit-translate';
+import {fireEvent} from '../../utils/fire-custom-event';
+import ReportingRequirementsCommonMixin from '../reporting-requirements/mixins/reporting-requirements-common-mixin';
 
 /**
  * @customElement
  */
 @customElement('intervention-dates')
-export class InterventionDates extends CommentsMixin(ComponentBaseMixin(FrNumbersConsistencyMixin(LitElement))) {
+export class InterventionDates extends CommentsMixin(
+  ComponentBaseMixin(FrNumbersConsistencyMixin(ReportingRequirementsCommonMixin(LitElement)))
+) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -46,6 +57,10 @@ export class InterventionDates extends CommentsMixin(ComponentBaseMixin(FrNumber
         }
         datepicker-lite {
           min-width: 200px;
+        }
+
+        etools-content-panel::part(ecp-content) {
+          padding: 8px 24px 16px 24px;
         }
       </style>
 
@@ -155,6 +170,8 @@ export class InterventionDates extends CommentsMixin(ComponentBaseMixin(FrNumber
   @property({type: Object})
   permissions!: Permission<InterventionDatesPermissions>;
 
+  warningRequired = false;
+
   connectedCallback() {
     super.connectedCallback();
   }
@@ -167,6 +184,7 @@ export class InterventionDates extends CommentsMixin(ComponentBaseMixin(FrNumber
       return;
     }
     this.data = selectInterventionDates(state);
+    this.checkIfWarningRequired(state.interventions.partnerReportingRequirements);
     this.originalData = cloneDeep(this.data);
     this.permissions = selectInterventionDatesPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
@@ -197,6 +215,18 @@ export class InterventionDates extends CommentsMixin(ComponentBaseMixin(FrNumber
     );
   }
 
+  private checkIfWarningRequired(partnerReportingRequirements: PartnerReportingRequirements) {
+    // Existence of PD Output activities with timeframes are validated on BK
+    this.warningRequired = this.thereArePartnerReportingRequirements(partnerReportingRequirements);
+  }
+
+  private thereArePartnerReportingRequirements(partnerReportingRequirements: PartnerReportingRequirements) {
+    if (partnerReportingRequirements) {
+      return Object.entries(partnerReportingRequirements).some(([_key, value]) => !!value.length);
+    }
+    return false;
+  }
+
   saveData() {
     if (!this.validate()) {
       return Promise.resolve(false);
@@ -205,6 +235,12 @@ export class InterventionDates extends CommentsMixin(ComponentBaseMixin(FrNumber
     return getStore()
       .dispatch<AsyncAction>(patchIntervention(this.data))
       .then(() => {
+        if (this.warningRequired) {
+          fireEvent(this, 'toast', {
+            text: getTranslation('INTERVENTION_TIMING.INTERVENTION_DATES.SAVE_WARNING'),
+            showCloseBtn: true
+          });
+        }
         this.editMode = false;
       });
   }

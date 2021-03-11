@@ -40,6 +40,10 @@ export class TechnicalGuidance extends CommentsMixin(ComponentBaseMixin(LitEleme
           display: block;
           margin-bottom: 24px;
         }
+
+        etools-content-panel::part(ecp-content) {
+          padding: 8px 24px 16px 24px;
+        }
       </style>
 
       <etools-content-panel
@@ -60,6 +64,7 @@ export class TechnicalGuidance extends CommentsMixin(ComponentBaseMixin(LitEleme
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.technical_guidance)}"
             ?required="${this.permissions.required.technical_guidance}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'technical_guidance')}"
+            maxlength="5000"
           >
           </paper-textarea>
         </div>
@@ -75,6 +80,7 @@ export class TechnicalGuidance extends CommentsMixin(ComponentBaseMixin(LitEleme
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.capacity_development)}"
             ?required="${this.permissions.required.capacity_development}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'capacity_development')}"
+            maxlength="5000"
           >
           </paper-textarea>
         </div>
@@ -90,6 +96,7 @@ export class TechnicalGuidance extends CommentsMixin(ComponentBaseMixin(LitEleme
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.other_partners_involved)}"
             ?required="${this.permissions.required.other_partners_involved}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'other_partners_involved')}"
+            maxlength="5000"
           >
           </paper-textarea>
         </div>
@@ -105,6 +112,7 @@ export class TechnicalGuidance extends CommentsMixin(ComponentBaseMixin(LitEleme
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.other_info)}"
             ?required="${this.permissions.required.other_info}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'other_info')}"
+            maxlength="5000"
           >
           </paper-textarea>
         </div>

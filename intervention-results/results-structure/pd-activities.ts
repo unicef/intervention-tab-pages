@@ -55,32 +55,30 @@ export class PdActivities extends CommentsMixin(LitElement) {
       <style>
         ${sharedStyles} etools-data-table-row {
           --list-bg-color: var(--green-background);
-          --list-row-collapse-wrapper: {
-            padding: 0 !important;
-            background-color: var(--green-background-dark);
-            border-top: 1px solid var(--main-border-color);
-          }
-          --list-row-wrapper: {
-            background-color: var(--green-background);
-            min-height: 48px;
-            border: 1px solid var(--main-border-color) !important;
-            border-bottom: none !important;
-          }
-          --icon-wrapper: {
-            padding: 0px 0px !important;
-            margin-right: 16px !important;
-          }
         }
+
+        etools-data-table-row::part(edt-list-row-collapse-wrapper) {
+          padding: 0 !important;
+          background-color: var(--green-background-dark);
+          border-top: 1px solid var(--main-border-color);
+        }
+        etools-data-table-row::part(edt-list-row-wrapper) {
+          background-color: var(--green-background);
+          min-height: 48px;
+          border: 1px solid var(--main-border-color) !important;
+          border-bottom: none !important;
+        }
+        etools-data-table-row::part(edt-icon-wrapper) {
+          padding: 0 0 !important;
+          margin-right: 16px !important;
+        }
+
         .editable-row .hover-block {
           background-color: rgb(199, 212, 200);
         }
-        etools-data-table-row:last-child {
-          --list-row-wrapper: {
-            background-color: var(--green-background);
-            min-height: 48px;
-            border: 1px solid var(--main-border-color) !important;
-            border-bottom: 1px solid var(--main-border-color) !important;
-          }
+
+        etools-data-table-row::part(edt-list-row-wrapper):hover {
+          background-color: rgb(199, 212, 200);
         }
       </style>
 

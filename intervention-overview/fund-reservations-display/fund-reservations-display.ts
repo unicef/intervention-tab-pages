@@ -7,7 +7,6 @@ import '@polymer/iron-icons/iron-icons';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {frWarningsStyles} from '../../common/styles/fr-warnings-styles';
-import {_layoutVertical, _layoutEnd} from '../../common/styles/flex-layout-styles';
 import {customIcons} from '../../common/styles/custom-icons';
 import {prettyDate} from '../../utils/date-utils';
 import '../../common/mixins/fr-numbers-consistency-mixin';
@@ -32,8 +31,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
     return html`
       ${customIcons}
       <style>
-        ${sharedStyles}
-        :host {
+        ${sharedStyles} :host {
           --list-column-label: {
             margin-right: 0;
           }
@@ -44,7 +42,8 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
           }
           --list-bg-color: var(--light-theme-background-color);
         }
-        #plannedUnicefCash, #totalsRow {
+        #plannedUnicefCash,
+        #totalsRow {
           --list-row-wrapper-padding: 0 24px 0 56px;
         }
         #plannedUnicefCash {
@@ -57,8 +56,9 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
           padding-top: 12px;
           padding-bottom: 12px;
           line-height: 16px;
-          ${_layoutVertical}
-          ${_layoutEnd}
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
         }
         .unicef-cash-col iron-label {
           font-size: 12px;

@@ -14,12 +14,13 @@ export class CancelJustification extends LitElement {
         ${sharedStyles} :host {
           display: block;
           margin-bottom: 24px;
-          --ecp-header-title: {
-            font-weight: 500;
-            font-size: 18px;
-            text-align: left;
-            margin-left: 80px;
-          }
+        }
+
+        etools-content-panel::part(ecp-header-title) {
+          font-weight: 500;
+          font-size: 18px;
+          text-align: left;
+          margin-left: 80px;
         }
 
         .cancellation-text {
