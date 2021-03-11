@@ -10,7 +10,7 @@ import {
 } from 'lit-element';
 import {ResultStructureStyles} from './results-structure.styles';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import '@unicef-polymer/etools-data-table/etools-data-table';
+import '@unicef-polymer/etools-data-table/etools-data-table.js';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/iron-icons';
 import './modals/cp-output-dialog';
