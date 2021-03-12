@@ -187,7 +187,7 @@
       "UNICEF_CASH": "Numerar UNICEF",
       "TOTAL_CASH": "Total Numerar"
     },
-    "SUPPLY_AGREEMENT": {
+    "UNICEF_SUPPLY_CONTRIBUTION": {
       "NUMBER_UNITS": "Numar Unitati",
       "ITEM_ALL_PRICES": "Element (toate preturile explimate in valuta din PD)",
       "PRICE_UNIT": "Pret/Unitate",
@@ -195,15 +195,15 @@
       "CP_OUTPUTS": "Realizari CP",
       "OTHER_MENTIONS": "Alte Mentiuni",
       "DELETE_SUPPLY_PROMPT": "Doriti sa stergeti acest item din Acordul privind livrabilele?",
-      "SUPPLY_AGREEMENT": "Acord privind livrabilele",
+      "UNICEF_SUPPLY_CONTRIBUTION": "Contributia UNICEF privind livrabilele",
       "TOTAL_SUPPLY_BUDGET": "Buget al Tuturor Livrabilelor:",
-      "NO_SUPPLY_AGREEMENTS": "Nu s-au adaugat acorduri pentru livrabile.",
+      "NO_SUPPLY_CONTRIBUTION": "Nu s-au planificat contributii UNICEF pentru livrabile.",
       "SUPPLIES_UPLOADED": "Livrabilele au fost incarcate cu succes",
       "UNICEF_PRODUCT_NUMBER": "Numar Produs UNICEF"
     },
-    "SUPPLY_AGREEMENT_DIALOG": {
-      "ADD_SUPPLY_AGREEMENT": "Adauga Acord privind livrabile",
-      "EDIT_SUPPLY_AGREEMENT": "Editeaza Acordul privind livrabilele",
+    "SUPPLY_CONTRIBUTION_DIALOG": {
+      "ADD_SUPPLY_CONTRIBUTION": "Adauga Contributia privind livrabile",
+      "EDIT_SUPPLY_CONTRIBUTION": "Editeaza Contributia privind livrabilele",
       "CP_OUTPUT": "Realizari CP"
     },
     "PD_INDICATOR": {

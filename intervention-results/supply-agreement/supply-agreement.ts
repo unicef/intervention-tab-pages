@@ -83,14 +83,14 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
 
       <etools-content-panel
         show-expand-btn
-        panel-title=${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.SUPPLY_AGREEMENT')}
+        panel-title=${translate('INTERVENTION_RESULTS.UNICEF_SUPPLY_CONTRIBUTION.UNICEF_SUPPLY_CONTRIBUTION')}
         comment-element="supply-agreement"
-        comment-description=${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.SUPPLY_AGREEMENT')}
+        comment-description=${translate('INTERVENTION_RESULTS.UNICEF_SUPPLY_CONTRIBUTION.UNICEF_SUPPLY_CONTRIBUTION')}
       >
         <div slot="panel-btns">
           <span class="mr-20">
             <label class="paper-label font-bold pad-right"
-              >${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.TOTAL_SUPPLY_BUDGET')}
+              >${translate('INTERVENTION_RESULTS.UNICEF_SUPPLY_CONTRIBUTION.TOTAL_SUPPLY_BUDGET')}
             </label>
             <label class="font-bold-12"
               >${this.intervention.planned_budget.currency}
@@ -123,7 +123,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           .showDelete=${this.permissions.edit.supply_items}
         ></etools-table>
         <div class="row-h" ?hidden="${this.supply_items?.length}">
-          <p>${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.NO_SUPPLY_AGREEMENTS')}</p>
+          <p>${translate('INTERVENTION_RESULTS.UNICEF_SUPPLY_CONTRIBUTION.NO_SUPPLY_CONTRIBUTION')}</p>
         </div>
       </etools-content-panel>
 
@@ -150,25 +150,25 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   @property({type: Array})
   columns: EtoolsTableColumn[] = [
     {
-      label: (translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.ITEM_ALL_PRICES') as unknown) as string,
+      label: (translate('INTERVENTION_RESULTS.UNICEF_SUPPLY_CONTRIBUTION.ITEM_ALL_PRICES') as unknown) as string,
       name: 'title',
       type: EtoolsTableColumnType.Text,
       cssClass: 'col_title'
     },
     {
-      label: (translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.NUMBER_UNITS') as unknown) as string,
+      label: (translate('INTERVENTION_RESULTS.UNICEF_SUPPLY_CONTRIBUTION.NUMBER_UNITS') as unknown) as string,
       name: 'unit_number',
       type: EtoolsTableColumnType.Number,
       cssClass: 'col_nowrap'
     },
     {
-      label: (translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.PRICE_UNIT') as unknown) as string,
+      label: (translate('INTERVENTION_RESULTS.UNICEF_SUPPLY_CONTRIBUTION.PRICE_UNIT') as unknown) as string,
       name: 'unit_price',
       type: EtoolsTableColumnType.Number,
       cssClass: 'col_nowrap'
     },
     {
-      label: (translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.TOTAL_PRICE') as unknown) as string,
+      label: (translate('INTERVENTION_RESULTS.UNICEF_SUPPLY_CONTRIBUTION.TOTAL_PRICE') as unknown) as string,
       name: 'total_price',
       cssClass: 'col_nowrap',
       type: EtoolsTableColumnType.Number
@@ -199,7 +199,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         this.isUnicefUser
           ? html`<td class="ptb-0">
               <div class="child-row-inner-container">
-                <label class="paper-label">${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.CP_OUTPUTS')}</label
+                <label class="paper-label">${translate('INTERVENTION_RESULTS.UNICEF_SUPPLY_CONTRIBUTION.CP_OUTPUTS')}</label
                 ><br />
                 <label>${output || '—'}</label><br />
               </div>
@@ -208,7 +208,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       }
       <td colspan="${this.isUnicefUser ? '2' : '3'}" class="ptb-0">
         <div class="child-row-inner-container">
-          <label class="paper-label">${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.OTHER_MENTIONS')}</label><br />
+          <label class="paper-label">${translate('INTERVENTION_RESULTS.UNICEF_SUPPLY_CONTRIBUTION.OTHER_MENTIONS')}</label><br />
           <label>${item.other_mentions || '—'}</label>
           </paper-input>
         </div>
@@ -216,7 +216,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       <td colspan="2">
         <div class="child-row-inner-container">
           <label class="paper-label">
-            ${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.UNICEF_PRODUCT_NUMBER')}</label><br />
+            ${translate('INTERVENTION_RESULTS.UNICEF_SUPPLY_CONTRIBUTION.UNICEF_PRODUCT_NUMBER')}</label><br />
           <label>${item.unicef_product_number || '—'}</label>
           </paper-input>
         </div>
@@ -271,7 +271,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
-        content: translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.DELETE_SUPPLY_PROMPT'),
+        content: translate('INTERVENTION_RESULTS.UNICEF_SUPPLY_CONTRIBUTION.DELETE_SUPPLY_PROMPT'),
         confirmBtnText: translate('GENERAL.DELETE')
       }
     }).then(({confirmed}) => {
@@ -306,7 +306,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
     if (success) {
       getStore().dispatch(updateCurrentIntervention(success));
       fireEvent(this, 'toast', {
-        text: getTranslation('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.SUPPLIES_UPLOADED')
+        text: getTranslation('INTERVENTION_RESULTS.UNICEF_SUPPLY_CONTRIBUTION.SUPPLIES_UPLOADED')
       });
     } else {
       const message = this.getUploadError(error);
