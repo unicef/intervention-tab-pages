@@ -24,6 +24,13 @@
     "UNLOCK_PROMPT": "Are you sure you want to unlock?",
     "REVIEW_PROMPT": "Are you sure you want to review?"
   },
+  "PERFORMED_ACTIONS_STATUS": {
+    "UNICEF_ACCEPTED": "UNICEF Accepted",
+    "PARTNER_AND_UNICEF_ACCEPTED": "Partner & UNICEF Accepted",
+    "PARTNER_ACCEPTED": "Partner Accepted",
+    "SENT_TO_PARTNER": "Sent to Partner",
+    "SENT_TO_UNICEF": "Sent to UNICEF"
+  },
   "INTERVENTION_REVIEWS": {
     "REVIEW_TAB": "Review",
     "INTERVENTION_REVIEW": "Intervention Review",
@@ -116,7 +123,7 @@
     "BUDGET_CURRENCY": "Budget Currency",
     "BUDGET_HQ_RATE": "Budget HQ Rate",
     "PRGM_EFFECTIVENESS": "% Prgm Effectiveness",
-    "TOTAL_CSO_CONTRIB": "Total CSO Contrib",
+    "TOTAL_PARTNER_CASH": "Total Partner Cash",
     "TOTAL_UNICEF_CONTRIB": "Total UNICEF Contrib",
     "TOTAL_UNICEF_CASH": "Total UNICEF Cash",
     "TOTAL_SUPPLY": "Total Supply",
@@ -131,7 +138,7 @@
     "DELETE_PROMPT": "Are you sure you want to delete this indicator?",
     "RESULTS_STRUCTURE": {
       "RESULTS_STRUCTURE": "Results Structure",
-      "CSO_CASH": "CSO Cash",
+      "PARTNER_CASH": "Partner Cash",
       "UNICEF_CASH": "UNICEF Cash",
       "PERCENT_PARTNER": "%Partner",
       "TIME_PERIODS": "Time Periods",
@@ -162,7 +169,7 @@
       "TOTAL": "TOTAL:",
       "ITEM_PD_CURRENCY": "Item (all prices in PD currency)",
       "UNICEF_CASH": "UNICEF Cash",
-      "PARTNER_CONTRIBUTION": "Partner Contribution",
+      "PARTNER_CASH": "Partner Cash",
       "TITLE_1": "In-country management and support staff",
       "DESCRIPTION_1": "Contribution for In-country management and support staff prorated to their contribution to the programme (representation, planning, coordination, logistics, administration, finance)",
       "TITLE_2": "Operational costs",
@@ -177,13 +184,13 @@
       "ACTIVITY_DATA": "Activity Data",
       "ACTIVITY_NAME": "Activity Name",
       "OTHER_NOTES": "Other Notes",
-      "CSO_CASH_BUDGET": "CSO Cash Budget",
+      "PARTNER_CASH_BUDGET": "Partner Cash Budget",
       "UNICEF_CASH_BUDGET": "UNICEF Cash Budget",
       "USE_INPUT_LEVEL": "Use Input-level",
       "FILL_ALL_ACTIVITY_ITEMS": "Please fill all Activity Items names",
       "FILL_ACTIVITY_TIME": "Please select an Activity time frame.",
       "ITEM_DESCRIPTION": "Item Description",
-      "CSO_CONTRIB": "CSO Contrib",
+      "PARTNER_CASH": "Partner Cash",
       "UNICEF_CASH": "UNICEF Cash",
       "TOTAL_CASH": "Total Cash"
     },
