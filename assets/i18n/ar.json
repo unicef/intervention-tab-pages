@@ -24,6 +24,13 @@
     "UNLOCK_PROMPT": "Are you sure you want to unlock?",
     "REVIEW_PROMPT": "Are you sure you want to review?"
   },
+  "PERFORMED_ACTIONS_STATUS": {
+    "UNICEF_ACCEPTED": "UNICEF Accepted",
+    "PARTNER_AND_UNICEF_ACCEPTED": "Partner & UNICEF Accepted",
+    "PARTNER_ACCEPTED": "Partner Accepted",
+    "SENT_TO_PARTNER": "Sent to Partner",
+    "SENT_TO_UNICEF": "Sent to UNICEF"
+  },
   "INTERVENTION_REVIEWS": {
     "REVIEW_TAB": "Review",
     "INTERVENTION_REVIEW": "Intervention Review",

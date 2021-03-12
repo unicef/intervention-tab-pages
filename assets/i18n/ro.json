@@ -24,6 +24,13 @@
     "UNLOCK_PROMPT": "Sunteti sigur ca doriti sa deblocati?",
     "REVIEW_PROMPT": "Sunteti sigur ca doriti sa evaluati?"
   },
+  "PERFORMED_ACTIONS_STATUS": {
+    "UNICEF_ACCEPTED": "Acceptata de UNICEF",
+    "PARTNER_AND_UNICEF_ACCEPTED": "Acceptata de Partener & UNICEF",
+    "PARTNER_ACCEPTED": "Acceptata de Partener",
+    "SENT_TO_PARTNER": "Trimisa la Partener",
+    "SENT_TO_UNICEF": "Trimisa la UNICEF"
+  },
   "INTERVENTION_REVIEWS": {
     "REVIEW_TAB": "Evaluare",
     "INTERVENTION_REVIEW": "Evaluare Interventie",
