@@ -70,7 +70,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit?.title)}"
             ?required="${this.permissions.required.title}"
             error-message="This field is required"
-            maxlength="5000"
+            maxlength="256"
             .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.title)}"
           >
           </paper-textarea>
