@@ -1,7 +1,7 @@
 import {LitElement, html, property, customElement} from 'lit-element';
 import '@polymer/paper-button/paper-button.js';
 declare const dayjs: any;
-import '@unicef-polymer/etools-dialog/etools-dialog';
+import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import '@unicef-polymer/etools-date-time/calendar-lite';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
@@ -15,7 +15,7 @@ import {convertDate} from '../../../utils/date-utils';
 import {getEndpoint} from '../../../utils/endpoint-helper';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
-import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
+import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {isEmptyObject} from '../../../utils/utils';
 import {connectStore} from '../../../common/mixins/connect-store-mixin';

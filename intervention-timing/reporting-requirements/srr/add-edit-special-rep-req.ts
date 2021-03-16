@@ -8,14 +8,14 @@ import {prepareDatepickerDate} from '../../../utils/date-utils';
 
 import '@polymer/iron-label/iron-label';
 import '@polymer/paper-input/paper-input';
-import '@unicef-polymer/etools-dialog/etools-dialog';
+import '@unicef-polymer/etools-dialog/etools-dialog.js';
 
 import '@unicef-polymer/etools-date-time/calendar-lite';
 import {fireEvent} from '../../../utils/fire-custom-event';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
+import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {AnyObject} from '@unicef-polymer/etools-types';
 declare const dayjs: any;
 import {translate} from 'lit-translate';

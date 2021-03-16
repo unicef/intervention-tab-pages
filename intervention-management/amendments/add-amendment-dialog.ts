@@ -1,6 +1,6 @@
 import {LitElement, html, property, customElement} from 'lit-element';
 import '@polymer/paper-input/paper-input';
-import '@unicef-polymer/etools-dialog/etools-dialog';
+import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
 import '@unicef-polymer/etools-upload/etools-upload';
 import '@unicef-polymer/etools-date-time/datepicker-lite';

@@ -3,7 +3,7 @@ import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-table/etools-table';
 import {EtoolsTableColumn, EtoolsTableColumnType} from '@unicef-polymer/etools-table/etools-table';
-import '@unicef-polymer/etools-dropdown';
+import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import '@polymer/paper-icon-button/paper-icon-button';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
