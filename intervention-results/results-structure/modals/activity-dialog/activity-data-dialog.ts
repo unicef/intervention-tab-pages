@@ -3,7 +3,7 @@ import {DataMixin} from '../../../../common/mixins/data-mixin';
 import '@unicef-polymer/etools-currency-amount-input';
 import '@polymer/paper-input/paper-textarea';
 import '@polymer/paper-toggle-button';
-import '@unicef-polymer/etools-dialog';
+import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import './activity-items-table';
 import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
 import {formatCurrency, getTotal} from './get-total.helper';
