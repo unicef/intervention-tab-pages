@@ -345,6 +345,16 @@ export const sharedStylesContent = `
   etools-dialog::part(ed-title) {
       border-bottom: solid 1px var(--dark-divider-color);
   }
+
+  etools-dialog::part(ed-scrollable) {
+    margin-top: 0 !important;
+    padding-top: 12px;
+    padding-bottom: 16px;
+  }
+
+  etools-dialog::part(ed-button-styles) {
+    margin-top: 0;
+  }
 `;
 // export const sharedStyles = html`${unsafeCSS(sharedStylesContent)}`;
 export const sharedStyles = css`
