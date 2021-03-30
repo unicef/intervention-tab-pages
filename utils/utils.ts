@@ -125,3 +125,7 @@ export const buildUrlQueryString = (params: AnyObject): string => {
 
   return queryParams.join('&');
 };
+
+export function decimalFractionEquals0(val: string) {
+  return val.lastIndexOf('.') > 0 && Number(val.substring(val.lastIndexOf('.') + 1)) === 0;
+}

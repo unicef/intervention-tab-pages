@@ -21,7 +21,7 @@ import {FinancialComponentData, FinancialComponentPermissions} from './financial
 import {selectFinancialComponentPermissions, selectFinancialComponent} from './financialComponent.models';
 import {patchIntervention} from '../../common/actions/interventions';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
-import {isJsonStrMatch} from '../../utils/utils';
+import {decimalFractionEquals0, isJsonStrMatch} from '../../utils/utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
@@ -78,6 +78,18 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
         etools-content-panel::part(ecp-content) {
           padding: 8px 24px 16px 24px;
         }
+        .grouping-div {
+          border-top: 1px solid lightgray;
+          margin-bottom: 20px;
+          margin-top: 30px;
+          width: 10px;
+          border-left: 1px solid lightgray;
+          border-bottom: 1px solid lightgray;
+          margin-right: 6px;
+        }
+        .hq-info-label {
+          color: darkred;
+        }       
       </style>
       <etools-content-panel
         show-expand-btn
@@ -107,44 +119,51 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
               </div>`
           )}
         </div>
-        <div class="layout-horizontal row-padding-v extra-padd-top">
-          <div class="w100">
-            <label class="paper-label"
-              >${translate('INTERVENTION_MANAGEMENT.FINANCIAL_COMPONENT.HEADQUARTERS_CONTRIBUTION')}</label
-            >
+       
+
+        <div class="layout-horizontal">
+          <div class="grouping-div"></div>
+          <div>
+            <div class="layout-horizontal row-padding-v extra-padd-top">
+              <div class="w100">
+                <label class="paper-label"
+                  >${translate('INTERVENTION_MANAGEMENT.FINANCIAL_COMPONENT.HEADQUARTERS_CONTRIBUTION')}</label
+                >
+              </div>
+            </div>
+            <div class="layout-horizontal">
+              <div class="col col-3">
+                <paper-slider
+                  .value="${this.data.hq_support_cost}"
+                  width="100%;"
+                  max="7"
+                  step="0.1"
+                  ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.hq_support_cost)}"
+                  @value-changed="${(e: CustomEvent) => this.updateSlider(e)}"
+                ></paper-slider>
+                ${this.data.hq_support_cost}
+              </div>
+            </div>
+            <div class="layout-horizontal row-padding-v">
+              <label class="paper-label hq-info-label"><b>${this.data.hq_support_cost}%</b> of the total UNICEF cash contribution is:
+                <b>${this.autoCalculatedHqContrib} ${this.data.planned_budget.currency}</b>. Please review and enter the actual final number below.</label
+              >
+            </div>
+            <div class="layout-horizontal">
+              <paper-input
+                id="hqContrib"
+                allowed-pattern="[0-9]"
+                placeholder="&#8212;"
+                label="HQ Contribution"
+                .value="${this.data.planned_budget.total_hq_cash_local}"
+                ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_budget)}"
+                @value-changed="${({detail}: CustomEvent) => this.hqContribChanged(detail, 'total_hq_cash_local')}"
+              >
+              </paper-input>
+            </div>
           </div>
         </div>
-        <div class="layout-horizontal">
-          <div class="col col-3">
-            <paper-slider
-              .value="${this.data.hq_support_cost}"
-              width="100%;"
-              max="7"
-              step="0.1"
-              ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.hq_support_cost)}"
-              @value-changed="${(e: CustomEvent) => this.updateSlider(e)}"
-            ></paper-slider>
-            ${this.data.hq_support_cost}
-          </div>
-        </div>
-        <div class="layout-horizontal extra-padd-top">
-          <label class="paper-label"
-            >This is ${this.data.hq_support_cost} of the total UNICEF cash contribution:
-            ${this.autoCalculatedHqContrib}. Please now review and enter actual final number.</label
-          >
-        </div>
-        <div class="layout-horizontal">
-          <paper-input
-            id="hqContrib"
-            allowed-pattern="[0-9]"
-            placeholder="&#8212;"
-            label="HQ Contribution"
-            .value="${this.data.planned_budget.total_hq_cash_local}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_budget)}"
-            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'total_hq_cash_local')}"
-          >
-          </paper-input>
-        </div>
+
         <div class="layout-horizontal extra-padd-top">
           <div class="col col-3">
             <etools-dropdown
@@ -191,8 +210,8 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
   @property({type: Array})
   cashTransferModalities!: LabelAndValue[];
 
-  @property({type: Number})
-  autoCalculatedHqContrib = 0;
+  @property({type: String})
+  autoCalculatedHqContrib = '0';
 
   connectedCallback() {
     super.connectedCallback();
@@ -224,11 +243,10 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
     // console.log(this.data.planned_budget.total_hq_cash_local);
     this.data = selectFinancialComponent(state);
     this.originalData = cloneDeep(this.data);
-    this.autoCalculatedHqContrib =
-      Number(this.data.planned_budget.total_unicef_cash_local_wo_hq) * (0.01 * Number(this.data.hq_support_cost));
+    this.autoCalculatedHqContrib = this.autoCalcHqContrib();
     super.stateChanged(state);
   }
-
+  
   checkCashTransferModality(value: string) {
     return this.data.cash_transfer_modalities.indexOf(value) > -1;
   }
@@ -238,7 +256,31 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
       return;
     }
     this.data = {...this.data, hq_support_cost: e.detail.value} as FinancialComponentData;
+    this.autoCalculatedHqContrib = this.autoCalcHqContrib();
+      ;
   }
+
+  autoCalcHqContrib() {
+    const hqContrib = Number(this.data.planned_budget.total_unicef_cash_local_wo_hq) * (0.01 * Number(this.data.hq_support_cost));
+    return this.limitDecimals(hqContrib);
+  }
+
+  limitDecimals(initVal: Number) {
+    let formatedVal = String(initVal);
+    if (initVal < 0.01) {
+      formatedVal = initVal.toFixed(4); // Taking into consideration values like 0.0018
+    } else {
+      formatedVal = initVal.toFixed(2);
+    }
+
+    if (decimalFractionEquals0(formatedVal)) {
+      formatedVal = formatedVal.substring(0, formatedVal.lastIndexOf('.')); // Removing `.00` form value like `100.00`
+    }
+
+    return formatedVal;
+  }
+
+ 
 
   // updateHq(e: CustomEvent) {
   //   if (!e.detail) {

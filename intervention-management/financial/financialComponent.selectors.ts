@@ -8,7 +8,6 @@ export class FinancialComponentData extends ModelsBase {
   }
   cash_transfer_modalities: string[] = [];
   hq_support_cost = '';
-  total_hq_cash_local = '';
   planned_budget = new PlannedBudget();
 }
 
@@ -19,6 +18,5 @@ export class FinancialComponentPermissions extends ModelsBase {
   }
   cash_transfer_modalities = true;
   hq_support_cost = true;
-  total_hq_cash_local = true;
   planned_budget = true;
 }
