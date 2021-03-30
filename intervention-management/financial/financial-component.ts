@@ -233,11 +233,6 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
     if (!isJsonStrMatch(this.cashTransferModalities, state.commonData!.cashTransferModalities)) {
       this.cashTransferModalities = [...state.commonData!.cashTransferModalities];
     }
-    // const financialCompData = selectFinancialComponent(state);
-    // if (!isJsonStrMatch(this.originalData, financialCompData)) {
-    //   this.data = cloneDeep(financialCompData);
-    //   this.originalData = cloneDeep(financialCompData);
-    // }
     this.data = selectFinancialComponent(state);
     this.originalData = cloneDeep(this.data);
     this.autoCalculatedHqContrib = this.autoCalcHqContrib();
@@ -286,20 +281,7 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
     return formatedVal;
   }
 
- 
-
-  // updateHq(e: CustomEvent) {
-  //   if (!e.detail) {
-  //     return;
-  //   }
-  //   this.data.planned_budget = {...this.data.planned_budget, total_hq_cash_local: e.detail.value};
-  // }
-
   updateData(value: any, checkValue: string) {
-    // const index = this.data.cash_transfer_modalities.indexOf('direct');
-    // if (index > -1) {
-    //   this.data.cash_transfer_modalities.splice(index, 1);
-    // }
     if (value == false) {
       this.data.cash_transfer_modalities = this.data.cash_transfer_modalities.filter((el: string) => el !== checkValue);
     } else if (this.data.cash_transfer_modalities.indexOf(checkValue) === -1) {
