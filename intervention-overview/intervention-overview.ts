@@ -40,8 +40,6 @@ export class InterventionOverview extends connectStore(LitElement) {
       <style>
         ${sharedStyles} :host {
           width: 100%;
-          --ecp-content-padding: 0px;
-          --ecp-content_-_padding: 0;
           --paper-input-container-underline-disabled_-_display: none;
         }
 
@@ -121,7 +119,7 @@ export class InterventionOverview extends connectStore(LitElement) {
               <strong>${this.interventionAgreement.agreement_type}</strong>
               with
               ${this.isUnicefUser
-                ? html` <a href="/pmp/partners/${this.intervention.partner_id}/details">
+                ? html` <a target="_blank" href="/pmp/partners/${this.intervention.partner_id}/details">
                     <strong class="blue">${this.intervention.partner}</strong>
                   </a>`
                 : html`<strong class="blue">${this.intervention.partner}</strong>`}
@@ -161,6 +159,7 @@ export class InterventionOverview extends connectStore(LitElement) {
                 placeholder="&#8212;"
                 no-label-float
                 disabled
+                tabindex="-1"
               >
               </etools-currency-amount-input>
             </div>
@@ -188,6 +187,7 @@ export class InterventionOverview extends connectStore(LitElement) {
                 placeholder="&#8212;"
                 no-label-float
                 disabled
+                tabindex="-1"
               >
               </etools-currency-amount-input>
             </div>
@@ -201,6 +201,7 @@ export class InterventionOverview extends connectStore(LitElement) {
                 placeholder="&#8212;"
                 no-label-float
                 disabled
+                tabindex="-1"
               >
               </etools-currency-amount-input>
             </div>
@@ -214,6 +215,7 @@ export class InterventionOverview extends connectStore(LitElement) {
                 placeholder="&#8212;"
                 no-label-float
                 disabled
+                tabindex="-1"
               >
               </etools-currency-amount-input>
             </div>

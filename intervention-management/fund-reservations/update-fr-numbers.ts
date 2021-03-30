@@ -3,22 +3,15 @@ import '@polymer/iron-icons/iron-icons';
 import '@polymer/paper-input/paper-input';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-icon-button/paper-icon-button';
-import '@unicef-polymer/etools-dialog/etools-dialog';
+import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import RepeatableDataSetsMixin from '../../common/mixins/repeatable-data-sets-mixin';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
-import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
+import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {PaperInputElement} from '@polymer/paper-input/paper-input';
 import {PaperDialogElement} from '@polymer/paper-dialog/paper-dialog';
-import {
-  layoutVertical,
-  layoutFlex,
-  layoutCenterJustified,
-  layoutWrap,
-  layoutHorizontal
-} from '../../common/styles/flex-layout-styles';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 
@@ -54,16 +47,19 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
           padding: 0 0 16px 24px;
         }
         .item-actions-container {
-          ${layoutHorizontal}
+          display: flex;
+          flex-direction: row;
         }
         .item-actions-container .actions {
-          ${layoutVertical}
-          ${layoutCenterJustified}
-          ${layoutWrap}
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          flex-wrap: wrap;
         }
         .item-container .item-content {
-          ${layoutVertical}
-          ${layoutFlex}
+          display: flex;
+          flex-direction: column;
+          flex: 1;
           margin-left: 10px;
           border-left: 1px solid var(--darker-divider-color);
         }

@@ -5,7 +5,7 @@ import {interventionEndpoints} from '../utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import '@unicef-polymer/etools-upload/etools-upload.js';
 import '@polymer/paper-checkbox';
-import '@unicef-polymer/etools-dialog';
+import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {getStore} from '../utils/redux-store-access';
 import {updateCurrentIntervention} from '../common/actions/interventions';
 import {validateRequiredFields} from '../utils/validation-helper';
@@ -29,7 +29,7 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
         etools-upload {
           margin-top: 14px;
         }
-        etools-form-element-wrapper {
+        paper-checkbox {
           display: block;
           margin-top: 18px;
         }
@@ -55,13 +55,12 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
   protected render(): TemplateResult {
     return html`
       <style>
-        ${sharedStyles} etools-dialog {
-          --etools-dialog-scrollable: {
-            margin-top: 0 !important;
-          }
-          --etools-dialog-button-styles: {
-            margin-top: 0;
-          }
+        ${sharedStyles} etools-dialog::part(ed-scrollable) {
+          margin-top: 0 !important;
+        }
+
+        etools-dialog::part(ed-button-styles) {
+          margin-top: 0;
         }
       </style>
       <etools-dialog
@@ -101,7 +100,7 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
           <!-- Attachment -->
           <etools-upload
             label=${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.INT_ATT_DIALOG.ATTACHMENT')}
-            accept=".doc,.docx,.pdf,.jpg,.png"
+            accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt"
             .showDeleteBtn="${false}"
             ?readonly="${this.data.id}"
             required
@@ -114,14 +113,12 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
             @click="${() => this.resetFieldError('attachment_document')}"
           ></etools-upload>
 
-          <etools-form-element-wrapper no-placeholder>
-            <paper-checkbox
-              ?checked="${!this.data?.active}"
-              @checked-changed="${(e: CustomEvent) => this.updateField('active', !e.detail.value)}"
-            >
-              ${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.INVALID')}
-            </paper-checkbox>
-          </etools-form-element-wrapper>
+          <paper-checkbox
+            ?checked="${!this.data?.active}"
+            @checked-changed="${(e: CustomEvent) => this.updateField('active', !e.detail.value)}"
+          >
+            ${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.INVALID')}
+          </paper-checkbox>
         </div>
       </etools-dialog>
     `;

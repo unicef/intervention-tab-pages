@@ -18,7 +18,6 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import isEmpty from 'lodash-es/isEmpty';
 import get from 'lodash-es/get';
 import {openDialog} from '../../utils/dialog';
-import {layoutCenter, layoutVertical} from '../../common/styles/flex-layout-styles';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, LocationObject, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
@@ -51,6 +50,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
           padding-right: 0;
           color: var(--primary-color);
           min-width: 100px;
+          display: flex;
           flex-direction: row;
           padding-bottom: 12px;
         }
@@ -58,8 +58,9 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         .locations-btn {
           margin: auto;
           width: 100px;
-          ${layoutVertical}
-          ${layoutCenter}
+          display: flex;
+          flex-direction: column;
+          align-items: center;
         }
 
         .see-locations iron-icon {
@@ -75,6 +76,10 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
 
         #locations {
           max-width: 100%;
+        }
+
+        etools-content-panel::part(ecp-content) {
+          padding: 8px 24px 16px 24px;
         }
       </style>
 
@@ -98,7 +103,6 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
             option-label="name"
             option-value="id"
             error-message=${translate('INTERVENTION_DETAILS.LOCATIONS_ERR')}
-            disable-on-focus-handling
             trigger-value-change-event
             @etools-selected-items-changed="${({detail}: CustomEvent) =>
               this.selectedItemsChanged(detail, 'flat_locations')}"

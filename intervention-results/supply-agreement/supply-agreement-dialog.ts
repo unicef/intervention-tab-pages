@@ -11,7 +11,7 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
-import '@unicef-polymer/etools-dialog/etools-dialog';
+import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@polymer/paper-input/paper-input';
 import '@polymer/paper-input/paper-textarea';
@@ -79,7 +79,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
           <paper-input
             value="${this.data.unit_number ? this.data.unit_number : ''}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unit_number')}"
-            label=${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.NUMBER_UNITS')}
+            label=${translate('INTERVENTION_RESULTS.UNICEF_SUPPLY_CONTRIBUTION.NUMBER_UNITS')}
             allowed-pattern="[0-9]"
             placeholder="—"
             error-message=${translate('GENERAL.REQUIRED_FIELD')}
@@ -91,7 +91,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
         <div class="col col-4">
           <etools-currency-amount-input
             id="unicefCash"
-            label=${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.PRICE_UNIT')}
+            label=${translate('INTERVENTION_RESULTS.UNICEF_SUPPLY_CONTRIBUTION.PRICE_UNIT')}
             placeholder="—"
             required
             .value="${this.data.unit_price ? this.data.unit_price : ''}"
@@ -104,7 +104,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
         <div class="col col-4">
           <paper-input
             id="unicefProductNumber"
-            label=${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.UNICEF_PRODUCT_NUMBER')}
+            label=${translate('INTERVENTION_RESULTS.UNICEF_SUPPLY_CONTRIBUTION.UNICEF_PRODUCT_NUMBER')}
             placeholder="—"
             .value="${this.data.unicef_product_number ? this.data.unicef_product_number : ''}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unicef_product_number')}"
@@ -119,7 +119,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
               <div class="col col-8">
                 <etools-dropdown
                   class="cp-out"
-                  label=${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT_DIALOG.CP_OUTPUT')}
+                  label=${translate('INTERVENTION_RESULTS.SUPPLY_CONTRIBUTION_DIALOG.CP_OUTPUT')}
                   placeholder="&#8212;"
                   .options="${this.cpOutputs}"
                   option-label="cp_output_name"
@@ -140,7 +140,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
         <div class="col col-12">
           <paper-textarea
             id="otherMentions"
-            label=${translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT.OTHER_MENTIONS')}
+            label=${translate('INTERVENTION_RESULTS.UNICEF_SUPPLY_CONTRIBUTION.OTHER_MENTIONS')}
             always-float-label
             placeholder="—"
             .value="${this.data.other_mentions}"
@@ -184,8 +184,8 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
     this.isNewRecord = !this.data.id;
     this.interventionId = interventionId;
     this.dialogTitle = this.isNewRecord
-      ? ((translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT_DIALOG.ADD_SUPPLY_AGREEMENT') as unknown) as string)
-      : ((translate('INTERVENTION_RESULTS.SUPPLY_AGREEMENT_DIALOG.EDIT_SUPPLY_AGREEMENT') as unknown) as string);
+      ? ((translate('INTERVENTION_RESULTS.SUPPLY_CONTRIBUTION_DIALOG.ADD_SUPPLY_CONTRIBUTION') as unknown) as string)
+      : ((translate('INTERVENTION_RESULTS.SUPPLY_CONTRIBUTION_DIALOG.EDIT_SUPPLY_CONTRIBUTION') as unknown) as string);
     this.confirmBtnTxt = this.isNewRecord
       ? ((translate('GENERAL.ADD') as unknown) as string)
       : ((translate('GENERAL.SAVE') as unknown) as string);

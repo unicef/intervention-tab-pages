@@ -48,7 +48,7 @@ export class ActivityItemsTable extends LitElement {
           ${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.ITEM_DESCRIPTION')}
         </div>
         <div class="grid-cell header-cell center">
-          ${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.CSO_CONTRIB')}
+          ${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.PARTNER_CASH')}
         </div>
         <div class="grid-cell header-cell center">
           ${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.UNICEF_CASH')}

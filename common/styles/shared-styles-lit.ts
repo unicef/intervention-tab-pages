@@ -1,4 +1,4 @@
-import {html, unsafeCSS} from 'lit-element';
+import {css, unsafeCSS} from 'lit-element';
 // language=css
 export const sharedStylesContent = `
   :host {
@@ -66,7 +66,8 @@ export const sharedStylesContent = `
   etools-dropdown-multi[readonly],
   datepicker-lite[readonly],
   paper-input[readonly],
-  paper-textarea[readonly] {
+  paper-textarea[readonly],
+  etools-currency-amount-input[readonly] {
     --paper-input-container-underline: {
       display: none;
     }
@@ -212,7 +213,8 @@ export const sharedStylesContent = `
   }
 
   paper-radio-group:focus,
-  paper-textarea[focused] {
+  paper-textarea[focused],
+  .nav-menu-item {
     outline: none;
   }
 
@@ -236,18 +238,35 @@ export const sharedStylesContent = `
     width: 100%;
   }
 
+  .col-data.actions {
+    height: 24px;
+  }
+
   .hidden {
     display: none !important;
   }
 
-  etools-content-panel {
-    --epc-header: {
-     border-bottom: 1px solid var(--dark-divider-color) !important;
-    }
+  etools-content-panel::part(ecp-header) {
+      background-color: var(--primary-background-color);
+      border-bottom: 1px groove var(--dark-divider-color);
+  }
+
+  etools-content-panel::part(ecp-header-title) {
+      padding: 0 24px 0 0;
+      text-align: left;
+      font-size: 18px;
+      font-weight: 500;
+  }
+
+  etools-content-panel::part(ecp-content) {
+      padding: 0;
   }
 
   .editable-row .hover-block {
-    display: none;
+    opacity: 0;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
     position: absolute;
     top: 0;
     right: 0;
@@ -263,9 +282,11 @@ export const sharedStylesContent = `
   }
 
   .editable-row:hover > .hover-block {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
+      opacity: 1;
+  }
+
+  .editable-row:focus-within .hover-block {
+    opacity: 1;
   }
 
   etools-data-table-row {
@@ -305,10 +326,45 @@ export const sharedStylesContent = `
     --iron-icon-height: 14px;
   }
 
-  *:focus:not(paper-icon-button):not(paper-radio-button) {
+  .secondary-btn:focus {
     outline: 0;
-    box-shadow: var(--paper-material-elevation-3_-_box-shadow);
+    box-shadow:  0 0 10px 10px rgba(170, 165, 165, 0.2) !important;
+    background-color: rgba(170, 165, 165, 0.2);
   }
 
+  a:focus {
+    outline: 0;
+    box-shadow:  0 0 10px 10px rgba(170, 165, 165, 0.2) !important;
+    background-color: rgba(170, 165, 165, 0.2);
+  }
+
+  *[disabled] {
+    outline: 0;
+  }
+
+  etools-dialog::part(ed-title) {
+      border-bottom: solid 1px var(--dark-divider-color);
+  }
+
+  etools-dialog::part(ed-scrollable) {
+    margin-top: 0 !important;
+    padding-top: 12px;
+    padding-bottom: 16px;
+  }
+
+  etools-dialog::part(ed-button-styles) {
+    margin-top: 0;
+  }
 `;
-export const sharedStyles = html`${unsafeCSS(sharedStylesContent)}`;
+// export const sharedStyles = html`${unsafeCSS(sharedStylesContent)}`;
+export const sharedStyles = css`
+  ${unsafeCSS(sharedStylesContent)}
+`;
+
+export const sharedStylesPolymer = () => {
+  const template = document.createElement('template');
+  template.innerHTML = `<style>
+    ${sharedStylesContent}
+   </style>`;
+  return template;
+};

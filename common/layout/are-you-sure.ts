@@ -1,5 +1,5 @@
 import {html, LitElement, customElement, property} from 'lit-element';
-import '@unicef-polymer/etools-dialog/etools-dialog';
+import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {translate} from 'lit-translate';
 

@@ -2,7 +2,6 @@ import {LitElement, customElement, html, property, CSSResultArray, css} from 'li
 import {fireEvent} from '../utils/fire-custom-event';
 import {translate} from 'lit-translate';
 import {getStore} from '../utils/redux-store-access';
-import {connect} from 'pwa-helpers/connect-mixin';
 import {RootState} from '../common/types/store.types';
 import {pageIsNotCurrentlyActive} from '../utils/common-methods';
 import {GenericObject, InterventionReview} from '@unicef-polymer/etools-types';
@@ -16,7 +15,9 @@ import {updateCurrentIntervention} from '../common/actions/interventions';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-checkbox/paper-checkbox';
-declare const moment: any;
+import {formatDate} from '../utils/date-utils';
+import {connectStore} from '../common/mixins/connect-store-mixin';
+import {sharedStyles} from '../common/styles/shared-styles-lit';
 
 const Types: GenericObject<string> = {
   prc: 'PRC Review',
@@ -28,12 +29,13 @@ const Types: GenericObject<string> = {
  * @customElement
  */
 @customElement('intervention-review')
-export class InterventionReviewTab extends connect(getStore())(LitElement) {
+export class InterventionReviewTab extends connectStore(LitElement) {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
       gridLayoutStylesLit,
       buttonsStyles,
+      sharedStyles,
       css`
         *[hidden] {
           display: none;
@@ -59,6 +61,10 @@ export class InterventionReviewTab extends connect(getStore())(LitElement) {
           margin-right: 1.5rem;
           min-width: 110px;
         }
+
+        etools-content-panel::part(ecp-content) {
+          padding: 8px 24px 16px 24px;
+        }
       `
     ];
   }
@@ -69,7 +75,7 @@ export class InterventionReviewTab extends connect(getStore())(LitElement) {
   private interventionId: number | null = null;
 
   get reviewCreatedDate(): string {
-    return this.review ? moment(this.review.created).format('DD MMM YYYY') : '-';
+    return this.review ? formatDate(this.review.created, 'DD MMM YYYY') : '-';
   }
 
   render() {

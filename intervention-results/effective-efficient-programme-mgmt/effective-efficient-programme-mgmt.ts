@@ -61,9 +61,8 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         :host {
           display: block;
           margin-bottom: 24px;
-          --ecp-content-padding: 0;
-          --ecp-content_-_padding: 0;
         }
+
         etools-table {
           padding-top: 0;
         }
@@ -117,13 +116,13 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
       type: EtoolsTableColumnType.Text
     },
     {
-      label: (translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.UNICEF_CASH') as unknown) as string,
-      name: 'unicef_cash',
+      label: (translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.PARTNER_CASH') as unknown) as string,
+      name: 'partner_contribution',
       type: EtoolsTableColumnType.Number
     },
     {
-      label: (translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.PARTNER_CONTRIBUTION') as unknown) as string,
-      name: 'partner_contribution',
+      label: (translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.UNICEF_CASH') as unknown) as string,
+      name: 'unicef_cash',
       type: EtoolsTableColumnType.Number
     },
     {
@@ -169,24 +168,24 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
       {
         title: translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.TITLE_1'),
         description: translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.DESCRIPTION_1'),
-        unicef_cash: addCurrencyAmountDelimiter(data.act1_unicef),
         partner_contribution: addCurrencyAmountDelimiter(data.act1_partner),
+        unicef_cash: addCurrencyAmountDelimiter(data.act1_unicef),
         total: addCurrencyAmountDelimiter(data.act1_total),
         index: 1
       },
       {
         title: translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.TITLE_2'),
         description: translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.DESCRIPTION_2'),
-        unicef_cash: addCurrencyAmountDelimiter(data.act2_unicef),
         partner_contribution: addCurrencyAmountDelimiter(data.act2_partner),
+        unicef_cash: addCurrencyAmountDelimiter(data.act2_unicef),
         total: addCurrencyAmountDelimiter(data.act2_total),
         index: 2
       },
       {
         title: translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.TITLE_3'),
         description: translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.DESCRIPTION_3'),
-        unicef_cash: addCurrencyAmountDelimiter(data.act3_unicef),
         partner_contribution: addCurrencyAmountDelimiter(data.act3_partner),
+        unicef_cash: addCurrencyAmountDelimiter(data.act3_unicef),
         total: addCurrencyAmountDelimiter(data.act3_total),
         index: 3
       }

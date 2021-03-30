@@ -60,7 +60,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
     stateChanged(state: RootState) {
       const commentsState = state.commentsData;
       this.currentInterventionId =
-        Number(state.app.routeDetails.params?.interventionId) || state.interventions?.current?.id || null;
+        Number(state.app.routeDetails?.params?.interventionId) || state.interventions?.current?.id || null;
       if (!commentsState || !this.currentInterventionId) {
         return;
       }

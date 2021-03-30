@@ -87,13 +87,13 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
         ${sharedStyles} :host etools-data-table-row {
           --list-bg-color: var(--blue-background);
           --list-second-bg-color: var(--blue-background);
-          --list-row-collapse-wrapper: {
+          etools-data-table-row::part(edt-list-row-collapse-wrapper) {
             padding: 0 !important;
             background-color: var(--blue-background-dark);
             border-top: 1px solid var(--main-border-color);
           }
           --list-row-wrapper: {
-            min-height: 55px;
+            min-height: 48px;
             border: 1px solid var(--main-border-color) !important;
             border-bottom: none !important;
             align-items: stretch;

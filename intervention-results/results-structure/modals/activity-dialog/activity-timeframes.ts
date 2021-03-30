@@ -1,3 +1,4 @@
+/* eslint-disable lit-a11y/click-events-have-key-events */
 import {
   LitElement,
   html,
@@ -83,10 +84,19 @@ export class ActivityTimeFrames extends LitElement {
           border-radius: 5px;
           margin: 5px;
         }
-        *:focus {
+
+        .time-frame:focus:not(:focus-visible) {
           outline: 0;
-          box-shadow: rgba(0, 0, 0, 0.14) 0px 2px 2px 0px, rgba(0, 0, 0, 0.12) 0px 1px 5px 0px, rgba(0, 0, 0, 0.2) 0px 3px 1px -2px;
-          box-sizing: border-box;
+        }
+        .time-frame:focus:not(.focus-visible) {
+          outline: 0;
+        }
+        .time-frame:focus-visible {
+          outline: 0;
+          box-shadow: 0 0 5px 5px rgba(170, 165, 165, 0.3);
+        }
+        .time-frame.focus-visible {
+          outline: black solid 1px;
         }
       `
     ];
@@ -119,7 +129,7 @@ export class ActivityTimeFrames extends LitElement {
                   (frame: ActivityTime, index: number) => html`
                     <div
                       tabindex="${this.readonly ? -1 : 0}"
-                      class="time-frame${this.selectedTimeFrames?.includes(frame.id) ? ' selected' : ''} ${!this
+                      class="time-frame ${this.selectedTimeFrames?.includes(frame.id) ? ' selected' : ''} ${!this
                         .readonly
                         ? ' editable'
                         : ''}"
@@ -145,6 +155,10 @@ export class ActivityTimeFrames extends LitElement {
     this.shadowRoot!.querySelectorAll('.time-frame').forEach((el) => {
       callClickOnSpacePush(el);
     });
+
+    if (window.applyFocusVisiblePolyfill != null) {
+      window.applyFocusVisiblePolyfill(this.shadowRoot);
+    }
   }
 
   toggleFrame(frameId: number): void {

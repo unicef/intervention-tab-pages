@@ -11,7 +11,6 @@ import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../../../common/styles/button-styles';
 import {PaperCheckboxElement} from '@polymer/paper-checkbox/paper-checkbox.js';
-import {layoutCenter, layoutVertical} from '../../../../common/styles/flex-layout-styles';
 import {Indicator} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 
@@ -69,13 +68,13 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         .add-locations {
           padding-right: 0;
           align-items: flex-end;
-          padding-top: 20px !important;
         }
 
         .all-locations {
           margin: auto;
-          ${layoutVertical}
-          ${layoutCenter}
+          display: flex;
+          flex-direction: column;
+          align-items: center;
         }
 
         .row-h {
@@ -378,7 +377,6 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           required
           auto-validate
           error-message=${translate('INDICATOR_DIALOG.LOCATIONS_ERR')}
-          disable-on-focus-handling
           fit-into="etools-dialog"
           ?readonly="${this.readonly}"
           trigger-value-change-event
@@ -472,19 +470,6 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
     }
     return false;
   }
-
-  // TODO
-  // _readonlyChanged(newVal: boolean, oldVal: boolean) {
-  //   if (newVal !== oldVal) {
-  //     this.updateStyles();
-  //   }
-  // }
-
-  // _baselineUnknownChanged(isUnknown: boolean) {
-  //   if (isUnknown) {
-  //     this.set('indicator.baseline', {v: null, d: 1});
-  //   }
-  // }
 
   _typeChanged() {
     this.resetValidations();

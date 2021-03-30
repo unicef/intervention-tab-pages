@@ -1,5 +1,4 @@
-import {PolymerElement} from '@polymer/polymer';
-import {property} from '@polymer/decorators';
+import {LitElement, property} from 'lit-element';
 import CONSTANTS from '../../common/constants';
 import {Constructor} from '@unicef-polymer/etools-types';
 
@@ -10,13 +9,14 @@ class Paginator {
   visible_range: string[] | number[] = [];
 }
 
-function PaginationMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
+function PaginationMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class PaginationClass extends baseClass {
-    @property({type: Object, notify: true})
+    @property({type: Object})
     paginator = new Paginator();
 
-    static get observers() {
-      return ['_pageInsidePaginationRange(paginator.page, paginator.count)', 'resetPageNumber(paginator.page_size)'];
+    set pageSize(pageSize: number) {
+      this.resetPageNumber();
+      this.paginator = Object.assign({}, this.paginator, {page_size: pageSize});
     }
 
     pageSizeChanged(e: CustomEvent) {
@@ -26,6 +26,10 @@ function PaginationMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
 
     pageNumberChanged(e: CustomEvent) {
       this.setPageNumber(parseInt(e.detail.value, 10));
+    }
+
+    visibleRangeChanged(e: CustomEvent) {
+      this.paginator = Object.assign({}, this.paginator, {visible_range: e.detail.value});
     }
 
     getRequestPaginationParams() {
@@ -39,19 +43,22 @@ function PaginationMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
       if (reqResponse && reqResponse.count) {
         const count = parseInt(reqResponse.count, 10);
         if (!isNaN(count)) {
-          this.set('paginator.count', count);
+          this.paginator = Object.assign({}, this.paginator, {count: count});
+          this._pageInsidePaginationRange(this.paginator.page, this.paginator.count);
           return;
         }
       }
-      this.set('paginator.count', 0);
+      this.paginator = Object.assign({}, this.paginator, {count: 0});
+      this._pageInsidePaginationRange(this.paginator.page, this.paginator.count);
     }
 
     setPageSize(size: number) {
-      this.set('paginator.page_size', size);
+      this.paginator = Object.assign({}, this.paginator, {page_size: size});
     }
 
     setPageNumber(page: number) {
-      this.set('paginator.page', page);
+      this.paginator = Object.assign({}, this.paginator, {page: page});
+      this._pageInsidePaginationRange(this.paginator.page, this.paginator.count);
     }
 
     resetPageNumber() {
@@ -63,12 +70,11 @@ function PaginationMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
       this.setPageSize(urlParams.size ? parseInt(urlParams.size) : CONSTANTS.DEFAULT_LIST_SIZE);
     }
 
-    _pageInsidePaginationRange(page: number, totalResults: string) {
+    _pageInsidePaginationRange(page: number, total: number | null) {
       if (page < 1) {
         this.resetPageNumber();
       }
-      const total = parseInt(totalResults, 10);
-      if (isNaN(total)) {
+      if (total === null) {
         return;
       }
 
