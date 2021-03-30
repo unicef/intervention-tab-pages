@@ -61,7 +61,10 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
         <div class="data-column">
           <label class="paper-label">${translate('INTERVENTION_RESULTS.BUDGET_HQ_RATE')}</label>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.hq_support_cost)}">
-            ${this.roundPercentage(this.budgetSummary.hq_support_cost)}
+            ${this.roundPercentage(this.budgetSummary.hq_support_cost)}(${this.displayCurrencyAmount(
+              this.budgetSummary.total_hq_cash_local,
+              '0.00'
+            )})
           </div>
         </div>
 
@@ -150,7 +153,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
     ) {
       return;
     }
-    this.budgetSummary = selectBudgetSummary(state);
+    this.budgetSummary = selectBudgetSummary(state);    
     this.intervention = state.interventions.current;
     this.frsDetails = this.intervention.frs_details;
     const warn = this.checkFrsAndUnicefCashAmountsConsistency(
