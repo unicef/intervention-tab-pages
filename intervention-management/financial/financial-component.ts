@@ -21,7 +21,7 @@ import {FinancialComponentData, FinancialComponentPermissions} from './financial
 import {selectFinancialComponentPermissions, selectFinancialComponent} from './financialComponent.models';
 import {patchIntervention} from '../../common/actions/interventions';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
-import {decimalFractionEquals0, isJsonStrMatch} from '../../utils/utils';
+import {areEqual, decimalFractionEquals0, isJsonStrMatch} from '../../utils/utils';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
@@ -238,13 +238,19 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
     //   this.data = cloneDeep(financialCompData);
     //   this.originalData = cloneDeep(financialCompData);
     // }
-    // console.log('this.data', this.data);
-    console.log('state has changed');
-    // console.log(this.data.planned_budget.total_hq_cash_local);
     this.data = selectFinancialComponent(state);
     this.originalData = cloneDeep(this.data);
     this.autoCalculatedHqContrib = this.autoCalcHqContrib();
     super.stateChanged(state);
+  }
+
+  hqContribChanged(detail: any) {    
+    if (areEqual(this.data.planned_budget.total_hq_cash_local, detail.value)) {
+      return;
+    }
+
+    this.data.planned_budget.total_hq_cash_local = detail.value;
+    this.requestUpdate();
   }
   
   checkCashTransferModality(value: string) {
@@ -319,7 +325,11 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
     if (!data || !data.planned_budget) {
       return data;
     }
-    data.planned_budget = {id: data.planned_budget.id, currency: data.planned_budget.currency};
+    data.planned_budget = {
+      id: data.planned_budget.id,
+      currency: data.planned_budget.currency,
+      total_hq_cash_local: data.planned_budget.total_hq_cash_local
+    };
     return data;
   }
 }
