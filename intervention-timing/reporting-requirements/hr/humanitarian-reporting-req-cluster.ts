@@ -9,6 +9,7 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
 import {ExpectedResult, ResultLinkLowerResult} from '@unicef-polymer/etools-types';
 import {fireEvent} from '../../../utils/fire-custom-event';
 import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
+import {translate} from 'lit-translate';
 
 /**
  * @customElement
@@ -37,8 +38,12 @@ export class HumanitarianReportingReqCluster extends EndpointsLitMixin(Reporting
 
       <div class="flex-c" ?hidden="${!this.reportingRequirements.length}">
         <etools-data-table-header no-collapse no-title class="w100">
-          <etools-data-table-column class="col-2">Frequency</etools-data-table-column>
-          <etools-data-table-column class="flex-c">Due Dates</etools-data-table-column>
+          <etools-data-table-column class="col-2">${translate(
+            'INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.FREQUENCY'
+          )}</etools-data-table-column>
+          <etools-data-table-column class="flex-c">${translate(
+            'INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.DUE_DATES'
+          )}</etools-data-table-column>
         </etools-data-table-header>
         ${this.reportingRequirements.map(
           (item: any) => html` <etools-data-table-row no-collapse>
@@ -51,7 +56,7 @@ export class HumanitarianReportingReqCluster extends EndpointsLitMixin(Reporting
         </div>
 
         <div class="row-h" ?hidden="${!this._empty(this.reportingRequirements)}">
-          There are no cluster humanitarian report requirements set.
+          ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.NO_CLUSTER_HUMANITARIAN_REQUIREMENTS_SET')}
         </div>
       </div>
     `;

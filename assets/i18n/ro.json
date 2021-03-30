@@ -24,6 +24,13 @@
     "UNLOCK_PROMPT": "Sunteti sigur ca doriti sa deblocati?",
     "REVIEW_PROMPT": "Sunteti sigur ca doriti sa evaluati?"
   },
+  "PERFORMED_ACTIONS_STATUS": {
+    "UNICEF_ACCEPTED": "Acceptata de UNICEF",
+    "PARTNER_AND_UNICEF_ACCEPTED": "Acceptata de Partener & UNICEF",
+    "PARTNER_ACCEPTED": "Acceptata de Partener",
+    "SENT_TO_PARTNER": "Trimisa la Partener",
+    "SENT_TO_UNICEF": "Trimisa la UNICEF"
+  },
   "INTERVENTION_REVIEWS": {
     "REVIEW_TAB": "Evaluare",
     "INTERVENTION_REVIEW": "Evaluare Interventie",
@@ -116,7 +123,7 @@
     "BUDGET_CURRENCY": "Valuta Buget",
     "BUDGET_HQ_RATE": "Budget HQ Rate",
     "PRGM_EFFECTIVENESS": "% Eficienta Prgm",
-    "TOTAL_CSO_CONTRIB": "Total CSO Contrib",
+    "TOTAL_PARTNER_CASH": "Total Numerar Partener",
     "TOTAL_UNICEF_CONTRIB": "Total Contributie UNICEF",
     "TOTAL_UNICEF_CASH": "Total UNICEF Numerar",
     "TOTAL_SUPPLY": "Total Livrabile",
@@ -131,14 +138,14 @@
     "DELETE_PROMPT": "Sigur doriți să ștergeți acest indicator?",
     "RESULTS_STRUCTURE": {
       "RESULTS_STRUCTURE": "Structura Rezultatelor",
-      "CSO_CASH": "Numerar CSO",
+      "PARTNER_CASH": "Numerar Partener",
       "UNICEF_CASH": "Numerar UNICEF",
       "PERCENT_PARTNER": "%Partener",
       "TIME_PERIODS": "Perioade de Timp",
       "OTHER_NOTES": "Alte Note",
       "DELETE_ACTIVITY_PROMPT": "Sunteti sigur ca doriti sa stergeti aceasta activitate?",
       "COUNTRY_PROGRAME_OUTPUT": "Rezultat CP",
-      "RAM_INDICATORS": "Indicatori Ram",
+      "RAM_INDICATORS": "Indicatori RAM",
       "UNASSOCIATED_TO_CP_OUTPUT": "Neasociat cu un resultat CP! Va rugam sa asociati inainte de a continua",
       "ADD_PD_OUTPUT": "Adauga Rezultat al PD-ului/Rezultat PD",
       "PD_ACTIVITIES": "Activitati PD"
@@ -162,7 +169,7 @@
       "TOTAL": "TOTAL:",
       "ITEM_PD_CURRENCY": "Element (toate preturile in valuta PD)",
       "UNICEF_CASH": "Numerar UNICEF",
-      "PARTNER_CONTRIBUTION": "Contributie Partener",
+      "PARTNER_CASH": "Numerar Partener",
       "TITLE_1": "Managementul personalului și personalul de sprijin",
       "DESCRIPTION_1": "Contribuție pentru personalul de gestionare și sprijin din țară proporțional cu contribuția lor la program (reprezentare, planificare, coordonare, logistică, administrație, finanțe)",
       "TITLE_2": "Costuri operationale",
@@ -177,17 +184,17 @@
       "ACTIVITY_DATA": "Date Activitate",
       "ACTIVITY_NAME": "Nume Activitate",
       "OTHER_NOTES": "Alte Note",
-      "CSO_CASH_BUDGET": "Buget Numerar CSO",
+      "PARTNER_CASH_BUDGET": "Buget Numerar Partener",
       "UNICEF_CASH_BUDGET": "Buget Numerar UNICEF",
       "USE_INPUT_LEVEL": "Utilizati inregistrarea pe nivele",
       "FILL_ALL_ACTIVITY_ITEMS": "Va rugam completati toate denumirile Activitatilor",
       "FILL_ACTIVITY_TIME": "Vă rugăm să selectați un interval de timp pentru Activitate",
       "ITEM_DESCRIPTION": "Descriere",
-      "CSO_CONTRIB": "Contrib CSO",
+      "PARTNER_CASH": "Numerar Partener",
       "UNICEF_CASH": "Numerar UNICEF",
       "TOTAL_CASH": "Total Numerar"
     },
-    "SUPPLY_AGREEMENT": {
+    "UNICEF_SUPPLY_CONTRIBUTION": {
       "NUMBER_UNITS": "Numar Unitati",
       "ITEM_ALL_PRICES": "Element (toate preturile explimate in valuta din PD)",
       "PRICE_UNIT": "Pret/Unitate",
@@ -195,15 +202,15 @@
       "CP_OUTPUTS": "Realizari CP",
       "OTHER_MENTIONS": "Alte Mentiuni",
       "DELETE_SUPPLY_PROMPT": "Doriti sa stergeti acest item din Acordul privind livrabilele?",
-      "SUPPLY_AGREEMENT": "Acord privind livrabilele",
+      "UNICEF_SUPPLY_CONTRIBUTION": "Contributia UNICEF privind livrabilele",
       "TOTAL_SUPPLY_BUDGET": "Buget al Tuturor Livrabilelor:",
-      "NO_SUPPLY_AGREEMENTS": "Nu s-au adaugat acorduri pentru livrabile.",
+      "NO_SUPPLY_CONTRIBUTION": "Nu s-au planificat contributii UNICEF pentru livrabile.",
       "SUPPLIES_UPLOADED": "Livrabilele au fost incarcate cu succes",
       "UNICEF_PRODUCT_NUMBER": "Numar Produs UNICEF"
     },
-    "SUPPLY_AGREEMENT_DIALOG": {
-      "ADD_SUPPLY_AGREEMENT": "Adauga Acord privind livrabile",
-      "EDIT_SUPPLY_AGREEMENT": "Editeaza Acordul privind livrabilele",
+    "SUPPLY_CONTRIBUTION_DIALOG": {
+      "ADD_SUPPLY_CONTRIBUTION": "Adauga Contributia privind livrabile",
+      "EDIT_SUPPLY_CONTRIBUTION": "Editeaza Contributia privind livrabilele",
       "CP_OUTPUT": "Realizari CP"
     },
     "PD_INDICATOR": {
@@ -215,7 +222,7 @@
       "INDICATORS_FOR_CP_OUTPUT": "Indicatori pentru Realizari CP:",
       "ADD_CP_OUTPUT": "Adauga Realizari CP",
       "CP_OUTPUT": "Realizari CP",
-      "RAM_INDICATORS": "Indicatori Ram",
+      "RAM_INDICATORS": "Indicatori RAM",
       "CAN_NOT_SAVE_IND": "Nu se pot salva indicatorii!"
     },
     "PD_OUTPUT_DIALOG": {
@@ -291,13 +298,54 @@
       "SELECT_START_DATE": "Va rugam selectati data de inceput",
       "END_DATE": "Data Final",
       "SELECT_END_DATE": "Va rugam selectati data final",
-      "ACTIVATION_LETTER": "Scrisoare de Activare"
+      "ACTIVATION_LETTER": "Scrisoare de Activare",
+      "SAVE_WARNING": "Fii sigur sa verifici si sa actualizezi Cerintele de Raportare ale Partenerului dupa fiecare schimbare de data."
     },
     "ACTIVITY_TIMEFRAMES": {
       "ACTIVITY_TIMEFRAMES": "Perioade de activitate",
       "NO_ACTIVITIES": "Fara Activitati",
       "ACTIVITY_TIMES": "Perioada de Activitate (click pentru a selecta/deselecta)",
       "ACTIVITY_TIMES_MSG": "Perioada de Activitate va fi disponibila dupa selectarea datei de Inceput si Final."
+    },
+    "PARTNER_REPORTING_REQUIREMENTS": {
+      "PARTNER_REPORTING_REQUIREMENTS": "Cerinte de Raportare ale Partenerului",
+      "QUARTERLY_PROGRESS_REPORTS": "Rapoarte de Progres Trimestriale",
+      "HUMANITARIAN_REPORTS_UNICEF": "Rapoarte Umanitare - UNICEF",
+      "HUMANITARIAN_REPORTS_CLUSTER": "Rapoarte Umanitare - Grup",
+      "SPECIAL_REPORT": "Raport Special",
+      "NO_QUARTERLY_REPORTING_REQUIREMENTS": "Nu există cerințe de raportare trimestriale stabilite.",
+      "ADD_REQUIREMENTS": "Adaugati cerinte",
+      "QUARTERLY_REPORT_PROMPT": "Trebuie mai intai sa completati Data de Inceput si Final PD!",
+      "NO_HUMANITARIAN_REPORT": "Nu sunt stabilite cerințe privind raportul umanitar.",
+      "CAN_BE_MODIFIED_PROMPT": "Poate fi modificat numai daca exista Indicatori Umanitari de Inalta Frecvență definiți.",
+      "FILL_START_DATE": "Trebuie sa completati Data de Inceput PD!",
+      "EDIT_DATES_HUMANITARIAN_REPORT": "Adauga/Modifica Date ale Raportului Umanitar - UNICEF",
+      "SELECT_START_DATE": "Alegeti Data de Inceput",
+      "HUMANITARIAN_REPORT_PROMPT": "Utilizați selectorul de date pentru a selecta datele de încheiere a cerințelor privind raportul umanitar.",
+      "ADD_SELECTED_DATE": "Adauga Data Selectata la Lista",
+      "NO_DATES_ADDED": "Nu sunt date adaugate.",
+      "PLEASE_SELECT_DATE": "Va rugam selectati o data.",
+      "DATE_ALREADY_ADDED": "Aceasta data este deja adaugata la lista.",
+      "REPORT_END_DATE": "Data Final Raport",
+      "EDIT_QPR_REQUIREMENTS": "Modifica Cerințe Trimestriale privind Raportarea Progreselor",
+      "ALL_DATES_IN_FUTURE": "Toate datele din viitor pot fi modificate inainte de a salva. | Sau",
+      "ADD_REQUIREMENT": "Adaugati o Cerinta",
+      "EDIT_STANDARD_QUARTERLY_REPORT_REQUIREMENTS": "Modifica Rapoarte Standard de Progres Trimestriale",
+      "EDITING_ID": "Modificati ID",
+      "START_DATE": "Data Inceput",
+      "END_DATE": "Data Final",
+      "DUE_DATE": "Data Scadentă",
+      "DATES_REQUIRED": "Data de inceput, final si scadenta sunt necesare.",
+      "REQUIREMENT_DATES_NOT_ADDED": "Datele pentru Cerinte nu sunt adaugate, Data Scadenta este deja in lista.",
+      "FREQUENCY": "Frecventa",
+      "DUE_DATES": "Date Scadente",
+      "NO_CLUSTER_HUMANITARIAN_REQUIREMENTS_SET": "Nu sunt cerinte de raportare de tip grup umanitar.",
+      "ADD_EDIT_SPECIAL_REPORTING_REQUIREMENTS": "Adauga/Modifica Cerinte de Raportare Speciale",
+      "REPORT_DUE_DATE": "Data Scadentă Raport",
+      "REPORTING_REQUIREMENT": "Cerința de Raportare",
+      "NO_SPECIAL_REPORTING_REQUIREMENTS": "Nu sunt cerinte de raportare speciale setate.",
+      "DELETE_SPECIAL_REPORTING_REQUIREMENT_PROMPT": "Sunteti sigur ca doriti sa stergeti Cerinta de Raportare Speciala?",
+      "DEL_SPECIAL_REPORTING_REQUIREMENT": "Sterge Cerința de Raportare Speciala"
     }
   },
   "INTERVENTION_MANAGEMENT": {

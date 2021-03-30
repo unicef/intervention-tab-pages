@@ -6,7 +6,6 @@ import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {repeatableDataSetsStyles} from '../../common/styles/repeatable-data-sets-styles';
 import isEmpty from 'lodash-es/isEmpty';
-import {layoutCenterJustified, layoutVertical} from '../../common/styles/flex-layout-styles';
 import {RootState} from '../../common/types/store.types';
 import {PlannedVisitsPermissions} from './programmaticVisits.models';
 import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown';
@@ -43,8 +42,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
     // language=HTML
     return html`
       <style>
-        ${sharedStyles} ${repeatableDataSetsStyles}
-        :host {
+        ${sharedStyles} ${repeatableDataSetsStyles} :host {
           display: block;
           margin-bottom: 24px;
         }
@@ -60,8 +58,9 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
         .error-msg {
           color: var(--error-color);
           font-size: 12px;
-          ${layoutVertical}
-          ${layoutCenterJustified}
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
         }
 
         .padd-left-when-items {
@@ -78,6 +77,10 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
         }
         p {
           margin-top: 24px;
+        }
+
+        etools-content-panel::part(ecp-content) {
+          padding: 8px 24px 16px 24px;
         }
       </style>
 

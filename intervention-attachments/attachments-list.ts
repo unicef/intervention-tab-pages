@@ -2,7 +2,7 @@ import {LitElement, html, TemplateResult, property, customElement, CSSResultArra
 import {prettyDate} from '../utils/date-utils';
 import CONSTANTS from '../common/constants';
 import '@unicef-polymer/etools-content-panel';
-import '@unicef-polymer/etools-data-table';
+import '@unicef-polymer/etools-data-table/etools-data-table.js';
 import '@polymer/iron-icons';
 import './intervention-attachment-dialog';
 import {sharedStyles} from '../common/styles/shared-styles-lit';
@@ -45,8 +45,9 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
 
       <etools-content-panel
         class="content-section"
-        .panelTitle="${((translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.ATTACHMENTS') as unknown) as string)
-           } (${this.attachments.length})"
+        .panelTitle="${(translate(
+          'INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.ATTACHMENTS'
+        ) as unknown) as string} (${this.attachments.length})"
         comment-element="attachments"
         comment-description=${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.ATTACHMENTS')}
       >

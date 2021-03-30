@@ -90,7 +90,6 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
                   option-label="title"
                   option-value="id"
                   error-message=${translate('INDICATOR_DIALOG.RESPONSE_PLAN_ERR')}
-                  disable-on-focus-handling
                   fit-into="etools-dialog"
                   ?readonly="${this.readonly}"
                   trigger-value-change-event
@@ -111,7 +110,6 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
                   option-label="title"
                   option-value="id"
                   error-message=${translate('INDICATOR_DIALOG.CLUSTER_ERR')}
-                  disable-on-focus-handling
                   fit-into="etools-dialog"
                   ?readonly="${this.readonly}"
                   trigger-value-change-event
@@ -135,7 +133,6 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
                 required
                 auto-validate
                 error-message=${translate('INDICATOR_DIALOG.INDICATOR_ERR')}
-                disable-on-focus-handling
                 fit-into="etools-dialog"
                 ?readonly="${this.readonly}"
                 trigger-value-change-event
@@ -312,7 +309,6 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
           required
           auto-validate
           error-message=${translate('INDICATOR_DIALOG.LOCATIONS_ERR')}
-          disable-on-focus-handling
           fit-into="etools-dialog"
           ?readonly="${this.readonly}"
           trigger-value-change-event

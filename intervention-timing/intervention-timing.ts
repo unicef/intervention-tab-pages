@@ -25,6 +25,7 @@ export class InterventionTiming extends CommentsMixin(LitElement) {
       ></partner-reporting-requirements>
     `;
   }
+
   connectedCallback() {
     super.connectedCallback();
     // Disable loading message for tab load, triggered by parent element on stamp or by tap event on tabs

@@ -1,3 +1,4 @@
+/* eslint-disable lit-a11y/click-events-have-key-events */
 import {CSSResultArray, LitElement, TemplateResult, html, property, customElement} from 'lit-element';
 import {arrowLeftIcon} from '../common/styles/app-icons';
 import '@polymer/paper-button';

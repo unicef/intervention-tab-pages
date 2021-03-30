@@ -1,3 +1,4 @@
+/* eslint-disable lit-a11y/click-events-have-key-events */
 import {getStore} from '../../utils/redux-store-access';
 import {css, html, CSSResultArray, customElement, LitElement, property} from 'lit-element';
 import {repeat} from 'lit-html/directives/repeat';
@@ -11,7 +12,7 @@ import {
   selectResultLinksPermissions
 } from './results-structure.selectors';
 import {ResultStructureStyles} from './results-structure.styles';
-import '@unicef-polymer/etools-data-table';
+import '@unicef-polymer/etools-data-table/etools-data-table';
 import '@unicef-polymer/etools-content-panel';
 import '@polymer/paper-toggle-button/paper-toggle-button';
 import '@polymer/paper-icon-button/paper-icon-button';
@@ -27,7 +28,7 @@ import {RootState} from '../../common/types/store.types';
 import {openDialog} from '../../utils/dialog';
 import CONSTANTS from '../../common/constants';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {callClickOnSpacePush, callClickOnEnterPush, pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import '../../common/layout/are-you-sure';
 import get from 'lodash-es/get';
 import {getIntervention, updateCurrentIntervention} from '../../common/actions/interventions';
@@ -48,7 +49,6 @@ import {
   ResultLinkLowerResult
 } from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {callClickOnSpacePush} from '../../utils/common-methods';
 
 const RESULT_VIEW = 'result_view';
 const BUDGET_VIEW = 'budget_view';
@@ -66,10 +66,8 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
       ResultStructureStyles,
       buttonsStyles,
       css`
-        etools-content-panel {
-          --ecp-content-padding: 0;
-          --ecp-content_-_padding: 0;
-          --epc-header_-_z-index: 1;
+        etools-content-panel::part(ecp-header) {
+          z-index: 1;
         }
 
         iron-icon[icon='create'] {
@@ -102,6 +100,10 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         .view-toggle-button[active] {
           background-color: #009688;
         }
+        .view-toggle-button:focus {
+          outline: 0;
+          box-shadow: var(--paper-material-elevation-3_-_box-shadow);
+        }
         .no-results {
           padding: 24px;
         }
@@ -109,7 +111,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           margin: 0 4px;
         }
         .pdOtputMargin.unicef-user .editable-row .hover-block {
-          background-color: rgb(230, 230, 230);
+          background-color: rgb(240, 240, 240);
         }
         .pdOtputMargin.partner .editable-row .hover-block {
           background-color: rgb(240, 240, 240);
@@ -203,18 +205,19 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           display: block;
           margin-bottom: 24px;
         }
-        etools-data-table-row {
-          --list-row-wrapper-padding: 0 12px 0 0;
-          --list-row-collapse-wrapper: {
-            padding: 0 !important;
-            border-bottom: none !important;
-          }
-          --list-row-wrapper: {
-            background-color: var(--secondary-background-color);
-            min-height: 48px;
-            border-bottom: 1px solid var(--main-border-color) !important;
-          }
+
+        etools-data-table-row::part(edt-list-row-wrapper) {
+          padding: 0 12px 0 0;
+          background-color: var(--secondary-background-color);
+          min-height: 48px;
+          border-bottom: 1px solid var(--main-border-color) !important;
         }
+
+        etools-data-table-row::part(edt-list-row-collapse-wrapper) {
+          padding: 0 !important;
+          border-bottom: none !important;
+        }
+
         .export-res-btn {
           height: 28px;
         }
@@ -224,25 +227,22 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           padding-right: 10px;
           margin: 6px 0 6px 10px;
         }
-        etools-content-panel {
-          --epc-header: {
-            position: relative;
-            z-index: 1000;
-            border-bottom: 1px groove var(--dark-divider-color);
-          }
+
+        etools-content-panel::part(ecp-header) {
+          position: relative;
+          z-index: 1000;
+          border-bottom: 1px groove var(--dark-divider-color);
         }
+
         .add-cp {
           opacity: 0.84;
           margin-left: 6px;
         }
       </style>
 
-      <!-- TODO: format translation-->
       <etools-content-panel
         show-expand-btn
-        panel-title="${(translate(
-          'INTERVENTION_RESULTS.RESULTS_STRUCTURE.RESULTS_STRUCTURE'
-        ) as unknown) as string} (${this.noOfPdOutputs})"
+        panel-title="${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.RESULTS_STRUCTURE')} (${this.noOfPdOutputs})"
       >
         <div slot="panel-btns" class="layout-horizontal align-items-center">
           <paper-button
@@ -294,6 +294,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                 class="view-toggle-button layout-horizontal align-items-center"
                 ?active="${tab.type === this.viewType}"
                 tabindex="0"
+                id="clickable"
                 @click="${() => this.updateTableView(tab.showIndicators, tab.showActivities)}"
               >
                 ${tab.name}
@@ -313,6 +314,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           (result: ExpectedResult) => result.id,
           (result, _index) => html`
             <cp-output-level
+              index="${_index}"
               ?show-cpo-level="${this.isUnicefUser}"
               .resultLink="${result}"
               .interventionId="${this.interventionId}"
@@ -392,9 +394,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           class="add-pd white row-h align-items-center"
           @click="${() => this.openPdOutputDialog()}"
         >
-          <paper-icon-button icon="add-box"></paper-icon-button>${translate(
-            'INTERVENTION_RESULTS.ADD_PD_OUTPUT'
-          )}
+          <paper-icon-button icon="add-box"></paper-icon-button>${translate('INTERVENTION_RESULTS.ADD_PD_OUTPUT')}
         </div>
       </etools-content-panel>
     `;
@@ -410,6 +410,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     this.shadowRoot!.querySelectorAll('#view-toggle-button, .add-cp, iron-icon').forEach((el) =>
       callClickOnSpacePush(el)
     );
+    this.shadowRoot!.querySelectorAll('#clickable').forEach((el) => callClickOnEnterPush(el));
   }
 
   stateChanged(state: RootState) {

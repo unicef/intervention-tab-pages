@@ -55,6 +55,10 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
         .padd-top {
           padding-top: 17px;
         }
+
+        etools-content-panel::part(ecp-content) {
+          padding: 8px 24px 16px 24px;
+        }
       </style>
 
       <etools-content-panel
@@ -65,18 +69,6 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
-        <div class="layout-horizontal">
-          <div class="col col-4">
-            <span>
-              <label class="paper-label">${translate('INTERVENTION_DETAILS.DOCUMENT_TYPE')}</label>
-            </span>
-          </div>
-        </div>
-        <div class="layout-horizontal">
-          <label class="input-label" ?empty="${!this.data.document_type}">
-            ${this.getDocumentLongName(this.data.document_type)}
-          </label>
-        </div>
         <div class="layout-horizontal row-padding-v">
           <div class="col col-4">
             <etools-dropdown-multi
@@ -162,6 +154,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
               id="budgetOwnerInput"
               label=${translate('INTERVENTION_DETAILS.UNICEF_BUDGET_OWNER')}
               .options="${this.users_list}"
+              enable-none-option
               class="row-padding-v"
               option-label="name"
               option-value="id"
@@ -314,7 +307,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
 
   private formatUsersData(data: PdUnicefDetails) {
     const dataToSave: AnyObject = cloneDeep(data);
-    dataToSave.budget_owner = data.budget_owner?.id;
+    dataToSave.budget_owner = data.budget_owner ? data.budget_owner.id : null;
     dataToSave.unicef_focal_points = data.unicef_focal_points.map((u: any) => u.id);
     return dataToSave;
   }

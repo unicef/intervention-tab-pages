@@ -1,11 +1,12 @@
 import {LitElement, html, property, customElement, query} from 'lit-element';
-import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
+import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import get from 'lodash-es/get';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {LocationObject} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
+import {sharedStyles} from '../../common/styles/shared-styles-lit';
 
 class GroupedLocations {
   adminLevelLocation: LocationObject | null = null;
@@ -25,15 +26,13 @@ export class GroupedLocationsDialog extends LitElement {
     // language=HTML
     return html`
       <style>
-        [hidden] {
+        ${sharedStyles} [hidden] {
           display: none !important;
         }
 
-        etools-dialog {
-          --etools-dialog-scrollable: {
-            min-height: 300px;
-            font-size: 16px;
-          }
+        etools-dialog::part(ed-scrollable) {
+          min-height: 300px;
+          font-size: 16px;
         }
 
         .adminLevelLoc {
@@ -87,7 +86,6 @@ export class GroupedLocationsDialog extends LitElement {
           .options="${this.adminLevels}"
           option-label="name"
           option-value="name"
-          disable-on-focus-handling
           trigger-value-change-event
           @etools-selected-item-changed="${this.adminLevelChanged}"
         >

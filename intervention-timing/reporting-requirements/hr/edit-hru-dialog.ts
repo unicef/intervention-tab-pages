@@ -1,7 +1,7 @@
 import {LitElement, html, property, customElement} from 'lit-element';
 import '@polymer/paper-button/paper-button.js';
-declare const moment: any;
-import '@unicef-polymer/etools-dialog/etools-dialog';
+declare const dayjs: any;
+import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import '@unicef-polymer/etools-date-time/calendar-lite';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
@@ -12,17 +12,17 @@ import {fireEvent} from '../../../utils/fire-custom-event';
 import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
 import {requiredFieldStarredStylesPolymer} from '../../../common/styles/required-field-styles';
 import {convertDate} from '../../../utils/date-utils';
-// this was refactored
-// import EndpointsMixin from '../mixins/endpoints-mixin';
 import {getEndpoint} from '../../../utils/endpoint-helper';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
-import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
+import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {isEmptyObject} from '../../../utils/utils';
 import {connectStore} from '../../../common/mixins/connect-store-mixin';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {buttonsStyles} from '../../../common/styles/button-styles.js';
+import {translate, get as getTranslation} from 'lit-translate';
+import {sharedStyles} from '../../../common/styles/shared-styles-lit.js';
 
 /**
  * @polymer
@@ -39,7 +39,7 @@ export class EditHruDialog extends connectStore(LitElement) {
     return html`
       ${requiredFieldStarredStylesPolymer}
       <style>
-        *[hidden] {
+        ${sharedStyles}*[hidden] {
           display: none !important;
         }
 
@@ -63,17 +63,19 @@ export class EditHruDialog extends connectStore(LitElement) {
       <etools-dialog
         id="editHruDialog"
         size="lg"
-        dialog-title="Add/Edit Dates for Humanitarian Report - UNICEF"
+        dialog-title=${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.EDIT_DATES_HUMANITARIAN_REPORT')}
         @confirm-btn-clicked="${this._saveHurData}"
-        ok-btn-text="Save"
+        ok-btn-text=${translate('GENERAL.SAVE')}
         keep-dialog-open
+        opened
         ?hidden="${this.datePickerOpen}"
-        spinner-text="Saving..."
+        @close="${() => this._onClose()}"
+        spinner-text=${translate('GENERAL.SAVING_DATA')}
       >
         <div class="start-date">
           <datepicker-lite
             id="dtPickerStDate"
-            label="Select Start Date"
+            label=${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.SELECT_START_DATE')}
             .value="${this.repStartDate}"
             required
             min-date="${this.minDate}"
@@ -83,7 +85,7 @@ export class EditHruDialog extends connectStore(LitElement) {
           >
           </datepicker-lite>
         </div>
-        <div>Use the date picker to select end dates of humanitarian report requirements.</div>
+        <div>${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.HUMANITARIAN_REPORT_PROMPT')}</div>
 
         <div class="layout-horizontal row-padding-v">
           <div class="col layout-vertical col-6">
@@ -95,12 +97,11 @@ export class EditHruDialog extends connectStore(LitElement) {
               hide-header
             >
             </calendar-lite>
-            <paper-button id="add-selected-date" class="secondary-btn" @click="${() => this._addToList()}">
-              Add Selected Date to List
-            </paper-button>
           </div>
           <div class="col col-6">
-            <div class="row-h" ?hidden="${!this._empty(this.hruData.length)}">No dates added.</div>
+            <div class="row-h" ?hidden="${!this._empty(this.hruData.length)}">
+              ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.NO_DATES_ADDED')}
+            </div>
             <hru-list
               id="hruList"
               class="flex-c"
@@ -111,6 +112,13 @@ export class EditHruDialog extends connectStore(LitElement) {
               @delete-hru="${this._deleteHruDate}"
             >
             </hru-list>
+          </div>
+        </div>
+        <div class="layout-horizontal row-padding-v">
+          <div class="col layout-vertical col-3">
+            <paper-button id="add-selected-date" class="secondary-btn" @click="${() => this._addToList()}">
+              ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.ADD_SELECTED_DATE')}
+            </paper-button>
           </div>
         </div>
       </etools-dialog>
@@ -149,6 +157,16 @@ export class EditHruDialog extends connectStore(LitElement) {
     return this._interventionId;
   }
 
+  set dialogData(data: any) {
+    const {hruData, selectedDate, interventionId, interventionStart}: any = data;
+    this.hruData = hruData;
+    this.selectedDate = selectedDate;
+    this.interventionId = interventionId;
+    this.interventionStart = interventionStart;
+
+    this._setDefaultStartDate();
+  }
+
   intervDataChanged() {
     this.minDate = this._getMinDate();
   }
@@ -159,7 +177,7 @@ export class EditHruDialog extends connectStore(LitElement) {
     }
     const stDt = this.interventionStart instanceof Date ? this.interventionStart : convertDate(this.interventionStart);
     if (stDt) {
-      return moment(stDt).add(-1, 'days').toDate();
+      return dayjs(stDt).add(-1, 'days').toDate();
     }
     return null;
   }
@@ -180,15 +198,8 @@ export class EditHruDialog extends connectStore(LitElement) {
     return this.hruData[0].start_date;
   }
 
-  openDialog() {
-    this._setDefaultStartDate();
-    const dialog = this.shadowRoot!.querySelector(`#editHruDialog`) as EtoolsDialog;
-    dialog.opened = true;
-  }
-
-  closeDialog() {
-    const dialog = this.shadowRoot!.querySelector(`#editHruDialog`) as EtoolsDialog;
-    dialog.opened = false;
+  _onClose(): void {
+    fireEvent(this, 'dialog-closed', {confirmed: false});
   }
 
   _empty(listLength: number) {
@@ -198,7 +209,7 @@ export class EditHruDialog extends connectStore(LitElement) {
   _addToList() {
     if (!this.selectedDate) {
       fireEvent(this, 'toast', {
-        text: 'Please select a date.',
+        text: getTranslation('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.PLEASE_SELECT_DATE'),
         showCloseBtn: true
       });
       return;
@@ -206,21 +217,21 @@ export class EditHruDialog extends connectStore(LitElement) {
     const alreadySelected = this.hruData.find((d: any) => d.end_date === this.selectedDate);
     if (alreadySelected) {
       fireEvent(this, 'toast', {
-        text: 'This date is already added to the list.',
+        text: getTranslation('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.DATE_ALREADY_ADDED'),
         showCloseBtn: true
       });
       return;
     }
     const auxHruData = [...this.hruData];
     auxHruData.push({
-      end_date: moment(this.selectedDate).format('YYYY-MM-DD'),
+      end_date: dayjs(this.selectedDate).format('YYYY-MM-DD'),
       due_date: this._oneDayAfterEndDate(this.selectedDate)
     });
     this.hruData = [...auxHruData];
   }
 
   _oneDayAfterEndDate(endDt: string) {
-    return moment(endDt).add(1, 'days').format('YYYY-MM-DD');
+    return dayjs(endDt).add(1, 'days').format('YYYY-MM-DD');
   }
 
   _deleteHruDate(e: CustomEvent) {
@@ -250,7 +261,7 @@ export class EditHruDialog extends connectStore(LitElement) {
   }
 
   _computeStartDate(i: number) {
-    return moment(this.hruData[i - 1].end_date)
+    return dayjs(this.hruData[i - 1].end_date)
       .add(1, 'days')
       .format('YYYY-MM-DD');
   }
@@ -269,9 +280,8 @@ export class EditHruDialog extends connectStore(LitElement) {
       body: {reporting_requirements: this.hruData}
     })
       .then((response: any) => {
-        fireEvent(this, 'reporting-requirements-saved', response.reporting_requirements);
         dialog.stopSpinner();
-        this.closeDialog();
+        fireEvent(this, 'dialog-closed', {confirmed: true, response: response.reporting_requirements});
       })
       .catch((error: any) => {
         logError('Failed to save/update HR data!', 'edit-hru-dialog', error);
@@ -281,6 +291,6 @@ export class EditHruDialog extends connectStore(LitElement) {
   }
 
   changed(value: string) {
-    this.selectedDate = moment(new Date(value)).format('YYYY-MM-DD');
+    this.selectedDate = dayjs(new Date(value)).format('YYYY-MM-DD');
   }
 }

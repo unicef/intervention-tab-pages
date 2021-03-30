@@ -51,7 +51,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
       </style>
       <div ?hidden="${this._isEmptyList(this.data, this.data.length)}">
         ${this.data.map(
-          (item: any, index: number) => html` <div class="row-h item-container no-h-margin" tabindex="0">
+          (item: any, index: number) => html` <div class="row-h item-container no-h-margin">
             <div class="item-actions-container">
               <div class="actions">
                 <paper-icon-button

@@ -26,6 +26,7 @@ export interface AppState {
 
 export interface InterventionsState {
   current: Intervention | null;
+  partnerReportingRequirements: PartnerReportingRequirements;
 }
 
 export interface AgreementsState {
@@ -67,4 +68,11 @@ export interface RootState {
     commentsModeEnabled: boolean;
     collection: GenericObject<CommentsCollection>;
   };
+}
+
+export interface PartnerReportingRequirements {
+  qpr: any;
+  hr: any;
+  sr: any;
+  special: any;
 }

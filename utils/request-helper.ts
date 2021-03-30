@@ -2,8 +2,8 @@ import {sendRequest, EtoolsRequestConfig} from '@unicef-polymer/etools-ajax/etoo
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {fireEvent} from './fire-custom-event';
 
-export const _sendRequest = (etoolsReqConfig: EtoolsRequestConfig, _requestKey?: string, _checkProgress?: boolean) => {
-  return sendRequest(etoolsReqConfig, _requestKey, _checkProgress)
+export const _sendRequest = (etoolsReqConfig: EtoolsRequestConfig, _requestKey?: string) => {
+  return sendRequest(etoolsReqConfig, _requestKey)
     .then((response: any) => response)
     .catch((error: any) => {
       if (error.status === 401) {

@@ -4,7 +4,7 @@ import {getEndpoint} from '../../../utils/endpoint-helper';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {DataMixin} from '../../../common/mixins/data-mixin';
 import {getDifference} from '../../../common/mixins/objects-diff';
-import '@unicef-polymer/etools-dialog';
+import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {getStore} from '../../../utils/redux-store-access';
 import {getIntervention} from '../../../common/actions/interventions';
 import {fireEvent} from '../../../utils/fire-custom-event';
@@ -12,6 +12,7 @@ import {validateRequiredFields} from '../../../utils/validation-helper';
 import {AsyncAction, CpOutput} from '@unicef-polymer/etools-types';
 import {ResultLinkLowerResult} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
+import {sharedStyles} from '../../../common/styles/shared-styles-lit';
 
 @customElement('pd-output-dialog')
 export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElement) {
@@ -40,13 +41,12 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
     // language=html
     return html`
       <style>
-        etools-dialog {
-          --etools-dialog-scrollable: {
-            margin-top: 0 !important;
-          }
-          --etools-dialog-button-styles: {
-            margin-top: 0 !important;
-          }
+        ${sharedStyles} etools-dialog::part(ed-scrollable) {
+          margin-top: 0 !important;
+        }
+
+        etools-dialog::part(ed-button-styles) {
+          margin-top: 0 !important;
         }
         .container {
           padding: 12px 24px;

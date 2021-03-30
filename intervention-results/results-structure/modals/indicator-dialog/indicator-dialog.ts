@@ -11,7 +11,7 @@ import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
-import EtoolsDialog from '@unicef-polymer/etools-dialog';
+import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import SaveIndicatorMixin from './mixins/save-indicator-mixin';
 import IndicatorDialogTabsMixin from './mixins/indicator-dialog-tabs-mixin';
 import {fireEvent} from '../../../../utils/fire-custom-event';
@@ -73,11 +73,9 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
           color: var(--primary-color);
         }
 
-        etools-dialog {
-          --etools-dialog-scrollable: {
-            min-height: 400px;
-            font-size: 16px;
-          }
+        etools-dialog::part(ed-scrollable) {
+          min-height: 400px;
+          font-size: 16px;
         }
       </style>
 
@@ -124,7 +122,6 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
                   required
                   auto-validate
                   error-message=${translate('INDICATOR_DIALOG.PLEASE_SELECT_SECTIONS')}
-                  disable-on-focus-handling
                   fit-into="etools-dialog"
                   ?readonly="${this.readonly}"
                   trigger-value-change-event

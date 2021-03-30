@@ -1,6 +1,6 @@
 import {LitElement, html, property, customElement} from 'lit-element';
-import '@unicef-polymer/etools-dialog/etools-dialog';
-import '@unicef-polymer/etools-dropdown';
+import '@unicef-polymer/etools-dialog/etools-dialog.js';
+import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import '@polymer/paper-input/paper-textarea';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax';

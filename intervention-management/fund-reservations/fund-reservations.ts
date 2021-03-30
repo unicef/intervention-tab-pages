@@ -1,10 +1,9 @@
 import {LitElement, html, property, customElement} from 'lit-element';
 
 import '@polymer/iron-icons/iron-icons';
-import '@polymer/iron-flex-layout/iron-flex-layout';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import {removeDialog, createDynamicDialog} from '@unicef-polymer/etools-dialog/dynamic-dialog';
+import {removeDialog, createDynamicDialog} from '@unicef-polymer/etools-dialog/dynamic-dialog.js';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {getStore} from '../../utils/redux-store-access';
@@ -16,7 +15,7 @@ import {frWarningsStyles} from '../../common/styles/fr-warnings-styles';
 import {logWarn} from '@unicef-polymer/etools-behaviors/etools-logging';
 import './update-fr-numbers';
 import {UpdateFrNumbers} from './update-fr-numbers';
-import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
+import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {getArraysDiff} from '../../utils/array-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
@@ -61,8 +60,6 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
           -webkit-box-sizing: border-box;
           -moz-box-sizing: border-box;
           box-sizing: border-box;
-          --ecp-content-padding: 0;
-          --ecp-content_-_padding: 0;
           margin-bottom: 24px;
         }
 
@@ -351,10 +348,14 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
    */
   _frsDetailsErrorHandler(responseErr: any) {
     this.frsDialogEl.stopSpinner();
-    const toastMsg =
+    let toastMsg =
       responseErr && responseErr.error
         ? responseErr.error
         : ((translate('INTERVENTION_MANAGEMENT.FUND_RESERVATIONS.ADD_UPDATE_FR_NUMBER_ERR') as unknown) as string);
+    if (toastMsg.includes('HTTPConnection')) {
+      const index = toastMsg.indexOf('HTTPConnection');
+      toastMsg = toastMsg.slice(0, index);
+    }
     // show the invalid frs warning
     fireEvent(this, 'toast', {
       text: toastMsg,

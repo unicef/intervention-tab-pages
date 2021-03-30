@@ -74,6 +74,10 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
         .padd-bott {
           padding-bottom: 16px !important;
         }
+
+        etools-content-panel::part(ecp-content) {
+          padding: 8px 24px 16px 24px;
+        }
       </style>
       <etools-content-panel
         show-expand-btn
