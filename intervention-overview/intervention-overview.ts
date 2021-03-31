@@ -8,7 +8,7 @@ import {sharedStyles} from '../common/styles/shared-styles-lit';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {prettyDate} from '../utils/date-utils';
-import {isJsonStrMatch} from '../utils/utils';
+import {decimalFractionEquals0, isJsonStrMatch} from '../utils/utils';
 import './fund-reservations-display/fund-reservations-display';
 import './monitoring-visits-list/monitoring-visits-list';
 import {pageIsNotCurrentlyActive} from '../utils/common-methods';
@@ -362,14 +362,10 @@ export class InterventionOverview extends connectStore(LitElement) {
     } else {
       percentage = rawPercentage.toFixed(2);
     }
-    if (this.decimalFractionEquals0(percentage)) {
+    if (decimalFractionEquals0(percentage)) {
       percentage = percentage.substring(0, percentage.lastIndexOf('.')); // Removing `.00` form value like `100.00%`
     }
     return percentage;
-  }
-
-  private decimalFractionEquals0(percentage: string) {
-    return percentage.lastIndexOf('.') > 0 && Number(percentage.substring(percentage.lastIndexOf('.') + 1)) === 0;
   }
 
   private getTotalUnicefContrib() {
