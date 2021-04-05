@@ -87,6 +87,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
               always-float-label
               class="w100"
               placeholder="&#8212;"
+              rows="3"
               max-rows="4"
               .value="${this.data.gender_narrative}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'gender_narrative')}"
@@ -113,6 +114,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
               always-float-label
               class="w100"
               placeholder="&#8212;"
+              rows="3"
               max-rows="4"
               .value="${this.data.sustainability_narrative}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'sustainability_narrative')}"
@@ -139,6 +141,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
               always-float-label
               class="w100"
               placeholder="&#8212;"
+              rows="3"
               max-rows="4"
               .value="${this.data.equity_narrative}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'equity_narrative')}"
