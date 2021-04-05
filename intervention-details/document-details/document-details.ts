@@ -88,6 +88,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit?.context)}"
             ?required="${this.permissions.required.context}"
             maxlength="7000"
+            rows="3"
             .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.context)}"
           >
           </paper-textarea>
@@ -104,6 +105,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit?.implementation_strategy)}"
             ?required="${this.permissions.required.implementation_strategy}"
             maxlength="5000"
+            rows="3"
             .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.implementation_strategy)}"
           >
           </paper-textarea>
@@ -120,6 +122,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit?.ip_program_contribution)}"
             ?required="${this.permissions.required.ip_program_contribution}"
             maxlength="5000"
+            rows="3"
             .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.ip_program_contribution)}"
           >
           </paper-textarea>
