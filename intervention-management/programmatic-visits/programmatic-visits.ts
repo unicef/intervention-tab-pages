@@ -22,6 +22,7 @@ import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {PlannedVisit} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
+import {isJsonStrMatch} from '../../utils/utils';
 
 /**
  * @customElement
@@ -141,8 +142,11 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
   }
 
   populateVisits(state: any) {
-    this.data = selectPlannedVisits(state).planned_visits;
-    this.originalData = cloneDeep(this.data);
+    const planned_visits = selectPlannedVisits(state).planned_visits;
+    if (!isJsonStrMatch(this.originalData, planned_visits)) {
+      this.data = planned_visits;
+      this.originalData = cloneDeep(this.data);
+    }
     const interventionDates = selectInterventionDates(state);
     this._setYears(interventionDates.start, interventionDates.end);
   }

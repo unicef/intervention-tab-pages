@@ -91,7 +91,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
             @click="${() => this.openDialog()}"
           ></paper-icon-button>
         </div>
-        <div class="heading number-data flex-none">${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.CSO_CASH')}</div>
+        <div class="heading number-data flex-none">${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.PARTNER_CASH')}</div>
         <div class="heading number-data flex-none">
           ${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.UNICEF_CASH')}
         </div>

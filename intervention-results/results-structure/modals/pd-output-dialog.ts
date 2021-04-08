@@ -4,7 +4,7 @@ import {getEndpoint} from '../../../utils/endpoint-helper';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {DataMixin} from '../../../common/mixins/data-mixin';
 import {getDifference} from '../../../common/mixins/objects-diff';
-import '@unicef-polymer/etools-dialog';
+import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {getStore} from '../../../utils/redux-store-access';
 import {getIntervention} from '../../../common/actions/interventions';
 import {fireEvent} from '../../../utils/fire-custom-event';

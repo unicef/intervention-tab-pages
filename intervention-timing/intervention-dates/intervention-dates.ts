@@ -18,14 +18,7 @@ import get from 'lodash-es/get';
 import '@unicef-polymer/etools-upload/etools-upload';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {
-  AsyncAction,
-  ExpectedResult,
-  Intervention,
-  InterventionActivity,
-  Permission,
-  ResultLinkLowerResult
-} from '@unicef-polymer/etools-types';
+import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {fireEvent} from '../../utils/fire-custom-event';
 import ReportingRequirementsCommonMixin from '../reporting-requirements/mixins/reporting-requirements-common-mixin';

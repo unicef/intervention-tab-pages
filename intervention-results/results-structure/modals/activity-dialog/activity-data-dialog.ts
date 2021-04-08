@@ -3,7 +3,7 @@ import {DataMixin} from '../../../../common/mixins/data-mixin';
 import '@unicef-polymer/etools-currency-amount-input';
 import '@polymer/paper-input/paper-textarea';
 import '@polymer/paper-toggle-button';
-import '@unicef-polymer/etools-dialog';
+import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import './activity-items-table';
 import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
 import {formatCurrency, getTotal} from './get-total.helper';
@@ -159,7 +159,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
               ? html`
                   <etools-currency-amount-input
                     class="col-3"
-                    label=${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.CSO_CASH_BUDGET')}
+                    label=${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.PARTNER_CASH_BUDGET')}
                     ?readonly="${this.readonly}"
                     .value="${this.editedData.cso_cash}"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue('cso_cash', detail.value)}"
@@ -178,7 +178,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
                     readonly
                     tabindex="-1"
                     class="col-3 total-input"
-                    label=${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.CSO_CASH_BUDGET')}
+                    label=${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.PARTNER_CASH_BUDGET')}
                     .value="${this.getSumValue('cso_cash')}"
                   ></paper-input>
                   <paper-input
