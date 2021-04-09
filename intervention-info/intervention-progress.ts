@@ -70,6 +70,10 @@ export class InterventionProgress extends connectStore(
     return html`
       ${pmpCustomIcons}
       <style>
+        :host {
+          background-color: #eeeeee;
+        }
+        
         ${sharedStyles}${dataTableStylesLit} #progress-summary etools-progress-bar {
           margin-top: 16px;
         }

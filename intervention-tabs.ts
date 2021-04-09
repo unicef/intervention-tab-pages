@@ -145,6 +145,7 @@ export class InterventionTabs extends connectStore(LitElement) {
         </intervention-attachments>
         <intervention-reports ?hidden="${!this.isActiveTab(this.activeTab, 'reports')}"></intervention-reports>
         <intervention-progress ?hidden="${!this.isActiveTab(this.activeTab, 'progress')}"></intervention-progress>
+        <intervention-info ?hidden="${!this.isActiveTab(this.activeTab, 'info')}"></intervention-info>
       </div>
     `;
   }
@@ -179,6 +180,11 @@ export class InterventionTabs extends connectStore(LitElement) {
     {
       tab: 'attachments',
       tabLabel: (translate('INTERVENTION_TABS.ATTACHMENTS_TAB') as unknown) as string,
+      hidden: false
+    },
+    {
+      tab: 'info',
+      tabLabel: (translate('INTERVENTION_TABS.INFO_TAB') as unknown) as string,
       hidden: false
     }
   ];
@@ -265,16 +271,16 @@ export class InterventionTabs extends connectStore(LitElement) {
         !envFlags.prp_mode_off &&
         !this.pageTabs.find((x) => x.tab === 'progress')
       ) {
-        this.pageTabs.push({
-          tab: 'progress',
-          tabLabel: (translate('INTERVENTION_TABS.PROGRESS_TAB') as unknown) as string,
-          hidden: false
-        });
-        this.pageTabs.push({
-          tab: 'reports',
-          tabLabel: (translate('INTERVENTION_TABS.REPORTS_TAB') as unknown) as string,
-          hidden: false
-        });
+        // this.pageTabs.push({
+        //   tab: 'progress',
+        //   tabLabel: (translate('INTERVENTION_TABS.PROGRESS_TAB') as unknown) as string,
+        //   hidden: false
+        // });
+        // this.pageTabs.push({
+        //   tab: 'reports',
+        //   tabLabel: (translate('INTERVENTION_TABS.REPORTS_TAB') as unknown) as string,
+        //   hidden: false
+        // });
       }
     } else if (this._routeDetails) {
       this._routeDetails = null;

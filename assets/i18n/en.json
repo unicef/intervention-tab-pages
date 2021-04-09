@@ -47,6 +47,7 @@
     "MANAGEMENT_TAB": "Management",
     "ATTACHMENTS_TAB": "Attachments",
     "PROGRESS_TAB": "Progress",
+    "INFO_TAB": "Info",
     "REPORTS_TAB": "Reports",
     "DISAGGREGATIONS_TAB": "Disaggregations"
   },
