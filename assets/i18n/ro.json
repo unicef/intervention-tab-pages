@@ -423,7 +423,8 @@
       "FINANCIAL": "Financiar",
       "CASH_TRANSFER_MOD": "Modalitati de Transfer Cash",
       "HEADQUARTERS_CONTRIBUTION": "Contribuție la sediul central (automat 7% pentru INGO)",
-      "DOCUMENT_CURRENCY": "Valuta Document"
+      "DOCUMENT_CURRENCY": "Valuta Document",
+      "HQ_CONTRIBUTION": "Contributie HQ"
     },
     "FUND_RESERVATIONS": {
       "FUND_RESERVATIONS": "Rezervări de Fonduri",

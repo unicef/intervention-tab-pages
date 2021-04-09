@@ -423,7 +423,8 @@
       "FINANCIAL": "Financial",
       "CASH_TRANSFER_MOD": "Cash Transfer Modality(ies)",
       "HEADQUARTERS_CONTRIBUTION": "Headquarters Contribution (automatic 7% for INGO)",
-      "DOCUMENT_CURRENCY": "Document Currency"
+      "DOCUMENT_CURRENCY": "Document Currency",
+      "HQ_CONTRIBUTION": "HQ Contribution"
     },
     "FUND_RESERVATIONS": {
       "FUND_RESERVATIONS": "Fund Reservations",

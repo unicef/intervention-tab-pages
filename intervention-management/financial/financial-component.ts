@@ -8,6 +8,7 @@ import '@polymer/paper-input/paper-textarea';
 import '@polymer/paper-input/paper-input';
 import '@polymer/paper-slider/paper-slider.js';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
+import '@unicef-polymer/etools-currency-amount-input';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
@@ -132,7 +133,7 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
               </div>
             </div>
             <div class="layout-horizontal">
-              <div class="col col-3">
+              <div class="col col-5">
                 <paper-slider
                   .value="${this.data.hq_support_cost}"
                   width="100%;"
@@ -150,16 +151,15 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
               >
             </div>
             <div class="layout-horizontal">
-              <paper-input
+              <etools-currency-amount-input
                 id="hqContrib"
-                allowed-pattern="[0-9]"
+                class="col-4"
                 placeholder="&#8212;"
-                label="HQ Contribution"
+                label=${translate('INTERVENTION_MANAGEMENT.FINANCIAL_COMPONENT.HQ_CONTRIBUTION')}
                 .value="${this.data.planned_budget.total_hq_cash_local}"
                 ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_budget)}"
-                @value-changed="${({detail}: CustomEvent) => this.hqContribChanged(detail, 'total_hq_cash_local')}"
-              >
-              </paper-input>
+                @value-changed="${({detail}: CustomEvent) => this.hqContribChanged(detail)}"
+              ></etools-currency-amount-input>              
             </div>
           </div>
         </div>
