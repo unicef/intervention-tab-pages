@@ -124,8 +124,6 @@
       "UNICEF_USER_ERR": "Va rog selectati utilizator UNICEF",
       "SIGNED_PD_SPD": "PD/SPD Semnat",
       "SELECT_SIGNED_PD_SPD_DOC": "Va rog selectati un document PD/SPD semnat",
-      "DAYS_SUBMISSION_SIGNED": "Zile de la Depunere la Semnat",
-      "DAYS_REVIEW_SIGNED": "Zile de la Revizuire la Semnat",
       "TERMINATION_NOTICE": "Instiintare de reziliere"
     },
     "AMENDMENTS": {
@@ -236,6 +234,7 @@
     "OTHER_NON_FINANCIAL_CONTRIBUTION": "Other non-financial partner contributions",
     "HEADQUARTERS_CONTRIBUTION_TITLE": "Contribuție la sediul central",
     "HEADQUARTERS_CONTRIBUTION": "Contribuție la sediul central (automat 7% pentru INGO)",
+    "HQ_CONTRIBUTION": "Contributie HQ",
     "RESULTS_STRUCTURE": {
       "RESULTS_STRUCTURE": "Structura Rezultatelor",
       "PARTNER_CASH": "Numerar Partener",
@@ -390,7 +389,9 @@
       "PRC_REVIEW_DATE": "Data Revizuire PRC",
       "DATE_PARTNER_SIGNED": "Data Semnatura Partener",
       "DATE_UNICEF_SIGNED": "Data Semnatura UNICEF",
-      "DATE_LAST_AMENDED": "Data Ultimului Amendament"
+      "DATE_LAST_AMENDED": "Data Ultimului Amendament",
+      "DAYS_SUBMISSION_SIGNED": "Zile de la Depunere la Semnat",
+      "DAYS_REVIEW_SIGNED": "Zile de la Revizuire la Semnat"
     },
     "INTERVENTION_DATES": {
       "PROGRAMME_DOC_DATES": "Date Document",

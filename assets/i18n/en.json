@@ -124,8 +124,6 @@
       "UNICEF_USER_ERR": "Please select UNICEF user",
       "SIGNED_PD_SPD": "Signed PD/SPD",
       "SELECT_SIGNED_PD_SPD_DOC": "Please select Signed PD/SPD document",
-      "DAYS_SUBMISSION_SIGNED": "Days from Submission to Signed",
-      "DAYS_REVIEW_SIGNED": "Days from Review to Signed",
       "TERMINATION_NOTICE": "Termination Notice"
     },
     "AMENDMENTS": {
@@ -237,6 +235,7 @@
     "OTHER_NON_FINANCIAL_CONTRIBUTION": "Other non-financial partner contributions",
     "HEADQUARTERS_CONTRIBUTION_TITLE": "Headquarters Contribution",
     "HEADQUARTERS_CONTRIBUTION": "Headquarters Contribution (automatic 7% for INGO)",
+    "HQ_CONTRIBUTION": "HQ Contribution",
     "RESULTS_STRUCTURE": {
       "RESULTS_STRUCTURE": "Results Structure",
       "PARTNER_CASH": "Partner Cash",
@@ -391,7 +390,9 @@
       "PRC_REVIEW_DATE": "PRC Review Date",
       "DATE_PARTNER_SIGNED": "Date Partner Signed",
       "DATE_UNICEF_SIGNED": "Date UNICEF Signed",
-      "DATE_LAST_AMENDED": "Date Last Amended"
+      "DATE_LAST_AMENDED": "Date Last Amended",
+      "DAYS_SUBMISSION_SIGNED": "Days from Submission to Signed",
+      "DAYS_REVIEW_SIGNED": "Days from Review to Signed"
     },
     "INTERVENTION_DATES": {
       "PROGRAMME_DOC_DATES": "Programme Document Dates",

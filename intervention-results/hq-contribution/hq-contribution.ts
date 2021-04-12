@@ -111,7 +111,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
                 id="hqContrib"
                 class="col-4"
                 placeholder="&#8212;"
-                label=${translate('INTERVENTION_MANAGEMENT.FINANCIAL_COMPONENT.HQ_CONTRIBUTION')}
+                label=${translate('INTERVENTION_RESULTS.HQ_CONTRIBUTION')}
                 .value="${this.data.planned_budget.total_hq_cash_local}"
                 ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_budget)}"
                 @value-changed="${({detail}: CustomEvent) => this.hqContribChanged(detail)}"
