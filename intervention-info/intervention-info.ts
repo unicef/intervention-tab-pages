@@ -33,23 +33,23 @@ export class InterventionInfo extends LitElement {
        <div class="border-b">
         <etools-tabs-lit
             .tabs="${this.tabs}"
-            .activeTab="${this.activeTab}"
+            .activeTab="${this.activeSubTab}"
             @iron-select="${this._handleTabSelectAction}"
           ></etools-tabs-lit>
         </div>
 
-        <intervention-summary ?hidden="${this.activeTab !== 'summary'}"></intervention-summary>
-        <intervention-implementation-status ?hidden="${this.activeTab !== 'implementation-status'}"></intervention-implementation-status>
-        <intervention-monitoring-activities ?hidden="${this.activeTab !== 'monitoring-activities'}"></intervention-monitoring-activities>
-        <intervention-progress ?hidden="${this.activeTab !== 'progress'}"></intervention-progress>
-        <intervention-reports ?hidden="${this.activeTab !== 'reports'}"></intervention-reports>
+        <intervention-summary ?hidden="${this.activeSubTab !== 'summary'}"></intervention-summary>
+        <intervention-implementation-status ?hidden="${this.activeSubTab !== 'implementation-status'}"></intervention-implementation-status>
+        <intervention-monitoring-activities ?hidden="${this.activeSubTab !== 'monitoring-activities'}"></intervention-monitoring-activities>
+        <intervention-progress ?hidden="${this.activeSubTab !== 'progress'}"></intervention-progress>
+        <intervention-reports ?hidden="${this.activeSubTab !== 'reports'}"></intervention-reports>
 
       </div>
     `;
   }
 
   @property({type: String})
-  activeTab = 'summary';
+  activeSubTab = 'summary';
 
   @property({type: Array})
   tabs = [
@@ -98,6 +98,6 @@ export class InterventionInfo extends LitElement {
   }
 
   _handleTabSelectAction(e: CustomEvent) {
-    this.activeTab = e.detail.item.getAttribute('name');
+    this.activeSubTab = e.detail.item.getAttribute('name');
   }
 }

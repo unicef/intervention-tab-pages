@@ -5,6 +5,7 @@ import {AnyObject} from '@unicef-polymer/etools-types';
 import '@polymer/paper-menu-button/paper-menu-button.js';
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-icon/iron-icon';
+import { fireEvent } from '../../utils/fire-custom-event';
 
 /**
  * @LitElement
@@ -22,9 +23,7 @@ export class EtoolsTabs extends LitElement {
           display: none !important;
         }
 
-        paper-tab[disabled] {
-          opacity: 0.3;
-        }
+       
 
         *[disabled] {
           cursor: not-allowed !important;
@@ -76,8 +75,8 @@ export class EtoolsTabs extends LitElement {
       </style>
 
       <paper-tabs style="overflow: visible" id="tabs" selected="${this.activeTab}" attr-for-selected="name" noink>
-        ${this.tabs.map((item) =>{ if (item.tab== 'info') {
-          return this.getInfoTab(item);
+        ${this.tabs.map((item) =>{ if (item.subtabs) {
+          return this.getSubtabs(item);
         } else { return this.getTabHtml(item)} }
         )}
       </paper-tabs>
@@ -86,6 +85,9 @@ export class EtoolsTabs extends LitElement {
 
   @property({type: String})
   activeTab = '';
+
+  @property({type: String})
+  activeSubTab = '';
 
   @property({type: Array})
   tabs!: AnyObject[];
@@ -98,47 +100,62 @@ export class EtoolsTabs extends LitElement {
     `;
   }
 
-  getInfoTab(item: any) {
+  getSubtabs(item: any) {
     return html`
       <paper-tab style="overflow: visible !important;" name="${item.tab}" link ?hidden="${item.hidden}" ?disabled="${item.disabled}">
           
-        <paper-menu-button id="tabmenu" ignore-select horizontal-align="right" vertical-offset="45">
+        <paper-menu-button id="subtabmenu" ignore-select horizontal-align="right" vertical-offset="45">
             <paper-button class="button" slot="dropdown-trigger">              
-              Info
+              ${item.tab}
               <iron-icon icon="arrow-drop-down"></iron-icon>
             </paper-button>
-            <paper-listbox slot="dropdown-content" style="position:relative; z-index: 2000">
-              
-                <paper-icon-item @tap="selectInfoPage" selected="${item.selected}">
-                  <iron-icon icon="check" slot="item-icon" ?hidden="${!item.selected}">
+            <paper-listbox slot="dropdown-content" style="position:relative; z-index: 2000" attr-for-selected="subtab">
+            ${item.subtabs.map((subitem: any) => html`
+               <paper-icon-item @tap="${this.subtabSelected}" name="${item.tab}" subtab="${subitem.value}" selected="${this.isSelectedSubtab(subitem.value)}">
+                  <iron-icon icon="check" slot="item-icon" ?hidden="${!this.isSelectedSubtab(subitem.value)}">
                   </iron-icon>
-                  <paper-item-body>Summary</paper-item-body>
+                  <paper-item-body>${subitem.label}</paper-item-body>
                 </paper-icon-item>
-                <paper-icon-item @tap="selectInfoPage" selected="${item.selected}">
-                  <iron-icon icon="check" slot="item-icon" ?hidden="${!item.selected}">
-                  </iron-icon>
-                  <paper-item-body>Implementation Status</paper-item-body>
-                </paper-icon-item>
-                <paper-icon-item @tap="selectInfoPage" selected="${item.selected}">
-                  <iron-icon icon="check" slot="item-icon" ?hidden="${!item.selected}">
-                  </iron-icon>
-                  <paper-item-body>Monitoring Activities</paper-item-body>
-                </paper-icon-item>
-                <paper-icon-item @tap="selectInfoPage" selected="${item.selected}">
-                  <iron-icon icon="check" slot="item-icon" ?hidden="${!item.selected}">
-                  </iron-icon>
-                  <paper-item-body>Results Reported</paper-item-body>
-                </paper-icon-item>
-                <paper-icon-item @tap="selectInfoPage" selected="${item.selected}">
-                  <iron-icon icon="check" slot="item-icon" ?hidden="${!item.selected}">
-                  </iron-icon>
-                  <paper-item-body>Reports</paper-item-body>
-                </paper-icon-item>
+            `)}
+               <!-- <paper-icon-item @tap="subtabSelected" selected="${this.isSelectedSubtab(item.label)}">
+                 <iron-icon icon="check" slot="item-icon" ?hidden="${!this.isSelectedSubtab(item.label)}">
+                 </iron-icon>
+                 <paper-item-body>Summary</paper-item-body>
+               </paper-icon-item>
+               <paper-icon-item @tap="subtabSelected" selected="${this.isSelectedSubtab(item.label)}">
+                 <iron-icon icon="check" slot="item-icon" ?hidden="${!this.isSelectedSubtab(item.label)}">
+                 </iron-icon>
+                 <paper-item-body>Implementation Status</paper-item-body>
+               </paper-icon-item>
+               <paper-icon-item @tap="subtabSelected" selected="${this.isSelectedSubtab(item.label)}">
+                 <iron-icon icon="check" slot="item-icon" ?hidden="${!this.isSelectedSubtab(item.label)}">
+                 </iron-icon>
+                 <paper-item-body>Monitoring Activities</paper-item-body>
+               </paper-icon-item>
+               <paper-icon-item @tap="subtabSelected" selected="${this.isSelectedSubtab(item.label)}">
+                 <iron-icon icon="check" slot="item-icon" ?hidden="${!this.isSelectedSubtab(item.label)}">
+                 </iron-icon>
+                 <paper-item-body>Results Reported</paper-item-body>
+               </paper-icon-item>
+               <paper-icon-item @tap="subtabSelected" selected="${this.isSelectedSubtab(item.label)}">
+                 <iron-icon icon="check" slot="item-icon" ?hidden="${!this.isSelectedSubtab(item.label)}">
+                 </iron-icon>
+                 <paper-item-body>Reports</paper-item-body>
+               </paper-icon-item> -->
 
             </paper-listbox>
           </paper-menu-button>
       </paper-tab>
-    `;
+    `; 
    
+  }
+
+  isSelectedSubtab(dropdownItemValue: string) {
+    return dropdownItemValue == this.activeSubTab;
+  }
+
+  subtabSelected(e) {
+    console.log(e);
+    fireEvent(this, 'subtab-changed', {detail: {}});
   }
 }

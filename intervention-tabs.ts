@@ -12,7 +12,7 @@ import {customElement, LitElement, html, property, css} from 'lit-element';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {getStore, getStoreAsync} from './utils/redux-store-access';
-import {selectAvailableActions, currentPage, currentSubpage, isUnicefUser} from './common/selectors';
+import {selectAvailableActions, currentPage, currentSubpage, isUnicefUser, currentSubSubpage} from './common/selectors';
 import {elevationStyles} from './common/styles/elevation-styles';
 import {RootState} from './common/types/store.types';
 import {getIntervention, updateCurrentIntervention} from './common/actions/interventions';
@@ -125,7 +125,9 @@ export class InterventionTabs extends connectStore(LitElement) {
           <etools-tabs-lit
             .tabs="${this.pageTabs}"
             .activeTab="${this.activeTab}"
+            .activeSubTab="${this.activeSubTab}"
             @iron-select="${this.handleTabChange}"
+            @subtab-changed="${this.subtabChanged}"
           ></etools-tabs-lit>
         </div>
       </intervention-page-content-header>
@@ -145,7 +147,7 @@ export class InterventionTabs extends connectStore(LitElement) {
         </intervention-attachments>
         <intervention-reports ?hidden="${!this.isActiveTab(this.activeTab, 'reports')}"></intervention-reports>
         <intervention-progress ?hidden="${!this.isActiveTab(this.activeTab, 'progress')}"></intervention-progress>
-        <intervention-info ?hidden="${!this.isActiveTab(this.activeTab, 'info')}"></intervention-info>
+        <intervention-info .activeSubTab="${this.activeSubTab}" ?hidden="${!this.isActiveTab(this.activeTab, 'info')}"></intervention-info>
       </div>
     `;
   }
@@ -185,12 +187,23 @@ export class InterventionTabs extends connectStore(LitElement) {
     {
       tab: 'info',
       tabLabel: (translate('INTERVENTION_TABS.INFO_TAB') as unknown) as string,
-      hidden: false
+      hidden: false,
+      disabled: true,
+      subtabs: [
+        {label: 'Summary', value: 'summary'},
+        {label: 'Implementation Status', value: 'implementation-status'},
+        {label: 'Monitoring Visits', value: 'monitoring-visits'},
+        {label: 'Results Reported', value: 'progress'},
+        {label: 'Reports', value: 'reports'},
+      ],
     }
   ];
 
   @property({type: String})
   activeTab = 'details';
+
+  @property({type: String})
+  activeSubTab = '';
 
   @property({type: Object})
   intervention!: Intervention | null;
@@ -231,6 +244,7 @@ export class InterventionTabs extends connectStore(LitElement) {
   public stateChanged(state: RootState) {
     if (currentPage(state) === 'interventions' && currentSubpage(state) !== 'list') {
       this.activeTab = currentSubpage(state) as string;
+      this.activeSubTab = currentSubSubpage(state) as string;
       this.isUnicefUser = isUnicefUser(state);
       const currentInterventionId = get(state, 'app.routeDetails.params.interventionId');
       const currentIntervention = get(state, 'interventions.current');
@@ -341,32 +355,52 @@ export class InterventionTabs extends connectStore(LitElement) {
     return '';
   }
 
-  handleTabChange(e: CustomEvent) {
-    const newTabName: string = e.detail.item.getAttribute('name');
-    if (newTabName === this.activeTab) {
-      return;
-    }
-    this.tabChanged(newTabName, this.activeTab);
+  subtabChanged(e) {
+
+
   }
 
-  tabChanged(newTabName: string, oldTabName: string | undefined) {
+  handleTabChange(e: CustomEvent) {
+    const newTabName: string = e.detail.item.getAttribute('name');
+    const newSubTab = e.detail.item.getAttribute('subtab');
+    if (newTabName === this.activeTab && newSubTab === this.activeSubTab) {
+      return;
+    }
+    this.tabChanged(newTabName, this.activeTab, newSubTab, this.activeSubTab);
+  }
+
+  tabChanged(newTabName: string, oldTabName: string | undefined,
+    newSubTab: string, oldSubTab: string) {
     if (oldTabName === undefined) {
       // page load, tab init, component is gonna be imported in loadPageComponents action
       return;
     }
-    if (newTabName !== oldTabName) {
+    if (newTabName !== oldTabName || newSubTab != oldSubTab) {
       const tabControl = this.shadowRoot!.querySelector(`intervention-${newTabName}`);
       if (tabControl && !tabControl.shadowRoot) {
         // show loading message if tab was not already loaded
         this._showInterventionPageLoadingMessage();
       }
 
-      const stringParams: string = buildUrlQueryString(this._routeDetails!.queryParams || {});
-      const newPath =
-        `interventions/${this.intervention!.id}/${newTabName}` + (stringParams !== '' ? `?${stringParams}` : '');
+      let newPath = this._geNewUrlPath(newTabName, newSubTab);
+
       history.pushState(window.history.state, '', newPath);
       window.dispatchEvent(new CustomEvent('popstate'));
     }
+  }
+
+  _geNewUrlPath(newTabName: string, newSubTab: string) {
+    const stringParams: string = buildUrlQueryString(this._routeDetails!.queryParams || {});
+    let newPath =
+      `interventions/${this.intervention!.id}/${newTabName}`;
+    if (newSubTab) {
+      newPath += `/${newSubTab}`;
+    } else {
+      this.activeSubTab = '';
+    }
+    newPath += (stringParams !== '' ? `?${stringParams}` : '');
+
+    return newPath;
   }
 
   goToPageNotFound() {
