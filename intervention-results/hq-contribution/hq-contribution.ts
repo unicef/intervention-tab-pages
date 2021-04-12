@@ -3,7 +3,7 @@ import '@polymer/paper-button/paper-button';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-loading/etools-loading';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import '@polymer/paper-input/paper-input';
+import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
 import '@polymer/paper-slider/paper-slider.js';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
@@ -87,7 +87,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
               </div>
             </div>
             <div class="layout-horizontal">
-              <div class="col col-3">
+              <div class="col col-5">
                 <paper-slider
                   .value="${this.data.hq_support_cost}"
                   width="100%;"
@@ -107,16 +107,16 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
               >
             </div>
             <div class="layout-horizontal">
-              <paper-input
+              <etools-currency-amount-input
                 id="hqContrib"
-                allowed-pattern="[0-9]"
+                class="col-4"
                 placeholder="&#8212;"
-                label="HQ Contribution"
+                label=${translate('INTERVENTION_MANAGEMENT.FINANCIAL_COMPONENT.HQ_CONTRIBUTION')}
                 .value="${this.data.planned_budget.total_hq_cash_local}"
                 ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_budget)}"
                 @value-changed="${({detail}: CustomEvent) => this.hqContribChanged(detail)}"
               >
-              </paper-input>
+              </etools-currency-amount-input>
             </div>
           </div>
         </div>
