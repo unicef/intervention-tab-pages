@@ -42,11 +42,14 @@
   "INTERVENTION_TABS": {
     "OVERVIEW_TAB": "General",
     "DETAILS_TAB": "Detalii",
+    "METADATA_TAB": "Metadata",
+    "STRATEGY_TAB": "Strategy",
     "RESULTS_TAB": "Rezultate",
     "TIMING_TAB": "Cronologie",
     "MANAGEMENT_TAB": "Management",
     "ATTACHMENTS_TAB": "Atasamente",
     "PROGRESS_TAB": "Progres",
+    "INFO_TAB": "Info",
     "REPORTS_TAB": "Rapoarte",
     "DISAGGREGATIONS_TAB": "Dezagregari"
   },
@@ -73,8 +76,7 @@
     "MONITORING_ACTIVITIES": "Activitati de Monitorizare",
     "NO_ACTIVITIES": "Nu sunt activitati."
   },
-  "INTERVENTION_DETAILS": {
-    "DOCUMENT_DETAILS": "Detalii Document",
+  "INTERVENTION_METADATA": {
     "DOCUMENT_TYPE": "Tip Document",
     "UNPP_CFEI_DSR": "Numar de Referinta UNPP CFEI/DSR",
     "HUMANITARIAN": "Umanitar",
@@ -92,15 +94,103 @@
     "UNICEF_FOCAL_POINTS": "Persoane de interes ale UNICEF",
     "UNICEF_BUDGET_OWNER": "Responsabil UNICEF al Bugetului",
     "CP_STRUCTURES": "Structuri CP",
-    "TITLE": "Titlu",
-    "CONTEXT": "Context",
-    "IMPLEMENTATION_STRATEGY": "Strategie Implementare",
-    "PARTNER_NON_FINANCIAL_CONTRIBUTION": "Contributie Non-Financiara a Partenerului",
     "GEOGRAPHICAL_COVERAGE": "Acoperire Geografică",
     "LOCATIONS": "Locatii",
     "LOCATIONS_ERR": "Va rugam selectati locatii",
     "SEE_ALL_LOCATIONS": "Vezi toate locatiile",
     "SEE_ALL": "Vezi tot",
+    "OTHER": "Altele",
+    "GROUPED_LOCATIONS":{
+      "LOCATIONS_PD_COVERS": "Locatiile acoperite de PD/SPD",
+      "GROUP_LOCATIONS_BY": "Grupeaza Locatiile Dupa",
+      "LOCATIONS_UNABLE_TO_GROUP": "Locatii negrupate: "
+    },
+    "REVIEW_AND_SIGN": {
+      "SIGNATURES_DATES": "Semnaturi & Date",
+      "DOC_SUB_DATE": "Data Depunere Document",
+      "MAX_DATE_ERR": "Data nu poate fi in viitor",
+      "DOC_DATE_REQUIRED": "Data Depunere Document este necesar",
+      "SUBMITTED_PRC": "Depus la PRC?",
+      "SUBMISSION_DATE_PRC": "Data Depunere la PRC",
+      "REVIEW_DATE_PRC": "Data Revizuire de PRC",
+      "PRC_REVIEW_DOC": "Document Revizuire PRC",
+      "SIGNED_PARTNER_AUTH_OFFICER": "Semnat de Ofiterul Autorizat al Partenerului",
+      "PARTNER_AUTH_OFFICER_ERR": "Selectati Ofiterul Autorizat al Partenerului",
+      "SIGNED_PARTNER_DATE": "Data Semnat de Partener",
+      "DATE_REQUIRED": "Data este necesara",
+      "SIGNED_UNICEF_AUTH_OFFICER": "Semnat de Ofiterul Autorizat de UNICEF",
+      "SIGNED_UNICEF_DATE": "Data semnat de UNICEF",
+      "SIGNED_UNICEF": "Semnat de UNICEF",
+      "UNICEF_USER_ERR": "Va rog selectati utilizator UNICEF",
+      "SIGNED_PD_SPD": "PD/SPD Semnat",
+      "SELECT_SIGNED_PD_SPD_DOC": "Va rog selectati un document PD/SPD semnat",
+      "DAYS_SUBMISSION_SIGNED": "Zile de la Depunere la Semnat",
+      "DAYS_REVIEW_SIGNED": "Zile de la Revizuire la Semnat",
+      "TERMINATION_NOTICE": "Instiintare de reziliere"
+    },
+    "AMENDMENTS": {
+      "AMENDMENTS": "Amendamente",
+      "ADD_AMENDMENT": "Adauga Amendament",
+      "REF": "Ref #",
+      "SIGNED_DATE": "Data Semnat",
+      "AMENDMENT_TYPES": "Tipuri de Amendament",
+      "SIGNED_AMENDMENT": "Amendament Semnat",
+      "INTERNAL_PRC_REVIEWS": "Intern / Revizuiri PRC",
+      "OTHER_INFO": "Alte Informatii",
+      "NO_AMENDMENTS_ADDED": "Nu sunt amendamente adaugate.",
+      "AMENDMENT_DIALOG": {
+        "MAX_DATE_ERR": "Data nu poate fi in viitor",
+        "TYPE_ERR": "Tipul este necesar",
+        "OTHER": "Altele",
+        "ATTACHMENT_REQUIRED": "Atasament necesar",
+        "ADMIN_ERR_MSG": "Corecții în document din cauza greșelilor de eroare sau a unei erori administrative.",
+        "BUDGET_LTE_20_MSG": "Modificări la bugetul activităților care au ca rezultat o modificare a contribuției UNICEF ≤ 20% din numerarul și / sau aprovizionările aprobate anterior, cu sau fără modificări ale rezultatelor programului.",
+        "BUDGET_GT_20_MSG": "Modificări ale bugetului activităților care au ca rezultat o modificare a contribuției UNICEF> 20% din numerarul și / sau aprovizionările aprobate anterior, cu sau fără modificări ale rezultatelor programului.",
+        "NO_COST_EXTENSION_MSG": "Fără prelungire de cost",
+        "CHANGE_MSG": "Modificări ale rezultatelor planificate, ale populației sau ale acoperirii geografice a programului, fără modificări ale contribuției UNICEF.",
+        "OTHER_MSG": "Altele"
+      }
+    },
+    "FINANCIAL_COMPONENT": {
+      "FINANCIAL": "Financiar",
+      "DOCUMENT_CURRENCY": "Valuta Document",
+      "DOC_TYPE": "Tip Doc",
+      "PARTNER_FOCAL_POINTS_TOOLTIP": "Utilizatorilor selectati aici li se va acorda acces de editare la acest PD odata ce este trimis partenerului",
+    },
+    "FUND_RESERVATIONS": {
+      "FUND_RESERVATIONS": "Rezervări de Fonduri",
+      "FR_WARNING": "Atentionari Rezervări de Fonduri",
+      "OK_BTN": "Da",
+      "CANCEL_BTN": "Nu",
+      "ADD_UPDATE_FR_NUMBER_ERR": "Nu se poate adauga/modifica numerele FR. Va rugam incercati mai tarziu!",
+      "NO_FR_NUM_ADDED": "Nu sunt rezervari de fonduri adaugate.",
+      "CAN_NOT_ADD_FR_NUM": "Nu poti adauga numere FR. PD/SPD trebuie salvat mai intai.",
+      "FR_DIALOG": {
+        "ADD_UPDATE_FR_NUMBERS": "Adauga/Modifica Numere FR",
+        "FILL_FR_NUMBER": "Va rugam introduceti un numar FR sau stergeti campul",
+        "ADD_FR_NUM": "Adauga Numar FR",
+        "DELETE_FR_PROMPT": "Sunteti sigur ca doriti sa stergeti acest numar FR?",
+        "NO_FUND_RESERVATIONS_ADDED": "Nu sunt rezervari de fonduri adaugate.",
+        "FR_NUMBER": "Numar FR"
+      }
+    },
+    "FINAL_REVIEW": {
+      "FINAL_PARTNERSHIP_REVIEW": "Revizuirea Finala a Parteneriatului",
+      "DATE_REVIEW_PERFORMED": "Data efectuarii Revizuirii",
+      "FINAL_REVIEW_POP": {
+        "FINAL_PARTNERSHIP_REV_ATT": "Final Partnership Review Attachment",
+        "CORRECT_FILE_ERR": "Va rugam selectati fisierul corect",
+        "DATE_REQUIRED": "Daae este necesara"
+      }
+    }
+  },
+  "INTERVENTION_STRATEGY": {
+    "DOCUMENT_DETAILS": "Detalii Document",
+    "IMPLEMENTATION_STRATEGY": "Strategie Implementare",
+    "CONTEXT": "Context",
+    "TITLE": "Titlu",
+    "FINANCIAL": "Financial",
+    "CASH_TRANSFER_MOD": "Modalitati de Transfer Cash",
     "GENDER_EQUITY_SUSTAINABILITY": "Gen, Echitate & Durabilitate",
     "GENDER_RATING": "Rating dupa sex",
     "GENDER_NARATIVE": "Narațiune de Gen",
@@ -113,10 +203,16 @@
     "CAPACITY_DEVELOPMENT": "Dezvoltarea Capacității",
     "OTHER_PARTNERS_INVOLVED": "Alti Parteneri Implicati",
     "OTHER_INFORMATION": "Alte Informatii",
-    "GROUPED_LOCATIONS":{
-      "LOCATIONS_PD_COVERS": "Locatiile acoperite de PD/SPD",
-      "GROUP_LOCATIONS_BY": "Grupeaza Locatiile Dupa",
-      "LOCATIONS_UNABLE_TO_GROUP": "Locatii negrupate: "
+    "RISKS": {
+      "RISKS": "Riscuri",
+      "NO_RISK_ADDED": "Nu sunt riscuri adaugate.",
+      "TYPE": "Tip",
+      "PROPOSED_MITIGATION_MEASURES": "Masuri de Mitigare Propuse",
+      "DELETE_RISK_PROMPT": "Sunteti sigur ca vreti sa stergeti acest Risc?",
+      "RISK_DIALOG": {
+        "EDIT_RISK": "Editeaza risc",
+        "ADD_RISK": "Adauga risc"
+      }
     }
   },
   "INTERVENTION_RESULTS": {
@@ -136,6 +232,10 @@
     "DEACTIVATE_PROMPT": "Aceasta este o acțiune ireversibilă, sunteți sigur că doriți să dezactivați acest indicator?",
     "DEACTIVATE": "Dezactiveaza",
     "DELETE_PROMPT": "Sigur doriți să ștergeți acest indicator?",
+    "PARTNER_NON_FINANCIAL_CONTRIBUTION": "Contributie Non-Financiara a Partenerului",
+    "OTHER_NON_FINANCIAL_CONTRIBUTION": "Other non-financial partner contributions",
+    "HEADQUARTERS_CONTRIBUTION_TITLE": "Contribuție la sediul central",
+    "HEADQUARTERS_CONTRIBUTION": "Contribuție la sediul central (automat 7% pentru INGO)",
     "RESULTS_STRUCTURE": {
       "RESULTS_STRUCTURE": "Structura Rezultatelor",
       "PARTNER_CASH": "Numerar Partener",
@@ -346,42 +446,6 @@
       "NO_SPECIAL_REPORTING_REQUIREMENTS": "Nu sunt cerinte de raportare speciale setate.",
       "DELETE_SPECIAL_REPORTING_REQUIREMENT_PROMPT": "Sunteti sigur ca doriti sa stergeti Cerinta de Raportare Speciala?",
       "DEL_SPECIAL_REPORTING_REQUIREMENT": "Sterge Cerința de Raportare Speciala"
-    }
-  },
-  "INTERVENTION_MANAGEMENT": {
-    "REVIEW_AND_SIGN": {
-      "SIGNATURES_DATES": "Semnaturi & Date",
-      "DOC_SUB_DATE": "Data Depunere Document",
-      "MAX_DATE_ERR": "Data nu poate fi in viitor",
-      "DOC_DATE_REQUIRED": "Data Depunere Document este necesar",
-      "SUBMITTED_PRC": "Depus la PRC?",
-      "SUBMISSION_DATE_PRC": "Data Depunere la PRC",
-      "REVIEW_DATE_PRC": "Data Revizuire de PRC",
-      "PRC_REVIEW_DOC": "Document Revizuire PRC",
-      "SIGNED_PARTNER_AUTH_OFFICER": "Semnat de Ofiterul Autorizat al Partenerului",
-      "PARTNER_AUTH_OFFICER_ERR": "Selectati Ofiterul Autorizat al Partenerului",
-      "SIGNED_PARTNER_DATE": "Data Semnat de Partener",
-      "DATE_REQUIRED": "Data este necesara",
-      "SIGNED_UNICEF_AUTH_OFFICER": "Semnat de Ofiterul Autorizat de UNICEF",
-      "SIGNED_UNICEF_DATE": "Data semnat de UNICEF",
-      "SIGNED_UNICEF": "Semnat de UNICEF",
-      "UNICEF_USER_ERR": "Va rog selectati utilizator UNICEF",
-      "SIGNED_PD_SPD": "PD/SPD Semnat",
-      "SELECT_SIGNED_PD_SPD_DOC": "Va rog selectati un document PD/SPD semnat",
-      "DAYS_SUBMISSION_SIGNED": "Zile de la Depunere la Semnat",
-      "DAYS_REVIEW_SIGNED": "Zile de la Revizuire la Semnat",
-      "TERMINATION_NOTICE": "Instiintare de reziliere"
-    },
-    "RISKS": {
-      "RISKS": "Riscuri",
-      "NO_RISK_ADDED": "Nu sunt riscuri adaugate.",
-      "TYPE": "Tip",
-      "PROPOSED_MITIGATION_MEASURES": "Masuri de Mitigare Propuse",
-      "DELETE_RISK_PROMPT": "Sunteti sigur ca vreti sa stergeti acest Risc?",
-      "RISK_DIALOG": {
-        "EDIT_RISK": "Editeaza risc",
-        "ADD_RISK": "Adauga risc"
-      }
     },
     "PROGRAMATIC_VISITS": {
       "PROGRAMATIC_VISITS": "Vizite Programate",
@@ -395,61 +459,6 @@
       "TOTAL_ERR": "Totalul trebuie sa fie mai mare de 0",
       "YEAR_SELECTED_ERR": "Anul este deja selectat pe alt plan de vizita.",
       "ALREADY_ADDED_PLANNED_VISIT": "Plan de vizita deja adaugat, datele nu sunt valide inca."
-    },
-    "AMENDMENTS": {
-      "AMENDMENTS": "Amendamente",
-      "ADD_AMENDMENT": "Adauga Amendament",
-      "REF": "Ref #",
-      "SIGNED_DATE": "Data Semnat",
-      "AMENDMENT_TYPES": "Tipuri de Amendament",
-      "SIGNED_AMENDMENT": "Amendament Semnat",
-      "INTERNAL_PRC_REVIEWS": "Intern / Revizuiri PRC",
-      "OTHER_INFO": "Alte Informatii",
-      "NO_AMENDMENTS_ADDED": "Nu sunt amendamente adaugate.",
-      "AMENDMENT_DIALOG": {
-        "MAX_DATE_ERR": "Data nu poate fi in viitor",
-        "TYPE_ERR": "Tipul este necesar",
-        "OTHER": "Altele",
-        "ATTACHMENT_REQUIRED": "Atasament necesar",
-        "ADMIN_ERR_MSG": "Corecții în document din cauza greșelilor de eroare sau a unei erori administrative.",
-        "BUDGET_LTE_20_MSG": "Modificări la bugetul activităților care au ca rezultat o modificare a contribuției UNICEF ≤ 20% din numerarul și / sau aprovizionările aprobate anterior, cu sau fără modificări ale rezultatelor programului.",
-        "BUDGET_GT_20_MSG": "Modificări ale bugetului activităților care au ca rezultat o modificare a contribuției UNICEF> 20% din numerarul și / sau aprovizionările aprobate anterior, cu sau fără modificări ale rezultatelor programului.",
-        "NO_COST_EXTENSION_MSG": "Fără prelungire de cost",
-        "CHANGE_MSG": "Modificări ale rezultatelor planificate, ale populației sau ale acoperirii geografice a programului, fără modificări ale contribuției UNICEF.",
-        "OTHER_MSG": "Altele"
-      }
-    },
-    "FINANCIAL_COMPONENT": {
-      "FINANCIAL": "Financiar",
-      "CASH_TRANSFER_MOD": "Modalitati de Transfer Cash",
-      "HEADQUARTERS_CONTRIBUTION": "Contribuție la sediul central (automat 7% pentru INGO)",
-      "DOCUMENT_CURRENCY": "Valuta Document"
-    },
-    "FUND_RESERVATIONS": {
-      "FUND_RESERVATIONS": "Rezervări de Fonduri",
-      "FR_WARNING": "Atentionari Rezervări de Fonduri",
-      "OK_BTN": "Da",
-      "CANCEL_BTN": "Nu",
-      "ADD_UPDATE_FR_NUMBER_ERR": "Nu se poate adauga/modifica numerele FR. Va rugam incercati mai tarziu!",
-      "NO_FR_NUM_ADDED": "Nu sunt rezervari de fonduri adaugate.",
-      "CAN_NOT_ADD_FR_NUM": "Nu poti adauga numere FR. PD/SPD trebuie salvat mai intai.",
-      "FR_DIALOG": {
-        "ADD_UPDATE_FR_NUMBERS": "Adauga/Modifica Numere FR",
-        "FILL_FR_NUMBER": "Va rugam introduceti un numar FR sau stergeti campul",
-        "ADD_FR_NUM": "Adauga Numar FR",
-        "DELETE_FR_PROMPT": "Sunteti sigur ca doriti sa stergeti acest numar FR?",
-        "NO_FUND_RESERVATIONS_ADDED": "Nu sunt rezervari de fonduri adaugate.",
-        "FR_NUMBER": "Numar FR"
-      }
-    },
-    "FINAL_REVIEW": {
-      "FINAL_PARTNERSHIP_REVIEW": "Revizuirea Finala a Parteneriatului",
-      "DATE_REVIEW_PERFORMED": "Data efectuarii Revizuirii",
-      "FINAL_REVIEW_POP": {
-        "FINAL_PARTNERSHIP_REV_ATT": "Final Partnership Review Attachment",
-        "CORRECT_FILE_ERR": "Va rugam selectati fisierul corect",
-        "DATE_REQUIRED": "Daae este necesara"
-      }
     }
   },
   "INTERVENTION_ATTACHMENTS": {
