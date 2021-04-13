@@ -127,7 +127,6 @@ export class InterventionTabs extends connectStore(LitElement) {
             .activeTab="${this.activeTab}"
             .activeSubTab="${this.activeSubTab}"
             @iron-select="${this.handleTabChange}"
-            @subtab-changed="${this.subtabChanged}"
           ></etools-tabs-lit>
         </div>
       </intervention-page-content-header>
@@ -192,7 +191,7 @@ export class InterventionTabs extends connectStore(LitElement) {
       subtabs: [
         {label: 'Summary', value: 'summary'},
         {label: 'Implementation Status', value: 'implementation-status'},
-        {label: 'Monitoring Visits', value: 'monitoring-visits'},
+        {label: 'Monitoring Activities', value: 'monitoring-activities'},
         {label: 'Results Reported', value: 'progress'},
         {label: 'Reports', value: 'reports'},
       ],
@@ -355,12 +354,11 @@ export class InterventionTabs extends connectStore(LitElement) {
     return '';
   }
 
-  subtabChanged(e) {
-
-
-  }
-
   handleTabChange(e: CustomEvent) {
+    const isSubtabParent = e.detail.item.getAttribute('is-subtabs-parent');
+    if (isSubtabParent) {
+      return;
+    }
     const newTabName: string = e.detail.item.getAttribute('name');
     const newSubTab = e.detail.item.getAttribute('subtab');
     if (newTabName === this.activeTab && newSubTab === this.activeSubTab) {
