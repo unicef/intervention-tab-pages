@@ -224,7 +224,6 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
    * Backend errors out otherwise
    */
   cleanUp(data: OtherData) {
-    debugger;
     if (!data || !data.planned_budget) {
       return data;
     }
