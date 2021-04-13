@@ -79,6 +79,12 @@ export class EtoolsTabs extends LitElement {
             opacity: 1;
           }
         }
+        paper-tab[is-subtabs-parent]>paper-menu-button>paper-button {
+          color: var(--secondary-text-color);
+        }
+        paper-tab.iron-selected[is-subtabs-parent]>paper-menu-button>paper-button {
+          color: var(--primary-color) !important;
+        }
 
         @media print {
           :host {
