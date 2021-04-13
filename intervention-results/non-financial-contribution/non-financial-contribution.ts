@@ -11,7 +11,7 @@ import {
   selectNonFinancialContribution,
   selectNonFinancialContributionPermissions
 } from './nonFinancialContribution.selectors';
-import {NonFinancialContribution, NonFinancialContributionPermissions} from './nonFinancialContribution.models';
+import {NonFinancialContributionData, NonFinancialContributionPermissions} from './nonFinancialContribution.models';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {getStore} from '../../utils/redux-store-access';
 import {patchIntervention} from '../../common/actions/interventions';
@@ -33,7 +33,7 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
   }
 
   render() {
-    if (!this.data) {
+    if (!this.data || !this.permissions) {
       return html`<style>
           ${sharedStyles}
         </style>
@@ -82,7 +82,7 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
     `;
   }
   @property({type: Object})
-  data!: NonFinancialContribution;
+  data!: NonFinancialContributionData;
 
   @property({type: Object})
   permissions!: Permission<NonFinancialContributionPermissions>;

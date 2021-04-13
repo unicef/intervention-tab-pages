@@ -8,7 +8,7 @@ import '@polymer/paper-slider/paper-slider.js';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {selectHqContribution, selectHqContributionPermissions} from './hqContribution.selectors';
+import {selectHqContributionData, selectHqContributionPermissions} from './hqContribution.selectors';
 import {HqContributionData, HqContributionPermissions} from './hqContribution.models';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {getStore} from '../../utils/redux-store-access';
@@ -135,7 +135,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
     if (!state.interventions.current) {
       return;
     }
-    this.data = selectHqContribution(state);
+    this.data = selectHqContributionData(state);
     this.originalData = cloneDeep(this.data);
     this.autoCalculatedHqContrib = this.autoCalcHqContrib();
     this.setPermissions(state);

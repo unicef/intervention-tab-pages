@@ -1,7 +1,7 @@
 import {Intervention, InterventionPermissionsFields} from '@unicef-polymer/etools-types';
 import {ModelsBase} from '../../common/models/models.base';
 
-export class NonFinancialContribution extends ModelsBase {
+export class NonFinancialContributionData extends ModelsBase {
   constructor(intervention: Intervention) {
     super();
     this.setObjProperties(intervention);

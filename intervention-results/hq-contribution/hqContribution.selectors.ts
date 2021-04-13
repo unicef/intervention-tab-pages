@@ -4,7 +4,7 @@ import {currentIntervention, currentInterventionPermissions} from '../../common/
 import {Permission} from '@unicef-polymer/etools-types';
 import {InterventionPermissionsFields, Intervention} from '@unicef-polymer/etools-types';
 
-export const selectHqContribution = createSelector(currentIntervention, (intervention: Intervention) => {
+export const selectHqContributionData = createSelector(currentIntervention, (intervention: Intervention) => {
   return new HqContributionData(intervention);
 });
 
