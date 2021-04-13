@@ -68,8 +68,15 @@ export class EtoolsTabs extends LitElement {
           }
         }
 
+        paper-listbox {
+          z-index: 1000;
+        }
+
         paper-tab[is-subtabs-parent][disabled] {
           cursor: pointer !important;
+          --paper-tab-content-unselected:{
+            opacity: 1;
+          }
         }
 
         @media print {
