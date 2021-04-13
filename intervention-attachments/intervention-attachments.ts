@@ -1,6 +1,6 @@
 import {LitElement, customElement, html} from 'lit-element';
 import {fireEvent} from '../utils/fire-custom-event';
-import './attachments-list';
+import './attachments-list/attachments-list';
 import './prc-document/prc-document';
 /**
  * @customElement

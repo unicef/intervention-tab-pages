@@ -36,10 +36,11 @@ export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadMixin(Li
   }
   render() {
     // language=HTML
-    if (!this.data || this._isDraft(this.data.status)) {
+    if (!this.data || !this.permissions) {
       return html`<style>
-        ${sharedStyles}
-      </style>`;
+          ${sharedStyles}
+        </style>
+        <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     return html`
       <style>
@@ -104,8 +105,6 @@ export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadMixin(Li
     this.originalData = cloneDeep(this.data);
 
     const permissions = selectPrcDocumentPermissions(state);
-    // @dci
-    permissions.edit.prc_review_attachment = true;
     if (!isJsonStrMatch(this.permissions, permissions)) {
       this.permissions = permissions;
       this.set_canEditAtLeastOneField(this.permissions.edit);
