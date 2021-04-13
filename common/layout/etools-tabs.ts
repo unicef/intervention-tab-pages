@@ -64,7 +64,12 @@ export class EtoolsTabs extends LitElement {
         paper-tabs {
           --paper-tabs-container: {
             overflow: visible;
+            max-width: 100% !important;
           }
+        }
+
+        paper-tab[is-subtabs-parent][disabled] {
+          cursor: pointer !important;
         }
 
         @media print {
@@ -74,7 +79,7 @@ export class EtoolsTabs extends LitElement {
         }
       </style>
 
-      <paper-tabs style="overflow: visible" id="tabs" selected="${this.activeTab}" attr-for-selected="name" noink>
+      <paper-tabs style="overflow: visible; max-width: 100%" id="tabs" selected="${this.activeTab}" attr-for-selected="name" noink>
         ${this.tabs.map((item) =>{ if (item.subtabs) {
           return this.getSubtabs(item);
         } else { return this.getTabHtml(item)} }
@@ -111,7 +116,7 @@ export class EtoolsTabs extends LitElement {
             </paper-button>
             <paper-listbox slot="dropdown-content"  attr-for-selected="subtab">
             ${item.subtabs.map((subitem: any) => html`
-               <paper-icon-item @tap="${this.subtabSelected}" name="${item.tab}" subtab="${subitem.value}" selected="${this.isSelectedSubtab(subitem.value)}">
+               <paper-icon-item name="${item.tab}" subtab="${subitem.value}" selected="${this.isSelectedSubtab(subitem.value)}">
                   <iron-icon icon="check" slot="item-icon" ?hidden="${!this.isSelectedSubtab(subitem.value)}">
                   </iron-icon>
                   <paper-item-body>${subitem.label}</paper-item-body>
@@ -126,10 +131,5 @@ export class EtoolsTabs extends LitElement {
 
   isSelectedSubtab(dropdownItemValue: string) {
     return dropdownItemValue == this.activeSubTab;
-  }
-
-  subtabSelected(e) {
-    console.log(e);
-    fireEvent(this, 'subtab-changed', {detail: {}});
   }
 }
