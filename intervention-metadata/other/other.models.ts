@@ -19,4 +19,6 @@ export class OtherPermissions extends ModelsBase {
   }
   planned_budget = true;
   document_type = true;
+  humanitarian_flag = true;
+  contingency_pd = true;
 }

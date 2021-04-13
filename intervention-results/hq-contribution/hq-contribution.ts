@@ -32,7 +32,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
   }
 
   render() {
-    if (!this.data) {
+    if (!this.data || !this.permissions) {
       return html`<style>
           ${sharedStyles}
         </style>
@@ -48,25 +48,19 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
         etools-content-panel::part(ecp-content) {
           padding: 8px 24px 16px 24px;
         }
-        .extra-padd-top {
+        .extra-padd-top-no-bottom {
           padding-top: 16px !important;
+          padding-bottom: 0 !important;
         }
         paper-slider {
           width: 100%;
-          margin-left: -10px;
+          margin-left: -15px;
           margin-top: -5px;
-        }
-        .grouping-div {
-          border-top: 1px solid lightgray;
-          margin-bottom: 20px;
-          margin-top: 30px;
-          width: 10px;
-          border-left: 1px solid lightgray;
-          border-bottom: 1px solid lightgray;
-          margin-right: 6px;
+          height: 30px;
         }
         .hq-info-label {
           color: darkred;
+          padding-bottom: 5px;
         }
       </style>
 
@@ -74,51 +68,47 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
         show-expand-btn
         panel-title=${translate('INTERVENTION_RESULTS.HEADQUARTERS_CONTRIBUTION_TITLE')}
         comment-element="hq-contribution"
-        comment-description="Headquarters Contribution"
+        comment-description=${translate('INTERVENTION_RESULTS.HEADQUARTERS_CONTRIBUTION_TITLE')}
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
-        <div class="layout-horizontal">
-          <div class="grouping-div"></div>
-          <div>
-            <div class="layout-horizontal row-padding-v extra-padd-top">
-              <div class="w100">
-                <label class="paper-label">${translate('INTERVENTION_RESULTS.HEADQUARTERS_CONTRIBUTION')}</label>
-              </div>
-            </div>
-            <div class="layout-horizontal">
-              <div class="col col-5">
-                <paper-slider
-                  .value="${this.data.hq_support_cost}"
-                  width="100%;"
-                  max="7"
-                  step="0.1"
-                  ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.hq_support_cost)}"
-                  @value-changed="${(e: CustomEvent) => this.updateSlider(e)}"
-                ></paper-slider>
-                ${this.data.hq_support_cost}
-              </div>
-            </div>
-            <div class="layout-horizontal row-padding-v">
-              <label class="paper-label hq-info-label"
-                ><b>${this.data.hq_support_cost}%</b> of the total UNICEF cash contribution is:
-                <b>${this.autoCalculatedHqContrib} ${this.data.planned_budget.currency}</b>. Please review and enter the
-                actual final number below.</label
-              >
-            </div>
-            <div class="layout-horizontal">
-              <etools-currency-amount-input
-                id="hqContrib"
-                class="col-4"
-                placeholder="&#8212;"
-                label=${translate('INTERVENTION_RESULTS.HQ_CONTRIBUTION')}
-                .value="${this.data.planned_budget.total_hq_cash_local}"
-                ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_budget)}"
-                @value-changed="${({detail}: CustomEvent) => this.hqContribChanged(detail)}"
-              >
-              </etools-currency-amount-input>
-            </div>
+        <div class="layout-horizontal row-padding-v extra-padd-top-no-bottom">
+          <div class="w100">
+            <label class="paper-label">${translate('INTERVENTION_RESULTS.HEADQUARTERS_CONTRIBUTION')}</label>
           </div>
+        </div>
+        <div class="layout-horizontal">
+          <div class="col col-4">
+            <paper-slider
+              .value="${this.data.hq_support_cost}"
+              width="100%"
+              max="7"
+              step="0.1"
+              ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.hq_support_cost)}"
+              .editable="${!this.isReadonly(this.editMode, this.permissions.edit.hq_support_cost)}"
+              @value-changed="${(e: CustomEvent) => this.updateSlider(e)}"
+            ></paper-slider>
+            <span ?hidden="${this.editMode}">${this.data.hq_support_cost}</span>
+          </div>
+        </div>
+        <div class="layout-horizontal row-padding-v">
+          <label class="paper-label hq-info-label"
+            ><b>${this.data.hq_support_cost}%</b> of the total UNICEF cash contribution is:
+            <b>${this.autoCalculatedHqContrib} ${this.data.planned_budget.currency}</b>. Please review and enter the
+            actual final number below.</label
+          >
+        </div>
+        <div class="layout-horizontal">
+          <etools-currency-amount-input
+            id="hqContrib"
+            class="col-3"
+            placeholder="&#8212;"
+            label=${translate('INTERVENTION_RESULTS.HQ_CONTRIBUTION')}
+            .value="${this.data.planned_budget.total_hq_cash_local}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_budget)}"
+            @value-changed="${({detail}: CustomEvent) => this.hqContribChanged(detail)}"
+          >
+          </etools-currency-amount-input>
         </div>
 
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}

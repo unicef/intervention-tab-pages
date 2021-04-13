@@ -1,7 +1,7 @@
 import {LitElement, customElement, html} from 'lit-element';
 import {fireEvent} from '../utils/fire-custom-event';
 import './attachments-list';
-
+import './prc-document/prc-document';
 /**
  * @customElement
  */
@@ -9,7 +9,9 @@ import './attachments-list';
 export class InterventionAttachments extends LitElement {
   render() {
     // language=HTML
-    return html`<attachments-list></attachments-list>`;
+    return html` <style></style>
+      <attachments-list></attachments-list>
+      <prc-document></prc-document>`;
   }
 
   connectedCallback() {

@@ -1,18 +1,19 @@
-import {Intervention, InterventionPermissionsFields} from '@unicef-polymer/etools-types';
-import {ModelsBase} from '../../common/models/models.base';
+import {createSelector} from 'reselect';
+import {FinancialComponentData, FinancialComponentPermissions} from './financialComponent.models';
+import {currentInterventionPermissions, currentIntervention} from '../../common/selectors';
+import {Permission} from '@unicef-polymer/etools-types';
+import {InterventionPermissionsFields, Intervention} from '@unicef-polymer/etools-types';
 
-export class FinancialComponentData extends ModelsBase {
-  constructor(intervention: Intervention) {
-    super();
-    this.setObjProperties(intervention);
-  }
-  cash_transfer_modalities: string[] = [];
-}
+export const selectFinancialComponent = createSelector(currentIntervention, (intervention: Intervention) => {
+  return new FinancialComponentData(intervention);
+});
 
-export class FinancialComponentPermissions extends ModelsBase {
-  constructor(permissions: InterventionPermissionsFields) {
-    super();
-    this.setObjProperties(permissions);
+export const selectFinancialComponentPermissions = createSelector(
+  currentInterventionPermissions,
+  (permissions: Permission<InterventionPermissionsFields>) => {
+    return {
+      edit: new FinancialComponentPermissions(permissions!.edit),
+      required: new FinancialComponentPermissions(permissions!.required)
+    };
   }
-  cash_transfer_modalities = true;
-}
+);

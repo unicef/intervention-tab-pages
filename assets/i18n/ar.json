@@ -113,7 +113,6 @@
       "SUBMITTED_PRC": "Submitted to PRC?",
       "SUBMISSION_DATE_PRC": "Submission Date to PRC",
       "REVIEW_DATE_PRC": "Review Date by PRC",
-      "PRC_REVIEW_DOC": "PRC Review Document",
       "SIGNED_PARTNER_AUTH_OFFICER": "Signed by Partner Authorized Officer",
       "PARTNER_AUTH_OFFICER_ERR": "Please select Partner Authorized Officer",
       "SIGNED_PARTNER_DATE": "Signed by Partner Date",
@@ -154,6 +153,8 @@
       "CASH_TRANSFER_MOD": "Cash Transfer Modality(ies)",
       "DOCUMENT_CURRENCY": "Document Currency",
       "DOC_TYPE": "Document Type",
+      "SPD_HUMANITARIAN": "This SPD is Humanitarian",
+      "CONTINGENCY_DOC": "This is Contingency Document",
       "PARTNER_FOCAL_POINTS_TOOLTIP": "The users selected here will be granted edit access to this PD once it is sent to the partner"
     },
     "FUND_RESERVATIONS": {
@@ -474,6 +475,7 @@
       "SHOW_INVALID": "Show invalid",
       "CONFIRM_BTN_TEXT": "Yes",
       "DELETE_ATTACHMENTS_PROMPT": "Are you sure you want to delete this attachment?",
+      "PRC_REVIEW_DOC": "PRC Review Document",
       "INT_ATT_DIALOG": {
         "ATTACHMENT": "Attachment",
         "SELECT_DOC_TYPE": "Select Document Type"

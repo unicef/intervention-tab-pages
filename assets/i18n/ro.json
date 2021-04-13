@@ -113,7 +113,6 @@
       "SUBMITTED_PRC": "Depus la PRC?",
       "SUBMISSION_DATE_PRC": "Data Depunere la PRC",
       "REVIEW_DATE_PRC": "Data Revizuire de PRC",
-      "PRC_REVIEW_DOC": "Document Revizuire PRC",
       "SIGNED_PARTNER_AUTH_OFFICER": "Semnat de Ofiterul Autorizat al Partenerului",
       "PARTNER_AUTH_OFFICER_ERR": "Selectati Ofiterul Autorizat al Partenerului",
       "SIGNED_PARTNER_DATE": "Data Semnat de Partener",
@@ -153,6 +152,8 @@
       "FINANCIAL": "Financiar",
       "DOCUMENT_CURRENCY": "Valuta Document",
       "DOC_TYPE": "Tip Doc",
+      "SPD_HUMANITARIAN": "Acest SPD este Umanitar",
+      "CONTINGENCY_DOC": "Acesta este Document de Contingenta",
       "PARTNER_FOCAL_POINTS_TOOLTIP": "Utilizatorilor selectati aici li se va acorda acces de editare la acest PD odata ce este trimis partenerului",
     },
     "FUND_RESERVATIONS": {
@@ -473,6 +474,7 @@
       "SHOW_INVALID": "Arata invalid",
       "CONFIRM_BTN_TEXT": "Da",
       "DELETE_ATTACHMENTS_PROMPT": "Sunteti sigur ca doriti sa stergeti acest atasament?",
+      "PRC_REVIEW_DOC": "Document Revizuire PRC",
       "INT_ATT_DIALOG": {
         "ATTACHMENT": "Atasament",
         "SELECT_DOC_TYPE": "Selectati Tipul de Document"

@@ -1,5 +1,6 @@
 import {customElement, html, LitElement, property} from 'lit-element';
 import '@polymer/paper-button/paper-button';
+import '@polymer/paper-toggle-button/paper-toggle-button';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@unicef-polymer/etools-loading/etools-loading';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
@@ -31,7 +32,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   }
 
   render() {
-    if (!this.data) {
+    if (!this.data || !this.permissions) {
       return html`<style>
           ${sharedStyles}
         </style>
@@ -48,16 +49,81 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
         etools-content-panel::part(ecp-content) {
           padding: 8px 24px 16px 24px;
         }
+
+        .row {
+          position: relative;
+          display: flex;
+          padding: 3px 0;
+        }
+
+        .row > * {
+          padding-left: 40px;
+          box-sizing: border-box;
+        }
+
+        paper-toggle-button {
+          margin: 25px 0;
+        }
       </style>
 
       <etools-content-panel
         show-expand-btn
         panel-title=${translate('INTERVENTION_METADATA.OTHER')}
-        comment-element="metadata-other"
-        comment-description="Other"
+        comment-element="other-metadata"
+        comment-description=${translate('INTERVENTION_METADATA.OTHER')}
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
+        <div class="layout-horizontal row-padding-v">
+          <!--   Document Type   -->
+          <div class="col col-4">
+            <etools-dropdown
+              id="documentType"
+              label=${translate('INTERVENTION_METADATA.FINANCIAL_COMPONENT.DOC_TYPE')}
+              placeholder="&#8212;"
+              ?readonly="${!this.documentTypes.length ||
+              this.isReadonly(this.editMode, this.permissions.edit.document_type)}"
+              required
+              .options="${this.documentTypes}"
+              .selected="${this.data.document_type}"
+              @etools-selected-item-changed="${({detail}: CustomEvent) =>
+                this.documentTypeChanged(detail.selectedItem && detail.selectedItem.value)}"
+              trigger-value-change-event
+              hide-search
+              @focus="${() => resetRequiredFields(this)}"
+              @click="${() => resetRequiredFields(this)}"
+            >
+            </etools-dropdown>
+          </div>
+          <div class="col-8">
+            <div class="row">
+              <!--   SPD is Humanitarian   -->
+              <div ?hidden="${!this.isSPD}">
+                <paper-toggle-button
+                  ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.humanitarian_flag)}"
+                  ?checked="${this.data.humanitarian_flag}"
+                  @checked-changed="${({detail}: CustomEvent) => {
+                    this.data.contingency_pd = false;
+                    this.valueChanged(detail, 'humanitarian_flag');
+                  }}"
+                >
+                  ${translate('INTERVENTION_METADATA.FINANCIAL_COMPONENT.SPD_HUMANITARIAN')}
+                </paper-toggle-button>
+              </div>
+
+              <!--   Contingency Document   -->
+              <div ?hidden="${!this.data.humanitarian_flag}">
+                <paper-toggle-button
+                  ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.contingency_pd)}"
+                  ?checked="${this.data.contingency_pd}"
+                  @checked-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'contingency_pd')}"
+                >
+                  ${translate('INTERVENTION_METADATA.FINANCIAL_COMPONENT.CONTINGENCY_DOC')}
+                </paper-toggle-button>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="layout-horizontal row-padding-v">
           <div class="col col-4">
             <etools-dropdown
@@ -77,26 +143,6 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
                 this.requestUpdate();
               }}"
               trigger-value-change-event
-            >
-            </etools-dropdown>
-          </div>
-          <!--   Document Type   -->
-          <div class="col col-4">
-            <etools-dropdown
-              id="documentType"
-              label=${translate('INTERVENTION_METADATA.FINANCIAL_COMPONENT.DOC_TYPE')}
-              placeholder="&#8212;"
-              ?readonly="${!this.documentTypes.length ||
-              this.isReadonly(this.editMode, this.permissions.edit.document_type)}"
-              required
-              .options="${this.documentTypes}"
-              .selected="${this.data.document_type}"
-              @etools-selected-item-changed="${({detail}: CustomEvent) =>
-                this.documentTypeChanged(detail.selectedItem && detail.selectedItem.value)}"
-              trigger-value-change-event
-              hide-search
-              @focus="${() => resetRequiredFields(this)}"
-              @click="${() => resetRequiredFields(this)}"
             >
             </etools-dropdown>
           </div>
@@ -124,6 +170,10 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
 
   @property({type: Array})
   currencies!: LabelAndValue[];
+
+  get isSPD(): boolean {
+    return this.data.document_type === CONSTANTS.DOCUMENT_TYPES.SPD;
+  }
 
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata')) {
@@ -174,6 +224,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
    * Backend errors out otherwise
    */
   cleanUp(data: OtherData) {
+    debugger;
     if (!data || !data.planned_budget) {
       return data;
     }

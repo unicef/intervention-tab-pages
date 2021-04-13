@@ -39,9 +39,11 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
   protected render(): TemplateResult {
     return html`
       <style>
-        ${sharedStyles}
+        ${sharedStyles} ${AttachmentsListStyles} :host {
+          display: block;
+          margin-bottom: 24px;
+        }
       </style>
-      ${AttachmentsListStyles}
 
       <etools-content-panel
         class="content-section"

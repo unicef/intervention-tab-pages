@@ -55,8 +55,8 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
       <etools-content-panel
         show-expand-btn
         panel-title=${translate('INTERVENTION_RESULTS.PARTNER_NON_FINANCIAL_CONTRIBUTION')}
-        comment-element="document-details"
-        comment-description="Document Details"
+        comment-element="non-financial-contribution"
+        comment-description=${translate('INTERVENTION_RESULTS.PARTNER_NON_FINANCIAL_CONTRIBUTION')}
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
