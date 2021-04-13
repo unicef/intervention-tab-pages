@@ -65,6 +65,7 @@ export class EtoolsTabs extends LitElement {
           --paper-tabs-container: {
             overflow: visible;
             max-width: 100% !important;
+            z-index: 999;
           }
         }
 
@@ -74,7 +75,7 @@ export class EtoolsTabs extends LitElement {
 
         paper-tab[is-subtabs-parent][disabled] {
           cursor: pointer !important;
-          --paper-tab-content-unselected:{
+          --paper-tab-content-unselected: {
             opacity: 1;
           }
         }
