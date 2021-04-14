@@ -302,7 +302,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
       this.intervention.planned_budget!.unicef_cash_local!,
       this.frsDetails.total_frs_amt,
       this.intervention,
-      'interventionDetails',
+      'interventionMetadata',
       true
     );
     this._frsTotalAmountWarning = String(warn);
