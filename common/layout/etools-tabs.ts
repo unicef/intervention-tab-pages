@@ -128,7 +128,7 @@ export class EtoolsTabs extends LitElement {
               ${item.tab}
               <iron-icon icon="arrow-drop-down"></iron-icon>
             </paper-button>
-            <paper-listbox slot="dropdown-content"  attr-for-selected="subtab">
+            <paper-listbox slot="dropdown-content"  attr-for-selected="subtab" selected="${this.activeSubTab}">
             ${item.subtabs.map((subitem: any) => html`
                <paper-icon-item name="${item.tab}" subtab="${subitem.value}" selected="${this.isSelectedSubtab(subitem.value)}">
                   <iron-icon icon="check" slot="item-icon" ?hidden="${!this.isSelectedSubtab(subitem.value)}">
