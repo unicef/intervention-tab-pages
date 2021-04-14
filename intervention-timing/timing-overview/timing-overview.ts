@@ -87,6 +87,20 @@ export class TimingOverview extends CommentsMixin(LitElement) {
           <label class="paper-label">${translate('INTERVENTION_TIMING.TIMING_OVERVIEW.DATE_LAST_AMENDED')}</label>
           <div class="input-label" empty></div>
         </div>
+
+        <div class="data-column">
+          <label class="paper-label">${translate('INTERVENTION_TIMING.TIMING_OVERVIEW.DAYS_SUBMISSION_SIGNED')}</label>
+          <div class="input-label" ?empty="${!this.timingOverview.days_from_submission_to_signed}">
+            ${this.timingOverview.days_from_submission_to_signed}
+          </div>
+        </div>
+
+        <div class="data-column">
+          <label class="paper-label">${translate('INTERVENTION_TIMING.TIMING_OVERVIEW.DAYS_REVIEW_SIGNED')}</label>
+          <div class="input-label" ?empty="${!this.timingOverview.days_from_review_to_signed}">
+            ${this.timingOverview.days_from_review_to_signed}
+          </div>
+        </div>
       </section>
     `;
   }

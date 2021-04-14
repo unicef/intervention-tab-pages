@@ -135,12 +135,11 @@ export class InterventionTabs extends connectStore(LitElement) {
         ${this.intervention.cancel_justification
           ? html`<cancel-justification .justification=${this.intervention.cancel_justification}></cancel-justification>`
           : ''}
-        <intervention-details ?hidden="${!this.isActiveTab(this.activeTab, 'details')}"> </intervention-details>
+        <intervention-metadata ?hidden="${!this.isActiveTab(this.activeTab, 'metadata')}"> </intervention-metadata>
+        <intervention-strategy ?hidden="${!this.isActiveTab(this.activeTab, 'strategy')}"></intervention-strategy>
         <intervention-overview ?hidden="${!this.isActiveTab(this.activeTab, 'overview')}"></intervention-overview>
         <intervention-results ?hidden="${!this.isActiveTab(this.activeTab, 'results')}"> </intervention-results>
         <intervention-timing ?hidden="${!this.isActiveTab(this.activeTab, 'timing')}"> </intervention-timing>
-        <intervention-management ?hidden="${!this.isActiveTab(this.activeTab, 'management')}">
-        </intervention-management>
         <intervention-review ?hidden="${!this.isActiveTab(this.activeTab, 'review')}"></intervention-review>
         <intervention-attachments ?hidden="${!this.isActiveTab(this.activeTab, 'attachments')}">
         </intervention-attachments>
@@ -159,8 +158,13 @@ export class InterventionTabs extends connectStore(LitElement) {
       hidden: false
     },
     {
-      tab: 'details',
-      tabLabel: (translate('INTERVENTION_TABS.DETAILS_TAB') as unknown) as string,
+      tab: 'metadata',
+      tabLabel: (translate('INTERVENTION_TABS.METADATA_TAB') as unknown) as string,
+      hidden: false
+    },
+    {
+      tab: 'strategy',
+      tabLabel: (translate('INTERVENTION_TABS.STRATEGY_TAB') as unknown) as string,
       hidden: false
     },
     {
@@ -171,11 +175,6 @@ export class InterventionTabs extends connectStore(LitElement) {
     {
       tab: 'timing',
       tabLabel: (translate('INTERVENTION_TABS.TIMING_TAB') as unknown) as string,
-      hidden: false
-    },
-    {
-      tab: 'management',
-      tabLabel: (translate('INTERVENTION_TABS.MANAGEMENT_TAB') as unknown) as string,
       hidden: false
     },
     {
@@ -199,7 +198,7 @@ export class InterventionTabs extends connectStore(LitElement) {
   ];
 
   @property({type: String})
-  activeTab = 'details';
+  activeTab = 'metadata';
 
   @property({type: String})
   activeSubTab = '';
