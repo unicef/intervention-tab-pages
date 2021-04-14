@@ -30,14 +30,6 @@ export class InterventionInfo extends LitElement {
         
       </style>
       <div class="elevation" elevation="1" id="container" style="position: static">
-       <div class="border-b">
-        <etools-tabs-lit
-            .tabs="${this.tabs}"
-            .activeTab="${this.activeSubTab}"
-            @iron-select="${this._handleTabSelectAction}"
-          ></etools-tabs-lit>
-        </div>
-
         <intervention-summary ?hidden="${this.activeSubTab !== 'summary'}"></intervention-summary>
         <intervention-implementation-status ?hidden="${this.activeSubTab !== 'implementation-status'}"></intervention-implementation-status>
         <intervention-monitoring-activities ?hidden="${this.activeSubTab !== 'monitoring-activities'}"></intervention-monitoring-activities>
@@ -50,35 +42,6 @@ export class InterventionInfo extends LitElement {
 
   @property({type: String})
   activeSubTab = 'summary';
-
-  @property({type: Array})
-  tabs = [
-    {
-      tab: 'summary',
-      tabLabel: 'Summary',
-      hidden: false
-    },
-    {
-      tab: 'implementation-status',
-      tabLabel: 'Implementation Status',
-      hidden: false
-    },
-    {
-      tab: 'monitoring-activities',
-      tabLabel: 'Monitoring Activities',
-      hidden: false
-    },
-    {
-      tab: 'progress',
-      tabLabel: 'Results Reported',
-      hidden: false
-    },
-    {
-      tab: 'reports',
-      tabLabel: 'Reports',
-      hidden: false
-    }
-  ]
   
   connectedCallback() {
     super.connectedCallback();
@@ -87,17 +50,5 @@ export class InterventionInfo extends LitElement {
       active: false,
       loadingSource: 'interv-page'
     });
-  }
-
-  getTabHtml(item: any) {
-    return html`
-      <paper-tab name="${item.tab}" link ?hidden="${item.hidden}" ?disabled="${item.disabled}">
-        <span class="tab-content"> ${item.tabLabel} ${item.showTabCounter ? html`(${item.counter})` : ''} </span>
-      </paper-tab>
-    `;
-  }
-
-  _handleTabSelectAction(e: CustomEvent) {
-    this.activeSubTab = e.detail.item.getAttribute('name');
-  }
+  } 
 }

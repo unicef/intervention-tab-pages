@@ -23,16 +23,16 @@ export class InterventionImplementationStatus extends connectStore(LitElement) {
       <style>
         ${sharedStyles}
       </style>
-      <!-- <etools-content-panel
+      <etools-content-panel
         id="fund-reservation-display"
         class="content-section"
         panel-title=${translate('INTERVENTION_OVERVIEW.IMPLEMENTATION_STATUS')}
-      > -->
+      >
         <fund-reservations-display
           .intervention="${this.intervention}"
           .frsDetails="${this.intervention?.frs_details}"
         ></fund-reservations-display>
-      <!-- </etools-content-panel> -->
+      </etools-content-panel>
     `;
   }
   @property({type: Object})

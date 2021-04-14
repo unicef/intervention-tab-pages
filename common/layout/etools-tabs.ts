@@ -5,7 +5,6 @@ import {AnyObject} from '@unicef-polymer/etools-types';
 import '@polymer/paper-menu-button/paper-menu-button.js';
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-icon/iron-icon';
-import { fireEvent } from '../../utils/fire-custom-event';
 
 /**
  * @LitElement

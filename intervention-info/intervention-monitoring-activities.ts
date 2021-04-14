@@ -23,18 +23,18 @@ export class InterventionMonitoringActivities extends connectStore(LitElement) {
       <style>
         ${sharedStyles}
       </style>
-      <!-- <etools-content-panel
+      <etools-content-panel
           id="monitoring-visits-panel"
           class="content-section"
           panel-title=${translate('INTERVENTION_OVERVIEW.MONITORING_ACTIVITIES')}
-        > -->
+        >
           <monitoring-visits-list
             .interventionId="${this.intervention.id}"
             .partnerId="${this.intervention.partner_id}"
             showTpmVisits
           >
           </monitoring-visits-list>
-      <!-- </etools-content-panel> -->
+      </etools-content-panel>
     `;
   }
   @property({type: Object})

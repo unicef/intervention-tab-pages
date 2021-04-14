@@ -70,9 +70,7 @@ export class InterventionSummary extends connectStore(LitElement) {
         font-weight: bold;
         color: var(--light-primary-text-color, #ffffff);
       }
-      #top-container {
-        margin-bottom: 24px;
-      }
+     
       etools-content-panel {
         margin-bottom: 24px;
       }
@@ -85,7 +83,10 @@ export class InterventionSummary extends connectStore(LitElement) {
       }
     </style>
 
-    <div class="page-content elevation" elevation="1" id="top-container">
+      <etools-content-panel       
+        class="content-section"
+        panel-title="Summary"
+      >
       ${this.isUnicefUser
         ? html` <div class="row-h flex-c">
             <div class="col col-12 block">
@@ -229,6 +230,8 @@ export class InterventionSummary extends connectStore(LitElement) {
         </div>
       </div>
     </div>
+    <div style="height: 26px;"></div>
+    </etools-content-panel>
     `;
     }
     @property({type: Object})
