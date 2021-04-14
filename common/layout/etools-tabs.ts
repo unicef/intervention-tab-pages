@@ -123,7 +123,7 @@ export class EtoolsTabs extends LitElement {
     return html`
       <paper-tab style="overflow: visible !important;" name="${item.tab}" is-subtabs-parent="true" link ?hidden="${item.hidden}" ?disabled="${item.disabled}">
           
-        <paper-menu-button id="subtabmenu" ignore-select horizontal-align="right" vertical-offset="45">
+        <paper-menu-button id="subtabmenu" horizontal-align="right" vertical-offset="45">
             <paper-button class="button" slot="dropdown-trigger">              
               ${item.tab}
               <iron-icon icon="arrow-drop-down"></iron-icon>
