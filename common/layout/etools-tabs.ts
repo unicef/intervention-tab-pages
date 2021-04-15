@@ -22,6 +22,10 @@ export class EtoolsTabs extends LitElement {
           display: none !important;
         }
 
+        paper-tab[disabled] {
+          opacity: 0.3;
+        }
+
         *[disabled] {
           cursor: not-allowed !important;
           pointer-events: auto !important;
@@ -66,11 +70,8 @@ export class EtoolsTabs extends LitElement {
           }
         }
 
-        paper-listbox {
-          z-index: 1000;
-        }
-
         paper-tab[is-subtabs-parent][disabled] {
+          opacity: 1 !important;
           cursor: pointer !important;
           --paper-tab-content-unselected: {
             opacity: 1;
