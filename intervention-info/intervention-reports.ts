@@ -25,7 +25,7 @@ import {connectStore} from '../common/mixins/connect-store-mixin';
 import {GenericObject, User} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {currentIntervention} from '../common/selectors';
-import { sharedStyles } from '../common/styles/shared-styles-lit';
+import {sharedStyles} from '../common/styles/shared-styles-lit';
 
 /**
  * @polymer
@@ -46,8 +46,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
   render() {
     return html`
       <style>
-      ${sharedStyles}
-        ${dataTableStylesLit}:host {
+        ${sharedStyles} ${dataTableStylesLit}:host {
           @apply --layout-flex;
           width: 100%;
 
@@ -57,7 +56,8 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
           }
         }
 
-        .pd-ref,.view-report {
+        .pd-ref,
+        .view-report {
           @apply --text-btn-style;
         }
 
@@ -84,9 +84,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
         query="(max-width: 767px)"
         @query-matches-changed="${this.resolutionChanged}"
       ></iron-media-query>
-      <etools-content-panel       
-        panel-title="Reports"
-      >
+      <etools-content-panel panel-title="Reports">
         ${!this.reports.length
           ? html` <div class="row-h">
               <p>${translate('INTERVENTION_REPORTS.NO_REPORTS_YET')}</p>

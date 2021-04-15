@@ -30,7 +30,7 @@ export class InterventionSummary extends connectStore(LitElement) {
         </style>
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
-        // language=HTML
+    // language=HTML
     return html`
     <style>
       ${sharedStyles} :host {
@@ -87,21 +87,23 @@ export class InterventionSummary extends connectStore(LitElement) {
         class="content-section"
         panel-title="Summary"
       >
-      ${this.isUnicefUser
-        ? html` <div class="row-h flex-c">
-            <div class="col col-12 block">
-              <iron-label for="cp_outputs_list" class="label-secondary-color"
-                >${translate('INTERVENTION_OVERVIEW.CP_OUTPUTS')}</iron-label
-              >
-              <br />
-              <div class="content" id="cp_outputs_list">
-                ${this.interventionCpOutputs.length
-                  ? this.interventionCpOutputs.map((cpOut: string) => html`<strong>${cpOut}</strong><br />`)
-                  : html`&#8212;`}
+      ${
+        this.isUnicefUser
+          ? html` <div class="row-h flex-c">
+              <div class="col col-12 block">
+                <iron-label for="cp_outputs_list" class="label-secondary-color"
+                  >${translate('INTERVENTION_OVERVIEW.CP_OUTPUTS')}</iron-label
+                >
+                <br />
+                <div class="content" id="cp_outputs_list">
+                  ${this.interventionCpOutputs.length
+                    ? this.interventionCpOutputs.map((cpOut: string) => html`<strong>${cpOut}</strong><br />`)
+                    : html`&#8212;`}
+                </div>
               </div>
-            </div>
-          </div>`
-        : ``}
+            </div>`
+          : ``
+      }
 
       <div class="row-h flex-c">
         <div class="col col-12 block">
@@ -114,11 +116,13 @@ export class InterventionSummary extends connectStore(LitElement) {
             Under
             <strong>${this.interventionAgreement.agreement_type}</strong>
             with
-            ${this.isUnicefUser
-              ? html` <a target="_blank" href="/pmp/partners/${this.intervention.partner_id}/details">
-                  <strong class="blue">${this.intervention.partner}</strong>
-                </a>`
-              : html`<strong class="blue">${this.intervention.partner}</strong>`}
+            ${
+              this.isUnicefUser
+                ? html` <a target="_blank" href="/pmp/partners/${this.intervention.partner_id}/details">
+                    <strong class="blue">${this.intervention.partner}</strong>
+                  </a>`
+                : html`<strong class="blue">${this.intervention.partner}</strong>`
+            }
           </div>
         </div>
       </div>
@@ -233,180 +237,180 @@ export class InterventionSummary extends connectStore(LitElement) {
     <div style="height: 26px;"></div>
     </etools-content-panel>
     `;
+  }
+  @property({type: Object})
+  intervention!: Intervention;
+
+  @property({type: Object})
+  interventionAgreement!: MinimalAgreement;
+
+  @property({type: Array})
+  monitoringVisit!: [];
+
+  @property({type: Array})
+  cpOutputs!: CpOutput[];
+
+  @property({type: Array})
+  interventionCpOutputs!: string[];
+
+  @property({type: Array})
+  sections!: AnyObject[];
+
+  @property({type: String})
+  inteventionSections = '';
+
+  @property({type: Array})
+  resultLinks!: ExpectedResult[];
+
+  @property({type: Array})
+  interventionPartner!: AnyObject;
+
+  @property({type: Boolean})
+  isUnicefUser = false;
+
+  stateChanged(state: RootState) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'info')) {
+      return;
     }
-    @property({type: Object})
-    intervention!: Intervention;
-  
-    @property({type: Object})
-    interventionAgreement!: MinimalAgreement;
-  
-    @property({type: Array})
-    monitoringVisit!: [];
-  
-    @property({type: Array})
-    cpOutputs!: CpOutput[];
-  
-    @property({type: Array})
-    interventionCpOutputs!: string[];
-  
-    @property({type: Array})
-    sections!: AnyObject[];
-  
-    @property({type: String})
-    inteventionSections = '';
-  
-    @property({type: Array})
-    resultLinks!: ExpectedResult[];
-  
-    @property({type: Array})
-    interventionPartner!: AnyObject;
-  
-    @property({type: Boolean})
-    isUnicefUser = false;
-  
-    stateChanged(state: RootState) {
-      if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'info')) {
-        return;
-      }
-  
-      if (get(state, 'interventions.current')) {
-        const currentIntervention = get(state, 'interventions.current');
-        this.intervention = cloneDeep(currentIntervention);
-        this.resultLinks = this.intervention.result_links;
-      }
-  
-      if (this.intervention && get(state, 'agreements.list')) {
-        const agreements: MinimalAgreement[] = get(state, 'agreements.list');
-        this.interventionAgreement =
-          agreements.find((item: MinimalAgreement) => item.id === this.intervention.agreement) ||
-          ({} as MinimalAgreement);
-      }
-      if (!isJsonStrMatch(this.sections, state.commonData!.sections)) {
-        this.sections = [...state.commonData!.sections];
-      }
-      if (this.intervention) {
-        const partners = get(state, 'commonData.partners') || get(state, 'partners.list') || [];
-        const interventionPartner = partners.find((partner: StaticPartner) => partner.name === this.intervention.partner);
-        this.interventionPartner = interventionPartner || {};
-      }
-      if (this.sections && this.intervention) {
-        this._parseSections(this.sections.length, this.intervention.sections.length);
-      }
-      if (state.user && state.user.data) {
-        this.isUnicefUser = state.user.data.is_unicef_user;
-      }
-      if (this.isUnicefUser) {
-        if (!isJsonStrMatch(this.cpOutputs, state.commonData!.cpOutputs)) {
-          this.cpOutputs = [...state.commonData!.cpOutputs];
-        }
-        if (this.cpOutputs && this.resultLinks) {
-          this._parseCpOutputs(this.cpOutputs.length, this.resultLinks.length);
-        }
-      }
+
+    if (get(state, 'interventions.current')) {
+      const currentIntervention = get(state, 'interventions.current');
+      this.intervention = cloneDeep(currentIntervention);
+      this.resultLinks = this.intervention.result_links;
     }
-  
-    connectedCallback() {
-      super.connectedCallback();
-      // Disable loading message for tab load, triggered by parent element on stamp or by tap event on tabs
-      fireEvent(this, 'global-loading', {
-        active: false,
-        loadingSource: 'interv-page'
-      });
+
+    if (this.intervention && get(state, 'agreements.list')) {
+      const agreements: MinimalAgreement[] = get(state, 'agreements.list');
+      this.interventionAgreement =
+        agreements.find((item: MinimalAgreement) => item.id === this.intervention.agreement) ||
+        ({} as MinimalAgreement);
     }
-  
-    getUnicefEEContribOutOfTotaUnicefContrib() {
-      const totalEEUnicefContrib = this.getUnicefEEContrib(this.intervention.management_budgets);
-      const rawPercentage = (totalEEUnicefContrib * 100) / (this.getTotalUnicefContrib() || 1);
-  
-      return this.formatPercentage(rawPercentage) + '%';
+    if (!isJsonStrMatch(this.sections, state.commonData!.sections)) {
+      this.sections = [...state.commonData!.sections];
     }
-  
-    formatPercentage(rawPercentage: number) {
-      let percentage = '0';
-      if (rawPercentage === 0) {
-        return percentage;
-      }
-      if (rawPercentage < 0.01) {
-        percentage = rawPercentage.toFixed(4); // Taking into consideration values like 0.0018
-      } else {
-        percentage = rawPercentage.toFixed(2);
-      }
-      if (decimalFractionEquals0(percentage)) {
-        percentage = percentage.substring(0, percentage.lastIndexOf('.')); // Removing `.00` form value like `100.00%`
-      }
-      return percentage;
+    if (this.intervention) {
+      const partners = get(state, 'commonData.partners') || get(state, 'partners.list') || [];
+      const interventionPartner = partners.find((partner: StaticPartner) => partner.name === this.intervention.partner);
+      this.interventionPartner = interventionPartner || {};
     }
-  
-    private getTotalUnicefContrib() {
-      return Number(
-        this.intervention.planned_budget ? this.intervention.planned_budget.total_unicef_contribution_local || 0 : 0
-      );
+    if (this.sections && this.intervention) {
+      this._parseSections(this.sections.length, this.intervention.sections.length);
     }
-  
-    private getUnicefEEContrib(management_budgets?: ManagementBudget) {
-      if (!management_budgets) {
-        return 0;
-      }
-      return (
-        Number(management_budgets.act1_unicef) +
-        Number(management_budgets.act2_unicef) +
-        Number(management_budgets.act3_unicef)
-      );
+    if (state.user && state.user.data) {
+      this.isUnicefUser = state.user.data.is_unicef_user;
     }
-  
-    _parseCpOutputs(cpOutputsLength: number, resultsLength: number) {
-      if (!cpOutputsLength || !resultsLength) {
-        this.interventionCpOutputs = [];
-        return;
+    if (this.isUnicefUser) {
+      if (!isJsonStrMatch(this.cpOutputs, state.commonData!.cpOutputs)) {
+        this.cpOutputs = [...state.commonData!.cpOutputs];
       }
-  
-      let interventionCpOutputs: string[] = [];
-      const uniqueIds = [...new Set(this.resultLinks.map((item) => item.cp_output))];
-      if (Array.isArray(this.cpOutputs) && this.cpOutputs.length > 0) {
-        interventionCpOutputs = this.cpOutputs.filter((cpo) => uniqueIds.includes(cpo.id)).map((cpo) => cpo.name);
+      if (this.cpOutputs && this.resultLinks) {
+        this._parseCpOutputs(this.cpOutputs.length, this.resultLinks.length);
       }
-      this.interventionCpOutputs = interventionCpOutputs;
-    }
-  
-    _parseSections(sectionsLength: number, intSectionsLength: number) {
-      if (!sectionsLength || !intSectionsLength) {
-        this.inteventionSections = '—';
-        return;
-      }
-  
-      this.inteventionSections = this._getIntervSectionNames();
-    }
-  
-    _getIntervSectionNames() {
-      const interventionSections = this.intervention.sections.map((sectionId: string) => parseInt(sectionId, 10));
-      const sectionNames: string[] = [];
-  
-      this.sections.forEach(function (section: AnyObject) {
-        if (interventionSections.indexOf(parseInt(section.id, 10)) > -1) {
-          sectionNames.push(section.name);
-        }
-      });
-  
-      return sectionNames.join(', ');
-    }
-  
-    getPartnerPseaRiskRatingHtml() {
-      if (!this.isUnicefUser || !this.interventionPartner?.sea_risk_rating_name) {
-        return html`${this.interventionPartner?.sea_risk_rating_name || 'N\\A'}`;
-      }
-      // eslint-disable-next-line lit/no-invalid-html
-      return html`<a target="_blank" href="/psea/assessments/list?partner=${this.intervention.partner_id}">
-        <strong class="blue">${this.interventionPartner.sea_risk_rating_name}</strong></a
-      >`;
-    }
-  
-    getPartnerHactRiskRatingHtml() {
-      if (!this.isUnicefUser || !this.interventionPartner?.rating) {
-        return html`${this.interventionPartner?.rating || 'N\\A'}`;
-      }
-      // eslint-disable-next-line lit/no-invalid-html
-      return html`<a target="_blank" href="/ap/engagements/list?partner__in=${this.intervention.partner_id}">
-        <strong class="blue">${this.interventionPartner.rating}</strong></a
-      >`;
     }
   }
+
+  connectedCallback() {
+    super.connectedCallback();
+    // Disable loading message for tab load, triggered by parent element on stamp or by tap event on tabs
+    fireEvent(this, 'global-loading', {
+      active: false,
+      loadingSource: 'interv-page'
+    });
+  }
+
+  getUnicefEEContribOutOfTotaUnicefContrib() {
+    const totalEEUnicefContrib = this.getUnicefEEContrib(this.intervention.management_budgets);
+    const rawPercentage = (totalEEUnicefContrib * 100) / (this.getTotalUnicefContrib() || 1);
+
+    return this.formatPercentage(rawPercentage) + '%';
+  }
+
+  formatPercentage(rawPercentage: number) {
+    let percentage = '0';
+    if (rawPercentage === 0) {
+      return percentage;
+    }
+    if (rawPercentage < 0.01) {
+      percentage = rawPercentage.toFixed(4); // Taking into consideration values like 0.0018
+    } else {
+      percentage = rawPercentage.toFixed(2);
+    }
+    if (decimalFractionEquals0(percentage)) {
+      percentage = percentage.substring(0, percentage.lastIndexOf('.')); // Removing `.00` form value like `100.00%`
+    }
+    return percentage;
+  }
+
+  private getTotalUnicefContrib() {
+    return Number(
+      this.intervention.planned_budget ? this.intervention.planned_budget.total_unicef_contribution_local || 0 : 0
+    );
+  }
+
+  private getUnicefEEContrib(management_budgets?: ManagementBudget) {
+    if (!management_budgets) {
+      return 0;
+    }
+    return (
+      Number(management_budgets.act1_unicef) +
+      Number(management_budgets.act2_unicef) +
+      Number(management_budgets.act3_unicef)
+    );
+  }
+
+  _parseCpOutputs(cpOutputsLength: number, resultsLength: number) {
+    if (!cpOutputsLength || !resultsLength) {
+      this.interventionCpOutputs = [];
+      return;
+    }
+
+    let interventionCpOutputs: string[] = [];
+    const uniqueIds = [...new Set(this.resultLinks.map((item) => item.cp_output))];
+    if (Array.isArray(this.cpOutputs) && this.cpOutputs.length > 0) {
+      interventionCpOutputs = this.cpOutputs.filter((cpo) => uniqueIds.includes(cpo.id)).map((cpo) => cpo.name);
+    }
+    this.interventionCpOutputs = interventionCpOutputs;
+  }
+
+  _parseSections(sectionsLength: number, intSectionsLength: number) {
+    if (!sectionsLength || !intSectionsLength) {
+      this.inteventionSections = '—';
+      return;
+    }
+
+    this.inteventionSections = this._getIntervSectionNames();
+  }
+
+  _getIntervSectionNames() {
+    const interventionSections = this.intervention.sections.map((sectionId: string) => parseInt(sectionId, 10));
+    const sectionNames: string[] = [];
+
+    this.sections.forEach(function (section: AnyObject) {
+      if (interventionSections.indexOf(parseInt(section.id, 10)) > -1) {
+        sectionNames.push(section.name);
+      }
+    });
+
+    return sectionNames.join(', ');
+  }
+
+  getPartnerPseaRiskRatingHtml() {
+    if (!this.isUnicefUser || !this.interventionPartner?.sea_risk_rating_name) {
+      return html`${this.interventionPartner?.sea_risk_rating_name || 'N\\A'}`;
+    }
+    // eslint-disable-next-line lit/no-invalid-html
+    return html`<a target="_blank" href="/psea/assessments/list?partner=${this.intervention.partner_id}">
+      <strong class="blue">${this.interventionPartner.sea_risk_rating_name}</strong></a
+    >`;
+  }
+
+  getPartnerHactRiskRatingHtml() {
+    if (!this.isUnicefUser || !this.interventionPartner?.rating) {
+      return html`${this.interventionPartner?.rating || 'N\\A'}`;
+    }
+    // eslint-disable-next-line lit/no-invalid-html
+    return html`<a target="_blank" href="/ap/engagements/list?partner__in=${this.intervention.partner_id}">
+      <strong class="blue">${this.interventionPartner.rating}</strong></a
+    >`;
+  }
+}

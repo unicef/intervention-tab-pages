@@ -1,17 +1,16 @@
-import { Intervention } from "@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes";
-import { customElement, html, LitElement, property } from "lit-element";
+import {Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
+import {customElement, html, LitElement, property} from 'lit-element';
 import '@unicef-polymer/etools-content-panel/etools-content-panel.js';
-import { translate } from "lit-translate";
-import get from "lodash-es/get";
-import { connectStore } from "../common/mixins/connect-store-mixin";
-import { gridLayoutStylesLit } from "../common/styles/grid-layout-styles-lit";
-import { RootState } from "../common/types/store.types";
-import { pageIsNotCurrentlyActive } from "../utils/common-methods";
-import { fireEvent } from "../utils/fire-custom-event";
-import { cloneDeep } from "../utils/utils";
+import {translate} from 'lit-translate';
+import get from 'lodash-es/get';
+import {connectStore} from '../common/mixins/connect-store-mixin';
+import {gridLayoutStylesLit} from '../common/styles/grid-layout-styles-lit';
+import {RootState} from '../common/types/store.types';
+import {pageIsNotCurrentlyActive} from '../utils/common-methods';
+import {fireEvent} from '../utils/fire-custom-event';
+import {cloneDeep} from '../utils/utils';
 import './fund-reservations-display.js';
-import { sharedStyles } from "../common/styles/shared-styles-lit";
-
+import {sharedStyles} from '../common/styles/shared-styles-lit';
 
 @customElement('intervention-implementation-status')
 export class InterventionImplementationStatus extends connectStore(LitElement) {
@@ -45,7 +44,7 @@ export class InterventionImplementationStatus extends connectStore(LitElement) {
 
     if (get(state, 'interventions.current')) {
       this.intervention = cloneDeep(get(state, 'interventions.current'));
-    }            
+    }
   }
 
   connectedCallback() {
@@ -57,5 +56,3 @@ export class InterventionImplementationStatus extends connectStore(LitElement) {
     });
   }
 }
-
-

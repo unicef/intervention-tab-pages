@@ -25,7 +25,7 @@ import {enableCommentMode, getComments} from './common/components/comments/comme
 import {commentsData} from './common/components/comments/comments.reducer';
 import {Store} from 'redux';
 import {connectStore} from './common/mixins/connect-store-mixin';
-import {Intervention} from '@unicef-polymer/etools-types';
+import {EnvFlags, Intervention} from '@unicef-polymer/etools-types';
 import {AsyncAction, RouteDetails} from '@unicef-polymer/etools-types';
 import {interventions} from './common/reducers/interventions';
 import {translate, get as getTranslation} from 'lit-translate';
@@ -137,26 +137,21 @@ export class InterventionTabs extends connectStore(LitElement) {
           : ''}
         <intervention-metadata ?hidden="${!this.isActiveTab(this.activeTab, 'metadata')}"> </intervention-metadata>
         <intervention-strategy ?hidden="${!this.isActiveTab(this.activeTab, 'strategy')}"></intervention-strategy>
-        <intervention-overview ?hidden="${!this.isActiveTab(this.activeTab, 'overview')}"></intervention-overview>
         <intervention-results ?hidden="${!this.isActiveTab(this.activeTab, 'results')}"> </intervention-results>
         <intervention-timing ?hidden="${!this.isActiveTab(this.activeTab, 'timing')}"> </intervention-timing>
         <intervention-review ?hidden="${!this.isActiveTab(this.activeTab, 'review')}"></intervention-review>
         <intervention-attachments ?hidden="${!this.isActiveTab(this.activeTab, 'attachments')}">
         </intervention-attachments>
-        <intervention-reports ?hidden="${!this.isActiveTab(this.activeTab, 'reports')}"></intervention-reports>
-        <intervention-progress ?hidden="${!this.isActiveTab(this.activeTab, 'progress')}"></intervention-progress>
-        <intervention-info .activeSubTab="${this.activeSubTab}" ?hidden="${!this.isActiveTab(this.activeTab, 'info')}"></intervention-info>
+        <intervention-info
+          .activeSubTab="${this.activeSubTab}"
+          ?hidden="${!this.isActiveTab(this.activeTab, 'info')}"
+        ></intervention-info>
       </div>
     `;
   }
 
   @property({type: Array})
   pageTabs = [
-    {
-      tab: 'overview',
-      tabLabel: (translate('INTERVENTION_TABS.OVERVIEW_TAB') as unknown) as string,
-      hidden: false
-    },
     {
       tab: 'metadata',
       tabLabel: (translate('INTERVENTION_TABS.METADATA_TAB') as unknown) as string,
@@ -187,13 +182,7 @@ export class InterventionTabs extends connectStore(LitElement) {
       tabLabel: (translate('INTERVENTION_TABS.INFO_TAB') as unknown) as string,
       hidden: false,
       disabled: true,
-      subtabs: [
-        {label: 'Summary', value: 'summary'},
-        {label: 'Implementation Status', value: 'implementation-status'},
-        {label: 'Monitoring Activities', value: 'monitoring-activities'},
-        {label: 'Results Reported', value: 'progress'},
-        {label: 'Reports', value: 'reports'},
-      ],
+      subtabs: [{label: 'Summary', value: 'summary'}]
     }
   ];
 
@@ -276,29 +265,36 @@ export class InterventionTabs extends connectStore(LitElement) {
       this.availableActions = selectAvailableActions(state);
       this.checkReviewTab(state);
       // Progress, Reports tabs are visible only for unicef users if flag prp_mode_off it's not ON
-      const envFlags = get(state, 'commonData.envFlags');
-      if (
-        get(state, 'user.data.is_unicef_user') &&
-        envFlags &&
-        !envFlags.prp_mode_off &&
-        !this.pageTabs.find((x) => x.tab === 'progress')
-      ) {
-        // this.pageTabs.push({
-        //   tab: 'progress',
-        //   tabLabel: (translate('INTERVENTION_TABS.PROGRESS_TAB') as unknown) as string,
-        //   hidden: false
-        // });
-        // this.pageTabs.push({
-        //   tab: 'reports',
-        //   tabLabel: (translate('INTERVENTION_TABS.REPORTS_TAB') as unknown) as string,
-        //   hidden: false
-        // });
+
+      if (get(state, 'user.data.is_unicef_user')) {
+        this.handleInfoSubtabsVisibility(get(state, 'commonData.envFlags'));
       }
     } else if (this._routeDetails) {
       this._routeDetails = null;
       fireEvent(this, 'scroll-up');
       this.intervention = null;
       getStore().dispatch(updateCurrentIntervention(null));
+    }
+  }
+
+  handleInfoSubtabsVisibility(envFlags: EnvFlags) {
+    if (!this.pageTabs.find((x) => x.tab === 'info')?.subtabs?.find((t) => t.value === 'implementation-status')) {
+      this.pageTabs
+        .find((t) => t.tab === 'info')
+        ?.subtabs?.push(
+          {label: 'Implementation Status', value: 'implementation-status'},
+          {label: 'Monitoring Activities', value: 'monitoring-activities'}
+        );
+    }
+
+    if (
+      envFlags &&
+      !envFlags.prp_mode_off &&
+      !this.pageTabs.find((x) => x.tab === 'info')?.subtabs?.find((t) => t.value === 'progress')
+    ) {
+      this.pageTabs
+        .find((t) => t.tab === 'info')
+        ?.subtabs?.push({label: 'Results Reported', value: 'progress'}, {label: 'Reports', value: 'reports'});
     }
   }
 
@@ -366,8 +362,7 @@ export class InterventionTabs extends connectStore(LitElement) {
     this.tabChanged(newTabName, this.activeTab, newSubTab, this.activeSubTab);
   }
 
-  tabChanged(newTabName: string, oldTabName: string | undefined,
-    newSubTab: string, oldSubTab: string) {
+  tabChanged(newTabName: string, oldTabName: string | undefined, newSubTab: string, oldSubTab: string) {
     if (oldTabName === undefined) {
       // page load, tab init, component is gonna be imported in loadPageComponents action
       return;
@@ -379,7 +374,7 @@ export class InterventionTabs extends connectStore(LitElement) {
         this._showInterventionPageLoadingMessage();
       }
 
-      let newPath = this._geNewUrlPath(newTabName, newSubTab);
+      const newPath = this._geNewUrlPath(newTabName, newSubTab);
 
       history.pushState(window.history.state, '', newPath);
       window.dispatchEvent(new CustomEvent('popstate'));
@@ -388,14 +383,13 @@ export class InterventionTabs extends connectStore(LitElement) {
 
   _geNewUrlPath(newTabName: string, newSubTab: string) {
     const stringParams: string = buildUrlQueryString(this._routeDetails!.queryParams || {});
-    let newPath =
-      `interventions/${this.intervention!.id}/${newTabName}`;
+    let newPath = `interventions/${this.intervention!.id}/${newTabName}`;
     if (newSubTab) {
       newPath += `/${newSubTab}`;
     } else {
       this.activeSubTab = '';
     }
-    newPath += (stringParams !== '' ? `?${stringParams}` : '');
+    newPath += stringParams !== '' ? `?${stringParams}` : '';
 
     return newPath;
   }

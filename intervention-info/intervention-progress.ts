@@ -73,7 +73,7 @@ export class InterventionProgress extends connectStore(
         :host {
           background-color: #eeeeee;
         }
-        
+
         ${sharedStyles}${dataTableStylesLit} #progress-summary etools-progress-bar {
           margin-top: 16px;
         }
