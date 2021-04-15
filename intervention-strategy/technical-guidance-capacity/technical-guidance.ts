@@ -27,7 +27,7 @@ export class TechnicalGuidance extends CommentsMixin(ComponentBaseMixin(LitEleme
   }
 
   render() {
-    if (!this.data) {
+    if (!this.data || !this.permissions) {
       return html`<style>
           ${sharedStyles}
         </style>
