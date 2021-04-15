@@ -15,38 +15,26 @@ import { connectStore } from '../common/mixins/connect-store-mixin.js';
 
 @customElement('intervention-info')
 export class InterventionInfo extends connectStore(LitElement) {
-  static get styles() {
-    return [elevationStyles];
-  }
   render() {
     return html`
       <style>
-        div[elevation] {
-          margin-bottom: 15px;
-          background-color: var(--primary-background-color);
-        }
-        .border-b {
-          border-bottom: 1px solid var(--dark-divider-color);
-        }
         *[hidden] {
           display: none;
         }
       </style>
-      <div class="elevation" elevation="1" id="container">
-        <intervention-summary ?hidden="${this.activeSubTab !== 'summary'}"></intervention-summary>
-        ${this.isUnicefUser
-          ? html`
-              <intervention-implementation-status
-                ?hidden="${this.activeSubTab !== 'implementation-status'}"
-              ></intervention-implementation-status>
-              <intervention-monitoring-activities
-                ?hidden="${this.activeSubTab !== 'monitoring-activities'}"
-              ></intervention-monitoring-activities>
-              <intervention-progress ?hidden="${this.activeSubTab !== 'progress'}"></intervention-progress>
-              <intervention-reports ?hidden="${this.activeSubTab !== 'reports'}"></intervention-reports>
-            `
-          : ''}
-      </div>
+      <intervention-summary ?hidden="${this.activeSubTab !== 'summary'}"></intervention-summary>
+      ${this.isUnicefUser
+        ? html`
+            <intervention-implementation-status
+              ?hidden="${this.activeSubTab !== 'implementation-status'}"
+            ></intervention-implementation-status>
+            <intervention-monitoring-activities
+              ?hidden="${this.activeSubTab !== 'monitoring-activities'}"
+            ></intervention-monitoring-activities>
+            <intervention-progress ?hidden="${this.activeSubTab !== 'progress'}"></intervention-progress>
+            <intervention-reports ?hidden="${this.activeSubTab !== 'reports'}"></intervention-reports>
+          `
+        : ''}
     `;
   }
 
