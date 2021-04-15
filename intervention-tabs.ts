@@ -182,7 +182,7 @@ export class InterventionTabs extends connectStore(LitElement) {
       tabLabel: (translate('INTERVENTION_TABS.INFO_TAB') as unknown) as string,
       hidden: false,
       disabled: true,
-      subtabs: [{label: 'Summary', value: 'summary'}]
+      subtabs: [{label: translate('INTERVENTION_TABS.SUMMARY_SUBTAB'), value: 'summary'}]
     }
   ];
 
