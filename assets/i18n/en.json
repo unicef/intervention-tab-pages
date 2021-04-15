@@ -40,7 +40,6 @@
     "REVIEW_TYPE": "Review type"
   },
   "INTERVENTION_TABS": {
-    "OVERVIEW_TAB": "Overview",
     "DETAILS_TAB": "Details",
     "METADATA_TAB": "Metadata",
     "STRATEGY_TAB": "Strategy",
@@ -50,7 +49,11 @@
     "ATTACHMENTS_TAB": "Attachments",
     "PROGRESS_TAB": "Progress",
     "INFO_TAB": "Info",
-    "REPORTS_TAB": "Reports",
+    "SUMMARY_SUBTAB": "Summary",
+    "IMPLEMENTATION_STATUS_SUBTAB": "Implementation Status",
+    "MONITORING_ACTIVITIES_SUBTAB": "Monitoring Activities",
+    "RESULTS_REPORTED_SUBTAB": "Results Reported",
+    "REPORTS_SUBTAB": "Reports",
     "DISAGGREGATIONS_TAB": "Disaggregations"
   },
   "ARE_YOU_SURE": {
@@ -71,9 +74,7 @@
     "TOTAL_UNICEF_CONTRIB": "Total UNICEF Contribution",
     "PARTNER_HACT_RR": "Partner HACT Risk Rating",
     "PARTNER_PSEA_RR": "Partner PSEA Risk Rating",
-    "IMPLEMENTATION_STATUS": "Implementation Status",
     "NO_FUND_RESERVATIONS": "There are no fund reservations added for this intervention.",
-    "MONITORING_ACTIVITIES": "Monitoring Activities",
     "NO_ACTIVITIES": "There are no activities."
   },
   "INTERVENTION_METADATA": {
@@ -499,7 +500,6 @@
     "FR_CURRENCY_NOT_MATCH": "FR currency does not match PD/SPD currency.",
     "NA_%": "N/A %",
     "OVERALL_PD_SPD_RATING": "Overall PD/SPD Rating by UNICEF",
-    "RESULTS_REPORTED": "Results reported",
     "NO_RESULTS": "There are no results to show.",
     "CP_OUTPUT": "CP Output:",
     "NO_PD_OUTPUTS": "There are no PD Outputs.",

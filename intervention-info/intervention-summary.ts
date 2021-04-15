@@ -85,7 +85,7 @@ export class InterventionSummary extends connectStore(LitElement) {
 
       <etools-content-panel       
         class="content-section"
-        panel-title="Summary"
+        panel-title="${translate('INTERVENTION_TABS.SUMMARY_SUBTAB')}"
       >
       ${
         this.isUnicefUser

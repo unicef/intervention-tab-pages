@@ -40,7 +40,6 @@
     "REVIEW_TYPE": "Tipul Evaluarii"
   },
   "INTERVENTION_TABS": {
-    "OVERVIEW_TAB": "General",
     "DETAILS_TAB": "Detalii",
     "METADATA_TAB": "Metadata",
     "STRATEGY_TAB": "Strategy",
@@ -50,7 +49,11 @@
     "ATTACHMENTS_TAB": "Atasamente",
     "PROGRESS_TAB": "Progres",
     "INFO_TAB": "Info",
-    "REPORTS_TAB": "Rapoarte",
+    "SUMMARY_SUBTAB": "Sumar",
+    "IMPLEMENTATION_STATUS_SUBTAB": "Status Implementare",
+    "MONITORING_ACTIVITIES_SUBTAB": "Activitati de Monitorizare",
+    "RESULTS_REPORTED_SUBTAB": "Rezultate Raportate",
+    "REPORTS_SUBTAB": "Rapoarte",
     "DISAGGREGATIONS_TAB": "Dezagregari"
   },
   "ARE_YOU_SURE": {
@@ -71,9 +74,7 @@
     "TOTAL_UNICEF_CONTRIB": "Total Contributie UNICEF",
     "PARTNER_HACT_RR": "Ratingul de risc HACT al Partenerului",
     "PARTNER_PSEA_RR": "Ratingul de risc PSEA al Partenerului",
-    "IMPLEMENTATION_STATUS": "Status Implementare",
     "NO_FUND_RESERVATIONS": "Nu sunt rezervari de fonduri pentru aceasta interventie.",
-    "MONITORING_ACTIVITIES": "Activitati de Monitorizare",
     "NO_ACTIVITIES": "Nu sunt activitati."
   },
   "INTERVENTION_METADATA": {
@@ -498,7 +499,6 @@
     "FR_CURRENCY_NOT_MATCH": "Valuta FR nu este aceeasi cu cea din PD/SPD.",
     "NA_%": "N/A %",
     "OVERALL_PD_SPD_RATING": "Evaluare Generală PD/SPD de către UNICEF",
-    "RESULTS_REPORTED": "Rezultate raportate",
     "NO_RESULTS": "Nu sunt rezultate.",
     "CP_OUTPUT": "Realizari CP:",
     "NO_PD_OUTPUTS": "Nu sunt realizari PD.",

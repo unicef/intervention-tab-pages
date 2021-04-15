@@ -264,8 +264,7 @@ export class InterventionTabs extends connectStore(LitElement) {
       }
       this.availableActions = selectAvailableActions(state);
       this.checkReviewTab(state);
-      // Progress, Reports tabs are visible only for unicef users if flag prp_mode_off it's not ON
-
+      
       if (get(state, 'user.data.is_unicef_user')) {
         this.handleInfoSubtabsVisibility(get(state, 'commonData.envFlags'));
       }
@@ -282,11 +281,12 @@ export class InterventionTabs extends connectStore(LitElement) {
       this.pageTabs
         .find((t) => t.tab === 'info')
         ?.subtabs?.push(
-          {label: 'Implementation Status', value: 'implementation-status'},
-          {label: 'Monitoring Activities', value: 'monitoring-activities'}
+          {label: getTranslation('INTERVENTION_TABS.IMPLEMENTATION_STATUS_SUBTAB'), value: 'implementation-status'},
+          {label: getTranslation('INTERVENTION_TABS.MONITORING_ACTIVITIES_SUBTAB'), value: 'monitoring-activities'}
         );
     }
 
+    // Results Reported, Reports tabs are visible only for unicef users if flag prp_mode_off it's not ON
     if (
       envFlags &&
       !envFlags.prp_mode_off &&
@@ -294,7 +294,7 @@ export class InterventionTabs extends connectStore(LitElement) {
     ) {
       this.pageTabs
         .find((t) => t.tab === 'info')
-        ?.subtabs?.push({label: 'Results Reported', value: 'progress'}, {label: 'Reports', value: 'reports'});
+        ?.subtabs?.push({label: getTranslation('INTERVENTION_TABS.RESULTS_REPORTED_SUBTAB'), value: 'progress'}, {label: getTranslation('INTERVENTION_TABS.REPORTS_SUBTAB'), value: 'reports'});
     }
   }
 
