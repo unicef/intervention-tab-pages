@@ -34,7 +34,6 @@ export const elevationStyles = css`
   .elevation,
   :host(.elevation) {
     display: block;
-    position: relative;
   }
 
   .elevation[elevation='1'],

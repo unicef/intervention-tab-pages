@@ -9,8 +9,6 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {prettyDate} from '../utils/date-utils';
 import {decimalFractionEquals0, isJsonStrMatch} from '../utils/utils';
-import './fund-reservations-display/fund-reservations-display';
-import './monitoring-visits-list/monitoring-visits-list';
 import {pageIsNotCurrentlyActive} from '../utils/common-methods';
 import {RootState} from '../common/types/store.types';
 import {fireEvent} from '../utils/fire-custom-event';
@@ -19,14 +17,12 @@ import {AnyObject, CpOutput, StaticPartner, ManagementBudget} from '@unicef-poly
 import {ExpectedResult, MinimalAgreement, Intervention} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 
-/**
- * @customElement
- */
-@customElement('intervention-overview')
-export class InterventionOverview extends connectStore(LitElement) {
+@customElement('intervention-summary')
+export class InterventionSummary extends connectStore(LitElement) {
   static get styles() {
     return [gridLayoutStylesLit, elevationStyles];
   }
+
   render() {
     if ((this.isUnicefUser && !this.interventionCpOutputs) || !this.intervention || !this.interventionAgreement) {
       return html`<style>
@@ -34,64 +30,65 @@ export class InterventionOverview extends connectStore(LitElement) {
         </style>
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
-
     // language=HTML
     return html`
-      <style>
-        ${sharedStyles} :host {
-          width: 100%;
-          --paper-input-container-underline-disabled_-_display: none;
-        }
+    <style>
+      ${sharedStyles} :host {
+        width: 100%;
+        --paper-input-container-underline-disabled_-_display: none;
+      }
 
-        .block {
-          display: block !important;
-        }
-        .content {
-          margin-top: 8px;
-          font-size: 14px;
-        }
-        iron-label {
-          color: var(--dark-secondary-text-color);
-        }
-        .secondary {
-          color: var(--dark-secondary-text-color);
-          font-size: 14px;
-        }
-        .label-secondary-color {
-          color: var(--secondary-text-color);
-          font-size: 14px;
-        }
-        .blue {
-          color: var(--paper-blue-500);
-        }
-        .sector-label {
-          display: inline-block;
-          white-space: nowrap;
-          height: 19px;
-          text-align: center;
-          padding: 7px 10px;
-          background-color: var(--warning-color);
-          text-transform: capitalize;
-          font-weight: bold;
-          color: var(--light-primary-text-color, #ffffff);
-        }
-        #top-container {
-          margin-bottom: 24px;
-        }
-        etools-content-panel {
-          margin-bottom: 24px;
-        }
-        div[elevation] {
-          padding: 15px 20px;
-          background-color: var(--primary-background-color);
-        }
-        etools-currency-amount-input {
-          width: 160px;
-        }
-      </style>
+      .block {
+        display: block !important;
+      }
+      .content {
+        margin-top: 8px;
+        font-size: 14px;
+      }
+      iron-label {
+        color: var(--dark-secondary-text-color);
+      }
+      .secondary {
+        color: var(--dark-secondary-text-color);
+        font-size: 14px;
+      }
+      .label-secondary-color {
+        color: var(--secondary-text-color);
+        font-size: 14px;
+      }
+      .blue {
+        color: var(--paper-blue-500);
+      }
+      .sector-label {
+        display: inline-block;
+        white-space: nowrap;
+        height: 19px;
+        text-align: center;
+        padding: 7px 10px;
+        background-color: var(--warning-color);
+        text-transform: capitalize;
+        font-weight: bold;
+        color: var(--light-primary-text-color, #ffffff);
+      }
+     
+      etools-content-panel {
+        margin-bottom: 24px;
+      }
+      div[elevation] {
+        padding: 15px 20px;
+        background-color: var(--primary-background-color);
+      }
+      etools-currency-amount-input {
+        width: 160px;
+      }
+    </style>
 
-      <div class="page-content elevation" elevation="1" id="top-container">
-        ${this.isUnicefUser
+      <etools-content-panel       
+        class="content-section"
+        panel-title="${translate('INTERVENTION_TABS.SUMMARY_SUBTAB')}"
+      >
+      ${
+        this.isUnicefUser
           ? html` <div class="row-h flex-c">
               <div class="col col-12 block">
                 <iron-label for="cp_outputs_list" class="label-secondary-color"
@@ -105,166 +102,142 @@ export class InterventionOverview extends connectStore(LitElement) {
                 </div>
               </div>
             </div>`
-          : ``}
+          : ``
+      }
 
-        <div class="row-h flex-c">
-          <div class="col col-12 block">
-            <iron-label for="document_title" class="label-secondary-color"
-              >${translate('INTERVENTION_OVERVIEW.DOCUMENT_TITLE')}</iron-label
-            >
-            <br />
-            <div class="content" id="document_title">${this.intervention.title}</div>
-            <div class="secondary">
-              Under
-              <strong>${this.interventionAgreement.agreement_type}</strong>
-              with
-              ${this.isUnicefUser
+      <div class="row-h flex-c">
+        <div class="col col-12 block">
+          <iron-label for="document_title" class="label-secondary-color"
+            >${translate('INTERVENTION_OVERVIEW.DOCUMENT_TITLE')}</iron-label
+          >
+          <br />
+          <div class="content" id="document_title">${this.intervention.title}</div>
+          <div class="secondary">
+            Under
+            <strong>${this.interventionAgreement.agreement_type}</strong>
+            with
+            ${
+              this.isUnicefUser
                 ? html` <a target="_blank" href="/pmp/partners/${this.intervention.partner_id}/details">
                     <strong class="blue">${this.intervention.partner}</strong>
                   </a>`
-                : html`<strong class="blue">${this.intervention.partner}</strong>`}
-            </div>
-          </div>
-        </div>
-
-        <div class="row-h flex-c">
-          <div class="col col-4 block">
-            <iron-label for="interventions_timeline" class="label-secondary-color"
-              >${translate('INTERVENTION_OVERVIEW.TIMELINE')}</iron-label
-            >
-            <br />
-            <div class="content" id="interventions_timeline">
-              ${prettyDate(this.intervention.start)} &#8212; ${prettyDate(this.intervention.end)}
-            </div>
-          </div>
-          <div class="col col-4 block">
-            <iron-label for="intervention-sections" class="label-secondary-color"
-              >${translate('INTERVENTION_OVERVIEW.SECTIONS')}
-            </iron-label>
-            <br />
-            <div class="content" id="intervention-sections">${this.inteventionSections}</div>
-          </div>
-        </div>
-
-        <div class="row-h flex-c">
-          <div class="col col-4">
-            <div>
-              <label class="label-secondary-color"
-                >${translate('INTERVENTION_OVERVIEW.TOTAL_VAL_EFF_PROG_MGMT_COST')}</label
-              >
-              <etools-currency-amount-input
-                class="w100"
-                type="number"
-                .value="${this.intervention.management_budgets?.total}"
-                placeholder="&#8212;"
-                no-label-float
-                disabled
-                tabindex="-1"
-              >
-              </etools-currency-amount-input>
-            </div>
-          </div>
-
-          <div class="col col-6">
-            <div>
-              <label class="label-secondary-color">
-                ${translate('INTERVENTION_OVERVIEW.TOTAL_VALUE_UNICEF_CONTRIB_EFF')}
-              </label>
-              <div class="input-label">${this.getUnicefEEContribOutOfTotaUnicefContrib()}</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="row-h flex-c">
-          <div class="col col-4">
-            <div>
-              <label class="label-secondary-color"
-                >${translate('INTERVENTION_OVERVIEW.UNICEF_CASH_CONTRIBUTION')}</label
-              >
-              <etools-currency-amount-input
-                .value="${this.intervention.planned_budget.unicef_cash_local}"
-                type="number"
-                placeholder="&#8212;"
-                no-label-float
-                disabled
-                tabindex="-1"
-              >
-              </etools-currency-amount-input>
-            </div>
-          </div>
-          <div class="col col-4">
-            <div>
-              <label class="label-secondary-color">${translate('INTERVENTION_OVERVIEW.UNICEF_SUPPLY_CONTRIB')}</label>
-              <etools-currency-amount-input
-                .value="${this.intervention.planned_budget.in_kind_amount_local}"
-                type="number"
-                placeholder="&#8212;"
-                no-label-float
-                disabled
-                tabindex="-1"
-              >
-              </etools-currency-amount-input>
-            </div>
-          </div>
-          <div class="col col-4">
-            <div>
-              <label class="label-secondary-color">${translate('INTERVENTION_OVERVIEW.TOTAL_UNICEF_CONTRIB')}</label>
-              <etools-currency-amount-input
-                .value="${this.intervention.planned_budget.total_unicef_contribution_local}"
-                type="number"
-                placeholder="&#8212;"
-                no-label-float
-                disabled
-                tabindex="-1"
-              >
-              </etools-currency-amount-input>
-            </div>
-          </div>
-        </div>
-        <div class="row-h flex-c">
-          <div class="col col-4 block">
-            <label class="label-secondary-color">${translate('INTERVENTION_OVERVIEW.PARTNER_HACT_RR')}</label>
-            <br />
-            <div class="content">${this.getPartnerHactRiskRatingHtml()}</div>
-          </div>
-          <div class="col col-4 block">
-            <label class="label-secondary-color">${translate('INTERVENTION_OVERVIEW.PARTNER_PSEA_RR')}</label>
-            <br />
-            <div class="content">${this.getPartnerPseaRiskRatingHtml()}</div>
+                : html`<strong class="blue">${this.intervention.partner}</strong>`
+            }
           </div>
         </div>
       </div>
 
-      ${this.isUnicefUser
-        ? html`
-            <etools-content-panel
-              id="fund-reservation-display"
-              class="content-section"
-              panel-title=${translate('INTERVENTION_OVERVIEW.IMPLEMENTATION_STATUS')}
-            >
-              <fund-reservations-display
-                .intervention="${this.intervention}"
-                .frsDetails="${this.intervention.frs_details}"
-              ></fund-reservations-display>
-            </etools-content-panel>
+      <div class="row-h flex-c">
+        <div class="col col-4 block">
+          <iron-label for="interventions_timeline" class="label-secondary-color"
+            >${translate('INTERVENTION_OVERVIEW.TIMELINE')}</iron-label
+          >
+          <br />
+          <div class="content" id="interventions_timeline">
+            ${prettyDate(this.intervention.start)} &#8212; ${prettyDate(this.intervention.end)}
+          </div>
+        </div>
+        <div class="col col-4 block">
+          <iron-label for="intervention-sections" class="label-secondary-color"
+            >${translate('INTERVENTION_OVERVIEW.SECTIONS')}
+          </iron-label>
+          <br />
+          <div class="content" id="intervention-sections">${this.inteventionSections}</div>
+        </div>
+      </div>
 
-            <etools-content-panel
-              id="monitoring-visits-panel"
-              class="content-section"
-              panel-title=${translate('INTERVENTION_OVERVIEW.MONITORING_ACTIVITIES')}
+      <div class="row-h flex-c">
+        <div class="col col-4">
+          <div>
+            <label class="label-secondary-color"
+              >${translate('INTERVENTION_OVERVIEW.TOTAL_VAL_EFF_PROG_MGMT_COST')}</label
             >
-              <monitoring-visits-list
-                .interventionId="${this.intervention.id}"
-                .partnerId="${this.intervention.partner_id}"
-                showTpmVisits
-              >
-              </monitoring-visits-list>
-            </etools-content-panel>
-          `
-        : html``}
+            <etools-currency-amount-input
+              class="w100"
+              type="number"
+              .value="${this.intervention.management_budgets?.total}"
+              placeholder="&#8212;"
+              no-label-float
+              disabled
+              tabindex="-1"
+            >
+            </etools-currency-amount-input>
+          </div>
+        </div>
+
+        <div class="col col-6">
+          <div>
+            <label class="label-secondary-color">
+              ${translate('INTERVENTION_OVERVIEW.TOTAL_VALUE_UNICEF_CONTRIB_EFF')}
+            </label>
+            <div class="input-label">${this.getUnicefEEContribOutOfTotaUnicefContrib()}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-h flex-c">
+        <div class="col col-4">
+          <div>
+            <label class="label-secondary-color"
+              >${translate('INTERVENTION_OVERVIEW.UNICEF_CASH_CONTRIBUTION')}</label
+            >
+            <etools-currency-amount-input
+              .value="${this.intervention.planned_budget.unicef_cash_local}"
+              type="number"
+              placeholder="&#8212;"
+              no-label-float
+              disabled
+              tabindex="-1"
+            >
+            </etools-currency-amount-input>
+          </div>
+        </div>
+        <div class="col col-4">
+          <div>
+            <label class="label-secondary-color">${translate('INTERVENTION_OVERVIEW.UNICEF_SUPPLY_CONTRIB')}</label>
+            <etools-currency-amount-input
+              .value="${this.intervention.planned_budget.in_kind_amount_local}"
+              type="number"
+              placeholder="&#8212;"
+              no-label-float
+              disabled
+              tabindex="-1"
+            >
+            </etools-currency-amount-input>
+          </div>
+        </div>
+        <div class="col col-4">
+          <div>
+            <label class="label-secondary-color">${translate('INTERVENTION_OVERVIEW.TOTAL_UNICEF_CONTRIB')}</label>
+            <etools-currency-amount-input
+              .value="${this.intervention.planned_budget.total_unicef_contribution_local}"
+              type="number"
+              placeholder="&#8212;"
+              no-label-float
+              disabled
+              tabindex="-1"
+            >
+            </etools-currency-amount-input>
+          </div>
+        </div>
+      </div>
+      <div class="row-h flex-c">
+        <div class="col col-4 block">
+          <label class="label-secondary-color">${translate('INTERVENTION_OVERVIEW.PARTNER_HACT_RR')}</label>
+          <br />
+          <div class="content">${this.getPartnerHactRiskRatingHtml()}</div>
+        </div>
+        <div class="col col-4 block">
+          <label class="label-secondary-color">${translate('INTERVENTION_OVERVIEW.PARTNER_PSEA_RR')}</label>
+          <br />
+          <div class="content">${this.getPartnerPseaRiskRatingHtml()}</div>
+        </div>
+      </div>
+    </div>
+    <div style="height: 26px;"></div>
+    </etools-content-panel>
     `;
   }
-
   @property({type: Object})
   intervention!: Intervention;
 
@@ -296,7 +269,7 @@ export class InterventionOverview extends connectStore(LitElement) {
   isUnicefUser = false;
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'overview')) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'info')) {
       return;
     }
 

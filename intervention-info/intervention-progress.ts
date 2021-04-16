@@ -50,7 +50,6 @@ import {currentIntervention} from '../common/selectors';
 declare const dayjs: any;
 
 /**
- * @polymer
  * @customElement
  * @mixinFunction
  * @appliesMixin EtoolsCurrency
@@ -243,7 +242,7 @@ export class InterventionProgress extends connectStore(
         </div>
       </div>
 
-      <etools-content-panel class="content-section" panel-title="${translate('INTERVENTION_REPORTS.RESULTS_REPORTED')}">
+      <etools-content-panel class="content-section" panel-title="${translate('INTERVENTION_TABS.RESULTS_REPORTED_SUBTAB')}">
         <div
           class="row-h"
           ?hidden="${this.progress.details ? !this._emptyList(this.progress.details.cp_outputs) : false}"

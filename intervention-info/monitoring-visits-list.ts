@@ -2,17 +2,17 @@
 import {LitElement, customElement, html, property} from 'lit-element';
 import '@unicef-polymer/etools-loading/etools-loading.js';
 import '@unicef-polymer/etools-data-table/etools-data-table';
-import {prettyDate} from '../../utils/date-utils';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {getEndpoint} from '../../utils/endpoint-helper';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging.js';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
 import isEmpty from 'lodash-es/isEmpty';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {gridLayoutStylesLit} from '../common/styles/grid-layout-styles-lit';
+import {sharedStyles} from '../common/styles/shared-styles-lit';
+import {prettyDate} from '../utils/date-utils';
+import {getEndpoint} from '../utils/endpoint-helper';
+import {interventionEndpoints} from '../utils/intervention-endpoints';
 declare const dayjs: any;
 
 /**

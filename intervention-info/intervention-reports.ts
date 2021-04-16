@@ -4,6 +4,7 @@ import '@polymer/paper-styles/element-styles/paper-material-styles';
 import '@polymer/paper-tooltip/paper-tooltip';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import '@polymer/iron-media-query/iron-media-query';
+import '@unicef-polymer/etools-content-panel/etools-content-panel.js';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {abortRequestByKey} from '@unicef-polymer/etools-ajax/etools-iron-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
@@ -24,6 +25,7 @@ import {connectStore} from '../common/mixins/connect-store-mixin';
 import {GenericObject, User} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {currentIntervention} from '../common/selectors';
+import {sharedStyles} from '../common/styles/shared-styles-lit';
 
 /**
  * @polymer
@@ -44,7 +46,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
   render() {
     return html`
       <style>
-        ${dataTableStylesLit}:host {
+        ${sharedStyles} ${dataTableStylesLit}:host {
           @apply --layout-flex;
           width: 100%;
 
@@ -82,7 +84,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
         query="(max-width: 767px)"
         @query-matches-changed="${this.resolutionChanged}"
       ></iron-media-query>
-      <div id="list" class="paper-material elevation" elevation="1">
+      <etools-content-panel panel-title="Reports">
         ${!this.reports.length
           ? html` <div class="row-h">
               <p>${translate('INTERVENTION_REPORTS.NO_REPORTS_YET')}</p>
@@ -198,7 +200,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
                 @page-number-changed="${this.pageNumberChanged}"
               >
               </etools-data-table-footer>`}
-      </div>
+      </etools-content-panel>
     `;
   }
 

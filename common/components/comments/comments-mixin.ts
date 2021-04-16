@@ -175,7 +175,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         right: 0;
         bottom: 0;
         background-color: transparent;
-        z-index: 9999;
+        z-index: 990;
         cursor: pointer;
       `;
       return element;
