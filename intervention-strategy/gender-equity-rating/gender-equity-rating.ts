@@ -31,7 +31,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
     return [gridLayoutStylesLit, buttonsStyles];
   }
   render() {
-    if (!this.data || !this.ratings) {
+    if (!this.data || !this.ratings || !this.permissions) {
       return html`<style>
           ${sharedStyles}
         </style>
@@ -177,13 +177,13 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
       this.ratings = state.commonData.genderEquityRatings;
     }
     if (state.interventions.current) {
+      this.setPermissions(state);
       const genderEquityRating = selectGenderEquityRating(state);
       if (!isJsonStrMatch(this.originalData, genderEquityRating)) {
         this.data = cloneDeep(genderEquityRating);
         this.originalData = cloneDeep(genderEquityRating);
       }
     }
-    this.setPermissions(state);
     super.stateChanged(state);
   }
 

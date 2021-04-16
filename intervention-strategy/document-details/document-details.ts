@@ -31,7 +31,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
   }
 
   render() {
-    if (!this.data) {
+    if (!this.data || !this.permissions) {
       return html`<style>
           ${sharedStyles}
         </style>

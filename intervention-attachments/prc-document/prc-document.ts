@@ -116,6 +116,7 @@ export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadMixin(Li
     if (e.detail.success) {
       const response = e.detail.success;
       this.data.prc_review_attachment = response.id;
+      this.requestUpdate();
     }
   }
 

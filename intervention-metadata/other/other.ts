@@ -100,7 +100,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               <!--   SPD is Humanitarian   -->
               <div ?hidden="${!this.isSPD}">
                 <paper-toggle-button
-                  ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.humanitarian_flag)}"
+                  ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.document_type)}"
                   ?checked="${this.data.humanitarian_flag}"
                   @checked-changed="${({detail}: CustomEvent) => {
                     this.data.contingency_pd = false;
@@ -114,7 +114,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               <!--   Contingency Document   -->
               <div ?hidden="${!this.data.humanitarian_flag}">
                 <paper-toggle-button
-                  ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.contingency_pd)}"
+                  ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.document_type)}"
                   ?checked="${this.data.contingency_pd}"
                   @checked-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'contingency_pd')}"
                 >
