@@ -242,7 +242,10 @@ export class InterventionProgress extends connectStore(
         </div>
       </div>
 
-      <etools-content-panel class="content-section" panel-title="${translate('INTERVENTION_TABS.RESULTS_REPORTED_SUBTAB')}">
+      <etools-content-panel
+        class="content-section"
+        panel-title="${translate('INTERVENTION_TABS.RESULTS_REPORTED_SUBTAB')}"
+      >
         <div
           class="row-h"
           ?hidden="${this.progress.details ? !this._emptyList(this.progress.details.cp_outputs) : false}"
@@ -386,9 +389,10 @@ export class InterventionProgress extends connectStore(
   interventionStatus!: string;
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'progress')) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'info', 'progress')) {
       return;
     }
+
     const currentInterventionId = get(state, 'app.routeDetails.params.interventionId');
     if (currentInterventionId) {
       this.interventionId = currentInterventionId;

@@ -1,6 +1,5 @@
 import {customElement, html, LitElement, property} from 'lit-element';
 import '../common/layout/etools-tabs.js';
-import {elevationStyles} from '../common/styles/elevation-styles.js';
 import {fireEvent} from '../utils/fire-custom-event.js';
 import './intervention-summary.js';
 import './intervention-implementation-status.js';
@@ -10,8 +9,8 @@ import './intervention-reports.js';
 import get from 'lodash-es/get';
 import {pageIsNotCurrentlyActive} from '../utils/common-methods.js';
 import {RootState} from '../common/types/store.types.js';
-import { isUnicefUser } from '../common/selectors.js';
-import { connectStore } from '../common/mixins/connect-store-mixin.js';
+import {isUnicefUser} from '../common/selectors.js';
+import {connectStore} from '../common/mixins/connect-store-mixin.js';
 
 @customElement('intervention-info')
 export class InterventionInfo extends connectStore(LitElement) {
@@ -57,6 +56,7 @@ export class InterventionInfo extends connectStore(LitElement) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'info')) {
       return;
     }
+
     this.isUnicefUser = isUnicefUser(state);
   }
 }

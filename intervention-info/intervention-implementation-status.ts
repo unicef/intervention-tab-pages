@@ -38,7 +38,7 @@ export class InterventionImplementationStatus extends connectStore(LitElement) {
   intervention!: Intervention;
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'info')) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'info', 'implementation-status')) {
       return;
     }
 

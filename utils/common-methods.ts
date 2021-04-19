@@ -15,8 +15,18 @@ export const handleItemsNoLongerAssignedToCurrentCountry = (availableItems: AnyO
   }
 };
 
-export const pageIsNotCurrentlyActive = (routeDetails: any, routeName: string, subRouteName: string) => {
-  return !(routeDetails && routeDetails.routeName === routeName && routeDetails.subRouteName === subRouteName);
+export const pageIsNotCurrentlyActive = (
+  routeDetails: any,
+  routeName: string,
+  subRouteName: string,
+  subSubRouteName?: string
+) => {
+  return !(
+    routeDetails &&
+    routeDetails.routeName === routeName &&
+    routeDetails.subRouteName === subRouteName &&
+    (!subSubRouteName || routeDetails.subSubRouteName === subSubRouteName)
+  );
 };
 
 export const callClickOnSpacePush = (htmlElement: any) => {
