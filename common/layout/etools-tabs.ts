@@ -97,6 +97,7 @@ export class EtoolsTabs extends LitElement {
         selected="${this.activeTab}"
         attr-for-selected="name"
         noink
+        @iron-activate="${this.cancelSelection}"
       >
         ${this.tabs.map((item) => {
           if (item.subtabs) {
@@ -134,7 +135,7 @@ export class EtoolsTabs extends LitElement {
         is-subtabs-parent="true"
         link
         ?hidden="${item.hidden}"
-        ?disabled="${item.disabled}"
+        
       >
         <paper-menu-button id="subtabmenu" horizontal-align="right" vertical-offset="45">
           <paper-button class="button" slot="dropdown-trigger">
@@ -163,5 +164,11 @@ export class EtoolsTabs extends LitElement {
 
   isSelectedSubtab(dropdownItemValue: string) {
     return dropdownItemValue == this.activeSubTab;
+  }
+
+  cancelSelection(e: CustomEvent) {
+    if (e.detail.item.getAttribute('is-subtabs-parent')) {
+      e.preventDefault();
+    }
   }
 }
