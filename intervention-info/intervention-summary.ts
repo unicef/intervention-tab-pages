@@ -70,7 +70,7 @@ export class InterventionSummary extends connectStore(LitElement) {
         font-weight: bold;
         color: var(--light-primary-text-color, #ffffff);
       }
-     
+
       etools-content-panel {
         margin-bottom: 24px;
       }
@@ -83,7 +83,7 @@ export class InterventionSummary extends connectStore(LitElement) {
       }
     </style>
 
-      <etools-content-panel       
+      <etools-content-panel
         class="content-section"
         panel-title="${translate('INTERVENTION_TABS.SUMMARY_SUBTAB')}"
       >
@@ -269,7 +269,7 @@ export class InterventionSummary extends connectStore(LitElement) {
   isUnicefUser = false;
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'info')) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'info', 'summary')) {
       return;
     }
 

@@ -272,9 +272,10 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
   }
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'reports')) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'info', 'reports')) {
       return;
     }
+
     this.interventionId = get(state, 'app.routeDetails.params.interventionId');
     this.endStateChanged(state);
     this.interventionStatus = currentIntervention(state)?.status;

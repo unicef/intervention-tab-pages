@@ -40,7 +40,7 @@ export class InterventionMonitoringActivities extends connectStore(LitElement) {
   intervention!: Intervention;
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'info')) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'info', 'monitoring-activities')) {
       return;
     }
 
