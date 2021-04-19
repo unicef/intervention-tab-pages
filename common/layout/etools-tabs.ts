@@ -70,7 +70,7 @@ export class EtoolsTabs extends LitElement {
           }
         }
 
-        paper-tab[is-subtabs-parent][disabled] {
+        paper-tab[is-subtabs-parent] {
           opacity: 1 !important;
           cursor: pointer !important;
           --paper-tab-content-unselected: {
