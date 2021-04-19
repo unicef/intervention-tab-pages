@@ -440,66 +440,7 @@ export class InterventionProgress extends connectStore(
     this.requestInProgress = true;
     this.fireRequest('interventionProgress', {pdId: id})
       .then((response: any) => {
-        this.progress = {
-          "id": id,
-          "reference_number": "RWA/PCA201895/PD2018109-4",
-          "title": "Provision of Market Based Early Childhood Development Services",
-          "start_date": "16-Oct-2018",
-          "end_date": "31-Aug-2021",
-          "frequency": "Monthly",
-          "sections": [
-              {
-                  "name": "Health & Nutrition"
-              },
-              {
-                  "name": "Early Childhood and Development"
-              }
-          ],
-          "details": {
-              "id": 436,
-              "title": "Provision of Market Based Early Childhood Development Services",
-              "reference_number": "RWA/PCA201895/PD2018109-4",
-              "cp_outputs": [
-                  {
-                      "id": 293,
-                      "title": "AVAILABILITY OF QUALITY ECD AND FAMILY SERVICES TO CHILDREN",
-                      "ll_outputs": [
-                          {
-                              "id": 584,
-                              "title": "Families are aware of quality ECD services, and provide responsive and nurturing care to young children (0-6 years), in the targeted communities"
-                          },
-                          {
-                              "id": 585,
-                              "title": "Increased availability of quality ECD services to children (0-6 years) and their families in the targeted communities"
-                          }
-                      ],
-                      "external_cp_output_id": 484
-                  },
-                  {
-                      "id": 2179,
-                      "title": "PARTNERSHIP AND ADVOCACY",
-                      "ll_outputs": [
-                          {
-                              "id": 4740,
-                              "title": "Skilled caregivers provide quality Care to children and support the establishment of child friendly workplaces in the rice and mining sectors"
-                          }
-                      ],
-                      "external_cp_output_id": 480
-                  }
-              ],
-              "status": "Act",
-              "external_id": "109"
-          },
-          "latest_accepted_pr": {},
-          "latest_accepted_pr_indicator_reports": [],
-          "unicef_budget_cash": 438084000,
-          "unicef_budget_cash_currency": "RWF",
-          "unicef_budget_supplies": 0,
-          "unicef_budget_supplies_currency": "RWF",
-          "disbursement": 341223964,
-          "disbursement_currency": "RWF",
-          "disbursement_percent": 77.9
-      };
+        this.progress = response;
         fireEvent(this, 'global-loading', {
           active: false,
           loadingSource: 'pd-progress'
