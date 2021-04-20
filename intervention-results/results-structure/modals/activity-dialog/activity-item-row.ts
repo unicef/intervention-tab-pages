@@ -12,7 +12,7 @@ import {getTotal} from './get-total.helper';
 import {ActivityItemsTableInlineStyles, ActivityItemsTableStyles} from './acivity-items-table.styles';
 import {fireEvent} from '../../../../utils/fire-custom-event';
 import {InterventionActivityItem} from '@unicef-polymer/etools-types';
-import {callClickOnSpacePush} from '../../../../utils/common-methods';
+import {callClickOnSpacePushListener} from '../../../../utils/common-methods';
 
 @customElement('activity-item-row')
 export class ActivityItemRow extends LitElement {
@@ -99,7 +99,7 @@ export class ActivityItemRow extends LitElement {
   firstUpdated(changedProperties: PropertyValues): void {
     super.firstUpdated(changedProperties);
 
-    callClickOnSpacePush(this.shadowRoot!.querySelector('#btnRemove'));
+    callClickOnSpacePushListener(this.shadowRoot!.querySelector('#btnRemove'));
   }
 
   updateField(field: keyof InterventionActivityItem, value: any): void {

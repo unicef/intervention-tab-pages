@@ -13,7 +13,7 @@ import {fireEvent} from '../../../../utils/fire-custom-event';
 import {ActivityItemRow} from './activity-item-row';
 import './activity-item-row';
 import {InterventionActivityItem} from '@unicef-polymer/etools-types';
-import {callClickOnSpacePush} from '../../../../utils/common-methods';
+import {callClickOnSpacePushListener} from '../../../../utils/common-methods';
 import {PaperTextareaElement} from '@polymer/paper-input/paper-textarea';
 import {translate} from 'lit-translate';
 
@@ -78,7 +78,7 @@ export class ActivityItemsTable extends LitElement {
   firstUpdated(changedProperties: PropertyValues): void {
     super.firstUpdated(changedProperties);
 
-    callClickOnSpacePush(this.shadowRoot!.querySelector('#btnAddItem'));
+    callClickOnSpacePushListener(this.shadowRoot!.querySelector('#btnAddItem'));
   }
 
   addNew(): void {

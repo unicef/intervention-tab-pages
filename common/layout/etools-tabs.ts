@@ -135,7 +135,7 @@ export class EtoolsTabs extends LitElement {
         is-subtabs-parent="true"
         link
         ?hidden="${item.hidden}"
-        
+        @keyup=${this.callClickOnEnterSpaceDownKeys}    
       >
         <paper-menu-button id="subtabmenu" horizontal-align="right" vertical-offset="45">
           <paper-button class="button" slot="dropdown-trigger">
@@ -169,6 +169,19 @@ export class EtoolsTabs extends LitElement {
   cancelSelection(e: CustomEvent) {
     if (e.detail.item.getAttribute('is-subtabs-parent')) {
       e.preventDefault();
+    }
+  }
+
+  callClickOnEnterSpaceDownKeys(event: KeyboardEvent) {
+    if (['Enter', ' ', 'ArrowDown'].includes(event.key) && !event.ctrlKey) {
+      // Cancel the default action, if needed
+      event.preventDefault();
+      
+      // @ts-ignore
+      if (event.target!.localName !== 'paper-tab') {
+        return;
+      }
+      ((event.target as any).querySelector('paper-button') as any).click();
     }
   }
 }

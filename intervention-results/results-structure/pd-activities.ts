@@ -16,7 +16,7 @@ import {getEndpoint} from '../../utils/endpoint-helper';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, InterventionActivity, InterventionQuarter} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {callClickOnSpacePush} from '../../utils/common-methods';
+import {callClickOnSpacePushListener} from '../../utils/common-methods';
 
 @customElement('pd-activities')
 export class PdActivities extends CommentsMixin(LitElement) {
@@ -190,7 +190,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
   firstUpdated(): void {
     super.firstUpdated();
 
-    this.shadowRoot!.querySelectorAll('iron-icon').forEach((el) => callClickOnSpacePush(el));
+    this.shadowRoot!.querySelectorAll('iron-icon').forEach((el) => callClickOnSpacePushListener(el));
   }
 
   getSpecialElements(container: HTMLElement): CommentElementMeta[] {
