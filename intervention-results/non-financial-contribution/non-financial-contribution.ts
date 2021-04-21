@@ -90,26 +90,6 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
   @property({type: Object})
   originalData = {};
 
-  @property({type: Boolean})
-  autoValidate = false;
-
-  connectedCallback() {
-    super.connectedCallback();
-  }
-
-  firstUpdated() {
-    this._handlePaperTextareaAutovalidateError();
-    super.firstUpdated();
-  }
-
-  /**
-   * This will prevent a console error "Uncaught TypeError: Cannot read property 'textarea' of undefined"
-   * The error occurs only on first load/ hard refresh and on paper-textareas that have auto-validate
-   */
-  _handlePaperTextareaAutovalidateError() {
-    this.autoValidate = true;
-  }
-
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'results')) {
       return;
