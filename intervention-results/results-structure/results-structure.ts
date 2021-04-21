@@ -28,7 +28,7 @@ import {RootState} from '../../common/types/store.types';
 import {openDialog} from '../../utils/dialog';
 import CONSTANTS from '../../common/constants';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {callClickOnSpacePush, callClickOnEnterPush, pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {callClickOnSpacePushListener, callClickOnEnterPushListener, pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import '../../common/layout/are-you-sure';
 import get from 'lodash-es/get';
 import {getIntervention, updateCurrentIntervention} from '../../common/actions/interventions';
@@ -408,9 +408,9 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     super.firstUpdated();
 
     this.shadowRoot!.querySelectorAll('#view-toggle-button, .add-cp, iron-icon').forEach((el) =>
-      callClickOnSpacePush(el)
+      callClickOnSpacePushListener(el)
     );
-    this.shadowRoot!.querySelectorAll('#clickable').forEach((el) => callClickOnEnterPush(el));
+    this.shadowRoot!.querySelectorAll('#clickable').forEach((el) => callClickOnEnterPushListener(el));
   }
 
   stateChanged(state: RootState) {

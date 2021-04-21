@@ -70,7 +70,7 @@ export class EtoolsTabs extends LitElement {
           }
         }
 
-        paper-tab[is-subtabs-parent][disabled] {
+        paper-tab[is-subtabs-parent] {
           opacity: 1 !important;
           cursor: pointer !important;
           --paper-tab-content-unselected: {
@@ -97,6 +97,7 @@ export class EtoolsTabs extends LitElement {
         selected="${this.activeTab}"
         attr-for-selected="name"
         noink
+        @iron-activate="${this.cancelSelection}"
       >
         ${this.tabs.map((item) => {
           if (item.subtabs) {
@@ -134,7 +135,7 @@ export class EtoolsTabs extends LitElement {
         is-subtabs-parent="true"
         link
         ?hidden="${item.hidden}"
-        ?disabled="${item.disabled}"
+        @keyup=${this.callClickOnEnterSpaceDownKeys}    
       >
         <paper-menu-button id="subtabmenu" horizontal-align="right" vertical-offset="45">
           <paper-button class="button" slot="dropdown-trigger">
@@ -163,5 +164,24 @@ export class EtoolsTabs extends LitElement {
 
   isSelectedSubtab(dropdownItemValue: string) {
     return dropdownItemValue == this.activeSubTab;
+  }
+
+  cancelSelection(e: CustomEvent) {
+    if (e.detail.item.getAttribute('is-subtabs-parent')) {
+      e.preventDefault();
+    }
+  }
+
+  callClickOnEnterSpaceDownKeys(event: KeyboardEvent) {
+    if (['Enter', ' ', 'ArrowDown'].includes(event.key) && !event.ctrlKey) {
+      // Cancel the default action, if needed
+      event.preventDefault();
+      
+      // @ts-ignore
+      if (event.target!.localName !== 'paper-tab') {
+        return;
+      }
+      ((event.target as any).querySelector('paper-button') as any).click();
+    }
   }
 }
