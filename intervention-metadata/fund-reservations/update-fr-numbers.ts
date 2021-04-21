@@ -71,7 +71,7 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
       <etools-dialog
         id="frsDialog"
         size="md"
-        dialog-title=${translate('FUND_RESERVATIONS.FR_DIALOG.ADD_UPDATE_FR_NUMBERS')}
+        dialog-title=${translate('ADD_UPDATE_FR_NUMBERS')}
         ok-btn-text=${translate('GENERAL.ADD_UPDATE')}
         cancel-btn-text=${translate('GENERAL.CANCEL')}
         ?disable-confirm-btn="${this.disableConfirmBtn}"
@@ -100,12 +100,12 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
                   <!-- FR Number -->
                   <paper-input
                     .id="fr-nr-${index}"
-                    label=${translate('FUND_RESERVATIONS.FR_DIALOG.FR_NUMBER')}
+                    label=${translate('FR_NUMBER')}
                     .value="${item.fr_number}"
                     placeholder="&#8212;"
                     allowed-pattern="[0-9]"
                     required
-                    error-message=${translate('FUND_RESERVATIONS.FR_DIALOG.FILL_FR_NUMBER')}
+                    error-message=${translate('FILL_FR_NUMBER')}
                     @value-changed="${({detail}: CustomEvent) => this._frNrValueChanged(item, detail)}"
                   >
                   </paper-input>
@@ -116,13 +116,13 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
         )}
 
         <div class="${(this.data || []).length ? 'hidden' : 'row-h'}">
-          ${translate('FUND_RESERVATIONS.FR_DIALOG.NO_FUND_RESERVATIONS_ADDED')}
+          ${translate('NO_FUND_RESERVATIONS_ADDED')}
         </div>
 
         <div class="row-h">
           <paper-button class="secondary-btn" @click="${() => this._addNewFundReservation()}">
             <iron-icon icon="add"></iron-icon>
-            ${translate('FUND_RESERVATIONS.FR_DIALOG.ADD_FR_NUM')}
+            ${translate('ADD_FR_NUM')}
           </paper-button>
         </div>
       </etools-dialog>
@@ -136,7 +136,7 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
 
   @property({type: String})
   deleteConfirmationMessage = (translate(
-    'FUND_RESERVATIONS.FR_DIALOG.DELETE_FR_PROMPT'
+    'DELETE_FR_PROMPT'
   ) as unknown) as string;
 
   @property({type: Boolean})

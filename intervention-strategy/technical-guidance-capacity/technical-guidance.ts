@@ -48,16 +48,16 @@ export class TechnicalGuidance extends CommentsMixin(ComponentBaseMixin(LitEleme
 
       <etools-content-panel
         show-expand-btn
-        panel-title=${translate('INTERVENTION_STRATEGY.TECHNICAL_GUIDANCE_CAPACITY_MISCELLANEOUS')}
+        panel-title=${translate('TECHNICAL_GUIDANCE_CAPACITY_MISCELLANEOUS')}
         comment-element="technical-guidance"
-        comment-description=${translate('INTERVENTION_STRATEGY.TECHNICAL_GUIDANCE_CAPACITY_MISCELLANEOUS')}
+        comment-description=${translate('TECHNICAL_GUIDANCE_CAPACITY_MISCELLANEOUS')}
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="row-padding-v">
           <paper-textarea
             id="technicalGuidance"
-            label=${translate('INTERVENTION_STRATEGY.TECHNICAL_GUIDANCE')}
+            label=${translate('TECHNICAL_GUIDANCE')}
             always-float-label
             placeholder="—"
             .value="${this.data.technical_guidance}"
@@ -73,7 +73,7 @@ export class TechnicalGuidance extends CommentsMixin(ComponentBaseMixin(LitEleme
         <div class="row-padding-v">
           <paper-textarea
             id="capacityDevelopment"
-            label=${translate('INTERVENTION_STRATEGY.CAPACITY_DEVELOPMENT')}
+            label=${translate('CAPACITY_DEVELOPMENT')}
             type="text"
             always-float-label
             placeholder="—"
@@ -90,7 +90,7 @@ export class TechnicalGuidance extends CommentsMixin(ComponentBaseMixin(LitEleme
         <div class="row-padding-v">
           <paper-textarea
             id="otherPartnersInvolved"
-            label=${translate('INTERVENTION_STRATEGY.OTHER_PARTNERS_INVOLVED')}
+            label=${translate('OTHER_PARTNERS_INVOLVED')}
             type="text"
             always-float-label
             placeholder="—"
@@ -107,7 +107,7 @@ export class TechnicalGuidance extends CommentsMixin(ComponentBaseMixin(LitEleme
         <div class="row-padding-v">
           <paper-textarea
             id="otherInformation"
-            label=${translate('INTERVENTION_STRATEGY.OTHER_INFORMATION')}
+            label=${translate('OTHER_INFORMATION')}
             type="text"
             always-float-label
             placeholder="—"

@@ -54,16 +54,16 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
 
       <etools-content-panel
         show-expand-btn
-        panel-title=${translate('INTERVENTION_RESULTS.PARTNER_NON_FINANCIAL_CONTRIBUTION')}
+        panel-title=${translate('PARTNER_NON_FINANCIAL_CONTRIBUTION')}
         comment-element="non-financial-contribution"
-        comment-description=${translate('INTERVENTION_RESULTS.PARTNER_NON_FINANCIAL_CONTRIBUTION')}
+        comment-description=${translate('PARTNER_NON_FINANCIAL_CONTRIBUTION')}
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="row-padding-v">
           <paper-textarea
             id="ip_program_contribution"
-            label=${translate('INTERVENTION_RESULTS.OTHER_NON_FINANCIAL_CONTRIBUTION')}
+            label=${translate('OTHER_NON_FINANCIAL_CONTRIBUTION')}
             always-float-label
             placeholder="—"
             .value="${this.data.ip_program_contribution}"

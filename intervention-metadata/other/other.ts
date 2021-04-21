@@ -79,7 +79,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
           <div class="col col-4">
             <etools-dropdown
               id="documentType"
-              label=${translate('FINANCIAL_COMPONENT.DOC_TYPE')}
+              label=${translate('DOC_TYPE')}
               placeholder="&#8212;"
               ?readonly="${!this.documentTypes.length ||
               this.isReadonly(this.editMode, this.permissions.edit.document_type)}"
@@ -107,7 +107,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
                     this.valueChanged(detail, 'humanitarian_flag');
                   }}"
                 >
-                  ${translate('FINANCIAL_COMPONENT.SPD_HUMANITARIAN')}
+                  ${translate('SPD_HUMANITARIAN')}
                 </paper-toggle-button>
               </div>
 
@@ -118,7 +118,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
                   ?checked="${this.data.contingency_pd}"
                   @checked-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'contingency_pd')}"
                 >
-                  ${translate('FINANCIAL_COMPONENT.CONTINGENCY_DOC')}
+                  ${translate('CONTINGENCY_DOC')}
                 </paper-toggle-button>
               </div>
             </div>
@@ -130,7 +130,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               id="currencyDd"
               option-value="value"
               option-label="label"
-              label=${translate('FINANCIAL_COMPONENT.DOCUMENT_CURRENCY')}
+              label=${translate('DOCUMENT_CURRENCY')}
               placeholder="&#8212;"
               .options="${this.currencies}"
               .selected="${this.data.planned_budget.currency}"

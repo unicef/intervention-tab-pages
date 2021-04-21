@@ -105,7 +105,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
 
       <div class="row-h align-items-center header">
         <div class="heading flex-auto">
-          ${translate('INTERVENTION_RESULTS.PD_INDICATORS')}
+          ${translate('PD_INDICATORS')}
           <paper-icon-button
             class="add-box"
             icon="add-box"
@@ -113,8 +113,8 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
             ?hidden="${this.readonly}"
           ></paper-icon-button>
         </div>
-        <div class="heading number-data flex-none">${translate('INTERVENTION_RESULTS.BASELINE')}</div>
-        <div class="heading number-data flex-none">${translate('INTERVENTION_RESULTS.TARGET')}</div>
+        <div class="heading number-data flex-none">${translate('BASELINE')}</div>
+        <div class="heading number-data flex-none">${translate('TARGET')}</div>
       </div>
 
       ${this.indicators.map(
@@ -198,8 +198,8 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
-        content: (translate('INTERVENTION_RESULTS.DEACTIVATE_PROMPT') as unknown) as string,
-        confirmBtnText: (translate('INTERVENTION_RESULTS.DEACTIVATE') as unknown) as string
+        content: (translate('DEACTIVATE_PROMPT') as unknown) as string,
+        confirmBtnText: (translate('DEACTIVATE') as unknown) as string
       }
     }).then(({confirmed}) => {
       return confirmed;
@@ -233,7 +233,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
-        content: (translate('INTERVENTION_RESULTS.DELETE_PROMPT') as unknown) as string,
+        content: (translate('DELETE_PROMPT') as unknown) as string,
         confirmBtnText: (translate('GENERAL.DELETE') as unknown) as string
       }
     }).then(({confirmed}) => {

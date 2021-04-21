@@ -43,7 +43,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         id="activityDialog"
         size="md"
         keep-dialog-open
-        dialog-title=${translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.ACTIVITY_DIALOG.EDIT_ACTIVITY')}
+        dialog-title=${translate('EFF_EFF_PROG_MGM.ACTIVITY_DIALOG.EDIT_ACTIVITY')}
         ok-btn-text=${translate('GENERAL.SAVE')}
         cancel-btn-text=${translate('GENERAL.CANCEL')}
         ?opened="${this.dialogOpened}"
@@ -80,7 +80,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
           <div class="col col-6">
             <etools-currency-amount-input
               id="partnerContribution"
-              label=${translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.PARTNER_CASH')}
+              label=${translate('EFF_EFF_PROG_MGM.PARTNER_CASH')}
               .value="${this.originalData.partner_contribution}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, this.getPropertyName('partner'))}"
             >
@@ -89,7 +89,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
           <div class="col col-6">
             <etools-currency-amount-input
               id="unicefCash"
-              label=${translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.UNICEF_CASH')}
+              label=${translate('EFF_EFF_PROG_MGM.UNICEF_CASH')}
               .value="${this.originalData.unicef_cash}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, this.getPropertyName('unicef'))}"
             >

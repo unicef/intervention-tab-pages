@@ -72,9 +72,9 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       </style>
       <etools-content-panel
         show-expand-btn
-        panel-title=${translate('INTERVENTION_STRATEGY.RISKS.RISKS')}
+        panel-title=${translate('RISKS')}
         comment-element="risks"
-        comment-description=${translate('INTERVENTION_STRATEGY.RISKS.RISKS')}
+        comment-description=${translate('RISKS')}
       >
         <div slot="panel-btns">
           <paper-icon-button
@@ -97,7 +97,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         >
         </etools-table>
         <div class="row-h" ?hidden="${this.data?.length}">
-          <p>${translate('INTERVENTION_STRATEGY.RISKS.NO_RISK_ADDED')}</p>
+          <p>${translate('NO_RISK_ADDED')}</p>
         </div>
       </etools-content-panel>
     `;
@@ -115,7 +115,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   @property({type: Array})
   columns: EtoolsTableColumn[] = [
     {
-      label: (translate('INTERVENTION_STRATEGY.RISKS.TYPE') as unknown) as string,
+      label: (translate('TYPE') as unknown) as string,
       name: 'risk_type',
       type: EtoolsTableColumnType.Custom,
       customMethod: (item: any, _key: string, customData: AnyObject) => {
@@ -125,7 +125,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       cssClass: 'col_type'
     },
     {
-      label: (translate('INTERVENTION_STRATEGY.RISKS.PROPOSED_MITIGATION_MEASURES') as unknown) as string,
+      label: (translate('PROPOSED_MITIGATION_MEASURES') as unknown) as string,
       name: 'mitigation_measures',
       type: EtoolsTableColumnType.Text,
       cssClass: 'col_measures'
@@ -170,7 +170,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
-        content: (translate('INTERVENTION_STRATEGY.RISKS.DELETE_RISK_PROMPT') as unknown) as string,
+        content: (translate('DELETE_RISK_PROMPT') as unknown) as string,
         confirmBtnText: (translate('GENERAL.DELETE') as unknown) as string
       }
     }).then(({confirmed}) => {

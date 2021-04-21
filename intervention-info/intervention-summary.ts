@@ -208,7 +208,7 @@ export class InterventionSummary extends connectStore(LitElement) {
         </div>
         <div class="col col-4">
           <div>
-            <label class="label-secondary-color">${translate('TOTAL_UNICEF_CONTRIB')}</label>
+            <label class="label-secondary-color">${translate('TOTAL_UNICEF_CONTRIBUTION')}</label>
             <etools-currency-amount-input
               .value="${this.intervention.planned_budget.total_unicef_contribution_local}"
               type="number"
