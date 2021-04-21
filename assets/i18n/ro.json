@@ -146,7 +146,7 @@
         "BUDGET_GT_20_MSG": "Modificări ale bugetului activităților care au ca rezultat o modificare a contribuției UNICEF> 20% din numerarul și / sau aprovizionările aprobate anterior, cu sau fără modificări ale rezultatelor programului.",
         "NO_COST_EXTENSION_MSG": "Fără prelungire de cost",
         "CHANGE_MSG": "Modificări ale rezultatelor planificate, ale populației sau ale acoperirii geografice a programului, fără modificări ale contribuției UNICEF.",
-        "OTHER_MSG": "Altele"
+        "OTHER": "Altele"
       }
     },
     "FINANCIAL_COMPONENT": {

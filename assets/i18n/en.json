@@ -146,7 +146,7 @@
         "BUDGET_GT_20_MSG": "Changes to the budget of activities resulting in a change in the UNICEF contribution >20% of previously approved cash and/or supplies, with or without changes to the programme results.",
         "NO_COST_EXTENSION_MSG": "No cost extension",
         "CHANGE_MSG": "Changes to planned results, population or geographical coverage of the programme with no change in UNICEF contribution.",
-        "OTHER_MSG": "Other"
+        "OTHER": "Other"
       }
     },
     "FINANCIAL_COMPONENT": {
