@@ -68,9 +68,9 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
 
       <etools-content-panel
         show-expand-btn
-        panel-title=${translate('INTERVENTION_METADATA.OTHER')}
+        panel-title=${translate('OTHER')}
         comment-element="other-metadata"
-        comment-description=${translate('INTERVENTION_METADATA.OTHER')}
+        comment-description=${translate('OTHER')}
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
@@ -79,7 +79,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
           <div class="col col-4">
             <etools-dropdown
               id="documentType"
-              label=${translate('INTERVENTION_METADATA.FINANCIAL_COMPONENT.DOC_TYPE')}
+              label=${translate('FINANCIAL_COMPONENT.DOC_TYPE')}
               placeholder="&#8212;"
               ?readonly="${!this.documentTypes.length ||
               this.isReadonly(this.editMode, this.permissions.edit.document_type)}"
@@ -107,7 +107,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
                     this.valueChanged(detail, 'humanitarian_flag');
                   }}"
                 >
-                  ${translate('INTERVENTION_METADATA.FINANCIAL_COMPONENT.SPD_HUMANITARIAN')}
+                  ${translate('FINANCIAL_COMPONENT.SPD_HUMANITARIAN')}
                 </paper-toggle-button>
               </div>
 
@@ -118,7 +118,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
                   ?checked="${this.data.contingency_pd}"
                   @checked-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'contingency_pd')}"
                 >
-                  ${translate('INTERVENTION_METADATA.FINANCIAL_COMPONENT.CONTINGENCY_DOC')}
+                  ${translate('FINANCIAL_COMPONENT.CONTINGENCY_DOC')}
                 </paper-toggle-button>
               </div>
             </div>
@@ -130,7 +130,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               id="currencyDd"
               option-value="value"
               option-label="label"
-              label=${translate('INTERVENTION_METADATA.FINANCIAL_COMPONENT.DOCUMENT_CURRENCY')}
+              label=${translate('FINANCIAL_COMPONENT.DOCUMENT_CURRENCY')}
               placeholder="&#8212;"
               .options="${this.currencies}"
               .selected="${this.data.planned_budget.currency}"

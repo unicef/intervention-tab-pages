@@ -72,7 +72,7 @@ export class GroupedLocationsDialog extends LitElement {
       <etools-dialog
         id="groupedLocDialog"
         size="md"
-        dialog-title=${translate('INTERVENTION_METADATA.GROUPED_LOCATIONS.LOCATIONS_PD_COVERS')}
+        dialog-title=${translate('LOCATIONS_PD_COVERS')}
         hide-confirm-btn
         ?opened="${this.dialogOpened}"
         cancel-btn-text=${translate('GENERAL.CANCEL')}
@@ -80,7 +80,7 @@ export class GroupedLocationsDialog extends LitElement {
       >
         <etools-dropdown
           id="adminLevelsDropdw"
-          label=${translate('INTERVENTION_METADATA.GROUPED_LOCATIONS.GROUP_LOCATIONS_BY')}
+          label=${translate('GROUP_LOCATIONS_BY')}
           .selected="${this.adminLevel}"
           placeholder="&#8212;"
           .options="${this.adminLevels}"
@@ -256,7 +256,7 @@ export class GroupedLocationsDialog extends LitElement {
 
     if (locationsUnableToGroup && locationsUnableToGroup.length) {
       this.message =
-        getTranslation('INTERVENTION_METADATA.GROUPED_LOCATIONS.LOCATIONS_UNABLE_TO_GROUP') +
+        getTranslation('LOCATIONS_UNABLE_TO_GROUP') +
         locationsUnableToGroup.join(', ');
     }
 

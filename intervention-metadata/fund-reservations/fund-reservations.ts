@@ -85,9 +85,9 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
 
       <etools-content-panel
         show-expand-btn
-        panel-title=${translate('INTERVENTION_METADATA.FUND_RESERVATIONS.FUND_RESERVATIONS')}
+        panel-title=${translate('FUND_RESERVATIONS.FUND_RESERVATIONS')}
         comment-element="fund-reservations"
-        comment-description=${translate('INTERVENTION_METADATA.FUND_RESERVATIONS.FUND_RESERVATIONS')}
+        comment-description=${translate('FUND_RESERVATIONS.FUND_RESERVATIONS')}
       >
         <paper-icon-button
           slot="panel-btns"
@@ -203,10 +203,10 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
 
     this._frsInconsistenciesConfirmationHandler = this._frsInconsistenciesConfirmationHandler.bind(this);
     this.frsConfirmationsDialog = createDynamicDialog({
-      title: (translate('INTERVENTION_METADATA.FUND_RESERVATIONS.FR_WARNING') as unknown) as string,
+      title: (translate('FUND_RESERVATIONS.FR_WARNING') as unknown) as string,
       size: 'md',
-      okBtnText: (translate('INTERVENTION_METADATA.FUND_RESERVATIONS.OK_BTN') as unknown) as string,
-      cancelBtnText: (translate('INTERVENTION_METADATA.FUND_RESERVATIONS.CANCEL_BTN') as unknown) as string,
+      okBtnText: (translate('FUND_RESERVATIONS.OK_BTN') as unknown) as string,
+      cancelBtnText: (translate('FUND_RESERVATIONS.CANCEL_BTN') as unknown) as string,
       closeCallback: this._frsInconsistenciesConfirmationHandler,
       content: this._frsConfirmationsDialogMessage
     });
@@ -351,7 +351,7 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
     let toastMsg =
       responseErr && responseErr.error
         ? responseErr.error
-        : ((translate('INTERVENTION_METADATA.FUND_RESERVATIONS.ADD_UPDATE_FR_NUMBER_ERR') as unknown) as string);
+        : ((translate('FUND_RESERVATIONS.ADD_UPDATE_FR_NUMBER_ERR') as unknown) as string);
     if (toastMsg.includes('HTTPConnection')) {
       const index = toastMsg.indexOf('HTTPConnection');
       toastMsg = toastMsg.slice(0, index);
@@ -383,9 +383,9 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
   }
 
   _getNoFrsWarningText(interventionId: string) {
-    let msg = (translate('INTERVENTION_METADATA.FUND_RESERVATIONS.NO_FR_NUM_ADDED') as unknown) as string;
+    let msg = (translate('FUND_RESERVATIONS.NO_FR_NUM_ADDED') as unknown) as string;
     if (!interventionId) {
-      msg = (translate('INTERVENTION_METADATA.FUND_RESERVATIONS.CAN_NOT_ADD_FR_NUM') as unknown) as string;
+      msg = (translate('FUND_RESERVATIONS.CAN_NOT_ADD_FR_NUM') as unknown) as string;
     }
     return msg;
   }
