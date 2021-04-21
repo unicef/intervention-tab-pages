@@ -35,13 +35,13 @@ export class QprList extends ReportingRequirementsCommonMixin(ReportingReqPastDa
       <etools-data-table-header no-collapse no-title>
         <etools-data-table-column class="col-1 right-align index-col">ID</etools-data-table-column>
         <etools-data-table-column class="col-3"
-          >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.START_DATE')}</etools-data-table-column
+          >${translate('START_DATE')}</etools-data-table-column
         >
         <etools-data-table-column class="col-3"
-          >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.END_DATE')}</etools-data-table-column
+          >${translate('END_DATE')}</etools-data-table-column
         >
         <etools-data-table-column class="col-3"
-          >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.DUE_DATE')}</etools-data-table-column
+          >${translate('DUE_DATE')}</etools-data-table-column
         >
         <etools-data-table-column class="flex-c"></etools-data-table-column>
       </etools-data-table-header>

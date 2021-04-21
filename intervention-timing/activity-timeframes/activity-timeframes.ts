@@ -41,14 +41,14 @@ export class ActivityTimeframes extends CommentsMixin(LitElement) {
       </style>
       <etools-content-panel
         show-expand-btn
-        panel-title=${translate('INTERVENTION_TIMING.ACTIVITY_TIMEFRAMES.ACTIVITY_TIMEFRAMES')}
+        panel-title=${translate('ACTIVITY_TIMEFRAMES')}
         comment-element="activity-timeframes"
-        comment-description=${translate('INTERVENTION_TIMING.ACTIVITY_TIMEFRAMES.ACTIVITY_TIMEFRAMES')}
+        comment-description=${translate('ACTIVITY_TIMEFRAMES')}
       >
         ${!timeFrames.length
           ? html`
               <div class="align-items-baseline">
-                <p>${translate('INTERVENTION_TIMING.ACTIVITY_TIMEFRAMES.ACTIVITY_TIMES_MSG')}</p>
+                <p>${translate('ACTIVITY_TIMES_MSG')}</p>
               </div>
             `
           : ''}
@@ -70,7 +70,7 @@ export class ActivityTimeframes extends CommentsMixin(LitElement) {
 
                       <div class="activities-container ${index === frames.length - 1 ? 'hide-border' : ''}">
                         <div class="no-activities" ?hidden="${mappedActivities[id].length}">
-                          - ${translate('INTERVENTION_TIMING.ACTIVITY_TIMEFRAMES.NO_ACTIVITIES')}
+                          - ${translate('NO_ACTIVITIES')}
                         </div>
                         ${mappedActivities[id].map(
                           ({name: activityName}: InterventionActivity) => html`

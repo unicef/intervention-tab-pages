@@ -49,9 +49,9 @@ export class CpOutputDialog extends LitElement {
   get dialogTitle(): string {
     let title = '';
     if (this.cpOutputName) {
-      title = getTranslation('CP_OUTPUT_DIALOG.INDICATORS_FOR_CP_OUTPUT') + this.cpOutputName;
+      title = getTranslation('INDICATORS_FOR_CP_OUTPUT') + this.cpOutputName;
     } else {
-      title = getTranslation('CP_OUTPUT_DIALOG.ADD_CP_OUTPUT');
+      title = getTranslation('ADD_CP_OUTPUT');
     }
     return title;
   }
@@ -94,7 +94,7 @@ export class CpOutputDialog extends LitElement {
                     this.onCpOutputSelected(detail.selectedItem && detail.selectedItem.id)}"
                   ?trigger-value-change-event="${!this.loadingInProcess}"
                   .selected="${this.selectedCpOutput}"
-                  label=${translate('CP_OUTPUT_DIALOG.CP_OUTPUT')}
+                  label=${translate('CP_OUTPUT')}
                   placeholder="&#8212;"
                   .options="${this.cpOutputs}"
                   option-label="name"
@@ -115,7 +115,7 @@ export class CpOutputDialog extends LitElement {
               this.onIndicatorsSelected(detail.selectedItems)}"
             ?trigger-value-change-event="${!this.loadingInProcess}"
             .selectedValues="${this.selectedIndicators}"
-            label=${translate('CP_OUTPUT_DIALOG.RAM_INDICATORS')}
+            label=${translate('RAM_INDICATORS')}
             placeholder="&#8212;"
             .options="${this.indicators}"
             option-label="name"
@@ -179,7 +179,7 @@ export class CpOutputDialog extends LitElement {
       .catch((error) => {
         this.loadingInProcess = false;
         this.errors = (error && error.response) || {};
-        fireEvent(this, 'toast', {text: getTranslation('CP_OUTPUT_DIALOG.CAN_NOT_SAVE_IND')});
+        fireEvent(this, 'toast', {text: getTranslation('CAN_NOT_SAVE_IND')});
       });
   }
 

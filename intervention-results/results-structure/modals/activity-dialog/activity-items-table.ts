@@ -45,17 +45,17 @@ export class ActivityItemsTable extends LitElement {
     return html`
       <div class="grid-row header border">
         <div class="grid-cell header-cell">
-          ${translate('ACTIVITY_DATA_DIALOG.ITEM_DESCRIPTION')}
+          ${translate('ITEM_DESCRIPTION')}
         </div>
         <div class="grid-cell header-cell center">
-          ${translate('ACTIVITY_DATA_DIALOG.PARTNER_CASH')}
+          ${translate('PARTNER_CASH')}
         </div>
         <div class="grid-cell header-cell center">
-          ${translate('ACTIVITY_DATA_DIALOG.UNICEF_CASH')}
+          ${translate('UNICEF_CASH')}
         </div>
         <div class="grid-cell header-cell"></div>
         <div class="grid-cell header-cell end">
-          ${translate('ACTIVITY_DATA_DIALOG.TOTAL_CASH')}
+          ${translate('TOTAL_CASH')}
         </div>
       </div>
 

@@ -73,13 +73,13 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
 
       <etools-content-panel
         show-expand-btn
-        panel-title=${translate('EFF_EFF_PROG_MGM.EFFECTIVE_EFFICIENT_PROG_MGM')}
+        panel-title=${translate('EFFECTIVE_EFFICIENT_PROG_MGM')}
         comment-element="programme-management"
-        comment-description=${translate('EFF_EFF_PROG_MGM.EFFECTIVE_EFFICIENT_PROG_MGM')}
+        comment-description=${translate('EFFECTIVE_EFFICIENT_PROG_MGM')}
       >
         <div slot="panel-btns">
           <label class="paper-label font-bold pad-right"
-            >${translate('EFF_EFF_PROG_MGM.TOTAL')}</label
+            >${translate('TOTAL')}</label
           ><label class="font-bold-12">${this.data.currency} ${this.total_amount}</label>
         </div>
 
@@ -111,17 +111,17 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
   @property({type: Array})
   columns: EtoolsTableColumn[] = [
     {
-      label: (translate('EFF_EFF_PROG_MGM.ITEM_PD_CURRENCY') as unknown) as string,
+      label: (translate('ITEM_PD_CURRENCY') as unknown) as string,
       name: 'title',
       type: EtoolsTableColumnType.Text
     },
     {
-      label: (translate('EFF_EFF_PROG_MGM.PARTNER_CASH') as unknown) as string,
+      label: (translate('PARTNER_CASH') as unknown) as string,
       name: 'partner_contribution',
       type: EtoolsTableColumnType.Number
     },
     {
-      label: (translate('EFF_EFF_PROG_MGM.UNICEF_CASH') as unknown) as string,
+      label: (translate('UNICEF_CASH') as unknown) as string,
       name: 'unicef_cash',
       type: EtoolsTableColumnType.Number
     },
@@ -166,24 +166,24 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
     this.total_amount = addCurrencyAmountDelimiter(data.total) || '0';
     return [
       {
-        title: translate('EFF_EFF_PROG_MGM.TITLE_1'),
-        description: translate('EFF_EFF_PROG_MGM.DESCRIPTION_1'),
+        title: translate('TITLE_1'),
+        description: translate('DESCRIPTION_1'),
         partner_contribution: addCurrencyAmountDelimiter(data.act1_partner),
         unicef_cash: addCurrencyAmountDelimiter(data.act1_unicef),
         total: addCurrencyAmountDelimiter(data.act1_total),
         index: 1
       },
       {
-        title: translate('EFF_EFF_PROG_MGM.TITLE_2'),
-        description: translate('EFF_EFF_PROG_MGM.DESCRIPTION_2'),
+        title: translate('TITLE_2'),
+        description: translate('DESCRIPTION_2'),
         partner_contribution: addCurrencyAmountDelimiter(data.act2_partner),
         unicef_cash: addCurrencyAmountDelimiter(data.act2_unicef),
         total: addCurrencyAmountDelimiter(data.act2_total),
         index: 2
       },
       {
-        title: translate('EFF_EFF_PROG_MGM.TITLE_3'),
-        description: translate('EFF_EFF_PROG_MGM.DESCRIPTION_3'),
+        title: translate('TITLE_3'),
+        description: translate('DESCRIPTION_3'),
         partner_contribution: addCurrencyAmountDelimiter(data.act3_partner),
         unicef_cash: addCurrencyAmountDelimiter(data.act3_unicef),
         total: addCurrencyAmountDelimiter(data.act3_total),

@@ -67,7 +67,7 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
         size="md"
         keep-dialog-open
         ?opened="${this.dialogOpened}"
-        dialog-title=${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.INT_ATT_DIALOG.ATTACHMENT')}
+        dialog-title=${translate('ATTACHMENT')}
         @confirm-btn-clicked="${() => this.processRequest()}"
         @close="${this.onClose}"
         ok-btn-text=${translate('GENERAL.SAVE')}
@@ -83,7 +83,7 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
               this.updateField('type', detail.selectedItem && detail.selectedItem.id)}"
             ?trigger-value-change-event="${!this.savingInProcess}"
             .selected="${this.data?.type}"
-            label=${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.INT_ATT_DIALOG.SELECT_DOC_TYPE')}
+            label=${translate('SELECT_DOC_TYPE')}
             placeholder="—"
             .options="${this.fileTypes}"
             option-label="name"
@@ -99,7 +99,7 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
 
           <!-- Attachment -->
           <etools-upload
-            label=${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.INT_ATT_DIALOG.ATTACHMENT')}
+            label=${translate('ATTACHMENT')}
             accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt"
             .showDeleteBtn="${false}"
             ?readonly="${this.data.id}"
@@ -117,7 +117,7 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
             ?checked="${!this.data?.active}"
             @checked-changed="${(e: CustomEvent) => this.updateField('active', !e.detail.value)}"
           >
-            ${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.INVALID')}
+            ${translate('INVALID')}
           </paper-checkbox>
         </div>
       </etools-dialog>

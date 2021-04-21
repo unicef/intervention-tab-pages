@@ -114,11 +114,11 @@ export class ActivityTimeFrames extends LitElement {
   protected render(): TemplateResult {
     return html`
       <label class="paper-label layout-horizontal center-align" required
-        >${translate('INTERVENTION_TIMING.ACTIVITY_TIMEFRAMES.ACTIVITY_TIMES')}</label
+        >${translate('ACTIVITY_TIMES')}</label
       >
       <div class="layout-horizontal center-align time-frame-container">
         ${!this._timeFrames.length
-          ? html`${translate('INTERVENTION_TIMING.ACTIVITY_TIMEFRAMES.ACTIVITY_TIMES_MSG')}`
+          ? html`${translate('ACTIVITY_TIMES_MSG')}`
           : html``}
         ${this._timeFrames.map(
           ([year, frames]: any) => html`

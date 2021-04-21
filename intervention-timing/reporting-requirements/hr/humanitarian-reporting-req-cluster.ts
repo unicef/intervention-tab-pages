@@ -39,10 +39,10 @@ export class HumanitarianReportingReqCluster extends EndpointsLitMixin(Reporting
       <div class="flex-c" ?hidden="${!this.reportingRequirements.length}">
         <etools-data-table-header no-collapse no-title class="w100">
           <etools-data-table-column class="col-2">${translate(
-            'INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.FREQUENCY'
+            'FREQUENCY'
           )}</etools-data-table-column>
           <etools-data-table-column class="flex-c">${translate(
-            'INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.DUE_DATES'
+            'DUE_DATES'
           )}</etools-data-table-column>
         </etools-data-table-header>
         ${this.reportingRequirements.map(
@@ -56,7 +56,7 @@ export class HumanitarianReportingReqCluster extends EndpointsLitMixin(Reporting
         </div>
 
         <div class="row-h" ?hidden="${!this._empty(this.reportingRequirements)}">
-          ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.NO_CLUSTER_HUMANITARIAN_REQUIREMENTS_SET')}
+          ${translate('NO_CLUSTER_HUMANITARIAN_REQUIREMENTS_SET')}
         </div>
       </div>
     `;

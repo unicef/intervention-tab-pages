@@ -87,7 +87,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
       <etools-content-panel panel-title="Reports">
         ${!this.reports.length
           ? html` <div class="row-h">
-              <p>${translate('INTERVENTION_REPORTS.NO_REPORTS_YET')}</p>
+              <p>${translate('NO_REPORTS_YET')}</p>
             </div>`
           : html` <etools-data-table-header
                 id="listHeader"
@@ -96,23 +96,23 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
                   .count} results to show"
               >
                 <etools-data-table-column class="col-2"
-                  >${translate('INTERVENTION_REPORTS.REPORT_NUM')}</etools-data-table-column
+                  >${translate('REPORT_NUM')}</etools-data-table-column
                 >
                 <etools-data-table-column class="flex-c"
-                  >${translate('INTERVENTION_REPORTS.PARTNER')}</etools-data-table-column
+                  >${translate('PARTNER')}</etools-data-table-column
                 >
                 <etools-data-table-column class="flex-c"
-                  >${translate('INTERVENTION_REPORTS.REPORT_STATUS')}</etools-data-table-column
+                  >${translate('REPORT_STATUS')}</etools-data-table-column
                 >
                 <etools-data-table-column class="flex-c"
-                  >${translate('INTERVENTION_REPORTS.DUE_DATE')}</etools-data-table-column
+                  >${translate('DUE_DATE')}</etools-data-table-column
                 >
                 <etools-data-table-column class="flex-c"
-                  >${translate('INTERVENTION_REPORTS.REPORTING_PERIOD')}</etools-data-table-column
+                  >${translate('REPORTING_PERIOD')}</etools-data-table-column
                 >
                 ${!this.noPdSsfaRef
                   ? html`<etools-data-table-column class="col-2"
-                      >${translate('INTERVENTION_REPORTS.PD_SPD_REF_NUM')}</etools-data-table-column
+                      >${translate('PD_SPD_REF_NUM')}</etools-data-table-column
                     >`
                   : html``}
               </etools-data-table-header>
@@ -121,7 +121,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
                   <div slot="row-data">
                     <span
                       class="col-data col-2"
-                      data-col-header-label="${translate('INTERVENTION_REPORTS.REPORT_NUM')}"
+                      data-col-header-label="${translate('REPORT_NUM')}"
                     >
                       <span id="tooltip-trigger-${report.id}" class="tooltip-trigger">
                         <a
@@ -133,14 +133,14 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
                         </a>
                         <span ?hidden="${this._canViewReport(report.status)}">${this._getReportTitle(report)}</span>
                         ${report.is_final
-                          ? html`<span class="final-badge">${translate('INTERVENTION_REPORTS.FINAL')}</span>`
+                          ? html`<span class="final-badge">${translate('FINAL')}</span>`
                           : html``}
                       </span>
                       <paper-tooltip for="tooltip-trigger-${report.id}" position="right" fit-to-visible-bounds>
                         ${report.programme_document.title}
                       </paper-tooltip>
                     </span>
-                    <span class="col-data flex-c" data-col-header-label="${translate('INTERVENTION_REPORTS.PARTNER')}">
+                    <span class="col-data flex-c" data-col-header-label="${translate('PARTNER')}">
                       <span id="tooltip-partner-${report.id}" class="tooltip-trigger">
                         ${this._displayOrDefault(report.partner_name)}
                       </span>
@@ -151,23 +151,23 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
                     </span>
                     <span
                       class="col-data flex-c"
-                      data-col-header-label="${translate('INTERVENTION_REPORTS.REPORT_STATUS')}"
+                      data-col-header-label="${translate('REPORT_STATUS')}"
                     >
                       <intervention-report-status status="${report.status}"></intervention-report-status>
                     </span>
-                    <span class="col-data flex-c" data-col-header-label="${translate('INTERVENTION_REPORTS.DUE_DATE')}">
+                    <span class="col-data flex-c" data-col-header-label="${translate('DUE_DATE')}">
                       ${this._displayOrDefault(report.due_date)}
                     </span>
                     <span
                       class="col-data flex-c"
-                      data-col-header-label="${translate('INTERVENTION_REPORTS.REPORTING_PERIOD')}"
+                      data-col-header-label="${translate('REPORTING_PERIOD')}"
                     >
                       ${this.getDisplayValue(report.reporting_period)}
                     </span>
                     ${!this.noPdSsfaRef
                       ? html`<span
                           class="col-data col-2"
-                          data-col-header-label="${translate('INTERVENTION_REPORTS.PD_SPD_REF_NUM')}"
+                          data-col-header-label="${translate('PD_SPD_REF_NUM')}"
                         >
                           <a
                             class="pd-ref truncate"
@@ -182,7 +182,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
 
                   <div slot="row-data-details">
                     <div class="row-details-content">
-                      <span class="rdc-title flex-c">${translate('INTERVENTION_REPORTS.UNICEF_FOCAL_POINTS')}</span>
+                      <span class="rdc-title flex-c">${translate('UNICEF_FOCAL_POINTS')}</span>
                       <span>${this.getDisplayValue(report.unicef_focal_points)}</span>
                     </div>
                   </div>

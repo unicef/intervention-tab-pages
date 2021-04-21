@@ -63,7 +63,7 @@ export class EditHruDialog extends connectStore(LitElement) {
       <etools-dialog
         id="editHruDialog"
         size="lg"
-        dialog-title=${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.EDIT_DATES_HUMANITARIAN_REPORT')}
+        dialog-title=${translate('EDIT_DATES_HUMANITARIAN_REPORT')}
         @confirm-btn-clicked="${this._saveHurData}"
         ok-btn-text=${translate('GENERAL.SAVE')}
         keep-dialog-open
@@ -75,7 +75,7 @@ export class EditHruDialog extends connectStore(LitElement) {
         <div class="start-date">
           <datepicker-lite
             id="dtPickerStDate"
-            label=${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.SELECT_START_DATE')}
+            label=${translate('SELECT_START_DATE')}
             .value="${this.repStartDate}"
             required
             min-date="${this.minDate}"
@@ -85,7 +85,7 @@ export class EditHruDialog extends connectStore(LitElement) {
           >
           </datepicker-lite>
         </div>
-        <div>${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.HUMANITARIAN_REPORT_PROMPT')}</div>
+        <div>${translate('HUMANITARIAN_REPORT_PROMPT')}</div>
 
         <div class="layout-horizontal row-padding-v">
           <div class="col layout-vertical col-6">
@@ -100,7 +100,7 @@ export class EditHruDialog extends connectStore(LitElement) {
           </div>
           <div class="col col-6">
             <div class="row-h" ?hidden="${!this._empty(this.hruData.length)}">
-              ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.NO_DATES_ADDED')}
+              ${translate('NO_DATES_ADDED')}
             </div>
             <hru-list
               id="hruList"
@@ -117,7 +117,7 @@ export class EditHruDialog extends connectStore(LitElement) {
         <div class="layout-horizontal row-padding-v">
           <div class="col layout-vertical col-3">
             <paper-button id="add-selected-date" class="secondary-btn" @click="${() => this._addToList()}">
-              ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.ADD_SELECTED_DATE')}
+              ${translate('ADD_SELECTED_DATE')}
             </paper-button>
           </div>
         </div>
@@ -209,7 +209,7 @@ export class EditHruDialog extends connectStore(LitElement) {
   _addToList() {
     if (!this.selectedDate) {
       fireEvent(this, 'toast', {
-        text: getTranslation('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.PLEASE_SELECT_DATE'),
+        text: getTranslation('PLEASE_SELECT_DATE'),
         showCloseBtn: true
       });
       return;
@@ -217,7 +217,7 @@ export class EditHruDialog extends connectStore(LitElement) {
     const alreadySelected = this.hruData.find((d: any) => d.end_date === this.selectedDate);
     if (alreadySelected) {
       fireEvent(this, 'toast', {
-        text: getTranslation('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.DATE_ALREADY_ADDED'),
+        text: getTranslation('DATE_ALREADY_ADDED'),
         showCloseBtn: true
       });
       return;
