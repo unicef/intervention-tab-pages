@@ -17,7 +17,7 @@ import {fireEvent} from '../../../../utils/fire-custom-event';
 import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 import {AnyObject, Disaggregation} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
-import {callClickOnSpacePush} from '../../../../utils/common-methods';
+import {callClickOnSpacePushListener} from '../../../../utils/common-methods';
 
 /**
  * @customElement
@@ -185,7 +185,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
       this.shadowRoot!.querySelectorAll('etools-dropdown').forEach((el, index) => {
         const paperEl = el.shadowRoot!.querySelector('paper-input');
         if (paperEl) {
-          callClickOnSpacePush(paperEl);
+          callClickOnSpacePushListener(paperEl);
           if (index === 0) {
             paperEl.focus();
           }

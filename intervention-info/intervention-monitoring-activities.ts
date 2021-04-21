@@ -28,8 +28,8 @@ export class InterventionMonitoringActivities extends connectStore(LitElement) {
         panel-title=${translate('MONITORING_ACTIVITIES_SUBTAB')}
       >
         <monitoring-visits-list
-          .interventionId="${this.intervention.id}"
-          .partnerId="${this.intervention.partner_id}"
+          .interventionId="${this.intervention?.id}"
+          .partnerId="${this.intervention?.partner_id}"
           showTpmVisits
         >
         </monitoring-visits-list>

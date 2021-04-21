@@ -27,7 +27,7 @@ import {connectStore} from '../../common/mixins/connect-store-mixin';
 import {AnyObject, Permission} from '@unicef-polymer/etools-types';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
-import {callClickOnSpacePush} from '../../utils/common-methods';
+import {callClickOnSpacePushListener} from '../../utils/common-methods';
 import {translate} from 'lit-translate';
 
 /**
@@ -237,7 +237,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
   firstUpdated(changedProperties: PropertyValues): void {
     super.firstUpdated(changedProperties);
 
-    this.shadowRoot!.querySelectorAll('#clickable').forEach((el) => callClickOnSpacePush(el));
+    this.shadowRoot!.querySelectorAll('#clickable').forEach((el) => callClickOnSpacePushListener(el));
   }
 
   @property({type: String})

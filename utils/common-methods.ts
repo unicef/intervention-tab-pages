@@ -29,7 +29,7 @@ export const pageIsNotCurrentlyActive = (
   );
 };
 
-export const callClickOnSpacePush = (htmlElement: any) => {
+export const callClickOnSpacePushListener = (htmlElement: any) => {
   if (htmlElement && htmlElement.addEventListener) {
     htmlElement.addEventListener('keyup', function (event: KeyboardEvent) {
       if (event.key === ' ' && !event.ctrlKey) {
@@ -42,7 +42,7 @@ export const callClickOnSpacePush = (htmlElement: any) => {
   }
 };
 
-export const callClickOnEnterPush = (htmlElement: any) => {
+export const callClickOnEnterPushListener = (htmlElement: any) => {
   if (htmlElement && htmlElement.addEventListener) {
     htmlElement.addEventListener('keyup', function (event: KeyboardEvent) {
       if (event.key === 'Enter' && !event.ctrlKey) {

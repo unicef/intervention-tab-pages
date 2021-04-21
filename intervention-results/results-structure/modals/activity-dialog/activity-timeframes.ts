@@ -14,7 +14,7 @@ import {ActivityTime, groupByYear, serializeTimeFrameData} from '../../../../uti
 import {fireEvent} from '../../../../utils/fire-custom-event';
 import {InterventionActivityTimeframe} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {callClickOnSpacePush} from '../../../../utils/common-methods';
+import {callClickOnSpacePushListener} from '../../../../utils/common-methods';
 
 @customElement('activity-time-frames')
 export class ActivityTimeFrames extends LitElement {
@@ -153,7 +153,7 @@ export class ActivityTimeFrames extends LitElement {
     super.firstUpdated(changedProperties);
 
     this.shadowRoot!.querySelectorAll('.time-frame').forEach((el) => {
-      callClickOnSpacePush(el);
+      callClickOnSpacePushListener(el);
     });
 
     if (window.applyFocusVisiblePolyfill != null) {
