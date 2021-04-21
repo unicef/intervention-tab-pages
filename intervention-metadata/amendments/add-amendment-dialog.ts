@@ -237,7 +237,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
           break;
         case 'other':
           messages.push(
-            (translate('INTERVENTION_METADATA.AMENDMENTS.AMENDMENT_DIALOG.OTHER_MSG') as unknown) as string
+            (translate('INTERVENTION_METADATA.AMENDMENTS.AMENDMENT_DIALOG.OTHER') as unknown) as string
           );
           break;
       }
