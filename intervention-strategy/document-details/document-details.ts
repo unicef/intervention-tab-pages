@@ -69,6 +69,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'title')}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit?.title)}"
             ?required="${this.permissions.required.title}"
+            @focus="${() => (this.autoValidate = true)}"
             error-message="This field is required"
             maxlength="256"
             .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.title)}"
@@ -129,23 +130,6 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
 
   @property({type: Boolean})
   autoValidate = false;
-
-  connectedCallback() {
-    super.connectedCallback();
-  }
-
-  firstUpdated() {
-    this._handlePaperTextareaAutovalidateError();
-    super.firstUpdated();
-  }
-
-  /**
-   * This will prevent a console error "Uncaught TypeError: Cannot read property 'textarea' of undefined"
-   * The error occurs only on first load/ hard refresh and on paper-textareas that have auto-validate
-   */
-  _handlePaperTextareaAutovalidateError() {
-    this.autoValidate = true;
-  }
 
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'strategy')) {
