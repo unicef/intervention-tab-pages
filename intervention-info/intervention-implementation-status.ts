@@ -25,7 +25,7 @@ export class InterventionImplementationStatus extends connectStore(LitElement) {
       <etools-content-panel
         id="fund-reservation-display"
         class="content-section"
-        panel-title=${translate('INTERVENTION_TABS.IMPLEMENTATION_STATUS_SUBTAB')}
+        panel-title=${translate('IMPLEMENTATION_STATUS_SUBTAB')}
       >
         <fund-reservations-display
           .intervention="${this.intervention}"

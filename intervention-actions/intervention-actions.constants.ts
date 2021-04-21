@@ -21,16 +21,16 @@ export const BACK_ACTIONS = [SEND_TO_PARTNER, SEND_TO_UNICEF, UNLOCK, REJECT_REV
 export const ACTIONS_WITH_INPUT = [CANCEL, TERMINATE];
 
 export const namesMap: GenericObject<string> = {
-  [EXPORT_COMMENTS]: getTranslation('INTERVENTION_ACTIONS.EXPORT_COMMENTS'),
-  [EXPORT_CSV]: getTranslation('INTERVENTION_ACTIONS.EXPORT_CSV'),
-  [EXPORT_PDF]: getTranslation('INTERVENTION_ACTIONS.EXPORT_PDF'),
-  [SEND_TO_PARTNER]: getTranslation('INTERVENTION_ACTIONS.SEND_TO_PARTNER'),
-  [SEND_TO_UNICEF]: getTranslation('INTERVENTION_ACTIONS.SEND_TO_UNICEF'),
-  [UNLOCK]: getTranslation('INTERVENTION_ACTIONS.UNLOCK'),
-  [ACCEPT]: getTranslation('INTERVENTION_ACTIONS.ACCEPT'),
-  [REVIEW]: getTranslation('INTERVENTION_ACTIONS.REVIEW'),
+  [EXPORT_COMMENTS]: getTranslation('EXPORT_COMMENTS'),
+  [EXPORT_CSV]: getTranslation('EXPORT_CSV'),
+  [EXPORT_PDF]: getTranslation('EXPORT_PDF'),
+  [SEND_TO_PARTNER]: getTranslation('SEND_TO_PARTNER'),
+  [SEND_TO_UNICEF]: getTranslation('SEND_TO_UNICEF'),
+  [UNLOCK]: getTranslation('UNLOCK'),
+  [ACCEPT]: getTranslation('ACCEPT'),
+  [REVIEW]: getTranslation('REVIEW'),
   [CANCEL]: getTranslation('GENERAL.CANCEL'),
-  [TERMINATE]: getTranslation('INTERVENTION_ACTIONS.TERMINATE'),
-  [REJECT_REVIEW]: getTranslation('INTERVENTION_ACTIONS.REJECT_REVIEW'),
-  [SIGN]: getTranslation('INTERVENTION_ACTIONS.SIGN')
+  [TERMINATE]: getTranslation('TERMINATE'),
+  [REJECT_REVIEW]: getTranslation('REJECT_REVIEW'),
+  [SIGN]: getTranslation('SIGN')
 };

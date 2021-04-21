@@ -28,7 +28,7 @@ export class AreYouSure extends LitElement {
   }
 
   @property({type: String})
-  content = (translate('ARE_YOU_SURE.ARE_YOU_SURE_PROMPT') as unknown) as string;
+  content = (translate('ARE_YOU_SURE_DEL') as unknown) as string;
 
   @property({type: String})
   confirmBtnText = 'OK';

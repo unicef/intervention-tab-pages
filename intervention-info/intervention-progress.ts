@@ -244,7 +244,7 @@ export class InterventionProgress extends connectStore(
 
       <etools-content-panel
         class="content-section"
-        panel-title="${translate('INTERVENTION_TABS.RESULTS_REPORTED_SUBTAB')}"
+        panel-title="${translate('RESULTS_REPORTED_SUBTAB')}"
       >
         <div
           class="row-h"

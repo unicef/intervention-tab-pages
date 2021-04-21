@@ -115,33 +115,33 @@ export class InterventionActions extends LitElement {
     let btn = '';
     switch (action) {
       case 'signature':
-        btn = getTranslation('INTERVENTION_ACTIONS.SEND');
-        message = getTranslation('INTERVENTION_ACTIONS.SEND_FOR_SIGNATURE');
+        btn = getTranslation('SEND');
+        message = getTranslation('SEND_FOR_SIGNATURE');
         break;
       case 'accept_review':
-        btn = getTranslation('INTERVENTION_ACTIONS.SEND');
-        message = getTranslation('INTERVENTION_ACTIONS.SEND_FOR_ACCEPT_REVIEW');
+        btn = getTranslation('SEND');
+        message = getTranslation('SEND_FOR_ACCEPT_REVIEW');
         break;
       case 'cancel':
         btn = getTranslation('GENERAL.YES');
-        message = getTranslation('INTERVENTION_ACTIONS.CANCEL_PROMPT');
+        message = getTranslation('CANCEL_PROMPT');
         break;
       case 'send_to_partner':
         btn = getTranslation('GENERAL.YES');
-        message = getTranslation('INTERVENTION_ACTIONS.SEND_TO_PARTNER_PROMPT');
+        message = getTranslation('SEND_TO_PARTNER_PROMPT');
         break;
       case 'send_to_unicef':
         btn = getTranslation('GENERAL.YES');
-        message = getTranslation('INTERVENTION_ACTIONS.SEND_TO_UNICEF_PROMPT');
+        message = getTranslation('SEND_TO_UNICEF_PROMPT');
         break;
       case 'terminate':
-        btn = getTranslation('INTERVENTION_ACTIONS.CONTINUE');
-        message = getTranslation('INTERVENTION_ACTIONS.TERMINATE_PROMPT');
+        btn = getTranslation('CONTINUE');
+        message = getTranslation('TERMINATE_PROMPT');
         break;
       default:
         btn = this.actionsNamesMap[action];
         message =
-          getTranslation('INTERVENTION_ACTIONS.ARE_YOU_SURE_PROMPT') +
+          getTranslation('ARE_YOU_SURE_PROMPT') +
           this.actionsNamesMap[action]?.toLowerCase() +
           ' ?';
     }

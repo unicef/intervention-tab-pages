@@ -114,7 +114,7 @@ export class MonitoringVisitsList extends LitElement {
           class="row-h"
           ?hidden="${!this._hideMonitoringVisits(this.monitoringVisits.length, this.tpmActivities.length)}"
         >
-          <p>${translate('INTERVENTION_OVERVIEW.NO_ACTIVITIES')}</p>
+          <p>${translate('NO_ACTIVITIES')}</p>
         </div>
       </div>`;
   }

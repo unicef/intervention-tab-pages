@@ -83,22 +83,22 @@ export class InterventionReviewTab extends connectStore(LitElement) {
     return html`
       <etools-content-panel
         class="content-section"
-        panel-title="${translate('INTERVENTION_REVIEWS.INTERVENTION_REVIEW')}"
+        panel-title="${translate('INTERVENTION_REVIEW')}"
       >
         <div slot="panel-btns">
           <paper-icon-button @click="${() => (this.allowEdit = true)}" icon="create"> </paper-icon-button>
         </div>
 
         <div class="row-padding-v">
-          <div ?hidden="${this.review}">${translate('INTERVENTION_REVIEWS.EMPTY_REVIEW')}</div>
+          <div ?hidden="${this.review}">${translate('EMPTY_REVIEW')}</div>
 
           <div ?hidden="${!this.review}" class="container layout-horizontal">
             <div class="info-block">
-              <div class="label">${translate('INTERVENTION_REVIEWS.REVIEW_CREATED')}</div>
+              <div class="label">${translate('REVIEW_CREATED')}</div>
               <div class="value">${this.reviewCreatedDate}</div>
             </div>
             <div class="info-block">
-              <div class="label">${translate('INTERVENTION_REVIEWS.REVIEW_TYPE')}</div>
+              <div class="label">${translate('REVIEW_TYPE')}</div>
               <div class="value">${Types[this.review?.review_type || '']}</div>
             </div>
             <paper-checkbox
@@ -106,7 +106,7 @@ export class InterventionReviewTab extends connectStore(LitElement) {
               ?disabled="${!this.allowEdit}"
               @checked-changed="${(e: CustomEvent) => this.updateField(e.detail.value)}"
             >
-              ${translate('INTERVENTION_REVIEWS.OVERALL_APPROVAL')}
+              ${translate('OVERALL_APPROVAL')}
             </paper-checkbox>
           </div>
 
