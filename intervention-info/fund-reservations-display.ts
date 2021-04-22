@@ -78,7 +78,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
       </style>
 
       <div class="row-h" ?hidden="${this.frsDetails.frs.length}">
-        <p>${translate('INTERVENTION_OVERVIEW.NO_FUND_RESERVATIONS')}</p>
+        <p>${translate('NO_FUND_RESERVATIONS')}</p>
       </div>
 
       <div class="list-container" ?hidden="${this._noFrs(this.frsDetails)}">

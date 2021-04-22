@@ -71,19 +71,19 @@ export class IndicatorReportTarget extends UtilsMixin(CommonMixin(LitElement)) {
       </style>
 
       <div class="target-row">
-        <span>${translate('INTERVENTION_REPORTS.TARGET')}</span>
+        <span>${translate('TARGET')}</span>
         <span title="${this._getTargetValue(this.displayType, this.target)}">
           ${this._getTargetValue(this.displayType, this.target)}
         </span>
       </div>
       <div class="target-row">
-        <span>${translate('INTERVENTION_REPORTS.TOTAL_CUMULATIVE')}</span>
+        <span>${translate('TOTAL_CUMULATIVE')}</span>
         <span title="${this._getCumulativeProgress(this.displayType, this.cumulativeProgress)}">
           ${this._getCumulativeProgress(this.displayType, this.cumulativeProgress)}
         </span>
       </div>
       <div class="target-row">
-        <span>${translate('INTERVENTION_REPORTS.ACHIEVEMENT_IN_REPORTING_PERIOD')}</span>
+        <span>${translate('ACHIEVEMENT_IN_REPORTING_PERIOD')}</span>
         <span title="${this._getAchievement(this.displayType, this.achievement)}"
           >${this._getAchievement(this.displayType, this.achievement)}</span
         >

@@ -58,14 +58,14 @@ export class PdAmendments extends CommentsMixin(LitElement) {
 
       <etools-content-panel
         show-expand-btn
-        panel-title=${translate('INTERVENTION_METADATA.AMENDMENTS.AMENDMENTS')}
+        panel-title=${translate('AMENDMENTS')}
         comment-element="amendments"
-        comment-description=${translate('INTERVENTION_METADATA.AMENDMENTS.AMENDMENTS')}
+        comment-description=${translate('AMENDMENTS')}
       >
         <div slot="panel-btns">
           <paper-icon-button
             icon="add-box"
-            title=${translate('INTERVENTION_METADATA.AMENDMENTS.ADD_AMENDMENT')}
+            title=${translate('ADD_AMENDMENT')}
             hidden
             @click="${() => this._showAddAmendmentDialog()}"
           >
@@ -74,22 +74,22 @@ export class PdAmendments extends CommentsMixin(LitElement) {
         <div class="p-relative" id="amendments-wrapper">
           <etools-data-table-header id="listHeader" no-collapse no-title ?hidden="${!this.amendments.length}">
             <etools-data-table-column class="col-1"
-              >${translate('INTERVENTION_METADATA.AMENDMENTS.REF')}</etools-data-table-column
+              >${translate('REF')}</etools-data-table-column
             >
             <etools-data-table-column class="col-2"
-              >${translate('INTERVENTION_METADATA.AMENDMENTS.SIGNED_DATE')}</etools-data-table-column
+              >${translate('SIGNED_DATE')}</etools-data-table-column
             >
             <etools-data-table-column class="col-3"
-              >${translate('INTERVENTION_METADATA.AMENDMENTS.AMENDMENT_TYPES')}</etools-data-table-column
+              >${translate('AMENDMENT_TYPES')}</etools-data-table-column
             >
             <etools-data-table-column class="col-2"
-              >${translate('INTERVENTION_METADATA.AMENDMENTS.SIGNED_AMENDMENT')}</etools-data-table-column
+              >${translate('SIGNED_AMENDMENT')}</etools-data-table-column
             >
             <etools-data-table-column class="flex-c"
-              >${translate('INTERVENTION_METADATA.AMENDMENTS.INTERNAL_PRC_REVIEWS')}</etools-data-table-column
+              >${translate('INTERNAL_PRC_REVIEWS')}</etools-data-table-column
             >
             <etools-data-table-column class="flex-c"
-              >${translate('INTERVENTION_METADATA.AMENDMENTS.OTHER_INFO')}</etools-data-table-column
+              >${translate('OTHER_INFO')}</etools-data-table-column
             >
           </etools-data-table-header>
 
@@ -133,7 +133,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
             `
           )}
           <div class="row-h" ?hidden=${this.amendments.length}>
-            <p>${translate('INTERVENTION_METADATA.AMENDMENTS.NO_AMENDMENTS_ADDED')}</p>
+            <p>${translate('NO_AMENDMENTS_ADDED')}</p>
           </div>
         </div>
       </etools-content-panel> `;

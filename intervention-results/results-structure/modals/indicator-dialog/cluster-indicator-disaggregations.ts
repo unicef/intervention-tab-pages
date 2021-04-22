@@ -37,13 +37,13 @@ export class ClusterIndicatorDisaggregations extends LitElement {
             <div class="row-h ">
               <div class="col col-4">
                 <div class="layout-vertical">
-                  <label class="paper-label">${translate('INDICATOR_DIALOG.DISAGREG_BY')}</label>
+                  <label class="paper-label">${translate('DISAGREG_BY')}</label>
                   <label class="input-label" empty="${!item.name}">${item.name}</label>
                 </div>
               </div>
               <div class="col col-8">
                 <div class="layout-vertical">
-                  <label class="paper-label">${translate('INDICATOR_DIALOG.DISAGREG_GROUPS')}</label>
+                  <label class="paper-label">${translate('DISAGREG_GROUPS')}</label>
                   <label class="input-label" empty="${!item.choices}">${this._getGroupNames(item.choices)}</label>
                 </div>
               </div>
@@ -53,7 +53,7 @@ export class ClusterIndicatorDisaggregations extends LitElement {
       </div>
 
       <div class="row-h" ?hidden="${!this._noDisaggregations(this.disaggregations, this.disaggregations.length)}">
-        <p>${translate('INDICATOR_DIALOG.NO_DISAGREG_ADDED')}</p>
+        <p>${translate('NO_DISAGREG_ADDED')}</p>
       </div>
     `;
   }

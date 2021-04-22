@@ -58,9 +58,9 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
 
       <etools-content-panel
         show-expand-btn
-        panel-title=${translate('INTERVENTION_STRATEGY.GENDER_EQUITY_SUSTAINABILITY')}
+        panel-title=${translate('GENDER_EQUITY_SUSTAINABILITY')}
         comment-element="gender-equity-sustainability"
-        comment-description=${translate('INTERVENTION_STRATEGY.GENDER_EQUITY_SUSTAINABILITY')}
+        comment-description=${translate('GENDER_EQUITY_SUSTAINABILITY')}
       >
         <div slot="panel-btns">
           <paper-icon-button
@@ -73,7 +73,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
 
         <div class="row-padding-v pb-20">
           <div class="w100">
-            <label class="paper-label">${translate('INTERVENTION_STRATEGY.GENDER_RATING')}</label>
+            <label class="paper-label">${translate('GENDER_RATING')}</label>
           </div>
           <paper-radio-group
             selected="${this.data.gender_rating}"
@@ -83,7 +83,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
           </paper-radio-group>
           <div class="col col-12 pl-none">
             <paper-textarea
-              label=${translate('INTERVENTION_STRATEGY.GENDER_NARATIVE')}
+              label=${translate('GENDER_NARATIVE')}
               always-float-label
               class="w100"
               placeholder="&#8212;"
@@ -100,7 +100,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         </div>
         <div class="row-padding-v pb-20">
           <div class="w100">
-            <label class="paper-label">${translate('INTERVENTION_STRATEGY.SUSTAINABILITY_RATING')}</label>
+            <label class="paper-label">${translate('SUSTAINABILITY_RATING')}</label>
           </div>
           <paper-radio-group
             .selected="${this.data.sustainability_rating}"
@@ -110,7 +110,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
           </paper-radio-group>
           <div class="col col-12 pl-none">
             <paper-textarea
-              label=${translate('INTERVENTION_STRATEGY.SUSTAINABILITY_NARRATIVE')}
+              label=${translate('SUSTAINABILITY_NARRATIVE')}
               always-float-label
               class="w100"
               placeholder="&#8212;"
@@ -127,7 +127,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         </div>
         <div class="row-padding-v pb-20">
           <div class="w100">
-            <label class="paper-label">${translate('INTERVENTION_STRATEGY.EQUITY_RATING')}</label>
+            <label class="paper-label">${translate('EQUITY_RATING')}</label>
           </div>
           <paper-radio-group
             .selected="${this.data.equity_rating}"
@@ -137,7 +137,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
           </paper-radio-group>
           <div class="col col-12 pl-none">
             <paper-textarea
-              label=${translate('INTERVENTION_STRATEGY.EQUITY_NARATIVE')}
+              label=${translate('EQUITY_NARATIVE')}
               always-float-label
               class="w100"
               placeholder="&#8212;"

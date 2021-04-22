@@ -84,20 +84,20 @@ export class PdActivities extends CommentsMixin(LitElement) {
 
       <div class="row-h align-items-center header">
         <div class="heading flex-auto">
-          ${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.PD_ACTIVITIES')}
+          ${translate('PD_ACTIVITIES')}
           <paper-icon-button
             icon="add-box"
             ?hidden="${this.readonly}"
             @click="${() => this.openDialog()}"
           ></paper-icon-button>
         </div>
-        <div class="heading number-data flex-none">${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.PARTNER_CASH')}</div>
+        <div class="heading number-data flex-none">${translate('PARTNER_CASH')}</div>
         <div class="heading number-data flex-none">
-          ${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.UNICEF_CASH')}
+          ${translate('UNICEF_CASH')}
         </div>
         <div class="heading number-data flex-none">${translate('GENERAL.TOTAL')}</div>
         <div class="heading number-data flex-none">
-          ${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.PERCENT_PARTNER')}
+          ${translate('PERCENT_PARTNER')}
         </div>
       </div>
 
@@ -155,7 +155,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
               <!--    Locations    -->
               <div class="details-container">
                 <div class="text details-heading">
-                  ${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.TIME_PERIODS')}
+                  ${translate('TIME_PERIODS')}
                 </div>
                 <div class="details-text">
                   <b>${this.getQuartersNames(activity.time_frames)}</b>
@@ -165,7 +165,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
               <!--    Section and Cluster    -->
               <div class="details-container full">
                 <div class="text details-heading">
-                  ${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.OTHER_NOTES')}
+                  ${translate('OTHER_NOTES')}
                 </div>
                 <div class="details-text">${activity.context_details || '-'}</div>
               </div>
@@ -234,7 +234,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
-        content: (translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.DELETE_ACTIVITY_PROMPT') as unknown) as string,
+        content: (translate('DELETE_ACTIVITY_PROMPT') as unknown) as string,
         confirmBtnText: (translate('GENERAL.DELETE') as unknown) as string
       }
     }).then(({confirmed}) => {

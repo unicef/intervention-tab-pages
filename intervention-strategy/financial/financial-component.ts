@@ -72,14 +72,14 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
       </style>
       <etools-content-panel
         show-expand-btn
-        panel-title=${translate('INTERVENTION_STRATEGY.FINANCIAL')}
+        panel-title=${translate('FINANCIAL')}
         comment-element="financial"
-        comment-description=${translate('INTERVENTION_STRATEGY.FINANCIAL')}
+        comment-description=${translate('FINANCIAL')}
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
         <div class="layout-horizontal padd-top">
           <div class="w100">
-            <label class="paper-label">${translate('INTERVENTION_STRATEGY.CASH_TRANSFER_MOD')}</label>
+            <label class="paper-label">${translate('CASH_TRANSFER_MOD')}</label>
           </div>
         </div>
         <div class="layout-horizontal row-padding-v padd-bott">

@@ -101,13 +101,13 @@ export class CpOutputLevel extends LitElement {
                   ? html`
                       <div class="flex-1 flex-fix">
                         <div class="heading">
-                          ${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.COUNTRY_PROGRAME_OUTPUT')}
+                          ${translate('COUNTRY_PROGRAME_OUTPUT')}
                         </div>
                         <div class="data">${this.resultLink.cp_output_name}</div>
                       </div>
 
                       <div class="flex-1 flex-fix" ?hidden="${!this.showIndicators}">
-                        <div class="heading">${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.RAM_INDICATORS')}</div>
+                        <div class="heading">${translate('RAM_INDICATORS')}</div>
                         <div class="data">
                           <ul id="ram-list">
                             ${this.resultLink.ram_indicator_names.length
@@ -123,7 +123,7 @@ export class CpOutputLevel extends LitElement {
                       </div>
 
                       <div class="flex-none" ?hidden="${!this.showActivities}">
-                        <div class="heading">${translate('INTERVENTION_RESULTS.TOTAL_CASH_BUDGET')}</div>
+                        <div class="heading">${translate('TOTAL_CASH_BUDGET')}</div>
                         <div class="data">${this.currency} ${displayCurrencyAmount(this.resultLink.total, '0.00')}</div>
                       </div>
 
@@ -143,7 +143,7 @@ export class CpOutputLevel extends LitElement {
                   : html`
                       <!--      If PD is unassociated with CP Output      -->
                       <div class="flex-1 flex-fix data alert">
-                        ${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.UNASSOCIATED_TO_CP_OUTPUT')}
+                        ${translate('UNASSOCIATED_TO_CP_OUTPUT')}
                       </div>
                     `}
               </div>
@@ -153,7 +153,7 @@ export class CpOutputLevel extends LitElement {
 
                 <div class="add-pd row-h align-items-center" ?hidden="${!this.resultLink.cp_output || this.readonly}">
                   <paper-icon-button icon="add-box" @click="${() => this.addPD()}"></paper-icon-button>
-                  ${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.ADD_PD_OUTPUT')}
+                  ${translate('ADD_PD_OUTPUT')}
                 </div>
               </div>
             </etools-data-table-row>

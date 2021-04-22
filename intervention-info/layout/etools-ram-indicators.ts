@@ -49,7 +49,7 @@ export class EtoolsRamIndicators extends CommonMixin(LitElement) {
       <etools-loading ?active="${this.loading}">Loading...</etools-loading>
 
       <iron-label>
-        <span id="label">${translate('INTERVENTION_REPORTS.RAM_INDICATORS')}</span>
+        <span id="label">${translate('RAM_INDICATORS')}</span>
         <div id="ram-indicators" iron-label-target>${this.getRamIndicatorsHTML(this.ramIndicators)}</div>
       </iron-label>
     `;
@@ -128,7 +128,7 @@ export class EtoolsRamIndicators extends CommonMixin(LitElement) {
       .catch((error: any) => {
         if (error.status === 404) {
           fireEvent(this, 'toast', {
-            text: this._translate('INTERVENTION_REPORTS.DUE_DATE'),
+            text: this._translate('DUE_DATE'),
             showCloseBtn: true
           });
         } else {

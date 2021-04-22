@@ -50,7 +50,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
         size="md"
         ?opened="${this.dialogOpened}"
         ok-btn-text="Save"
-        dialog-title=${translate('INTERVENTION_METADATA.AMENDMENTS.ADD_AMENDMENT')}
+        dialog-title=${translate('ADD_AMENDMENT')}
         @close="${() => this.onClose()}"
         @confirm-btn-clicked="${() => this._validateAndSaveAmendment()}"
         ?show-spinner="${this.savingInProcess}"
@@ -61,13 +61,13 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
           <!-- Signed Date -->
           <datepicker-lite
             id="signed-date"
-            label=${translate('INTERVENTION_METADATA.AMENDMENTS.SIGNED_DATE')}
+            label=${translate('SIGNED_DATE')}
             .value="${this.data.signed_date}"
             max-date="${this.getCurrentDate()}"
             fire-date-has-changed
             @date-has-changed="${(e: CustomEvent) =>
               this.valueChanged({value: formatDate(e.detail.date, 'YYYY-MM-DD')}, 'signed_date')}"
-            max-date-error-msg=${translate('INTERVENTION_METADATA.AMENDMENTS.AMENDMENT_DIALOG.MAX_DATE_ERR')}
+            max-date-error-msg=${translate('MAX_DATE_ERR')}
             auto-validate
             required
             selected-date-display-format="D MMM YYYY"
@@ -78,7 +78,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
           <!-- Amendment Type -->
           <etools-dropdown-multi
             id="amendment-types"
-            label=${translate('INTERVENTION_METADATA.AMENDMENTS.AMENDMENT_TYPES')}
+            label=${translate('AMENDMENT_TYPES')}
             placeholder="&#8212;"
             .options="${this.filteredAmendmentTypes}"
             .selectedValues="${this.data.types}"
@@ -86,7 +86,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
             required
             option-label="label"
             option-value="value"
-            error-message=${translate('INTERVENTION_METADATA.AMENDMENTS.AMENDMENT_DIALOG.TYPE_ERR')}
+            error-message=${translate('TYPE_ERR')}
             trigger-value-change-event
             @etools-selected-items-changed="${({detail}: CustomEvent) => {
               this.selectedItemsChanged(detail, 'types', 'value');
@@ -103,7 +103,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
           <paper-input
             id="other"
             placeholder="&#8212;"
-            label=${translate('INTERVENTION_METADATA.AMENDMENTS.AMENDMENT_DIALOG.OTHER')}
+            label=${translate('OTHER')}
             invalid
             ?required="${this.showOtherInput}"
             auto-validate
@@ -117,7 +117,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
           <!-- Signed Agreement -->
           <etools-upload
             id="signed-agreement-upload"
-            label=${translate('INTERVENTION_METADATA.AMENDMENTS.SIGNED_AMENDMENT')}
+            label=${translate('SIGNED_AMENDMENT')}
             accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt"
             .fileUrl="${this.data.signed_amendment_attachment}"
             .uploadEndpoint="${this.uploadEndpoint}"
@@ -125,14 +125,14 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
             required
             auto-validate
             .uploadInProgress="${this.amdUploadInProgress}"
-            error-message=${translate('INTERVENTION_METADATA.AMENDMENTS.AMENDMENT_DIALOG.ATTACHMENT_REQUIRED')}
+            error-message=${translate('ATTACHMENT_REQUIRED')}
           >
           </etools-upload>
         </div>
         <div class="row-h flex-c">
           <etools-upload
             id="prc-review-upload"
-            label=${translate('INTERVENTION_METADATA.AMENDMENTS.INTERNAL_PRC_REVIEWS')}
+            label=${translate('INTERNAL_PRC_REVIEWS')}
             accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt"
             .fileUrl="${this.data.internal_prc_review}"
             .uploadEndpoint="${this.uploadEndpoint}"
@@ -212,32 +212,32 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
       switch (amdType) {
         case 'admin_error':
           messages.push(
-            (translate('INTERVENTION_METADATA.AMENDMENTS.AMENDMENT_DIALOG.ADMIN_ERR_MSG') as unknown) as string
+            (translate('ADMIN_ERR_MSG') as unknown) as string
           );
           break;
         case 'budget_lte_20':
           messages.push(
-            (translate('INTERVENTION_METADATA.AMENDMENTS.AMENDMENT_DIALOG.BUDGET_LTE_20_MSG') as unknown) as string
+            (translate('BUDGET_LTE_20_MSG') as unknown) as string
           );
           break;
         case 'budget_gt_20':
           messages.push(
-            (translate('INTERVENTION_METADATA.AMENDMENTS.AMENDMENT_DIALOG.BUDGET_GT_20_MSG') as unknown) as string
+            (translate('BUDGET_GT_20_MSG') as unknown) as string
           );
           break;
         case 'no_cost':
           messages.push(
-            (translate('INTERVENTION_METADATA.AMENDMENTS.AMENDMENT_DIALOG.NO_COST_EXTENSION_MSG') as unknown) as string
+            (translate('NO_COST_EXTENSION_MSG') as unknown) as string
           );
           break;
         case 'change':
           messages.push(
-            (translate('INTERVENTION_METADATA.AMENDMENTS.AMENDMENT_DIALOG.CHANGE_MSG') as unknown) as string
+            (translate('CHANGE_MSG') as unknown) as string
           );
           break;
         case 'other':
           messages.push(
-            (translate('INTERVENTION_METADATA.AMENDMENTS.AMENDMENT_DIALOG.OTHER') as unknown) as string
+            (translate('OTHER') as unknown) as string
           );
           break;
       }

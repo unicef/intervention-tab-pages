@@ -82,7 +82,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
       <etools-dialog
         id="indicatorDialog"
         size="lg"
-        dialog-title=${translate('INDICATOR_DIALOG.INDICATOR')}
+        dialog-title=${translate('INDICATOR')}
         no-padding
         opened
         @close="${this.onClose}"
@@ -113,7 +113,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
               <div class="col col-4">
                 <etools-dropdown
                   id="sectionDropdw"
-                  label=${translate('INDICATOR_DIALOG.SECTION')}
+                  label=${translate('SECTION')}
                   .selected="${this.data?.section}"
                   placeholder="&#8212;"
                   .options="${this.sectionOptions}"
@@ -121,7 +121,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
                   option-value="id"
                   required
                   auto-validate
-                  error-message=${translate('INDICATOR_DIALOG.PLEASE_SELECT_SECTIONS')}
+                  error-message=${translate('PLEASE_SELECT_SECTIONS')}
                   fit-into="etools-dialog"
                   ?readonly="${this.readonly}"
                   trigger-value-change-event
@@ -137,7 +137,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
                 ?checked="${this.isCluster}"
                 @iron-change="${(e: CustomEvent) => this.isClusterChanged(e)}"
               ></paper-toggle-button>
-              ${translate('INDICATOR_DIALOG.CLUSTER_INDICATOR')}
+              ${translate('CLUSTER_INDICATOR')}
             </div>
             <div class="indicator-content${this.isCluster ? ' cluster' : ''}">
               ${!this.isCluster
@@ -163,8 +163,8 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
           </div>
           <div class="row-padding" name="disaggregations">
             <div ?hidden="${this._hideAddDisaggreations(this.isCluster, this.currentUser)}" class="createDisaggreg">
-              ${translate('INDICATOR_DIALOG.IF_NO_DISAGGREG_GROUPS')}
-              <a href="/pmp/settings" target="_blank">${translate('INDICATOR_DIALOG.HERE')}</a>.
+              ${translate('IF_NO_DISAGGREG_GROUPS')}
+              <a href="/pmp/settings" target="_blank">${translate('HERE')}</a>.
             </div>
             ${!this.isCluster
               ? html` <indicator-dissaggregations
@@ -325,8 +325,8 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
 
   setTitle() {
     const title = this.isEditRecord
-      ? getTranslation('INDICATOR_DIALOG.EDIT_INDICATOR')
-      : getTranslation('INDICATOR_DIALOG.ADD_INDICATOR');
+      ? getTranslation('EDIT_INDICATOR')
+      : getTranslation('ADD_INDICATOR');
     setTimeout(() => {
       this.indicatorDialog.dialogTitle = title;
     });

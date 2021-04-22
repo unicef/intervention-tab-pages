@@ -54,7 +54,7 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
           <div class="col col-4">
             <etools-dropdown
               id="type"
-              label=${translate('INTERVENTION_STRATEGY.RISKS.TYPE')}
+              label=${translate('TYPE')}
               .options="${this.riskTypes}"
               .selected="${this.originalData.risk_type}"
               option-value="value"
@@ -70,7 +70,7 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
           <div class="col col-8">
             <paper-textarea
               id="mitigationMeasures"
-              label=${translate('INTERVENTION_STRATEGY.RISKS.PROPOSED_MITIGATION_MEASURES')}
+              label=${translate('PROPOSED_MITIGATION_MEASURES')}
               always-float-label
               type="text"
               .autoValidate="${this.autoValidate}"
@@ -122,8 +122,8 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
     this.permissions = permissions;
     this.riskTypes = riskTypes;
     this.riskDialogTitle = item.id
-      ? ((translate('INTERVENTION_STRATEGY.RISKS.RISK_DIALOG.EDIT_RISK') as unknown) as string)
-      : ((translate('INTERVENTION_STRATEGY.RISKS.RISK_DIALOG.ADD_RISK') as unknown) as string);
+      ? ((translate('EDIT_RISK') as unknown) as string)
+      : ((translate('ADD_RISK') as unknown) as string);
   }
 
   protected onClose(): void {

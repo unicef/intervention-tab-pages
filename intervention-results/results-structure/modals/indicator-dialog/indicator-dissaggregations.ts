@@ -68,7 +68,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
                 <div class="col col-4">
                   <etools-dropdown
                     id="disaggregate_by_${index}"
-                    label=${translate('INDICATOR_DIALOG.DISAGGREGATE_BY')}
+                    label=${translate('DISAGGREGATE_BY')}
                     .options="${this.preDefinedDisaggregtions}"
                     .selected="${item.disaggregId}"
                     option-value="id"
@@ -86,7 +86,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
                     id="disaggregationGroups_${index}"
                     readonly
                     tabindex="-1"
-                    label=${translate('INDICATOR_DIALOG.DISAGGREGATION_GROUPS')}
+                    label=${translate('DISAGGREGATION_GROUPS')}
                     placeholder="&#8212;"
                   ></paper-input>
                 </div>
@@ -97,7 +97,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
       </div>
 
       <div class="row-padding-v" ?hidden="${!this._isEmptyList(this.data, this.data.length)}">
-        <p>${translate('INDICATOR_DIALOG.NO_DISAGGREGATIONS_ADDED')}</p>
+        <p>${translate('NO_DISAGGREGATIONS_ADDED')}</p>
       </div>
 
       <div class="row-padding-v">
@@ -105,8 +105,8 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
           class="secondary-btn"
           @click="${this._addNewDisaggregation}"
           ?hidden="${this._maxDisaggregations(this.data.length) || this.readonly}"
-          title=${translate('INDICATOR_DIALOG.ADD_DISAGGREGATION')}
-          >${translate('INDICATOR_DIALOG.ADD_DISAGREG')}
+          title=${translate('ADD_DISAGGREGATION')}
+          >${translate('ADD_DISAGREG')}
         </paper-button>
       </div>
     `;
@@ -155,7 +155,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
       this.shadowRoot!.querySelector<EtoolsDropdownEl>('#disaggregate_by_' + index)!.selected = null;
       this._clearDisagregGroups(index);
       fireEvent(this, 'show-toast', {
-        error: {response: getTranslation('INDICATOR_DIALOG.DISAGREG_ALREADY_SELECTED')}
+        error: {response: getTranslation('DISAGREG_ALREADY_SELECTED')}
       });
       this.data[index].disaggregId = null;
     } else {

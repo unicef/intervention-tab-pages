@@ -171,7 +171,7 @@ export class InterventionProgress extends connectStore(
         <div class="row-h">
           <div class="layout-vertical col-4">
             <etools-form-element-wrapper
-              label="${translate('INTERVENTION_REPORTS.PD_DURATION')}"
+              label="${translate('PD_DURATION')}"
               .value="${this._getPdDuration(this.progress.start_date, this.progress.end_date)}"
             >
             </etools-form-element-wrapper>
@@ -187,7 +187,7 @@ export class InterventionProgress extends connectStore(
               >
                 <etools-form-element-wrapper
                   slot="field"
-                  label="${translate('INTERVENTION_REPORTS.CASH_TRANSFERED')}"
+                  label="${translate('CASH_TRANSFERED')}"
                   .value="${this._getPropertyText(this.progress.disbursement_currency)} ${displayCurrencyAmount(
                     this.progress.disbursement,
                     '0',
@@ -196,12 +196,12 @@ export class InterventionProgress extends connectStore(
                 >
                 </etools-form-element-wrapper>
                 <iron-icon icon="pmp-custom-icons:not-equal" slot="custom-icon"></iron-icon>
-                <span slot="message">${translate('INTERVENTION_REPORTS.DISBURSEMENT_AMOUNTS')}</span>
+                <span slot="message">${translate('DISBURSEMENT_AMOUNTS')}</span>
               </etools-info-tooltip>
 
               <etools-form-element-wrapper
                 class="col-6"
-                label="${translate('INTERVENTION_REPORTS.UNICEF_CASH')}"
+                label="${translate('UNICEF_CASH')}"
                 .value="${this._getPropertyText(this.progress.unicef_budget_cash_currency)}
                         ${displayCurrencyAmount(this.progress.unicef_budget_cash, '0', 0)}"
               >
@@ -221,15 +221,15 @@ export class InterventionProgress extends connectStore(
                 icon-first
                 .hideTooltip="${!this.multipleCurrenciesWereUsed(this.progress.disbursement_percent, this.progress)}"
               >
-                <span slot="field">${translate('INTERVENTION_REPORTS.NA_%')}</span>
+                <span slot="field">${translate('NA_%')}</span>
                 <iron-icon slot="custom-icon" icon="pmp-custom-icons:not-equal"></iron-icon>
-                <span slot="message">${translate('INTERVENTION_REPORTS.FR_CURRENCY_NOT_MATCH')}</span>
+                <span slot="message">${translate('FR_CURRENCY_NOT_MATCH')}</span>
               </etools-info-tooltip>`
               : ``}
           </div>
           <div class="col col-3">
             <etools-form-element-wrapper
-              label="${translate('INTERVENTION_REPORTS.OVERALL_PD_SPD_RATING')}"
+              label="${translate('OVERALL_PD_SPD_RATING')}"
               .value="${this._getOverallPdStatusDate(this.latestAcceptedPr)}"
               noPlaceholder
             >
@@ -244,18 +244,18 @@ export class InterventionProgress extends connectStore(
 
       <etools-content-panel
         class="content-section"
-        panel-title="${translate('INTERVENTION_TABS.RESULTS_REPORTED_SUBTAB')}"
+        panel-title="${translate('RESULTS_REPORTED_SUBTAB')}"
       >
         <div
           class="row-h"
           ?hidden="${this.progress.details ? !this._emptyList(this.progress.details.cp_outputs) : false}"
         >
-          <p>${translate('INTERVENTION_REPORTS.NO_RESULTS')}</p>
+          <p>${translate('NO_RESULTS')}</p>
         </div>
         ${(this.progress.details ? this.progress.details.cp_outputs : []).map(
           (item: any) => html`
             <div class="row-v row-second-bg">
-              <strong>${translate('INTERVENTION_REPORTS.CP_OUTPUT')}${item.title}</strong>
+              <strong>${translate('CP_OUTPUT')}${item.title}</strong>
             </div>
 
             <!-- RAM indicators display -->
@@ -266,16 +266,16 @@ export class InterventionProgress extends connectStore(
             ></etools-ram-indicators>
 
             <div class="row-h" ?hidden="${!this._emptyList(item.ll_outputs)}">
-              <p>${translate('INTERVENTION_REPORTS.NO_PD_OUTPUTS')}</p>
+              <p>${translate('NO_PD_OUTPUTS')}</p>
             </div>
 
             <div class="lower-results-table" ?hidden="${this._emptyList(item.ll_outputs)}">
               <etools-data-table-header id="listHeader" no-title>
                 <etools-data-table-column class="col-9"
-                  >${translate('INTERVENTION_REPORTS.PD_OUTPUTS')}</etools-data-table-column
+                  >${translate('PD_OUTPUTS')}</etools-data-table-column
                 >
                 <etools-data-table-column class="col-3"
-                  >${translate('INTERVENTION_REPORTS.CURRENT_PROGRESS')}</etools-data-table-column
+                  >${translate('CURRENT_PROGRESS')}</etools-data-table-column
                 >
               </etools-data-table-header>
 
@@ -293,7 +293,7 @@ export class InterventionProgress extends connectStore(
                   <div slot="row-data-details">
                     <div class="row-details-content flex-c">
                       <div class="row-h" ?hidden="${this._countIndicatorReports(lowerResult.id)}">
-                        ${translate('INTERVENTION_REPORTS.NO_INDICATORS')}
+                        ${translate('NO_INDICATORS')}
                       </div>
                       ${this._getIndicatorsReports(lowerResult.id).map(
                         (indicatorReport: any) => html`<div class="row-h indicator-report">

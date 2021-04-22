@@ -107,13 +107,13 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
       <etools-content-panel
         show-expand-btn
         class="content-section"
-        panel-title=${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.PARTNER_REPORTING_REQUIREMENTS')}
+        panel-title=${translate('PARTNER_REPORTING_REQUIREMENTS')}
       >
         <div class="flex-c layout-horizontal">
           <div class="reports-menu nav-menu">
             <div
               name="qtyProgress"
-              title=${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.QUARTERLY_PROGRESS_REPORTS')}
+              title=${translate('QUARTERLY_PROGRESS_REPORTS')}
               class="nav-menu-item qpr"
               ?selected="${this.isSelected('qtyProgress')}"
               @click="${this.selectType}"
@@ -121,7 +121,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
               id="clickable"
             >
               <span
-                >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.QUARTERLY_PROGRESS_REPORTS')}
+                >${translate('QUARTERLY_PROGRESS_REPORTS')}
                 (${this.qprRequirementsCount})</span
               >
               <paper-icon-button
@@ -133,7 +133,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
             </div>
             <div
               name="humanitarianUnicef"
-              title=${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.HUMANITARIAN_REPORTS_UNICEF')}
+              title=${translate('HUMANITARIAN_REPORTS_UNICEF')}
               class="nav-menu-item"
               ?selected="${this.isSelected('humanitarianUnicef')}"
               @click="${this.selectType}"
@@ -141,7 +141,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
               id="clickable"
             >
               <span
-                >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.HUMANITARIAN_REPORTS_UNICEF')}
+                >${translate('HUMANITARIAN_REPORTS_UNICEF')}
                 (${this.hrUnicefRequirementsCount})</span
               >
               <paper-icon-button
@@ -154,28 +154,28 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
             ${this.isUnicefUser
               ? html` <div
                   name="humanitarianCluster"
-                  title=${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.HUMANITARIAN_REPORTS_CLUSTER')}
+                  title=${translate('HUMANITARIAN_REPORTS_CLUSTER')}
                   class="nav-menu-item"
                   ?selected="${this.isSelected('humanitarianCluster')}"
                   @click="${this.selectType}"
                   tabindex="0"
                   id="clickable"
                 >
-                  ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.HUMANITARIAN_REPORTS_CLUSTER')}
+                  ${translate('HUMANITARIAN_REPORTS_CLUSTER')}
                   (${this.hrClusterRequirementsCount})
                 </div>`
               : html``}
 
             <div
               name="special"
-              title=${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.SPECIAL_REPORT')}
+              title=${translate('SPECIAL_REPORT')}
               class="nav-menu-item"
               ?selected="${this.isSelected('special')}"
               @click="${this.selectType}"
               tabindex="0"
               id="clickable"
             >
-              ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.SPECIAL_REPORT')}
+              ${translate('SPECIAL_REPORT')}
               (${this.specialRequirementsCount})
             </div>
           </div>

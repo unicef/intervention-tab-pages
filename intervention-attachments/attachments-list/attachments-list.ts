@@ -32,7 +32,7 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
   @property() canEdit = true;
   @property() fileTypes: IdAndName[] = [];
   @property({type: String}) deleteConfirmationMessage = (translate(
-    'INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.DELETE_ATTACHMENTS_PROMPT'
+    'DELETE_ATTACHMENTS_PROMPT'
   ) as unknown) as string;
   private intervention!: Intervention;
 
@@ -48,10 +48,10 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
       <etools-content-panel
         class="content-section"
         .panelTitle="${(translate(
-          'INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.ATTACHMENTS'
+          'ATTACHMENTS'
         ) as unknown) as string} (${this.attachments.length})"
         comment-element="attachments"
-        comment-description=${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.ATTACHMENTS')}
+        comment-description=${translate('ATTACHMENTS')}
       >
         <div slot="panel-btns" class="layout-horizontal">
           <paper-toggle-button
@@ -60,7 +60,7 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
             @iron-change="${(event: CustomEvent) =>
               (this.showInvalid = (event.currentTarget as HTMLInputElement).checked)}"
           >
-            ${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.SHOW_INVALID')}
+            ${translate('SHOW_INVALID')}
           </paper-toggle-button>
 
           <paper-icon-button
@@ -76,16 +76,16 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
           ? html`
               <etools-data-table-header no-collapse no-title>
                 <etools-data-table-column class="col-2"
-                  >${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.DATE_UPLOADED')}</etools-data-table-column
+                  >${translate('DATE_UPLOADED')}</etools-data-table-column
                 >
                 <etools-data-table-column class="col-3"
-                  >${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.DOC_TYPE')}</etools-data-table-column
+                  >${translate('DOC_TYPE')}</etools-data-table-column
                 >
                 <etools-data-table-column class="col-6"
-                  >${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.DOC')}</etools-data-table-column
+                  >${translate('DOC')}</etools-data-table-column
                 >
                 <etools-data-table-column class="col-1 center-align"
-                  >${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.INVALID')}</etools-data-table-column
+                  >${translate('INVALID')}</etools-data-table-column
                 >
               </etools-data-table-header>
 
@@ -131,7 +131,7 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
             `
           : html`
               <div class="row-h">
-                <p>${translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.NO_ATTACHMENTS_ADDED')}</p>
+                <p>${translate('NO_ATTACHMENTS_ADDED')}</p>
               </div>
             `}
       </etools-content-panel>
@@ -172,7 +172,7 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
       dialog: 'are-you-sure',
       dialogData: {
         content: this.deleteConfirmationMessage,
-        confirmBtnText: translate('INTERVENTION_ATTACHMENTS.ATTACHMENTS_LIST.CONFIRM_BTN_TEXT')
+        confirmBtnText: translate('CONFIRM_BTN_TEXT')
       }
     }).then(({confirmed}) => {
       return confirmed;

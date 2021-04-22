@@ -49,22 +49,22 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
           <div class="layout-horizontal">
             <div class="flex-2">
               <span>
-                <label class="paper-label">${translate('INTERVENTION_METADATA.DOCUMENT_TYPE')}</label>
+                <label class="paper-label">${translate('DOCUMENT_TYPE')}</label>
               </span>
             </div>
             <div class="flex-3">
               <span>
-                <label class="paper-label">${translate('INTERVENTION_METADATA.UNPP_CFEI_DSR')}</label>
+                <label class="paper-label">${translate('UNPP_CFEI_DSR')}</label>
               </span>
             </div>
             <div class="flex-1">
               <span>
-                <label class="paper-label">${translate('INTERVENTION_METADATA.HUMANITARIAN')}</label>
+                <label class="paper-label">${translate('HUMANITARIAN')}</label>
               </span>
             </div>
             <div class="flex-1">
               <span>
-                <label class="paper-label">${translate('INTERVENTION_METADATA.CONTINGENCY')}</label>
+                <label class="paper-label">${translate('CONTINGENCY')}</label>
               </span>
             </div>
           </div>

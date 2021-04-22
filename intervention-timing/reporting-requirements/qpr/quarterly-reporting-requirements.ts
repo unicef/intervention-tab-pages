@@ -43,11 +43,11 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
 
       <div ?hidden="${!this._empty(this.reportingRequirements)}">
         <div class="row-h">
-          ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.NO_QUARTERLY_REPORTING_REQUIREMENTS')}
+          ${translate('NO_QUARTERLY_REPORTING_REQUIREMENTS')}
         </div>
         <div class="row-h" ?hidden="${!this.editMode}">
           <paper-button class="secondary-btn" @click="${this.openQuarterlyRepRequirementsDialog}">
-            ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.ADD_REQUIREMENTS')}
+            ${translate('ADD_REQUIREMENTS')}
           </paper-button>
         </div>
       </div>
@@ -68,7 +68,7 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
   openQuarterlyRepRequirementsDialog() {
     if (!this.interventionStart || !this.interventionEnd) {
       fireEvent(this, 'toast', {
-        text: getTranslation('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.QUARTERLY_REPORT_PROMPT'),
+        text: getTranslation('QUARTERLY_REPORT_PROMPT'),
         showCloseBtn: true
       });
       return;

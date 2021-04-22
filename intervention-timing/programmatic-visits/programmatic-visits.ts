@@ -87,9 +87,9 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
 
       <etools-content-panel
         show-expand-btn
-        panel-title=${translate('INTERVENTION_TIMING.PROGRAMATIC_VISITS.PROGRAMATIC_VISITS')}
+        panel-title=${translate('PROGRAMATIC_VISITS')}
         comment-element="programmatic-visits"
-        comment-description=${translate('INTERVENTION_TIMING.PROGRAMATIC_VISITS.PROGRAMATIC_VISITS')}
+        comment-description=${translate('PROGRAMATIC_VISITS')}
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
@@ -98,14 +98,14 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
             class="secondary-btn ${this._getAddBtnPadding(this.data?.length)}"
             @click="${this._addNewPlannedVisit}"
           >
-            ${translate('INTERVENTION_TIMING.PROGRAMATIC_VISITS.ADD_YEAR')}
+            ${translate('ADD_YEAR')}
           </paper-button>
         </div>
 
         <div class="pv-container">${this.renderVisitsTemplate(this.data)}</div>
 
         <div ?hidden="${!isEmpty(this.data)}">
-          <p>${translate('INTERVENTION_TIMING.PROGRAMATIC_VISITS.NO_PLANNED_VISITS')}</p>
+          <p>${translate('NO_PLANNED_VISITS')}</p>
         </div>
 
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
@@ -204,7 +204,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
                   <etools-dropdown
                     .id="year_${index}"
                     class="year"
-                    label=${translate('INTERVENTION_TIMING.PROGRAMATIC_VISITS.YEAR')}
+                    label=${translate('YEAR')}
                     placeholder="&#8212;"
                     .selected="${item.year}"
                     .options="${this.years}"
@@ -220,7 +220,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
                 <div class="col col-1">
                   <paper-input
                     .id="visit_${index}_q1"
-                    label=${translate('INTERVENTION_TIMING.PROGRAMATIC_VISITS.QUARTER_1')}
+                    label=${translate('QUARTER_1')}
                     .value="${item.programmatic_q1}"
                     type="number"
                     min="0"
@@ -237,7 +237,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
                 <div class="col col-1">
                   <paper-input
                     .id="visit_${index}_q2"
-                    label=${translate('INTERVENTION_TIMING.PROGRAMATIC_VISITS.QUARTER_2')}
+                    label=${translate('QUARTER_2')}
                     .value="${item.programmatic_q2}"
                     type="number"
                     min="0"
@@ -254,7 +254,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
                 <div class="col col-1">
                   <paper-input
                     .id="visit_${index}_q3"
-                    label=${translate('INTERVENTION_TIMING.PROGRAMATIC_VISITS.QUARTER_3')}
+                    label=${translate('QUARTER_3')}
                     .value="${item.programmatic_q3}"
                     type="number"
                     min="0"
@@ -271,7 +271,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
                 <div class="col col-1">
                   <paper-input
                     .id="visit_${index}_q4"
-                    label=${translate('INTERVENTION_TIMING.PROGRAMATIC_VISITS.QUARTER_4')}
+                    label=${translate('QUARTER_4')}
                     .value="${item.programmatic_q4}"
                     type="number"
                     min="0"
@@ -311,7 +311,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
                     item.programmatic_q4
                   )}"
                 >
-                  <div class="error-msg">${translate('INTERVENTION_TIMING.PROGRAMATIC_VISITS.TOTAL_ERR')}</div>
+                  <div class="error-msg">${translate('TOTAL_ERR')}</div>
                 </div>
               </div>
             </div>
@@ -356,7 +356,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
 
     if (this.isAlreadySelected(yearSelected, index, 'year')) {
       fireEvent(this, 'toast', {
-        text: getTranslation('INTERVENTION_TIMING.PROGRAMATIC_VISITS.YEAR_SELECTED_ERR'),
+        text: getTranslation('YEAR_SELECTED_ERR'),
         showCloseBtn: true
       });
       this._clearSelectedYear(index);
@@ -431,7 +431,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
   _addNewPlannedVisit() {
     if (!this.validate()) {
       fireEvent(this, 'toast', {
-        text: getTranslation('INTERVENTION_TIMING.PROGRAMATIC_VISITS.ALREADY_ADDED_PLANNED_VISIT'),
+        text: getTranslation('ALREADY_ADDED_PLANNED_VISIT'),
         showCloseBtn: true
       });
       return;

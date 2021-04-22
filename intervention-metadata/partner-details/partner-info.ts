@@ -55,9 +55,9 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
 
       <etools-content-panel
         show-expand-btn
-        panel-title="${translate('INTERVENTION_METADATA.PARTNER_DETAILS')}"
+        panel-title="${translate('PARTNER_DETAILS')}"
         comment-element="partner-details"
-        comment-description=${translate('INTERVENTION_METADATA.PARTNER_DETAILS')}
+        comment-description=${translate('PARTNER_DETAILS')}
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
@@ -65,7 +65,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
           <div class="col col-7">
             <paper-input
               class="w100"
-              label=${translate('INTERVENTION_METADATA.PARTNER_ORGANIZATION')}
+              label=${translate('PARTNER_ORGANIZATION')}
               .value="${this.data?.partner}"
               required
               readonly
@@ -76,7 +76,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
           <div class="col col-5">
             <etools-dropdown
               id="agreements"
-              label=${translate('INTERVENTION_METADATA.AGREEMENTS')}
+              label=${translate('AGREEMENTS')}
               .options="${this.partnerAgreements}"
               .selected="${this.data?.agreement}"
               option-value="id"
@@ -94,7 +94,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
           <div class="col col-7">
             <paper-input
               class="w100"
-              label=${translate('INTERVENTION_METADATA.PARTNER_VENDOR_NUMBER')}
+              label=${translate('PARTNER_VENDOR_NUMBER')}
               .value="${this.data?.partner_vendor}"
               readonly
               always-float-label
@@ -103,7 +103,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
           </div>
           <div class="col col-5 layout-vertical">
             <label for="agreementAuthOff" class="paper-label"
-              >${translate('INTERVENTION_METADATA.AGREEMENT_AUTHORIZED_OFFICERS')}</label
+              >${translate('AGREEMENT_AUTHORIZED_OFFICERS')}</label
             >
             <div id="agreementAuthOff">${this.renderAgreementAuthorizedOfficers(this.agreementAuthorizedOfficers)}</div>
           </div>
@@ -111,7 +111,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
         <div class="row-padding-v">
           <div class="col col-7 layout-vertical">
             <etools-dropdown-multi
-              label=${translate('INTERVENTION_METADATA.PARTNER_FOCAL_POINTS')}
+              label=${translate('PARTNER_FOCAL_POINTS')}
               .selectedValues="${this.data?.partner_focal_points?.map((f: any) => f.id)}"
               .options="${this.partnerStaffMembers}"
               option-label="name"
@@ -125,7 +125,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
             </etools-dropdown-multi>
             ${this.isReadonly(this.editMode, this.permissions?.edit.partner_focal_points)
               ? html`<label for="focalPointsDetails" class="paper-label"
-                    >${translate('INTERVENTION_METADATA.PARTNER_FOCAL_POINTS')}</label
+                    >${translate('PARTNER_FOCAL_POINTS')}</label
                   >
                   <div id="focalPointsDetails">
                     ${this.renderReadonlyUserDetails(

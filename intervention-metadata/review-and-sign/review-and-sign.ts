@@ -97,9 +97,9 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
       </style>
       <etools-content-panel
         show-expand-btn class="content-section"
-        panel-title=${translate('INTERVENTION_METADATA.REVIEW_AND_SIGN.SIGNATURES_DATES')}
+        panel-title=${translate('SIGNATURES_DATES')}
         comment-element="signatures-and-dates"
-        comment-description=${translate('INTERVENTION_METADATA.REVIEW_AND_SIGN.SIGNATURES_DATES')}
+        comment-description=${translate('SIGNATURES_DATES')}
       >
         <div slot="panel-btns">
           ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
@@ -109,7 +109,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
             <!-- Signed By Partner Authorized Officer -->
             <etools-dropdown
               id="signedByAuthorizedOfficer"
-              label=${translate('INTERVENTION_METADATA.REVIEW_AND_SIGN.SIGNED_PARTNER_AUTH_OFFICER')}
+              label=${translate('SIGNED_PARTNER_AUTH_OFFICER')}
               placeholder="&#8212;"
               .options="${this.agreementAuthorizedOfficers}"
               .selected="${this.data.partner_authorized_officer_signatory?.id}"
@@ -118,7 +118,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
               auto-validate
               option-value="id"
               option-label="name"
-              error-message=${translate('INTERVENTION_METADATA.REVIEW_AND_SIGN.PARTNER_AUTH_OFFICER_ERR')}
+              error-message=${translate('PARTNER_AUTH_OFFICER_ERR')}
               @etools-selected-item-changed="${({detail}: CustomEvent) => {
                 if (!detail.selectedItem) {
                   return;
@@ -132,7 +132,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
             ${
               this.isReadonly(this.editMode, this.permissions?.edit.partner_authorized_officer_signatory)
                 ? html`<label for="partnerAuth" class="paper-label">
-                      ${translate('INTERVENTION_METADATA.REVIEW_AND_SIGN.SIGNED_PARTNER_AUTH_OFFICER')}
+                      ${translate('SIGNED_PARTNER_AUTH_OFFICER')}
                     </label>
                     <div id="partnerAuth">
                       ${this.renderReadonlyUserDetails(
@@ -148,7 +148,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
             <!-- Signed by Partner Date -->
             <datepicker-lite
               id="signedByPartnerDateField"
-              label=${translate('INTERVENTION_METADATA.REVIEW_AND_SIGN.SIGNED_PARTNER_DATE')}
+              label=${translate('SIGNED_PARTNER_DATE')}
               .value="${this.data.signed_by_partner_date}"
               ?required="${this.permissions.required.signed_by_partner_date}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.signed_by_partner_date)}"
@@ -156,8 +156,8 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
               @date-has-changed="${(e: CustomEvent) =>
                 this.valueChanged({value: formatDate(e.detail.date, 'YYYY-MM-DD')}, 'signed_by_partner_date')}"
               ?auto-validate="${this.editMode}"
-              error-message=${translate('INTERVENTION_METADATA.REVIEW_AND_SIGN.DATE_REQUIRED')}
-              max-date-error-msg=${translate('INTERVENTION_METADATA.REVIEW_AND_SIGN.MAX_DATE_ERR')}
+              error-message=${translate('DATE_REQUIRED')}
+              max-date-error-msg=${translate('MAX_DATE_ERR')}
               max-date="${this.getCurrentDate()}"
               selected-date-display-format="D MMM YYYY"
             >
@@ -170,7 +170,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
             <paper-input-container>
               <div slot="input" class="paper-input-input">
                 <span class="input-value"> ${translate(
-                  'INTERVENTION_METADATA.REVIEW_AND_SIGN.SIGNED_UNICEF_AUTH_OFFICER'
+                  'SIGNED_UNICEF_AUTH_OFFICER'
                 )}</span>
               </div>
             </paper-input-container>
@@ -179,7 +179,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
             <!-- Signed by UNICEF Date -->
             <datepicker-lite
               id="signedByUnicefDateField"
-              label=${translate('INTERVENTION_METADATA.REVIEW_AND_SIGN.SIGNED_UNICEF_DATE')}
+              label=${translate('SIGNED_UNICEF_DATE')}
               .value="${this.data.signed_by_unicef_date}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.signed_by_unicef_date)}"
               ?required="${this.permissions.required.signed_by_unicef_date}"
@@ -187,8 +187,8 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
               @date-has-changed="${(e: CustomEvent) =>
                 this.valueChanged({value: formatDate(e.detail.date, 'YYYY-MM-DD')}, 'signed_by_unicef_date')}"
               ?auto-validate="${this.editMode}"
-              error-message=${translate('INTERVENTION_METADATA.REVIEW_AND_SIGN.DATE_REQUIRED')}
-              max-date-error-msg=${translate('INTERVENTION_METADATA.REVIEW_AND_SIGN.MAX_DATE_ERR')}
+              error-message=${translate('DATE_REQUIRED')}
+              max-date-error-msg=${translate('MAX_DATE_ERR')}
               max-date="${this.getCurrentDate()}"
               selected-date-display-format="D MMM YYYY"
             >
@@ -201,7 +201,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
             <!-- Signed by UNICEF -->
             <etools-dropdown
               id="signedByUnicef"
-              label=${translate('INTERVENTION_METADATA.REVIEW_AND_SIGN.SIGNED_UNICEF')}
+              label=${translate('SIGNED_UNICEF')}
               placeholder="&#8212;"
               .options="${this.signedByUnicefUsers}"
               option-value="id"
@@ -209,7 +209,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
               .selected="${this.data.unicef_signatory?.id}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.unicef_signatory)}"
               auto-validate
-              error-message=${translate('INTERVENTION_METADATA.REVIEW_AND_SIGN.UNICEF_USER_ERR')}
+              error-message=${translate('UNICEF_USER_ERR')}
               @etools-selected-item-changed="${({detail}: CustomEvent) => {
                 if (!detail.selectedItem) {
                   return;
@@ -223,7 +223,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
             ${
               this.isReadonly(this.editMode, this.permissions?.edit.unicef_signatory)
                 ? html`<label for="unicefSignatory" class="paper-label"
-                      >${translate('INTERVENTION_METADATA.REVIEW_AND_SIGN.SIGNED_UNICEF')}</label
+                      >${translate('SIGNED_UNICEF')}</label
                     >
                     <div id="unicefSignatory">
                       ${this.renderReadonlyUserDetails(
@@ -239,7 +239,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
             <!-- Signed PD/SPD -->
             <etools-upload
               id="signedIntervFile"
-              label=${translate('INTERVENTION_METADATA.REVIEW_AND_SIGN.SIGNED_PD_SPD')}
+              label=${translate('SIGNED_PD_SPD')}
               accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt"
               .fileUrl="${this.data.signed_pd_attachment}"
               .uploadEndpoint="${this.uploadEndpoint}"
@@ -249,7 +249,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
               ?auto-validate="${this.editMode}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.signed_pd_attachment)}"
               ?required="${this.permissions.required.signed_pd_attachment}"
-              error-message=${translate('INTERVENTION_METADATA.REVIEW_AND_SIGN.SELECT_SIGNED_PD_SPD_DOC')}
+              error-message=${translate('SELECT_SIGNED_PD_SPD_DOC')}
               @upload-started="${this._onUploadStarted}"
               @change-unsaved-file="${this._onChangeUnsavedFile}"
             >
@@ -261,7 +261,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
             <!-- TERMINATION DOC -->
             <etools-upload
               id="terminationDoc"
-              label=${translate('INTERVENTION_METADATA.REVIEW_AND_SIGN.TERMINATION_NOTICE')}
+              label=${translate('TERMINATION_NOTICE')}
               .hidden="${!this.data.termination_doc_attachment}"
               .fileUrl="${this.data.termination_doc_attachment}"
               readonly

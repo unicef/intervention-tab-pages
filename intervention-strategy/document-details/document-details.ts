@@ -52,7 +52,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
 
       <etools-content-panel
         show-expand-btn
-        panel-title=${translate('INTERVENTION_STRATEGY.DOCUMENT_DETAILS')}
+        panel-title=${translate('DOCUMENT_DETAILS')}
         comment-element="document-details"
         comment-description="Document Details"
       >
@@ -61,7 +61,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
         <div class="row-padding-v">
           <paper-textarea
             id="title"
-            label=${translate('INTERVENTION_STRATEGY.TITLE')}
+            label=${translate('TITLE')}
             always-float-label
             placeholder="—"
             .autoValidate="${this.autoValidate}"
@@ -80,7 +80,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
         <div class="row-padding-v">
           <paper-textarea
             id="context"
-            label=${translate('INTERVENTION_STRATEGY.CONTEXT')}
+            label=${translate('CONTEXT')}
             always-float-label
             type="text"
             placeholder="—"
@@ -98,7 +98,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
         <div class="row-padding-v">
           <paper-textarea
             id="implementation-strategy"
-            label=${translate('INTERVENTION_STRATEGY.IMPLEMENTATION_STRATEGY')}
+            label=${translate('IMPLEMENTATION_STRATEGY')}
             always-float-label
             placeholder="—"
             .value="${this.data.implementation_strategy}"

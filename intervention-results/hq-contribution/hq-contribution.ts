@@ -66,15 +66,15 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
 
       <etools-content-panel
         show-expand-btn
-        panel-title=${translate('INTERVENTION_RESULTS.HEADQUARTERS_CONTRIBUTION_TITLE')}
+        panel-title=${translate('HEADQUARTERS_CONTRIBUTION_TITLE')}
         comment-element="hq-contribution"
-        comment-description=${translate('INTERVENTION_RESULTS.HEADQUARTERS_CONTRIBUTION_TITLE')}
+        comment-description=${translate('HEADQUARTERS_CONTRIBUTION_TITLE')}
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="layout-horizontal row-padding-v extra-padd-top-no-bottom">
           <div class="w100">
-            <label class="paper-label">${translate('INTERVENTION_RESULTS.HEADQUARTERS_CONTRIBUTION')}</label>
+            <label class="paper-label">${translate('HEADQUARTERS_CONTRIBUTION')}</label>
           </div>
         </div>
         <div class="layout-horizontal">
@@ -103,7 +103,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
             id="hqContrib"
             class="col-3"
             placeholder="&#8212;"
-            label=${translate('INTERVENTION_RESULTS.HQ_CONTRIBUTION')}
+            label=${translate('HQ_CONTRIBUTION')}
             .value="${this.data.planned_budget.total_hq_cash_local}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_budget)}"
             @value-changed="${({detail}: CustomEvent) => this.hqContribChanged(detail)}"

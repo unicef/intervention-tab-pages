@@ -43,15 +43,15 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
 
       <div ?hidden="${!this._empty(this.reportingRequirements)}">
         <div class="row-h">
-          ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.NO_HUMANITARIAN_REPORT')}
+          ${translate('NO_HUMANITARIAN_REPORT')}
         </div>
         <div class="row-h" ?hidden="${!this._showAdd(this.expectedResults, this.editMode)}">
           <paper-button class="secondary-btn" @click="${this.openUnicefHumanitarianRepReqDialog}">
-            ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.ADD_REQUIREMENTS')}
+            ${translate('ADD_REQUIREMENTS')}
           </paper-button>
         </div>
         <div class="row-h" ?hidden="${this._thereAreHFIndicators(this.expectedResults)}">
-          ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.CAN_BE_MODIFIED_PROMPT')}
+          ${translate('CAN_BE_MODIFIED_PROMPT')}
         </div>
       </div>
 
@@ -109,7 +109,7 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
   openUnicefHumanitarianRepReqDialog() {
     if (!this.interventionStart) {
       fireEvent(this, 'toast', {
-        text: getTranslation('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.FILL_START_DATE'),
+        text: getTranslation('FILL_START_DATE'),
         showCloseBtn: true
       });
       return;

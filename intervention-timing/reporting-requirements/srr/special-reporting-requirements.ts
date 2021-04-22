@@ -39,12 +39,12 @@ export class SpecialReportingRequirements extends ReportingRequirementsCommonMix
       </style>
 
       <div class="row-h" ?hidden="${!this._empty(this.reportingRequirements)}">
-        ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.NO_SPECIAL_REPORTING_REQUIREMENTS')}
+        ${translate('NO_SPECIAL_REPORTING_REQUIREMENTS')}
       </div>
 
       <div class="row-h" ?hidden="${!this.editMode}">
         <paper-button class="secondary-btn" @click="${this._openAddDialog}"
-          >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.ADD_REQUIREMENTS')}</paper-button
+          >${translate('ADD_REQUIREMENTS')}</paper-button
         >
       </div>
 
@@ -52,11 +52,11 @@ export class SpecialReportingRequirements extends ReportingRequirementsCommonMix
         <etools-data-table-header no-collapse no-title>
           <etools-data-table-column class="col-1 right-align index-col">ID</etools-data-table-column>
           <etools-data-table-column class="col-3"
-            >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.DUE_DATE')}</etools-data-table-column
+            >${translate('DUE_DATE')}</etools-data-table-column
           >
           <etools-data-table-column class="flex-6"
             >${translate(
-              'INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.REPORTING_REQUIREMENT'
+              'REPORTING_REQUIREMENT'
             )}</etools-data-table-column
           >
           <etools-data-table-column class="flex-c"></etools-data-table-column>
@@ -175,10 +175,10 @@ export class SpecialReportingRequirements extends ReportingRequirementsCommonMix
     this._onDeleteConfirmation = this._onDeleteConfirmation.bind(this);
     const confirmationMSg = document.createElement('span');
     confirmationMSg.innerText = getTranslation(
-      'INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.DELETE_SPECIAL_REPORTING_REQUIREMENT_PROMPT'
+      'DELETE_SPECIAL_REPORTING_REQUIREMENT_PROMPT'
     );
     const confirmationDialogConf = {
-      title: getTranslation('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.DEL_SPECIAL_REPORTING_REQUIREMENT'),
+      title: getTranslation('DEL_SPECIAL_REPORTING_REQUIREMENT'),
       size: 'md',
       okBtnText: getTranslation('GENERAL.YES'),
       cancelBtnText: getTranslation('GENERAL.NO'),

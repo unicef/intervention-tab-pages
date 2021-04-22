@@ -117,7 +117,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
         ?opened="${this.dialogOpened}"
         ?show-spinner="${this.loadingInProcess}"
         spinner-text="${this.spinnerText}"
-        dialog-title=${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.ACTIVITY_DATA')}
+        dialog-title=${translate('ACTIVITY_DATA')}
         @confirm-btn-clicked="${() => this.processRequest()}"
         @close="${this.onClose}"
         ok-btn-text=${translate('GENERAL.SAVE')}
@@ -128,7 +128,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
         <div class="container layout vertical">
           <paper-input
             class="validate-input flex-1"
-            label=${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.ACTIVITY_NAME')}
+            label=${translate('ACTIVITY_NAME')}
             placeholder="&#8212;"
             .value="${this.editedData.name}"
             @value-changed="${({detail}: CustomEvent) => this.updateModelValue('name', detail.value)}"
@@ -143,7 +143,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
 
           <paper-textarea
             class="validate-input flex-1"
-            label=${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.OTHER_NOTES')}
+            label=${translate('OTHER_NOTES')}
             placeholder="&#8212;"
             .value="${this.editedData.context_details}"
             @value-changed="${({detail}: CustomEvent) => this.updateModelValue('context_details', detail.value)}"
@@ -159,7 +159,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
               ? html`
                   <etools-currency-amount-input
                     class="col-3"
-                    label=${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.PARTNER_CASH_BUDGET')}
+                    label=${translate('PARTNER_CASH_BUDGET')}
                     ?readonly="${this.readonly}"
                     .value="${this.editedData.cso_cash}"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue('cso_cash', detail.value)}"
@@ -167,7 +167,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
 
                   <etools-currency-amount-input
                     class="col-3"
-                    label=${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.UNICEF_CASH_BUDGET')}
+                    label=${translate('UNICEF_CASH_BUDGET')}
                     ?readonly="${this.readonly}"
                     .value="${this.editedData.unicef_cash}"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue('unicef_cash', detail.value)}"
@@ -178,14 +178,14 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
                     readonly
                     tabindex="-1"
                     class="col-3 total-input"
-                    label=${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.PARTNER_CASH_BUDGET')}
+                    label=${translate('PARTNER_CASH_BUDGET')}
                     .value="${this.getSumValue('cso_cash')}"
                   ></paper-input>
                   <paper-input
                     readonly
                     tabindex="-1"
                     class="col-3 total-input"
-                    label=${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.UNICEF_CASH_BUDGET')}
+                    label=${translate('UNICEF_CASH_BUDGET')}
                     .value="${this.getSumValue('unicef_cash')}"
                   ></paper-input>
                 `}
@@ -207,7 +207,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
             @iron-change="${this.inputLevelChange}"
             class="col-5"
           >
-            ${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.USE_INPUT_LEVEL')}
+            ${translate('USE_INPUT_LEVEL')}
           </paper-toggle-button>
           <activity-items-table
             ?hidden="${!this.useInputLevel}"
@@ -293,13 +293,13 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
     );
     if (!this.validateActivityItems()) {
       fireEvent(this, 'toast', {
-        text: getTranslation('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.FILL_ALL_ACTIVITY_ITEMS')
+        text: getTranslation('FILL_ALL_ACTIVITY_ITEMS')
       });
       return;
     }
     if (!this.validateActivityTimeFrames()) {
       fireEvent(this, 'toast', {
-        text: getTranslation('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.FILL_ACTIVITY_TIME')
+        text: getTranslation('FILL_ACTIVITY_TIME')
       });
       return;
     }

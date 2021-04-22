@@ -25,7 +25,7 @@ export class InterventionMonitoringActivities extends connectStore(LitElement) {
       <etools-content-panel
         id="monitoring-visits-panel"
         class="content-section"
-        panel-title=${translate('INTERVENTION_TABS.MONITORING_ACTIVITIES_SUBTAB')}
+        panel-title=${translate('MONITORING_ACTIVITIES_SUBTAB')}
       >
         <monitoring-visits-list
           .interventionId="${this.intervention?.id}"

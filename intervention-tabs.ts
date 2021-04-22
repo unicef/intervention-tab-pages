@@ -154,35 +154,35 @@ export class InterventionTabs extends connectStore(LitElement) {
   pageTabs = [
     {
       tab: 'metadata',
-      tabLabel: (translate('INTERVENTION_TABS.METADATA_TAB') as unknown) as string,
+      tabLabel: (translate('METADATA_TAB') as unknown) as string,
       hidden: false
     },
     {
       tab: 'strategy',
-      tabLabel: (translate('INTERVENTION_TABS.STRATEGY_TAB') as unknown) as string,
+      tabLabel: (translate('STRATEGY_TAB') as unknown) as string,
       hidden: false
     },
     {
       tab: 'results',
-      tabLabel: (translate('INTERVENTION_TABS.RESULTS_TAB') as unknown) as string,
+      tabLabel: (translate('RESULTS_TAB') as unknown) as string,
       hidden: false
     },
     {
       tab: 'timing',
-      tabLabel: (translate('INTERVENTION_TABS.TIMING_TAB') as unknown) as string,
+      tabLabel: (translate('TIMING_TAB') as unknown) as string,
       hidden: false
     },
     {
       tab: 'attachments',
-      tabLabel: (translate('INTERVENTION_TABS.ATTACHMENTS_TAB') as unknown) as string,
+      tabLabel: (translate('ATTACHMENTS_TAB') as unknown) as string,
       hidden: false
     },
     {
       tab: 'info',
-      tabLabel: (translate('INTERVENTION_TABS.INFO_TAB') as unknown) as string,
+      tabLabel: (translate('INFO_TAB') as unknown) as string,
       hidden: false,
       disabled: true,
-      subtabs: [{label: getTranslation('INTERVENTION_TABS.SUMMARY_SUBTAB'), value: 'summary'}]
+      subtabs: [{label: translate('SUMMARY_SUBTAB'), value: 'summary'}]
     }
   ];
 
@@ -281,8 +281,8 @@ export class InterventionTabs extends connectStore(LitElement) {
       this.pageTabs
         .find((t) => t.tab === 'info')
         ?.subtabs?.push(
-          {label: getTranslation('INTERVENTION_TABS.IMPLEMENTATION_STATUS_SUBTAB'), value: 'implementation-status'},
-          {label: getTranslation('INTERVENTION_TABS.MONITORING_ACTIVITIES_SUBTAB'), value: 'monitoring-activities'}
+          {label: getTranslation('IMPLEMENTATION_STATUS_SUBTAB'), value: 'implementation-status'},
+          {label: getTranslation('MONITORING_ACTIVITIES_SUBTAB'), value: 'monitoring-activities'}
         );
     }
 
@@ -294,7 +294,7 @@ export class InterventionTabs extends connectStore(LitElement) {
     ) {
       this.pageTabs
         .find((t) => t.tab === 'info')
-        ?.subtabs?.push({label: getTranslation('INTERVENTION_TABS.RESULTS_REPORTED_SUBTAB'), value: 'progress'}, {label: getTranslation('INTERVENTION_TABS.REPORTS_SUBTAB'), value: 'reports'});
+        ?.subtabs?.push({label: getTranslation('RESULTS_REPORTED_SUBTAB'), value: 'progress'}, {label: getTranslation('REPORTS_SUBTAB'), value: 'reports'});
     }
   }
 
@@ -304,7 +304,7 @@ export class InterventionTabs extends connectStore(LitElement) {
     if (tabIndex === -1 && unicefUser) {
       this.pageTabs.splice(5, 0, {
         tab: 'review',
-        tabLabel: getTranslation('INTERVENTION_REVIEWS.REVIEW_TAB'),
+        tabLabel: getTranslation('REVIEW_TAB'),
         hidden: false
       });
     }
@@ -327,16 +327,16 @@ export class InterventionTabs extends connectStore(LitElement) {
       return '';
     }
     if (this.intervention!.partner_accepted && this.intervention!.unicef_accepted) {
-      return translate('PERFORMED_ACTIONS_STATUS.PARTNER_AND_UNICEF_ACCEPTED');
+      return translate('PARTNER_AND_UNICEF_ACCEPTED');
     }
     if (!this.intervention!.partner_accepted && this.intervention!.unicef_accepted) {
-      return translate('PERFORMED_ACTIONS_STATUS.UNICEF_ACCEPTED');
+      return translate('UNICEF_ACCEPTED');
     }
     if (this.intervention!.partner_accepted && !this.intervention!.unicef_accepted) {
-      return translate('PERFORMED_ACTIONS_STATUS.PARTNER_ACCEPTED');
+      return translate('PARTNER_ACCEPTED');
     }
     if (!this.intervention!.unicef_court && !!this.intervention!.date_sent_to_partner) {
-      return translate('PERFORMED_ACTIONS_STATUS.SENT_TO_PARTNER');
+      return translate('SENT_TO_PARTNER');
     }
 
     if (
@@ -344,7 +344,7 @@ export class InterventionTabs extends connectStore(LitElement) {
       !!this.intervention!.submission_date &&
       !!this.intervention!.date_sent_to_partner
     ) {
-      return translate('PERFORMED_ACTIONS_STATUS.SENT_TO_UNICEF');
+      return translate('SENT_TO_UNICEF');
     }
     return '';
   }

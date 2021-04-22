@@ -58,7 +58,7 @@ export class AddEditSpecialRepReq extends LitElement {
         size="lg"
         opened
         dialog-title=${translate(
-          'INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.ADD_EDIT_SPECIAL_REPORTING_REQUIREMENTS'
+          'ADD_EDIT_SPECIAL_REPORTING_REQUIREMENTS'
         )}
         @confirm-btn-clicked="${this._save}"
         ok-btn-text=${translate('GENERAL.SAVE')}
@@ -69,7 +69,7 @@ export class AddEditSpecialRepReq extends LitElement {
         <div class="row-h">
           <div class="col layout-vertical col-5">
             <iron-label for="startDate"
-              >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.REPORT_DUE_DATE')}</iron-label
+              >${translate('REPORT_DUE_DATE')}</iron-label
             >
             <calendar-lite
               id="startDate"
@@ -83,7 +83,7 @@ export class AddEditSpecialRepReq extends LitElement {
         </div>
         <div class="row-h">
           <paper-input
-            label=${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.REPORTING_REQUIREMENT')}
+            label=${translate('REPORTING_REQUIREMENT')}
             placeholder="&#8212;"
             value="${this.item.description ? this.item.description : ''}"
             @value-changed="${({detail}: CustomEvent) => (this.item.description = detail.value)}"

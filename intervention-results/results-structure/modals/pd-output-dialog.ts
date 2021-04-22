@@ -72,7 +72,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
         ?opened="${this.dialogOpened}"
         ?show-spinner="${this.loadingInProcess}"
         dialog-title="${this.isEditDialog ? translate('GENERAL.EDIT') : translate('GENERAL.ADD')} ${translate(
-          'INTERVENTION_RESULTS.PD_OUTPUT_DIALOG.PD_OUTPUT'
+          'PD_OUTPUT'
         )}"
         @confirm-btn-clicked="${() => this.processRequest()}"
         @close="${this.onClose}"
@@ -82,13 +82,13 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
       >
         <div class="unassociated-warning" ?hidden="${!this.unassociated || this.hideCpOutputs}">
           <div>
-            <iron-icon icon="warning"></iron-icon>${translate('INTERVENTION_RESULTS.PD_OUTPUT_DIALOG.ASSOCIATE_PROMPT')}
+            <iron-icon icon="warning"></iron-icon>${translate('ASSOCIATE_PROMPT')}
           </div>
           ${!this.cpOutputs.length
             ? html`
                 <div>
                   <br /><iron-icon icon="warning"></iron-icon> ${translate(
-                    'INTERVENTION_RESULTS.PD_OUTPUT_DIALOG.ASSOCIATE_MSG'
+                    'ASSOCIATE_MSG'
                   )}
                 </div>
               `
@@ -97,7 +97,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
         <div class="container layout vertical">
           <paper-input
             class="validate-input flex-1"
-            label=${translate('INTERVENTION_RESULTS.PD_OUTPUT_DIALOG.PD_OUTPUT_NAME')}
+            label=${translate('PD_OUTPUT_NAME')}
             placeholder="&#8212;"
             .value="${this.editedData.name}"
             @value-changed="${({detail}: CustomEvent) => this.updateModelValue('name', detail.value)}"
@@ -180,7 +180,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
       .catch((error) => {
         this.loadingInProcess = false;
         this.errors = (error && error.response) || {};
-        fireEvent(this, 'toast', {text: getTranslation('INTERVENTION_RESULTS.PD_OUTPUT_DIALOG.ERR_SAVE_PD_OUTPUT')});
+        fireEvent(this, 'toast', {text: getTranslation('ERR_SAVE_PD_OUTPUT')});
       });
   }
 }
