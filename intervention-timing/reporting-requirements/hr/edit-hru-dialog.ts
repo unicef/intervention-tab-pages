@@ -10,7 +10,6 @@ import './hru-list.js';
 import CONSTANTS from '../../../common/constants';
 import {fireEvent} from '../../../utils/fire-custom-event';
 import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
-import {requiredFieldStarredStylesPolymer} from '../../../common/styles/required-field-styles';
 import {convertDate} from '../../../utils/date-utils';
 import {getEndpoint} from '../../../utils/endpoint-helper';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
@@ -37,7 +36,6 @@ export class EditHruDialog extends connectStore(LitElement) {
   }
   render() {
     return html`
-      ${requiredFieldStarredStylesPolymer}
       <style>
         ${sharedStyles}*[hidden] {
           display: none !important;

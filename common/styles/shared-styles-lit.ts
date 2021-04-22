@@ -104,16 +104,6 @@ export const sharedStylesContent = `
     }
   }
 
-  :host > * {
-    --required-star-style: {
-      background: url('./images/required.svg') no-repeat 99% 20%/8px;
-      width: auto !important;
-      max-width: 100%;
-      right: auto;
-      padding-right: 15px;
-    }
-  }
-
   paper-input,
   paper-textarea,
   paper-input-container,
