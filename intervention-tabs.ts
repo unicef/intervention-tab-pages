@@ -29,6 +29,7 @@ import {EnvFlags, Intervention} from '@unicef-polymer/etools-types';
 import {AsyncAction, RouteDetails} from '@unicef-polymer/etools-types';
 import {interventions} from './common/reducers/interventions';
 import {translate, get as getTranslation} from 'lit-translate';
+import { EtoolsTabs } from './common/layout/etools-tabs';
 
 const MOCKUP_STATUSES = [
   ['draft', 'Draft'],
@@ -360,6 +361,14 @@ export class InterventionTabs extends connectStore(LitElement) {
       return;
     }
     this.tabChanged(newTabName, this.activeTab, newSubTab, this.activeSubTab);
+    this.handleIntermittent2TabsUnderlined(e.target as EtoolsTabs);
+    
+  }
+
+  handleIntermittent2TabsUnderlined(etoolsTabs: EtoolsTabs) {
+    if (this.activeSubTab) {
+      setTimeout(() => etoolsTabs.notifyResize());
+    }
   }
 
   tabChanged(newTabName: string, oldTabName: string | undefined, newSubTab: string, oldSubTab: string) {
