@@ -184,4 +184,8 @@ export class EtoolsTabs extends LitElement {
       ((event.target as any).querySelector('paper-button') as any).click();
     }
   }
+
+  public notifyResize() {
+    this.shadowRoot?.querySelector('paper-tabs')?.notifyResize();
+  }
 }
