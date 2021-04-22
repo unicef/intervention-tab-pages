@@ -66,10 +66,6 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
       ResultStructureStyles,
       buttonsStyles,
       css`
-        etools-content-panel::part(ecp-header) {
-          z-index: 1;
-        }
-
         iron-icon[icon='create'] {
           margin-left: 50px;
         }
@@ -94,11 +90,12 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           font-size: 14px;
           border-radius: 50px;
           background-color: #d0d0d0;
-          color: #fff;
+          color: rgb(2 86 77);
           cursor: pointer;
         }
         .view-toggle-button[active] {
           background-color: #009688;
+          color: #fff;
         }
         .view-toggle-button:focus {
           outline: 0;
