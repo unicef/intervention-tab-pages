@@ -80,6 +80,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
         <div class="layout-horizontal">
           <div class="col col-4">
             <paper-slider
+              dir="${this.dir}"
               .value="${this.data.hq_support_cost}"
               width="100%"
               max="7"
@@ -127,6 +128,9 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
   @property({type: String})
   autoCalculatedHqContrib = '0';
 
+  @property({type: String}) 
+  dir = 'ltr';
+
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'results')) {
       return;
@@ -139,7 +143,15 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
     this.originalData = cloneDeep(this.data);
     this.autoCalculatedHqContrib = this.autoCalcHqContrib();
     this.setPermissions(state);
+    this.dir = this.getPageDirection(state);
     super.stateChanged(state);
+  }
+
+  getPageDirection(state: RootState) {
+    if(get(state, 'activeLanguage.activeLanguage') === 'ar') {
+      return 'rtl';
+    }
+    return 'ltr';
   }
 
   hqContribChanged(detail: any) {
