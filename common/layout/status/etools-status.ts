@@ -47,7 +47,8 @@ export class EtoolsStatus extends LitElement {
           vertical-align: middle;
           width: 40px;
           height: 1px;
-          margin: 0 24px;
+          margin-right: 16px;
+          margin-left: 24px;
           border-top: 1px solid var(--secondary-text-color);
         }
 
@@ -60,6 +61,7 @@ export class EtoolsStatus extends LitElement {
           color: #fff;
           background-color: var(--secondary-text-color);
           margin-right: 8px;
+          margin-left: 8px;
           font-size: 14px;
           line-height: 24px;
         }
