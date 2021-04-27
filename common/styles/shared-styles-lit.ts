@@ -246,7 +246,7 @@ export const sharedStylesContent = `
 
   etools-content-panel::part(ecp-header-title) {
       padding: 0 24px 0 0;
-      text-align: left;
+      text-align: start;
       font-size: 18px;
       font-weight: 500;
   }
