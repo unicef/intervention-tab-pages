@@ -24,14 +24,24 @@ export const ActivityTimeframesStyles: CSSResult = css`
     grid-row-gap: 11px;
     align-items: center;
   }
-  .frames-grid:after {
+  .frames-grid:not([rtl]):after {
     content: '';
     position: absolute;
     top: 5%;
     left: 116px;
     height: 90%;
-    border-left: 1px solid var(--light-hex-divider-color);
+    border-inline-start: 1px solid var(--light-hex-divider-color);
   }
+
+  .frames-grid[rtl]:after {
+    content: '';
+    position: absolute;
+    top: 5%;
+    right: 116px; /*Little browser support for inset-inline-start*/
+    height: 90%;
+    border-inline-start: 1px solid var(--light-hex-divider-color);
+  }
+
   .activities-container,
   .frame {
     position: relative;

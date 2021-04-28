@@ -25,6 +25,8 @@ export class ActivityTimeframes extends CommentsMixin(LitElement) {
   }
 
   @property() intervention: Intervention | null = null;
+  @property({type: String}) 
+  dir = 'ltr';
 
   protected render(): TemplateResult {
     if (!this.intervention) {
@@ -59,7 +61,7 @@ export class ActivityTimeframes extends CommentsMixin(LitElement) {
                 <!--      Year title        -->
                 <div class="year">${year}</div>
 
-                <div class="frames-grid">
+                <div class="frames-grid" ?rtl="${this.dir === 'rtl'}">
                   ${frames.map(
                     ({name, frameDisplay, id}: ActivityTime, index: number) => html`
                       <!--   Frame data   -->
@@ -98,6 +100,10 @@ export class ActivityTimeframes extends CommentsMixin(LitElement) {
     super.stateChanged(state);
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+    this.dir = getComputedStyle(this).direction;
+  }
   private getTimeFrames(): GroupedActivityTime[] {
     if (!this.intervention) {
       return [];
