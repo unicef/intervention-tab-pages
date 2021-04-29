@@ -33,7 +33,6 @@ import {
   dateIsBetween,
   isValidDate,
   dateIsAfter,
-  EdgeAcceptableDateParse,
   datesAreEqual
 } from '../utils/date-utils';
 import {logError, logWarn} from '@unicef-polymer/etools-behaviors/etools-logging';
@@ -438,6 +437,7 @@ export class InterventionProgress extends connectStore(
       loadingSource: 'pd-progress'
     });
     this.requestInProgress = true;
+
     this.fireRequest('interventionProgress', {pdId: id})
       .then((response: any) => {
         this.progress = response;
@@ -566,10 +566,8 @@ export class InterventionProgress extends connectStore(
       return;
     }
     const today = new Date();
-    // eslint-disable-next-line new-cap
-    const startDt = EdgeAcceptableDateParse(start);
-    // eslint-disable-next-line new-cap
-    const endDt = EdgeAcceptableDateParse(end);
+    const startDt = dayjs(start).toDate();
+    const endDt = dayjs(end).toDate();
     try {
       if (dateIsBetween(startDt, endDt, today)) {
         const intervalTotalDays = dateDiff(startDt, endDt);
@@ -595,8 +593,7 @@ export class InterventionProgress extends connectStore(
   }
 
   _convertToDisplayFormat(strDt: string) {
-    // eslint-disable-next-line new-cap
-    return dayjs(EdgeAcceptableDateParse(strDt)).format('D MMM YYYY');
+    return dayjs(strDt).format('D MMM YYYY');
   }
 
   getProgressPercentage(progress_percentage: number, displayType: string) {
