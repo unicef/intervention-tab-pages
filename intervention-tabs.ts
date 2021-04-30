@@ -29,7 +29,8 @@ import {EnvFlags, Intervention} from '@unicef-polymer/etools-types';
 import {AsyncAction, RouteDetails} from '@unicef-polymer/etools-types';
 import {interventions} from './common/reducers/interventions';
 import {translate, get as getTranslation} from 'lit-translate';
-import { EtoolsTabs } from './common/layout/etools-tabs';
+import {EtoolsTabs} from './common/layout/etools-tabs';
+import {reviews} from './common/reducers/officers-reviews';
 
 const MOCKUP_STATUSES = [
   ['draft', 'Draft'],
@@ -216,7 +217,8 @@ export class InterventionTabs extends connectStore(LitElement) {
     getStoreAsync().then((store: Store<RootState>) => {
       (store as any).addReducers({
         commentsData,
-        interventions
+        interventions,
+        reviews
       });
     });
   }
@@ -265,7 +267,7 @@ export class InterventionTabs extends connectStore(LitElement) {
       }
       this.availableActions = selectAvailableActions(state);
       this.checkReviewTab(state);
-      
+
       if (get(state, 'user.data.is_unicef_user')) {
         this.handleInfoSubtabsVisibility(get(state, 'commonData.envFlags'));
       }
@@ -361,7 +363,7 @@ export class InterventionTabs extends connectStore(LitElement) {
       return;
     }
     this.tabChanged(newTabName, this.activeTab, newSubTab, this.activeSubTab);
-    this.fixIntermittent2TabsUnderlined(e.target as EtoolsTabs);    
+    this.fixIntermittent2TabsUnderlined(e.target as EtoolsTabs);
   }
 
   fixIntermittent2TabsUnderlined(etoolsTabs: EtoolsTabs) {
