@@ -28,7 +28,11 @@ import {RootState} from '../../common/types/store.types';
 import {openDialog} from '../../utils/dialog';
 import CONSTANTS from '../../common/constants';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {callClickOnSpacePushListener, callClickOnEnterPushListener, pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {
+  callClickOnSpacePushListener,
+  callClickOnEnterPushListener,
+  pageIsNotCurrentlyActive
+} from '../../utils/common-methods';
 import '../../common/layout/are-you-sure';
 import get from 'lodash-es/get';
 import {getIntervention, updateCurrentIntervention} from '../../common/actions/interventions';
@@ -227,7 +231,6 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
 
         etools-content-panel::part(ecp-header) {
           position: relative;
-          z-index: 1000;
           border-bottom: 1px groove var(--dark-divider-color);
         }
 
@@ -237,10 +240,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         }
       </style>
 
-      <etools-content-panel
-        show-expand-btn
-        panel-title="${translate('RESULTS_STRUCTURE')} (${this.noOfPdOutputs})"
-      >
+      <etools-content-panel show-expand-btn panel-title="${translate('RESULTS_STRUCTURE')} (${this.noOfPdOutputs})">
         <div slot="panel-btns" class="layout-horizontal align-items-center">
           <paper-button
             title=${translate('EXPORT_RESULTS')}
@@ -382,9 +382,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
             </cp-output-level>
           `
         )}
-        ${!this.resultLinks.length
-          ? html` <div class="no-results">${translate('NO_RESULTS_ADDED')}</div> `
-          : ''}
+        ${!this.resultLinks.length ? html` <div class="no-results">${translate('NO_RESULTS_ADDED')}</div> ` : ''}
 
         <div
           ?hidden="${this.isUnicefUser || this.commentMode || !this.permissions.edit.result_links}"

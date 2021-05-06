@@ -161,7 +161,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         font-weight: bold;
         font-size: 10px;
         color: #ffffff;
-        z-index: 99;
+        z-index: 90;
       `;
       return element;
     }
@@ -175,7 +175,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         right: 0;
         bottom: 0;
         background-color: transparent;
-        z-index: 990;
+        z-index: 91;
         cursor: pointer;
       `;
       return element;
