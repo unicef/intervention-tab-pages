@@ -66,7 +66,7 @@ export class EtoolsTabs extends LitElement {
           --paper-tabs-container: {
             overflow: visible;
             max-width: 100% !important;
-            z-index: 999;
+            z-index: 99;
           }
         }
 
@@ -135,7 +135,7 @@ export class EtoolsTabs extends LitElement {
         is-subtabs-parent="true"
         link
         ?hidden="${item.hidden}"
-        @keyup=${this.callClickOnEnterSpaceDownKeys}    
+        @keyup=${this.callClickOnEnterSpaceDownKeys}
       >
         <paper-menu-button id="subtabmenu" horizontal-align="right" vertical-offset="45">
           <paper-button class="button" slot="dropdown-trigger">
@@ -176,7 +176,7 @@ export class EtoolsTabs extends LitElement {
     if (['Enter', ' ', 'ArrowDown'].includes(event.key) && !event.ctrlKey) {
       // Cancel the default action, if needed
       event.preventDefault();
-      
+
       // @ts-ignore
       if (event.target!.localName !== 'paper-tab') {
         return;
