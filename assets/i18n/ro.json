@@ -192,7 +192,6 @@
   "RESULTS_STRUCTURE": "Structura Rezultatelor",
   "PARTNER_CASH": "Numerar Partener",
   "UNICEF_CASH": "Numerar UNICEF",
-  "PERCENT_PARTNER": "%Partener",
   "TIME_PERIODS": "Perioade de Timp",
   "OTHER_NOTES": "Alte Note",
   "DELETE_ACTIVITY_PROMPT": "Sunteti sigur ca doriti sa stergeti aceasta activitate?",
@@ -233,6 +232,8 @@
   "FILL_ACTIVITY_TIME": "Vă rugăm să selectați un interval de timp pentru Activitate",
   "ITEM_DESCRIPTION": "Descriere",
   "TOTAL_CASH": "Total Numerar",
+  "TOTAL_COST": "Total Cost",
+  "UNIT": "Unitate",
   "NUMBER_UNITS": "Numar Unitati",
   "ITEM_ALL_PRICES": "Element (toate preturile explimate in valuta din PD)",
   "PRICE_UNIT": "Pret/Unitate",
@@ -399,5 +400,5 @@
   "COMMUNITY_CHANNELS": "Canalele Comunității eTools",
   "KNOLEDGE_BASE": "Bază de cunoștințe",
   "DISCUSSION": "Discutii",
-  "INFORMATION": "Informatii"  
+  "INFORMATION": "Informatii"
 }

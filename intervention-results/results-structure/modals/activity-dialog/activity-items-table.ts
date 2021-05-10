@@ -48,6 +48,18 @@ export class ActivityItemsTable extends LitElement {
           ${translate('ITEM_DESCRIPTION')}
         </div>
         <div class="grid-cell header-cell center">
+          ${translate('UNIT')}
+        </div>
+        <div class="grid-cell header-cell center">
+          ${translate('NUMBER_UNITS')}
+        </div>
+        <div class="grid-cell header-cell center">
+          ${translate('PRICE_UNIT')}
+        </div>
+        <div class="grid-cell header-cell end">
+          ${translate('TOTAL_COST')}
+        </div>
+        <div class="grid-cell header-cell center">
           ${translate('PARTNER_CASH')}
         </div>
         <div class="grid-cell header-cell center">

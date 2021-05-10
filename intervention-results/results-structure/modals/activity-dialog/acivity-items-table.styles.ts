@@ -8,13 +8,13 @@ export const ActivityItemsTableStyles: CSSResult = css`
   }
   .grid-row {
     display: grid;
-    grid-template-columns: auto 110px 110px 14px 100px;
+    grid-template-columns: auto 50px 90px 100px 110px 110px 110px 14px 110px;
     min-height: 47px;
   }
   div.grid-cell {
     display: flex;
     align-items: center;
-    padding: 10px;
+    padding: 10px 5px;
     box-sizing: border-box;
     font-weight: normal;
     font-size: 13px;
@@ -48,7 +48,8 @@ export const ActivityItemsTableStyles: CSSResult = css`
 export const ActivityItemsTableInlineStyles: TemplateResult = html`
   <style>
     :host etools-currency-amount-input,
-    :host paper-textarea {
+    :host paper-textarea,
+    :host paper-input {
       width: 100%;
       margin-top: 1px;
       --paper-input-container: {

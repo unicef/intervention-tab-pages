@@ -8,7 +8,7 @@ import {
   css,
   PropertyValues
 } from 'lit-element';
-import {getTotal} from './get-total.helper';
+import {getTotal, getMultiplyProduct} from './get-total.helper';
 import {ActivityItemsTableInlineStyles, ActivityItemsTableStyles} from './acivity-items-table.styles';
 import {fireEvent} from '../../../../utils/fire-custom-event';
 import {InterventionActivityItem} from '@unicef-polymer/etools-types';
@@ -58,6 +58,51 @@ export class ActivityItemRow extends LitElement {
                 @click="${() => (this.invalid = false)}"
               ></paper-textarea>
             </div>
+
+            <div class="grid-cell ${!this.lastItem || !this.readonly ? 'border' : ''}">
+              <paper-input
+                .value="${this.activityItem.unit_name || ''}"
+                no-label-float
+                placeholder="—"
+                id="activityName"
+                ?invalid="${this.invalid}"
+                ?readonly="${this.readonly}"
+                @value-changed="${({detail}: CustomEvent) => this.updateField('unit_name', detail.value)}"
+                @blur="${() => this.onBlur()}"
+                @focus="${() => (this.invalid = false)}"
+                @click="${() => (this.invalid = false)}"
+              ></paper-input>
+            </div>
+            <div class="grid-cell center ${!this.lastItem || !this.readonly ? 'border' : ''}">
+              <paper-input
+                .value="${this.activityItem.unit_number || ''}"
+                no-label-float
+                allowed-pattern="[0-9]"
+                placeholder="—"
+                id="unit_number"
+                ?invalid="${this.invalid}"
+                ?readonly="${this.readonly}"
+                @value-changed="${({detail}: CustomEvent) => this.updateField('unit_number', detail.value)}"
+                @blur="${() => this.onBlur()}"
+                @focus="${() => (this.invalid = false)}"
+                @click="${() => (this.invalid = false)}"
+              ></paper-input>
+            </div>
+            <div class="grid-cell center ${!this.lastItem || !this.readonly ? 'border' : ''}">
+              <etools-currency-amount-input
+                .value="${this.activityItem.unit_price || 0}"
+                no-label-float
+                ?readonly="${this.readonly}"
+                @value-changed="${({detail}: CustomEvent) => this.updateField('unit_price', detail.value)}"
+                @blur="${() => this.onBlur()}"
+              ></etools-currency-amount-input>
+            </div>
+            <div class="grid-cell end ${!this.lastItem || !this.readonly ? 'border' : ''}">
+              ${getMultiplyProduct(this.activityItem.unit_number || 0, this.activityItem.unit_price || 0)}
+            </div>
+
+
+
             <div class="grid-cell center ${!this.lastItem || !this.readonly ? 'border' : ''}">
               <etools-currency-amount-input
                 .value="${this.activityItem.cso_cash || 0}"

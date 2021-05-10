@@ -92,13 +92,8 @@ export class PdActivities extends CommentsMixin(LitElement) {
           ></paper-icon-button>
         </div>
         <div class="heading number-data flex-none">${translate('PARTNER_CASH')}</div>
-        <div class="heading number-data flex-none">
-          ${translate('UNICEF_CASH')}
-        </div>
+        <div class="heading number-data flex-none">${translate('UNICEF_CASH')}</div>
         <div class="heading number-data flex-none">${translate('GENERAL.TOTAL')}</div>
-        <div class="heading number-data flex-none">
-          ${translate('PERCENT_PARTNER')}
-        </div>
       </div>
 
       ${this.activities.map(
@@ -125,12 +120,6 @@ export class PdActivities extends CommentsMixin(LitElement) {
                 ${this.formatCurrency(this.getTotal(activity.cso_cash, activity.unicef_cash))}
               </div>
 
-              <!--    %Partner    -->
-              <div class="text number-data flex-none">
-                <!--       TODO: use field from backend         -->
-                ${this.getPartnerPercent(activity.cso_cash, activity.unicef_cash)}
-              </div>
-
               <div class="hover-block">
                 <paper-icon-button
                   icon="icons:create"
@@ -154,9 +143,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
             <div slot="row-data-details" class="row-h">
               <!--    Locations    -->
               <div class="details-container">
-                <div class="text details-heading">
-                  ${translate('TIME_PERIODS')}
-                </div>
+                <div class="text details-heading">${translate('TIME_PERIODS')}</div>
                 <div class="details-text">
                   <b>${this.getQuartersNames(activity.time_frames)}</b>
                 </div>
@@ -164,9 +151,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
 
               <!--    Section and Cluster    -->
               <div class="details-container full">
-                <div class="text details-heading">
-                  ${translate('OTHER_NOTES')}
-                </div>
+                <div class="text details-heading">${translate('OTHER_NOTES')}</div>
                 <div class="details-text">${activity.context_details || '-'}</div>
               </div>
             </div>
@@ -177,7 +162,6 @@ export class PdActivities extends CommentsMixin(LitElement) {
         ? html`
             <div class="layout-horizontal empty-row">
               <div class="text flex-auto">—</div>
-              <div class="text number-data flex-none">—</div>
               <div class="text number-data flex-none">—</div>
               <div class="text number-data flex-none">—</div>
               <div class="text number-data flex-none">—</div>
@@ -206,15 +190,6 @@ export class PdActivities extends CommentsMixin(LitElement) {
 
   getTotal(partner: string, unicef: string): number {
     return (Number(partner) || 0) + (Number(unicef) || 0);
-  }
-
-  getPartnerPercent(partner: string, unicef: string): string {
-    if (!Number(partner)) {
-      return '0 %';
-    }
-    const total: number = this.getTotal(partner, unicef);
-    const percent: number = Number(partner) / (total / 100);
-    return `${Number(percent.toFixed(2))} %`;
   }
 
   openDialog(activity?: InterventionActivity, readonly?: boolean): void {
