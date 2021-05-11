@@ -23,9 +23,11 @@ export class ActivityItemRow extends LitElement {
       css`
         iron-icon {
           width: 14px;
-          margin-top: 14px;
           color: var(--secondary-text-color);
           cursor: pointer;
+          position: relative;
+          top: 50%;
+          transform: translateY(-50%);
         }
         iron-icon:hover {
           color: var(--primary-text-color);
@@ -35,7 +37,8 @@ export class ActivityItemRow extends LitElement {
   }
 
   @property() activityItem: Partial<InterventionActivityItem> = {};
-  @property() invalid = false;
+  @property() invalidName = false;
+  @property() invalidSums = false;
   @property() readonly: boolean | undefined = false;
   @property() lastItem: boolean | undefined = false;
 
@@ -50,12 +53,12 @@ export class ActivityItemRow extends LitElement {
                 no-label-float
                 placeholder="—"
                 id="activityName"
-                ?invalid="${this.invalid}"
+                ?invalid="${this.invalidName}"
                 ?readonly="${this.readonly}"
                 @value-changed="${({detail}: CustomEvent) => this.updateField('name', detail.value)}"
                 @blur="${() => this.onBlur()}"
-                @focus="${() => (this.invalid = false)}"
-                @click="${() => (this.invalid = false)}"
+                @focus="${() => (this.invalidName = false)}"
+                @click="${() => (this.invalidName = false)}"
               ></paper-textarea>
             </div>
 
@@ -65,12 +68,9 @@ export class ActivityItemRow extends LitElement {
                 no-label-float
                 placeholder="—"
                 id="activityName"
-                ?invalid="${this.invalid}"
                 ?readonly="${this.readonly}"
                 @value-changed="${({detail}: CustomEvent) => this.updateField('unit_name', detail.value)}"
                 @blur="${() => this.onBlur()}"
-                @focus="${() => (this.invalid = false)}"
-                @click="${() => (this.invalid = false)}"
               ></paper-input>
             </div>
             <div class="grid-cell center ${!this.lastItem || !this.readonly ? 'border' : ''}">
@@ -80,12 +80,12 @@ export class ActivityItemRow extends LitElement {
                 allowed-pattern="[0-9]"
                 placeholder="—"
                 id="unit_number"
-                ?invalid="${this.invalid}"
+                ?invalid="${this.invalidSums}"
                 ?readonly="${this.readonly}"
                 @value-changed="${({detail}: CustomEvent) => this.updateField('unit_number', detail.value)}"
                 @blur="${() => this.onBlur()}"
-                @focus="${() => (this.invalid = false)}"
-                @click="${() => (this.invalid = false)}"
+                @focus="${() => (this.invalidSums = false)}"
+                @click="${() => (this.invalidSums = false)}"
               ></paper-input>
             </div>
             <div class="grid-cell center ${!this.lastItem || !this.readonly ? 'border' : ''}">
@@ -95,13 +95,15 @@ export class ActivityItemRow extends LitElement {
                 ?readonly="${this.readonly}"
                 @value-changed="${({detail}: CustomEvent) => this.updateField('unit_price', detail.value)}"
                 @blur="${() => this.onBlur()}"
+                ?invalid="${this.invalidSums}"
+                @focus="${() => (this.invalidSums = false)}"
+                @click="${() => (this.invalidSums = false)}"
+                error-message=""
               ></etools-currency-amount-input>
             </div>
             <div class="grid-cell end ${!this.lastItem || !this.readonly ? 'border' : ''}">
               ${getMultiplyProduct(this.activityItem.unit_number || 0, this.activityItem.unit_price || 0)}
             </div>
-
-
 
             <div class="grid-cell center ${!this.lastItem || !this.readonly ? 'border' : ''}">
               <etools-currency-amount-input
@@ -110,6 +112,10 @@ export class ActivityItemRow extends LitElement {
                 ?readonly="${this.readonly}"
                 @value-changed="${({detail}: CustomEvent) => this.updateField('cso_cash', detail.value)}"
                 @blur="${() => this.onBlur()}"
+                ?invalid="${this.invalidSums}"
+                @focus="${() => (this.invalidSums = false)}"
+                @click="${() => (this.invalidSums = false)}"
+                error-message=""
               ></etools-currency-amount-input>
             </div>
             <div class="grid-cell center ${!this.lastItem || !this.readonly ? 'border' : ''}">
@@ -119,6 +125,10 @@ export class ActivityItemRow extends LitElement {
                 ?readonly="${this.readonly}"
                 @value-changed="${({detail}: CustomEvent) => this.updateField('unicef_cash', detail.value)}"
                 @blur="${() => this.onBlur()}"
+                ?invalid="${this.invalidSums}"
+                @focus="${() => (this.invalidSums = false)}"
+                @click="${() => (this.invalidSums = false)}"
+                error-message=""
               ></etools-currency-amount-input>
             </div>
             ${!this.readonly
@@ -165,7 +175,10 @@ export class ActivityItemRow extends LitElement {
   }
 
   validate(): boolean {
-    this.invalid = !this.activityItem.name;
-    return !this.invalid;
+    this.invalidName = !this.activityItem.name;
+    this.invalidSums = getMultiplyProduct(this.activityItem.unit_number || 0, this.activityItem.unit_price || 0) !==
+    getTotal(this.activityItem.cso_cash || 0, this.activityItem.unicef_cash || 0);
+
+    return !this.invalidName && !this.invalidSums;
   }
 }
