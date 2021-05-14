@@ -94,8 +94,9 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           font-size: 14px;
           border-radius: 50px;
           background-color: #d0d0d0;
-          color: rgb(2 86 77);
+          color: rgb(3 114 102);
           cursor: pointer;
+          box-shadow: var(--paper-material-elevation-1_-_box-shadow);
         }
         .view-toggle-button[active] {
           background-color: #009688;
@@ -103,7 +104,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         }
         .view-toggle-button:focus {
           outline: 0;
-          box-shadow: var(--paper-material-elevation-3_-_box-shadow);
+          box-shadow: var(--paper-material-elevation-3_-_box-shadow) !important;
         }
         .no-results {
           padding: 24px;
