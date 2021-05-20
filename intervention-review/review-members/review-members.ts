@@ -2,7 +2,7 @@ import {LitElement, TemplateResult, html, customElement, property, CSSResultArra
 import {InterventionReview, User} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {sharedStyles, sharedStylesContent} from '../../common/styles/shared-styles-lit';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
@@ -26,7 +26,6 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
     return [
       gridLayoutStylesLit,
       buttonsStyles,
-      sharedStyles,
       css`
         :host {
           display: block;
@@ -43,6 +42,12 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
         }
         .row-h:not(:first-child) {
           padding-top: 0;
+        }
+        datepicker-lite {
+          min-width: 180px;
+        }
+        etools-dropdown-multi {
+          max-width: initial;
         }
       `
     ];
@@ -61,6 +66,9 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
   render(): TemplateResult {
     // language=HTML
     return html`
+      <style>
+        ${sharedStylesContent}
+      </style>
       <etools-content-panel class="content-section" panel-title="${translate('REVIEW_MEMBERS')}">
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
@@ -137,8 +145,9 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
         getStore().dispatch(updateCurrentIntervention(intervention));
         this.editMode = false;
       })
-      .catch(() => {
-        fireEvent(this, 'toast', {text: 'Can not save review. Try again later'});
+      .catch((err: any) => {
+        const errorText = err?.response?.detail || 'Try again later';
+        fireEvent(this, 'toast', {text: `Can not save review. ${errorText}`});
       });
   }
 
@@ -154,8 +163,9 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
       .then(() => {
         fireEvent(this, 'toast', {text: 'Notification sent successfully'});
       })
-      .catch(() => {
-        fireEvent(this, 'toast', {text: 'Can not send notification. Try again later'});
+      .catch((err: any) => {
+        const errorText = err?.response?.detail || 'Try again later';
+        fireEvent(this, 'toast', {text: `Can not send notification. ${errorText}`});
       });
   }
 }

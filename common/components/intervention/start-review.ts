@@ -23,12 +23,13 @@ export class StartReview extends LitElement {
     return html`
       <style>
         ${sharedStyles} .row {
-          padding: 0 24px;
+          padding: 12px 24px;
         }
         etools-dropdown {
           --esmm-external-wrapper_-_max-width: initial;
         }
       </style>
+
       <etools-dialog
         no-padding
         keep-dialog-open

@@ -42,7 +42,7 @@ export class ReviewChecklistPopup extends LitElement {
         .likert-scale {
           padding-top: 16px;
           padding-bottom: 14px;
-          border-bottom: 1px solid var(--main-border-color);
+          border-bottom: 1px solid var(--secondary-background-color);
         }
         div[slot='buttons'] {
           border-top: 1px solid var(--divider-color);
@@ -197,9 +197,8 @@ export class ReviewChecklistPopup extends LitElement {
       .then(() => (!this.isOverallReview ? getStore().dispatch<AsyncAction>(loadReviews(reviewId)) : null))
       .then(() => this.close(true))
       .catch((err: any) => {
-        if (err.status === 404) {
-          throw new Error('404');
-        }
+        const errorText = err?.response?.detail || 'Try again later';
+        fireEvent(this, 'toast', {text: `Can not save review. ${errorText}`});
       })
       .finally(() => (this.requestInProcess = false));
   }
