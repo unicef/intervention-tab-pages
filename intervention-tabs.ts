@@ -32,6 +32,7 @@ import {translate, get as getTranslation} from 'lit-translate';
 import {EtoolsTabs} from './common/layout/etools-tabs';
 import {reviews} from './common/reducers/officers-reviews';
 
+
 const MOCKUP_STATUSES = [
   ['draft', 'Draft'],
   ['signed', 'Signed'],
@@ -80,12 +81,23 @@ export class InterventionTabs extends connectStore(LitElement) {
           justify-content: center;
         }
         .flag {
-          color: #ffffff;
-          background-color: #52c2e6;
-          padding: 5px 20px;
+          color: var(--primary-text-color);
+          background-color: whitesmoke;
+          padding: 5px 0;
+          padding-inline-end: 14px;
+          padding-inline-start: 10px;
           width: 100%;
-          border-radius: 8px 8px;
+          border-radius: 25px;
         }
+        .dot {
+          display: inline-block;
+          width: 12px;
+          height: 12px;
+          background-color: #52c2e6;
+          border-radius: 50%;
+          margin-inline-end: 3px;
+        }
+
         div[slot='tabs'] {
           width: 100%;
         }
@@ -107,7 +119,10 @@ export class InterventionTabs extends connectStore(LitElement) {
         </div>
 
         <div slot="statusFlag" ?hidden="${!this.showPerformedActionsStatus()}">
-          <span class="icon flag">${this.getPerformedAction()}</span>
+          <span class="icon flag">
+            <span class="dot"></span>
+            ${this.getPerformedAction()}
+          </span>
         </div>
 
         <div slot="title-row-actions" class="content-header-actions">
@@ -297,7 +312,10 @@ export class InterventionTabs extends connectStore(LitElement) {
     ) {
       this.pageTabs
         .find((t) => t.tab === 'info')
-        ?.subtabs?.push({label: getTranslation('RESULTS_REPORTED_SUBTAB'), value: 'progress'}, {label: getTranslation('REPORTS_SUBTAB'), value: 'reports'});
+        ?.subtabs?.push(
+          {label: getTranslation('RESULTS_REPORTED_SUBTAB'), value: 'progress'},
+          {label: getTranslation('REPORTS_SUBTAB'), value: 'reports'}
+        );
     }
   }
 
