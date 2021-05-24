@@ -82,8 +82,8 @@ export class InterventionTabs extends connectStore(LitElement) {
           color: var(--primary-text-color);
           background-color: whitesmoke;
           padding: 5px 0;
-          padding-right: 14px;
-          padding-left: 10px;
+          padding-inline-end: 14px;
+          padding-inline-start: 10px;
           width: 100%;
           border-radius: 25px;
         }
