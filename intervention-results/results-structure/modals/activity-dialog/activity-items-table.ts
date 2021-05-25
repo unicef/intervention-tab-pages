@@ -17,7 +17,6 @@ import {callClickOnSpacePushListener} from '../../../../utils/common-methods';
 import {PaperTextareaElement} from '@polymer/paper-input/paper-textarea';
 import {translate} from 'lit-translate';
 import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
-import {NonFinancialContributionPermissions} from '../../../non-financial-contribution/nonFinancialContribution.models';
 
 @customElement('activity-items-table')
 export class ActivityItemsTable extends LitElement {

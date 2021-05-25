@@ -13,7 +13,6 @@ import {ActivityItemsTableInlineStyles, ActivityItemsTableStyles} from './acivit
 import {fireEvent} from '../../../../utils/fire-custom-event';
 import {InterventionActivityItem} from '@unicef-polymer/etools-types';
 import {callClickOnSpacePushListener} from '../../../../utils/common-methods';
-import {TechnicalDetails} from '../../../../intervention-strategy/technical-guidance-capacity/technicalGuidance.models';
 
 @customElement('activity-item-row')
 export class ActivityItemRow extends LitElement {
