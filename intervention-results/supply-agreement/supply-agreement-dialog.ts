@@ -140,11 +140,11 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
             placeholder="&#8212;"
             .options="${this.providers}"
             option-label="label"
-            option-value="value"
-            .selected="${this.data.result}"
+            option-value="id"
+            .selected="${this.data.provided_by}"
             trigger-value-change-event
             @etools-selected-item-changed="${({detail}: CustomEvent) => {
-              this.selectedItemChanged(detail, 'result');
+              this.selectedItemChanged(detail, 'provided_by');
             }}"
           >
           </etools-dropdown>
@@ -194,7 +194,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
   autoValidate = false;
 
   @property({type: Array})
-  providers!: {label: string; value: string}[];
+  providers!: {label: string; id: string}[];
 
   set dialogData({data, interventionId, result_links, isUnicefUser}: any) {
     this.cpOutputs = (result_links || []).filter((x: ExpectedResult) => !!x.cp_output_name);
@@ -209,8 +209,8 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
       : ((translate('GENERAL.SAVE') as unknown) as string);
     this.isUnicefUser = isUnicefUser;
     this.providers = [
-      {label: getTranslation('UNICEF'), value: 'UNICEF'},
-      {label: getTranslation('PARTNER'), value: 'PARTNER'}
+      {label: getTranslation('UNICEF'), id: 'unicef'},
+      {label: getTranslation('PARTNER'), id: 'partner'}
     ];
   }
 

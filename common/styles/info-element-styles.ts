@@ -16,7 +16,7 @@ export const InfoElementStyles = html`
     }
     .data-column {
       margin: 14px 0;
-      min-width: 150px;
+      min-width: 140px;
       max-width: max-content;
       padding: 0 5px;
       box-sizing: border-box;
