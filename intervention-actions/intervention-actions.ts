@@ -6,6 +6,7 @@ import '@polymer/paper-menu-button';
 import '@polymer/paper-icon-button';
 import '../common/layout/export-intervention-data';
 import './reason-popup';
+import './accept-for-partner';
 import {getEndpoint} from '../utils/endpoint-helper';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
@@ -14,7 +15,14 @@ import {openDialog} from '../utils/dialog';
 import '../common/layout/are-you-sure';
 import '../common/components/intervention/pd-termination';
 import {InterventionActionsStyles} from './intervention-actions.styles';
-import {ACTIONS_WITH_INPUT, BACK_ACTIONS, CANCEL, EXPORT_ACTIONS, namesMap} from './intervention-actions.constants';
+import {
+  ACCEPT_ON_BEHALF_OF_PARTNER,
+  ACTIONS_WITH_INPUT,
+  BACK_ACTIONS,
+  CANCEL,
+  EXPORT_ACTIONS,
+  namesMap
+} from './intervention-actions.constants';
 import {PaperMenuButton} from '@polymer/paper-menu-button/paper-menu-button';
 import {updateCurrentIntervention} from '../common/actions/interventions';
 import {getStore} from '../utils/redux-store-access';
@@ -40,6 +48,7 @@ export class InterventionActions extends LitElement {
   });
 
   protected render(): TemplateResult {
+    this.actions.push('accept_on_behalf_of_partner');
     const actions: Set<string> = new Set(this.actions);
     const exportActions: string[] = EXPORT_ACTIONS.filter((action: string) => actions.has(action));
     const backAction: string | undefined = BACK_ACTIONS.find((action: string) => actions.has(action));
@@ -81,13 +90,12 @@ export class InterventionActions extends LitElement {
     const withAdditional = actions.length ? ' with-additional' : '';
     const onlyCancel = !actions.length && mainAction === CANCEL ? ` cancel-background` : '';
     const className = `main-button${withAdditional}${onlyCancel}`;
-    return mainAction
-      ? html`
-          <paper-button class="${className}" @click="${() => this.processAction(mainAction)}">
-            ${this.actionsNamesMap[mainAction]} ${this.getAdditionalTransitions(actions)}
-          </paper-button>
-        `
-      : html``;
+    // return mainAction
+    return html`
+      <paper-button class="${className}" @click="${() => this.processAction(mainAction)}">
+        ${this.actionsNamesMap[mainAction]} ${this.getAdditionalTransitions(actions)}
+      </paper-button>
+    `;
   }
 
   private getAdditionalTransitions(actions?: string[]): TemplateResult {
@@ -140,10 +148,7 @@ export class InterventionActions extends LitElement {
         break;
       default:
         btn = this.actionsNamesMap[action];
-        message =
-          getTranslation('ARE_YOU_SURE_PROMPT') +
-          this.actionsNamesMap[action]?.toLowerCase() +
-          ' ?';
+        message = getTranslation('ARE_YOU_SURE_PROMPT') + this.actionsNamesMap[action]?.toLowerCase() + ' ?';
     }
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
@@ -232,6 +237,22 @@ export class InterventionActions extends LitElement {
     });
   }
 
+  private openAcceptForPartner() {
+    return openDialog({
+      dialog: 'accept-for-partner',
+      dialogData: {
+        interventionId: this.interventionId
+      }
+    }).then(({confirmed, response}) => {
+      if (!confirmed || !response) {
+        return null;
+      }
+      return {
+        submission_date: response.submission_date
+      };
+    });
+  }
+
   private closeDropdown(): void {
     const element: PaperMenuButton | null = this.shadowRoot!.querySelector('paper-menu-button');
     if (element) {
@@ -245,6 +266,8 @@ export class InterventionActions extends LitElement {
         return this.openCommentDialog(action);
       case 'terminate':
         return this.openTermiantionDialog();
+      case ACCEPT_ON_BEHALF_OF_PARTNER:
+        return this.openAcceptForPartner();
       default:
         return;
     }

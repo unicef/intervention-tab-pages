@@ -15,10 +15,11 @@ const REVIEW = 'review';
 export const CANCEL = 'cancel';
 export const TERMINATE = 'terminate';
 const REJECT_REVIEW = 'reject_review';
+export const ACCEPT_ON_BEHALF_OF_PARTNER = 'accept_on_behalf_of_partner';
 
 export const EXPORT_ACTIONS = [EXPORT_CSV, EXPORT_PDF, EXPORT_COMMENTS];
 export const BACK_ACTIONS = [SEND_TO_PARTNER, SEND_TO_UNICEF, UNLOCK, REJECT_REVIEW];
-export const ACTIONS_WITH_INPUT = [CANCEL, TERMINATE];
+export const ACTIONS_WITH_INPUT = [CANCEL, TERMINATE, ACCEPT_ON_BEHALF_OF_PARTNER];
 
 export const namesMap: GenericObject<string> = {
   [EXPORT_COMMENTS]: getTranslation('EXPORT_COMMENTS'),
@@ -32,5 +33,6 @@ export const namesMap: GenericObject<string> = {
   [CANCEL]: getTranslation('GENERAL.CANCEL'),
   [TERMINATE]: getTranslation('TERMINATE'),
   [REJECT_REVIEW]: getTranslation('REJECT_REVIEW'),
-  [SIGN]: getTranslation('SIGN')
+  [SIGN]: getTranslation('SIGN'),
+  [ACCEPT_ON_BEHALF_OF_PARTNER]: getTranslation('ACCEPT_ON_BEHALF_OF_PARTNER')
 };

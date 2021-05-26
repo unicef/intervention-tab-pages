@@ -399,5 +399,7 @@
   "COMMUNITY_CHANNELS": "eTools Community Channels",
   "KNOLEDGE_BASE": "Knowledge base",
   "DISCUSSION": "Discussion",
-  "INFORMATION": "Information"
+  "INFORMATION": "Information",
+  "ACCEPT_ON_BEHALF_OF_PARTNER": "Accept On Behalf Of Partner",
+  "SUBMISSION_DATE": "Submission Date"
 }
