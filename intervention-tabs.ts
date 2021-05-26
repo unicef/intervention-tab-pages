@@ -169,35 +169,35 @@ export class InterventionTabs extends connectStore(LitElement) {
   pageTabs = [
     {
       tab: 'metadata',
-      tabLabel: (translate('METADATA_TAB') as unknown) as string,
+      tabLabel: getTranslation('METADATA_TAB'),
       hidden: false
     },
     {
       tab: 'strategy',
-      tabLabel: (translate('STRATEGY_TAB') as unknown) as string,
+      tabLabel: getTranslation('STRATEGY_TAB'),
       hidden: false
     },
     {
       tab: 'results',
-      tabLabel: (translate('RESULTS_TAB') as unknown) as string,
+      tabLabel: getTranslation('RESULTS_TAB'),
       hidden: false
     },
     {
       tab: 'timing',
-      tabLabel: (translate('TIMING_TAB') as unknown) as string,
+      tabLabel: (getTranslation('TIMING_TAB') as unknown) as string,
       hidden: false
     },
     {
       tab: 'attachments',
-      tabLabel: (translate('ATTACHMENTS_TAB') as unknown) as string,
+      tabLabel: (getTranslation('ATTACHMENTS_TAB') as unknown) as string,
       hidden: false
     },
     {
       tab: 'info',
-      tabLabel: (translate('INFO_TAB') as unknown) as string,
+      tabLabel: getTranslation('INFO_TAB'),
       hidden: false,
       disabled: true,
-      subtabs: [{label: translate('SUMMARY_SUBTAB'), value: 'summary'}]
+      subtabs: [{label: getTranslation('SUMMARY_SUBTAB'), value: 'summary'}]
     }
   ];
 
