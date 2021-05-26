@@ -6,6 +6,7 @@ import '@polymer/paper-menu-button';
 import '@polymer/paper-icon-button';
 import '../common/layout/export-intervention-data';
 import './reason-popup';
+import './accept-for-partner';
 import {getEndpoint} from '../utils/endpoint-helper';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
@@ -27,7 +28,8 @@ import {
   REJECT_REVIEW,
   REVIEW,
   SIGN,
-  TERMINATE
+  TERMINATE,
+  ACCEPT_ON_BEHALF_OF_PARTNER
 } from './intervention-actions.constants';
 import {PaperMenuButton} from '@polymer/paper-menu-button/paper-menu-button';
 import {updateCurrentIntervention} from '../common/actions/interventions';
@@ -269,6 +271,22 @@ export class InterventionActions extends LitElement {
     });
   }
 
+  private openAcceptForPartner() {
+    return openDialog({
+      dialog: 'accept-for-partner',
+      dialogData: {
+        interventionId: this.interventionId
+      }
+    }).then(({confirmed, response}) => {
+      if (!confirmed || !response) {
+        return null;
+      }
+      return {
+        submission_date: response.submission_date
+      };
+    });
+  }
+
   private closeDropdown(): void {
     const element: PaperMenuButton | null = this.shadowRoot!.querySelector('paper-menu-button');
     if (element) {
@@ -290,6 +308,8 @@ export class InterventionActions extends LitElement {
         return this.openReviewDialog({rejectPopup: true});
       case SIGN:
         return this.openReviewDialog({approvePopup: true});
+      case ACCEPT_ON_BEHALF_OF_PARTNER:
+        return this.openAcceptForPartner();
       default:
         return;
     }

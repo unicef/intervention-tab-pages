@@ -420,5 +420,7 @@
   "APPROVE": "Approve",
   "REJECT": "Reject",
   "SAVE_REVIEW": "Save Review",
-  "REVIEW_CHECKLIST": "Review"
+  "REVIEW_CHECKLIST": "Review",
+  "ACCEPT_ON_BEHALF_OF_PARTNER": "Accept On Behalf Of Partner",
+  "SUBMISSION_DATE": "Submission Date"
 }
