@@ -30,8 +30,14 @@ export class InterventionActions extends LitElement {
   }
 
   @property() actions: string[] = [];
+  @property({type: String}) dir = 'ltr';
   interventionId!: number;
   activeStatus!: string;
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.dir = getComputedStyle(document.body).direction;
+  }
 
   private actionsNamesMap = new Proxy(namesMap, {
     get(target: GenericObject<string>, property: string): string {
@@ -78,7 +84,7 @@ export class InterventionActions extends LitElement {
   }
 
   private renderGroupedActions(mainAction: string, actions: string[]): TemplateResult {
-    const withAdditional = actions.length ? ' with-additional' : '';
+    const withAdditional = actions.length && this.dir === 'ltr' ? ' with-additional' : '';
     const onlyCancel = !actions.length && mainAction === CANCEL ? ` cancel-background` : '';
     const className = `main-button${withAdditional}${onlyCancel}`;
     return mainAction
