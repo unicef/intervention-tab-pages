@@ -44,7 +44,8 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
         }
 
         .item-container .item-content > * {
-          padding: 0 0 16px 24px;
+          padding-inline: 24px 0;
+          padding-block: 0 16px;
         }
         .item-actions-container {
           display: flex;
@@ -60,8 +61,7 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
           display: flex;
           flex-direction: column;
           flex: 1;
-          margin-inline-start: 10px;
-          padding-inline-start: 20px;
+          padding-inline-start: 10px;
           border-inline-start: 1px solid var(--darker-divider-color);
         }
         .action.delete {
