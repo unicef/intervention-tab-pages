@@ -25,7 +25,7 @@ export class ActivityTimeframes extends CommentsMixin(LitElement) {
   }
 
   @property() intervention: Intervention | null = null;
-  @property({type: String}) 
+  @property({type: String})
   dir = 'ltr';
 
   protected render(): TemplateResult {
