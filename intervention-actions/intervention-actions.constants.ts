@@ -5,8 +5,8 @@ const EXPORT_COMMENTS = 'download_comments';
 const EXPORT_CSV = 'export';
 const EXPORT_PDF = 'generate_pdf';
 
-const SEND_TO_PARTNER = 'send_to_partner';
-const SEND_TO_UNICEF = 'send_to_unicef';
+export const SEND_TO_PARTNER = 'send_to_partner';
+export const SEND_TO_UNICEF = 'send_to_unicef';
 const UNLOCK = 'unlock';
 export const SIGN = 'sign';
 
@@ -14,6 +14,9 @@ const ACCEPT = 'accept';
 export const REVIEW = 'review';
 export const PRC_REVIEW = 'prc_review';
 export const CANCEL = 'cancel';
+export const ACCEPT_REVIEW = 'accept_review';
+export const SIGNATURE = 'signature';
+export const AMENDMENT_MERGE = 'amendment_merge';
 export const TERMINATE = 'terminate';
 export const REJECT_REVIEW = 'reject_review';
 

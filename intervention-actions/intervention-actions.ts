@@ -17,17 +17,22 @@ import '../common/components/intervention/start-review';
 import '../common/components/intervention/review-checklist-popup';
 import {InterventionActionsStyles} from './intervention-actions.styles';
 import {
+  ACCEPT_REVIEW,
   ACTIONS_WITH_INPUT,
-  ACTIONS_WITHOUT_CONFIRM,
+  AMENDMENT_MERGE,
   BACK_ACTIONS,
   CANCEL,
   EXPORT_ACTIONS,
   namesMap,
+  SEND_TO_PARTNER,
+  SEND_TO_UNICEF,
+  SIGNATURE,
+  TERMINATE,
+  ACTIONS_WITHOUT_CONFIRM,
   PRC_REVIEW,
   REJECT_REVIEW,
   REVIEW,
-  SIGN,
-  TERMINATE
+  SIGN
 } from './intervention-actions.constants';
 import {PaperMenuButton} from '@polymer/paper-menu-button/paper-menu-button';
 import {updateCurrentIntervention} from '../common/actions/interventions';
@@ -36,6 +41,7 @@ import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-pa
 import {GenericObject} from '@unicef-polymer/etools-types';
 import {Intervention} from '@unicef-polymer/etools-types';
 import {get as getTranslation} from 'lit-translate';
+import {ROOT_PATH} from '../config/config';
 
 @customElement('intervention-actions')
 export class InterventionActions extends LitElement {
@@ -137,27 +143,31 @@ export class InterventionActions extends LitElement {
     let message = '';
     let btn = '';
     switch (action) {
-      case 'signature':
+      case SIGNATURE:
         btn = getTranslation('SEND');
         message = getTranslation('SEND_FOR_SIGNATURE');
         break;
-      case 'accept_review':
+      case ACCEPT_REVIEW:
         btn = getTranslation('SEND');
         message = getTranslation('SEND_FOR_ACCEPT_REVIEW');
         break;
-      case 'cancel':
+      case CANCEL:
         btn = getTranslation('GENERAL.YES');
         message = getTranslation('CANCEL_PROMPT');
         break;
-      case 'send_to_partner':
+      case AMENDMENT_MERGE:
+        btn = getTranslation('GENERAL.YES');
+        message = getTranslation('AMENDMENT_MERGE');
+        break;
+      case SEND_TO_PARTNER:
         btn = getTranslation('GENERAL.YES');
         message = getTranslation('SEND_TO_PARTNER_PROMPT');
         break;
-      case 'send_to_unicef':
+      case SEND_TO_UNICEF:
         btn = getTranslation('GENERAL.YES');
         message = getTranslation('SEND_TO_UNICEF_PROMPT');
         break;
-      case 'terminate':
+      case TERMINATE:
         btn = getTranslation('CONTINUE');
         message = getTranslation('TERMINATE_PROMPT');
         break;
@@ -199,7 +209,12 @@ export class InterventionActions extends LitElement {
       method: 'PATCH'
     })
       .then((intervention: Intervention) => {
-        getStore().dispatch(updateCurrentIntervention(intervention));
+        if (action === AMENDMENT_MERGE) {
+          history.pushState(window.history.state, '', `${ROOT_PATH}interventions/${intervention.id}/metadata`);
+          window.dispatchEvent(new CustomEvent('popstate'));
+        } else {
+          getStore().dispatch(updateCurrentIntervention(intervention));
+        }
       })
       .finally(() => {
         fireEvent(this, 'global-loading', {

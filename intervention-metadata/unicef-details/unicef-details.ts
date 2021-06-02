@@ -119,36 +119,37 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
           </div>
         </div>
         <div class="layout-horizontal row-padding-v">
-          <div class="col col-4">
-            <etools-dropdown-multi
-              id="focalPointInput"
-              label=${translate('UNICEF_FOCAL_POINTS')}
-              class="row-padding-v"
-              .options="${this.users_list}"
-              option-label="name"
-              option-value="id"
-              .selectedValues="${this.data.unicef_focal_points.map((u: any) => u.id)}"
-              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.unicef_focal_points)}"
-              ?required="${this.permissions.required.unicef_focal_points}"
-              @etools-selected-items-changed="${({detail}: CustomEvent) =>
-                this.selectedUsersChanged(detail, 'unicef_focal_points')}"
-              trigger-value-change-event
-            >
-            </etools-dropdown-multi>
-            <div
-              class="padd-top"
-              ?hidden="${!this.isReadonly(this.editMode, this.permissions.edit.unicef_focal_points)}"
-            >
-              <label for="focalPointInput" class="paper-label"
-                >${translate('UNICEF_FOCAL_POINTS')}</label
-              >
-              <div id="focalPointDetails">
-                ${this.renderReadonlyUserDetails(
-                  this.originalData?.unicef_focal_points ? this.originalData?.unicef_focal_points! : []
-                )}
-              </div>
-            </div>
-          </div>
+          ${this.permissions.view.unicef_focal_points
+            ? html`<div class="col col-4">
+                <etools-dropdown-multi
+                  id="focalPointInput"
+                  label=${translate('UNICEF_FOCAL_POINTS')}
+                  class="row-padding-v"
+                  .options="${this.users_list}"
+                  option-label="name"
+                  option-value="id"
+                  .selectedValues="${this.data.unicef_focal_points.map((u: any) => u.id)}"
+                  ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.unicef_focal_points)}"
+                  ?required="${this.permissions.required.unicef_focal_points}"
+                  @etools-selected-items-changed="${({detail}: CustomEvent) =>
+                    this.selectedUsersChanged(detail, 'unicef_focal_points')}"
+                  trigger-value-change-event
+                >
+                </etools-dropdown-multi>
+                <div
+                  class="padd-top"
+                  ?hidden="${!this.isReadonly(this.editMode, this.permissions.edit.unicef_focal_points)}"
+                >
+                  <label for="focalPointInput" class="paper-label">${translate('UNICEF_FOCAL_POINTS')}</label>
+                  <div id="focalPointDetails">
+                    ${this.renderReadonlyUserDetails(
+                      this.originalData?.unicef_focal_points ? this.originalData?.unicef_focal_points! : []
+                    )}
+                  </div>
+                </div>
+              </div>`
+            : null}
+
           <div class="col col-4" ?hidden="${!this.isUnicefUser}">
             <etools-dropdown
               id="budgetOwnerInput"
@@ -168,9 +169,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
             </etools-dropdown>
 
             <div class="padd-top" ?hidden="${!this.isReadonly(this.editMode, this.permissions.edit.budget_owner)}">
-              <label for="budgetOwnerInput" class="paper-label"
-                >${translate('UNICEF_BUDGET_OWNER')}</label
-              >
+              <label for="budgetOwnerInput" class="paper-label">${translate('UNICEF_BUDGET_OWNER')}</label>
               <div id="budgetOwnerDetails">
                 ${this.renderReadonlyUserDetails(
                   this.originalData?.budget_owner ? [this.originalData?.budget_owner!] : []

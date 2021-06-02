@@ -428,5 +428,15 @@
   "APPROVE": "Approve",
   "REJECT": "Reject",
   "SAVE_REVIEW": "Save Review",
-  "REVIEW_CHECKLIST": "Review"
+  "REVIEW_CHECKLIST": "Review",
+  "NORMAL_AMENDMENT": "Normal",
+  "CONTINGENCY_AMENDMENT": "Contingency",
+  "AMENDMENT_KIND": "Kind",
+  "AMENDMENT_STATUS": "Status",
+  "UNICEF_SIGNATORY": "Unicef Signatory",
+  "PARTNER_AUTHORIZED_OFFICER_SIGNATORY": "Partner Authorized Officer Signatory",
+  "AMENDMENT_MERGE": "Are you sure you want to merge amendment?",
+  "AMENDMENT_MODE_TEXT": "This PD is in amendment. See",
+  "ORIGINAL_VERSION": "original version",
+  "DELETE_AMENDMENT_QUESTION": "delete this amendment?"
 }

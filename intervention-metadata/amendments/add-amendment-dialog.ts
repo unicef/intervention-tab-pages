@@ -1,4 +1,5 @@
 import {LitElement, html, property, customElement} from 'lit-element';
+import {get as getTranslation} from 'lit-translate';
 import '@polymer/paper-input/paper-input';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
@@ -10,8 +11,6 @@ import '../../common/layout/etools-warn-message';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {formatDate} from '../../utils/date-utils';
-import {validateRequiredFields} from '../../utils/validation-helper';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
@@ -20,6 +19,8 @@ import {fireEvent} from '../../utils/fire-custom-event';
 import {getIntervention} from '../../common/actions/interventions';
 import {AnyObject, AsyncAction, InterventionAmendment, LabelAndValue} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {AmendmentsKind, AmendmentsKindTranslateKeys} from './pd-amendments.models';
+import {validateRequiredFields} from '../../utils/validation-helper';
 
 /**
  * @customElement
@@ -53,25 +54,26 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
         @close="${() => this.onClose()}"
         @confirm-btn-clicked="${() => this._validateAndSaveAmendment()}"
         ?show-spinner="${this.savingInProcess}"
-        ?disable-confirm-btn="${this.uploadInProgress}"
-        ?disable-dismiss-btn="${this.uploadInProgress}"
       >
         <div class="row-h flex-c">
-          <!-- Signed Date -->
-          <datepicker-lite
-            id="signed-date"
-            label=${translate('SIGNED_DATE')}
-            .value="${this.data.signed_date}"
-            max-date="${this.getCurrentDate()}"
-            fire-date-has-changed
-            @date-has-changed="${(e: CustomEvent) =>
-              this.valueChanged({value: formatDate(e.detail.date, 'YYYY-MM-DD')}, 'signed_date')}"
-            max-date-error-msg=${translate('MAX_DATE_ERR')}
-            auto-validate
+          <!-- Amendment kind -->
+          <etools-dropdown
+            id="amendment-kind"
+            label=${translate('AMENDMENT_KIND')}
+            placeholder="&#8212;"
+            .options="${this.amendmentKinds}"
+            .selectedValue="${this.data.kind}"
+            hide-search
             required
-            selected-date-display-format="D MMM YYYY"
+            option-label="label"
+            option-value="value"
+            error-message=${translate('GENERAL.REQUIRED_FIELD')}
+            trigger-value-change-event
+            @etools-selected-item-changed="${({detail}: CustomEvent) => {
+              this.selectedItemChanged(detail, 'kind', 'value');
+            }}"
           >
-          </datepicker-lite>
+          </etools-dropdown>
         </div>
         <div class="row-h flex-c">
           <!-- Amendment Type -->
@@ -112,34 +114,6 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
           >
           </paper-input>
         </div>
-        <div class="row-h flex-c">
-          <!-- Signed Agreement -->
-          <etools-upload
-            id="signed-agreement-upload"
-            label=${translate('SIGNED_AMENDMENT')}
-            accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt"
-            .fileUrl="${this.data.signed_amendment_attachment}"
-            .uploadEndpoint="${this.uploadEndpoint}"
-            @upload-finished="${this._amendmentUploadFinished}"
-            required
-            auto-validate
-            .uploadInProgress="${this.amdUploadInProgress}"
-            error-message=${translate('ATTACHMENT_REQUIRED')}
-          >
-          </etools-upload>
-        </div>
-        <div class="row-h flex-c">
-          <etools-upload
-            id="prc-review-upload"
-            label=${translate('INTERNAL_PRC_REVIEWS')}
-            accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt"
-            .fileUrl="${this.data.internal_prc_review}"
-            .uploadEndpoint="${this.uploadEndpoint}"
-            .uploadInProgress="${this.prcUploadInProgress}"
-            @upload-finished="${this._prcReviewUploadFinished}"
-          >
-          </etools-upload>
-        </div>
       </etools-dialog>
     `;
   }
@@ -154,17 +128,17 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
   @property({type: Array})
   amendmentTypes!: LabelAndValue[];
 
-  @property({type: String})
-  uploadEndpoint: string | undefined = getEndpoint(interventionEndpoints.attachmentsUpload).url;
-
-  @property({type: Boolean})
-  uploadInProgress = false;
-
-  @property({type: Boolean})
-  amdUploadInProgress = false;
-
-  @property({type: Boolean})
-  prcUploadInProgress = false;
+  @property({type: Array})
+  amendmentKinds: LabelAndValue[] = [
+    {
+      label: getTranslation(AmendmentsKindTranslateKeys[AmendmentsKind.normal]),
+      value: AmendmentsKind.normal
+    },
+    {
+      label: getTranslation(AmendmentsKindTranslateKeys[AmendmentsKind.contingency]),
+      value: AmendmentsKind.contingency
+    }
+  ];
 
   @property({type: Array})
   filteredAmendmentTypes!: LabelAndValue[];
@@ -183,10 +157,6 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
     this.intervention = intervention;
     this.amendmentTypes = amendmentTypes;
     this._filterAmendmentTypes(this.amendmentTypes, this.intervention.document_type);
-  }
-
-  getUploadInProgress(amdInProgress: boolean, prcInProgress: boolean) {
-    return amdInProgress || prcInProgress;
   }
 
   _filterAmendmentTypes(amendmentTypes: AnyObject[], interventionDocumentType: string) {
@@ -210,34 +180,22 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
     types.forEach((amdType: string) => {
       switch (amdType) {
         case 'admin_error':
-          messages.push(
-            (translate('ADMIN_ERR_MSG') as unknown) as string
-          );
+          messages.push((translate('ADMIN_ERR_MSG') as unknown) as string);
           break;
         case 'budget_lte_20':
-          messages.push(
-            (translate('BUDGET_LTE_20_MSG') as unknown) as string
-          );
+          messages.push((translate('BUDGET_LTE_20_MSG') as unknown) as string);
           break;
         case 'budget_gt_20':
-          messages.push(
-            (translate('BUDGET_GT_20_MSG') as unknown) as string
-          );
+          messages.push((translate('BUDGET_GT_20_MSG') as unknown) as string);
           break;
         case 'no_cost':
-          messages.push(
-            (translate('NO_COST_EXTENSION_MSG') as unknown) as string
-          );
+          messages.push((translate('NO_COST_EXTENSION_MSG') as unknown) as string);
           break;
         case 'change':
-          messages.push(
-            (translate('CHANGE_MSG') as unknown) as string
-          );
+          messages.push((translate('CHANGE_MSG') as unknown) as string);
           break;
         case 'other':
-          messages.push(
-            (translate('OTHER') as unknown) as string
-          );
+          messages.push((translate('OTHER') as unknown) as string);
           break;
       }
     });
@@ -252,9 +210,6 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
   }
 
   _saveAmendment(newAmendment: Partial<InterventionAmendment>) {
-    if (!newAmendment.internal_prc_review) {
-      delete newAmendment.internal_prc_review;
-    }
     const options = {
       method: 'POST',
       endpoint: getEndpoint(interventionEndpoints.interventionAmendmentAdd, {
@@ -276,40 +231,15 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
   }
 
   _handleResponse(_response: InterventionAmendment) {
-    // @dci if use `updateCurrentIntervention` permissions are not updated
-    getStore().dispatch<AsyncAction>(getIntervention(this.intervention.id));
-    // this.intervention.amendments.push(response);
-    // getStore().dispatch(updateCurrentIntervention(this.intervention));
-    this.onClose();
+    // getStore().dispatch<AsyncAction>(getIntervention(this.intervention.id));
+    this.onClose({id: _response.amended_intervention});
   }
 
   _handleErrorResponse(error: any) {
     parseRequestErrorsAndShowAsToastMsgs(error, this);
   }
 
-  _amendmentUploadFinished(e: CustomEvent) {
-    if (e.detail.success) {
-      const uploadResponse = e.detail.success;
-      this.data.signed_amendment_attachment = uploadResponse.id;
-      this.data = {...this.data};
-      this.data.signed_amendment_attachment = uploadResponse.id;
-    }
-  }
-
-  _prcReviewUploadFinished(e: CustomEvent) {
-    if (e.detail.success) {
-      const uploadResponse = e.detail.success;
-      this.data.internal_prc_review = uploadResponse.id;
-      this.data = {...this.data};
-      this.data.internal_prc_review = uploadResponse.id;
-    }
-  }
-
-  public onClose() {
-    fireEvent(this, 'dialog-closed', {confirmed: false});
-  }
-
-  getCurrentDate() {
-    return new Date();
+  public onClose(response = {}) {
+    fireEvent(this, 'dialog-closed', {response});
   }
 }

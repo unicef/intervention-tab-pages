@@ -13,7 +13,8 @@ export const selectPdUnicefDetailsPermissions = createSelector(
   (permissions: Permission<InterventionPermissionsFields>) => {
     return {
       edit: new PdUnicefDetailsPermissions(permissions!.edit),
-      required: new PdUnicefDetailsPermissions(permissions!.required)
+      required: new PdUnicefDetailsPermissions(permissions!.required),
+      view: new PdUnicefDetailsPermissions(permissions!.view)
     };
   }
 );

@@ -25,6 +25,7 @@ export interface EtoolsEndpoints {
   attachmentsUpload: EtoolsEndpoint;
   supplyItemsUpload: EtoolsEndpoint;
   interventionAmendmentAdd: EtoolsEndpoint;
+  interventionAmendmentDelete: EtoolsEndpoint;
   frNumbersDetails: EtoolsEndpoint;
   comments: EtoolsEndpoint;
   resolveComment: EtoolsEndpoint;
@@ -127,6 +128,9 @@ export const interventionEndpoints: EtoolsEndpoints = {
   },
   interventionAmendmentAdd: {
     template: '/api/v2/interventions/<%=intervId%>/amendments/'
+  },
+  interventionAmendmentDelete: {
+    template: '/api/v2/interventions/amendments/<%=amendmentId%>/'
   },
   frNumbersDetails: {
     url: '/api/v2/funds/frs'
