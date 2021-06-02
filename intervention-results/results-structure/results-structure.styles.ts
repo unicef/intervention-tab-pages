@@ -37,10 +37,8 @@ export const ResultStructureStyles: CSSResult = css`
     border: 1px solid var(--main-border-color);
     border-top: none;
     border-bottom: none;
-    padding-left: 56px !important;
-    padding-right: 12px !important;
-    padding-top: 12px !important;
-    padding-bottom: 12px !important;
+    padding-inline: 56px 12px !important;
+    padding-block: 12px !important;
   }
   div[slot='row-data'] {
     width: 100%;
@@ -102,7 +100,8 @@ export const ResultStructureStyles: CSSResult = css`
     min-height: 65px !important;
   }
   .empty-row {
-    padding: 16px 12px 16px 56px;
+    padding-inline: 56px 16px;
+    padding-block: 12px 16px;
     border-bottom: 1px solid var(--main-border-color);
     border-top: 1px solid var(--main-border-color);
   }
