@@ -54,7 +54,7 @@ const CONSTANTS = {
   }
 };
 
-export const PAGES = {
+export const TABS = {
   Metadata: 'metadata',
   Strategy: 'strategy',
   Results: 'results',
@@ -65,8 +65,7 @@ export const PAGES = {
   ImplementationStatus: 'implementation-status',
   MonitoringActivities: 'monitoring-activities',
   ResultsReported: 'progress',
-  Reports: 'reports',
-  List: 'list'
+  Reports: 'reports'
 };
 
 export default CONSTANTS;

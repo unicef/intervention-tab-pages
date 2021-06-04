@@ -11,7 +11,7 @@ import {fireEvent} from '../utils/fire-custom-event';
 import {cloneDeep} from '../utils/utils';
 import {sharedStyles} from '../common/styles/shared-styles-lit';
 import './monitoring-visits-list';
-import {PAGES} from '../common/constants';
+import {TABS} from '../common/constants';
 
 @customElement('intervention-monitoring-activities')
 export class InterventionMonitoringActivities extends connectStore(LitElement) {
@@ -41,7 +41,7 @@ export class InterventionMonitoringActivities extends connectStore(LitElement) {
   intervention!: Intervention;
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'info', PAGES.MonitoringActivities)) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'info', TABS.MonitoringActivities)) {
       return;
     }
 

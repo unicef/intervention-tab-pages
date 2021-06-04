@@ -12,7 +12,14 @@ import {customElement, LitElement, html, property, css} from 'lit-element';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {getStore, getStoreAsync} from './utils/redux-store-access';
-import {selectAvailableActions, currentPage, currentSubpage, isUnicefUser, currentSubSubpage} from './common/selectors';
+import {
+  selectAvailableActions,
+  currentPage,
+  currentSubpage,
+  isUnicefUser,
+  currentSubSubpage,
+  currentUser
+} from './common/selectors';
 import {elevationStyles} from './common/styles/elevation-styles';
 import {RootState} from './common/types/store.types';
 import {getIntervention, updateCurrentIntervention} from './common/actions/interventions';
@@ -30,7 +37,7 @@ import {AsyncAction, RouteDetails} from '@unicef-polymer/etools-types';
 import {interventions} from './common/reducers/interventions';
 import {translate, get as getTranslation} from 'lit-translate';
 import {EtoolsTabs} from './common/layout/etools-tabs';
-import {PAGES} from './common/constants';
+import {TABS} from './common/constants';
 
 const MOCKUP_STATUSES = [
   ['draft', 'Draft'],
@@ -169,27 +176,27 @@ export class InterventionTabs extends connectStore(LitElement) {
   @property({type: Array})
   pageTabs = [
     {
-      tab: 'metadata',
+      tab: TABS.Metadata,
       tabLabel: getTranslation('METADATA_TAB'),
       hidden: false
     },
     {
-      tab: 'strategy',
+      tab: TABS.Strategy,
       tabLabel: getTranslation('STRATEGY_TAB'),
       hidden: false
     },
     {
-      tab: 'results',
+      tab: TABS.Results,
       tabLabel: getTranslation('RESULTS_TAB'),
       hidden: false
     },
     {
-      tab: 'timing',
+      tab: TABS.Timing,
       tabLabel: (getTranslation('TIMING_TAB') as unknown) as string,
       hidden: false
     },
     {
-      tab: 'attachments',
+      tab: TABS.Attachments,
       tabLabel: (getTranslation('ATTACHMENTS_TAB') as unknown) as string,
       hidden: false
     },
@@ -198,12 +205,12 @@ export class InterventionTabs extends connectStore(LitElement) {
       tabLabel: getTranslation('INFO_TAB'),
       hidden: false,
       disabled: true,
-      subtabs: [{label: getTranslation('SUMMARY_SUBTAB'), value: 'summary'}]
+      subtabs: [{label: getTranslation('SUMMARY_SUBTAB'), value: TABS.Summary}]
     }
   ];
 
   @property({type: String})
-  activeTab = 'metadata';
+  activeTab = TABS.Metadata;
 
   @property({type: String})
   activeSubTab = '';
@@ -256,6 +263,11 @@ export class InterventionTabs extends connectStore(LitElement) {
       return;
     }
 
+    if (!currentUser(state)) {
+      // Avoid timing issues
+      return;
+    }
+
     if (!this.hasPermissionsToAccessPage(currentSubpage(state), currentSubSubpage(state), isUnicefUser(state))) {
       this.goToPageNotFound();
 
@@ -304,9 +316,7 @@ export class InterventionTabs extends connectStore(LitElement) {
 
   hasPermissionsToAccessPage(_tab: string, subTab: string, isUnicefUser: boolean) {
     if (!isUnicefUser) {
-      if (
-        [PAGES.ResultsReported, PAGES.Reports, PAGES.ImplementationStatus, PAGES.MonitoringActivities].includes(subTab)
-      ) {
+      if ([TABS.ResultsReported, TABS.Reports, TABS.ImplementationStatus, TABS.MonitoringActivities].includes(subTab)) {
         return false;
       }
     }
@@ -315,12 +325,12 @@ export class InterventionTabs extends connectStore(LitElement) {
   }
 
   handleInfoSubtabsVisibility(envFlags: EnvFlags) {
-    if (!this.pageTabs.find((x) => x.tab === 'info')?.subtabs?.find((t) => t.value === PAGES.ImplementationStatus)) {
+    if (!this.pageTabs.find((x) => x.tab === 'info')?.subtabs?.find((t) => t.value === TABS.ImplementationStatus)) {
       this.pageTabs
         .find((t) => t.tab === 'info')
         ?.subtabs?.push(
-          {label: getTranslation('IMPLEMENTATION_STATUS_SUBTAB'), value: PAGES.ImplementationStatus},
-          {label: getTranslation('MONITORING_ACTIVITIES_SUBTAB'), value: PAGES.MonitoringActivities}
+          {label: getTranslation('IMPLEMENTATION_STATUS_SUBTAB'), value: TABS.ImplementationStatus},
+          {label: getTranslation('MONITORING_ACTIVITIES_SUBTAB'), value: TABS.MonitoringActivities}
         );
     }
 
