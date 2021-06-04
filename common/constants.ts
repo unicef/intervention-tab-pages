@@ -54,4 +54,19 @@ const CONSTANTS = {
   }
 };
 
+export const PAGES = {
+  Metadata: 'metadata',
+  Strategy: 'strategy',
+  Results: 'results',
+  Timing: 'timing',
+  Attachments: 'attachments',
+  Review: 'review',
+  Summary: 'summary',
+  ImplementationStatus: 'implementation-status',
+  MonitoringActivities: 'monitoring-activities',
+  ResultsReported: 'progress',
+  Reports: 'reports',
+  List: 'list'
+};
+
 export default CONSTANTS;

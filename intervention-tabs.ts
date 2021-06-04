@@ -30,6 +30,7 @@ import {AsyncAction, RouteDetails} from '@unicef-polymer/etools-types';
 import {interventions} from './common/reducers/interventions';
 import {translate, get as getTranslation} from 'lit-translate';
 import {EtoolsTabs} from './common/layout/etools-tabs';
+import {PAGES} from './common/constants';
 
 const MOCKUP_STATUSES = [
   ['draft', 'Draft'],
@@ -244,60 +245,82 @@ export class InterventionTabs extends connectStore(LitElement) {
   }
 
   public stateChanged(state: RootState) {
-    if (currentPage(state) === 'interventions' && currentSubpage(state) !== 'list') {
-      this.activeTab = currentSubpage(state) as string;
-      this.activeSubTab = currentSubSubpage(state) as string;
-      this.isUnicefUser = isUnicefUser(state);
-      const currentInterventionId = get(state, 'app.routeDetails.params.interventionId');
-      const currentIntervention = get(state, 'interventions.current');
-
-      if (currentIntervention) {
-        if (!isJsonStrMatch(this.intervention, currentIntervention)) {
-          this.intervention = cloneDeep(currentIntervention);
-        }
-      }
-      if (
-        currentInterventionId !== String(get(this.intervention, 'id')) &&
-        !isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)
-      ) {
-        getStore()
-          .dispatch<AsyncAction>(getIntervention(currentInterventionId))
-          .catch((err: any) => {
-            if (err.message === '404') {
-              this.goToPageNotFound();
-            }
-          });
-        getStore().dispatch<AsyncAction>(getComments(currentInterventionId));
-      }
-      if (!isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)) {
-        this._routeDetails = cloneDeep(state.app!.routeDetails);
-        this.commentMode = !!(this._routeDetails?.queryParams || {})['comment_mode'];
-        setTimeout(() => {
-          getStore().dispatch(enableCommentMode(this.commentMode));
-        }, 10);
+    if (currentPage(state) === 'interventions' && currentSubpage(state) === 'list') {
+      if (this._routeDetails) {
+        this._routeDetails = null;
         fireEvent(this, 'scroll-up');
+        this.intervention = null;
+        getStore().dispatch(updateCurrentIntervention(null));
       }
-      this.availableActions = selectAvailableActions(state);
-      this.checkReviewTab(state);
 
-      if (get(state, 'user.data.is_unicef_user')) {
-        this.handleInfoSubtabsVisibility(get(state, 'commonData.envFlags'));
+      return;
+    }
+
+    if (!this.hasPermissionsToAccessPage(currentSubpage(state), currentSubSubpage(state), isUnicefUser(state))) {
+      this.goToPageNotFound();
+
+      return;
+    }
+
+    this.activeTab = currentSubpage(state) as string;
+    this.activeSubTab = currentSubSubpage(state) as string;
+    this.isUnicefUser = isUnicefUser(state);
+    const currentInterventionId = get(state, 'app.routeDetails.params.interventionId');
+    const currentIntervention = get(state, 'interventions.current');
+
+    if (currentIntervention) {
+      if (!isJsonStrMatch(this.intervention, currentIntervention)) {
+        this.intervention = cloneDeep(currentIntervention);
       }
-    } else if (this._routeDetails) {
-      this._routeDetails = null;
+    }
+    if (
+      currentInterventionId !== String(get(this.intervention, 'id')) &&
+      !isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)
+    ) {
+      getStore()
+        .dispatch<AsyncAction>(getIntervention(currentInterventionId))
+        .catch((err: any) => {
+          if (err.message === '404') {
+            this.goToPageNotFound();
+          }
+        });
+      getStore().dispatch<AsyncAction>(getComments(currentInterventionId));
+    }
+    if (!isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)) {
+      this._routeDetails = cloneDeep(state.app!.routeDetails);
+      this.commentMode = !!(this._routeDetails?.queryParams || {})['comment_mode'];
+      setTimeout(() => {
+        getStore().dispatch(enableCommentMode(this.commentMode));
+      }, 10);
       fireEvent(this, 'scroll-up');
-      this.intervention = null;
-      getStore().dispatch(updateCurrentIntervention(null));
+    }
+    this.availableActions = selectAvailableActions(state);
+    this.checkReviewTab(state);
+
+    if (get(state, 'user.data.is_unicef_user')) {
+      this.handleInfoSubtabsVisibility(get(state, 'commonData.envFlags'));
     }
   }
 
+  hasPermissionsToAccessPage(_tab: string, subTab: string, isUnicefUser: boolean) {
+    if (!isUnicefUser) {
+      if (
+        [PAGES.ResultsReported, PAGES.Reports, PAGES.ImplementationStatus, PAGES.MonitoringActivities].includes(subTab)
+      ) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   handleInfoSubtabsVisibility(envFlags: EnvFlags) {
-    if (!this.pageTabs.find((x) => x.tab === 'info')?.subtabs?.find((t) => t.value === 'implementation-status')) {
+    if (!this.pageTabs.find((x) => x.tab === 'info')?.subtabs?.find((t) => t.value === PAGES.ImplementationStatus)) {
       this.pageTabs
         .find((t) => t.tab === 'info')
         ?.subtabs?.push(
-          {label: getTranslation('IMPLEMENTATION_STATUS_SUBTAB'), value: 'implementation-status'},
-          {label: getTranslation('MONITORING_ACTIVITIES_SUBTAB'), value: 'monitoring-activities'}
+          {label: getTranslation('IMPLEMENTATION_STATUS_SUBTAB'), value: PAGES.ImplementationStatus},
+          {label: getTranslation('MONITORING_ACTIVITIES_SUBTAB'), value: PAGES.MonitoringActivities}
         );
     }
 

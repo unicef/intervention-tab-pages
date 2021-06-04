@@ -11,6 +11,7 @@ import {pageIsNotCurrentlyActive} from '../utils/common-methods.js';
 import {RootState} from '../common/types/store.types.js';
 import {isUnicefUser} from '../common/selectors.js';
 import {connectStore} from '../common/mixins/connect-store-mixin.js';
+import {PAGES} from '../common/constants.js';
 
 @customElement('intervention-info')
 export class InterventionInfo extends connectStore(LitElement) {
@@ -25,10 +26,10 @@ export class InterventionInfo extends connectStore(LitElement) {
       ${this.isUnicefUser
         ? html`
             <intervention-implementation-status
-              ?hidden="${this.activeSubTab !== 'implementation-status'}"
+              ?hidden="${this.activeSubTab !== PAGES.ImplementationStatus}"
             ></intervention-implementation-status>
             <intervention-monitoring-activities
-              ?hidden="${this.activeSubTab !== 'monitoring-activities'}"
+              ?hidden="${this.activeSubTab !== PAGES.MonitoringActivities}"
             ></intervention-monitoring-activities>
             <intervention-progress ?hidden="${this.activeSubTab !== 'progress'}"></intervention-progress>
             <intervention-reports ?hidden="${this.activeSubTab !== 'reports'}"></intervention-reports>

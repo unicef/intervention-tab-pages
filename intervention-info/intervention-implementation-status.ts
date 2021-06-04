@@ -11,6 +11,7 @@ import {fireEvent} from '../utils/fire-custom-event';
 import {cloneDeep} from '../utils/utils';
 import './fund-reservations-display.js';
 import {sharedStyles} from '../common/styles/shared-styles-lit';
+import {PAGES} from '../common/constants';
 
 @customElement('intervention-implementation-status')
 export class InterventionImplementationStatus extends connectStore(LitElement) {
@@ -38,7 +39,7 @@ export class InterventionImplementationStatus extends connectStore(LitElement) {
   intervention!: Intervention;
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'info', 'implementation-status')) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'info', PAGES.ImplementationStatus)) {
       return;
     }
 
