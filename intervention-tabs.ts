@@ -37,6 +37,7 @@ import {AsyncAction, RouteDetails} from '@unicef-polymer/etools-types';
 import {interventions} from './common/reducers/interventions';
 import {translate, get as getTranslation} from 'lit-translate';
 import {EtoolsTabs} from './common/layout/etools-tabs';
+import {reviews} from './common/reducers/officers-reviews';
 import {TABS} from './common/constants';
 
 const MOCKUP_STATUSES = [
@@ -238,7 +239,8 @@ export class InterventionTabs extends connectStore(LitElement) {
     getStoreAsync().then((store: Store<RootState>) => {
       (store as any).addReducers({
         commentsData,
-        interventions
+        interventions,
+        reviews
       });
     });
   }
