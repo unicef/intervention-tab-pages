@@ -17,7 +17,7 @@ import '@polymer/paper-input/paper-input';
 import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-currency-amount-input';
 import {ExpectedResult} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 
 /**
  * @customElement
@@ -113,28 +113,43 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
 
         </div>
       </div>
+      <div class="layout-horizontal">
       ${
         this.isUnicefUser
-          ? html`<div class="layout-horizontal">
-              <div class="col col-8">
-                <etools-dropdown
-                  class="cp-out"
-                  label=${translate('CP_OUTPUT')}
-                  placeholder="&#8212;"
-                  .options="${this.cpOutputs}"
-                  option-label="cp_output_name"
-                  option-value="id"
-                  .selected="${this.data.result}"
-                  trigger-value-change-event
-                  @etools-selected-item-changed="${({detail}: CustomEvent) => {
-                    this.selectedItemChanged(detail, 'result');
-                  }}"
-                >
-                </etools-dropdown>
-              </div>
+          ? html` <div class="col col-8">
+              <etools-dropdown
+                class="cp-out"
+                label=${translate('CP_OUTPUT')}
+                placeholder="&#8212;"
+                .options="${this.cpOutputs}"
+                option-label="cp_output_name"
+                option-value="id"
+                .selected="${this.data.result}"
+                trigger-value-change-event
+                @etools-selected-item-changed="${({detail}: CustomEvent) => {
+                  this.selectedItemChanged(detail, 'result');
+                }}"
+              >
+              </etools-dropdown>
             </div>`
           : html``
       }
+        <div class="col col-4">
+          <etools-dropdown
+            label=${translate('PROVIDED_BY')}
+            placeholder="&#8212;"
+            .options="${this.providers}"
+            option-label="label"
+            option-value="id"
+            .selected="${this.data.provided_by}"
+            trigger-value-change-event
+            @etools-selected-item-changed="${({detail}: CustomEvent) => {
+              this.selectedItemChanged(detail, 'provided_by');
+            }}"
+          >
+          </etools-dropdown>
+        </div>
+      </div>
 
       <div class="layout-horizontal">
         <div class="col col-12">
@@ -178,6 +193,9 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
   @property({type: Boolean})
   autoValidate = false;
 
+  @property({type: Array})
+  providers!: {label: string; id: string}[];
+
   set dialogData({data, interventionId, result_links, isUnicefUser}: any) {
     this.cpOutputs = (result_links || []).filter((x: ExpectedResult) => !!x.cp_output_name);
     this.data = data;
@@ -190,6 +208,10 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
       ? ((translate('GENERAL.ADD') as unknown) as string)
       : ((translate('GENERAL.SAVE') as unknown) as string);
     this.isUnicefUser = isUnicefUser;
+    this.providers = [
+      {label: getTranslation('UNICEF'), id: 'unicef'},
+      {label: getTranslation('PARTNER'), id: 'partner'}
+    ];
   }
 
   onClose(): void {

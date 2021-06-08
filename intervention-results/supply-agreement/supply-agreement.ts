@@ -83,15 +83,13 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
 
       <etools-content-panel
         show-expand-btn
-        panel-title=${translate('UNICEF_SUPPLY_CONTRIBUTION')}
+        panel-title=${translate('SUPPLY_CONTRIBUTION')}
         comment-element="supply-agreement"
-        comment-description=${translate('UNICEF_SUPPLY_CONTRIBUTION')}
+        comment-description=${translate('SUPPLY_CONTRIBUTION')}
       >
         <div slot="panel-btns">
           <span class="mr-20">
-            <label class="paper-label font-bold pad-right"
-              >${translate('TOTAL_SUPPLY_BUDGET')}
-            </label>
+            <label class="paper-label font-bold pad-right">${translate('TOTAL_SUPPLY_BUDGET')} </label>
             <label class="font-bold-12"
               >${this.intervention.planned_budget.currency}
               ${displayCurrencyAmount(this.intervention.planned_budget.in_kind_amount_local!)}</label
@@ -199,8 +197,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         this.isUnicefUser
           ? html`<td class="ptb-0">
               <div class="child-row-inner-container">
-                <label class="paper-label">${translate('CP_OUTPUTS')}</label
-                ><br />
+                <label class="paper-label">${translate('CP_OUTPUTS')}</label><br />
                 <label>${output || '—'}</label><br />
               </div>
             </td>`
