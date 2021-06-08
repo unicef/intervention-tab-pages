@@ -76,7 +76,7 @@ function FrNumbersConsistencyMixin<T extends Constructor<LitElement>>(baseClass:
             intervention.planned_budget!.unicef_cash_local as string,
             (frsDetails.total_frs_amt as unknown) as string,
             intervention,
-            'interventionDetails',
+            'interventionMetadata',
             false,
             skipEmptyListCheck
           )
@@ -196,13 +196,13 @@ function FrNumbersConsistencyMixin<T extends Constructor<LitElement>>(baseClass:
       return !!active;
     }
 
-    emptyFrsList(intervention: Intervention, interventionIsFromWhere: 'interventionDetails'): boolean;
+    emptyFrsList(intervention: Intervention, interventionIsFromWhere: 'interventionMetadata'): boolean;
     emptyFrsList(intervention: InterventionListData, interventionIsFromWhere: 'interventionsList'): boolean;
     emptyFrsList(intervention: any, interventionIsFromWhere: string) {
       // * The intervention object from interventions-list
-      // has different properties than the one on intervention-details
+      // has different properties than the one on intervention-metadata
       switch (interventionIsFromWhere) {
-        case 'interventionDetails':
+        case 'interventionMetadata':
           return !intervention || !intervention.frs_details || intervention.frs_details.frs.length === 0;
         case 'interventionsList':
           return !intervention.frs_earliest_start_date || !intervention.frs_latest_end_date;

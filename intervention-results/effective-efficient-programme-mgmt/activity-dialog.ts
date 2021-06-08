@@ -33,10 +33,9 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         .layout-horizontal {
           overflow: hidden;
         }
-        etools-dialog {
-          --etools-dialog-scrollable: {
-            margin-top: 0 !important;
-          }
+
+        etools-dialog::part(ed-scrollable) {
+          margin-top: 0 !important;
         }
       </style>
 
@@ -44,7 +43,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         id="activityDialog"
         size="md"
         keep-dialog-open
-        dialog-title=${translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.ACTIVITY_DIALOG.EDIT_ACTIVITY')}
+        dialog-title=${translate('EDIT_ACTIVITY')}
         ok-btn-text=${translate('GENERAL.SAVE')}
         cancel-btn-text=${translate('GENERAL.CANCEL')}
         ?opened="${this.dialogOpened}"
@@ -80,19 +79,19 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         <div class="layout-horizontal">
           <div class="col col-6">
             <etools-currency-amount-input
-              id="unicefCash"
-              label=${translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.UNICEF_CASH')}
-              .value="${this.originalData.unicef_cash}"
-              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, this.getPropertyName('unicef'))}"
+              id="partnerContribution"
+              label=${translate('PARTNER_CASH')}
+              .value="${this.originalData.partner_contribution}"
+              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, this.getPropertyName('partner'))}"
             >
             </etools-currency-amount-input>
           </div>
           <div class="col col-6">
             <etools-currency-amount-input
-              id="partnerContribution"
-              label=${translate('INTERVENTION_RESULTS.EFF_EFF_PROG_MGM.PARTNER_CONTRIBUTION')}
-              .value="${this.originalData.partner_contribution}"
-              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, this.getPropertyName('partner'))}"
+              id="unicefCash"
+              label=${translate('UNICEF_CASH')}
+              .value="${this.originalData.unicef_cash}"
+              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, this.getPropertyName('unicef'))}"
             >
             </etools-currency-amount-input>
           </div>

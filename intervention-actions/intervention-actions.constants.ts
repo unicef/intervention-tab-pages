@@ -8,33 +8,31 @@ const EXPORT_PDF = 'generate_pdf';
 const SEND_TO_PARTNER = 'send_to_partner';
 const SEND_TO_UNICEF = 'send_to_unicef';
 const UNLOCK = 'unlock';
-const SIGN = 'sign';
+export const SIGN = 'sign';
 
 const ACCEPT = 'accept';
-const REVIEW = 'review';
-const SIGNATURE = 'signature';
+export const REVIEW = 'review';
+export const PRC_REVIEW = 'prc_review';
 export const CANCEL = 'cancel';
 export const TERMINATE = 'terminate';
-const ACCEPT_REVIEW = 'accept_review';
-const REJECT_REVIEW = 'reject_review';
+export const REJECT_REVIEW = 'reject_review';
 
 export const EXPORT_ACTIONS = [EXPORT_CSV, EXPORT_PDF, EXPORT_COMMENTS];
 export const BACK_ACTIONS = [SEND_TO_PARTNER, SEND_TO_UNICEF, UNLOCK, REJECT_REVIEW];
-export const ACTIONS_WITH_INPUT = [CANCEL, TERMINATE];
+export const ACTIONS_WITH_INPUT = [CANCEL, TERMINATE, REVIEW, PRC_REVIEW, REJECT_REVIEW, SIGN];
+export const ACTIONS_WITHOUT_CONFIRM = [PRC_REVIEW, REJECT_REVIEW, SIGN];
 
 export const namesMap: GenericObject<string> = {
-  [EXPORT_COMMENTS]: getTranslation('INTERVENTION_ACTIONS.EXPORT_COMMENTS'),
-  [EXPORT_CSV]: getTranslation('INTERVENTION_ACTIONS.EXPORT_CSV'),
-  [EXPORT_PDF]: getTranslation('INTERVENTION_ACTIONS.EXPORT_PDF'),
-  [SEND_TO_PARTNER]: getTranslation('INTERVENTION_ACTIONS.SEND_TO_PARTNER'),
-  [SEND_TO_UNICEF]: getTranslation('INTERVENTION_ACTIONS.SEND_TO_UNICEF'),
-  [UNLOCK]: getTranslation('INTERVENTION_ACTIONS.UNLOCK'),
-  [ACCEPT]: getTranslation('INTERVENTION_ACTIONS.ACCEPT'),
-  [ACCEPT_REVIEW]: 'Accept & Review', // TODO - see if this is still used
-  [REVIEW]: getTranslation('INTERVENTION_ACTIONS.REVIEW'),
-  [SIGNATURE]: 'Ready for Signature', // TODO - see if this is still used
+  [EXPORT_COMMENTS]: getTranslation('EXPORT_COMMENTS'),
+  [EXPORT_CSV]: getTranslation('EXPORT_CSV'),
+  [EXPORT_PDF]: getTranslation('EXPORT_PDF'),
+  [SEND_TO_PARTNER]: getTranslation('SEND_TO_PARTNER'),
+  [SEND_TO_UNICEF]: getTranslation('SEND_TO_UNICEF'),
+  [UNLOCK]: getTranslation('UNLOCK'),
+  [ACCEPT]: getTranslation('ACCEPT'),
+  [REVIEW]: getTranslation('REVIEW'),
   [CANCEL]: getTranslation('GENERAL.CANCEL'),
-  [TERMINATE]: getTranslation('INTERVENTION_ACTIONS.TERMINATE'),
-  [REJECT_REVIEW]: getTranslation('INTERVENTION_ACTIONS.REJECT_REVIEW'),
-  [SIGN]: getTranslation('INTERVENTION_ACTIONS.SIGN')
+  [TERMINATE]: getTranslation('TERMINATE'),
+  [REJECT_REVIEW]: getTranslation('REJECT_REVIEW'),
+  [SIGN]: getTranslation('SIGN')
 };

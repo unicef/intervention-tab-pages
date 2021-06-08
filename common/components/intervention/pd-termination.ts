@@ -1,7 +1,7 @@
 import {LitElement, html, customElement, property} from 'lit-element';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
-import '@unicef-polymer/etools-dialog/etools-dialog';
-import '@unicef-polymer/etools-upload/etools-upload';
+import '@unicef-polymer/etools-dialog/etools-dialog.js';
+import '@unicef-polymer/etools-upload/etools-upload.js';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
 import '../../../common/layout/etools-warn-message';
 import '../../styles/shared-styles-lit';

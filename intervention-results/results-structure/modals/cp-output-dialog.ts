@@ -1,5 +1,5 @@
 import {LitElement, html, TemplateResult, property, customElement} from 'lit-element';
-import '@unicef-polymer/etools-dialog';
+import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {getEndpoint} from '../../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
@@ -10,6 +10,7 @@ import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
 import {AsyncAction, ResultIndicator, GenericObject} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
+import {sharedStyles} from '../../../common/styles/shared-styles-lit';
 
 @customElement('cp-output-dialog')
 export class CpOutputDialog extends LitElement {
@@ -48,9 +49,9 @@ export class CpOutputDialog extends LitElement {
   get dialogTitle(): string {
     let title = '';
     if (this.cpOutputName) {
-      title = getTranslation('INTERVENTION_RESULTS.CP_OUTPUT_DIALOG.INDICATORS_FOR_CP_OUTPUT') + this.cpOutputName;
+      title = getTranslation('INDICATORS_FOR_CP_OUTPUT') + this.cpOutputName;
     } else {
-      title = getTranslation('INTERVENTION_RESULTS.CP_OUTPUT_DIALOG.ADD_CP_OUTPUT');
+      title = getTranslation('ADD_CP_OUTPUT');
     }
     return title;
   }
@@ -59,14 +60,14 @@ export class CpOutputDialog extends LitElement {
     // language=html
     return html`
       <style>
-        etools-dialog {
-          --etools-dialog-scrollable: {
-            margin-top: 0 !important;
-          }
-          --etools-dialog-button-styles: {
-            margin-top: 0 !important;
-          }
+        ${sharedStyles} etools-dialog::part(ed-scrollable) {
+          margin-top: 0 !important;
         }
+
+        etools-dialog::part(ed-button-styles) {
+          margin-top: 0;
+        }
+
         .container {
           padding: 12px 24px;
         }
@@ -93,7 +94,7 @@ export class CpOutputDialog extends LitElement {
                     this.onCpOutputSelected(detail.selectedItem && detail.selectedItem.id)}"
                   ?trigger-value-change-event="${!this.loadingInProcess}"
                   .selected="${this.selectedCpOutput}"
-                  label=${translate('INTERVENTION_RESULTS.CP_OUTPUT_DIALOG.CP_OUTPUT')}
+                  label=${translate('CP_OUTPUT')}
                   placeholder="&#8212;"
                   .options="${this.cpOutputs}"
                   option-label="name"
@@ -114,7 +115,7 @@ export class CpOutputDialog extends LitElement {
               this.onIndicatorsSelected(detail.selectedItems)}"
             ?trigger-value-change-event="${!this.loadingInProcess}"
             .selectedValues="${this.selectedIndicators}"
-            label=${translate('INTERVENTION_RESULTS.CP_OUTPUT_DIALOG.RAM_INDICATORS')}
+            label=${translate('RAM_INDICATORS')}
             placeholder="&#8212;"
             .options="${this.indicators}"
             option-label="name"
@@ -178,7 +179,7 @@ export class CpOutputDialog extends LitElement {
       .catch((error) => {
         this.loadingInProcess = false;
         this.errors = (error && error.response) || {};
-        fireEvent(this, 'toast', {text: getTranslation('INTERVENTION_RESULTS.CP_OUTPUT_DIALOG.CAN_NOT_SAVE_IND')});
+        fireEvent(this, 'toast', {text: getTranslation('CAN_NOT_SAVE_IND')});
       });
   }
 

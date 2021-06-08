@@ -41,7 +41,7 @@ import {
   Indicator,
   Intervention
 } from '@unicef-polymer/etools-types';
-import {callClickOnSpacePush} from '../../utils/common-methods';
+import {callClickOnSpacePushListener} from '../../utils/common-methods';
 
 @customElement('pd-indicators')
 export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)) {
@@ -87,7 +87,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
         ${sharedStyles} :host etools-data-table-row {
           --list-bg-color: var(--blue-background);
           --list-second-bg-color: var(--blue-background);
-          --list-row-collapse-wrapper: {
+          etools-data-table-row::part(edt-list-row-collapse-wrapper) {
             padding: 0 !important;
             background-color: var(--blue-background-dark);
             border-top: 1px solid var(--main-border-color);
@@ -105,7 +105,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
 
       <div class="row-h align-items-center header">
         <div class="heading flex-auto">
-          ${translate('INTERVENTION_RESULTS.PD_INDICATORS')}
+          ${translate('PD_INDICATORS')}
           <paper-icon-button
             class="add-box"
             icon="add-box"
@@ -113,8 +113,8 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
             ?hidden="${this.readonly}"
           ></paper-icon-button>
         </div>
-        <div class="heading number-data flex-none">${translate('INTERVENTION_RESULTS.BASELINE')}</div>
-        <div class="heading number-data flex-none">${translate('INTERVENTION_RESULTS.TARGET')}</div>
+        <div class="heading number-data flex-none">${translate('BASELINE')}</div>
+        <div class="heading number-data flex-none">${translate('TARGET')}</div>
       </div>
 
       ${this.indicators.map(
@@ -165,7 +165,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
   firstUpdated(changedProperties: PropertyValues): void {
     super.firstUpdated(changedProperties);
 
-    this.shadowRoot!.querySelectorAll('#view-toggle-button, iron-icon').forEach((el) => callClickOnSpacePush(el));
+    this.shadowRoot!.querySelectorAll('#view-toggle-button, iron-icon').forEach((el) => callClickOnSpacePushListener(el));
   }
 
   computeAvailableOptionsForIndicators(intervention: Intervention) {
@@ -198,8 +198,8 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
-        content: (translate('INTERVENTION_RESULTS.DEACTIVATE_PROMPT') as unknown) as string,
-        confirmBtnText: (translate('INTERVENTION_RESULTS.DEACTIVATE') as unknown) as string
+        content: (translate('DEACTIVATE_PROMPT') as unknown) as string,
+        confirmBtnText: (translate('DEACTIVATE') as unknown) as string
       }
     }).then(({confirmed}) => {
       return confirmed;
@@ -233,7 +233,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
-        content: (translate('INTERVENTION_RESULTS.DELETE_PROMPT') as unknown) as string,
+        content: (translate('DELETE_PROMPT') as unknown) as string,
         confirmBtnText: (translate('GENERAL.DELETE') as unknown) as string
       }
     }).then(({confirmed}) => {

@@ -14,21 +14,20 @@ export class CancelJustification extends LitElement {
         ${sharedStyles} :host {
           display: block;
           margin-bottom: 24px;
-          --ecp-header-title: {
-            font-weight: 500;
-            font-size: 18px;
-            text-align: left;
-            margin-left: 80px;
-          }
+        }
+
+        etools-content-panel::part(ecp-header-title) {
+          font-weight: 500;
+          text-align: left;
+          font-size: 18px;
+          margin-left: 80px;
         }
 
         .cancellation-text {
           font-size: 17px;
           white-space: pre-wrap;
           color: var(--primary-text-color);
-          padding-left: 80px;
-          padding-top: 16px;
-          padding-bottom: 12px;
+          padding: 26px 12px 26px  80px;
         }
 
         div[slot='panel-btns'].bookmark {

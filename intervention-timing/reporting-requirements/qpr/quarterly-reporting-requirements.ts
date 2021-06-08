@@ -8,10 +8,11 @@ import {fireEvent} from '../../../utils/fire-custom-event';
 
 import './edit-qpr-dialog';
 import './qpr-list';
-import {EditQprDialogEl} from './edit-qpr-dialog';
 import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../../common/styles/button-styles';
 import {translate, get as getTranslation} from 'lit-translate';
+import {sharedStyles} from '../../../common/styles/shared-styles-lit';
+import {openDialog} from '../../../utils/dialog';
 
 /**
  * @polymer
@@ -31,7 +32,7 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
   render() {
     return html`
       <style>
-        *[hidden] {
+        ${sharedStyles} *[hidden] {
           display: none !important;
         }
       </style>
@@ -42,11 +43,11 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
 
       <div ?hidden="${!this._empty(this.reportingRequirements)}">
         <div class="row-h">
-          ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.NO_QUARTERLY_REPORTING_REQUIREMENTS')}
+          ${translate('NO_QUARTERLY_REPORTING_REQUIREMENTS')}
         </div>
         <div class="row-h" ?hidden="${!this.editMode}">
           <paper-button class="secondary-btn" @click="${this.openQuarterlyRepRequirementsDialog}">
-            ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.ADD_REQUIREMENTS')}
+            ${translate('ADD_REQUIREMENTS')}
           </paper-button>
         </div>
       </div>
@@ -59,44 +60,15 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
   @property({type: String})
   interventionEnd!: string;
 
-  @property({type: Object})
-  editQprDialog!: EditQprDialogEl;
-
   @property({type: Boolean})
   editMode!: boolean;
 
   @property() dialogOpened = true;
 
-  connectedCallback() {
-    super.connectedCallback();
-    this._createEditQprDialog();
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    this._removeEditQprDialog();
-  }
-
-  _createEditQprDialog() {
-    if (this.reportingRequirements) {
-      this.editQprDialog = document.createElement('edit-qpr-dialog') as EditQprDialogEl;
-      this._onReportingRequirementsSaved = this._onReportingRequirementsSaved.bind(this);
-      this.editQprDialog.addEventListener('reporting-requirements-saved', this._onReportingRequirementsSaved as any);
-      document.querySelector('body')!.appendChild(this.editQprDialog);
-    }
-  }
-
-  _removeEditQprDialog() {
-    if (this.editQprDialog) {
-      this.editQprDialog.removeEventListener('reporting-requirements-saved', this._onReportingRequirementsSaved as any);
-      document.querySelector('body')!.removeChild(this.editQprDialog);
-    }
-  }
-
   openQuarterlyRepRequirementsDialog() {
     if (!this.interventionStart || !this.interventionEnd) {
       fireEvent(this, 'toast', {
-        text: getTranslation('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.QUARTERLY_REPORT_PROMPT'),
+        text: getTranslation('QUARTERLY_REPORT_PROMPT'),
         showCloseBtn: true
       });
       return;
@@ -107,9 +79,20 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
     } else {
       qprData = JSON.parse(JSON.stringify(this.reportingRequirements));
     }
-    this.editQprDialog.qprData = qprData;
-    this.editQprDialog.interventionId = this.interventionId;
-    this.editQprDialog.openQprDialog();
+
+    openDialog({
+      dialog: 'edit-qpr-dialog',
+      dialogData: {
+        qprData: qprData,
+        interventionId: this.interventionId
+      }
+    }).then(({confirmed, response}) => {
+      if (!confirmed || !response) {
+        return;
+      }
+      this._onReportingRequirementsSaved(response);
+      this.updateReportingRequirements(response, CONSTANTS.REQUIREMENTS_REPORT_TYPE.QPR);
+    });
   }
 
   _getReportType() {

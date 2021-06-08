@@ -3,6 +3,8 @@ import './budget-summary/budget-summary';
 import './supply-agreement/supply-agreement';
 import './results-structure/results-structure';
 import './effective-efficient-programme-mgmt/effective-efficient-programme-mgmt';
+import './non-financial-contribution/non-financial-contribution';
+import './hq-contribution/hq-contribution';
 import {fireEvent} from '../utils/fire-custom-event';
 
 /**
@@ -18,7 +20,9 @@ export class InterventionResults extends LitElement {
       <budget-summary></budget-summary>
       <results-structure></results-structure>
       <effective-and-efficient-programme-management></effective-and-efficient-programme-management>
+      <hq-contribution></hq-contribution>
       <supply-agreements></supply-agreements>
+      <non-financial-contribution></non-financial-contribution>
     `;
   }
 

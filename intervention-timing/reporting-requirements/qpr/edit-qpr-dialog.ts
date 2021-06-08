@@ -1,10 +1,9 @@
 import {LitElement, html, property, query, customElement} from 'lit-element';
 import '@polymer/iron-label/iron-label';
 import '@polymer/paper-button/paper-button';
-import '@unicef-polymer/etools-dialog/etools-dialog';
+import '@unicef-polymer/etools-dialog/etools-dialog.js';
 
 import {prepareDatepickerDate} from '../../../utils/date-utils';
-// import EndpointsMixin from '../mixins/endpoints-mixin';
 import {getEndpoint} from '../../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import './qpr-list.js';
@@ -21,6 +20,7 @@ import {AnyObject} from '@unicef-polymer/etools-types';
 declare const dayjs: any;
 import {buttonsStyles} from '../../../common/styles/button-styles';
 import {translate, get as getTranslation} from 'lit-translate';
+import {sharedStyles} from '../../../common/styles/shared-styles-lit';
 
 /**
  * @polymer
@@ -34,7 +34,7 @@ export class EditQprDialog extends LitElement {
   render() {
     return html`
       <style>
-        *[hidden] {
+        ${sharedStyles}*[hidden] {
           display: none !important;
         }
 
@@ -60,21 +60,22 @@ export class EditQprDialog extends LitElement {
       <etools-dialog
         id="editQprDialog"
         size="lg"
-        dialog-title=${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.EDIT_QPR_REQUIREMENTS')}
+        dialog-title=${translate('EDIT_QPR_REQUIREMENTS')}
         ?hidden="${this.addOrModifyQprDialogOpened}"
         @confirm-btn-clicked="${() => this._saveModifiedQprData()}"
         @close="${() => this.closeQprDialog()}"
         ok-btn-text=${translate('GENERAL.SAVE')}
         cancel-btn-text=${translate('GENERAL.CANCEL')}
         keep-dialog-open
+        opened
         spinner-text=${translate('GENERAL.SAVING_DATA')}
       >
         <div class="layout-horizontal">
           <span id="qpr-edit-info"
-            >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.ALL_DATES_IN_FUTURE')}</span
+            >${translate('ALL_DATES_IN_FUTURE')}</span
           >
           <paper-button class="secondary-btn" @click="${this._addNewQpr}"
-            >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.ADD_REQUIREMENT')}</paper-button
+            >${translate('ADD_REQUIREMENT')}</paper-button
           >
         </div>
 
@@ -93,7 +94,7 @@ export class EditQprDialog extends LitElement {
         id="addOrModifyQprDialog"
         size="lg"
         dialog-title=${translate(
-          'INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.EDIT_STANDARD_QUARTERLY_REPORT_REQUIREMENTS'
+          'EDIT_STANDARD_QUARTERLY_REPORT_REQUIREMENTS'
         )}
         ?opened="${this.addOrModifyQprDialogOpened}"
         no-padding
@@ -104,14 +105,14 @@ export class EditQprDialog extends LitElement {
         cancel-btn-text=${translate('GENERAL.CANCEL')}
       >
         <div class="row-h" ?hidden="${this._hideEditedIndexInfo(this._qprDatesSetEditedIndex)}">
-          ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.EDITING_ID')}
+          ${translate('EDITING_ID')}
           ${this._getEditedQprDatesSetId(this._qprDatesSetEditedIndex)}
         </div>
 
         <div class="row-h">
           <div class="col layout-vertical">
             <iron-label for="startDate"
-              >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.START_DATE')}</iron-label
+              >${translate('START_DATE')}</iron-label
             >
             <calendar-lite
               id="startDate"
@@ -124,7 +125,7 @@ export class EditQprDialog extends LitElement {
           </div>
           <div class="col layout-vertical">
             <iron-label for="endDate"
-              >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.END_DATE')}</iron-label
+              >${translate('END_DATE')}</iron-label
             >
             <calendar-lite
               id="endDate"
@@ -137,7 +138,7 @@ export class EditQprDialog extends LitElement {
           </div>
           <div class="col layout-vertical">
             <iron-label for="dueDate"
-              >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.DUE_DATE')}</iron-label
+              >${translate('DUE_DATE')}</iron-label
             >
             <calendar-lite
               id="dueDate"
@@ -178,6 +179,14 @@ export class EditQprDialog extends LitElement {
   @property({type: Array})
   qprData!: any[];
 
+  set dialogData(data: any) {
+    const {qprData, interventionId}: any = data;
+    this.qprData = qprData;
+    this.interventionId = interventionId;
+
+    this.addEventListener('edit-qpr', this._editQprDatesSet as any);
+  }
+
   changed(value: string, item: string) {
     if (this._editedQprDatesSet) {
       const newDate = dayjs(new Date(value)).format('YYYY-MM-DD');
@@ -189,14 +198,9 @@ export class EditQprDialog extends LitElement {
     this.addOrModifyQprDialogOpened = false;
   }
 
-  openQprDialog() {
-    (this.editQprDialog as EtoolsDialog).opened = true;
-    this.addEventListener('edit-qpr', this._editQprDatesSet as any);
-  }
-
   closeQprDialog() {
-    (this.editQprDialog as EtoolsDialog).opened = false;
     this.removeEventListener('edit-qpr', this._editQprDatesSet as any);
+    fireEvent(this, 'dialog-closed', {confirmed: false});
   }
 
   _addNewQpr() {
@@ -216,14 +220,14 @@ export class EditQprDialog extends LitElement {
   _validateDataBeforeAdd() {
     if (!this._editedQprDatesSet.due_date || !this._editedQprDatesSet.start_date || !this._editedQprDatesSet.end_date) {
       fireEvent(this, 'toast', {
-        text: getTranslation('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.DATES_REQUIRED'),
+        text: getTranslation('DATES_REQUIRED'),
         showCloseBtn: true
       });
       return false;
     }
     if (this._duplicateDueDate(this._editedQprDatesSet.due_date)) {
       fireEvent(this, 'toast', {
-        text: getTranslation('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.REQUIREMENT_DATES_NOT_ADDED'),
+        text: getTranslation('REQUIREMENT_DATES_NOT_ADDED'),
         showCloseBtn: true
       });
       return false;
@@ -270,7 +274,7 @@ export class EditQprDialog extends LitElement {
   }
 
   _getEditedQprDatesSetId(index: number) {
-    const dialog = this.shadowRoot!.querySelector(`#qpr-list`) as QprListEl;
+    const dialog = this.shadowRoot!.querySelector(`#qprList`) as QprListEl;
     if (dialog) {
       return dialog.getIndex(index, this.qprData.length);
     }
@@ -290,9 +294,9 @@ export class EditQprDialog extends LitElement {
       body: {reporting_requirements: this.qprData}
     })
       .then((response: any) => {
-        fireEvent(this, 'reporting-requirements-saved', response.reporting_requirements);
         dialog.stopSpinner();
-        this.closeQprDialog();
+        this.removeEventListener('edit-qpr', this._editQprDatesSet as any);
+        fireEvent(this, 'dialog-closed', {confirmed: true, response: response.reporting_requirements});
       })
       .catch((error: any) => {
         logError('Failed to save/update qpr data!', 'edit-qpr-dialog', error);

@@ -10,19 +10,19 @@ import {translate} from 'lit-translate';
 function RepeatableDataSetsMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class RepeatableDataSetsClass extends baseClass {
     @property({type: String})
-    deleteConfirmationTitle = (translate('ARE_YOU_SURE.DELETE_CONFIRMATION') as unknown) as string;
+    deleteConfirmationTitle = (translate('DELETE_CONFIRMATION') as unknown) as string;
 
     @property({type: String})
-    deleteConfirmationMessage = (translate('ARE_YOU_SURE.ARE_YOU_SURE_PROMPT') as unknown) as string;
+    deleteConfirmationMessage = (translate('ARE_YOU_SURE_DEL') as unknown) as string;
 
     @property({type: String})
-    deleteActionLoadingMsg = (translate('ARE_YOU_SURE.DELETE_FROM_SERVER') as unknown) as string;
+    deleteActionLoadingMsg = (translate('DELETE_FROM_SERVER') as unknown) as string;
 
     @property({type: String})
     deleteLoadingSource = 'delete-data-set';
 
     @property({type: String})
-    deleteActionDefaultErrMsg = (translate('ARE_YOU_SURE.DELETE_FAILED') as unknown) as string;
+    deleteActionDefaultErrMsg = (translate('DELETE_FAILED') as unknown) as string;
 
     @property({type: Array})
     data!: any[];

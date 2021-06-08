@@ -1,8 +1,8 @@
+/* eslint-disable lit-a11y/click-events-have-key-events */
 import {LitElement, customElement, html, property, PropertyValues} from 'lit-element';
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-selector/iron-selector';
 import '@polymer/iron-pages/iron-pages';
-import '@polymer/iron-flex-layout/iron-flex-layout';
 import '@polymer/paper-item/paper-item';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
@@ -27,7 +27,7 @@ import {connectStore} from '../../common/mixins/connect-store-mixin';
 import {AnyObject, Permission} from '@unicef-polymer/etools-types';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
-import {callClickOnSpacePush} from '../../utils/common-methods';
+import {callClickOnSpacePushListener} from '../../utils/common-methods';
 import {translate} from 'lit-translate';
 
 /**
@@ -50,11 +50,6 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
           -webkit-box-sizing: border-box;
           -moz-box-sizing: border-box;
           box-sizing: border-box;
-        }
-
-        etools-content-panel {
-          --ecp-content-padding: 0;
-          --ecp-content_-_padding: 0;
         }
 
         /* ------------------------------- */
@@ -96,6 +91,12 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
           font-weight: bold;
           text-transform: capitalize;
         }
+        .nav-menu-item:focus-visible {
+          outline: 0;
+          box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12),
+            0 3px 5px -1px rgba(0, 0, 0, 0.4);
+          background-color: rgba(170, 165, 165, 0.2);
+        }
         /* ------------------------------- */
 
         .edit-rep-req {
@@ -106,13 +107,13 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
       <etools-content-panel
         show-expand-btn
         class="content-section"
-        panel-title=${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.PARTNER_REPORTING_REQUIREMENTS')}
+        panel-title=${translate('PARTNER_REPORTING_REQUIREMENTS')}
       >
         <div class="flex-c layout-horizontal">
           <div class="reports-menu nav-menu">
             <div
               name="qtyProgress"
-              title=${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.QUARTERLY_PROGRESS_REPORTS')}
+              title=${translate('QUARTERLY_PROGRESS_REPORTS')}
               class="nav-menu-item qpr"
               ?selected="${this.isSelected('qtyProgress')}"
               @click="${this.selectType}"
@@ -120,7 +121,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
               id="clickable"
             >
               <span
-                >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.QUARTERLY_PROGRESS_REPORTS')}
+                >${translate('QUARTERLY_PROGRESS_REPORTS')}
                 (${this.qprRequirementsCount})</span
               >
               <paper-icon-button
@@ -132,7 +133,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
             </div>
             <div
               name="humanitarianUnicef"
-              title=${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.HUMANITARIAN_REPORTS_UNICEF')}
+              title=${translate('HUMANITARIAN_REPORTS_UNICEF')}
               class="nav-menu-item"
               ?selected="${this.isSelected('humanitarianUnicef')}"
               @click="${this.selectType}"
@@ -140,7 +141,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
               id="clickable"
             >
               <span
-                >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.HUMANITARIAN_REPORTS_UNICEF')}
+                >${translate('HUMANITARIAN_REPORTS_UNICEF')}
                 (${this.hrUnicefRequirementsCount})</span
               >
               <paper-icon-button
@@ -153,28 +154,28 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
             ${this.isUnicefUser
               ? html` <div
                   name="humanitarianCluster"
-                  title=${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.HUMANITARIAN_REPORTS_CLUSTER')}
+                  title=${translate('HUMANITARIAN_REPORTS_CLUSTER')}
                   class="nav-menu-item"
                   ?selected="${this.isSelected('humanitarianCluster')}"
                   @click="${this.selectType}"
                   tabindex="0"
                   id="clickable"
                 >
-                  ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.HUMANITARIAN_REPORTS_CLUSTER')}
+                  ${translate('HUMANITARIAN_REPORTS_CLUSTER')}
                   (${this.hrClusterRequirementsCount})
                 </div>`
               : html``}
 
             <div
               name="special"
-              title=${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.SPECIAL_REPORT')}
+              title=${translate('SPECIAL_REPORT')}
               class="nav-menu-item"
               ?selected="${this.isSelected('special')}"
               @click="${this.selectType}"
               tabindex="0"
               id="clickable"
             >
-              ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.SPECIAL_REPORT')}
+              ${translate('SPECIAL_REPORT')}
               (${this.specialRequirementsCount})
             </div>
           </div>
@@ -222,6 +223,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
                 name="special"
                 .interventionId="${this.interventionId}"
                 .requirementsCount="${this.specialRequirementsCount}"
+                .editMode="${!this.isReadonly}"
                 @count-changed=${(e: CustomEvent) => this.updateSRRCount(e.detail)}
               >
               </special-reporting-requirements>
@@ -235,7 +237,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
   firstUpdated(changedProperties: PropertyValues): void {
     super.firstUpdated(changedProperties);
 
-    this.shadowRoot!.querySelectorAll('#clickable').forEach((el) => callClickOnSpacePush(el));
+    this.shadowRoot!.querySelectorAll('#clickable').forEach((el) => callClickOnSpacePushListener(el));
   }
 
   @property({type: String})
@@ -289,7 +291,6 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
       return;
     }
     this.isUnicefUser = isUnicefUser(state);
-
     this.reportingRequirementsPermissions = selectReportingRequirementsPermissions(state);
     const currentIntervention = get(state, 'interventions.current');
     this.intervention = cloneDeep(currentIntervention);

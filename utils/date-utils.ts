@@ -1,11 +1,5 @@
 import {logWarn} from '@unicef-polymer/etools-behaviors/etools-logging.js';
 declare const dayjs: any;
-declare const dayjs_plugin_isSameOrBefore: any;
-declare const dayjs_plugin_isBetween: any;
-
-dayjs.extend(dayjs_plugin_isSameOrBefore);
-dayjs.extend(dayjs_plugin_isBetween);
-
 
 export function prettyDate(dateString: string, format?: string, placeholder?: string) {
   const date = convertDate(dateString);
@@ -128,32 +122,6 @@ export function dateIsBefore(dateToCheckStr: string, dateStr: string) {
 
 export function dateIsAfter(dateToCheckStr: string | Date, dateStr: string | Date) {
   return dayjs(dateToCheckStr).isAfter(dateStr);
-}
-
-function getShortStrMonths() {
-  return ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-}
-
-export function EdgeAcceptableDateParse(strDt: any) {
-  // expected dt fromat : 01-Sep-2018
-
-  let date = new Date(strDt + 'Z');
-  if (isValidDate(date)) {
-    return date;
-  }
-
-  const dtArr = strDt.split('-');
-  if (dtArr && dtArr.length) {
-    let numericMonth = dtArr[1];
-
-    if (isNaN(numericMonth)) {
-      numericMonth = getShortStrMonths().indexOf(numericMonth);
-    }
-
-    date = new Date(dtArr[2], numericMonth, dtArr[0]);
-  }
-
-  return date;
 }
 
 export function datesAreEqual(date1: any, date2: any) {

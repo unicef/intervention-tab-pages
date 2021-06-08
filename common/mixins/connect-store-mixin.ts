@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import {getStoreAsync} from '../../utils/redux-store-access';
 import {Store, Unsubscribe} from 'redux';
 import {Constructor} from '@unicef-polymer/etools-types';

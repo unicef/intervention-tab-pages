@@ -1,8 +1,10 @@
 import {LitElement, html, property, customElement} from 'lit-element';
 import '@polymer/paper-tabs/paper-tabs';
 import '@polymer/paper-tabs/paper-tab';
-import {layoutHorizontal, layoutStartJustified} from '../styles/flex-layout-styles';
 import {AnyObject} from '@unicef-polymer/etools-types';
+import '@polymer/paper-menu-button/paper-menu-button.js';
+import '@polymer/iron-icons/iron-icons';
+import '@polymer/iron-icon/iron-icon';
 
 /**
  * @LitElement
@@ -21,7 +23,7 @@ export class EtoolsTabs extends LitElement {
         }
 
         paper-tab[disabled] {
-          opacity: .3;
+          opacity: 0.3;
         }
 
         *[disabled] {
@@ -30,8 +32,9 @@ export class EtoolsTabs extends LitElement {
         }
 
         :host {
-          ${layoutHorizontal}
-          ${layoutStartJustified}
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-start;
         }
 
         :host([border-bottom]) {
@@ -59,6 +62,28 @@ export class EtoolsTabs extends LitElement {
           color: var(--primary-color);
         }
 
+        paper-tabs {
+          --paper-tabs-container: {
+            overflow: visible;
+            max-width: 100% !important;
+            z-index: 99;
+          }
+        }
+
+        paper-tab[is-subtabs-parent] {
+          opacity: 1 !important;
+          cursor: pointer !important;
+          --paper-tab-content-unselected: {
+            opacity: 1;
+          }
+        }
+        paper-tab[is-subtabs-parent] > paper-menu-button > paper-button {
+          color: var(--secondary-text-color);
+        }
+        paper-tab.iron-selected[is-subtabs-parent] > paper-menu-button > paper-button {
+          color: var(--primary-color) !important;
+        }
+
         @media print {
           :host {
             display: none;
@@ -66,14 +91,30 @@ export class EtoolsTabs extends LitElement {
         }
       </style>
 
-      <paper-tabs id="tabs" selected="${this.activeTab}" attr-for-selected="name" noink>
-        ${this.tabs.map((item) => this.getTabHtml(item))}
+      <paper-tabs
+        style="overflow: visible; max-width: 100%"
+        id="tabs"
+        selected="${this.activeTab}"
+        attr-for-selected="name"
+        noink
+        @iron-activate="${this.cancelSelection}"
+      >
+        ${this.tabs.map((item) => {
+          if (item.subtabs) {
+            return this.getSubtabs(item);
+          } else {
+            return this.getTabHtml(item);
+          }
+        })}
       </paper-tabs>
     `;
   }
 
   @property({type: String})
   activeTab = '';
+
+  @property({type: String})
+  activeSubTab = '';
 
   @property({type: Array})
   tabs!: AnyObject[];
@@ -84,5 +125,67 @@ export class EtoolsTabs extends LitElement {
         <span class="tab-content"> ${item.tabLabel} ${item.showTabCounter ? html`(${item.counter})` : ''} </span>
       </paper-tab>
     `;
+  }
+
+  getSubtabs(item: any) {
+    return html`
+      <paper-tab
+        style="overflow: visible !important;"
+        name="${item.tab}"
+        is-subtabs-parent="true"
+        link
+        ?hidden="${item.hidden}"
+        @keyup=${this.callClickOnEnterSpaceDownKeys}
+      >
+        <paper-menu-button id="subtabmenu" horizontal-align="right" vertical-offset="45">
+          <paper-button class="button" slot="dropdown-trigger">
+            ${item.tab}
+            <iron-icon icon="arrow-drop-down"></iron-icon>
+          </paper-button>
+          <paper-listbox slot="dropdown-content" attr-for-selected="subtab" selected="${this.activeSubTab}">
+            ${item.subtabs.map(
+              (subitem: any) => html`
+                <paper-icon-item
+                  name="${item.tab}"
+                  subtab="${subitem.value}"
+                  selected="${this.isSelectedSubtab(subitem.value)}"
+                >
+                  <iron-icon icon="check" slot="item-icon" ?hidden="${!this.isSelectedSubtab(subitem.value)}">
+                  </iron-icon>
+                  <paper-item-body>${subitem.label}</paper-item-body>
+                </paper-icon-item>
+              `
+            )}
+          </paper-listbox>
+        </paper-menu-button>
+      </paper-tab>
+    `;
+  }
+
+  isSelectedSubtab(dropdownItemValue: string) {
+    return dropdownItemValue == this.activeSubTab;
+  }
+
+  cancelSelection(e: CustomEvent) {
+    if (e.detail.item.getAttribute('is-subtabs-parent')) {
+      e.preventDefault();
+    }
+  }
+
+  callClickOnEnterSpaceDownKeys(event: KeyboardEvent) {
+    if (['Enter', ' ', 'ArrowDown'].includes(event.key) && !event.ctrlKey) {
+      // Cancel the default action, if needed
+      event.preventDefault();
+
+      // @ts-ignore
+      if (event.target!.localName !== 'paper-tab') {
+        return;
+      }
+      ((event.target as any).querySelector('paper-button') as any).click();
+    }
+  }
+
+  public notifyResize() {
+    this.shadowRoot?.querySelector('paper-tabs')?.notifyResize();
   }
 }

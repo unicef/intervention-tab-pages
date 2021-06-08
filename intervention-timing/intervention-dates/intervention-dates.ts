@@ -6,7 +6,7 @@ import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {RootState} from '../../common/types/store.types';
+import {PartnerReportingRequirements, RootState} from '../../common/types/store.types';
 import {ProgrammeDocDates, InterventionDatesPermissions} from './interventionDates.models';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {selectInterventionDates, selectInterventionDatesPermissions} from './interventionDates.selectors';
@@ -19,13 +19,17 @@ import '@unicef-polymer/etools-upload/etools-upload';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
+import {fireEvent} from '../../utils/fire-custom-event';
+import ReportingRequirementsCommonMixin from '../reporting-requirements/mixins/reporting-requirements-common-mixin';
 
 /**
  * @customElement
  */
 @customElement('intervention-dates')
-export class InterventionDates extends CommentsMixin(ComponentBaseMixin(FrNumbersConsistencyMixin(LitElement))) {
+export class InterventionDates extends CommentsMixin(
+  ComponentBaseMixin(FrNumbersConsistencyMixin(ReportingRequirementsCommonMixin(LitElement)))
+) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -47,13 +51,17 @@ export class InterventionDates extends CommentsMixin(ComponentBaseMixin(FrNumber
         datepicker-lite {
           min-width: 200px;
         }
+
+        etools-content-panel::part(ecp-content) {
+          padding: 8px 24px 16px 24px;
+        }
       </style>
 
       <etools-content-panel
         show-expand-btn
-        panel-title=${translate('INTERVENTION_TIMING.INTERVENTION_DATES.PROGRAMME_DOC_DATES')}
+        panel-title=${translate('PROGRAMME_DOC_DATES')}
         comment-element="programme-document-dates"
-        comment-description=${translate('INTERVENTION_TIMING.INTERVENTION_DATES.PROGRAMME_DOC_DATES')}
+        comment-description=${translate('PROGRAMME_DOC_DATES')}
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
         <div class="layout-horizontal row-padding-v">
@@ -69,11 +77,11 @@ export class InterventionDates extends CommentsMixin(ComponentBaseMixin(FrNumber
               <datepicker-lite
                 slot="field"
                 id="intStart"
-                label=${translate('INTERVENTION_TIMING.INTERVENTION_DATES.START_DATE')}
+                label=${translate('START_DATE')}
                 .value="${this.data.start}"
                 ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.start)}"
                 ?required="${this.permissions.required.start}"
-                error-message=${translate('INTERVENTION_TIMING.INTERVENTION_DATES.SELECT_START_DATE')}
+                error-message=${translate('SELECT_START_DATE')}
                 auto-validate
                 selected-date-display-format="D MMM YYYY"
                 fire-date-has-changed
@@ -97,11 +105,11 @@ export class InterventionDates extends CommentsMixin(ComponentBaseMixin(FrNumber
               <datepicker-lite
                 slot="field"
                 id="intEnd"
-                label=${translate('INTERVENTION_TIMING.INTERVENTION_DATES.END_DATE')}
+                label=${translate('END_DATE')}
                 .value="${this.data.end}"
                 ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.end)}"
                 ?required="${this.permissions.required.end}"
-                error-message=${translate('INTERVENTION_TIMING.INTERVENTION_DATES.SELECT_END_DATE')}
+                error-message=${translate('SELECT_END_DATE')}
                 auto-validate
                 selected-date-display-format="D MMM YYYY"
                 fire-date-has-changed
@@ -118,7 +126,7 @@ export class InterventionDates extends CommentsMixin(ComponentBaseMixin(FrNumber
           ?hidden="${this.hideActivationLetter(this.data.status, this.data.contingency_pd)}"
         >
           <etools-upload
-            label=${translate('INTERVENTION_TIMING.INTERVENTION_DATES.ACTIVATION_LETTER')}
+            label=${translate('ACTIVATION_LETTER')}
             id="activationLetterUpload"
             .fileUrl="${this.data.activation_letter_attachment}"
             .uploadEndpoint="${this.uploadEndpoint}"
@@ -155,6 +163,8 @@ export class InterventionDates extends CommentsMixin(ComponentBaseMixin(FrNumber
   @property({type: Object})
   permissions!: Permission<InterventionDatesPermissions>;
 
+  warningRequired = false;
+
   connectedCallback() {
     super.connectedCallback();
   }
@@ -167,6 +177,7 @@ export class InterventionDates extends CommentsMixin(ComponentBaseMixin(FrNumber
       return;
     }
     this.data = selectInterventionDates(state);
+    this.checkIfWarningRequired(state.interventions.partnerReportingRequirements);
     this.originalData = cloneDeep(this.data);
     this.permissions = selectInterventionDatesPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
@@ -197,6 +208,18 @@ export class InterventionDates extends CommentsMixin(ComponentBaseMixin(FrNumber
     );
   }
 
+  private checkIfWarningRequired(partnerReportingRequirements: PartnerReportingRequirements) {
+    // Existence of PD Output activities with timeframes are validated on BK
+    this.warningRequired = this.thereArePartnerReportingRequirements(partnerReportingRequirements);
+  }
+
+  private thereArePartnerReportingRequirements(partnerReportingRequirements: PartnerReportingRequirements) {
+    if (partnerReportingRequirements) {
+      return Object.entries(partnerReportingRequirements).some(([_key, value]) => !!value.length);
+    }
+    return false;
+  }
+
   saveData() {
     if (!this.validate()) {
       return Promise.resolve(false);
@@ -205,6 +228,12 @@ export class InterventionDates extends CommentsMixin(ComponentBaseMixin(FrNumber
     return getStore()
       .dispatch<AsyncAction>(patchIntervention(this.data))
       .then(() => {
+        if (this.warningRequired) {
+          fireEvent(this, 'toast', {
+            text: getTranslation('SAVE_WARNING'),
+            showCloseBtn: true
+          });
+        }
         this.editMode = false;
       });
   }

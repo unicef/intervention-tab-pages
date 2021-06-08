@@ -54,4 +54,18 @@ const CONSTANTS = {
   }
 };
 
+export const TABS = {
+  Metadata: 'metadata',
+  Strategy: 'strategy',
+  Results: 'results',
+  Timing: 'timing',
+  Attachments: 'attachments',
+  Review: 'review',
+  Summary: 'summary',
+  ImplementationStatus: 'implementation-status',
+  MonitoringActivities: 'monitoring-activities',
+  ResultsReported: 'progress',
+  Reports: 'reports'
+};
+
 export default CONSTANTS;

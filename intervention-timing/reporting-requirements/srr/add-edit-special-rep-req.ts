@@ -1,23 +1,21 @@
 /* eslint-disable lit/no-legacy-template-syntax */
 import {LitElement, html, property, customElement} from 'lit-element';
 import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
-// @lajos bellow 2 where imported from PMP
-// import EndpointsMixin from '../mixins/endpoints-mixin';
+import {sharedStyles} from '../../../common/styles/shared-styles-lit';
 import {getEndpoint} from '../../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {prepareDatepickerDate} from '../../../utils/date-utils';
 
 import '@polymer/iron-label/iron-label';
 import '@polymer/paper-input/paper-input';
-import '@unicef-polymer/etools-dialog/etools-dialog';
+import '@unicef-polymer/etools-dialog/etools-dialog.js';
 
 import '@unicef-polymer/etools-date-time/calendar-lite';
-// @lajos To refactor bellow
 import {fireEvent} from '../../../utils/fire-custom-event';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
+import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {AnyObject} from '@unicef-polymer/etools-types';
 declare const dayjs: any;
 import {translate} from 'lit-translate';
@@ -38,7 +36,7 @@ export class AddEditSpecialRepReq extends LitElement {
     }
     return html`
       <style>
-        :host {
+        ${sharedStyles}:host {
           display: block;
         }
 
@@ -58,19 +56,20 @@ export class AddEditSpecialRepReq extends LitElement {
       <etools-dialog
         id="addEditDialog"
         size="lg"
-        ?opened="${this.opened}"
+        opened
         dialog-title=${translate(
-          'INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.ADD_EDIT_SPECIAL_REPORTING_REQUIREMENTS'
+          'ADD_EDIT_SPECIAL_REPORTING_REQUIREMENTS'
         )}
         @confirm-btn-clicked="${this._save}"
         ok-btn-text=${translate('GENERAL.SAVE')}
         cancel-btn-text=${translate('GENERAL.CANCEL')}
+        @close="${() => this._onClose()}"
         keep-dialog-open
       >
         <div class="row-h">
           <div class="col layout-vertical col-5">
             <iron-label for="startDate"
-              >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.REPORT_DUE_DATE')}</iron-label
+              >${translate('REPORT_DUE_DATE')}</iron-label
             >
             <calendar-lite
               id="startDate"
@@ -84,7 +83,7 @@ export class AddEditSpecialRepReq extends LitElement {
         </div>
         <div class="row-h">
           <paper-input
-            label=${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.REPORTING_REQUIREMENT')}
+            label=${translate('REPORTING_REQUIREMENT')}
             placeholder="&#8212;"
             value="${this.item.description ? this.item.description : ''}"
             @value-changed="${({detail}: CustomEvent) => (this.item.description = detail.value)}"
@@ -95,14 +94,17 @@ export class AddEditSpecialRepReq extends LitElement {
     `;
   }
 
-  @property({type: Boolean})
-  opened!: boolean;
-
   @property({type: Number})
   interventionId!: number;
 
   @property({type: Object})
   item!: AnyObject;
+
+  set dialogData(data: any) {
+    const {item, interventionId}: any = data;
+    this.item = item;
+    this.interventionId = interventionId;
+  }
 
   _isNew() {
     return !this.item.id;
@@ -134,9 +136,8 @@ export class AddEditSpecialRepReq extends LitElement {
       body: this._getBody()
     })
       .then((response: any) => {
-        fireEvent(this, 'reporting-requirements-saved', response);
         dialog.stopSpinner();
-        this.opened = false;
+        fireEvent(this, 'dialog-closed', {confirmed: true, response: response});
       })
       .catch((error: any) => {
         dialog.stopSpinner();
@@ -161,6 +162,10 @@ export class AddEditSpecialRepReq extends LitElement {
       return date;
     }
     return prepareDatepickerDate(dateStr);
+  }
+
+  _onClose(): void {
+    fireEvent(this, 'dialog-closed', {confirmed: false});
   }
 }
 export {AddEditSpecialRepReq as AddEditSpecialRepReqEl};

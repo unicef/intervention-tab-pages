@@ -16,7 +16,7 @@ import {getEndpoint} from '../../utils/endpoint-helper';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, InterventionActivity, InterventionQuarter} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {callClickOnSpacePush} from '../../utils/common-methods';
+import {callClickOnSpacePushListener} from '../../utils/common-methods';
 
 @customElement('pd-activities')
 export class PdActivities extends CommentsMixin(LitElement) {
@@ -55,51 +55,49 @@ export class PdActivities extends CommentsMixin(LitElement) {
       <style>
         ${sharedStyles} etools-data-table-row {
           --list-bg-color: var(--green-background);
-          --list-row-collapse-wrapper: {
-            padding: 0 !important;
-            background-color: var(--green-background-dark);
-            border-top: 1px solid var(--main-border-color);
-          }
-          --list-row-wrapper: {
-            background-color: var(--green-background);
-            min-height: 48px;
-            border: 1px solid var(--main-border-color) !important;
-            border-bottom: none !important;
-          }
-          --icon-wrapper: {
-            padding: 0px 0px !important;
-            margin-right: 16px !important;
-          }
         }
+
+        etools-data-table-row::part(edt-list-row-collapse-wrapper) {
+          padding: 0 !important;
+          background-color: var(--green-background-dark);
+          border-top: 1px solid var(--main-border-color);
+        }
+        etools-data-table-row::part(edt-list-row-wrapper) {
+          background-color: var(--green-background);
+          min-height: 48px;
+          border: 1px solid var(--main-border-color) !important;
+          border-bottom: none !important;
+        }
+        etools-data-table-row::part(edt-icon-wrapper) {
+          padding: 0 0 !important;
+          margin-right: 16px !important;
+        }
+
         .editable-row .hover-block {
           background-color: rgb(199, 212, 200);
         }
-        etools-data-table-row:last-child {
-          --list-row-wrapper: {
-            background-color: var(--green-background);
-            min-height: 48px;
-            border: 1px solid var(--main-border-color) !important;
-            border-bottom: 1px solid var(--main-border-color) !important;
-          }
+
+        etools-data-table-row::part(edt-list-row-wrapper):hover {
+          background-color: rgb(199, 212, 200);
         }
       </style>
 
       <div class="row-h align-items-center header">
         <div class="heading flex-auto">
-          ${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.PD_ACTIVITIES')}
+          ${translate('PD_ACTIVITIES')}
           <paper-icon-button
             icon="add-box"
             ?hidden="${this.readonly}"
             @click="${() => this.openDialog()}"
           ></paper-icon-button>
         </div>
-        <div class="heading number-data flex-none">${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.CSO_CASH')}</div>
+        <div class="heading number-data flex-none">${translate('PARTNER_CASH')}</div>
         <div class="heading number-data flex-none">
-          ${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.UNICEF_CASH')}
+          ${translate('UNICEF_CASH')}
         </div>
         <div class="heading number-data flex-none">${translate('GENERAL.TOTAL')}</div>
         <div class="heading number-data flex-none">
-          ${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.PERCENT_PARTNER')}
+          ${translate('PERCENT_PARTNER')}
         </div>
       </div>
 
@@ -157,7 +155,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
               <!--    Locations    -->
               <div class="details-container">
                 <div class="text details-heading">
-                  ${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.TIME_PERIODS')}
+                  ${translate('TIME_PERIODS')}
                 </div>
                 <div class="details-text">
                   <b>${this.getQuartersNames(activity.time_frames)}</b>
@@ -167,7 +165,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
               <!--    Section and Cluster    -->
               <div class="details-container full">
                 <div class="text details-heading">
-                  ${translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.OTHER_NOTES')}
+                  ${translate('OTHER_NOTES')}
                 </div>
                 <div class="details-text">${activity.context_details || '-'}</div>
               </div>
@@ -192,7 +190,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
   firstUpdated(): void {
     super.firstUpdated();
 
-    this.shadowRoot!.querySelectorAll('iron-icon').forEach((el) => callClickOnSpacePush(el));
+    this.shadowRoot!.querySelectorAll('iron-icon').forEach((el) => callClickOnSpacePushListener(el));
   }
 
   getSpecialElements(container: HTMLElement): CommentElementMeta[] {
@@ -236,7 +234,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
-        content: (translate('INTERVENTION_RESULTS.RESULTS_STRUCTURE.DELETE_ACTIVITY_PROMPT') as unknown) as string,
+        content: (translate('DELETE_ACTIVITY_PROMPT') as unknown) as string,
         confirmBtnText: (translate('GENERAL.DELETE') as unknown) as string
       }
     }).then(({confirmed}) => {

@@ -13,7 +13,7 @@ import {fireEvent} from '../../../../utils/fire-custom-event';
 import {ActivityItemRow} from './activity-item-row';
 import './activity-item-row';
 import {InterventionActivityItem} from '@unicef-polymer/etools-types';
-import {callClickOnSpacePush} from '../../../../utils/common-methods';
+import {callClickOnSpacePushListener} from '../../../../utils/common-methods';
 import {PaperTextareaElement} from '@polymer/paper-input/paper-textarea';
 import {translate} from 'lit-translate';
 
@@ -45,17 +45,17 @@ export class ActivityItemsTable extends LitElement {
     return html`
       <div class="grid-row header border">
         <div class="grid-cell header-cell">
-          ${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.ITEM_DESCRIPTION')}
+          ${translate('ITEM_DESCRIPTION')}
         </div>
         <div class="grid-cell header-cell center">
-          ${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.CSO_CONTRIB')}
+          ${translate('PARTNER_CASH')}
         </div>
         <div class="grid-cell header-cell center">
-          ${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.UNICEF_CASH')}
+          ${translate('UNICEF_CASH')}
         </div>
         <div class="grid-cell header-cell"></div>
         <div class="grid-cell header-cell end">
-          ${translate('INTERVENTION_RESULTS.ACTIVITY_DATA_DIALOG.TOTAL_CASH')}
+          ${translate('TOTAL_CASH')}
         </div>
       </div>
 
@@ -78,7 +78,7 @@ export class ActivityItemsTable extends LitElement {
   firstUpdated(changedProperties: PropertyValues): void {
     super.firstUpdated(changedProperties);
 
-    callClickOnSpacePush(this.shadowRoot!.querySelector('#btnAddItem'));
+    callClickOnSpacePushListener(this.shadowRoot!.querySelector('#btnAddItem'));
   }
 
   addNew(): void {

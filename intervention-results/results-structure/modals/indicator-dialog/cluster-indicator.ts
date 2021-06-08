@@ -52,7 +52,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
             <div class="row-h flex-c">
               <div class="col col-6">
                 <div class="layout-vertical">
-                  <label class="paper-label">${translate('INDICATOR_DIALOG.RESPONSE_PLAN')}</label>
+                  <label class="paper-label">${translate('RESPONSE_PLAN')}</label>
                   <label class="input-label" ?empty="${!this.indicator?.response_plan_name}"
                     >${this.indicator?.response_plan_name}</label
                   >
@@ -60,7 +60,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
               </div>
               <div class="col col-6">
                 <div class="layout-vertical">
-                  <label class="paper-label">${translate('INDICATOR_DIALOG.CLUSTER')}</label>
+                  <label class="paper-label">${translate('CLUSTER')}</label>
                   <label class="input-label" ?empty="${!this.indicator?.cluster_name}"
                     >${this.indicator?.cluster_name}</label
                   >
@@ -69,7 +69,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
             </div>
             <div class="row-h flex-c">
               <div class="layout-vertical">
-                <label class="paper-label">${translate('INDICATOR_DIALOG.INDICATOR')}</label>
+                <label class="paper-label">${translate('INDICATOR')}</label>
                 <label class="input-label" ?empty="${!this.indicator?.cluster_indicator_title}"
                   >${this.indicator?.cluster_indicator_title}</label
                 >
@@ -83,13 +83,13 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
               <div class="col col-6">
                 <etools-dropdown
                   id="responsePlanDropdw"
-                  label=${translate('INDICATOR_DIALOG.RESPONSE_PLAN')}
+                  label=${translate('RESPONSE_PLAN')}
                   placeholder="&#8212;"
                   .selected="${this.responsePlanId}"
                   .options="${this.responsePlans}"
                   option-label="title"
                   option-value="id"
-                  error-message=${translate('INDICATOR_DIALOG.RESPONSE_PLAN_ERR')}
+                  error-message=${translate('RESPONSE_PLAN_ERR')}
                   fit-into="etools-dialog"
                   ?readonly="${this.readonly}"
                   trigger-value-change-event
@@ -103,13 +103,13 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
               <div class="col col-6">
                 <etools-dropdown
                   id="clusterDropdw"
-                  label=${translate('INDICATOR_DIALOG.CLUSTER')}
+                  label=${translate('CLUSTER')}
                   placeholder="&#8212;"
                   .selected="${this.clusterId}"
                   .options="${this.clusters}"
                   option-label="title"
                   option-value="id"
-                  error-message=${translate('INDICATOR_DIALOG.CLUSTER_ERR')}
+                  error-message=${translate('CLUSTER_ERR')}
                   fit-into="etools-dialog"
                   ?readonly="${this.readonly}"
                   trigger-value-change-event
@@ -124,7 +124,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
             <div class="row-h flex-c">
               <etools-dropdown
                 id="clusterIndicatorDropdw"
-                label=${translate('INDICATOR_DIALOG.INDICATOR')}
+                label=${translate('INDICATOR')}
                 placeholder="&#8212;"
                 .selected="${this.indicator.cluster_indicator_id}"
                 .options="${this.prpClusterIndicators}"
@@ -132,7 +132,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
                 option-value="id"
                 required
                 auto-validate
-                error-message=${translate('INDICATOR_DIALOG.INDICATOR_ERR')}
+                error-message=${translate('INDICATOR_ERR')}
                 fit-into="etools-dialog"
                 ?readonly="${this.readonly}"
                 trigger-value-change-event
@@ -151,7 +151,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
         <div class="col col-4">
           <paper-input
             id="numeratorLbl"
-            label=${translate('INDICATOR_DIALOG.NUMERATOR_LABEL')}
+            label=${translate('NUMERATOR_LABEL')}
             .value="${this.indicator.numerator_label}"
             placeholder="&#8212;"
             ?readonly="${this.readonly}"
@@ -164,7 +164,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
         <div class="col col-4">
           <paper-input
             id="denomitorLbl"
-            label=${translate('INDICATOR_DIALOG.DENOMINATOR_LABEL')}
+            label=${translate('DENOMINATOR_LABEL')}
             .value="${this.indicator.denominator_label}"
             placeholder="&#8212;"
             ?readonly="${this.readonly}"
@@ -181,13 +181,13 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
             <div class="col-4 layout-horizontal">
               <paper-input
                 id="baselineNumerator"
-                label=${translate('INDICATOR_DIALOG.BASELINE')}
+                label=${translate('BASELINE')}
                 .value="${this.indicator.baseline.v}"
-                placeholder=${translate('INDICATOR_DIALOG.NUMERATOR')}
+                placeholder=${translate('NUMERATOR')}
                 allowed-pattern="[0-9]"
                 .pattern="${this.digitsNotStartingWith0Pattern}"
                 auto-validate
-                error-message=${translate('INDICATOR_DIALOG.INVALID_ERR')}
+                error-message=${translate('INVALID_ERR')}
                 ?readonly="${this.readonly}"
                 @value-changed="${({detail}: CustomEvent) => {
                   this.indicator.baseline.v = detail.value;
@@ -198,11 +198,11 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
               <paper-input
                 id="baselineDenominator"
                 .value="${this.indicator.baseline.d}"
-                placeholder=${translate('INDICATOR_DIALOG.DENOMINATOR')}
+                placeholder=${translate('DENOMINATOR')}
                 allowed-pattern="[0-9]"
                 .pattern="${this.digitsNotStartingWith0Pattern}"
                 auto-validate
-                error-message=${translate('INDICATOR_DIALOG.INVALID_ERR')}
+                error-message=${translate('INVALID_ERR')}
                 ?readonly="${this.readonly}"
                 @value-changed="${({detail}: CustomEvent) => {
                   this.indicator.baseline.d = detail.value;
@@ -213,14 +213,14 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
             <div class="col col-4">
               <paper-input
                 id="targetNumerator"
-                label=${translate('INDICATOR_DIALOG.TARGET')}
+                label=${translate('TARGET')}
                 .value="${this.indicator.target.v}"
-                placeholder=${translate('INDICATOR_DIALOG.NUMERATOR')}
+                placeholder=${translate('NUMERATOR')}
                 allowed-pattern="[0-9]"
                 .pattern="${this.digitsNotStartingWith0Pattern}"
                 auto-validate
                 required
-                error-message=${translate('INDICATOR_DIALOG.INVALID_ERR')}
+                error-message=${translate('INVALID_ERR')}
                 ?readonly="${this.readonly}"
                 @value-changed="${({detail}: CustomEvent) => {
                   this.indicator.target.v = detail.value;
@@ -231,14 +231,14 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
               <div class="layout-horizontal bottom-aligned dash-separator">/</div>
               <paper-input
                 id="targetDenominator"
-                placeholder=${translate('INDICATOR_DIALOG.DENOMINATOR')}
+                placeholder=${translate('DENOMINATOR')}
                 .value="${this.indicator.target.d}"
                 readonly
                 allowed-pattern="[0-9]"
                 .pattern="${this.digitsNotStartingWith0Pattern}"
                 required
                 auto-validate
-                error-message=${translate('INDICATOR_DIALOG.INVALID_ERR')}
+                error-message=${translate('INVALID_ERR')}
                 @value-changed="${({detail}: CustomEvent) => {
                   this.indicator.target.d = detail.value;
                 }}"
@@ -253,13 +253,13 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
               <div class="col col-4">
                 <paper-input
                   id="baselineEl"
-                  label=${translate('INDICATOR_DIALOG.BASELINE')}
+                  label=${translate('BASELINE')}
                   placeholder="&#8212;"
                   .value="${this.indicator.baseline.v}"
                   allowed-pattern="[0-9.,]"
                   .pattern="${this.numberPattern}"
                   auto-validate
-                  error-message=${translate('INDICATOR_DIALOG.INVALID_NUMBER')}
+                  error-message=${translate('INVALID_NUMBER')}
                   ?readonly="${this.readonly}"
                   @value-changed="${({detail}: CustomEvent) => {
                     this.indicator.baseline.v = detail.value;
@@ -271,14 +271,14 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
               <div class="col col-4">
                 <paper-input
                   id="targetEl"
-                  label=${translate('INDICATOR_DIALOG.TARGET')}
+                  label=${translate('TARGET')}
                   placeholder="&#8212;"
                   .value="${this.indicator.target.v}"
                   required
                   allowed-pattern="[0-9.,]"
                   .pattern="${this.numberPattern}"
                   auto-validate
-                  error-message=${translate('INDICATOR_DIALOG.VALID_TARGET_ERR')}
+                  error-message=${translate('VALID_TARGET_ERR')}
                   ?readonly="${this.readonly}"
                   @value-changed="${({detail}: CustomEvent) => {
                     this.indicator.target.v = detail.value;
@@ -291,7 +291,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
         : html``}
       <div class="row-h flex-c">
         <div class="layout-vertical">
-          <label class="paper-label">${translate('INDICATOR_DIALOG.MEANS_OF_VERIFICATION')}</label>
+          <label class="paper-label">${translate('MEANS_OF_VERIFICATION')}</label>
           <label class="input-label" ?empty="${!this.prpClusterIndicator.means_of_verification}">
             ${this.prpClusterIndicator.means_of_verification}
           </label>
@@ -300,7 +300,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
       <div class="last-item row-h flex-c">
         <etools-dropdown-multi
           id="locationsDropdw"
-          label=${translate('INDICATOR_DIALOG.LOCATIONS')}
+          label=${translate('LOCATIONS')}
           placeholder="&#8212;"
           .selectedValues="${this.indicator.locations}"
           .options="${this.locationOptions}"
@@ -308,7 +308,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
           option-value="id"
           required
           auto-validate
-          error-message=${translate('INDICATOR_DIALOG.LOCATIONS_ERR')}
+          error-message=${translate('LOCATIONS_ERR')}
           fit-into="etools-dialog"
           ?readonly="${this.readonly}"
           trigger-value-change-event

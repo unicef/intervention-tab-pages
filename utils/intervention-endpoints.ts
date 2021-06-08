@@ -48,6 +48,9 @@ export interface EtoolsEndpoints {
   downloadComment: EtoolsEndpoint;
   downloadPDPdf: EtoolsEndpoint;
   interventionReview: EtoolsEndpoint;
+  sendReviewNotification: EtoolsEndpoint;
+  officersReviews: EtoolsEndpoint;
+  officerReviewData: EtoolsEndpoint;
 }
 
 export const interventionEndpoints: EtoolsEndpoints = {
@@ -174,6 +177,15 @@ export const interventionEndpoints: EtoolsEndpoints = {
   },
   interventionReview: {
     template: '/api/pmp/v3/interventions/<%=interventionId%>/reviews/<%=id%>/'
+  },
+  sendReviewNotification: {
+    template: '/api/pmp/v3/interventions/<%=interventionId%>/reviews/<%=id%>/notify/'
+  },
+  officersReviews: {
+    template: '/api/pmp/v3/interventions/<%=interventionId%>/reviews/<%=id%>/officers-reviews/'
+  },
+  officerReviewData: {
+    template: '/api/pmp/v3/interventions/<%=interventionId%>/reviews/<%=id%>/officers-reviews/<%=userId%>/'
   },
   updatePdAttachment: {
     template: '/api/pmp/v3/interventions/<%=id%>/attachments/<%=attachment_id%>/'

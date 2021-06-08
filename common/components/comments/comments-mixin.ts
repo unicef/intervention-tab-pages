@@ -60,7 +60,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
     stateChanged(state: RootState) {
       const commentsState = state.commentsData;
       this.currentInterventionId =
-        Number(state.app.routeDetails.params?.interventionId) || state.interventions?.current?.id || null;
+        Number(state.app.routeDetails?.params?.interventionId) || state.interventions?.current?.id || null;
       if (!commentsState || !this.currentInterventionId) {
         return;
       }
@@ -161,7 +161,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         font-weight: bold;
         font-size: 10px;
         color: #ffffff;
-        z-index: 99;
+        z-index: 90;
       `;
       return element;
     }
@@ -175,7 +175,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         right: 0;
         bottom: 0;
         background-color: transparent;
-        z-index: 9999;
+        z-index: 91;
         cursor: pointer;
       `;
       return element;

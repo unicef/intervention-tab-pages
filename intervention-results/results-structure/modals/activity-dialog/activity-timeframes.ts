@@ -1,3 +1,4 @@
+/* eslint-disable lit-a11y/click-events-have-key-events */
 import {
   LitElement,
   html,
@@ -13,7 +14,7 @@ import {ActivityTime, groupByYear, serializeTimeFrameData} from '../../../../uti
 import {fireEvent} from '../../../../utils/fire-custom-event';
 import {InterventionActivityTimeframe} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {callClickOnSpacePush} from '../../../../utils/common-methods';
+import {callClickOnSpacePushListener} from '../../../../utils/common-methods';
 
 @customElement('activity-time-frames')
 export class ActivityTimeFrames extends LitElement {
@@ -83,10 +84,19 @@ export class ActivityTimeFrames extends LitElement {
           border-radius: 5px;
           margin: 5px;
         }
-        *:focus {
+
+        .time-frame:focus:not(:focus-visible) {
           outline: 0;
-          box-shadow: rgba(0, 0, 0, 0.14) 0px 2px 2px 0px, rgba(0, 0, 0, 0.12) 0px 1px 5px 0px, rgba(0, 0, 0, 0.2) 0px 3px 1px -2px;
-          box-sizing: border-box;
+        }
+        .time-frame:focus:not(.focus-visible) {
+          outline: 0;
+        }
+        .time-frame:focus-visible {
+          outline: 0;
+          box-shadow: 0 0 5px 5px rgba(170, 165, 165, 0.3);
+        }
+        .time-frame.focus-visible {
+          outline: black solid 1px;
         }
       `
     ];
@@ -104,11 +114,11 @@ export class ActivityTimeFrames extends LitElement {
   protected render(): TemplateResult {
     return html`
       <label class="paper-label layout-horizontal center-align" required
-        >${translate('INTERVENTION_TIMING.ACTIVITY_TIMEFRAMES.ACTIVITY_TIMES')}</label
+        >${translate('ACTIVITY_TIMES')}</label
       >
       <div class="layout-horizontal center-align time-frame-container">
         ${!this._timeFrames.length
-          ? html`${translate('INTERVENTION_TIMING.ACTIVITY_TIMEFRAMES.ACTIVITY_TIMES_MSG')}`
+          ? html`${translate('ACTIVITY_TIMES_MSG')}`
           : html``}
         ${this._timeFrames.map(
           ([year, frames]: any) => html`
@@ -119,7 +129,7 @@ export class ActivityTimeFrames extends LitElement {
                   (frame: ActivityTime, index: number) => html`
                     <div
                       tabindex="${this.readonly ? -1 : 0}"
-                      class="time-frame${this.selectedTimeFrames?.includes(frame.id) ? ' selected' : ''} ${!this
+                      class="time-frame ${this.selectedTimeFrames?.includes(frame.id) ? ' selected' : ''} ${!this
                         .readonly
                         ? ' editable'
                         : ''}"
@@ -143,8 +153,12 @@ export class ActivityTimeFrames extends LitElement {
     super.firstUpdated(changedProperties);
 
     this.shadowRoot!.querySelectorAll('.time-frame').forEach((el) => {
-      callClickOnSpacePush(el);
+      callClickOnSpacePushListener(el);
     });
+
+    if (window.applyFocusVisiblePolyfill != null) {
+      window.applyFocusVisiblePolyfill(this.shadowRoot);
+    }
   }
 
   toggleFrame(frameId: number): void {

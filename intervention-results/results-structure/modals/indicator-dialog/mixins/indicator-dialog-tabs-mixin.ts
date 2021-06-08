@@ -20,11 +20,11 @@ function IndicatorDialogTabsMixin<T extends Constructor<LitElement>>(baseClass: 
     indicatorDataTabs: EtoolsTab[] = [
       {
         tab: 'details',
-        tabLabel: (translate('INTERVENTION_TABS.DETAILS_TAB') as unknown) as string
+        tabLabel: (translate('DETAILS_TAB') as unknown) as string
       },
       {
         tab: 'disaggregations',
-        tabLabel: (translate('INTERVENTION_TABS.DISAGGREGATIONS_TAB') as unknown) as string,
+        tabLabel: (translate('DISAGGREGATIONS_TAB') as unknown) as string,
         showTabCounter: true,
         counter: 0
       }
@@ -32,14 +32,6 @@ function IndicatorDialogTabsMixin<T extends Constructor<LitElement>>(baseClass: 
 
     @property({type: String})
     activeTab = 'details';
-
-    // static get observers() {
-    //   // TODO
-    //   return [
-    //     '_setDisaggregationsCount1(disaggregations, prpDisaggregations, isCluster)',
-    //     '_setDisaggregationsCount2(disaggregations.length, prpDisaggregations.length)'
-    //   ];
-    // }
 
     connectedCallback() {
       super.connectedCallback();
@@ -55,36 +47,6 @@ function IndicatorDialogTabsMixin<T extends Constructor<LitElement>>(baseClass: 
       this.indicatorDataTabs[1].counter = event.detail.count;
       this.indicatorDataTabs = [...this.indicatorDataTabs];
     }
-
-    // /**
-    //  * Update disaggegations tab counter
-    //  */
-    // _updateDisaggregationsNrInTabLabel(disaggregationsCount: number) {
-    //   this.indicatorDataTabs[1].counter = disaggregationsCount;
-    //   this.requestUpdate();
-    // }
-
-    // _setDisaggregationsCount1(disaggregs: [], prpDisaggregs: []) {
-    //   // @ts-ignore
-    //   if (!this.indicator || !disaggregs || !prpDisaggregs) {
-    //     this._updateDisaggregationsNrInTabLabel(0);
-    //     return;
-    //   }
-    //   this._setDisaggregationsCount2(disaggregs.length, prpDisaggregs.length);
-    // }
-
-    // _setDisaggregationsCount2(disaggregsLength: number, prpDisaggregsLength: number) {
-    //   if (typeof disaggregsLength === 'undefined' || typeof prpDisaggregsLength === 'undefined') {
-    //     return;
-    //   }
-    //   // @ts-ignore
-    //   const disaggregationsNr = this.isCluster ? prpDisaggregsLength : disaggregsLength;
-    //   this._updateDisaggregationsNrInTabLabel(disaggregationsNr);
-    // }
-
-    // updateActiveTab(tab: string) {
-    //   this.activeTab = tab;
-    // }
   }
   return IndicatorDialogTabsClass;
 }

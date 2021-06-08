@@ -1,5 +1,4 @@
 import {css, unsafeCSS} from 'lit-element';
-import {_layoutCenterJustified, _layoutHorizontal} from './flex-layout-styles';
 export const buttonsStylesContent = `
   paper-button.default,
   paper-button.primary,
@@ -72,8 +71,9 @@ export const buttonsStylesContent = `
   }
 
   paper-button .btn-label {
-    ${_layoutHorizontal}
-    ${_layoutCenterJustified}
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
   }
 
   .secondary-btn {

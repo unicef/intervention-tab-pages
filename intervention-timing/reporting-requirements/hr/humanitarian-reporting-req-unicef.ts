@@ -7,11 +7,11 @@ import './hru-list.js';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
 import FrontendPaginationMixin from '../mixins/frontend-pagination-mixin';
 import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
-import {EditHruDialog} from './edit-hru-dialog.js';
 import {HruListEl} from './hru-list.js';
 import {ExpectedResult} from '@unicef-polymer/etools-types';
 import {buttonsStyles} from '../../../common/styles/button-styles';
 import {translate, get as getTranslation} from 'lit-translate';
+import {openDialog} from '../../../utils/dialog';
 
 /**
  * @customElement
@@ -43,15 +43,15 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
 
       <div ?hidden="${!this._empty(this.reportingRequirements)}">
         <div class="row-h">
-          ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.NO_HUMANITARIAN_REPORT')}
+          ${translate('NO_HUMANITARIAN_REPORT')}
         </div>
         <div class="row-h" ?hidden="${!this._showAdd(this.expectedResults, this.editMode)}">
           <paper-button class="secondary-btn" @click="${this.openUnicefHumanitarianRepReqDialog}">
-            ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.ADD_REQUIREMENTS')}
+            ${translate('ADD_REQUIREMENTS')}
           </paper-button>
         </div>
         <div class="row-h" ?hidden="${this._thereAreHFIndicators(this.expectedResults)}">
-          ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.CAN_BE_MODIFIED_PROMPT')}
+          ${translate('CAN_BE_MODIFIED_PROMPT')}
         </div>
       </div>
 
@@ -69,9 +69,6 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
     `;
   }
 
-  @property({type: Object})
-  editHruDialog!: EditHruDialog;
-
   @property({type: Array})
   expectedResults!: [];
 
@@ -83,7 +80,6 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
 
   connectedCallback() {
     super.connectedCallback();
-    this._createEditHruDialog();
     if (this.reportingRequirements) {
       this._paginationChanged(1, 10, this.reportingRequirements);
     }
@@ -93,30 +89,10 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
     }
   }
 
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    this._removeEditHruDialog();
-  }
-
-  _createEditHruDialog() {
-    if (this.reportingRequirements) {
-      this._reportingRequirementsSaved = this._reportingRequirementsSaved.bind(this);
-      this.editHruDialog = document.createElement('edit-hru-dialog') as any;
-      this.editHruDialog.addEventListener('reporting-requirements-saved', this._reportingRequirementsSaved as any);
-      document.querySelector('body')!.appendChild(this.editHruDialog);
-    }
-  }
-
-  _removeEditHruDialog() {
-    if (this.editHruDialog) {
-      this.editHruDialog.removeEventListener('reporting-requirements-saved', this._reportingRequirementsSaved as any);
-      document.querySelector('body')!.removeChild(this.editHruDialog);
-    }
-  }
-
-  _reportingRequirementsSaved(e: CustomEvent) {
-    this._onReportingRequirementsSaved(e);
+  _reportingRequirementsSaved(reportingRequirements: any[]) {
+    this._onReportingRequirementsSaved(reportingRequirements);
     this.pagination.pageNumber = 1;
+    this.updateReportingRequirements(reportingRequirements, CONSTANTS.REQUIREMENTS_REPORT_TYPE.HR);
   }
 
   _sortRequirementsAsc() {
@@ -133,7 +109,7 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
   openUnicefHumanitarianRepReqDialog() {
     if (!this.interventionStart) {
       fireEvent(this, 'toast', {
-        text: getTranslation('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.FILL_START_DATE'),
+        text: getTranslation('FILL_START_DATE'),
         showCloseBtn: true
       });
       return;
@@ -142,11 +118,20 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
     if (this.requirementsCount > 0) {
       hruData = JSON.parse(JSON.stringify(this.reportingRequirements));
     }
-    this.editHruDialog.hruData = hruData;
-    this.editHruDialog.selectedDate = '';
-    this.editHruDialog.interventionId = this.interventionId;
-    this.editHruDialog.interventionStart = this.interventionStart;
-    this.editHruDialog.openDialog();
+    openDialog({
+      dialog: 'edit-hru-dialog',
+      dialogData: {
+        hruData: hruData,
+        selectedDate: '',
+        interventionId: this.interventionId,
+        interventionStart: this.interventionStart
+      }
+    }).then(({confirmed, response}) => {
+      if (!confirmed || !response) {
+        return;
+      }
+      this._reportingRequirementsSaved(response);
+    });
   }
 
   setTotalResults(interventionId: number, reportingRequirements: any) {
