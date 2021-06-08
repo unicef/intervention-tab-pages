@@ -254,7 +254,7 @@ export class InterventionTabs extends connectStore(LitElement) {
   }
 
   public stateChanged(state: RootState) {
-    if (currentPage(state) === 'interventions' && currentSubpage(state) === 'list') {
+    if (currentPage(state) !== 'interventions' || currentSubpage(state) === 'list') {
       if (this._routeDetails) {
         this._routeDetails = null;
         fireEvent(this, 'scroll-up');
