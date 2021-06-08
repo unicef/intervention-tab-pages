@@ -13,8 +13,22 @@ import {fireEvent} from '../utils/fire-custom-event';
 import {openDialog} from '../utils/dialog';
 import '../common/layout/are-you-sure';
 import '../common/components/intervention/pd-termination';
+import '../common/components/intervention/start-review';
+import '../common/components/intervention/review-checklist-popup';
 import {InterventionActionsStyles} from './intervention-actions.styles';
-import {ACTIONS_WITH_INPUT, BACK_ACTIONS, CANCEL, EXPORT_ACTIONS, namesMap} from './intervention-actions.constants';
+import {
+  ACTIONS_WITH_INPUT,
+  ACTIONS_WITHOUT_CONFIRM,
+  BACK_ACTIONS,
+  CANCEL,
+  EXPORT_ACTIONS,
+  namesMap,
+  PRC_REVIEW,
+  REJECT_REVIEW,
+  REVIEW,
+  SIGN,
+  TERMINATE
+} from './intervention-actions.constants';
 import {PaperMenuButton} from '@polymer/paper-menu-button/paper-menu-button';
 import {updateCurrentIntervention} from '../common/actions/interventions';
 import {getStore} from '../utils/redux-store-access';
@@ -30,8 +44,14 @@ export class InterventionActions extends LitElement {
   }
 
   @property() actions: string[] = [];
+  @property({type: String}) dir = 'ltr';
   interventionId!: number;
   activeStatus!: string;
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.dir = getComputedStyle(document.body).direction;
+  }
 
   private actionsNamesMap = new Proxy(namesMap, {
     get(target: GenericObject<string>, property: string): string {
@@ -78,7 +98,7 @@ export class InterventionActions extends LitElement {
   }
 
   private renderGroupedActions(mainAction: string, actions: string[]): TemplateResult {
-    const withAdditional = actions.length ? ' with-additional' : '';
+    const withAdditional = actions.length && this.dir === 'ltr' ? ' with-additional' : '';
     const onlyCancel = !actions.length && mainAction === CANCEL ? ` cancel-background` : '';
     const className = `main-button${withAdditional}${onlyCancel}`;
     return mainAction
@@ -111,6 +131,9 @@ export class InterventionActions extends LitElement {
   }
 
   async confirmAction(action: string) {
+    if (ACTIONS_WITHOUT_CONFIRM.includes(action)) {
+      return true;
+    }
     let message = '';
     let btn = '';
     switch (action) {
@@ -140,22 +163,15 @@ export class InterventionActions extends LitElement {
         break;
       default:
         btn = this.actionsNamesMap[action];
-        message =
-          getTranslation('ARE_YOU_SURE_PROMPT') +
-          this.actionsNamesMap[action]?.toLowerCase() +
-          ' ?';
+        message = getTranslation('ARE_YOU_SURE_PROMPT') + this.actionsNamesMap[action]?.toLowerCase() + ' ?';
     }
-    const confirmed = await openDialog({
+    return await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
         content: message,
         confirmBtnText: btn
       }
-    }).then(({confirmed}) => {
-      return confirmed;
-    });
-
-    return confirmed;
+    }).then(({confirmed}) => confirmed);
   }
 
   async processAction(action: string): Promise<void> {
@@ -232,6 +248,33 @@ export class InterventionActions extends LitElement {
     });
   }
 
+  private openStartReviewDialog() {
+    return openDialog({
+      dialog: 'start-review'
+    }).then(({confirmed, response}) => {
+      if (!confirmed) {
+        return null;
+      }
+      return {review_type: response};
+    });
+  }
+
+  private openReviewDialog(additional?: GenericObject) {
+    return openDialog({
+      dialog: 'review-checklist-popup',
+      dialogData: {
+        isOverall: Boolean(additional),
+        ...additional
+      }
+    }).then(({confirmed}) => {
+      if (!additional) {
+        return null;
+      } else {
+        return confirmed ? {} : null;
+      }
+    });
+  }
+
   private closeDropdown(): void {
     const element: PaperMenuButton | null = this.shadowRoot!.querySelector('paper-menu-button');
     if (element) {
@@ -241,10 +284,18 @@ export class InterventionActions extends LitElement {
 
   private openActionsWithInputsDialogs(action: string) {
     switch (action) {
-      case 'cancel':
+      case CANCEL:
         return this.openCommentDialog(action);
-      case 'terminate':
+      case TERMINATE:
         return this.openTermiantionDialog();
+      case REVIEW:
+        return this.openStartReviewDialog();
+      case PRC_REVIEW:
+        return this.openReviewDialog();
+      case REJECT_REVIEW:
+        return this.openReviewDialog({rejectPopup: true});
+      case SIGN:
+        return this.openReviewDialog({approvePopup: true});
       default:
         return;
     }
