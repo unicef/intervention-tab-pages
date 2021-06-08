@@ -20,7 +20,7 @@ import {ActivityTimeFrames} from './activity-timeframes';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {validateRequiredFields} from '../../../../utils/validation-helper';
 import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
-import {InterventionActivity, InterventionActivityItem} from '@unicef-polymer/etools-types';
+import {AnyObject, InterventionActivity, InterventionActivityItem} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 
 @customElement('activity-data-dialog')
@@ -112,7 +112,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
 
       <!-- ATTENTION spinner-text property binding WORKS WITHOUT '.'  -->
       <etools-dialog
-        size="md"
+        size="lg"
         keep-dialog-open
         ?opened="${this.dialogOpened}"
         ?show-spinner="${this.loadingInProcess}"
@@ -291,9 +291,12 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
         nestedFields: ['items']
       }
     );
-    if (!this.validateActivityItems()) {
+    const activityItemsValidationSummary = this.validateActivityItems();
+    if (activityItemsValidationSummary) {
       fireEvent(this, 'toast', {
-        text: getTranslation('FILL_ALL_ACTIVITY_ITEMS')
+        text: activityItemsValidationSummary.invalidRequired
+          ? getTranslation('FILL_ALL_ACTIVITY_ITEMS')
+          : getTranslation('INVALID_TOTAL_ACTIVITY_ITEMS')
       });
       return;
     }
@@ -320,9 +323,9 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
       });
   }
 
-  validateActivityItems(): boolean {
+  validateActivityItems(): AnyObject | undefined {
     const itemsTable: ActivityItemsTable | null = this.shadowRoot!.querySelector('activity-items-table');
-    return itemsTable !== null && itemsTable.validate();
+    return itemsTable !== null ? itemsTable.validate() : undefined;
   }
 
   validateActivityTimeFrames() {

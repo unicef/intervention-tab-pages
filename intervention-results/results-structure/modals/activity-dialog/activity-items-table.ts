@@ -12,10 +12,11 @@ import {ActivityItemsTableStyles} from './acivity-items-table.styles';
 import {fireEvent} from '../../../../utils/fire-custom-event';
 import {ActivityItemRow} from './activity-item-row';
 import './activity-item-row';
-import {InterventionActivityItem} from '@unicef-polymer/etools-types';
+import {AnyObject, InterventionActivityItem} from '@unicef-polymer/etools-types';
 import {callClickOnSpacePushListener} from '../../../../utils/common-methods';
 import {PaperTextareaElement} from '@polymer/paper-input/paper-textarea';
 import {translate} from 'lit-translate';
+import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 
 @customElement('activity-items-table')
 export class ActivityItemsTable extends LitElement {
@@ -43,20 +44,21 @@ export class ActivityItemsTable extends LitElement {
   protected render(): TemplateResult {
     // language=html
     return html`
+      <style>
+        ${sharedStyles}
+      </style>
       <div class="grid-row header border">
-        <div class="grid-cell header-cell">
-          ${translate('ITEM_DESCRIPTION')}
+        <div class="grid-cell header-cell left">
+          <label required>${translate('ITEM_DESCRIPTION')}&nbsp;&nbsp;</label>
         </div>
-        <div class="grid-cell header-cell center">
-          ${translate('PARTNER_CASH')}
-        </div>
-        <div class="grid-cell header-cell center">
-          ${translate('UNICEF_CASH')}
-        </div>
+        <div class="grid-cell header-cell left"><label required>${translate('UNIT')}</label></div>
+        <div class="grid-cell header-cell center"><label required>${translate('NUMBER_UNITS')}</label></div>
+        <div class="grid-cell header-cell center">${translate('PRICE_UNIT')}</div>
+        <div class="grid-cell header-cell end">${translate('TOTAL_COST')}</div>
+        <div class="grid-cell header-cell center">${translate('PARTNER_CASH')}</div>
+        <div class="grid-cell header-cell center">${translate('UNICEF_CASH')}</div>
         <div class="grid-cell header-cell"></div>
-        <div class="grid-cell header-cell end">
-          ${translate('TOTAL_CASH')}
-        </div>
+        <div class="grid-cell header-cell end">${translate('TOTAL_CASH')}</div>
       </div>
 
       ${this.activityItems.map(
@@ -115,13 +117,18 @@ export class ActivityItemsTable extends LitElement {
     fireEvent(this, 'activity-items-changed', [...this.activityItems]);
   }
 
-  validate(): boolean {
+  validate(): AnyObject | undefined {
     const rows: NodeListOf<ActivityItemRow> = this.shadowRoot!.querySelectorAll('activity-item-row');
-    let valid = true;
+    let validationData: AnyObject | undefined;
     rows.forEach((row: ActivityItemRow) => {
-      valid = valid && row.validate();
+      if (!validationData) {
+        const rowValidationData = row.validate();
+        if (rowValidationData.invalidRequired || rowValidationData.invalidSum) {
+          validationData = Object.assign({}, rowValidationData);
+        }
+      }
     });
-    return valid;
+    return validationData;
   }
 
   isLastItem(currentIndex: number): boolean {
