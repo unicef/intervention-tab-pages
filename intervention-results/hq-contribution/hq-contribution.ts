@@ -128,7 +128,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
   @property({type: String})
   autoCalculatedHqContrib = '0';
 
-  @property({type: String}) 
+  @property({type: String})
   dir = 'ltr';
 
   stateChanged(state: RootState) {
@@ -148,7 +148,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
   }
 
   getPageDirection(state: RootState) {
-    if(get(state, 'activeLanguage.activeLanguage') === 'ar') {
+    if (get(state, 'activeLanguage.activeLanguage') === 'ar') {
       return 'rtl';
     }
     return 'ltr';
