@@ -12,14 +12,7 @@ import {customElement, LitElement, html, property, css} from 'lit-element';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {getStore, getStoreAsync} from './utils/redux-store-access';
-import {
-  selectAvailableActions,
-  currentPage,
-  currentSubpage,
-  isUnicefUser,
-  currentSubSubpage,
-  currentUser
-} from './common/selectors';
+import {currentPage, currentSubpage, isUnicefUser, currentSubSubpage, currentUser} from './common/selectors';
 import {elevationStyles} from './common/styles/elevation-styles';
 import {RootState} from './common/types/store.types';
 import {getIntervention, updateCurrentIntervention} from './common/actions/interventions';
@@ -37,6 +30,7 @@ import {AsyncAction, RouteDetails} from '@unicef-polymer/etools-types';
 import {interventions} from './common/reducers/interventions';
 import {translate, get as getTranslation} from 'lit-translate';
 import {EtoolsTabs} from './common/layout/etools-tabs';
+import {ROOT_PATH} from './config/config';
 import {reviews} from './common/reducers/officers-reviews';
 import {TABS} from './common/constants';
 
@@ -55,12 +49,41 @@ const MOCKUP_STATUSES = [
 @customElement('intervention-tabs')
 export class InterventionTabs extends connectStore(LitElement) {
   static get styles() {
+    // language=css
     return [
       elevationStyles,
       pageContentHeaderSlottedStyles,
       css`
+        :host {
+          flex: 1;
+          display: flex !important;
+          width: 100%;
+          flex-direction: column;
+        }
+        :host([is-in-amendment]) {
+          border: 5px solid #ffd28b;
+          box-sizing: border-box;
+        }
         .page-content {
           margin: 24px;
+          flex: 1;
+        }
+        .amendment-info {
+          position: sticky;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          padding: 0 20px;
+          box-sizing: border-box;
+          display: flex;
+          align-items: center;
+          background-color: #ffd28b;
+          height: 50px;
+        }
+        .amendment-info a {
+          margin-left: 7px;
+          cursor: pointer;
+          text-decoration: underline;
         }
         @media (max-width: 576px) {
           .page-content {
@@ -171,6 +194,13 @@ export class InterventionTabs extends connectStore(LitElement) {
           ?hidden="${!this.isActiveTab(this.activeTab, 'info')}"
         ></intervention-info>
       </div>
+
+      <div class="amendment-info" ?hidden="${!this.isInAmendment}">
+        ${translate('AMENDMENT_MODE_TEXT')}
+        <a href="${ROOT_PATH}interventions/${this.intervention?.original_intervention}/metadata">
+          ${translate('ORIGINAL_VERSION')}
+        </a>
+      </div>
     `;
   }
 
@@ -194,11 +224,6 @@ export class InterventionTabs extends connectStore(LitElement) {
     {
       tab: TABS.Timing,
       tabLabel: (getTranslation('TIMING_TAB') as unknown) as string,
-      hidden: false
-    },
-    {
-      tab: TABS.Attachments,
-      tabLabel: (getTranslation('ATTACHMENTS_TAB') as unknown) as string,
       hidden: false
     },
     {
@@ -228,10 +253,16 @@ export class InterventionTabs extends connectStore(LitElement) {
   @property({type: Boolean})
   isUnicefUser = false;
 
+  @property({type: Boolean, attribute: 'is-in-amendment', reflect: true})
+  isInAmendment = false;
+
   /*
    * Used to avoid unnecessary get intervention request
    */
   _routeDetails: RouteDetails | null = null;
+
+  // id from route params
+  private interventionId: string | null = null;
 
   connectedCallback() {
     super.connectedCallback();
@@ -254,79 +285,78 @@ export class InterventionTabs extends connectStore(LitElement) {
   }
 
   public stateChanged(state: RootState) {
-    if (currentPage(state) !== 'interventions' || currentSubpage(state) === 'list') {
-      if (this._routeDetails) {
-        this._routeDetails = null;
-        fireEvent(this, 'scroll-up');
-        this.intervention = null;
-        getStore().dispatch(updateCurrentIntervention(null));
-      }
-
-      return;
+    const notInterventionTabs: boolean = currentPage(state) !== 'interventions' || currentSubpage(state) === 'list';
+    const needToReset = Boolean(notInterventionTabs && (this._routeDetails || this.intervention));
+    if (needToReset) {
+      this.resetPageData();
     }
-
-    if (!currentUser(state)) {
-      // Avoid timing issues
-      return;
-    }
-
-    if (!this.hasPermissionsToAccessPage(currentSubpage(state), currentSubSubpage(state), isUnicefUser(state))) {
-      this.goToPageNotFound();
-
+    if (notInterventionTabs || state.interventions?.interventionLoading || !currentUser(state)) {
       return;
     }
 
     this.activeTab = currentSubpage(state) as string;
     this.activeSubTab = currentSubSubpage(state) as string;
     this.isUnicefUser = isUnicefUser(state);
+
+    // check permissions after intervention was loaded
+    if (state.interventions?.current && !this.hasPermissionsToAccessPage(state)) {
+      this.goToPageNotFound();
+      return;
+    }
     const currentInterventionId = get(state, 'app.routeDetails.params.interventionId');
     const currentIntervention = get(state, 'interventions.current');
 
-    if (currentIntervention) {
-      if (!isJsonStrMatch(this.intervention, currentIntervention)) {
-        this.intervention = cloneDeep(currentIntervention);
-      }
+    // check if intervention was changed
+    if (!isJsonStrMatch(this.intervention, currentIntervention)) {
+      this.intervention = cloneDeep(currentIntervention);
+      this.availableActions = this.intervention?.available_actions || [];
+      // set amendment attribute on host to add border and other styles
+      this.isInAmendment = Boolean(this.intervention?.in_amendment);
+      this.checkTabs(state);
     }
-    if (
-      currentInterventionId !== String(get(this.intervention, 'id')) &&
-      !isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)
-    ) {
-      getStore()
-        .dispatch<AsyncAction>(getIntervention(currentInterventionId))
-        .catch((err: any) => {
-          if (err.message === '404') {
-            this.goToPageNotFound();
-          }
-        });
-      getStore().dispatch<AsyncAction>(getComments(currentInterventionId));
+
+    // check if we need to load intervention and comments
+    if (currentInterventionId !== this.interventionId) {
+      this.interventionId = currentInterventionId;
+      this.loadInterventionData(currentInterventionId);
     }
+
+    // on routing change
     if (!isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)) {
       this._routeDetails = cloneDeep(state.app!.routeDetails);
-      this.commentMode = !!(this._routeDetails?.queryParams || {})['comment_mode'];
+      this.commentMode = Boolean(this._routeDetails?.queryParams?.comment_mode);
       setTimeout(() => {
         getStore().dispatch(enableCommentMode(this.commentMode));
       }, 10);
       fireEvent(this, 'scroll-up');
     }
-    this.availableActions = selectAvailableActions(state);
+  }
+
+  hasPermissionsToAccessPage(state: RootState) {
+    const unicefUser = isUnicefUser(state);
+    const tab = currentSubpage(state);
+    const subTab = currentSubSubpage(state);
+
+    const attachmentRestricted =
+      tab === TABS.Attachments && !state.interventions.current?.permissions?.view.attachments;
+    const restrictedTabs = !unicefUser && [TABS.Review].includes(tab);
+    const restrictedSubTabs =
+      !unicefUser &&
+      [TABS.ResultsReported, TABS.Reports, TABS.ImplementationStatus, TABS.MonitoringActivities].includes(subTab);
+    return !attachmentRestricted && !restrictedSubTabs && !restrictedTabs;
+  }
+
+  checkTabs(state: RootState): void {
+    this.checkAttachmentsTab(state);
     this.checkReviewTab(state);
 
-    if (get(state, 'user.data.is_unicef_user')) {
-      this.handleInfoSubtabsVisibility(get(state, 'commonData.envFlags'));
+    if (state?.user.data?.is_unicef_user) {
+      this.handleInfoSubtabsVisibility(state.commonData?.envFlags);
     }
+    this.pageTabs = [...this.pageTabs];
   }
 
-  hasPermissionsToAccessPage(_tab: string, subTab: string, isUnicefUser: boolean) {
-    if (!isUnicefUser) {
-      if ([TABS.ResultsReported, TABS.Reports, TABS.ImplementationStatus, TABS.MonitoringActivities].includes(subTab)) {
-        return false;
-      }
-    }
-
-    return true;
-  }
-
-  handleInfoSubtabsVisibility(envFlags: EnvFlags) {
+  handleInfoSubtabsVisibility(envFlags: EnvFlags | null) {
     if (!this.pageTabs.find((x) => x.tab === 'info')?.subtabs?.find((t) => t.value === TABS.ImplementationStatus)) {
       this.pageTabs
         .find((t) => t.tab === 'info')
@@ -355,11 +385,27 @@ export class InterventionTabs extends connectStore(LitElement) {
     const tabIndex = this.pageTabs.findIndex((x) => x.tab === 'review');
     const unicefUser = get(state, 'user.data.is_unicef_user');
     if (tabIndex === -1 && unicefUser) {
-      this.pageTabs.splice(5, 0, {
-        tab: 'review',
+      const pasteTo = this.pageTabs.findIndex((x) => x.tab === 'info');
+      this.pageTabs.splice(pasteTo, 0, {
+        tab: TABS.Review,
         tabLabel: getTranslation('REVIEW_TAB'),
         hidden: false
       });
+    }
+  }
+
+  checkAttachmentsTab(state: RootState): void {
+    const tabIndex = this.pageTabs.findIndex((x) => x.tab === 'attachments');
+    const canView = get(state, 'interventions.current.permissions.view.attachments');
+    if (tabIndex === -1 && canView) {
+      const pasteTo = this.pageTabs.findIndex((x) => x.tab === 'info');
+      this.pageTabs.splice(pasteTo, 0, {
+        tab: TABS.Attachments,
+        tabLabel: (getTranslation('ATTACHMENTS_TAB') as unknown) as string,
+        hidden: false
+      });
+    } else if (tabIndex !== -1 && !canView) {
+      this.pageTabs.splice(tabIndex, 1);
     }
   }
 
@@ -489,5 +535,35 @@ export class InterventionTabs extends connectStore(LitElement) {
       active: true,
       loadingSource: 'interv-page'
     });
+  }
+
+  private resetPageData(): void {
+    fireEvent(this, 'scroll-up');
+    this._routeDetails = null;
+    this.intervention = null;
+    this.interventionId = null;
+    this.isInAmendment = false;
+    getStore().dispatch(updateCurrentIntervention(null));
+  }
+
+  private loadInterventionData(currentInterventionId: string | number): void {
+    fireEvent(this, 'global-loading', {
+      active: true,
+      loadingSource: 'intervention-tabs'
+    });
+    getStore()
+      .dispatch<AsyncAction>(getIntervention(String(currentInterventionId)))
+      .catch((err: any) => {
+        if (err.message === '404') {
+          this.goToPageNotFound();
+        }
+      })
+      .finally(() =>
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: 'intervention-tabs'
+        })
+      );
+    getStore().dispatch<AsyncAction>(getComments(Number(currentInterventionId)));
   }
 }

@@ -18,7 +18,7 @@ export class InterventionPageContentHeader extends LitElement {
           display: flex;
           flex-direction: column;
           justify-content: flex-start;
-          flex: 1;
+          flex: none;
 
           background-color: var(--primary-background-color);
           padding: 0;

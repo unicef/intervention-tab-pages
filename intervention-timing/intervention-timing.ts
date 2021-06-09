@@ -1,4 +1,4 @@
-import {LitElement, customElement, html} from 'lit-element';
+import {LitElement, customElement, html, property} from 'lit-element';
 import './reporting-requirements/partner-reporting-requirements';
 import './intervention-dates/intervention-dates';
 import './timing-overview/timing-overview';
@@ -6,12 +6,14 @@ import './activity-timeframes/activity-timeframes';
 import './programmatic-visits/programmatic-visits';
 import {fireEvent} from '../utils/fire-custom-event';
 import {CommentElementMeta, CommentsMixin} from '../common/components/comments/comments-mixin';
+import {RootState} from '../common/types/store.types';
 
 /**
  * @customElement
  */
 @customElement('intervention-timing')
 export class InterventionTiming extends CommentsMixin(LitElement) {
+  @property() viewPlannedVisits = false;
   render() {
     // language=HTML
     return html`
@@ -24,7 +26,7 @@ export class InterventionTiming extends CommentsMixin(LitElement) {
         .commentsMode="${this.commentMode}"
         comments-container
       ></partner-reporting-requirements>
-      <programmatic-visits></programmatic-visits>
+      ${this.viewPlannedVisits ? html`<programmatic-visits></programmatic-visits>` : ''}
     `;
   }
 
@@ -35,6 +37,11 @@ export class InterventionTiming extends CommentsMixin(LitElement) {
       active: false,
       loadingSource: 'interv-page'
     });
+  }
+
+  stateChanged(state: RootState) {
+    super.stateChanged(state);
+    this.viewPlannedVisits = Boolean(state.interventions?.current?.permissions?.view.planned_visits);
   }
 
   getSpecialElements(container: HTMLElement): CommentElementMeta[] {

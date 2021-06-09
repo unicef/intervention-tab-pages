@@ -1,4 +1,4 @@
-import {LitElement, html} from 'lit-element';
+import {LitElement, html, property} from 'lit-element';
 import './partner-details/partner-info';
 import './details-overview/details-overview';
 import './unicef-details/unicef-details';
@@ -8,11 +8,15 @@ import './fund-reservations/fund-reservations';
 import './review-and-sign/review-and-sign';
 import './other/other';
 import {fireEvent} from '../utils/fire-custom-event';
+import {connectStore} from '../common/mixins/connect-store-mixin';
+import {RootState} from '../common/types/store.types';
 
 /**
  * @customElement
  */
-export class InterventionMetadata extends LitElement {
+export class InterventionMetadata extends connectStore(LitElement) {
+  @property() showAmendments = false;
+  @property() showFundReservations = false;
   render() {
     // language=HTML
     return html`
@@ -22,8 +26,8 @@ export class InterventionMetadata extends LitElement {
       <partner-info></partner-info>
       <unicef-details></unicef-details>
       <geographical-coverage></geographical-coverage>
-      <fund-reservations></fund-reservations>
-      <pd-amendments></pd-amendments>
+      ${this.showFundReservations ? html`<fund-reservations></fund-reservations>` : ''}
+      ${this.showAmendments ? html`<pd-amendments></pd-amendments>` : ''}
       <review-and-sign></review-and-sign>
       <other-metadata></other-metadata>
     `;
@@ -36,6 +40,11 @@ export class InterventionMetadata extends LitElement {
       active: false,
       loadingSource: 'interv-page'
     });
+  }
+
+  stateChanged(state: RootState): void {
+    this.showAmendments = state.interventions.current?.permissions?.view.amendments;
+    this.showFundReservations = state.interventions.current?.permissions?.view.frs;
   }
 }
 

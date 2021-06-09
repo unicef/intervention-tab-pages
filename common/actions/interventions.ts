@@ -1,7 +1,7 @@
 import {_sendRequest} from '../../utils/request-helper';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {SHOW_TOAST} from '../actionsConstants';
+import {INTERVENTION_LOADING, SHOW_TOAST, UPDATE_CURRENT_INTERVENTION} from '../actionsConstants';
 import {AnyObject, PlannedBudget, Intervention} from '@unicef-polymer/etools-types';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {PartnerReportingRequirements} from '../types/store.types';
@@ -11,8 +11,15 @@ export const updateCurrentIntervention = (intervention: AnyObject | null) => {
     intervention.planned_budget = new PlannedBudget();
   }
   return {
-    type: 'UPDATE_CURRENT_INTERVENTION',
+    type: UPDATE_CURRENT_INTERVENTION,
     current: intervention
+  };
+};
+
+export const setInterventionLoading = (loadingState: number | null) => {
+  return {
+    type: INTERVENTION_LOADING,
+    loadingState: loadingState
   };
 };
 
@@ -20,6 +27,7 @@ export const getIntervention = (interventionId?: string) => (dispatch: any, getS
   if (!interventionId) {
     interventionId = getState().app.routeDetails.params.interventionId;
   }
+  dispatch(setInterventionLoading(Number(interventionId)));
   return sendRequest({
     endpoint: getEndpoint(interventionEndpoints.intervention, {interventionId: interventionId})
   })
@@ -30,7 +38,8 @@ export const getIntervention = (interventionId?: string) => (dispatch: any, getS
       if (err.status === 404) {
         throw new Error('404');
       }
-    });
+    })
+    .finally(() => dispatch(setInterventionLoading(null)));
 };
 
 export const showToast = (message: string, showCloseBtn = true) => {
