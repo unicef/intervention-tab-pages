@@ -13,6 +13,7 @@ import {ActivityItemsTableInlineStyles, ActivityItemsTableStyles} from './acivit
 import {fireEvent} from '../../../../utils/fire-custom-event';
 import {InterventionActivityItem} from '@unicef-polymer/etools-types';
 import {callClickOnSpacePushListener} from '../../../../utils/common-methods';
+import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
 
 @customElement('activity-item-row')
 export class ActivityItemRow extends LitElement {
@@ -79,11 +80,9 @@ export class ActivityItemRow extends LitElement {
               ></paper-input>
             </div>
             <div class="grid-cell center ${!this.lastItem || !this.readonly ? 'border' : ''}">
-              <paper-input
+              <etools-currency-amount-input
                 .value="${this.activityItem.no_units || ''}"
                 no-label-float
-                allowed-pattern="[0-9]"
-                placeholder="—"
                 id="activityNoUnits"
                 ?invalid="${this.invalidSum || this.invalidNoUnits}"
                 ?readonly="${this.readonly}"
@@ -97,7 +96,9 @@ export class ActivityItemRow extends LitElement {
                   this.invalidSum = false;
                   this.invalidNoUnits = false;
                 }}"
-              ></paper-input>
+                no-of-decimals="1"
+                error-message=""
+              ></etools-currency-amount-input>
             </div>
             <div class="grid-cell center ${!this.lastItem || !this.readonly ? 'border' : ''}">
               <etools-currency-amount-input
@@ -188,7 +189,7 @@ export class ActivityItemRow extends LitElement {
   validate(): any {
     this.invalidName = !this.activityItem.name;
     this.invalidUnit = !this.activityItem.unit;
-    this.invalidNoUnits = !this.activityItem.no_units || Number(this.activityItem.no_units) < 1;
+    this.invalidNoUnits = isNaN(parseFloat(String(this.activityItem.no_units)));
     const invalidRequired = this.invalidName || this.invalidUnit || this.invalidNoUnits;
     this.invalidSum = invalidRequired
       ? false
