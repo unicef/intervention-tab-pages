@@ -26,8 +26,8 @@ export class InterventionMetadata extends connectStore(LitElement) {
       <partner-info></partner-info>
       <unicef-details></unicef-details>
       <geographical-coverage></geographical-coverage>
-      ${this.showFundReservations ? html`<fund-reservations></fund-reservations>` : null}
-      ${this.showAmendments ? html`<pd-amendments></pd-amendments>` : null}
+      ${this.showFundReservations ? html`<fund-reservations></fund-reservations>` : ''}
+      ${this.showAmendments ? html`<pd-amendments></pd-amendments>` : ''}
       <review-and-sign></review-and-sign>
       <other-metadata></other-metadata>
     `;

@@ -59,7 +59,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
           <!-- Amendment kind -->
           <etools-dropdown
             id="amendment-kind"
-            label=${translate('AMENDMENT_KIND')}
+            label=${translate('KIND')}
             placeholder="&#8212;"
             .options="${this.amendmentKinds}"
             .selectedValue="${this.data.kind}"

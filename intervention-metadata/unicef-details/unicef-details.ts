@@ -148,7 +148,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
                   </div>
                 </div>
               </div>`
-            : null}
+            : ''}
 
           <div class="col col-4" ?hidden="${!this.isUnicefUser}">
             <etools-dropdown

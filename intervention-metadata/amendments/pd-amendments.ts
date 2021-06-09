@@ -114,7 +114,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
         <div class="p-relative" id="amendments-wrapper">
           <etools-data-table-header id="listHeader" no-title ?hidden="${!this.amendments.length}">
             <etools-data-table-column class="static-column">${translate('REF')}</etools-data-table-column>
-            <etools-data-table-column class="static-column">${translate('AMENDMENT_KIND')}</etools-data-table-column>
+            <etools-data-table-column class="static-column">${translate('KIND')}</etools-data-table-column>
             <etools-data-table-column class="flex-1">${translate('AMENDMENT_TYPES')}</etools-data-table-column>
             <etools-data-table-column class="static-column">
               ${translate('SIGNED_UNICEF_DATE')}
@@ -122,7 +122,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
             <etools-data-table-column class="static-column">
               ${translate('SIGNED_PARTNER_DATE')}
             </etools-data-table-column>
-            <etools-data-table-column class="static-column">${translate('AMENDMENT_STATUS')}</etools-data-table-column>
+            <etools-data-table-column class="static-column">${translate('STATUS')}</etools-data-table-column>
           </etools-data-table-header>
 
           ${this.amendments.map(
@@ -261,7 +261,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
         amendmentTypes: this.amendmentTypes
       }
     }).then(({response}) => {
-      if (response) {
+      if (response?.id) {
         history.pushState(window.history.state, '', `${ROOT_PATH}interventions/${response.id}/metadata`);
         window.dispatchEvent(new CustomEvent('popstate'));
       }

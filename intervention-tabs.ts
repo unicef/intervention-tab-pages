@@ -60,7 +60,7 @@ export class InterventionTabs extends connectStore(LitElement) {
           width: 100%;
           flex-direction: column;
         }
-        :host([amendment]) {
+        :host([is-in-amendment]) {
           border: 5px solid #ffd28b;
           box-sizing: border-box;
         }
@@ -195,7 +195,7 @@ export class InterventionTabs extends connectStore(LitElement) {
         ></intervention-info>
       </div>
 
-      <div class="amendment-info" ?hidden="${!this.amendment}">
+      <div class="amendment-info" ?hidden="${!this.isInAmendment}">
         ${translate('AMENDMENT_MODE_TEXT')}
         <a href="${ROOT_PATH}interventions/${this.intervention?.original_intervention}/metadata">
           ${translate('ORIGINAL_VERSION')}
@@ -253,8 +253,8 @@ export class InterventionTabs extends connectStore(LitElement) {
   @property({type: Boolean})
   isUnicefUser = false;
 
-  @property({type: Boolean, attribute: 'amendment', reflect: true})
-  amendment = false;
+  @property({type: Boolean, attribute: 'is-in-amendment', reflect: true})
+  isInAmendment = false;
 
   /*
    * Used to avoid unnecessary get intervention request
@@ -299,7 +299,7 @@ export class InterventionTabs extends connectStore(LitElement) {
     this.isUnicefUser = isUnicefUser(state);
 
     // check permissions after intervention was loaded
-    if (state.interventions.current && !this.hasPermissionsToAccessPage(state)) {
+    if (state.interventions?.current && !this.hasPermissionsToAccessPage(state)) {
       this.goToPageNotFound();
       return;
     }
@@ -311,7 +311,7 @@ export class InterventionTabs extends connectStore(LitElement) {
       this.intervention = cloneDeep(currentIntervention);
       this.availableActions = this.intervention?.available_actions || [];
       // set amendment attribute on host to add border and other styles
-      this.amendment = Boolean(this.intervention?.in_amendment);
+      this.isInAmendment = Boolean(this.intervention?.in_amendment);
       this.checkTabs(state);
     }
 
@@ -542,7 +542,7 @@ export class InterventionTabs extends connectStore(LitElement) {
     this._routeDetails = null;
     this.intervention = null;
     this.interventionId = null;
-    this.amendment = false;
+    this.isInAmendment = false;
     getStore().dispatch(updateCurrentIntervention(null));
   }
 

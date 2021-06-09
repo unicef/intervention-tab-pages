@@ -26,7 +26,7 @@ export class InterventionTiming extends CommentsMixin(LitElement) {
         .commentsMode="${this.commentMode}"
         comments-container
       ></partner-reporting-requirements>
-      ${this.viewPlannedVisits ? html`<programmatic-visits></programmatic-visits>` : null}
+      ${this.viewPlannedVisits ? html`<programmatic-visits></programmatic-visits>` : ''}
     `;
   }
 

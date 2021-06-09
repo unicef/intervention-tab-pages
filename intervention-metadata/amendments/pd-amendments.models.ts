@@ -15,6 +15,6 @@ export enum AmendmentsKind {
 }
 
 export const AmendmentsKindTranslateKeys = {
-  [AmendmentsKind.normal]: 'NORMAL_AMENDMENT',
-  [AmendmentsKind.contingency]: 'CONTINGENCY_AMENDMENT'
+  [AmendmentsKind.normal]: 'NORMAL',
+  [AmendmentsKind.contingency]: 'CONTINGENCY'
 };
