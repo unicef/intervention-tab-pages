@@ -72,7 +72,7 @@ export class InterventionPageContentHeader extends LitElement {
             display: flex;
             flex-direction: column;
           }
-          .content-header-row div:last-child {
+          .row-actions {
             margin-top: 20px;
           }
         }
@@ -83,6 +83,15 @@ export class InterventionPageContentHeader extends LitElement {
           }
           .title-row {
             padding: 0 5px 5px 5px;
+          }
+        }
+        @media (max-width: 770px) {
+          .flex-block {
+            flex-direction: column !important;
+            align-items: center;
+          }
+          .modeContainer {
+            margin-bottom: 8px;
           }
         }
         .statusContainer {
@@ -109,7 +118,7 @@ export class InterventionPageContentHeader extends LitElement {
           flex: 1;
           min-width: 0;
           display: flex;
-          flex-direction: row
+          flex-direction: row;
         }
         .none-flex {
           flex: none;
@@ -129,7 +138,7 @@ export class InterventionPageContentHeader extends LitElement {
             <slot name="statusFlag"></slot>
           </div>
         </div>
-        <div>
+        <div class="row-actions">
           <slot name="title-row-actions"></slot>
         </div>
       </div>
