@@ -19,7 +19,7 @@ import {pageIsNotCurrentlyActive, detailsTextareaRowsCount} from '../../utils/co
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AnyObject, AsyncAction, Permission} from '@unicef-polymer/etools-types';
+import {AsyncAction, LabelAndValue, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 
 /**
@@ -75,12 +75,13 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
           <div class="w100">
             <label class="paper-label">${translate('GENDER_RATING')}</label>
           </div>
-          <paper-radio-group
-            selected="${this.data.gender_rating}"
-            @selected-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'gender_rating')}"
-          >
-            ${this._getRatingRadioButtonsTemplate(this.ratings, this.permissions.edit.gender_rating)}
-          </paper-radio-group>
+          ${this._getRatingRadioButtonGroupTemplate(
+            this.editMode,
+            this.data.gender_rating,
+            'gender_rating',
+            this.ratings,
+            this.permissions.edit.gender_rating
+          )}
           <div class="col col-12 pl-none">
             <paper-textarea
               label=${translate('GENDER_NARATIVE')}
@@ -102,12 +103,13 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
           <div class="w100">
             <label class="paper-label">${translate('SUSTAINABILITY_RATING')}</label>
           </div>
-          <paper-radio-group
-            .selected="${this.data.sustainability_rating}"
-            @selected-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'sustainability_rating')}"
-          >
-            ${this._getRatingRadioButtonsTemplate(this.ratings, this.permissions.edit.sustainability_rating)}
-          </paper-radio-group>
+          ${this._getRatingRadioButtonGroupTemplate(
+            this.editMode,
+            this.data.sustainability_rating,
+            'sustainability_rating',
+            this.ratings,
+            this.permissions.edit.sustainability_rating
+          )}
           <div class="col col-12 pl-none">
             <paper-textarea
               label=${translate('SUSTAINABILITY_NARRATIVE')}
@@ -129,12 +131,13 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
           <div class="w100">
             <label class="paper-label">${translate('EQUITY_RATING')}</label>
           </div>
-          <paper-radio-group
-            .selected="${this.data.equity_rating}"
-            @selected-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'equity_rating')}"
-          >
-            ${this._getRatingRadioButtonsTemplate(this.ratings, this.permissions.edit.equity_rating)}
-          </paper-radio-group>
+          ${this._getRatingRadioButtonGroupTemplate(
+            this.editMode,
+            this.data.equity_rating,
+            'equity_rating',
+            this.ratings,
+            this.permissions.edit.equity_rating
+          )}
           <div class="col col-12 pl-none">
             <paper-textarea
               label=${translate('EQUITY_NARATIVE')}
@@ -163,7 +166,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
   permissions!: Permission<GenderEquityRatingPermissions>;
 
   @property({type: Array})
-  ratings!: AnyObject[];
+  ratings!: LabelAndValue[];
 
   @property({type: Object})
   data!: GenderEquityRating;
@@ -194,10 +197,32 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
       this.set_canEditAtLeastOneField(this.permissions.edit);
     }
   }
+  _getRatingRadioButtonGroupTemplate(
+    editMode: boolean,
+    ratingSelected: string,
+    ratingKey: string,
+    ratings: LabelAndValue[],
+    permission: boolean
+  ) {
+    let ratingText = '';
+    if (!editMode) {
+      const currentRating = ratings.find((r) => r.value === ratingSelected);
+      ratingText = currentRating ? currentRating.label : '';
+    }
 
-  _getRatingRadioButtonsTemplate(ratings: AnyObject[], permission: boolean) {
+    return editMode
+      ? html`<paper-radio-group
+          selected="${ratingSelected}"
+          @selected-changed="${({detail}: CustomEvent) => this.valueChanged(detail, ratingKey)}"
+        >
+          ${this._getRatingRadioButtonsTemplate(ratings, permission)}
+        </paper-radio-group>`
+      : html`<label>${ratingText}</label>`;
+  }
+
+  _getRatingRadioButtonsTemplate(ratings: LabelAndValue[], permission: boolean) {
     return ratings.map(
-      (r: AnyObject) =>
+      (r: LabelAndValue) =>
         html`<paper-radio-button
           class="${this.isReadonly(this.editMode, permission) ? 'readonly' : ''}"
           name="${r.value}"
