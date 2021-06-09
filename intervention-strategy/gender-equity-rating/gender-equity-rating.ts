@@ -206,8 +206,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
   ) {
     let ratingText = '';
     if (!editMode) {
-      const currentRating = ratings.find((r) => r.value === ratingSelected);
-      ratingText = currentRating ? currentRating.label : '';
+      ratingText = ratings.find((r) => r.value === ratingSelected)?.label || '';
     }
 
     return editMode
