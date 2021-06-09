@@ -92,7 +92,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
             <span ?hidden="${this.editMode}">${this.data.hq_support_cost}</span>
           </div>
         </div>
-        <div class="layout-horizontal row-padding-v">
+        <div class="layout-horizontal row-padding-v" ?hidden="${!this.isUnicefUser}">
           <label class="paper-label hq-info-label"
             ><b>${this.data.hq_support_cost}%</b> of the total UNICEF cash contribution is:
             <b>${this.autoCalculatedHqContrib} ${this.data.planned_budget.currency}</b>. Please review and enter the
@@ -131,6 +131,9 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
   @property({type: String})
   dir = 'ltr';
 
+  @property({type: Boolean})
+  isUnicefUser = false;
+
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'results')) {
       return;
@@ -139,6 +142,8 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
     if (!state.interventions.current) {
       return;
     }
+
+    this.isUnicefUser = get(state, 'user.data.is_unicef_user');
     this.data = selectHqContributionData(state);
     this.originalData = cloneDeep(this.data);
     this.autoCalculatedHqContrib = this.autoCalcHqContrib();
