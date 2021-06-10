@@ -345,7 +345,8 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         data: item,
         interventionId: this.intervention.id,
         result_links: this.intervention.result_links,
-        isUnicefUser: this.isUnicefUser
+        isUnicefUser: this.isUnicefUser,
+        currency: this.intervention.planned_budget.currency
       }
     });
   }
