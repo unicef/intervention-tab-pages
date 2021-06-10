@@ -17,6 +17,7 @@ import {cloneDeep} from '../../../utils/utils';
 import '@polymer/paper-radio-group';
 import '@polymer/paper-checkbox/paper-checkbox';
 import '@polymer/paper-input/paper-textarea';
+import {formatDate, getTodayDateStr} from '../../../utils/date-utils';
 
 @customElement('review-checklist-popup')
 export class ReviewChecklistPopup extends LitElement {
@@ -37,7 +38,6 @@ export class ReviewChecklistPopup extends LitElement {
         }
         .form-container {
           padding: 0 24px;
-          max-height: 350px;
         }
         .likert-scale {
           padding-top: 16px;
@@ -95,11 +95,25 @@ export class ReviewChecklistPopup extends LitElement {
         no-padding
         keep-dialog-open
         opened
-        size="md"
+        size="lg"
         dialog-title="${translate('REVIEW_CHECKLIST')}"
         ?show-spinner="${this.requestInProcess}"
       >
         <div class="form-container">
+          ${this.isOverallReview
+            ? html`
+                <div class="col col-12 pl-none">
+                  <datepicker-lite
+                    label="${translate('REVIEW_DATE_PRC')}"
+                    .value="${this.review?.review_date || getTodayDateStr()}"
+                    selected-date-display-format="D MMM YYYY"
+                    fire-date-has-changed
+                    @date-has-changed="${(e: CustomEvent) => this.dateHasChanged(e.detail)}"
+                  >
+                  </datepicker-lite>
+                </div>
+              `
+            : ''}
           ${Object.entries(this.questions).map(([field, question]: [string, string], index: number) =>
             this.generateLikertScale(field as keyof InterventionReview, question, index)
           )}
@@ -172,6 +186,11 @@ export class ReviewChecklistPopup extends LitElement {
   valueChanged(value: any, field: keyof InterventionReview): void {
     this.review[field] = value;
     this.requestUpdate();
+  }
+
+  dateHasChanged(detail: {date: Date}) {
+    const newValue = detail.date ? formatDate(detail.date, 'YYYY-MM-DD') : null;
+    this.valueChanged(newValue, 'review_date');
   }
 
   saveReview(): void {

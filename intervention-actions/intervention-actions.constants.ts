@@ -12,7 +12,7 @@ export const SIGN = 'sign';
 
 const ACCEPT = 'accept';
 export const REVIEW = 'review';
-export const PRC_REVIEW = 'prc_review';
+export const PRC_REVIEW = 'individual_review';
 export const CANCEL = 'cancel';
 export const ACCEPT_REVIEW = 'accept_review';
 export const SIGNATURE = 'signature';
@@ -37,5 +37,5 @@ export const namesMap: GenericObject<string> = {
   [CANCEL]: getTranslation('GENERAL.CANCEL'),
   [TERMINATE]: getTranslation('TERMINATE'),
   [REJECT_REVIEW]: getTranslation('REJECT_REVIEW'),
-  [SIGN]: getTranslation('SIGN')
+  [SIGN]: getTranslation('ACCEPT_REVIEW')
 };

@@ -31,6 +31,7 @@ export class OverallApproval extends LitElement {
           line-height: 16px;
           color: var(--secondary-text-color);
         }
+        .answer,
         .value {
           font-size: 16px;
           line-height: 24px;
@@ -46,6 +47,9 @@ export class OverallApproval extends LitElement {
         .multiline {
           white-space: pre-line;
         }
+        .answer:not(:last-of-type) {
+          margin-bottom: 20px;
+        }
       `
     ];
   }
@@ -59,17 +63,13 @@ export class OverallApproval extends LitElement {
         <div slot="panel-btns" ?hidden="${this.readonly}">
           <paper-icon-button icon="icons:create" @click="${() => this.openReviewPopup()}"></paper-icon-button>
         </div>
-        <etools-data-table-row class="overall-row">
+        <etools-data-table-row class="overall-row" no-collapse details-opened>
           <div slot="row-data">
             <div class="layout-horizontal row-padding space-between">
               <div class="info-block">
-                <div class="label">${translate('REVIEWED_BY')}</div>
-                <div class="value">${this.review.submitted_by?.name || '-'}</div>
-              </div>
-              <div class="info-block">
                 <div class="label">${translate('REVIEW_DATE_PRC')}</div>
                 <div class="value">
-                  ${this.review.submitted_date ? formatDate(this.review.submitted_date, 'DD MMM YYYY') : '-'}
+                  ${this.review.review_date ? formatDate(this.review.review_date, 'DD MMM YYYY') : '-'}
                 </div>
               </div>
               <div class="info-block">
@@ -89,19 +89,16 @@ export class OverallApproval extends LitElement {
               <div class="label">${translate('ACTIONS_LIST')}</div>
               <div class="value multiline">${this.review?.actions_list || '-'}</div>
             </div>
-          </div>
-
-          <div slot="row-data-details">
-            ${Object.entries(REVIEW_QUESTIONS).map(
-              ([field, question]: [string, string], index: number) => html`
-                <div>
+            <div class="row-padding">
+              ${Object.entries(REVIEW_QUESTIONS).map(
+                ([field, question]: [string, string], index: number) => html`
                   <label class="paper-label">Q${index + 1}: ${question}</label>
-                </div>
-                <div class="answer">
-                  ${REVIEW_ANSVERS.get(String(this.review[field as keyof InterventionReview])) || '-'}
-                </div>
-              `
-            )}
+                  <div class="answer">
+                    ${REVIEW_ANSVERS.get(String(this.review[field as keyof InterventionReview])) || '-'}
+                  </div>
+                `
+              )}
+            </div>
           </div>
         </etools-data-table-row>
       </etools-content-panel>

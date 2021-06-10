@@ -339,11 +339,12 @@ export class InterventionTabs extends connectStore(LitElement) {
 
     const attachmentRestricted =
       tab === TABS.Attachments && !state.interventions.current?.permissions?.view.attachments;
+    const reviewRestricted = tab === TABS.Review && !state.interventions.current?.permissions?.view.review;
     const restrictedTabs = !unicefUser && [TABS.Review].includes(tab);
     const restrictedSubTabs =
       !unicefUser &&
       [TABS.ResultsReported, TABS.Reports, TABS.ImplementationStatus, TABS.MonitoringActivities].includes(subTab);
-    return !attachmentRestricted && !restrictedSubTabs && !restrictedTabs;
+    return !attachmentRestricted && !reviewRestricted && !restrictedSubTabs && !restrictedTabs;
   }
 
   checkTabs(state: RootState): void {
