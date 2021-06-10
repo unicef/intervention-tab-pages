@@ -68,7 +68,9 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
         ${sharedStyles} etools-dialog::part(ed-scrollable) {
           margin-top: 0 !important;
         }
-
+        etools-dialog::part(ed-paper-dialog) {
+          width: 98vw !important;
+        }
         etools-dialog::part(ed-button-styles) {
           margin-top: 0;
         }

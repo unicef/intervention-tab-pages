@@ -14,6 +14,7 @@ import {fireEvent} from '../../../../utils/fire-custom-event';
 import {InterventionActivityItem} from '@unicef-polymer/etools-types';
 import {callClickOnSpacePushListener} from '../../../../utils/common-methods';
 import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
+import {translate} from 'lit-translate';
 
 @customElement('activity-item-row')
 export class ActivityItemRow extends LitElement {
@@ -27,8 +28,6 @@ export class ActivityItemRow extends LitElement {
           color: var(--secondary-text-color);
           cursor: pointer;
           position: relative;
-          top: 50%;
-          transform: translateY(-50%);
         }
         iron-icon:hover {
           color: var(--primary-text-color);
@@ -50,7 +49,10 @@ export class ActivityItemRow extends LitElement {
       ? html`
           ${ActivityItemsTableInlineStyles}
           <div class="grid-row">
-            <div class="grid-cell ${!this.lastItem || !this.readonly ? 'border' : ''}">
+            <div
+              class="grid-cell ${!this.lastItem || !this.readonly ? 'border' : ''}"
+              data-col-header-label="${translate('ITEM_DESCRIPTION')}"
+            >
               <paper-textarea
                 .value="${this.activityItem.name || ''}"
                 no-label-float
@@ -65,7 +67,10 @@ export class ActivityItemRow extends LitElement {
               ></paper-textarea>
             </div>
 
-            <div class="grid-cell ${!this.lastItem || !this.readonly ? 'border' : ''}">
+            <div
+              class="grid-cell ${!this.lastItem || !this.readonly ? 'border' : ''}"
+              data-col-header-label="${translate('UNIT')}"
+            >
               <paper-input
                 .value="${this.activityItem.unit || ''}"
                 no-label-float
@@ -79,7 +84,10 @@ export class ActivityItemRow extends LitElement {
                 @click="${() => (this.invalidUnit = false)}"
               ></paper-input>
             </div>
-            <div class="grid-cell center ${!this.lastItem || !this.readonly ? 'border' : ''}">
+            <div
+              class="grid-cell end ${!this.lastItem || !this.readonly ? 'border' : ''}"
+              data-col-header-label="${translate('NUMBER_UNITS')}"
+            >
               <etools-currency-amount-input
                 .value="${this.activityItem.no_units || ''}"
                 no-label-float
@@ -100,7 +108,10 @@ export class ActivityItemRow extends LitElement {
                 error-message=""
               ></etools-currency-amount-input>
             </div>
-            <div class="grid-cell center ${!this.lastItem || !this.readonly ? 'border' : ''}">
+            <div
+              class="grid-cell end ${!this.lastItem || !this.readonly ? 'border' : ''}"
+              data-col-header-label="${translate('PRICE_UNIT')}"
+            >
               <etools-currency-amount-input
                 .value="${this.activityItem.unit_price || 0}"
                 no-label-float
@@ -113,11 +124,19 @@ export class ActivityItemRow extends LitElement {
                 error-message=""
               ></etools-currency-amount-input>
             </div>
-            <div class="grid-cell end ${!this.lastItem || !this.readonly ? 'border' : ''}">
-              ${getMultiplyProduct(this.activityItem.no_units || 0, this.activityItem.unit_price || 0)}
+            <div
+              class="grid-cell end ${!this.lastItem || !this.readonly ? 'border' : ''}"
+              data-col-header-label="${translate('TOTAL_COST')}"
+            >
+              <span class="total">
+                ${getMultiplyProduct(this.activityItem.no_units || 0, this.activityItem.unit_price || 0)}
+              </span>
             </div>
 
-            <div class="grid-cell center ${!this.lastItem || !this.readonly ? 'border' : ''}">
+            <div
+              class="grid-cell end ${!this.lastItem || !this.readonly ? 'border' : ''}"
+              data-col-header-label="${translate('PARTNER_CASH')}"
+            >
               <etools-currency-amount-input
                 .value="${this.activityItem.cso_cash || 0}"
                 no-label-float
@@ -130,7 +149,10 @@ export class ActivityItemRow extends LitElement {
                 error-message=""
               ></etools-currency-amount-input>
             </div>
-            <div class="grid-cell center ${!this.lastItem || !this.readonly ? 'border' : ''}">
+            <div
+              class="grid-cell end ${!this.lastItem || !this.readonly ? 'border' : ''}"
+              data-col-header-label="${translate('UNICEF_CASH')}"
+            >
               <etools-currency-amount-input
                 .value="${this.activityItem.unicef_cash || 0}"
                 no-label-float
@@ -144,7 +166,7 @@ export class ActivityItemRow extends LitElement {
               ></etools-currency-amount-input>
             </div>
             ${!this.readonly
-              ? html`<div>
+              ? html`<div class="grid-cell remove" data-col-header-label="${translate('GENERAL.DELETE')}">
                   <iron-icon
                     id="btnRemove"
                     icon="close"
@@ -155,8 +177,13 @@ export class ActivityItemRow extends LitElement {
                 </div>`
               : html`<div class="${!this.lastItem ? 'border' : ''}"></div>`}
 
-            <div class="grid-cell end ${!this.lastItem && this.readonly ? 'border' : ''}">
-              ${getTotal(this.activityItem.cso_cash || 0, this.activityItem.unicef_cash || 0)}
+            <div
+              class="grid-cell last-cell end ${!this.lastItem && this.readonly ? 'border' : ''}"
+              data-col-header-label="${translate('TOTAL_CASH')}"
+            >
+              <span class="total">
+                ${getTotal(this.activityItem.cso_cash || 0, this.activityItem.unicef_cash || 0)}
+              </span>
             </div>
           </div>
         `
