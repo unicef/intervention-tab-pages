@@ -29,6 +29,7 @@ export class ActivityItemsTable extends LitElement {
           margin: 11px 25px 11px;
           color: var(--secondary-text-color);
           cursor: pointer;
+          padding: 0 0 2px 0;
         }
         :host {
           border-bottom: 1px solid var(--main-border-color);
@@ -49,14 +50,14 @@ export class ActivityItemsTable extends LitElement {
       </style>
       <div class="grid-row header border">
         <div class="grid-cell header-cell left">
-          <label required>${translate('ITEM_DESCRIPTION')}&nbsp;&nbsp;</label>
+          <label required>${translate('ITEM_DESCRIPTION')}</label>
         </div>
         <div class="grid-cell header-cell left"><label required>${translate('UNIT')}</label></div>
-        <div class="grid-cell header-cell center"><label required>${translate('NUMBER_UNITS')}</label></div>
-        <div class="grid-cell header-cell center">${translate('PRICE_UNIT')}</div>
+        <div class="grid-cell header-cell end"><label required>${translate('NUMBER_UNITS')}</label></div>
+        <div class="grid-cell header-cell end">${translate('PRICE_UNIT')}</div>
         <div class="grid-cell header-cell end">${translate('TOTAL_COST')}</div>
-        <div class="grid-cell header-cell center">${translate('PARTNER_CASH')}</div>
-        <div class="grid-cell header-cell center">${translate('UNICEF_CASH')}</div>
+        <div class="grid-cell header-cell end">${translate('PARTNER_CASH')}</div>
+        <div class="grid-cell header-cell end">${translate('UNICEF_CASH')}</div>
         <div class="grid-cell header-cell"></div>
         <div class="grid-cell header-cell end">${translate('TOTAL_CASH')}</div>
       </div>
