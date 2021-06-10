@@ -131,15 +131,15 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
         <div class="data-column">
           <label class="paper-label">${translate('TOTAL_PARTNER_CASH')}</label>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.partner_contribution_local)}">
-            ${this.roundPercentage(this.budgetSummary.partner_contribution_percent)}
-            (${this.displayCurrencyAmount(this.budgetSummary.partner_contribution_local, '0.00')})
+            ${this.displayCurrencyAmount(this.budgetSummary.partner_contribution_local, '0.00')}
           </div>
         </div>
 
         <div class="data-column">
           <label class="paper-label">${translate('TOTAL_PARTNER_CONTRIBUTION')}</label>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.total_partner_contribution_local)}">
-            ${this.displayCurrencyAmount(this.budgetSummary.total_partner_contribution_local)}
+            ${this.roundPercentage(this.budgetSummary.partner_contribution_percent)}
+            (${this.displayCurrencyAmount(this.budgetSummary.total_partner_contribution_local)})
           </div>
         </div>
       </section>
