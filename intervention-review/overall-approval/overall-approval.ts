@@ -63,7 +63,7 @@ export class OverallApproval extends LitElement {
         <div slot="panel-btns" ?hidden="${this.readonly}">
           <paper-icon-button icon="icons:create" @click="${() => this.openReviewPopup()}"></paper-icon-button>
         </div>
-        <etools-data-table-row class="overall-row" no-collapse detailsopened>
+        <etools-data-table-row class="overall-row" no-collapse details-opened>
           <div slot="row-data">
             <div class="layout-horizontal row-padding space-between">
               <div class="info-block">
