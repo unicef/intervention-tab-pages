@@ -375,6 +375,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                         .quarters="${this.quarters}"
                         ?hidden="${!this.showActivities}"
                         .readonly="${!this.permissions.edit.result_links || this.commentMode}"
+                        .currency="${this.intervention.planned_budget.currency}"
                       ></pd-activities>
                     </div>
                   </etools-data-table-row>

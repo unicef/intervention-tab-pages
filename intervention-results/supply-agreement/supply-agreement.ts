@@ -166,7 +166,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       cssClass: 'col_nowrap'
     },
     {
-      label: (translate('TOTAL_PRICE') as unknown) as string,
+      label: '',
       name: 'total_price',
       cssClass: 'col_nowrap',
       type: EtoolsTableColumnType.Number
@@ -236,6 +236,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
     if (get(state, 'interventions.current')) {
       const currentIntervention = get(state, 'interventions.current');
       this.intervention = cloneDeep(currentIntervention);
+      this.currencyDisplayForTotal();
     }
     this.supply_items = selectSupplyAgreement(state);
     this.permissions = selectSupplyAgreementPermissions(state);
@@ -245,10 +246,16 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       item.unit_price = addCurrencyAmountDelimiter(item.unit_price);
       return item;
     });
+
     if (state.user && state.user.data) {
       this.isUnicefUser = isUnicefUser(state);
     }
     super.stateChanged(state);
+  }
+  currencyDisplayForTotal() {
+    if (!this.columns[3].label) {
+      this.columns[3].label = getTranslation('TOTAL_PRICE') + ' (' + this.intervention?.planned_budget?.currency + ')';
+    }
   }
 
   cancelSupply() {
