@@ -1,6 +1,7 @@
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {PrcOfficerReview} from '@unicef-polymer/etools-types';
 
 export const SET_REVIEWS = 'SET_REVIEWS';
 export const RESET_REVIEWS = 'SET_REVIEWS';
@@ -23,6 +24,6 @@ export const loadReviews = (reviewId: number) => (dispatch: any, getState: any) 
     });
 };
 
-function checkReviews(reviews: any) {
-  return reviews.filter((review) => Boolean(review.started_date || review.submitted_date));
+function checkReviews(reviews: PrcOfficerReview[]) {
+  return reviews.filter((review: PrcOfficerReview) => Boolean(review.review_date));
 }

@@ -80,7 +80,7 @@ export class ReviewsList extends connectStore(LitElement) {
                   <iron-icon icon="${approval.overall_approval ? 'check' : 'close'}"></iron-icon>
                 </div>
                 <div class="flex-4">${approval.overall_comment || '-'}</div>
-                <div class="flex-1">${formatDate(approval.submitted_date as string, 'DD MMM YYYY')}</div>
+                <div class="flex-1">${formatDate(approval.review_date as string, 'DD MMM YYYY')}</div>
                 <div class="hover-block" ?hidden="${this.readonly || approval.user.id !== this.currentUserId}">
                   <paper-icon-button
                     icon="icons:create"
