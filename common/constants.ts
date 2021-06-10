@@ -1,3 +1,6 @@
+import {AnyObject} from '@unicef-polymer/etools-types';
+import {get as getTranslation} from 'lit-translate';
+
 const CONSTANTS = {
   PD_EXPORT_TYPES: {
     PdResult: 'PD Result',
@@ -66,6 +69,16 @@ export const TABS = {
   MonitoringActivities: 'monitoring-activities',
   ResultsReported: 'progress',
   Reports: 'reports'
+};
+
+export const SupplyItemProviders = [
+  {label: getTranslation('UNICEF'), id: 'unicef'},
+  {label: getTranslation('PARTNER'), id: 'partner'}
+];
+
+export const SupplyItemProvidersMap: AnyObject = {
+  unicef: getTranslation('UNICEF'),
+  partner: getTranslation('PARTNER')
 };
 
 export default CONSTANTS;

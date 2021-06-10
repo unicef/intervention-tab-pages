@@ -18,6 +18,7 @@ import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-currency-amount-input';
 import {ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
+import {SupplyItemProviders} from '../../common/constants';
 
 /**
  * @customElement
@@ -142,6 +143,8 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
             option-label="label"
             option-value="id"
             .selected="${this.data.provided_by}"
+            required
+            auto-validate
             trigger-value-change-event
             @etools-selected-item-changed="${({detail}: CustomEvent) => {
               this.selectedItemChanged(detail, 'provided_by');
@@ -200,6 +203,9 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
     this.cpOutputs = (result_links || []).filter((x: ExpectedResult) => !!x.cp_output_name);
     this.data = data;
     this.isNewRecord = !this.data.id;
+    if (this.isNewRecord) {
+      this.data.provided_by = 'unicef';
+    }
     this.interventionId = interventionId;
     this.dialogTitle = this.isNewRecord
       ? ((translate('ADD_SUPPLY_CONTRIBUTION') as unknown) as string)
@@ -208,10 +214,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
       ? ((translate('GENERAL.ADD') as unknown) as string)
       : ((translate('GENERAL.SAVE') as unknown) as string);
     this.isUnicefUser = isUnicefUser;
-    this.providers = [
-      {label: getTranslation('UNICEF'), id: 'unicef'},
-      {label: getTranslation('PARTNER'), id: 'partner'}
-    ];
+    this.providers = SupplyItemProviders;
   }
 
   onClose(): void {
