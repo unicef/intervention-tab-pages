@@ -33,6 +33,7 @@ import {EtoolsUpload} from '@unicef-polymer/etools-upload/etools-upload';
 import {AnyObject, AsyncAction, InterventionSupplyItem} from '@unicef-polymer/etools-types';
 import {Intervention, ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
+import {SupplyItemProvidersMap} from '../../common/constants';
 
 const customStyles = html`
   <style>
@@ -210,11 +211,19 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           </paper-input>
         </div>
       </td>
-      <td colspan="2">
+      <td colspan="1">
         <div class="child-row-inner-container">
           <label class="paper-label">
             ${translate('UNICEF_PRODUCT_NUMBER')}</label><br />
           <label>${item.unicef_product_number || '—'}</label>
+          </paper-input>
+        </div>
+      </td>
+      <td colspan="1">
+        <div class="child-row-inner-container">
+          <label class="paper-label">
+            ${translate('PROVIDED_BY')}</label><br />
+          <label>${SupplyItemProvidersMap[item.provided_by] || '—'}</label>
           </paper-input>
         </div>
       </td>
