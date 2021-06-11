@@ -339,9 +339,8 @@ export class InterventionTabs extends connectStore(LitElement) {
 
     const attachmentRestricted =
       tab === TABS.Attachments && !state.interventions.current?.permissions?.view.attachments;
-    // eslint-disable-next-line max-len
-    const reviewRestricted = !unicefUser; // TODO-when bk ready: tab === TABS.Review && !state.interventions.current?.permissions?.view.review;
 
+    const reviewRestricted = tab === TABS.Review && !state.interventions.current?.permissions?.view.reviews;
     const restrictedSubTabs =
       !unicefUser &&
       [TABS.ResultsReported, TABS.Reports, TABS.ImplementationStatus, TABS.MonitoringActivities].includes(subTab);
