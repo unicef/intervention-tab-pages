@@ -6,7 +6,7 @@ import '@polymer/paper-toggle-button';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import './activity-items-table';
 import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
-import {formatCurrency, getTotal} from './get-total.helper';
+import {formatCurrency, getTotal} from '../../../../utils/get-total.helper';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {getEndpoint} from '../../../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../../../utils/intervention-endpoints';

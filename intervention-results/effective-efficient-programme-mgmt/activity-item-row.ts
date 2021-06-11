@@ -8,15 +8,15 @@ import {
   css,
   PropertyValues
 } from 'lit-element';
-import {getTotal, getMultiplyProduct} from '../../../../utils/get-total.helper';
+import {getTotal} from '../../utils/get-total.helper';
 import {ActivityItemsTableInlineStyles, ActivityItemsTableStyles} from './acivity-items-table.styles';
-import {fireEvent} from '../../../../utils/fire-custom-event';
+import {fireEvent} from '../../utils/fire-custom-event';
 import {InterventionActivityItem} from '@unicef-polymer/etools-types';
-import {callClickOnSpacePushListener} from '../../../../utils/common-methods';
+import {callClickOnSpacePushListener} from '../../utils/common-methods';
 import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
 import {translate} from 'lit-translate';
 
-@customElement('activity-item-row')
+@customElement('ef-activity-item-row')
 export class ActivityItemRow extends LitElement {
   static get styles(): CSSResultArray {
     // language=css
@@ -38,9 +38,6 @@ export class ActivityItemRow extends LitElement {
 
   @property() activityItem: Partial<InterventionActivityItem> = {};
   @property() invalidName = false;
-  @property() invalidUnit = false;
-  @property() invalidNoUnits = false;
-  @property() invalidSum = false;
   @property() readonly: boolean | undefined = false;
   @property() lastItem: boolean | undefined = false;
 
@@ -66,73 +63,6 @@ export class ActivityItemRow extends LitElement {
                 @click="${() => (this.invalidName = false)}"
               ></paper-textarea>
             </div>
-
-            <div
-              class="grid-cell ${!this.lastItem || !this.readonly ? 'border' : ''}"
-              data-col-header-label="${translate('UNIT')}"
-            >
-              <paper-input
-                .value="${this.activityItem.unit || ''}"
-                no-label-float
-                placeholder="—"
-                id="activityUnit"
-                ?readonly="${this.readonly}"
-                ?invalid="${this.invalidUnit}"
-                @value-changed="${({detail}: CustomEvent) => this.updateField('unit', detail.value)}"
-                @blur="${() => this.onBlur()}"
-                @focus="${() => (this.invalidUnit = false)}"
-                @click="${() => (this.invalidUnit = false)}"
-              ></paper-input>
-            </div>
-            <div
-              class="grid-cell end ${!this.lastItem || !this.readonly ? 'border' : ''}"
-              data-col-header-label="${translate('NUMBER_UNITS')}"
-            >
-              <etools-currency-amount-input
-                .value="${this.activityItem.no_units || ''}"
-                no-label-float
-                id="activityNoUnits"
-                ?invalid="${this.invalidSum || this.invalidNoUnits}"
-                ?readonly="${this.readonly}"
-                @value-changed="${({detail}: CustomEvent) => this.updateField('no_units', detail.value)}"
-                @blur="${() => this.onBlur()}"
-                @focus="${() => {
-                  this.invalidSum = false;
-                  this.invalidNoUnits = false;
-                }}"
-                @click="${() => {
-                  this.invalidSum = false;
-                  this.invalidNoUnits = false;
-                }}"
-                no-of-decimals="1"
-                error-message=""
-              ></etools-currency-amount-input>
-            </div>
-            <div
-              class="grid-cell end ${!this.lastItem || !this.readonly ? 'border' : ''}"
-              data-col-header-label="${translate('PRICE_UNIT')}"
-            >
-              <etools-currency-amount-input
-                .value="${this.activityItem.unit_price || 0}"
-                no-label-float
-                ?readonly="${this.readonly}"
-                @value-changed="${({detail}: CustomEvent) => this.updateField('unit_price', detail.value)}"
-                @blur="${() => this.onBlur()}"
-                ?invalid="${this.invalidSum}"
-                @focus="${() => (this.invalidSum = false)}"
-                @click="${() => (this.invalidSum = false)}"
-                error-message=""
-              ></etools-currency-amount-input>
-            </div>
-            <div
-              class="grid-cell end ${!this.lastItem || !this.readonly ? 'border' : ''}"
-              data-col-header-label="${translate('TOTAL_COST')}"
-            >
-              <span class="total">
-                ${getMultiplyProduct(this.activityItem.no_units || 0, this.activityItem.unit_price || 0)}
-              </span>
-            </div>
-
             <div
               class="grid-cell end ${!this.lastItem || !this.readonly ? 'border' : ''}"
               data-col-header-label="${translate('PARTNER_CASH')}"
@@ -143,9 +73,6 @@ export class ActivityItemRow extends LitElement {
                 ?readonly="${this.readonly}"
                 @value-changed="${({detail}: CustomEvent) => this.updateField('cso_cash', detail.value)}"
                 @blur="${() => this.onBlur()}"
-                ?invalid="${this.invalidSum}"
-                @focus="${() => (this.invalidSum = false)}"
-                @click="${() => (this.invalidSum = false)}"
                 error-message=""
               ></etools-currency-amount-input>
             </div>
@@ -159,9 +86,6 @@ export class ActivityItemRow extends LitElement {
                 ?readonly="${this.readonly}"
                 @value-changed="${({detail}: CustomEvent) => this.updateField('unicef_cash', detail.value)}"
                 @blur="${() => this.onBlur()}"
-                ?invalid="${this.invalidSum}"
-                @focus="${() => (this.invalidSum = false)}"
-                @click="${() => (this.invalidSum = false)}"
                 error-message=""
               ></etools-currency-amount-input>
             </div>
@@ -215,14 +139,8 @@ export class ActivityItemRow extends LitElement {
 
   validate(): any {
     this.invalidName = !this.activityItem.name;
-    this.invalidUnit = !this.activityItem.unit;
-    this.invalidNoUnits = isNaN(parseFloat(String(this.activityItem.no_units)));
-    const invalidRequired = this.invalidName || this.invalidUnit || this.invalidNoUnits;
-    this.invalidSum = invalidRequired
-      ? false
-      : getMultiplyProduct(this.activityItem.no_units || 0, this.activityItem.unit_price || 0) !==
-        getTotal(this.activityItem.cso_cash || 0, this.activityItem.unicef_cash || 0);
+    const invalidRequired = this.invalidName;
 
-    return {invalidRequired: invalidRequired, invalidSum: this.invalidSum};
+    return {invalidRequired: invalidRequired, invalidSum: false};
   }
 }
