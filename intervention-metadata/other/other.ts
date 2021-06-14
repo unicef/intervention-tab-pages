@@ -21,6 +21,7 @@ import {translate} from 'lit-translate';
 import {OtherData, OtherPermissions} from './other.models';
 import {selectOtherData, selectOtherPermissions} from './other.selectors';
 import CONSTANTS from '../../common/constants';
+import {translatesMap} from '../../utils/intervention-labels-map';
 
 /**
  * @customElement
@@ -130,7 +131,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               id="currencyDd"
               option-value="value"
               option-label="label"
-              label=${translate('DOCUMENT_CURRENCY')}
+              label=${translate(translatesMap.currency)}
               placeholder="&#8212;"
               .options="${this.currencies}"
               .selected="${this.data.planned_budget.currency}"

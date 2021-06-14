@@ -29,6 +29,7 @@ import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {callClickOnSpacePushListener} from '../../utils/common-methods';
 import {translate} from 'lit-translate';
+import {translatesMap} from '../../utils/intervention-labels-map';
 
 /**
  * @polymer
@@ -107,7 +108,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
       <etools-content-panel
         show-expand-btn
         class="content-section"
-        panel-title=${translate('PARTNER_REPORTING_REQUIREMENTS')}
+        panel-title=${translate(translatesMap.reporting_requirements)}
       >
         <div class="flex-c layout-horizontal">
           <div class="reports-menu nav-menu">
@@ -120,10 +121,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
               tabindex="0"
               id="clickable"
             >
-              <span
-                >${translate('QUARTERLY_PROGRESS_REPORTS')}
-                (${this.qprRequirementsCount})</span
-              >
+              <span>${translate('QUARTERLY_PROGRESS_REPORTS')} (${this.qprRequirementsCount})</span>
               <paper-icon-button
                 class="edit-rep-req"
                 icon="create"
@@ -140,10 +138,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
               tabindex="0"
               id="clickable"
             >
-              <span
-                >${translate('HUMANITARIAN_REPORTS_UNICEF')}
-                (${this.hrUnicefRequirementsCount})</span
-              >
+              <span>${translate('HUMANITARIAN_REPORTS_UNICEF')} (${this.hrUnicefRequirementsCount})</span>
               <paper-icon-button
                 class="edit-rep-req"
                 icon="create"
@@ -161,8 +156,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
                   tabindex="0"
                   id="clickable"
                 >
-                  ${translate('HUMANITARIAN_REPORTS_CLUSTER')}
-                  (${this.hrClusterRequirementsCount})
+                  ${translate('HUMANITARIAN_REPORTS_CLUSTER')} (${this.hrClusterRequirementsCount})
                 </div>`
               : html``}
 
@@ -175,8 +169,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
               tabindex="0"
               id="clickable"
             >
-              ${translate('SPECIAL_REPORT')}
-              (${this.specialRequirementsCount})
+              ${translate('SPECIAL_REPORT')} (${this.specialRequirementsCount})
             </div>
           </div>
           <div class="flex-c reporting-req-data">

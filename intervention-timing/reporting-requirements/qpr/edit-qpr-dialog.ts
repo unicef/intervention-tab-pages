@@ -21,6 +21,7 @@ declare const dayjs: any;
 import {buttonsStyles} from '../../../common/styles/button-styles';
 import {translate, get as getTranslation} from 'lit-translate';
 import {sharedStyles} from '../../../common/styles/shared-styles-lit';
+import {translatesMap} from '../../../utils/intervention-labels-map';
 
 /**
  * @polymer
@@ -112,7 +113,7 @@ export class EditQprDialog extends LitElement {
         <div class="row-h">
           <div class="col layout-vertical">
             <iron-label for="startDate"
-              >${translate('START_DATE')}</iron-label
+              >${translate(translatesMap.start_date)}</iron-label
             >
             <calendar-lite
               id="startDate"

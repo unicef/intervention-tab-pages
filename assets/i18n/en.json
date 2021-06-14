@@ -13,6 +13,12 @@
   "ACCEPT": "Accept",
   "UNLOCK": "Unlock",
   "REVIEW": "Review",
+  "ADDED": "Added",
+  "REMOVED": "Removed",
+  "CREATED": "Created",
+  "UPDATED": "Updated",
+  "ORIGINAL_VALUE": "Original value",
+  "PLANNED_BUDGET": "Planned Budget",
   "SEND_FOR_SIGNATURE": "Are you sure you want to send for signature?",
   "SEND_FOR_ACCEPT_REVIEW": "Are you sure you want to send for Accept & Review?",
   "CANCEL_PROMPT": "Are you sure you want to cancel?",
@@ -435,5 +441,8 @@
   "AMENDMENT_MERGE": "Are you sure you want to merge amendment?",
   "AMENDMENT_MODE_TEXT": "This PD is in amendment. See",
   "ORIGINAL_VERSION": "original version",
-  "DELETE_AMENDMENT_QUESTION": "delete this amendment?"
+  "DELETE_AMENDMENT_QUESTION": "delete this amendment?",
+  "PREVIOUS_VALUE": "Previous value",
+  "CURRENT_VALUE": "Current value",
+  "INPUT_LEVEL_ITEMS": "Input Level Items"
 }

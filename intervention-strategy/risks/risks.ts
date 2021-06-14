@@ -26,6 +26,7 @@ import {currentInterventionPermissions} from '../../common/selectors';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, LabelAndValue, RiskData} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {translatesMap} from '../../utils/intervention-labels-map';
 
 const customStyles = html`
   <style>
@@ -72,9 +73,9 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       </style>
       <etools-content-panel
         show-expand-btn
-        panel-title=${translate('RISKS')}
+        panel-title=${translate(translatesMap.risks)}
         comment-element="risks"
-        comment-description=${translate('RISKS')}
+        comment-description=${translate(translatesMap.risks)}
       >
         <div slot="panel-btns">
           <paper-icon-button
