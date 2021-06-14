@@ -348,6 +348,10 @@ export const sharedStylesContent = `
   etools-dialog::part(ed-button-styles) {
     margin-top: 0;
   }
+
+  .not-allowed, .not-allowed label {
+    cursor: not-allowed !important;
+  }
 `;
 // export const sharedStyles = html`${unsafeCSS(sharedStylesContent)}`;
 export const sharedStyles = css`
