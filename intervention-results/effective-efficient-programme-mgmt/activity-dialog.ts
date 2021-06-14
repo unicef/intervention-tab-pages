@@ -13,8 +13,8 @@ import {fireEvent} from '../../utils/fire-custom-event';
 import {getStore} from '../../utils/redux-store-access';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {translate, get as getTranslation} from 'lit-translate';
-import './activity-items-table';
-import {formatCurrency, getTotal} from '../../utils/get-total.helper';
+import '../../common/components/activity/activity-items-table';
+import {formatCurrency, getTotal} from '../../common/components/activity/get-total.helper';
 import {cloneDeep} from '../../utils/utils';
 import {AnyObject} from '@unicef-polymer/etools-types';
 
@@ -37,7 +37,10 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         .layout-horizontal {
           overflow: hidden;
         }
-
+        etools-dialog::part(ed-paper-dialog) {
+          width: 98vw !important;
+          max-width: 1200px;
+        }
         etools-dialog::part(ed-scrollable) {
           margin-top: 0 !important;
         }
@@ -152,14 +155,14 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
             ${translate('USE_INPUT_LEVEL')}
           </paper-toggle-button>
         </div>
-        <ef-activity-items-table
+        <activity-items-table
           ?hidden="${!this.useInputLevel}"
           .activityItems="${this.data.items || []}"
           @activity-items-changed="${({detail}: CustomEvent) => {
             this.data.items = detail;
             this.requestUpdate();
           }}"
-        ></ef-activity-items-table>
+        ></activity-items-table>
       </etools-dialog>
     `;
   }
