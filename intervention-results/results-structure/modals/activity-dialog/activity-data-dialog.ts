@@ -29,6 +29,8 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
     return [gridLayoutStylesLit];
   }
 
+  @property({type: String})
+  currency = '';
   @property() dialogOpened = true;
   @property() loadingInProcess = false;
   @property() isEditDialog = true;
@@ -37,9 +39,10 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
   @property() readonly: boolean | undefined = false;
   quarters: ActivityTimeFrames[] = [];
 
-  set dialogData({activityId, pdOutputId, interventionId, quarters, readonly}: any) {
+  set dialogData({activityId, pdOutputId, interventionId, quarters, readonly, currency}: any) {
     this.quarters = quarters;
     this.readonly = readonly;
+    this.currency = currency;
     if (!activityId) {
       this.data = {} as InterventionActivity;
       this.isEditDialog = false;
@@ -198,7 +201,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
                 readonly
                 tabindex="-1"
                 class="col-6 general-total"
-                label=${translate('GENERAL.TOTAL')}
+                label="${translate('GENERAL.TOTAL')} (${this.currency})"
                 .value="${this.getTotalValue()}"
               ></paper-input>
             </div>
@@ -216,6 +219,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
             ?hidden="${!this.useInputLevel}"
             .activityItems="${this.editedData.items || []}"
             .readonly="${this.readonly}"
+            .currency="${this.currency}"
             @activity-items-changed="${({detail}: CustomEvent) => {
               this.editedData.items = detail;
               this.requestUpdate();

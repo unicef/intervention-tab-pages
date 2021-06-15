@@ -202,7 +202,8 @@ export class PdActivities extends CommentsMixin(LitElement) {
         interventionId: this.interventionId,
         pdOutputId: this.pdOutputId,
         quarters: this.quarters,
-        readonly: readonly
+        readonly: readonly,
+        currency: this.currency
       }
     });
   }
