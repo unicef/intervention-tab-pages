@@ -11,7 +11,7 @@ import {getStore} from '../../utils/redux-store-access';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {patchIntervention} from '../../common/actions/interventions';
 import {isJsonStrMatch} from '../../utils/utils';
-import {detailsTextareaRowsCount, pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {RootState} from '../../common/types/store.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
