@@ -11,7 +11,7 @@ import {getStore} from '../../utils/redux-store-access';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {patchIntervention} from '../../common/actions/interventions';
 import {isJsonStrMatch} from '../../utils/utils';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {detailsTextareaRowsCount, pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {RootState} from '../../common/types/store.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
@@ -86,8 +86,12 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               required
               .options="${this.documentTypes}"
               .selected="${this.data.document_type}"
-              @etools-selected-item-changed="${({detail}: CustomEvent) =>
-                this.documentTypeChanged(detail.selectedItem && detail.selectedItem.value)}"
+              @etools-selected-item-changed="${({detail}: CustomEvent) => {
+                if (!detail.selectedItem) {
+                  return;
+                }
+                this.documentTypeChanged(detail.selectedItem && detail.selectedItem.value);
+              }}"
               trigger-value-change-event
               hide-search
               @focus="${() => resetRequiredFields(this)}"
