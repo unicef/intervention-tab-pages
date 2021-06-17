@@ -21,6 +21,7 @@ import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {translatesMap} from '../../utils/intervention-labels-map';
 
 /**
  * @customElement
@@ -74,7 +75,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
 
         <div class="layout-horizontal row-padding-v extra-padd-top-no-bottom">
           <div class="w100">
-            <label class="paper-label">${translate('HEADQUARTERS_CONTRIBUTION')}</label>
+            <label class="paper-label">${translate(translatesMap.hq_support_cost)}</label>
           </div>
         </div>
         <div class="layout-horizontal">
@@ -104,10 +105,11 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
             id="hqContrib"
             class="col-3"
             placeholder="&#8212;"
-            label=${translate('HQ_CONTRIBUTION')}
+            label=${translate(translatesMap.total_hq_cash_local)}
             .value="${this.data.planned_budget.total_hq_cash_local}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_budget)}"
             @value-changed="${({detail}: CustomEvent) => this.hqContribChanged(detail)}"
+            .currency="${this.data.planned_budget?.currency}"
           >
           </etools-currency-amount-input>
         </div>

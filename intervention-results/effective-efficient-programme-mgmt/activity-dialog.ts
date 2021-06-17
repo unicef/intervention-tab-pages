@@ -13,6 +13,7 @@ import {fireEvent} from '../../utils/fire-custom-event';
 import {getStore} from '../../utils/redux-store-access';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {translate, get as getTranslation} from 'lit-translate';
+import {translatesMap} from '../../utils/intervention-labels-map';
 
 /**
  * @customElement
@@ -89,7 +90,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
           <div class="col col-6">
             <etools-currency-amount-input
               id="unicefCash"
-              label=${translate('UNICEF_CASH')}
+              label=${translate(translatesMap.unicef_cash)}
               .value="${this.originalData.unicef_cash}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, this.getPropertyName('unicef'))}"
             >

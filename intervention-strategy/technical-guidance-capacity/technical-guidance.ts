@@ -16,6 +16,7 @@ import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {translatesMap} from '../../utils/intervention-labels-map';
 
 /**
  * @customElement
@@ -57,7 +58,7 @@ export class TechnicalGuidance extends CommentsMixin(ComponentBaseMixin(LitEleme
         <div class="row-padding-v">
           <paper-textarea
             id="technicalGuidance"
-            label=${translate('TECHNICAL_GUIDANCE')}
+            label=${translate(translatesMap.technical_guidance)}
             always-float-label
             placeholder="—"
             .value="${this.data.technical_guidance}"
@@ -73,7 +74,7 @@ export class TechnicalGuidance extends CommentsMixin(ComponentBaseMixin(LitEleme
         <div class="row-padding-v">
           <paper-textarea
             id="capacityDevelopment"
-            label=${translate('CAPACITY_DEVELOPMENT')}
+            label=${translate(translatesMap.capacity_development)}
             type="text"
             always-float-label
             placeholder="—"
@@ -90,7 +91,7 @@ export class TechnicalGuidance extends CommentsMixin(ComponentBaseMixin(LitEleme
         <div class="row-padding-v">
           <paper-textarea
             id="otherPartnersInvolved"
-            label=${translate('OTHER_PARTNERS_INVOLVED')}
+            label=${translate(translatesMap.other_partners_involved)}
             type="text"
             always-float-label
             placeholder="—"
@@ -107,7 +108,7 @@ export class TechnicalGuidance extends CommentsMixin(ComponentBaseMixin(LitEleme
         <div class="row-padding-v">
           <paper-textarea
             id="otherInformation"
-            label=${translate('OTHER_INFORMATION')}
+            label=${translate(translatesMap.other_info)}
             type="text"
             always-float-label
             placeholder="—"

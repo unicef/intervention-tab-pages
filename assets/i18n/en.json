@@ -13,6 +13,12 @@
   "ACCEPT": "Accept",
   "UNLOCK": "Unlock",
   "REVIEW": "Review",
+  "ADDED": "Added",
+  "REMOVED": "Removed",
+  "CREATED": "Created",
+  "UPDATED": "Updated",
+  "ORIGINAL_VALUE": "Original value",
+  "PLANNED_BUDGET": "Planned Budget",
   "SEND_FOR_SIGNATURE": "Are you sure you want to send for signature?",
   "SEND_FOR_ACCEPT_REVIEW": "Are you sure you want to send for Accept & Review?",
   "CANCEL_PROMPT": "Are you sure you want to cancel?",
@@ -437,5 +443,8 @@
   "ORIGINAL_VERSION": "original version",
   "DELETE_AMENDMENT_QUESTION": "delete this amendment?",
   "NOT_ALLOWED_BUDGET": "These are the readonly TOTALS of the values entered below for PD Output Activities, EEF, Supplies",
-  "NOT_ALLOWED_TIMING": ""
+  "NOT_ALLOWED_TIMING": "",
+  "PREVIOUS_VALUE": "Previous value",
+  "CURRENT_VALUE": "Current value",
+  "INPUT_LEVEL_ITEMS": "Input Level Items"
 }

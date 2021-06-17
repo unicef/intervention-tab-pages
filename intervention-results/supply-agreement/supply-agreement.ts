@@ -34,6 +34,7 @@ import {AnyObject, AsyncAction, InterventionSupplyItem} from '@unicef-polymer/et
 import {Intervention, ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {SupplyItemProvidersMap} from '../../common/constants';
+import {translatesMap} from '../../utils/intervention-labels-map';
 
 const customStyles = html`
   <style>
@@ -84,7 +85,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
 
       <etools-content-panel
         show-expand-btn
-        panel-title=${translate('SUPPLY_CONTRIBUTION')}
+        panel-title=${translate(translatesMap.supply_items)}
         comment-element="supply-agreement"
         comment-description=${translate('SUPPLY_CONTRIBUTION')}
       >
@@ -167,10 +168,20 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       cssClass: 'col_nowrap'
     },
     {
-      label: (translate('TOTAL_PRICE') as unknown) as string,
+      label: '',
       name: 'total_price',
       cssClass: 'col_nowrap',
       type: EtoolsTableColumnType.Number
+    },
+    {
+      label: (translate('PROVIDED_BY') as unknown) as string,
+      name: 'provided_by',
+      cssClass: 'col_nowrap',
+      type: EtoolsTableColumnType.Custom,
+      capitalize: true,
+      customMethod: (item: any, _key: string) => {
+        return SupplyItemProvidersMap[item.provided_by] || '—';
+      }
     }
   ];
 
@@ -204,26 +215,18 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
             </td>`
           : html``
       }
-      <td colspan="${this.isUnicefUser ? '2' : '3'}" class="ptb-0">
+      <td colspan="${this.isUnicefUser ? '3' : '4'}" class="ptb-0">
         <div class="child-row-inner-container">
           <label class="paper-label">${translate('OTHER_MENTIONS')}</label><br />
           <label>${item.other_mentions || '—'}</label>
           </paper-input>
         </div>
       </td>
-      <td colspan="1">
+      <td colspan="2" class="ptb-0">
         <div class="child-row-inner-container">
           <label class="paper-label">
             ${translate('UNICEF_PRODUCT_NUMBER')}</label><br />
           <label>${item.unicef_product_number || '—'}</label>
-          </paper-input>
-        </div>
-      </td>
-      <td colspan="1">
-        <div class="child-row-inner-container">
-          <label class="paper-label">
-            ${translate('PROVIDED_BY')}</label><br />
-          <label>${SupplyItemProvidersMap[item.provided_by] || '—'}</label>
           </paper-input>
         </div>
       </td>
@@ -245,6 +248,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
     if (get(state, 'interventions.current')) {
       const currentIntervention = get(state, 'interventions.current');
       this.intervention = cloneDeep(currentIntervention);
+      this.currencyDisplayForTotal();
     }
     this.supply_items = selectSupplyAgreement(state);
     this.permissions = selectSupplyAgreementPermissions(state);
@@ -254,10 +258,16 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       item.unit_price = addCurrencyAmountDelimiter(item.unit_price);
       return item;
     });
+
     if (state.user && state.user.data) {
       this.isUnicefUser = isUnicefUser(state);
     }
     super.stateChanged(state);
+  }
+  currencyDisplayForTotal() {
+    if (!this.columns[3].label) {
+      this.columns[3].label = getTranslation('TOTAL_PRICE') + ' (' + this.intervention?.planned_budget?.currency + ')';
+    }
   }
 
   cancelSupply() {
@@ -338,7 +348,8 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         data: item,
         interventionId: this.intervention.id,
         result_links: this.intervention.result_links,
-        isUnicefUser: this.isUnicefUser
+        isUnicefUser: this.isUnicefUser,
+        currency: this.intervention.planned_budget.currency
       }
     });
   }

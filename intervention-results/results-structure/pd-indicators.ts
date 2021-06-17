@@ -42,6 +42,7 @@ import {
   Intervention
 } from '@unicef-polymer/etools-types';
 import {callClickOnSpacePushListener} from '../../utils/common-methods';
+import {translatesMap} from '../../utils/intervention-labels-map';
 
 @customElement('pd-indicators')
 export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)) {
@@ -105,7 +106,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
 
       <div class="row-h align-items-center header">
         <div class="heading flex-auto">
-          ${translate('PD_INDICATORS')}
+          ${translate(translatesMap.applied_indicators)}
           <paper-icon-button
             class="add-box"
             icon="add-box"
