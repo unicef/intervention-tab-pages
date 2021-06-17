@@ -22,6 +22,7 @@ import {validateRequiredFields} from '../../../../utils/validation-helper';
 import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 import {AnyObject, InterventionActivity, InterventionActivityItem} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
+import {translatesMap} from '../../../../utils/intervention-labels-map';
 
 @customElement('activity-data-dialog')
 export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitElement) {
@@ -162,7 +163,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
               ? html`
                   <etools-currency-amount-input
                     class="col-3"
-                    label=${translate('PARTNER_CASH_BUDGET')}
+                    label=${translate(translatesMap.cso_cash)}
                     ?readonly="${this.readonly}"
                     .value="${this.editedData.cso_cash}"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue('cso_cash', detail.value)}"

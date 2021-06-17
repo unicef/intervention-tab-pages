@@ -21,6 +21,7 @@ import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, LabelAndValue, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {translatesMap} from '../../utils/intervention-labels-map';
 
 /**
  * @customElement
@@ -73,7 +74,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
 
         <div class="row-padding-v pb-20">
           <div class="w100">
-            <label class="paper-label">${translate('GENDER_RATING')}</label>
+            <label class="paper-label">${translate(translatesMap.gender_rating)}</label>
           </div>
           ${this._getRatingRadioButtonGroupTemplate(
             this.editMode,
@@ -84,7 +85,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
           )}
           <div class="col col-12 pl-none">
             <paper-textarea
-              label=${translate('GENDER_NARATIVE')}
+              label=${translate(translatesMap.gender_narrative)}
               always-float-label
               class="w100"
               placeholder="&#8212;"
@@ -101,7 +102,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         </div>
         <div class="row-padding-v pb-20">
           <div class="w100">
-            <label class="paper-label">${translate('SUSTAINABILITY_RATING')}</label>
+            <label class="paper-label">${translate(translatesMap.sustainability_rating)}</label>
           </div>
           ${this._getRatingRadioButtonGroupTemplate(
             this.editMode,
@@ -112,7 +113,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
           )}
           <div class="col col-12 pl-none">
             <paper-textarea
-              label=${translate('SUSTAINABILITY_NARRATIVE')}
+              label=${translate(translatesMap.sustainability_narrative)}
               always-float-label
               class="w100"
               placeholder="&#8212;"
@@ -129,7 +130,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         </div>
         <div class="row-padding-v pb-20">
           <div class="w100">
-            <label class="paper-label">${translate('EQUITY_RATING')}</label>
+            <label class="paper-label">${translate(translatesMap.equity_rating)}</label>
           </div>
           ${this._getRatingRadioButtonGroupTemplate(
             this.editMode,
@@ -140,7 +141,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
           )}
           <div class="col col-12 pl-none">
             <paper-textarea
-              label=${translate('EQUITY_NARATIVE')}
+              label=${translate(translatesMap.equity_narrative)}
               always-float-label
               class="w100"
               placeholder="&#8212;"

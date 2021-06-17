@@ -28,6 +28,7 @@ import './cluster-indicator-disaggregations';
 import {Indicator, IndicatorDialogData} from '@unicef-polymer/etools-types';
 import {AnyObject, EtoolsUser, LocationObject, Section} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
+import {translatesMap} from '../../../../utils/intervention-labels-map';
 
 @customElement('indicator-dialog')
 export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin(ComponentBaseMixin(LitElement))) {
@@ -113,7 +114,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
               <div class="col col-4">
                 <etools-dropdown
                   id="sectionDropdw"
-                  label=${translate('SECTION')}
+                  label=${translate(translatesMap.section)}
                   .selected="${this.data?.section}"
                   placeholder="&#8212;"
                   .options="${this.sectionOptions}"
