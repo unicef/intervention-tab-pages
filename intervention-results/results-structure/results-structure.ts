@@ -53,6 +53,7 @@ import {
   ResultLinkLowerResult
 } from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {translatesMap} from '../../utils/intervention-labels-map';
 
 const RESULT_VIEW = 'result_view';
 const BUDGET_VIEW = 'budget_view';
@@ -241,7 +242,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         }
       </style>
 
-      <etools-content-panel show-expand-btn panel-title="${translate('RESULTS_STRUCTURE')} (${this.noOfPdOutputs})">
+      <etools-content-panel show-expand-btn panel-title="${translate(translatesMap.result_links)} (${this.noOfPdOutputs})">
         <div slot="panel-btns" class="layout-horizontal align-items-center">
           <paper-button
             title=${translate('EXPORT_RESULTS')}
@@ -335,7 +336,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                   >
                     <div slot="row-data" class="layout-horizontal align-items-center editable-row higher-slot">
                       <div class="flex-1 flex-fix">
-                        <div class="heading">${translate('PROGRAM_DOCUMENT_OUTPUT')}</div>
+                        <div class="heading">${translate(translatesMap.ll_results)}</div>
                         <div class="data bold-data">${pdOutput.name}</div>
                       </div>
 
@@ -375,6 +376,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                         .quarters="${this.quarters}"
                         ?hidden="${!this.showActivities}"
                         .readonly="${!this.permissions.edit.result_links || this.commentMode}"
+                        .currency="${this.intervention.planned_budget.currency}"
                       ></pd-activities>
                     </div>
                   </etools-data-table-row>

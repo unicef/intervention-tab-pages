@@ -13,6 +13,7 @@ import {buttonsStyles} from '../../../../common/styles/button-styles';
 import {PaperCheckboxElement} from '@polymer/paper-checkbox/paper-checkbox.js';
 import {Indicator} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {translatesMap} from '../../../../utils/intervention-labels-map';
 
 /**
  * @customElement
@@ -157,7 +158,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         <div class="col col-3">
           <paper-input
             id="numeratorLbl"
-            label=${translate('NUMERATOR_LABEL')}
+            label=${translate(translatesMap.numerator_label)}
             .value="${this.indicator.numerator_label}"
             placeholder="&#8212;"
             ?readonly="${this.readonly}"
@@ -170,7 +171,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         <div class="col col-3">
           <paper-input
             id="denomitorLbl"
-            label=${translate('DENOMINATOR_LABEL')}
+            label=${translate(translatesMap.denominator_label)}
             .value="${this.indicator.denominator_label}"
             placeholder="&#8212;"
             ?readonly="${this.readonly}"
@@ -265,7 +266,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           ? html` <div class="col-3 layout-horizontal">
                 <paper-input
                   id="baselineNumerator"
-                  label=${translate('BASELINE')}
+                  label=${translate(translatesMap.baseline)}
                   .value="${this.indicator.baseline.v}"
                   allowed-pattern="[0-9]"
                   .pattern="${this.digitsNotStartingWith0Pattern}"
@@ -337,7 +338,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
             ?disabled="${this.readonly}"
             @iron-change="${this.isHighFrequencyChanged}"
           >
-            ${translate('HIGH_FREQ_HUM_IND')}
+            ${translate(translatesMap.is_high_frequency)}
           </paper-toggle-button>
         </div>
       </div>
@@ -354,7 +355,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
       <!-- Baseline & Target -->
       <div class="row-h flex-c">
         <paper-textarea
-          label=${translate('MEANS_OF_VERIFICATION')}
+          label=${translate(translatesMap.means_of_verification)}
           type="text"
           .value="${this.indicator.means_of_verification}"
           ?readonly="${this.readonly}"
@@ -368,7 +369,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
       <div class="last-item row-h flex-c">
         <etools-dropdown-multi
           id="locationsDropdw"
-          label=${translate('LOCATIONS')}
+          label=${translate(translatesMap.locations)}
           placeholder="&#8212;"
           .selectedValues="${this.indicator.locations}"
           .options="${this.locationOptions}"

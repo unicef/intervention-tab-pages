@@ -22,6 +22,7 @@ import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {fireEvent} from '../../utils/fire-custom-event';
 import ReportingRequirementsCommonMixin from '../reporting-requirements/mixins/reporting-requirements-common-mixin';
+import {translatesMap} from '../../utils/intervention-labels-map';
 
 /**
  * @customElement
@@ -77,7 +78,7 @@ export class InterventionDates extends CommentsMixin(
               <datepicker-lite
                 slot="field"
                 id="intStart"
-                label=${translate('START_DATE')}
+                label=${translate(translatesMap.start)}
                 .value="${this.data.start}"
                 ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.start)}"
                 ?required="${this.permissions.required.start}"
@@ -105,7 +106,7 @@ export class InterventionDates extends CommentsMixin(
               <datepicker-lite
                 slot="field"
                 id="intEnd"
-                label=${translate('END_DATE')}
+                label=${translate(translatesMap.end)}
                 .value="${this.data.end}"
                 ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.end)}"
                 ?required="${this.permissions.required.end}"

@@ -22,6 +22,7 @@ import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {translatesMap} from '../../utils/intervention-labels-map';
 
 /**
  * @customElement
@@ -63,7 +64,7 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
         <div class="row-padding-v">
           <paper-textarea
             id="ip_program_contribution"
-            label=${translate('OTHER_NON_FINANCIAL_CONTRIBUTION')}
+            label=${translate(translatesMap.ip_program_contribution)}
             always-float-label
             placeholder="—"
             .value="${this.data.ip_program_contribution}"

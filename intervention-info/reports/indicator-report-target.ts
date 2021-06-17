@@ -3,6 +3,7 @@ import {LitElement, html, property, customElement} from 'lit-element';
 import {GenericObject} from '@unicef-polymer/etools-types';
 import CommonMixin from '../../common/mixins/common-mixin';
 import {translate} from 'lit-translate';
+import {translatesMap} from '../../utils/intervention-labels-map';
 
 /**
  * @polymer
@@ -71,7 +72,7 @@ export class IndicatorReportTarget extends UtilsMixin(CommonMixin(LitElement)) {
       </style>
 
       <div class="target-row">
-        <span>${translate('TARGET')}</span>
+        <span>${translate(translatesMap.target)}</span>
         <span title="${this._getTargetValue(this.displayType, this.target)}">
           ${this._getTargetValue(this.displayType, this.target)}
         </span>

@@ -24,6 +24,7 @@ import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, LabelAndValue, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {translatesMap} from '../../utils/intervention-labels-map';
 
 /**
  * @customElement
@@ -79,7 +80,7 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
         <div class="layout-horizontal padd-top">
           <div class="w100">
-            <label class="paper-label">${translate('CASH_TRANSFER_MOD')}</label>
+            <label class="paper-label">${translate(translatesMap.cash_transfer_modalities)}</label>
           </div>
         </div>
         <div class="layout-horizontal row-padding-v padd-bott">
