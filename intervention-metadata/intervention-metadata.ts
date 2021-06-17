@@ -10,13 +10,19 @@ import './other/other';
 import {fireEvent} from '../utils/fire-custom-event';
 import {connectStore} from '../common/mixins/connect-store-mixin';
 import {RootState} from '../common/types/store.types';
+import {InterventionPermissionsFields, Permission} from '@unicef-polymer/etools-types';
+import {currentInterventionPermissions} from '../common/selectors';
+import {selectDatesAndSignaturesPermissions} from '../common/managementDocument.selectors';
 
 /**
  * @customElement
  */
 export class InterventionMetadata extends connectStore(LitElement) {
-  @property() showAmendments = false;
-  @property() showFundReservations = false;
+  @property({type: Object})
+  permissions!: Permission<InterventionPermissionsFields>;
+
+  @property() showSignatureAndDates = false;
+
   render() {
     // language=HTML
     return html`
@@ -26,9 +32,9 @@ export class InterventionMetadata extends connectStore(LitElement) {
       <partner-info></partner-info>
       <unicef-details></unicef-details>
       <geographical-coverage></geographical-coverage>
-      ${this.showFundReservations ? html`<fund-reservations></fund-reservations>` : ''}
-      ${this.showAmendments ? html`<pd-amendments></pd-amendments>` : ''}
-      <review-and-sign></review-and-sign>
+      ${this.permissions?.view.frs ? html`<fund-reservations></fund-reservations>` : ''}
+      ${this.permissions?.view.amendments ? html`<pd-amendments></pd-amendments>` : ''}
+      ${this.showSignatureAndDates ? html`<review-and-sign></review-and-sign>` : ''}
       <other-metadata></other-metadata>
     `;
   }
@@ -43,8 +49,15 @@ export class InterventionMetadata extends connectStore(LitElement) {
   }
 
   stateChanged(state: RootState): void {
-    this.showAmendments = state.interventions.current?.permissions?.view.amendments;
-    this.showFundReservations = state.interventions.current?.permissions?.view.frs;
+    this.permissions = currentInterventionPermissions(state);
+    if (this.permissions) {
+      this.setShowSignatureAndDates(state);
+    }
+  }
+
+  setShowSignatureAndDates(state: RootState) {
+    const viewPerm = selectDatesAndSignaturesPermissions(state)?.view;
+    this.showSignatureAndDates = Object.keys(viewPerm).some((key: string) => viewPerm[key] === true);
   }
 }
 
