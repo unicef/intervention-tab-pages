@@ -42,6 +42,8 @@ export class ActivityItemsTable extends LitElement {
 
   @property() activityItems: Partial<InterventionActivityItem>[] = [];
   @property() readonly: boolean | undefined = false;
+  @property({type: String})
+  currency = '';
 
   protected render(): TemplateResult {
     // language=html
@@ -60,7 +62,7 @@ export class ActivityItemsTable extends LitElement {
         <div class="grid-cell header-cell end">${translate('PARTNER_CASH')}</div>
         <div class="grid-cell header-cell end">${translate('UNICEF_CASH')}</div>
         <div class="grid-cell header-cell"></div>
-        <div class="grid-cell header-cell end">${translate('TOTAL_CASH')}</div>
+        <div class="grid-cell header-cell end">${translate('TOTAL_CASH')} (${this.currency})</div>
       </div>
 
       ${this.activityItems.map(
@@ -71,6 +73,7 @@ export class ActivityItemsTable extends LitElement {
             @remove-item="${() => this.updateActivityItem(index, null)}"
             .readonly="${this.readonly}"
             .lastItem="${this.isLastItem(index)}"
+            .currency="${this.currency}"
           ></activity-item-row>`
       )}
       ${!this.readonly

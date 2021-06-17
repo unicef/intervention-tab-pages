@@ -100,6 +100,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
             @focus="${() => (this.autoValidate = true)}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unit_price')}"
             .autoValidate="${this.autoValidate}"
+            .currency="${this.currency}"
           >
           </etools-currency-amount-input>
         </div>
@@ -183,6 +184,9 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
   dialogTitle = '';
 
   @property({type: String})
+  currency = '';
+
+  @property({type: String})
   confirmBtnTxt = '';
 
   @property({type: Number})
@@ -200,9 +204,10 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
   @property({type: Array})
   providers!: {label: string; id: string}[];
 
-  set dialogData({data, interventionId, result_links, isUnicefUser}: any) {
+  set dialogData({data, interventionId, result_links, isUnicefUser, currency}: any) {
     this.cpOutputs = (result_links || []).filter((x: ExpectedResult) => !!x.cp_output_name);
     this.data = data;
+    this.currency = currency;
     this.isNewRecord = !this.data.id;
     if (this.isNewRecord) {
       this.data.provided_by = 'unicef';

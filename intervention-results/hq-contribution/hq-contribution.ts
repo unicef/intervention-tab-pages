@@ -109,6 +109,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
             .value="${this.data.planned_budget.total_hq_cash_local}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_budget)}"
             @value-changed="${({detail}: CustomEvent) => this.hqContribChanged(detail)}"
+            .currency="${this.data.planned_budget?.currency}"
           >
           </etools-currency-amount-input>
         </div>

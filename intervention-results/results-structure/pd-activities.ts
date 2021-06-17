@@ -39,6 +39,8 @@ export class PdActivities extends CommentsMixin(LitElement) {
       `
     ];
   }
+  @property({type: String})
+  currency = '';
 
   @property({type: Array})
   activities: InterventionActivity[] = [];
@@ -94,7 +96,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
         </div>
         <div class="heading number-data flex-none">${translate('PARTNER_CASH')}</div>
         <div class="heading number-data flex-none">${translate('UNICEF_CASH')}</div>
-        <div class="heading number-data flex-none">${translate('GENERAL.TOTAL')}</div>
+        <div class="heading number-data flex-none">${translate('GENERAL.TOTAL')} (${this.currency})</div>
       </div>
 
       ${this.activities.map(
@@ -201,7 +203,8 @@ export class PdActivities extends CommentsMixin(LitElement) {
         interventionId: this.interventionId,
         pdOutputId: this.pdOutputId,
         quarters: this.quarters,
-        readonly: readonly
+        readonly: readonly,
+        currency: this.currency
       }
     });
   }

@@ -24,7 +24,7 @@ import {ProgrammeManagement} from './effectiveEfficientProgrammeMgmt.models';
 import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {get as getTranslation, translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 
 const customStyles = html`
@@ -79,8 +79,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         comment-description=${translate(translatesMap.management_budgets)}
       >
         <div slot="panel-btns">
-          <label class="paper-label font-bold pad-right"
-            >${translate('TOTAL')}</label
+          <label class="paper-label font-bold pad-right">${translate('TOTAL')}</label
           ><label class="font-bold-12">${this.data.currency} ${this.total_amount}</label>
         </div>
 
@@ -127,7 +126,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
       type: EtoolsTableColumnType.Number
     },
     {
-      label: (translate('GENERAL.TOTAL') as unknown) as string,
+      label: '',
       name: 'total',
       cssClass: 'right-a',
       type: EtoolsTableColumnType.Number
@@ -153,6 +152,8 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
     }
     this.interventionId = state.interventions.current.id!;
     this.data = selectProgrammeManagement(state);
+    this.currencyDisplayForTotal();
+
     this.originalData = cloneDeep(this.data);
 
     const newPermissions = selectProgrammeManagementActivityPermissions(state);
@@ -161,6 +162,12 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
     }
     this.formattedData = this.formatData(this.data);
     super.stateChanged(state);
+  }
+
+  currencyDisplayForTotal() {
+    if (!this.columns[3].label) {
+      this.columns[3].label = getTranslation('GENERAL.TOTAL') + ' (' + this.data.currency + ')';
+    }
   }
 
   formatData(data: ProgrammeManagement) {
