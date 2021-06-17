@@ -40,7 +40,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
         comment-description="Budget Summary"
       >
         <iron-icon id="not-allowed-icon" icon="icons:info"></iron-icon>
-        <paper-tooltip for="not-allowed-icon" position="left">${translate('NOT_ALLOWED_BUDGET')}</paper-tooltip>
+        <paper-tooltip for="not-allowed-icon" position="left">${translate('BUDGET_TOOLTIP')}</paper-tooltip>
         <div class="data-column">
           <label class="paper-label">${translate('BUDGET_CURRENCY')}</label>
           <div>
