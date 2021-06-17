@@ -17,9 +17,8 @@ import '@polymer/paper-input/paper-input';
 import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-currency-amount-input';
 import {ExpectedResult} from '@unicef-polymer/etools-types';
-import {translate, get as getTranslation} from 'lit-translate';
+import {translate} from 'lit-translate';
 import {SupplyItemProviders} from '../../common/constants';
-import {cloneDeep} from '../../../../../utils/utils';
 import {translatesMap} from '../../utils/intervention-labels-map';
 
 /**
