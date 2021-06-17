@@ -435,5 +435,7 @@
   "AMENDMENT_MERGE": "Are you sure you want to merge amendment?",
   "AMENDMENT_MODE_TEXT": "This PD is in amendment. See",
   "ORIGINAL_VERSION": "original version",
-  "DELETE_AMENDMENT_QUESTION": "delete this amendment?"
+  "DELETE_AMENDMENT_QUESTION": "delete this amendment?",
+  "NOT_ALLOWED_BUDGET": "These are the readonly TOTALS of the values entered below for PD Output Activities, EEF, Supplies",
+  "NOT_ALLOWED_TIMING": ""
 }

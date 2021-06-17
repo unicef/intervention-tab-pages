@@ -37,6 +37,8 @@ export class TimingOverview extends CommentsMixin(LitElement) {
         comment-element="timing-overview"
         comment-description="Overview"
       >
+        <iron-icon id="not-allowed-icon" icon="icons:info"></iron-icon>
+        <paper-tooltip for="not-allowed-icon" position="left">${translate('NOT_ALLOWED_TIMING')}</paper-tooltip>
         <div class="data-column">
           <label class="paper-label">${translate('DATE_CREATED')}</label>
           <div class="input-label" ?empty="${!this.timingOverview.created}">

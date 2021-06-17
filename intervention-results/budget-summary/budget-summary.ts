@@ -34,11 +34,13 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
     return html`
       ${customIcons} ${InfoElementStyles}
       <section
-        class="elevation table"
+        class="elevation table not-allowed"
         elevation="1"
         comment-element="budget-summary"
         comment-description="Budget Summary"
       >
+        <iron-icon id="not-allowed-icon" icon="icons:info"></iron-icon>
+        <paper-tooltip for="not-allowed-icon" position="left">${translate('NOT_ALLOWED_BUDGET')}</paper-tooltip>
         <div class="data-column">
           <label class="paper-label">${translate('BUDGET_CURRENCY')}</label>
           <div>

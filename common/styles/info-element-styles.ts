@@ -6,6 +6,9 @@ export const InfoElementStyles = html`
     ${sharedStyles} :host {
       display: block;
       margin-bottom: 24px;
+      --paper-tooltip: {
+        font-size: 12px;
+      }
     }
     section.table {
       display: flex;
@@ -29,6 +32,19 @@ export const InfoElementStyles = html`
       padding-top: 0;
       display: flex;
       align-items: center;
+    }
+    .not-allowed,
+    .not-allowed label {
+      cursor: not-allowed !important;
+    }
+    section.not-allowed.table {
+      padding-right: 40px !important;
+    }
+    #not-allowed-icon {
+      position: absolute;
+      right: 20px;
+      top: 12px;
+      color: var(--primary-color);
     }
   </style>
 `;
