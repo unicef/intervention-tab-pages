@@ -17,6 +17,7 @@ import {callClickOnSpacePushListener} from '../../../../utils/common-methods';
 import {PaperTextareaElement} from '@polymer/paper-input/paper-textarea';
 import {translate} from 'lit-translate';
 import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
+import {translatesMap} from '../../../../utils/intervention-labels-map';
 
 @customElement('activity-items-table')
 export class ActivityItemsTable extends LitElement {
@@ -54,8 +55,8 @@ export class ActivityItemsTable extends LitElement {
         <div class="grid-cell header-cell left">
           <label required>${translate('ITEM_DESCRIPTION')}</label>
         </div>
-        <div class="grid-cell header-cell left"><label required>${translate('UNIT')}</label></div>
-        <div class="grid-cell header-cell end"><label required>${translate('NUMBER_UNITS')}</label></div>
+        <div class="grid-cell header-cell left"><label required>${translate(translatesMap.unit)}</label></div>
+        <div class="grid-cell header-cell end"><label required>${translate(translatesMap.no_units)}</label></div>
         <div class="grid-cell header-cell end">${translate('PRICE_UNIT')}</div>
         <div class="grid-cell header-cell end">${translate('TOTAL_COST')}</div>
         <div class="grid-cell header-cell end">${translate('PARTNER_CASH')}</div>

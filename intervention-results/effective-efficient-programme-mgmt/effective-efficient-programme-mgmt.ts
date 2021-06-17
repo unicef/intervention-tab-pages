@@ -25,6 +25,7 @@ import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {get as getTranslation, translate} from 'lit-translate';
+import {translatesMap} from '../../utils/intervention-labels-map';
 
 const customStyles = html`
   <style>
@@ -73,9 +74,9 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
 
       <etools-content-panel
         show-expand-btn
-        panel-title=${translate('EFFECTIVE_EFFICIENT_PROG_MGM')}
+        panel-title=${translate(translatesMap.management_budgets)}
         comment-element="programme-management"
-        comment-description=${translate('EFFECTIVE_EFFICIENT_PROG_MGM')}
+        comment-description=${translate(translatesMap.management_budgets)}
       >
         <div slot="panel-btns">
           <label class="paper-label font-bold pad-right">${translate('TOTAL')}</label

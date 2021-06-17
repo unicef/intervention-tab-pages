@@ -21,6 +21,7 @@ import {openDialog} from '../../utils/dialog';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, LocationObject, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {translatesMap} from '../../utils/intervention-labels-map';
 
 /**
  * @customElement
@@ -94,7 +95,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         <div class="flex-c layout-horizontal row-padding-v">
           <etools-dropdown-multi
             id="locations"
-            label=${translate('LOCATIONS')}
+            label=${translate(translatesMap.flat_locations)}
             placeholder="&#8212;"
             .options="${this.allLocations}"
             .selectedValues="${this.data.flat_locations}"

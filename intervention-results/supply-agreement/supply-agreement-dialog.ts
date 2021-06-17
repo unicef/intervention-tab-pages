@@ -19,6 +19,7 @@ import '@unicef-polymer/etools-currency-amount-input';
 import {ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {SupplyItemProviders} from '../../common/constants';
+import {translatesMap} from '../../utils/intervention-labels-map';
 
 /**
  * @customElement
@@ -66,7 +67,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
             class="w100"
             value="${this.data.title}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'title')}"
-            label=${translate('GENERAL.TITLE')}
+            label=${translate(translatesMap.title)}
             type="text"
             placeholder="—"
             error-message=${translate('GENERAL.REQUIRED_FIELD')}
@@ -80,7 +81,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
           <paper-input
             value="${this.data.unit_number ? this.data.unit_number : ''}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unit_number')}"
-            label=${translate('NUMBER_UNITS')}
+            label=${translate(translatesMap.unit_number)}
             allowed-pattern="[0-9]"
             placeholder="—"
             error-message=${translate('GENERAL.REQUIRED_FIELD')}
@@ -92,7 +93,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
         <div class="col col-4">
           <etools-currency-amount-input
             id="unicefCash"
-            label=${translate('PRICE_UNIT')}
+            label=${translate(translatesMap.unit_price)}
             placeholder="—"
             required
             .value="${this.data.unit_price ? this.data.unit_price : ''}"
@@ -106,7 +107,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
         <div class="col col-4">
           <paper-input
             id="unicefProductNumber"
-            label=${translate('UNICEF_PRODUCT_NUMBER')}
+            label=${translate(translatesMap.unicef_product_number)}
             placeholder="—"
             .value="${this.data.unicef_product_number ? this.data.unicef_product_number : ''}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unicef_product_number')}"
@@ -121,7 +122,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
           ? html` <div class="col col-8">
               <etools-dropdown
                 class="cp-out"
-                label=${translate('CP_OUTPUT')}
+                label=${translate(translatesMap.result)}
                 placeholder="&#8212;"
                 .options="${this.cpOutputs}"
                 option-label="cp_output_name"
@@ -138,7 +139,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
       }
         <div class="col col-4">
           <etools-dropdown
-            label=${translate('PROVIDED_BY')}
+            label=${translate(translatesMap.provided_by)}
             placeholder="&#8212;"
             .options="${this.providers}"
             option-label="label"
@@ -159,7 +160,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
         <div class="col col-12">
           <paper-textarea
             id="otherMentions"
-            label=${translate('OTHER_MENTIONS')}
+            label=${translate(translatesMap.other_mentions)}
             always-float-label
             placeholder="—"
             .value="${this.data.other_mentions}"

@@ -17,6 +17,7 @@ import {CommentElementMeta, CommentsMixin} from '../../common/components/comment
 import {AsyncAction, InterventionActivity, InterventionQuarter} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {callClickOnSpacePushListener} from '../../utils/common-methods';
+import {translatesMap} from '../../utils/intervention-labels-map';
 
 @customElement('pd-activities')
 export class PdActivities extends CommentsMixin(LitElement) {
@@ -86,7 +87,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
 
       <div class="row-h align-items-center header">
         <div class="heading flex-auto">
-          ${translate('PD_ACTIVITIES')}
+          ${translate(translatesMap.activities)}
           <paper-icon-button
             icon="add-box"
             ?hidden="${this.readonly}"

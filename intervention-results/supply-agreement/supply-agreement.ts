@@ -34,6 +34,7 @@ import {AnyObject, AsyncAction, InterventionSupplyItem} from '@unicef-polymer/et
 import {Intervention, ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {SupplyItemProvidersMap} from '../../common/constants';
+import {translatesMap} from '../../utils/intervention-labels-map';
 
 const customStyles = html`
   <style>
@@ -84,7 +85,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
 
       <etools-content-panel
         show-expand-btn
-        panel-title=${translate('SUPPLY_CONTRIBUTION')}
+        panel-title=${translate(translatesMap.supply_items)}
         comment-element="supply-agreement"
         comment-description=${translate('SUPPLY_CONTRIBUTION')}
       >
@@ -222,7 +223,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       <td colspan="1">
         <div class="child-row-inner-container">
           <label class="paper-label">
-            ${translate('PROVIDED_BY')}</label><br />
+            ${translate(translatesMap.provided_by)}</label><br />
           <label>${SupplyItemProvidersMap[item.provided_by] || '—'}</label>
           </paper-input>
         </div>
