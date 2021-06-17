@@ -19,6 +19,7 @@ import '@unicef-polymer/etools-currency-amount-input';
 import {ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {SupplyItemProviders} from '../../common/constants';
+import {cloneDeep} from '../../../../../utils/utils';
 import {translatesMap} from '../../utils/intervention-labels-map';
 
 /**
@@ -105,15 +106,21 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
           </etools-currency-amount-input>
         </div>
         <div class="col col-4">
-          <paper-input
-            id="unicefProductNumber"
-            label=${translate(translatesMap.unicef_product_number)}
-            placeholder="—"
-            .value="${this.data.unicef_product_number ? this.data.unicef_product_number : ''}"
-            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unicef_product_number')}"
+          <etools-dropdown
+            label=${translate(translatesMap.provided_by)}
+            placeholder="&#8212;"
+            .options="${this.providers}"
+            option-label="label"
+            option-value="id"
+            .selected="${this.data.provided_by}"
+            required
+            auto-validate
+            trigger-value-change-event
+            @etools-selected-item-changed="${({detail}: CustomEvent) => {
+              this.selectedItemChanged(detail, 'provided_by');
+            }}"
           >
-          </paper-input>
-
+          </etools-dropdown>
         </div>
       </div>
       <div class="layout-horizontal">
@@ -137,23 +144,19 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
             </div>`
           : html``
       }
-        <div class="col col-4">
-          <etools-dropdown
-            label=${translate(translatesMap.provided_by)}
-            placeholder="&#8212;"
-            .options="${this.providers}"
-            option-label="label"
-            option-value="id"
-            .selected="${this.data.provided_by}"
-            required
-            auto-validate
-            trigger-value-change-event
-            @etools-selected-item-changed="${({detail}: CustomEvent) => {
-              this.selectedItemChanged(detail, 'provided_by');
-            }}"
+
+        <div class="col col-4" ?hidden="${this.data.provided_by == 'partner'}">
+          <paper-input
+            id="unicefProductNumber"
+            label=${translate(translatesMap.unicef_product_number)}
+            placeholder="—"
+            .value="${this.data.unicef_product_number ? this.data.unicef_product_number : ''}"
+            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unicef_product_number')}"
           >
-          </etools-dropdown>
+          </paper-input>
+
         </div>
+       
       </div>
 
       <div class="layout-horizontal">
@@ -250,7 +253,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
     sendRequest({
       endpoint: endpoint,
       method: this.isNewRecord ? 'POST' : 'PATCH',
-      body: this.data
+      body: this.cleanUpData(this.data)
     })
       .then((response: any) => {
         getStore().dispatch(updateCurrentIntervention(response.intervention));
@@ -262,5 +265,13 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
       .finally(() => {
         this.requestInProcess = false;
       });
+  }
+
+  cleanUpData(data: any) {
+    let dataToSave = cloneDeep(data);
+    if (dataToSave.provided_by == 'partner') {
+      dataToSave.unicef_product_number = '';
+    }
+    return dataToSave;
   }
 }

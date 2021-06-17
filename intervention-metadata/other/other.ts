@@ -87,8 +87,12 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               required
               .options="${this.documentTypes}"
               .selected="${this.data.document_type}"
-              @etools-selected-item-changed="${({detail}: CustomEvent) =>
-                this.documentTypeChanged(detail.selectedItem && detail.selectedItem.value)}"
+              @etools-selected-item-changed="${({detail}: CustomEvent) => {
+                if (!detail.selectedItem) {
+                  return;
+                }
+                this.documentTypeChanged(detail.selectedItem && detail.selectedItem.value);
+              }}"
               trigger-value-change-event
               hide-search
               @focus="${() => resetRequiredFields(this)}"

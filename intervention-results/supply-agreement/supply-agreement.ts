@@ -172,6 +172,16 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       name: 'total_price',
       cssClass: 'col_nowrap',
       type: EtoolsTableColumnType.Number
+    },
+    {
+      label: (translate('PROVIDED_BY') as unknown) as string,
+      name: 'provided_by',
+      cssClass: 'col_nowrap',
+      type: EtoolsTableColumnType.Custom,
+      capitalize: true,
+      customMethod: (item: any, _key: string) => {
+        return SupplyItemProvidersMap[item.provided_by] || '—';
+      }
     }
   ];
 
@@ -205,26 +215,18 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
             </td>`
           : html``
       }
-      <td colspan="${this.isUnicefUser ? '2' : '3'}" class="ptb-0">
+      <td colspan="${this.isUnicefUser ? '3' : '4'}" class="ptb-0">
         <div class="child-row-inner-container">
           <label class="paper-label">${translate('OTHER_MENTIONS')}</label><br />
           <label>${item.other_mentions || '—'}</label>
           </paper-input>
         </div>
       </td>
-      <td colspan="1">
+      <td colspan="2" class="ptb-0">
         <div class="child-row-inner-container">
           <label class="paper-label">
             ${translate('UNICEF_PRODUCT_NUMBER')}</label><br />
           <label>${item.unicef_product_number || '—'}</label>
-          </paper-input>
-        </div>
-      </td>
-      <td colspan="1">
-        <div class="child-row-inner-container">
-          <label class="paper-label">
-            ${translate(translatesMap.provided_by)}</label><br />
-          <label>${SupplyItemProvidersMap[item.provided_by] || '—'}</label>
           </paper-input>
         </div>
       </td>
