@@ -7,7 +7,7 @@ export const InfoElementStyles = html`
       display: block;
       margin-bottom: 24px;
       --paper-tooltip: {
-        font-size: 12px;
+        font-size: 14px;
       }
     }
     section.table {
@@ -45,6 +45,7 @@ export const InfoElementStyles = html`
       right: 20px;
       top: 12px;
       color: var(--primary-color);
+      cursor: default !important;
     }
   </style>
 `;
