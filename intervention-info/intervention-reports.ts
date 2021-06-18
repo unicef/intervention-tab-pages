@@ -95,21 +95,11 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
                 label="${this.paginator.visible_range[0]}-${this.paginator.visible_range[1]} of ${this.paginator
                   .count} results to show"
               >
-                <etools-data-table-column class="col-2"
-                  >${translate('REPORT_NUM')}</etools-data-table-column
-                >
-                <etools-data-table-column class="flex-c"
-                  >${translate('PARTNER')}</etools-data-table-column
-                >
-                <etools-data-table-column class="flex-c"
-                  >${translate('REPORT_STATUS')}</etools-data-table-column
-                >
-                <etools-data-table-column class="flex-c"
-                  >${translate('DUE_DATE')}</etools-data-table-column
-                >
-                <etools-data-table-column class="flex-c"
-                  >${translate('REPORTING_PERIOD')}</etools-data-table-column
-                >
+                <etools-data-table-column class="col-2">${translate('REPORT_NUM')}</etools-data-table-column>
+                <etools-data-table-column class="flex-c">${translate('PARTNER')}</etools-data-table-column>
+                <etools-data-table-column class="flex-c">${translate('REPORT_STATUS')}</etools-data-table-column>
+                <etools-data-table-column class="flex-c">${translate('DUE_DATE')}</etools-data-table-column>
+                <etools-data-table-column class="flex-c">${translate('REPORTING_PERIOD')}</etools-data-table-column>
                 ${!this.noPdSsfaRef
                   ? html`<etools-data-table-column class="col-2"
                       >${translate('PD_SPD_REF_NUM')}</etools-data-table-column
@@ -119,10 +109,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
               ${this.reports.map(
                 (report: any) => html` <etools-data-table-row .lowResolutionLayout="${this.lowResolutionLayout}">
                   <div slot="row-data">
-                    <span
-                      class="col-data col-2"
-                      data-col-header-label="${translate('REPORT_NUM')}"
-                    >
+                    <span class="col-data col-2" data-col-header-label="${translate('REPORT_NUM')}">
                       <span id="tooltip-trigger-${report.id}" class="tooltip-trigger">
                         <a
                           class="view-report"
@@ -132,9 +119,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
                           ${this._getReportTitle(report)}
                         </a>
                         <span ?hidden="${this._canViewReport(report.status)}">${this._getReportTitle(report)}</span>
-                        ${report.is_final
-                          ? html`<span class="final-badge">${translate('FINAL')}</span>`
-                          : html``}
+                        ${report.is_final ? html`<span class="final-badge">${translate('FINAL')}</span>` : html``}
                       </span>
                       <paper-tooltip for="tooltip-trigger-${report.id}" position="right" fit-to-visible-bounds>
                         ${report.programme_document.title}
@@ -149,26 +134,17 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
                         ${report.partner_vendor_number}
                       </paper-tooltip>
                     </span>
-                    <span
-                      class="col-data flex-c"
-                      data-col-header-label="${translate('REPORT_STATUS')}"
-                    >
+                    <span class="col-data flex-c" data-col-header-label="${translate('REPORT_STATUS')}">
                       <intervention-report-status status="${report.status}"></intervention-report-status>
                     </span>
                     <span class="col-data flex-c" data-col-header-label="${translate('DUE_DATE')}">
                       ${this._displayOrDefault(report.due_date)}
                     </span>
-                    <span
-                      class="col-data flex-c"
-                      data-col-header-label="${translate('REPORTING_PERIOD')}"
-                    >
+                    <span class="col-data flex-c" data-col-header-label="${translate('REPORTING_PERIOD')}">
                       ${this.getDisplayValue(report.reporting_period)}
                     </span>
                     ${!this.noPdSsfaRef
-                      ? html`<span
-                          class="col-data col-2"
-                          data-col-header-label="${translate('PD_SPD_REF_NUM')}"
-                        >
+                      ? html`<span class="col-data col-2" data-col-header-label="${translate('PD_SPD_REF_NUM')}">
                           <a
                             class="pd-ref truncate"
                             href="interventions/${report.programme_document.external_id}/details"

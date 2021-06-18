@@ -11,7 +11,7 @@ import {fireEvent} from '../utils/fire-custom-event';
 import {connectStore} from '../common/mixins/connect-store-mixin';
 import {RootState} from '../common/types/store.types';
 import {InterventionPermissionsFields, Permission} from '@unicef-polymer/etools-types';
-import {currentInterventionPermissions} from '../common/selectors';
+import {currentInterventionPermissions, currentPage, currentSubpage} from '../common/selectors';
 import {selectDatesAndSignaturesPermissions} from '../common/managementDocument.selectors';
 
 /**
@@ -49,6 +49,9 @@ export class InterventionMetadata extends connectStore(LitElement) {
   }
 
   stateChanged(state: RootState): void {
+    if (currentPage(state) !== 'interventions' || currentSubpage(state) !== 'metadata') {
+      return;
+    }
     this.permissions = currentInterventionPermissions(state);
     if (this.permissions) {
       this.setShowSignatureAndDates(state);
