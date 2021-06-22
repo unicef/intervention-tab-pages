@@ -1,7 +1,8 @@
 import {
   INTERVENTION_LOADING,
+  SHOULD_REGET_LIST,
   UPDATE_CURRENT_INTERVENTION,
-  UPDATE_PARTNER_REPORTING_REQUIREMENTS,
+  UPDATE_PARTNER_REPORTING_REQUIREMENTS
 } from '../actionsConstants';
 import {Intervention} from '@unicef-polymer/etools-types';
 import {PartnerReportingRequirements} from '../types/store.types';
@@ -10,12 +11,14 @@ export interface InterventionsState {
   current: Intervention | null;
   interventionLoading: number | null;
   partnerReportingRequirements: PartnerReportingRequirements;
+  shouldReGetList: boolean;
 }
 
 const INITIAL_STATE: InterventionsState = {
   current: null,
   interventionLoading: null,
-  partnerReportingRequirements: {special: [], qpr: [], hr: [], sr: []}
+  partnerReportingRequirements: {special: [], qpr: [], hr: [], sr: []},
+  shouldReGetList: false
 };
 
 export const interventions = (state = INITIAL_STATE, action: any) => {
@@ -34,6 +37,11 @@ export const interventions = (state = INITIAL_STATE, action: any) => {
       return {
         ...state,
         interventionLoading: action.loadingState
+      };
+    case SHOULD_REGET_LIST:
+      return {
+        ...state,
+        shouldReGetList: action.shouldReGetList
       };
     default:
       return state;
