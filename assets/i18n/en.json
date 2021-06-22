@@ -444,7 +444,7 @@
   "DELETE_AMENDMENT_QUESTION": "delete this amendment?",
   "BUDGET_TOOLTIP": "These are the readonly TOTALS of the values entered below for PD Output Activities, EEF, Supplies",
   "TIMING_TOOLTIP": "These are the centralised and readonly Dates of when the said actions have been taken on the PD",
-  "METADATA_TOOLTIP": "These are a readonly display of values entered in the PD",
+  "METADATA_TOOLTIP": "Readonly display of values entered on the PD",
   "PREVIOUS_VALUE": "Previous value",
   "CURRENT_VALUE": "Current value",
   "INPUT_LEVEL_ITEMS": "Input Level Items"
