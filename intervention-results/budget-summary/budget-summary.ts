@@ -34,7 +34,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
     return html`
       ${customIcons} ${InfoElementStyles}
       <section
-        class="elevation table"
+        class="elevation table not-allowed"
         elevation="1"
         comment-element="budget-summary"
         comment-description="Budget Summary"
@@ -142,6 +142,13 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
             (${this.displayCurrencyAmount(this.budgetSummary.total_partner_contribution_local)})
           </div>
         </div>
+
+        <etools-info-tooltip icon="icons:info" id="not-allowed-icon">
+          <span slot="message">
+            <span>${translate('BUDGET_TOOLTIP')}</span>
+          </span>
+        </etools-info-tooltip>
+
       </section>
     `;
   }
