@@ -1,5 +1,6 @@
 import {LitElement, customElement, html, property} from 'lit-element';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
+import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {elevationStyles} from '../../common/styles/elevation-styles';
@@ -32,7 +33,7 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
     return html`
       ${InfoElementStyles}
       <style>
-      .data-column {
+      ${sharedStyles} .data-column {
         max-width: none;
       }
       .container-width {
@@ -48,33 +49,38 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
       }
       </style>
       <section class="elevation table not-allowed" elevation="1" comment-element="details" comment-description="Details">
-        <iron-icon id="not-allowed-icon" icon="icons:info"></iron-icon>
-        <paper-tooltip for="not-allowed-icon" position="left">${translate('METADATA_TOOLTIP')}</paper-tooltip>
+
         <div class="container-width">
-          <div class="data-column flex-2">
-            <label class="paper-label">${translate('DOCUMENT_TYPE')}</label>
-            <div class="input-label" ?empty="${!this.interventionOverview.document_type}">
-              ${this.getDocumentLongName(this.interventionOverview.document_type)}
+            <div class="data-column flex-2">
+              <label class="paper-label">${translate('DOCUMENT_TYPE')}</label>
+              <div class="input-label" ?empty="${!this.interventionOverview.document_type}">
+                ${this.getDocumentLongName(this.interventionOverview.document_type)}
+              </div>
             </div>
-          </div>
-          <div class="data-column flex-3">
-            <label class="paper-label">${translate('UNPP_CFEI_DSR')}</label>
-            <div class="input-label" ?empty="${!this.interventionOverview.cfei_number}">
-              ${this.interventionOverview.cfei_number}
+            <div class="data-column flex-3">
+              <label class="paper-label">${translate('UNPP_CFEI_DSR')}</label>
+              <div class="input-label" ?empty="${!this.interventionOverview.cfei_number}">
+                ${this.interventionOverview.cfei_number}
+              </div>
             </div>
-          </div>
-          <div class="data-column flex-1">
-            <label class="paper-label">${translate('HUMANITARIAN')}</label>
-            <div class="input-label">
-              ${this._getText(this.interventionOverview.humanitarian_flag)}
+            <div class="data-column flex-1">
+              <label class="paper-label">${translate('HUMANITARIAN')}</label>
+              <div class="input-label">
+                ${this._getText(this.interventionOverview.humanitarian_flag)}
+              </div>
             </div>
-          </div>
-          <div class="data-column flex-1">
-            <label class="paper-label">${translate('CONTINGENCY')}</label>
-            <div class="input-label">
-              ${this._getText(this.interventionOverview.contingency_pd)}
+            <div class="data-column flex-1">
+              <label class="paper-label">${translate('CONTINGENCY')}</label>
+              <div class="input-label">
+                ${this._getText(this.interventionOverview.contingency_pd)}
+              </div>
             </div>
-          </div>
+
+          <etools-info-tooltip icon="icons:info" id="not-allowed-icon">
+            <span slot="message">
+              <span>${translate('METADATA_TOOLTIP')}</span>
+            </span>
+          </etools-info-tooltip>
         </div>
 
       </section>

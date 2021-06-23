@@ -39,8 +39,6 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
         comment-element="budget-summary"
         comment-description="Budget Summary"
       >
-        <iron-icon id="not-allowed-icon" icon="icons:info"></iron-icon>
-        <paper-tooltip for="not-allowed-icon" position="left">${translate('BUDGET_TOOLTIP')}</paper-tooltip>
         <div class="data-column">
           <label class="paper-label">${translate('BUDGET_CURRENCY')}</label>
           <div>
@@ -144,6 +142,13 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
             (${this.displayCurrencyAmount(this.budgetSummary.total_partner_contribution_local)})
           </div>
         </div>
+
+        <etools-info-tooltip icon="icons:info" id="not-allowed-icon">
+          <span slot="message">
+            <span>${translate('BUDGET_TOOLTIP')}</span>
+          </span>
+        </etools-info-tooltip>
+
       </section>
     `;
   }
