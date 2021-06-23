@@ -97,9 +97,7 @@ export class EditHruDialog extends connectStore(LitElement) {
             </calendar-lite>
           </div>
           <div class="col col-6">
-            <div class="row-h" ?hidden="${!this._empty(this.hruData.length)}">
-              ${translate('NO_DATES_ADDED')}
-            </div>
+            <div class="row-h" ?hidden="${!this._empty(this.hruData.length)}">${translate('NO_DATES_ADDED')}</div>
             <hru-list
               id="hruList"
               class="flex-c"
@@ -175,7 +173,7 @@ export class EditHruDialog extends connectStore(LitElement) {
     }
     const stDt = this.interventionStart instanceof Date ? this.interventionStart : convertDate(this.interventionStart);
     if (stDt) {
-      return dayjs(stDt).add(-1, 'days').toDate();
+      return dayjs(stDt).toDate();
     }
     return null;
   }

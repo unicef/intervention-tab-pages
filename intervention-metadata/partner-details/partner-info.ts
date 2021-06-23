@@ -109,7 +109,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
           </div>
         </div>
         <div class="row-padding-v">
-          <div class="col col-7 layout-vertical">
+          <div class="col col-7 layout-vertical" ?hidden="${!this.permissions?.view.partner_focal_points}">
             <etools-dropdown-multi
               label=${translate('PARTNER_FOCAL_POINTS')}
               .selectedValues="${this.data?.partner_focal_points?.map((f: any) => f.id)}"

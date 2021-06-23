@@ -20,8 +20,9 @@ import {ActivityTimeFrames} from './activity-timeframes';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {validateRequiredFields} from '../../../../utils/validation-helper';
 import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
-import {InterventionActivity, InterventionActivityItem} from '@unicef-polymer/etools-types';
+import {AnyObject, InterventionActivity, InterventionActivityItem} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
+import {translatesMap} from '../../../../utils/intervention-labels-map';
 
 @customElement('activity-data-dialog')
 export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitElement) {
@@ -29,6 +30,8 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
     return [gridLayoutStylesLit];
   }
 
+  @property({type: String})
+  currency = '';
   @property() dialogOpened = true;
   @property() loadingInProcess = false;
   @property() isEditDialog = true;
@@ -37,9 +40,10 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
   @property() readonly: boolean | undefined = false;
   quarters: ActivityTimeFrames[] = [];
 
-  set dialogData({activityId, pdOutputId, interventionId, quarters, readonly}: any) {
+  set dialogData({activityId, pdOutputId, interventionId, quarters, readonly, currency}: any) {
     this.quarters = quarters;
     this.readonly = readonly;
+    this.currency = currency;
     if (!activityId) {
       this.data = {} as InterventionActivity;
       this.isEditDialog = false;
@@ -68,7 +72,10 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
         ${sharedStyles} etools-dialog::part(ed-scrollable) {
           margin-top: 0 !important;
         }
-
+        etools-dialog::part(ed-paper-dialog) {
+          width: 98vw !important;
+          max-width: 1200px;
+        }
         etools-dialog::part(ed-button-styles) {
           margin-top: 0;
         }
@@ -112,7 +119,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
 
       <!-- ATTENTION spinner-text property binding WORKS WITHOUT '.'  -->
       <etools-dialog
-        size="md"
+        size="lg"
         keep-dialog-open
         ?opened="${this.dialogOpened}"
         ?show-spinner="${this.loadingInProcess}"
@@ -159,7 +166,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
               ? html`
                   <etools-currency-amount-input
                     class="col-3"
-                    label=${translate('PARTNER_CASH_BUDGET')}
+                    label=${translate(translatesMap.cso_cash)}
                     ?readonly="${this.readonly}"
                     .value="${this.editedData.cso_cash}"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue('cso_cash', detail.value)}"
@@ -195,7 +202,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
                 readonly
                 tabindex="-1"
                 class="col-6 general-total"
-                label=${translate('GENERAL.TOTAL')}
+                label="${translate('GENERAL.TOTAL')} (${this.currency})"
                 .value="${this.getTotalValue()}"
               ></paper-input>
             </div>
@@ -213,6 +220,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
             ?hidden="${!this.useInputLevel}"
             .activityItems="${this.editedData.items || []}"
             .readonly="${this.readonly}"
+            .currency="${this.currency}"
             @activity-items-changed="${({detail}: CustomEvent) => {
               this.editedData.items = detail;
               this.requestUpdate();
@@ -291,9 +299,12 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
         nestedFields: ['items']
       }
     );
-    if (!this.validateActivityItems()) {
+    const activityItemsValidationSummary = this.validateActivityItems();
+    if (activityItemsValidationSummary) {
       fireEvent(this, 'toast', {
-        text: getTranslation('FILL_ALL_ACTIVITY_ITEMS')
+        text: activityItemsValidationSummary.invalidRequired
+          ? getTranslation('FILL_ALL_ACTIVITY_ITEMS')
+          : getTranslation('INVALID_TOTAL_ACTIVITY_ITEMS')
       });
       return;
     }
@@ -320,9 +331,9 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
       });
   }
 
-  validateActivityItems(): boolean {
+  validateActivityItems(): AnyObject | undefined {
     const itemsTable: ActivityItemsTable | null = this.shadowRoot!.querySelector('activity-items-table');
-    return itemsTable !== null && itemsTable.validate();
+    return itemsTable !== null ? itemsTable.validate() : undefined;
   }
 
   validateActivityTimeFrames() {

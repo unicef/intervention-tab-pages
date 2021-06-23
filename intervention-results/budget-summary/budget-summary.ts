@@ -34,7 +34,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
     return html`
       ${customIcons} ${InfoElementStyles}
       <section
-        class="elevation table"
+        class="elevation table not-allowed"
         elevation="1"
         comment-element="budget-summary"
         comment-description="Budget Summary"
@@ -74,13 +74,6 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
             ${this.roundPercentage(this.budgetSummary.programme_effectiveness)}
           </div>
         </div>
-        <div class="data-column">
-          <label class="paper-label">${translate('TOTAL_PARTNER_CASH')}</label>
-          <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.partner_contribution_local)}">
-            ${this.roundPercentage(this.budgetSummary.partner_contribution_percent)}
-            (${this.displayCurrencyAmount(this.budgetSummary.partner_contribution_local, '0.00')})
-          </div>
-        </div>
 
         <div class="data-column">
           <label class="paper-label">${translate('TOTAL_UNICEF_CONTRIB')}</label>
@@ -108,7 +101,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
         </div>
 
         <div class="data-column">
-          <label class="paper-label">${translate('TOTAL_SUPPLY')}</label>
+          <label class="paper-label">${translate('TOTAL_UNICEF_SUPPLY')}</label>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.in_kind_amount_local)}">
             ${this.displayCurrencyAmount(this.budgetSummary.in_kind_amount_local, '0.00')}
           </div>
@@ -127,6 +120,35 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
             ${this.displayCurrencyAmount(this.budgetSummary.total_local)}
           </div>
         </div>
+
+        <div class="data-column">
+          <label class="paper-label">${translate('TOTAL_PARTNER_SUPPLY')}</label>
+          <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.partner_supply_local)}">
+            ${this.displayCurrencyAmount(this.budgetSummary.partner_supply_local)}
+          </div>
+        </div>
+
+        <div class="data-column">
+          <label class="paper-label">${translate('TOTAL_PARTNER_CASH')}</label>
+          <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.partner_contribution_local)}">
+            ${this.displayCurrencyAmount(this.budgetSummary.partner_contribution_local, '0.00')}
+          </div>
+        </div>
+
+        <div class="data-column">
+          <label class="paper-label">${translate('TOTAL_PARTNER_CONTRIBUTION')}</label>
+          <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.total_partner_contribution_local)}">
+            ${this.roundPercentage(this.budgetSummary.partner_contribution_percent)}
+            (${this.displayCurrencyAmount(this.budgetSummary.total_partner_contribution_local)})
+          </div>
+        </div>
+
+        <etools-info-tooltip icon="icons:info" id="not-allowed-icon">
+          <span slot="message">
+            <span>${translate('BUDGET_TOOLTIP')}</span>
+          </span>
+        </etools-info-tooltip>
+
       </section>
     `;
   }

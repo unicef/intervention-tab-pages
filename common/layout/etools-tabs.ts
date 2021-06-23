@@ -89,6 +89,23 @@ export class EtoolsTabs extends LitElement {
             display: none;
           }
         }
+        @media (max-width: 1024px) {
+          paper-tabs {
+            width: 100%;
+          }
+          paper-tab[link],
+          paper-tab {
+            padding: 0 !important;
+          }
+          paper-tab .tab-content {
+            min-width: fit-content !important;
+          }
+          paper-tab[is-subtabs-parent] > paper-menu-button {
+            padding: 0 !important;
+            --paper-button_-_padding: 0.7em 0 !important;
+            --paper-button_-_min-width: 0 !important;
+          }
+        }
       </style>
 
       <paper-tabs

@@ -18,6 +18,9 @@ import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-currency-amount-input';
 import {ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {SupplyItemProviders} from '../../common/constants';
+import {translatesMap} from '../../utils/intervention-labels-map';
+import {cloneDeep} from '../../utils/utils';
 
 /**
  * @customElement
@@ -65,7 +68,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
             class="w100"
             value="${this.data.title}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'title')}"
-            label=${translate('GENERAL.TITLE')}
+            label=${translate(translatesMap.title)}
             type="text"
             placeholder="—"
             error-message=${translate('GENERAL.REQUIRED_FIELD')}
@@ -79,7 +82,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
           <paper-input
             value="${this.data.unit_number ? this.data.unit_number : ''}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unit_number')}"
-            label=${translate('NUMBER_UNITS')}
+            label=${translate(translatesMap.unit_number)}
             allowed-pattern="[0-9]"
             placeholder="—"
             error-message=${translate('GENERAL.REQUIRED_FIELD')}
@@ -91,20 +94,61 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
         <div class="col col-4">
           <etools-currency-amount-input
             id="unicefCash"
-            label=${translate('PRICE_UNIT')}
+            label=${translate(translatesMap.unit_price)}
             placeholder="—"
             required
             .value="${this.data.unit_price ? this.data.unit_price : ''}"
             @focus="${() => (this.autoValidate = true)}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unit_price')}"
             .autoValidate="${this.autoValidate}"
+            .currency="${this.currency}"
           >
           </etools-currency-amount-input>
         </div>
         <div class="col col-4">
+          <etools-dropdown
+            label=${translate(translatesMap.provided_by)}
+            placeholder="&#8212;"
+            .options="${this.providers}"
+            option-label="label"
+            option-value="id"
+            .selected="${this.data.provided_by}"
+            required
+            auto-validate
+            trigger-value-change-event
+            @etools-selected-item-changed="${({detail}: CustomEvent) => {
+              this.selectedItemChanged(detail, 'provided_by');
+            }}"
+          >
+          </etools-dropdown>
+        </div>
+      </div>
+      <div class="layout-horizontal">
+      ${
+        this.isUnicefUser
+          ? html` <div class="col col-8">
+              <etools-dropdown
+                class="cp-out"
+                label=${translate(translatesMap.result)}
+                placeholder="&#8212;"
+                .options="${this.cpOutputs}"
+                option-label="cp_output_name"
+                option-value="id"
+                .selected="${this.data.result}"
+                trigger-value-change-event
+                @etools-selected-item-changed="${({detail}: CustomEvent) => {
+                  this.selectedItemChanged(detail, 'result');
+                }}"
+              >
+              </etools-dropdown>
+            </div>`
+          : html``
+      }
+
+        <div class="col col-4" ?hidden="${this.data.provided_by == 'partner'}">
           <paper-input
             id="unicefProductNumber"
-            label=${translate('UNICEF_PRODUCT_NUMBER')}
+            label=${translate(translatesMap.unicef_product_number)}
             placeholder="—"
             .value="${this.data.unicef_product_number ? this.data.unicef_product_number : ''}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unicef_product_number')}"
@@ -112,35 +156,14 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
           </paper-input>
 
         </div>
+       
       </div>
-      ${
-        this.isUnicefUser
-          ? html`<div class="layout-horizontal">
-              <div class="col col-8">
-                <etools-dropdown
-                  class="cp-out"
-                  label=${translate('CP_OUTPUT')}
-                  placeholder="&#8212;"
-                  .options="${this.cpOutputs}"
-                  option-label="cp_output_name"
-                  option-value="id"
-                  .selected="${this.data.result}"
-                  trigger-value-change-event
-                  @etools-selected-item-changed="${({detail}: CustomEvent) => {
-                    this.selectedItemChanged(detail, 'result');
-                  }}"
-                >
-                </etools-dropdown>
-              </div>
-            </div>`
-          : html``
-      }
 
       <div class="layout-horizontal">
         <div class="col col-12">
           <paper-textarea
             id="otherMentions"
-            label=${translate('OTHER_MENTIONS')}
+            label=${translate(translatesMap.other_mentions)}
             always-float-label
             placeholder="—"
             .value="${this.data.other_mentions}"
@@ -164,6 +187,9 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
   dialogTitle = '';
 
   @property({type: String})
+  currency = '';
+
+  @property({type: String})
   confirmBtnTxt = '';
 
   @property({type: Number})
@@ -178,10 +204,17 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
   @property({type: Boolean})
   autoValidate = false;
 
-  set dialogData({data, interventionId, result_links, isUnicefUser}: any) {
+  @property({type: Array})
+  providers!: {label: string; id: string}[];
+
+  set dialogData({data, interventionId, result_links, isUnicefUser, currency}: any) {
     this.cpOutputs = (result_links || []).filter((x: ExpectedResult) => !!x.cp_output_name);
     this.data = data;
+    this.currency = currency;
     this.isNewRecord = !this.data.id;
+    if (this.isNewRecord) {
+      this.data.provided_by = 'unicef';
+    }
     this.interventionId = interventionId;
     this.dialogTitle = this.isNewRecord
       ? ((translate('ADD_SUPPLY_CONTRIBUTION') as unknown) as string)
@@ -190,6 +223,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
       ? ((translate('GENERAL.ADD') as unknown) as string)
       : ((translate('GENERAL.SAVE') as unknown) as string);
     this.isUnicefUser = isUnicefUser;
+    this.providers = SupplyItemProviders;
   }
 
   onClose(): void {
@@ -219,7 +253,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
     sendRequest({
       endpoint: endpoint,
       method: this.isNewRecord ? 'POST' : 'PATCH',
-      body: this.data
+      body: this.cleanUpData(this.data)
     })
       .then((response: any) => {
         getStore().dispatch(updateCurrentIntervention(response.intervention));
@@ -231,5 +265,13 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
       .finally(() => {
         this.requestInProcess = false;
       });
+  }
+
+  cleanUpData(data: any) {
+    const dataToSave = cloneDeep(data);
+    if (dataToSave.provided_by == 'partner') {
+      dataToSave.unicef_product_number = '';
+    }
+    return dataToSave;
   }
 }

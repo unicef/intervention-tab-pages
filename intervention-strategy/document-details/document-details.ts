@@ -20,6 +20,7 @@ import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {translatesMap} from '../../utils/intervention-labels-map';
 
 /**
  * @customElement
@@ -80,7 +81,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
         <div class="row-padding-v">
           <paper-textarea
             id="context"
-            label=${translate('CONTEXT')}
+            label=${translate(translatesMap.context)}
             always-float-label
             type="text"
             placeholder="—"
@@ -98,7 +99,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
         <div class="row-padding-v">
           <paper-textarea
             id="implementation-strategy"
-            label=${translate('IMPLEMENTATION_STRATEGY')}
+            label=${translate(translatesMap.implementation_strategy)}
             always-float-label
             placeholder="—"
             .value="${this.data.implementation_strategy}"

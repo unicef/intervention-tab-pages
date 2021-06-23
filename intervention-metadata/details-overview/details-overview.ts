@@ -1,8 +1,10 @@
 import {LitElement, customElement, html, property} from 'lit-element';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
+import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {elevationStyles} from '../../common/styles/elevation-styles';
+import {InfoElementStyles} from '../../common/styles/info-element-styles';
 import {InterventionOverview} from './interventionOverview.models';
 import {selectInterventionOverview} from './interventionOverview.selectors';
 import {RootState} from '../../common/types/store.types';
@@ -29,72 +31,58 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     return html`
+      ${InfoElementStyles}
       <style>
-        ${sharedStyles} :host {
-          display: block;
-          margin-bottom: 24px;
-        }
+      ${sharedStyles} .data-column {
+        max-width: none;
+      }
+      .container-width {
+        width: 70%;
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+      }
+      @media (max-width: 1420px) {
         .container-width {
-          width: 70%;
-          flex: 1;
+          width: 100%;
         }
-        @media (max-width: 900px) {
-          .container-width {
-            width: 100%;
-          }
-        }
+      }
       </style>
-      <section class="elevation content-wrapper" elevation="1" comment-element="details" comment-description="Details">
+      <section class="elevation table not-allowed" elevation="1" comment-element="details" comment-description="Details">
+
         <div class="container-width">
-          <div class="layout-horizontal">
-            <div class="flex-2">
-              <span>
-                <label class="paper-label">${translate('DOCUMENT_TYPE')}</label>
-              </span>
+            <div class="data-column flex-2">
+              <label class="paper-label">${translate('DOCUMENT_TYPE')}</label>
+              <div class="input-label" ?empty="${!this.interventionOverview.document_type}">
+                ${this.getDocumentLongName(this.interventionOverview.document_type)}
+              </div>
             </div>
-            <div class="flex-3">
-              <span>
-                <label class="paper-label">${translate('UNPP_CFEI_DSR')}</label>
-              </span>
+            <div class="data-column flex-3">
+              <label class="paper-label">${translate('UNPP_CFEI_DSR')}</label>
+              <div class="input-label" ?empty="${!this.interventionOverview.cfei_number}">
+                ${this.interventionOverview.cfei_number}
+              </div>
             </div>
-            <div class="flex-1">
-              <span>
-                <label class="paper-label">${translate('HUMANITARIAN')}</label>
-              </span>
+            <div class="data-column flex-1">
+              <label class="paper-label">${translate('HUMANITARIAN')}</label>
+              <div class="input-label">
+                ${this._getText(this.interventionOverview.humanitarian_flag)}
+              </div>
             </div>
-            <div class="flex-1">
-              <span>
-                <label class="paper-label">${translate('CONTINGENCY')}</label>
-              </span>
+            <div class="data-column flex-1">
+              <label class="paper-label">${translate('CONTINGENCY')}</label>
+              <div class="input-label">
+                ${this._getText(this.interventionOverview.contingency_pd)}
+              </div>
             </div>
-          </div>
-          <div class="layout-horizontal">
-            <div class="flex-2">
-              <span>
-                <label class="input-label" ?empty="${!this.interventionOverview.document_type}">
-                  ${this.getDocumentLongName(this.interventionOverview.document_type)}
-                </label>
-              </span>
-            </div>
-            <div class="flex-3">
-              <span>
-                <label class="input-label" ?empty="${!this.interventionOverview.cfei_number}">
-                  ${this.interventionOverview.cfei_number}
-                </label>
-              </span>
-            </div>
-            <div class="flex-1">
-              <span>
-                <label class="input-label"> ${this._getText(this.interventionOverview.humanitarian_flag)} </label>
-              </span>
-            </div>
-            <div class="flex-1">
-              <span>
-                <label class="input-label"> ${this._getText(this.interventionOverview.contingency_pd)} </label>
-              </span>
-            </div>
-          </div>
+
+          <etools-info-tooltip icon="icons:info" id="not-allowed-icon">
+            <span slot="message">
+              <span>${translate('METADATA_TOOLTIP')}</span>
+            </span>
+          </etools-info-tooltip>
         </div>
+
       </section>
     `;
   }

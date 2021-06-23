@@ -46,7 +46,7 @@ export class GeneralReviewInformation extends LitElement {
   @property() review?: InterventionReview;
 
   get reviewCreatedDate(): string {
-    return this.review?.started_date ? formatDate(this.review.started_date, 'DD MMM YYYY') : '-';
+    return this.review?.created_date ? formatDate(this.review.created_date, 'DD MMM YYYY') : '-';
   }
 
   render(): TemplateResult {
@@ -66,8 +66,8 @@ export class GeneralReviewInformation extends LitElement {
               <div class="value">${REVIEW_TYPES.get(this.review?.review_type || '-')}</div>
             </div>
             <div class="info-block">
-              <div class="label">${translate('STARTED_BY')}</div>
-              <div class="value">${this.review?.started_by?.name || '-'}</div>
+              <div class="label">${translate('SUBMITTED_BY')}</div>
+              <div class="value">${this.review?.submitted_by?.name || '-'}</div>
             </div>
           </div>
         </div>

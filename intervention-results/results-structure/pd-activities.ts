@@ -17,6 +17,7 @@ import {CommentElementMeta, CommentsMixin} from '../../common/components/comment
 import {AsyncAction, InterventionActivity, InterventionQuarter} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {callClickOnSpacePushListener} from '../../utils/common-methods';
+import {translatesMap} from '../../utils/intervention-labels-map';
 
 @customElement('pd-activities')
 export class PdActivities extends CommentsMixin(LitElement) {
@@ -38,6 +39,8 @@ export class PdActivities extends CommentsMixin(LitElement) {
       `
     ];
   }
+  @property({type: String})
+  currency = '';
 
   @property({type: Array})
   activities: InterventionActivity[] = [];
@@ -84,7 +87,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
 
       <div class="row-h align-items-center header">
         <div class="heading flex-auto">
-          ${translate('PD_ACTIVITIES')}
+          ${translate(translatesMap.activities)}
           <paper-icon-button
             icon="add-box"
             ?hidden="${this.readonly}"
@@ -92,13 +95,8 @@ export class PdActivities extends CommentsMixin(LitElement) {
           ></paper-icon-button>
         </div>
         <div class="heading number-data flex-none">${translate('PARTNER_CASH')}</div>
-        <div class="heading number-data flex-none">
-          ${translate('UNICEF_CASH')}
-        </div>
-        <div class="heading number-data flex-none">${translate('GENERAL.TOTAL')}</div>
-        <div class="heading number-data flex-none">
-          ${translate('PERCENT_PARTNER')}
-        </div>
+        <div class="heading number-data flex-none">${translate('UNICEF_CASH')}</div>
+        <div class="heading number-data flex-none">${translate('GENERAL.TOTAL')} (${this.currency})</div>
       </div>
 
       ${this.activities.map(
@@ -125,12 +123,6 @@ export class PdActivities extends CommentsMixin(LitElement) {
                 ${this.formatCurrency(this.getTotal(activity.cso_cash, activity.unicef_cash))}
               </div>
 
-              <!--    %Partner    -->
-              <div class="text number-data flex-none">
-                <!--       TODO: use field from backend         -->
-                ${this.getPartnerPercent(activity.cso_cash, activity.unicef_cash)}
-              </div>
-
               <div class="hover-block">
                 <paper-icon-button
                   icon="icons:create"
@@ -154,9 +146,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
             <div slot="row-data-details" class="row-h">
               <!--    Locations    -->
               <div class="details-container">
-                <div class="text details-heading">
-                  ${translate('TIME_PERIODS')}
-                </div>
+                <div class="text details-heading">${translate('TIME_PERIODS')}</div>
                 <div class="details-text">
                   <b>${this.getQuartersNames(activity.time_frames)}</b>
                 </div>
@@ -164,9 +154,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
 
               <!--    Section and Cluster    -->
               <div class="details-container full">
-                <div class="text details-heading">
-                  ${translate('OTHER_NOTES')}
-                </div>
+                <div class="text details-heading">${translate('OTHER_NOTES')}</div>
                 <div class="details-text">${activity.context_details || '-'}</div>
               </div>
             </div>
@@ -177,7 +165,6 @@ export class PdActivities extends CommentsMixin(LitElement) {
         ? html`
             <div class="layout-horizontal empty-row">
               <div class="text flex-auto">—</div>
-              <div class="text number-data flex-none">—</div>
               <div class="text number-data flex-none">—</div>
               <div class="text number-data flex-none">—</div>
               <div class="text number-data flex-none">—</div>
@@ -208,15 +195,6 @@ export class PdActivities extends CommentsMixin(LitElement) {
     return (Number(partner) || 0) + (Number(unicef) || 0);
   }
 
-  getPartnerPercent(partner: string, unicef: string): string {
-    if (!Number(partner)) {
-      return '0 %';
-    }
-    const total: number = this.getTotal(partner, unicef);
-    const percent: number = Number(partner) / (total / 100);
-    return `${Number(percent.toFixed(2))} %`;
-  }
-
   openDialog(activity?: InterventionActivity, readonly?: boolean): void {
     openDialog<any>({
       dialog: 'activity-data-dialog',
@@ -225,7 +203,8 @@ export class PdActivities extends CommentsMixin(LitElement) {
         interventionId: this.interventionId,
         pdOutputId: this.pdOutputId,
         quarters: this.quarters,
-        readonly: readonly
+        readonly: readonly,
+        currency: this.currency
       }
     });
   }

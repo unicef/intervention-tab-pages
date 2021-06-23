@@ -23,7 +23,7 @@ export const getStoreAsync = () => {
     return Promise.resolve(store);
   }
   if (!storePromise) {
-    storePromise = new Promise((resolve: () => any) => (storeResolver = resolve));
+    storePromise = new Promise((resolve) => (storeResolver = resolve));
   }
   return storePromise;
 };
