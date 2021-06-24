@@ -433,6 +433,8 @@
   "REJECT": "Reject",
   "SAVE_REVIEW": "Save Review",
   "REVIEW_CHECKLIST": "Review Checklist",
+  "ACCEPT_ON_BEHALF_OF_PARTNER": "Accept On Behalf Of Partner",
+  "SUBMISSION_DATE": "Submission Date",
   "NORMAL": "Normal",
   "KIND": "Kind",
   "STATUS": "Status",
