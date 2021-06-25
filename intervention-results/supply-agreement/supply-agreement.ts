@@ -33,7 +33,6 @@ import {EtoolsUpload} from '@unicef-polymer/etools-upload/etools-upload';
 import {AnyObject, AsyncAction, InterventionSupplyItem} from '@unicef-polymer/etools-types';
 import {Intervention, ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
-import {SupplyItemProvidersMap} from '../../common/constants';
 import {translatesMap} from '../../utils/intervention-labels-map';
 
 const customStyles = html`
@@ -119,6 +118,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           @delete-item="${this.confirmDeleteSupplyItem}"
           .getChildRowTemplateMethod="${this.getChildRowTemplate.bind(this)}"
           .extraCSS="${this.getTableStyle()}"
+          .customData="${{supplyItemProviders: this.supplyItemProviders}}"
           .showEdit=${this.permissions.edit.supply_items}
           .showDelete=${this.permissions.edit.supply_items}
         ></etools-table>
@@ -179,8 +179,8 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       cssClass: 'col_nowrap',
       type: EtoolsTableColumnType.Custom,
       capitalize: true,
-      customMethod: (item: any, _key: string) => {
-        return SupplyItemProvidersMap[item.provided_by] || '—';
+      customMethod: (item: any, _key: string, customData: AnyObject) => {
+        return customData.supplyItemProviders[item.provided_by] || '—';
       }
     }
   ];
@@ -196,6 +196,12 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
 
   @query('etools-upload')
   uploader!: EtoolsUpload & {_openFileChooser(): void};
+
+  @property({type: Object})
+  supplyItemProviders: AnyObject = {
+    unicef: getTranslation('UNICEF'),
+    partner: getTranslation('PARTNER')
+  };
 
   getChildRowTemplate(item: any): EtoolsTableChildRow {
     const childRow = {} as EtoolsTableChildRow;
