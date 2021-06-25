@@ -14,7 +14,7 @@ export const selectPdUnicefDetailsPermissions = createSelector(
     return {
       edit: new PdUnicefDetailsPermissions(permissions!.edit),
       required: new PdUnicefDetailsPermissions(permissions!.required),
-      view: new PdUnicefDetailsPermissions(permissions!.view)
+      view: new PdUnicefDetailsPermissions(permissions!.view!)
     };
   }
 );

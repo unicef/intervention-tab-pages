@@ -120,7 +120,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
           </div>
         </div>
         <div class="layout-horizontal row-padding-v">
-          ${this.permissions.view.unicef_focal_points
+          ${this.permissions.view!.unicef_focal_points
             ? html`<div class="col col-4">
                 <etools-dropdown-multi
                   id="focalPointInput"

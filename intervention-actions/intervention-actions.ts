@@ -34,7 +34,6 @@ import {
   REJECT_REVIEW,
   REVIEW,
   SIGN,
-  TERMINATE,
   ACCEPT_ON_BEHALF_OF_PARTNER
 } from './intervention-actions.constants';
 import {PaperMenuButton} from '@polymer/paper-menu-button/paper-menu-button';

@@ -19,7 +19,7 @@ const WITHOUT = {label: REVIEW_TYPES.get(NO_REVIEW), value: NO_REVIEW};
 @customElement('start-review')
 export class StartReview extends connectStore(LitElement) {
   @property() type = '';
-  @property() reviewTypes = [];
+  @property() reviewTypes:{ label: string | undefined; value: string; }[] = [];
 
   render() {
     return html`

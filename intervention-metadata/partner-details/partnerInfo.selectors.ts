@@ -14,7 +14,7 @@ export const selectPartnerDetailsPermissions = createSelector(
     return {
       edit: new PartnerInfoPermissions(permissions!.edit),
       required: new PartnerInfoPermissions(permissions!.required),
-      view: new PartnerInfoPermissions(permissions!.view)
+      view: new PartnerInfoPermissions(permissions!.view!)
     };
   }
 );

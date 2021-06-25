@@ -2,7 +2,7 @@ import {LitElement, TemplateResult, html, customElement, property, CSSResultArra
 import {InterventionReview, User} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {sharedStyles, sharedStylesContent} from '../../common/styles/shared-styles-lit';
+import {sharedStylesContent} from '../../common/styles/shared-styles-lit';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
