@@ -1,15 +1,8 @@
-import {get as getTranslation} from 'lit-translate';
 import {GenericObject} from '@unicef-polymer/etools-types';
 
 export const PRC_REVIEW = 'prc';
 export const NON_PRC_REVIEW = 'non-prc';
 export const NO_REVIEW = 'no-review';
-
-export const REVIEW_TYPES = new Map([
-  [PRC_REVIEW, getTranslation('PRC_REVIEW')],
-  [NON_PRC_REVIEW, getTranslation('NON_PRC_REVIEW')],
-  [NO_REVIEW, getTranslation('NO_REVIEW')]
-]);
 
 export enum ReviewQuestionFields {
   relationshipIsRepresented = 'relationship_is_represented',
