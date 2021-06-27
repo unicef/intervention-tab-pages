@@ -544,7 +544,6 @@ export class InterventionTabs extends connectStore(LitElement) {
     this.intervention = null;
     this.interventionId = null;
     this.isInAmendment = false;
-    getStore().dispatch(updateCurrentIntervention(null));
   }
 
   private loadInterventionData(currentInterventionId: string | number): void {

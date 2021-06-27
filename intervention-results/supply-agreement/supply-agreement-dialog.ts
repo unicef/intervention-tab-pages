@@ -18,9 +18,9 @@ import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-currency-amount-input';
 import {ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {SupplyItemProviders} from '../../common/constants';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {cloneDeep} from '../../utils/utils';
+import {get as getTranslation} from 'lit-translate';
 
 /**
  * @customElement
@@ -156,7 +156,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
           </paper-input>
 
         </div>
-       
+
       </div>
 
       <div class="layout-horizontal">
@@ -205,7 +205,10 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
   autoValidate = false;
 
   @property({type: Array})
-  providers!: {label: string; id: string}[];
+  providers = [
+    {label: getTranslation('UNICEF'), id: 'unicef'},
+    {label: getTranslation('PARTNER'), id: 'partner'}
+  ];
 
   set dialogData({data, interventionId, result_links, isUnicefUser, currency}: any) {
     this.cpOutputs = (result_links || []).filter((x: ExpectedResult) => !!x.cp_output_name);
@@ -223,7 +226,6 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
       ? ((translate('GENERAL.ADD') as unknown) as string)
       : ((translate('GENERAL.SAVE') as unknown) as string);
     this.isUnicefUser = isUnicefUser;
-    this.providers = SupplyItemProviders;
   }
 
   onClose(): void {
