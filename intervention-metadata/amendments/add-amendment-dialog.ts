@@ -6,7 +6,6 @@ import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
 import '@unicef-polymer/etools-upload/etools-upload';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
-import {getStore} from '../../utils/redux-store-access';
 import '../../common/layout/etools-warn-message';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
@@ -16,8 +15,7 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {fireEvent} from '../../utils/fire-custom-event';
-import {getIntervention} from '../../common/actions/interventions';
-import {AnyObject, AsyncAction, InterventionAmendment, LabelAndValue} from '@unicef-polymer/etools-types';
+import {AnyObject, InterventionAmendment, LabelAndValue} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {AmendmentsKind, AmendmentsKindTranslateKeys} from './pd-amendments.models';
 import {validateRequiredFields} from '../../utils/validation-helper';
@@ -231,7 +229,6 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
   }
 
   _handleResponse(_response: InterventionAmendment) {
-    // getStore().dispatch<AsyncAction>(getIntervention(this.intervention.id));
     this.onClose({id: _response.amended_intervention});
   }
 

@@ -21,7 +21,9 @@ const WITHOUT = {label: getTranslation('NO_REVIEW'), value: NO_REVIEW};
 @customElement('start-review')
 export class StartReview extends connectStore(LitElement) {
   @property() type = '';
+
   @property() reviewTypes: LabelAndValue[] = [];
+
 
   render() {
     return html`

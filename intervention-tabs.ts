@@ -338,9 +338,9 @@ export class InterventionTabs extends connectStore(LitElement) {
     const subTab = currentSubSubpage(state);
 
     const attachmentRestricted =
-      tab === TABS.Attachments && !state.interventions.current?.permissions?.view.attachments;
+      tab === TABS.Attachments && !state.interventions.current?.permissions?.view!.attachments;
 
-    const reviewRestricted = tab === TABS.Review && !state.interventions.current?.permissions?.view.reviews;
+    const reviewRestricted = tab === TABS.Review && !state.interventions.current?.permissions?.view!.reviews;
     const restrictedSubTabs =
       !unicefUser &&
       [TABS.ResultsReported, TABS.Reports, TABS.ImplementationStatus, TABS.MonitoringActivities].includes(subTab);
