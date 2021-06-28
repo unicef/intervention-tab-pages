@@ -6,7 +6,7 @@ import {AnyObject, PlannedBudget, Intervention} from '@unicef-polymer/etools-typ
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {PartnerReportingRequirements} from '../types/store.types';
 import {pick} from 'lodash-es';
-import {isJsonStrMatch} from '../../../../../utils/utils';
+import {isJsonStrMatch} from '../../utils/utils';
 
 export const updateCurrentIntervention = (intervention: AnyObject | null) => {
   if (intervention && !intervention.planned_budget) {
