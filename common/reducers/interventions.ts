@@ -6,7 +6,7 @@ import {
 } from '../actionsConstants';
 import {Intervention} from '@unicef-polymer/etools-types';
 import {PartnerReportingRequirements} from '../types/store.types';
-import {UPDATE_ROUTE_AND_RESET_INTERVENTION} from '../../../../../../redux/actions/app';
+import {UPDATE_ROUTE_AND_RESET_INTERVENTION} from '../actions/actionsContants';
 
 export interface InterventionsState {
   current: Intervention | null;
