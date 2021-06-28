@@ -229,7 +229,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         </div>
       </td>
       <td colspan="2" class="ptb-0">
-        <div class="child-row-inner-container">
+        <div class="child-row-inner-container" ?hidden="${item.provided_by.toLowerCase() === 'partner'}">
           <label class="paper-label">
             ${translate('UNICEF_PRODUCT_NUMBER')}</label><br />
           <label>${item.unicef_product_number || '—'}</label>
