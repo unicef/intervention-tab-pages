@@ -29,7 +29,7 @@ import {translatesMap} from '../../utils/intervention-labels-map';
  */
 @customElement('intervention-dates')
 export class InterventionDates extends CommentsMixin(
-  ComponentBaseMixin(FrNumbersConsistencyMixin(ReportingRequirementsCommonMixin(LitElement)))
+  FrNumbersConsistencyMixin(ReportingRequirementsCommonMixin(ComponentBaseMixin()<ProgrammeDocDates>(LitElement)))
 ) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
@@ -151,9 +151,6 @@ export class InterventionDates extends CommentsMixin(
 
   @property({type: Object})
   originalData!: ProgrammeDocDates;
-
-  @property({type: Object})
-  data!: ProgrammeDocDates;
 
   @property({type: String})
   _frsStartConsistencyWarning = '';

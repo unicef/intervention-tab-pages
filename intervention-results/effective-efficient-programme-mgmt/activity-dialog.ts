@@ -19,7 +19,7 @@ import {translatesMap} from '../../utils/intervention-labels-map';
  * @customElement
  */
 @customElement('activity-dialog')
-export class ActivityDialog extends ComponentBaseMixin(LitElement) {
+export class ActivityDialog extends ComponentBaseMixin()(LitElement) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }

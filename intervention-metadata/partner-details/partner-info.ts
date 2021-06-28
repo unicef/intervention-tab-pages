@@ -32,7 +32,7 @@ import {translate} from 'lit-translate';
  * @customElement
  */
 @customElement('partner-info')
-export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
+export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin()<PartnerInfo>(LitElement)) {
   static get styles() {
     return [buttonsStyles, gridLayoutStylesLit];
   }
@@ -141,9 +141,6 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
   originalData!: PartnerInfo;
 
   @property({type: Object})
-  data!: PartnerInfo;
-
-  @property({type: Object})
   permissions!: Permission<PartnerInfoPermissions>;
 
   @property({type: Array})
@@ -186,9 +183,9 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
       if (this.partnerIdHasChanged(newPartnerDetails)) {
         this.partnerStaffMembers = await this.getAllPartnerStaffMembers(newPartnerDetails.partner_id!);
       }
-      this.data = cloneDeep(newPartnerDetails);
-      this.originalData = cloneDeep(this.data);
     }
+    this.data = cloneDeep(newPartnerDetails);
+    this.originalData = cloneDeep(this.data);
   }
 
   filterAgreementsByPartner(agreements: MinimalAgreement[], partnerId: number) {

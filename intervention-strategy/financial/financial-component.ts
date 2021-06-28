@@ -30,7 +30,7 @@ import {translatesMap} from '../../utils/intervention-labels-map';
  * @customElement
  */
 @customElement('financial-component')
-export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElement)) {
+export class FinancialComponent extends CommentsMixin(ComponentBaseMixin()<FinancialComponentData>(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -105,9 +105,6 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
 
   @property({type: Object})
   originalData!: FinancialComponentData;
-
-  @property({type: Object})
-  data!: FinancialComponentData;
 
   @property({type: Object})
   permissions!: Permission<FinancialComponentPermissions>;

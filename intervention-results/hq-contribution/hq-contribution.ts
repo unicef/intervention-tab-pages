@@ -27,7 +27,7 @@ import {translatesMap} from '../../utils/intervention-labels-map';
  * @customElement
  */
 @customElement('hq-contribution')
-export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
+export class HqContributionElement extends CommentsMixin(ComponentBaseMixin()<HqContributionData>(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -118,8 +118,6 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
       </etools-content-panel>
     `;
   }
-  @property({type: Object})
-  data!: HqContributionData;
 
   @property({type: Object})
   permissions!: Permission<HqContributionPermissions>;

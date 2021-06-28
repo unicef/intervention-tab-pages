@@ -23,16 +23,14 @@ declare const dayjs: any;
  * @customElement
  */
 @customElement('pd-termination')
-export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitElement)) {
+export class PdTermination extends EnvironmentFlagsMixin(ComponentBaseMixin()(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit];
   }
   render() {
     return html`
       <style>
-        ${sharedStyles}:host {
-          /* host CSS */
-        }
+        ${sharedStyles}
         #pdTermination {
           --etools-dialog-default-btn-bg: var(--error-color);
         }

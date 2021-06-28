@@ -15,7 +15,7 @@ import {getStore, getStoreAsync} from './utils/redux-store-access';
 import {currentPage, currentSubpage, isUnicefUser, currentSubSubpage, currentUser} from './common/selectors';
 import {elevationStyles} from './common/styles/elevation-styles';
 import {RootState} from './common/types/store.types';
-import {getIntervention, updateCurrentIntervention} from './common/actions/interventions';
+import {getIntervention} from './common/actions/interventions';
 import {sharedStyles} from './common/styles/shared-styles-lit';
 import {isJsonStrMatch} from './utils/utils';
 import {pageContentHeaderSlottedStyles} from './common/layout/page-content-header/page-content-header-slotted-styles';

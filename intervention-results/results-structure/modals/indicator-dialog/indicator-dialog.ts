@@ -31,7 +31,9 @@ import {translate, get as getTranslation} from 'lit-translate';
 import {translatesMap} from '../../../../utils/intervention-labels-map';
 
 @customElement('indicator-dialog')
-export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin(ComponentBaseMixin(LitElement))) {
+export class IndicatorDialog extends IndicatorDialogTabsMixin(
+  SaveIndicatorMixin(ComponentBaseMixin()<Indicator>(LitElement))
+) {
   static get styles() {
     return [gridLayoutStylesLit];
   }
@@ -189,9 +191,6 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
     `;
   }
 
-  @property({type: Object})
-  data: Indicator = new Indicator(); // This is the indicator
-
   private _disaggregations: {disaggregId: string}[] = [];
   @property({type: Array})
   get disaggregations() {
@@ -286,6 +285,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
 
   connectedCallback() {
     super.connectedCallback();
+    this.data = new Indicator();
     this._initIndicatorDialogListeners();
   }
 
@@ -325,9 +325,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   }
 
   setTitle() {
-    const title = this.isEditRecord
-      ? getTranslation('EDIT_INDICATOR')
-      : getTranslation('ADD_INDICATOR');
+    const title = this.isEditRecord ? getTranslation('EDIT_INDICATOR') : getTranslation('ADD_INDICATOR');
     setTimeout(() => {
       this.indicatorDialog.dialogTitle = title;
     });

@@ -22,7 +22,7 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import orderBy from 'lodash-es/orderBy';
-import {AnyObject, CountryProgram, Permission, AsyncAction, User} from '@unicef-polymer/etools-types';
+import {AnyObject, CountryProgram, Permission, AsyncAction, MinimalUser} from '@unicef-polymer/etools-types';
 import isEmpty from 'lodash-es/isEmpty';
 import uniqBy from 'lodash-es/uniqBy';
 import {translate} from 'lit-translate';
@@ -32,7 +32,7 @@ import {translatesMap} from '../../utils/intervention-labels-map';
  * @customElement
  */
 @customElement('unicef-details')
-export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
+export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin()<PdUnicefDetails>(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -219,7 +219,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
   isUnicefUser = false;
 
   @property({type: Array})
-  users_list!: User[];
+  users_list!: MinimalUser[];
 
   @property({type: Array})
   office_list!: AnyObject[];
@@ -286,7 +286,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
     if (!isEmpty(this.data.unicef_focal_points)) {
       savedUsers.push(this.data.unicef_focal_points);
     }
-    return uniqBy(savedUsers.flat(), 'id');
+    return uniqBy(savedUsers.flat(), 'id') as MinimalUser[];
   }
 
   getClusterText(clusters: string[]) {

@@ -52,7 +52,7 @@ const customStyles = html`
 `;
 
 @customElement('supply-agreements')
-export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) {
+export class FollowUpPage extends CommentsMixin(ComponentBaseMixin()(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }

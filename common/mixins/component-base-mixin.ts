@@ -9,8 +9,8 @@ import CONSTANTS from '../constants';
 import ContentPanelMixin from './content-panel-mixin';
 import {AnyObject, Constructor, MinimalUser} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-
-function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
+// <T extends Constructor<LitElement>>() => <K>(superclass: B) =>
+const ComponentBaseMixin = <T extends Constructor<LitElement>>() => <K extends AnyObject>(baseClass: T) => {
   class ComponentBaseClass extends ContentPanelMixin(baseClass) {
     @property({type: Boolean})
     editMode = false;
@@ -21,8 +21,18 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
     @property({type: Object})
     originalData!: any;
 
+    _data: K = {};
     @property({type: Object})
-    data: any = {};
+    get data() {
+      return this._data;
+    }
+
+    set data(newVal) {
+      this._data = newVal;
+      this.editMode = false;
+    }
+    // @property({type: Object})
+    // data: any = {};
 
     @property({type: Object})
     permissions!: any;
@@ -123,6 +133,7 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
       if (areEqual(this.data[key], newValue)) {
         return;
       }
+      // @ts-ignore
       this.data[key] = newValue;
       this.requestUpdate();
     }
@@ -135,6 +146,7 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
       if (areEqual(this.data[key], newValue)) {
         return;
       }
+      // @ts-ignore
       this.data[key] = newValue;
       this.requestUpdate();
     }
@@ -147,6 +159,7 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
       if (areEqual(this.data[key], newValue)) {
         return;
       }
+      // @ts-ignore
       this.data[key] = newValue;
       this.requestUpdate();
     }
@@ -159,6 +172,7 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
       if (areEqual(this.data[key], newValue)) {
         return;
       }
+      // @ts-ignore
       this.data[key] = newValue;
       this.requestUpdate();
     }
@@ -177,6 +191,7 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
         return;
       }
 
+      // @ts-ignore
       this.data[key] = newValues;
 
       /** Necessary because LitElement remembers the values used for last render
@@ -190,6 +205,7 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
         return;
       }
 
+      // @ts-ignore
       this.data[key] = detail.value;
       this.requestUpdate();
     }
@@ -225,6 +241,6 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
     }
   }
   return ComponentBaseClass;
-}
+};
 
 export default ComponentBaseMixin;

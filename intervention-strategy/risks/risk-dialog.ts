@@ -23,7 +23,7 @@ import {translatesMap} from '../../utils/intervention-labels-map';
  * @customElement
  */
 @customElement('risk-dialog')
-export class RiskDialog extends ComponentBaseMixin(LitElement) {
+export class RiskDialog extends ComponentBaseMixin()(LitElement) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }

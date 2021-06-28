@@ -28,7 +28,9 @@ import {isJsonStrMatch} from '../../utils/utils';
  * @customElement
  */
 @customElement('programmatic-visits')
-export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(RepeatableDataSetsMixin(LitElement))) {
+export class ProgrammaticVisits extends CommentsMixin(
+  RepeatableDataSetsMixin(ComponentBaseMixin()<PlannedVisit[]>(LitElement))
+) {
   static get styles() {
     return [buttonsStyles, gridLayoutStylesLit];
   }
@@ -124,9 +126,6 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
 
   @property({type: Object})
   permissions!: Permission<PlannedVisitsPermissions>;
-
-  @property({type: Array})
-  data!: PlannedVisit[];
 
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'timing')) {

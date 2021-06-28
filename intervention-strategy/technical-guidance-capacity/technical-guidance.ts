@@ -22,7 +22,7 @@ import {translatesMap} from '../../utils/intervention-labels-map';
  * @customElement
  */
 @customElement('technical-guidance')
-export class TechnicalGuidance extends CommentsMixin(ComponentBaseMixin(LitElement)) {
+export class TechnicalGuidance extends CommentsMixin(ComponentBaseMixin()<TechnicalDetails>(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -126,9 +126,6 @@ export class TechnicalGuidance extends CommentsMixin(ComponentBaseMixin(LitEleme
       </etools-content-panel>
     `;
   }
-
-  @property({type: Object})
-  data!: TechnicalDetails;
 
   @property({type: Object})
   permissions!: Permission<TechnicalDetailsPermissions>;

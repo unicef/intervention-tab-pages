@@ -20,7 +20,7 @@ import '@unicef-polymer/etools-date-time/datepicker-lite';
 import {PRC_REVIEW} from '../review.const';
 
 @customElement('review-members')
-export class ReviewMembers extends ComponentBaseMixin(LitElement) {
+export class ReviewMembers extends ComponentBaseMixin()(LitElement) {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
