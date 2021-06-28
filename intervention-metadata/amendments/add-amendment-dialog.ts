@@ -24,7 +24,7 @@ import {validateRequiredFields} from '../../utils/validation-helper';
  * @customElement
  */
 @customElement('add-amendment-dialog')
-export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
+export class AddAmendmentDialog extends ComponentBaseMixin()(LitElement) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }

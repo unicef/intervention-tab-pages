@@ -27,7 +27,7 @@ import {translatesMap} from '../../utils/intervention-labels-map';
  * @customElement
  */
 @customElement('gender-equity-rating')
-export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
+export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin()<GenderEquityRating>(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -168,9 +168,6 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
 
   @property({type: Array})
   ratings!: LabelAndValue[];
-
-  @property({type: Object})
-  data!: GenderEquityRating;
 
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'strategy')) {

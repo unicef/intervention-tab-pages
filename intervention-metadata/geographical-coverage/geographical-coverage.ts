@@ -23,11 +23,13 @@ import {AnyObject, AsyncAction, LocationObject, Permission} from '@unicef-polyme
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 
+type GeographicalCoverageData = {flat_locations: string[]};
+
 /**
  * @customElement
  */
 @customElement('geographical-coverage')
-export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitElement)) {
+export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin()<GeographicalCoverageData>(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -132,9 +134,6 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
 
   @property({type: Array})
   adminLevels!: AnyObject[];
-
-  @property({type: Object})
-  data!: {flat_locations: string[]};
 
   @property({type: Object})
   permissions!: Permission<LocationsPermissions>;

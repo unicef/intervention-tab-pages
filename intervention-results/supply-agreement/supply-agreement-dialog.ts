@@ -26,7 +26,7 @@ import {get as getTranslation} from 'lit-translate';
  * @customElement
  */
 @customElement('supply-agreement-dialog')
-export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
+export class SupplyAgreementDialog extends ComponentBaseMixin()(LitElement) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }

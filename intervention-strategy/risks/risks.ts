@@ -43,7 +43,7 @@ const customStyles = html`
  * @customElement
  */
 @customElement('risks-element')
-export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
+export class RisksElement extends CommentsMixin(ComponentBaseMixin()<RiskData[]>(LitElement)) {
   static get styles() {
     return [buttonsStyles, gridLayoutStylesLit];
   }
@@ -103,9 +103,6 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       </etools-content-panel>
     `;
   }
-
-  @property({type: Object})
-  data!: RiskData[];
 
   @property({type: Array})
   riskTypes!: LabelAndValue[];

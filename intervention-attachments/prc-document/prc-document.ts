@@ -30,7 +30,7 @@ import UploadMixin from '../../common/mixins/uploads-mixin';
  * @customElement
  */
 @customElement('prc-document')
-export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadMixin(LitElement))) {
+export class PrcDocument extends CommentsMixin(UploadMixin(ComponentBaseMixin()<PrcDocumentData>(LitElement))) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -85,9 +85,6 @@ export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadMixin(Li
 
   @property({type: String})
   uploadEndpoint: string = getEndpoint(interventionEndpoints.attachmentsUpload).url;
-
-  @property({type: Object})
-  data!: PrcDocumentData;
 
   @property({type: Object})
   permissions!: Permission<PrcDocumentPermissions>;

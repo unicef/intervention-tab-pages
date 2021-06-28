@@ -27,7 +27,7 @@ import {translatesMap} from '../../utils/intervention-labels-map';
  * @customElement
  */
 @customElement('other-metadata')
-export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
+export class Other extends CommentsMixin(ComponentBaseMixin()<OtherData>(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -160,9 +160,6 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
 
   @property({type: Object})
   originalData!: OtherData;
-
-  @property({type: Object})
-  data!: OtherData;
 
   @property({type: Object})
   permissions!: Permission<OtherPermissions>;

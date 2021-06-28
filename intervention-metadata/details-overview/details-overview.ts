@@ -18,7 +18,7 @@ import {translate} from 'lit-translate';
  * @customElement
  */
 @customElement('details-overview')
-export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement)) {
+export class DetailsOverview extends CommentsMixin(ComponentBaseMixin()(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, elevationStyles];
   }
@@ -33,48 +33,48 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
     return html`
       ${InfoElementStyles}
       <style>
-      ${sharedStyles} .data-column {
-        max-width: none;
-      }
-      .container-width {
-        width: 70%;
-        display: flex;
-        justify-content: flex-start;
-        flex-wrap: wrap;
-      }
-      @media (max-width: 1420px) {
-        .container-width {
-          width: 100%;
+        ${sharedStyles} .data-column {
+          max-width: none;
         }
-      }
+        .container-width {
+          width: 70%;
+          display: flex;
+          justify-content: flex-start;
+          flex-wrap: wrap;
+        }
+        @media (max-width: 1420px) {
+          .container-width {
+            width: 100%;
+          }
+        }
       </style>
-      <section class="elevation table not-allowed" elevation="1" comment-element="details" comment-description="Details">
-
+      <section
+        class="elevation table not-allowed"
+        elevation="1"
+        comment-element="details"
+        comment-description="Details"
+      >
         <div class="container-width">
-            <div class="data-column flex-2">
-              <label class="paper-label">${translate('DOCUMENT_TYPE')}</label>
-              <div class="input-label" ?empty="${!this.interventionOverview.document_type}">
-                ${this.getDocumentLongName(this.interventionOverview.document_type)}
-              </div>
+          <div class="data-column flex-2">
+            <label class="paper-label">${translate('DOCUMENT_TYPE')}</label>
+            <div class="input-label" ?empty="${!this.interventionOverview.document_type}">
+              ${this.getDocumentLongName(this.interventionOverview.document_type)}
             </div>
-            <div class="data-column flex-3">
-              <label class="paper-label">${translate('UNPP_CFEI_DSR')}</label>
-              <div class="input-label" ?empty="${!this.interventionOverview.cfei_number}">
-                ${this.interventionOverview.cfei_number}
-              </div>
+          </div>
+          <div class="data-column flex-3">
+            <label class="paper-label">${translate('UNPP_CFEI_DSR')}</label>
+            <div class="input-label" ?empty="${!this.interventionOverview.cfei_number}">
+              ${this.interventionOverview.cfei_number}
             </div>
-            <div class="data-column flex-1">
-              <label class="paper-label">${translate('HUMANITARIAN')}</label>
-              <div class="input-label">
-                ${this._getText(this.interventionOverview.humanitarian_flag)}
-              </div>
-            </div>
-            <div class="data-column flex-1">
-              <label class="paper-label">${translate('CONTINGENCY')}</label>
-              <div class="input-label">
-                ${this._getText(this.interventionOverview.contingency_pd)}
-              </div>
-            </div>
+          </div>
+          <div class="data-column flex-1">
+            <label class="paper-label">${translate('HUMANITARIAN')}</label>
+            <div class="input-label">${this._getText(this.interventionOverview.humanitarian_flag)}</div>
+          </div>
+          <div class="data-column flex-1">
+            <label class="paper-label">${translate('CONTINGENCY')}</label>
+            <div class="input-label">${this._getText(this.interventionOverview.contingency_pd)}</div>
+          </div>
 
           <etools-info-tooltip icon="icons:info" id="not-allowed-icon">
             <span slot="message">
@@ -82,7 +82,6 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
             </span>
           </etools-info-tooltip>
         </div>
-
       </section>
     `;
   }

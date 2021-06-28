@@ -28,7 +28,9 @@ import {translatesMap} from '../../utils/intervention-labels-map';
  * @customElement
  */
 @customElement('non-financial-contribution')
-export class NonFinancialContributionElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
+export class NonFinancialContributionElement extends CommentsMixin(
+  ComponentBaseMixin()<NonFinancialContributionData>(LitElement)
+) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -82,8 +84,6 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
       </etools-content-panel>
     `;
   }
-  @property({type: Object})
-  data!: NonFinancialContributionData;
 
   @property({type: Object})
   permissions!: Permission<NonFinancialContributionPermissions>;

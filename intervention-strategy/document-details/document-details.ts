@@ -26,7 +26,7 @@ import {translatesMap} from '../../utils/intervention-labels-map';
  * @customElement
  */
 @customElement('document-details')
-export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
+export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin()<DocumentDetails>(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -117,8 +117,6 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
       </etools-content-panel>
     `;
   }
-  @property({type: Object})
-  data!: DocumentDetails;
 
   @property({type: Object})
   permissions!: Permission<DocumentDetailsPermissions>;

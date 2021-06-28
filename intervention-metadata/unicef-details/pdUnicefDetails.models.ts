@@ -9,7 +9,7 @@ export class PdUnicefDetails extends ModelsBase {
   }
   offices: AnyObject[] = [];
   sections: AnyObject[] = [];
-  cluster_names: AnyObject[] = [];
+  cluster_names: string[] = [];
   unicef_focal_points: AnyObject[] = [];
   budget_owner: AnyObject = {};
   country_programmes: [] = [];

@@ -41,7 +41,9 @@ const customStyles = html`
  * @customElement
  */
 @customElement('effective-and-efficient-programme-management')
-export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
+export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(
+  ComponentBaseMixin()<ProgrammeManagement>(LitElement)
+) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles, elevationStyles];
   }
@@ -104,9 +106,6 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
 
   @property({type: Boolean})
   canEdit = true;
-
-  @property({type: Object})
-  data!: ProgrammeManagement;
 
   @property({type: Array})
   columns: EtoolsTableColumn[] = [

@@ -40,7 +40,9 @@ import {getDifference} from '../../common/mixins/objects-diff';
  * @appliesMixin UploadsMixin
  */
 @customElement('review-and-sign')
-export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(UploadMixin(LitElement))) {
+export class InterventionReviewAndSign extends CommentsMixin(
+  UploadMixin(ComponentBaseMixin()<ReviewData>(LitElement))
+) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -271,9 +273,6 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
 
   @property({type: Object})
   originalData!: ReviewData;
-
-  @property({type: Object})
-  data!: ReviewData;
 
   @property({type: Object})
   permissions!: Permission<ReviewDataPermission>;
