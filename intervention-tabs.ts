@@ -372,10 +372,10 @@ export class InterventionTabs extends connectStore(LitElement) {
       progressTab = cloneDeep(this.progressTabTemplate);
     }
     // Results Reported, Reports tabs are visible only for unicef users if flag prp_mode_off is not ON
-    if (envFlags && !envFlags.prp_mode_off && !progressTab?.subtabs?.find((t) => t.value === 'progress')) {
+    if (envFlags && !envFlags.prp_mode_off && !progressTab?.subtabs?.find((t) => t.value === TABS.ResultsReported)) {
       progressTab?.subtabs?.push(
-        {label: getTranslation('RESULTS_REPORTED_SUBTAB'), value: 'progress'},
-        {label: getTranslation('REPORTS_SUBTAB'), value: 'reports'}
+        {label: getTranslation('RESULTS_REPORTED_SUBTAB'), value: TABS.ResultsReported},
+        {label: getTranslation('REPORTS_SUBTAB'), value: TABS.Reports}
       );
     }
     this.pageTabs.push(progressTab);

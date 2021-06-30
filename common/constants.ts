@@ -64,7 +64,7 @@ export const TABS = {
   Summary: 'summary',
   ImplementationStatus: 'implementation-status',
   MonitoringActivities: 'monitoring-activities',
-  ResultsReported: 'progress',
+  ResultsReported: 'results-reported',
   Reports: 'reports'
 };
 

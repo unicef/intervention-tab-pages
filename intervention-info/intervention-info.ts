@@ -3,7 +3,7 @@ import '../common/layout/etools-tabs.js';
 import {fireEvent} from '../utils/fire-custom-event.js';
 import './intervention-implementation-status.js';
 import './intervention-monitoring-activities.js';
-import './intervention-progress.js';
+import './intervention-results-reported.js';
 import './intervention-reports.js';
 import get from 'lodash-es/get';
 import {pageIsNotCurrentlyActive} from '../utils/common-methods.js';
@@ -29,7 +29,9 @@ export class InterventionInfo extends connectStore(LitElement) {
             <intervention-monitoring-activities
               ?hidden="${this.activeSubTab !== TABS.MonitoringActivities}"
             ></intervention-monitoring-activities>
-            <intervention-progress ?hidden="${this.activeSubTab !== 'progress'}"></intervention-progress>
+            <intervention-results-reported
+              ?hidden="${this.activeSubTab !== TABS.ResultsReported}"
+            ></intervention-results-reported>
             <intervention-reports ?hidden="${this.activeSubTab !== 'reports'}"></intervention-reports>
           `
         : ''}

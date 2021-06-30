@@ -28,13 +28,7 @@ import {fireEvent} from '../utils/fire-custom-event';
 import {RootState} from '../common/types/store.types';
 import {pageIsNotCurrentlyActive} from '../utils/common-methods';
 
-import {
-  dateDiff,
-  dateIsBetween,
-  isValidDate,
-  dateIsAfter,
-  datesAreEqual
-} from '../utils/date-utils';
+import {dateDiff, dateIsBetween, isValidDate, dateIsAfter, datesAreEqual} from '../utils/date-utils';
 import {logError, logWarn} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {pmpCustomIcons} from './styles/pmp-icons';
@@ -46,6 +40,7 @@ import {AnyObject, GenericObject} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {currentIntervention} from '../common/selectors';
+import {TABS} from '../common/constants';
 declare const dayjs: any;
 
 /**
@@ -58,8 +53,8 @@ declare const dayjs: any;
 /**
  * @customElement
  */
-@customElement('intervention-progress')
-export class InterventionProgress extends connectStore(
+@customElement('intervention-results-reported')
+export class InterventionResultsReported extends connectStore(
   UtilsMixin(CommonMixin(EndpointsLitMixin(EtoolsCurrency(LitElement))))
 ) {
   static get styles() {
@@ -241,10 +236,7 @@ export class InterventionProgress extends connectStore(
         </div>
       </div>
 
-      <etools-content-panel
-        class="content-section"
-        panel-title="${translate('RESULTS_REPORTED_SUBTAB')}"
-      >
+      <etools-content-panel class="content-section" panel-title="${translate('RESULTS_REPORTED_SUBTAB')}">
         <div
           class="row-h"
           ?hidden="${this.progress.details ? !this._emptyList(this.progress.details.cp_outputs) : false}"
@@ -270,12 +262,8 @@ export class InterventionProgress extends connectStore(
 
             <div class="lower-results-table" ?hidden="${this._emptyList(item.ll_outputs)}">
               <etools-data-table-header id="listHeader" no-title>
-                <etools-data-table-column class="col-9"
-                  >${translate('PD_OUTPUTS')}</etools-data-table-column
-                >
-                <etools-data-table-column class="col-3"
-                  >${translate('CURRENT_PROGRESS')}</etools-data-table-column
-                >
+                <etools-data-table-column class="col-9">${translate('PD_OUTPUTS')}</etools-data-table-column>
+                <etools-data-table-column class="col-3">${translate('CURRENT_PROGRESS')}</etools-data-table-column>
               </etools-data-table-header>
 
               ${item.ll_outputs.map(
@@ -388,7 +376,7 @@ export class InterventionProgress extends connectStore(
   interventionStatus!: string;
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'info', 'progress')) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'info', TABS.ResultsReported)) {
       return;
     }
 
@@ -447,7 +435,7 @@ export class InterventionProgress extends connectStore(
         });
       })
       .catch((error: any) => {
-        logError('PD/SPD progress request failed!', 'intervention-progress', error);
+        logError('PD/SPD progress request failed!', 'intervention-results-reported', error);
         parseRequestErrorsAndShowAsToastMsgs(error, this);
         fireEvent(this, 'global-loading', {
           active: false,
@@ -576,7 +564,7 @@ export class InterventionProgress extends connectStore(
         return;
       }
     } catch (err) {
-      logWarn('Time progress compute error', 'intervention-progress', err);
+      logWarn('Time progress compute error', 'intervention-results-reported', err);
     }
     // if end date is valid and is past date or today's date, progress should be 100%
     if (isValidDate(endDt) && (dateIsAfter(today, endDt) || datesAreEqual(today, endDt))) {
