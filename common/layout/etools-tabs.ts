@@ -156,7 +156,7 @@ export class EtoolsTabs extends LitElement {
       >
         <paper-menu-button id="subtabmenu" horizontal-align="right" vertical-offset="45">
           <paper-button class="button" slot="dropdown-trigger">
-            ${item.tab}
+            ${item.tabLabel}
             <iron-icon icon="arrow-drop-down"></iron-icon>
           </paper-button>
           <paper-listbox slot="dropdown-content" attr-for-selected="subtab" selected="${this.activeSubTab}">

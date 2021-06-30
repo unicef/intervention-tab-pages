@@ -80,11 +80,11 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
             <label class="paper-label">${translate('CONTINGENCY')}</label>
             <div class="input-label">${this._getText(this.interventionOverview.contingency_pd)}</div>
           </div>
-          <div class="data-column flex-1" ?hidden="${!this.isUnicefUser}">
+          <div class="data-column flex-2" ?hidden="${!this.isUnicefUser}">
             <label class="paper-label">${translate('PARTNER_HACT_RR')}</label>
             <div class="input-label">${this.getPartnerHactRiskRatingHtml()}</div>
           </div>
-          <div class="data-column flex-1" ?hidden="${!this.isUnicefUser}">
+          <div class="data-column flex-2" ?hidden="${!this.isUnicefUser}">
             <label class="paper-label">${translate('PARTNER_PSEA_RR')}</label>
             <div class="input-label">${this.getPartnerPseaRiskRatingHtml()}</div>
           </div>

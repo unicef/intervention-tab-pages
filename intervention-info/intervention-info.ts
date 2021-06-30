@@ -1,7 +1,6 @@
 import {customElement, html, LitElement, property} from 'lit-element';
 import '../common/layout/etools-tabs.js';
 import {fireEvent} from '../utils/fire-custom-event.js';
-import './intervention-summary.js';
 import './intervention-implementation-status.js';
 import './intervention-monitoring-activities.js';
 import './intervention-progress.js';
@@ -22,7 +21,6 @@ export class InterventionInfo extends connectStore(LitElement) {
           display: none;
         }
       </style>
-      <intervention-summary ?hidden="${this.activeSubTab !== 'summary'}"></intervention-summary>
       ${this.isUnicefUser
         ? html`
             <intervention-implementation-status

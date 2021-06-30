@@ -225,15 +225,19 @@ export class InterventionTabs extends connectStore(LitElement) {
       tab: TABS.Timing,
       tabLabel: (getTranslation('TIMING_TAB') as unknown) as string,
       hidden: false
-    },
-    {
-      tab: 'info',
-      tabLabel: getTranslation('INFO_TAB'),
-      hidden: false,
-      disabled: true,
-      subtabs: [{label: getTranslation('SUMMARY_SUBTAB'), value: TABS.Summary}]
     }
   ];
+
+  progressTabTemplate = {
+    tab: 'info',
+    tabLabel: getTranslation('PROGRESS_TAB'),
+    hidden: false,
+    disabled: true,
+    subtabs: [
+      {label: getTranslation('IMPLEMENTATION_STATUS_SUBTAB'), value: TABS.ImplementationStatus},
+      {label: getTranslation('MONITORING_ACTIVITIES_SUBTAB'), value: TABS.MonitoringActivities}
+    ]
+  };
 
   @property({type: String})
   activeTab = TABS.Metadata;
@@ -351,35 +355,30 @@ export class InterventionTabs extends connectStore(LitElement) {
     this.checkAttachmentsTab(state);
     this.checkReviewTab(state);
 
-    if (state?.user.data?.is_unicef_user) {
-      this.handleInfoSubtabsVisibility(state.commonData?.envFlags);
-    }
+    this.handleProgressTabVisibility(state.commonData?.envFlags, state?.user.data?.is_unicef_user);
     this.pageTabs = [...this.pageTabs];
   }
 
-  handleInfoSubtabsVisibility(envFlags: EnvFlags | null) {
-    if (!this.pageTabs.find((x) => x.tab === 'info')?.subtabs?.find((t) => t.value === TABS.ImplementationStatus)) {
-      this.pageTabs
-        .find((t) => t.tab === 'info')
-        ?.subtabs?.push(
-          {label: getTranslation('IMPLEMENTATION_STATUS_SUBTAB'), value: TABS.ImplementationStatus},
-          {label: getTranslation('MONITORING_ACTIVITIES_SUBTAB'), value: TABS.MonitoringActivities}
-        );
+  handleProgressTabVisibility(envFlags: EnvFlags | null, isUnicefUser?: boolean) {
+    if (!isUnicefUser) {
+      return; // ONLY visible for unicef users
     }
 
-    // Results Reported, Reports tabs are visible only for unicef users if flag prp_mode_off it's not ON
-    if (
-      envFlags &&
-      !envFlags.prp_mode_off &&
-      !this.pageTabs.find((x) => x.tab === 'info')?.subtabs?.find((t) => t.value === 'progress')
-    ) {
-      this.pageTabs
-        .find((t) => t.tab === 'info')
-        ?.subtabs?.push(
-          {label: getTranslation('RESULTS_REPORTED_SUBTAB'), value: 'progress'},
-          {label: getTranslation('REPORTS_SUBTAB'), value: 'reports'}
-        );
+    let progressTab = this.pageTabs.find((x) => x.tab === 'info');
+    if (progressTab) {
+      // tab already configured
+      return;
+    } else {
+      progressTab = cloneDeep(this.progressTabTemplate);
     }
+    // Results Reported, Reports tabs are visible only for unicef users if flag prp_mode_off is not ON
+    if (envFlags && !envFlags.prp_mode_off && !progressTab?.subtabs?.find((t) => t.value === 'progress')) {
+      progressTab?.subtabs?.push(
+        {label: getTranslation('RESULTS_REPORTED_SUBTAB'), value: 'progress'},
+        {label: getTranslation('REPORTS_SUBTAB'), value: 'reports'}
+      );
+    }
+    this.pageTabs.push(progressTab);
   }
 
   checkReviewTab(state: RootState): void {
