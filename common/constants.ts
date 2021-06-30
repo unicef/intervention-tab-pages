@@ -65,7 +65,8 @@ export const TABS = {
   ImplementationStatus: 'implementation-status',
   MonitoringActivities: 'monitoring-activities',
   ResultsReported: 'results-reported',
-  Reports: 'reports'
+  Reports: 'reports',
+  Progress: 'progress'
 };
 
 export default CONSTANTS;

@@ -12,8 +12,8 @@ import {isUnicefUser} from '../common/selectors.js';
 import {connectStore} from '../common/mixins/connect-store-mixin.js';
 import {TABS} from '../common/constants.js';
 
-@customElement('intervention-info')
-export class InterventionInfo extends connectStore(LitElement) {
+@customElement('intervention-progress')
+export class InterventionProgress extends connectStore(LitElement) {
   render() {
     return html`
       <style>
@@ -54,7 +54,7 @@ export class InterventionInfo extends connectStore(LitElement) {
   }
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'info')) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Progress)) {
       return;
     }
 

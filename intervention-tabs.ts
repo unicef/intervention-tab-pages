@@ -189,10 +189,10 @@ export class InterventionTabs extends connectStore(LitElement) {
         <intervention-review ?hidden="${!this.isActiveTab(this.activeTab, 'review')}"></intervention-review>
         <intervention-attachments ?hidden="${!this.isActiveTab(this.activeTab, 'attachments')}">
         </intervention-attachments>
-        <intervention-info
+        <intervention-progress
           .activeSubTab="${this.activeSubTab}"
-          ?hidden="${!this.isActiveTab(this.activeTab, 'info')}"
-        ></intervention-info>
+          ?hidden="${!this.isActiveTab(this.activeTab, TABS.Progress)}"
+        ></intervention-progress>
       </div>
 
       <div class="amendment-info" ?hidden="${!this.isInAmendment}">
@@ -229,7 +229,7 @@ export class InterventionTabs extends connectStore(LitElement) {
   ];
 
   progressTabTemplate = {
-    tab: 'info',
+    tab: TABS.Progress,
     tabLabel: getTranslation('PROGRESS_TAB'),
     hidden: false,
     disabled: true,
@@ -364,7 +364,7 @@ export class InterventionTabs extends connectStore(LitElement) {
       return; // ONLY visible for unicef users
     }
 
-    let progressTab = this.pageTabs.find((x) => x.tab === 'info');
+    let progressTab = this.pageTabs.find((x) => x.tab === TABS.Progress);
     if (progressTab) {
       // tab already configured
       return;
@@ -385,7 +385,7 @@ export class InterventionTabs extends connectStore(LitElement) {
     const tabIndex = this.pageTabs.findIndex((x) => x.tab === 'review');
     const unicefUser = get(state, 'user.data.is_unicef_user');
     if (tabIndex === -1 && unicefUser) {
-      const pasteTo = this.pageTabs.findIndex((x) => x.tab === 'info');
+      const pasteTo = this.pageTabs.findIndex((x) => x.tab === TABS.Progress);
       this.pageTabs.splice(pasteTo, 0, {
         tab: TABS.Review,
         tabLabel: getTranslation('REVIEW_TAB'),
@@ -398,7 +398,7 @@ export class InterventionTabs extends connectStore(LitElement) {
     const tabIndex = this.pageTabs.findIndex((x) => x.tab === 'attachments');
     const canView = get(state, 'interventions.current.permissions.view.attachments');
     if (tabIndex === -1 && canView) {
-      const pasteTo = this.pageTabs.findIndex((x) => x.tab === 'info');
+      const pasteTo = this.pageTabs.findIndex((x) => x.tab === TABS.Progress);
       this.pageTabs.splice(pasteTo, 0, {
         tab: TABS.Attachments,
         tabLabel: (getTranslation('ATTACHMENTS_TAB') as unknown) as string,
