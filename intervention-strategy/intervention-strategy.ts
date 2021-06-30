@@ -1,5 +1,4 @@
 import {LitElement, customElement, html} from 'lit-element';
-import './financial/financial-component';
 import './risks/risks';
 import './document-details/document-details';
 import './geographical-coverage/geographical-coverage';
@@ -20,7 +19,6 @@ export class InterventionStrategy extends LitElement {
       <geographical-coverage></geographical-coverage>
       <gender-equity-rating></gender-equity-rating>
       <risks-element></risks-element>
-      <financial-component></financial-component>
     `;
   }
   connectedCallback() {
