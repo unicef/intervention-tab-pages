@@ -57,7 +57,7 @@ export const translatesMap: GenericObject = {
   technical_guidance: 'TECHNICAL_GUIDANCE',
   capacity_development: 'CAPACITY_DEVELOPMENT',
   sustainability_rating: 'SUSTAINABILITY_RATING',
-  implementation_strategy: 'IMPLEMENTATION_STRATEGY',
+  implementation_strategy: 'IMPLEMENTATION_STRATEGY_AND_TECHNICAL_GUIDANCE',
   ip_program_contribution: 'OTHER_NON_FINANCIAL_CONTRIBUTION',
   other_partners_involved: 'OTHER_PARTNERS_INVOLVED',
   cash_transfer_modalities: 'CASH_TRANSFER_MOD',

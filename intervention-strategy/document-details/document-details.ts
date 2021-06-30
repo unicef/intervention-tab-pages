@@ -113,6 +113,40 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
           </paper-textarea>
         </div>
 
+        <div class="row-padding-v">
+          <paper-textarea
+            id="capacityDevelopment"
+            label=${translate(translatesMap.capacity_development)}
+            type="text"
+            always-float-label
+            placeholder="—"
+            .value="${this.data.capacity_development}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.capacity_development)}"
+            ?required="${this.permissions.required.capacity_development}"
+            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'capacity_development')}"
+            maxlength="5000"
+            rows="${detailsTextareaRowsCount(this.editMode)}"
+          >
+          </paper-textarea>
+        </div>
+
+        <div class="row-padding-v">
+          <paper-textarea
+            id="otherPartnersInvolved"
+            label=${translate(translatesMap.other_partners_involved)}
+            type="text"
+            always-float-label
+            placeholder="—"
+            .value="${this.data.other_partners_involved}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.other_partners_involved)}"
+            ?required="${this.permissions.required.other_partners_involved}"
+            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'other_partners_involved')}"
+            maxlength="5000"
+            rows="${detailsTextareaRowsCount(this.editMode)}"
+          >
+          </paper-textarea>
+        </div>
+
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
       </etools-content-panel>
     `;
