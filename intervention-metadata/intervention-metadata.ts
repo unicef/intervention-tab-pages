@@ -2,7 +2,6 @@ import {LitElement, html, property} from 'lit-element';
 import './partner-details/partner-info';
 import './details-overview/details-overview';
 import './unicef-details/unicef-details';
-import './geographical-coverage/geographical-coverage';
 import './amendments/pd-amendments';
 import './fund-reservations/fund-reservations';
 import './review-and-sign/review-and-sign';
@@ -31,7 +30,6 @@ export class InterventionMetadata extends connectStore(LitElement) {
       <details-overview></details-overview>
       <partner-info></partner-info>
       <unicef-details></unicef-details>
-      <geographical-coverage></geographical-coverage>
       ${this.permissions?.view!.frs ? html`<fund-reservations></fund-reservations>` : ''}
       ${this.permissions?.view!.amendments ? html`<pd-amendments></pd-amendments>` : ''}
       ${this.showSignatureAndDates ? html`<review-and-sign></review-and-sign>` : ''}
@@ -60,7 +58,7 @@ export class InterventionMetadata extends connectStore(LitElement) {
 
   setShowSignatureAndDates(state: RootState) {
     const viewPerm = selectDatesAndSignaturesPermissions(state)?.view;
-    this.showSignatureAndDates = Object.values(viewPerm).some(perm => perm === true);
+    this.showSignatureAndDates = Object.values(viewPerm).some((perm) => perm === true);
   }
 }
 

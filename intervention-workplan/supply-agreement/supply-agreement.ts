@@ -34,6 +34,7 @@ import {AnyObject, AsyncAction, InterventionSupplyItem} from '@unicef-polymer/et
 import {Intervention, ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
+import {TABS} from '../../common/constants';
 
 const customStyles = html`
   <style>
@@ -248,7 +249,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   }
 
   stateChanged(state: RootState): void {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'workplan')) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan)) {
       return;
     }
     if (get(state, 'interventions.current')) {

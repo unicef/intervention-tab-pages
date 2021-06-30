@@ -22,6 +22,7 @@ import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, LocationObject, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
+import {TABS} from '../../common/constants';
 
 /**
  * @customElement
@@ -144,7 +145,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
   }
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata')) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Strategy)) {
       return;
     }
     if (!state.interventions.current) {
