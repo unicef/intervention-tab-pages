@@ -248,7 +248,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   }
 
   stateChanged(state: RootState): void {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'results')) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'workplan')) {
       return;
     }
     if (get(state, 'interventions.current')) {

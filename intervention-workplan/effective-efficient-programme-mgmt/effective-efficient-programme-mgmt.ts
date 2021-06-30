@@ -147,7 +147,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
     if (!state.interventions.current) {
       return;
     }
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'results')) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'workplan')) {
       return;
     }
     this.interventionId = state.interventions.current.id!;

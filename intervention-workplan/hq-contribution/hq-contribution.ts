@@ -137,7 +137,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
   isUnicefUser = false;
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'results')) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'workplan')) {
       return;
     }
 

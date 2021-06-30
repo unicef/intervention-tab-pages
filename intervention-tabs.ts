@@ -184,7 +184,7 @@ export class InterventionTabs extends connectStore(LitElement) {
           : ''}
         <intervention-metadata ?hidden="${!this.isActiveTab(this.activeTab, 'metadata')}"> </intervention-metadata>
         <intervention-strategy ?hidden="${!this.isActiveTab(this.activeTab, 'strategy')}"></intervention-strategy>
-        <intervention-results ?hidden="${!this.isActiveTab(this.activeTab, 'results')}"> </intervention-results>
+        <intervention-workplan ?hidden="${!this.isActiveTab(this.activeTab, 'workplan')}"> </intervention-workplan>
         <intervention-timing ?hidden="${!this.isActiveTab(this.activeTab, 'timing')}"> </intervention-timing>
         <intervention-review ?hidden="${!this.isActiveTab(this.activeTab, 'review')}"></intervention-review>
         <intervention-attachments ?hidden="${!this.isActiveTab(this.activeTab, 'attachments')}">
@@ -217,8 +217,8 @@ export class InterventionTabs extends connectStore(LitElement) {
       hidden: false
     },
     {
-      tab: TABS.Results,
-      tabLabel: getTranslation('RESULTS_TAB'),
+      tab: TABS.Workplan,
+      tabLabel: getTranslation('WORKPLAN_TAB'),
       hidden: false
     },
     {

@@ -150,7 +150,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
   }
 
   stateChanged(state: RootState): void {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'results')) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'workplan')) {
       return;
     }
     this.sections = (state.commonData && state.commonData.sections) || [];
@@ -166,7 +166,9 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
   firstUpdated(changedProperties: PropertyValues): void {
     super.firstUpdated(changedProperties);
 
-    this.shadowRoot!.querySelectorAll('#view-toggle-button, iron-icon').forEach((el) => callClickOnSpacePushListener(el));
+    this.shadowRoot!.querySelectorAll('#view-toggle-button, iron-icon').forEach((el) =>
+      callClickOnSpacePushListener(el)
+    );
   }
 
   computeAvailableOptionsForIndicators(intervention: Intervention) {

@@ -148,7 +148,6 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
             <span>${translate('BUDGET_TOOLTIP')}</span>
           </span>
         </etools-info-tooltip>
-
       </section>
     `;
   }
@@ -170,7 +169,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
 
   public stateChanged(state: RootState) {
     if (
-      pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'results') ||
+      pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'workplan') ||
       !state.interventions.current
     ) {
       return;

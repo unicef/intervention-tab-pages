@@ -92,7 +92,7 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
   originalData = {};
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'results')) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'workplan')) {
       return;
     }
 
