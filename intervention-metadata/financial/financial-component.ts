@@ -156,9 +156,18 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
       return Promise.resolve(false);
     }
     return getStore()
-      .dispatch<AsyncAction>(patchIntervention(this.data))
+      .dispatch<AsyncAction>(patchIntervention(this.cleanUpData(this.data)))
       .then(() => {
         this.editMode = false;
       });
+  }
+
+  cleanUpData(data: any) {
+    // 'direct' is an old option that is still around in the db and causes errors
+    const index = data.cash_transfer_modalities.indexOf('direct');
+    if (index > -1) {
+      data.cash_transfer_modalities.splice(index, 1);
+    }
+    return data;
   }
 }
