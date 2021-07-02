@@ -22,14 +22,14 @@ export class InterventionTiming extends CommentsMixin(LitElement) {
       <timing-overview></timing-overview>
       <intervention-dates></intervention-dates>
       <activity-timeframes></activity-timeframes>
-      ${this.viewPlannedVisits
+      ${this.viewPartnerReportingRequirements
         ? html`<partner-reporting-requirements
             class="content-section"
             .commentsMode="${this.commentMode}"
             comments-container
           ></partner-reporting-requirements>`
         : ''}
-      ${this.viewPartnerReportingRequirements ? html`<programmatic-visits></programmatic-visits>` : ''}
+      ${this.viewPlannedVisits ? html`<programmatic-visits></programmatic-visits>` : ''}
     `;
   }
 
