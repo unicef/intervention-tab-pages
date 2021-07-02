@@ -17,6 +17,7 @@ import {AnyObject, CpOutput, StaticPartner, ManagementBudget} from '@unicef-poly
 import {ExpectedResult, MinimalAgreement, Intervention} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 
+// TODO - NOT USED AT THE MOMENT
 @customElement('intervention-summary')
 export class InterventionSummary extends connectStore(LitElement) {
   static get styles() {
@@ -91,9 +92,7 @@ export class InterventionSummary extends connectStore(LitElement) {
         this.isUnicefUser
           ? html` <div class="row-h flex-c">
               <div class="col col-12 block">
-                <iron-label for="cp_outputs_list" class="label-secondary-color"
-                  >${translate('CP_OUTPUTS')}</iron-label
-                >
+                <iron-label for="cp_outputs_list" class="label-secondary-color">${translate('CP_OUTPUTS')}</iron-label>
                 <br />
                 <div class="content" id="cp_outputs_list">
                   ${this.interventionCpOutputs.length
@@ -269,7 +268,7 @@ export class InterventionSummary extends connectStore(LitElement) {
   isUnicefUser = false;
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'info', 'summary')) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Progress, 'summary')) {
       return;
     }
 

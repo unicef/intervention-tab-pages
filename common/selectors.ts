@@ -6,3 +6,4 @@ export const currentInterventionPermissions = (state: any) => state.intervention
 export const currentInterventionPlannedBudget = (state: any) => state.interventions.current?.planned_budget;
 export const isUnicefUser = (state: any) => state.user?.data?.is_unicef_user;
 export const currentUser = (state: any) => state.user?.data;
+export const allPartners = (state: any) => state.commonData?.partners || state.partners?.list || [];

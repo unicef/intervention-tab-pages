@@ -26,7 +26,7 @@ import '@polymer/paper-listbox';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {RootState} from '../../common/types/store.types';
 import {openDialog} from '../../utils/dialog';
-import CONSTANTS from '../../common/constants';
+import CONSTANTS, {TABS} from '../../common/constants';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {
   callClickOnSpacePushListener,
@@ -242,7 +242,10 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         }
       </style>
 
-      <etools-content-panel show-expand-btn panel-title="${translate(translatesMap.result_links)} (${this.noOfPdOutputs})">
+      <etools-content-panel
+        show-expand-btn
+        panel-title="${translate(translatesMap.result_links)} (${this.noOfPdOutputs})"
+      >
         <div slot="panel-btns" class="layout-horizontal align-items-center">
           <paper-button
             title=${translate('EXPORT_RESULTS')}
@@ -412,7 +415,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
   }
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'results')) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan)) {
       return;
     }
     this.resultLinks = selectInterventionResultLinks(state);

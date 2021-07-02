@@ -57,15 +57,16 @@ const CONSTANTS = {
 export const TABS = {
   Metadata: 'metadata',
   Strategy: 'strategy',
-  Results: 'results',
+  Workplan: 'workplan',
   Timing: 'timing',
   Attachments: 'attachments',
   Review: 'review',
   Summary: 'summary',
   ImplementationStatus: 'implementation-status',
   MonitoringActivities: 'monitoring-activities',
-  ResultsReported: 'progress',
-  Reports: 'reports'
+  ResultsReported: 'results-reported',
+  Reports: 'reports',
+  Progress: 'progress'
 };
 
 export default CONSTANTS;

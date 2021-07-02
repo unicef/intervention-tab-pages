@@ -43,6 +43,7 @@ import {
 } from '@unicef-polymer/etools-types';
 import {callClickOnSpacePushListener} from '../../utils/common-methods';
 import {translatesMap} from '../../utils/intervention-labels-map';
+import {TABS} from '../../common/constants';
 
 @customElement('pd-indicators')
 export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)) {
@@ -150,7 +151,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
   }
 
   stateChanged(state: RootState): void {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'results')) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan)) {
       return;
     }
     this.sections = (state.commonData && state.commonData.sections) || [];
@@ -166,7 +167,9 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
   firstUpdated(changedProperties: PropertyValues): void {
     super.firstUpdated(changedProperties);
 
-    this.shadowRoot!.querySelectorAll('#view-toggle-button, iron-icon').forEach((el) => callClickOnSpacePushListener(el));
+    this.shadowRoot!.querySelectorAll('#view-toggle-button, iron-icon').forEach((el) =>
+      callClickOnSpacePushListener(el)
+    );
   }
 
   computeAvailableOptionsForIndicators(intervention: Intervention) {

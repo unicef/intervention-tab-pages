@@ -184,15 +184,15 @@ export class InterventionTabs extends connectStore(LitElement) {
           : ''}
         <intervention-metadata ?hidden="${!this.isActiveTab(this.activeTab, 'metadata')}"> </intervention-metadata>
         <intervention-strategy ?hidden="${!this.isActiveTab(this.activeTab, 'strategy')}"></intervention-strategy>
-        <intervention-results ?hidden="${!this.isActiveTab(this.activeTab, 'results')}"> </intervention-results>
+        <intervention-workplan ?hidden="${!this.isActiveTab(this.activeTab, 'workplan')}"> </intervention-workplan>
         <intervention-timing ?hidden="${!this.isActiveTab(this.activeTab, 'timing')}"> </intervention-timing>
         <intervention-review ?hidden="${!this.isActiveTab(this.activeTab, 'review')}"></intervention-review>
         <intervention-attachments ?hidden="${!this.isActiveTab(this.activeTab, 'attachments')}">
         </intervention-attachments>
-        <intervention-info
+        <intervention-progress
           .activeSubTab="${this.activeSubTab}"
-          ?hidden="${!this.isActiveTab(this.activeTab, 'info')}"
-        ></intervention-info>
+          ?hidden="${!this.isActiveTab(this.activeTab, TABS.Progress)}"
+        ></intervention-progress>
       </div>
 
       <div class="amendment-info" ?hidden="${!this.isInAmendment}">
@@ -217,23 +217,27 @@ export class InterventionTabs extends connectStore(LitElement) {
       hidden: false
     },
     {
-      tab: TABS.Results,
-      tabLabel: getTranslation('RESULTS_TAB'),
+      tab: TABS.Workplan,
+      tabLabel: getTranslation('WORKPLAN_TAB'),
       hidden: false
     },
     {
       tab: TABS.Timing,
       tabLabel: (getTranslation('TIMING_TAB') as unknown) as string,
       hidden: false
-    },
-    {
-      tab: 'info',
-      tabLabel: getTranslation('INFO_TAB'),
-      hidden: false,
-      disabled: true,
-      subtabs: [{label: getTranslation('SUMMARY_SUBTAB'), value: TABS.Summary}]
     }
   ];
+
+  progressTabTemplate = {
+    tab: TABS.Progress,
+    tabLabel: getTranslation('PROGRESS_TAB'),
+    hidden: false,
+    disabled: true,
+    subtabs: [
+      {label: getTranslation('IMPLEMENTATION_STATUS_SUBTAB'), value: TABS.ImplementationStatus},
+      {label: getTranslation('MONITORING_ACTIVITIES_SUBTAB'), value: TABS.MonitoringActivities}
+    ]
+  };
 
   @property({type: String})
   activeTab = TABS.Metadata;
@@ -351,42 +355,37 @@ export class InterventionTabs extends connectStore(LitElement) {
     this.checkAttachmentsTab(state);
     this.checkReviewTab(state);
 
-    if (state?.user.data?.is_unicef_user) {
-      this.handleInfoSubtabsVisibility(state.commonData?.envFlags);
-    }
+    this.handleProgressTabVisibility(state.commonData?.envFlags, state?.user.data?.is_unicef_user);
     this.pageTabs = [...this.pageTabs];
   }
 
-  handleInfoSubtabsVisibility(envFlags: EnvFlags | null) {
-    if (!this.pageTabs.find((x) => x.tab === 'info')?.subtabs?.find((t) => t.value === TABS.ImplementationStatus)) {
-      this.pageTabs
-        .find((t) => t.tab === 'info')
-        ?.subtabs?.push(
-          {label: getTranslation('IMPLEMENTATION_STATUS_SUBTAB'), value: TABS.ImplementationStatus},
-          {label: getTranslation('MONITORING_ACTIVITIES_SUBTAB'), value: TABS.MonitoringActivities}
-        );
+  handleProgressTabVisibility(envFlags: EnvFlags | null, isUnicefUser?: boolean) {
+    if (!isUnicefUser) {
+      return; // ONLY visible for unicef users
     }
 
-    // Results Reported, Reports tabs are visible only for unicef users if flag prp_mode_off it's not ON
-    if (
-      envFlags &&
-      !envFlags.prp_mode_off &&
-      !this.pageTabs.find((x) => x.tab === 'info')?.subtabs?.find((t) => t.value === 'progress')
-    ) {
-      this.pageTabs
-        .find((t) => t.tab === 'info')
-        ?.subtabs?.push(
-          {label: getTranslation('RESULTS_REPORTED_SUBTAB'), value: 'progress'},
-          {label: getTranslation('REPORTS_SUBTAB'), value: 'reports'}
-        );
+    let progressTab = this.pageTabs.find((x) => x.tab === TABS.Progress);
+    if (progressTab) {
+      // tab already configured
+      return;
+    } else {
+      progressTab = cloneDeep(this.progressTabTemplate);
     }
+    // Results Reported, Reports tabs are visible only for unicef users if flag prp_mode_off is not ON
+    if (envFlags && !envFlags.prp_mode_off && !progressTab?.subtabs?.find((t) => t.value === TABS.ResultsReported)) {
+      progressTab?.subtabs?.push(
+        {label: getTranslation('RESULTS_REPORTED_SUBTAB'), value: TABS.ResultsReported},
+        {label: getTranslation('REPORTS_SUBTAB'), value: TABS.Reports}
+      );
+    }
+    this.pageTabs.push(progressTab);
   }
 
   checkReviewTab(state: RootState): void {
     const tabIndex = this.pageTabs.findIndex((x) => x.tab === 'review');
     const unicefUser = get(state, 'user.data.is_unicef_user');
     if (tabIndex === -1 && unicefUser) {
-      const pasteTo = this.pageTabs.findIndex((x) => x.tab === 'info');
+      const pasteTo = this.pageTabs.findIndex((x) => x.tab === TABS.Progress);
       this.pageTabs.splice(pasteTo, 0, {
         tab: TABS.Review,
         tabLabel: getTranslation('REVIEW_TAB'),
@@ -399,7 +398,7 @@ export class InterventionTabs extends connectStore(LitElement) {
     const tabIndex = this.pageTabs.findIndex((x) => x.tab === 'attachments');
     const canView = get(state, 'interventions.current.permissions.view.attachments');
     if (tabIndex === -1 && canView) {
-      const pasteTo = this.pageTabs.findIndex((x) => x.tab === 'info');
+      const pasteTo = this.pageTabs.findIndex((x) => x.tab === TABS.Progress);
       this.pageTabs.splice(pasteTo, 0, {
         tab: TABS.Attachments,
         tabLabel: (getTranslation('ATTACHMENTS_TAB') as unknown) as string,

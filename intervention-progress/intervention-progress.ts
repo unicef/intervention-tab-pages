@@ -1,10 +1,9 @@
 import {customElement, html, LitElement, property} from 'lit-element';
 import '../common/layout/etools-tabs.js';
 import {fireEvent} from '../utils/fire-custom-event.js';
-import './intervention-summary.js';
 import './intervention-implementation-status.js';
 import './intervention-monitoring-activities.js';
-import './intervention-progress.js';
+import './intervention-results-reported.js';
 import './intervention-reports.js';
 import get from 'lodash-es/get';
 import {pageIsNotCurrentlyActive} from '../utils/common-methods.js';
@@ -13,8 +12,8 @@ import {isUnicefUser} from '../common/selectors.js';
 import {connectStore} from '../common/mixins/connect-store-mixin.js';
 import {TABS} from '../common/constants.js';
 
-@customElement('intervention-info')
-export class InterventionInfo extends connectStore(LitElement) {
+@customElement('intervention-progress')
+export class InterventionProgress extends connectStore(LitElement) {
   render() {
     return html`
       <style>
@@ -22,7 +21,6 @@ export class InterventionInfo extends connectStore(LitElement) {
           display: none;
         }
       </style>
-      <intervention-summary ?hidden="${this.activeSubTab !== 'summary'}"></intervention-summary>
       ${this.isUnicefUser
         ? html`
             <intervention-implementation-status
@@ -31,7 +29,9 @@ export class InterventionInfo extends connectStore(LitElement) {
             <intervention-monitoring-activities
               ?hidden="${this.activeSubTab !== TABS.MonitoringActivities}"
             ></intervention-monitoring-activities>
-            <intervention-progress ?hidden="${this.activeSubTab !== 'progress'}"></intervention-progress>
+            <intervention-results-reported
+              ?hidden="${this.activeSubTab !== TABS.ResultsReported}"
+            ></intervention-results-reported>
             <intervention-reports ?hidden="${this.activeSubTab !== 'reports'}"></intervention-reports>
           `
         : ''}
@@ -54,7 +54,7 @@ export class InterventionInfo extends connectStore(LitElement) {
   }
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'info')) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Progress)) {
       return;
     }
 

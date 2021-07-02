@@ -26,6 +26,7 @@ import {GenericObject, User} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {currentIntervention} from '../common/selectors';
 import {sharedStyles} from '../common/styles/shared-styles-lit';
+import {TABS} from '../common/constants';
 
 /**
  * @polymer
@@ -248,7 +249,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
   }
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'info', 'reports')) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Progress, 'reports')) {
       return;
     }
 

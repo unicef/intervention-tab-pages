@@ -14,6 +14,7 @@ import {InfoElementStyles} from '../../common/styles/info-element-styles';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {FrsDetails, Intervention} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {TABS} from '../../common/constants';
 
 /**
  * @customElement
@@ -148,7 +149,6 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
             <span>${translate('BUDGET_TOOLTIP')}</span>
           </span>
         </etools-info-tooltip>
-
       </section>
     `;
   }
@@ -170,7 +170,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
 
   public stateChanged(state: RootState) {
     if (
-      pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'results') ||
+      pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan) ||
       !state.interventions.current
     ) {
       return;

@@ -10,8 +10,8 @@ import {fireEvent} from '../utils/fire-custom-event';
 /**
  * @customElement
  */
-@customElement('intervention-results')
-export class InterventionResults extends LitElement {
+@customElement('intervention-workplan')
+export class InterventionWorkplan extends LitElement {
   render() {
     // language=HTML
     return html`

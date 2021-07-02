@@ -26,6 +26,7 @@ import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {get as getTranslation, translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
+import {TABS} from '../../common/constants';
 
 const customStyles = html`
   <style>
@@ -147,7 +148,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
     if (!state.interventions.current) {
       return;
     }
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'results')) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan)) {
       return;
     }
     this.interventionId = state.interventions.current.id!;

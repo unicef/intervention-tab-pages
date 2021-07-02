@@ -100,34 +100,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
             </paper-textarea>
           </div>
         </div>
-        <div class="row-padding-v pb-20">
-          <div class="w100">
-            <label class="paper-label">${translate(translatesMap.sustainability_rating)}</label>
-          </div>
-          ${this._getRatingRadioButtonGroupTemplate(
-            this.editMode,
-            this.data.sustainability_rating,
-            'sustainability_rating',
-            this.ratings,
-            this.permissions.edit.sustainability_rating
-          )}
-          <div class="col col-12 pl-none">
-            <paper-textarea
-              label=${translate(translatesMap.sustainability_narrative)}
-              always-float-label
-              class="w100"
-              placeholder="&#8212;"
-              rows="${detailsTextareaRowsCount(this.editMode)}"
-              max-rows="4"
-              .value="${this.data.sustainability_narrative}"
-              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'sustainability_narrative')}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.sustainability_narrative)}"
-              ?required="${this.permissions.required.sustainability_narrative}"
-              maxlength="3000"
-            >
-            </paper-textarea>
-          </div>
-        </div>
+        
         <div class="row-padding-v pb-20">
           <div class="w100">
             <label class="paper-label">${translate(translatesMap.equity_rating)}</label>
@@ -151,6 +124,35 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'equity_narrative')}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.equity_narrative)}"
               ?required="${this.permissions.required.equity_narrative}"
+              maxlength="3000"
+            >
+            </paper-textarea>
+          </div>
+        </div>
+
+        <div class="row-padding-v pb-20">
+          <div class="w100">
+            <label class="paper-label">${translate(translatesMap.sustainability_rating)}</label>
+          </div>
+          ${this._getRatingRadioButtonGroupTemplate(
+            this.editMode,
+            this.data.sustainability_rating,
+            'sustainability_rating',
+            this.ratings,
+            this.permissions.edit.sustainability_rating
+          )}
+          <div class="col col-12 pl-none">
+            <paper-textarea
+              label=${translate(translatesMap.sustainability_narrative)}
+              always-float-label
+              class="w100"
+              placeholder="&#8212;"
+              rows="${detailsTextareaRowsCount(this.editMode)}"
+              max-rows="4"
+              .value="${this.data.sustainability_narrative}"
+              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'sustainability_narrative')}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.sustainability_narrative)}"
+              ?required="${this.permissions.required.sustainability_narrative}"
               maxlength="3000"
             >
             </paper-textarea>
