@@ -19,7 +19,7 @@ export class AreYouSure extends LitElement {
         opened
         theme="confirmation"
         .okBtnText="${this.confirmBtnText}"
-        cancel-btn-text=${translate('GENERAL.CANCEL')}
+        cancel-btn-text=${this.cancelBtnText}
         @close="${(e: CustomEvent) => this.handleDialogClosed(e)}"
         @confirm-btn-clicked="${(e: CustomEvent) => this.handleDialogClosed(e)}"
       >
@@ -33,10 +33,16 @@ export class AreYouSure extends LitElement {
   @property({type: String})
   confirmBtnText = 'OK';
 
-  set dialogData({content, confirmBtnText}: any) {
+  @property({type: String})
+  cancelBtnText = (translate('CANCEL') as unknown) as string;
+
+  set dialogData({content, confirmBtnText, cancelBtnText}: any) {
     this.content = content;
     if (confirmBtnText) {
       this.confirmBtnText = confirmBtnText;
+    }
+    if (cancelBtnText) {
+      this.cancelBtnText = cancelBtnText;
     }
   }
 
