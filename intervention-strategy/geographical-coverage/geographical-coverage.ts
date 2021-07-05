@@ -34,7 +34,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
   }
 
   render() {
-    if (!this.data) {
+    if (!this.data || !this.permissions) {
       return html`<style>
           ${sharedStyles}
         </style>
