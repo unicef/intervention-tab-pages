@@ -28,10 +28,6 @@ export class MonitoringVisitsList extends LitElement {
         ${sharedStyles} .monitoring-visits-container {
           position: relative;
         }
-        etools-loading {
-          margin-top: -10px;
-          margin-bottom: -40px;
-        }
       </style>
 
       <div class="monitoring-visits-container">
