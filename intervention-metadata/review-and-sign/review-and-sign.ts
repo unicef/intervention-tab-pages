@@ -20,8 +20,6 @@ import {isJsonStrMatch} from '../../utils/utils';
 import {RootState} from '../../common/types/store.types';
 import {selectReviewData, selectDatesAndSignaturesPermissions} from '../../common/managementDocument.selectors';
 import {ReviewDataPermission, ReviewData} from './managementDocument.model';
-import {getEndpoint} from '../../utils/endpoint-helper';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {isEmpty, cloneDeep} from 'lodash-es';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {patchIntervention} from '../../common/actions/interventions';
@@ -289,9 +287,6 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
 
   @property({type: String})
   unicefDateValidatorErrorMessage!: string;
-
-  @property({type: String})
-  uploadEndpoint: string = getEndpoint(interventionEndpoints.attachmentsUpload).url;
 
   @property({type: Boolean})
   isUnicefUser = false;

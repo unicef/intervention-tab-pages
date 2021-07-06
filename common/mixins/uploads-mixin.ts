@@ -2,6 +2,9 @@ import {LitElement, property} from 'lit-element';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {Constructor} from '@unicef-polymer/etools-types';
+import {getStore} from '../../utils/redux-store-access';
+import {DECREASE_UNSAVED_UPLOADS, INCREASE_UPLOADS_IN_PROGRESS} from '../../common/actions/actionsContants';
+
 /**
  * @polymer
  * @mixinFunction
@@ -29,10 +32,12 @@ function UploadsMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
     public _onUploadStarted(e: any) {
       e.stopImmediatePropagation();
+      getStore().dispatch({type: INCREASE_UPLOADS_IN_PROGRESS});
     }
 
     public _onChangeUnsavedFile(e: any) {
       e.stopImmediatePropagation();
+      getStore().dispatch({type: DECREASE_UNSAVED_UPLOADS});
     }
   }
   return UploadsClass;

@@ -8,7 +8,7 @@ import './common/components/cancel/cancel-justification';
 import './common/layout/status/etools-status';
 import './intervention-actions/intervention-actions';
 import './common/components/prp-country-data/prp-country-data';
-import {customElement, LitElement, html, property, css} from 'lit-element';
+import {customElement, LitElement, html, property, css, query} from 'lit-element';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {getStore, getStoreAsync} from './utils/redux-store-access';
@@ -32,7 +32,12 @@ import {translate, get as getTranslation} from 'lit-translate';
 import {EtoolsTabs} from './common/layout/etools-tabs';
 import {ROOT_PATH} from './config/config';
 import {reviews} from './common/reducers/officers-reviews';
+import {uploadStatus} from './common/reducers/upload-status';
 import {TABS} from './common/constants';
+import UploadMixin from './common/mixins/uploads-mixin';
+import './common/layout/are-you-sure';
+import {openDialog} from './utils/dialog';
+import {RESET_UNSAVED_UPLOADS, RESET_UPLOADS_IN_PROGRESS} from './common/actions/actionsContants';
 
 const MOCKUP_STATUSES = [
   ['draft', 'Draft'],
@@ -47,7 +52,7 @@ const MOCKUP_STATUSES = [
  * @customElement
  */
 @customElement('intervention-tabs')
-export class InterventionTabs extends connectStore(LitElement) {
+export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   static get styles() {
     // language=css
     return [
@@ -174,6 +179,7 @@ export class InterventionTabs extends connectStore(LitElement) {
             .activeTab="${this.activeTab}"
             .activeSubTab="${this.activeSubTab}"
             @iron-select="${this.handleTabChange}"
+            @iron-activate="${this.handleTabActivate}"
           ></etools-tabs-lit>
         </div>
       </intervention-page-content-header>
@@ -260,6 +266,9 @@ export class InterventionTabs extends connectStore(LitElement) {
   @property({type: Boolean, attribute: 'is-in-amendment', reflect: true})
   isInAmendment = false;
 
+  @query('etools-tabs-lit')
+  etoolsTabs!: EtoolsTabs;
+
   /*
    * Used to avoid unnecessary get intervention request
    */
@@ -275,7 +284,8 @@ export class InterventionTabs extends connectStore(LitElement) {
       (store as any).addReducers({
         commentsData,
         interventions,
-        reviews
+        reviews,
+        uploadStatus
       });
     });
   }
@@ -323,6 +333,10 @@ export class InterventionTabs extends connectStore(LitElement) {
     if (currentInterventionId !== this.interventionId) {
       this.interventionId = currentInterventionId;
       this.loadInterventionData(currentInterventionId);
+    }
+
+    if (get(state, 'uploadStatus')) {
+      this.uploadsStateChanged(state);
     }
 
     // on routing change
@@ -448,6 +462,13 @@ export class InterventionTabs extends connectStore(LitElement) {
     return '';
   }
 
+  handleTabActivate(e: CustomEvent) {
+    if (this.existsUnsavedUploads(e)) {
+      e.preventDefault();
+      return;
+    }
+  }
+
   handleTabChange(e: CustomEvent) {
     const isSubtabParent = e.detail.item.getAttribute('is-subtabs-parent');
     if (isSubtabParent) {
@@ -459,7 +480,33 @@ export class InterventionTabs extends connectStore(LitElement) {
       return;
     }
     this.tabChanged(newTabName, this.activeTab, newSubTab, this.activeSubTab);
-    this.fixIntermittent2TabsUnderlined(e.target as EtoolsTabs);
+    this.fixIntermittent2TabsUnderlined(this.etoolsTabs);
+  }
+
+  existsUnsavedUploads(e: CustomEvent) {
+    if (Number(this.uploadsInProgress) > 0 || Number(this.unsavedUploads) > 0) {
+      this.confirmLeaveUploadsUnsavedDialog(e);
+      return true;
+    }
+    return false;
+  }
+
+  async confirmLeaveUploadsUnsavedDialog(e: CustomEvent) {
+    const confirmed = await openDialog({
+      dialog: 'are-you-sure',
+      dialogData: {
+        content: translate('LEAVE_UPLOADS_UNSAVED'),
+        confirmBtnText: translate('LEAVE'),
+        cancelBtnText: translate('STAY')
+      }
+    }).then(({confirmed}) => {
+      return confirmed;
+    });
+    if (confirmed) {
+      getStore().dispatch({type: RESET_UNSAVED_UPLOADS});
+      getStore().dispatch({type: RESET_UPLOADS_IN_PROGRESS});
+      this.handleTabChange(e);
+    }
   }
 
   fixIntermittent2TabsUnderlined(etoolsTabs: EtoolsTabs) {
