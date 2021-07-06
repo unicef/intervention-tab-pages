@@ -144,7 +144,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
           </div>
         </div>
 
-        <etools-info-tooltip icon="icons:info" id="not-allowed-icon">
+        <etools-info-tooltip icon="icons:info" position="left" id="not-allowed-icon">
           <span slot="message">
             <span>${translate('BUDGET_TOOLTIP')}</span>
           </span>
