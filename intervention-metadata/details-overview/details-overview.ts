@@ -89,7 +89,7 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
             <div class="input-label">${this.getPartnerPseaRiskRatingHtml()}</div>
           </div>
 
-          <etools-info-tooltip icon="icons:info" id="not-allowed-icon">
+          <etools-info-tooltip icon="icons:info" position="left" id="not-allowed-icon">
             <span slot="message">
               <span>${translate('METADATA_TOOLTIP')}</span>
             </span>

@@ -108,7 +108,7 @@ export class TimingOverview extends CommentsMixin(LitElement) {
           </div>
         </div>
 
-        <etools-info-tooltip icon="icons:info" id="not-allowed-icon">
+        <etools-info-tooltip icon="icons:info" position="left" id="not-allowed-icon">
           <span slot="message">
             <span>${translate('TIMING_TOOLTIP')}</span>
           </span>

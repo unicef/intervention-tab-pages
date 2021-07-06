@@ -439,7 +439,7 @@
   "AMENDMENT_MODE_TEXT": "This PD is in amendment. See",
   "ORIGINAL_VERSION": "original version",
   "DELETE_AMENDMENT_QUESTION": "delete this amendment?",
-  "BUDGET_TOOLTIP": "These are the readonly TOTALS of the values entered below for PD Output Activities, EEF, Supplies",
+  "BUDGET_TOOLTIP": "These are the readonly TOTALS of the values entered below for PD Output Activities, Effective and Efficient Programme Management, Supplies",
   "TIMING_TOOLTIP": "These are the centralised and readonly Dates of when the said actions have been taken on the PD",
   "METADATA_TOOLTIP": "Readonly display of values entered on the PD"
 }
