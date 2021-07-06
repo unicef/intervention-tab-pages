@@ -20,7 +20,7 @@
   "CANCEL": "Cancel",
   "STAY": "Stay",
   "LEAVE": "Leave",
-  "LEAVE_UPLOADS_UNSAVED": "Are you sure you want to leave this page? All file uploads in progress or unsaved will be lost!",
+  "LEAVE_UPLOADS_UNSAVED": "Are you sure you want to leave this page? You have unsaved uploaded files!",
   "ORIGINAL_VALUE": "Original value",
   "PLANNED_BUDGET": "Planned Budget",
   "SEND_FOR_SIGNATURE": "Are you sure you want to send for signature?",
