@@ -4,7 +4,8 @@ import {translate} from 'lit-translate';
 import {formatDate} from '../../utils/date-utils';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {REVIEW_TYPES} from '../review.const';
+import {PRC_REVIEW, NON_PRC_REVIEW, NO_REVIEW} from '../review.const';
+import {get as getTranslation} from 'lit-translate';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 
 @customElement('general-review-information')
@@ -45,6 +46,13 @@ export class GeneralReviewInformation extends LitElement {
   }
   @property() review?: InterventionReview;
 
+  @property({type: Object})
+  reviewTypes = new Map([
+    [PRC_REVIEW, getTranslation('PRC_REVIEW')],
+    [NON_PRC_REVIEW, getTranslation('NON_PRC_REVIEW')],
+    [NO_REVIEW, getTranslation('NO_REVIEW')]
+  ]);
+
   get reviewCreatedDate(): string {
     return this.review?.created_date ? formatDate(this.review.created_date, 'DD MMM YYYY') : '-';
   }
@@ -63,7 +71,7 @@ export class GeneralReviewInformation extends LitElement {
             </div>
             <div class="info-block">
               <div class="label">${translate('REVIEW_TYPE')}</div>
-              <div class="value">${REVIEW_TYPES.get(this.review?.review_type || '-')}</div>
+              <div class="value">${this.reviewTypes.get(this.review?.review_type || '-')}</div>
             </div>
             <div class="info-block">
               <div class="label">${translate('SUBMITTED_BY')}</div>

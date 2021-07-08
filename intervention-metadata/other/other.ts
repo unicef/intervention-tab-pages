@@ -21,6 +21,7 @@ import {translate} from 'lit-translate';
 import {OtherData, OtherPermissions} from './other.models';
 import {selectOtherData, selectOtherPermissions} from './other.selectors';
 import CONSTANTS from '../../common/constants';
+import {translatesMap} from '../../utils/intervention-labels-map';
 
 /**
  * @customElement
@@ -86,8 +87,12 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               required
               .options="${this.documentTypes}"
               .selected="${this.data.document_type}"
-              @etools-selected-item-changed="${({detail}: CustomEvent) =>
-                this.documentTypeChanged(detail.selectedItem && detail.selectedItem.value)}"
+              @etools-selected-item-changed="${({detail}: CustomEvent) => {
+                if (!detail.selectedItem) {
+                  return;
+                }
+                this.documentTypeChanged(detail.selectedItem && detail.selectedItem.value);
+              }}"
               trigger-value-change-event
               hide-search
               @focus="${() => resetRequiredFields(this)}"
@@ -130,7 +135,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               id="currencyDd"
               option-value="value"
               option-label="label"
-              label=${translate('DOCUMENT_CURRENCY')}
+              label=${translate(translatesMap.currency)}
               placeholder="&#8212;"
               .options="${this.currencies}"
               .selected="${this.data.planned_budget.currency}"

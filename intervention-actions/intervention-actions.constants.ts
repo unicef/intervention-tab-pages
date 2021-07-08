@@ -19,10 +19,19 @@ export const SIGNATURE = 'signature';
 export const AMENDMENT_MERGE = 'amendment_merge';
 export const TERMINATE = 'terminate';
 export const REJECT_REVIEW = 'reject_review';
+export const ACCEPT_ON_BEHALF_OF_PARTNER = 'accept_on_behalf_of_partner';
 
 export const EXPORT_ACTIONS = [EXPORT_CSV, EXPORT_PDF, EXPORT_COMMENTS];
 export const BACK_ACTIONS = [SEND_TO_PARTNER, SEND_TO_UNICEF, UNLOCK, REJECT_REVIEW];
-export const ACTIONS_WITH_INPUT = [CANCEL, TERMINATE, REVIEW, PRC_REVIEW, REJECT_REVIEW, SIGN];
+export const ACTIONS_WITH_INPUT = [
+  CANCEL,
+  TERMINATE,
+  REVIEW,
+  PRC_REVIEW,
+  REJECT_REVIEW,
+  SIGN,
+  ACCEPT_ON_BEHALF_OF_PARTNER
+];
 export const ACTIONS_WITHOUT_CONFIRM = [PRC_REVIEW, REJECT_REVIEW, SIGN];
 
 export const namesMap: GenericObject<string> = {
@@ -37,5 +46,5 @@ export const namesMap: GenericObject<string> = {
   [CANCEL]: getTranslation('GENERAL.CANCEL'),
   [TERMINATE]: getTranslation('TERMINATE'),
   [REJECT_REVIEW]: getTranslation('REJECT_REVIEW'),
-  [SIGN]: getTranslation('ACCEPT_REVIEW')
+  [ACCEPT_ON_BEHALF_OF_PARTNER]: getTranslation('ACCEPT_ON_BEHALF_OF_PARTNER')
 };

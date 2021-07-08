@@ -18,10 +18,8 @@ import {getStore} from '../../utils/redux-store-access';
 import {isJsonStrMatch} from '../../utils/utils';
 
 import {RootState} from '../../common/types/store.types';
-import {selectReviewData, selectReviewDataPermissions} from './managementDocument.selectors';
+import {selectReviewData, selectDatesAndSignaturesPermissions} from '../../common/managementDocument.selectors';
 import {ReviewDataPermission, ReviewData} from './managementDocument.model';
-import {getEndpoint} from '../../utils/endpoint-helper';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {isEmpty, cloneDeep} from 'lodash-es';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {patchIntervention} from '../../common/actions/interventions';
@@ -169,9 +167,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
             <!-- Signed by UNICEF Authorized Officer -->
             <paper-input-container>
               <div slot="input" class="paper-input-input">
-                <span class="input-value"> ${translate(
-                  'SIGNED_UNICEF_AUTH_OFFICER'
-                )}</span>
+                <span class="input-value"> ${translate('SIGNED_UNICEF_AUTH_OFFICER')}</span>
               </div>
             </paper-input-container>
           </div>
@@ -222,9 +218,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
             </etools-dropdown>
             ${
               this.isReadonly(this.editMode, this.permissions?.edit.unicef_signatory)
-                ? html`<label for="unicefSignatory" class="paper-label"
-                      >${translate('SIGNED_UNICEF')}</label
-                    >
+                ? html`<label for="unicefSignatory" class="paper-label">${translate('SIGNED_UNICEF')}</label>
                     <div id="unicefSignatory">
                       ${this.renderReadonlyUserDetails(
                         this.originalData?.unicef_signatory ? [this.originalData?.unicef_signatory] : []
@@ -294,9 +288,6 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
   @property({type: String})
   unicefDateValidatorErrorMessage!: string;
 
-  @property({type: String})
-  uploadEndpoint: string = getEndpoint(interventionEndpoints.attachmentsUpload).url;
-
   @property({type: Boolean})
   isUnicefUser = false;
 
@@ -315,7 +306,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
     if (state.interventions.current) {
       this.data = selectReviewData(state);
       this.originalData = cloneDeep(this.data);
-      const permissions = selectReviewDataPermissions(state);
+      const permissions = selectDatesAndSignaturesPermissions(state);
       if (!isJsonStrMatch(this.permissions, permissions)) {
         this.permissions = permissions;
         this.set_canEditAtLeastOneField(this.permissions.edit);

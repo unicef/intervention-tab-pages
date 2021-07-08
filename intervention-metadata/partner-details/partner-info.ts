@@ -102,14 +102,12 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
             </paper-input>
           </div>
           <div class="col col-5 layout-vertical">
-            <label for="agreementAuthOff" class="paper-label"
-              >${translate('AGREEMENT_AUTHORIZED_OFFICERS')}</label
-            >
+            <label for="agreementAuthOff" class="paper-label">${translate('AGREEMENT_AUTHORIZED_OFFICERS')}</label>
             <div id="agreementAuthOff">${this.renderAgreementAuthorizedOfficers(this.agreementAuthorizedOfficers)}</div>
           </div>
         </div>
         <div class="row-padding-v">
-          <div class="col col-7 layout-vertical" ?hidden="${!this.permissions?.view.partner_focal_points}">
+          <div class="col col-7 layout-vertical" ?hidden="${!this.permissions?.view!.partner_focal_points}">
             <etools-dropdown-multi
               label=${translate('PARTNER_FOCAL_POINTS')}
               .selectedValues="${this.data?.partner_focal_points?.map((f: any) => f.id)}"
@@ -124,9 +122,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
             >
             </etools-dropdown-multi>
             ${this.isReadonly(this.editMode, this.permissions?.edit.partner_focal_points)
-              ? html`<label for="focalPointsDetails" class="paper-label"
-                    >${translate('PARTNER_FOCAL_POINTS')}</label
-                  >
+              ? html`<label for="focalPointsDetails" class="paper-label">${translate('PARTNER_FOCAL_POINTS')}</label>
                   <div id="focalPointsDetails">
                     ${this.renderReadonlyUserDetails(
                       this.originalData?.partner_focal_points ? this.originalData?.partner_focal_points : []

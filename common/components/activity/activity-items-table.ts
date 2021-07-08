@@ -16,7 +16,8 @@ import {AnyObject, InterventionActivityItem} from '@unicef-polymer/etools-types'
 import {callClickOnSpacePushListener} from '../../../utils/common-methods';
 import {PaperTextareaElement} from '@polymer/paper-input/paper-textarea';
 import {translate} from 'lit-translate';
-import {sharedStyles} from '../../styles/shared-styles-lit';
+import {sharedStyles} from '../../../common/styles/shared-styles-lit';
+import {translatesMap} from '../../../utils/intervention-labels-map';
 
 @customElement('activity-items-table')
 export class ActivityItemsTable extends LitElement {
@@ -41,6 +42,8 @@ export class ActivityItemsTable extends LitElement {
 
   @property() activityItems: Partial<InterventionActivityItem>[] = [];
   @property() readonly: boolean | undefined = false;
+  @property({type: String})
+  currency = '';
 
   protected render(): TemplateResult {
     // language=html
@@ -52,14 +55,14 @@ export class ActivityItemsTable extends LitElement {
         <div class="grid-cell header-cell left">
           <label required>${translate('ITEM_DESCRIPTION')}</label>
         </div>
-        <div class="grid-cell header-cell left"><label required>${translate('UNIT')}</label></div>
-        <div class="grid-cell header-cell end"><label required>${translate('NUMBER_UNITS')}</label></div>
+        <div class="grid-cell header-cell left"><label required>${translate(translatesMap.unit)}</label></div>
+        <div class="grid-cell header-cell end"><label required>${translate(translatesMap.no_units)}</label></div>
         <div class="grid-cell header-cell end">${translate('PRICE_UNIT')}</div>
         <div class="grid-cell header-cell end">${translate('TOTAL_COST')}</div>
         <div class="grid-cell header-cell end">${translate('PARTNER_CASH')}</div>
         <div class="grid-cell header-cell end">${translate('UNICEF_CASH')}</div>
         <div class="grid-cell header-cell"></div>
-        <div class="grid-cell header-cell end">${translate('TOTAL_CASH')}</div>
+        <div class="grid-cell header-cell end">${translate('TOTAL_CASH')} (${this.currency})</div>
       </div>
 
       ${this.activityItems.map(
@@ -70,6 +73,7 @@ export class ActivityItemsTable extends LitElement {
             @remove-item="${() => this.updateActivityItem(index, null)}"
             .readonly="${this.readonly}"
             .lastItem="${this.isLastItem(index)}"
+            .currency="${this.currency}"
           ></activity-item-row>`
       )}
       ${!this.readonly

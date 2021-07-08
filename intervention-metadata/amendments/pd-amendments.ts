@@ -27,6 +27,7 @@ import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {getStore} from '../../utils/redux-store-access';
 import {getIntervention} from '../../common/actions/interventions';
 import {fireEvent} from '../../utils/fire-custom-event';
+import './amendment-difference';
 
 /**
  * @customElement
@@ -184,6 +185,11 @@ export class PdAmendments extends CommentsMixin(LitElement) {
                         </a>
                       </span>
                     </div>
+                  </div>
+
+                  <div class="info-block">
+                    <div class="label">Difference</div>
+                    <amendment-difference .difference="${item.difference}"></amendment-difference>
                   </div>
                 </div>
               </etools-data-table-row>

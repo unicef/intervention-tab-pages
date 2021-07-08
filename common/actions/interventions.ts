@@ -1,10 +1,12 @@
 import {_sendRequest} from '../../utils/request-helper';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {INTERVENTION_LOADING, SHOW_TOAST, UPDATE_CURRENT_INTERVENTION} from '../actionsConstants';
+import {INTERVENTION_LOADING, SHOULD_REGET_LIST, SHOW_TOAST, UPDATE_CURRENT_INTERVENTION} from '../actionsConstants';
 import {AnyObject, PlannedBudget, Intervention} from '@unicef-polymer/etools-types';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {PartnerReportingRequirements} from '../types/store.types';
+import {pick} from 'lodash-es';
+import {isJsonStrMatch} from '../../utils/utils';
 
 export const updateCurrentIntervention = (intervention: AnyObject | null) => {
   if (intervention && !intervention.planned_budget) {
@@ -20,6 +22,13 @@ export const setInterventionLoading = (loadingState: number | null) => {
   return {
     type: INTERVENTION_LOADING,
     loadingState: loadingState
+  };
+};
+
+export const setShouldReGetList = (reGet: boolean) => {
+  return {
+    type: SHOULD_REGET_LIST,
+    shouldReGetList: reGet
   };
 };
 
@@ -64,14 +73,39 @@ export const patchIntervention = (interventionChunck: any, interventionId?: stri
   if (!interventionId) {
     interventionId = getState().app.routeDetails.params.interventionId;
   }
+  const prevInterventionState = getState().interventions?.current;
   return _sendRequest({
     endpoint: getEndpoint(interventionEndpoints.intervention, {interventionId: interventionId}),
     body: interventionChunck,
     method: 'PATCH'
   }).then((intervention: Intervention) => {
     dispatch(updateCurrentIntervention(intervention));
+
+    if (shouldReGetList(prevInterventionState, intervention)) {
+      dispatch(setShouldReGetList(true));
+    }
   });
 };
+
+function shouldReGetList(prevInterventionState: Intervention, currentInterventionState: Intervention) {
+  const fieldsDisplayedOnList = [
+    'number',
+    'partner_name',
+    'document_type',
+    'status',
+    'titl',
+    'start',
+    'end',
+    'planned_budget',
+    'partner_accepted',
+    'unicef_accepted',
+    'unicef_court',
+    'date_sent_to_partner'
+  ];
+  const prevI = pick(prevInterventionState, fieldsDisplayedOnList);
+  const currentI = pick(currentInterventionState, fieldsDisplayedOnList);
+  return !isJsonStrMatch(prevI, currentI);
+}
 
 export const updatePartnerReportingRequirements = (newReportingRequirements: PartnerReportingRequirements) => {
   return {

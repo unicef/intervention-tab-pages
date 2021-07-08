@@ -1,5 +1,6 @@
 import {LitElement, customElement, html, property} from 'lit-element';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
+import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {elevationStyles} from '../../common/styles/elevation-styles';
@@ -31,7 +32,12 @@ export class TimingOverview extends CommentsMixin(LitElement) {
     }
     return html`
       ${InfoElementStyles}
-      <section class="elevation table" elevation="1" comment-element="timing-overview" comment-description="Overview">
+      <section
+        class="elevation table not-allowed"
+        elevation="1"
+        comment-element="timing-overview"
+        comment-description="Overview"
+      >
         <div class="data-column">
           <label class="paper-label">${translate('DATE_CREATED')}</label>
           <div class="input-label" ?empty="${!this.timingOverview.created}">
@@ -101,6 +107,13 @@ export class TimingOverview extends CommentsMixin(LitElement) {
             ${this.timingOverview.days_from_review_to_signed}
           </div>
         </div>
+
+        <etools-info-tooltip icon="icons:info" position="left" id="not-allowed-icon">
+          <span slot="message">
+            <span>${translate('TIMING_TOOLTIP')}</span>
+          </span>
+        </etools-info-tooltip>
+
       </section>
     `;
   }

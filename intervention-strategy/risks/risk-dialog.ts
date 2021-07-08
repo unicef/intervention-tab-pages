@@ -17,6 +17,7 @@ import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {LabelAndValue} from '@unicef-polymer/etools-types';
 import {Intervention} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {translatesMap} from '../../utils/intervention-labels-map';
 
 /**
  * @customElement
@@ -54,7 +55,7 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
           <div class="col col-4">
             <etools-dropdown
               id="type"
-              label=${translate('TYPE')}
+              label=${translate(translatesMap.risk_type)}
               .options="${this.riskTypes}"
               .selected="${this.originalData.risk_type}"
               option-value="value"
@@ -70,7 +71,7 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
           <div class="col col-8">
             <paper-textarea
               id="mitigationMeasures"
-              label=${translate('PROPOSED_MITIGATION_MEASURES')}
+              label=${translate(translatesMap.mitigation_measures)}
               always-float-label
               type="text"
               .autoValidate="${this.autoValidate}"

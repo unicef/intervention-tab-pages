@@ -43,6 +43,8 @@ export class ActivityItemRow extends LitElement {
   @property() invalidSum = false;
   @property() readonly: boolean | undefined = false;
   @property() lastItem: boolean | undefined = false;
+  @property({type: String})
+  currency = '';
 
   protected render(): TemplateResult {
     return this.activityItem
@@ -179,7 +181,7 @@ export class ActivityItemRow extends LitElement {
 
             <div
               class="grid-cell last-cell end ${!this.lastItem && this.readonly ? 'border' : ''}"
-              data-col-header-label="${translate('TOTAL_CASH')}"
+              data-col-header-label="${translate('TOTAL_CASH')} (${this.currency})"
             >
               <span class="total">
                 ${getTotal(this.activityItem.cso_cash || 0, this.activityItem.unicef_cash || 0)}

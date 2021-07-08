@@ -26,6 +26,7 @@ import {AnyObject, CountryProgram, Permission, AsyncAction, User} from '@unicef-
 import isEmpty from 'lodash-es/isEmpty';
 import uniqBy from 'lodash-es/uniqBy';
 import {translate} from 'lit-translate';
+import {translatesMap} from '../../utils/intervention-labels-map';
 
 /**
  * @customElement
@@ -73,7 +74,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
           <div class="col col-4">
             <etools-dropdown-multi
               id="officeInput"
-              label=${translate('UNICEF_OFFICES')}
+              label=${translate(translatesMap.offices)}
               class="row-padding-v"
               .options="${this.office_list}"
               option-label="name"
@@ -90,7 +91,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
           <div class="col col-4">
             <etools-dropdown-multi
               id="sectionInput"
-              label=${translate('UNICEF_SECTIONS')}
+              label=${translate(translatesMap.sections)}
               class="row-padding-v"
               .options="${this.section_list}"
               option-label="name"
@@ -119,7 +120,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
           </div>
         </div>
         <div class="layout-horizontal row-padding-v">
-          ${this.permissions.view.unicef_focal_points
+          ${this.permissions.view!.unicef_focal_points
             ? html`<div class="col col-4">
                 <etools-dropdown-multi
                   id="focalPointInput"

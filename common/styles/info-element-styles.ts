@@ -30,5 +30,25 @@ export const InfoElementStyles = html`
       display: flex;
       align-items: center;
     }
+    .not-allowed,
+    .not-allowed label {
+      cursor: not-allowed !important;
+    }
+    section.not-allowed.table {
+      padding-right: 40px !important;
+    }
+    #not-allowed-icon {
+      --etools-tooltip-trigger-icon: {
+        position: absolute;
+        right: 24px;
+        top: 12px;
+        color: var(--primary-color);
+        cursor: default !important;
+      }
+      --paper-tooltip: {
+        font-size: 14px !important;
+        white-space: normal !important;
+      }
+    }
   </style>
 `;
