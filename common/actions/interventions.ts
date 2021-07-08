@@ -1,12 +1,12 @@
-import {_sendRequest} from '../../utils/request-helper';
-import {getEndpoint} from '../../utils/endpoint-helper';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {_sendRequest} from '../../../../common/utils/request-helper';
+import {getEndpoint} from '../../../../common/utils/endpoint-helper';
+import {interventionEndpoints} from '../../../../common/utils/intervention-endpoints';
 import {INTERVENTION_LOADING, SHOULD_REGET_LIST, SHOW_TOAST, UPDATE_CURRENT_INTERVENTION} from '../actionsConstants';
 import {AnyObject, PlannedBudget, Intervention} from '@unicef-polymer/etools-types';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {PartnerReportingRequirements} from '../types/store.types';
 import {pick} from 'lodash-es';
-import {isJsonStrMatch} from '../../utils/utils';
+import {isJsonStrMatch} from '../../../../common/utils/utils';
 
 export const updateCurrentIntervention = (intervention: AnyObject | null) => {
   if (intervention && !intervention.planned_budget) {

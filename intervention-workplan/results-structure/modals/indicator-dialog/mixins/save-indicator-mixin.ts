@@ -3,13 +3,13 @@ import pick from 'lodash-es/pick';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
 import {LitElement} from 'lit-element';
-import {getEndpoint} from '../../../../../utils/endpoint-helper';
+import {getEndpoint} from '../../../../../../../common/utils/endpoint-helper';
 import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown.js';
-import {interventionEndpoints} from '../../../../../utils/intervention-endpoints';
+import {interventionEndpoints} from '../../../../../../../common/utils/intervention-endpoints';
 import {NonClusterIndicatorEl} from '../non-cluster-indicator';
 import {ClusterIndicatorEl} from '../cluster-indicator';
 import {IndicatorDisaggregations} from '../indicator-dissaggregations';
-import {getStore} from '../../../../../utils/redux-store-access';
+import {getStore} from '../../../../../../../common/utils/redux-store-access';
 import {updateCurrentIntervention} from '../../../../../common/actions/interventions';
 import {Constructor} from '@unicef-polymer/etools-types';
 

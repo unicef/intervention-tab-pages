@@ -9,23 +9,23 @@ import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {abortRequestByKey} from '@unicef-polymer/etools-ajax/etools-iron-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 
-import '../common/layout/status/intervention-report-status';
-import {isEmptyObject, isJsonStrMatch} from '../utils/utils';
-import {fireEvent} from '../utils/fire-custom-event';
+import '../../../common/layout/status/intervention-report-status';
+import {isEmptyObject, isJsonStrMatch} from '../../../common/utils/utils';
+import {fireEvent} from '../../../common/utils/fire-custom-event';
 import {RootState} from '../common/types/store.types';
-import {gridLayoutStylesLit} from '../common/styles/grid-layout-styles-lit';
+import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
 import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
-import {elevationStyles} from '../common/styles/elevation-styles';
-import CommonMixin from '../common/mixins/common-mixin';
-import EndpointsLitMixin from '../common/mixins/endpoints-mixin-lit';
-import PaginationMixin from '../common/mixins/pagination-mixin';
-import {pageIsNotCurrentlyActive} from '../utils/common-methods';
+import {elevationStyles} from '../../../common/styles/elevation-styles';
+import CommonMixin from '../../../common/mixins/common-mixin';
+import EndpointsLitMixin from '../../../common/mixins/endpoints-mixin-lit';
+import PaginationMixin from '../../../common/mixins/pagination-mixin';
+import {pageIsNotCurrentlyActive} from '../../../common/utils/common-methods';
 import get from 'lodash-es/get';
-import {connectStore} from '../common/mixins/connect-store-mixin';
+import {connectStore} from '../../../common/mixins/connect-store-mixin';
 import {GenericObject, User} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {currentIntervention} from '../common/selectors';
-import {sharedStyles} from '../common/styles/shared-styles-lit';
+import {sharedStyles} from '../../../common/styles/shared-styles-lit';
 import {TABS} from '../common/constants';
 
 /**

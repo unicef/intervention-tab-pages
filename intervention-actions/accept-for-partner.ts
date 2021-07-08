@@ -1,9 +1,9 @@
 import {customElement, html, LitElement, property} from 'lit-element';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
-import {fireEvent} from '../utils/fire-custom-event';
+import {fireEvent} from '../../../common/utils/fire-custom-event';
 import {translate} from 'lit-translate';
-import {sharedStyles} from '../common/styles/shared-styles-lit';
+import {sharedStyles} from '../../../common/styles/shared-styles-lit';
 
 @customElement('accept-for-partner')
 export class AcceptForPartner extends LitElement {

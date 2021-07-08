@@ -9,18 +9,18 @@ import '@polymer/paper-item/paper-item.js';
 import '@polymer/paper-toggle-button/paper-toggle-button.js';
 import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
-import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
+import {sharedStyles} from '../../../../../../common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../../../../../../common/styles/grid-layout-styles-lit';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import SaveIndicatorMixin from './mixins/save-indicator-mixin';
 import IndicatorDialogTabsMixin from './mixins/indicator-dialog-tabs-mixin';
-import {fireEvent} from '../../../../utils/fire-custom-event';
-import {getStore} from '../../../../utils/redux-store-access';
+import {fireEvent} from '../../../../../../common/utils/fire-custom-event';
+import {getStore} from '../../../../../../common/utils/redux-store-access';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {userIsPme} from '../../../../common/user-permissions';
-import ComponentBaseMixin from '../../../../common/mixins/component-base-mixin';
+import ComponentBaseMixin from '../../../../../../common/mixins/component-base-mixin';
 import {PaperCheckboxElement} from '@polymer/paper-checkbox';
-import '../../../../common/layout/etools-tabs';
+import '../../../../../../common/layout/etools-tabs';
 import './indicator-dissaggregations';
 import './non-cluster-indicator';
 import './cluster-indicator';
@@ -28,7 +28,7 @@ import './cluster-indicator-disaggregations';
 import {Indicator, IndicatorDialogData} from '@unicef-polymer/etools-types';
 import {AnyObject, EtoolsUser, LocationObject, Section} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
-import {translatesMap} from '../../../../utils/intervention-labels-map';
+import {translatesMap} from '../../../../../../common/utils/intervention-labels-map';
 
 @customElement('indicator-dialog')
 export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin(ComponentBaseMixin(LitElement))) {
@@ -325,9 +325,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   }
 
   setTitle() {
-    const title = this.isEditRecord
-      ? getTranslation('EDIT_INDICATOR')
-      : getTranslation('ADD_INDICATOR');
+    const title = this.isEditRecord ? getTranslation('EDIT_INDICATOR') : getTranslation('ADD_INDICATOR');
     setTimeout(() => {
       this.indicatorDialog.dialogTitle = title;
     });

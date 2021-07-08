@@ -1,16 +1,16 @@
-import {getEndpoint} from '../../../utils/endpoint-helper';
-import {interventionEndpoints} from '../../../utils/intervention-endpoints';
+import {getEndpoint} from '../../../../../common/utils/endpoint-helper';
+import {interventionEndpoints} from '../../../../../common/utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import CONSTANTS from '../../../common/constants';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {LitElement, property} from 'lit-element';
-import {isEmptyObject} from '../../../utils/utils';
+import {isEmptyObject} from '../../../../../common/utils/utils';
 import {Constructor} from '@unicef-polymer/etools-types';
-import {fireEvent} from '../../../utils/fire-custom-event';
-import {prettyDate} from '../../../utils/date-utils';
+import {fireEvent} from '../../../../../common/utils/fire-custom-event';
+import {prettyDate} from '../../../../../common/utils/date-utils';
 import {updatePartnerReportingRequirements} from '../../../common/actions/interventions';
-import {getStore} from '../../../utils/redux-store-access';
+import {getStore} from '../../../../../common/utils/redux-store-access';
 
 /**
  * @polymer

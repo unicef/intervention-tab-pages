@@ -3,25 +3,25 @@ import '@polymer/paper-button/paper-button';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
 import './grouped-locations-dialog';
 
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '../../common/styles/button-styles';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {getStore} from '../../utils/redux-store-access';
+import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '../../../../common/styles/button-styles';
+import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
+import {getStore} from '../../../../common/utils/redux-store-access';
 import {LocationsPermissions} from './geographicalCoverage.models';
 import {selectLocationsPermissions} from './geographicalCoverage.selectors';
-import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
+import ComponentBaseMixin from '../../../../common/mixins/component-base-mixin';
 import {patchIntervention} from '../../common/actions/interventions';
-import {isJsonStrMatch} from '../../utils/utils';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {isJsonStrMatch} from '../../../../common/utils/utils';
+import {pageIsNotCurrentlyActive} from '../../../../common/utils/common-methods';
 import {RootState} from '../../common/types/store.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import isEmpty from 'lodash-es/isEmpty';
 import get from 'lodash-es/get';
-import {openDialog} from '../../utils/dialog';
+import {openDialog} from '../../../../common/utils/dialog';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, LocationObject, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {translatesMap} from '../../utils/intervention-labels-map';
+import {translatesMap} from '../../../../common/utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 
 /**

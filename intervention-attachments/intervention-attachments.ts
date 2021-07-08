@@ -1,5 +1,5 @@
 import {LitElement, customElement, html} from 'lit-element';
-import {fireEvent} from '../utils/fire-custom-event';
+import {fireEvent} from '../../../common/utils/fire-custom-event';
 import './attachments-list/attachments-list';
 import './prc-document/prc-document';
 /**

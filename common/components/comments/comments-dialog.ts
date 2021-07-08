@@ -10,23 +10,23 @@ import {
   PropertyValues,
   queryAll
 } from 'lit-element';
-import {fireEvent} from '../../../utils/fire-custom-event';
+import {fireEvent} from '../../../../../common/utils/fire-custom-event';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import '@polymer/paper-input/paper-textarea';
 import './comment';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getEndpoint} from '../../../utils/endpoint-helper';
-import {interventionEndpoints} from '../../../utils/intervention-endpoints';
-import {getStore} from '../../../utils/redux-store-access';
+import {getEndpoint} from '../../../../../common/utils/endpoint-helper';
+import {interventionEndpoints} from '../../../../../common/utils/intervention-endpoints';
+import {getStore} from '../../../../../common/utils/redux-store-access';
 import {addComment, updateComment} from './comments.actions';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {RootState} from '../../types/store.types';
-import {connectStore} from '../../mixins/connect-store-mixin';
+import {connectStore} from '../../../../../common/mixins/connect-store-mixin';
 import {PaperTextareaElement} from '@polymer/paper-input/paper-textarea';
-import {setTextareasMaxHeight} from '../../../utils/textarea-max-rows-helper';
+import {setTextareasMaxHeight} from '../../../../../common/utils/textarea-max-rows-helper';
 import {InterventionComment, GenericObject} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {sharedStyles} from '../../styles/shared-styles-lit';
+import {sharedStyles} from '../../../../../common/styles/shared-styles-lit';
 
 @customElement('comments-dialog')
 export class CommentsDialog extends connectStore(LitElement) {

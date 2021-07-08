@@ -4,10 +4,10 @@ import '@unicef-polymer/etools-loading/etools-loading.js';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging.js';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
-import {fireEvent} from '../../utils/fire-custom-event';
-import {getEndpoint} from '../../utils/endpoint-helper';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import CommonMixin from '../../common/mixins/common-mixin';
+import {fireEvent} from '../../../../common/utils/fire-custom-event';
+import {getEndpoint} from '../../../../common/utils/endpoint-helper';
+import {interventionEndpoints} from '../../../../common/utils/intervention-endpoints';
+import CommonMixin from '../../../../common/mixins/common-mixin';
 import {translate} from 'lit-translate';
 
 /**

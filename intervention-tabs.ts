@@ -1,42 +1,42 @@
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-toggle-button';
 
-import './common/layout/page-content-header/intervention-page-content-header';
-import './common/layout/etools-tabs';
+import '../../common/layout/page-content-header/intervention-page-content-header';
+import '../../common/layout/etools-tabs';
 import './common/components/cancel/cancel-justification';
 // eslint-disable-next-line max-len
-import './common/layout/status/etools-status';
+import '../../common/layout/status/etools-status';
 import './intervention-actions/intervention-actions';
 import './common/components/prp-country-data/prp-country-data';
 import {customElement, LitElement, html, property, css, query} from 'lit-element';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
-import {getStore, getStoreAsync} from './utils/redux-store-access';
+import {getStore, getStoreAsync} from '../../common/utils/redux-store-access';
 import {currentPage, currentSubpage, isUnicefUser, currentSubSubpage, currentUser} from './common/selectors';
-import {elevationStyles} from './common/styles/elevation-styles';
+import {elevationStyles} from '../../common/styles/elevation-styles';
 import {RootState} from './common/types/store.types';
 import {getIntervention} from './common/actions/interventions';
-import {sharedStyles} from './common/styles/shared-styles-lit';
-import {isJsonStrMatch} from './utils/utils';
-import {pageContentHeaderSlottedStyles} from './common/layout/page-content-header/page-content-header-slotted-styles';
-import {fireEvent} from './utils/fire-custom-event';
-import {buildUrlQueryString} from './utils/utils';
+import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {isJsonStrMatch} from '../../common/utils/utils';
+import {pageContentHeaderSlottedStyles} from '../../common/layout/page-content-header/page-content-header-slotted-styles';
+import {fireEvent} from '../../common/utils/fire-custom-event';
+import {buildUrlQueryString} from '../../common/utils/utils';
 import {enableCommentMode, getComments} from './common/components/comments/comments.actions';
 import {commentsData} from './common/components/comments/comments.reducer';
 import {Store} from 'redux';
-import {connectStore} from './common/mixins/connect-store-mixin';
+import {connectStore} from '../../common/mixins/connect-store-mixin';
 import {EnvFlags, Intervention} from '@unicef-polymer/etools-types';
 import {AsyncAction, RouteDetails} from '@unicef-polymer/etools-types';
 import {interventions} from './common/reducers/interventions';
 import {translate, get as getTranslation} from 'lit-translate';
-import {EtoolsTabs} from './common/layout/etools-tabs';
-import {ROOT_PATH} from './config/config';
+import {EtoolsTabs} from '../../common/layout/etools-tabs';
+import {ROOT_PATH} from '../../common/config/config';
 import {reviews} from './common/reducers/officers-reviews';
 import {uploadStatus} from './common/reducers/upload-status';
 import {TABS} from './common/constants';
-import UploadMixin from './common/mixins/uploads-mixin';
-import './common/layout/are-you-sure';
-import {openDialog} from './utils/dialog';
+import UploadMixin from '../../common/mixins/uploads-mixin';
+import '../../common/layout/are-you-sure';
+import {openDialog} from '../../common/utils/dialog';
 import {RESET_UNSAVED_UPLOADS, RESET_UPLOADS_IN_PROGRESS} from './common/actions/actionsContants';
 
 const MOCKUP_STATUSES = [

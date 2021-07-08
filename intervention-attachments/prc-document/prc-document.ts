@@ -3,28 +3,28 @@ import '@polymer/paper-button/paper-button';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-loading/etools-loading';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import {buttonsStyles} from '../../common/styles/button-styles';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '../../../../common/styles/button-styles';
+import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
 import cloneDeep from 'lodash-es/cloneDeep';
-import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
+import ComponentBaseMixin from '../../../../common/mixins/component-base-mixin';
 import {RootState} from '../../common/types/store.types';
-import {getStore} from '../../utils/redux-store-access';
+import {getStore} from '../../../../common/utils/redux-store-access';
 import './prcDocument.models';
 import './prcDocument.selectors';
 import {selectPrcDocumentData, selectPrcDocumentPermissions} from './prcDocument.selectors';
 import {PrcDocumentData, PrcDocumentPermissions} from './prcDocument.models';
-import {isJsonStrMatch} from '../../utils/utils';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {isJsonStrMatch} from '../../../../common/utils/utils';
+import {pageIsNotCurrentlyActive} from '../../../../common/utils/common-methods';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import CONSTANTS from '../../common/constants';
-import {getEndpoint} from '../../utils/endpoint-helper';
+import {getEndpoint} from '../../../../common/utils/endpoint-helper';
 import {patchIntervention} from '../../common/actions/interventions';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import UploadMixin from '../../common/mixins/uploads-mixin';
+import {interventionEndpoints} from '../../../../common/utils/intervention-endpoints';
+import UploadMixin from '../../../../common/mixins/uploads-mixin';
 
 /**
  * @customElement

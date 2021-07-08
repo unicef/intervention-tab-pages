@@ -10,9 +10,9 @@ import {
 } from 'lit-element';
 import {getTotal, getMultiplyProduct} from './get-total.helper';
 import {ActivityItemsTableInlineStyles, ActivityItemsTableStyles} from './acivity-items-table.styles';
-import {fireEvent} from '../../../../utils/fire-custom-event';
+import {fireEvent} from '../../../../../../common/utils/fire-custom-event';
 import {InterventionActivityItem} from '@unicef-polymer/etools-types';
-import {callClickOnSpacePushListener} from '../../../../utils/common-methods';
+import {callClickOnSpacePushListener} from '../../../../../../common/utils/common-methods';
 import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
 import {translate} from 'lit-translate';
 

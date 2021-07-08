@@ -1,17 +1,17 @@
 import {LitElement, html, property, customElement} from 'lit-element';
-import {fireEvent} from '../../../utils/fire-custom-event';
+import {fireEvent} from '../../../../../common/utils/fire-custom-event';
 import CONSTANTS from '../../../common/constants';
 import '@polymer/paper-button/paper-button.js';
 import './edit-hru-dialog.js';
 import './hru-list.js';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
 import FrontendPaginationMixin from '../mixins/frontend-pagination-mixin';
-import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
+import {gridLayoutStylesLit} from '../../../../../common/styles/grid-layout-styles-lit';
 import {HruListEl} from './hru-list.js';
 import {ExpectedResult} from '@unicef-polymer/etools-types';
-import {buttonsStyles} from '../../../common/styles/button-styles';
+import {buttonsStyles} from '../../../../../common/styles/button-styles';
 import {translate, get as getTranslation} from 'lit-translate';
-import {openDialog} from '../../../utils/dialog';
+import {openDialog} from '../../../../../common/utils/dialog';
 
 /**
  * @customElement
@@ -42,9 +42,7 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
       </style>
 
       <div ?hidden="${!this._empty(this.reportingRequirements)}">
-        <div class="row-h">
-          ${translate('NO_HUMANITARIAN_REPORT')}
-        </div>
+        <div class="row-h">${translate('NO_HUMANITARIAN_REPORT')}</div>
         <div class="row-h" ?hidden="${!this._showAdd(this.expectedResults, this.editMode)}">
           <paper-button class="secondary-btn" @click="${this.openUnicefHumanitarianRepReqDialog}">
             ${translate('ADD_REQUIREMENTS')}

@@ -5,19 +5,19 @@ import '@unicef-polymer/etools-table/etools-table';
 import {EtoolsTableChildRow, EtoolsTableColumn, EtoolsTableColumnType} from '@unicef-polymer/etools-table/etools-table';
 import '@unicef-polymer/etools-currency-amount-input';
 import './activity-dialog';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '../../common/styles/button-styles';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {elevationStyles} from '../../common/styles/elevation-styles';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '../../../../common/styles/button-styles';
+import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
+import {elevationStyles} from '../../../../common/styles/elevation-styles';
+import {pageIsNotCurrentlyActive} from '../../../../common/utils/common-methods';
 import get from 'lodash-es/get';
-import {isJsonStrMatch} from '../../utils/utils';
-import {openDialog} from '../../utils/dialog';
+import {isJsonStrMatch} from '../../../../common/utils/utils';
+import {openDialog} from '../../../../common/utils/dialog';
 import {
   selectProgrammeManagement,
   selectProgrammeManagementActivityPermissions
 } from './effectiveEfficientProgrammeMgmt.selectors';
-import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
+import ComponentBaseMixin from '../../../../common/mixins/component-base-mixin';
 import {RootState} from '../../common/types/store.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {ProgrammeManagement} from './effectiveEfficientProgrammeMgmt.models';
@@ -25,7 +25,7 @@ import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {get as getTranslation, translate} from 'lit-translate';
-import {translatesMap} from '../../utils/intervention-labels-map';
+import {translatesMap} from '../../../../common/utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 
 const customStyles = html`

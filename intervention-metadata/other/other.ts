@@ -3,15 +3,15 @@ import '@polymer/paper-button/paper-button';
 import '@polymer/paper-toggle-button/paper-toggle-button';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@unicef-polymer/etools-loading/etools-loading';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '../../common/styles/button-styles';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {resetRequiredFields} from '../../utils/validation-helper';
-import {getStore} from '../../utils/redux-store-access';
-import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
+import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '../../../../common/styles/button-styles';
+import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
+import {resetRequiredFields} from '../../../../common/utils/validation-helper';
+import {getStore} from '../../../../common/utils/redux-store-access';
+import ComponentBaseMixin from '../../../../common/mixins/component-base-mixin';
 import {patchIntervention} from '../../common/actions/interventions';
-import {isJsonStrMatch} from '../../utils/utils';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {isJsonStrMatch} from '../../../../common/utils/utils';
+import {pageIsNotCurrentlyActive} from '../../../../common/utils/common-methods';
 import {RootState} from '../../common/types/store.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
@@ -21,7 +21,7 @@ import {translate} from 'lit-translate';
 import {OtherData, OtherPermissions} from './other.models';
 import {selectOtherData, selectOtherPermissions} from './other.selectors';
 import CONSTANTS from '../../common/constants';
-import {translatesMap} from '../../utils/intervention-labels-map';
+import {translatesMap} from '../../../../common/utils/intervention-labels-map';
 
 /**
  * @customElement

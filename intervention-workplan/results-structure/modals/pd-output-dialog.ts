@@ -1,18 +1,18 @@
 import {LitElement, html, TemplateResult, property, customElement} from 'lit-element';
-import {interventionEndpoints} from '../../../utils/intervention-endpoints';
-import {getEndpoint} from '../../../utils/endpoint-helper';
+import {interventionEndpoints} from '../../../../../common/utils/intervention-endpoints';
+import {getEndpoint} from '../../../../../common/utils/endpoint-helper';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {DataMixin} from '../../../common/mixins/data-mixin';
-import {getDifference} from '../../../common/mixins/objects-diff';
+import {DataMixin} from '../../../../../common/mixins/data-mixin';
+import {getDifference} from '../../../../../common/mixins/objects-diff';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
-import {getStore} from '../../../utils/redux-store-access';
+import {getStore} from '../../../../../common/utils/redux-store-access';
 import {getIntervention} from '../../../common/actions/interventions';
-import {fireEvent} from '../../../utils/fire-custom-event';
-import {validateRequiredFields} from '../../../utils/validation-helper';
+import {fireEvent} from '../../../../../common/utils/fire-custom-event';
+import {validateRequiredFields} from '../../../../../common/utils/validation-helper';
 import {AsyncAction, CpOutput} from '@unicef-polymer/etools-types';
 import {ResultLinkLowerResult} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
-import {sharedStyles} from '../../../common/styles/shared-styles-lit';
+import {sharedStyles} from '../../../../../common/styles/shared-styles-lit';
 
 @customElement('pd-output-dialog')
 export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElement) {
@@ -81,17 +81,9 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
         no-padding
       >
         <div class="unassociated-warning" ?hidden="${!this.unassociated || this.hideCpOutputs}">
-          <div>
-            <iron-icon icon="warning"></iron-icon>${translate('ASSOCIATE_PROMPT')}
-          </div>
+          <div><iron-icon icon="warning"></iron-icon>${translate('ASSOCIATE_PROMPT')}</div>
           ${!this.cpOutputs.length
-            ? html`
-                <div>
-                  <br /><iron-icon icon="warning"></iron-icon> ${translate(
-                    'ASSOCIATE_MSG'
-                  )}
-                </div>
-              `
+            ? html` <div><br /><iron-icon icon="warning"></iron-icon> ${translate('ASSOCIATE_MSG')}</div> `
             : ''}
         </div>
         <div class="container layout vertical">

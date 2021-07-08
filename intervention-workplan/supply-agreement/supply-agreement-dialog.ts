@@ -1,14 +1,14 @@
 import {LitElement, html, property, customElement} from 'lit-element';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '../../common/styles/button-styles';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {getStore} from '../../utils/redux-store-access';
-import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
-import {validateRequiredFields} from '../../utils/validation-helper';
+import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '../../../../common/styles/button-styles';
+import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
+import {getStore} from '../../../../common/utils/redux-store-access';
+import ComponentBaseMixin from '../../../../common/mixins/component-base-mixin';
+import {validateRequiredFields} from '../../../../common/utils/validation-helper';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getEndpoint} from '../../utils/endpoint-helper';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {fireEvent} from '../../utils/fire-custom-event';
+import {getEndpoint} from '../../../../common/utils/endpoint-helper';
+import {interventionEndpoints} from '../../../../common/utils/intervention-endpoints';
+import {fireEvent} from '../../../../common/utils/fire-custom-event';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
@@ -18,8 +18,8 @@ import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-currency-amount-input';
 import {ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {translatesMap} from '../../utils/intervention-labels-map';
-import {cloneDeep} from '../../utils/utils';
+import {translatesMap} from '../../../../common/utils/intervention-labels-map';
+import {cloneDeep} from '../../../../common/utils/utils';
 import {get as getTranslation} from 'lit-translate';
 
 /**

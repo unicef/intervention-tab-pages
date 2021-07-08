@@ -1,14 +1,14 @@
 import {LitElement, html, property, customElement} from 'lit-element';
 import '@unicef-polymer/etools-data-table/etools-data-table';
-import '../../../common/layout/icons-actions';
-import {fireEvent} from '../../../utils/fire-custom-event';
+import '../../../../../common/layout/icons-actions';
+import {fireEvent} from '../../../../../common/utils/fire-custom-event';
 import ReportingReqPastDatesCheckMixin from '../mixins/reporting-req-past-dates-check';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
-import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
+import {gridLayoutStylesLit} from '../../../../../common/styles/grid-layout-styles-lit';
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
-import {isEmptyObject} from '../../../utils/utils';
+import {isEmptyObject} from '../../../../../common/utils/utils';
 import {AnyObject} from '@unicef-polymer/etools-types';
-import {sharedStyles} from '../../../common/styles/shared-styles-lit';
+import {sharedStyles} from '../../../../../common/styles/shared-styles-lit';
 import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
 import {translate} from 'lit-translate';
 
@@ -38,9 +38,7 @@ export class HruList extends ReportingReqPastDatesCheckMixin(ReportingRequiremen
 
       <etools-data-table-header no-collapse no-title>
         <etools-data-table-column class="col-1 right-align index-col">ID</etools-data-table-column>
-        <etools-data-table-column class="flex-c"
-          >${translate('REPORT_END_DATE')}</etools-data-table-column
-        >
+        <etools-data-table-column class="flex-c">${translate('REPORT_END_DATE')}</etools-data-table-column>
         <etools-data-table-column class="col-2"></etools-data-table-column>
       </etools-data-table-header>
       ${this.hruData.map(
