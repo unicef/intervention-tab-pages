@@ -1,5 +1,6 @@
 import {LitElement, customElement, html, property} from 'lit-element';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
+import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {elevationStyles} from '../../common/styles/elevation-styles';
@@ -31,16 +32,21 @@ export class TimingOverview extends CommentsMixin(LitElement) {
     }
     return html`
       ${InfoElementStyles}
-      <section class="elevation table" elevation="1" comment-element="timing-overview" comment-description="Overview">
+      <section
+        class="elevation table not-allowed"
+        elevation="1"
+        comment-element="timing-overview"
+        comment-description="Overview"
+      >
         <div class="data-column">
-          <label class="paper-label">${translate('INTERVENTION_TIMING.TIMING_OVERVIEW.DATE_CREATED')}</label>
+          <label class="paper-label">${translate('DATE_CREATED')}</label>
           <div class="input-label" ?empty="${!this.timingOverview.created}">
             ${formatDate(this.timingOverview.created)}
           </div>
         </div>
 
         <div class="data-column">
-          <label class="paper-label">${translate('INTERVENTION_TIMING.TIMING_OVERVIEW.DATE_FIRST_SENT_PARTNER')}</label>
+          <label class="paper-label">${translate('DATE_FIRST_SENT_PARTNER')}</label>
           <div class="input-label" ?empty="${!this.timingOverview.date_sent_to_partner}">
             ${formatDate(this.timingOverview.date_sent_to_partner)}
           </div>
@@ -48,7 +54,7 @@ export class TimingOverview extends CommentsMixin(LitElement) {
 
         <div class="data-column">
           <label class="paper-label"
-            >${translate('INTERVENTION_TIMING.TIMING_OVERVIEW.DATE_FIRST_DRAFT_PARTNER')}</label
+            >${translate('DATE_FIRST_DRAFT_PARTNER')}</label
           >
           <div class="input-label" ?empty="${!this.timingOverview.submission_date}">
             ${formatDate(this.timingOverview.submission_date)}
@@ -56,37 +62,58 @@ export class TimingOverview extends CommentsMixin(LitElement) {
         </div>
 
         <div class="data-column">
-          <label class="paper-label">${translate('INTERVENTION_TIMING.TIMING_OVERVIEW.PRC_SUBMISSION_DATE')}</label>
+          <label class="paper-label">${translate('PRC_SUBMISSION_DATE')}</label>
           <div class="input-label" ?empty="${!this.timingOverview.submission_date_prc}">
             ${formatDate(this.timingOverview.submission_date_prc)}
           </div>
         </div>
 
         <div class="data-column">
-          <label class="paper-label">${translate('INTERVENTION_TIMING.TIMING_OVERVIEW.PRC_REVIEW_DATE')}</label>
+          <label class="paper-label">${translate('PRC_REVIEW_DATE')}</label>
           <div class="input-label" ?empty="${!this.timingOverview.review_date_prc}">
             ${formatDate(this.timingOverview.review_date_prc)}
           </div>
         </div>
 
         <div class="data-column">
-          <label class="paper-label">${translate('INTERVENTION_TIMING.TIMING_OVERVIEW.DATE_PARTNER_SIGNED')}</label>
+          <label class="paper-label">${translate('DATE_PARTNER_SIGNED')}</label>
           <div class="input-label" ?empty="${!this.timingOverview.signed_by_partner_date}">
             ${formatDate(this.timingOverview.signed_by_partner_date)}
           </div>
         </div>
 
         <div class="data-column">
-          <label class="paper-label">${translate('INTERVENTION_TIMING.TIMING_OVERVIEW.DATE_UNICEF_SIGNED')}</label>
+          <label class="paper-label">${translate('DATE_UNICEF_SIGNED')}</label>
           <div class="input-label" ?empty="${!this.timingOverview.signed_by_unicef_date}">
             ${formatDate(this.timingOverview.signed_by_unicef_date)}
           </div>
         </div>
 
         <div class="data-column">
-          <label class="paper-label">${translate('INTERVENTION_TIMING.TIMING_OVERVIEW.DATE_LAST_AMENDED')}</label>
+          <label class="paper-label">${translate('DATE_LAST_AMENDED')}</label>
           <div class="input-label" empty></div>
         </div>
+
+        <div class="data-column">
+          <label class="paper-label">${translate('DAYS_SUBMISSION_SIGNED')}</label>
+          <div class="input-label" ?empty="${!this.timingOverview.days_from_submission_to_signed}">
+            ${this.timingOverview.days_from_submission_to_signed}
+          </div>
+        </div>
+
+        <div class="data-column">
+          <label class="paper-label">${translate('DAYS_REVIEW_SIGNED')}</label>
+          <div class="input-label" ?empty="${!this.timingOverview.days_from_review_to_signed}">
+            ${this.timingOverview.days_from_review_to_signed}
+          </div>
+        </div>
+
+        <etools-info-tooltip icon="icons:info" position="left" id="not-allowed-icon">
+          <span slot="message">
+            <span>${translate('TIMING_TOOLTIP')}</span>
+          </span>
+        </etools-info-tooltip>
+
       </section>
     `;
   }

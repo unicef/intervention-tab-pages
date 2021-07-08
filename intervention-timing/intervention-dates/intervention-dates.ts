@@ -16,19 +16,20 @@ import {patchIntervention} from '../../common/actions/interventions';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
 import '@unicef-polymer/etools-upload/etools-upload';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {fireEvent} from '../../utils/fire-custom-event';
 import ReportingRequirementsCommonMixin from '../reporting-requirements/mixins/reporting-requirements-common-mixin';
+import {translatesMap} from '../../utils/intervention-labels-map';
+import UploadsMixin from '../../common/mixins/uploads-mixin';
 
 /**
  * @customElement
  */
 @customElement('intervention-dates')
 export class InterventionDates extends CommentsMixin(
-  ComponentBaseMixin(FrNumbersConsistencyMixin(ReportingRequirementsCommonMixin(LitElement)))
+  UploadsMixin(ComponentBaseMixin(FrNumbersConsistencyMixin(ReportingRequirementsCommonMixin(LitElement))))
 ) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
@@ -59,9 +60,9 @@ export class InterventionDates extends CommentsMixin(
 
       <etools-content-panel
         show-expand-btn
-        panel-title=${translate('INTERVENTION_TIMING.INTERVENTION_DATES.PROGRAMME_DOC_DATES')}
+        panel-title=${translate('PROGRAMME_DOC_DATES')}
         comment-element="programme-document-dates"
-        comment-description=${translate('INTERVENTION_TIMING.INTERVENTION_DATES.PROGRAMME_DOC_DATES')}
+        comment-description=${translate('PROGRAMME_DOC_DATES')}
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
         <div class="layout-horizontal row-padding-v">
@@ -77,11 +78,11 @@ export class InterventionDates extends CommentsMixin(
               <datepicker-lite
                 slot="field"
                 id="intStart"
-                label=${translate('INTERVENTION_TIMING.INTERVENTION_DATES.START_DATE')}
+                label=${translate(translatesMap.start)}
                 .value="${this.data.start}"
                 ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.start)}"
                 ?required="${this.permissions.required.start}"
-                error-message=${translate('INTERVENTION_TIMING.INTERVENTION_DATES.SELECT_START_DATE')}
+                error-message=${translate('SELECT_START_DATE')}
                 auto-validate
                 selected-date-display-format="D MMM YYYY"
                 fire-date-has-changed
@@ -105,11 +106,11 @@ export class InterventionDates extends CommentsMixin(
               <datepicker-lite
                 slot="field"
                 id="intEnd"
-                label=${translate('INTERVENTION_TIMING.INTERVENTION_DATES.END_DATE')}
+                label=${translate(translatesMap.end)}
                 .value="${this.data.end}"
                 ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.end)}"
                 ?required="${this.permissions.required.end}"
-                error-message=${translate('INTERVENTION_TIMING.INTERVENTION_DATES.SELECT_END_DATE')}
+                error-message=${translate('SELECT_END_DATE')}
                 auto-validate
                 selected-date-display-format="D MMM YYYY"
                 fire-date-has-changed
@@ -126,12 +127,14 @@ export class InterventionDates extends CommentsMixin(
           ?hidden="${this.hideActivationLetter(this.data.status, this.data.contingency_pd)}"
         >
           <etools-upload
-            label=${translate('INTERVENTION_TIMING.INTERVENTION_DATES.ACTIVATION_LETTER')}
+            label=${translate('ACTIVATION_LETTER')}
             id="activationLetterUpload"
             .fileUrl="${this.data.activation_letter_attachment}"
             .uploadEndpoint="${this.uploadEndpoint}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.activation_letter_attachment)}"
             @upload-finished="${(e: CustomEvent) => this.activationLetterUploadFinished(e)}"
+            @upload-started="${this._onUploadStarted}"
+            @change-unsaved-file="${this._onChangeUnsavedFile}"
             .showDeleteBtn="${this.showActivationLetterDeleteBtn(
               this.data.status,
               this.permissions.edit.activation_letter_attachment,
@@ -145,8 +148,6 @@ export class InterventionDates extends CommentsMixin(
       </etools-content-panel>
     `;
   }
-  @property({type: String})
-  uploadEndpoint = interventionEndpoints.attachmentsUpload.url!;
 
   @property({type: Object})
   originalData!: ProgrammeDocDates;
@@ -230,7 +231,7 @@ export class InterventionDates extends CommentsMixin(
       .then(() => {
         if (this.warningRequired) {
           fireEvent(this, 'toast', {
-            text: getTranslation('INTERVENTION_TIMING.INTERVENTION_DATES.SAVE_WARNING'),
+            text: getTranslation('SAVE_WARNING'),
             showCloseBtn: true
           });
         }

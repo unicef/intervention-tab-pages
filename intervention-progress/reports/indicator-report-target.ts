@@ -3,6 +3,7 @@ import {LitElement, html, property, customElement} from 'lit-element';
 import {GenericObject} from '@unicef-polymer/etools-types';
 import CommonMixin from '../../common/mixins/common-mixin';
 import {translate} from 'lit-translate';
+import {translatesMap} from '../../utils/intervention-labels-map';
 
 /**
  * @polymer
@@ -71,19 +72,19 @@ export class IndicatorReportTarget extends UtilsMixin(CommonMixin(LitElement)) {
       </style>
 
       <div class="target-row">
-        <span>${translate('INTERVENTION_REPORTS.TARGET')}</span>
+        <span>${translate(translatesMap.target)}</span>
         <span title="${this._getTargetValue(this.displayType, this.target)}">
           ${this._getTargetValue(this.displayType, this.target)}
         </span>
       </div>
       <div class="target-row">
-        <span>${translate('INTERVENTION_REPORTS.TOTAL_CUMULATIVE')}</span>
+        <span>${translate('TOTAL_CUMULATIVE')}</span>
         <span title="${this._getCumulativeProgress(this.displayType, this.cumulativeProgress)}">
           ${this._getCumulativeProgress(this.displayType, this.cumulativeProgress)}
         </span>
       </div>
       <div class="target-row">
-        <span>${translate('INTERVENTION_REPORTS.ACHIEVEMENT_IN_REPORTING_PERIOD')}</span>
+        <span>${translate('ACHIEVEMENT_IN_REPORTING_PERIOD')}</span>
         <span title="${this._getAchievement(this.displayType, this.achievement)}"
           >${this._getAchievement(this.displayType, this.achievement)}</span
         >

@@ -6,6 +6,7 @@ import '@polymer/paper-menu-button';
 import '@polymer/paper-icon-button';
 import '../common/layout/export-intervention-data';
 import './reason-popup';
+import './accept-for-partner';
 import {getEndpoint} from '../utils/endpoint-helper';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
@@ -13,8 +14,28 @@ import {fireEvent} from '../utils/fire-custom-event';
 import {openDialog} from '../utils/dialog';
 import '../common/layout/are-you-sure';
 import '../common/components/intervention/pd-termination';
+import '../common/components/intervention/start-review';
+import '../common/components/intervention/review-checklist-popup';
 import {InterventionActionsStyles} from './intervention-actions.styles';
-import {ACTIONS_WITH_INPUT, BACK_ACTIONS, CANCEL, EXPORT_ACTIONS, namesMap} from './intervention-actions.constants';
+import {
+  ACCEPT_REVIEW,
+  ACTIONS_WITH_INPUT,
+  AMENDMENT_MERGE,
+  BACK_ACTIONS,
+  CANCEL,
+  EXPORT_ACTIONS,
+  namesMap,
+  SEND_TO_PARTNER,
+  SEND_TO_UNICEF,
+  SIGNATURE,
+  TERMINATE,
+  ACTIONS_WITHOUT_CONFIRM,
+  PRC_REVIEW,
+  REJECT_REVIEW,
+  REVIEW,
+  SIGN,
+  ACCEPT_ON_BEHALF_OF_PARTNER
+} from './intervention-actions.constants';
 import {PaperMenuButton} from '@polymer/paper-menu-button/paper-menu-button';
 import {updateCurrentIntervention} from '../common/actions/interventions';
 import {getStore} from '../utils/redux-store-access';
@@ -22,6 +43,7 @@ import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-pa
 import {GenericObject} from '@unicef-polymer/etools-types';
 import {Intervention} from '@unicef-polymer/etools-types';
 import {get as getTranslation} from 'lit-translate';
+import {ROOT_PATH} from '../config/config';
 
 @customElement('intervention-actions')
 export class InterventionActions extends LitElement {
@@ -30,8 +52,14 @@ export class InterventionActions extends LitElement {
   }
 
   @property() actions: string[] = [];
+  @property({type: String}) dir = 'ltr';
   interventionId!: number;
   activeStatus!: string;
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.dir = getComputedStyle(document.body).direction;
+  }
 
   private actionsNamesMap = new Proxy(namesMap, {
     get(target: GenericObject<string>, property: string): string {
@@ -78,7 +106,7 @@ export class InterventionActions extends LitElement {
   }
 
   private renderGroupedActions(mainAction: string, actions: string[]): TemplateResult {
-    const withAdditional = actions.length ? ' with-additional' : '';
+    const withAdditional = actions.length && this.dir === 'ltr' ? ' with-additional' : '';
     const onlyCancel = !actions.length && mainAction === CANCEL ? ` cancel-background` : '';
     const className = `main-button${withAdditional}${onlyCancel}`;
     return mainAction
@@ -111,51 +139,51 @@ export class InterventionActions extends LitElement {
   }
 
   async confirmAction(action: string) {
+    if (ACTIONS_WITHOUT_CONFIRM.includes(action)) {
+      return true;
+    }
     let message = '';
     let btn = '';
     switch (action) {
-      case 'signature':
-        btn = getTranslation('INTERVENTION_ACTIONS.SEND');
-        message = getTranslation('INTERVENTION_ACTIONS.SEND_FOR_SIGNATURE');
+      case SIGNATURE:
+        btn = getTranslation('SEND');
+        message = getTranslation('SEND_FOR_SIGNATURE');
         break;
-      case 'accept_review':
-        btn = getTranslation('INTERVENTION_ACTIONS.SEND');
-        message = getTranslation('INTERVENTION_ACTIONS.SEND_FOR_ACCEPT_REVIEW');
+      case ACCEPT_REVIEW:
+        btn = getTranslation('SEND');
+        message = getTranslation('SEND_FOR_ACCEPT_REVIEW');
         break;
-      case 'cancel':
+      case CANCEL:
         btn = getTranslation('GENERAL.YES');
-        message = getTranslation('INTERVENTION_ACTIONS.CANCEL_PROMPT');
+        message = getTranslation('CANCEL_PROMPT');
         break;
-      case 'send_to_partner':
+      case AMENDMENT_MERGE:
         btn = getTranslation('GENERAL.YES');
-        message = getTranslation('INTERVENTION_ACTIONS.SEND_TO_PARTNER_PROMPT');
+        message = getTranslation('AMENDMENT_MERGE');
         break;
-      case 'send_to_unicef':
+      case SEND_TO_PARTNER:
         btn = getTranslation('GENERAL.YES');
-        message = getTranslation('INTERVENTION_ACTIONS.SEND_TO_UNICEF_PROMPT');
+        message = getTranslation('SEND_TO_PARTNER_PROMPT');
         break;
-      case 'terminate':
-        btn = getTranslation('INTERVENTION_ACTIONS.CONTINUE');
-        message = getTranslation('INTERVENTION_ACTIONS.TERMINATE_PROMPT');
+      case SEND_TO_UNICEF:
+        btn = getTranslation('GENERAL.YES');
+        message = getTranslation('SEND_TO_UNICEF_PROMPT');
+        break;
+      case TERMINATE:
+        btn = getTranslation('CONTINUE');
+        message = getTranslation('TERMINATE_PROMPT');
         break;
       default:
         btn = this.actionsNamesMap[action];
-        message =
-          getTranslation('INTERVENTION_ACTIONS.ARE_YOU_SURE_PROMPT') +
-          this.actionsNamesMap[action]?.toLowerCase() +
-          ' ?';
+        message = getTranslation('ARE_YOU_SURE_PROMPT') + this.actionsNamesMap[action]?.toLowerCase() + ' ?';
     }
-    const confirmed = await openDialog({
+    return await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
         content: message,
         confirmBtnText: btn
       }
-    }).then(({confirmed}) => {
-      return confirmed;
-    });
-
-    return confirmed;
+    }).then(({confirmed}) => confirmed);
   }
 
   async processAction(action: string): Promise<void> {
@@ -183,7 +211,12 @@ export class InterventionActions extends LitElement {
       method: 'PATCH'
     })
       .then((intervention: Intervention) => {
-        getStore().dispatch(updateCurrentIntervention(intervention));
+        if (action === AMENDMENT_MERGE) {
+          history.pushState(window.history.state, '', `${ROOT_PATH}interventions/${intervention.id}/metadata`);
+          window.dispatchEvent(new CustomEvent('popstate'));
+        } else {
+          getStore().dispatch(updateCurrentIntervention(intervention));
+        }
       })
       .finally(() => {
         fireEvent(this, 'global-loading', {
@@ -232,6 +265,49 @@ export class InterventionActions extends LitElement {
     });
   }
 
+  private openStartReviewDialog() {
+    return openDialog({
+      dialog: 'start-review'
+    }).then(({confirmed, response}) => {
+      if (!confirmed) {
+        return null;
+      }
+      return {review_type: response};
+    });
+  }
+
+  private openReviewDialog(additional?: GenericObject) {
+    return openDialog({
+      dialog: 'review-checklist-popup',
+      dialogData: {
+        isOverall: Boolean(additional),
+        ...additional
+      }
+    }).then(({confirmed}) => {
+      if (!additional) {
+        return null;
+      } else {
+        return confirmed ? {} : null;
+      }
+    });
+  }
+
+  private openAcceptForPartner() {
+    return openDialog({
+      dialog: 'accept-for-partner',
+      dialogData: {
+        interventionId: this.interventionId
+      }
+    }).then(({confirmed, response}) => {
+      if (!confirmed || !response) {
+        return null;
+      }
+      return {
+        submission_date: response.submission_date
+      };
+    });
+  }
+
   private closeDropdown(): void {
     const element: PaperMenuButton | null = this.shadowRoot!.querySelector('paper-menu-button');
     if (element) {
@@ -241,10 +317,20 @@ export class InterventionActions extends LitElement {
 
   private openActionsWithInputsDialogs(action: string) {
     switch (action) {
-      case 'cancel':
+      case CANCEL:
         return this.openCommentDialog(action);
-      case 'terminate':
+      case TERMINATE:
         return this.openTermiantionDialog();
+      case REVIEW:
+        return this.openStartReviewDialog();
+      case PRC_REVIEW:
+        return this.openReviewDialog();
+      case REJECT_REVIEW:
+        return this.openReviewDialog({rejectPopup: true});
+      case SIGN:
+        return this.openReviewDialog({approvePopup: true});
+      case ACCEPT_ON_BEHALF_OF_PARTNER:
+        return this.openAcceptForPartner();
       default:
         return;
     }

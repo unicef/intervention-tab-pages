@@ -21,6 +21,7 @@ declare const dayjs: any;
 import {buttonsStyles} from '../../../common/styles/button-styles';
 import {translate, get as getTranslation} from 'lit-translate';
 import {sharedStyles} from '../../../common/styles/shared-styles-lit';
+import {translatesMap} from '../../../utils/intervention-labels-map';
 
 /**
  * @polymer
@@ -60,7 +61,7 @@ export class EditQprDialog extends LitElement {
       <etools-dialog
         id="editQprDialog"
         size="lg"
-        dialog-title=${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.EDIT_QPR_REQUIREMENTS')}
+        dialog-title=${translate('EDIT_QPR_REQUIREMENTS')}
         ?hidden="${this.addOrModifyQprDialogOpened}"
         @confirm-btn-clicked="${() => this._saveModifiedQprData()}"
         @close="${() => this.closeQprDialog()}"
@@ -72,10 +73,10 @@ export class EditQprDialog extends LitElement {
       >
         <div class="layout-horizontal">
           <span id="qpr-edit-info"
-            >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.ALL_DATES_IN_FUTURE')}</span
+            >${translate('ALL_DATES_IN_FUTURE')}</span
           >
           <paper-button class="secondary-btn" @click="${this._addNewQpr}"
-            >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.ADD_REQUIREMENT')}</paper-button
+            >${translate('ADD_REQUIREMENT')}</paper-button
           >
         </div>
 
@@ -94,7 +95,7 @@ export class EditQprDialog extends LitElement {
         id="addOrModifyQprDialog"
         size="lg"
         dialog-title=${translate(
-          'INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.EDIT_STANDARD_QUARTERLY_REPORT_REQUIREMENTS'
+          'EDIT_STANDARD_QUARTERLY_REPORT_REQUIREMENTS'
         )}
         ?opened="${this.addOrModifyQprDialogOpened}"
         no-padding
@@ -105,14 +106,14 @@ export class EditQprDialog extends LitElement {
         cancel-btn-text=${translate('GENERAL.CANCEL')}
       >
         <div class="row-h" ?hidden="${this._hideEditedIndexInfo(this._qprDatesSetEditedIndex)}">
-          ${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.EDITING_ID')}
+          ${translate('EDITING_ID')}
           ${this._getEditedQprDatesSetId(this._qprDatesSetEditedIndex)}
         </div>
 
         <div class="row-h">
           <div class="col layout-vertical">
             <iron-label for="startDate"
-              >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.START_DATE')}</iron-label
+              >${translate(translatesMap.start_date)}</iron-label
             >
             <calendar-lite
               id="startDate"
@@ -125,7 +126,7 @@ export class EditQprDialog extends LitElement {
           </div>
           <div class="col layout-vertical">
             <iron-label for="endDate"
-              >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.END_DATE')}</iron-label
+              >${translate('END_DATE')}</iron-label
             >
             <calendar-lite
               id="endDate"
@@ -138,7 +139,7 @@ export class EditQprDialog extends LitElement {
           </div>
           <div class="col layout-vertical">
             <iron-label for="dueDate"
-              >${translate('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.DUE_DATE')}</iron-label
+              >${translate('DUE_DATE')}</iron-label
             >
             <calendar-lite
               id="dueDate"
@@ -220,14 +221,14 @@ export class EditQprDialog extends LitElement {
   _validateDataBeforeAdd() {
     if (!this._editedQprDatesSet.due_date || !this._editedQprDatesSet.start_date || !this._editedQprDatesSet.end_date) {
       fireEvent(this, 'toast', {
-        text: getTranslation('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.DATES_REQUIRED'),
+        text: getTranslation('DATES_REQUIRED'),
         showCloseBtn: true
       });
       return false;
     }
     if (this._duplicateDueDate(this._editedQprDatesSet.due_date)) {
       fireEvent(this, 'toast', {
-        text: getTranslation('INTERVENTION_TIMING.PARTNER_REPORTING_REQUIREMENTS.REQUIREMENT_DATES_NOT_ADDED'),
+        text: getTranslation('REQUIREMENT_DATES_NOT_ADDED'),
         showCloseBtn: true
       });
       return false;

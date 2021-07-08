@@ -16,12 +16,8 @@ import {translate} from 'lit-translate';
  * @mixinFunction
  * @appliesMixin EndpointsMixin
  */
-@customElement('etools-ram-indicator')
+@customElement('etools-ram-indicators')
 export class EtoolsRamIndicators extends CommonMixin(LitElement) {
-  // static get is() {
-  //   return 'etools-ram-indicators';
-  // }
-
   render() {
     return html`
       <style>
@@ -32,6 +28,10 @@ export class EtoolsRamIndicators extends CommonMixin(LitElement) {
 
         *[hidden] {
           display: none !important;
+        }
+
+        iron-label {
+          font-size: 14px;
         }
 
         #label,
@@ -49,19 +49,8 @@ export class EtoolsRamIndicators extends CommonMixin(LitElement) {
       <etools-loading ?active="${this.loading}">Loading...</etools-loading>
 
       <iron-label>
-        <span id="label">${translate('INTERVENTION_REPORTS.RAM_INDICATORS')}</span>
-        <div id="ram-indicators" iron-label-target>
-          ${this._noRamIndicators(this.ramIndicators.length)
-            ? html`<span id="no-ram-indicators">&#8212;</span>`
-            : html``}
-          ${!this._noRamIndicators(this.ramIndicators.length)
-            ? html`<ul id="ram-indicators-list">
-                ${this.ramIndicators.map((ramIndName) => {
-                  html`<li>${ramIndName}</li>`;
-                })}
-              </ul>`
-            : html``}
-        </div>
+        <span id="label">${translate('RAM_INDICATORS')}</span>
+        <div id="ram-indicators" iron-label-target>${this.getRamIndicatorsHTML(this.ramIndicators)}</div>
       </iron-label>
     `;
   }
@@ -112,6 +101,20 @@ export class EtoolsRamIndicators extends CommonMixin(LitElement) {
     });
   }
 
+  getRamIndicatorsHTML(ramIndicators: any[]) {
+    if (!ramIndicators || !ramIndicators.length) {
+      return html`<span id="no-ram-indicators">&#8212;</span>`;
+    } else {
+      return html`<ul id="ram-indicators-list">
+        ${this.renderRamIndicators(ramIndicators)}
+      </ul>`;
+    }
+  }
+
+  renderRamIndicators(ramIndicators: any[]) {
+    return html`${ramIndicators.map((ramIndName) => html`<li>${ramIndName}</li>`)}`;
+  }
+
   _requestRamIndicatorsData(reqPayload: any) {
     this.loading = true;
     sendRequest({
@@ -125,7 +128,7 @@ export class EtoolsRamIndicators extends CommonMixin(LitElement) {
       .catch((error: any) => {
         if (error.status === 404) {
           fireEvent(this, 'toast', {
-            text: this._translate('INTERVENTION_REPORTS.DUE_DATE'),
+            text: this._translate('DUE_DATE'),
             showCloseBtn: true
           });
         } else {
@@ -141,9 +144,5 @@ export class EtoolsRamIndicators extends CommonMixin(LitElement) {
         );
         this.loading = false;
       });
-  }
-
-  _noRamIndicators(l: number) {
-    return typeof l !== 'number' || l === 0;
   }
 }

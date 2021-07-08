@@ -27,6 +27,7 @@ export interface AppState {
 export interface InterventionsState {
   current: Intervention | null;
   partnerReportingRequirements: PartnerReportingRequirements;
+  interventionLoading: number | null;
 }
 
 export interface AgreementsState {
@@ -61,6 +62,7 @@ export interface CommonDataState {
 export interface RootState {
   app: AppState;
   interventions: InterventionsState;
+  reviews: any[];
   agreements: AgreementsState;
   user: UserState;
   commonData: CommonDataState;

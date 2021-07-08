@@ -25,6 +25,8 @@ export class ActivityTimeframes extends CommentsMixin(LitElement) {
   }
 
   @property() intervention: Intervention | null = null;
+  @property({type: String})
+  dir = 'ltr';
 
   protected render(): TemplateResult {
     if (!this.intervention) {
@@ -41,14 +43,14 @@ export class ActivityTimeframes extends CommentsMixin(LitElement) {
       </style>
       <etools-content-panel
         show-expand-btn
-        panel-title=${translate('INTERVENTION_TIMING.ACTIVITY_TIMEFRAMES.ACTIVITY_TIMEFRAMES')}
+        panel-title=${translate('ACTIVITY_TIMEFRAMES')}
         comment-element="activity-timeframes"
-        comment-description=${translate('INTERVENTION_TIMING.ACTIVITY_TIMEFRAMES.ACTIVITY_TIMEFRAMES')}
+        comment-description=${translate('ACTIVITY_TIMEFRAMES')}
       >
         ${!timeFrames.length
           ? html`
               <div class="align-items-baseline">
-                <p>${translate('INTERVENTION_TIMING.ACTIVITY_TIMEFRAMES.ACTIVITY_TIMES_MSG')}</p>
+                <p>${translate('ACTIVITY_TIMES_MSG')}</p>
               </div>
             `
           : ''}
@@ -59,7 +61,7 @@ export class ActivityTimeframes extends CommentsMixin(LitElement) {
                 <!--      Year title        -->
                 <div class="year">${year}</div>
 
-                <div class="frames-grid">
+                <div class="frames-grid" ?rtl="${this.dir === 'rtl'}">
                   ${frames.map(
                     ({name, frameDisplay, id}: ActivityTime, index: number) => html`
                       <!--   Frame data   -->
@@ -70,7 +72,7 @@ export class ActivityTimeframes extends CommentsMixin(LitElement) {
 
                       <div class="activities-container ${index === frames.length - 1 ? 'hide-border' : ''}">
                         <div class="no-activities" ?hidden="${mappedActivities[id].length}">
-                          - ${translate('INTERVENTION_TIMING.ACTIVITY_TIMEFRAMES.NO_ACTIVITIES')}
+                          - ${translate('NO_ACTIVITIES')}
                         </div>
                         ${mappedActivities[id].map(
                           ({name: activityName}: InterventionActivity) => html`
@@ -98,6 +100,10 @@ export class ActivityTimeframes extends CommentsMixin(LitElement) {
     super.stateChanged(state);
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+    this.dir = getComputedStyle(this).direction;
+  }
   private getTimeFrames(): GroupedActivityTime[] {
     if (!this.intervention) {
       return [];

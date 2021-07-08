@@ -104,16 +104,6 @@ export const sharedStylesContent = `
     }
   }
 
-  :host > * {
-    --required-star-style: {
-      background: url('./images/required.svg') no-repeat 99% 20%/8px;
-      width: auto !important;
-      max-width: 100%;
-      right: auto;
-      padding-right: 15px;
-    }
-  }
-
   paper-input,
   paper-textarea,
   paper-input-container,
@@ -134,8 +124,6 @@ export const sharedStylesContent = `
   paper-textarea[required][label],
   paper-input-container[required],
   datepicker-lite[required],
-  etools-dropdown[required],
-  etools-dropdown-multi[required],
   etools-upload[required],
   etools-currency-amount-input[required] {
     --paper-input-container-label: {
@@ -146,6 +134,11 @@ export const sharedStylesContent = `
       @apply --required-star-style;
       color: var(--secondary-text-color, #737373);
     }
+  }
+
+  etools-dropdown-multi[required]::part(esmm-label),
+  etools-dropdown[required]::part(esmm-label) {
+    @apply --required-star-style;
   }
 
   label[required] {
@@ -253,7 +246,7 @@ export const sharedStylesContent = `
 
   etools-content-panel::part(ecp-header-title) {
       padding: 0 24px 0 0;
-      text-align: left;
+      text-align: start;
       font-size: 18px;
       font-weight: 500;
   }
