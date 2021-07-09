@@ -1,9 +1,9 @@
 /* eslint-disable lit-a11y/click-events-have-key-events */
-import {getStore} from '../../utils/redux-store-access';
+import {getStore} from '../../../../common/utils/redux-store-access';
 import {css, html, CSSResultArray, customElement, LitElement, property} from 'lit-element';
 import {repeat} from 'lit-html/directives/repeat';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '../../common/styles/button-styles';
+import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '../../../../common/styles/button-styles';
 import {
   selectInterventionId,
   selectInterventionStatus,
@@ -23,24 +23,24 @@ import './modals/pd-output-dialog';
 import './modals/cp-output-dialog';
 import '@polymer/paper-item';
 import '@polymer/paper-listbox';
-import {getEndpoint} from '../../utils/endpoint-helper';
+import {getEndpoint} from '../../../../common/utils/endpoint-helper';
 import {RootState} from '../../common/types/store.types';
-import {openDialog} from '../../utils/dialog';
+import {openDialog} from '../../../../common/utils/dialog';
 import CONSTANTS, {TABS} from '../../common/constants';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {interventionEndpoints} from '../../../../common/utils/intervention-endpoints';
 import {
   callClickOnSpacePushListener,
   callClickOnEnterPushListener,
   pageIsNotCurrentlyActive
-} from '../../utils/common-methods';
-import '../../common/layout/are-you-sure';
+} from '../../../../common/utils/common-methods';
+import '../../../../common/layout/are-you-sure';
 import get from 'lodash-es/get';
 import {getIntervention, updateCurrentIntervention} from '../../common/actions/interventions';
-import {_sendRequest} from '../../utils/request-helper';
+import {_sendRequest} from '../../../../common/utils/request-helper';
 import {isUnicefUser, currentIntervention} from '../../common/selectors';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import ContentPanelMixin from '../../common/mixins/content-panel-mixin';
+import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
+import ContentPanelMixin from '../../../../common/mixins/content-panel-mixin';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {
@@ -53,7 +53,7 @@ import {
   ResultLinkLowerResult
 } from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {translatesMap} from '../../utils/intervention-labels-map';
+import {translatesMap} from '../../../../common/utils/intervention-labels-map';
 
 const RESULT_VIEW = 'result_view';
 const BUDGET_VIEW = 'budget_view';

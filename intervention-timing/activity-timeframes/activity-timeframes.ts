@@ -1,10 +1,15 @@
 import {LitElement, html, TemplateResult, customElement, CSSResultArray, property} from 'lit-element';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {RootState} from '../../common/types/store.types';
-import {ActivityTime, groupByYear, GroupedActivityTime, serializeTimeFrameData} from '../../utils/timeframes.helper';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
+import {
+  ActivityTime,
+  groupByYear,
+  GroupedActivityTime,
+  serializeTimeFrameData
+} from '../../../../common/utils/timeframes.helper';
+import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
 import {ActivityTimeframesStyles} from './activity-timeframes.styles';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {pageIsNotCurrentlyActive} from '../../../../common/utils/common-methods';
 import {get} from 'lodash-es';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {
@@ -13,7 +18,7 @@ import {
   InterventionQuarter,
   InterventionActivityTimeframe
 } from '@unicef-polymer/etools-types';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 import {Intervention, ResultLinkLowerResult, ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 

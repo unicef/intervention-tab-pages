@@ -4,20 +4,20 @@ import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import '@polymer/paper-input/paper-textarea';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {getStore} from '../../utils/redux-store-access';
-import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
-import {buttonsStyles} from '../../common/styles/button-styles';
-import {validateRequiredFields} from '../../utils/validation-helper';
-import {getEndpoint} from '../../utils/endpoint-helper';
-import {fireEvent} from '../../utils/fire-custom-event';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
+import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
+import {getStore} from '../../../../common/utils/redux-store-access';
+import ComponentBaseMixin from '../../../../common/mixins/component-base-mixin';
+import {buttonsStyles} from '../../../../common/styles/button-styles';
+import {validateRequiredFields} from '../../../../common/utils/validation-helper';
+import {getEndpoint} from '../../../../common/utils/endpoint-helper';
+import {fireEvent} from '../../../../common/utils/fire-custom-event';
+import {interventionEndpoints} from '../../../../common/utils/intervention-endpoints';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {LabelAndValue} from '@unicef-polymer/etools-types';
 import {Intervention} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {translatesMap} from '../../utils/intervention-labels-map';
+import {translatesMap} from '../../../../common/utils/intervention-labels-map';
 
 /**
  * @customElement

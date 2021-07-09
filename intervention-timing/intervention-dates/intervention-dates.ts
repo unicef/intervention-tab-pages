@@ -1,28 +1,28 @@
 import {LitElement, html, customElement, property} from 'lit-element';
-import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
-import FrNumbersConsistencyMixin from '../../common/mixins/fr-numbers-consistency-mixin';
+import ComponentBaseMixin from '../../../../common/mixins/component-base-mixin';
+import FrNumbersConsistencyMixin from '../../../../common/mixins/fr-numbers-consistency-mixin';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
+import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 import {PartnerReportingRequirements, RootState} from '../../common/types/store.types';
 import {ProgrammeDocDates, InterventionDatesPermissions} from './interventionDates.models';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {selectInterventionDates, selectInterventionDatesPermissions} from './interventionDates.selectors';
-import {buttonsStyles} from '../../common/styles/button-styles';
-import {getStore} from '../../utils/redux-store-access';
+import {buttonsStyles} from '../../../../common/styles/button-styles';
+import {getStore} from '../../../../common/utils/redux-store-access';
 import {patchIntervention} from '../../common/actions/interventions';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {pageIsNotCurrentlyActive} from '../../../../common/utils/common-methods';
 import get from 'lodash-es/get';
 import '@unicef-polymer/etools-upload/etools-upload';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
-import {fireEvent} from '../../utils/fire-custom-event';
+import {fireEvent} from '../../../../common/utils/fire-custom-event';
 import ReportingRequirementsCommonMixin from '../reporting-requirements/mixins/reporting-requirements-common-mixin';
-import {translatesMap} from '../../utils/intervention-labels-map';
-import UploadsMixin from '../../common/mixins/uploads-mixin';
+import {translatesMap} from '../../../../common/utils/intervention-labels-map';
+import UploadsMixin from '../../../../common/mixins/uploads-mixin';
 
 /**
  * @customElement

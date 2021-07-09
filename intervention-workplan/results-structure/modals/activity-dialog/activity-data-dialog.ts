@@ -1,28 +1,28 @@
 import {CSSResultArray, customElement, html, LitElement, property, TemplateResult} from 'lit-element';
-import {DataMixin} from '../../../../common/mixins/data-mixin';
+import {DataMixin} from '../../../../../../common/mixins/data-mixin';
 import '@unicef-polymer/etools-currency-amount-input';
 import '@polymer/paper-input/paper-textarea';
 import '@polymer/paper-toggle-button';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import './activity-items-table';
-import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
+import {gridLayoutStylesLit} from '../../../../../../common/styles/grid-layout-styles-lit';
 import {formatCurrency, getTotal} from './get-total.helper';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getEndpoint} from '../../../../utils/endpoint-helper';
-import {interventionEndpoints} from '../../../../utils/intervention-endpoints';
-import {getDifference} from '../../../../common/mixins/objects-diff';
-import {getStore} from '../../../../utils/redux-store-access';
+import {getEndpoint} from '../../../../../../common/utils/endpoint-helper';
+import {interventionEndpoints} from '../../../../../../common/utils/intervention-endpoints';
+import {getDifference} from '../../../../../../common/mixins/objects-diff';
+import {getStore} from '../../../../../../common/utils/redux-store-access';
 import './activity-timeframes';
-import {fireEvent} from '../../../../utils/fire-custom-event';
+import {fireEvent} from '../../../../../../common/utils/fire-custom-event';
 import {ActivityItemsTable} from './activity-items-table';
 import {updateCurrentIntervention} from '../../../../common/actions/interventions';
 import {ActivityTimeFrames} from './activity-timeframes';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {validateRequiredFields} from '../../../../utils/validation-helper';
-import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
+import {validateRequiredFields} from '../../../../../../common/utils/validation-helper';
+import {sharedStyles} from '../../../../../../common/styles/shared-styles-lit';
 import {AnyObject, InterventionActivity, InterventionActivityItem} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
-import {translatesMap} from '../../../../utils/intervention-labels-map';
+import {translatesMap} from '../../../../../../common/utils/intervention-labels-map';
 
 @customElement('activity-data-dialog')
 export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitElement) {

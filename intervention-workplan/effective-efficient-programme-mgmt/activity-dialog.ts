@@ -2,18 +2,18 @@ import {LitElement, html, property, customElement} from 'lit-element';
 import '@polymer/paper-input/paper-input';
 import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-currency-amount-input';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '../../common/styles/button-styles';
-import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '../../../../common/styles/button-styles';
+import ComponentBaseMixin from '../../../../common/mixins/component-base-mixin';
+import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getEndpoint} from '../../utils/endpoint-helper';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {fireEvent} from '../../utils/fire-custom-event';
-import {getStore} from '../../utils/redux-store-access';
+import {getEndpoint} from '../../../../common/utils/endpoint-helper';
+import {interventionEndpoints} from '../../../../common/utils/intervention-endpoints';
+import {fireEvent} from '../../../../common/utils/fire-custom-event';
+import {getStore} from '../../../../common/utils/redux-store-access';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {translate, get as getTranslation} from 'lit-translate';
-import {translatesMap} from '../../utils/intervention-labels-map';
+import {translatesMap} from '../../../../common/utils/intervention-labels-map';
 
 /**
  * @customElement

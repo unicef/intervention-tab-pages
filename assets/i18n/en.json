@@ -452,5 +452,6 @@
   "METADATA_TOOLTIP": "Readonly display of values entered on the PD",
   "PREVIOUS_VALUE": "Previous value",
   "CURRENT_VALUE": "Current value",
-  "INPUT_LEVEL_ITEMS": "Input Level Items"
+  "INPUT_LEVEL_ITEMS": "Input Level Items",
+  "SUBMIT": "Submit"
 }

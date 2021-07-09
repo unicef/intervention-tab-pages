@@ -1,9 +1,9 @@
 import {LitElement, TemplateResult, html, customElement, property, CSSResultArray, css} from 'lit-element';
 import {InterventionReview} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {formatDate} from '../../utils/date-utils';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {formatDate} from '../../../../common/utils/date-utils';
+import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
+import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 import {PRC_REVIEW, NON_PRC_REVIEW, NO_REVIEW} from '../review.const';
 import {get as getTranslation} from 'lit-translate';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';

@@ -7,17 +7,17 @@ import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import {PaperInputElement} from '@polymer/paper-input/paper-input.js';
 import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import {LitElement, html, property, customElement} from 'lit-element';
-import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
-import RepeatableDataSetsMixin from '../../../../common/mixins/repeatable-data-sets-mixin';
+import {gridLayoutStylesLit} from '../../../../../../common/styles/grid-layout-styles-lit';
+import RepeatableDataSetsMixin from '../../../../../../common/mixins/repeatable-data-sets-mixin';
 import {flaggedSortedDisaggregs} from '../../redux/selectors';
-import {getStore} from '../../../../utils/redux-store-access';
-import {repeatableDataSetsStyles} from '../../../../common/styles/repeatable-data-sets-styles';
-import {buttonsStyles} from '../../../../common/styles/button-styles';
-import {fireEvent} from '../../../../utils/fire-custom-event';
-import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
+import {getStore} from '../../../../../../common/utils/redux-store-access';
+import {repeatableDataSetsStyles} from '../../../../../../common/styles/repeatable-data-sets-styles';
+import {buttonsStyles} from '../../../../../../common/styles/button-styles';
+import {fireEvent} from '../../../../../../common/utils/fire-custom-event';
+import {sharedStyles} from '../../../../../../common/styles/shared-styles-lit';
 import {AnyObject, Disaggregation} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
-import {callClickOnSpacePushListener} from '../../../../utils/common-methods';
+import {callClickOnSpacePushListener} from '../../../../../../common/utils/common-methods';
 
 /**
  * @customElement

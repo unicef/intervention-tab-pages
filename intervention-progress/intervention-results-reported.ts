@@ -7,34 +7,34 @@ import '@unicef-polymer/etools-data-table/etools-data-table';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
 
-import '../common/layout/etools-form-element-wrapper';
+import '../../../common/layout/etools-form-element-wrapper';
 import './layout/etools-progress-bar';
 import './layout/etools-ram-indicators';
-import '../common/layout/status/intervention-report-status';
+import '../../../common/layout/status/intervention-report-status';
 import './reports/indicator-report-target';
 
-import CommonMixin from '../common/mixins/common-mixin';
-import UtilsMixin from '../common/mixins/utils-mixin';
-import EndpointsLitMixin from '../common/mixins/endpoints-mixin-lit';
+import CommonMixin from '../../../common/mixins/common-mixin';
+import UtilsMixin from '../../../common/mixins/utils-mixin';
+import EndpointsLitMixin from '../../../common/mixins/endpoints-mixin-lit';
 
-import {contentSectionStylesLit} from '../common/styles/content-section-styles-lit';
-import {sharedStyles} from '../common/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../common/styles/grid-layout-styles-lit';
+import {contentSectionStylesLit} from '../../../common/styles/content-section-styles-lit';
+import {sharedStyles} from '../../../common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
 import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
-import {elevationStyles} from '../common/styles/elevation-styles';
+import {elevationStyles} from '../../../common/styles/elevation-styles';
 
-import {isEmptyObject} from '../utils/utils';
-import {fireEvent} from '../utils/fire-custom-event';
+import {isEmptyObject} from '../../../common/utils/utils';
+import {fireEvent} from '../../../common/utils/fire-custom-event';
 import {RootState} from '../common/types/store.types';
-import {pageIsNotCurrentlyActive} from '../utils/common-methods';
+import {pageIsNotCurrentlyActive} from '../../../common/utils/common-methods';
 
-import {dateDiff, dateIsBetween, isValidDate, dateIsAfter, datesAreEqual} from '../utils/date-utils';
+import {dateDiff, dateIsBetween, isValidDate, dateIsAfter, datesAreEqual} from '../../../common/utils/date-utils';
 import {logError, logWarn} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {pmpCustomIcons} from './styles/pmp-icons';
-import {frWarningsStyles} from '../common/styles/fr-warnings-styles';
+import {frWarningsStyles} from '../../../common/styles/fr-warnings-styles';
 import get from 'lodash-es/get';
-import {connectStore} from '../common/mixins/connect-store-mixin';
+import {connectStore} from '../../../common/mixins/connect-store-mixin';
 import {AnyObject, GenericObject} from '@unicef-polymer/etools-types';
 
 import {translate} from 'lit-translate';

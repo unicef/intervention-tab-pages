@@ -7,26 +7,26 @@ import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import '@polymer/paper-icon-button/paper-icon-button';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
-import {getStore} from '../../utils/redux-store-access';
-import {openDialog} from '../../utils/dialog';
-import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
-import {buttonsStyles} from '../../common/styles/button-styles';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {getStore} from '../../../../common/utils/redux-store-access';
+import {openDialog} from '../../../../common/utils/dialog';
+import ComponentBaseMixin from '../../../../common/mixins/component-base-mixin';
+import {buttonsStyles} from '../../../../common/styles/button-styles';
+import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
+import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
 import {RootState} from '../../common/types/store.types';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {pageIsNotCurrentlyActive} from '../../../../common/utils/common-methods';
 import get from 'lodash-es/get';
 import {selectRisks} from './risk.selectors';
 import './risk-dialog';
-import '../../common/layout/are-you-sure';
-import {getEndpoint} from '../../utils/endpoint-helper';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import '../../../../common/layout/are-you-sure';
+import {getEndpoint} from '../../../../common/utils/endpoint-helper';
+import {interventionEndpoints} from '../../../../common/utils/intervention-endpoints';
 import {getIntervention} from '../../common/actions/interventions';
 import {currentInterventionPermissions} from '../../common/selectors';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, LabelAndValue, RiskData} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {translatesMap} from '../../utils/intervention-labels-map';
+import {translatesMap} from '../../../../common/utils/intervention-labels-map';
 
 const customStyles = html`
   <style>

@@ -5,22 +5,22 @@ import '@polymer/paper-input/paper-input';
 import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-loading/etools-loading';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import {buttonsStyles} from '../../common/styles/button-styles';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '../../../../common/styles/button-styles';
+import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
 import {selectDocumentDetails, selectDocumentDetailsPermissions} from './documentDetails.selectors';
 import {DocumentDetailsPermissions, DocumentDetails} from './documentDetails.models';
-import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
-import {getStore} from '../../utils/redux-store-access';
+import ComponentBaseMixin from '../../../../common/mixins/component-base-mixin';
+import {getStore} from '../../../../common/utils/redux-store-access';
 import {patchIntervention} from '../../common/actions/interventions';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {RootState} from '../../common/types/store.types';
-import {pageIsNotCurrentlyActive, detailsTextareaRowsCount} from '../../utils/common-methods';
+import {pageIsNotCurrentlyActive, detailsTextareaRowsCount} from '../../../../common/utils/common-methods';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {translatesMap} from '../../utils/intervention-labels-map';
+import {translatesMap} from '../../../../common/utils/intervention-labels-map';
 
 /**
  * @customElement

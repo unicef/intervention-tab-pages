@@ -1,16 +1,16 @@
 import {LitElement, customElement, html, property} from 'lit-element';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {elevationStyles} from '../../common/styles/elevation-styles';
+import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
+import {elevationStyles} from '../../../../common/styles/elevation-styles';
 import {TimingOverviewData} from './timingOverview.models';
 import {selectTimingOverview} from './timingOverview.selectors';
-import {formatDate} from '../../utils/date-utils';
+import {formatDate} from '../../../../common/utils/date-utils';
 import {RootState} from '../../common/types/store.types';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {pageIsNotCurrentlyActive} from '../../../../common/utils/common-methods';
 import get from 'lodash-es/get';
-import {InfoElementStyles} from '../../common/styles/info-element-styles';
+import {InfoElementStyles} from '../../../../common/styles/info-element-styles';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {translate} from 'lit-translate';
 
@@ -53,9 +53,7 @@ export class TimingOverview extends CommentsMixin(LitElement) {
         </div>
 
         <div class="data-column">
-          <label class="paper-label"
-            >${translate('DATE_FIRST_DRAFT_PARTNER')}</label
-          >
+          <label class="paper-label">${translate('DATE_FIRST_DRAFT_PARTNER')}</label>
           <div class="input-label" ?empty="${!this.timingOverview.submission_date}">
             ${formatDate(this.timingOverview.submission_date)}
           </div>
@@ -113,7 +111,6 @@ export class TimingOverview extends CommentsMixin(LitElement) {
             <span>${translate('TIMING_TOOLTIP')}</span>
           </span>
         </etools-info-tooltip>
-
       </section>
     `;
   }

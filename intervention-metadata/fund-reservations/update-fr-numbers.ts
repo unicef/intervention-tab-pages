@@ -4,11 +4,11 @@ import '@polymer/paper-input/paper-input';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
-import RepeatableDataSetsMixin from '../../common/mixins/repeatable-data-sets-mixin';
-import {fireEvent} from '../../utils/fire-custom-event';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '../../common/styles/button-styles';
+import RepeatableDataSetsMixin from '../../../../common/mixins/repeatable-data-sets-mixin';
+import {fireEvent} from '../../../../common/utils/fire-custom-event';
+import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '../../../../common/styles/button-styles';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {PaperInputElement} from '@polymer/paper-input/paper-input';
 import {PaperDialogElement} from '@polymer/paper-dialog/paper-dialog';
@@ -116,9 +116,7 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
           `
         )}
 
-        <div class="${(this.data || []).length ? 'hidden' : 'row-h'}">
-          ${translate('NO_FUND_RESERVATIONS_ADDED')}
-        </div>
+        <div class="${(this.data || []).length ? 'hidden' : 'row-h'}">${translate('NO_FUND_RESERVATIONS_ADDED')}</div>
 
         <div class="row-h">
           <paper-button class="secondary-btn" @click="${() => this._addNewFundReservation()}">
@@ -136,9 +134,7 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
   editMode = true;
 
   @property({type: String})
-  deleteConfirmationMessage = (translate(
-    'DELETE_FR_PROMPT'
-  ) as unknown) as string;
+  deleteConfirmationMessage = (translate('DELETE_FR_PROMPT') as unknown) as string;
 
   @property({type: Boolean})
   disableConfirmBtn = true;

@@ -1,9 +1,9 @@
 import {LitElement, customElement, html, property, CSSResult, css} from 'lit-element';
-import {fireEvent} from '../utils/fire-custom-event';
+import {fireEvent} from '../../../common/utils/fire-custom-event';
 import {RootState} from '../common/types/store.types';
-import {pageIsNotCurrentlyActive} from '../utils/common-methods';
+import {pageIsNotCurrentlyActive} from '../../../common/utils/common-methods';
 import {InterventionReview, User} from '@unicef-polymer/etools-types';
-import {connectStore} from '../common/mixins/connect-store-mixin';
+import {connectStore} from '../../../common/mixins/connect-store-mixin';
 import './general-review-information/general-review-information';
 import './review-members/review-members';
 import './reviews-list/reviews-list';

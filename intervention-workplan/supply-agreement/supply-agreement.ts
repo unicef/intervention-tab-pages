@@ -2,27 +2,27 @@ import {LitElement, html, property, customElement, query} from 'lit-element';
 import '@unicef-polymer/etools-content-panel/etools-content-panel.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@unicef-polymer/etools-table/etools-table';
-import {getStore} from '../../utils/redux-store-access';
-import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
+import {getStore} from '../../../../common/utils/redux-store-access';
+import ComponentBaseMixin from '../../../../common/mixins/component-base-mixin';
 import '@unicef-polymer/etools-loading';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {buttonsStyles} from '../../common/styles/button-styles';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
+import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
+import {buttonsStyles} from '../../../../common/styles/button-styles';
+import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
 import {EtoolsTableColumn, EtoolsTableColumnType, EtoolsTableChildRow} from '@unicef-polymer/etools-table/etools-table';
 import './supply-agreement-dialog';
 import {RootState} from '../../common/types/store.types';
-import {openDialog} from '../../utils/dialog';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {openDialog} from '../../../../common/utils/dialog';
+import {pageIsNotCurrentlyActive} from '../../../../common/utils/common-methods';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {selectSupplyAgreement, selectSupplyAgreementPermissions} from './supplyAgreement.selectors';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getEndpoint} from '../../utils/endpoint-helper';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {fireEvent} from '../../utils/fire-custom-event';
+import {getEndpoint} from '../../../../common/utils/endpoint-helper';
+import {interventionEndpoints} from '../../../../common/utils/intervention-endpoints';
+import {fireEvent} from '../../../../common/utils/fire-custom-event';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {getIntervention, updateCurrentIntervention} from '../../common/actions/interventions';
-import '../../common/layout/are-you-sure';
+import '../../../../common/layout/are-you-sure';
 import {
   addCurrencyAmountDelimiter,
   displayCurrencyAmount
@@ -33,7 +33,7 @@ import {EtoolsUpload} from '@unicef-polymer/etools-upload/etools-upload';
 import {AnyObject, AsyncAction, InterventionSupplyItem} from '@unicef-polymer/etools-types';
 import {Intervention, ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
-import {translatesMap} from '../../utils/intervention-labels-map';
+import {translatesMap} from '../../../../common/utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 
 const customStyles = html`
