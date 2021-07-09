@@ -5,7 +5,7 @@ import '@polymer/paper-button';
 import '@polymer/paper-menu-button';
 import '@polymer/paper-icon-button';
 import '../../../common/layout/export-intervention-data';
-import './reason-popup';
+import '../../../common/layout/reason-popup';
 import './accept-for-partner';
 import {getEndpoint} from '../../../common/utils/endpoint-helper';
 import {interventionEndpoints} from '../../../common/utils/intervention-endpoints';
