@@ -213,7 +213,8 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
       dialog: 'activity-dialog',
       dialogData: {
         activity: event.detail,
-        interventionId: this.interventionId
+        interventionId: this.interventionId,
+        currency: this.data.currency
       }
     });
   }
