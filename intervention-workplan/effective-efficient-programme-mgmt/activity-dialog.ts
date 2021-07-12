@@ -18,6 +18,7 @@ import {formatCurrency, getTotal} from '../../common/components/activity/get-tot
 import {cloneDeep} from '../../utils/utils';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {translatesMap} from '../../utils/intervention-labels-map';
+import {ActivityItemsTable} from '../../common/components/activity/activity-items-table';
 
 /**
  * @customElement
@@ -103,9 +104,8 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         </div>
 
         <div class="layout-horizontal align-items-center">
-          ${
-            !this.useInputLevel
-              ? html`
+          ${!this.useInputLevel
+            ? html`
                   <etools-currency-amount-input
                     class="col-3"
                     id="partnerContribution"
@@ -126,51 +126,33 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
                   >
                   </etools-currency-amount-input>
                 </div>`
-              : html`
-                  <paper-input
-                    readonly
-                    tabindex="-1"
-                    class="col-3 total-input"
-                    label=${translate('PARTNER_CASH_BUDGET')}
-                    .value="${this.getSumValue('cso_cash')}"
-                  ></paper-input>
-                  <paper-input
-                    readonly
-                    tabindex="-1"
-                    class="col-3 total-input"
-                    label=${translate('UNICEF_CASH_BUDGET')}
-                    .value="${this.getSumValue('unicef_cash')}"
-                  ></paper-input>
-                `
-          }
+            : html`
+                <paper-input
+                  readonly
+                  tabindex="-1"
+                  class="col-3 total-input"
+                  label=${translate('PARTNER_CASH_BUDGET')}
+                  .value="${this.getSumValue('partner_contribution')}"
+                ></paper-input>
+                <paper-input
+                  readonly
+                  tabindex="-1"
+                  class="col-3 total-input"
+                  label=${translate('UNICEF_CASH_BUDGET')}
+                  .value="${this.getSumValue('unicef_cash')}"
+                ></paper-input>
+              `}
           <div class="flex-auto layout-horizontal total">
             <paper-input
               readonly
               tabindex="-1"
               class="col-6 general-total"
-              label=${translate('GENERAL.TOTAL')}
+              label="${translate('GENERAL.TOTAL')} (${this.currency})"
               .value="${this.getTotalValue()}"
             ></paper-input>
-        <div class="layout-horizontal">
-          <div class="col col-6">
-            <etools-currency-amount-input
-              id="partnerContribution"
-              label=${translate('PARTNER_CASH')}
-              .value="${this.originalData.partner_contribution}"
-              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, this.getPropertyName('partner'))}"
-            >
-            </etools-currency-amount-input>
-          </div>
-          <div class="col col-6">
-            <etools-currency-amount-input
-              id="unicefCash"
-              label=${translate(translatesMap.unicef_cash)}
-              .value="${this.originalData.unicef_cash}"
-              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, this.getPropertyName('unicef'))}"
-            >
-            </etools-currency-amount-input>
           </div>
         </div>
+
         <div class="layout-horizontal">
           <paper-toggle-button ?checked="${this.useInputLevel}" @iron-change="${this.inputLevelChange}" class="col-5">
             ${translate('USE_INPUT_LEVEL')}
@@ -196,6 +178,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
     this.data = activity;
     this.originalData = cloneDeep(this.data);
     this.interventionId = interventionId;
+    this.currency = data.currency || '';
     this.useInputLevel = Boolean((this.data.items || []).length);
   }
 
@@ -204,9 +187,19 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
   @property() loadingInProcess = false;
   @property() dialogOpened = true;
   @property() useInputLevel = false;
+  @property({type: String}) currency = '';
 
   onSaveClick() {
     this.loadingInProcess = true;
+    const activityItemsValidationSummary = this.validateActivityItems();
+    if (activityItemsValidationSummary) {
+      fireEvent(this, 'toast', {
+        text: activityItemsValidationSummary.invalidRequired
+          ? getTranslation('FILL_ALL_ACTIVITY_ITEMS')
+          : getTranslation('INVALID_TOTAL_ACTIVITY_ITEMS')
+      });
+      return;
+    }
 
     sendRequest({
       endpoint: getEndpoint(interventionEndpoints.interventionBudgetUpdate, {
@@ -242,7 +235,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
     // items: this.useInputLevel ? this.items : [],
   }
 
-  getSumValue(field: 'cso_cash' | 'unicef_cash'): string {
+  getSumValue(field: 'cso_cash' | 'partner_contribution' | 'unicef_cash'): string {
     return formatCurrency(
       (this.data.items || []).reduce((sum: number, item: AnyObject) => sum + Number(item[field]), 0)
     );
@@ -250,11 +243,17 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
 
   getTotalValue(): string {
     if (!this.useInputLevel) {
-      return getTotal(this.data[this.getPropertyName('partner')] || 0, this.data[this.getPropertyName('unicef')] || 0);
+      return getTotal(this.data.partner_contribution || 0, this.data.unicef_cash || 0);
+      //return getTotal(this.data[this.getPropertyName('partner')] || 0, this.data[this.getPropertyName('unicef')] || 0);
     } else {
       const cso: string = this.getSumValue('cso_cash').replace(/,/g, '');
       const unicef: string = this.getSumValue('unicef_cash').replace(/,/g, '');
       return getTotal(cso, unicef);
     }
+  }
+
+  validateActivityItems(): AnyObject | undefined {
+    const itemsTable: ActivityItemsTable | null = this.shadowRoot!.querySelector('activity-items-table');
+    return itemsTable !== null ? itemsTable.validate() : undefined;
   }
 }
