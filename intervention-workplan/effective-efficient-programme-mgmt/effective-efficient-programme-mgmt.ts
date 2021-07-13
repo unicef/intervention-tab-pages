@@ -20,7 +20,7 @@ import {
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {RootState} from '../../common/types/store.types';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {ProgrammeManagement} from './effectiveEfficientProgrammeMgmt.models';
+import {KindChoices, ProgrammeManagement} from './effectiveEfficientProgrammeMgmt.models';
 import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject} from '@unicef-polymer/etools-types';
@@ -180,7 +180,8 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         partner_contribution: addCurrencyAmountDelimiter(data.act1_partner),
         unicef_cash: addCurrencyAmountDelimiter(data.act1_unicef),
         total: addCurrencyAmountDelimiter(data.act1_total),
-        index: 1
+        index: 1,
+        kind: KindChoices.inCountry
       },
       {
         title: translate('TITLE_2'),
@@ -188,7 +189,8 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         partner_contribution: addCurrencyAmountDelimiter(data.act2_partner),
         unicef_cash: addCurrencyAmountDelimiter(data.act2_unicef),
         total: addCurrencyAmountDelimiter(data.act2_total),
-        index: 2
+        index: 2,
+        kind: KindChoices.operational
       },
       {
         title: translate('TITLE_3'),
@@ -196,7 +198,8 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         partner_contribution: addCurrencyAmountDelimiter(data.act3_partner),
         unicef_cash: addCurrencyAmountDelimiter(data.act3_unicef),
         total: addCurrencyAmountDelimiter(data.act3_total),
-        index: 3
+        index: 3,
+        kind: KindChoices.planning
       }
     ];
   }
@@ -209,11 +212,13 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
   }
 
   openActivityDialog(event: CustomEvent) {
+    event.detail.items = this.data.items;
     openDialog({
       dialog: 'activity-dialog',
       dialogData: {
         activity: event.detail,
-        interventionId: this.interventionId
+        interventionId: this.interventionId,
+        currency: this.data.currency
       }
     });
   }
