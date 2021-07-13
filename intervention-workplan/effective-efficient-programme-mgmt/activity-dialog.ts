@@ -16,8 +16,7 @@ import {translate, get as getTranslation} from 'lit-translate';
 import '../../common/components/activity/activity-items-table';
 import {formatCurrency, getTotal} from '../../common/components/activity/get-total.helper';
 import {cloneDeep} from '../../utils/utils';
-import {AnyObject} from '@unicef-polymer/etools-types';
-import {translatesMap} from '../../utils/intervention-labels-map';
+import {AnyObject, ManagementBudgetItem} from '@unicef-polymer/etools-types';
 import {ActivityItemsTable} from '../../common/components/activity/activity-items-table';
 
 /**
@@ -110,7 +109,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
                     class="col-3"
                     id="partnerContribution"
                     label=${translate('PARTNER_CASH_BUDGET')}
-                    .value="${this.data.partner_contribution}"
+                    .value="${this.data[this.getPropertyName('partner')]}"
                     @value-changed="${({detail}: CustomEvent) =>
                       this.valueChanged(detail, this.getPropertyName('partner'))}"
                   >
@@ -120,7 +119,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
                     class="col-3"
                     id="unicefCash"
                     label=${translate('UNICEF_CASH_BUDGET')}
-                    .value="${this.data.unicef_cash}"
+                    .value="${this.data[this.getPropertyName('unicef')]}"
                     @value-changed="${({detail}: CustomEvent) =>
                       this.valueChanged(detail, this.getPropertyName('unicef'))}"
                   >
@@ -132,7 +131,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
                   tabindex="-1"
                   class="col-3 total-input"
                   label=${translate('PARTNER_CASH_BUDGET')}
-                  .value="${this.getSumValue('partner_contribution')}"
+                  .value="${this.getSumValue('cso_cash')}"
                 ></paper-input>
                 <paper-input
                   readonly
@@ -154,15 +153,19 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         </div>
 
         <div class="layout-horizontal">
-          <paper-toggle-button ?checked="${this.useInputLevel}" @iron-change="${this.inputLevelChange}" class="col-5">
+          <paper-toggle-button
+            ?checked="${this.useInputLevel}"
+            @checked-changed="${this.inputLevelChange}"
+            class="col-5"
+          >
             ${translate('USE_INPUT_LEVEL')}
           </paper-toggle-button>
         </div>
         <activity-items-table
           ?hidden="${!this.useInputLevel}"
-          .activityItems="${this.data.items || []}"
+          .activityItems="${this.items || []}"
           @activity-items-changed="${({detail}: CustomEvent) => {
-            this.data.items = detail;
+            this.items = detail;
             this.requestUpdate();
           }}"
         ></activity-items-table>
@@ -176,10 +179,15 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
     }
     const {activity, interventionId}: any = data;
     this.data = activity;
+    this.items = (this.data.items || []).filter((row: ManagementBudgetItem) => row.kind === this.data.kind);
+    this.data.items = (this.data.items || []).filter((row: ManagementBudgetItem) => row.kind !== this.data.kind);
     this.originalData = cloneDeep(this.data);
+    this.data[this.getPropertyName('partner')] = this.data.partner_contribution;
+    this.data[this.getPropertyName('unicef')] = this.data.unicef_cash;
+
     this.interventionId = interventionId;
     this.currency = data.currency || '';
-    this.useInputLevel = Boolean((this.data.items || []).length);
+    this.useInputLevel = Boolean((this.items || []).length);
   }
 
   private interventionId = '';
@@ -188,9 +196,9 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
   @property() dialogOpened = true;
   @property() useInputLevel = false;
   @property({type: String}) currency = '';
+  @property({type: Array}) items: ManagementBudgetItem[] = [];
 
   onSaveClick() {
-    this.loadingInProcess = true;
     const activityItemsValidationSummary = this.validateActivityItems();
     if (activityItemsValidationSummary) {
       fireEvent(this, 'toast', {
@@ -200,7 +208,11 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
       });
       return;
     }
-
+    this.items.forEach((row: ManagementBudgetItem) => {
+      row.kind = this.data.kind;
+    });
+    this.loadingInProcess = true;
+    this.data.items = this.data.items.concat(this.items);
     sendRequest({
       endpoint: getEndpoint(interventionEndpoints.interventionBudgetUpdate, {
         interventionId: this.interventionId
@@ -232,19 +244,21 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
     }
     const element = e.currentTarget as HTMLInputElement;
     this.useInputLevel = element.checked;
-    // items: this.useInputLevel ? this.items : [],
+    if (this.useInputLevel) {
+      this.data[this.getPropertyName('unicef')] = '0';
+      this.data[this.getPropertyName('partner')] = '0';
+    } else {
+      this.items = [];
+    }
   }
 
-  getSumValue(field: 'cso_cash' | 'partner_contribution' | 'unicef_cash'): string {
-    return formatCurrency(
-      (this.data.items || []).reduce((sum: number, item: AnyObject) => sum + Number(item[field]), 0)
-    );
+  getSumValue(field: 'cso_cash' | 'unicef_cash'): string {
+    return formatCurrency((this.items || []).reduce((sum: number, item: AnyObject) => sum + Number(item[field]), 0));
   }
 
   getTotalValue(): string {
     if (!this.useInputLevel) {
-      return getTotal(this.data.partner_contribution || 0, this.data.unicef_cash || 0);
-      //return getTotal(this.data[this.getPropertyName('partner')] || 0, this.data[this.getPropertyName('unicef')] || 0);
+      return getTotal(this.data[this.getPropertyName('partner')] || 0, this.data[this.getPropertyName('unicef')] || 0);
     } else {
       const cso: string = this.getSumValue('cso_cash').replace(/,/g, '');
       const unicef: string = this.getSumValue('unicef_cash').replace(/,/g, '');
