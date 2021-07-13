@@ -184,7 +184,6 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
     this.originalData = cloneDeep(this.data);
     this.data[this.getPropertyName('partner')] = this.data.partner_contribution;
     this.data[this.getPropertyName('unicef')] = this.data.unicef_cash;
-
     this.interventionId = interventionId;
     this.currency = data.currency || '';
     this.useInputLevel = Boolean((this.items || []).length);
