@@ -51,10 +51,13 @@ export class EditQprDialog extends LitElement {
           margin-bottom: 24px;
         }
 
+        etools-dialog::part(ed-paper-dialog) {
+          width: 960px;
+        }
+
         calendar-lite {
           position: relative;
-          width: 268px;
-          height: 100%;
+          width: 288px;
         }
       </style>
 
