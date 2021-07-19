@@ -56,6 +56,9 @@ export class EditHruDialog extends connectStore(LitElement) {
         calendar-lite {
           position: relative;
         }
+        #dtPickerStDate::part(dp-calendar) {
+          height: 390px;
+        }
       </style>
 
       <etools-dialog
