@@ -452,5 +452,7 @@
   "METADATA_TOOLTIP": "Readonly display of values entered on the PD",
   "PREVIOUS_VALUE": "Previous value",
   "CURRENT_VALUE": "Current value",
-  "INPUT_LEVEL_ITEMS": "Input Level Items"
+  "INPUT_LEVEL_ITEMS": "Input Level Items",
+  "CORE_VALUES_ASSESSMENT_DATE": "Core Values Assessment Date",
+  "PSEA_ASSESSMENT_DATE": "PSEA Assessment Date"
 }

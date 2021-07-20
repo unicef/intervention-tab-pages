@@ -10,4 +10,6 @@ export class InterventionOverview extends ModelsBase {
   cfei_number = '';
   contingency_pd = false;
   humanitarian_flag = false;
+  last_assessment_date = '';
+  psea_assessment_date = '';
 }
