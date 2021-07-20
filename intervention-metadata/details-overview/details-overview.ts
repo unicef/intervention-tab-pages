@@ -9,6 +9,7 @@ import {InterventionOverview} from './interventionOverview.models';
 import {selectInterventionOverview} from './interventionOverview.selectors';
 import {RootState} from '../../common/types/store.types';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {formatDate} from '../../utils/date-utils';
 import get from 'lodash-es/get';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
@@ -94,11 +95,11 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
           </div>
           <div class="data-column">
             <label class="paper-label">${translate('CORE_VALUES_ASSESSMENT_DATE')}</label>
-            <div class="input-label">${this.interventionOverview.last_assessment_date}</div>
+            <div class="input-label">${formatDate(this.interventionPartner?.last_assessment_date)}</div>
           </div>
           <div class="data-column">
             <label class="paper-label">${translate('PSEA_ASSESSMENT_DATE')}</label>
-            <div class="input-label">${this.interventionOverview.psea_assessment_date}</div>
+            <div class="input-label">${formatDate(this.interventionPartner?.psea_assessment_date)}</div>
           </div>
 
           <etools-info-tooltip icon="icons:info" position="left" id="not-allowed-icon">
