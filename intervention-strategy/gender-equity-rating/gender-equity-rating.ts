@@ -89,18 +89,18 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
               always-float-label
               class="w100"
               placeholder="&#8212;"
-              rows="${detailsTextareaRowsCount(this.editMode)}"
-              max-rows="4"
               .value="${this.data.gender_narrative}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'gender_narrative')}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.gender_narrative)}"
               ?required="${this.permissions.required.gender_narrative}"
               maxlength="3000"
+              rows="${detailsTextareaRowsCount(this.editMode)}"
+              .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.gender_narrative)}"
             >
             </paper-textarea>
           </div>
         </div>
-        
+
         <div class="row-padding-v pb-20">
           <div class="w100">
             <label class="paper-label">${translate(translatesMap.equity_rating)}</label>
@@ -118,13 +118,13 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
               always-float-label
               class="w100"
               placeholder="&#8212;"
-              rows="${detailsTextareaRowsCount(this.editMode)}"
-              max-rows="4"
               .value="${this.data.equity_narrative}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'equity_narrative')}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.equity_narrative)}"
               ?required="${this.permissions.required.equity_narrative}"
               maxlength="3000"
+              rows="${detailsTextareaRowsCount(this.editMode)}"
+              .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.equity_narrative)}"
             >
             </paper-textarea>
           </div>
@@ -147,13 +147,13 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
               always-float-label
               class="w100"
               placeholder="&#8212;"
-              rows="${detailsTextareaRowsCount(this.editMode)}"
-              max-rows="4"
               .value="${this.data.sustainability_narrative}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'sustainability_narrative')}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.sustainability_narrative)}"
               ?required="${this.permissions.required.sustainability_narrative}"
               maxlength="3000"
+              rows="${detailsTextareaRowsCount(this.editMode)}"
+              .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.sustainability_narrative)}"
             >
             </paper-textarea>
           </div>
