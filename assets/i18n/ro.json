@@ -447,5 +447,7 @@
   "DELETE_AMENDMENT_QUESTION": "delete this amendment?",
   "BUDGET_TOOLTIP": "These are the readonly TOTALS of the values entered below for PD Output Activities, Effective and Efficient Programme Management, Supplies",
   "TIMING_TOOLTIP": "These are the centralised and readonly Dates of when the said actions have been taken on the PD",
-  "METADATA_TOOLTIP": "Readonly display of values entered on the PD"
+  "METADATA_TOOLTIP": "Readonly display of values entered on the PD",
+  "UPLOAD_SUPPLY_TOOLTIP": "Upload From Supply Catalogue",
+  "UPLOAD_SUPPLY_HELPER": "To upload from supply catalogue please visit {0} to select items and export to excel then upload into the PD."
 }

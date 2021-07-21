@@ -77,6 +77,9 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         .pad-right {
           padding-right: 6px;
         }
+        #uploadHelpPanel {
+          margin-block-end: 0;
+        }
         div[slot='panel-btns'] {
           display: flex;
           align-items: center;
@@ -97,12 +100,22 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
               ${displayCurrencyAmount(this.intervention.planned_budget.in_kind_amount_local!)}</label
             >
           </span>
-          <paper-icon-button
-            ?hidden="${!this.permissions.edit.supply_items || this.uploadInProcess}"
-            @click="${() => this.uploader?._openFileChooser()}"
-            icon="file-upload"
+
+          <etools-info-tooltip
+            custom-icon
+            position="left"
+            ?hide-tooltip="${!this.permissions.edit.supply_items || this.uploadInProcess}"
           >
-          </paper-icon-button>
+            <paper-icon-button
+              slot="custom-icon"
+              ?hidden="${!this.permissions.edit.supply_items || this.uploadInProcess}"
+              @click="${() => this.uploader?._openFileChooser()}"
+              icon="file-upload"
+            >
+            </paper-icon-button>
+            <span slot="message">${translate('UPLOAD_SUPPLY_TOOLTIP')}</span>
+          </etools-info-tooltip>
+
           <etools-loading ?active="${this.uploadInProcess}" no-overlay loading-text></etools-loading>
           <paper-icon-button
             ?hidden="${!this.permissions.edit.supply_items}"
@@ -110,6 +123,9 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
             icon="add-box"
           >
           </paper-icon-button>
+        </div>
+        <div class="row-h" ?hidden="${!this.permissions.edit.supply_items}">
+          <p id="uploadHelpPanel">${this.getUploadHelpText()}</p>
         </div>
         <etools-table
           ?hidden="${!this.supply_items?.length}"
@@ -246,6 +262,16 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         ${sharedStyles}
       </style>
       ${customStyles}`;
+  }
+
+  getUploadHelpText() {
+    const uploadHelpPanel = this.shadowRoot!.querySelector('#uploadHelpPanel');
+    if (uploadHelpPanel) {
+      const translatedText = getTranslation('UPLOAD_SUPPLY_HELPER').split('{0}');
+      const link = 'https://supply.unicef.org/all-materials.html';
+      uploadHelpPanel.innerHTML =
+        translatedText[0] + `<a target='_blank' href=${link}>${link}</a>` + (translatedText[1] || '');
+    }
   }
 
   stateChanged(state: RootState): void {

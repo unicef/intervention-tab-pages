@@ -452,5 +452,7 @@
   "METADATA_TOOLTIP": "Readonly display of values entered on the PD",
   "PREVIOUS_VALUE": "Previous value",
   "CURRENT_VALUE": "Current value",
-  "INPUT_LEVEL_ITEMS": "Input Level Items"
+  "INPUT_LEVEL_ITEMS": "Input Level Items",
+  "UPLOAD_SUPPLY_TOOLTIP": "Upload From Supply Catalogue",
+  "UPLOAD_SUPPLY_HELPER": "To upload from supply catalogue please visit {0} to select items and export to excel then upload into the PD."
 }
