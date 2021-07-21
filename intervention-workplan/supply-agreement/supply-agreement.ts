@@ -267,10 +267,11 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   getUploadHelpText() {
     const uploadHelpPanel = this.shadowRoot!.querySelector('#uploadHelpPanel');
     if (uploadHelpPanel) {
-      const translatedText = getTranslation('UPLOAD_SUPPLY_HELPER').split('{0}');
       const link = 'https://supply.unicef.org/all-materials.html';
-      uploadHelpPanel.innerHTML =
-        translatedText[0] + `<a target='_blank' href=${link}>${link}</a>` + (translatedText[1] || '');
+      uploadHelpPanel.innerHTML = getTranslation('UPLOAD_SUPPLY_HELPER').replace(
+        '{0}',
+        `<a target='_blank' href=${link}>${link}</a>`
+      );
     }
   }
 
