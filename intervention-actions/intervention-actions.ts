@@ -173,6 +173,10 @@ export class InterventionActions extends LitElement {
         btn = getTranslation('CONTINUE');
         message = getTranslation('TERMINATE_PROMPT');
         break;
+      case REVIEW:
+        btn = getTranslation('ACCEPT');
+        message = getTranslation('REVIEW_PROMPT');
+        break;
       default:
         btn = this.actionsNamesMap[action];
         message = getTranslation('ARE_YOU_SURE_PROMPT') + this.actionsNamesMap[action]?.toLowerCase() + ' ?';
