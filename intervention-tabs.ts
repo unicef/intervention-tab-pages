@@ -25,7 +25,7 @@ import {enableCommentMode, getComments} from './common/components/comments/comme
 import {commentsData} from './common/components/comments/comments.reducer';
 import {Store} from 'redux';
 import {connectStore} from './common/mixins/connect-store-mixin';
-import {EnvFlags, Intervention} from '@unicef-polymer/etools-types';
+import {EnvFlags, ExpectedResult, Intervention} from '@unicef-polymer/etools-types';
 import {AsyncAction, RouteDetails} from '@unicef-polymer/etools-types';
 import {interventions} from './common/reducers/interventions';
 import {translate, get as getTranslation} from 'lit-translate';
@@ -33,7 +33,7 @@ import {EtoolsTabs} from './common/layout/etools-tabs';
 import {ROOT_PATH} from './config/config';
 import {reviews} from './common/reducers/officers-reviews';
 import {uploadStatus} from './common/reducers/upload-status';
-import {TABS} from './common/constants';
+import CONSTANTS, {TABS} from './common/constants';
 import UploadMixin from './common/mixins/uploads-mixin';
 import './common/layout/are-you-sure';
 import {openDialog} from './utils/dialog';
@@ -323,7 +323,10 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     // check if intervention was changed
     if (!isJsonStrMatch(this.intervention, currentIntervention)) {
       this.intervention = cloneDeep(currentIntervention);
-      this.availableActions = this.intervention?.available_actions || [];
+      this.availableActions = this.checkExportOptionsAvailability(
+        this.intervention?.available_actions || [],
+        this.intervention!
+      );
       // set amendment attribute on host to add border and other styles
       this.isInAmendment = Boolean(this.intervention?.in_amendment);
       this.checkTabs(state);
@@ -348,6 +351,29 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       }, 10);
       fireEvent(this, 'scroll-up');
     }
+  }
+
+  checkExportOptionsAvailability(availableActions: string[], intervention: Intervention) {
+    if (
+      availableActions &&
+      availableActions.includes('export_results') &&
+      !this.showExportResults(intervention.status, intervention.result_links)
+    ) {
+      return availableActions.filter((x: string) => x !== 'export_results');
+    }
+    return availableActions;
+  }
+
+  showExportResults(status: string, resultLinks: ExpectedResult[]) {
+    return (
+      [
+        CONSTANTS.STATUSES.Draft.toLowerCase(),
+        CONSTANTS.STATUSES.Signed.toLowerCase(),
+        CONSTANTS.STATUSES.Active.toLowerCase()
+      ].indexOf(status) > -1 &&
+      resultLinks &&
+      resultLinks.length
+    );
   }
 
   hasPermissionsToAccessPage(state: RootState) {
