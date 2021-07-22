@@ -450,5 +450,7 @@
   "BUDGET_TOOLTIP": "These are the readonly TOTALS of the values entered below for PD Output Activities, Effective and Efficient Programme Management, Supplies",
   "TIMING_TOOLTIP": "These are the centralised and readonly Dates of when the said actions have been taken on the PD",
   "METADATA_TOOLTIP": "Readonly display of values entered on the PD",
-  "SUBMIT": "Submit"
+  "SUBMIT": "Submit",
+  "PLS_FILL_IN_ALL_REQUIRED_FIELDS": "Please fill in all required fields",
+  "MAKE_SURE_AMOUNTS_GREATER_THAN_0": "Make sure you enter amounts greater than 0.00"
 }
