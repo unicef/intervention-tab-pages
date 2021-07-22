@@ -9,6 +9,7 @@ import {InterventionOverview} from './interventionOverview.models';
 import {selectInterventionOverview} from './interventionOverview.selectors';
 import {RootState} from '../../common/types/store.types';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {formatDate} from '../../utils/date-utils';
 import get from 'lodash-es/get';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
@@ -41,8 +42,12 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
         ${sharedStyles} .data-column {
           max-width: none;
         }
+        .data-column {
+          margin-right: 20px;
+          padding-left: 0px;
+        }
         .container-width {
-          width: 70%;
+          width: 100%;
           display: flex;
           justify-content: flex-start;
           flex-wrap: wrap;
@@ -60,33 +65,41 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
         comment-description="Details"
       >
         <div class="container-width">
-          <div class="data-column flex-2">
+          <div class="data-column">
             <label class="paper-label">${translate('DOCUMENT_TYPE')}</label>
             <div class="input-label" ?empty="${!this.interventionOverview.document_type}">
               ${this.getDocumentLongName(this.interventionOverview.document_type)}
             </div>
           </div>
-          <div class="data-column flex-3">
+          <div class="data-column">
             <label class="paper-label">${translate('UNPP_CFEI_DSR')}</label>
             <div class="input-label" ?empty="${!this.interventionOverview.cfei_number}">
               ${this.interventionOverview.cfei_number}
             </div>
           </div>
-          <div class="data-column flex-1">
+          <div class="data-column">
             <label class="paper-label">${translate('HUMANITARIAN')}</label>
             <div class="input-label">${this._getText(this.interventionOverview.humanitarian_flag)}</div>
           </div>
-          <div class="data-column flex-1">
+          <div class="data-column">
             <label class="paper-label">${translate('CONTINGENCY')}</label>
             <div class="input-label">${this._getText(this.interventionOverview.contingency_pd)}</div>
           </div>
-          <div class="data-column flex-2" ?hidden="${!this.isUnicefUser}">
+          <div class="data-column" ?hidden="${!this.isUnicefUser}">
             <label class="paper-label">${translate('PARTNER_HACT_RR')}</label>
             <div class="input-label">${this.getPartnerHactRiskRatingHtml()}</div>
           </div>
-          <div class="data-column flex-2" ?hidden="${!this.isUnicefUser}">
+          <div class="data-column" ?hidden="${!this.isUnicefUser}">
             <label class="paper-label">${translate('PARTNER_PSEA_RR')}</label>
             <div class="input-label">${this.getPartnerPseaRiskRatingHtml()}</div>
+          </div>
+          <div class="data-column">
+            <label class="paper-label">${translate('CORE_VALUES_ASSESSMENT_DATE')}</label>
+            <div class="input-label">${formatDate(this.interventionPartner?.last_assessment_date)}</div>
+          </div>
+          <div class="data-column">
+            <label class="paper-label">${translate('PSEA_ASSESSMENT_DATE')}</label>
+            <div class="input-label">${formatDate(this.interventionPartner?.psea_assessment_date)}</div>
           </div>
 
           <etools-info-tooltip icon="icons:info" position="left" id="not-allowed-icon">
