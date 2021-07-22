@@ -414,7 +414,7 @@
   "KNOLEDGE_BASE": "Bază de cunoștințe",
   "DISCUSSION": "Discutii",
   "INFORMATION": "Informatii",
-  "START_REVIEW": "Start Review",
+  "SEND_FOR_REVIEW": "Send for Review",
   "START": "Start",
   "PRC_REVIEW": "PRC Review",
   "NON_PRC_REVIEW": "Non-PRC Review",
@@ -449,5 +449,7 @@
   "TIMING_TOOLTIP": "These are the centralised and readonly Dates of when the said actions have been taken on the PD",
   "METADATA_TOOLTIP": "Readonly display of values entered on the PD",
   "CORE_VALUES_ASSESSMENT_DATE": "Core Values Assessment Date",
-  "PSEA_ASSESSMENT_DATE": "PSEA Assessment Date"
+  "PSEA_ASSESSMENT_DATE": "PSEA Assessment Date",
+  "UPLOAD_SUPPLY_TOOLTIP": "Upload From Supply Catalogue",
+  "UPLOAD_SUPPLY_HELPER": "To upload from supply catalogue please visit {0} to select items and export to excel then upload into the PD."
 }
