@@ -3,7 +3,12 @@ import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {Constructor} from '@unicef-polymer/etools-types';
 import {getStore} from '../../utils/redux-store-access';
-import {DECREASE_UNSAVED_UPLOADS, INCREASE_UPLOADS_IN_PROGRESS} from '../../common/actions/actionsContants';
+import {
+  INCREASE_UNSAVED_UPLOADS,
+  DECREASE_UNSAVED_UPLOADS,
+  INCREASE_UPLOADS_IN_PROGRESS,
+  DECREASE_UPLOADS_IN_PROGRESS
+} from '../../common/actions/actionsContants';
 
 /**
  * @polymer
@@ -35,8 +40,27 @@ function UploadsMixin<T extends Constructor<LitElement>>(baseClass: T) {
       getStore().dispatch({type: INCREASE_UPLOADS_IN_PROGRESS});
     }
 
+    public _onUploadFinished(success: any) {
+      getStore().dispatch({type: DECREASE_UPLOADS_IN_PROGRESS});
+      if (success) {
+        getStore().dispatch({type: INCREASE_UNSAVED_UPLOADS});
+      }
+    }
+
     public _onChangeUnsavedFile(e: any) {
       e.stopImmediatePropagation();
+      this.decreaseUnsavedUploads();
+    }
+
+    public _onUploadDelete() {
+      this.decreaseUnsavedUploads();
+    }
+
+    public _onUploadSaved() {
+      this.decreaseUnsavedUploads();
+    }
+
+    private decreaseUnsavedUploads() {
       getStore().dispatch({type: DECREASE_UNSAVED_UPLOADS});
     }
   }

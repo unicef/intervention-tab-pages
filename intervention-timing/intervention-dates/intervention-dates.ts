@@ -193,6 +193,7 @@ export class InterventionDates extends CommentsMixin(
   }
 
   private activationLetterUploadFinished(e: CustomEvent) {
+    this._onUploadFinished(e.detail.success);
     if (e.detail.success) {
       const response = e.detail.success;
       this.data.activation_letter_attachment = response.id;
@@ -235,6 +236,7 @@ export class InterventionDates extends CommentsMixin(
             showCloseBtn: true
           });
         }
+        this._onUploadSaved();
         this.editMode = false;
       });
   }
