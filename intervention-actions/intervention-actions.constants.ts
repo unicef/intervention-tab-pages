@@ -40,7 +40,7 @@ export const namesMap: GenericObject<string> = {
   [SEND_TO_UNICEF]: getTranslation('SEND_TO_UNICEF'),
   [UNLOCK]: getTranslation('UNLOCK'),
   [ACCEPT]: getTranslation('ACCEPT'),
-  [REVIEW]: getTranslation('REVIEW'),
+  [REVIEW]: getTranslation('SEND_FOR_REVIEW'),
   [CANCEL]: getTranslation('GENERAL.CANCEL'),
   [TERMINATE]: getTranslation('TERMINATE'),
   [REJECT_REVIEW]: getTranslation('REJECT_REVIEW'),

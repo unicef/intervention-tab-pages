@@ -30,7 +30,7 @@
   "ARE_YOU_SURE_PROMPT": "هل أنت متأكد ",
   "ACCEPT_PROMPT": "Are you sure you want to accept?",
   "UNLOCK_PROMPT": "Are you sure you want to unlock?",
-  "REVIEW_PROMPT": "Are you sure you want to review?",
+  "REVIEW_PROMPT": "Accept as budget owner if you are satisfied with all entered information, planned budget, planned results and other requirements",
   "UNICEF_ACCEPTED": "UNICEF Accepted",
   "PARTNER_AND_UNICEF_ACCEPTED": "Partner & UNICEF Accepted",
   "PARTNER_ACCEPTED": "Partner Accepted",
