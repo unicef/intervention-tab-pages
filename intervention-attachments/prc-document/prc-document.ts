@@ -68,11 +68,11 @@ export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadMixin(Li
               accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt"
               .fileUrl="${this.data.prc_review_attachment}"
               .uploadEndpoint="${this.uploadEndpoint}"
-              @upload-finished="${this._prcRevDocUploadFinished}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.prc_review_attachment)}"
               .showDeleteBtn="${this.showPrcReviewDeleteBtn(this.data.status)}"
               @delete-file="${this._prcRevDocDelete}"
               @upload-started="${this._onUploadStarted}"
+              @upload-finished="${this._prcRevDocUploadFinished}"
               @change-unsaved-file="${this._onChangeUnsavedFile}"
             >
             </etools-upload>
@@ -113,6 +113,7 @@ export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadMixin(Li
   }
 
   _prcRevDocUploadFinished(e: CustomEvent) {
+    this._onUploadFinished(e.detail.success);
     if (e.detail.success) {
       const response = e.detail.success;
       this.data.prc_review_attachment = response.id;
@@ -122,6 +123,7 @@ export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadMixin(Li
 
   _prcRevDocDelete(_e: CustomEvent) {
     this.data.prc_review_attachment = null;
+    this._onUploadDelete();
   }
 
   showPrcReviewDeleteBtn(status: string) {
@@ -139,6 +141,7 @@ export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadMixin(Li
         patchIntervention({prc_review_attachment: this.data.prc_review_attachment})
       )
       .then(() => {
+        this._onUploadSaved();
         this.editMode = false;
       });
   }
