@@ -78,16 +78,7 @@ export class ExportInterventionData extends LitElement {
   }
 
   @property({type: Array})
-  exportLinks: AnyObject[] = [
-    {
-      name: 'Export Excel',
-      type: 'xlsx'
-    },
-    {
-      name: 'Export CSV',
-      type: 'csv'
-    }
-  ];
+  exportLinks!: AnyObject[];
 
   @property({type: String})
   params = '';
@@ -102,15 +93,14 @@ export class ExportInterventionData extends LitElement {
       window.open(url, '_blank');
       return;
     }
-    if (_type == 'generate_pdf') {
-      url = getEndpoint(interventionEndpoints.downloadPDPdf, {interventionId: this.interventionId}).url;
+    if (_type == 'export_results') {
+      url = getEndpoint(interventionEndpoints.expectedResultsExport, {intervention_id: this.interventionId}).url;
       window.open(url, '_blank');
       return;
-    } else {
-      // TODO: Export not implemented yet
-      // url = getEndpoint(interventionEndpoints.intervention, {interventionId: this.interventionId}).url;
-      // url = url + `export/${_type}/` + (this.params ? `?${this.params}` : '');
-      fireEvent(this, 'toast', {text: 'Export this not implemented...'});
     }
+    // TODO: Export not implemented yet
+    // url = getEndpoint(interventionEndpoints.intervention, {interventionId: this.interventionId}).url;
+    // url = url + `export/${_type}/` + (this.params ? `?${this.params}` : '');
+    fireEvent(this, 'toast', {text: 'Export this not implemented...'});
   }
 }
