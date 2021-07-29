@@ -14,7 +14,6 @@ export class OverallApproval extends LitElement {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
-      sharedStyles,
       gridLayoutStylesLit,
       css`
         :host {
@@ -59,6 +58,9 @@ export class OverallApproval extends LitElement {
 
   render(): TemplateResult {
     return html`
+      <style>
+        ${sharedStyles}
+      </style>
       <etools-content-panel class="content-section" panel-title="Overall Review">
         <div slot="panel-btns" ?hidden="${this.readonly}">
           <paper-icon-button icon="icons:create" @click="${() => this.openReviewPopup()}"></paper-icon-button>

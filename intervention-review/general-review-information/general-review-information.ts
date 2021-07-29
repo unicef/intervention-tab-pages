@@ -14,7 +14,6 @@ export class GeneralReviewInformation extends LitElement {
     // language=CSS
     return [
       gridLayoutStylesLit,
-      sharedStyles,
       css`
         *[hidden] {
           display: none;
@@ -60,6 +59,9 @@ export class GeneralReviewInformation extends LitElement {
   render(): TemplateResult {
     // language=HTML
     return html`
+      <style>
+        ${sharedStyles}
+      </style>
       <etools-content-panel panel-title="${translate('INTERVENTION_REVIEW')}">
         <div class="row-padding-v">
           <div ?hidden="${this.review}">${translate('EMPTY_REVIEW')}</div>
