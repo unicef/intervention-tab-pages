@@ -3,7 +3,7 @@ import '@polymer/paper-toggle-button';
 
 import '../../common/layout/page-content-header/intervention-page-content-header';
 import '../../common/layout/etools-tabs';
-import './common/components/cancel/cancel-justification';
+import '../../common/layout/cancel/cancel-justification';
 // eslint-disable-next-line max-len
 import '../../common/layout/status/etools-status';
 import './intervention-actions/intervention-actions';
