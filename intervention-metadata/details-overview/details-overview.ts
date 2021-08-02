@@ -1,10 +1,8 @@
 import {LitElement, customElement, html, property} from 'lit-element';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {elevationStyles} from '../../common/styles/elevation-styles';
-import {InfoElementStyles} from '../../common/styles/info-element-styles';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
 import {InterventionOverview} from './interventionOverview.models';
 import {selectInterventionOverview} from './interventionOverview.selectors';
 import {RootState} from '../../common/types/store.types';
@@ -19,6 +17,8 @@ import {AnyObject} from '@unicef-polymer/etools-types/dist/global.types';
 import {Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
 import {TABS} from '../../common/constants';
 import {StaticPartner} from '@unicef-polymer/etools-types';
+import {elevationStyles} from '../../../../etools-pages-common/styles/elevation-styles';
+import {InfoElementStyles} from '../../../../etools-pages-common/styles/info-element-styles';
 
 /**
  * @customElement

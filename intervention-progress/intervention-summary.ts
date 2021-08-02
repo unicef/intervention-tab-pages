@@ -2,9 +2,8 @@ import {LitElement, customElement, html, property} from 'lit-element';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import '@polymer/iron-label/iron-label';
 import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
-import {elevationStyles} from '../common/styles/elevation-styles';
-import {gridLayoutStylesLit} from '../common/styles/grid-layout-styles-lit';
-import {sharedStyles} from '../common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {sharedStyles} from '../../../etools-pages-common/styles/shared-styles-lit';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {prettyDate} from '../utils/date-utils';
@@ -16,6 +15,7 @@ import {connectStore} from '../common/mixins/connect-store-mixin';
 import {AnyObject, CpOutput, StaticPartner, ManagementBudget} from '@unicef-polymer/etools-types';
 import {ExpectedResult, MinimalAgreement, Intervention} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {elevationStyles} from '../../../etools-pages-common/styles/elevation-styles';
 
 // TODO - NOT USED AT THE MOMENT
 @customElement('intervention-summary')

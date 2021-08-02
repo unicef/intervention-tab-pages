@@ -2,8 +2,8 @@
 import {getStore} from '../../utils/redux-store-access';
 import {css, html, CSSResultArray, customElement, LitElement, property} from 'lit-element';
 import {repeat} from 'lit-html/directives/repeat';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '../../common/styles/button-styles';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '../../../../etools-pages-common/styles/button-styles';
 import {
   selectInterventionId,
   selectInterventionStatus,
@@ -39,7 +39,7 @@ import {getIntervention, updateCurrentIntervention} from '../../common/actions/i
 import {_sendRequest} from '../../utils/request-helper';
 import {isUnicefUser, currentIntervention} from '../../common/selectors';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
 import ContentPanelMixin from '../../common/mixins/content-panel-mixin';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';

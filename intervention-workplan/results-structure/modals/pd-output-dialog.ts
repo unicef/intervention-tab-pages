@@ -12,7 +12,7 @@ import {validateRequiredFields} from '../../../utils/validation-helper';
 import {AsyncAction, CpOutput} from '@unicef-polymer/etools-types';
 import {ResultLinkLowerResult} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
-import {sharedStyles} from '../../../common/styles/shared-styles-lit';
+import {sharedStyles} from '../../../../../etools-pages-common/styles/shared-styles-lit';
 
 @customElement('pd-output-dialog')
 export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElement) {
@@ -81,17 +81,9 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
         no-padding
       >
         <div class="unassociated-warning" ?hidden="${!this.unassociated || this.hideCpOutputs}">
-          <div>
-            <iron-icon icon="warning"></iron-icon>${translate('ASSOCIATE_PROMPT')}
-          </div>
+          <div><iron-icon icon="warning"></iron-icon>${translate('ASSOCIATE_PROMPT')}</div>
           ${!this.cpOutputs.length
-            ? html`
-                <div>
-                  <br /><iron-icon icon="warning"></iron-icon> ${translate(
-                    'ASSOCIATE_MSG'
-                  )}
-                </div>
-              `
+            ? html` <div><br /><iron-icon icon="warning"></iron-icon> ${translate('ASSOCIATE_MSG')}</div> `
             : ''}
         </div>
         <div class="container layout vertical">

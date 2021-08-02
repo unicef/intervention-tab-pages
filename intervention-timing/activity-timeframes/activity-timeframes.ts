@@ -2,7 +2,7 @@ import {LitElement, html, TemplateResult, customElement, CSSResultArray, propert
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {RootState} from '../../common/types/store.types';
 import {ActivityTime, groupByYear, GroupedActivityTime, serializeTimeFrameData} from '../../utils/timeframes.helper';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
 import {ActivityTimeframesStyles} from './activity-timeframes.styles';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {get} from 'lodash-es';
@@ -13,7 +13,7 @@ import {
   InterventionQuarter,
   InterventionActivityTimeframe
 } from '@unicef-polymer/etools-types';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
 import {Intervention, ResultLinkLowerResult, ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 

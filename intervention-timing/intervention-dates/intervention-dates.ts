@@ -4,13 +4,13 @@ import FrNumbersConsistencyMixin from '../../common/mixins/fr-numbers-consistenc
 import '@unicef-polymer/etools-date-time/datepicker-lite';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
 import {PartnerReportingRequirements, RootState} from '../../common/types/store.types';
 import {ProgrammeDocDates, InterventionDatesPermissions} from './interventionDates.models';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {selectInterventionDates, selectInterventionDatesPermissions} from './interventionDates.selectors';
-import {buttonsStyles} from '../../common/styles/button-styles';
+import {buttonsStyles} from '../../../../etools-pages-common/styles/button-styles';
 import {getStore} from '../../utils/redux-store-access';
 import {patchIntervention} from '../../common/actions/interventions';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';

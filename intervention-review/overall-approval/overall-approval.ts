@@ -1,7 +1,7 @@
 import {customElement, LitElement, html, CSSResultArray, css, TemplateResult, property} from 'lit-element';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
 import '@unicef-polymer/etools-data-table/etools-data-table';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
 import {translate} from 'lit-translate';
 import {InterventionReview} from '@unicef-polymer/etools-types';
 import {REVIEW_ANSVERS, REVIEW_QUESTIONS} from '../review.const';
@@ -14,7 +14,6 @@ export class OverallApproval extends LitElement {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
-      sharedStyles,
       gridLayoutStylesLit,
       css`
         :host {
@@ -59,6 +58,9 @@ export class OverallApproval extends LitElement {
 
   render(): TemplateResult {
     return html`
+      <style>
+        ${sharedStyles}
+      </style>
       <etools-content-panel class="content-section" panel-title="Overall Review">
         <div slot="panel-btns" ?hidden="${this.readonly}">
           <paper-icon-button icon="icons:create" @click="${() => this.openReviewPopup()}"></paper-icon-button>

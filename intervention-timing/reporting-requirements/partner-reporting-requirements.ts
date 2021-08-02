@@ -11,8 +11,6 @@ import './qpr/quarterly-reporting-requirements';
 import './hr/humanitarian-reporting-req-unicef';
 import './hr/humanitarian-reporting-req-cluster';
 import './srr/special-reporting-requirements';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {sectionContentStyles} from '../../common/styles/content-section-styles-polymer';
 
 import {HumanitarianReportingReqUnicefEl} from './hr/humanitarian-reporting-req-unicef';
 import {QuarterlyReportingRequirementsEL} from './qpr/quarterly-reporting-requirements';
@@ -25,11 +23,13 @@ import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {isUnicefUser} from '../../common/selectors';
 import {connectStore} from '../../common/mixins/connect-store-mixin';
 import {AnyObject, Permission} from '@unicef-polymer/etools-types';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {buttonsStyles} from '../../common/styles/button-styles';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
 import {callClickOnSpacePushListener} from '../../utils/common-methods';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
+import {buttonsStyles} from '../../../../etools-pages-common/styles/button-styles';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {sectionContentStyles} from '../../../../etools-pages-common/styles/content-section-styles-polymer';
 
 /**
  * @polymer

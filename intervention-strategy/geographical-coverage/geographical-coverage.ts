@@ -3,9 +3,9 @@ import '@polymer/paper-button/paper-button';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
 import './grouped-locations-dialog';
 
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '../../common/styles/button-styles';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '../../../../etools-pages-common/styles/button-styles';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
 import {getStore} from '../../utils/redux-store-access';
 import {LocationsPermissions} from './geographicalCoverage.models';
 import {selectLocationsPermissions} from './geographicalCoverage.selectors';

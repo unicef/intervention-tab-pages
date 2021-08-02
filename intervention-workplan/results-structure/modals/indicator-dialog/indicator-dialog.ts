@@ -9,8 +9,8 @@ import '@polymer/paper-item/paper-item.js';
 import '@polymer/paper-toggle-button/paper-toggle-button.js';
 import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
-import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
+import {sharedStyles} from '../../../../../../etools-pages-common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../../../../../../etools-pages-common/styles/grid-layout-styles-lit';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import SaveIndicatorMixin from './mixins/save-indicator-mixin';
 import IndicatorDialogTabsMixin from './mixins/indicator-dialog-tabs-mixin';
@@ -325,9 +325,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   }
 
   setTitle() {
-    const title = this.isEditRecord
-      ? getTranslation('EDIT_INDICATOR')
-      : getTranslation('ADD_INDICATOR');
+    const title = this.isEditRecord ? getTranslation('EDIT_INDICATOR') : getTranslation('ADD_INDICATOR');
     setTimeout(() => {
       this.indicatorDialog.dialogTitle = title;
     });

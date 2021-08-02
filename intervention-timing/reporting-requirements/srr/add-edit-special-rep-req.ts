@@ -1,7 +1,7 @@
 /* eslint-disable lit/no-legacy-template-syntax */
 import {LitElement, html, property, customElement} from 'lit-element';
-import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
-import {sharedStyles} from '../../../common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {sharedStyles} from '../../../../../etools-pages-common/styles/shared-styles-lit';
 import {getEndpoint} from '../../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {prepareDatepickerDate} from '../../../utils/date-utils';
@@ -57,9 +57,7 @@ export class AddEditSpecialRepReq extends LitElement {
         id="addEditDialog"
         size="lg"
         opened
-        dialog-title=${translate(
-          'ADD_EDIT_SPECIAL_REPORTING_REQUIREMENTS'
-        )}
+        dialog-title=${translate('ADD_EDIT_SPECIAL_REPORTING_REQUIREMENTS')}
         @confirm-btn-clicked="${this._save}"
         ok-btn-text=${translate('GENERAL.SAVE')}
         cancel-btn-text=${translate('GENERAL.CANCEL')}
@@ -68,9 +66,7 @@ export class AddEditSpecialRepReq extends LitElement {
       >
         <div class="row-h">
           <div class="col layout-vertical col-5">
-            <iron-label for="startDate"
-              >${translate('REPORT_DUE_DATE')}</iron-label
-            >
+            <iron-label for="startDate">${translate('REPORT_DUE_DATE')}</iron-label>
             <calendar-lite
               id="startDate"
               pretty-date="${this.item.due_date ? this.item.due_date : ''}"

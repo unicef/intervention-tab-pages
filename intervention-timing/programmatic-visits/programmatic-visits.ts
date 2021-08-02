@@ -1,10 +1,9 @@
 import {LitElement, html, property, customElement} from 'lit-element';
 import {getStore} from '../../utils/redux-store-access';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
-import {buttonsStyles} from '../../common/styles/button-styles';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {repeatableDataSetsStyles} from '../../common/styles/repeatable-data-sets-styles';
+import {buttonsStyles} from '../../../../etools-pages-common/styles/button-styles';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
 import isEmpty from 'lodash-es/isEmpty';
 import {RootState} from '../../common/types/store.types';
 import {PlannedVisitsPermissions} from './programmaticVisits.models';
@@ -23,6 +22,7 @@ import {AnyObject, AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {PlannedVisit} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {isJsonStrMatch} from '../../utils/utils';
+import {repeatableDataSetsStyles} from '../../../../etools-pages-common/styles/repeatable-data-sets-styles';
 
 /**
  * @customElement

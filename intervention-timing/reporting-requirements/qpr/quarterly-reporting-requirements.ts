@@ -8,10 +8,10 @@ import {fireEvent} from '../../../utils/fire-custom-event';
 
 import './edit-qpr-dialog';
 import './qpr-list';
-import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '../../../common/styles/button-styles';
+import {gridLayoutStylesLit} from '../../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '../../../../../etools-pages-common/styles/button-styles';
 import {translate, get as getTranslation} from 'lit-translate';
-import {sharedStyles} from '../../../common/styles/shared-styles-lit';
+import {sharedStyles} from '../../../../../etools-pages-common/styles/shared-styles-lit';
 import {openDialog} from '../../../utils/dialog';
 
 /**
@@ -42,9 +42,7 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
       </div>
 
       <div ?hidden="${!this._empty(this.reportingRequirements)}">
-        <div class="row-h">
-          ${translate('NO_QUARTERLY_REPORTING_REQUIREMENTS')}
-        </div>
+        <div class="row-h">${translate('NO_QUARTERLY_REPORTING_REQUIREMENTS')}</div>
         <div class="row-h" ?hidden="${!this.editMode}">
           <paper-button class="secondary-btn" @click="${this.openQuarterlyRepRequirementsDialog}">
             ${translate('ADD_REQUIREMENTS')}

@@ -2,7 +2,7 @@ import {LitElement, html, property, customElement} from 'lit-element';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import EndpointsLitMixin from '../../../common/mixins/endpoints-mixin-lit';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
-import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
+import {gridLayoutStylesLit} from '../../../../../etools-pages-common/styles/grid-layout-styles-lit';
 import {isEmptyObject} from '../../../utils/utils';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
@@ -38,12 +38,8 @@ export class HumanitarianReportingReqCluster extends EndpointsLitMixin(Reporting
 
       <div class="flex-c" ?hidden="${!this.reportingRequirements.length}">
         <etools-data-table-header no-collapse no-title class="w100">
-          <etools-data-table-column class="col-2">${translate(
-            'FREQUENCY'
-          )}</etools-data-table-column>
-          <etools-data-table-column class="flex-c">${translate(
-            'DUE_DATES'
-          )}</etools-data-table-column>
+          <etools-data-table-column class="col-2">${translate('FREQUENCY')}</etools-data-table-column>
+          <etools-data-table-column class="flex-c">${translate('DUE_DATES')}</etools-data-table-column>
         </etools-data-table-header>
         ${this.reportingRequirements.map(
           (item: any) => html` <etools-data-table-row no-collapse>

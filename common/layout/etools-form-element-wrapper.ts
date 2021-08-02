@@ -1,6 +1,6 @@
 import {LitElement, html, property, customElement} from 'lit-element';
 import '@polymer/paper-input/paper-input-container';
-import {sharedStyles} from '../styles/shared-styles-lit';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
 
 /**
  * @customElement

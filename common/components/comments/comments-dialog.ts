@@ -26,7 +26,7 @@ import {PaperTextareaElement} from '@polymer/paper-input/paper-textarea';
 import {setTextareasMaxHeight} from '../../../utils/textarea-max-rows-helper';
 import {InterventionComment, GenericObject} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {sharedStyles} from '../../styles/shared-styles-lit';
+import {sharedStyles} from '../../../../../etools-pages-common/styles/shared-styles-lit';
 
 @customElement('comments-dialog')
 export class CommentsDialog extends connectStore(LitElement) {

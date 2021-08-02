@@ -5,7 +5,7 @@ import '@polymer/paper-input/paper-textarea';
 import '@polymer/paper-toggle-button';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import '../../../../common/components/activity/activity-items-table';
-import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
+import {gridLayoutStylesLit} from '../../../../../../etools-pages-common/styles/grid-layout-styles-lit';
 import {formatCurrency, getTotal} from '../../../../common/components/activity/get-total.helper';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {getEndpoint} from '../../../../utils/endpoint-helper';
@@ -19,7 +19,7 @@ import {updateCurrentIntervention} from '../../../../common/actions/intervention
 import {ActivityTimeFrames} from './activity-timeframes';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {validateRequiredFields} from '../../../../utils/validation-helper';
-import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
+import {sharedStyles} from '../../../../../../etools-pages-common/styles/shared-styles-lit';
 import {AnyObject, InterventionActivity, InterventionActivityItem} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {translatesMap} from '../../../../utils/intervention-labels-map';

@@ -5,8 +5,8 @@ import '@unicef-polymer/etools-content-panel';
 import '@unicef-polymer/etools-data-table/etools-data-table.js';
 import '@polymer/iron-icons';
 import './intervention-attachment-dialog';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
 import {openDialog} from '../../utils/dialog';
 import {InterventionAttachment, Intervention, IdAndName, AsyncAction} from '@unicef-polymer/etools-types';
 import {AttachmentsListStyles} from './attachments-list.styles';
@@ -31,9 +31,7 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
   @property() showInvalid = true;
   @property() canEdit = true;
   @property() fileTypes: IdAndName[] = [];
-  @property({type: String}) deleteConfirmationMessage = (translate(
-    'DELETE_ATTACHMENTS_PROMPT'
-  ) as unknown) as string;
+  @property({type: String}) deleteConfirmationMessage = (translate('DELETE_ATTACHMENTS_PROMPT') as unknown) as string;
   private intervention!: Intervention;
 
   protected render(): TemplateResult {
@@ -47,9 +45,7 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
 
       <etools-content-panel
         class="content-section"
-        .panelTitle="${(translate(
-          'ATTACHMENTS'
-        ) as unknown) as string} (${this.attachments.length})"
+        .panelTitle="${(translate('ATTACHMENTS') as unknown) as string} (${this.attachments.length})"
         comment-element="attachments"
         comment-description=${translate('ATTACHMENTS')}
       >
@@ -75,18 +71,10 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
         ${this.attachments.length
           ? html`
               <etools-data-table-header no-collapse no-title>
-                <etools-data-table-column class="col-2"
-                  >${translate('DATE_UPLOADED')}</etools-data-table-column
-                >
-                <etools-data-table-column class="col-3"
-                  >${translate('DOC_TYPE')}</etools-data-table-column
-                >
-                <etools-data-table-column class="col-6"
-                  >${translate('DOC')}</etools-data-table-column
-                >
-                <etools-data-table-column class="col-1 center-align"
-                  >${translate('INVALID')}</etools-data-table-column
-                >
+                <etools-data-table-column class="col-2">${translate('DATE_UPLOADED')}</etools-data-table-column>
+                <etools-data-table-column class="col-3">${translate('DOC_TYPE')}</etools-data-table-column>
+                <etools-data-table-column class="col-6">${translate('DOC')}</etools-data-table-column>
+                <etools-data-table-column class="col-1 center-align">${translate('INVALID')}</etools-data-table-column>
               </etools-data-table-header>
 
               ${this.attachments.map(

@@ -17,11 +17,9 @@ import CommonMixin from '../common/mixins/common-mixin';
 import UtilsMixin from '../common/mixins/utils-mixin';
 import EndpointsLitMixin from '../common/mixins/endpoints-mixin-lit';
 
-import {contentSectionStylesLit} from '../common/styles/content-section-styles-lit';
-import {sharedStyles} from '../common/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../common/styles/grid-layout-styles-lit';
+import {sharedStyles} from '../../../etools-pages-common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../../../etools-pages-common/styles/grid-layout-styles-lit';
 import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
-import {elevationStyles} from '../common/styles/elevation-styles';
 
 import {isEmptyObject} from '../utils/utils';
 import {fireEvent} from '../utils/fire-custom-event';
@@ -32,7 +30,6 @@ import {dateDiff, dateIsBetween, isValidDate, dateIsAfter, datesAreEqual} from '
 import {logError, logWarn} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {pmpCustomIcons} from './styles/pmp-icons';
-import {frWarningsStyles} from '../common/styles/fr-warnings-styles';
 import get from 'lodash-es/get';
 import {connectStore} from '../common/mixins/connect-store-mixin';
 import {AnyObject, GenericObject} from '@unicef-polymer/etools-types';
@@ -41,6 +38,9 @@ import {translate} from 'lit-translate';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {currentIntervention} from '../common/selectors';
 import {TABS} from '../common/constants';
+import {elevationStyles} from '../../../etools-pages-common/styles/elevation-styles';
+import {contentSectionStylesLit} from '../../../etools-pages-common/styles/content-section-styles-lit';
+import {frWarningsStyles} from '../../../etools-pages-common/styles/fr-warnings-styles';
 declare const dayjs: any;
 
 /**

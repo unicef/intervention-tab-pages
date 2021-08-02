@@ -10,7 +10,7 @@ import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
 import {AsyncAction, ResultIndicator, GenericObject} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
-import {sharedStyles} from '../../../common/styles/shared-styles-lit';
+import {sharedStyles} from '../../../../../etools-pages-common/styles/shared-styles-lit';
 
 @customElement('cp-output-dialog')
 export class CpOutputDialog extends LitElement {

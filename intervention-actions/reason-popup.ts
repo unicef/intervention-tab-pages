@@ -2,7 +2,7 @@ import {customElement, html, LitElement, property, TemplateResult} from 'lit-ele
 import {fireEvent} from '../utils/fire-custom-event';
 import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
-import {sharedStyles} from '../common/styles/shared-styles-lit';
+import {sharedStyles} from '../../../etools-pages-common/styles/shared-styles-lit';
 
 @customElement('reason-popup')
 export class ReasonPopup extends LitElement {

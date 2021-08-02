@@ -4,9 +4,9 @@ import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-loading/etools-loading';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import {buttonsStyles} from '../../common/styles/button-styles';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '../../../../etools-pages-common/styles/button-styles';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
 import {
   selectNonFinancialContribution,
   selectNonFinancialContributionPermissions

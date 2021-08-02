@@ -9,7 +9,7 @@ import {
   customElement,
   PropertyValues
 } from 'lit-element';
-import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
+import {gridLayoutStylesLit} from '../../../../../../etools-pages-common/styles/grid-layout-styles-lit';
 import {ActivityTime, groupByYear, serializeTimeFrameData} from '../../../../utils/timeframes.helper';
 import {fireEvent} from '../../../../utils/fire-custom-event';
 import {InterventionActivityTimeframe} from '@unicef-polymer/etools-types';
@@ -113,13 +113,9 @@ export class ActivityTimeFrames extends LitElement {
 
   protected render(): TemplateResult {
     return html`
-      <label class="paper-label layout-horizontal center-align" required
-        >${translate('ACTIVITY_TIMES')}</label
-      >
+      <label class="paper-label layout-horizontal center-align" required>${translate('ACTIVITY_TIMES')}</label>
       <div class="layout-horizontal center-align time-frame-container">
-        ${!this._timeFrames.length
-          ? html`${translate('ACTIVITY_TIMES_MSG')}`
-          : html``}
+        ${!this._timeFrames.length ? html`${translate('ACTIVITY_TIMES_MSG')}` : html``}
         ${this._timeFrames.map(
           ([year, frames]: any) => html`
             <div class="light-gray-container">

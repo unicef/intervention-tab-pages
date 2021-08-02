@@ -9,9 +9,9 @@ import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {getStore} from '../../utils/redux-store-access';
 
 import FrNumbersConsistencyMixin from '../../common/mixins/fr-numbers-consistency-mixin';
-import {customIcons} from '../../common/styles/custom-icons';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {frWarningsStyles} from '../../common/styles/fr-warnings-styles';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
+import {frWarningsStyles} from '../../../../etools-pages-common/styles/fr-warnings-styles';
+import {customIcons} from '../../../../etools-pages-common/styles/custom-icons';
 import {logWarn} from '@unicef-polymer/etools-behaviors/etools-logging';
 import './update-fr-numbers';
 import {UpdateFrNumbers} from './update-fr-numbers';

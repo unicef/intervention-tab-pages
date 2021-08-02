@@ -1,5 +1,5 @@
 import {LitElement, html, property} from 'lit-element';
-import {sharedStyles} from '../../styles/shared-styles-lit';
+import {sharedStyles} from '../../../../../etools-pages-common/styles/shared-styles-lit';
 
 /**
  * @customElement
@@ -27,7 +27,7 @@ export class CancelJustification extends LitElement {
           font-size: 17px;
           white-space: pre-wrap;
           color: var(--primary-text-color);
-          padding: 26px 12px 26px  80px;
+          padding: 26px 12px 26px 80px;
         }
 
         div[slot='panel-btns'].bookmark {

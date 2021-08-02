@@ -9,7 +9,7 @@ import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import './hru-list.js';
 import CONSTANTS from '../../../common/constants';
 import {fireEvent} from '../../../utils/fire-custom-event';
-import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
+import {gridLayoutStylesLit} from '../../../../../etools-pages-common/styles/grid-layout-styles-lit';
 import {convertDate} from '../../../utils/date-utils';
 import {getEndpoint} from '../../../utils/endpoint-helper';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
@@ -19,9 +19,9 @@ import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {isEmptyObject} from '../../../utils/utils';
 import {connectStore} from '../../../common/mixins/connect-store-mixin';
 import {AnyObject} from '@unicef-polymer/etools-types';
-import {buttonsStyles} from '../../../common/styles/button-styles.js';
 import {translate, get as getTranslation} from 'lit-translate';
-import {sharedStyles} from '../../../common/styles/shared-styles-lit.js';
+import {buttonsStyles} from '../../../../../etools-pages-common/styles/button-styles.js';
+import {sharedStyles} from '../../../../../etools-pages-common/styles/shared-styles-lit.js';
 
 /**
  * @polymer

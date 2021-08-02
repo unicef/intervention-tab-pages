@@ -9,7 +9,7 @@ import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {getStore} from '../../utils/redux-store-access';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {validateRequiredFields} from '../../utils/validation-helper';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
 import {connectStore} from '../../common/mixins/connect-store-mixin';
 import {IdAndName, GenericObject, ReviewAttachment} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';

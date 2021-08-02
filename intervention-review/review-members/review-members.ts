@@ -1,15 +1,15 @@
 import {LitElement, TemplateResult, html, customElement, property, CSSResultArray, css} from 'lit-element';
 import {InterventionReview, User} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {sharedStylesContent} from '../../common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {sharedStylesContent} from '../../../../etools-pages-common/styles/shared-styles-lit';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {getStore} from '../../utils/redux-store-access';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
-import {buttonsStyles} from '../../common/styles/button-styles';
+import {buttonsStyles} from '../../../../etools-pages-common/styles/button-styles';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {cloneDeep} from 'lodash-es';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';

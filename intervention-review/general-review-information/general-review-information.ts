@@ -2,11 +2,11 @@ import {LitElement, TemplateResult, html, customElement, property, CSSResultArra
 import {InterventionReview} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {formatDate} from '../../utils/date-utils';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
 import {PRC_REVIEW, NON_PRC_REVIEW, NO_REVIEW} from '../review.const';
 import {get as getTranslation} from 'lit-translate';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
 
 @customElement('general-review-information')
 export class GeneralReviewInformation extends LitElement {
@@ -14,7 +14,6 @@ export class GeneralReviewInformation extends LitElement {
     // language=CSS
     return [
       gridLayoutStylesLit,
-      sharedStyles,
       css`
         *[hidden] {
           display: none;
@@ -60,6 +59,9 @@ export class GeneralReviewInformation extends LitElement {
   render(): TemplateResult {
     // language=HTML
     return html`
+      <style>
+        ${sharedStyles}
+      </style>
       <etools-content-panel panel-title="${translate('INTERVENTION_REVIEW')}">
         <div class="row-padding-v">
           <div ?hidden="${this.review}">${translate('EMPTY_REVIEW')}</div>

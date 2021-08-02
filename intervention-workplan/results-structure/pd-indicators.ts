@@ -9,7 +9,7 @@ import {
   PropertyValues
 } from 'lit-element';
 import {ResultStructureStyles} from './results-structure.styles';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/iron-icons';
 import {getStore} from '../../utils/redux-store-access';
@@ -29,7 +29,7 @@ import {fireEvent} from '../../utils/fire-custom-event';
 import {openDialog} from '../../utils/dialog';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import './pd-indicator';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
 import {connectStore} from '../../common/mixins/connect-store-mixin';
 import {translate} from 'lit-translate';
 import {

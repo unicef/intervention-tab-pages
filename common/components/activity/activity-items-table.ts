@@ -16,7 +16,7 @@ import {AnyObject, InterventionActivityItem} from '@unicef-polymer/etools-types'
 import {callClickOnSpacePushListener} from '../../../utils/common-methods';
 import {PaperTextareaElement} from '@polymer/paper-input/paper-textarea';
 import {translate} from 'lit-translate';
-import {sharedStyles} from '../../../common/styles/shared-styles-lit';
+import {sharedStyles} from '../../../../../etools-pages-common/styles/shared-styles-lit';
 import {translatesMap} from '../../../utils/intervention-labels-map';
 
 @customElement('activity-items-table')

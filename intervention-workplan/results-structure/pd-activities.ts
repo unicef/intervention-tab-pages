@@ -1,11 +1,11 @@
 import {LitElement, html, TemplateResult, CSSResultArray, css, customElement, property} from 'lit-element';
 import {ResultStructureStyles} from './results-structure.styles';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/iron-icons';
 import './modals/activity-dialog/activity-data-dialog';
 import {openDialog} from '../../utils/dialog';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {getStore} from '../../utils/redux-store-access';
 import {getIntervention} from '../../common/actions/interventions';

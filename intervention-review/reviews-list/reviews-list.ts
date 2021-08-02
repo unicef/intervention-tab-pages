@@ -1,6 +1,6 @@
 import {customElement, LitElement, html, CSSResultArray, css, TemplateResult, property} from 'lit-element';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
 import {translate} from 'lit-translate';
 import {InterventionReview, PrcOfficerReview} from '@unicef-polymer/etools-types';
 import {getStore} from '../../utils/redux-store-access';
@@ -20,7 +20,6 @@ export class ReviewsList extends connectStore(LitElement) {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
-      sharedStyles,
       gridLayoutStylesLit,
       css`
         :host {
@@ -64,6 +63,9 @@ export class ReviewsList extends connectStore(LitElement) {
 
   render(): TemplateResult {
     return html`
+      <style>
+        ${sharedStyles}
+      </style>
       <etools-content-panel class="content-section" panel-title="PRC Member Reviews">
         <etools-data-table-header no-title ?no-collapse="${!this.approvals.length}">
           <etools-data-table-column class="flex-2">${translate('PRC_NAME')}</etools-data-table-column>
