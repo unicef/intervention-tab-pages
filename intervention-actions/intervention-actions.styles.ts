@@ -42,9 +42,14 @@ export const InterventionActionsStyles: CSSResult = css`
     margin-left: 5px;
   }
 
+  .main-button.with-additional span {
+    margin-right: 15px;
+  }
+
   .main-button span {
     margin-right: 7px;
     vertical-align: middle;
+    line-height: 36px;
   }
 
   .other-options {
@@ -65,7 +70,6 @@ export const InterventionActionsStyles: CSSResult = css`
     z-index: 10;
   }
   .option-button {
-    margin-left: 14px;
     height: 36px;
     border-left: 2px solid rgba(255, 255, 255, 0.12);
   }
