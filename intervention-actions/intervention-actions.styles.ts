@@ -17,6 +17,8 @@ export const InterventionActionsStyles: CSSResult = css`
     color: white;
     background: var(--green-color);
     font-weight: 500;
+    text-transform: uppercase;
+    border-radius: 3px;
   }
 
   .back-button {
@@ -37,10 +39,12 @@ export const InterventionActionsStyles: CSSResult = css`
 
   .main-button.with-additional {
     padding: 0 0 0 18px;
+    margin-left: 5px;
   }
 
   .main-button span {
     margin-right: 7px;
+    vertical-align: middle;
   }
 
   .other-options {
