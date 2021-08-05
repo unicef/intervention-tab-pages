@@ -94,7 +94,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
             <span ?hidden="${this.editMode}">${this.data.hq_support_cost}</span>
           </div>
         </div>
-        <div class="layout-horizontal row-padding-v" ?hidden="${!this.isUnicefUser}">
+        <div class="layout-horizontal row-padding-v" ?hidden="${!this.isUnicefUser || !this.editMode}">
           <label class="paper-label hq-info-label"
             ><b>${this.data.hq_support_cost}%</b> of the total UNICEF cash contribution is:
             <b>${this.autoCalculatedHqContrib} ${this.data.planned_budget.currency}</b>. Please review and enter the
