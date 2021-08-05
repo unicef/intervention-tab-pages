@@ -1,9 +1,9 @@
 /* eslint-disable lit-a11y/click-events-have-key-events */
-import {getStore} from '../../utils/redux-store-access';
+import {getStore} from '../../../../etools-pages-common/utils/redux-store-access';
 import {css, html, CSSResultArray, customElement, LitElement, property} from 'lit-element';
 import {repeat} from 'lit-html/directives/repeat';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '../../common/styles/button-styles';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '../../../../etools-pages-common/styles/button-styles';
 import {
   selectInterventionId,
   selectInterventionStatus,
@@ -23,24 +23,22 @@ import './modals/pd-output-dialog';
 import './modals/cp-output-dialog';
 import '@polymer/paper-item';
 import '@polymer/paper-listbox';
-import {getEndpoint} from '../../utils/endpoint-helper';
+import {getEndpoint} from '../../../../etools-pages-common/utils/endpoint-helper';
 import {RootState} from '../../common/types/store.types';
-import {openDialog} from '../../utils/dialog';
+import {openDialog} from '../../../../etools-pages-common/utils/dialog';
 import {TABS} from '../../common/constants';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {
   callClickOnSpacePushListener,
   callClickOnEnterPushListener,
   pageIsNotCurrentlyActive
-} from '../../utils/common-methods';
-import '../../common/layout/are-you-sure';
+} from '../../../../etools-pages-common/utils/common-methods';
+import '../../../../etools-pages-common/layout/are-you-sure';
 import get from 'lodash-es/get';
 import {getIntervention, updateCurrentIntervention} from '../../common/actions/interventions';
-import {_sendRequest} from '../../utils/request-helper';
 import {isUnicefUser, currentIntervention} from '../../common/selectors';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import ContentPanelMixin from '../../common/mixins/content-panel-mixin';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {
@@ -54,6 +52,8 @@ import {
 } from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
+import ContentPanelMixin from '../../../../etools-pages-common/mixins/content-panel-mixin';
+import {_sendRequest} from '../../../../etools-pages-common/utils/request-helper';
 
 const RESULT_VIEW = 'result_view';
 const BUDGET_VIEW = 'budget_view';

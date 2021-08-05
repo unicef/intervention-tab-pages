@@ -1,16 +1,15 @@
 import {customElement, html, LitElement, property} from 'lit-element';
-import '../common/layout/etools-tabs.js';
-import {fireEvent} from '../utils/fire-custom-event.js';
+import get from 'lodash-es/get';
+import {connectStore} from '../../../etools-pages-common/mixins/connect-store-mixin';
+import {pageIsNotCurrentlyActive} from '../../../etools-pages-common/utils/common-methods';
+import {fireEvent} from '../../../etools-pages-common/utils/fire-custom-event';
+import {TABS} from '../common/constants';
+import {isUnicefUser} from '../common/selectors';
+import {RootState} from '../common/types/store.types';
 import './intervention-implementation-status.js';
 import './intervention-monitoring-activities.js';
 import './intervention-results-reported.js';
 import './intervention-reports.js';
-import get from 'lodash-es/get';
-import {pageIsNotCurrentlyActive} from '../utils/common-methods.js';
-import {RootState} from '../common/types/store.types.js';
-import {isUnicefUser} from '../common/selectors.js';
-import {connectStore} from '../common/mixins/connect-store-mixin.js';
-import {TABS} from '../common/constants.js';
 
 @customElement('intervention-progress')
 export class InterventionProgress extends connectStore(LitElement) {

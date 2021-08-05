@@ -1,7 +1,7 @@
-import {_sendRequest} from '../../../utils/request-helper';
-import {getEndpoint} from '../../../utils/endpoint-helper';
+import {getEndpoint} from '../../../../../etools-pages-common/utils/endpoint-helper';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {InterventionComment, GenericObject} from '@unicef-polymer/etools-types';
+import {_sendRequest} from '../../../../../etools-pages-common/utils/request-helper';
 
 export const SET_COMMENTS = 'SET_COMMENTS';
 export const ADD_COMMENT = 'ADD_COMMENT';

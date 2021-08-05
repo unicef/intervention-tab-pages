@@ -1,17 +1,17 @@
 import {customElement, LitElement, html, CSSResultArray, css, TemplateResult, property} from 'lit-element';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
 import {translate} from 'lit-translate';
 import {InterventionReview, PrcOfficerReview} from '@unicef-polymer/etools-types';
-import {getStore} from '../../utils/redux-store-access';
+import {getStore} from '../../../../etools-pages-common/utils/redux-store-access';
 import {loadReviews} from '../../common/actions/officers-reviews';
 import {isEqual} from 'lodash-es';
-import {connectStore} from '../../common/mixins/connect-store-mixin';
+import {connectStore} from '../../../../etools-pages-common/mixins/connect-store-mixin';
 import {RootState} from '../../common/types/store.types';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
-import {openDialog} from '../../utils/dialog';
+import {pageIsNotCurrentlyActive} from '../../../../etools-pages-common/utils/common-methods';
+import {openDialog} from '../../../../etools-pages-common/utils/dialog';
 import {REVIEW_ANSVERS, REVIEW_QUESTIONS} from '../review.const';
-import {formatDate} from '../../utils/date-utils';
+import {formatDate} from '../../../../etools-pages-common/utils/date-utils';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import '../../common/components/intervention/review-checklist-popup';
 

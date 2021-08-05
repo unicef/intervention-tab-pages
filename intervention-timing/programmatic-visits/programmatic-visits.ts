@@ -1,10 +1,9 @@
 import {LitElement, html, property, customElement} from 'lit-element';
-import {getStore} from '../../utils/redux-store-access';
-import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
-import {buttonsStyles} from '../../common/styles/button-styles';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {repeatableDataSetsStyles} from '../../common/styles/repeatable-data-sets-styles';
+import {getStore} from '../../../../etools-pages-common/utils/redux-store-access';
+import ComponentBaseMixin from '../../../../etools-pages-common/mixins/component-base-mixin';
+import {buttonsStyles} from '../../../../etools-pages-common/styles/button-styles';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
 import isEmpty from 'lodash-es/isEmpty';
 import {RootState} from '../../common/types/store.types';
 import {PlannedVisitsPermissions} from './programmaticVisits.models';
@@ -14,15 +13,16 @@ import {selectPlannedVisits, selectPlannedVisitsPermissions} from './programmati
 import {selectInterventionDates} from '../intervention-dates/interventionDates.selectors';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {patchIntervention} from '../../common/actions/interventions';
-import RepeatableDataSetsMixin from '../../common/mixins/repeatable-data-sets-mixin';
-import {fireEvent} from '../../utils/fire-custom-event';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {fireEvent} from '../../../../etools-pages-common/utils/fire-custom-event';
+import {pageIsNotCurrentlyActive} from '../../../../etools-pages-common/utils/common-methods';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {PlannedVisit} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
-import {isJsonStrMatch} from '../../utils/utils';
+import {isJsonStrMatch} from '../../../../etools-pages-common/utils/utils';
+import RepeatableDataSetsMixin from '../../../../etools-pages-common/mixins/repeatable-data-sets-mixin';
+import {repeatableDataSetsStyles} from '../../../../etools-pages-common/styles/repeatable-data-sets-styles';
 
 /**
  * @customElement

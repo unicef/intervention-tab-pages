@@ -1,5 +1,5 @@
 declare const dayjs: any;
-import {convertDate} from '../../../utils/date-utils';
+import {convertDate} from '../../../../../etools-pages-common/utils/date-utils';
 import {LitElement, property} from 'lit-element';
 import {Constructor} from '@unicef-polymer/etools-types';
 

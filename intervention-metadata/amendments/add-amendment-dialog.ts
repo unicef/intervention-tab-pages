@@ -5,20 +5,20 @@ import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
 import '@unicef-polymer/etools-upload/etools-upload';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
-import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
-import '../../common/layout/etools-warn-message';
-import {buttonsStyles} from '../../common/styles/button-styles';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {getEndpoint} from '../../utils/endpoint-helper';
+import '../../../../etools-pages-common/layout/etools-warn-message';
+import {buttonsStyles} from '../../../../etools-pages-common/styles/button-styles';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {getEndpoint} from '../../../../etools-pages-common/utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {fireEvent} from '../../utils/fire-custom-event';
+import {fireEvent} from '../../../../etools-pages-common/utils/fire-custom-event';
 import {AnyObject, InterventionAmendment, LabelAndValue} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {AmendmentsKind, AmendmentsKindTranslateKeys} from './pd-amendments.models';
-import {validateRequiredFields} from '../../utils/validation-helper';
+import {validateRequiredFields} from '../../../../etools-pages-common/utils/validation-helper';
+import ComponentBaseMixin from '../../../../etools-pages-common/mixins/component-base-mixin.js';
 
 /**
  * @customElement
