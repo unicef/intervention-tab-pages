@@ -124,7 +124,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           >
           </paper-icon-button>
         </div>
-        <div class="row-h" ?hidden="${!this.permissions.edit.supply_items}">
+        <div class="row-h" ?hidden="${!this.permissions.edit.supply_items || this.supply_items?.length}">
           <p id="uploadHelpPanel">${this.getUploadHelpText()}</p>
         </div>
         <etools-table
