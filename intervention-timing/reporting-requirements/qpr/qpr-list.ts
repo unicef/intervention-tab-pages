@@ -28,8 +28,9 @@ export class QprList extends ReportingRequirementsCommonMixin(ReportingReqPastDa
       return;
     }
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} ${dataTableStylesLit}
+        ${dataTableStylesLit}
       </style>
 
       <etools-data-table-header no-collapse no-title>

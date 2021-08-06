@@ -36,8 +36,9 @@ export class ActivityTimeframes extends CommentsMixin(LitElement) {
     const timeFrames: GroupedActivityTime[] = this.getTimeFrames();
     const mappedActivities: GenericObject<InterventionActivity[]> = this.getActivities();
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} etools-content-panel::part(ecp-content) {
+        etools-content-panel::part(ecp-content) {
           padding: 8px 24px 16px 24px;
         }
       </style>

@@ -34,8 +34,8 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
   render() {
     // language=HTML
     return html`
-      <style>
-        ${sharedStyles}
+      ${sharedStyles}
+      <style>        
         paper-textarea {
           flex: auto;
           --paper-input-container-input: {

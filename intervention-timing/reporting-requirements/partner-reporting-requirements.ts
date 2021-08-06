@@ -42,9 +42,9 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
   }
   render() {
     return html`
-      ${sectionContentStyles}
+      ${sectionContentStyles} ${sharedStyles}
       <style>
-        ${sharedStyles} :host {
+        :host {
           display: block;
           margin-bottom: 24px;
           width: 100%;

@@ -28,9 +28,9 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
       return html`<etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     return html`
-      ${customIcons}
+      ${customIcons} ${sharedStyles}
       <style>
-        ${sharedStyles} :host {
+        :host {
           --list-column-label: {
             margin-right: 0;
           }

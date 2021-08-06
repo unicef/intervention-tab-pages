@@ -29,8 +29,8 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
     return [gridLayoutStylesLit, buttonsStyles];
   }
   render() {
-    return html`<style>
-        ${sharedStyles}
+    return html`${sharedStyles}
+      <style>        
         paper-input#other {
           width: 100%;
         }

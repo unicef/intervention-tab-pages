@@ -39,8 +39,9 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
   render() {
     // language=HTML
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} :host {
+        :host {
           display: block;
           margin-bottom: 24px;
         }

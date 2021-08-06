@@ -38,14 +38,13 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
   render() {
     // language=HTML
     if (!this.data || !this.cashTransferModalities) {
-      return html`<style>
-          ${sharedStyles}
-        </style>
+      return html` ${sharedStyles}
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} :host {
+        :host {
           display: block;
           margin-bottom: 24px;
         }

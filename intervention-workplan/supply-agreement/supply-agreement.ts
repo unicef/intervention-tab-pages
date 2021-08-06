@@ -59,14 +59,13 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   }
   render() {
     if (!this.supply_items) {
-      return html`<style>
-          ${sharedStyles}
-        </style>
+      return html` ${sharedStyles}
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} :host {
+        :host {
           display: block;
           margin-bottom: 24px;
         }

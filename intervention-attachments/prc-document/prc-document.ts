@@ -37,14 +37,13 @@ export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadsMixin(L
   render() {
     // language=HTML
     if (!this.data || !this.permissions) {
-      return html`<style>
-          ${sharedStyles}
-        </style>
+      return html` ${sharedStyles}
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} :host {
+        :host {
           display: block;
           margin-bottom: 24px;
         }

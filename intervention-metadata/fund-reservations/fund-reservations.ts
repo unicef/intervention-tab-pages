@@ -52,9 +52,9 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
       return html`<etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     return html`
-      ${customIcons}
+      ${customIcons} ${sharedStyles}
       <style>
-        ${sharedStyles}:host {
+        :host {
           display: block;
           width: 100%;
           -webkit-box-sizing: border-box;

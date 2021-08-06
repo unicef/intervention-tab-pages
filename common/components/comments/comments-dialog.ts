@@ -93,8 +93,9 @@ export class CommentsDialog extends connectStore(LitElement) {
 
   protected render(): TemplateResult {
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} etools-dialog::part(ed-scrollable) {
+        etools-dialog::part(ed-scrollable) {
           margin-top: 0 !important;
         }
         paper-textarea {

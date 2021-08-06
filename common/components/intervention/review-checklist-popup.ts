@@ -88,9 +88,8 @@ export class ReviewChecklistPopup extends LitElement {
 
   protected render(): TemplateResult {
     return html`
-      <style>
-        ${sharedStyles}
-      </style>
+      ${sharedStyles}
+
       <etools-dialog
         no-padding
         keep-dialog-open

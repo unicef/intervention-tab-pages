@@ -20,9 +20,7 @@ export class InterventionMonitoringActivities extends connectStore(LitElement) {
   }
   render() {
     return html`
-      <style>
-        ${sharedStyles}
-      </style>
+      ${sharedStyles}
       <etools-content-panel
         id="monitoring-visits-panel"
         class="content-section"

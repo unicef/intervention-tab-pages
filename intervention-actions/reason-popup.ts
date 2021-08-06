@@ -19,8 +19,9 @@ export class ReasonPopup extends LitElement {
 
   render(): TemplateResult | void {
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} .container {
+        .container {
           padding: 15px 20px;
         }
         paper-textarea {

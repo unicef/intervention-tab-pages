@@ -45,14 +45,13 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
   }
   render() {
     if (!this.data || !this.permissions) {
-      return html` <style>
-          ${sharedStyles}
-        </style>
+      return html` ${sharedStyles}
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     return html`
+    ${sharedStyles}
       <style>
-        ${sectionContentStyles}${sharedStyles}:host {
+        ${sectionContentStyles}:host {
           display: flex;
           flex-direction: column;
           width: 100%;

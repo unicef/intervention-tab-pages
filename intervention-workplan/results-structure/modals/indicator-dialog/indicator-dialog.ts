@@ -40,8 +40,9 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
       return html``;
     }
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} [hidden] {
+        [hidden] {
           display: none !important;
         }
 

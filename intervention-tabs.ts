@@ -108,13 +108,14 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     // main template
     // language=HTML
     return html`
+      ${sharedStyles}
       <style>
         :host {
           --ecp-header-bg: #ffffff;
           --ecp-header-color: var(--primary-text-color);
         }
 
-        ${sharedStyles} etools-status {
+        etools-status {
           justify-content: center;
         }
         .flag {

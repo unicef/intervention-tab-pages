@@ -2,7 +2,7 @@ import {LitElement, TemplateResult, html, customElement, property, CSSResultArra
 import {InterventionReview, User} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
-import {sharedStylesContent} from '../../../../etools-pages-common/styles/shared-styles-lit';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
 import {fireEvent} from '../../../../etools-pages-common/utils/fire-custom-event';
 import {getEndpoint} from '../../../../etools-pages-common/utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
@@ -66,9 +66,7 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
   render(): TemplateResult {
     // language=HTML
     return html`
-      <style>
-        ${sharedStylesContent}
-      </style>
+      ${sharedStyles}
       <etools-content-panel class="content-section" panel-title="${translate('REVIEW_MEMBERS')}">
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 

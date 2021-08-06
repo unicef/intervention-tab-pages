@@ -35,8 +35,9 @@ export class AddEditSpecialRepReq extends LitElement {
       return;
     }
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles}:host {
+        :host {
           display: block;
         }
 

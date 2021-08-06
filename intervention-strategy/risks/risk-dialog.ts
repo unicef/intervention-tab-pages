@@ -29,8 +29,9 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
   }
   render() {
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} paper-textarea {
+        paper-textarea {
           flex: auto;
           --paper-input-container-input: {
             display: block;

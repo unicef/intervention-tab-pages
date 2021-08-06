@@ -55,8 +55,9 @@ export class PdActivities extends CommentsMixin(LitElement) {
   protected render(): TemplateResult {
     // language=HTML
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} etools-data-table-row {
+        etools-data-table-row {
           --list-bg-color: var(--green-background);
         }
 

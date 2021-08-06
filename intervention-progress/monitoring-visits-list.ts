@@ -24,8 +24,9 @@ export class MonitoringVisitsList extends LitElement {
     return [gridLayoutStylesLit];
   }
   render() {
-    return html` <style>
-        ${sharedStyles} .monitoring-visits-container {
+    return html`${sharedStyles}
+      <style>
+        .monitoring-visits-container {
           position: relative;
         }
       </style>

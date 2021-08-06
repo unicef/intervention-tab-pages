@@ -8,8 +8,9 @@ import {sharedStyles} from '../../../etools-pages-common/styles/shared-styles-li
 @customElement('accept-for-partner')
 export class AcceptForPartner extends LitElement {
   render() {
-    return html` <style>
-        ${sharedStyles} .container {
+    return html` ${sharedStyles}
+      <style>
+        .container {
           padding: 15px 20px;
         }
       </style>

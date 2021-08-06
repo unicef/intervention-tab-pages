@@ -20,9 +20,7 @@ export class InterventionImplementationStatus extends connectStore(LitElement) {
   }
   render() {
     return html`
-      <style>
-        ${sharedStyles}
-      </style>
+      ${sharedStyles}
       <etools-content-panel
         id="fund-reservation-display"
         class="content-section"
