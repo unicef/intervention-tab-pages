@@ -40,8 +40,9 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
   protected render(): TemplateResult {
     // language=html
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} etools-dialog::part(ed-scrollable) {
+        etools-dialog::part(ed-scrollable) {
           margin-top: 0 !important;
         }
 

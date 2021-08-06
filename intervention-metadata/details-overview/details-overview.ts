@@ -32,15 +32,13 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
   render() {
     // language=HTML
     if (!this.interventionOverview) {
-      return html` <style>
-          ${sharedStyles}
-        </style>
+      return html` ${sharedStyles}
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     return html`
-      ${InfoElementStyles}
+      ${InfoElementStyles} ${sharedStyles}
       <style>
-        ${sharedStyles} .data-column {
+        .data-column {
           max-width: none;
         }
         .data-column {

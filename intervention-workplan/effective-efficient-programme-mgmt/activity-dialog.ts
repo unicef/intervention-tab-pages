@@ -31,8 +31,9 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
   render() {
     // language=HTML
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} *[hidden] {
+        *[hidden] {
           display: none !important;
         }
         .layout-horizontal {

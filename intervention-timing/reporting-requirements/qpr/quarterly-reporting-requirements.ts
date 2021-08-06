@@ -31,8 +31,9 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
   }
   render() {
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} *[hidden] {
+        *[hidden] {
           display: none !important;
         }
       </style>

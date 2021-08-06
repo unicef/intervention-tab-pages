@@ -26,8 +26,9 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
   render() {
     // ${repeatableDataSetsStyles}
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} :host {
+        :host {
           --paper-dialog-scrollable: {
             width: 100%;
             overflow-x: hidden;

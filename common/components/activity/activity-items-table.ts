@@ -48,9 +48,7 @@ export class ActivityItemsTable extends LitElement {
   protected render(): TemplateResult {
     // language=html
     return html`
-      <style>
-        ${sharedStyles}
-      </style>
+      ${sharedStyles}
       <div class="grid-row header border">
         <div class="grid-cell header-cell left">
           <label required>${translate('ITEM_DESCRIPTION')}</label>

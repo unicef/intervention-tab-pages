@@ -85,8 +85,9 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
   protected render(): TemplateResult {
     // language=HTML
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} :host etools-data-table-row {
+        :host etools-data-table-row {
           --list-bg-color: var(--blue-background);
           --list-second-bg-color: var(--blue-background);
           etools-data-table-row::part(edt-list-row-collapse-wrapper) {

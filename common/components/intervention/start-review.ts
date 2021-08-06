@@ -26,8 +26,9 @@ export class StartReview extends connectStore(LitElement) {
 
   render() {
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} .row {
+        .row {
           padding: 12px 24px;
         }
         etools-dropdown {

@@ -31,9 +31,9 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
 
   render() {
     return html`
-      ${repeatableDataSetsStyles}
+      ${repeatableDataSetsStyles} ${sharedStyles}
       <style>
-        ${sharedStyles} [hidden] {
+        [hidden] {
           display: none !important;
         }
 

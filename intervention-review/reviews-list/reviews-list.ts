@@ -20,7 +20,6 @@ export class ReviewsList extends connectStore(LitElement) {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
-      sharedStyles,
       gridLayoutStylesLit,
       css`
         :host {
@@ -64,6 +63,7 @@ export class ReviewsList extends connectStore(LitElement) {
 
   render(): TemplateResult {
     return html`
+      ${sharedStyles}
       <etools-content-panel class="content-section" panel-title="PRC Member Reviews">
         <etools-data-table-header no-title ?no-collapse="${!this.approvals.length}">
           <etools-data-table-column class="flex-2">${translate('PRC_NAME')}</etools-data-table-column>

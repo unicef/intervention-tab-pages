@@ -25,8 +25,9 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
   }
   render() {
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} :host {
+        :host {
           display: block;
         }
 

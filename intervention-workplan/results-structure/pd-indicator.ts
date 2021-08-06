@@ -23,8 +23,9 @@ export class PdIndicator extends CommentsMixin(LitElement) {
 
   render() {
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} :host {
+        :host {
           --indicator-blue: #a4c4e1;
           --indicator-green: #c4d7c6;
         }

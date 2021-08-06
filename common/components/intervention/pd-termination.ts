@@ -29,8 +29,9 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
   }
   render() {
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles}:host {
+      :host {
           /* host CSS */
         }
         #pdTermination {

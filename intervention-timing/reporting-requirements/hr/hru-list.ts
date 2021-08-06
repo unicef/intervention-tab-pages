@@ -29,8 +29,9 @@ export class HruList extends ReportingReqPastDatesCheckMixin(ReportingRequiremen
       return;
     }
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} ${dataTableStylesLit}:host([with-scroll]) {
+        ${dataTableStylesLit}:host([with-scroll]) {
           max-height: 400px;
           overflow-y: auto;
         }

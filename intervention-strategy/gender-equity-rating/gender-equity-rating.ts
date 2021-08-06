@@ -33,15 +33,14 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
   }
   render() {
     if (!this.data || !this.ratings || !this.permissions) {
-      return html`<style>
-          ${sharedStyles}
-        </style>
+      return html` ${sharedStyles}
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`
+     ${sharedStyles} 
       <style>
-        ${sharedStyles} :host {
+       :host {
           display: block;
           margin-bottom: 24px;
         }

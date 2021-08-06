@@ -34,8 +34,9 @@ export class SpecialReportingRequirements extends ReportingRequirementsCommonMix
   }
   render() {
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} ${dataTableStylesLit}
+        ${dataTableStylesLit}
       </style>
 
       <div class="row-h" ?hidden="${!this._empty(this.reportingRequirements)}">

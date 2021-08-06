@@ -35,15 +35,14 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
 
   render() {
     if (!this.data) {
-      return html`<style>
-          ${sharedStyles}
-        </style>
+      return html` ${sharedStyles}
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} ${repeatableDataSetsStyles} :host {
+        ${repeatableDataSetsStyles} :host {
           display: block;
           margin-bottom: 24px;
         }

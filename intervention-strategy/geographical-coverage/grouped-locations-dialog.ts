@@ -25,8 +25,9 @@ export class GroupedLocationsDialog extends LitElement {
   render() {
     // language=HTML
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} [hidden] {
+        [hidden] {
           display: none !important;
         }
 

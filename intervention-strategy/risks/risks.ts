@@ -50,15 +50,15 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
 
   render() {
     if (!this.data || this.data.constructor == Object) {
-      return html`<style>
-          ${sharedStyles}
-        </style>
+      return html` ${sharedStyles}
+
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} :host {
+        :host {
           display: block;
           margin-bottom: 24px;
         }
@@ -149,10 +149,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   }
 
   getTableStyle() {
-    return html`<style>
-        ${sharedStyles}
-      </style>
-      ${customStyles}`;
+    return html` ${sharedStyles} ${customStyles}`;
   }
 
   openRiskDialog(e?: CustomEvent) {

@@ -49,16 +49,12 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
 
   render() {
     if (!this.data || this.data.constructor == Object) {
-      return html`<style>
-          ${sharedStyles}
-        </style>
+      return html` ${sharedStyles}
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`
-      <style>
-        ${sharedStyles}
-      </style>
+      ${sharedStyles}
       <style>
         :host {
           display: block;
@@ -205,10 +201,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
   }
 
   getTableStyle() {
-    return html`<style>
-        ${sharedStyles}
-      </style>
-      ${customStyles}`;
+    return html` ${sharedStyles} ${customStyles}`;
   }
 
   openActivityDialog(event: CustomEvent) {

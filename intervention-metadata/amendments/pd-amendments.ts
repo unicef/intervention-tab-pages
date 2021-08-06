@@ -39,8 +39,10 @@ export class PdAmendments extends CommentsMixin(LitElement) {
   }
 
   render() {
-    return html`<style>
-        ${sharedStyles} :host {
+    return html`
+      ${sharedStyles}
+      <style>
+        :host {
           display: block;
           width: 100%;
           -webkit-box-sizing: border-box;
@@ -199,7 +201,8 @@ export class PdAmendments extends CommentsMixin(LitElement) {
             <p>${translate('NO_AMENDMENTS_ADDED')}</p>
           </div>
         </div>
-      </etools-content-panel> `;
+      </etools-content-panel>
+    `;
   }
 
   @property({type: Array})

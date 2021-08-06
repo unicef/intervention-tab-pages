@@ -27,15 +27,14 @@ export class InterventionSummary extends connectStore(LitElement) {
 
   render() {
     if ((this.isUnicefUser && !this.interventionCpOutputs) || !this.intervention || !this.interventionAgreement) {
-      return html`<style>
-          ${sharedStyles}
-        </style>
+      return html` ${sharedStyles}
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`
+    ${sharedStyles}
     <style>
-      ${sharedStyles} :host {
+       :host {
         width: 100%;
         --paper-input-container-underline-disabled_-_display: none;
       }

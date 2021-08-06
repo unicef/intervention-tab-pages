@@ -34,8 +34,9 @@ export class EditQprDialog extends LitElement {
   }
   render() {
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles}*[hidden] {
+        *[hidden] {
           display: none !important;
         }
 

@@ -196,15 +196,14 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
 
   render() {
     if (!this.intervention || !this.permissions || !this.resultLinks) {
-      return html`<style>
-          ${sharedStyles}
-        </style>
+      return html` ${sharedStyles}
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} :host {
+        :host {
           display: block;
           margin-bottom: 24px;
         }

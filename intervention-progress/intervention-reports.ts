@@ -47,8 +47,9 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
   }
   render() {
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} ${dataTableStylesLit}:host {
+        ${dataTableStylesLit}:host {
           @apply --layout-flex;
           width: 100%;
 

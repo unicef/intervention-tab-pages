@@ -39,14 +39,13 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
   render() {
     // language=HTML
     if (!this.data) {
-      return html`<style>
-          ${sharedStyles}
-        </style>
+      return html` ${sharedStyles}
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} :host {
+        :host {
           display: block;
           margin-bottom: 24px;
         }
