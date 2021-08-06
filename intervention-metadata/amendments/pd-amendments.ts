@@ -3,30 +3,30 @@ import '@polymer/iron-icons/iron-icons';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-data-table/etools-data-table';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
 import './add-amendment-dialog';
-import '../../common/layout/are-you-sure';
+import '../../../../etools-pages-common/layout/are-you-sure';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {RootState} from '../../common/types/store.types';
-import {prettyDate} from '../../utils/date-utils';
-import {getFileNameFromURL, isJsonStrMatch} from '../../utils/utils';
+import {prettyDate} from '../../../../etools-pages-common/utils/date-utils';
+import {getFileNameFromURL, isJsonStrMatch} from '../../../../etools-pages-common/utils/utils';
 import {selectAmendmentsPermissions} from './pd-amendments.selectors';
 import {AmendmentsKind, AmendmentsKindTranslateKeys, PdAmendmentPermissions} from './pd-amendments.models';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
-import {openDialog} from '../../utils/dialog';
+import {pageIsNotCurrentlyActive} from '../../../../etools-pages-common/utils/common-methods';
+import {openDialog} from '../../../../etools-pages-common/utils/dialog';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, LabelAndValue, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {ROOT_PATH} from '../../config/config';
+import {ROOT_PATH} from '../../../../etools-pages-common/config/config';
 import {get as getTranslation} from 'lit-translate/util';
-import {getEndpoint} from '../../utils/endpoint-helper';
+import {getEndpoint} from '../../../../etools-pages-common/utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getStore} from '../../utils/redux-store-access';
+import {getStore} from '../../../../etools-pages-common/utils/redux-store-access';
 import {getIntervention} from '../../common/actions/interventions';
-import {fireEvent} from '../../utils/fire-custom-event';
+import {fireEvent} from '../../../../etools-pages-common/utils/fire-custom-event';
 import './amendment-difference';
 
 /**
@@ -39,8 +39,10 @@ export class PdAmendments extends CommentsMixin(LitElement) {
   }
 
   render() {
-    return html`<style>
-        ${sharedStyles} :host {
+    return html`
+      ${sharedStyles}
+      <style>
+        :host {
           display: block;
           width: 100%;
           -webkit-box-sizing: border-box;
@@ -199,7 +201,8 @@ export class PdAmendments extends CommentsMixin(LitElement) {
             <p>${translate('NO_AMENDMENTS_ADDED')}</p>
           </div>
         </div>
-      </etools-content-panel> `;
+      </etools-content-panel>
+    `;
   }
 
   @property({type: Array})

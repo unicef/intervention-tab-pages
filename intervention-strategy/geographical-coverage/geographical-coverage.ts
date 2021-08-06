@@ -3,21 +3,21 @@ import '@polymer/paper-button/paper-button';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
 import './grouped-locations-dialog';
 
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '../../common/styles/button-styles';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {getStore} from '../../utils/redux-store-access';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '../../../../etools-pages-common/styles/button-styles';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
+import {getStore} from '../../../../etools-pages-common/utils/redux-store-access';
 import {LocationsPermissions} from './geographicalCoverage.models';
 import {selectLocationsPermissions} from './geographicalCoverage.selectors';
-import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
+import ComponentBaseMixin from '../../../../etools-pages-common/mixins/component-base-mixin';
 import {patchIntervention} from '../../common/actions/interventions';
-import {isJsonStrMatch} from '../../utils/utils';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {isJsonStrMatch} from '../../../../etools-pages-common/utils/utils';
+import {pageIsNotCurrentlyActive} from '../../../../etools-pages-common/utils/common-methods';
 import {RootState} from '../../common/types/store.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import isEmpty from 'lodash-es/isEmpty';
 import get from 'lodash-es/get';
-import {openDialog} from '../../utils/dialog';
+import {openDialog} from '../../../../etools-pages-common/utils/dialog';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, LocationObject, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
@@ -35,15 +35,14 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
 
   render() {
     if (!this.data || !this.permissions) {
-      return html`<style>
-          ${sharedStyles}
-        </style>
+      return html` ${sharedStyles}
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} :host {
+        :host {
           display: block;
           margin-bottom: 24px;
         }

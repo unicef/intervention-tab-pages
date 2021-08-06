@@ -2,42 +2,44 @@ import '@polymer/paper-button/paper-button';
 import '@polymer/paper-toggle-button';
 
 import './common/layout/page-content-header/intervention-page-content-header';
-import './common/layout/etools-tabs';
-import './common/components/cancel/cancel-justification';
+import '../../etools-pages-common/layout/etools-tabs';
+import '../../etools-pages-common/components/cancel/cancel-justification';
 // eslint-disable-next-line max-len
-import './common/layout/status/etools-status';
+import '../../etools-pages-common/layout/status/etools-status';
 import './intervention-actions/intervention-actions';
 import './common/components/prp-country-data/prp-country-data';
 import {customElement, LitElement, html, property, css, query} from 'lit-element';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
-import {getStore, getStoreAsync} from './utils/redux-store-access';
+import {getStore, getStoreAsync} from '../../etools-pages-common/utils/redux-store-access';
 import {currentPage, currentSubpage, isUnicefUser, currentSubSubpage, currentUser} from './common/selectors';
-import {elevationStyles} from './common/styles/elevation-styles';
-import {RootState} from './common/types/store.types';
+import {elevationStyles} from '../../etools-pages-common/styles/elevation-styles';
 import {getIntervention} from './common/actions/interventions';
-import {sharedStyles} from './common/styles/shared-styles-lit';
-import {isJsonStrMatch} from './utils/utils';
+import {sharedStyles} from '../../etools-pages-common/styles/shared-styles-lit';
+import {isJsonStrMatch} from '../../etools-pages-common/utils/utils';
 import {pageContentHeaderSlottedStyles} from './common/layout/page-content-header/page-content-header-slotted-styles';
-import {fireEvent} from './utils/fire-custom-event';
-import {buildUrlQueryString} from './utils/utils';
+import {fireEvent} from '../../etools-pages-common/utils/fire-custom-event';
+import {buildUrlQueryString} from '../../etools-pages-common/utils/utils';
 import {enableCommentMode, getComments} from './common/components/comments/comments.actions';
 import {commentsData} from './common/components/comments/comments.reducer';
 import {Store} from 'redux';
-import {connectStore} from './common/mixins/connect-store-mixin';
+import {connectStore} from '../../etools-pages-common/mixins/connect-store-mixin';
 import {EnvFlags, ExpectedResult, Intervention} from '@unicef-polymer/etools-types';
 import {AsyncAction, RouteDetails} from '@unicef-polymer/etools-types';
 import {interventions} from './common/reducers/interventions';
 import {translate, get as getTranslation} from 'lit-translate';
-import {EtoolsTabs} from './common/layout/etools-tabs';
-import {ROOT_PATH} from './config/config';
+import {EtoolsTabs} from '../../etools-pages-common/layout/etools-tabs';
+import {ROOT_PATH} from '../../etools-pages-common/config/config';
 import {reviews} from './common/reducers/officers-reviews';
 import {uploadStatus} from './common/reducers/upload-status';
 import CONSTANTS, {TABS} from './common/constants';
-import UploadMixin from './common/mixins/uploads-mixin';
-import './common/layout/are-you-sure';
-import {openDialog} from './utils/dialog';
+import UploadMixin from '../../etools-pages-common/mixins/uploads-mixin';
+import '../../etools-pages-common/layout/are-you-sure';
+import {openDialog} from '../../etools-pages-common/utils/dialog';
 import {RESET_UNSAVED_UPLOADS, RESET_UPLOADS_IN_PROGRESS} from './common/actions/actionsContants';
+import {RootState} from './common/types/store.types';
+import {getEndpoint} from '../../etools-pages-common/utils/endpoint-helper';
+import {interventionEndpoints} from './utils/intervention-endpoints';
 
 const MOCKUP_STATUSES = [
   ['draft', 'Draft'],
@@ -106,13 +108,14 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     // main template
     // language=HTML
     return html`
+      ${sharedStyles}
       <style>
         :host {
           --ecp-header-bg: #ffffff;
           --ecp-header-color: var(--primary-text-color);
         }
 
-        ${sharedStyles} etools-status {
+        etools-status {
           justify-content: center;
         }
         .flag {
@@ -244,6 +247,9 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       {label: getTranslation('MONITORING_ACTIVITIES_SUBTAB'), value: TABS.MonitoringActivities}
     ]
   };
+
+  @property({type: String})
+  uploadEndpoint: string = getEndpoint(interventionEndpoints.attachmentsUpload).url;
 
   @property({type: String})
   activeTab = TABS.Metadata;
@@ -412,7 +418,9 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       progressTab = cloneDeep(this.progressTabTemplate);
     }
     // Results Reported, Reports tabs are visible only for unicef users if flag prp_mode_off is not ON
+    // @ts-ignore
     if (envFlags && !envFlags.prp_mode_off && !progressTab?.subtabs?.find((t) => t.value === TABS.ResultsReported)) {
+      // @ts-ignore
       progressTab?.subtabs?.push(
         {label: getTranslation('RESULTS_REPORTED_SUBTAB'), value: TABS.ResultsReported},
         {label: getTranslation('REPORTS_SUBTAB'), value: TABS.Reports}

@@ -9,18 +9,18 @@ import '@polymer/paper-item/paper-item.js';
 import '@polymer/paper-toggle-button/paper-toggle-button.js';
 import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
-import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
+import {sharedStyles} from '../../../../../../etools-pages-common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../../../../../../etools-pages-common/styles/grid-layout-styles-lit';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import SaveIndicatorMixin from './mixins/save-indicator-mixin';
 import IndicatorDialogTabsMixin from './mixins/indicator-dialog-tabs-mixin';
-import {fireEvent} from '../../../../utils/fire-custom-event';
-import {getStore} from '../../../../utils/redux-store-access';
+import {fireEvent} from '../../../../../../etools-pages-common/utils/fire-custom-event';
+import {getStore} from '../../../../../../etools-pages-common/utils/redux-store-access';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {userIsPme} from '../../../../common/user-permissions';
-import ComponentBaseMixin from '../../../../common/mixins/component-base-mixin';
+import {userIsPme} from '../../../../../../etools-pages-common/utils/user-permissions';
+import ComponentBaseMixin from '../../../../../../etools-pages-common/mixins/component-base-mixin';
 import {PaperCheckboxElement} from '@polymer/paper-checkbox';
-import '../../../../common/layout/etools-tabs';
+import '../../../../../../etools-pages-common/layout/etools-tabs';
 import './indicator-dissaggregations';
 import './non-cluster-indicator';
 import './cluster-indicator';
@@ -40,8 +40,9 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
       return html``;
     }
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} [hidden] {
+        [hidden] {
           display: none !important;
         }
 
@@ -325,9 +326,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   }
 
   setTitle() {
-    const title = this.isEditRecord
-      ? getTranslation('EDIT_INDICATOR')
-      : getTranslation('ADD_INDICATOR');
+    const title = this.isEditRecord ? getTranslation('EDIT_INDICATOR') : getTranslation('ADD_INDICATOR');
     setTimeout(() => {
       this.indicatorDialog.dialogTitle = title;
     });

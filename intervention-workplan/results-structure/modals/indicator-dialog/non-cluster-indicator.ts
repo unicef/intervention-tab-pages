@@ -7,13 +7,13 @@ import '@polymer/paper-toggle-button/paper-toggle-button.js';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi.js';
 import IndicatorsCommonMixin from './mixins/indicators-common-mixin';
 import {LitElement, html, property, customElement} from 'lit-element';
-import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '../../../../common/styles/button-styles';
+import {sharedStyles} from '../../../../../../etools-pages-common/styles/shared-styles-lit';
+import {buttonsStyles} from '../../../../../../etools-pages-common/styles/button-styles';
 import {PaperCheckboxElement} from '@polymer/paper-checkbox/paper-checkbox.js';
 import {Indicator} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../../../utils/intervention-labels-map';
+import {gridLayoutStylesLit} from '../../../../../../etools-pages-common/styles/grid-layout-styles-lit';
 
 /**
  * @customElement
@@ -27,8 +27,9 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
 
   render() {
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} *[hidden] {
+        *[hidden] {
           display: none !important;
         }
 

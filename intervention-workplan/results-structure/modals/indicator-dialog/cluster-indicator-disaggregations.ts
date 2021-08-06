@@ -1,7 +1,7 @@
 import {LitElement, html, property, customElement} from 'lit-element';
-import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '../../../../common/styles/button-styles';
+import {sharedStyles} from '../../../../../../etools-pages-common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../../../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '../../../../../../etools-pages-common/styles/button-styles';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 
@@ -16,8 +16,9 @@ export class ClusterIndicatorDisaggregations extends LitElement {
 
   render() {
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} [hidden] {
+        [hidden] {
           display: none !important;
         }
         :host {

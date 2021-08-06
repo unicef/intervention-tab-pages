@@ -3,25 +3,25 @@ import '@polymer/iron-label/iron-label';
 import '@polymer/paper-button/paper-button';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 
-import {prepareDatepickerDate} from '../../../utils/date-utils';
-import {getEndpoint} from '../../../utils/endpoint-helper';
+import {prepareDatepickerDate} from '../../../../../etools-pages-common/utils/date-utils';
+import {getEndpoint} from '../../../../../etools-pages-common/utils/endpoint-helper';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import './qpr-list.js';
 import CONSTANTS from '../../../common/constants';
 import '@unicef-polymer/etools-date-time/calendar-lite.js';
-import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {QprListEl} from './qpr-list.js';
-import {fireEvent} from '../../../utils/fire-custom-event';
+import {fireEvent} from '../../../../../etools-pages-common/utils/fire-custom-event';
 import {AnyObject} from '@unicef-polymer/etools-types';
 declare const dayjs: any;
-import {buttonsStyles} from '../../../common/styles/button-styles';
 import {translate, get as getTranslation} from 'lit-translate';
-import {sharedStyles} from '../../../common/styles/shared-styles-lit';
 import {translatesMap} from '../../../utils/intervention-labels-map';
+import {gridLayoutStylesLit} from '../../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '../../../../../etools-pages-common/styles/button-styles';
+import {sharedStyles} from '../../../../../etools-pages-common/styles/shared-styles-lit';
 
 /**
  * @polymer
@@ -34,8 +34,9 @@ export class EditQprDialog extends LitElement {
   }
   render() {
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles}*[hidden] {
+        *[hidden] {
           display: none !important;
         }
 
@@ -75,12 +76,8 @@ export class EditQprDialog extends LitElement {
         spinner-text=${translate('GENERAL.SAVING_DATA')}
       >
         <div class="layout-horizontal">
-          <span id="qpr-edit-info"
-            >${translate('ALL_DATES_IN_FUTURE')}</span
-          >
-          <paper-button class="secondary-btn" @click="${this._addNewQpr}"
-            >${translate('ADD_REQUIREMENT')}</paper-button
-          >
+          <span id="qpr-edit-info">${translate('ALL_DATES_IN_FUTURE')}</span>
+          <paper-button class="secondary-btn" @click="${this._addNewQpr}">${translate('ADD_REQUIREMENT')}</paper-button>
         </div>
 
         <qpr-list
@@ -97,9 +94,7 @@ export class EditQprDialog extends LitElement {
       <etools-dialog
         id="addOrModifyQprDialog"
         size="lg"
-        dialog-title=${translate(
-          'EDIT_STANDARD_QUARTERLY_REPORT_REQUIREMENTS'
-        )}
+        dialog-title=${translate('EDIT_STANDARD_QUARTERLY_REPORT_REQUIREMENTS')}
         ?opened="${this.addOrModifyQprDialogOpened}"
         no-padding
         @confirm-btn-clicked="${() => this._updateQprData()}"
@@ -109,15 +104,12 @@ export class EditQprDialog extends LitElement {
         cancel-btn-text=${translate('GENERAL.CANCEL')}
       >
         <div class="row-h" ?hidden="${this._hideEditedIndexInfo(this._qprDatesSetEditedIndex)}">
-          ${translate('EDITING_ID')}
-          ${this._getEditedQprDatesSetId(this._qprDatesSetEditedIndex)}
+          ${translate('EDITING_ID')} ${this._getEditedQprDatesSetId(this._qprDatesSetEditedIndex)}
         </div>
 
         <div class="row-h">
           <div class="col layout-vertical">
-            <iron-label for="startDate"
-              >${translate(translatesMap.start_date)}</iron-label
-            >
+            <iron-label for="startDate">${translate(translatesMap.start_date)}</iron-label>
             <calendar-lite
               id="startDate"
               pretty-date="${this._editedQprDatesSet!.start_date ? this._editedQprDatesSet!.start_date : ''}"
@@ -128,9 +120,7 @@ export class EditQprDialog extends LitElement {
             </calendar-lite>
           </div>
           <div class="col layout-vertical">
-            <iron-label for="endDate"
-              >${translate('END_DATE')}</iron-label
-            >
+            <iron-label for="endDate">${translate('END_DATE')}</iron-label>
             <calendar-lite
               id="endDate"
               pretty-date="${this._editedQprDatesSet!.end_date ? this._editedQprDatesSet!.end_date : ''}"
@@ -141,9 +131,7 @@ export class EditQprDialog extends LitElement {
             </calendar-lite>
           </div>
           <div class="col layout-vertical">
-            <iron-label for="dueDate"
-              >${translate('DUE_DATE')}</iron-label
-            >
+            <iron-label for="dueDate">${translate('DUE_DATE')}</iron-label>
             <calendar-lite
               id="dueDate"
               pretty-date="${this._editedQprDatesSet!.due_date ? this._editedQprDatesSet!.due_date : ''}"

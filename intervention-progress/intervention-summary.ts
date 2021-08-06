@@ -2,20 +2,21 @@ import {LitElement, customElement, html, property} from 'lit-element';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import '@polymer/iron-label/iron-label';
 import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
-import {elevationStyles} from '../common/styles/elevation-styles';
-import {gridLayoutStylesLit} from '../common/styles/grid-layout-styles-lit';
-import {sharedStyles} from '../common/styles/shared-styles-lit';
+import {sharedStyles} from '../../../etools-pages-common/styles/shared-styles-lit';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
-import {prettyDate} from '../utils/date-utils';
-import {decimalFractionEquals0, isJsonStrMatch} from '../utils/utils';
-import {pageIsNotCurrentlyActive} from '../utils/common-methods';
 import {RootState} from '../common/types/store.types';
-import {fireEvent} from '../utils/fire-custom-event';
-import {connectStore} from '../common/mixins/connect-store-mixin';
+import {fireEvent} from '../../../etools-pages-common/utils/fire-custom-event';
 import {AnyObject, CpOutput, StaticPartner, ManagementBudget} from '@unicef-polymer/etools-types';
 import {ExpectedResult, MinimalAgreement, Intervention} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {connectStore} from '../../../etools-pages-common/mixins/connect-store-mixin';
+import {gridLayoutStylesLit} from '../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {elevationStyles} from '../../../etools-pages-common/styles/elevation-styles';
+import {prettyDate} from '../../../etools-pages-common/utils/date-utils';
+import {pageIsNotCurrentlyActive} from '../../../etools-pages-common/utils/common-methods';
+import {TABS} from '../common/constants';
+import {decimalFractionEquals0, isJsonStrMatch} from '../../../etools-pages-common/utils/utils';
 
 // TODO - NOT USED AT THE MOMENT
 @customElement('intervention-summary')
@@ -26,15 +27,14 @@ export class InterventionSummary extends connectStore(LitElement) {
 
   render() {
     if ((this.isUnicefUser && !this.interventionCpOutputs) || !this.intervention || !this.interventionAgreement) {
-      return html`<style>
-          ${sharedStyles}
-        </style>
+      return html` ${sharedStyles}
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`
+    ${sharedStyles}
     <style>
-      ${sharedStyles} :host {
+       :host {
         width: 100%;
         --paper-input-container-underline-disabled_-_display: none;
       }

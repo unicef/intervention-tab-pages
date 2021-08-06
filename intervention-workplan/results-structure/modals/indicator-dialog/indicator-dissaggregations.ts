@@ -7,17 +7,17 @@ import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import {PaperInputElement} from '@polymer/paper-input/paper-input.js';
 import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import {LitElement, html, property, customElement} from 'lit-element';
-import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
-import RepeatableDataSetsMixin from '../../../../common/mixins/repeatable-data-sets-mixin';
 import {flaggedSortedDisaggregs} from '../../redux/selectors';
-import {getStore} from '../../../../utils/redux-store-access';
-import {repeatableDataSetsStyles} from '../../../../common/styles/repeatable-data-sets-styles';
-import {buttonsStyles} from '../../../../common/styles/button-styles';
-import {fireEvent} from '../../../../utils/fire-custom-event';
-import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
+import {getStore} from '../../../../../../etools-pages-common/utils/redux-store-access';
+import {buttonsStyles} from '../../../../../../etools-pages-common/styles/button-styles';
+import {fireEvent} from '../../../../../../etools-pages-common/utils/fire-custom-event';
+import {sharedStyles} from '../../../../../../etools-pages-common/styles/shared-styles-lit';
 import {AnyObject, Disaggregation} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
-import {callClickOnSpacePushListener} from '../../../../utils/common-methods';
+import RepeatableDataSetsMixin from '../../../../../../etools-pages-common/mixins/repeatable-data-sets-mixin';
+import {gridLayoutStylesLit} from '../../../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {repeatableDataSetsStyles} from '../../../../../../etools-pages-common/styles/repeatable-data-sets-styles';
+import {callClickOnSpacePushListener} from '../../../../../../etools-pages-common/utils/common-methods';
 
 /**
  * @customElement
@@ -31,9 +31,9 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
 
   render() {
     return html`
-      ${repeatableDataSetsStyles}
+      ${repeatableDataSetsStyles} ${sharedStyles}
       <style>
-        ${sharedStyles} [hidden] {
+        [hidden] {
           display: none !important;
         }
 

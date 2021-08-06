@@ -1,14 +1,14 @@
 import {LitElement, html, property, customElement} from 'lit-element';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '../../common/styles/button-styles';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {getStore} from '../../utils/redux-store-access';
-import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
-import {validateRequiredFields} from '../../utils/validation-helper';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '../../../../etools-pages-common/styles/button-styles';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
+import {getStore} from '../../../../etools-pages-common/utils/redux-store-access';
+import ComponentBaseMixin from '../../../../etools-pages-common/mixins/component-base-mixin';
+import {validateRequiredFields} from '../../../../etools-pages-common/utils/validation-helper';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getEndpoint} from '../../utils/endpoint-helper';
+import {getEndpoint} from '../../../../etools-pages-common/utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {fireEvent} from '../../utils/fire-custom-event';
+import {fireEvent} from '../../../../etools-pages-common/utils/fire-custom-event';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
@@ -19,7 +19,7 @@ import '@unicef-polymer/etools-currency-amount-input';
 import {ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
-import {cloneDeep} from '../../utils/utils';
+import {cloneDeep} from '../../../../etools-pages-common/utils/utils';
 import {get as getTranslation} from 'lit-translate';
 
 /**
@@ -34,8 +34,8 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
   render() {
     // language=HTML
     return html`
-      <style>
-        ${sharedStyles}
+      ${sharedStyles}
+      <style>        
         paper-textarea {
           flex: auto;
           --paper-input-container-input: {

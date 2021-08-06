@@ -1,23 +1,23 @@
 import {LitElement, TemplateResult, html, property, customElement, css} from 'lit-element';
-import {gridLayoutStylesLit} from '../../styles/grid-layout-styles-lit';
-import {sharedStyles} from '../../styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {sharedStyles} from '../../../../../etools-pages-common/styles/shared-styles-lit';
 import {AnyObject, AsyncAction, GenericObject, InterventionReview} from '@unicef-polymer/etools-types';
-import {fireEvent} from '../../../utils/fire-custom-event';
+import {fireEvent} from '../../../../../etools-pages-common/utils/fire-custom-event';
 import {translate} from 'lit-translate';
-import {buttonsStyles} from '../../styles/button-styles';
-import {getStore} from '../../../utils/redux-store-access';
+import {buttonsStyles} from '../../../../../etools-pages-common/styles/button-styles';
+import {getStore} from '../../../../../etools-pages-common/utils/redux-store-access';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getEndpoint} from '../../../utils/endpoint-helper';
+import {getEndpoint} from '../../../../../etools-pages-common/utils/endpoint-helper';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {loadReviews} from '../../actions/officers-reviews';
 import {REVIEW_ANSVERS, REVIEW_QUESTIONS} from '../../../intervention-review/review.const';
 import {updateCurrentIntervention} from '../../actions/interventions';
-import {getDifference} from '../../mixins/objects-diff';
-import {cloneDeep} from '../../../utils/utils';
+import {getDifference} from '../../../../../etools-pages-common/mixins/objects-diff';
+import {cloneDeep} from '../../../../../etools-pages-common/utils/utils';
 import '@polymer/paper-radio-group';
 import '@polymer/paper-checkbox/paper-checkbox';
 import '@polymer/paper-input/paper-textarea';
-import {formatDate, getTodayDateStr} from '../../../utils/date-utils';
+import {formatDate, getTodayDateStr} from '../../../../../etools-pages-common/utils/date-utils';
 
 @customElement('review-checklist-popup')
 export class ReviewChecklistPopup extends LitElement {
@@ -88,9 +88,8 @@ export class ReviewChecklistPopup extends LitElement {
 
   protected render(): TemplateResult {
     return html`
-      <style>
-        ${sharedStyles}
-      </style>
+      ${sharedStyles}
+
       <etools-dialog
         no-padding
         keep-dialog-open

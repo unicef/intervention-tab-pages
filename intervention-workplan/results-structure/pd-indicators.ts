@@ -9,28 +9,28 @@ import {
   PropertyValues
 } from 'lit-element';
 import {ResultStructureStyles} from './results-structure.styles';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/iron-icons';
-import {getStore} from '../../utils/redux-store-access';
+import {getStore} from '../../../../etools-pages-common/utils/redux-store-access';
 import {RootState} from '../../common/types/store.types';
 import './modals/indicator-dialog/indicator-dialog';
 import get from 'lodash-es/get';
-import {filterByIds, isJsonStrMatch} from '../../utils/utils';
-import EnvironmentFlagsMixin from '../../common/mixins/environment-flags-mixin';
+import {filterByIds, isJsonStrMatch} from '../../../../etools-pages-common/utils/utils';
+import EnvironmentFlagsMixin from '../../../../etools-pages-common/mixins/environment-flags-mixin';
 import cloneDeep from 'lodash-es/cloneDeep';
-import '../../common/layout/are-you-sure';
-import {getEndpoint} from '../../utils/endpoint-helper';
+import '../../../../etools-pages-common/layout/are-you-sure';
+import {getEndpoint} from '../../../../etools-pages-common/utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {getIntervention} from '../../common/actions/interventions';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {fireEvent} from '../../utils/fire-custom-event';
-import {openDialog} from '../../utils/dialog';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {fireEvent} from '../../../../etools-pages-common/utils/fire-custom-event';
+import {openDialog} from '../../../../etools-pages-common/utils/dialog';
+import {pageIsNotCurrentlyActive} from '../../../../etools-pages-common/utils/common-methods';
 import './pd-indicator';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {connectStore} from '../../common/mixins/connect-store-mixin';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
+import {connectStore} from '../../../../etools-pages-common/mixins/connect-store-mixin';
 import {translate} from 'lit-translate';
 import {
   AsyncAction,
@@ -41,7 +41,7 @@ import {
   Indicator,
   Intervention
 } from '@unicef-polymer/etools-types';
-import {callClickOnSpacePushListener} from '../../utils/common-methods';
+import {callClickOnSpacePushListener} from '../../../../etools-pages-common/utils/common-methods';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 
@@ -85,8 +85,9 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
   protected render(): TemplateResult {
     // language=HTML
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} :host etools-data-table-row {
+        :host etools-data-table-row {
           --list-bg-color: var(--blue-background);
           --list-second-bg-color: var(--blue-background);
           etools-data-table-row::part(edt-list-row-collapse-wrapper) {

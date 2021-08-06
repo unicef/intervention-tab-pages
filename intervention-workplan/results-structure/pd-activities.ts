@@ -1,22 +1,22 @@
 import {LitElement, html, TemplateResult, CSSResultArray, css, customElement, property} from 'lit-element';
 import {ResultStructureStyles} from './results-structure.styles';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/iron-icons';
 import './modals/activity-dialog/activity-data-dialog';
-import {openDialog} from '../../utils/dialog';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {openDialog} from '../../../../etools-pages-common/utils/dialog';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
-import {getStore} from '../../utils/redux-store-access';
+import {getStore} from '../../../../etools-pages-common/utils/redux-store-access';
 import {getIntervention} from '../../common/actions/interventions';
-import {fireEvent} from '../../utils/fire-custom-event';
+import {fireEvent} from '../../../../etools-pages-common/utils/fire-custom-event';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {getEndpoint} from '../../utils/endpoint-helper';
+import {getEndpoint} from '../../../../etools-pages-common/utils/endpoint-helper';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, InterventionActivity, InterventionQuarter} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {callClickOnSpacePushListener} from '../../utils/common-methods';
+import {callClickOnSpacePushListener} from '../../../../etools-pages-common/utils/common-methods';
 import {translatesMap} from '../../utils/intervention-labels-map';
 
 @customElement('pd-activities')
@@ -55,8 +55,9 @@ export class PdActivities extends CommentsMixin(LitElement) {
   protected render(): TemplateResult {
     // language=HTML
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} etools-data-table-row {
+        etools-data-table-row {
           --list-bg-color: var(--green-background);
         }
 

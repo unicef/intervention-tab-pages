@@ -9,17 +9,17 @@ import {
   TemplateResult
 } from 'lit-element';
 import {ResultStructureStyles} from './results-structure.styles';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
 import '@unicef-polymer/etools-data-table/etools-data-table.js';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/iron-icons';
 import './modals/cp-output-dialog';
-import {fireEvent} from '../../utils/fire-custom-event';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {fireEvent} from '../../../../etools-pages-common/utils/fire-custom-event';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {callClickOnSpacePushListener} from '../../utils/common-methods';
+import {callClickOnSpacePushListener} from '../../../../etools-pages-common/utils/common-methods';
 import {PaperButtonElement} from '@polymer/paper-button';
 
 @customElement('cp-output-level')
@@ -72,8 +72,9 @@ export class CpOutputLevel extends LitElement {
 
   protected render(): TemplateResult {
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} etools-data-table-row {
+        etools-data-table-row {
           overflow: hidden;
           --list-row-wrapper-padding: 0 12px 0 0;
         }
@@ -100,9 +101,7 @@ export class CpOutputLevel extends LitElement {
                 ${this.resultLink.cp_output
                   ? html`
                       <div class="flex-1 flex-fix">
-                        <div class="heading">
-                          ${translate('COUNTRY_PROGRAME_OUTPUT')}
-                        </div>
+                        <div class="heading">${translate('COUNTRY_PROGRAME_OUTPUT')}</div>
                         <div class="data">${this.resultLink.cp_output_name}</div>
                       </div>
 
@@ -142,9 +141,7 @@ export class CpOutputLevel extends LitElement {
                     `
                   : html`
                       <!--      If PD is unassociated with CP Output      -->
-                      <div class="flex-1 flex-fix data alert">
-                        ${translate('UNASSOCIATED_TO_CP_OUTPUT')}
-                      </div>
+                      <div class="flex-1 flex-fix data alert">${translate('UNASSOCIATED_TO_CP_OUTPUT')}</div>
                     `}
               </div>
 

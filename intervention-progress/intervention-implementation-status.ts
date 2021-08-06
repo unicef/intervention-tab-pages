@@ -3,15 +3,15 @@ import {customElement, html, LitElement, property} from 'lit-element';
 import '@unicef-polymer/etools-content-panel/etools-content-panel.js';
 import {translate} from 'lit-translate';
 import get from 'lodash-es/get';
-import {connectStore} from '../common/mixins/connect-store-mixin';
-import {gridLayoutStylesLit} from '../common/styles/grid-layout-styles-lit';
 import {RootState} from '../common/types/store.types';
-import {pageIsNotCurrentlyActive} from '../utils/common-methods';
-import {fireEvent} from '../utils/fire-custom-event';
-import {cloneDeep} from '../utils/utils';
+import {fireEvent} from '../../../etools-pages-common/utils/fire-custom-event';
 import './fund-reservations-display.js';
-import {sharedStyles} from '../common/styles/shared-styles-lit';
+import {sharedStyles} from '../../../etools-pages-common/styles/shared-styles-lit';
 import {TABS} from '../common/constants';
+import {connectStore} from '../../../etools-pages-common/mixins/connect-store-mixin';
+import {gridLayoutStylesLit} from '../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {pageIsNotCurrentlyActive} from '../../../etools-pages-common/utils/common-methods';
+import {cloneDeep} from '../../../etools-pages-common/utils/utils';
 
 @customElement('intervention-implementation-status')
 export class InterventionImplementationStatus extends connectStore(LitElement) {
@@ -20,9 +20,7 @@ export class InterventionImplementationStatus extends connectStore(LitElement) {
   }
   render() {
     return html`
-      <style>
-        ${sharedStyles}
-      </style>
+      ${sharedStyles}
       <etools-content-panel
         id="fund-reservation-display"
         class="content-section"

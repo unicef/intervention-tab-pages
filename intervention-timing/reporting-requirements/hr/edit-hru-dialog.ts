@@ -8,20 +8,20 @@ import '@unicef-polymer/etools-date-time/datepicker-lite';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import './hru-list.js';
 import CONSTANTS from '../../../common/constants';
-import {fireEvent} from '../../../utils/fire-custom-event';
-import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
-import {convertDate} from '../../../utils/date-utils';
-import {getEndpoint} from '../../../utils/endpoint-helper';
+import {fireEvent} from '../../../../../etools-pages-common/utils/fire-custom-event';
+import {convertDate} from '../../../../../etools-pages-common/utils/date-utils';
+import {getEndpoint} from '../../../../../etools-pages-common/utils/endpoint-helper';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
-import {isEmptyObject} from '../../../utils/utils';
-import {connectStore} from '../../../common/mixins/connect-store-mixin';
+import {isEmptyObject} from '../../../../../etools-pages-common/utils/utils';
 import {AnyObject} from '@unicef-polymer/etools-types';
-import {buttonsStyles} from '../../../common/styles/button-styles.js';
 import {translate, get as getTranslation} from 'lit-translate';
-import {sharedStyles} from '../../../common/styles/shared-styles-lit.js';
+import {connectStore} from '../../../../../etools-pages-common/mixins/connect-store-mixin.js';
+import {gridLayoutStylesLit} from '../../../../../etools-pages-common/styles/grid-layout-styles-lit.js';
+import {buttonsStyles} from '../../../../../etools-pages-common/styles/button-styles.js';
+import {sharedStyles} from '../../../../../etools-pages-common/styles/shared-styles-lit.js';
 
 /**
  * @polymer
@@ -36,8 +36,9 @@ export class EditHruDialog extends connectStore(LitElement) {
   }
   render() {
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles}*[hidden] {
+        *[hidden] {
           display: none !important;
         }
 

@@ -10,23 +10,24 @@ import {abortRequestByKey} from '@unicef-polymer/etools-ajax/etools-iron-request
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 
 import '../common/layout/status/intervention-report-status';
-import {isEmptyObject, isJsonStrMatch} from '../utils/utils';
-import {fireEvent} from '../utils/fire-custom-event';
+import {fireEvent} from '../../../etools-pages-common/utils/fire-custom-event';
 import {RootState} from '../common/types/store.types';
-import {gridLayoutStylesLit} from '../common/styles/grid-layout-styles-lit';
 import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
-import {elevationStyles} from '../common/styles/elevation-styles';
-import CommonMixin from '../common/mixins/common-mixin';
-import EndpointsLitMixin from '../common/mixins/endpoints-mixin-lit';
-import PaginationMixin from '../common/mixins/pagination-mixin';
-import {pageIsNotCurrentlyActive} from '../utils/common-methods';
 import get from 'lodash-es/get';
-import {connectStore} from '../common/mixins/connect-store-mixin';
 import {GenericObject, User} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {currentIntervention} from '../common/selectors';
-import {sharedStyles} from '../common/styles/shared-styles-lit';
+import {sharedStyles} from '../../../etools-pages-common/styles/shared-styles-lit';
 import {TABS} from '../common/constants';
+import {connectStore} from '../../../etools-pages-common/mixins/connect-store-mixin';
+import PaginationMixin from '../../../etools-pages-common/mixins/pagination-mixin';
+import CommonMixin from '../../../etools-pages-common/mixins/common-mixin';
+import EndpointsLitMixin from '../../../etools-pages-common/mixins/endpoints-mixin-lit';
+import {gridLayoutStylesLit} from '../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {elevationStyles} from '../../../etools-pages-common/styles/elevation-styles';
+import {pageIsNotCurrentlyActive} from '../../../etools-pages-common/utils/common-methods';
+import {isEmptyObject, isJsonStrMatch} from '../../../etools-pages-common/utils/utils';
+import {interventionEndpoints} from '../utils/intervention-endpoints';
 
 /**
  * @polymer
@@ -46,8 +47,9 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
   }
   render() {
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} ${dataTableStylesLit}:host {
+        ${dataTableStylesLit}:host {
           @apply --layout-flex;
           width: 100%;
 
@@ -303,7 +305,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
     // abort previous req and then fire a new one with updated params
     abortRequestByKey(this._endpointName);
 
-    this.fireRequest('reports', {}, {params: params}, this._endpointName)
+    this.fireRequest(interventionEndpoints, 'reports', {}, {params: params}, this._endpointName)
       .then((response: any) => {
         if (response) {
           this.reports = [...response.results];
