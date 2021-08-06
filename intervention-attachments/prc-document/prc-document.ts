@@ -54,9 +54,9 @@ export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadMixin(Li
       </style>
       <etools-content-panel
         show-expand-btn
-        panel-title=${translate('PRC_REVIEW_DOC')}
+        panel-title=${translate('PRC_REVIEW_DOC_TITLE')}
         comment-element="prc-document"
-        comment-description=${translate('PRC_REVIEW_DOC')}
+        comment-description=${translate('PRC_REVIEW_DOC_TITLE')}
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
         <div class="layout-horizontal row-padding-v">
