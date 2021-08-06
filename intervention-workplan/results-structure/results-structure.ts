@@ -26,7 +26,7 @@ import '@polymer/paper-listbox';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {RootState} from '../../common/types/store.types';
 import {openDialog} from '../../utils/dialog';
-import CONSTANTS, {TABS} from '../../common/constants';
+import {TABS} from '../../common/constants';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {
   callClickOnSpacePushListener,
@@ -224,12 +224,6 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         .export-res-btn {
           height: 28px;
         }
-        .separator {
-          border-left: solid 1px var(--dark-divider-color);
-          height: 28px;
-          padding-right: 10px;
-          margin: 6px 0 6px 10px;
-        }
 
         etools-content-panel::part(ecp-header) {
           position: relative;
@@ -247,23 +241,6 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         panel-title="${translate(translatesMap.result_links)} (${this.noOfPdOutputs})"
       >
         <div slot="panel-btns" class="layout-horizontal align-items-center">
-          <paper-button
-            title=${translate('EXPORT_RESULTS')}
-            class="primary export-res-btn"
-            ?hidden="${!this.showExportResults(this.interventionStatus, this.resultLinks)}"
-            @click="${this.exportExpectedResults}"
-          >
-            ${translate('EXPORT')}
-          </paper-button>
-          <div
-            class="separator"
-            ?hidden="${!this.showSeparator(
-              this.interventionStatus,
-              this.resultLinks,
-              this.permissions.edit.result_links
-            )}"
-          ></div>
-
           <paper-toggle-button
             id="showInactive"
             ?hidden="${!this.thereAreInactiveIndicators}"
@@ -580,29 +557,6 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           .reduce((a: number, b: number) => a + b, 0);
       })
       .reduce((a: number, b: number) => a + b, 0);
-  }
-
-  showExportResults(status: string, resultLinks: ExpectedResult[]) {
-    return (
-      [
-        CONSTANTS.STATUSES.Draft.toLowerCase(),
-        CONSTANTS.STATUSES.Signed.toLowerCase(),
-        CONSTANTS.STATUSES.Active.toLowerCase()
-      ].indexOf(status) > -1 &&
-      resultLinks &&
-      resultLinks.length
-    );
-  }
-
-  showSeparator(status: string, resultLinks: ExpectedResult[], resultLinkPermission: boolean | undefined) {
-    return this.showExportResults(status, resultLinks) && resultLinkPermission;
-  }
-
-  exportExpectedResults() {
-    const endpoint = getEndpoint(interventionEndpoints.expectedResultsExport, {
-      intervention_id: this.interventionId
-    }).url;
-    window.open(endpoint, '_blank');
   }
 
   inactiveChange(e: CustomEvent): void {

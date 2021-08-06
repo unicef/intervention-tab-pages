@@ -237,7 +237,6 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
               accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt"
               .fileUrl="${this.data.signed_pd_attachment}"
               .uploadEndpoint="${this.uploadEndpoint}"
-              @upload-finished="${this._signedPDUploadFinished}"
               .showDeleteBtn="${this.showSignedPDDeleteBtn(this.data.status)}"
               @delete-file="${this._signedPDDocDelete}"
               ?auto-validate="${this.editMode}"
@@ -245,6 +244,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
               ?required="${this.permissions.required.signed_pd_attachment}"
               error-message=${translate('SELECT_SIGNED_PD_SPD_DOC')}
               @upload-started="${this._onUploadStarted}"
+              @upload-finished="${this._signedPDUploadFinished}"
               @change-unsaved-file="${this._onChangeUnsavedFile}"
             >
             </etools-upload>
@@ -386,6 +386,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
   }
 
   _signedPDUploadFinished(e: CustomEvent) {
+    this._onUploadFinished(e.detail.success);
     if (e.detail.success) {
       const response = e.detail.success;
       this.data.signed_pd_attachment = response.id;
@@ -395,6 +396,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
 
   _signedPDDocDelete(_e: CustomEvent) {
     this.data.signed_pd_attachment = null;
+    this._onUploadDelete();
   }
 
   showSignedPDDeleteBtn(status: string) {
@@ -416,6 +418,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
         patchIntervention(this.formatUserData(getDifference<ReviewData>(this.originalData, this.data)))
       )
       .then(() => {
+        this._onUploadSaved();
         this.editMode = false;
       });
   }

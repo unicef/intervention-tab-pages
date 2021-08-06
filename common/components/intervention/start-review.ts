@@ -42,7 +42,7 @@ export class StartReview extends connectStore(LitElement) {
         opened
         size="md"
         ok-btn-text="${translate('START')}"
-        dialog-title="${translate('START_REVIEW')}"
+        dialog-title="${translate('SEND_FOR_REVIEW')}"
         @confirm-btn-clicked="${() => this.startReview()}"
       >
         <div class="row">
