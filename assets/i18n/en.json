@@ -388,6 +388,7 @@
   "CONFIRM_BTN_TEXT": "Yes",
   "DELETE_ATTACHMENTS_PROMPT": "Are you sure you want to delete this attachment?",
   "PRC_REVIEW_DOC": "PRC Review Document",
+  "PRC_REVIEW_DOC_TITLE": "PRC Review Document for legacy PDs only",
   "ATTACHMENT": "Attachment",
   "SELECT_DOC_TYPE": "Select Document Type",
   "NO_REPORTS_YET": "There are no reports yet.",
