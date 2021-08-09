@@ -1,16 +1,16 @@
 import {LitElement, html, TemplateResult, property, customElement} from 'lit-element';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getEndpoint} from '../../../../../common/utils/endpoint-helper';
-import {interventionEndpoints} from '../../../../../common/utils/intervention-endpoints';
-import {getStore} from '../../../../../common/utils/redux-store-access';
+import {getEndpoint} from '../../../../../etools-pages-common/utils/endpoint-helper';
+import {interventionEndpoints} from '../../../utils/intervention-endpoints';
+import {getStore} from '../../../../../etools-pages-common/utils/redux-store-access';
 import {getIntervention} from '../../../common/actions/interventions';
-import {fireEvent} from '../../../../../common/utils/fire-custom-event';
+import {fireEvent} from '../../../../../etools-pages-common/utils/fire-custom-event';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
 import {AsyncAction, ResultIndicator, GenericObject} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
-import {sharedStyles} from '../../../../../common/styles/shared-styles-lit';
+import {sharedStyles} from '../../../../../etools-pages-common/styles/shared-styles-lit';
 
 @customElement('cp-output-dialog')
 export class CpOutputDialog extends LitElement {
@@ -59,8 +59,9 @@ export class CpOutputDialog extends LitElement {
   protected render(): TemplateResult {
     // language=html
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} etools-dialog::part(ed-scrollable) {
+        etools-dialog::part(ed-scrollable) {
           margin-top: 0 !important;
         }
 

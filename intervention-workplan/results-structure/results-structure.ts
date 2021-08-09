@@ -1,9 +1,9 @@
 /* eslint-disable lit-a11y/click-events-have-key-events */
-import {getStore} from '../../../../common/utils/redux-store-access';
+import {getStore} from '../../../../etools-pages-common/utils/redux-store-access';
 import {css, html, CSSResultArray, customElement, LitElement, property} from 'lit-element';
 import {repeat} from 'lit-html/directives/repeat';
-import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '../../../../common/styles/button-styles';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '../../../../etools-pages-common/styles/button-styles';
 import {
   selectInterventionId,
   selectInterventionStatus,
@@ -23,24 +23,22 @@ import './modals/pd-output-dialog';
 import './modals/cp-output-dialog';
 import '@polymer/paper-item';
 import '@polymer/paper-listbox';
-import {getEndpoint} from '../../../../common/utils/endpoint-helper';
+import {getEndpoint} from '../../../../etools-pages-common/utils/endpoint-helper';
 import {RootState} from '../../common/types/store.types';
-import {openDialog} from '../../../../common/utils/dialog';
-import CONSTANTS, {TABS} from '../../common/constants';
-import {interventionEndpoints} from '../../../../common/utils/intervention-endpoints';
+import {openDialog} from '../../../../etools-pages-common/utils/dialog';
+import {TABS} from '../../common/constants';
+import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {
   callClickOnSpacePushListener,
   callClickOnEnterPushListener,
   pageIsNotCurrentlyActive
-} from '../../../../common/utils/common-methods';
-import '../../../../common/layout/are-you-sure';
+} from '../../../../etools-pages-common/utils/common-methods';
+import '../../../../etools-pages-common/layout/are-you-sure';
 import get from 'lodash-es/get';
 import {getIntervention, updateCurrentIntervention} from '../../common/actions/interventions';
-import {_sendRequest} from '../../../../common/utils/request-helper';
 import {isUnicefUser, currentIntervention} from '../../common/selectors';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
-import ContentPanelMixin from '../../../../common/mixins/content-panel-mixin';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {
@@ -53,7 +51,9 @@ import {
   ResultLinkLowerResult
 } from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {translatesMap} from '../../../../common/utils/intervention-labels-map';
+import {translatesMap} from '../../utils/intervention-labels-map';
+import ContentPanelMixin from '../../../../etools-pages-common/mixins/content-panel-mixin';
+import {_sendRequest} from '../../../../etools-pages-common/utils/request-helper';
 
 const RESULT_VIEW = 'result_view';
 const BUDGET_VIEW = 'budget_view';
@@ -196,15 +196,14 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
 
   render() {
     if (!this.intervention || !this.permissions || !this.resultLinks) {
-      return html`<style>
-          ${sharedStyles}
-        </style>
+      return html` ${sharedStyles}
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} :host {
+        :host {
           display: block;
           margin-bottom: 24px;
         }
@@ -224,12 +223,6 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         .export-res-btn {
           height: 28px;
         }
-        .separator {
-          border-left: solid 1px var(--dark-divider-color);
-          height: 28px;
-          padding-right: 10px;
-          margin: 6px 0 6px 10px;
-        }
 
         etools-content-panel::part(ecp-header) {
           position: relative;
@@ -247,23 +240,6 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         panel-title="${translate(translatesMap.result_links)} (${this.noOfPdOutputs})"
       >
         <div slot="panel-btns" class="layout-horizontal align-items-center">
-          <paper-button
-            title=${translate('EXPORT_RESULTS')}
-            class="primary export-res-btn"
-            ?hidden="${!this.showExportResults(this.interventionStatus, this.resultLinks)}"
-            @click="${this.exportExpectedResults}"
-          >
-            ${translate('EXPORT')}
-          </paper-button>
-          <div
-            class="separator"
-            ?hidden="${!this.showSeparator(
-              this.interventionStatus,
-              this.resultLinks,
-              this.permissions.edit.result_links
-            )}"
-          ></div>
-
           <paper-toggle-button
             id="showInactive"
             ?hidden="${!this.thereAreInactiveIndicators}"
@@ -580,29 +556,6 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           .reduce((a: number, b: number) => a + b, 0);
       })
       .reduce((a: number, b: number) => a + b, 0);
-  }
-
-  showExportResults(status: string, resultLinks: ExpectedResult[]) {
-    return (
-      [
-        CONSTANTS.STATUSES.Draft.toLowerCase(),
-        CONSTANTS.STATUSES.Signed.toLowerCase(),
-        CONSTANTS.STATUSES.Active.toLowerCase()
-      ].indexOf(status) > -1 &&
-      resultLinks &&
-      resultLinks.length
-    );
-  }
-
-  showSeparator(status: string, resultLinks: ExpectedResult[], resultLinkPermission: boolean | undefined) {
-    return this.showExportResults(status, resultLinks) && resultLinkPermission;
-  }
-
-  exportExpectedResults() {
-    const endpoint = getEndpoint(interventionEndpoints.expectedResultsExport, {
-      intervention_id: this.interventionId
-    }).url;
-    window.open(endpoint, '_blank');
   }
 
   inactiveChange(e: CustomEvent): void {

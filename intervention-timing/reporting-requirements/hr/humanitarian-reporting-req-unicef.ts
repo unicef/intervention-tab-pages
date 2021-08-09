@@ -1,17 +1,17 @@
 import {LitElement, html, property, customElement} from 'lit-element';
-import {fireEvent} from '../../../../../common/utils/fire-custom-event';
+import {fireEvent} from '../../../../../etools-pages-common/utils/fire-custom-event';
 import CONSTANTS from '../../../common/constants';
 import '@polymer/paper-button/paper-button.js';
 import './edit-hru-dialog.js';
 import './hru-list.js';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
 import FrontendPaginationMixin from '../mixins/frontend-pagination-mixin';
-import {gridLayoutStylesLit} from '../../../../../common/styles/grid-layout-styles-lit';
 import {HruListEl} from './hru-list.js';
 import {ExpectedResult} from '@unicef-polymer/etools-types';
-import {buttonsStyles} from '../../../../../common/styles/button-styles';
 import {translate, get as getTranslation} from 'lit-translate';
-import {openDialog} from '../../../../../common/utils/dialog';
+import {openDialog} from '../../../../../etools-pages-common/utils/dialog';
+import {buttonsStyles} from '../../../../../etools-pages-common/styles/button-styles';
+import {gridLayoutStylesLit} from '../../../../../etools-pages-common/styles/grid-layout-styles-lit';
 
 /**
  * @customElement

@@ -1,17 +1,18 @@
 import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi.js';
 import IndicatorsCommonMixin from './mixins/indicators-common-mixin';
-import EndpointsLitMixin from '../../../../../../common/mixins/endpoints-mixin-lit';
+import EndpointsLitMixin from '../../../../../../etools-pages-common/mixins/endpoints-mixin-lit';
 import {PaperInputElement} from '@polymer/paper-input/paper-input';
 import {html, LitElement, property, customElement} from 'lit-element';
-import {gridLayoutStylesLit} from '../../../../../../common/styles/grid-layout-styles-lit';
-import {sharedStyles} from '../../../../../../common/styles/shared-styles-lit';
-import {fireEvent} from '../../../../../../common/utils/fire-custom-event';
+import {gridLayoutStylesLit} from '../../../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {sharedStyles} from '../../../../../../etools-pages-common/styles/shared-styles-lit';
+import {fireEvent} from '../../../../../../etools-pages-common/utils/fire-custom-event';
 import isEmpty from 'lodash-es/isEmpty';
-import {connectStore} from '../../../../../../common/mixins/connect-store-mixin';
+import {connectStore} from '../../../../../../etools-pages-common/mixins/connect-store-mixin';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {Indicator} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {interventionEndpoints} from '../../../../utils/intervention-endpoints';
 
 /**
  * @customElement
@@ -24,8 +25,9 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
   }
   render() {
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} :host {
+        :host {
           display: block;
         }
 
@@ -389,7 +391,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
   connectedCallback() {
     super.connectedCallback();
     this.waitForReduxDataToLoad().then(() =>
-      this.fireRequest('getResponsePlans', {})
+      this.fireRequest(interventionEndpoints, 'getResponsePlans', {})
         .then((response: any) => {
           this.responsePlans = response;
         })
@@ -432,7 +434,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
   _getPrpClusterIndicator(clusterIndicId: string) {
     fireEvent(this, 'start-spinner', {spinnerText: 'Loading...'});
 
-    this.fireRequest('getPrpClusterIndicator', {id: clusterIndicId})
+    this.fireRequest(interventionEndpoints, 'getPrpClusterIndicator', {id: clusterIndicId})
       .then((response: any) => {
         this.prpClusterIndicator = response;
         fireEvent(this, 'stop-spinner');
@@ -482,7 +484,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
     }
     fireEvent(this, 'start-spinner', {spinnerText: 'Loading...'});
 
-    this.fireRequest('getPrpClusterIndicators', {id: clusterId})
+    this.fireRequest(interventionEndpoints, 'getPrpClusterIndicators', {id: clusterId})
       .then((response: any) => {
         this.prpClusterIndicators = this._unnestIndicatorTitle(response.results);
         fireEvent(this, 'stop-spinner');

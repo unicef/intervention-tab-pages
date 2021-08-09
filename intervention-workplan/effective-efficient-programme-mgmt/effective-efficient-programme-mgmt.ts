@@ -5,27 +5,27 @@ import '@unicef-polymer/etools-table/etools-table';
 import {EtoolsTableChildRow, EtoolsTableColumn, EtoolsTableColumnType} from '@unicef-polymer/etools-table/etools-table';
 import '@unicef-polymer/etools-currency-amount-input';
 import './activity-dialog';
-import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '../../../../common/styles/button-styles';
-import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
-import {elevationStyles} from '../../../../common/styles/elevation-styles';
-import {pageIsNotCurrentlyActive} from '../../../../common/utils/common-methods';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '../../../../etools-pages-common/styles/button-styles';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
+import {elevationStyles} from '../../../../etools-pages-common/styles/elevation-styles';
+import {pageIsNotCurrentlyActive} from '../../../../etools-pages-common/utils/common-methods';
 import get from 'lodash-es/get';
-import {isJsonStrMatch} from '../../../../common/utils/utils';
-import {openDialog} from '../../../../common/utils/dialog';
+import {isJsonStrMatch} from '../../../../etools-pages-common/utils/utils';
+import {openDialog} from '../../../../etools-pages-common/utils/dialog';
 import {
   selectProgrammeManagement,
   selectProgrammeManagementActivityPermissions
 } from './effectiveEfficientProgrammeMgmt.selectors';
-import ComponentBaseMixin from '../../../../common/mixins/component-base-mixin';
+import ComponentBaseMixin from '../../../../etools-pages-common/mixins/component-base-mixin';
 import {RootState} from '../../common/types/store.types';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {ProgrammeManagement} from './effectiveEfficientProgrammeMgmt.models';
+import {KindChoices, ProgrammeManagement} from './effectiveEfficientProgrammeMgmt.models';
 import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {get as getTranslation, translate} from 'lit-translate';
-import {translatesMap} from '../../../../common/utils/intervention-labels-map';
+import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 
 const customStyles = html`
@@ -49,16 +49,12 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
 
   render() {
     if (!this.data || this.data.constructor == Object) {
-      return html`<style>
-          ${sharedStyles}
-        </style>
+      return html` ${sharedStyles}
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`
-      <style>
-        ${sharedStyles}
-      </style>
+      ${sharedStyles}
       <style>
         :host {
           display: block;
@@ -180,7 +176,8 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         partner_contribution: addCurrencyAmountDelimiter(data.act1_partner),
         unicef_cash: addCurrencyAmountDelimiter(data.act1_unicef),
         total: addCurrencyAmountDelimiter(data.act1_total),
-        index: 1
+        index: 1,
+        kind: KindChoices.inCountry
       },
       {
         title: translate('TITLE_2'),
@@ -188,7 +185,8 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         partner_contribution: addCurrencyAmountDelimiter(data.act2_partner),
         unicef_cash: addCurrencyAmountDelimiter(data.act2_unicef),
         total: addCurrencyAmountDelimiter(data.act2_total),
-        index: 2
+        index: 2,
+        kind: KindChoices.operational
       },
       {
         title: translate('TITLE_3'),
@@ -196,24 +194,24 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         partner_contribution: addCurrencyAmountDelimiter(data.act3_partner),
         unicef_cash: addCurrencyAmountDelimiter(data.act3_unicef),
         total: addCurrencyAmountDelimiter(data.act3_total),
-        index: 3
+        index: 3,
+        kind: KindChoices.planning
       }
     ];
   }
 
   getTableStyle() {
-    return html`<style>
-        ${sharedStyles}
-      </style>
-      ${customStyles}`;
+    return html` ${sharedStyles} ${customStyles}`;
   }
 
   openActivityDialog(event: CustomEvent) {
+    event.detail.items = this.data.items;
     openDialog({
       dialog: 'activity-dialog',
       dialogData: {
         activity: event.detail,
-        interventionId: this.interventionId
+        interventionId: this.interventionId,
+        currency: this.data.currency
       }
     });
   }

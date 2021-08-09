@@ -5,23 +5,23 @@ import '@polymer/paper-radio-group';
 import '@unicef-polymer/etools-loading/etools-loading';
 import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import {buttonsStyles} from '../../../../common/styles/button-styles';
-import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
-import ComponentBaseMixin from '../../../../common/mixins/component-base-mixin';
+import {buttonsStyles} from '../../../../etools-pages-common/styles/button-styles';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import ComponentBaseMixin from '../../../../etools-pages-common/mixins/component-base-mixin';
 import {selectGenderEquityRating, selectGenderEquityRatingPermissions} from './genderEquityRating.selectors';
 import {GenderEquityRatingPermissions, GenderEquityRating} from './genderEquityRating.models';
-import {getStore} from '../../../../common/utils/redux-store-access';
+import {getStore} from '../../../../etools-pages-common/utils/redux-store-access';
 import {RootState} from '../../common/types/store.types';
 import {patchIntervention} from '../../common/actions/interventions';
-import {isJsonStrMatch} from '../../../../common/utils/utils';
-import {pageIsNotCurrentlyActive, detailsTextareaRowsCount} from '../../../../common/utils/common-methods';
+import {isJsonStrMatch} from '../../../../etools-pages-common/utils/utils';
+import {pageIsNotCurrentlyActive, detailsTextareaRowsCount} from '../../../../etools-pages-common/utils/common-methods';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, LabelAndValue, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {translatesMap} from '../../../../common/utils/intervention-labels-map';
+import {translatesMap} from '../../utils/intervention-labels-map';
 
 /**
  * @customElement
@@ -33,15 +33,14 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
   }
   render() {
     if (!this.data || !this.ratings || !this.permissions) {
-      return html`<style>
-          ${sharedStyles}
-        </style>
+      return html` ${sharedStyles}
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`
+     ${sharedStyles} 
       <style>
-        ${sharedStyles} :host {
+       :host {
           display: block;
           margin-bottom: 24px;
         }
@@ -89,18 +88,18 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
               always-float-label
               class="w100"
               placeholder="&#8212;"
-              rows="${detailsTextareaRowsCount(this.editMode)}"
-              max-rows="4"
               .value="${this.data.gender_narrative}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'gender_narrative')}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.gender_narrative)}"
               ?required="${this.permissions.required.gender_narrative}"
               maxlength="3000"
+              rows="${detailsTextareaRowsCount(this.editMode)}"
+              .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.gender_narrative)}"
             >
             </paper-textarea>
           </div>
         </div>
-        
+
         <div class="row-padding-v pb-20">
           <div class="w100">
             <label class="paper-label">${translate(translatesMap.equity_rating)}</label>
@@ -118,13 +117,13 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
               always-float-label
               class="w100"
               placeholder="&#8212;"
-              rows="${detailsTextareaRowsCount(this.editMode)}"
-              max-rows="4"
               .value="${this.data.equity_narrative}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'equity_narrative')}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.equity_narrative)}"
               ?required="${this.permissions.required.equity_narrative}"
               maxlength="3000"
+              rows="${detailsTextareaRowsCount(this.editMode)}"
+              .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.equity_narrative)}"
             >
             </paper-textarea>
           </div>
@@ -147,13 +146,13 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
               always-float-label
               class="w100"
               placeholder="&#8212;"
-              rows="${detailsTextareaRowsCount(this.editMode)}"
-              max-rows="4"
               .value="${this.data.sustainability_narrative}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'sustainability_narrative')}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.sustainability_narrative)}"
               ?required="${this.permissions.required.sustainability_narrative}"
               maxlength="3000"
+              rows="${detailsTextareaRowsCount(this.editMode)}"
+              .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.sustainability_narrative)}"
             >
             </paper-textarea>
           </div>

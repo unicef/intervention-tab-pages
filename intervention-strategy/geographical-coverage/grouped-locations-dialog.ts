@@ -1,12 +1,12 @@
 import {LitElement, html, property, customElement, query} from 'lit-element';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
-import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '../../../../common/styles/button-styles';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '../../../../etools-pages-common/styles/button-styles';
 import get from 'lodash-es/get';
-import {fireEvent} from '../../../../common/utils/fire-custom-event';
+import {fireEvent} from '../../../../etools-pages-common/utils/fire-custom-event';
 import {LocationObject} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
-import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
 
 class GroupedLocations {
   adminLevelLocation: LocationObject | null = null;
@@ -25,8 +25,9 @@ export class GroupedLocationsDialog extends LitElement {
   render() {
     // language=HTML
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} [hidden] {
+        [hidden] {
           display: none !important;
         }
 

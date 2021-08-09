@@ -30,7 +30,7 @@
   "ARE_YOU_SURE_DEL": "Sunteti sigur ca doriti sa executati actiunea: ",
   "ACCEPT_PROMPT": "Sunteti sigur ca doriti sa acceptati?",
   "UNLOCK_PROMPT": "Sunteti sigur ca doriti sa deblocati?",
-  "REVIEW_PROMPT": "Sunteti sigur ca doriti sa evaluati?",
+  "REVIEW_PROMPT": "Accept as budget owner if you are satisfied with all entered information, planned budget, planned results and other requirements",
   "UNICEF_ACCEPTED": "Acceptata de UNICEF",
   "PARTNER_AND_UNICEF_ACCEPTED": "Acceptata de Partener & UNICEF",
   "PARTNER_ACCEPTED": "Acceptata de Partener",
@@ -210,7 +210,7 @@
   "UNASSOCIATED_TO_CP_OUTPUT": "Neasociat cu un resultat CP! Va rugam sa asociati inainte de a continua",
   "ADD_PD_OUTPUT": "Adauga Rezultat al PD-ului/Rezultat PD",
   "PD_ACTIVITIES": "Activitati PD",
-  "EXPORT_RESULTS": "Exporta rezultate",
+  "EXPORT_RESULTS": "Exporta Rezultate",
   "EXPORT": "Export",
   "SHOW_INACTIVE": "Arata Inactive",
   "VIEW": "Vizualizeaza",
@@ -414,7 +414,7 @@
   "KNOLEDGE_BASE": "Bază de cunoștințe",
   "DISCUSSION": "Discutii",
   "INFORMATION": "Informatii",
-  "START_REVIEW": "Start Review",
+  "SEND_FOR_REVIEW": "Send for Review",
   "START": "Start",
   "PRC_REVIEW": "PRC Review",
   "NON_PRC_REVIEW": "Non-PRC Review",
@@ -450,5 +450,9 @@
   "METADATA_TOOLTIP": "Readonly display of values entered on the PD",
   "SUBMIT": "Submit",
   "PLS_FILL_IN_ALL_REQUIRED_FIELDS": "Please fill in all required fields",
-  "MAKE_SURE_AMOUNTS_GREATER_THAN_0": "Make sure you enter amounts greater than 0.00"
+  "MAKE_SURE_AMOUNTS_GREATER_THAN_0": "Make sure you enter amounts greater than 0.00",
+  "CORE_VALUES_ASSESSMENT_DATE": "Core Values Assessment Date",
+  "PSEA_ASSESSMENT_DATE": "PSEA Assessment Date",
+  "UPLOAD_SUPPLY_TOOLTIP": "Upload From Supply Catalogue",
+  "UPLOAD_SUPPLY_HELPER": "To upload from supply catalogue please visit {0} to select items and export to excel then upload into the PD."
 }

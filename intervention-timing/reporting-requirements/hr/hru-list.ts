@@ -1,16 +1,16 @@
 import {LitElement, html, property, customElement} from 'lit-element';
 import '@unicef-polymer/etools-data-table/etools-data-table';
-import '../../../../../common/layout/icons-actions';
-import {fireEvent} from '../../../../../common/utils/fire-custom-event';
+import '../../../../../etools-pages-common/layout/icons-actions';
+import {fireEvent} from '../../../../../etools-pages-common/utils/fire-custom-event';
 import ReportingReqPastDatesCheckMixin from '../mixins/reporting-req-past-dates-check';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
-import {gridLayoutStylesLit} from '../../../../../common/styles/grid-layout-styles-lit';
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
-import {isEmptyObject} from '../../../../../common/utils/utils';
+import {isEmptyObject} from '../../../../../etools-pages-common/utils/utils';
 import {AnyObject} from '@unicef-polymer/etools-types';
-import {sharedStyles} from '../../../../../common/styles/shared-styles-lit';
 import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
 import {translate} from 'lit-translate';
+import {gridLayoutStylesLit} from '../../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {sharedStyles} from '../../../../../etools-pages-common/styles/shared-styles-lit';
 
 /**
  * @polymer
@@ -29,8 +29,9 @@ export class HruList extends ReportingReqPastDatesCheckMixin(ReportingRequiremen
       return;
     }
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} ${dataTableStylesLit}:host([with-scroll]) {
+        ${dataTableStylesLit}:host([with-scroll]) {
           max-height: 400px;
           overflow-y: auto;
         }

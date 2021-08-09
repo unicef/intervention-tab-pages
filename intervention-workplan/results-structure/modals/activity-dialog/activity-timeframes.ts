@@ -9,12 +9,12 @@ import {
   customElement,
   PropertyValues
 } from 'lit-element';
-import {gridLayoutStylesLit} from '../../../../../../common/styles/grid-layout-styles-lit';
-import {ActivityTime, groupByYear, serializeTimeFrameData} from '../../../../../../common/utils/timeframes.helper';
-import {fireEvent} from '../../../../../../common/utils/fire-custom-event';
+import {ActivityTime, groupByYear, serializeTimeFrameData} from '../../../../utils/timeframes.helper';
+import {fireEvent} from '../../../../../../etools-pages-common/utils/fire-custom-event';
 import {InterventionActivityTimeframe} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {callClickOnSpacePushListener} from '../../../../../../common/utils/common-methods';
+import {gridLayoutStylesLit} from '../../../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {callClickOnSpacePushListener} from '../../../../../../etools-pages-common/utils/common-methods';
 
 @customElement('activity-time-frames')
 export class ActivityTimeFrames extends LitElement {

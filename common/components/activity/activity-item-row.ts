@@ -9,12 +9,12 @@ import {
   PropertyValues
 } from 'lit-element';
 import {getTotal, getMultiplyProduct} from './get-total.helper';
-import {ActivityItemsTableInlineStyles, ActivityItemsTableStyles} from './acivity-items-table.styles';
-import {fireEvent} from '../../../../../../common/utils/fire-custom-event';
+import {ActivityItemsTableInlineStyles, ActivityItemsTableStyles} from './activity-items-table.styles';
+import {fireEvent} from '../../../../../etools-pages-common/utils/fire-custom-event';
 import {InterventionActivityItem} from '@unicef-polymer/etools-types';
-import {callClickOnSpacePushListener} from '../../../../../../common/utils/common-methods';
 import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
 import {translate} from 'lit-translate';
+import {callClickOnSpacePushListener} from '../../../../../etools-pages-common/utils/common-methods';
 
 @customElement('activity-item-row')
 export class ActivityItemRow extends LitElement {

@@ -1,9 +1,9 @@
 import {RootState} from '../../types/store.types';
 import {LitElement} from 'lit-element';
 import {CommentsCollection} from './comments.reducer';
-import {openDialog} from '../../../../../common/utils/dialog';
+import {openDialog} from '../../../../../etools-pages-common/utils/dialog';
 import './comments-dialog';
-import {connectStore} from '../../../../../common/mixins/connect-store-mixin';
+import {connectStore} from '../../../../../etools-pages-common/mixins/connect-store-mixin';
 import {Constructor, InterventionComment} from '@unicef-polymer/etools-types';
 
 type MetaData = CommentElementMeta & {

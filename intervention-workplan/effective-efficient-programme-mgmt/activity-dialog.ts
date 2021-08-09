@@ -2,18 +2,22 @@ import {LitElement, html, property, customElement} from 'lit-element';
 import '@polymer/paper-input/paper-input';
 import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-currency-amount-input';
-import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '../../../../common/styles/button-styles';
-import ComponentBaseMixin from '../../../../common/mixins/component-base-mixin';
-import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '../../../../etools-pages-common/styles/button-styles';
+import ComponentBaseMixin from '../../../../etools-pages-common/mixins/component-base-mixin';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getEndpoint} from '../../../../common/utils/endpoint-helper';
-import {interventionEndpoints} from '../../../../common/utils/intervention-endpoints';
-import {fireEvent} from '../../../../common/utils/fire-custom-event';
-import {getStore} from '../../../../common/utils/redux-store-access';
+import {getEndpoint} from '../../../../etools-pages-common/utils/endpoint-helper';
+import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {fireEvent} from '../../../../etools-pages-common/utils/fire-custom-event';
+import {getStore} from '../../../../etools-pages-common/utils/redux-store-access';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {translate, get as getTranslation} from 'lit-translate';
-import {translatesMap} from '../../../../common/utils/intervention-labels-map';
+import '../../common/components/activity/activity-items-table';
+import {formatCurrency, getTotal} from '../../common/components/activity/get-total.helper';
+import {cloneDeep} from '../../../../etools-pages-common/utils/utils';
+import {AnyObject, ManagementBudgetItem} from '@unicef-polymer/etools-types';
+import {ActivityItemsTable} from '../../common/components/activity/activity-items-table';
 
 /**
  * @customElement
@@ -27,22 +31,44 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
   render() {
     // language=HTML
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} *[hidden] {
+        *[hidden] {
           display: none !important;
         }
         .layout-horizontal {
           overflow: hidden;
         }
-
+        etools-dialog::part(ed-paper-dialog) {
+          width: 98vw !important;
+          max-width: 1200px;
+        }
         etools-dialog::part(ed-scrollable) {
           margin-top: 0 !important;
+        }
+        paper-toggle-button {
+          margin: 25px 0;
+        }
+        .total-input,
+        etools-currency-amount-input {
+          margin-right: 24px;
+        }
+        .total {
+          justify-content: flex-end;
+        }
+        .total-input,
+        .total paper-input {
+          --paper-input-container-color: transparent;
+          --paper-input-container-focus-color: transparent;
+        }
+        .general-total {
+          min-width: 155px;
         }
       </style>
 
       <etools-dialog
         id="activityDialog"
-        size="md"
+        size="lg"
         keep-dialog-open
         dialog-title=${translate('EDIT_ACTIVITY')}
         ok-btn-text=${translate('GENERAL.SAVE')}
@@ -60,7 +86,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
             label=${translate('GENERAL.TITLE')}
             always-float-label
             placeholder="—"
-            .value="${this.originalData.title}"
+            .value="${this.data.title}"
           >
           </paper-input>
         </div>
@@ -73,30 +99,77 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
             tabindex="-1"
             always-float-label
             placeholder="—"
-            .value="${this.originalData.description}"
+            .value="${this.data.description}"
           ></paper-textarea>
         </div>
 
-        <div class="layout-horizontal">
-          <div class="col col-6">
-            <etools-currency-amount-input
-              id="partnerContribution"
-              label=${translate('PARTNER_CASH')}
-              .value="${this.originalData.partner_contribution}"
-              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, this.getPropertyName('partner'))}"
-            >
-            </etools-currency-amount-input>
-          </div>
-          <div class="col col-6">
-            <etools-currency-amount-input
-              id="unicefCash"
-              label=${translate(translatesMap.unicef_cash)}
-              .value="${this.originalData.unicef_cash}"
-              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, this.getPropertyName('unicef'))}"
-            >
-            </etools-currency-amount-input>
+        <div class="layout-horizontal align-items-center">
+          ${!this.useInputLevel
+            ? html`
+                  <etools-currency-amount-input
+                    class="col-3"
+                    id="partnerContribution"
+                    label=${translate('PARTNER_CASH_BUDGET')}
+                    .value="${this.data[this.getPropertyName('partner')]}"
+                    @value-changed="${({detail}: CustomEvent) =>
+                      this.valueChanged(detail, this.getPropertyName('partner'))}"
+                  >
+                  </etools-currency-amount-input>
+
+                  <etools-currency-amount-input
+                    class="col-3"
+                    id="unicefCash"
+                    label=${translate('UNICEF_CASH_BUDGET')}
+                    .value="${this.data[this.getPropertyName('unicef')]}"
+                    @value-changed="${({detail}: CustomEvent) =>
+                      this.valueChanged(detail, this.getPropertyName('unicef'))}"
+                  >
+                  </etools-currency-amount-input>
+                </div>`
+            : html`
+                <paper-input
+                  readonly
+                  tabindex="-1"
+                  class="col-3 total-input"
+                  label=${translate('PARTNER_CASH_BUDGET')}
+                  .value="${this.getSumValue('cso_cash')}"
+                ></paper-input>
+                <paper-input
+                  readonly
+                  tabindex="-1"
+                  class="col-3 total-input"
+                  label=${translate('UNICEF_CASH_BUDGET')}
+                  .value="${this.getSumValue('unicef_cash')}"
+                ></paper-input>
+              `}
+          <div class="flex-auto layout-horizontal total">
+            <paper-input
+              readonly
+              tabindex="-1"
+              class="col-6 general-total"
+              label="${translate('GENERAL.TOTAL')} (${this.currency})"
+              .value="${this.getTotalValue()}"
+            ></paper-input>
           </div>
         </div>
+
+        <div class="layout-horizontal">
+          <paper-toggle-button
+            ?checked="${this.useInputLevel}"
+            @checked-changed="${this.inputLevelChange}"
+            class="col-5"
+          >
+            ${translate('USE_INPUT_LEVEL')}
+          </paper-toggle-button>
+        </div>
+        <activity-items-table
+          ?hidden="${!this.useInputLevel}"
+          .activityItems="${this.items || []}"
+          @activity-items-changed="${({detail}: CustomEvent) => {
+            this.items = detail;
+            this.requestUpdate();
+          }}"
+        ></activity-items-table>
       </etools-dialog>
     `;
   }
@@ -106,19 +179,41 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
       return;
     }
     const {activity, interventionId}: any = data;
-    this.originalData = activity;
+    this.data = activity;
+    this.items = (this.data.items || []).filter((row: ManagementBudgetItem) => row.kind === this.data.kind);
+    this.data.items = (this.data.items || []).filter((row: ManagementBudgetItem) => row.kind !== this.data.kind);
+    this.originalData = cloneDeep(this.data);
+    this.data[this.getPropertyName('partner')] = this.data.partner_contribution;
+    this.data[this.getPropertyName('unicef')] = this.data.unicef_cash;
+
     this.interventionId = interventionId;
+    this.currency = data.currency || '';
+    this.useInputLevel = Boolean((this.items || []).length);
   }
 
   private interventionId = '';
 
   @property() loadingInProcess = false;
-
   @property() dialogOpened = true;
+  @property() useInputLevel = false;
+  @property({type: String}) currency = '';
+  @property({type: Array}) items: ManagementBudgetItem[] = [];
 
   onSaveClick() {
+    const activityItemsValidationSummary = this.validateActivityItems();
+    if (activityItemsValidationSummary) {
+      fireEvent(this, 'toast', {
+        text: activityItemsValidationSummary.invalidRequired
+          ? getTranslation('FILL_ALL_ACTIVITY_ITEMS')
+          : getTranslation('INVALID_TOTAL_ACTIVITY_ITEMS')
+      });
+      return;
+    }
+    this.items.forEach((row: ManagementBudgetItem) => {
+      row.kind = this.data.kind;
+    });
     this.loadingInProcess = true;
-
+    this.data.items = this.data.items.concat(this.items);
     sendRequest({
       endpoint: getEndpoint(interventionEndpoints.interventionBudgetUpdate, {
         interventionId: this.interventionId
@@ -142,5 +237,38 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
 
   getPropertyName(sufix: string) {
     return this.originalData ? `act${this.originalData.index}_${sufix}` : '';
+  }
+
+  inputLevelChange(e: CustomEvent): void {
+    if (!e.detail) {
+      return;
+    }
+    const element = e.currentTarget as HTMLInputElement;
+    this.useInputLevel = element.checked;
+    if (this.useInputLevel) {
+      this.data[this.getPropertyName('unicef')] = '0';
+      this.data[this.getPropertyName('partner')] = '0';
+    } else {
+      this.items = [];
+    }
+  }
+
+  getSumValue(field: 'cso_cash' | 'unicef_cash'): string {
+    return formatCurrency((this.items || []).reduce((sum: number, item: AnyObject) => sum + Number(item[field]), 0));
+  }
+
+  getTotalValue(): string {
+    if (!this.useInputLevel) {
+      return getTotal(this.data[this.getPropertyName('partner')] || 0, this.data[this.getPropertyName('unicef')] || 0);
+    } else {
+      const cso: string = this.getSumValue('cso_cash').replace(/,/g, '');
+      const unicef: string = this.getSumValue('unicef_cash').replace(/,/g, '');
+      return getTotal(cso, unicef);
+    }
+  }
+
+  validateActivityItems(): AnyObject | undefined {
+    const itemsTable: ActivityItemsTable | null = this.shadowRoot!.querySelector('activity-items-table');
+    return itemsTable !== null ? itemsTable.validate() : undefined;
   }
 }

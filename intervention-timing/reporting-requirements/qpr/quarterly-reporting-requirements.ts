@@ -4,15 +4,15 @@ import CONSTANTS from '../../../common/constants';
 import GenerateQuarterlyReportingRequirementsMixin from '../mixins/generate-quarterly-reporting-requirements-mixin';
 
 import '@polymer/paper-button/paper-button.js';
-import {fireEvent} from '../../../../../common/utils/fire-custom-event';
+import {fireEvent} from '../../../../../etools-pages-common/utils/fire-custom-event';
 
 import './edit-qpr-dialog';
 import './qpr-list';
-import {gridLayoutStylesLit} from '../../../../../common/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '../../../../../common/styles/button-styles';
 import {translate, get as getTranslation} from 'lit-translate';
-import {sharedStyles} from '../../../../../common/styles/shared-styles-lit';
-import {openDialog} from '../../../../../common/utils/dialog';
+import {openDialog} from '../../../../../etools-pages-common/utils/dialog';
+import {gridLayoutStylesLit} from '../../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '../../../../../etools-pages-common/styles/button-styles';
+import {sharedStyles} from '../../../../../etools-pages-common/styles/shared-styles-lit';
 
 /**
  * @polymer
@@ -31,8 +31,9 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
   }
   render() {
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} *[hidden] {
+        *[hidden] {
           display: none !important;
         }
       </style>

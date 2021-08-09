@@ -4,13 +4,13 @@ import '../mixins/reporting-req-past-dates-check';
 import '../styles/reporting-requirements-lists-styles';
 import ReportingReqPastDatesCheckMixin from '../mixins/reporting-req-past-dates-check';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
-import {gridLayoutStylesLit} from '../../../../../common/styles/grid-layout-styles-lit';
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
-import {fireEvent} from '../../../../../common/utils/fire-custom-event';
-import {isEmptyObject} from '../../../../../common/utils/utils';
-import {sharedStyles} from '../../../../../common/styles/shared-styles-lit';
+import {fireEvent} from '../../../../../etools-pages-common/utils/fire-custom-event';
+import {isEmptyObject} from '../../../../../etools-pages-common/utils/utils';
 import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
 import {translate} from 'lit-translate';
+import {gridLayoutStylesLit} from '../../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {sharedStyles} from '../../../../../etools-pages-common/styles/shared-styles-lit';
 
 /**
  * @polymer
@@ -28,8 +28,9 @@ export class QprList extends ReportingRequirementsCommonMixin(ReportingReqPastDa
       return;
     }
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} ${dataTableStylesLit}
+        ${dataTableStylesLit}
       </style>
 
       <etools-data-table-header no-collapse no-title>

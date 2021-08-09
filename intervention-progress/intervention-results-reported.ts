@@ -7,40 +7,46 @@ import '@unicef-polymer/etools-data-table/etools-data-table';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
 
-import '../../../common/layout/etools-form-element-wrapper';
+import '../../../etools-pages-common/layout/etools-form-element-wrapper';
 import './layout/etools-progress-bar';
 import './layout/etools-ram-indicators';
-import '../../../common/layout/status/intervention-report-status';
+import '../common/layout/status/intervention-report-status';
 import './reports/indicator-report-target';
 
-import CommonMixin from '../../../common/mixins/common-mixin';
-import UtilsMixin from '../../../common/mixins/utils-mixin';
-import EndpointsLitMixin from '../../../common/mixins/endpoints-mixin-lit';
-
-import {contentSectionStylesLit} from '../../../common/styles/content-section-styles-lit';
-import {sharedStyles} from '../../../common/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
+import {sharedStyles} from '../../../etools-pages-common/styles/shared-styles-lit';
 import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
-import {elevationStyles} from '../../../common/styles/elevation-styles';
 
-import {isEmptyObject} from '../../../common/utils/utils';
-import {fireEvent} from '../../../common/utils/fire-custom-event';
+import {fireEvent} from '../../../etools-pages-common/utils/fire-custom-event';
 import {RootState} from '../common/types/store.types';
-import {pageIsNotCurrentlyActive} from '../../../common/utils/common-methods';
 
-import {dateDiff, dateIsBetween, isValidDate, dateIsAfter, datesAreEqual} from '../../../common/utils/date-utils';
 import {logError, logWarn} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {pmpCustomIcons} from './styles/pmp-icons';
-import {frWarningsStyles} from '../../../common/styles/fr-warnings-styles';
 import get from 'lodash-es/get';
-import {connectStore} from '../../../common/mixins/connect-store-mixin';
 import {AnyObject, GenericObject} from '@unicef-polymer/etools-types';
 
 import {translate} from 'lit-translate';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {currentIntervention} from '../common/selectors';
 import {TABS} from '../common/constants';
+import {connectStore} from '../../../etools-pages-common/mixins/connect-store-mixin';
+import UtilsMixin from '../../../etools-pages-common/mixins/utils-mixin';
+import CommonMixin from '../../../etools-pages-common/mixins/common-mixin';
+import EndpointsLitMixin from '../../../etools-pages-common/mixins/endpoints-mixin-lit';
+import {contentSectionStylesLit} from '../../../etools-pages-common/styles/content-section-styles-lit';
+import {gridLayoutStylesLit} from '../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {elevationStyles} from '../../../etools-pages-common/styles/elevation-styles';
+import {frWarningsStyles} from '../../../etools-pages-common/styles/fr-warnings-styles';
+import {pageIsNotCurrentlyActive} from '../../../etools-pages-common/utils/common-methods';
+import {isEmptyObject} from '../../../etools-pages-common/utils/utils';
+import {
+  dateDiff,
+  dateIsAfter,
+  dateIsBetween,
+  datesAreEqual,
+  isValidDate
+} from '../../../etools-pages-common/utils/date-utils';
+import {interventionEndpoints} from '../utils/intervention-endpoints';
 declare const dayjs: any;
 
 /**
@@ -62,9 +68,9 @@ export class InterventionResultsReported extends connectStore(
   }
   render() {
     return html`
-      ${pmpCustomIcons}
+      ${pmpCustomIcons} ${sharedStyles}
       <style>
-        ${sharedStyles}${dataTableStylesLit} #progress-summary etools-progress-bar {
+        ${dataTableStylesLit} #progress-summary etools-progress-bar {
           margin-top: 16px;
         }
 
@@ -428,7 +434,7 @@ export class InterventionResultsReported extends connectStore(
     });
     this.requestInProgress = true;
 
-    this.fireRequest('interventionProgress', {pdId: id})
+    this.fireRequest(interventionEndpoints, 'interventionProgress', {pdId: id})
       .then((response: any) => {
         this.progress = response;
         fireEvent(this, 'global-loading', {

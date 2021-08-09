@@ -3,25 +3,25 @@ import '@polymer/iron-label/iron-label';
 import '@polymer/paper-button/paper-button';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 
-import {prepareDatepickerDate} from '../../../../../common/utils/date-utils';
-import {getEndpoint} from '../../../../../common/utils/endpoint-helper';
-import {interventionEndpoints} from '../../../../../common/utils/intervention-endpoints';
+import {prepareDatepickerDate} from '../../../../../etools-pages-common/utils/date-utils';
+import {getEndpoint} from '../../../../../etools-pages-common/utils/endpoint-helper';
+import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import './qpr-list.js';
 import CONSTANTS from '../../../common/constants';
 import '@unicef-polymer/etools-date-time/calendar-lite.js';
-import {gridLayoutStylesLit} from '../../../../../common/styles/grid-layout-styles-lit';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {QprListEl} from './qpr-list.js';
-import {fireEvent} from '../../../../../common/utils/fire-custom-event';
+import {fireEvent} from '../../../../../etools-pages-common/utils/fire-custom-event';
 import {AnyObject} from '@unicef-polymer/etools-types';
 declare const dayjs: any;
-import {buttonsStyles} from '../../../../../common/styles/button-styles';
 import {translate, get as getTranslation} from 'lit-translate';
-import {sharedStyles} from '../../../../../common/styles/shared-styles-lit';
-import {translatesMap} from '../../../../../common/utils/intervention-labels-map';
+import {translatesMap} from '../../../utils/intervention-labels-map';
+import {gridLayoutStylesLit} from '../../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '../../../../../etools-pages-common/styles/button-styles';
+import {sharedStyles} from '../../../../../etools-pages-common/styles/shared-styles-lit';
 
 /**
  * @polymer
@@ -34,8 +34,9 @@ export class EditQprDialog extends LitElement {
   }
   render() {
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles}*[hidden] {
+        *[hidden] {
           display: none !important;
         }
 
@@ -51,10 +52,13 @@ export class EditQprDialog extends LitElement {
           margin-bottom: 24px;
         }
 
+        etools-dialog::part(ed-paper-dialog) {
+          width: 960px;
+        }
+
         calendar-lite {
           position: relative;
-          width: 268px;
-          height: 100%;
+          width: 288px;
         }
       </style>
 

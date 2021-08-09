@@ -1,17 +1,15 @@
 /* eslint-disable lit/no-legacy-template-syntax */
 import {LitElement, html, property, customElement} from 'lit-element';
-import {gridLayoutStylesLit} from '../../../../../common/styles/grid-layout-styles-lit';
-import {sharedStyles} from '../../../../../common/styles/shared-styles-lit';
-import {getEndpoint} from '../../../../../common/utils/endpoint-helper';
-import {interventionEndpoints} from '../../../../../common/utils/intervention-endpoints';
-import {prepareDatepickerDate} from '../../../../../common/utils/date-utils';
+import {getEndpoint} from '../../../../../etools-pages-common/utils/endpoint-helper';
+import {interventionEndpoints} from '../../../utils/intervention-endpoints';
+import {prepareDatepickerDate} from '../../../../../etools-pages-common/utils/date-utils';
 
 import '@polymer/iron-label/iron-label';
 import '@polymer/paper-input/paper-input';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 
 import '@unicef-polymer/etools-date-time/calendar-lite';
-import {fireEvent} from '../../../../../common/utils/fire-custom-event';
+import {fireEvent} from '../../../../../etools-pages-common/utils/fire-custom-event';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
@@ -19,6 +17,8 @@ import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {AnyObject} from '@unicef-polymer/etools-types';
 declare const dayjs: any;
 import {translate} from 'lit-translate';
+import {gridLayoutStylesLit} from '../../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {sharedStyles} from '../../../../../etools-pages-common/styles/shared-styles-lit';
 
 /**
  * @polymer
@@ -35,8 +35,9 @@ export class AddEditSpecialRepReq extends LitElement {
       return;
     }
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles}:host {
+        :host {
           display: block;
         }
 

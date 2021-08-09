@@ -5,26 +5,26 @@ import '@polymer/paper-radio-group';
 import '@polymer/paper-checkbox';
 import '@unicef-polymer/etools-loading/etools-loading';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import {buttonsStyles} from '../../../../common/styles/button-styles';
-import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '../../../../etools-pages-common/styles/button-styles';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
 import cloneDeep from 'lodash-es/cloneDeep';
-import ComponentBaseMixin from '../../../../common/mixins/component-base-mixin';
+import ComponentBaseMixin from '../../../../etools-pages-common/mixins/component-base-mixin';
 import {RootState} from '../../common/types/store.types';
-import {getStore} from '../../../../common/utils/redux-store-access';
+import {getStore} from '../../../../etools-pages-common/utils/redux-store-access';
 import './financialComponent.models';
 import './financialComponent.selectors';
 import {FinancialComponentData, FinancialComponentPermissions} from './financialComponent.models';
 import {selectFinancialComponentPermissions, selectFinancialComponent} from './financialComponent.selectors';
 import {patchIntervention} from '../../common/actions/interventions';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
-import {isJsonStrMatch} from '../../../../common/utils/utils';
-import {pageIsNotCurrentlyActive} from '../../../../common/utils/common-methods';
+import {isJsonStrMatch} from '../../../../etools-pages-common/utils/utils';
+import {pageIsNotCurrentlyActive} from '../../../../etools-pages-common/utils/common-methods';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, LabelAndValue, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {translatesMap} from '../../../../common/utils/intervention-labels-map';
+import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 
 /**
@@ -38,14 +38,13 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
   render() {
     // language=HTML
     if (!this.data || !this.cashTransferModalities) {
-      return html`<style>
-          ${sharedStyles}
-        </style>
+      return html` ${sharedStyles}
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} :host {
+        :host {
           display: block;
           margin-bottom: 24px;
         }
