@@ -1,22 +1,24 @@
 import {LitElement, customElement, html, property} from 'lit-element';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
-import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
-import {elevationStyles} from '../../../../common/styles/elevation-styles';
-import {InfoElementStyles} from '../../../../common/styles/info-element-styles';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {elevationStyles} from '../../../../etools-pages-common/styles/elevation-styles';
+import {InfoElementStyles} from '../../../../etools-pages-common/styles/info-element-styles';
 import {InterventionOverview} from './interventionOverview.models';
 import {selectInterventionOverview} from './interventionOverview.selectors';
 import {RootState} from '../../common/types/store.types';
-import {pageIsNotCurrentlyActive} from '../../../../common/utils/common-methods';
+import {pageIsNotCurrentlyActive} from '../../../../etools-pages-common/utils/common-methods';
+import {formatDate} from '../../../../etools-pages-common/utils/date-utils';
 import get from 'lodash-es/get';
-import ComponentBaseMixin from '../../../../common/mixins/component-base-mixin';
+import ComponentBaseMixin from '../../../../etools-pages-common/mixins/component-base-mixin';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {translate} from 'lit-translate';
 import {allPartners, currentIntervention, isUnicefUser} from '../../common/selectors';
 import {AnyObject} from '@unicef-polymer/etools-types/dist/global.types';
 import {Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
 import {TABS} from '../../common/constants';
+import CONSTANTS from '../../common/constants';
 import {StaticPartner} from '@unicef-polymer/etools-types';
 
 /**
@@ -30,19 +32,21 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
   render() {
     // language=HTML
     if (!this.interventionOverview) {
-      return html` <style>
-          ${sharedStyles}
-        </style>
+      return html` ${sharedStyles}
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     return html`
-      ${InfoElementStyles}
+      ${InfoElementStyles} ${sharedStyles}
       <style>
-        ${sharedStyles} .data-column {
+        .data-column {
           max-width: none;
         }
+        .data-column {
+          margin-right: 20px;
+          padding-left: 0px;
+        }
         .container-width {
-          width: 70%;
+          width: 100%;
           display: flex;
           justify-content: flex-start;
           flex-wrap: wrap;
@@ -60,33 +64,41 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
         comment-description="Details"
       >
         <div class="container-width">
-          <div class="data-column flex-2">
+          <div class="data-column">
             <label class="paper-label">${translate('DOCUMENT_TYPE')}</label>
             <div class="input-label" ?empty="${!this.interventionOverview.document_type}">
               ${this.getDocumentLongName(this.interventionOverview.document_type)}
             </div>
           </div>
-          <div class="data-column flex-3">
+          <div class="data-column">
             <label class="paper-label">${translate('UNPP_CFEI_DSR')}</label>
             <div class="input-label" ?empty="${!this.interventionOverview.cfei_number}">
               ${this.interventionOverview.cfei_number}
             </div>
           </div>
-          <div class="data-column flex-1">
+          <div class="data-column">
             <label class="paper-label">${translate('HUMANITARIAN')}</label>
             <div class="input-label">${this._getText(this.interventionOverview.humanitarian_flag)}</div>
           </div>
-          <div class="data-column flex-1">
+          <div class="data-column">
             <label class="paper-label">${translate('CONTINGENCY')}</label>
             <div class="input-label">${this._getText(this.interventionOverview.contingency_pd)}</div>
           </div>
-          <div class="data-column flex-2" ?hidden="${!this.isUnicefUser}">
+          <div class="data-column" ?hidden="${!this.isUnicefUser}">
             <label class="paper-label">${translate('PARTNER_HACT_RR')}</label>
             <div class="input-label">${this.getPartnerHactRiskRatingHtml()}</div>
           </div>
-          <div class="data-column flex-2" ?hidden="${!this.isUnicefUser}">
+          <div class="data-column" ?hidden="${!this.isUnicefUser}">
             <label class="paper-label">${translate('PARTNER_PSEA_RR')}</label>
             <div class="input-label">${this.getPartnerPseaRiskRatingHtml()}</div>
+          </div>
+          <div class="data-column">
+            <label class="paper-label">${translate('CORE_VALUES_ASSESSMENT_DATE')}</label>
+            <div class="input-label">${formatDate(this.interventionPartner?.last_assessment_date)}</div>
+          </div>
+          <div class="data-column">
+            <label class="paper-label">${translate('PSEA_ASSESSMENT_DATE')}</label>
+            <div class="input-label">${formatDate(this.interventionPartner?.psea_assessment_date)}</div>
           </div>
 
           <etools-info-tooltip icon="icons:info" position="left" id="not-allowed-icon">
@@ -160,5 +172,12 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
     return html`<a target="_blank" href="/ap/engagements/list?partner__in=${this.intervention.partner_id}">
       <strong class="blue">${this.interventionPartner.rating}</strong></a
     >`;
+  }
+  getDocumentLongName(value: any): string | undefined {
+    if (!value) {
+      return;
+    }
+    // @ts-ignore
+    return CONSTANTS.DOCUMENT_TYPES_LONG[value.toUpperCase()];
   }
 }

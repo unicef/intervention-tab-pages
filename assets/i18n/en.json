@@ -32,7 +32,7 @@
   "ARE_YOU_SURE_PROMPT": "Are you sure you want to ",
   "ACCEPT_PROMPT": "Are you sure you want to accept?",
   "UNLOCK_PROMPT": "Are you sure you want to unlock?",
-  "REVIEW_PROMPT": "Are you sure you want to review?",
+  "REVIEW_PROMPT": "Accept as budget owner if you are satisfied with all entered information, planned budget, planned results and other requirements",
   "UNICEF_ACCEPTED": "UNICEF Accepted",
   "PARTNER_AND_UNICEF_ACCEPTED": "Partner & UNICEF Accepted",
   "PARTNER_ACCEPTED": "Partner Accepted",
@@ -211,7 +211,7 @@
   "RAM_INDICATORS": "RAM Indicators",
   "UNASSOCIATED_TO_CP_OUTPUT": "Unassociated to CP Output! Please associate before moving forward",
   "PD_ACTIVITIES": "PD Activities",
-  "EXPORT_RESULTS": "Export results",
+  "EXPORT_RESULTS": "Export Results",
   "EXPORT": "Export",
   "SHOW_INACTIVE": "Show Inactive",
   "VIEW": "View",
@@ -416,7 +416,7 @@
   "KNOLEDGE_BASE": "Knowledge base",
   "DISCUSSION": "Discussion",
   "INFORMATION": "Information",
-  "START_REVIEW": "Start Review",
+  "SEND_FOR_REVIEW": "Send for Review",
   "START": "Start",
   "PRC_REVIEW": "PRC Review",
   "NON_PRC_REVIEW": "Non-PRC Review",
@@ -455,5 +455,9 @@
   "INPUT_LEVEL_ITEMS": "Input Level Items",
   "SUBMIT": "Submit",
   "PLS_FILL_IN_ALL_REQUIRED_FIELDS": "Please fill in all required fields",
-  "MAKE_SURE_AMOUNTS_GREATER_THAN_0": "Make sure you enter amounts greater than 0.00"
+  "MAKE_SURE_AMOUNTS_GREATER_THAN_0": "Make sure you enter amounts greater than 0.00",
+  "CORE_VALUES_ASSESSMENT_DATE": "Core Values Assessment Date",
+  "PSEA_ASSESSMENT_DATE": "PSEA Assessment Date",
+  "UPLOAD_SUPPLY_TOOLTIP": "Upload From Supply Catalogue",
+  "UPLOAD_SUPPLY_HELPER": "To upload from supply catalogue please visit {0} to select items and export to excel then upload into the PD."
 }

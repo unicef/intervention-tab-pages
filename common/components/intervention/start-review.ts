@@ -1,13 +1,13 @@
 import {customElement, html, LitElement, property} from 'lit-element';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import '@unicef-polymer/etools-dropdown';
-import '../../../../../common/styles/shared-styles-lit';
-import {sharedStyles} from '../../../../../common/styles/shared-styles-lit';
+import '../../../../../etools-pages-common/utils/fire-custom-event';
+import {sharedStyles} from '../../../../../etools-pages-common/styles/shared-styles-lit';
 import {LabelAndValue} from '@unicef-polymer/etools-types';
-import {fireEvent} from '../../../../../common/utils/fire-custom-event';
+import {fireEvent} from '../../../../../etools-pages-common/utils/fire-custom-event';
 import {translate} from 'lit-translate';
 import {NO_REVIEW, NON_PRC_REVIEW, PRC_REVIEW} from '../../../intervention-review/review.const';
-import {connectStore} from '../../../../../common/mixins/connect-store-mixin';
+import {connectStore} from '../../../../../etools-pages-common/mixins/connect-store-mixin';
 import {RootState} from '../../types/store.types';
 import {get as getTranslation} from 'lit-translate';
 
@@ -26,8 +26,9 @@ export class StartReview extends connectStore(LitElement) {
 
   render() {
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} .row {
+        .row {
           padding: 12px 24px;
         }
         etools-dropdown {
@@ -41,7 +42,7 @@ export class StartReview extends connectStore(LitElement) {
         opened
         size="md"
         ok-btn-text="${translate('START')}"
-        dialog-title="${translate('START_REVIEW')}"
+        dialog-title="${translate('SEND_FOR_REVIEW')}"
         @confirm-btn-clicked="${() => this.startReview()}"
       >
         <div class="row">

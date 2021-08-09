@@ -1,6 +1,12 @@
 import {Intervention, InterventionPermissionsFields} from '@unicef-polymer/etools-types';
 import {ModelsBase} from '../../common/models/models.base';
 
+export enum KindChoices {
+  inCountry = 'in_country',
+  operational = 'operational',
+  planning = 'planning'
+}
+
 export class ProgrammeManagement extends ModelsBase {
   constructor(intervention: Intervention) {
     super();
@@ -18,6 +24,7 @@ export class ProgrammeManagement extends ModelsBase {
   act3_total = '0';
   total = '0';
   currency = '';
+  items = [];
 }
 
 export class ProgrammeManagementActivityPermissions extends ModelsBase {

@@ -1,7 +1,7 @@
 /* eslint-disable lit-a11y/click-events-have-key-events */
 import {LitElement, html, TemplateResult, CSSResultArray, customElement, property} from 'lit-element';
 import '@polymer/iron-icons';
-import {fireEvent} from '../../../../../common/utils/fire-custom-event';
+import {fireEvent} from '../../../../../etools-pages-common/utils/fire-custom-event';
 import {CommentStyles} from './comment.styles';
 import {InterventionComment} from '@unicef-polymer/etools-types';
 declare const dayjs: any;

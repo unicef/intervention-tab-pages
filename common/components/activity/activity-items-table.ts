@@ -8,16 +8,16 @@ import {
   property,
   PropertyValues
 } from 'lit-element';
-import {ActivityItemsTableStyles} from './acivity-items-table.styles';
-import {fireEvent} from '../../../../../../common/utils/fire-custom-event';
+import {ActivityItemsTableStyles} from './activity-items-table.styles';
+import {fireEvent} from '../../../../../etools-pages-common/utils/fire-custom-event';
 import {ActivityItemRow} from './activity-item-row';
 import './activity-item-row';
 import {AnyObject, InterventionActivityItem} from '@unicef-polymer/etools-types';
-import {callClickOnSpacePushListener} from '../../../../../../common/utils/common-methods';
 import {PaperTextareaElement} from '@polymer/paper-input/paper-textarea';
 import {translate} from 'lit-translate';
-import {sharedStyles} from '../../../../../../common/styles/shared-styles-lit';
-import {translatesMap} from '../../../../../../common/utils/intervention-labels-map';
+import {translatesMap} from '../../../utils/intervention-labels-map';
+import {sharedStyles} from '../../../../../etools-pages-common/styles/shared-styles-lit';
+import {callClickOnSpacePushListener} from '../../../../../etools-pages-common/utils/common-methods';
 
 @customElement('activity-items-table')
 export class ActivityItemsTable extends LitElement {
@@ -48,9 +48,7 @@ export class ActivityItemsTable extends LitElement {
   protected render(): TemplateResult {
     // language=html
     return html`
-      <style>
-        ${sharedStyles}
-      </style>
+      ${sharedStyles}
       <div class="grid-row header border">
         <div class="grid-cell header-cell left">
           <label required>${translate('ITEM_DESCRIPTION')}</label>

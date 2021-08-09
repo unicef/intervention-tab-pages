@@ -4,17 +4,16 @@ import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-inpu
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import '@polymer/iron-icons/iron-icons';
-import {sharedStyles} from '../../../common/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
-import {frWarningsStyles} from '../../../common/styles/fr-warnings-styles';
-import {customIcons} from '../../../common/styles/custom-icons';
-import {prettyDate} from '../../../common/utils/date-utils';
-import '../../../common/mixins/fr-numbers-consistency-mixin';
-import FrNumbersConsistencyMixin from '../../../common/mixins/fr-numbers-consistency-mixin';
+import {sharedStyles} from '../../../etools-pages-common/styles/shared-styles-lit';
 import isEmpty from 'lodash-es/isEmpty';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {Intervention, FrsDetails} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {gridLayoutStylesLit} from '../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {frWarningsStyles} from '../../../etools-pages-common/styles/fr-warnings-styles';
+import FrNumbersConsistencyMixin from '../../../etools-pages-common/mixins/fr-numbers-consistency-mixin';
+import {customIcons} from '../../../etools-pages-common/styles/custom-icons';
+import {prettyDate} from '../../../etools-pages-common/utils/date-utils';
 
 /**
  * @customElement
@@ -29,9 +28,9 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
       return html`<etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     return html`
-      ${customIcons}
+      ${customIcons} ${sharedStyles}
       <style>
-        ${sharedStyles} :host {
+        :host {
           --list-column-label: {
             margin-right: 0;
           }

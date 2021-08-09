@@ -1,9 +1,9 @@
 import {LitElement, html, customElement, property, TemplateResult} from 'lit-element';
 import '@unicef-polymer/etools-data-table/etools-data-table';
-import {fireEvent} from '../../../../common/utils/fire-custom-event';
-import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
+import {fireEvent} from '../../../../etools-pages-common/utils/fire-custom-event';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
 import {ResultStructureStyles} from './results-structure.styles';
-import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {Disaggregation, DisaggregationValue} from '@unicef-polymer/etools-types';
 import {Indicator} from '@unicef-polymer/etools-types';
@@ -23,8 +23,9 @@ export class PdIndicator extends CommentsMixin(LitElement) {
 
   render() {
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} :host {
+        :host {
           --indicator-blue: #a4c4e1;
           --indicator-green: #c4d7c6;
         }

@@ -1,5 +1,5 @@
 import {css, customElement, html, LitElement, property, TemplateResult} from 'lit-element';
-import {translatesMap} from '../../../../common/utils/intervention-labels-map';
+import {translatesMap} from '../../utils/intervention-labels-map';
 import {translate} from 'lit-translate';
 import {GenericObject} from '@unicef-polymer/etools-types';
 import {get as getTranslation} from 'lit-translate/util';

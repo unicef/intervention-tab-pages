@@ -1,24 +1,24 @@
 import {LitElement, html, TemplateResult, property, customElement, CSSResultArray} from 'lit-element';
-import {prettyDate} from '../../../../common/utils/date-utils';
+import {prettyDate} from '../../../../etools-pages-common/utils/date-utils';
 import CONSTANTS from '../../common/constants';
 import '@unicef-polymer/etools-content-panel';
 import '@unicef-polymer/etools-data-table/etools-data-table.js';
 import '@polymer/iron-icons';
 import './intervention-attachment-dialog';
-import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
-import {openDialog} from '../../../../common/utils/dialog';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {openDialog} from '../../../../etools-pages-common/utils/dialog';
 import {InterventionAttachment, Intervention, IdAndName, AsyncAction} from '@unicef-polymer/etools-types';
 import {AttachmentsListStyles} from './attachments-list.styles';
-import {getFileNameFromURL, cloneDeep} from '../../../../common/utils/utils';
+import {getFileNameFromURL, cloneDeep} from '../../../../etools-pages-common/utils/utils';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import '../../../../common/layout/are-you-sure';
-import {interventionEndpoints} from '../../../../common/utils/intervention-endpoints';
-import {getEndpoint} from '../../../../common/utils/endpoint-helper';
+import '../../../../etools-pages-common/layout/are-you-sure';
+import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {getEndpoint} from '../../../../etools-pages-common/utils/endpoint-helper';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
-import {getStore} from '../../../../common/utils/redux-store-access';
+import {getStore} from '../../../../etools-pages-common/utils/redux-store-access';
 import {getIntervention} from '../../common/actions/interventions';
-import {pageIsNotCurrentlyActive} from '../../../../common/utils/common-methods';
+import {pageIsNotCurrentlyActive} from '../../../../etools-pages-common/utils/common-methods';
 import get from 'lodash-es/get';
 import {translate} from 'lit-translate';
 
@@ -36,8 +36,9 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
 
   protected render(): TemplateResult {
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} ${AttachmentsListStyles} :host {
+        ${AttachmentsListStyles} :host {
           display: block;
           margin-bottom: 24px;
         }

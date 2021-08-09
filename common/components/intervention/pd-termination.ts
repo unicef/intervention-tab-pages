@@ -1,20 +1,20 @@
 import {LitElement, html, customElement, property} from 'lit-element';
-import {interventionEndpoints} from '../../../../../common/utils/intervention-endpoints';
+import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import '@unicef-polymer/etools-upload/etools-upload.js';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
-import '../../../../../common/layout/etools-warn-message';
-import '../../../../../common/styles/shared-styles-lit';
-import {sharedStyles} from '../../../../../common/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../../../../../common/styles/grid-layout-styles-lit';
-import {formatDate} from '../../../../../common/utils/date-utils';
-import {validateRequiredFields} from '../../../../../common/utils/validation-helper';
-import ComponentBaseMixin from '../../../../../common/mixins/component-base-mixin';
+import '../../../../../etools-pages-common/layout/etools-warn-message';
+import '../../../../../etools-pages-common/utils/fire-custom-event';
+import {sharedStyles} from '../../../../../etools-pages-common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {formatDate} from '../../../../../etools-pages-common/utils/date-utils';
+import {validateRequiredFields} from '../../../../../etools-pages-common/utils/validation-helper';
+import ComponentBaseMixin from '../../../../../etools-pages-common/mixins/component-base-mixin';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {fireEvent} from '../../../../../common/utils/fire-custom-event';
-import {openDialog} from '../../../../../common/utils/dialog';
-import EnvironmentFlagsMixin from '../../../../../common/mixins/environment-flags-mixin';
-import {getStore} from '../../../../../common/utils/redux-store-access';
+import {fireEvent} from '../../../../../etools-pages-common/utils/fire-custom-event';
+import {openDialog} from '../../../../../etools-pages-common/utils/dialog';
+import EnvironmentFlagsMixin from '../../../../../etools-pages-common/mixins/environment-flags-mixin';
+import {getStore} from '../../../../../etools-pages-common/utils/redux-store-access';
 import {AnyObject} from '@unicef-polymer/etools-types';
 declare const dayjs: any;
 
@@ -29,8 +29,9 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
   }
   render() {
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles}:host {
+      :host {
           /* host CSS */
         }
         #pdTermination {

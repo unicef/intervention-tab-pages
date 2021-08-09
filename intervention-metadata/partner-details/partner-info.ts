@@ -7,26 +7,26 @@ import '@unicef-polymer/etools-loading/etools-loading';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import {buttonsStyles} from '../../../../common/styles/button-styles';
+import {buttonsStyles} from '../../../../etools-pages-common/styles/button-styles';
 import {PartnerInfo, PartnerInfoPermissions} from './partnerInfo.models';
-import {getStore} from '../../../../common/utils/redux-store-access';
-import ComponentBaseMixin from '../../../../common/mixins/component-base-mixin';
-import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
+import {getStore} from '../../../../etools-pages-common/utils/redux-store-access';
+import ComponentBaseMixin from '../../../../etools-pages-common/mixins/component-base-mixin';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
 import {patchIntervention} from '../../common/actions/interventions';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
-import {getEndpoint} from '../../../../common/utils/endpoint-helper';
-import {interventionEndpoints} from '../../../../common/utils/intervention-endpoints';
-import {pageIsNotCurrentlyActive} from '../../../../common/utils/common-methods';
-import {isJsonStrMatch} from '../../../../common/utils/utils';
+import {getEndpoint} from '../../../../etools-pages-common/utils/endpoint-helper';
+import {pageIsNotCurrentlyActive} from '../../../../etools-pages-common/utils/common-methods';
+import {isJsonStrMatch} from '../../../../etools-pages-common/utils/utils';
 import isEmpty from 'lodash-es/isEmpty';
 import {RootState} from '../../common/types/store.types';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission, PartnerStaffMember, AnyObject} from '@unicef-polymer/etools-types';
 import {MinimalAgreement} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {interventionEndpoints} from '../../utils/intervention-endpoints';
 
 /**
  * @customElement
@@ -39,8 +39,9 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
   render() {
     // language=HTML
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} :host {
+        :host {
           display: block;
           margin-bottom: 24px;
         }

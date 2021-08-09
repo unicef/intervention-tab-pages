@@ -1,14 +1,14 @@
 import {LitElement, customElement, html, property, CSSResult, css} from 'lit-element';
-import {fireEvent} from '../../../common/utils/fire-custom-event';
+import {fireEvent} from '../../../etools-pages-common/utils/fire-custom-event';
 import {RootState} from '../common/types/store.types';
-import {pageIsNotCurrentlyActive} from '../../../common/utils/common-methods';
 import {InterventionReview, User} from '@unicef-polymer/etools-types';
-import {connectStore} from '../../../common/mixins/connect-store-mixin';
 import './general-review-information/general-review-information';
 import './review-members/review-members';
 import './reviews-list/reviews-list';
 import './overall-approval/overall-approval';
 import {PRC_REVIEW} from './review.const';
+import {connectStore} from '../../../etools-pages-common/mixins/connect-store-mixin';
+import {pageIsNotCurrentlyActive} from '../../../etools-pages-common/utils/common-methods';
 
 @customElement('intervention-review')
 export class InterventionReviewTab extends connectStore(LitElement) {

@@ -1,16 +1,16 @@
 import {LitElement, html, TemplateResult, property, customElement, CSSResultArray, css} from 'lit-element';
-import {fireEvent} from '../../../../common/utils/fire-custom-event';
-import {getEndpoint} from '../../../../common/utils/endpoint-helper';
-import {interventionEndpoints} from '../../../../common/utils/intervention-endpoints';
+import {fireEvent} from '../../../../etools-pages-common/utils/fire-custom-event';
+import {getEndpoint} from '../../../../etools-pages-common/utils/endpoint-helper';
+import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import '@unicef-polymer/etools-upload/etools-upload.js';
 import '@polymer/paper-checkbox';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
-import {getStore} from '../../../../common/utils/redux-store-access';
+import {getStore} from '../../../../etools-pages-common/utils/redux-store-access';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
-import {validateRequiredFields} from '../../../../common/utils/validation-helper';
-import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
-import {connectStore} from '../../../../common/mixins/connect-store-mixin';
+import {validateRequiredFields} from '../../../../etools-pages-common/utils/validation-helper';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
+import {connectStore} from '../../../../etools-pages-common/mixins/connect-store-mixin';
 import {IdAndName, GenericObject, ReviewAttachment} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 
@@ -54,8 +54,9 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
 
   protected render(): TemplateResult {
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} etools-dialog::part(ed-scrollable) {
+        etools-dialog::part(ed-scrollable) {
           margin-top: 0 !important;
         }
 

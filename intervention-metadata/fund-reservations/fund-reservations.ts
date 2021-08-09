@@ -6,34 +6,34 @@ import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {removeDialog, createDynamicDialog} from '@unicef-polymer/etools-dialog/dynamic-dialog.js';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getStore} from '../../../../common/utils/redux-store-access';
+import {getStore} from '../../../../etools-pages-common/utils/redux-store-access';
 
-import FrNumbersConsistencyMixin from '../../../../common/mixins/fr-numbers-consistency-mixin';
-import {customIcons} from '../../../../common/styles/custom-icons';
-import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
-import {frWarningsStyles} from '../../../../common/styles/fr-warnings-styles';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
 import {logWarn} from '@unicef-polymer/etools-behaviors/etools-logging';
 import './update-fr-numbers';
 import {UpdateFrNumbers} from './update-fr-numbers';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
-import {getEndpoint} from '../../../../common/utils/endpoint-helper';
-import {getArraysDiff} from '../../../../common/utils/array-helper';
-import {interventionEndpoints} from '../../../../common/utils/intervention-endpoints';
+import {getEndpoint} from '../../../../etools-pages-common/utils/endpoint-helper';
+import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {RootState} from '../../common/types/store.types';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {fireEvent} from '../../../../common/utils/fire-custom-event';
-import {pageIsNotCurrentlyActive} from '../../../../common/utils/common-methods';
+import {fireEvent} from '../../../../etools-pages-common/utils/fire-custom-event';
+import {pageIsNotCurrentlyActive} from '../../../../etools-pages-common/utils/common-methods';
 import {patchIntervention} from '../../common/actions/interventions';
-import {isJsonStrMatch} from '../../../../common/utils/utils';
+import {isJsonStrMatch} from '../../../../etools-pages-common/utils/utils';
 import {FundReservationsPermissions} from './fund-reservations.models';
 import {selectFundReservationPermissions} from './fund-reservations.selectors';
 import {isUnicefUser} from '../../common/selectors';
-import ContentPanelMixin from '../../../../common/mixins/content-panel-mixin';
 import {AnyObject, AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {Intervention, FrsDetails, Fr} from '@unicef-polymer/etools-types';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {translate} from 'lit-translate';
+import FrNumbersConsistencyMixin from '../../../../etools-pages-common/mixins/fr-numbers-consistency-mixin';
+import {frWarningsStyles} from '../../../../etools-pages-common/styles/fr-warnings-styles';
+import ContentPanelMixin from '../../../../etools-pages-common/mixins/content-panel-mixin';
+import {customIcons} from '../../../../etools-pages-common/styles/custom-icons';
+import {getArraysDiff} from '../../../../etools-pages-common/utils/array-helper';
 
 /**
  * @customElement
@@ -52,9 +52,9 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
       return html`<etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     return html`
-      ${customIcons}
+      ${customIcons} ${sharedStyles}
       <style>
-        ${sharedStyles}:host {
+        :host {
           display: block;
           width: 100%;
           -webkit-box-sizing: border-box;

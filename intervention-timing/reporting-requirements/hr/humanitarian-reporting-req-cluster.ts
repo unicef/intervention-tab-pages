@@ -1,15 +1,16 @@
 import {LitElement, html, property, customElement} from 'lit-element';
 import '@unicef-polymer/etools-data-table/etools-data-table';
-import EndpointsLitMixin from '../../../../../common/mixins/endpoints-mixin-lit';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
-import {gridLayoutStylesLit} from '../../../../../common/styles/grid-layout-styles-lit';
-import {isEmptyObject} from '../../../../../common/utils/utils';
+import {isEmptyObject} from '../../../../../etools-pages-common/utils/utils';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {ExpectedResult, ResultLinkLowerResult} from '@unicef-polymer/etools-types';
-import {fireEvent} from '../../../../../common/utils/fire-custom-event';
+import {fireEvent} from '../../../../../etools-pages-common/utils/fire-custom-event';
 import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
 import {translate} from 'lit-translate';
+import {gridLayoutStylesLit} from '../../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import EndpointsLitMixin from '../../../../../etools-pages-common/mixins/endpoints-mixin-lit';
+import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 
 /**
  * @customElement
@@ -104,6 +105,7 @@ export class HumanitarianReportingReqCluster extends EndpointsLitMixin(Reporting
     }
     let reportingRequirementsOriginal = this.reportingRequirements;
     this.fireRequest(
+      interventionEndpoints,
       'hrClusterReportingRequirements',
       {},
       {

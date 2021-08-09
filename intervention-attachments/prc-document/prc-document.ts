@@ -3,48 +3,47 @@ import '@polymer/paper-button/paper-button';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-loading/etools-loading';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import {buttonsStyles} from '../../../../common/styles/button-styles';
-import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '../../../../etools-pages-common/styles/button-styles';
+import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
 import cloneDeep from 'lodash-es/cloneDeep';
-import ComponentBaseMixin from '../../../../common/mixins/component-base-mixin';
+import ComponentBaseMixin from '../../../../etools-pages-common/mixins/component-base-mixin';
 import {RootState} from '../../common/types/store.types';
-import {getStore} from '../../../../common/utils/redux-store-access';
+import {getStore} from '../../../../etools-pages-common/utils/redux-store-access';
 import './prcDocument.models';
 import './prcDocument.selectors';
 import {selectPrcDocumentData, selectPrcDocumentPermissions} from './prcDocument.selectors';
 import {PrcDocumentData, PrcDocumentPermissions} from './prcDocument.models';
-import {isJsonStrMatch} from '../../../../common/utils/utils';
-import {pageIsNotCurrentlyActive} from '../../../../common/utils/common-methods';
+import {isJsonStrMatch} from '../../../../etools-pages-common/utils/utils';
+import {pageIsNotCurrentlyActive} from '../../../../etools-pages-common/utils/common-methods';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import CONSTANTS from '../../common/constants';
-import {getEndpoint} from '../../../../common/utils/endpoint-helper';
+import {getEndpoint} from '../../../../etools-pages-common/utils/endpoint-helper';
 import {patchIntervention} from '../../common/actions/interventions';
-import {interventionEndpoints} from '../../../../common/utils/intervention-endpoints';
-import UploadMixin from '../../../../common/mixins/uploads-mixin';
+import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import UploadsMixin from '../../../../etools-pages-common/mixins/uploads-mixin';
 
 /**
  * @customElement
  */
 @customElement('prc-document')
-export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadMixin(LitElement))) {
+export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadsMixin(LitElement))) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
   render() {
     // language=HTML
     if (!this.data || !this.permissions) {
-      return html`<style>
-          ${sharedStyles}
-        </style>
+      return html` ${sharedStyles}
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} :host {
+        :host {
           display: block;
           margin-bottom: 24px;
         }
@@ -68,11 +67,11 @@ export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadMixin(Li
               accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt"
               .fileUrl="${this.data.prc_review_attachment}"
               .uploadEndpoint="${this.uploadEndpoint}"
-              @upload-finished="${this._prcRevDocUploadFinished}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.prc_review_attachment)}"
               .showDeleteBtn="${this.showPrcReviewDeleteBtn(this.data.status)}"
               @delete-file="${this._prcRevDocDelete}"
               @upload-started="${this._onUploadStarted}"
+              @upload-finished="${this._prcRevDocUploadFinished}"
               @change-unsaved-file="${this._onChangeUnsavedFile}"
             >
             </etools-upload>
@@ -113,6 +112,7 @@ export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadMixin(Li
   }
 
   _prcRevDocUploadFinished(e: CustomEvent) {
+    this._onUploadFinished(e.detail.success);
     if (e.detail.success) {
       const response = e.detail.success;
       this.data.prc_review_attachment = response.id;
@@ -122,6 +122,7 @@ export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadMixin(Li
 
   _prcRevDocDelete(_e: CustomEvent) {
     this.data.prc_review_attachment = null;
+    this._onUploadDelete();
   }
 
   showPrcReviewDeleteBtn(status: string) {
@@ -139,6 +140,7 @@ export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadMixin(Li
         patchIntervention({prc_review_attachment: this.data.prc_review_attachment})
       )
       .then(() => {
+        this._onUploadSaved();
         this.editMode = false;
       });
   }

@@ -1,5 +1,5 @@
-import {getEndpoint} from '../../../../common/utils/endpoint-helper';
-import {interventionEndpoints} from '../../../../common/utils/intervention-endpoints';
+import {getEndpoint} from '../../../../etools-pages-common/utils/endpoint-helper';
+import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {PrcOfficerReview} from '@unicef-polymer/etools-types';
 
