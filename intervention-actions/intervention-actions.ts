@@ -111,9 +111,22 @@ export class InterventionActions extends LitElement {
     const className = `main-button${withAdditional}${onlyCancel}`;
     return mainAction
       ? html`
-          <paper-button class="${className}" @click="${() => this.processAction(mainAction)}">
-            ${this.actionsNamesMap[mainAction]} ${this.getAdditionalTransitions(actions)}
-          </paper-button>
+          <paper-menu-button
+            horizontal-align="right"
+            class="${className}"
+            @click="${(event: MouseEvent) => event.stopImmediatePropagation()}"
+          >
+            <span
+              slot="dropdown-trigger"
+              @click="${(event: MouseEvent) => {
+                event.stopImmediatePropagation();
+                this.processAction(mainAction);
+              }}"
+            >
+              ${this.actionsNamesMap[mainAction]}
+            </span>
+            ${this.getAdditionalTransitions(actions)}
+          </paper-menu-button>
         `
       : html``;
   }
@@ -123,18 +136,16 @@ export class InterventionActions extends LitElement {
       return html``;
     }
     return html`
-      <paper-menu-button horizontal-align="right" @click="${(event: MouseEvent) => event.stopImmediatePropagation()}">
-        <paper-icon-button slot="dropdown-trigger" class="option-button" icon="expand-more"></paper-icon-button>
-        <div slot="dropdown-content">
-          ${actions.map(
-            (action: string) => html`
-              <div class="other-options" @click="${() => this.processAction(action)}">
-                ${this.actionsNamesMap[action]}
-              </div>
-            `
-          )}
-        </div>
-      </paper-menu-button>
+      <paper-icon-button slot="dropdown-trigger" class="option-button" icon="expand-more"></paper-icon-button>
+      <div slot="dropdown-content">
+        ${actions.map(
+          (action: string) => html`
+            <div class="other-options" @click="${() => this.processAction(action)}">
+              ${this.actionsNamesMap[action]}
+            </div>
+          `
+        )}
+      </div>
     `;
   }
 
