@@ -3,7 +3,7 @@ import '@polymer/paper-toggle-button';
 
 import './common/layout/page-content-header/intervention-page-content-header';
 import '../../etools-pages-common/layout/etools-tabs';
-import '../../etools-pages-common/components/cancel/cancel-justification';
+import '../../etools-pages-common/components/cancel/reason-display';
 // eslint-disable-next-line max-len
 import '../../etools-pages-common/layout/status/etools-status';
 import './intervention-actions/intervention-actions';
@@ -189,7 +189,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
 
       <div class="page-content">
         ${this.intervention.cancel_justification
-          ? html`<cancel-justification .justification=${this.intervention.cancel_justification}></cancel-justification>`
+          ? html`<reason-display .justification=${this.intervention.cancel_justification}></reason-display>`
           : ''}
         <intervention-metadata ?hidden="${!this.isActiveTab(this.activeTab, 'metadata')}"> </intervention-metadata>
         <intervention-strategy ?hidden="${!this.isActiveTab(this.activeTab, 'strategy')}"></intervention-strategy>
