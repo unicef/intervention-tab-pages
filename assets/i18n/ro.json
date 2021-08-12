@@ -386,7 +386,7 @@
   "CONFIRM_BTN_TEXT": "Da",
   "DELETE_ATTACHMENTS_PROMPT": "Sunteti sigur ca doriti sa stergeti acest atasament?",
   "PRC_REVIEW_DOC": "Document Revizuire PRC",
-  "PRC_REVIEW_DOC_TITLE": "Document Revizuire PRC numai pentru PD-urile vechi",
+  "PRC_REVIEW_DOC_TITLE": "Document Revizuire PRC (*Numai pentru PD-urile vechi)",
   "ATTACHMENT": "Atasament",
   "SELECT_DOC_TYPE": "Selectati Tipul de Document",
   "NO_REPORTS_YET": "Nu există încă rapoarte.",

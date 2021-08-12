@@ -387,7 +387,7 @@
   "CONFIRM_BTN_TEXT": "نعم",
   "DELETE_ATTACHMENTS_PROMPT": "هل أنت متأكد أنك تريد حذف هذا المرفق؟",
   "PRC_REVIEW_DOC": "PRC مراجعة الوثيقة",
-  "PRC_REVIEW_DOC_TITLE": "PRC Review Document for legacy PDs only",
+  "PRC_REVIEW_DOC_TITLE": "PRC Review Document (*For legacy PDs only)",
   "ATTACHMENT": "المرفق",
   "SELECT_DOC_TYPE": "حدد نوع المستند",
   "NO_REPORTS_YET": "لا توجد تقارير حتى الان.",
