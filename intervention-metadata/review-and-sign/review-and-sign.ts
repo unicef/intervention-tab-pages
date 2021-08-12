@@ -24,7 +24,6 @@ import {buttonsStyles} from '../../../../etools-pages-common/styles/button-style
 import {getDifference} from '../../../../etools-pages-common/mixins/objects-diff';
 import {patchIntervention} from '../../common/actions/interventions';
 import {formatDate} from '../../../../etools-pages-common/utils/date-utils';
-import {getDifference} from '../../../../etools-pages-common/mixins/objects-diff';
 import {pageIsNotCurrentlyActive} from '../../../../etools-pages-common/utils/common-methods';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
