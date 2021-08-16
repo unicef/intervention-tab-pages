@@ -20,7 +20,7 @@ import {isJsonStrMatch} from '../../etools-pages-common/utils/utils';
 import {pageContentHeaderSlottedStyles} from './common/layout/page-content-header/page-content-header-slotted-styles';
 import {fireEvent} from '../../etools-pages-common/utils/fire-custom-event';
 import {buildUrlQueryString} from '../../etools-pages-common/utils/utils';
-import {enableCommentMode, getComments} from './common/components/comments/comments.actions';
+import {enableCommentMode, getComments, setCommentsEndpoint} from './common/components/comments/comments.actions';
 import {commentsData} from './common/components/comments/comments.reducer';
 import {Store} from 'redux';
 import {connectStore} from '../../etools-pages-common/mixins/connect-store-mixin';
@@ -40,6 +40,7 @@ import {RESET_UNSAVED_UPLOADS, RESET_UPLOADS_IN_PROGRESS} from './common/actions
 import {RootState} from './common/types/store.types';
 import {getEndpoint} from '../../etools-pages-common/utils/endpoint-helper';
 import {interventionEndpoints} from './utils/intervention-endpoints';
+import {CommentsEndpoints} from '../intervention-tab-pages/common/components/comments/comments-types';
 
 const MOCKUP_STATUSES = [
   ['draft', 'Draft'],
@@ -294,6 +295,12 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
         uploadStatus
       });
     });
+    const commentsEndpoints: CommentsEndpoints = {
+      saveComments: interventionEndpoints.comments,
+      deleteComment: interventionEndpoints.deleteComment,
+      resolveComment: interventionEndpoints.resolveComment
+    };
+    getStore().dispatch(setCommentsEndpoint(commentsEndpoints));
   }
 
   disconnectedCallback() {
@@ -644,6 +651,6 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
           loadingSource: 'intervention-tabs'
         })
       );
-    getStore().dispatch<AsyncAction>(getComments(Number(currentInterventionId)));
+    getStore().dispatch<AsyncAction>(getComments(interventionEndpoints.comments, Number(currentInterventionId)));
   }
 }
