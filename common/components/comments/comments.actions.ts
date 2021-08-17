@@ -19,7 +19,7 @@ export const enableCommentMode = (state: boolean) => {
 export const setCommentsEndpoint = (endpoints: CommentsEndpoints) => {
   return {
     type: SET_ENDPOINT,
-    data: endpoints
+    endpoints: endpoints
   };
 };
 

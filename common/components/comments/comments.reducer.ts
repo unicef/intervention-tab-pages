@@ -20,7 +20,7 @@ export const commentsData: Reducer<CommentsState, any> = (state = INITIAL, actio
     case SET_ENDPOINT:
       return {
         ...state,
-        endpoints: action.data
+        endpoints: action.endpoints
       };
     case SET_COMMENTS:
       return {
