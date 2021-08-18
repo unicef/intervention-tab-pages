@@ -1,18 +1,18 @@
 /* eslint-disable lit-a11y/click-events-have-key-events */
 import {CSSResultArray, LitElement, TemplateResult, html, property, customElement} from 'lit-element';
-import {arrowLeftIcon} from '../../../etools-pages-common/styles/app-icons';
+import {arrowLeftIcon} from '@unicef-polymer/etools-modules-common/dist/styles/app-icons';
 import '@polymer/paper-button';
 import '@polymer/paper-menu-button';
 import '@polymer/paper-icon-button';
 import '../common/layout/export-intervention-data';
-import '../../../etools-pages-common/components/cancel/reason-popup';
+import '@unicef-polymer/etools-modules-common/dist/components/cancel/reason-popup';
 import './accept-for-partner';
-import {getEndpoint} from '../../../etools-pages-common/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {fireEvent} from '../../../etools-pages-common/utils/fire-custom-event';
-import {openDialog} from '../../../etools-pages-common/utils/dialog';
-import '../../../etools-pages-common/layout/are-you-sure';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import '../common/components/intervention/pd-termination';
 import '../common/components/intervention/start-review';
 import '../common/components/intervention/review-checklist-popup';
@@ -38,12 +38,12 @@ import {
 } from './intervention-actions.constants';
 import {PaperMenuButton} from '@polymer/paper-menu-button/paper-menu-button';
 import {updateCurrentIntervention} from '../common/actions/interventions';
-import {getStore} from '../../../etools-pages-common/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {defaultKeyTranslate, formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {GenericObject} from '@unicef-polymer/etools-types';
 import {Intervention} from '@unicef-polymer/etools-types';
 import {get as getTranslation} from 'lit-translate';
-import {ROOT_PATH} from '../../../etools-pages-common/config/config';
+import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
 import {translatesMap} from '../utils/intervention-labels-map';
 
 @customElement('intervention-actions')

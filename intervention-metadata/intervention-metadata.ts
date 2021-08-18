@@ -1,18 +1,18 @@
 import {LitElement, html, property} from 'lit-element';
-import './partner-details/partner-info';
-import './details-overview/details-overview';
-import './unicef-details/unicef-details';
-import './amendments/pd-amendments';
+// import './partner-details/partner-info';
+// import './details-overview/details-overview';
+// import './unicef-details/unicef-details';
+// import './amendments/pd-amendments';
 import './fund-reservations/fund-reservations';
 import './review-and-sign/review-and-sign';
 import './other/other';
-import {fireEvent} from '../../../etools-pages-common/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {RootState} from '../common/types/store.types';
 import {InterventionPermissionsFields, Permission} from '@unicef-polymer/etools-types';
 import {currentInterventionPermissions, currentPage, currentSubpage} from '../common/selectors';
 import {selectDatesAndSignaturesPermissions} from '../common/managementDocument.selectors';
 import './financial/financial-component';
-import {connectStore} from '../../../etools-pages-common/mixins/connect-store-mixin';
+import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 
 /**
  * @customElement
