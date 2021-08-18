@@ -3,7 +3,7 @@ import '@polymer/iron-label/iron-label';
 import '@polymer/paper-button/paper-button';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 
-import {prepareDatepickerDate} from '../../../../../etools-pages-common/utils/date-utils';
+import {convertDate, prepareDatepickerDate} from '../../../../../etools-pages-common/utils/date-utils';
 import {getEndpoint} from '../../../../../etools-pages-common/utils/endpoint-helper';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import './qpr-list.js';
@@ -22,13 +22,14 @@ import {translatesMap} from '../../../utils/intervention-labels-map';
 import {gridLayoutStylesLit} from '../../../../../etools-pages-common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../../../../etools-pages-common/styles/button-styles';
 import {sharedStyles} from '../../../../../etools-pages-common/styles/shared-styles-lit';
+import GenerateQuarterlyReportingRequirementsMixin from '../mixins/generate-quarterly-reporting-requirements-mixin';
 
 /**
  * @polymer
  * @customElement
  */
 @customElement('edit-qpr-dialog')
-export class EditQprDialog extends LitElement {
+export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(LitElement) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -60,6 +61,9 @@ export class EditQprDialog extends LitElement {
           position: relative;
           width: 288px;
         }
+        #regenerate-info {
+          margin-inline-end: 24px;
+        }
       </style>
 
       <etools-dialog
@@ -73,11 +77,18 @@ export class EditQprDialog extends LitElement {
         cancel-btn-text=${translate('GENERAL.CANCEL')}
         keep-dialog-open
         opened
+        ?show-spinner="${this.requestInProgress}"
         spinner-text=${translate('GENERAL.SAVING_DATA')}
       >
         <div class="layout-horizontal">
           <span id="qpr-edit-info">${translate('ALL_DATES_IN_FUTURE')}</span>
           <paper-button class="secondary-btn" @click="${this._addNewQpr}">${translate('ADD_REQUIREMENT')}</paper-button>
+        </div>
+        <div class="layout-horizontal" style="padding-top:10px" ?hidden="${!this.insterventionsDatesDiffer()}">
+          <span id="regenerate-info">${translate('PD_START_END_DATE_CHANGED')}</span> &nbsp;
+          <paper-button class="secondary-btn" @click="${this.regenerateReportingRequirements}"
+            >${translate('REGENERATE')}</paper-button
+          >
         </div>
 
         <qpr-list
@@ -171,10 +182,25 @@ export class EditQprDialog extends LitElement {
   @property({type: Array})
   qprData!: any[];
 
+  @property({type: String})
+  interventionStart!: string;
+
+  @property({type: String})
+  interventionEnd!: string;
+
+  @property({type: Boolean})
+  requestInProgress = false;
+
+  @property({type: String})
+  interventionStatus = '';
+
   set dialogData(data: any) {
     const {qprData, interventionId}: any = data;
     this.qprData = qprData;
     this.interventionId = interventionId;
+    this.interventionStart = data.interventionStart;
+    this.interventionEnd = data.interventionEnd;
+    this.interventionStatus = data.interventionStatus;
 
     this.addEventListener('edit-qpr', this._editQprDatesSet as any);
   }
@@ -198,6 +224,22 @@ export class EditQprDialog extends LitElement {
   _addNewQpr() {
     this._editedQprDatesSet = Object.assign({}, this._qprDatesSetModel);
     this.addOrModifyQprDialogOpened = true;
+  }
+
+  regenerateReportingRequirements() {
+    this.requestInProgress = true;
+    this.qprData = this.generateQPRData(this.interventionStart, this.interventionEnd);
+    setTimeout(() => (this.requestInProgress = false));
+  }
+
+  insterventionsDatesDiffer() {
+    if (!['draft', 'development'].includes(this.interventionStatus)) {
+      return false;
+    }
+    if (!this.qprData || !this.qprData.length) {
+      return false;
+    }
+    return this.interventionStart != this.qprData[0].start_date || this.interventionEnd != this.qprData[0].end_date;
   }
 
   _duplicateDueDate(dueDate: any) {
