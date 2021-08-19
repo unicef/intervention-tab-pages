@@ -39,11 +39,12 @@ import {
 import {PaperMenuButton} from '@polymer/paper-menu-button/paper-menu-button';
 import {updateCurrentIntervention} from '../common/actions/interventions';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
-import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {defaultKeyTranslate, formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {GenericObject} from '@unicef-polymer/etools-types';
 import {Intervention} from '@unicef-polymer/etools-types';
 import {get as getTranslation} from 'lit-translate';
 import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
+import {translatesMap} from '../utils/intervention-labels-map';
 
 @customElement('intervention-actions')
 export class InterventionActions extends LitElement {
@@ -239,8 +240,13 @@ export class InterventionActions extends LitElement {
           loadingSource: 'intervention-actions'
         });
       })
-      .catch((err: any) => {
-        fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
+      .catch((error: any) => {
+        fireEvent(this, 'toast', {
+          text: formatServerErrorAsText(error, (key) => {
+            const labelKey = translatesMap[key];
+            return labelKey ? getTranslation(labelKey) : defaultKeyTranslate(key);
+          })
+        });
       });
   }
 

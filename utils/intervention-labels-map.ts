@@ -64,5 +64,6 @@ export const translatesMap: GenericObject = {
   sustainability_narrative: 'SUSTAINABILITY_NARRATIVE',
   unit_price: 'PRICE_UNIT',
   unicef_product_number: 'UNICEF_PRODUCT_NUMBER',
-  ll_results: 'PROGRAM_DOCUMENT_OUTPUT'
+  ll_results: 'PROGRAM_DOCUMENT_OUTPUT',
+  required_in_status: 'REQUIRED_ERROR'
 };
