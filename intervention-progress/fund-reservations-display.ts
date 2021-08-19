@@ -4,16 +4,16 @@ import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-inpu
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import '@polymer/iron-icons/iron-icons';
-import {sharedStyles} from '../../../etools-pages-common/styles/shared-styles-lit';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import isEmpty from 'lodash-es/isEmpty';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {Intervention, FrsDetails} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {gridLayoutStylesLit} from '../../../etools-pages-common/styles/grid-layout-styles-lit';
-import {frWarningsStyles} from '../../../etools-pages-common/styles/fr-warnings-styles';
-import FrNumbersConsistencyMixin from '../../../etools-pages-common/mixins/fr-numbers-consistency-mixin';
-import {customIcons} from '../../../etools-pages-common/styles/custom-icons';
-import {prettyDate} from '../../../etools-pages-common/utils/date-utils';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/fr-warnings-styles';
+import FrNumbersConsistencyMixin from '@unicef-polymer/etools-modules-common/dist/mixins/fr-numbers-consistency-mixin';
+import {customIcons} from '@unicef-polymer/etools-modules-common/dist/styles/custom-icons';
+import {prettyDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
 
 /**
  * @customElement

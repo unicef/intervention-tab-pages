@@ -4,16 +4,16 @@ import '@polymer/paper-input/paper-input';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
-import {fireEvent} from '../../../../etools-pages-common/utils/fire-custom-event';
-import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '../../../../etools-pages-common/styles/button-styles';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {PaperInputElement} from '@polymer/paper-input/paper-input';
 import {PaperDialogElement} from '@polymer/paper-dialog/paper-dialog';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import RepeatableDataSetsMixin from '../../../../etools-pages-common/mixins/repeatable-data-sets-mixin';
+import RepeatableDataSetsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/repeatable-data-sets-mixin';
 
 /**
  * @customElement

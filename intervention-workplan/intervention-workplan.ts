@@ -5,7 +5,7 @@ import './results-structure/results-structure';
 import './effective-efficient-programme-mgmt/effective-efficient-programme-mgmt';
 import './non-financial-contribution/non-financial-contribution';
 import './hq-contribution/hq-contribution';
-import {fireEvent} from '../../../etools-pages-common/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 
 /**
  * @customElement

@@ -1,9 +1,9 @@
 import {LitElement, html, customElement, property, TemplateResult} from 'lit-element';
 import '@unicef-polymer/etools-data-table/etools-data-table';
-import {fireEvent} from '../../../../etools-pages-common/utils/fire-custom-event';
-import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {ResultStructureStyles} from './results-structure.styles';
-import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {Disaggregation, DisaggregationValue} from '@unicef-polymer/etools-types';
 import {Indicator} from '@unicef-polymer/etools-types';
