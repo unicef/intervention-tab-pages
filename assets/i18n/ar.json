@@ -93,6 +93,8 @@
   "GEOGRAPHICAL_COVERAGE": "التغطية الجغرافية",
   "LOCATIONS": "موقع",
   "LOCATIONS_ERR": "الرجاء تحديد المواقع",
+  "SITES": "المواقع",
+  "SITES_ERR": "الرجاء تحديد المواقع",
   "SEE_ALL_LOCATIONS": "مشاهدة جميع المواقع",
   "SEE_ALL": "اظهار الكل",
   "OTHER": "آخر",

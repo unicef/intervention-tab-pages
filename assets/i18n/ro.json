@@ -93,6 +93,8 @@
   "GEOGRAPHICAL_COVERAGE": "Acoperire Geografică",
   "LOCATIONS": "Locatii",
   "LOCATIONS_ERR": "Va rugam selectati locatii",
+  "SITES": "Site-uri",
+  "SITES_ERR": "Va rugam selectati site-uri",
   "SEE_ALL_LOCATIONS": "Vezi toate locatiile",
   "SEE_ALL": "Vezi tot",
   "OTHER": "Altele",

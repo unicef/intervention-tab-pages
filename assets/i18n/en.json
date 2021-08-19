@@ -95,6 +95,8 @@
   "GEOGRAPHICAL_COVERAGE": "Geographical Coverage",
   "LOCATIONS": "Location(s)",
   "LOCATIONS_ERR": "Please select locations",
+  "SITES": "Site(s)",
+  "SITES_ERR": "Please select sites",
   "SEE_ALL_LOCATIONS": "See all locations",
   "SEE_ALL": "See all",
   "OTHER": "Other",

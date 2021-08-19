@@ -2,6 +2,7 @@ import {customElement, html, LitElement, property} from 'lit-element';
 import '@polymer/paper-button/paper-button';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
 import './grouped-locations-dialog';
+import './sites-dialog';
 
 import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../../../etools-pages-common/styles/button-styles';
@@ -19,7 +20,7 @@ import isEmpty from 'lodash-es/isEmpty';
 import get from 'lodash-es/get';
 import {openDialog} from '../../../../etools-pages-common/utils/dialog';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AnyObject, AsyncAction, LocationObject, Permission} from '@unicef-polymer/etools-types';
+import {AnyObject, AsyncAction, GenericObject, LocationObject, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
@@ -121,6 +122,24 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
             </paper-button>
           </div>
         </div>
+        <div class="flex-c layout-horizontal row-padding-v">
+          <paper-textarea
+            label="Selected sites"
+            always-float-label
+            class="w100"
+            placeholder="&#8212;"
+            readonly
+            max-rows="4"
+            .value="${this.getSelectedSitesText(this.data.sites)}"
+          ></paper-textarea>
+          <div class="locations-btn">
+            <paper-icon-button
+              ?hidden="${!this.editMode}"
+              icon="create"
+              @click="${() => this.openSitesDialog()}"
+            ></paper-icon-button>
+          </div>
+        </div>
 
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
       </etools-content-panel>
@@ -131,10 +150,16 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
   allLocations!: LocationObject[];
 
   @property({type: Array})
+  allSites!: Site[];
+
+  @property({type: Object})
+  currentCountry!: AnyObject;
+
+  @property({type: Array})
   adminLevels!: AnyObject[];
 
   @property({type: Object})
-  data!: {flat_locations: string[]};
+  data!: {flat_locations: string[]; sites: Site[]};
 
   @property({type: Object})
   permissions!: Permission<LocationsPermissions>;
@@ -153,10 +178,17 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
     if (!isJsonStrMatch(this.allLocations, state.commonData!.locations)) {
       this.allLocations = [...state.commonData!.locations];
     }
+    if (!isJsonStrMatch(this.allSites, state.commonData!.sites)) {
+      this.allSites = [...state.commonData!.sites];
+    }
     if (!isJsonStrMatch(this.adminLevels, state.commonData!.locationTypes)) {
       this.adminLevels = [...state.commonData!.locationTypes];
     }
-    this.data = {flat_locations: get(state, 'interventions.current.flat_locations')};
+    this.data = {
+      flat_locations: get(state, 'interventions.current.flat_locations'),
+      sites: get(state, 'interventions.current.sites') || []
+    };
+    this.currentCountry = get(state, 'user.data.country');
     this.originalData = cloneDeep(this.data);
     this.setPermissions(state);
     super.stateChanged(state);
@@ -177,6 +209,27 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         interventionLocationIds: this.data.flat_locations
       }
     });
+  }
+
+  private openSitesDialog() {
+    openDialog({
+      dialog: 'sites-dialog',
+      dialogData: {
+        workspaceCoordinates: [this.currentCountry.longitude, this.currentCountry.latitude],
+        sites: this.allSites,
+        selectedSites: this.data.sites
+      }
+    }).then(({confirmed, response}) => {
+      if (!confirmed) {
+        return;
+      }
+      this.data.sites = response;
+      this.data = {...this.data};
+    });
+  }
+
+  getSelectedSitesText(sites: Site[]) {
+    return (sites || []).map((x) => x.name).join('  |  ');
   }
 
   _isEmpty(array: any[]) {

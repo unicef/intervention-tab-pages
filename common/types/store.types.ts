@@ -43,6 +43,7 @@ export interface CommonDataState {
   unicefUsersData: [];
   partners: AnyObject[];
   locations: LocationObject[];
+  sites: Site[];
   sections: Section[];
   disaggregations: Disaggregation[];
   cpOutputs: CpOutput[];
