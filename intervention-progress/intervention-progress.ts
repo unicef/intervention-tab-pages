@@ -1,8 +1,8 @@
 import {customElement, html, LitElement, property} from 'lit-element';
 import get from 'lodash-es/get';
-import {connectStore} from '../../../etools-pages-common/mixins/connect-store-mixin';
-import {pageIsNotCurrentlyActive} from '../../../etools-pages-common/utils/common-methods';
-import {fireEvent} from '../../../etools-pages-common/utils/fire-custom-event';
+import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {TABS} from '../common/constants';
 import {isUnicefUser} from '../common/selectors';
 import {RootState} from '../common/types/store.types';

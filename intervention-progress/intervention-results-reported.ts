@@ -7,16 +7,16 @@ import '@unicef-polymer/etools-data-table/etools-data-table';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
 
-import '../../../etools-pages-common/layout/etools-form-element-wrapper';
+import '@unicef-polymer/etools-modules-common/dist/layout/etools-form-element-wrapper';
 import './layout/etools-progress-bar';
 import './layout/etools-ram-indicators';
 import '../common/layout/status/intervention-report-status';
 import './reports/indicator-report-target';
 
-import {sharedStyles} from '../../../etools-pages-common/styles/shared-styles-lit';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
 
-import {fireEvent} from '../../../etools-pages-common/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {RootState} from '../common/types/store.types';
 
 import {logError, logWarn} from '@unicef-polymer/etools-behaviors/etools-logging';
@@ -29,23 +29,23 @@ import {translate} from 'lit-translate';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {currentIntervention} from '../common/selectors';
 import {TABS} from '../common/constants';
-import {connectStore} from '../../../etools-pages-common/mixins/connect-store-mixin';
-import UtilsMixin from '../../../etools-pages-common/mixins/utils-mixin';
-import CommonMixin from '../../../etools-pages-common/mixins/common-mixin';
-import EndpointsLitMixin from '../../../etools-pages-common/mixins/endpoints-mixin-lit';
-import {contentSectionStylesLit} from '../../../etools-pages-common/styles/content-section-styles-lit';
-import {gridLayoutStylesLit} from '../../../etools-pages-common/styles/grid-layout-styles-lit';
-import {elevationStyles} from '../../../etools-pages-common/styles/elevation-styles';
-import {frWarningsStyles} from '../../../etools-pages-common/styles/fr-warnings-styles';
-import {pageIsNotCurrentlyActive} from '../../../etools-pages-common/utils/common-methods';
-import {isEmptyObject} from '../../../etools-pages-common/utils/utils';
+import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
+import UtilsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/utils-mixin';
+import CommonMixin from '@unicef-polymer/etools-modules-common/dist/mixins/common-mixin';
+import EndpointsLitMixin from '@unicef-polymer/etools-modules-common/dist/mixins/endpoints-mixin-lit';
+import {contentSectionStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/content-section-styles-lit';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
+import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/fr-warnings-styles';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {isEmptyObject} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {
   dateDiff,
   dateIsAfter,
   dateIsBetween,
   datesAreEqual,
   isValidDate
-} from '../../../etools-pages-common/utils/date-utils';
+} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
 declare const dayjs: any;
 

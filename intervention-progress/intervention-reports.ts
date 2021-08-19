@@ -10,23 +10,23 @@ import {abortRequestByKey} from '@unicef-polymer/etools-ajax/etools-iron-request
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 
 import '../common/layout/status/intervention-report-status';
-import {fireEvent} from '../../../etools-pages-common/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {RootState} from '../common/types/store.types';
 import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
 import get from 'lodash-es/get';
 import {GenericObject, User} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {currentIntervention} from '../common/selectors';
-import {sharedStyles} from '../../../etools-pages-common/styles/shared-styles-lit';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {TABS} from '../common/constants';
-import {connectStore} from '../../../etools-pages-common/mixins/connect-store-mixin';
-import PaginationMixin from '../../../etools-pages-common/mixins/pagination-mixin';
-import CommonMixin from '../../../etools-pages-common/mixins/common-mixin';
-import EndpointsLitMixin from '../../../etools-pages-common/mixins/endpoints-mixin-lit';
-import {gridLayoutStylesLit} from '../../../etools-pages-common/styles/grid-layout-styles-lit';
-import {elevationStyles} from '../../../etools-pages-common/styles/elevation-styles';
-import {pageIsNotCurrentlyActive} from '../../../etools-pages-common/utils/common-methods';
-import {isEmptyObject, isJsonStrMatch} from '../../../etools-pages-common/utils/utils';
+import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
+import PaginationMixin from '@unicef-polymer/etools-modules-common/dist/mixins/pagination-mixin';
+import CommonMixin from '@unicef-polymer/etools-modules-common/dist/mixins/common-mixin';
+import EndpointsLitMixin from '@unicef-polymer/etools-modules-common/dist/mixins/endpoints-mixin-lit';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {isEmptyObject, isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
 
 /**
