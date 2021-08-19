@@ -5,7 +5,6 @@ import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {removeDialog, createDynamicDialog} from '@unicef-polymer/etools-dialog/dynamic-dialog.js';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-
 import {logWarn} from '@unicef-polymer/etools-behaviors/etools-logging';
 import './update-fr-numbers';
 import {UpdateFrNumbers} from './update-fr-numbers';
