@@ -9,7 +9,7 @@ export interface IMarker extends Marker {
 }
 
 export const defaultIcon = L.icon({
-  iconUrl: '/epd/src/components/pages/interventions/intervention-tab-pages/assets/images/marker-icon-2x.png',
+  iconUrl: './src/components/pages/interventions/intervention-tab-pages/assets/images/marker-icon-2x.png',
   iconSize: [25, 41],
   shadowSize: [41, 41],
   iconAnchor: [12, 41],
@@ -18,7 +18,7 @@ export const defaultIcon = L.icon({
 });
 
 export const markedIcon = L.icon({
-  iconUrl: '/epd/src/components/pages/interventions/intervention-tab-pages/assets/images/marker-icon-yellow.png',
+  iconUrl: './src/components/pages/interventions/intervention-tab-pages/assets/images/marker-icon-yellow.png',
   iconSize: [25, 41],
   shadowSize: [41, 41],
   iconAnchor: [12, 41],
@@ -36,7 +36,7 @@ export class MapHelper {
     if (!element) {
       throw new Error('Please provide HTMLElement for map initialization!');
     }
-    L.Icon.Default.imagePath = '/epd/src/components/pages/interventions/intervention-tab-pages/assets/images/';
+    L.Icon.Default.imagePath = './src/components/pages/interventions/intervention-tab-pages/assets/images/';
     this.map = L.map(element);
     L.tileLayer(TILE_LAYER, {pane: 'tilePane'}).addTo(this.map);
     L.tileLayer(TILE_LAYER_LABELS, {pane: 'overlayPane'}).addTo(this.map);

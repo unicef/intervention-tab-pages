@@ -82,7 +82,7 @@ export class GroupedLocationsDialog extends LitElement {
         <sites-widget
           .workspaceCoordinates="${this.workspaceCoordinates}"
           .allSites="${this.allSites}"
-          .selectedSites="${this.selectedSites.map((x) => x.id)}"
+          .selectedSites="${this.selectedSites}"
           @sites-changed="${({detail}: CustomEvent) => {
             this.onSitesChanged(detail.sites || []);
           }}"
@@ -121,8 +121,8 @@ export class GroupedLocationsDialog extends LitElement {
     this.selectedSites = selectedSites || [];
   }
 
-  onSitesChanged(siteIDs: number[]): void {
-    this.selectedSites = this.allSites.filter((x) => siteIDs.includes(x.id));
+  onSitesChanged(sites: Site[]): void {
+    this.selectedSites = sites;
   }
 
   getSelectedSitesText(sites: Site[]) {

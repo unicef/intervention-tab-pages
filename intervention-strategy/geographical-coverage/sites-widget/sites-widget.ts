@@ -23,7 +23,7 @@ const DEFAULT_COORDINATES: LatLngTuple = [-0.09, 51.505];
 
 @customElement('sites-widget')
 export class LocationSitesWidgetComponent extends connectStore(LitElement) {
-  @property() selectedSites: number[] = [];
+  @property() selectedSites: Site[] = [];
   @property() allSites: Site[] = [];
   @property() sites!: Site[];
   @property() workspaceCoordinates!: [number, number];
@@ -35,7 +35,6 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
 
   protected defaultMapCenter: LatLngTuple = DEFAULT_COORDINATES;
   private MapHelper!: MapHelper;
-  private sitesLoading = true;
 
   static get styles(): CSSResultArray {
     return [elevationStyles, gridLayoutStylesLit, LocationWidgetStyles, leafletStyles];
@@ -161,10 +160,8 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
 
     this.defaultMapCenter = this.workspaceCoordinates || DEFAULT_COORDINATES;
     this.sites = (this.allSites || []).filter((s: Site) => s.is_active);
+    this.checkSelectedSitesExistence();
     this.mapInitialisation();
-    if (this.selectedSites.length) {
-      this.checkSelectedSites(this.selectedSites);
-    }
   }
 
   addSitesToMap(): void {
@@ -184,47 +181,44 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
     this.MapHelper.addCluster(reversedMarks, siteClick);
     this.requestUpdate();
     setTimeout(() => {
-      this.showSelectedSite();
+      this.markSelectedSitesOnMap();
     }, 100);
   }
 
-  showSelectedSite(): void {
-    if (this.selectedSites && this.selectedSites.length) {
-      const site = {id: this.selectedSites[0]} as Site;
-      this.onSiteHoverStart(site);
-      this.onSiteLineClick(site);
-    }
+  markSelectedSitesOnMap(): void {
+    (this.selectedSites || []).forEach((site) => this.setMarkerIcon(site.id, true));
   }
 
-  onSiteHoverStart(location: Site): void {
-    const site = (this.MapHelper.staticMarkers || []).find((marker: IMarker) => marker.staticData.id === location.id);
-    if (site) {
-      this.MapHelper.markerClusters.zoomToShowLayer(site, () => {
+  onSiteHoverStart(site: Site): void {
+    const marker = (this.MapHelper.staticMarkers || []).find((marker: IMarker) => marker.staticData.id === site.id);
+    if (marker) {
+      this.MapHelper.markerClusters.zoomToShowLayer(marker, () => {
         setTimeout(() => {
-          site.openPopup();
+          marker.openPopup();
         }, 10);
       });
     }
   }
 
+  addSiteToSelected(site: Site) {
+    if (!this.selectedSites.some((x: Site) => x.id === site.id)) {
+      this.selectedSites.push(site);
+      this.setMarkerIcon(site.id, true);
+      this.onSitesSelectionChange();
+    }
+  }
+
   onSiteLineClick(site: Site): void {
-    this.selectedSites.push(site.id);
-    this.selectedSites = [...new Set(this.selectedSites)];
-    this.setMarkerSelected(site.id, true);
-    this.onSitesSelectionChange();
+    this.addSiteToSelected(site);
   }
 
   onSiteClick(e: CustomEvent): void {
-    const id = (e.target as any).staticData.id;
-    this.selectedSites.push(id);
-    this.selectedSites = [...new Set(this.selectedSites)];
-    this.setMarkerSelected(id, true);
-    this.onSitesSelectionChange();
+    this.addSiteToSelected((e.target as any).staticData as Site);
   }
 
   onRemoveSiteClick(site: Site): void {
-    this.selectedSites = this.selectedSites.filter((x) => x !== site.id);
-    this.setMarkerSelected(site.id, false);
+    this.selectedSites = this.selectedSites.filter((x) => x.id !== site.id);
+    this.setMarkerIcon(site.id, false);
     this.onSitesSelectionChange();
   }
 
@@ -233,7 +227,7 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
     this.requestUpdate();
   }
 
-  setMarkerSelected(id: number, selected: boolean) {
+  setMarkerIcon(id: number, selected: boolean) {
     const marker = this.MapHelper.staticMarkers?.filter((m) => m.staticData.id === id);
     if (marker && marker.length) {
       marker[0].setIcon(selected ? markedIcon : defaultIcon);
@@ -244,7 +238,7 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
   }
 
   getSiteLineClass(siteId: number | string): string {
-    const isSelected: boolean = this.selectedSites.findIndex((id: number) => id === siteId) !== -1;
+    const isSelected: boolean = this.selectedSites.some((x: Site) => x.id === siteId);
     return isSelected ? 'selected' : '';
   }
 
@@ -266,30 +260,17 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
     this.mapInitialisation();
   }
 
-  protected updated(changedProperties: PropertyValues): void {
-    const oldSelectedSites: number[] | undefined = changedProperties.get('selectedSites') as number[] | undefined;
-    if (oldSelectedSites || changedProperties.has('mapInitializationProcess')) {
-      this.checkSelectedSites(this.selectedSites);
-    }
-  }
-
-  private checkSelectedSites(selectedSites: number[]): void {
-    if (this.mapInitializationProcess) {
+  private checkSelectedSitesExistence(): void {
+    if (!this.selectedSites || !this.selectedSites.length) {
       return;
     }
 
-    if (this.sitesLoading || !selectedSites.length) {
-      return;
-    }
+    const allSiteIDs = this.allSites.map((x) => x.id);
+    const missingSitesIDs = this.selectedSites.filter((x: Site) => !allSiteIDs.includes(x.id)).map((x) => x.id);
 
-    const missingSites: number[] = selectedSites.filter(
-      (siteId: number) => this.allSites.findIndex((site: Site) => site.id === siteId) === -1
-    );
-
-    if (missingSites.length !== 0) {
-      console.warn(`This sites are missing in list: ${missingSites}. They will be removed from selected`);
-      this.selectedSites = selectedSites.filter((siteId: number) => !missingSites.includes(siteId));
-      missingSites.forEach((siteId: number) => this.MapHelper.removeStaticMarker(siteId));
+    if (missingSitesIDs.length > 0) {
+      console.warn(`These sites are missing in list: ${missingSitesIDs.join(',')}. They will be removed from selected`);
+      this.selectedSites = this.selectedSites.filter((site) => !missingSitesIDs.includes(site.id));
     }
   }
 
