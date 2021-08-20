@@ -415,17 +415,6 @@ export const leafletStyles: CSSResult = css`
     border-radius: 5px;
   }
 
-  .leaflet-control-layers-toggle {
-    background-image: url(assets/images/layers.png);
-    width: 36px;
-    height: 36px;
-  }
-
-  .leaflet-retina .leaflet-control-layers-toggle {
-    background-image: url(assets/images/layers-2x.png);
-    background-size: 26px 26px;
-  }
-
   .leaflet-touch .leaflet-control-layers-toggle {
     width: 44px;
     height: 44px;
@@ -467,11 +456,6 @@ export const leafletStyles: CSSResult = css`
     height: 0;
     border-top: 1px solid #ddd;
     margin: 5px -10px 5px -6px;
-  }
-
-  /* Default icon URLs */
-  .leaflet-default-icon-path {
-    background-image: url(assets/images/marker-icon.png);
   }
 
   /* attribution and scale controls */

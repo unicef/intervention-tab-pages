@@ -14,27 +14,6 @@ export const LocationWidgetStyles: CSSResult = css`
     z-index: 0;
   }
 
-  .widget-container .history {
-    position: relative;
-    display: flex;
-    margin: 0 10px 5px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid var(--gray-lighter);
-  }
-
-  .widget-container .history .close-btn {
-    cursor: pointer;
-  }
-
-  .widget-container .history paper-input {
-    margin-right: 22px;
-  }
-
-  .widget-container .history paper-input div[slot] {
-    margin-left: 5px;
-    color: #dd0000;
-  }
-
   .widget-container a.link {
     color: var(--primary-color);
     cursor: pointer;

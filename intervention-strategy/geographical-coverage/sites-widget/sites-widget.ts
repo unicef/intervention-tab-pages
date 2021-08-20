@@ -42,34 +42,29 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
   get itemStyle(): string {
     // language=CSS
     return `
-      .site-line,
-      .location-line {
+      .site-line {
         position: relative;
         display: flex;
         padding: 5px;
         margin-bottom: 2px;
       }
 
-      .site-line:last-child,
-      .location-line:last-child {
+      .site-line:last-child{
         margin-bottom: 0;
       }
 
-      .site-line:hover,
-      .location-line:hover {
+      .site-line:hover {
         background-color: var(--gray-06);
         cursor: pointer;
       }
 
-      .site-line .gateway-name,
-      .location-line .gateway-name {
+      .site-line .gateway-name {
         flex: none;
         width: 100px;
         color: var(--gray-light);
       }
 
-      .site-line .location-name,
-      .location-line .location-name {
+      .site-line .location-name {
         flex: auto;
         overflow: hidden;
         white-space: nowrap;
@@ -77,26 +72,22 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
         margin-right: 5px;
       }
 
-      .site-line .deselect-btn,
-      .location-line .deselect-btn {
+      .site-line .deselect-btn {
         flex: none;
         width: 50px;
         text-align: center;
         color: #dd0000;
       }
 
-      .site-line .deselect-btn span,
-      .location-line .deselect-btn span {
+      .site-line .deselect-btn span {
         display: none;
       }
 
-      .site-line.selected,
-      .location-line.selected .deselect-btn {
+      .site-line.selected {
         background-color: #f3e5bf;
       }
 
-      .site-line.selected .deselect-btn span,
-      .location-line.selected .deselect-btn span {
+      .site-line.selected .deselect-btn span {
         display: inline;
       }
 
