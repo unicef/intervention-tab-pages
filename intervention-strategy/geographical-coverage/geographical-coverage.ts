@@ -124,7 +124,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         </div>
         <div class="flex-c layout-horizontal row-padding-v">
           <paper-textarea
-            label="Selected sites"
+            label=${translate(translatesMap.sites)}
             always-float-label
             class="w100"
             placeholder="&#8212;"
