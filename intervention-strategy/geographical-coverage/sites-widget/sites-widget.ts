@@ -18,6 +18,7 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {leafletStyles} from './leaflet-styles';
+import {Site} from '@unicef-polymer/etools-types';
 
 const DEFAULT_COORDINATES: LatLngTuple = [-0.09, 51.505];
 

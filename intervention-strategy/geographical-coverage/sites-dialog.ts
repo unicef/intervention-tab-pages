@@ -7,6 +7,7 @@ import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-c
 import {translate} from 'lit-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import './sites-widget/sites-widget';
+import {Site} from '@unicef-polymer/etools-types';
 
 /**
  * @customElement
