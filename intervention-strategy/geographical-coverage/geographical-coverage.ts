@@ -138,16 +138,17 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
           ></paper-textarea>
           <div class="locations-btn"></div>
         </div>
-        <paper-button
-          class="secondary-btn see-locations f-left"
-          @click="${this.openSitesDialog}"
-          ?hidden="${!this.editMode}"
-          title=${translate('SELECT_LOCATION_BY_SITE_FROM_MAP')}
-        >
-          <iron-icon icon="add"></iron-icon>
-          ${translate('SELECT_LOCATION_BY_SITE_FROM_MAP')}
-        </paper-button>
-
+        <div class="flex-c layout-horizontal row-padding-v">
+          <paper-button
+            class="secondary-btn see-locations f-left"
+            @click="${this.openSitesDialog}"
+            ?hidden="${!this.editMode}"
+            title=${translate('SELECT_LOCATION_BY_SITE_FROM_MAP')}
+          >
+            <iron-icon icon="add"></iron-icon>
+            ${translate('SELECT_LOCATION_BY_SITE_FROM_MAP')}
+          </paper-button>
+        </div>
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
       </etools-content-panel>
     `;

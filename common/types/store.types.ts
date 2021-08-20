@@ -5,6 +5,7 @@ import {
   EnvFlags,
   LabelAndValue,
   LocationObject,
+  Site,
   MinimalAgreement,
   RouteDetails,
   Intervention,
