@@ -24,8 +24,8 @@ const DEFAULT_COORDINATES: LatLngTuple = [-0.09, 51.505];
 @customElement('sites-widget')
 export class LocationSitesWidgetComponent extends connectStore(LitElement) {
   @property() selectedSites: Site[] = [];
-  @property() allSites: Site[] = [];
-  @property() sites!: Site[];
+  @property() sites: Site[] = [];
+  @property() displayedSites!: Site[];
   @property() workspaceCoordinates!: [number, number];
 
   @property({type: String, reflect: true}) locationSearch = '';
@@ -121,7 +121,7 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
 
             <div class="locations-list">
               ${repeat(
-                this.sites || [],
+                this.displayedSites || [],
                 (site: Site) => html`
                   <div
                     class="site-line ${this.getSiteLineClass(site.id)}"
@@ -150,19 +150,19 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
     this.mapInitializationProcess = true;
 
     this.defaultMapCenter = this.workspaceCoordinates || DEFAULT_COORDINATES;
-    this.sites = (this.allSites || []).filter((s: Site) => s.is_active);
+    this.displayedSites = (this.sites || []).filter((s: Site) => s.is_active);
     this.checkSelectedSitesExistence();
     this.mapInitialisation();
   }
 
   addSitesToMap(): void {
-    if (!this.MapHelper.map || !this.sites || this.MapHelper.markerClusters) {
+    if (!this.MapHelper.map || !this.displayedSites || this.MapHelper.markerClusters) {
       return;
     }
 
     const siteClick = this.onSiteClick.bind(this);
     const reversedMarks: MarkerDataObj[] = [];
-    (this.sites || []).forEach((location) => {
+    (this.displayedSites || []).forEach((location) => {
       reversedMarks.push({
         coords: [location.point.coordinates[1], location.point.coordinates[0]],
         staticData: location,
@@ -237,11 +237,11 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
     if (this.locationSearch !== value) {
       this.locationSearch = value;
       if (this.locationSearch) {
-        this.sites = this.allSites.filter((site: Site) => {
+        this.displayedSites = this.sites.filter((site: Site) => {
           return site.name.toLowerCase().includes(value.toLowerCase());
         });
       } else {
-        this.sites = [...this.allSites];
+        this.displayedSites = [...this.sites];
       }
     }
   }
@@ -256,7 +256,7 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
       return;
     }
 
-    const allSiteIDs = this.allSites.map((x) => x.id);
+    const allSiteIDs = this.sites.map((x) => x.id);
     const missingSitesIDs = this.selectedSites.filter((x: Site) => !allSiteIDs.includes(x.id)).map((x) => x.id);
 
     if (missingSitesIDs.length > 0) {
@@ -266,7 +266,7 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
   }
 
   private mapInitialisation(): void {
-    if (!this.mapElement || !this.sites) {
+    if (!this.mapElement || !this.displayedSites) {
       return;
     }
     if (this.mapInitializationProcess) {

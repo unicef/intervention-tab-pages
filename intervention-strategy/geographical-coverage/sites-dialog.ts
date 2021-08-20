@@ -18,7 +18,7 @@ export class GroupedLocationsDialog extends LitElement {
   }
 
   render() {
-    if (!this.allSites) {
+    if (!this.sites) {
       return html``;
     }
     // language=HTML
@@ -81,7 +81,7 @@ export class GroupedLocationsDialog extends LitElement {
       >
         <sites-widget
           .workspaceCoordinates="${this.workspaceCoordinates}"
-          .allSites="${this.allSites}"
+          .sites="${this.sites}"
           .selectedSites="${this.selectedSites}"
           @sites-changed="${({detail}: CustomEvent) => {
             this.onSitesChanged(detail.sites || []);
@@ -106,7 +106,7 @@ export class GroupedLocationsDialog extends LitElement {
   selectedSites!: Site[];
 
   @property({type: Array})
-  allSites!: Site[];
+  sites!: Site[];
 
   @property({type: Array})
   workspaceCoordinates!: [number, number];
@@ -117,7 +117,7 @@ export class GroupedLocationsDialog extends LitElement {
     }
     const {workspaceCoordinates, sites, selectedSites} = data;
     this.workspaceCoordinates = workspaceCoordinates;
-    this.allSites = sites || [];
+    this.sites = sites || [];
     this.selectedSites = selectedSites || [];
   }
 
