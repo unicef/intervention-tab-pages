@@ -1,20 +1,20 @@
 import {LitElement, customElement, html, property} from 'lit-element';
-import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
-import {elevationStyles} from '../../../../etools-pages-common/styles/elevation-styles';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {BudgetSummary} from './budgetSummary.models';
 import {selectBudgetSummary} from './budgetSummary.selectors';
-import {pageIsNotCurrentlyActive} from '../../../../etools-pages-common/utils/common-methods';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import {RootState} from '../../common/types/store.types';
 import get from 'lodash-es/get';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
-import {InfoElementStyles} from '../../../../etools-pages-common/styles/info-element-styles';
+import {InfoElementStyles} from '@unicef-polymer/etools-modules-common/dist/styles/info-element-styles';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {FrsDetails, Intervention} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {TABS} from '../../common/constants';
-import FrNumbersConsistencyMixin from '../../../../etools-pages-common/mixins/fr-numbers-consistency-mixin';
-import {frWarningsStyles} from '../../../../etools-pages-common/styles/fr-warnings-styles';
-import {customIcons} from '../../../../etools-pages-common/styles/custom-icons';
+import FrNumbersConsistencyMixin from '@unicef-polymer/etools-modules-common/dist/mixins/fr-numbers-consistency-mixin';
+import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/fr-warnings-styles';
+import {customIcons} from '@unicef-polymer/etools-modules-common/dist/styles/custom-icons';
 
 /**
  * @customElement

@@ -1,12 +1,12 @@
 import {LitElement, html, property, customElement, query} from 'lit-element';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
-import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '../../../../etools-pages-common/styles/button-styles';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import get from 'lodash-es/get';
-import {fireEvent} from '../../../../etools-pages-common/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {LocationObject} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
-import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 
 class GroupedLocations {
   adminLevelLocation: LocationObject | null = null;

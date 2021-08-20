@@ -8,30 +8,30 @@ import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@unicef-polymer/etools-upload/etools-upload';
 
 import '@unicef-polymer/etools-date-time/datepicker-lite';
-import ComponentBaseMixin from '../../../../etools-pages-common/mixins/component-base-mixin';
-import UploadMixin from '../../../../etools-pages-common/mixins/uploads-mixin';
+import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
+import UploadMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uploads-mixin';
 import CONSTANTS from '../../common/constants';
-import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
-import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
-import {getStore} from '../../../../etools-pages-common/utils/redux-store-access';
-import {isJsonStrMatch} from '../../../../etools-pages-common/utils/utils';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 
 import {RootState} from '../../common/types/store.types';
 import {selectReviewData, selectDatesAndSignaturesPermissions} from '../../common/managementDocument.selectors';
 import {ReviewDataPermission, ReviewData} from './managementDocument.model';
 import {isEmpty, cloneDeep} from 'lodash-es';
-import {buttonsStyles} from '../../../../etools-pages-common/styles/button-styles';
-import {getDifference} from '../../../../etools-pages-common/mixins/objects-diff';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import {getDifference} from '@unicef-polymer/etools-modules-common/dist/mixins/objects-diff';
 import {patchIntervention} from '../../common/actions/interventions';
-import {formatDate} from '../../../../etools-pages-common/utils/date-utils';
-import {pageIsNotCurrentlyActive} from '../../../../etools-pages-common/utils/common-methods';
+import {formatDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, MinimalUser, Permission, User} from '@unicef-polymer/etools-types';
 import {MinimalAgreement} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {sectionContentStyles} from '../../../../etools-pages-common/styles/content-section-styles-polymer';
-import {getEndpoint} from '../../../../etools-pages-common/utils/endpoint-helper';
+import {sectionContentStyles} from '@unicef-polymer/etools-modules-common/dist/styles/content-section-styles-polymer';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 
 /**

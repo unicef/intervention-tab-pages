@@ -8,20 +8,20 @@ import '@unicef-polymer/etools-date-time/datepicker-lite';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import './hru-list.js';
 import CONSTANTS from '../../../common/constants';
-import {fireEvent} from '../../../../../etools-pages-common/utils/fire-custom-event';
-import {convertDate} from '../../../../../etools-pages-common/utils/date-utils';
-import {getEndpoint} from '../../../../../etools-pages-common/utils/endpoint-helper';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {convertDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
-import {isEmptyObject} from '../../../../../etools-pages-common/utils/utils';
+import {isEmptyObject} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
-import {connectStore} from '../../../../../etools-pages-common/mixins/connect-store-mixin.js';
-import {gridLayoutStylesLit} from '../../../../../etools-pages-common/styles/grid-layout-styles-lit.js';
-import {buttonsStyles} from '../../../../../etools-pages-common/styles/button-styles.js';
-import {sharedStyles} from '../../../../../etools-pages-common/styles/shared-styles-lit.js';
+import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin.js';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit.js';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles.js';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit.js';
 
 /**
  * @polymer

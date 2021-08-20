@@ -1,15 +1,15 @@
 import {LitElement, html, property, customElement} from 'lit-element';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
-import {isEmptyObject} from '../../../../../etools-pages-common/utils/utils';
+import {isEmptyObject} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {ExpectedResult, ResultLinkLowerResult} from '@unicef-polymer/etools-types';
-import {fireEvent} from '../../../../../etools-pages-common/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
 import {translate} from 'lit-translate';
-import {gridLayoutStylesLit} from '../../../../../etools-pages-common/styles/grid-layout-styles-lit';
-import EndpointsLitMixin from '../../../../../etools-pages-common/mixins/endpoints-mixin-lit';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import EndpointsLitMixin from '@unicef-polymer/etools-modules-common/dist/mixins/endpoints-mixin-lit';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 
 /**

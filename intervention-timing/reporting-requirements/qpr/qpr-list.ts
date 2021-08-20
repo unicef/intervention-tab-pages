@@ -5,12 +5,12 @@ import '../styles/reporting-requirements-lists-styles';
 import ReportingReqPastDatesCheckMixin from '../mixins/reporting-req-past-dates-check';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
-import {fireEvent} from '../../../../../etools-pages-common/utils/fire-custom-event';
-import {isEmptyObject} from '../../../../../etools-pages-common/utils/utils';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {isEmptyObject} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
 import {translate} from 'lit-translate';
-import {gridLayoutStylesLit} from '../../../../../etools-pages-common/styles/grid-layout-styles-lit';
-import {sharedStyles} from '../../../../../etools-pages-common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 
 /**
  * @polymer

@@ -3,7 +3,7 @@ import '@polymer/paper-button/paper-button';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 
 import {createDynamicDialog} from '@unicef-polymer/etools-dialog/dynamic-dialog.js';
-import '../../../../../etools-pages-common/layout/icons-actions';
+import '@unicef-polymer/etools-modules-common/dist/layout/icons-actions';
 import './add-edit-special-rep-req';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
@@ -12,14 +12,14 @@ import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
-import {getEndpoint} from '../../../../../etools-pages-common/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
 import {translate, get as getTranslation} from 'lit-translate';
-import {openDialog} from '../../../../../etools-pages-common/utils/dialog';
-import {buttonsStyles} from '../../../../../etools-pages-common/styles/button-styles';
-import {gridLayoutStylesLit} from '../../../../../etools-pages-common/styles/grid-layout-styles-lit';
-import {sharedStyles} from '../../../../../etools-pages-common/styles/shared-styles-lit';
+import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 
 /**
  * @customElement

@@ -1,18 +1,18 @@
 import {LitElement, html, TemplateResult, property, customElement} from 'lit-element';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
-import {getEndpoint} from '../../../../../etools-pages-common/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {DataMixin} from '../../../../../etools-pages-common/mixins/data-mixin';
-import {getDifference} from '../../../../../etools-pages-common/mixins/objects-diff';
+import {DataMixin} from '@unicef-polymer/etools-modules-common/dist/mixins/data-mixin';
+import {getDifference} from '@unicef-polymer/etools-modules-common/dist/mixins/objects-diff';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
-import {getStore} from '../../../../../etools-pages-common/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {getIntervention} from '../../../common/actions/interventions';
-import {fireEvent} from '../../../../../etools-pages-common/utils/fire-custom-event';
-import {validateRequiredFields} from '../../../../../etools-pages-common/utils/validation-helper';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 import {AsyncAction, CpOutput} from '@unicef-polymer/etools-types';
 import {ResultLinkLowerResult} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
-import {sharedStyles} from '../../../../../etools-pages-common/styles/shared-styles-lit';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 
 @customElement('pd-output-dialog')
 export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElement) {
