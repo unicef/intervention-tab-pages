@@ -1,11 +1,11 @@
 import {LitElement, html, property, customElement} from 'lit-element';
 // import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import '@polymer/paper-input/paper-textarea';
-import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '../../../../etools-pages-common/styles/button-styles';
-import {fireEvent} from '../../../../etools-pages-common/utils/fire-custom-event';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {translate} from 'lit-translate';
-import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import './sites-widget/sites-widget';
 
 /**
@@ -73,7 +73,7 @@ export class GroupedLocationsDialog extends LitElement {
         size="lg"
         keep-dialog-open
         opened
-        dialog-title=${translate('SITES')}
+        dialog-title=${translate('SELECT_LOCATION_BY_SITE')}
         cancel-btn-text=${translate('GENERAL.CANCEL')}
         ok-btn-text=${translate('GENERAL.ADD_UPDATE')}
         @confirm-btn-clicked="${() => this.onConfirm()}"

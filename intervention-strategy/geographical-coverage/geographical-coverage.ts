@@ -80,6 +80,10 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
           max-width: 100%;
         }
 
+        .f-left {
+          float: left;
+        }
+
         etools-content-panel::part(ecp-content) {
           padding: 8px 24px 16px 24px;
         }
@@ -132,14 +136,17 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
             max-rows="4"
             .value="${this.getSelectedSitesText(this.data.sites)}"
           ></paper-textarea>
-          <div class="locations-btn">
-            <paper-icon-button
-              ?hidden="${!this.editMode}"
-              icon="create"
-              @click="${() => this.openSitesDialog()}"
-            ></paper-icon-button>
-          </div>
+          <div class="locations-btn"></div>
         </div>
+        <paper-button
+          class="secondary-btn see-locations f-left"
+          @click="${this.openSitesDialog}"
+          ?hidden="${!this.editMode}"
+          title=${translate('SELECT_LOCATION_BY_SITE_FROM_MAP')}
+        >
+          <iron-icon icon="add"></iron-icon>
+          ${translate('SELECT_LOCATION_BY_SITE_FROM_MAP')}
+        </paper-button>
 
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
       </etools-content-panel>

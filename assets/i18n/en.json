@@ -98,6 +98,8 @@
   "SITES": "Site(s)",
   "SITES_ERR": "Please select sites",
   "SEE_ALL_LOCATIONS": "See all locations",
+  "SELECT_LOCATION_BY_SITE": "Select Location by Site",
+  "SELECT_LOCATION_BY_SITE_FROM_MAP": "Select Location by Site from map",
   "SEE_ALL": "See all",
   "OTHER": "Other",
   "LOCATIONS_PD_COVERS": "Locations PD/SPD Covers",

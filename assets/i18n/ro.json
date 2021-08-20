@@ -96,6 +96,8 @@
   "SITES": "Site-uri",
   "SITES_ERR": "Va rugam selectati site-uri",
   "SEE_ALL_LOCATIONS": "Vezi toate locatiile",
+  "SELECT_LOCATION_BY_SITE": "Selectați locația după site",
+  "SELECT_LOCATION_BY_SITE_FROM_MAP": "Selectați locația după site de pe hartă",
   "SEE_ALL": "Vezi tot",
   "OTHER": "Altele",
   "LOCATIONS_PD_COVERS": "Locatiile acoperite de PD/SPD",

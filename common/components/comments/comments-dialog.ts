@@ -15,8 +15,8 @@ import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import '@polymer/paper-input/paper-textarea';
 import './comment';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getEndpoint} from '../../../../../etools-pages-common/utils/endpoint-helper';
-import {getStore} from '../../../../../etools-pages-common/utils/redux-store-access';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist//utils/endpoint-helper';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {addComment, updateComment} from './comments.actions';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {RootState} from '../../types/store.types';
@@ -24,8 +24,8 @@ import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/co
 import {PaperTextareaElement} from '@polymer/paper-input/paper-textarea';
 import {InterventionComment, GenericObject} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {sharedStyles} from '../../../../../etools-pages-common/styles/shared-styles-lit';
-import {setTextareasMaxHeight} from '../../../../../etools-pages-common/utils/textarea-max-rows-helper';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {setTextareasMaxHeight} from '@unicef-polymer/etools-modules-common/dist/utils/textarea-max-rows-helper';
 import {CommentsEndpoints} from './comments-types';
 
 @customElement('comments-dialog')

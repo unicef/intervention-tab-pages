@@ -9,14 +9,14 @@ import {
   TemplateResult
 } from 'lit-element';
 import {repeat} from 'lit-html/directives/repeat';
-import {connectStore} from '../../../../../etools-pages-common/mixins/connect-store-mixin';
+import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {LatLngTuple} from 'leaflet';
-import {IMarker, MapHelper, defaultIcon, markedIcon} from './map-mixin';
+import {IMarker, MapHelper, defaultIcon, markedIcon, MarkerDataObj} from './map-mixin';
 import {LocationWidgetStyles} from './location-widget.styles';
-import {gridLayoutStylesLit} from '../../../../../etools-pages-common/styles/grid-layout-styles-lit';
-import {sharedStyles} from '../../../../../etools-pages-common/styles/shared-styles-lit';
-import {elevationStyles} from '../../../../../etools-pages-common/styles/elevation-styles';
-import {fireEvent} from '../../../../../etools-pages-common/utils/fire-custom-event';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {leafletStyles} from './leaflet-styles';
 
 const DEFAULT_COORDINATES: LatLngTuple = [-0.09, 51.505];

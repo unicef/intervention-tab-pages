@@ -8,6 +8,13 @@ export interface IMarker extends Marker {
   staticData?: any;
 }
 
+export type MarkerDataObj = {
+  coords: [number, number];
+  staticData?: any;
+  popup?: string;
+};
+
+
 export const defaultIcon = L.icon({
   iconUrl: './src/components/pages/interventions/intervention-tab-pages/assets/images/marker-icon-2x.png',
   iconSize: [25, 41],
