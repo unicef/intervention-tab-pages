@@ -10,7 +10,7 @@ import {
   PropertyValues,
   queryAll
 } from 'lit-element';
-import {fireEvent} from '../../../../../etools-pages-common/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import '@polymer/paper-input/paper-textarea';
 import './comment';
@@ -20,7 +20,7 @@ import {getStore} from '../../../../../etools-pages-common/utils/redux-store-acc
 import {addComment, updateComment} from './comments.actions';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {RootState} from '../../types/store.types';
-import {connectStore} from '../../../../../etools-pages-common/mixins/connect-store-mixin';
+import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {PaperTextareaElement} from '@polymer/paper-input/paper-textarea';
 import {InterventionComment, GenericObject} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';

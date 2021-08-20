@@ -3,8 +3,8 @@ import '@polymer/iron-label/iron-label';
 import '@polymer/paper-button/paper-button';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 
-import {prepareDatepickerDate} from '../../../../../etools-pages-common/utils/date-utils';
-import {getEndpoint} from '../../../../../etools-pages-common/utils/endpoint-helper';
+import {prepareDatepickerDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import './qpr-list.js';
 import CONSTANTS from '../../../common/constants';
@@ -14,14 +14,14 @@ import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {QprListEl} from './qpr-list.js';
-import {fireEvent} from '../../../../../etools-pages-common/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {AnyObject} from '@unicef-polymer/etools-types';
 declare const dayjs: any;
 import {translate, get as getTranslation} from 'lit-translate';
 import {translatesMap} from '../../../utils/intervention-labels-map';
-import {gridLayoutStylesLit} from '../../../../../etools-pages-common/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '../../../../../etools-pages-common/styles/button-styles';
-import {sharedStyles} from '../../../../../etools-pages-common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 
 /**
  * @polymer
