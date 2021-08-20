@@ -18,9 +18,9 @@ import {getIntervention} from './common/actions/interventions';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {pageContentHeaderSlottedStyles} from './common/layout/page-content-header/page-content-header-slotted-styles';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
-import {buildUrlQueryString} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
-import {enableCommentMode, getComments} from './common/components/comments/comments.actions';
+import {fireEvent} from '../../etools-pages-common/utils/fire-custom-event';
+import {buildUrlQueryString} from '../../etools-pages-common/utils/utils';
+import {enableCommentMode, getComments, setCommentsEndpoint} from './common/components/comments/comments.actions';
 import {commentsData} from './common/components/comments/comments.reducer';
 import {Store} from 'redux';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
@@ -40,6 +40,7 @@ import {RESET_UNSAVED_UPLOADS, RESET_UPLOADS_IN_PROGRESS} from './common/actions
 import {RootState} from './common/types/store.types';
 import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from './utils/intervention-endpoints';
+import {CommentsEndpoints} from '../intervention-tab-pages/common/components/comments/comments-types';
 
 const MOCKUP_STATUSES = [
   ['draft', 'Draft'],
@@ -294,6 +295,12 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
         uploadStatus
       });
     });
+    const commentsEndpoints: CommentsEndpoints = {
+      saveComments: interventionEndpoints.comments,
+      deleteComment: interventionEndpoints.deleteComment,
+      resolveComment: interventionEndpoints.resolveComment
+    };
+    getStore().dispatch(setCommentsEndpoint(commentsEndpoints));
   }
 
   disconnectedCallback() {
@@ -644,6 +651,6 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
           loadingSource: 'intervention-tabs'
         })
       );
-    getStore().dispatch<AsyncAction>(getComments(Number(currentInterventionId)));
+    getStore().dispatch<AsyncAction>(getComments(interventionEndpoints.comments, Number(currentInterventionId)));
   }
 }

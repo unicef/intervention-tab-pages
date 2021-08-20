@@ -13,6 +13,7 @@ import {
   GenericObject,
   EtoolsUser
 } from '@unicef-polymer/etools-types';
+import {CommentsEndpoints} from '../components/comments/comments-types';
 
 export interface AppState {
   routeDetails: RouteDetails;
@@ -69,6 +70,7 @@ export interface RootState {
   commentsData: {
     commentsModeEnabled: boolean;
     collection: GenericObject<CommentsCollection>;
+    endpoints: CommentsEndpoints;
   };
 }
 

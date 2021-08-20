@@ -15,9 +15,8 @@ import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import '@polymer/paper-input/paper-textarea';
 import './comment';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
-import {interventionEndpoints} from '../../../utils/intervention-endpoints';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getEndpoint} from '../../../../../etools-pages-common/utils/endpoint-helper';
+import {getStore} from '../../../../../etools-pages-common/utils/redux-store-access';
 import {addComment, updateComment} from './comments.actions';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {RootState} from '../../types/store.types';
@@ -25,8 +24,9 @@ import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/co
 import {PaperTextareaElement} from '@polymer/paper-input/paper-textarea';
 import {InterventionComment, GenericObject} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {setTextareasMaxHeight} from '@unicef-polymer/etools-modules-common/dist/utils/textarea-max-rows-helper';
+import {sharedStyles} from '../../../../../etools-pages-common/styles/shared-styles-lit';
+import {setTextareasMaxHeight} from '../../../../../etools-pages-common/utils/textarea-max-rows-helper';
+import {CommentsEndpoints} from './comments-types';
 
 @customElement('comments-dialog')
 export class CommentsDialog extends connectStore(LitElement) {
@@ -69,6 +69,7 @@ export class CommentsDialog extends connectStore(LitElement) {
   @property() dialogOpened = true;
   @property() comments: (InterventionComment & {loadingError?: boolean})[] = [];
   @queryAll('paper-textarea') textareas!: PaperTextareaElement[];
+  @property() endpoints!: CommentsEndpoints;
 
   set dialogData({interventionId, relatedTo, relatedToDescription}: any) {
     this.interventionId = interventionId;
@@ -167,6 +168,7 @@ export class CommentsDialog extends connectStore(LitElement) {
       middle_name,
       name
     };
+    this.endpoints = state.commentsData.endpoints!;
   }
 
   onClose(): void {
@@ -185,7 +187,7 @@ export class CommentsDialog extends connectStore(LitElement) {
     this.requestUpdate();
     this.resolvingCollection.add(id);
     sendRequest({
-      endpoint: getEndpoint(interventionEndpoints.resolveComment, {interventionId: this.interventionId, commentId: id}),
+      endpoint: getEndpoint(this.endpoints.resolveComment, {interventionId: this.interventionId, commentId: id}),
       method: 'POST'
     })
       .then((updatedComment: InterventionComment) => {
@@ -209,7 +211,7 @@ export class CommentsDialog extends connectStore(LitElement) {
     this.requestUpdate();
     this.deletingCollection.add(id);
     sendRequest({
-      endpoint: getEndpoint(interventionEndpoints.deleteComment, {interventionId: this.interventionId, commentId: id}),
+      endpoint: getEndpoint(this.endpoints.deleteComment, {interventionId: this.interventionId, commentId: id}),
       method: 'POST'
     })
       .then((updatedComment: InterventionComment) => {
@@ -248,7 +250,7 @@ export class CommentsDialog extends connectStore(LitElement) {
       this.newMessageText = '';
     }
     sendRequest({
-      endpoint: getEndpoint(interventionEndpoints.comments, {interventionId: this.interventionId}),
+      endpoint: getEndpoint(this.endpoints.saveComments, {interventionId: this.interventionId}),
       method: 'POST',
       body
     })
