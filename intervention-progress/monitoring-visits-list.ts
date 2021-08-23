@@ -8,11 +8,11 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
 import isEmpty from 'lodash-es/isEmpty';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {sharedStyles} from '../../../etools-pages-common/styles/shared-styles-lit';
-import {getEndpoint} from '../../../etools-pages-common/utils/endpoint-helper';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
-import {gridLayoutStylesLit} from '../../../etools-pages-common/styles/grid-layout-styles-lit';
-import {prettyDate} from '../../../etools-pages-common/utils/date-utils';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {prettyDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
 declare const dayjs: any;
 
 /**
