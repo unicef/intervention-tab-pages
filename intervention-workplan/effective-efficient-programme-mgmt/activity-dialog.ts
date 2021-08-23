@@ -165,6 +165,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         <activity-items-table
           ?hidden="${!this.useInputLevel}"
           .activityItems="${this.items || []}"
+          .currency="${this.currency}"
           @activity-items-changed="${({detail}: CustomEvent) => {
             this.items = detail;
             this.requestUpdate();

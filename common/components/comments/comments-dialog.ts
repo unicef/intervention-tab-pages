@@ -15,7 +15,7 @@ import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import '@polymer/paper-input/paper-textarea';
 import './comment';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist//utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {addComment, updateComment} from './comments.actions';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
