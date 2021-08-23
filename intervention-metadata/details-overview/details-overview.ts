@@ -94,11 +94,15 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
           </div>
           <div class="data-column">
             <label class="paper-label">${translate('CORE_VALUES_ASSESSMENT_DATE')}</label>
-            <div class="input-label">${formatDate(this.interventionPartner?.last_assessment_date)}</div>
+            <div class="input-label" ?empty="${!this.interventionPartner?.last_assessment_date}">
+              ${formatDate(this.interventionPartner?.last_assessment_date)}
+            </div>
           </div>
           <div class="data-column">
             <label class="paper-label">${translate('PSEA_ASSESSMENT_DATE')}</label>
-            <div class="input-label">${formatDate(this.interventionPartner?.psea_assessment_date)}</div>
+            <div class="input-label" ?empty="${!this.interventionPartner?.psea_assessment_date}">
+              ${formatDate(this.interventionPartner?.psea_assessment_date)}
+            </div>
           </div>
 
           <etools-info-tooltip icon="icons:info" position="left" id="not-allowed-icon">

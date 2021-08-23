@@ -18,6 +18,7 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import {patchIntervention} from '../../common/actions/interventions';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import isEmpty from 'lodash-es/isEmpty';
@@ -26,7 +27,6 @@ import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission, PartnerStaffMember, AnyObject} from '@unicef-polymer/etools-types';
 import {MinimalAgreement} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
 
 /**
  * @customElement

@@ -1,8 +1,8 @@
 import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
-import {interventionEndpoints} from '../../../utils/intervention-endpoints';
-import {InterventionComment, GenericObject} from '@unicef-polymer/etools-types';
+import {InterventionComment, GenericObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import {_sendRequest} from '@unicef-polymer/etools-modules-common/dist/utils/request-helper';
-
+import {CommentsEndpoints} from './comments-types';
+export const SET_ENDPOINT = 'SET_ENDPOINT';
 export const SET_COMMENTS = 'SET_COMMENTS';
 export const ADD_COMMENT = 'ADD_COMMENT';
 export const UPDATE_COMMENT = 'UPDATE_COMMENT';
@@ -12,6 +12,13 @@ export const enableCommentMode = (state: boolean) => {
   return {
     type: ENABLE_COMMENT_MODE,
     state
+  };
+};
+
+export const setCommentsEndpoint = (endpoints: CommentsEndpoints) => {
+  return {
+    type: SET_ENDPOINT,
+    endpoints: endpoints
   };
 };
 
@@ -41,9 +48,9 @@ export const setComments = (comments: GenericObject<InterventionComment[]>, inte
   };
 };
 
-export const getComments = (interventionId: number) => (dispatch: any) => {
+export const getComments = (endpoint: EtoolsEndpoint, interventionId: number) => (dispatch: any) => {
   return _sendRequest({
-    endpoint: getEndpoint(interventionEndpoints.comments, {interventionId: interventionId})
+    endpoint: getEndpoint(endpoint, {interventionId: interventionId})
   }).then((comments: InterventionComment[]) => {
     dispatch(setComments(mapComments(comments), interventionId));
   });

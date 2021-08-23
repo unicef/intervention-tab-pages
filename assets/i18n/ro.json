@@ -457,5 +457,6 @@
   "UPLOAD_SUPPLY_TOOLTIP": "Upload From Supply Catalogue",
   "UPLOAD_SUPPLY_HELPER": "To upload from supply catalogue please visit {0} to select items and export to excel then upload into the PD.",
   "CANCELLATION_NOTE": "Motiv Anulare",
-  "REJECTION_NOTE": "Rejection Note"
+  "REJECTION_NOTE": "Rejection Note",
+  "REQUIRED_ERROR": "Please fill in required fields"
 }
