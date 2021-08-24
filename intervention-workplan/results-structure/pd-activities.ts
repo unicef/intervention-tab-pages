@@ -86,7 +86,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
         }
       </style>
 
-      <div class="row-h align-items-center header">
+      <div class="row-h align-items-center header" ?hidden="${this.readonly && !this.activities.length}">
         <div class="heading flex-auto">
           ${translate(translatesMap.activities)}
           <paper-icon-button
@@ -163,14 +163,16 @@ export class PdActivities extends CommentsMixin(LitElement) {
         `
       )}
       ${!this.activities.length
-        ? html`
-            <div class="layout-horizontal empty-row">
-              <div class="text flex-auto">—</div>
-              <div class="text number-data flex-none">—</div>
-              <div class="text number-data flex-none">—</div>
-              <div class="text number-data flex-none">—</div>
-            </div>
-          `
+        ? this.readonly
+          ? html`<div class="empty-row heading">${translate('THERE_ARE_NO_PD_ACTIVITIES')}</div>`
+          : html`
+              <div class="layout-horizontal empty-row">
+                <div class="text flex-auto">—</div>
+                <div class="text number-data flex-none">—</div>
+                <div class="text number-data flex-none">—</div>
+                <div class="text number-data flex-none">—</div>
+              </div>
+            `
         : ''}
     `;
   }
