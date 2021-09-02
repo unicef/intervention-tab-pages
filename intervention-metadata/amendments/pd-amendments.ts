@@ -157,7 +157,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
                   <div class="hover-block" ?hidden="${!item.is_active}">
                     <paper-icon-button
                       icon="delete"
-                      @click="${() => this.deleteAmendment(item.id)}"
+                      @click="${() => this.deleteAmendment(item.id, item.amended_intervention)}"
                     ></paper-icon-button>
                   </div>
                 </div>
@@ -285,7 +285,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
     });
   }
 
-  deleteAmendment(amendmentId: number): void {
+  deleteAmendment(amendmentId: number, amended_intervention: number): void {
     openDialog({
       dialog: 'are-you-sure',
       dialogData: {
@@ -306,6 +306,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
       };
       sendRequest(options)
         .then(() => {
+          fireEvent(this, 'amendment-deleted', {id: amended_intervention});
           return getStore().dispatch<AsyncAction>(getIntervention(this.intervention.id));
         })
         .catch(() => {
