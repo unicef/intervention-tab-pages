@@ -30,7 +30,7 @@ import {interventions} from './common/reducers/interventions';
 import {translate, get as getTranslation} from 'lit-translate';
 import {EtoolsTabs} from '@unicef-polymer/etools-modules-common/dist/layout/etools-tabs';
 import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
-import {reviews} from './common/reducers/officers-reviews';
+import {prcIndividualReviews} from './common/reducers/officers-reviews';
 import {uploadStatus} from './common/reducers/upload-status';
 import CONSTANTS, {TABS} from './common/constants';
 import UploadMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uploads-mixin';
@@ -291,7 +291,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       (store as any).addReducers({
         commentsData,
         interventions,
-        reviews,
+        prcIndividualReviews,
         uploadStatus
       });
     });
