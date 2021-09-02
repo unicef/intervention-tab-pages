@@ -157,7 +157,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
                   <div class="hover-block" ?hidden="${!item.is_active}">
                     <paper-icon-button
                       icon="delete"
-                      @click="${() => this.deleteAmendment(item.id)}"
+                      @click="${() => this.deleteAmendment(item.id, item.amended_intervention)}"
                     ></paper-icon-button>
                   </div>
                 </div>
@@ -220,6 +220,9 @@ export class PdAmendments extends CommentsMixin(LitElement) {
   @property({type: Object})
   intervention!: AnyObject;
 
+  @property({type: Boolean})
+  isNewAmendment = false;
+
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata')) {
       return;
@@ -233,6 +236,10 @@ export class PdAmendments extends CommentsMixin(LitElement) {
     if (currentIntervention && !isJsonStrMatch(this.intervention, currentIntervention)) {
       this.intervention = cloneDeep(currentIntervention);
       this.amendments = this.intervention.amendments;
+      if (this.isNewAmendment) {
+        this.isNewAmendment = false;
+        fireEvent(this, 'amendment-added', currentIntervention);
+      }
     }
     this.setPermissions(state);
     super.stateChanged(state);
@@ -271,13 +278,14 @@ export class PdAmendments extends CommentsMixin(LitElement) {
       }
     }).then(({response}) => {
       if (response?.id) {
+        this.isNewAmendment = true;
         history.pushState(window.history.state, '', `${ROOT_PATH}interventions/${response.id}/metadata`);
         window.dispatchEvent(new CustomEvent('popstate'));
       }
     });
   }
 
-  deleteAmendment(amendmentId: number): void {
+  deleteAmendment(amendmentId: number, amended_intervention: number): void {
     openDialog({
       dialog: 'are-you-sure',
       dialogData: {
@@ -298,6 +306,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
       };
       sendRequest(options)
         .then(() => {
+          fireEvent(this, 'amendment-deleted', {id: amended_intervention});
           return getStore().dispatch<AsyncAction>(getIntervention(this.intervention.id));
         })
         .catch(() => {
