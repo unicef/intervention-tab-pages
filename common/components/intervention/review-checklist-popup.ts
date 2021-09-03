@@ -9,7 +9,7 @@ import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-s
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
-import {loadReviews} from '../../actions/officers-reviews';
+import {loadPrcMembersIndividualReviews} from '../../actions/officers-reviews';
 import {REVIEW_ANSVERS, REVIEW_QUESTIONS} from '../../../intervention-review/review.const';
 import {updateCurrentIntervention} from '../../actions/interventions';
 import {getDifference} from '@unicef-polymer/etools-modules-common/dist/mixins/objects-diff';
@@ -212,7 +212,9 @@ export class ReviewChecklistPopup extends LitElement {
       body
     })
       .then(({intervention}: any) => getStore().dispatch(updateCurrentIntervention(intervention)))
-      .then(() => (!this.isOverallReview ? getStore().dispatch<AsyncAction>(loadReviews(reviewId)) : null))
+      .then(() =>
+        !this.isOverallReview ? getStore().dispatch<AsyncAction>(loadPrcMembersIndividualReviews(reviewId)) : null
+      )
       .then(() => this.close(true))
       .catch((err: any) => {
         const errorText = err?.response?.detail || 'Try again later';

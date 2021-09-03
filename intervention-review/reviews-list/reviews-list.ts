@@ -4,7 +4,7 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import {translate} from 'lit-translate';
 import {InterventionReview, PrcOfficerReview} from '@unicef-polymer/etools-types';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
-import {loadReviews} from '../../common/actions/officers-reviews';
+import {loadPrcMembersIndividualReviews} from '../../common/actions/officers-reviews';
 import {isEqual} from 'lodash-es';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {RootState} from '../../common/types/store.types';
@@ -43,14 +43,18 @@ export class ReviewsList extends connectStore(LitElement) {
     ];
   }
 
-  @property() set review(review: InterventionReview) {
-    const oldOfficers: number[] = this._review?.prc_officers || [];
+  private _review!: InterventionReview;
+  set review(review: InterventionReview) {
+    // Info: this._review is not persisted on nav to list and back to pd review (component is removed from DOM)
+    const oldOfficers: number[] | undefined = this._review ? this._review.prc_officers : undefined;
+
     this._review = review;
-    if (!isEqual(oldOfficers, review?.prc_officers)) {
-      getStore().dispatch<any>(loadReviews(review.id));
+    if (oldOfficers == undefined || !isEqual(oldOfficers, review?.prc_officers)) {
+      getStore().dispatch<any>(loadPrcMembersIndividualReviews(review.id));
     }
   }
 
+  @property({type: Object})
   get review(): InterventionReview {
     return this._review;
   }
@@ -58,8 +62,6 @@ export class ReviewsList extends connectStore(LitElement) {
   @property() approvals: PrcOfficerReview[] = [];
   @property() readonly = false;
   @property() currentUserId!: number;
-
-  private _review!: InterventionReview;
 
   render(): TemplateResult {
     return html`
@@ -118,7 +120,7 @@ export class ReviewsList extends connectStore(LitElement) {
     if (pageIsNotCurrentlyActive(state?.app?.routeDetails, 'interventions', 'review')) {
       return;
     }
-    this.approvals = state.reviews || [];
+    this.approvals = state.prcIndividualReviews || [];
     this.currentUserId = state.user.data!.user;
   }
 

@@ -6,7 +6,7 @@ import {PrcOfficerReview} from '@unicef-polymer/etools-types';
 export const SET_REVIEWS = 'SET_REVIEWS';
 export const RESET_REVIEWS = 'SET_REVIEWS';
 
-export const loadReviews = (reviewId: number) => (dispatch: any, getState: any) => {
+export const loadPrcMembersIndividualReviews = (reviewId: number) => (dispatch: any, getState: any) => {
   const interventionId = getState().app.routeDetails.params.interventionId;
   return sendRequest({
     endpoint: getEndpoint(interventionEndpoints.officersReviews, {interventionId: interventionId, id: reviewId})
