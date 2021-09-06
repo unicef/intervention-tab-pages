@@ -17,7 +17,6 @@ import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles
 import {getIntervention} from './common/actions/interventions';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
-import {pageContentHeaderSlottedStyles} from './common/layout/page-content-header/page-content-header-slotted-styles';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {buildUrlQueryString} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {enableCommentMode, getComments, setCommentsEndpoint} from './common/components/comments/comments.actions';
@@ -40,7 +39,9 @@ import {RESET_UNSAVED_UPLOADS, RESET_UPLOADS_IN_PROGRESS} from './common/actions
 import {RootState} from './common/types/store.types';
 import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from './utils/intervention-endpoints';
-import {CommentsEndpoints} from '../intervention-tab-pages/common/components/comments/comments-types';
+// eslint-disable-next-line max-len
+import {pageContentHeaderSlottedStyles} from '@unicef-polymer/etools-modules-common/dist/layout/page-content-header/page-content-header-slotted-styles';
+import {CommentsEndpoints} from './common/components/comments/comments-types';
 
 const MOCKUP_STATUSES = [
   ['draft', 'Draft'],

@@ -68,9 +68,9 @@ export class InterventionResultsReported extends connectStore(
   }
   render() {
     return html`
-      ${pmpCustomIcons}
+      ${pmpCustomIcons} ${sharedStyles}
       <style>
-        ${sharedStyles}${dataTableStylesLit} #progress-summary etools-progress-bar {
+        ${dataTableStylesLit} #progress-summary etools-progress-bar {
           margin-top: 16px;
         }
 

@@ -3,6 +3,7 @@ import {EtoolsEndpoint} from '@unicef-polymer/etools-types';
 export interface EtoolsEndpoints {
   intervention: EtoolsEndpoint;
   interventionAction: EtoolsEndpoint;
+  efaceAction: EtoolsEndpoint;
   partnerStaffMembers: EtoolsEndpoint;
   partnerAgreements: EtoolsEndpoint;
   specialReportingRequirements: EtoolsEndpoint;
@@ -60,6 +61,10 @@ export const interventionEndpoints: EtoolsEndpoints = {
   },
   interventionAction: {
     template: '/api/pmp/v3/interventions/<%=interventionId%>/<%=action%>/'
+  },
+  efaceAction: {
+    // TODO eface
+    template: '/api/v1/forms/<%=efaceId%>/<%=action%>/'
   },
   partnerStaffMembers: {
     template: '/api/pmp/v3/partners/<%=id%>/staff-members/'
