@@ -18,6 +18,7 @@ export class OverallApproval extends LitElement {
       css`
         :host {
           margin-top: 24px;
+          --list-row-wrapper-padding: 0;
         }
         .no-approval {
           padding: 16px 24px;

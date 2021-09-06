@@ -1,6 +1,6 @@
 import {RESET_REVIEWS, SET_REVIEWS} from '../actions/officers-reviews';
 
-export const reviews = (state = [], action: any) => {
+export const prcIndividualReviews = (state = [], action: any) => {
   switch (action.type) {
     case SET_REVIEWS:
       return action.reviews;

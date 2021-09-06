@@ -106,7 +106,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
         }
       </style>
 
-      <div class="row-h align-items-center header">
+      <div class="row-h align-items-center header" ?hidden="${!this.indicators.length && this.readonly}">
         <div class="heading flex-auto">
           ${translate(translatesMap.applied_indicators)}
           <paper-icon-button
@@ -140,13 +140,15 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
         `
       )}
       ${!this.indicators.length
-        ? html`
-            <div class="layout-horizontal empty-row">
-              <div class="text flex-auto">—</div>
-              <div class="text number-data flex-none">—</div>
-              <div class="text number-data flex-none">—</div>
-            </div>
-          `
+        ? this.readonly
+          ? html`<div class="empty-row heading">${translate('THERE_ARE_NO_PD_INDICATORS')}</div>`
+          : html`
+              <div class="layout-horizontal empty-row">
+                <div class="text flex-auto">—</div>
+                <div class="text number-data flex-none">—</div>
+                <div class="text number-data flex-none">—</div>
+              </div>
+            `
         : ''}
     `;
   }

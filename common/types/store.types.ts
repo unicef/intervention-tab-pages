@@ -63,7 +63,7 @@ export interface CommonDataState {
 export interface RootState {
   app: AppState;
   interventions: InterventionsState;
-  reviews: any[];
+  prcIndividualReviews: any[];
   agreements: AgreementsState;
   user: UserState;
   commonData: CommonDataState;
