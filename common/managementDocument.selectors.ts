@@ -14,7 +14,7 @@ export const selectDatesAndSignaturesPermissions = createSelector(
     return {
       edit: new ReviewDataPermission(permissions!.edit),
       required: new ReviewDataPermission(permissions!.required),
-      view: new ReviewDataPermission(permissions!.view!),
+      view: new ReviewDataPermission(permissions!.view!)
     };
   }
 );
