@@ -248,7 +248,6 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
               @upload-started="${this.__onUploadStarted}"
               @upload-finished="${this._signedPDUploadFinished}"
               @change-unsaved-file="${this._onChangeUnsavedFile}"
-              @upload-cancelled="${this.uploadCanceled}"
             >
             </etools-upload>
           </div>
@@ -305,7 +304,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
     }
 
     if (state.uploadStatus.uploadsInProgress || state.uploadStatus.unsavedUploads || this.justUploaded) {
-      setTimeout(() => (this.justUploaded = false), 100);
+      setTimeout(() => (this.justUploaded = false), 200);
       return; // Prevent upload related redux store changes (UploadMixin) from reseting data selected in other fields
     }
 
@@ -380,6 +379,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
     return this._isDraft(status) && fileUrl;
   }
   __onUploadStarted(e: CustomEvent) {
+    this.justUploaded = true;
     this._onUploadStarted(e);
   }
 
@@ -394,10 +394,6 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
     }
     this.decreaseUnsavedUploads();
     this.justUploaded = false;
-  }
-
-  uploadCanceled() {
-    getStore().dispatch({type: 'DECREASE_UPLOADS_IN_PROGRESS'});
   }
 
   validate() {
@@ -424,8 +420,8 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
       this.data.signed_pd_attachment = response.id;
       this.requestUpdate();
     }
-    this.justUploaded = true;
-    this._onUploadFinished(e);
+    // Called also after upload was cancelled
+    this._onUploadFinished(e.detail.success);
   }
 
   _signedPDDocDelete(_e: CustomEvent) {
