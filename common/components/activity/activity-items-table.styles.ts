@@ -41,7 +41,7 @@ export const ActivityItemsTableStyles: CSSResult = css`
       box-sizing: border-box;
     }
     div.grid-cell:before {
-      content: attr(data-col-header-label)": ";
+      content: attr(data-col-header-label) ': ';
       color: var(--list-secondary-text-color, #757575);
       font-weight: bold;
       margin-right: 8px;
