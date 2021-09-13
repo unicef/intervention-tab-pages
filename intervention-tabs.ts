@@ -351,7 +351,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       this.loadInterventionData(currentInterventionId);
     }
 
-    if (get(state, 'uploadStatus')) {
+    if (state.uploadStatus) {
       this.uploadsStateChanged(state);
     }
 

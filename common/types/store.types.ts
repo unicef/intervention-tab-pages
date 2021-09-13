@@ -14,6 +14,7 @@ import {
   EtoolsUser
 } from '@unicef-polymer/etools-types';
 import {CommentsEndpoints} from '../components/comments/comments-types';
+import {UploadStatusState} from '../reducers/upload-status';
 
 export interface AppState {
   routeDetails: RouteDetails;
@@ -72,6 +73,7 @@ export interface RootState {
     collection: GenericObject<CommentsCollection>;
     endpoints: CommentsEndpoints;
   };
+  uploadStatus: UploadStatusState;
 }
 
 export interface PartnerReportingRequirements {
