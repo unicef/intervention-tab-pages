@@ -228,10 +228,12 @@ export class InterventionActions extends LitElement {
     })
       .then((intervention: Intervention) => {
         if (action === AMENDMENT_MERGE) {
-          history.pushState(window.history.state, '', `${ROOT_PATH}interventions/${intervention.id}/metadata`);
-          window.dispatchEvent(new CustomEvent('popstate'));
+          this.redirectAfterProcessing(intervention.id, 'metadata');
         } else {
           getStore().dispatch(updateCurrentIntervention(intervention));
+          if (action === REVIEW) {
+            this.redirectAfterProcessing(intervention.id, REVIEW);
+          }
         }
       })
       .finally(() => {
@@ -248,6 +250,11 @@ export class InterventionActions extends LitElement {
           })
         });
       });
+  }
+
+  private redirectAfterProcessing(id: number | null, tabName: string) {
+    history.pushState(window.history.state, '', `${ROOT_PATH}interventions/${id}/${tabName}`);
+    window.dispatchEvent(new CustomEvent('popstate'));
   }
 
   private openCommentDialog(action: string): Promise<any> {
