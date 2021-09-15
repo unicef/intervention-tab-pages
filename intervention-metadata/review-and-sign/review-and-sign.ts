@@ -420,6 +420,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
       this.data.signed_pd_attachment = response.id;
       this.requestUpdate();
     }
+    this.justUploaded = true;
     // Called also after upload was cancelled
     this._onUploadFinished(e.detail.success);
   }
