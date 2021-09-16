@@ -287,6 +287,11 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   connectedCallback() {
     super.connectedCallback();
     this._showInterventionPageLoadingMessage();
+    const commentsEndpoints: CommentsEndpoints = {
+      saveComments: interventionEndpoints.comments,
+      deleteComment: interventionEndpoints.deleteComment,
+      resolveComment: interventionEndpoints.resolveComment
+    };
     getStoreAsync().then((store: Store<RootState>) => {
       (store as any).addReducers({
         commentsData,
@@ -294,13 +299,8 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
         prcIndividualReviews,
         uploadStatus
       });
+      getStore().dispatch(setCommentsEndpoint(commentsEndpoints));
     });
-    const commentsEndpoints: CommentsEndpoints = {
-      saveComments: interventionEndpoints.comments,
-      deleteComment: interventionEndpoints.deleteComment,
-      resolveComment: interventionEndpoints.resolveComment
-    };
-    getStore().dispatch(setCommentsEndpoint(commentsEndpoints));
   }
 
   disconnectedCallback() {
