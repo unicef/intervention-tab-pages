@@ -169,7 +169,6 @@ export class CommentsDialog extends connectStore(LitElement) {
       middle_name,
       name
     };
-    // this.endpoints = state.commentsData.endpoints!;
   }
 
   onClose(): void {
