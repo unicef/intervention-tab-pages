@@ -228,11 +228,11 @@ export class InterventionActions extends LitElement {
     })
       .then((intervention: Intervention) => {
         if (action === AMENDMENT_MERGE) {
-          this.redirectAfterProcessing(intervention.id, 'metadata');
+          this.redirectToTabPage(intervention.id, 'metadata');
         } else {
           getStore().dispatch(updateCurrentIntervention(intervention));
           if (action === REVIEW) {
-            this.redirectAfterProcessing(intervention.id, REVIEW);
+            this.redirectToTabPage(intervention.id, REVIEW);
           }
         }
       })
@@ -252,7 +252,7 @@ export class InterventionActions extends LitElement {
       });
   }
 
-  private redirectAfterProcessing(id: number | null, tabName: string) {
+  private redirectToTabPage(id: number | null, tabName: string) {
     history.pushState(window.history.state, '', `${ROOT_PATH}interventions/${id}/${tabName}`);
     window.dispatchEvent(new CustomEvent('popstate'));
   }
