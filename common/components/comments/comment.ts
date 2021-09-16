@@ -19,7 +19,11 @@ export class CommentElement extends LitElement {
   @property() deleting = false;
 
   get authorAvatar(): string {
-    return !this.comment ? '' : `${this.comment.user.first_name[0]}${this.comment.user.last_name[0]}`;
+    return !this.comment
+      ? ''
+      : `${this.comment.user.first_name ? this.comment.user.first_name[0] : ''}${
+          this.comment.user.last_name ? this.comment.user.last_name[0] : ''
+        }`;
   }
 
   get date(): string {
