@@ -71,9 +71,10 @@ export class CommentsDialog extends connectStore(LitElement) {
   @queryAll('paper-textarea') textareas!: PaperTextareaElement[];
   @property() endpoints!: CommentsEndpoints;
 
-  set dialogData({interventionId, relatedTo, relatedToDescription}: any) {
+  set dialogData({interventionId, relatedTo, relatedToDescription, endpoints}: any) {
     this.interventionId = interventionId;
     this.relatedTo = relatedTo;
+    this.endpoints = endpoints;
     this.commentsDialogTitle = `Comments on: ${relatedToDescription}`;
     const comments: GenericObject<InterventionComment[]> = getStore().getState().commentsData.collection[
       interventionId
@@ -168,7 +169,7 @@ export class CommentsDialog extends connectStore(LitElement) {
       middle_name,
       name
     };
-    this.endpoints = state.commentsData.endpoints!;
+    // this.endpoints = state.commentsData.endpoints!;
   }
 
   onClose(): void {
