@@ -53,26 +53,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
         @confirm-btn-clicked="${() => this._validateAndSaveAmendment()}"
         ?show-spinner="${this.savingInProcess}"
       >
-        <div class="row-h flex-c">
-          <!-- Amendment kind -->
-          <etools-dropdown
-            id="amendment-kind"
-            label=${translate('KIND')}
-            placeholder="&#8212;"
-            .options="${this.amendmentKinds}"
-            .selectedValue="${this.data.kind}"
-            hide-search
-            required
-            option-label="label"
-            option-value="value"
-            error-message=${translate('GENERAL.REQUIRED_FIELD')}
-            trigger-value-change-event
-            @etools-selected-item-changed="${({detail}: CustomEvent) => {
-              this.selectedItemChanged(detail, 'kind', 'value');
-            }}"
-          >
-          </etools-dropdown>
-        </div>
+        ${this.renderKindDropdown()}
         <div class="row-h flex-c">
           <!-- Amendment Type -->
           <etools-dropdown-multi
@@ -126,17 +107,17 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
   @property({type: Array})
   amendmentTypes!: LabelAndValue[];
 
-  @property({type: Array})
-  amendmentKinds: LabelAndValue[] = [
-    {
-      label: getTranslation(AmendmentsKindTranslateKeys[AmendmentsKind.normal]),
-      value: AmendmentsKind.normal
-    },
-    {
-      label: getTranslation(AmendmentsKindTranslateKeys[AmendmentsKind.contingency]),
-      value: AmendmentsKind.contingency
-    }
-  ];
+  // @property({type: Array})
+  // amendmentKinds: LabelAndValue[] = [
+  //   {
+  //     label: getTranslation(AmendmentsKindTranslateKeys[AmendmentsKind.normal]),
+  //     value: AmendmentsKind.normal
+  //   },
+  //   {
+  //     label: getTranslation(AmendmentsKindTranslateKeys[AmendmentsKind.contingency]),
+  //     value: AmendmentsKind.contingency
+  //   }
+  // ];
 
   @property({type: Array})
   filteredAmendmentTypes!: LabelAndValue[];
@@ -213,7 +194,11 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
       endpoint: getEndpoint(interventionEndpoints.interventionAmendmentAdd, {
         intervId: this.intervention.id
       }),
-      body: newAmendment
+      body: {
+        ...newAmendment,
+        kind: AmendmentsKind.normal
+      }
+      // body: newAmendment
     };
     this.savingInProcess = true;
     sendRequest(options)
@@ -238,5 +223,31 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
 
   public onClose(response = {}) {
     fireEvent(this, 'dialog-closed', {response});
+  }
+
+  public renderKindDropdown() {
+    return '';
+    // return html`
+    //   <div class="row-h flex-c">
+    //     <!-- Amendment kind -->
+    //     <etools-dropdown
+    //       id="amendment-kind"
+    //       label=${translate('KIND')}
+    //       placeholder="&#8212;"
+    //       .options="${this.amendmentKinds}"
+    //       .selectedValue="${this.data.kind}"
+    //       hide-search
+    //       required
+    //       option-label="label"
+    //       option-value="value"
+    //       error-message=${translate('GENERAL.REQUIRED_FIELD')}
+    //       trigger-value-change-event
+    //       @etools-selected-item-changed="${({detail}: CustomEvent) => {
+    //         this.selectedItemChanged(detail, 'kind', 'value');
+    //       }}"
+    //     >
+    //     </etools-dropdown>
+    //   </div>
+    // `;
   }
 }
