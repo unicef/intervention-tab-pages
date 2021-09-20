@@ -5,6 +5,7 @@ import '@polymer/paper-radio-group';
 import '@unicef-polymer/etools-loading/etools-loading';
 import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
+import './rating-instructions';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
@@ -41,7 +42,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
     }
     // language=HTML
     return html`
-     ${sharedStyles} 
+     ${sharedStyles}
       <style>
        :host {
           display: block;
@@ -77,6 +78,9 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         <div class="row-padding-v pb-20">
           <div class="w100">
             <label class="paper-label">${translate(translatesMap.gender_rating)}</label>
+            <rating-instructions ?hidden=${!this.editMode}
+              .instructions=${translate(translatesMap.gender_rating)}>
+            </rating-instructions>
           </div>
           ${this._getRatingRadioButtonGroupTemplate(
             this.editMode,
@@ -106,6 +110,9 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         <div class="row-padding-v pb-20">
           <div class="w100">
             <label class="paper-label">${translate(translatesMap.equity_rating)}</label>
+            <rating-instructions ?hidden=${!this.editMode}
+              .instructions=${translate(translatesMap.equity_rating)}>
+            </rating-instructions>
           </div>
           ${this._getRatingRadioButtonGroupTemplate(
             this.editMode,
@@ -135,6 +142,9 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         <div class="row-padding-v pb-20">
           <div class="w100">
             <label class="paper-label">${translate(translatesMap.sustainability_rating)}</label>
+            <rating-instructions ?hidden=${!this.editMode}
+              .instructions=${translate(translatesMap.sustainability_rating)}>
+            </rating-instructions>
           </div>
           ${this._getRatingRadioButtonGroupTemplate(
             this.editMode,
