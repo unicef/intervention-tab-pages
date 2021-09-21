@@ -10,6 +10,7 @@ export class OtherData extends ModelsBase {
   document_type = '';
   humanitarian_flag = false;
   contingency_pd = false;
+  activation_protocol = '';
 }
 
 export class OtherPermissions extends ModelsBase {
