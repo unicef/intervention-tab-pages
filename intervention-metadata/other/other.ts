@@ -169,7 +169,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
           </div>
         </div>
 
-        ${this.renderActions(this.editMode, true)}
+        ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
       </etools-content-panel>
     `;
   }
