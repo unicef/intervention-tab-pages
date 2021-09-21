@@ -98,9 +98,11 @@ export class ExportInterventionData extends LitElement {
       window.open(url, '_blank');
       return;
     }
-    // TODO: Export not implemented yet
-    // url = getEndpoint(interventionEndpoints.intervention, {interventionId: this.interventionId}).url;
-    // url = url + `export/${_type}/` + (this.params ? `?${this.params}` : '');
+    if (_type == 'export_pdf') {
+      url = getEndpoint(interventionEndpoints.exportPdf, {interventionId: this.interventionId}).url;
+      window.open(url, '_blank');
+      return;
+    }
     fireEvent(this, 'toast', {text: 'Export this not implemented...'});
   }
 }
