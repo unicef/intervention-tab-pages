@@ -250,9 +250,13 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
     }
 
     return getStore()
-      .dispatch<AsyncAction>(patchIntervention(this.data))
+      .dispatch<AsyncAction>(patchIntervention(this.getDataForSave()))
       .then(() => {
         this.editMode = false;
       });
+  }
+
+  getDataForSave() {
+    return {flat_locations: this.data.flat_locations, sites: (this.data.sites || []).map((x: Site) => x.id)};
   }
 }
