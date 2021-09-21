@@ -12,6 +12,7 @@ export const translatesMap: GenericObject = {
   equity_rating: 'EQUITY_RATING',
   gender_rating: 'GENDER_RATING',
   flat_locations: 'LOCATIONS',
+  sites: 'SITES',
   planned_budget: 'PLANNED_BUDGET',
   currency: 'DOCUMENT_CURRENCY',
   total_hq_cash_local: 'HQ_CONTRIBUTION',

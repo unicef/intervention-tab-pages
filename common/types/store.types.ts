@@ -5,6 +5,7 @@ import {
   EnvFlags,
   LabelAndValue,
   LocationObject,
+  Site,
   MinimalAgreement,
   RouteDetails,
   Intervention,
@@ -45,6 +46,7 @@ export interface CommonDataState {
   unicefUsersData: [];
   partners: AnyObject[];
   locations: LocationObject[];
+  sites: Site[];
   sections: Section[];
   disaggregations: Disaggregation[];
   cpOutputs: CpOutput[];
