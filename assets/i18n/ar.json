@@ -390,6 +390,7 @@
   "PRC_REVIEW_DOC_TITLE": "PRC Review Document (*For legacy PDs only)",
   "ATTACHMENT": "المرفق",
   "SELECT_DOC_TYPE": "حدد نوع المستند",
+  "ACTIVATION_PROTOCOL": "بروتوكول التنشيط",
   "NO_REPORTS_YET": "لا توجد تقارير حتى الان.",
   "REPORT_NUM": "عدد التقارير",
   "PARTNER": "شريك",

@@ -62,7 +62,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
         }
 
         paper-toggle-button {
-          margin: 25px 0;
+          margin-top: 25px;
         }
       </style>
 
@@ -120,12 +120,29 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
                 <paper-toggle-button
                   ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.document_type)}"
                   ?checked="${this.data.contingency_pd}"
-                  @checked-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'contingency_pd')}"
+                  @checked-changed="${({detail}: CustomEvent) => {
+                    this.valueChanged(detail, 'contingency_pd');
+                    this.data.activation_protocol = '';
+                  }}"
                 >
                   ${translate('CONTINGENCY_DOC')}
                 </paper-toggle-button>
               </div>
             </div>
+          </div>
+        </div>
+        <div class="layout-horizontal row-padding-v" ?hidden="${!this.data.contingency_pd}">
+          <div class="col col-4">
+            <paper-input
+              class="w100"
+              label=${translate('ACTIVATION_PROTOCOL')}
+              placeholder="&#8212;"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.document_type)}"
+              ?required="${this.data.contingency_pd}"
+              value="${this.data.activation_protocol || ''}"
+              @value-changed="${({detail}: CustomEvent) => (this.data.activation_protocol = detail.value)}"
+            >
+            </paper-input>
           </div>
         </div>
         <div class="layout-horizontal row-padding-v">
@@ -152,7 +169,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
           </div>
         </div>
 
-        ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
+        ${this.renderActions(this.editMode, true)}
       </etools-content-panel>
     `;
   }
@@ -207,6 +224,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
     if (type !== CONSTANTS.DOCUMENT_TYPES.SPD) {
       this.data.humanitarian_flag = false;
       this.data.contingency_pd = false;
+      this.data.activation_protocol = '';
     }
     this.data.document_type = type;
     this.requestUpdate();

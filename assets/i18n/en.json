@@ -391,6 +391,7 @@
   "PRC_REVIEW_DOC_TITLE": "PRC Review Document (*For legacy PDs only)",
   "ATTACHMENT": "Attachment",
   "SELECT_DOC_TYPE": "Select Document Type",
+  "ACTIVATION_PROTOCOL": "Activation Protocol",
   "NO_REPORTS_YET": "There are no reports yet.",
   "REPORT_NUM": "Report #",
   "PARTNER": "Partner",
