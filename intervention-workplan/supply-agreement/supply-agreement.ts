@@ -124,7 +124,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           </paper-icon-button>
         </div>
         <div class="row-h" ?hidden="${!this.permissions.edit.supply_items || this.supply_items?.length}">
-          <p id="uploadHelpPanel">${this.getUploadHelpText()}</p>
+          ${this.getUploadHelpElement()}
         </div>
         <etools-table
           ?hidden="${!this.supply_items?.length}"
@@ -263,15 +263,14 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       ${customStyles}`;
   }
 
-  getUploadHelpText() {
-    const uploadHelpPanel = this.shadowRoot!.querySelector('#uploadHelpPanel');
-    if (uploadHelpPanel) {
-      const link = 'https://supply.unicef.org/all-materials.html';
-      uploadHelpPanel.innerHTML = getTranslation('UPLOAD_SUPPLY_HELPER').replace(
-        '{0}',
-        `<a target='_blank' href=${link}>${link}</a>`
-      );
-    }
+  getUploadHelpElement() {
+    const link = 'https://supply.unicef.org/all-materials.html';
+    const paragraph = document.createElement('p');
+    paragraph.innerHTML = getTranslation('UPLOAD_SUPPLY_HELPER').replace(
+      '{0}',
+      `<a target='_blank' href=${link}>${link}</a>`
+    );
+    return paragraph;
   }
 
   stateChanged(state: RootState): void {
