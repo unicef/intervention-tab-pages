@@ -234,6 +234,10 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           opacity: 0.84;
           margin-left: 6px;
         }
+
+        .no-wrap {
+          white-space: nowrap;
+        }
       </style>
 
       <etools-content-panel
@@ -282,7 +286,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           )}
           <etools-info-tooltip
             custom-icon
-            position="left"
+            position="top"
             ?hide-tooltip="${!this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
           >
             <paper-icon-button
@@ -293,7 +297,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
               ?hidden="${!this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
               @click="${() => this.openCpOutputDialog()}"
             ></paper-icon-button>
-            <span slot="message">${translate('ADD_CP_OUTPUT')}</span>
+            <span class="no-wrap" slot="message">${translate('ADD_CP_OUTPUT')}</span>
           </etools-info-tooltip>
         </div>
         ${repeat(
