@@ -16,6 +16,7 @@ import '@unicef-polymer/etools-data-table/etools-data-table';
 import '@unicef-polymer/etools-content-panel';
 import '@polymer/paper-toggle-button/paper-toggle-button';
 import '@polymer/paper-icon-button/paper-icon-button';
+import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import './cp-output-level';
 import './pd-indicators';
 import './pd-activities';
@@ -279,13 +280,21 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
               </div>
             `
           )}
-          <paper-icon-button
-            class="add-cp"
-            icon="add-box"
-            tabindex="0"
-            ?hidden="${!this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
-            @click="${() => this.openCpOutputDialog()}"
-          ></paper-icon-button>
+          <etools-info-tooltip
+            custom-icon
+            position="left"
+            ?hide-tooltip="${!this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
+          >
+            <paper-icon-button
+              slot="custom-icon"
+              class="add-cp"
+              icon="add-box"
+              tabindex="0"
+              ?hidden="${!this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
+              @click="${() => this.openCpOutputDialog()}"
+            ></paper-icon-button>
+            <span slot="message">${translate('ADD_CP_OUTPUT')}</span>
+          </etools-info-tooltip>
         </div>
         ${repeat(
           this.resultLinks,
