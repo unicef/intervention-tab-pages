@@ -15,6 +15,7 @@ import {translate} from 'lit-translate';
 import {translatesMap} from '../../../../utils/intervention-labels-map';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 
+
 /**
  * @customElement
  * @appliesMixin IndicatorsCommonMixin
@@ -333,10 +334,10 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                 </paper-input>
               </div>`
           : html``}
-        <div class="col col-6">
+        <div class="col col-6" ?hidden=${!this.isUnicefUser}>
           <paper-toggle-button
             ?checked="${this.indicator.is_high_frequency}"
-            ?disabled="${this.readonly}"
+            ?disabled="${this.readonly || !this.isUnicefUser}"
             @iron-change="${this.isHighFrequencyChanged}"
           >
             ${translate(translatesMap.is_high_frequency)}
@@ -428,6 +429,9 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
 
   @property({type: String})
   interventionStatus!: string;
+
+  @property({type: Boolean})
+  isUnicefUser = false;
 
   private isHighFrequencyChanged(e: CustomEvent) {
     const chk = e.target as PaperCheckboxElement;
