@@ -149,6 +149,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
                     .locationOptions="${this.locationOptions}"
                     .interventionStatus="${this.interventionStatus}"
                     .readonly="${this.readonly}"
+                    .isUnicefUser="${this.currentUser?.is_unicef_user}"
                   ></non-cluster-indicator>`
                 : html``}
               ${this.isCluster
