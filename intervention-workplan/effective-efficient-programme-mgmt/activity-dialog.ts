@@ -1,4 +1,4 @@
-import {LitElement, html, property, customElement} from 'lit-element';
+import {LitElement, html, property, customElement, query} from 'lit-element';
 import '@polymer/paper-input/paper-input';
 import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-currency-amount-input';
@@ -18,6 +18,7 @@ import {formatCurrency, getTotal} from '../../common/components/activity/get-tot
 import {cloneDeep} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {AnyObject, ManagementBudgetItem} from '@unicef-polymer/etools-types';
 import {ActivityItemsTable} from '../../common/components/activity/activity-items-table';
+import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 
 /**
  * @customElement
@@ -163,6 +164,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
           </paper-toggle-button>
         </div>
         <activity-items-table
+          .dialogElement=${this.dialogElement}
           ?hidden="${!this.useInputLevel}"
           .activityItems="${this.items || []}"
           .currency="${this.currency}"
@@ -199,6 +201,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
   @property() useInputLevel = false;
   @property({type: String}) currency = '';
   @property({type: Array}) items: ManagementBudgetItem[] = [];
+  @query('etools-dialog') private dialogElement!: EtoolsDialog;
 
   onSaveClick() {
     const activityItemsValidationSummary = this.validateActivityItems();
