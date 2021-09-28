@@ -190,9 +190,11 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       </intervention-page-content-header>
 
       <div class="page-content">
-        ${this.intervention.cancel_justification
-          ? html`<reason-display .justification=${this.intervention.cancel_justification}></reason-display>`
-          : ''}
+        ${
+          this.intervention.cancel_justification
+            ? html`<reason-display .justification=${this.intervention.cancel_justification}></reason-display>`
+            : ''
+        }
         <intervention-metadata ?hidden="${!this.isActiveTab(this.activeTab, 'metadata')}"> </intervention-metadata>
         <intervention-strategy ?hidden="${!this.isActiveTab(this.activeTab, 'strategy')}"></intervention-strategy>
         <intervention-workplan ?hidden="${!this.isActiveTab(this.activeTab, 'workplan')}"> </intervention-workplan>
@@ -234,7 +236,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     },
     {
       tab: TABS.Timing,
-      tabLabel: (getTranslation('TIMING_TAB') as unknown) as string,
+      tabLabel: getTranslation('TIMING_TAB') as unknown as string,
       hidden: false
     }
   ];
@@ -341,7 +343,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     if (!isJsonStrMatch(this.intervention, currentIntervention)) {
       this.intervention = cloneDeep(currentIntervention);
 
-      if (currentIntervention.budget_owner) {
+      if (currentIntervention && currentIntervention.budget_owner) {
         this.userIsBudgetOwner = currentIntervention.budget_owner.id === get(state, 'user.data.user');
       }
 
@@ -465,7 +467,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       const pasteTo = this.pageTabs.findIndex((x) => x.tab === TABS.Progress);
       this.pageTabs.splice(pasteTo, 0, {
         tab: TABS.Attachments,
-        tabLabel: (getTranslation('ATTACHMENTS_TAB') as unknown) as string,
+        tabLabel: getTranslation('ATTACHMENTS_TAB') as unknown as string,
         hidden: false
       });
     } else if (tabIndex !== -1 && !canView) {
