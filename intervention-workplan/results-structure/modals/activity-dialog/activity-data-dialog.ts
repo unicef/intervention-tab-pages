@@ -1,4 +1,4 @@
-import {CSSResultArray, customElement, html, LitElement, property, TemplateResult} from 'lit-element';
+import {CSSResultArray, customElement, html, LitElement, property, TemplateResult, query} from 'lit-element';
 import '@unicef-polymer/etools-currency-amount-input';
 import '@polymer/paper-input/paper-textarea';
 import '@polymer/paper-toggle-button';
@@ -23,6 +23,7 @@ import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/st
 import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 import {getDifference} from '@unicef-polymer/etools-modules-common/dist/mixins/objects-diff';
+import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 
 @customElement('activity-data-dialog')
 export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitElement) {
@@ -38,6 +39,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
   @property() useInputLevel = false;
   @property({type: String}) spinnerText = 'Loading...';
   @property() readonly: boolean | undefined = false;
+  @query('etools-dialog') private dialogElement!: EtoolsDialog;
   quarters: ActivityTimeFrames[] = [];
 
   set dialogData({activityId, pdOutputId, interventionId, quarters, readonly, currency}: any) {
@@ -218,6 +220,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
             ${translate('USE_INPUT_LEVEL')}
           </paper-toggle-button>
           <activity-items-table
+            .dialogElement=${this.dialogElement}
             ?hidden="${!this.useInputLevel}"
             .activityItems="${this.editedData.items || []}"
             .readonly="${this.readonly}"
