@@ -1,16 +1,16 @@
 import {LitElement, customElement, html, property} from 'lit-element';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
-import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
-import {elevationStyles} from '../../../../etools-pages-common/styles/elevation-styles';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {TimingOverviewData} from './timingOverview.models';
 import {selectTimingOverview} from './timingOverview.selectors';
-import {formatDate} from '../../../../etools-pages-common/utils/date-utils';
+import {formatDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
 import {RootState} from '../../common/types/store.types';
-import {pageIsNotCurrentlyActive} from '../../../../etools-pages-common/utils/common-methods';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import get from 'lodash-es/get';
-import {InfoElementStyles} from '../../../../etools-pages-common/styles/info-element-styles';
+import {InfoElementStyles} from '@unicef-polymer/etools-modules-common/dist/styles/info-element-styles';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {translate} from 'lit-translate';
 

@@ -1,15 +1,15 @@
 /* eslint-disable lit/no-legacy-template-syntax */
 import {LitElement, html, property, customElement} from 'lit-element';
-import {getEndpoint} from '../../../../../etools-pages-common/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
-import {prepareDatepickerDate} from '../../../../../etools-pages-common/utils/date-utils';
+import {prepareDatepickerDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
 
 import '@polymer/iron-label/iron-label';
 import '@polymer/paper-input/paper-input';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 
 import '@unicef-polymer/etools-date-time/calendar-lite';
-import {fireEvent} from '../../../../../etools-pages-common/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
@@ -17,8 +17,8 @@ import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {AnyObject} from '@unicef-polymer/etools-types';
 declare const dayjs: any;
 import {translate} from 'lit-translate';
-import {gridLayoutStylesLit} from '../../../../../etools-pages-common/styles/grid-layout-styles-lit';
-import {sharedStyles} from '../../../../../etools-pages-common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 
 /**
  * @polymer

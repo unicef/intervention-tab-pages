@@ -1,12 +1,12 @@
 import {customElement, LitElement, html, CSSResultArray, css, TemplateResult, property} from 'lit-element';
-import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import '@unicef-polymer/etools-data-table/etools-data-table';
-import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {translate} from 'lit-translate';
 import {InterventionReview} from '@unicef-polymer/etools-types';
 import {REVIEW_ANSVERS, REVIEW_QUESTIONS} from '../review.const';
-import {openDialog} from '../../../../etools-pages-common/utils/dialog';
-import {formatDate} from '../../../../etools-pages-common/utils/date-utils';
+import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {formatDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
 import '../../common/components/intervention/review-checklist-popup';
 
 @customElement('overall-approval')
@@ -18,6 +18,7 @@ export class OverallApproval extends LitElement {
       css`
         :host {
           margin-top: 24px;
+          --list-row-wrapper-padding: 0;
         }
         .no-approval {
           padding: 16px 24px;

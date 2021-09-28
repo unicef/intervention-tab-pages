@@ -1,4 +1,4 @@
-import {CSSResultArray, customElement, html, LitElement, property, TemplateResult} from 'lit-element';
+import {CSSResultArray, customElement, html, LitElement, property, TemplateResult, query} from 'lit-element';
 import '@unicef-polymer/etools-currency-amount-input';
 import '@polymer/paper-input/paper-textarea';
 import '@polymer/paper-toggle-button';
@@ -7,22 +7,23 @@ import '../../../../common/components/activity/activity-items-table';
 import {formatCurrency, getTotal} from '../../../../common/components/activity/get-total.helper';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {interventionEndpoints} from '../../../../utils/intervention-endpoints';
-import {getStore} from '../../../../../../etools-pages-common/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import './activity-timeframes';
-import {fireEvent} from '../../../../../../etools-pages-common/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {ActivityItemsTable} from '../../../../common/components/activity/activity-items-table';
 import {updateCurrentIntervention} from '../../../../common/actions/interventions';
 import {ActivityTimeFrames} from './activity-timeframes';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {sharedStyles} from '../../../../../../etools-pages-common/styles/shared-styles-lit';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {AnyObject, InterventionActivity, InterventionActivityItem} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {translatesMap} from '../../../../utils/intervention-labels-map';
-import {DataMixin} from '../../../../../../etools-pages-common/mixins/data-mixin';
-import {gridLayoutStylesLit} from '../../../../../../etools-pages-common/styles/grid-layout-styles-lit';
-import {getEndpoint} from '../../../../../../etools-pages-common/utils/endpoint-helper';
-import {validateRequiredFields} from '../../../../../../etools-pages-common/utils/validation-helper';
-import {getDifference} from '../../../../../../etools-pages-common/mixins/objects-diff';
+import {DataMixin} from '@unicef-polymer/etools-modules-common/dist/mixins/data-mixin';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
+import {getDifference} from '@unicef-polymer/etools-modules-common/dist/mixins/objects-diff';
+import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 
 @customElement('activity-data-dialog')
 export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitElement) {
@@ -38,6 +39,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
   @property() useInputLevel = false;
   @property({type: String}) spinnerText = 'Loading...';
   @property() readonly: boolean | undefined = false;
+  @query('etools-dialog') private dialogElement!: EtoolsDialog;
   quarters: ActivityTimeFrames[] = [];
 
   set dialogData({activityId, pdOutputId, interventionId, quarters, readonly, currency}: any) {
@@ -218,6 +220,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
             ${translate('USE_INPUT_LEVEL')}
           </paper-toggle-button>
           <activity-items-table
+            .dialogElement=${this.dialogElement}
             ?hidden="${!this.useInputLevel}"
             .activityItems="${this.editedData.items || []}"
             .readonly="${this.readonly}"

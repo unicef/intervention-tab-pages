@@ -5,19 +5,19 @@ import '@unicef-polymer/etools-table/etools-table';
 import {EtoolsTableChildRow, EtoolsTableColumn, EtoolsTableColumnType} from '@unicef-polymer/etools-table/etools-table';
 import '@unicef-polymer/etools-currency-amount-input';
 import './activity-dialog';
-import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '../../../../etools-pages-common/styles/button-styles';
-import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
-import {elevationStyles} from '../../../../etools-pages-common/styles/elevation-styles';
-import {pageIsNotCurrentlyActive} from '../../../../etools-pages-common/utils/common-methods';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import get from 'lodash-es/get';
-import {isJsonStrMatch} from '../../../../etools-pages-common/utils/utils';
-import {openDialog} from '../../../../etools-pages-common/utils/dialog';
+import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import {
   selectProgrammeManagement,
   selectProgrammeManagementActivityPermissions
 } from './effectiveEfficientProgrammeMgmt.selectors';
-import ComponentBaseMixin from '../../../../etools-pages-common/mixins/component-base-mixin';
+import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {RootState} from '../../common/types/store.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {KindChoices, ProgrammeManagement} from './effectiveEfficientProgrammeMgmt.models';

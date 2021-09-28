@@ -5,17 +5,21 @@ import '@polymer/paper-radio-group';
 import '@unicef-polymer/etools-loading/etools-loading';
 import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import {buttonsStyles} from '../../../../etools-pages-common/styles/button-styles';
-import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
-import ComponentBaseMixin from '../../../../etools-pages-common/mixins/component-base-mixin';
+import './rating-instructions';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {selectGenderEquityRating, selectGenderEquityRatingPermissions} from './genderEquityRating.selectors';
 import {GenderEquityRatingPermissions, GenderEquityRating} from './genderEquityRating.models';
-import {getStore} from '../../../../etools-pages-common/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {RootState} from '../../common/types/store.types';
 import {patchIntervention} from '../../common/actions/interventions';
-import {isJsonStrMatch} from '../../../../etools-pages-common/utils/utils';
-import {pageIsNotCurrentlyActive, detailsTextareaRowsCount} from '../../../../etools-pages-common/utils/common-methods';
+import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {
+  pageIsNotCurrentlyActive,
+  detailsTextareaRowsCount
+} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
@@ -38,7 +42,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
     }
     // language=HTML
     return html`
-     ${sharedStyles} 
+     ${sharedStyles}
       <style>
        :host {
           display: block;
@@ -74,6 +78,9 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         <div class="row-padding-v pb-20">
           <div class="w100">
             <label class="paper-label">${translate(translatesMap.gender_rating)}</label>
+            <rating-instructions ?hidden=${!this.editMode}
+              .instructions=${translate(translatesMap.gender_rating)}>
+            </rating-instructions>
           </div>
           ${this._getRatingRadioButtonGroupTemplate(
             this.editMode,
@@ -103,6 +110,9 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         <div class="row-padding-v pb-20">
           <div class="w100">
             <label class="paper-label">${translate(translatesMap.equity_rating)}</label>
+            <rating-instructions ?hidden=${!this.editMode}
+              .instructions=${translate(translatesMap.equity_rating)}>
+            </rating-instructions>
           </div>
           ${this._getRatingRadioButtonGroupTemplate(
             this.editMode,
@@ -132,6 +142,9 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         <div class="row-padding-v pb-20">
           <div class="w100">
             <label class="paper-label">${translate(translatesMap.sustainability_rating)}</label>
+            <rating-instructions ?hidden=${!this.editMode}
+              .instructions=${translate(translatesMap.sustainability_rating)}>
+            </rating-instructions>
           </div>
           ${this._getRatingRadioButtonGroupTemplate(
             this.editMode,

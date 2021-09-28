@@ -47,7 +47,7 @@ export interface EtoolsEndpoints {
   hrClusterReportingRequirements: EtoolsEndpoint;
   getPRPCountries: EtoolsEndpoint;
   downloadComment: EtoolsEndpoint;
-  downloadPDPdf: EtoolsEndpoint;
+  exportPdf: EtoolsEndpoint;
   interventionReview: EtoolsEndpoint;
   sendReviewNotification: EtoolsEndpoint;
   officersReviews: EtoolsEndpoint;
@@ -218,7 +218,7 @@ export const interventionEndpoints: EtoolsEndpoints = {
     token: 'prp',
     cachingKey: 'prpCountries'
   },
-  downloadPDPdf: {
+  exportPdf: {
     template: '/api/pmp/v3/interventions/<%=interventionId%>/pdf'
   }
 };

@@ -3,15 +3,15 @@ import '@polymer/paper-button/paper-button';
 import '@polymer/paper-toggle-button/paper-toggle-button';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@unicef-polymer/etools-loading/etools-loading';
-import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '../../../../etools-pages-common/styles/button-styles';
-import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
-import {resetRequiredFields} from '../../../../etools-pages-common/utils/validation-helper';
-import {getStore} from '../../../../etools-pages-common/utils/redux-store-access';
-import ComponentBaseMixin from '../../../../etools-pages-common/mixins/component-base-mixin';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {resetRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {patchIntervention} from '../../common/actions/interventions';
-import {isJsonStrMatch} from '../../../../etools-pages-common/utils/utils';
-import {pageIsNotCurrentlyActive} from '../../../../etools-pages-common/utils/common-methods';
+import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import {RootState} from '../../common/types/store.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
@@ -62,7 +62,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
         }
 
         paper-toggle-button {
-          margin: 25px 0;
+          margin-top: 25px;
         }
       </style>
 
@@ -120,12 +120,29 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
                 <paper-toggle-button
                   ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.document_type)}"
                   ?checked="${this.data.contingency_pd}"
-                  @checked-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'contingency_pd')}"
+                  @checked-changed="${({detail}: CustomEvent) => {
+                    this.valueChanged(detail, 'contingency_pd');
+                    this.data.activation_protocol = '';
+                  }}"
                 >
                   ${translate('CONTINGENCY_DOC')}
                 </paper-toggle-button>
               </div>
             </div>
+          </div>
+        </div>
+        <div class="layout-horizontal row-padding-v" ?hidden="${!this.data.contingency_pd}">
+          <div class="col col-4">
+            <paper-input
+              class="w100"
+              label=${translate('ACTIVATION_PROTOCOL')}
+              placeholder="&#8212;"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.document_type)}"
+              ?required="${this.data.contingency_pd}"
+              value="${this.data.activation_protocol || ''}"
+              @value-changed="${({detail}: CustomEvent) => (this.data.activation_protocol = detail.value)}"
+            >
+            </paper-input>
           </div>
         </div>
         <div class="layout-horizontal row-padding-v">
@@ -207,6 +224,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
     if (type !== CONSTANTS.DOCUMENT_TYPES.SPD) {
       this.data.humanitarian_flag = false;
       this.data.contingency_pd = false;
+      this.data.activation_protocol = '';
     }
     this.data.document_type = type;
     this.requestUpdate();

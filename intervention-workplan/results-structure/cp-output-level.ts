@@ -9,17 +9,17 @@ import {
   TemplateResult
 } from 'lit-element';
 import {ResultStructureStyles} from './results-structure.styles';
-import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import '@unicef-polymer/etools-data-table/etools-data-table.js';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/iron-icons';
 import './modals/cp-output-dialog';
-import {fireEvent} from '../../../../etools-pages-common/utils/fire-custom-event';
-import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {callClickOnSpacePushListener} from '../../../../etools-pages-common/utils/common-methods';
+import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import {PaperButtonElement} from '@polymer/paper-button';
 
 @customElement('cp-output-level')

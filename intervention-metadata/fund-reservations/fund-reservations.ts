@@ -1,27 +1,20 @@
 import {LitElement, html, property, customElement} from 'lit-element';
-
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {removeDialog, createDynamicDialog} from '@unicef-polymer/etools-dialog/dynamic-dialog.js';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getStore} from '../../../../etools-pages-common/utils/redux-store-access';
-
-import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
 import {logWarn} from '@unicef-polymer/etools-behaviors/etools-logging';
 import './update-fr-numbers';
 import {UpdateFrNumbers} from './update-fr-numbers';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
-import {getEndpoint} from '../../../../etools-pages-common/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {RootState} from '../../common/types/store.types';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {fireEvent} from '../../../../etools-pages-common/utils/fire-custom-event';
-import {pageIsNotCurrentlyActive} from '../../../../etools-pages-common/utils/common-methods';
 import {patchIntervention} from '../../common/actions/interventions';
-import {isJsonStrMatch} from '../../../../etools-pages-common/utils/utils';
 import {FundReservationsPermissions} from './fund-reservations.models';
 import {selectFundReservationPermissions} from './fund-reservations.selectors';
 import {isUnicefUser} from '../../common/selectors';
@@ -29,11 +22,16 @@ import {AnyObject, AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {Intervention, FrsDetails, Fr} from '@unicef-polymer/etools-types';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {translate} from 'lit-translate';
-import FrNumbersConsistencyMixin from '../../../../etools-pages-common/mixins/fr-numbers-consistency-mixin';
-import {frWarningsStyles} from '../../../../etools-pages-common/styles/fr-warnings-styles';
-import ContentPanelMixin from '../../../../etools-pages-common/mixins/content-panel-mixin';
-import {customIcons} from '../../../../etools-pages-common/styles/custom-icons';
-import {getArraysDiff} from '../../../../etools-pages-common/utils/array-helper';
+import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import FrNumbersConsistencyMixin from '@unicef-polymer/etools-modules-common/dist/mixins/fr-numbers-consistency-mixin';
+import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/fr-warnings-styles';
+import ContentPanelMixin from '@unicef-polymer/etools-modules-common/dist/mixins/content-panel-mixin';
+import {customIcons} from '@unicef-polymer/etools-modules-common/dist/styles/custom-icons';
+import {getArraysDiff} from '@unicef-polymer/etools-modules-common/dist/utils/array-helper';
 
 /**
  * @customElement

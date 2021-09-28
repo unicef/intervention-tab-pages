@@ -1,23 +1,24 @@
-import {LitElement, html, property, customElement} from 'lit-element';
+import {LitElement, html, property, customElement, query} from 'lit-element';
 import '@polymer/paper-input/paper-input';
 import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-currency-amount-input';
-import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '../../../../etools-pages-common/styles/button-styles';
-import ComponentBaseMixin from '../../../../etools-pages-common/mixins/component-base-mixin';
-import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getEndpoint} from '../../../../etools-pages-common/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {fireEvent} from '../../../../etools-pages-common/utils/fire-custom-event';
-import {getStore} from '../../../../etools-pages-common/utils/redux-store-access';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {translate, get as getTranslation} from 'lit-translate';
 import '../../common/components/activity/activity-items-table';
 import {formatCurrency, getTotal} from '../../common/components/activity/get-total.helper';
-import {cloneDeep} from '../../../../etools-pages-common/utils/utils';
+import {cloneDeep} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {AnyObject, ManagementBudgetItem} from '@unicef-polymer/etools-types';
 import {ActivityItemsTable} from '../../common/components/activity/activity-items-table';
+import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 
 /**
  * @customElement
@@ -163,8 +164,10 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
           </paper-toggle-button>
         </div>
         <activity-items-table
+          .dialogElement=${this.dialogElement}
           ?hidden="${!this.useInputLevel}"
           .activityItems="${this.items || []}"
+          .currency="${this.currency}"
           @activity-items-changed="${({detail}: CustomEvent) => {
             this.items = detail;
             this.requestUpdate();
@@ -198,6 +201,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
   @property() useInputLevel = false;
   @property({type: String}) currency = '';
   @property({type: Array}) items: ManagementBudgetItem[] = [];
+  @query('etools-dialog') private dialogElement!: EtoolsDialog;
 
   onSaveClick() {
     const activityItemsValidationSummary = this.validateActivityItems();

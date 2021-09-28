@@ -1,17 +1,17 @@
 import {LitElement, customElement, html, property} from 'lit-element';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
-import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
-import {elevationStyles} from '../../../../etools-pages-common/styles/elevation-styles';
-import {InfoElementStyles} from '../../../../etools-pages-common/styles/info-element-styles';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
+import {InfoElementStyles} from '@unicef-polymer/etools-modules-common/dist/styles/info-element-styles';
 import {InterventionOverview} from './interventionOverview.models';
 import {selectInterventionOverview} from './interventionOverview.selectors';
 import {RootState} from '../../common/types/store.types';
-import {pageIsNotCurrentlyActive} from '../../../../etools-pages-common/utils/common-methods';
-import {formatDate} from '../../../../etools-pages-common/utils/date-utils';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {formatDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
 import get from 'lodash-es/get';
-import ComponentBaseMixin from '../../../../etools-pages-common/mixins/component-base-mixin';
+import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {translate} from 'lit-translate';
 import {allPartners, currentIntervention, isUnicefUser} from '../../common/selectors';
@@ -94,11 +94,15 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
           </div>
           <div class="data-column">
             <label class="paper-label">${translate('CORE_VALUES_ASSESSMENT_DATE')}</label>
-            <div class="input-label">${formatDate(this.interventionPartner?.last_assessment_date)}</div>
+            <div class="input-label" ?empty="${!this.interventionPartner?.last_assessment_date}">
+              ${formatDate(this.interventionPartner?.last_assessment_date)}
+            </div>
           </div>
           <div class="data-column">
             <label class="paper-label">${translate('PSEA_ASSESSMENT_DATE')}</label>
-            <div class="input-label">${formatDate(this.interventionPartner?.psea_assessment_date)}</div>
+            <div class="input-label" ?empty="${!this.interventionPartner?.psea_assessment_date}">
+              ${formatDate(this.interventionPartner?.psea_assessment_date)}
+            </div>
           </div>
 
           <etools-info-tooltip icon="icons:info" position="left" id="not-allowed-icon">

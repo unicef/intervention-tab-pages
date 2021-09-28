@@ -1,10 +1,11 @@
 import {RootState} from '../../types/store.types';
 import {LitElement} from 'lit-element';
 import {CommentsCollection} from './comments.reducer';
-import {openDialog} from '../../../../../etools-pages-common/utils/dialog';
+import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import './comments-dialog';
-import {connectStore} from '../../../../../etools-pages-common/mixins/connect-store-mixin';
+import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {Constructor, InterventionComment} from '@unicef-polymer/etools-types';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 
 type MetaData = CommentElementMeta & {
   oldStyles: string;
@@ -213,7 +214,8 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
             dialogData: {
               interventionId: this.currentInterventionId,
               relatedTo: meta.relatedTo,
-              relatedToDescription: meta.relatedToDescription
+              relatedToDescription: meta.relatedToDescription,
+              endpoints: getStore().getState().commentsData.endpoints
             }
           }).then(() => {
             this.currentEditedComments = null;

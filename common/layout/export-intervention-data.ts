@@ -3,10 +3,10 @@ import '@polymer/paper-button/paper-button';
 import '@polymer/paper-menu-button/paper-menu-button';
 import '@polymer/iron-icon/iron-icon';
 import '@polymer/paper-listbox/paper-listbox';
-import {fireEvent} from '../../../../etools-pages-common/utils/fire-custom-event';
-import {elevation2} from '../../../../etools-pages-common/styles/elevation-styles';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {elevation2} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {getEndpoint} from '../../../../etools-pages-common/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {AnyObject} from '@unicef-polymer/etools-types';
 
 /**
@@ -98,9 +98,11 @@ export class ExportInterventionData extends LitElement {
       window.open(url, '_blank');
       return;
     }
-    // TODO: Export not implemented yet
-    // url = getEndpoint(interventionEndpoints.intervention, {interventionId: this.interventionId}).url;
-    // url = url + `export/${_type}/` + (this.params ? `?${this.params}` : '');
+    if (_type == 'export_pdf') {
+      url = getEndpoint(interventionEndpoints.exportPdf, {interventionId: this.interventionId}).url;
+      window.open(url, '_blank');
+      return;
+    }
     fireEvent(this, 'toast', {text: 'Export this not implemented...'});
   }
 }

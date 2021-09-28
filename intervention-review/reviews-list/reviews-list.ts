@@ -1,17 +1,17 @@
 import {customElement, LitElement, html, CSSResultArray, css, TemplateResult, property} from 'lit-element';
-import {gridLayoutStylesLit} from '../../../../etools-pages-common/styles/grid-layout-styles-lit';
-import {sharedStyles} from '../../../../etools-pages-common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {translate} from 'lit-translate';
 import {InterventionReview, PrcOfficerReview} from '@unicef-polymer/etools-types';
-import {getStore} from '../../../../etools-pages-common/utils/redux-store-access';
-import {loadReviews} from '../../common/actions/officers-reviews';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {loadPrcMembersIndividualReviews} from '../../common/actions/officers-reviews';
 import {isEqual} from 'lodash-es';
-import {connectStore} from '../../../../etools-pages-common/mixins/connect-store-mixin';
+import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {RootState} from '../../common/types/store.types';
-import {pageIsNotCurrentlyActive} from '../../../../etools-pages-common/utils/common-methods';
-import {openDialog} from '../../../../etools-pages-common/utils/dialog';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import {REVIEW_ANSVERS, REVIEW_QUESTIONS} from '../review.const';
-import {formatDate} from '../../../../etools-pages-common/utils/date-utils';
+import {formatDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import '../../common/components/intervention/review-checklist-popup';
 
@@ -43,14 +43,18 @@ export class ReviewsList extends connectStore(LitElement) {
     ];
   }
 
-  @property() set review(review: InterventionReview) {
-    const oldOfficers: number[] = this._review?.prc_officers || [];
+  private _review!: InterventionReview;
+  set review(review: InterventionReview) {
+    // Info: this._review is not persisted on nav to list and back to pd review (component is removed from DOM)
+    const oldOfficers: number[] | undefined = this._review ? this._review.prc_officers : undefined;
+
     this._review = review;
-    if (!isEqual(oldOfficers, review?.prc_officers)) {
-      getStore().dispatch<any>(loadReviews(review.id));
+    if (oldOfficers == undefined || !isEqual(oldOfficers, review?.prc_officers)) {
+      getStore().dispatch<any>(loadPrcMembersIndividualReviews(review.id));
     }
   }
 
+  @property({type: Object})
   get review(): InterventionReview {
     return this._review;
   }
@@ -58,8 +62,6 @@ export class ReviewsList extends connectStore(LitElement) {
   @property() approvals: PrcOfficerReview[] = [];
   @property() readonly = false;
   @property() currentUserId!: number;
-
-  private _review!: InterventionReview;
 
   render(): TemplateResult {
     return html`
@@ -118,7 +120,7 @@ export class ReviewsList extends connectStore(LitElement) {
     if (pageIsNotCurrentlyActive(state?.app?.routeDetails, 'interventions', 'review')) {
       return;
     }
-    this.approvals = state.reviews || [];
+    this.approvals = state.prcIndividualReviews || [];
     this.currentUserId = state.user.data!.user;
   }
 

@@ -2,44 +2,45 @@ import '@polymer/paper-button/paper-button';
 import '@polymer/paper-toggle-button';
 
 import './common/layout/page-content-header/intervention-page-content-header';
-import '../../etools-pages-common/layout/etools-tabs';
-import '../../etools-pages-common/components/cancel/reason-display';
+import '@unicef-polymer/etools-modules-common/dist/layout/etools-tabs';
+import '@unicef-polymer/etools-modules-common/dist/components/cancel/reason-display';
 // eslint-disable-next-line max-len
-import '../../etools-pages-common/layout/status/etools-status';
+import '@unicef-polymer/etools-modules-common/dist/layout/status/etools-status';
 import './intervention-actions/intervention-actions';
 import './common/components/prp-country-data/prp-country-data';
 import {customElement, LitElement, html, property, css, query} from 'lit-element';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
-import {getStore, getStoreAsync} from '../../etools-pages-common/utils/redux-store-access';
+import {getStore, getStoreAsync} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {currentPage, currentSubpage, isUnicefUser, currentSubSubpage, currentUser} from './common/selectors';
-import {elevationStyles} from '../../etools-pages-common/styles/elevation-styles';
+import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {getIntervention} from './common/actions/interventions';
-import {sharedStyles} from '../../etools-pages-common/styles/shared-styles-lit';
-import {isJsonStrMatch} from '../../etools-pages-common/utils/utils';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {pageContentHeaderSlottedStyles} from './common/layout/page-content-header/page-content-header-slotted-styles';
-import {fireEvent} from '../../etools-pages-common/utils/fire-custom-event';
-import {buildUrlQueryString} from '../../etools-pages-common/utils/utils';
-import {enableCommentMode, getComments} from './common/components/comments/comments.actions';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {buildUrlQueryString} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {enableCommentMode, getComments, setCommentsEndpoint} from './common/components/comments/comments.actions';
 import {commentsData} from './common/components/comments/comments.reducer';
 import {Store} from 'redux';
-import {connectStore} from '../../etools-pages-common/mixins/connect-store-mixin';
+import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {EnvFlags, ExpectedResult, Intervention} from '@unicef-polymer/etools-types';
 import {AsyncAction, RouteDetails} from '@unicef-polymer/etools-types';
 import {interventions} from './common/reducers/interventions';
 import {translate, get as getTranslation} from 'lit-translate';
-import {EtoolsTabs} from '../../etools-pages-common/layout/etools-tabs';
-import {ROOT_PATH} from '../../etools-pages-common/config/config';
-import {reviews} from './common/reducers/officers-reviews';
+import {EtoolsTabs} from '@unicef-polymer/etools-modules-common/dist/layout/etools-tabs';
+import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
+import {prcIndividualReviews} from './common/reducers/officers-reviews';
 import {uploadStatus} from './common/reducers/upload-status';
 import CONSTANTS, {TABS} from './common/constants';
-import UploadMixin from '../../etools-pages-common/mixins/uploads-mixin';
-import '../../etools-pages-common/layout/are-you-sure';
-import {openDialog} from '../../etools-pages-common/utils/dialog';
+import UploadMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uploads-mixin';
+import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
+import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import {RESET_UNSAVED_UPLOADS, RESET_UPLOADS_IN_PROGRESS} from './common/actions/actionsContants';
 import {RootState} from './common/types/store.types';
-import {getEndpoint} from '../../etools-pages-common/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from './utils/intervention-endpoints';
+import {CommentsEndpoints} from '../intervention-tab-pages/common/components/comments/comments-types';
 
 const MOCKUP_STATUSES = [
   ['draft', 'Draft'],
@@ -168,6 +169,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
             .interventionId="${this.intervention.id}"
             .activeStatus="${this.intervention.status}"
             .actions="${this.availableActions}"
+            .userIsBudgetOwner="${this.userIsBudgetOwner}"
           ></intervention-actions>
         </div>
 
@@ -269,6 +271,9 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   @property({type: Boolean})
   isUnicefUser = false;
 
+  @property({type: Boolean})
+  userIsBudgetOwner = false;
+
   @property({type: Boolean, attribute: 'is-in-amendment', reflect: true})
   isInAmendment = false;
 
@@ -286,13 +291,19 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   connectedCallback() {
     super.connectedCallback();
     this._showInterventionPageLoadingMessage();
+    const commentsEndpoints: CommentsEndpoints = {
+      saveComments: interventionEndpoints.comments,
+      deleteComment: interventionEndpoints.deleteComment,
+      resolveComment: interventionEndpoints.resolveComment
+    };
     getStoreAsync().then((store: Store<RootState>) => {
       (store as any).addReducers({
         commentsData,
         interventions,
-        reviews,
+        prcIndividualReviews,
         uploadStatus
       });
+      getStore().dispatch(setCommentsEndpoint(commentsEndpoints));
     });
   }
 
@@ -329,6 +340,8 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     // check if intervention was changed
     if (!isJsonStrMatch(this.intervention, currentIntervention)) {
       this.intervention = cloneDeep(currentIntervention);
+
+      this.userIsBudgetOwner = currentIntervention.budget_owner.id === get(state, 'user.data.user');
       this.availableActions = this.checkExportOptionsAvailability(
         this.intervention?.available_actions || [],
         this.intervention!
@@ -344,7 +357,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       this.loadInterventionData(currentInterventionId);
     }
 
-    if (get(state, 'uploadStatus')) {
+    if (state.uploadStatus) {
       this.uploadsStateChanged(state);
     }
 
@@ -644,6 +657,6 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
           loadingSource: 'intervention-tabs'
         })
       );
-    getStore().dispatch<AsyncAction>(getComments(Number(currentInterventionId)));
+    getStore().dispatch<AsyncAction>(getComments(interventionEndpoints.comments, Number(currentInterventionId)));
   }
 }
