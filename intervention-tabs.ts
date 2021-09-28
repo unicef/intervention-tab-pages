@@ -169,6 +169,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
             .interventionId="${this.intervention.id}"
             .activeStatus="${this.intervention.status}"
             .actions="${this.availableActions}"
+            .userIsBudgetOwner="${this.userIsBudgetOwner}"
           ></intervention-actions>
         </div>
 
@@ -270,6 +271,9 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   @property({type: Boolean})
   isUnicefUser = false;
 
+  @property({type: Boolean})
+  userIsBudgetOwner = false;
+
   @property({type: Boolean, attribute: 'is-in-amendment', reflect: true})
   isInAmendment = false;
 
@@ -336,6 +340,8 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     // check if intervention was changed
     if (!isJsonStrMatch(this.intervention, currentIntervention)) {
       this.intervention = cloneDeep(currentIntervention);
+
+      this.userIsBudgetOwner = currentIntervention.budget_owner.id === get(state, 'user.data.user');
       this.availableActions = this.checkExportOptionsAvailability(
         this.intervention?.available_actions || [],
         this.intervention!
