@@ -341,7 +341,10 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     if (!isJsonStrMatch(this.intervention, currentIntervention)) {
       this.intervention = cloneDeep(currentIntervention);
 
-      this.userIsBudgetOwner = currentIntervention.budget_owner.id === get(state, 'user.data.user');
+      if (currentIntervention.budget_owner) {
+        this.userIsBudgetOwner = currentIntervention.budget_owner.id === get(state, 'user.data.user');
+      }
+
       this.availableActions = this.checkExportOptionsAvailability(
         this.intervention?.available_actions || [],
         this.intervention!

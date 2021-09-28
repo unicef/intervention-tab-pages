@@ -54,6 +54,9 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
   }
 
   @property({type: String})
+  interventionStatus = '';
+
+  @property({type: String})
   interventionStart!: string;
 
   @property({type: String})
@@ -83,7 +86,11 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
       dialog: 'edit-qpr-dialog',
       dialogData: {
         qprData: qprData,
-        interventionId: this.interventionId
+        interventionId: this.interventionId,
+        interventionStart: this.interventionStart,
+        interventionEnd: this.interventionEnd,
+        interventionStatus: this.interventionStatus,
+        initialReportingReq: this.reportingRequirements
       }
     }).then(({confirmed, response}) => {
       if (!confirmed || !response) {
