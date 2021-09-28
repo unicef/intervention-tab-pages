@@ -9,6 +9,7 @@ export const SEND_TO_PARTNER = 'send_to_partner';
 export const SEND_TO_UNICEF = 'send_to_unicef';
 const UNLOCK = 'unlock';
 export const SIGN = 'sign';
+export const SIGN_BUDGET_OWNER = 'sign_budget_owner';
 
 const ACCEPT = 'accept';
 export const REVIEW = 'review';
@@ -44,6 +45,8 @@ export const namesMap: GenericObject<string> = {
   [ACCEPT]: getTranslation('ACCEPT'),
   [REVIEW]: getTranslation('SEND_FOR_REVIEW'),
   [CANCEL]: getTranslation('GENERAL.CANCEL'),
+  [SIGN]: getTranslation('SIGN'),
+  [SIGN_BUDGET_OWNER]: getTranslation('SIGN_BUDGET_OWNER'),
   [TERMINATE]: getTranslation('TERMINATE'),
   [REJECT_REVIEW]: getTranslation('REJECT_REVIEW'),
   [ACCEPT_ON_BEHALF_OF_PARTNER]: getTranslation('ACCEPT_ON_BEHALF_OF_PARTNER')

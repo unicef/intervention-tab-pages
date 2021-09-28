@@ -19,6 +19,7 @@ import {AnyObject} from '@unicef-polymer/etools-types';
 declare const dayjs: any;
 import {translate, get as getTranslation} from 'lit-translate';
 import {translatesMap} from '../../../utils/intervention-labels-map';
+import GenerateQuarterlyReportingRequirementsMixin from '../mixins/generate-quarterly-reporting-requirements-mixin';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
@@ -28,7 +29,7 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
  * @customElement
  */
 @customElement('edit-qpr-dialog')
-export class EditQprDialog extends LitElement {
+export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(LitElement) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -60,6 +61,9 @@ export class EditQprDialog extends LitElement {
           position: relative;
           width: 288px;
         }
+        #regenerate-info {
+          margin-inline-end: 24px;
+        }
       </style>
 
       <etools-dialog
@@ -73,11 +77,18 @@ export class EditQprDialog extends LitElement {
         cancel-btn-text=${translate('GENERAL.CANCEL')}
         keep-dialog-open
         opened
+        ?show-spinner="${this.requestInProgress}"
         spinner-text=${translate('GENERAL.SAVING_DATA')}
       >
         <div class="layout-horizontal">
           <span id="qpr-edit-info">${translate('ALL_DATES_IN_FUTURE')}</span>
           <paper-button class="secondary-btn" @click="${this._addNewQpr}">${translate('ADD_REQUIREMENT')}</paper-button>
+        </div>
+        <div class="layout-horizontal" style="padding-top:10px" ?hidden="${!this.insterventionsDatesDiffer()}">
+          <span id="regenerate-info">${translate('PD_START_END_DATE_CHANGED')}</span> &nbsp;
+          <paper-button class="secondary-btn" @click="${this.regenerateReportingRequirements}"
+            >${translate('REGENERATE')}</paper-button
+          >
         </div>
 
         <qpr-list
@@ -171,10 +182,29 @@ export class EditQprDialog extends LitElement {
   @property({type: Array})
   qprData!: any[];
 
+  @property({type: String})
+  interventionStart!: string;
+
+  @property({type: String})
+  interventionEnd!: string;
+
+  @property({type: Boolean})
+  requestInProgress = false;
+
+  @property({type: String})
+  interventionStatus = '';
+
+  @property({type: Array})
+  initialReportingReq!: [];
+
   set dialogData(data: any) {
     const {qprData, interventionId}: any = data;
     this.qprData = qprData;
     this.interventionId = interventionId;
+    this.interventionStart = data.interventionStart;
+    this.interventionEnd = data.interventionEnd;
+    this.interventionStatus = data.interventionStatus;
+    this.initialReportingReq = data.initialReportingReq;
 
     this.addEventListener('edit-qpr', this._editQprDatesSet as any);
   }
@@ -198,6 +228,25 @@ export class EditQprDialog extends LitElement {
   _addNewQpr() {
     this._editedQprDatesSet = Object.assign({}, this._qprDatesSetModel);
     this.addOrModifyQprDialogOpened = true;
+  }
+
+  regenerateReportingRequirements() {
+    this.requestInProgress = true;
+    this.qprData = this.generateQPRData(this.interventionStart, this.interventionEnd);
+    setTimeout(() => (this.requestInProgress = false));
+  }
+
+  insterventionsDatesDiffer() {
+    if (!['draft', 'development'].includes(this.interventionStatus)) {
+      return false;
+    }
+    if (!this.initialReportingReq || !this.initialReportingReq.length) {
+      return false;
+    }
+    return (
+      this.interventionStart != this.qprData[0].start_date ||
+      this.interventionEnd != this.qprData[this.qprData.length - 1].end_date
+    );
   }
 
   _duplicateDueDate(dueDate: any) {

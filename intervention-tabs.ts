@@ -169,6 +169,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
             .interventionId="${this.intervention.id}"
             .activeStatus="${this.intervention.status}"
             .actions="${this.availableActions}"
+            .userIsBudgetOwner="${this.userIsBudgetOwner}"
           ></intervention-actions>
         </div>
 
@@ -189,9 +190,11 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       </intervention-page-content-header>
 
       <div class="page-content">
-        ${this.intervention.cancel_justification
-          ? html`<reason-display .justification=${this.intervention.cancel_justification}></reason-display>`
-          : ''}
+        ${
+          this.intervention.cancel_justification
+            ? html`<reason-display .justification=${this.intervention.cancel_justification}></reason-display>`
+            : ''
+        }
         <intervention-metadata ?hidden="${!this.isActiveTab(this.activeTab, 'metadata')}"> </intervention-metadata>
         <intervention-strategy ?hidden="${!this.isActiveTab(this.activeTab, 'strategy')}"></intervention-strategy>
         <intervention-workplan ?hidden="${!this.isActiveTab(this.activeTab, 'workplan')}"> </intervention-workplan>
@@ -233,7 +236,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     },
     {
       tab: TABS.Timing,
-      tabLabel: (getTranslation('TIMING_TAB') as unknown) as string,
+      tabLabel: getTranslation('TIMING_TAB') as unknown as string,
       hidden: false
     }
   ];
@@ -269,6 +272,9 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
 
   @property({type: Boolean})
   isUnicefUser = false;
+
+  @property({type: Boolean})
+  userIsBudgetOwner = false;
 
   @property({type: Boolean, attribute: 'is-in-amendment', reflect: true})
   isInAmendment = false;
@@ -336,6 +342,11 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     // check if intervention was changed
     if (!isJsonStrMatch(this.intervention, currentIntervention)) {
       this.intervention = cloneDeep(currentIntervention);
+
+      if (currentIntervention && currentIntervention.budget_owner) {
+        this.userIsBudgetOwner = currentIntervention.budget_owner.id === get(state, 'user.data.user');
+      }
+
       this.availableActions = this.checkExportOptionsAvailability(
         this.intervention?.available_actions || [],
         this.intervention!
@@ -456,7 +467,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       const pasteTo = this.pageTabs.findIndex((x) => x.tab === TABS.Progress);
       this.pageTabs.splice(pasteTo, 0, {
         tab: TABS.Attachments,
-        tabLabel: (getTranslation('ATTACHMENTS_TAB') as unknown) as string,
+        tabLabel: getTranslation('ATTACHMENTS_TAB') as unknown as string,
         hidden: false
       });
     } else if (tabIndex !== -1 && !canView) {

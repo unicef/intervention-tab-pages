@@ -34,7 +34,8 @@ import {
   REJECT_REVIEW,
   REVIEW,
   SIGN,
-  ACCEPT_ON_BEHALF_OF_PARTNER
+  ACCEPT_ON_BEHALF_OF_PARTNER,
+  SIGN_BUDGET_OWNER
 } from './intervention-actions.constants';
 import {PaperMenuButton} from '@polymer/paper-menu-button/paper-menu-button';
 import {updateCurrentIntervention} from '../common/actions/interventions';
@@ -56,6 +57,7 @@ export class InterventionActions extends LitElement {
   @property({type: String}) dir = 'ltr';
   interventionId!: number;
   activeStatus!: string;
+  userIsBudgetOwner = false;
 
   connectedCallback() {
     super.connectedCallback();
@@ -124,7 +126,7 @@ export class InterventionActions extends LitElement {
                 this.processAction(mainAction);
               }}"
             >
-              ${this.actionsNamesMap[mainAction]}
+              ${this.getMainActionTranslatedText(mainAction)}
             </span>
             ${this.getAdditionalTransitions(actions)}
           </paper-menu-button>
@@ -362,5 +364,12 @@ export class InterventionActions extends LitElement {
       default:
         return;
     }
+  }
+
+  private getMainActionTranslatedText(mainAction: string) {
+    if (this.activeStatus === 'review' && this.userIsBudgetOwner && mainAction === 'sign') {
+      return this.actionsNamesMap[SIGN_BUDGET_OWNER];
+    }
+    return this.actionsNamesMap[mainAction];
   }
 }

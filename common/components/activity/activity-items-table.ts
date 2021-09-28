@@ -18,6 +18,7 @@ import {translate} from 'lit-translate';
 import {translatesMap} from '../../../utils/intervention-labels-map';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 
 @customElement('activity-items-table')
 export class ActivityItemsTable extends LitElement {
@@ -42,6 +43,7 @@ export class ActivityItemsTable extends LitElement {
 
   @property() activityItems: Partial<InterventionActivityItem>[] = [];
   @property() readonly: boolean | undefined = false;
+  @property() dialogElement!: EtoolsDialog;
   @property({type: String})
   currency = '';
 
@@ -68,7 +70,10 @@ export class ActivityItemsTable extends LitElement {
           html`<activity-item-row
             .activityItem="${item}"
             @item-changed="${({detail}: CustomEvent) => this.updateActivityItem(index, detail)}"
-            @remove-item="${() => this.updateActivityItem(index, null)}"
+            @remove-item="${() => {
+              this.updateActivityItem(index, null);
+              this.resizeDialog();
+            }}"
             .readonly="${this.readonly}"
             .lastItem="${this.isLastItem(index)}"
             .currency="${this.currency}"
@@ -95,7 +100,14 @@ export class ActivityItemsTable extends LitElement {
         name: ''
       }
     ];
+    this.resizeDialog();
     this.setFocusOnFirstActivity();
+  }
+
+  resizeDialog() {
+    if (this.dialogElement) {
+      this.dialogElement.notifyResize();
+    }
   }
 
   setFocusOnFirstActivity() {
