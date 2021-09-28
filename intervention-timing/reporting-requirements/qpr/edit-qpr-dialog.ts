@@ -3,7 +3,7 @@ import '@polymer/iron-label/iron-label';
 import '@polymer/paper-button/paper-button';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 
-import {prepareDatepickerDate, convertDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
+import {prepareDatepickerDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
 import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import './qpr-list.js';
