@@ -89,7 +89,8 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
         interventionId: this.interventionId,
         interventionStart: this.interventionStart,
         interventionEnd: this.interventionEnd,
-        interventionStatus: this.interventionStatus
+        interventionStatus: this.interventionStatus,
+        initialReportingReq: this.reportingRequirements
       }
     }).then(({confirmed, response}) => {
       if (!confirmed || !response) {

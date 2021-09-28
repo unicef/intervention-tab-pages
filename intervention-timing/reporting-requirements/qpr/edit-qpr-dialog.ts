@@ -194,6 +194,9 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
   @property({type: String})
   interventionStatus = '';
 
+  @property({type: Array})
+  initialReportingReq!: [];
+
   set dialogData(data: any) {
     const {qprData, interventionId}: any = data;
     this.qprData = qprData;
@@ -201,6 +204,7 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
     this.interventionStart = data.interventionStart;
     this.interventionEnd = data.interventionEnd;
     this.interventionStatus = data.interventionStatus;
+    this.initialReportingReq = data.initialReportingReq;
 
     this.addEventListener('edit-qpr', this._editQprDatesSet as any);
   }
@@ -236,10 +240,13 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
     if (!['draft', 'development'].includes(this.interventionStatus)) {
       return false;
     }
-    if (!this.qprData || !this.qprData.length) {
+    if (!this.initialReportingReq || !this.initialReportingReq.length) {
       return false;
     }
-    return this.interventionStart != this.qprData[0].start_date || this.interventionEnd != this.qprData[0].end_date;
+    return (
+      this.interventionStart != this.qprData[0].start_date ||
+      this.interventionEnd != this.qprData[this.qprData.length - 1].end_date
+    );
   }
 
   _duplicateDueDate(dueDate: any) {
