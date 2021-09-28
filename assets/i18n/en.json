@@ -25,7 +25,7 @@
   "PLANNED_BUDGET": "Planned Budget",
   "SEND_FOR_SIGNATURE": "Are you sure you want to send for signature?",
   "SEND_FOR_ACCEPT_REVIEW": "Are you sure you want to send for Accept & Review?",
-  "CANCEL_PROMPT": "Are you sure you want to cancel?",
+  "CANCEL_PROMPT": "You are about to cancel the entire PD, this is irreversible and all progress will be lost. Are you sure you want to proceed?",
   "SEND_TO_PARTNER_PROMPT": "Are you sure you want to send to partner?",
   "SEND_TO_UNICEF_PROMPT": "Are you sure you want to send to UNICEF?",
   "TERMINATE_PROMPT": "Are you sure you want to terminate?",
