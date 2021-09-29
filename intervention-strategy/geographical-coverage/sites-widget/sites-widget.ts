@@ -106,6 +106,7 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
     return html`
       ${sharedStyles}
       <style>
+        /* changes marker color by default blue to orange-ish */
         .selectedMarker {
           filter: hue-rotate(160deg);
         }
