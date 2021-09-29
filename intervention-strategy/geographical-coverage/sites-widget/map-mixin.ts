@@ -14,9 +14,8 @@ export type MarkerDataObj = {
   popup?: string;
 };
 
-
 export const defaultIcon = L.icon({
-  iconUrl: './src/components/pages/interventions/intervention-tab-pages/assets/images/marker-icon-2x.png',
+  iconUrl: 'node_modules/leaflet/dist/images/marker-icon.png',
   iconSize: [25, 41],
   shadowSize: [41, 41],
   iconAnchor: [12, 41],
@@ -25,12 +24,13 @@ export const defaultIcon = L.icon({
 });
 
 export const markedIcon = L.icon({
-  iconUrl: './src/components/pages/interventions/intervention-tab-pages/assets/images/marker-icon-yellow.png',
+  iconUrl: 'node_modules/leaflet/dist/images/marker-icon.png',
   iconSize: [25, 41],
   shadowSize: [41, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
-  tooltipAnchor: [16, -28]
+  tooltipAnchor: [16, -28],
+  className: 'selectedMarker'
 });
 
 export class MapHelper {
@@ -43,7 +43,6 @@ export class MapHelper {
     if (!element) {
       throw new Error('Please provide HTMLElement for map initialization!');
     }
-    L.Icon.Default.imagePath = './src/components/pages/interventions/intervention-tab-pages/assets/images/';
     this.map = L.map(element);
     L.tileLayer(TILE_LAYER, {pane: 'tilePane'}).addTo(this.map);
     L.tileLayer(TILE_LAYER_LABELS, {pane: 'overlayPane'}).addTo(this.map);

@@ -105,6 +105,12 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
   protected render(): TemplateResult {
     return html`
       ${sharedStyles}
+      <style>
+        /* changes marker color by default blue to orange-ish */
+        .selectedMarker {
+          filter: hue-rotate(160deg);
+        }
+      </style>
       <div class="widget-container">
         <div class="map-and-list">
           <div id="map"></div>
@@ -223,9 +229,6 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
     const marker = this.MapHelper.staticMarkers?.filter((m) => m.staticData.id === id);
     if (marker && marker.length) {
       marker[0].setIcon(selected ? markedIcon : defaultIcon);
-      // const icon = {...marker[0].getIcon()};
-      // icon.options.iconUrl = selected ? 'marker-icon-yellow.png' : 'marker-icon.png';
-      // marker[0].setIcon(icon);
     }
   }
 
