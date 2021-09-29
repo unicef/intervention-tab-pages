@@ -117,7 +117,6 @@ export class MapHelper {
   }
 
   addDynamicMarker(cordinates: [number, number]): void {
-    debugger;
     if (!this.map) {
       throw new Error('Please, initialize map!');
     }
@@ -150,7 +149,6 @@ export class MapHelper {
   }
 
   private createMarker(data: MarkerDataObj): IMarker {
-    debugger;
     const marker: IMarker = L.marker(data.coords).addTo(this.map as Map);
     marker.staticData = data.staticData;
     if (data.popup) {
