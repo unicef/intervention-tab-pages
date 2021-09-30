@@ -158,7 +158,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
 
   @property({type: Boolean}) isUnicefUser = true;
   @property({type: Boolean}) showIndicators = true;
-  @property({type: Boolean}) showActivities = true;
+  @property({type: Boolean}) showActivities = false;
   @property({type: Object})
   permissions!: {
     edit: {result_links?: boolean};
@@ -320,7 +320,6 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
               ${result.ll_results.map(
                 (pdOutput: ResultLinkLowerResult) => html`
                   <etools-data-table-row
-                    details-opened
                     class="pdOtputMargin ${this.isUnicefUser ? 'unicef-user' : 'partner'}"
                     related-to="pd-output-${pdOutput.id}"
                     related-to-description=" PD Output - ${pdOutput.name}"
