@@ -259,8 +259,10 @@ export class InterventionActions extends LitElement {
 
   private isActionWithInput(action: string) {
     if (ACTIONS_WITH_INPUT.includes(action)) {
-      if (action == ACCEPT_ON_BEHALF_OF_PARTNER && this.interventionPartial.submission_date) {
-        return false;
+      if (action == ACCEPT_ON_BEHALF_OF_PARTNER) {
+        if (this.interventionPartial.submission_date || this.interventionPartial.in_amendment) {
+          return false;
+        }
       }
       return true;
     }

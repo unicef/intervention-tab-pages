@@ -669,7 +669,8 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     return {
       id: intervention.id,
       status: intervention.status,
-      submission_date: intervention.submission_date
+      submission_date: intervention.submission_date,
+      in_amendment: intervention.in_amendment
     };
   }
 }
