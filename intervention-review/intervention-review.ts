@@ -6,7 +6,7 @@ import './general-review-information/general-review-information';
 import './review-members/review-members';
 import './reviews-list/reviews-list';
 import './overall-approval/overall-approval';
-import {PRC_REVIEW} from './review.const';
+import {NO_REVIEW, PRC_REVIEW} from './review.const';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 
@@ -23,7 +23,7 @@ export class InterventionReviewTab extends connectStore(LitElement) {
     return html`
       <general-review-information .review="${this.review}"></general-review-information>
 
-      ${this.review
+      ${this.review && this.review.review_type != NO_REVIEW
         ? html`<review-members
               .review="${this.review}"
               .interventionId="${this.interventionId}"
