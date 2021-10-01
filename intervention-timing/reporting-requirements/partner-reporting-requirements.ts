@@ -186,7 +186,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
                 .interventionStart="${this.interventionStart}"
                 .interventionEnd="${this.interventionEnd}"
                 .requirementsCount="${this.qprRequirementsCount}"
-                .interventionStatus="${this.intervention.status}"
+                .interventionStatus="${this.intervention?.status}"
                 .editMode="${!this.isReadonly}"
                 @count-changed=${(e: CustomEvent) => this.updateQPRCount(e.detail)}
               >
