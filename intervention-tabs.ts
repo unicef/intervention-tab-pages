@@ -166,9 +166,8 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
 
         <div slot="title-row-actions" class="content-header-actions">
           <intervention-actions
-            .interventionId="${this.intervention.id}"
-            .activeStatus="${this.intervention.status}"
             .actions="${this.availableActions}"
+            .interventionPartial=${this.getInterventionDetailsForActionsDisplay(this.intervention)}
             .userIsBudgetOwner="${this.userIsBudgetOwner}"
           ></intervention-actions>
         </div>
@@ -190,11 +189,9 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       </intervention-page-content-header>
 
       <div class="page-content">
-        ${
-          this.intervention.cancel_justification
-            ? html`<reason-display .justification=${this.intervention.cancel_justification}></reason-display>`
-            : ''
-        }
+        ${this.intervention.cancel_justification
+          ? html`<reason-display .justification=${this.intervention.cancel_justification}></reason-display>`
+          : ''}
         <intervention-metadata ?hidden="${!this.isActiveTab(this.activeTab, 'metadata')}"> </intervention-metadata>
         <intervention-strategy ?hidden="${!this.isActiveTab(this.activeTab, 'strategy')}"></intervention-strategy>
         <intervention-workplan ?hidden="${!this.isActiveTab(this.activeTab, 'workplan')}"> </intervention-workplan>
@@ -236,7 +233,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     },
     {
       tab: TABS.Timing,
-      tabLabel: getTranslation('TIMING_TAB') as unknown as string,
+      tabLabel: (getTranslation('TIMING_TAB') as unknown) as string,
       hidden: false
     }
   ];
@@ -467,7 +464,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       const pasteTo = this.pageTabs.findIndex((x) => x.tab === TABS.Progress);
       this.pageTabs.splice(pasteTo, 0, {
         tab: TABS.Attachments,
-        tabLabel: getTranslation('ATTACHMENTS_TAB') as unknown as string,
+        tabLabel: (getTranslation('ATTACHMENTS_TAB') as unknown) as string,
         hidden: false
       });
     } else if (tabIndex !== -1 && !canView) {
@@ -663,5 +660,17 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
         })
       );
     getStore().dispatch<AsyncAction>(getComments(interventionEndpoints.comments, Number(currentInterventionId)));
+  }
+
+  private getInterventionDetailsForActionsDisplay(intervention: Intervention) {
+    if (!intervention) {
+      return {};
+    }
+    return {
+      id: intervention.id,
+      status: intervention.status,
+      submission_date: intervention.submission_date,
+      in_amendment: intervention.in_amendment
+    };
   }
 }

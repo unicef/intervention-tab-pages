@@ -55,8 +55,10 @@ export class InterventionActions extends LitElement {
 
   @property() actions: string[] = [];
   @property({type: String}) dir = 'ltr';
-  interventionId!: number;
-  activeStatus!: string;
+  @property({type: Object})
+  interventionPartial!: Partial<Intervention>;
+
+  @property({type: Boolean})
   userIsBudgetOwner = false;
 
   connectedCallback() {
@@ -92,7 +94,7 @@ export class InterventionActions extends LitElement {
       ? html`
           <export-intervention-data
             .exportLinks="${preparedExportActions}"
-            .interventionId="${this.interventionId}"
+            .interventionId="${this.interventionPartial.id}"
           ></export-intervention-data>
         `
       : html``;
@@ -210,13 +212,14 @@ export class InterventionActions extends LitElement {
     if (!(await this.confirmAction(action))) {
       return;
     }
-    const body = ACTIONS_WITH_INPUT.includes(action) ? await this.openActionsWithInputsDialogs(action) : {};
+
+    const body = this.isActionWithInput(action) ? await this.openActionsWithInputsDialogs(action) : {};
     if (body === null) {
       return;
     }
 
     const endpoint = getEndpoint(interventionEndpoints.interventionAction, {
-      interventionId: this.interventionId,
+      interventionId: this.interventionPartial.id,
       action
     });
     fireEvent(this, 'global-loading', {
@@ -254,6 +257,18 @@ export class InterventionActions extends LitElement {
       });
   }
 
+  private isActionWithInput(action: string) {
+    if (ACTIONS_WITH_INPUT.includes(action)) {
+      if (action == ACCEPT_ON_BEHALF_OF_PARTNER) {
+        if (this.interventionPartial.submission_date || this.interventionPartial.in_amendment) {
+          return false;
+        }
+      }
+      return true;
+    }
+    return false;
+  }
+
   private redirectToTabPage(id: number | null, tabName: string) {
     history.pushState(window.history.state, '', `${ROOT_PATH}interventions/${id}/${tabName}`);
     window.dispatchEvent(new CustomEvent('popstate'));
@@ -281,7 +296,7 @@ export class InterventionActions extends LitElement {
     return openDialog({
       dialog: 'pd-termination',
       dialogData: {
-        interventionId: this.interventionId
+        interventionId: this.interventionPartial.id
       }
     }).then(({confirmed, response}) => {
       if (!confirmed || !response) {
@@ -326,7 +341,7 @@ export class InterventionActions extends LitElement {
     return openDialog({
       dialog: 'accept-for-partner',
       dialogData: {
-        interventionId: this.interventionId
+        interventionId: this.interventionPartial.id
       }
     }).then(({confirmed, response}) => {
       if (!confirmed || !response) {
@@ -367,7 +382,7 @@ export class InterventionActions extends LitElement {
   }
 
   private getMainActionTranslatedText(mainAction: string) {
-    if (this.activeStatus === 'review' && this.userIsBudgetOwner && mainAction === 'sign') {
+    if (this.interventionPartial.status === 'review' && this.userIsBudgetOwner && mainAction === 'sign') {
       return this.actionsNamesMap[SIGN_BUDGET_OWNER];
     }
     return this.actionsNamesMap[mainAction];
