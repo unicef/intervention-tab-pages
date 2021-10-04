@@ -139,8 +139,10 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               placeholder="&#8212;"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.document_type)}"
               ?required="${this.data.contingency_pd}"
-              value="${this.data.activation_protocol || ''}"
-              @value-changed="${({detail}: CustomEvent) => (this.data.activation_protocol = detail.value)}"
+              .autoValidate="${this.autoValidateProtocol}"
+              @focus="${() => (this.autoValidateProtocol = true)}"
+              .value="${this.data.activation_protocol}"
+              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'activation_protocol')}"
             >
             </paper-input>
           </div>
@@ -191,6 +193,9 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
 
   @property({type: Array})
   currencies!: LabelAndValue[];
+
+  @property({type: Boolean})
+  autoValidateProtocol = false;
 
   get isSPD(): boolean {
     return this.data.document_type === CONSTANTS.DOCUMENT_TYPES.SPD;
