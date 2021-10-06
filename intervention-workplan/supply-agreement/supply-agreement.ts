@@ -297,9 +297,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
     super.stateChanged(state);
   }
   currencyDisplayForTotal() {
-    if (!this.columns[3].label) {
-      this.columns[3].label = getTranslation('TOTAL_PRICE') + ' (' + this.intervention?.planned_budget?.currency + ')';
-    }
+    this.columns[3].label = getTranslation('TOTAL_PRICE') + ' (' + this.intervention?.planned_budget?.currency + ')';
   }
 
   cancelSupply() {

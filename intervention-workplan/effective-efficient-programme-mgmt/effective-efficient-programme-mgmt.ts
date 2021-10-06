@@ -162,9 +162,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
   }
 
   currencyDisplayForTotal() {
-    if (!this.columns[3].label) {
-      this.columns[3].label = getTranslation('GENERAL.TOTAL') + ' (' + this.data.currency + ')';
-    }
+    this.columns[3].label = getTranslation('GENERAL.TOTAL') + ' (' + this.data.currency + ')';
   }
 
   formatData(data: ProgrammeManagement) {
