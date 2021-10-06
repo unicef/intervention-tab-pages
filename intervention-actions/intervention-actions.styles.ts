@@ -39,7 +39,6 @@ export const InterventionActionsStyles: CSSResult = css`
 
   .main-button.with-additional {
     padding: 0 0 0 18px;
-    margin-left: 5px;
   }
 
   .main-button.with-additional span {
@@ -64,6 +63,7 @@ export const InterventionActionsStyles: CSSResult = css`
 
   paper-menu-button {
     padding: 8px 2px;
+    margin-inline-start: 10px;
   }
 
   paper-button {
