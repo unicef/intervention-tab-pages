@@ -1,9 +1,9 @@
 /* eslint-disable lit-a11y/click-events-have-key-events */
-import {getStore} from '../../utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {css, html, CSSResultArray, customElement, LitElement, property} from 'lit-element';
 import {repeat} from 'lit-html/directives/repeat';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '../../common/styles/button-styles';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {
   selectInterventionId,
   selectInterventionStatus,
@@ -16,6 +16,7 @@ import '@unicef-polymer/etools-data-table/etools-data-table';
 import '@unicef-polymer/etools-content-panel';
 import '@polymer/paper-toggle-button/paper-toggle-button';
 import '@polymer/paper-icon-button/paper-icon-button';
+import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import './cp-output-level';
 import './pd-indicators';
 import './pd-activities';
@@ -23,24 +24,22 @@ import './modals/pd-output-dialog';
 import './modals/cp-output-dialog';
 import '@polymer/paper-item';
 import '@polymer/paper-listbox';
-import {getEndpoint} from '../../utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {RootState} from '../../common/types/store.types';
-import {openDialog} from '../../utils/dialog';
+import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import {TABS} from '../../common/constants';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {
   callClickOnSpacePushListener,
   callClickOnEnterPushListener,
   pageIsNotCurrentlyActive
-} from '../../utils/common-methods';
-import '../../common/layout/are-you-sure';
+} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import get from 'lodash-es/get';
 import {getIntervention, updateCurrentIntervention} from '../../common/actions/interventions';
-import {_sendRequest} from '../../utils/request-helper';
 import {isUnicefUser, currentIntervention} from '../../common/selectors';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import ContentPanelMixin from '../../common/mixins/content-panel-mixin';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {
@@ -54,6 +53,8 @@ import {
 } from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
+import ContentPanelMixin from '@unicef-polymer/etools-modules-common/dist/mixins/content-panel-mixin';
+import {_sendRequest} from '@unicef-polymer/etools-modules-common/dist/utils/request-helper';
 
 const RESULT_VIEW = 'result_view';
 const BUDGET_VIEW = 'budget_view';
@@ -157,7 +158,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
 
   @property({type: Boolean}) isUnicefUser = true;
   @property({type: Boolean}) showIndicators = true;
-  @property({type: Boolean}) showActivities = true;
+  @property({type: Boolean}) showActivities = false;
   @property({type: Object})
   permissions!: {
     edit: {result_links?: boolean};
@@ -196,15 +197,14 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
 
   render() {
     if (!this.intervention || !this.permissions || !this.resultLinks) {
-      return html`<style>
-          ${sharedStyles}
-        </style>
+      return html` ${sharedStyles}
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} :host {
+        :host {
           display: block;
           margin-bottom: 24px;
         }
@@ -233,6 +233,10 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         .add-cp {
           opacity: 0.84;
           margin-left: 6px;
+        }
+
+        .no-wrap {
+          white-space: nowrap;
         }
       </style>
 
@@ -280,13 +284,21 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
               </div>
             `
           )}
-          <paper-icon-button
-            class="add-cp"
-            icon="add-box"
-            tabindex="0"
-            ?hidden="${!this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
-            @click="${() => this.openCpOutputDialog()}"
-          ></paper-icon-button>
+          <etools-info-tooltip
+            custom-icon
+            position="top"
+            ?hide-tooltip="${!this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
+          >
+            <paper-icon-button
+              slot="custom-icon"
+              class="add-cp"
+              icon="add-box"
+              tabindex="0"
+              ?hidden="${!this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
+              @click="${() => this.openCpOutputDialog()}"
+            ></paper-icon-button>
+            <span class="no-wrap" slot="message">${translate('ADD_CP_OUTPUT')}</span>
+          </etools-info-tooltip>
         </div>
         ${repeat(
           this.resultLinks,
@@ -308,7 +320,6 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
               ${result.ll_results.map(
                 (pdOutput: ResultLinkLowerResult) => html`
                   <etools-data-table-row
-                    details-opened
                     class="pdOtputMargin ${this.isUnicefUser ? 'unicef-user' : 'partner'}"
                     related-to="pd-output-${pdOutput.id}"
                     related-to-description=" PD Output - ${pdOutput.name}"

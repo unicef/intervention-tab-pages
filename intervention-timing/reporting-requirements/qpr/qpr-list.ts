@@ -4,13 +4,13 @@ import '../mixins/reporting-req-past-dates-check';
 import '../styles/reporting-requirements-lists-styles';
 import ReportingReqPastDatesCheckMixin from '../mixins/reporting-req-past-dates-check';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
-import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
-import {fireEvent} from '../../../utils/fire-custom-event';
-import {isEmptyObject} from '../../../utils/utils';
-import {sharedStyles} from '../../../common/styles/shared-styles-lit';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {isEmptyObject} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
 import {translate} from 'lit-translate';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 
 /**
  * @polymer
@@ -28,21 +28,16 @@ export class QprList extends ReportingRequirementsCommonMixin(ReportingReqPastDa
       return;
     }
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} ${dataTableStylesLit}
+        ${dataTableStylesLit}
       </style>
 
       <etools-data-table-header no-collapse no-title>
         <etools-data-table-column class="col-1 right-align index-col">ID</etools-data-table-column>
-        <etools-data-table-column class="col-3"
-          >${translate('START_DATE')}</etools-data-table-column
-        >
-        <etools-data-table-column class="col-3"
-          >${translate('END_DATE')}</etools-data-table-column
-        >
-        <etools-data-table-column class="col-3"
-          >${translate('DUE_DATE')}</etools-data-table-column
-        >
+        <etools-data-table-column class="col-3">${translate('START_DATE')}</etools-data-table-column>
+        <etools-data-table-column class="col-3">${translate('END_DATE')}</etools-data-table-column>
+        <etools-data-table-column class="col-3">${translate('DUE_DATE')}</etools-data-table-column>
         <etools-data-table-column class="flex-c"></etools-data-table-column>
       </etools-data-table-header>
 

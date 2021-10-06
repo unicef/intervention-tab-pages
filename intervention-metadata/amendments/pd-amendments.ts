@@ -3,30 +3,30 @@ import '@polymer/iron-icons/iron-icons';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-data-table/etools-data-table';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import './add-amendment-dialog';
-import '../../common/layout/are-you-sure';
+import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {RootState} from '../../common/types/store.types';
-import {prettyDate} from '../../utils/date-utils';
-import {getFileNameFromURL, isJsonStrMatch} from '../../utils/utils';
+import {prettyDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
+import {getFileNameFromURL, isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {selectAmendmentsPermissions} from './pd-amendments.selectors';
 import {AmendmentsKind, AmendmentsKindTranslateKeys, PdAmendmentPermissions} from './pd-amendments.models';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
-import {openDialog} from '../../utils/dialog';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, LabelAndValue, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {ROOT_PATH} from '../../config/config';
+import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
 import {get as getTranslation} from 'lit-translate/util';
-import {getEndpoint} from '../../utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getStore} from '../../utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {getIntervention} from '../../common/actions/interventions';
-import {fireEvent} from '../../utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import './amendment-difference';
 
 /**
@@ -39,8 +39,10 @@ export class PdAmendments extends CommentsMixin(LitElement) {
   }
 
   render() {
-    return html`<style>
-        ${sharedStyles} :host {
+    return html`
+      ${sharedStyles}
+      <style>
+        :host {
           display: block;
           width: 100%;
           -webkit-box-sizing: border-box;
@@ -155,7 +157,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
                   <div class="hover-block" ?hidden="${!item.is_active}">
                     <paper-icon-button
                       icon="delete"
-                      @click="${() => this.deleteAmendment(item.id)}"
+                      @click="${() => this.deleteAmendment(item.id, item.amended_intervention)}"
                     ></paper-icon-button>
                   </div>
                 </div>
@@ -199,7 +201,8 @@ export class PdAmendments extends CommentsMixin(LitElement) {
             <p>${translate('NO_AMENDMENTS_ADDED')}</p>
           </div>
         </div>
-      </etools-content-panel> `;
+      </etools-content-panel>
+    `;
   }
 
   @property({type: Array})
@@ -217,6 +220,9 @@ export class PdAmendments extends CommentsMixin(LitElement) {
   @property({type: Object})
   intervention!: AnyObject;
 
+  @property({type: Boolean})
+  isNewAmendment = false;
+
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata')) {
       return;
@@ -230,6 +236,10 @@ export class PdAmendments extends CommentsMixin(LitElement) {
     if (currentIntervention && !isJsonStrMatch(this.intervention, currentIntervention)) {
       this.intervention = cloneDeep(currentIntervention);
       this.amendments = this.intervention.amendments;
+      if (this.isNewAmendment) {
+        this.isNewAmendment = false;
+        fireEvent(this, 'amendment-added', currentIntervention);
+      }
     }
     this.setPermissions(state);
     super.stateChanged(state);
@@ -268,13 +278,14 @@ export class PdAmendments extends CommentsMixin(LitElement) {
       }
     }).then(({response}) => {
       if (response?.id) {
+        this.isNewAmendment = true;
         history.pushState(window.history.state, '', `${ROOT_PATH}interventions/${response.id}/metadata`);
         window.dispatchEvent(new CustomEvent('popstate'));
       }
     });
   }
 
-  deleteAmendment(amendmentId: number): void {
+  deleteAmendment(amendmentId: number, amended_intervention: number): void {
     openDialog({
       dialog: 'are-you-sure',
       dialogData: {
@@ -295,6 +306,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
       };
       sendRequest(options)
         .then(() => {
+          fireEvent(this, 'amendment-deleted', {id: amended_intervention});
           return getStore().dispatch<AsyncAction>(getIntervention(this.intervention.id));
         })
         .catch(() => {

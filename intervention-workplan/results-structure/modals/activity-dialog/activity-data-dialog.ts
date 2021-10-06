@@ -1,28 +1,29 @@
-import {CSSResultArray, customElement, html, LitElement, property, TemplateResult} from 'lit-element';
-import {DataMixin} from '../../../../common/mixins/data-mixin';
+import {CSSResultArray, customElement, html, LitElement, property, TemplateResult, query} from 'lit-element';
 import '@unicef-polymer/etools-currency-amount-input';
 import '@polymer/paper-input/paper-textarea';
 import '@polymer/paper-toggle-button';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import '../../../../common/components/activity/activity-items-table';
-import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
 import {formatCurrency, getTotal} from '../../../../common/components/activity/get-total.helper';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getEndpoint} from '../../../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../../../utils/intervention-endpoints';
-import {getDifference} from '../../../../common/mixins/objects-diff';
-import {getStore} from '../../../../utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import './activity-timeframes';
-import {fireEvent} from '../../../../utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {ActivityItemsTable} from '../../../../common/components/activity/activity-items-table';
 import {updateCurrentIntervention} from '../../../../common/actions/interventions';
 import {ActivityTimeFrames} from './activity-timeframes';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {validateRequiredFields} from '../../../../utils/validation-helper';
-import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {AnyObject, InterventionActivity, InterventionActivityItem} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {translatesMap} from '../../../../utils/intervention-labels-map';
+import {DataMixin} from '@unicef-polymer/etools-modules-common/dist/mixins/data-mixin';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
+import {getDifference} from '@unicef-polymer/etools-modules-common/dist/mixins/objects-diff';
+import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 
 @customElement('activity-data-dialog')
 export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitElement) {
@@ -38,6 +39,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
   @property() useInputLevel = false;
   @property({type: String}) spinnerText = 'Loading...';
   @property() readonly: boolean | undefined = false;
+  @query('etools-dialog') private dialogElement!: EtoolsDialog;
   quarters: ActivityTimeFrames[] = [];
 
   set dialogData({activityId, pdOutputId, interventionId, quarters, readonly, currency}: any) {
@@ -68,8 +70,9 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
   protected render(): TemplateResult {
     // language=html
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} etools-dialog::part(ed-scrollable) {
+        etools-dialog::part(ed-scrollable) {
           margin-top: 0 !important;
         }
         etools-dialog::part(ed-paper-dialog) {
@@ -217,6 +220,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
             ${translate('USE_INPUT_LEVEL')}
           </paper-toggle-button>
           <activity-items-table
+            .dialogElement=${this.dialogElement}
             ?hidden="${!this.useInputLevel}"
             .activityItems="${this.editedData.items || []}"
             .readonly="${this.readonly}"

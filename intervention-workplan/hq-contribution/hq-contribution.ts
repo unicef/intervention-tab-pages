@@ -5,18 +5,18 @@ import '@unicef-polymer/etools-loading/etools-loading';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
 import '@polymer/paper-slider/paper-slider.js';
-import {buttonsStyles} from '../../common/styles/button-styles';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {selectHqContributionData, selectHqContributionPermissions} from './hqContribution.selectors';
 import {HqContributionData, HqContributionPermissions} from './hqContribution.models';
-import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
-import {getStore} from '../../utils/redux-store-access';
+import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {patchIntervention} from '../../common/actions/interventions';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {RootState} from '../../common/types/store.types';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
-import {areEqual, decimalFractionEquals0} from '../../utils/utils';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {areEqual, decimalFractionEquals0} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
@@ -35,15 +35,14 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
 
   render() {
     if (!this.data || !this.permissions) {
-      return html`<style>
-          ${sharedStyles}
-        </style>
+      return html` ${sharedStyles}
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} :host {
+        :host {
           display: block;
           margin-bottom: 24px;
         }
@@ -94,7 +93,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
             <span ?hidden="${this.editMode}">${this.data.hq_support_cost}</span>
           </div>
         </div>
-        <div class="layout-horizontal row-padding-v" ?hidden="${!this.isUnicefUser}">
+        <div class="layout-horizontal row-padding-v" ?hidden="${!this.isUnicefUser || !this.editMode}">
           <label class="paper-label hq-info-label"
             ><b>${this.data.hq_support_cost}%</b> of the total UNICEF cash contribution is:
             <b>${this.autoCalculatedHqContrib} ${this.data.planned_budget.currency}</b>. Please review and enter the

@@ -8,29 +8,32 @@ import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@unicef-polymer/etools-upload/etools-upload';
 
 import '@unicef-polymer/etools-date-time/datepicker-lite';
-import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
-import UploadMixin from '../../common/mixins/uploads-mixin';
+import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
+import UploadMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uploads-mixin';
 import CONSTANTS from '../../common/constants';
-import {sectionContentStyles} from '../../common/styles/content-section-styles-polymer';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {getStore} from '../../utils/redux-store-access';
-import {isJsonStrMatch} from '../../utils/utils';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 
 import {RootState} from '../../common/types/store.types';
 import {selectReviewData, selectDatesAndSignaturesPermissions} from '../../common/managementDocument.selectors';
 import {ReviewDataPermission, ReviewData} from './managementDocument.model';
 import {isEmpty, cloneDeep} from 'lodash-es';
-import {buttonsStyles} from '../../common/styles/button-styles';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import {getDifference} from '@unicef-polymer/etools-modules-common/dist/mixins/objects-diff';
 import {patchIntervention} from '../../common/actions/interventions';
-import {formatDate} from '../../utils/date-utils';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {formatDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, MinimalUser, Permission, User} from '@unicef-polymer/etools-types';
 import {MinimalAgreement} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {getDifference} from '../../common/mixins/objects-diff';
+import {sectionContentStyles} from '@unicef-polymer/etools-modules-common/dist/styles/content-section-styles-polymer';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {EtoolsUpload} from '@unicef-polymer/etools-upload/etools-upload';
 
 /**
  * @customElement
@@ -44,14 +47,13 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
   }
   render() {
     if (!this.data || !this.permissions) {
-      return html` <style>
-          ${sharedStyles}
-        </style>
+      return html` ${sharedStyles}
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     return html`
+    ${sharedStyles}
       <style>
-        ${sectionContentStyles}${sharedStyles}:host {
+        ${sectionContentStyles}:host {
           display: flex;
           flex-direction: column;
           width: 100%;
@@ -229,7 +231,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
           </div>
         </div>
         <div class="layout-horizontal row-padding-v">
-          <div class="col col-6">
+          <div class="col col-8">
             <!-- Signed PD/SPD -->
             <etools-upload
               id="signedIntervFile"
@@ -243,7 +245,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.signed_pd_attachment)}"
               ?required="${this.permissions.required.signed_pd_attachment}"
               error-message=${translate('SELECT_SIGNED_PD_SPD_DOC')}
-              @upload-started="${this._onUploadStarted}"
+              @upload-started="${this.__onUploadStarted}"
               @upload-finished="${this._signedPDUploadFinished}"
               @change-unsaved-file="${this._onChangeUnsavedFile}"
             >
@@ -251,7 +253,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
           </div>
         </div>
         <div class="layout-horizontal row-padding-v">
-          <div class="col col-6">
+          <div class="col col-8">
             <!-- TERMINATION DOC -->
             <etools-upload
               id="terminationDoc"
@@ -266,6 +268,9 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
       </etools-content-panel>
     `;
   }
+
+  @property({type: String})
+  uploadEndpoint: string = getEndpoint(interventionEndpoints.attachmentsUpload).url;
 
   @property({type: Object})
   originalData!: ReviewData;
@@ -291,9 +296,16 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
   @property({type: Boolean})
   isUnicefUser = false;
 
+  private justUploaded = false;
+
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata')) {
       return;
+    }
+
+    if (state.uploadStatus.uploadsInProgress || state.uploadStatus.unsavedUploads || this.justUploaded) {
+      setTimeout(() => (this.justUploaded = false), 200);
+      return; // Prevent upload related redux store changes (UploadMixin) from reseting data selected in other fields
     }
 
     if (!isJsonStrMatch(this.signedByUnicefUsers, state.commonData!.unicefUsersData)) {
@@ -304,7 +316,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
     }
 
     if (state.interventions.current) {
-      this.data = selectReviewData(state);
+      this.data = cloneDeep(selectReviewData(state));
       this.originalData = cloneDeep(this.data);
       const permissions = selectDatesAndSignaturesPermissions(state);
       if (!isJsonStrMatch(this.permissions, permissions)) {
@@ -366,6 +378,23 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
   _hideDeleteBtn(status: string, fileUrl: string) {
     return this._isDraft(status) && fileUrl;
   }
+  __onUploadStarted(e: CustomEvent) {
+    this.justUploaded = true;
+    this._onUploadStarted(e);
+  }
+
+  cancel() {
+    super.cancel();
+    // @ts-ignore
+    const uploadElem = this.shadowRoot?.querySelector('#signedIntervFile') as EtoolsUpload;
+    // @ts-ignore
+    if (uploadElem && uploadElem.uploadInProgress) {
+      uploadElem._cancelUpload();
+      getStore().dispatch({type: 'DECREASE_UPLOADS_IN_PROGRESS'});
+    }
+    this.decreaseUnsavedUploads();
+    this.justUploaded = false;
+  }
 
   validate() {
     let valid = true;
@@ -386,12 +415,14 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
   }
 
   _signedPDUploadFinished(e: CustomEvent) {
-    this._onUploadFinished(e.detail.success);
     if (e.detail.success) {
       const response = e.detail.success;
       this.data.signed_pd_attachment = response.id;
       this.requestUpdate();
     }
+    this.justUploaded = true;
+    // Called also after upload was cancelled
+    this._onUploadFinished(e.detail.success);
   }
 
   _signedPDDocDelete(_e: CustomEvent) {

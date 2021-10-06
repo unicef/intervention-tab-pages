@@ -18,9 +18,6 @@ export class PartnerInfoPermissions extends ModelsBase {
     super();
     this.setObjProperties(permissions);
   }
-  partner_id = false;
-  partner = false;
-  partner_vendor = false;
   partner_focal_points = false;
   agreement = false;
 }

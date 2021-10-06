@@ -3,18 +3,18 @@ import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import '@unicef-polymer/etools-upload/etools-upload.js';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
-import '../../../common/layout/etools-warn-message';
-import '../../styles/shared-styles-lit';
-import {sharedStyles} from '../../styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../../styles/grid-layout-styles-lit';
-import {formatDate} from '../../../utils/date-utils';
-import {validateRequiredFields} from '../../../utils/validation-helper';
-import ComponentBaseMixin from '../../mixins/component-base-mixin';
+import '@unicef-polymer/etools-modules-common/dist/layout/etools-warn-message';
+import '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {formatDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
+import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
+import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {fireEvent} from '../../../utils/fire-custom-event';
-import {openDialog} from '../../../utils/dialog';
-import EnvironmentFlagsMixin from '../../mixins/environment-flags-mixin';
-import {getStore} from '../../../utils/redux-store-access';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import EnvironmentFlagsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/environment-flags-mixin';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {AnyObject} from '@unicef-polymer/etools-types';
 declare const dayjs: any;
 
@@ -29,8 +29,9 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
   }
   render() {
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles}:host {
+      :host {
           /* host CSS */
         }
         #pdTermination {

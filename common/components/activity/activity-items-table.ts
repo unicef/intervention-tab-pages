@@ -9,15 +9,16 @@ import {
   PropertyValues
 } from 'lit-element';
 import {ActivityItemsTableStyles} from './activity-items-table.styles';
-import {fireEvent} from '../../../utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {ActivityItemRow} from './activity-item-row';
 import './activity-item-row';
 import {AnyObject, InterventionActivityItem} from '@unicef-polymer/etools-types';
-import {callClickOnSpacePushListener} from '../../../utils/common-methods';
 import {PaperTextareaElement} from '@polymer/paper-input/paper-textarea';
 import {translate} from 'lit-translate';
-import {sharedStyles} from '../../../common/styles/shared-styles-lit';
 import {translatesMap} from '../../../utils/intervention-labels-map';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 
 @customElement('activity-items-table')
 export class ActivityItemsTable extends LitElement {
@@ -42,15 +43,14 @@ export class ActivityItemsTable extends LitElement {
 
   @property() activityItems: Partial<InterventionActivityItem>[] = [];
   @property() readonly: boolean | undefined = false;
+  @property() dialogElement!: EtoolsDialog;
   @property({type: String})
   currency = '';
 
   protected render(): TemplateResult {
     // language=html
     return html`
-      <style>
-        ${sharedStyles}
-      </style>
+      ${sharedStyles}
       <div class="grid-row header border">
         <div class="grid-cell header-cell left">
           <label required>${translate('ITEM_DESCRIPTION')}</label>
@@ -70,7 +70,10 @@ export class ActivityItemsTable extends LitElement {
           html`<activity-item-row
             .activityItem="${item}"
             @item-changed="${({detail}: CustomEvent) => this.updateActivityItem(index, detail)}"
-            @remove-item="${() => this.updateActivityItem(index, null)}"
+            @remove-item="${() => {
+              this.updateActivityItem(index, null);
+              this.resizeDialog();
+            }}"
             .readonly="${this.readonly}"
             .lastItem="${this.isLastItem(index)}"
             .currency="${this.currency}"
@@ -97,7 +100,14 @@ export class ActivityItemsTable extends LitElement {
         name: ''
       }
     ];
+    this.resizeDialog();
     this.setFocusOnFirstActivity();
+  }
+
+  resizeDialog() {
+    if (this.dialogElement) {
+      this.dialogElement.notifyResize();
+    }
   }
 
   setFocusOnFirstActivity() {

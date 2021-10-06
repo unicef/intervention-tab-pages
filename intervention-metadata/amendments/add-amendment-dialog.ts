@@ -5,20 +5,20 @@ import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
 import '@unicef-polymer/etools-upload/etools-upload';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
-import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
-import '../../common/layout/etools-warn-message';
-import {buttonsStyles} from '../../common/styles/button-styles';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {getEndpoint} from '../../utils/endpoint-helper';
+import '@unicef-polymer/etools-modules-common/dist/layout/etools-warn-message';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {fireEvent} from '../../utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {AnyObject, InterventionAmendment, LabelAndValue} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {AmendmentsKind, AmendmentsKindTranslateKeys} from './pd-amendments.models';
-import {validateRequiredFields} from '../../utils/validation-helper';
+import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
+import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin.js';
 
 /**
  * @customElement
@@ -29,8 +29,8 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
     return [gridLayoutStylesLit, buttonsStyles];
   }
   render() {
-    return html`<style>
-        ${sharedStyles}
+    return html`${sharedStyles}
+      <style>        
         paper-input#other {
           width: 100%;
         }
@@ -53,26 +53,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
         @confirm-btn-clicked="${() => this._validateAndSaveAmendment()}"
         ?show-spinner="${this.savingInProcess}"
       >
-        <div class="row-h flex-c">
-          <!-- Amendment kind -->
-          <etools-dropdown
-            id="amendment-kind"
-            label=${translate('KIND')}
-            placeholder="&#8212;"
-            .options="${this.amendmentKinds}"
-            .selectedValue="${this.data.kind}"
-            hide-search
-            required
-            option-label="label"
-            option-value="value"
-            error-message=${translate('GENERAL.REQUIRED_FIELD')}
-            trigger-value-change-event
-            @etools-selected-item-changed="${({detail}: CustomEvent) => {
-              this.selectedItemChanged(detail, 'kind', 'value');
-            }}"
-          >
-          </etools-dropdown>
-        </div>
+        ${this.renderKindDropdown()}
         <div class="row-h flex-c">
           <!-- Amendment Type -->
           <etools-dropdown-multi
@@ -126,17 +107,17 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
   @property({type: Array})
   amendmentTypes!: LabelAndValue[];
 
-  @property({type: Array})
-  amendmentKinds: LabelAndValue[] = [
-    {
-      label: getTranslation(AmendmentsKindTranslateKeys[AmendmentsKind.normal]),
-      value: AmendmentsKind.normal
-    },
-    {
-      label: getTranslation(AmendmentsKindTranslateKeys[AmendmentsKind.contingency]),
-      value: AmendmentsKind.contingency
-    }
-  ];
+  // @property({type: Array})
+  // amendmentKinds: LabelAndValue[] = [
+  //   {
+  //     label: getTranslation(AmendmentsKindTranslateKeys[AmendmentsKind.normal]),
+  //     value: AmendmentsKind.normal
+  //   },
+  //   {
+  //     label: getTranslation(AmendmentsKindTranslateKeys[AmendmentsKind.contingency]),
+  //     value: AmendmentsKind.contingency
+  //   }
+  // ];
 
   @property({type: Array})
   filteredAmendmentTypes!: LabelAndValue[];
@@ -213,7 +194,11 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
       endpoint: getEndpoint(interventionEndpoints.interventionAmendmentAdd, {
         intervId: this.intervention.id
       }),
-      body: newAmendment
+      body: {
+        ...newAmendment,
+        kind: AmendmentsKind.normal
+      }
+      // body: newAmendment
     };
     this.savingInProcess = true;
     sendRequest(options)
@@ -238,5 +223,31 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
 
   public onClose(response = {}) {
     fireEvent(this, 'dialog-closed', {response});
+  }
+
+  public renderKindDropdown() {
+    return '';
+    // return html`
+    //   <div class="row-h flex-c">
+    //     <!-- Amendment kind -->
+    //     <etools-dropdown
+    //       id="amendment-kind"
+    //       label=${translate('KIND')}
+    //       placeholder="&#8212;"
+    //       .options="${this.amendmentKinds}"
+    //       .selectedValue="${this.data.kind}"
+    //       hide-search
+    //       required
+    //       option-label="label"
+    //       option-value="value"
+    //       error-message=${translate('GENERAL.REQUIRED_FIELD')}
+    //       trigger-value-change-event
+    //       @etools-selected-item-changed="${({detail}: CustomEvent) => {
+    //         this.selectedItemChanged(detail, 'kind', 'value');
+    //       }}"
+    //     >
+    //     </etools-dropdown>
+    //   </div>
+    // `;
   }
 }

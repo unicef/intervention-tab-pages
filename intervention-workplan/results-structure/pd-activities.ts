@@ -1,22 +1,22 @@
 import {LitElement, html, TemplateResult, CSSResultArray, css, customElement, property} from 'lit-element';
 import {ResultStructureStyles} from './results-structure.styles';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/iron-icons';
 import './modals/activity-dialog/activity-data-dialog';
-import {openDialog} from '../../utils/dialog';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
-import {getStore} from '../../utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {getIntervention} from '../../common/actions/interventions';
-import {fireEvent} from '../../utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {getEndpoint} from '../../utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, InterventionActivity, InterventionQuarter} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {callClickOnSpacePushListener} from '../../utils/common-methods';
+import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import {translatesMap} from '../../utils/intervention-labels-map';
 
 @customElement('pd-activities')
@@ -55,8 +55,9 @@ export class PdActivities extends CommentsMixin(LitElement) {
   protected render(): TemplateResult {
     // language=HTML
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} etools-data-table-row {
+        etools-data-table-row {
           --list-bg-color: var(--green-background);
         }
 
@@ -85,7 +86,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
         }
       </style>
 
-      <div class="row-h align-items-center header">
+      <div class="row-h align-items-center header" ?hidden="${this.readonly && !this.activities.length}">
         <div class="heading flex-auto">
           ${translate(translatesMap.activities)}
           <paper-icon-button
@@ -162,14 +163,16 @@ export class PdActivities extends CommentsMixin(LitElement) {
         `
       )}
       ${!this.activities.length
-        ? html`
-            <div class="layout-horizontal empty-row">
-              <div class="text flex-auto">—</div>
-              <div class="text number-data flex-none">—</div>
-              <div class="text number-data flex-none">—</div>
-              <div class="text number-data flex-none">—</div>
-            </div>
-          `
+        ? this.readonly
+          ? html`<div class="empty-row heading">${translate('THERE_ARE_NO_PD_ACTIVITIES')}</div>`
+          : html`
+              <div class="layout-horizontal empty-row">
+                <div class="text flex-auto">—</div>
+                <div class="text number-data flex-none">—</div>
+                <div class="text number-data flex-none">—</div>
+                <div class="text number-data flex-none">—</div>
+              </div>
+            `
         : ''}
     `;
   }

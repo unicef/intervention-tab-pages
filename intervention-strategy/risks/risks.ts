@@ -7,19 +7,19 @@ import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import '@polymer/paper-icon-button/paper-icon-button';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
-import {getStore} from '../../utils/redux-store-access';
-import {openDialog} from '../../utils/dialog';
-import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
-import {buttonsStyles} from '../../common/styles/button-styles';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {RootState} from '../../common/types/store.types';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import get from 'lodash-es/get';
 import {selectRisks} from './risk.selectors';
 import './risk-dialog';
-import '../../common/layout/are-you-sure';
-import {getEndpoint} from '../../utils/endpoint-helper';
+import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {getIntervention} from '../../common/actions/interventions';
 import {currentInterventionPermissions} from '../../common/selectors';
@@ -50,15 +50,15 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
 
   render() {
     if (!this.data || this.data.constructor == Object) {
-      return html`<style>
-          ${sharedStyles}
-        </style>
+      return html` ${sharedStyles}
+
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} :host {
+        :host {
           display: block;
           margin-bottom: 24px;
         }
@@ -149,10 +149,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   }
 
   getTableStyle() {
-    return html`<style>
-        ${sharedStyles}
-      </style>
-      ${customStyles}`;
+    return html` ${sharedStyles} ${customStyles}`;
   }
 
   openRiskDialog(e?: CustomEvent) {

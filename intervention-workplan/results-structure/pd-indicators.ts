@@ -9,28 +9,28 @@ import {
   PropertyValues
 } from 'lit-element';
 import {ResultStructureStyles} from './results-structure.styles';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/iron-icons';
-import {getStore} from '../../utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {RootState} from '../../common/types/store.types';
 import './modals/indicator-dialog/indicator-dialog';
 import get from 'lodash-es/get';
-import {filterByIds, isJsonStrMatch} from '../../utils/utils';
-import EnvironmentFlagsMixin from '../../common/mixins/environment-flags-mixin';
+import {filterByIds, isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import EnvironmentFlagsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/environment-flags-mixin';
 import cloneDeep from 'lodash-es/cloneDeep';
-import '../../common/layout/are-you-sure';
-import {getEndpoint} from '../../utils/endpoint-helper';
+import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {getIntervention} from '../../common/actions/interventions';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {fireEvent} from '../../utils/fire-custom-event';
-import {openDialog} from '../../utils/dialog';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import './pd-indicator';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {connectStore} from '../../common/mixins/connect-store-mixin';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {translate} from 'lit-translate';
 import {
   AsyncAction,
@@ -41,7 +41,7 @@ import {
   Indicator,
   Intervention
 } from '@unicef-polymer/etools-types';
-import {callClickOnSpacePushListener} from '../../utils/common-methods';
+import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 
@@ -85,8 +85,9 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
   protected render(): TemplateResult {
     // language=HTML
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} :host etools-data-table-row {
+        :host etools-data-table-row {
           --list-bg-color: var(--blue-background);
           --list-second-bg-color: var(--blue-background);
           etools-data-table-row::part(edt-list-row-collapse-wrapper) {
@@ -105,7 +106,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
         }
       </style>
 
-      <div class="row-h align-items-center header">
+      <div class="row-h align-items-center header" ?hidden="${!this.indicators.length && this.readonly}">
         <div class="heading flex-auto">
           ${translate(translatesMap.applied_indicators)}
           <paper-icon-button
@@ -139,13 +140,15 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
         `
       )}
       ${!this.indicators.length
-        ? html`
-            <div class="layout-horizontal empty-row">
-              <div class="text flex-auto">—</div>
-              <div class="text number-data flex-none">—</div>
-              <div class="text number-data flex-none">—</div>
-            </div>
-          `
+        ? this.readonly
+          ? html`<div class="empty-row heading">${translate('THERE_ARE_NO_PD_INDICATORS')}</div>`
+          : html`
+              <div class="layout-horizontal empty-row">
+                <div class="text flex-auto">—</div>
+                <div class="text number-data flex-none">—</div>
+                <div class="text number-data flex-none">—</div>
+              </div>
+            `
         : ''}
     `;
   }

@@ -2,27 +2,27 @@ import {LitElement, html, property, customElement, query} from 'lit-element';
 import '@unicef-polymer/etools-content-panel/etools-content-panel.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@unicef-polymer/etools-table/etools-table';
-import {getStore} from '../../utils/redux-store-access';
-import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import '@unicef-polymer/etools-loading';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {buttonsStyles} from '../../common/styles/button-styles';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {EtoolsTableColumn, EtoolsTableColumnType, EtoolsTableChildRow} from '@unicef-polymer/etools-table/etools-table';
 import './supply-agreement-dialog';
 import {RootState} from '../../common/types/store.types';
-import {openDialog} from '../../utils/dialog';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {selectSupplyAgreement, selectSupplyAgreementPermissions} from './supplyAgreement.selectors';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getEndpoint} from '../../utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {fireEvent} from '../../utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {getIntervention, updateCurrentIntervention} from '../../common/actions/interventions';
-import '../../common/layout/are-you-sure';
+import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import {
   addCurrencyAmountDelimiter,
   displayCurrencyAmount
@@ -59,14 +59,13 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   }
   render() {
     if (!this.supply_items) {
-      return html`<style>
-          ${sharedStyles}
-        </style>
+      return html` ${sharedStyles}
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} :host {
+        :host {
           display: block;
           margin-bottom: 24px;
         }
@@ -124,8 +123,8 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           >
           </paper-icon-button>
         </div>
-        <div class="row-h" ?hidden="${!this.permissions.edit.supply_items}">
-          <p id="uploadHelpPanel">${this.getUploadHelpText()}</p>
+        <div class="row-h" ?hidden="${!this.permissions.edit.supply_items || this.supply_items?.length}">
+          ${this.getUploadHelpElement()}
         </div>
         <etools-table
           ?hidden="${!this.supply_items?.length}"
@@ -264,15 +263,14 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       ${customStyles}`;
   }
 
-  getUploadHelpText() {
-    const uploadHelpPanel = this.shadowRoot!.querySelector('#uploadHelpPanel');
-    if (uploadHelpPanel) {
-      const link = 'https://supply.unicef.org/all-materials.html';
-      uploadHelpPanel.innerHTML = getTranslation('UPLOAD_SUPPLY_HELPER').replace(
-        '{0}',
-        `<a target='_blank' href=${link}>${link}</a>`
-      );
-    }
+  getUploadHelpElement() {
+    const link = 'https://supply.unicef.org/all-materials.html';
+    const paragraph = document.createElement('p');
+    paragraph.innerHTML = getTranslation('UPLOAD_SUPPLY_HELPER').replace(
+      '{0}',
+      `<a target='_blank' href=${link}>${link}</a>`
+    );
+    return paragraph;
   }
 
   stateChanged(state: RootState): void {

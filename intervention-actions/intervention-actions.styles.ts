@@ -17,6 +17,8 @@ export const InterventionActionsStyles: CSSResult = css`
     color: white;
     background: var(--green-color);
     font-weight: 500;
+    text-transform: uppercase;
+    border-radius: 3px;
   }
 
   .back-button {
@@ -39,8 +41,14 @@ export const InterventionActionsStyles: CSSResult = css`
     padding: 0 0 0 18px;
   }
 
+  .main-button.with-additional span {
+    margin-right: 15px;
+  }
+
   .main-button span {
     margin-right: 7px;
+    vertical-align: middle;
+    line-height: 36px;
   }
 
   .other-options {
@@ -55,13 +63,13 @@ export const InterventionActionsStyles: CSSResult = css`
 
   paper-menu-button {
     padding: 8px 2px;
+    margin-inline-start: 10px;
   }
 
   paper-button {
     z-index: 10;
   }
   .option-button {
-    margin-left: 14px;
     height: 36px;
     border-left: 2px solid rgba(255, 255, 255, 0.12);
   }

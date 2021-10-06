@@ -1,12 +1,12 @@
 import {LitElement, html, property, customElement, query} from 'lit-element';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '../../common/styles/button-styles';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import get from 'lodash-es/get';
-import {fireEvent} from '../../utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {LocationObject} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 
 class GroupedLocations {
   adminLevelLocation: LocationObject | null = null;
@@ -25,8 +25,9 @@ export class GroupedLocationsDialog extends LitElement {
   render() {
     // language=HTML
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} [hidden] {
+        [hidden] {
           display: none !important;
         }
 
@@ -255,9 +256,7 @@ export class GroupedLocationsDialog extends LitElement {
     }
 
     if (locationsUnableToGroup && locationsUnableToGroup.length) {
-      this.message =
-        getTranslation('LOCATIONS_UNABLE_TO_GROUP') +
-        locationsUnableToGroup.join(', ');
+      this.message = getTranslation('LOCATIONS_UNABLE_TO_GROUP') + locationsUnableToGroup.join(', ');
     }
 
     this.groupedLocations = groupedLocations;

@@ -3,23 +3,23 @@ import '@polymer/paper-button/paper-button';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 
 import {createDynamicDialog} from '@unicef-polymer/etools-dialog/dynamic-dialog.js';
-import '../../../common/layout/icons-actions';
+import '@unicef-polymer/etools-modules-common/dist/layout/icons-actions';
 import './add-edit-special-rep-req';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
-import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
 import CONSTANTS from '../../../common/constants';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
-import {getEndpoint} from '../../../utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
-import {sharedStyles} from '../../../common/styles/shared-styles-lit';
-import {buttonsStyles} from '../../../common/styles/button-styles';
 import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
 import {translate, get as getTranslation} from 'lit-translate';
-import {openDialog} from '../../../utils/dialog';
+import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 
 /**
  * @customElement
@@ -34,8 +34,9 @@ export class SpecialReportingRequirements extends ReportingRequirementsCommonMix
   }
   render() {
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} ${dataTableStylesLit}
+        ${dataTableStylesLit}
       </style>
 
       <div class="row-h" ?hidden="${!this._empty(this.reportingRequirements)}">
@@ -51,14 +52,8 @@ export class SpecialReportingRequirements extends ReportingRequirementsCommonMix
       <div class="flex-c" ?hidden="${this._empty(this.reportingRequirements)}">
         <etools-data-table-header no-collapse no-title>
           <etools-data-table-column class="col-1 right-align index-col">ID</etools-data-table-column>
-          <etools-data-table-column class="col-3"
-            >${translate('DUE_DATE')}</etools-data-table-column
-          >
-          <etools-data-table-column class="flex-6"
-            >${translate(
-              'REPORTING_REQUIREMENT'
-            )}</etools-data-table-column
-          >
+          <etools-data-table-column class="col-3">${translate('DUE_DATE')}</etools-data-table-column>
+          <etools-data-table-column class="flex-6">${translate('REPORTING_REQUIREMENT')}</etools-data-table-column>
           <etools-data-table-column class="flex-c"></etools-data-table-column>
         </etools-data-table-header>
         ${this.reportingRequirements.map(
@@ -174,9 +169,7 @@ export class SpecialReportingRequirements extends ReportingRequirementsCommonMix
   _createDeleteConfirmationsDialog() {
     this._onDeleteConfirmation = this._onDeleteConfirmation.bind(this);
     const confirmationMSg = document.createElement('span');
-    confirmationMSg.innerText = getTranslation(
-      'DELETE_SPECIAL_REPORTING_REQUIREMENT_PROMPT'
-    );
+    confirmationMSg.innerText = getTranslation('DELETE_SPECIAL_REPORTING_REQUIREMENT_PROMPT');
     const confirmationDialogConf = {
       title: getTranslation('DEL_SPECIAL_REPORTING_REQUIREMENT'),
       size: 'md',

@@ -8,11 +8,11 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
 import isEmpty from 'lodash-es/isEmpty';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {gridLayoutStylesLit} from '../common/styles/grid-layout-styles-lit';
-import {sharedStyles} from '../common/styles/shared-styles-lit';
-import {prettyDate} from '../utils/date-utils';
-import {getEndpoint} from '../utils/endpoint-helper';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {prettyDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
 declare const dayjs: any;
 
 /**
@@ -24,8 +24,9 @@ export class MonitoringVisitsList extends LitElement {
     return [gridLayoutStylesLit];
   }
   render() {
-    return html` <style>
-        ${sharedStyles} .monitoring-visits-container {
+    return html`${sharedStyles}
+      <style>
+        .monitoring-visits-container {
           position: relative;
         }
       </style>

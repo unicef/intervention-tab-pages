@@ -4,11 +4,11 @@ import '@unicef-polymer/etools-loading/etools-loading.js';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging.js';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
-import {fireEvent} from '../../utils/fire-custom-event';
-import {getEndpoint} from '../../utils/endpoint-helper';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import CommonMixin from '../../common/mixins/common-mixin';
 import {translate} from 'lit-translate';
+import CommonMixin from '@unicef-polymer/etools-modules-common/dist/mixins/common-mixin';
 
 /**
  * LitElement

@@ -1,9 +1,9 @@
-import UtilsMixin from '../../common/mixins/utils-mixin';
 import {LitElement, html, property, customElement} from 'lit-element';
 import {GenericObject} from '@unicef-polymer/etools-types';
-import CommonMixin from '../../common/mixins/common-mixin';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
+import CommonMixin from '@unicef-polymer/etools-modules-common/dist/mixins/common-mixin';
+import UtilsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/utils-mixin';
 
 /**
  * @polymer

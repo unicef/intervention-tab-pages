@@ -1,7 +1,7 @@
 /* eslint-disable lit-a11y/click-events-have-key-events */
 import {LitElement, html, TemplateResult, CSSResultArray, customElement, property} from 'lit-element';
 import '@polymer/iron-icons';
-import {fireEvent} from '../../../utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {CommentStyles} from './comment.styles';
 import {InterventionComment} from '@unicef-polymer/etools-types';
 declare const dayjs: any;
@@ -19,7 +19,11 @@ export class CommentElement extends LitElement {
   @property() deleting = false;
 
   get authorAvatar(): string {
-    return !this.comment ? '' : `${this.comment.user.first_name[0]}${this.comment.user.last_name[0]}`;
+    return !this.comment
+      ? ''
+      : `${this.comment.user.first_name ? this.comment.user.first_name[0] : ''}${
+          this.comment.user.last_name ? this.comment.user.last_name[0] : ''
+        }`;
   }
 
   get date(): string {

@@ -1,15 +1,16 @@
 import {LitElement, html, property, customElement} from 'lit-element';
 import '@unicef-polymer/etools-data-table/etools-data-table';
-import EndpointsLitMixin from '../../../common/mixins/endpoints-mixin-lit';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
-import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
-import {isEmptyObject} from '../../../utils/utils';
+import {isEmptyObject} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {ExpectedResult, ResultLinkLowerResult} from '@unicef-polymer/etools-types';
-import {fireEvent} from '../../../utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
 import {translate} from 'lit-translate';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import EndpointsLitMixin from '@unicef-polymer/etools-modules-common/dist/mixins/endpoints-mixin-lit';
+import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 
 /**
  * @customElement
@@ -38,12 +39,8 @@ export class HumanitarianReportingReqCluster extends EndpointsLitMixin(Reporting
 
       <div class="flex-c" ?hidden="${!this.reportingRequirements.length}">
         <etools-data-table-header no-collapse no-title class="w100">
-          <etools-data-table-column class="col-2">${translate(
-            'FREQUENCY'
-          )}</etools-data-table-column>
-          <etools-data-table-column class="flex-c">${translate(
-            'DUE_DATES'
-          )}</etools-data-table-column>
+          <etools-data-table-column class="col-2">${translate('FREQUENCY')}</etools-data-table-column>
+          <etools-data-table-column class="flex-c">${translate('DUE_DATES')}</etools-data-table-column>
         </etools-data-table-header>
         ${this.reportingRequirements.map(
           (item: any) => html` <etools-data-table-row no-collapse>
@@ -108,6 +105,7 @@ export class HumanitarianReportingReqCluster extends EndpointsLitMixin(Reporting
     }
     let reportingRequirementsOriginal = this.reportingRequirements;
     this.fireRequest(
+      interventionEndpoints,
       'hrClusterReportingRequirements',
       {},
       {

@@ -3,48 +3,47 @@ import '@polymer/paper-button/paper-button';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-loading/etools-loading';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import {buttonsStyles} from '../../common/styles/button-styles';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import cloneDeep from 'lodash-es/cloneDeep';
-import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
+import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {RootState} from '../../common/types/store.types';
-import {getStore} from '../../utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import './prcDocument.models';
 import './prcDocument.selectors';
 import {selectPrcDocumentData, selectPrcDocumentPermissions} from './prcDocument.selectors';
 import {PrcDocumentData, PrcDocumentPermissions} from './prcDocument.models';
-import {isJsonStrMatch} from '../../utils/utils';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import CONSTANTS from '../../common/constants';
-import {getEndpoint} from '../../utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {patchIntervention} from '../../common/actions/interventions';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import UploadMixin from '../../common/mixins/uploads-mixin';
+import UploadsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uploads-mixin';
 
 /**
  * @customElement
  */
 @customElement('prc-document')
-export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadMixin(LitElement))) {
+export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadsMixin(LitElement))) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
   render() {
     // language=HTML
     if (!this.data || !this.permissions) {
-      return html`<style>
-          ${sharedStyles}
-        </style>
+      return html` ${sharedStyles}
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} :host {
+        :host {
           display: block;
           margin-bottom: 24px;
         }
@@ -54,9 +53,9 @@ export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadMixin(Li
       </style>
       <etools-content-panel
         show-expand-btn
-        panel-title=${translate('PRC_REVIEW_DOC')}
+        panel-title=${translate('PRC_REVIEW_DOC_TITLE')}
         comment-element="prc-document"
-        comment-description=${translate('PRC_REVIEW_DOC')}
+        comment-description=${translate('PRC_REVIEW_DOC_TITLE')}
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
         <div class="layout-horizontal row-padding-v">

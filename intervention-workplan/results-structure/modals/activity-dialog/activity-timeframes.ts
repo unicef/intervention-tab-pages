@@ -9,12 +9,12 @@ import {
   customElement,
   PropertyValues
 } from 'lit-element';
-import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
 import {ActivityTime, groupByYear, serializeTimeFrameData} from '../../../../utils/timeframes.helper';
-import {fireEvent} from '../../../../utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {InterventionActivityTimeframe} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {callClickOnSpacePushListener} from '../../../../utils/common-methods';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 
 @customElement('activity-time-frames')
 export class ActivityTimeFrames extends LitElement {
@@ -113,13 +113,9 @@ export class ActivityTimeFrames extends LitElement {
 
   protected render(): TemplateResult {
     return html`
-      <label class="paper-label layout-horizontal center-align" required
-        >${translate('ACTIVITY_TIMES')}</label
-      >
+      <label class="paper-label layout-horizontal center-align" required>${translate('ACTIVITY_TIMES')}</label>
       <div class="layout-horizontal center-align time-frame-container">
-        ${!this._timeFrames.length
-          ? html`${translate('ACTIVITY_TIMES_MSG')}`
-          : html``}
+        ${!this._timeFrames.length ? html`${translate('ACTIVITY_TIMES_MSG')}` : html``}
         ${this._timeFrames.map(
           ([year, frames]: any) => html`
             <div class="light-gray-container">
