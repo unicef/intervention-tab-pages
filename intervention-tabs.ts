@@ -597,7 +597,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   }
 
   goToPageNotFound() {
-    history.pushState(window.history.state, '', 'page-not-found');
+    history.pushState(window.history.state, '', 'not-found');
     window.dispatchEvent(new CustomEvent('popstate'));
   }
 
