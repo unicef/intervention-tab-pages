@@ -1,5 +1,6 @@
 import {LitElement, html, property, customElement, css} from 'lit-element';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
+import {PaperTooltipElement} from '@polymer/paper-tooltip';
 
 @customElement('rating-instructions')
 export class AnswerInstructions extends LitElement {
@@ -7,15 +8,15 @@ export class AnswerInstructions extends LitElement {
     return [
       elevationStyles,
       css`
-        #rating-icon {
+        #info-icon {
           color: var(--primary-color);
         }
 
-        .rating-info-content {
+        .content {
           padding: 24px;
         }
 
-        .rating-info {
+        .tooltip-info {
           display: flex;
           flex-direction: column;
           padding: 6px;
@@ -24,15 +25,15 @@ export class AnswerInstructions extends LitElement {
           box-sizing: border-box;
         }
 
-        .rating-info.gray-border {
+        .tooltip-info.gray-border {
           border: solid 1px var(--secondary-background-color);
         }
 
-        .rating-info span {
+        .tooltip-info span {
           font-size: 14px;
         }
 
-        .rating-info span.primary {
+        .tooltip-info span.primary {
           font-weight: bold;
         }
       `
@@ -48,7 +49,7 @@ export class AnswerInstructions extends LitElement {
           --paper-tooltip: {
             padding: 0;
           }
-          width: 200px;
+          width: auto;
         }
 
         paper-tooltip span {
@@ -58,23 +59,38 @@ export class AnswerInstructions extends LitElement {
         }
       </style>
 
-      <paper-icon-button id="rating-icon" icon="info"></paper-icon-button>
-      <paper-tooltip for="rating-icon" animation-entry="noanimation" position="right">
+      <paper-icon-button id="info-icon" icon="info" @click="${this.showTooltip}"></paper-icon-button>
+      <paper-tooltip for="info-icon" id="tooltip" manual-mode animation-entry="noanimation" position="right">
         ${this.getRatingInfoHtml()}
       </paper-tooltip>
     `;
   }
 
   @property({type: String})
-  instructions = '';
+  tooltipText = '';
+
+  private tooltipHandler: any;
 
   getRatingInfoHtml() {
     return html`
-      <div class="rating-info-content elevation" elevation="1">
-        <div class="rating-info gray-border">
-          <span class="primary">${this.instructions}</span>
+      <div class="content elevation" elevation="1">
+        <div class="tooltip-info gray-border">
+          <span class="primary">${this.tooltipText}</span>
         </div>
       </div>
     `;
+  }
+
+  showTooltip() {
+    const tooltip = this.shadowRoot?.querySelector<PaperTooltipElement>('#tooltip')!;
+    tooltip.show();
+
+    this.tooltipHandler = this.hideTooltip.bind(this, tooltip);
+    document.addEventListener('click', this.tooltipHandler, true);
+  }
+
+  hideTooltip(tooltip: PaperTooltipElement) {
+    tooltip.hide();
+    document.removeEventListener('click', this.tooltipHandler);
   }
 }

@@ -79,7 +79,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
           <div class="w100">
             <label class="paper-label">${translate(translatesMap.gender_rating)}</label>
             <rating-instructions ?hidden=${!this.editMode}
-              .instructions=${translate(translatesMap.gender_rating)}>
+              .tooltipText=${translate('GENDER_RATING_INFO')}>
             </rating-instructions>
           </div>
           ${this._getRatingRadioButtonGroupTemplate(
@@ -111,7 +111,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
           <div class="w100">
             <label class="paper-label">${translate(translatesMap.equity_rating)}</label>
             <rating-instructions ?hidden=${!this.editMode}
-              .instructions=${translate(translatesMap.equity_rating)}>
+              .tooltipText=${translate(translatesMap.equity_rating)}>
             </rating-instructions>
           </div>
           ${this._getRatingRadioButtonGroupTemplate(
@@ -143,7 +143,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
           <div class="w100">
             <label class="paper-label">${translate(translatesMap.sustainability_rating)}</label>
             <rating-instructions ?hidden=${!this.editMode}
-              .instructions=${translate(translatesMap.sustainability_rating)}>
+              .tooltipText=${translate(translatesMap.sustainability_rating)}>
             </rating-instructions>
           </div>
           ${this._getRatingRadioButtonGroupTemplate(

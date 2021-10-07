@@ -464,12 +464,14 @@
   "PSEA_ASSESSMENT_DATE": "PSEA Assessment Date",
   "UPLOAD_SUPPLY_TOOLTIP": "Upload From Supply Catalogue",
   "UPLOAD_SUPPLY_HELPER": "To upload from supply catalogue please visit {0} to select items and export to excel then upload into the PD.",
-  "REQUIRED_ERROR": "Please fill in required fields",
   "REGENERATE": "Regenerate",
   "PD_START_END_DATE_CHANGED": "The PD/SPD start/end dates differ ",
+  "REQUIRED_ERROR": "Please fill in required fields",
   "CANCELLATION_NOTE": "Cancellation Note",
   "REJECTION_NOTE": "Rejection Note",
-  "REQUIRED_ERROR": "Please fill in required fields",
   "THERE_ARE_NO_PD_INDICATORS": "There are no PD Indicators",
-  "THERE_ARE_NO_PD_ACTIVITIES": "There are no PD Activities"
+  "THERE_ARE_NO_PD_ACTIVITIES": "There are no PD Activities",
+  "GENDER_RATING_INFO": "The gender rating assesses the expected contribution of the programme intervention to advancing gender equality and/or the empowerment of girls and women.",
+  "EQUITY_RATING_INFO": "The equity rating assesses the expected contribution of the programme intervention to ensuring all children have an opportunity to survive, develop and reach their full potential without discrimination, bias or favoritism.",
+  "SUSTAINABILITY_RATING_INFO": "The sustainability rating assesses the expected contribution of the programme intervention to sustainable development."
 }
