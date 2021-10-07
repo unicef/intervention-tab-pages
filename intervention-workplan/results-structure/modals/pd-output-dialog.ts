@@ -14,6 +14,7 @@ import {ResultLinkLowerResult} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 
+// @ts-ignore TODO
 @customElement('pd-output-dialog')
 export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElement) {
   @property() dialogOpened = true;
@@ -133,6 +134,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
   }
 
   onClose(): void {
+    // @ts-ignore TODO
     fireEvent(this, 'dialog-closed', {confirmed: false});
   }
 
@@ -140,6 +142,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
     if (this.loadingInProcess) {
       return;
     }
+    // @ts-ignore TODO
     if (!validateRequiredFields(this)) {
       return;
     }
@@ -168,11 +171,13 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
           .catch(() => Promise.resolve())
       )
       .then(() => {
+        // @ts-ignore TODO
         fireEvent(this, 'dialog-closed', {confirmed: true});
       })
       .catch((error) => {
         this.loadingInProcess = false;
         this.errors = (error && error.response) || {};
+        // @ts-ignore TODO
         fireEvent(this, 'toast', {text: getTranslation('ERR_SAVE_PD_OUTPUT')});
       });
   }

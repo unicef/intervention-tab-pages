@@ -1,5 +1,4 @@
 import {LitElement, html, property, customElement} from 'lit-element';
-import {get as getTranslation} from 'lit-translate';
 import '@polymer/paper-input/paper-input';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
@@ -16,7 +15,7 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {AnyObject, InterventionAmendment, LabelAndValue} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {AmendmentsKind, AmendmentsKindTranslateKeys} from './pd-amendments.models';
+import {AmendmentsKind} from './pd-amendments.models';
 import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin.js';
 
