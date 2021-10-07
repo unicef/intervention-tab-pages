@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import {css, CSSResult} from 'lit-element';
 /* tslint:disable:max-file-line-count */
 /* tslint:disable:max-line-length */

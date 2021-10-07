@@ -14,6 +14,7 @@ export type MarkerDataObj = {
   popup?: string;
 };
 
+// @ts-ignore TODO
 export const defaultIcon = L.icon({
   iconUrl: 'node_modules/leaflet/dist/images/marker-icon.png',
   iconSize: [25, 41],
@@ -23,6 +24,7 @@ export const defaultIcon = L.icon({
   tooltipAnchor: [16, -28]
 });
 
+// @ts-ignore TODO
 export const markedIcon = L.icon({
   iconUrl: 'node_modules/leaflet/dist/images/marker-icon.png',
   iconSize: [25, 41],
@@ -43,8 +45,11 @@ export class MapHelper {
     if (!element) {
       throw new Error('Please provide HTMLElement for map initialization!');
     }
+    // @ts-ignore TODO
     this.map = L.map(element);
+    // @ts-ignore TODO
     L.tileLayer(TILE_LAYER, {pane: 'tilePane'}).addTo(this.map);
+    // @ts-ignore TODO
     L.tileLayer(TILE_LAYER_LABELS, {pane: 'overlayPane'}).addTo(this.map);
     return this.map;
   }
@@ -60,11 +65,13 @@ export class MapHelper {
   }
 
   addCluster(markersData: MarkerDataObj[], onclick?: (e: any) => void): void {
+    // @ts-ignore TODO
     this.markerClusters = (L as any).markerClusterGroup();
     const markers: Marker[] = [];
     let marker: IMarker;
     (markersData || []).forEach((mark: MarkerDataObj) => {
-      marker = L.marker(mark.coords).bindPopup(`<b>${mark.popup}</b>`)
+      // @ts-ignore TODO
+      marker = L.marker(mark.coords).bindPopup(`<b>${mark.popup}</b>`);
       marker.staticData = mark.staticData;
       if (onclick) {
         marker.on('click', function (e) {
@@ -121,6 +128,7 @@ export class MapHelper {
       throw new Error('Please, initialize map!');
     }
     this.removeDynamicMarker();
+    // @ts-ignore TODO
     this.dynamicMarker = L.marker(cordinates).addTo(this.map);
   }
 
@@ -149,6 +157,7 @@ export class MapHelper {
   }
 
   private createMarker(data: MarkerDataObj): IMarker {
+    // @ts-ignore TODO
     const marker: IMarker = L.marker(data.coords).addTo(this.map as Map);
     marker.staticData = data.staticData;
     if (data.popup) {

@@ -103,6 +103,11 @@ export class ExportInterventionData extends LitElement {
       window.open(url, '_blank');
       return;
     }
+    if (_type == 'export_xls') {
+      url = getEndpoint(interventionEndpoints.exportXls, {interventionId: this.interventionId}).url;
+      window.open(url, '_blank');
+      return;
+    }
     fireEvent(this, 'toast', {text: 'Export this not implemented...'});
   }
 }

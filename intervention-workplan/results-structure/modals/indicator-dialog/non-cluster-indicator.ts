@@ -15,7 +15,6 @@ import {translate} from 'lit-translate';
 import {translatesMap} from '../../../../utils/intervention-labels-map';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 
-
 /**
  * @customElement
  * @appliesMixin IndicatorsCommonMixin

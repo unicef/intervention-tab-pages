@@ -60,6 +60,7 @@ declare const dayjs: any;
  * @customElement
  */
 @customElement('intervention-results-reported')
+// @ts-ignore TODO
 export class InterventionResultsReported extends connectStore(
   UtilsMixin(CommonMixin(EndpointsLitMixin(EtoolsCurrency(LitElement))))
 ) {

@@ -1,8 +1,8 @@
 /* eslint-disable lit-a11y/click-events-have-key-events */
 import {CSSResultArray, LitElement, TemplateResult, html, property, customElement} from 'lit-element';
 import {arrowLeftIcon} from '@unicef-polymer/etools-modules-common/dist/styles/app-icons';
-import '@polymer/paper-button';
-import '@polymer/paper-menu-button';
+import '@polymer/paper-button/paper-button';
+import '@polymer/paper-menu-button/paper-menu-button';
 import '@polymer/paper-icon-button';
 import '../common/layout/export-intervention-data';
 import '@unicef-polymer/etools-modules-common/dist/components/cancel/reason-popup';
@@ -116,22 +116,9 @@ export class InterventionActions extends LitElement {
     const className = `main-button${withAdditional}${onlyCancel}`;
     return mainAction
       ? html`
-          <paper-menu-button
-            horizontal-align="right"
-            class="${className}"
-            @click="${(event: MouseEvent) => event.stopImmediatePropagation()}"
-          >
-            <span
-              slot="dropdown-trigger"
-              @click="${(event: MouseEvent) => {
-                event.stopImmediatePropagation();
-                this.processAction(mainAction);
-              }}"
-            >
-              ${this.getMainActionTranslatedText(mainAction)}
-            </span>
-            ${this.getAdditionalTransitions(actions)}
-          </paper-menu-button>
+          <paper-button class="${className}" @click="${() => this.processAction(mainAction)}">
+            ${this.getMainActionTranslatedText(mainAction)} ${this.getAdditionalTransitions(actions)}
+          </paper-button>
         `
       : html``;
   }
@@ -141,16 +128,18 @@ export class InterventionActions extends LitElement {
       return html``;
     }
     return html`
-      <paper-icon-button slot="dropdown-trigger" class="option-button" icon="expand-more"></paper-icon-button>
-      <div slot="dropdown-content">
-        ${actions.map(
-          (action: string) => html`
-            <div class="other-options" @click="${() => this.processAction(action)}">
-              ${this.actionsNamesMap[action]}
-            </div>
-          `
-        )}
-      </div>
+      <paper-menu-button horizontal-align="right" @click="${(event: MouseEvent) => event.stopImmediatePropagation()}">
+        <paper-icon-button slot="dropdown-trigger" class="option-button" icon="expand-more"></paper-icon-button>
+        <div slot="dropdown-content">
+          ${actions.map(
+            (action: string) => html`
+              <div class="other-options" @click="${() => this.processAction(action)}">
+                ${this.actionsNamesMap[action]}
+              </div>
+            `
+          )}
+        </div>
+      </paper-menu-button>
     `;
   }
 

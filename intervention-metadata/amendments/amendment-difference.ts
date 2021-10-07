@@ -162,8 +162,7 @@ export class AmendmentDifference extends LitElement {
       .map((value) => choices.get(value) || value)
       .join(' | ');
     return html`<div class="offset">
-      <span>${translate('PREVIOUS_VALUE')}</span> - ${previous};
-      <span>${translate('CURRENT_VALUE')}</span> - ${current}
+      <span>${translate('PREVIOUS_VALUE')}</span> - ${previous}; <span>${translate('CURRENT_VALUE')}</span> - ${current}
     </div>`;
   }
 
