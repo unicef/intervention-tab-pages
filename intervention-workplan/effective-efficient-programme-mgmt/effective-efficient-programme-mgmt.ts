@@ -27,6 +27,7 @@ import {AnyObject} from '@unicef-polymer/etools-types';
 import {get as getTranslation, translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
+import '../../common/info-icon-tooltip';
 
 const customStyles = html`
   <style>
@@ -75,6 +76,11 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         comment-element="programme-management"
         comment-description=${translate(translatesMap.management_budgets)}
       >
+        <div slot="after-title">
+          <info-icon-tooltip
+            .tooltipText="${translate('EFFECTIVE_AND_EFFICIENT_PRGMT_MNGMT_INFO')}"
+          ></info-icon-tooltip>
+        </div>
         <div slot="panel-btns">
           <label class="paper-label font-bold pad-right">${translate('TOTAL')}</label
           ><label class="font-bold-12">${this.data.currency} ${this.total_amount}</label>
