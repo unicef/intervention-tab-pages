@@ -474,5 +474,6 @@
   "THERE_ARE_NO_PD_ACTIVITIES": "There are no PD Activities",
   "GENDER_RATING_INFO": "The gender rating assesses the expected contribution of the programme intervention to advancing gender equality and/or the empowerment of girls and women.",
   "EQUITY_RATING_INFO": "The equity rating assesses the expected contribution of the programme intervention to ensuring all children have an opportunity to survive, develop and reach their full potential without discrimination, bias or favoritism.",
-  "SUSTAINABILITY_RATING_INFO": "The sustainability rating assesses the expected contribution of the programme intervention to sustainable development."
+  "SUSTAINABILITY_RATING_INFO": "The sustainability rating assesses the expected contribution of the programme intervention to sustainable development.",
+  "RISKS_INFO": "Programme interventions may encounter a variety of risks. This field outlines key risks identified and proposed mitigation measures. These risks should inform programme design and monitoring."
 }

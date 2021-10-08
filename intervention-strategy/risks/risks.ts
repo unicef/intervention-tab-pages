@@ -27,6 +27,7 @@ import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, LabelAndValue, RiskData} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
+import '../../common/info-icon-tooltip';
 
 const customStyles = html`
   <style>
@@ -77,6 +78,9 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         comment-element="risks"
         comment-description=${translate(translatesMap.risks)}
       >
+        <div slot="after-title">
+          <info-icon-tooltip .tooltipText="${translate('RISKS_INFO')}"></info-icon-tooltip>
+        </div>
         <div slot="panel-btns">
           <paper-icon-button
             ?hidden="${!this.canEditAtLeastOneField}"
