@@ -24,6 +24,8 @@ import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
+import '../../common/info-icon-tooltip';
+import '../../common/paper-textarea-with-icon';
 
 /**
  * @customElement
@@ -50,6 +52,45 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
 
         etools-content-panel::part(ecp-content) {
           padding: 8px 24px 16px 24px;
+        }
+        paper-textarea-with-icon {
+          outline: none;
+          flex: auto;
+        }
+        paper-textarea-with-icon[readonly] {
+          --paper-input-container-underline: {
+            display: none;
+          }
+          --paper-input-container-input-focus: {
+          }
+          --paper-input-container-label-focus: {
+            color: var(--secondary-text-color);
+          }
+          --paper-input-container-underline-focus: {
+            display: none;
+          }
+          --paper-input-container: {
+            cusrsor: text;
+          }
+          --paper-input-container-label: {
+            color: var(--secondary-text-color, #737373);
+            cusrsor: text;
+          }
+          --esmm-select-cursor: text;
+          --esmm-external-wrapper: {
+            width: 100%;
+          }
+        }
+
+        paper-textarea-with-icon[required] {
+          --paper-input-container-label: {
+            @apply --required-star-style;
+            color: var(--secondary-text-color, #737373);
+          }
+          --paper-input-container-label-floating: {
+            @apply --required-star-style;
+            color: var(--secondary-text-color, #737373);
+          }
         }
       </style>
 
@@ -81,7 +122,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
         </div>
 
         <div class="row-padding-v">
-          <paper-textarea
+          <paper-textarea-with-icon
             id="context"
             label=${translate(translatesMap.context)}
             always-float-label
@@ -95,11 +136,16 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             rows="${detailsTextareaRowsCount(this.editMode)}"
             .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.context)}"
           >
-          </paper-textarea>
+            <info-icon-tooltip
+              style="display: inline-block"
+              slot="after-label"
+              .tooltipText="${translate('CONTEXT_TOOLTIP')}"
+            ></info-icon-tooltip>
+          </paper-textarea-with-icon>
         </div>
 
         <div class="row-padding-v">
-          <paper-textarea
+          <paper-textarea-with-icon
             id="implementation-strategy"
             label=${translate(translatesMap.implementation_strategy)}
             always-float-label
@@ -112,11 +158,11 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             rows="${detailsTextareaRowsCount(this.editMode)}"
             .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.implementation_strategy)}"
           >
-          </paper-textarea>
+          </paper-textarea-with-icon>
         </div>
 
         <div class="row-padding-v">
-          <paper-textarea
+          <paper-textarea-with-icon
             id="capacityDevelopment"
             label=${translate(translatesMap.capacity_development)}
             type="text"
@@ -129,7 +175,12 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             maxlength="5000"
             rows="${detailsTextareaRowsCount(this.editMode)}"
           >
-          </paper-textarea>
+            <info-icon-tooltip
+              style="display: inline-block"
+              slot="after-label"
+              .tooltipText="${translate('CAPACITY_DEVELOPMENT_TOOLTIP')}"
+            ></info-icon-tooltip>
+          </paper-textarea-with-icon>
         </div>
 
         <div class="row-padding-v">
