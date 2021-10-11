@@ -195,6 +195,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'other_partners_involved')}"
             maxlength="5000"
             rows="${detailsTextareaRowsCount(this.editMode)}"
+            .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.other_partners_involved)}"
           >
             <info-icon-tooltip
               slot="after-label"

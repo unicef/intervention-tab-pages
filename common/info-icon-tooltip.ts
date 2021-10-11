@@ -46,6 +46,7 @@ export class InfoIconTooltip extends LitElement {
       <style>
         :host {
           display: inline-block;
+          cursor: pointer;
         }
         iron-icon {
           margin: var(--iit-margin, 0);
