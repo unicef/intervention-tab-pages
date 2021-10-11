@@ -88,6 +88,10 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         etools-content-panel::part(ecp-content) {
           padding: 8px 24px 16px 24px;
         }
+
+        info-icon-tooltip {
+          --iit-margin: 8px 0 8px -15px;
+        }
       </style>
 
       <etools-content-panel

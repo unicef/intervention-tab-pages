@@ -30,6 +30,7 @@ import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-commo
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {sectionContentStyles} from '@unicef-polymer/etools-modules-common/dist/styles/content-section-styles-polymer';
+import '../../common/info-icon-tooltip';
 
 /**
  * @polymer
@@ -104,6 +105,10 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
           color: var(--primary-text-color);
           margin-left: 16px;
         }
+
+        info-icon-tooltip {
+          --iit-margin: 0 5px 0 0;
+        }
       </style>
       <etools-content-panel
         show-expand-btn
@@ -121,6 +126,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
               tabindex="0"
               id="clickable"
             >
+              <info-icon-tooltip .tooltipText="${translate('QUARTERLY_PROGRESS_REPORT_TOOLTIP')}"></info-icon-tooltip>
               <span>${translate('QUARTERLY_PROGRESS_REPORTS')} (${this.qprRequirementsCount})</span>
               <paper-icon-button
                 class="edit-rep-req"
@@ -138,6 +144,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
               tabindex="0"
               id="clickable"
             >
+              <info-icon-tooltip .tooltipText="${translate('HUMANITARIAN_REPORT_TOOLTIP')}"></info-icon-tooltip>
               <span>${translate('HUMANITARIAN_REPORTS_UNICEF')} (${this.hrUnicefRequirementsCount})</span>
               <paper-icon-button
                 class="edit-rep-req"
@@ -169,6 +176,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
               tabindex="0"
               id="clickable"
             >
+              <info-icon-tooltip .tooltipText="${translate('SPECIAL_REPORT_TOOLTIP')}"></info-icon-tooltip>
               ${translate('SPECIAL_REPORT')} (${this.specialRequirementsCount})
             </div>
           </div>

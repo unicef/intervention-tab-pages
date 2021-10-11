@@ -27,6 +27,8 @@ import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
+import '../../common/info-icon-tooltip';
+import '../../common/paper-textarea-with-icon';
 
 /**
  * @customElement
@@ -65,7 +67,7 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="row-padding-v">
-          <paper-textarea
+          <paper-textarea-with-icon
             id="ip_program_contribution"
             label=${translate(translatesMap.ip_program_contribution)}
             always-float-label
@@ -78,7 +80,11 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
             rows="${detailsTextareaRowsCount(this.editMode)}"
             .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.ip_program_contribution)}"
           >
-          </paper-textarea>
+            <info-icon-tooltip
+              slot="after-label"
+              .tooltipText="${translate('PARTNER_NON_FINANCIAL_CONTRIBUTION_TOOLTIP')}"
+            ></info-icon-tooltip>
+          </paper-textarea-with-icon>
         </div>
 
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}

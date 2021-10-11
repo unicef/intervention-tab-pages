@@ -3,7 +3,7 @@ import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles
 import {PaperTooltipElement} from '@polymer/paper-tooltip';
 
 @customElement('info-icon-tooltip')
-export class AnswerInstructions extends LitElement {
+export class InfoIconTooltip extends LitElement {
   static get styles() {
     return [
       elevationStyles,
@@ -47,6 +47,9 @@ export class AnswerInstructions extends LitElement {
         :host {
           display: inline-block;
         }
+        iron-icon {
+          margin: var(--iit-margin, 0);
+        }
         paper-tooltip {
           --paper-tooltip-background: #ffffff;
           --paper-tooltip: {
@@ -62,7 +65,7 @@ export class AnswerInstructions extends LitElement {
         }
       </style>
 
-      <iron-icon id="info-icon" icon="info" @click="${this.showTooltip}"></iron-icon>
+      <iron-icon id="info-icon" icon="info-outline" @click="${this.showTooltip}"></iron-icon>
       <paper-tooltip
         for="info-icon"
         id="tooltip"

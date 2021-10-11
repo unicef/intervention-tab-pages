@@ -136,11 +136,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             rows="${detailsTextareaRowsCount(this.editMode)}"
             .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.context)}"
           >
-            <info-icon-tooltip
-              style="display: inline-block"
-              slot="after-label"
-              .tooltipText="${translate('CONTEXT_TOOLTIP')}"
-            ></info-icon-tooltip>
+            <info-icon-tooltip slot="after-label" .tooltipText="${translate('CONTEXT_TOOLTIP')}"></info-icon-tooltip>
           </paper-textarea-with-icon>
         </div>
 
@@ -158,6 +154,10 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             rows="${detailsTextareaRowsCount(this.editMode)}"
             .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.implementation_strategy)}"
           >
+            <info-icon-tooltip
+              slot="after-label"
+              .tooltipText="${translate('IMPLEMENTATION_STRATEGY_AND_TECHNICAL_GUIDANCE_TOOLTIP')}"
+            ></info-icon-tooltip>
           </paper-textarea-with-icon>
         </div>
 
@@ -176,7 +176,6 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             rows="${detailsTextareaRowsCount(this.editMode)}"
           >
             <info-icon-tooltip
-              style="display: inline-block"
               slot="after-label"
               .tooltipText="${translate('CAPACITY_DEVELOPMENT_TOOLTIP')}"
             ></info-icon-tooltip>
@@ -184,7 +183,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
         </div>
 
         <div class="row-padding-v">
-          <paper-textarea
+          <paper-textarea-with-icon
             id="otherPartnersInvolved"
             label=${translate(translatesMap.other_partners_involved)}
             type="text"
@@ -197,7 +196,11 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             maxlength="5000"
             rows="${detailsTextareaRowsCount(this.editMode)}"
           >
-          </paper-textarea>
+            <info-icon-tooltip
+              slot="after-label"
+              .tooltipText="${translate('OTHER_PARTNERS_INVOLVED_TOOLTIP')}"
+            ></info-icon-tooltip>
+          </paper-textarea-with-icon>
         </div>
 
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}

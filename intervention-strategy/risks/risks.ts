@@ -71,6 +71,9 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           overflow: hidden;
           padding: 20px;
         }
+        info-icon-tooltip {
+          --iit-margin: 8px 0 8px -15px;
+        }
       </style>
       <etools-content-panel
         show-expand-btn
