@@ -256,7 +256,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
       if ((!this.items || !this.items.length) && this.activityItemsTable) {
         // add by default a row in activity items table if we have none
         setTimeout(() => {
-          (this.activityItemsTable.shadowRoot!.querySelector('#btnAddItem') as HTMLElement).click();
+          this.activityItemsTable.addNew();
         }, 100);
       }
     } else {
