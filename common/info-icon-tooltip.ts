@@ -1,6 +1,7 @@
 import {LitElement, html, property, customElement, css} from 'lit-element';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {PaperTooltipElement} from '@polymer/paper-tooltip';
+import {callClickOnEnterPushListener} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 
 @customElement('info-icon-tooltip')
 export class InfoIconTooltip extends LitElement {
@@ -66,7 +67,7 @@ export class InfoIconTooltip extends LitElement {
         }
       </style>
 
-      <iron-icon id="info-icon" icon="info-outline" @click="${this.showTooltip}"></iron-icon>
+      <iron-icon tabindex="0" id="info-icon" icon="info-outline" @click="${this.showTooltip}"></iron-icon>
       <paper-tooltip
         for="info-icon"
         id="tooltip"
@@ -86,6 +87,11 @@ export class InfoIconTooltip extends LitElement {
   position = 'right';
 
   private tooltipHandler: any;
+
+  connectedCallback() {
+    super.connectedCallback();
+    setTimeout(() => callClickOnEnterPushListener(this.shadowRoot?.querySelector('#info-icon')), 200);
+  }
 
   getRatingInfoHtml() {
     return html`
