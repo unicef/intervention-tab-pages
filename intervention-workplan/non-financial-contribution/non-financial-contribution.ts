@@ -27,7 +27,7 @@ import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
-import '../../common/info-icon-tooltip';
+import '@unicef-polymer/etools-modules-common/dist/components/info-icon-tooltip';
 import '../../common/paper-textarea-with-icon';
 
 /**
@@ -81,6 +81,7 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
             .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.ip_program_contribution)}"
           >
             <info-icon-tooltip
+              id="iit-non-fin"
               slot="after-label"
               .tooltipText="${translate('PARTNER_NON_FINANCIAL_CONTRIBUTION_TOOLTIP')}"
             ></info-icon-tooltip>

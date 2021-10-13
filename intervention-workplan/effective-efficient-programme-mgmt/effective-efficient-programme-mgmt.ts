@@ -27,7 +27,7 @@ import {AnyObject} from '@unicef-polymer/etools-types';
 import {get as getTranslation, translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
-import '../../common/info-icon-tooltip';
+import '@unicef-polymer/etools-modules-common/dist/components/info-icon-tooltip';
 
 const customStyles = html`
   <style>
@@ -81,6 +81,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
       >
         <div slot="after-title">
           <info-icon-tooltip
+            id="iit-eepm"
             .tooltipText="${translate('EFFECTIVE_AND_EFFICIENT_PRGMT_MNGMT_INFO')}"
           ></info-icon-tooltip>
         </div>

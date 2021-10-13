@@ -24,7 +24,7 @@ import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
-import '../../common/info-icon-tooltip';
+import '@unicef-polymer/etools-modules-common/dist/components/info-icon-tooltip';
 import '../../common/paper-textarea-with-icon';
 
 /**
@@ -58,15 +58,9 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
           flex: auto;
         }
 
-        paper-textarea-with-icon[required] {
-          --paper-input-container-label: {
-            @apply --required-star-style;
-            color: var(--secondary-text-color, #737373);
-          }
-          --paper-input-container-label-floating: {
-            @apply --required-star-style;
-            color: var(--secondary-text-color, #737373);
-          }
+        info-icon-tooltip {
+          --iit-icon-size: 18px;
+          --iit-margin: 0 0 4px 4px;
         }
       </style>
 
@@ -112,7 +106,11 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             rows="${detailsTextareaRowsCount(this.editMode)}"
             .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.context)}"
           >
-            <info-icon-tooltip slot="after-label" .tooltipText="${translate('CONTEXT_TOOLTIP')}"></info-icon-tooltip>
+            <info-icon-tooltip
+              id="iit-context"
+              slot="after-label"
+              .tooltipText="${translate('CONTEXT_TOOLTIP')}"
+            ></info-icon-tooltip>
           </paper-textarea-with-icon>
         </div>
 
@@ -131,6 +129,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.implementation_strategy)}"
           >
             <info-icon-tooltip
+              id="iit-implemen-strat"
               slot="after-label"
               .tooltipText="${translate('IMPLEMENTATION_STRATEGY_AND_TECHNICAL_GUIDANCE_TOOLTIP')}"
             ></info-icon-tooltip>
@@ -152,6 +151,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             rows="${detailsTextareaRowsCount(this.editMode)}"
           >
             <info-icon-tooltip
+              id="iit-cap-develop"
               slot="after-label"
               .tooltipText="${translate('CAPACITY_DEVELOPMENT_TOOLTIP')}"
             ></info-icon-tooltip>
@@ -174,6 +174,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.other_partners_involved)}"
           >
             <info-icon-tooltip
+              id="iit-other-p-i"
               slot="after-label"
               .tooltipText="${translate('OTHER_PARTNERS_INVOLVED_TOOLTIP')}"
             ></info-icon-tooltip>

@@ -60,6 +60,12 @@ Polymer({
         color: var(--secondary-text-color);
         font-size: 12px;
       }
+      .required-star {
+        color: red;
+        font-weight: bold;
+        font-size: 12px;
+        padding-inline-start: 4px;
+      }
     </style>
 
     <paper-input-container
@@ -68,12 +74,12 @@ Polymer({
       auto-validate$="[[autoValidate]]"
       disabled$="[[disabled]]"
       invalid="[[invalid]]"
+      required$="[[required]]"
     >
       <div slot="label">
-        <label style="display:inline-block" hidden$="[[!label]]" aria-hidden="true" for$="[[_inputId]]"
-          >[[label]]</label
-        >
-        <slot name="after-label"></slot>
+        <label style="display:inline-block" hidden$="[[!label]]" aria-hidden="true" for$="[[_inputId]]">[[label]]</label
+        ><sup hidden$="[[!required]]" class="required-star">*</sup>
+        <slot name="after-label" style="padding-left: 3px;"></slot>
       </div>
 
       <slot name="suffix" slot="suffix"></slot>

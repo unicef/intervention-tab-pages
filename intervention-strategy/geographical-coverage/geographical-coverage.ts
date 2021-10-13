@@ -24,7 +24,7 @@ import {AnyObject, AsyncAction, LocationObject, Permission, Site} from '@unicef-
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
-import '../../common/info-icon-tooltip';
+import '@unicef-polymer/etools-modules-common/dist/components/info-icon-tooltip';
 
 /**
  * @customElement
@@ -101,7 +101,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         comment-description="Geographical Coverage"
       >
         <div slot="after-title">
-          <info-icon-tooltip .tooltipText="${translate('GEOGRAPHICAL_COVERAGE_INFO')}"></info-icon-tooltip>
+          <info-icon-tooltip id="iit-geo" .tooltipText="${translate('GEOGRAPHICAL_COVERAGE_INFO')}"></info-icon-tooltip>
         </div>
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 

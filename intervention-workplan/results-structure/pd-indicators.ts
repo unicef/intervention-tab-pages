@@ -44,7 +44,7 @@ import {
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
-import '../../common/info-icon-tooltip';
+import '@unicef-polymer/etools-modules-common/dist/components/info-icon-tooltip';
 
 @customElement('pd-indicators')
 export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)) {
@@ -111,6 +111,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
         <div class="heading flex-auto">
           ${translate(translatesMap.applied_indicators)}
           <info-icon-tooltip
+            id="iit-ind"
             .tooltipText="${translate('INDICATOR_TOOLTIP')}"
             ?hidden="${this.readonly}"
           ></info-icon-tooltip>

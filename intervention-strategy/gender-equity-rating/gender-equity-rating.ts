@@ -5,7 +5,7 @@ import '@polymer/paper-radio-group';
 import '@unicef-polymer/etools-loading/etools-loading';
 import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import '../../common/info-icon-tooltip';
+import '@unicef-polymer/etools-modules-common/dist/components/info-icon-tooltip';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
@@ -58,6 +58,9 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         etools-content-panel::part(ecp-content) {
           padding: 8px 24px 16px 24px;
         }
+        info-icon-tooltip {
+          --iit-icon-size: 18px;
+        }
       </style>
 
       <etools-content-panel
@@ -78,7 +81,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         <div class="row-padding-v pb-20">
           <div class="w100">
             <label class="paper-label">${translate(translatesMap.gender_rating)}</label>
-            <info-icon-tooltip ?hidden=${!this.editMode}
+            <info-icon-tooltip id="iit-gender" ?hidden=${!this.editMode}
               .tooltipText=${translate('GENDER_RATING_INFO')}>
             </info-icon-tooltip>
           </div>
@@ -110,7 +113,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         <div class="row-padding-v pb-20">
           <div class="w100">
             <label class="paper-label">${translate(translatesMap.equity_rating)}</label>
-            <info-icon-tooltip ?hidden=${!this.editMode}
+            <info-icon-tooltip id="iit-equity" ?hidden=${!this.editMode}
               .tooltipText=${translate('EQUITY_RATING_INFO')}>
             </info-icon-tooltip>
           </div>
@@ -142,7 +145,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         <div class="row-padding-v pb-20">
           <div class="w100">
             <label class="paper-label">${translate(translatesMap.sustainability_rating)}</label>
-            <info-icon-tooltip ?hidden=${!this.editMode}
+            <info-icon-tooltip id="iit-sust" ?hidden=${!this.editMode}
               .tooltipText=${translate('SUSTAINABILITY_RATING_INFO')}>
             </info-icon-tooltip>
           </div>

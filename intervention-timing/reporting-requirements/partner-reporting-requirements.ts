@@ -30,7 +30,7 @@ import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-commo
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {sectionContentStyles} from '@unicef-polymer/etools-modules-common/dist/styles/content-section-styles-polymer';
-import '../../common/info-icon-tooltip';
+import '@unicef-polymer/etools-modules-common/dist/components/info-icon-tooltip';
 
 /**
  * @polymer
@@ -126,7 +126,10 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
               tabindex="0"
               id="clickable"
             >
-              <info-icon-tooltip .tooltipText="${translate('QUARTERLY_PROGRESS_REPORT_TOOLTIP')}"></info-icon-tooltip>
+              <info-icon-tooltip
+                id="iit-qpr"
+                .tooltipText="${translate('QUARTERLY_PROGRESS_REPORT_TOOLTIP')}"
+              ></info-icon-tooltip>
               <span>${translate('QUARTERLY_PROGRESS_REPORTS')} (${this.qprRequirementsCount})</span>
               <paper-icon-button
                 class="edit-rep-req"
@@ -144,7 +147,10 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
               tabindex="0"
               id="clickable"
             >
-              <info-icon-tooltip .tooltipText="${translate('HUMANITARIAN_REPORT_TOOLTIP')}"></info-icon-tooltip>
+              <info-icon-tooltip
+                id="iit-hrr"
+                .tooltipText="${translate('HUMANITARIAN_REPORT_TOOLTIP')}"
+              ></info-icon-tooltip>
               <span>${translate('HUMANITARIAN_REPORTS_UNICEF')} (${this.hrUnicefRequirementsCount})</span>
               <paper-icon-button
                 class="edit-rep-req"
@@ -176,7 +182,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
               tabindex="0"
               id="clickable"
             >
-              <info-icon-tooltip .tooltipText="${translate('SPECIAL_REPORT_TOOLTIP')}"></info-icon-tooltip>
+              <info-icon-tooltip id="iit-sp" .tooltipText="${translate('SPECIAL_REPORT_TOOLTIP')}"></info-icon-tooltip>
               ${translate('SPECIAL_REPORT')} (${this.specialRequirementsCount})
             </div>
           </div>

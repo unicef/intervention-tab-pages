@@ -1,4 +1,5 @@
 import {LitElement, html, property, customElement, css} from 'lit-element';
+import {unsafeHTML} from 'lit-html/directives/unsafe-html';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {PaperTooltipElement} from '@polymer/paper-tooltip';
 import {callClickOnEnterPushListener} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
@@ -14,28 +15,37 @@ export class InfoIconTooltip extends LitElement {
         }
 
         .content {
-          padding: 24px;
+          padding: 20px;
+          position: relative;
         }
 
         .tooltip-info {
-          display: flex;
-          flex-direction: column;
           padding: 6px;
           margin: 10px 0px;
-          width: 100%;
           box-sizing: border-box;
+          font-size: var(--iit-font-size, 14px);
+          color: var(--primary-text-color);
+          line-height: 22px;
+          font-weight: bold;
+          user-select: text;
         }
 
         .tooltip-info.gray-border {
           border: solid 1px var(--secondary-background-color);
         }
-
-        .tooltip-info span {
-          font-size: 14px;
+        iron-icon {
+          margin: var(--iit-margin, 0);
+          width: var(--iit-icon-size, 24px);
+          height: var(--iit-icon-size, 24px);
         }
-
-        .tooltip-info span.primary {
+        .close-link {
           font-weight: bold;
+          top: 8px;
+          right: 10px;
+          font-size: 12px;
+          position: absolute;
+          color: var(--primary-color);
+          text-decoration: none;
         }
       `
     ];
@@ -45,13 +55,6 @@ export class InfoIconTooltip extends LitElement {
     // language=HTML
     return html`
       <style>
-        :host {
-          display: inline-block;
-          cursor: pointer;
-        }
-        iron-icon {
-          margin: var(--iit-margin, 0);
-        }
         paper-tooltip {
           --paper-tooltip-background: #ffffff;
           --paper-tooltip: {
@@ -59,11 +62,9 @@ export class InfoIconTooltip extends LitElement {
           }
           width: auto;
         }
-
-        paper-tooltip span {
-          font-size: 16px;
-          color: var(--primary-text-color);
-          line-height: 20px;
+        :host {
+          display: inline-block;
+          cursor: pointer;
         }
       </style>
 
@@ -71,11 +72,16 @@ export class InfoIconTooltip extends LitElement {
       <paper-tooltip
         for="info-icon"
         id="tooltip"
+        fit-to-visible-bounds
         manual-mode
         animation-entry="noanimation"
         .position="${this.position}"
+        .offset="${this.offset}"
       >
-        ${this.getRatingInfoHtml()}
+        <div class="content elevation" elevation="1">
+          <a id="close" href="#" @click="${this.close}" class="close-link"> Close</a>
+          <div class="tooltip-info gray-border">${unsafeHTML(this.tooltipText)}</div>
+        </div>
       </paper-tooltip>
     `;
   }
@@ -86,6 +92,9 @@ export class InfoIconTooltip extends LitElement {
   @property({type: String})
   position = 'right';
 
+  @property({type: String})
+  offset = 14;
+
   private tooltipHandler: any;
 
   connectedCallback() {
@@ -93,26 +102,36 @@ export class InfoIconTooltip extends LitElement {
     setTimeout(() => callClickOnEnterPushListener(this.shadowRoot?.querySelector('#info-icon')), 200);
   }
 
-  getRatingInfoHtml() {
-    return html`
-      <div class="content elevation" elevation="1">
-        <div class="tooltip-info gray-border">
-          <span class="primary">${this.tooltipText}</span>
-        </div>
-      </div>
-    `;
-  }
-
   showTooltip() {
     const tooltip = this.shadowRoot?.querySelector<PaperTooltipElement>('#tooltip')!;
     tooltip.show();
 
-    this.tooltipHandler = this.hideTooltip.bind(this, tooltip);
+    this.tooltipHandler = this.hideTooltip.bind(this);
     document.addEventListener('click', this.tooltipHandler, true);
   }
 
-  hideTooltip(tooltip: PaperTooltipElement) {
-    tooltip.hide();
+  hideTooltip(e: PointerEvent) {
+    // @ts-ignore
+    if (e.path[0].id !== 'close' && this._isInPath(e.path, 'localName', 'info-icon-tooltip')) {
+      return;
+    }
+
+    this.shadowRoot?.querySelector<PaperTooltipElement>('#tooltip')?.hide();
     document.removeEventListener('click', this.tooltipHandler);
+  }
+
+  close(e: PointerEvent) {
+    e.preventDefault();
+    this.hideTooltip(e);
+  }
+
+  _isInPath(path: [], propertyName: string, elementName: string) {
+    path = path || [];
+    for (let i = 0; i < path.length; i++) {
+      if (path[i][propertyName] === elementName) {
+        return true;
+      }
+    }
+    return false;
   }
 }
