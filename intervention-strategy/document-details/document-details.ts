@@ -57,30 +57,6 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
           outline: none;
           flex: auto;
         }
-        paper-textarea-with-icon[readonly] {
-          --paper-input-container-underline: {
-            display: none;
-          }
-          --paper-input-container-input-focus: {
-          }
-          --paper-input-container-label-focus: {
-            color: var(--secondary-text-color);
-          }
-          --paper-input-container-underline-focus: {
-            display: none;
-          }
-          --paper-input-container: {
-            cusrsor: text;
-          }
-          --paper-input-container-label: {
-            color: var(--secondary-text-color, #737373);
-            cusrsor: text;
-          }
-          --esmm-select-cursor: text;
-          --esmm-external-wrapper: {
-            width: 100%;
-          }
-        }
 
         paper-textarea-with-icon[required] {
           --paper-input-container-label: {
