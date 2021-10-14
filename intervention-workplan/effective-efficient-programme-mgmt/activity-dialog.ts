@@ -202,6 +202,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
   @property({type: String}) currency = '';
   @property({type: Array}) items: ManagementBudgetItem[] = [];
   @query('etools-dialog') private dialogElement!: EtoolsDialog;
+  @query('activity-items-table') private activityItemsTable!: ActivityItemsTable;
 
   onSaveClick() {
     const activityItemsValidationSummary = this.validateActivityItems();
@@ -252,6 +253,12 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
     if (this.useInputLevel) {
       this.data[this.getPropertyName('unicef')] = '0';
       this.data[this.getPropertyName('partner')] = '0';
+      if ((!this.items || !this.items.length) && this.activityItemsTable) {
+        // add by default a row in activity items table if we have none
+        setTimeout(() => {
+          this.activityItemsTable.addNew();
+        }, 100);
+      }
     } else {
       this.items = [];
     }
