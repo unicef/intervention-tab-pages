@@ -109,6 +109,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             <info-icon-tooltip
               id="iit-context"
               slot="after-label"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit?.context)}"
               .tooltipText="${translate('CONTEXT_TOOLTIP')}"
             ></info-icon-tooltip>
           </paper-textarea-with-icon>
@@ -131,6 +132,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             <info-icon-tooltip
               id="iit-implemen-strat"
               slot="after-label"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit?.implementation_strategy)}"
               .tooltipText="${translate('IMPLEMENTATION_STRATEGY_AND_TECHNICAL_GUIDANCE_TOOLTIP')}"
             ></info-icon-tooltip>
           </paper-textarea-with-icon>
@@ -153,6 +155,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             <info-icon-tooltip
               id="iit-cap-develop"
               slot="after-label"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.capacity_development)}"
               .tooltipText="${translate('CAPACITY_DEVELOPMENT_TOOLTIP')}"
             ></info-icon-tooltip>
           </paper-textarea-with-icon>
@@ -176,6 +179,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             <info-icon-tooltip
               id="iit-other-p-i"
               slot="after-label"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.other_partners_involved)}"
               .tooltipText="${translate('OTHER_PARTNERS_INVOLVED_TOOLTIP')}"
             ></info-icon-tooltip>
           </paper-textarea-with-icon>

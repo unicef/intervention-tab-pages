@@ -83,6 +83,7 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
             <info-icon-tooltip
               id="iit-non-fin"
               slot="after-label"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit?.ip_program_contribution)}"
               .tooltipText="${translate('PARTNER_NON_FINANCIAL_CONTRIBUTION_TOOLTIP')}"
             ></info-icon-tooltip>
           </paper-textarea-with-icon>

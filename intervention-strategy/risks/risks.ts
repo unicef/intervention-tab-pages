@@ -82,7 +82,11 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         comment-description=${translate(translatesMap.risks)}
       >
         <div slot="after-title">
-          <info-icon-tooltip id="iit-risk" .tooltipText="${translate('RISKS_INFO')}"></info-icon-tooltip>
+          <info-icon-tooltip
+            id="iit-risk"
+            ?hidden="${!this.canEditAtLeastOneField}"
+            .tooltipText="${translate('RISKS_INFO')}"
+          ></info-icon-tooltip>
         </div>
         <div slot="panel-btns">
           <paper-icon-button

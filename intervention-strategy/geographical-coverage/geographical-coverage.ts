@@ -101,7 +101,11 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         comment-description="Geographical Coverage"
       >
         <div slot="after-title">
-          <info-icon-tooltip id="iit-geo" .tooltipText="${translate('GEOGRAPHICAL_COVERAGE_INFO')}"></info-icon-tooltip>
+          <info-icon-tooltip
+            id="iit-geo"
+            ?hidden="${!this.canEditAtLeastOneField}"
+            .tooltipText="${translate('GEOGRAPHICAL_COVERAGE_INFO')}"
+          ></info-icon-tooltip>
         </div>
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
