@@ -16,6 +16,7 @@ import FrNumbersConsistencyMixin from '@unicef-polymer/etools-modules-common/dis
 import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/fr-warnings-styles';
 import {customIcons} from '@unicef-polymer/etools-modules-common/dist/styles/custom-icons';
 import '@unicef-polymer/etools-modules-common/dist/components/info-icon-tooltip';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 
 /**
  * @customElement
@@ -28,13 +29,13 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
   render() {
     if (!this.budgetSummary) {
       return html`<style>
-          ${customIcons} ${InfoElementStyles}
+          ${customIcons} ${sharedStyles} ${InfoElementStyles}
         </style>
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`
-      ${customIcons} ${InfoElementStyles}
+      ${customIcons}${sharedStyles} ${InfoElementStyles}
       <section
         class="elevation layout-horizontal"
         elevation="1"

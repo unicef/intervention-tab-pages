@@ -32,7 +32,7 @@ export class TimingOverview extends CommentsMixin(LitElement) {
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     return html`
-      ${InfoElementStyles}
+      ${sharedStyles}${InfoElementStyles}
       <section class="elevation" elevation="1" comment-element="timing-overview" comment-description="Overview">
         <div class="table not-allowed">
           <div class="data-column">
