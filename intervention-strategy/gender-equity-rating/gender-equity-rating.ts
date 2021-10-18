@@ -5,7 +5,7 @@ import '@polymer/paper-radio-group';
 import '@unicef-polymer/etools-loading/etools-loading';
 import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import './rating-instructions';
+import '@unicef-polymer/etools-modules-common/dist/components/info-icon-tooltip';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
@@ -58,6 +58,9 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         etools-content-panel::part(ecp-content) {
           padding: 8px 24px 16px 24px;
         }
+        info-icon-tooltip {
+          --iit-icon-size: 18px;
+        }
       </style>
 
       <etools-content-panel
@@ -78,9 +81,9 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         <div class="row-padding-v pb-20">
           <div class="w100">
             <label class="paper-label">${translate(translatesMap.gender_rating)}</label>
-            <rating-instructions ?hidden=${!this.editMode}
-              .instructions=${translate(translatesMap.gender_rating)}>
-            </rating-instructions>
+            <info-icon-tooltip id="iit-gender" ?hidden=${!this.editMode}
+              .tooltipText=${translate('GENDER_RATING_INFO')}>
+            </info-icon-tooltip>
           </div>
           ${this._getRatingRadioButtonGroupTemplate(
             this.editMode,
@@ -110,9 +113,9 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         <div class="row-padding-v pb-20">
           <div class="w100">
             <label class="paper-label">${translate(translatesMap.equity_rating)}</label>
-            <rating-instructions ?hidden=${!this.editMode}
-              .instructions=${translate(translatesMap.equity_rating)}>
-            </rating-instructions>
+            <info-icon-tooltip id="iit-equity" ?hidden=${!this.editMode}
+              .tooltipText=${translate('EQUITY_RATING_INFO')}>
+            </info-icon-tooltip>
           </div>
           ${this._getRatingRadioButtonGroupTemplate(
             this.editMode,
@@ -142,9 +145,9 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         <div class="row-padding-v pb-20">
           <div class="w100">
             <label class="paper-label">${translate(translatesMap.sustainability_rating)}</label>
-            <rating-instructions ?hidden=${!this.editMode}
-              .instructions=${translate(translatesMap.sustainability_rating)}>
-            </rating-instructions>
+            <info-icon-tooltip id="iit-sust" ?hidden=${!this.editMode}
+              .tooltipText=${translate('SUSTAINABILITY_RATING_INFO')}>
+            </info-icon-tooltip>
           </div>
           ${this._getRatingRadioButtonGroupTemplate(
             this.editMode,
