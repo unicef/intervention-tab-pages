@@ -127,7 +127,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   @property({type: Array})
   columns: EtoolsTableColumn[] = [
     {
-      label: (translate('TYPE') as unknown) as string,
+      label: translate('TYPE') as unknown as string,
       name: 'risk_type',
       type: EtoolsTableColumnType.Custom,
       customMethod: (item: any, _key: string, customData: AnyObject) => {
@@ -137,7 +137,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       cssClass: 'col_type'
     },
     {
-      label: (translate('PROPOSED_MITIGATION_MEASURES') as unknown) as string,
+      label: translate('PROPOSED_MITIGATION_MEASURES') as unknown as string,
       name: 'mitigation_measures',
       type: EtoolsTableColumnType.Text,
       cssClass: 'col_measures'
@@ -179,8 +179,8 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
-        content: (translate('DELETE_RISK_PROMPT') as unknown) as string,
-        confirmBtnText: (translate('GENERAL.DELETE') as unknown) as string
+        content: translate('DELETE_RISK_PROMPT') as unknown as string,
+        confirmBtnText: translate('GENERAL.DELETE') as unknown as string
       }
     }).then(({confirmed}) => {
       return confirmed;

@@ -66,26 +66,24 @@ export const setPrpCountries = (PRPCountryData: AnyObject[]) => {
   };
 };
 
-export const patchIntervention = (interventionChunck: any, interventionId?: string) => (
-  dispatch: any,
-  getState: any
-) => {
-  if (!interventionId) {
-    interventionId = getState().app.routeDetails.params.interventionId;
-  }
-  const prevInterventionState = getState().interventions?.current;
-  return _sendRequest({
-    endpoint: getEndpoint(interventionEndpoints.intervention, {interventionId: interventionId}),
-    body: interventionChunck,
-    method: 'PATCH'
-  }).then((intervention: Intervention) => {
-    dispatch(updateCurrentIntervention(intervention));
-
-    if (shouldReGetList(prevInterventionState, intervention)) {
-      dispatch(setShouldReGetList(true));
+export const patchIntervention =
+  (interventionChunck: any, interventionId?: string) => (dispatch: any, getState: any) => {
+    if (!interventionId) {
+      interventionId = getState().app.routeDetails.params.interventionId;
     }
-  });
-};
+    const prevInterventionState = getState().interventions?.current;
+    return _sendRequest({
+      endpoint: getEndpoint(interventionEndpoints.intervention, {interventionId: interventionId}),
+      body: interventionChunck,
+      method: 'PATCH'
+    }).then((intervention: Intervention) => {
+      dispatch(updateCurrentIntervention(intervention));
+
+      if (shouldReGetList(prevInterventionState, intervention)) {
+        dispatch(setShouldReGetList(true));
+      }
+    });
+  };
 
 function shouldReGetList(prevInterventionState: Intervention, currentInterventionState: Intervention) {
   const fieldsDisplayedOnList = [

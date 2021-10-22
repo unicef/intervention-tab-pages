@@ -119,17 +119,17 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
   @property({type: Array})
   columns: EtoolsTableColumn[] = [
     {
-      label: (translate('ITEM_PD_CURRENCY') as unknown) as string,
+      label: translate('ITEM_PD_CURRENCY') as unknown as string,
       name: 'title',
       type: EtoolsTableColumnType.Text
     },
     {
-      label: (translate('PARTNER_CASH') as unknown) as string,
+      label: translate('PARTNER_CASH') as unknown as string,
       name: 'partner_contribution',
       type: EtoolsTableColumnType.Number
     },
     {
-      label: (translate('UNICEF_CASH') as unknown) as string,
+      label: translate('UNICEF_CASH') as unknown as string,
       name: 'unicef_cash',
       type: EtoolsTableColumnType.Number
     },

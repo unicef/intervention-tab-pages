@@ -201,10 +201,10 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
 
     this._frsInconsistenciesConfirmationHandler = this._frsInconsistenciesConfirmationHandler.bind(this);
     this.frsConfirmationsDialog = createDynamicDialog({
-      title: (translate('FR_WARNING') as unknown) as string,
+      title: translate('FR_WARNING') as unknown as string,
       size: 'md',
-      okBtnText: (translate('OK_BTN') as unknown) as string,
-      cancelBtnText: (translate('CANCEL_BTN') as unknown) as string,
+      okBtnText: translate('OK_BTN') as unknown as string,
+      cancelBtnText: translate('CANCEL_BTN') as unknown as string,
       closeCallback: this._frsInconsistenciesConfirmationHandler,
       content: this._frsConfirmationsDialogMessage
     });
@@ -349,7 +349,7 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
     let toastMsg =
       responseErr && responseErr.error
         ? responseErr.error
-        : ((translate('ADD_UPDATE_FR_NUMBER_ERR') as unknown) as string);
+        : (translate('ADD_UPDATE_FR_NUMBER_ERR') as unknown as string);
     if (toastMsg.includes('HTTPConnection')) {
       const index = toastMsg.indexOf('HTTPConnection');
       toastMsg = toastMsg.slice(0, index);
@@ -381,9 +381,9 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
   }
 
   _getNoFrsWarningText(interventionId: string) {
-    let msg = (translate('NO_FR_NUM_ADDED') as unknown) as string;
+    let msg = translate('NO_FR_NUM_ADDED') as unknown as string;
     if (!interventionId) {
-      msg = (translate('CAN_NOT_ADD_FR_NUM') as unknown) as string;
+      msg = translate('CAN_NOT_ADD_FR_NUM') as unknown as string;
     }
     return msg;
   }

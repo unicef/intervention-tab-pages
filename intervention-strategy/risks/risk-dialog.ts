@@ -124,8 +124,8 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
     this.permissions = permissions;
     this.riskTypes = riskTypes;
     this.riskDialogTitle = item.id
-      ? ((translate('EDIT_RISK') as unknown) as string)
-      : ((translate('ADD_RISK') as unknown) as string);
+      ? (translate('EDIT_RISK') as unknown as string)
+      : (translate('ADD_RISK') as unknown as string);
   }
 
   protected onClose(): void {

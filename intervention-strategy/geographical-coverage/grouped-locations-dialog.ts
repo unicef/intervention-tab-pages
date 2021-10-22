@@ -269,7 +269,7 @@ export class GroupedLocationsDialog extends LitElement {
       return null;
     }
     const existingGroup = groupedLocations.find(function (g) {
-      return parseInt((g.adminLevelLocation!.id as unknown) as string) === parseInt(adminLevelLocation.id);
+      return parseInt(g.adminLevelLocation!.id as unknown as string) === parseInt(adminLevelLocation.id);
     });
 
     if (!existingGroup) {

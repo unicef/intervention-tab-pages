@@ -220,11 +220,11 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
     }
     this.interventionId = interventionId;
     this.dialogTitle = this.isNewRecord
-      ? ((translate('ADD_SUPPLY_CONTRIBUTION') as unknown) as string)
-      : ((translate('EDIT_SUPPLY_CONTRIBUTION') as unknown) as string);
+      ? (translate('ADD_SUPPLY_CONTRIBUTION') as unknown as string)
+      : (translate('EDIT_SUPPLY_CONTRIBUTION') as unknown as string);
     this.confirmBtnTxt = this.isNewRecord
-      ? ((translate('GENERAL.ADD') as unknown) as string)
-      : ((translate('GENERAL.SAVE') as unknown) as string);
+      ? (translate('GENERAL.ADD') as unknown as string)
+      : (translate('GENERAL.SAVE') as unknown as string);
     this.isUnicefUser = isUnicefUser;
   }
 

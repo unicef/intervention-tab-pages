@@ -31,7 +31,7 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
   @property() showInvalid = true;
   @property() canEdit = true;
   @property() fileTypes: IdAndName[] = [];
-  @property({type: String}) deleteConfirmationMessage = (translate('DELETE_ATTACHMENTS_PROMPT') as unknown) as string;
+  @property({type: String}) deleteConfirmationMessage = translate('DELETE_ATTACHMENTS_PROMPT') as unknown as string;
   private intervention!: Intervention;
 
   protected render(): TemplateResult {
@@ -46,7 +46,7 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
 
       <etools-content-panel
         class="content-section"
-        .panelTitle="${(translate('ATTACHMENTS') as unknown) as string} (${this.attachments.length})"
+        .panelTitle="${translate('ATTACHMENTS') as unknown as string} (${this.attachments.length})"
         comment-element="attachments"
         comment-description=${translate('ATTACHMENTS')}
       >
