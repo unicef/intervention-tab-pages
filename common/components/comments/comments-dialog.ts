@@ -76,9 +76,8 @@ export class CommentsDialog extends connectStore(LitElement) {
     this.relatedTo = relatedTo;
     this.endpoints = endpoints;
     this.commentsDialogTitle = `Comments on: ${relatedToDescription}`;
-    const comments: GenericObject<InterventionComment[]> = getStore().getState().commentsData.collection[
-      interventionId
-    ];
+    const comments: GenericObject<InterventionComment[]> =
+      getStore().getState().commentsData.collection[interventionId];
     const relatedToComments: InterventionComment[] = (comments && comments[relatedTo]) || [];
     this.comments = [...relatedToComments];
     this.requestUpdate().then(() => this.scrollDown());

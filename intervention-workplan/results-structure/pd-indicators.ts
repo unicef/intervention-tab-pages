@@ -211,8 +211,8 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
-        content: (translate('DEACTIVATE_PROMPT') as unknown) as string,
-        confirmBtnText: (translate('DEACTIVATE') as unknown) as string
+        content: translate('DEACTIVATE_PROMPT') as unknown as string,
+        confirmBtnText: translate('DEACTIVATE') as unknown as string
       }
     }).then(({confirmed}) => {
       return confirmed;
@@ -246,8 +246,8 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
-        content: (translate('DELETE_PROMPT') as unknown) as string,
-        confirmBtnText: (translate('GENERAL.DELETE') as unknown) as string
+        content: translate('DELETE_PROMPT') as unknown as string,
+        confirmBtnText: translate('GENERAL.DELETE') as unknown as string
       }
     }).then(({confirmed}) => {
       return confirmed;

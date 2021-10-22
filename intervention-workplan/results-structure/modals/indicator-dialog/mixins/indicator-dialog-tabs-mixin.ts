@@ -20,11 +20,11 @@ function IndicatorDialogTabsMixin<T extends Constructor<LitElement>>(baseClass: 
     indicatorDataTabs: EtoolsTab[] = [
       {
         tab: 'details',
-        tabLabel: (translate('DETAILS_TAB') as unknown) as string
+        tabLabel: translate('DETAILS_TAB') as unknown as string
       },
       {
         tab: 'disaggregations',
-        tabLabel: (translate('DISAGGREGATIONS_TAB') as unknown) as string,
+        tabLabel: translate('DISAGGREGATIONS_TAB') as unknown as string,
         showTabCounter: true,
         counter: 0
       }
