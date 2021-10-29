@@ -25,7 +25,6 @@ import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist
 import {getDifference} from '@unicef-polymer/etools-modules-common/dist/mixins/objects-diff';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 
-// @ts-ignore TODO
 @customElement('activity-data-dialog')
 export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitElement) {
   static get styles(): CSSResultArray {
@@ -246,7 +245,6 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
   }
 
   onClose(): void {
-    // @ts-ignore TODO
     fireEvent(this, 'dialog-closed', {confirmed: false});
   }
 
@@ -284,7 +282,6 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
   }
 
   validate() {
-    // @ts-ignore TODO
     return validateRequiredFields(this);
   }
 
@@ -308,7 +305,6 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
     );
     const activityItemsValidationSummary = this.validateActivityItems();
     if (activityItemsValidationSummary) {
-      // @ts-ignore TODO
       fireEvent(this, 'toast', {
         text: activityItemsValidationSummary.invalidRequired
           ? getTranslation('FILL_ALL_ACTIVITY_ITEMS')
@@ -317,7 +313,6 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
       return;
     }
     if (!this.validateActivityTimeFrames()) {
-      // @ts-ignore TODO
       fireEvent(this, 'toast', {
         text: getTranslation('FILL_ACTIVITY_TIME')
       });
@@ -331,13 +326,11 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
     })
       .then((response: any) => getStore().dispatch(updateCurrentIntervention(response.intervention)))
       .then(() => {
-        // @ts-ignore TODO
         fireEvent(this, 'dialog-closed', {confirmed: true});
       })
-      .catch((error) => {
+      .catch((error: any) => {
         this.loadingInProcess = false;
         this.errors = (error && error.response) || {};
-        // @ts-ignore TODO
         fireEvent(this, 'toast', {text: formatServerErrorAsText(error)});
       });
   }

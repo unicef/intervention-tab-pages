@@ -1,5 +1,5 @@
-// import 'leaflet';
 import {Map, Marker} from 'leaflet';
+declare const L: any;
 
 const TILE_LAYER: Readonly<string> = 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png';
 const TILE_LAYER_LABELS: Readonly<string> = 'https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png';
@@ -14,7 +14,6 @@ export type MarkerDataObj = {
   popup?: string;
 };
 
-// @ts-ignore TODO
 export const defaultIcon = L.icon({
   iconUrl: 'node_modules/leaflet/dist/images/marker-icon.png',
   iconSize: [25, 41],
@@ -24,7 +23,6 @@ export const defaultIcon = L.icon({
   tooltipAnchor: [16, -28]
 });
 
-// @ts-ignore TODO
 export const markedIcon = L.icon({
   iconUrl: 'node_modules/leaflet/dist/images/marker-icon.png',
   iconSize: [25, 41],
@@ -41,15 +39,12 @@ export class MapHelper {
   dynamicMarker: IMarker | null = null;
   markerClusters: any | null = null;
 
-  initMap(element?: HTMLElement | null): Map | never {
+  initMap(element?: HTMLElement | null): Map | null {
     if (!element) {
       throw new Error('Please provide HTMLElement for map initialization!');
     }
-    // @ts-ignore TODO
     this.map = L.map(element);
-    // @ts-ignore TODO
     L.tileLayer(TILE_LAYER, {pane: 'tilePane'}).addTo(this.map);
-    // @ts-ignore TODO
     L.tileLayer(TILE_LAYER_LABELS, {pane: 'overlayPane'}).addTo(this.map);
     return this.map;
   }
@@ -65,12 +60,10 @@ export class MapHelper {
   }
 
   addCluster(markersData: MarkerDataObj[], onclick?: (e: any) => void): void {
-    // @ts-ignore TODO
     this.markerClusters = (L as any).markerClusterGroup();
     const markers: Marker[] = [];
     let marker: IMarker;
     (markersData || []).forEach((mark: MarkerDataObj) => {
-      // @ts-ignore TODO
       marker = L.marker(mark.coords).bindPopup(`<b>${mark.popup}</b>`);
       marker.staticData = mark.staticData;
       if (onclick) {
@@ -128,7 +121,6 @@ export class MapHelper {
       throw new Error('Please, initialize map!');
     }
     this.removeDynamicMarker();
-    // @ts-ignore TODO
     this.dynamicMarker = L.marker(cordinates).addTo(this.map);
   }
 
@@ -157,7 +149,6 @@ export class MapHelper {
   }
 
   private createMarker(data: MarkerDataObj): IMarker {
-    // @ts-ignore TODO
     const marker: IMarker = L.marker(data.coords).addTo(this.map as Map);
     marker.staticData = data.staticData;
     if (data.popup) {
