@@ -22,8 +22,8 @@ import {DataMixin} from '@unicef-polymer/etools-modules-common/dist/mixins/data-
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
-import {getDifference} from '@unicef-polymer/etools-modules-common/dist/mixins/objects-diff';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
+import cloneDeep from 'lodash-es/cloneDeep';
 
 @customElement('activity-data-dialog')
 export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitElement) {
@@ -58,10 +58,13 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
     sendRequest({
       endpoint: this.endpoint
     }).then((data: InterventionActivity) => {
-      this.data = data;
       this.useInputLevel = Boolean(data.items.length);
-      this.loadingInProcess = false;
-      this.spinnerText = 'Saving data...';
+      setTimeout(() => {
+        // Avoid reset caused by inputLevelChange method
+        this.data = data;
+        this.loadingInProcess = false;
+        this.spinnerText = 'Saving data...';
+      }, 100);
     });
   }
 
@@ -294,15 +297,6 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
       return;
     }
 
-    // get changed fields
-    const diff: Partial<InterventionActivity> = getDifference<InterventionActivity>(
-      this.isEditDialog ? (this.originalData as InterventionActivity) : {},
-      this.editedData,
-      {
-        toRequest: true,
-        nestedFields: ['items']
-      }
-    );
     const activityItemsValidationSummary = this.validateActivityItems();
     if (activityItemsValidationSummary) {
       fireEvent(this, 'toast', {
@@ -318,11 +312,20 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
       });
       return;
     }
+
     this.loadingInProcess = true;
+    // const dataToSave = this.getChangedFields();
+
+    const dataToSave = cloneDeep(this.editedData);
+    if (Boolean(dataToSave.items?.length)) {
+      // Let backend calculate these
+      delete dataToSave.unicef_cash;
+      delete dataToSave.cso_cash;
+    }
     sendRequest({
       endpoint: this.endpoint,
       method: this.isEditDialog ? 'PATCH' : 'POST',
-      body: this.isEditDialog ? {id: this.editedData.id, ...diff} : diff
+      body: this.isEditDialog ? {id: this.editedData.id, ...dataToSave} : dataToSave
     })
       .then((response: any) => getStore().dispatch(updateCurrentIntervention(response.intervention)))
       .then(() => {
@@ -334,6 +337,19 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
         fireEvent(this, 'toast', {text: formatServerErrorAsText(error)});
       });
   }
+
+  // private getChangedFields() {
+  //   const diff: Partial<InterventionActivity> = getDifference<InterventionActivity>(
+  //     this.isEditDialog ? (this.originalData as InterventionActivity) : {},
+  //     this.editedData,
+  //     {
+  //       toRequest: true,
+  //       nestedFields: ['items']
+  //     }
+  //   );
+
+  //   return diff;
+  // }
 
   validateActivityItems(): AnyObject | undefined {
     const itemsTable: ActivityItemsTable | null = this.shadowRoot!.querySelector('activity-items-table');
