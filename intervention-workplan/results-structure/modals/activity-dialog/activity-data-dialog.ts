@@ -22,7 +22,6 @@ import {DataMixin} from '@unicef-polymer/etools-modules-common/dist/mixins/data-
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
-import {getDifference} from '@unicef-polymer/etools-modules-common/dist/mixins/objects-diff';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 
 @customElement('activity-data-dialog')
@@ -36,7 +35,11 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
   @property() dialogOpened = true;
   @property() loadingInProcess = false;
   @property() isEditDialog = true;
-  @property() useInputLevel = false;
+  /**
+   *  Default to true to cover the case when Activity has input level items, but until this flag is set,
+   *  updateModelValue on etools-currency-amount-input reste unicef_cash, cso_cash to 0
+   */
+  @property() useInputLevel = true;
   @property({type: String}) spinnerText = 'Loading...';
   @property() readonly: boolean | undefined = false;
   @query('etools-dialog') private dialogElement!: EtoolsDialog;
@@ -294,15 +297,6 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
       return;
     }
 
-    // get changed fields
-    const diff: Partial<InterventionActivity> = getDifference<InterventionActivity>(
-      this.isEditDialog ? (this.originalData as InterventionActivity) : {},
-      this.editedData,
-      {
-        toRequest: true,
-        nestedFields: ['items']
-      }
-    );
     const activityItemsValidationSummary = this.validateActivityItems();
     if (activityItemsValidationSummary) {
       fireEvent(this, 'toast', {
@@ -318,11 +312,20 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
       });
       return;
     }
+
     this.loadingInProcess = true;
+    // const dataToSave = this.getChangedFields();
+
+    const dataToSave = this.editedData;
+    if (Boolean(dataToSave.items?.length)) {
+      // Let backend calculate these
+      delete dataToSave.unicef_cash;
+      delete dataToSave.cso_cash;
+    }
     sendRequest({
       endpoint: this.endpoint,
       method: this.isEditDialog ? 'PATCH' : 'POST',
-      body: this.isEditDialog ? {id: this.editedData.id, ...diff} : diff
+      body: this.isEditDialog ? {id: this.editedData.id, ...dataToSave} : dataToSave
     })
       .then((response: any) => getStore().dispatch(updateCurrentIntervention(response.intervention)))
       .then(() => {
@@ -334,6 +337,19 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
         fireEvent(this, 'toast', {text: formatServerErrorAsText(error)});
       });
   }
+
+  // private getChangedFields() {
+  //   const diff: Partial<InterventionActivity> = getDifference<InterventionActivity>(
+  //     this.isEditDialog ? (this.originalData as InterventionActivity) : {},
+  //     this.editedData,
+  //     {
+  //       toRequest: true,
+  //       nestedFields: ['items']
+  //     }
+  //   );
+
+  //   return diff;
+  // }
 
   validateActivityItems(): AnyObject | undefined {
     const itemsTable: ActivityItemsTable | null = this.shadowRoot!.querySelector('activity-items-table');
