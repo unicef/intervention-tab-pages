@@ -37,7 +37,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
   @property() isEditDialog = true;
   /**
    *  Default to true to cover the case when Activity has input level items, but until this flag is set,
-   *  updateModelValue on etools-currency-amount-input reste unicef_cash, cso_cash to 0
+   *  updateModelValue on etools-currency-amount-input resets unicef_cash, cso_cash to 0
    */
   @property() useInputLevel = true;
   @property({type: String}) spinnerText = 'Loading...';
