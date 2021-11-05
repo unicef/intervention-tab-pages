@@ -23,6 +23,7 @@ import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/st
 import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
+import cloneDeep from 'lodash-es/cloneDeep';
 
 @customElement('activity-data-dialog')
 export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitElement) {
@@ -316,7 +317,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
     this.loadingInProcess = true;
     // const dataToSave = this.getChangedFields();
 
-    const dataToSave = this.editedData;
+    const dataToSave = cloneDeep(this.editedData);
     if (Boolean(dataToSave.items?.length)) {
       // Let backend calculate these
       delete dataToSave.unicef_cash;
