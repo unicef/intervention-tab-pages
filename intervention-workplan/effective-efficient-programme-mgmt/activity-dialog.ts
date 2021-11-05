@@ -182,16 +182,19 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
       return;
     }
     const {activity, interventionId}: any = data;
-    this.data = activity;
-    this.items = (this.data.items || []).filter((row: ManagementBudgetItem) => row.kind === this.data.kind);
-    this.data.items = (this.data.items || []).filter((row: ManagementBudgetItem) => row.kind !== this.data.kind);
-    this.originalData = cloneDeep(this.data);
-    this.data[this.getPropertyName('partner')] = this.data.partner_contribution;
-    this.data[this.getPropertyName('unicef')] = this.data.unicef_cash;
-
-    this.interventionId = interventionId;
-    this.currency = data.currency || '';
+    this.items = (activity.items || []).filter((row: ManagementBudgetItem) => row.kind === activity.kind);
     this.useInputLevel = Boolean((this.items || []).length);
+
+    setTimeout(() => {
+      // timeout to avoid inputLevelChange method reseting totals to 0
+      this.data = activity;
+      this.data.items = (this.data.items || []).filter((row: ManagementBudgetItem) => row.kind !== this.data.kind);
+      this.originalData = cloneDeep(this.data);
+      this.data[this.getPropertyName('partner')] = this.data.partner_contribution; // ?
+      this.data[this.getPropertyName('unicef')] = this.data.unicef_cash; // ?
+      this.interventionId = interventionId;
+      this.currency = data.currency || '';
+    });
   }
 
   private interventionId = '';
