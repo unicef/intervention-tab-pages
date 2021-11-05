@@ -101,7 +101,7 @@ export class ActivityItemsTable extends LitElement {
       }
     ];
     this.resizeDialog();
-    this.setFocusOnFirstActivity();
+    this.setFocusOnLastActivity();
   }
 
   resizeDialog() {
@@ -110,11 +110,13 @@ export class ActivityItemsTable extends LitElement {
     }
   }
 
-  setFocusOnFirstActivity() {
+  setFocusOnLastActivity() {
     setTimeout(() => {
       const activityRows = this.shadowRoot!.querySelectorAll('activity-item-row');
       if (activityRows.length) {
-        const activityNameEl = activityRows[0].shadowRoot!.querySelector('#activityName') as PaperTextareaElement;
+        const activityNameEl = activityRows[activityRows.length - 1].shadowRoot!.querySelector(
+          '#activityName'
+        ) as PaperTextareaElement;
         if (activityNameEl) {
           activityNameEl.focus();
         }
@@ -125,7 +127,7 @@ export class ActivityItemsTable extends LitElement {
   updateActivityItem(index: number, item: Partial<InterventionActivityItem> | null): void {
     if (item === null) {
       this.activityItems.splice(index, 1);
-      this.setFocusOnFirstActivity();
+      this.setFocusOnLastActivity();
     } else {
       this.activityItems.splice(index, 1, item);
     }
