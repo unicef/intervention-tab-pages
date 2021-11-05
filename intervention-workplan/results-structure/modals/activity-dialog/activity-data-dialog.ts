@@ -36,11 +36,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
   @property() dialogOpened = true;
   @property() loadingInProcess = false;
   @property() isEditDialog = true;
-  /**
-   *  Default to true to cover the case when Activity has input level items, but until this flag is set,
-   *  updateModelValue on etools-currency-amount-input resets unicef_cash, cso_cash to 0
-   */
-  @property() useInputLevel = true;
+  @property() useInputLevel = false;
   @property({type: String}) spinnerText = 'Loading...';
   @property() readonly: boolean | undefined = false;
   @query('etools-dialog') private dialogElement!: EtoolsDialog;
@@ -62,10 +58,13 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
     sendRequest({
       endpoint: this.endpoint
     }).then((data: InterventionActivity) => {
-      this.data = data;
       this.useInputLevel = Boolean(data.items.length);
-      this.loadingInProcess = false;
-      this.spinnerText = 'Saving data...';
+      setTimeout(() => {
+        // Avoid reset caused by inputLevelChange method
+        this.data = data;
+        this.loadingInProcess = false;
+        this.spinnerText = 'Saving data...';
+      }, 100);
     });
   }
 
