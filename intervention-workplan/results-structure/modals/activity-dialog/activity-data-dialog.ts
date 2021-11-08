@@ -317,7 +317,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
     // const dataToSave = this.getChangedFields();
 
     const dataToSave = cloneDeep(this.editedData);
-    if (Boolean(dataToSave.items?.length)) {
+    if (dataToSave.items?.length) {
       // Let backend calculate these
       delete dataToSave.unicef_cash;
       delete dataToSave.cso_cash;
