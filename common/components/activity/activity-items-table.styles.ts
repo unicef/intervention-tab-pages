@@ -8,7 +8,7 @@ export const ActivityItemsTableStyles: CSSResult = css`
   }
   .grid-row {
     display: grid;
-    grid-template-columns: auto 110px 130px 120px 140px 120px 120px 14px 140px;
+    grid-template-columns: auto 108px 130px 120px 140px 120px 120px 140px 16px;
     min-height: 47px;
     padding: 0 2px 0 2px;
   }
