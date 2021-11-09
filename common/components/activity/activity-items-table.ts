@@ -61,8 +61,8 @@ export class ActivityItemsTable extends LitElement {
         <div class="grid-cell header-cell end">${translate('TOTAL_COST')}</div>
         <div class="grid-cell header-cell end">${translate('PARTNER_CASH')}</div>
         <div class="grid-cell header-cell end">${translate('UNICEF_CASH')}</div>
-        <div class="grid-cell header-cell"></div>
         <div class="grid-cell header-cell end">${translate('TOTAL_CASH')} (${this.currency})</div>
+        <div class="grid-cell header-cell"></div>
       </div>
 
       ${this.activityItems.map(
@@ -101,7 +101,7 @@ export class ActivityItemsTable extends LitElement {
       }
     ];
     this.resizeDialog();
-    this.setFocusOnLastActivity();
+    this.setFocusOnActivityRow();
   }
 
   resizeDialog() {
@@ -110,11 +110,12 @@ export class ActivityItemsTable extends LitElement {
     }
   }
 
-  setFocusOnLastActivity() {
+  setFocusOnActivityRow(focusLastRow = true) {
     setTimeout(() => {
       const activityRows = this.shadowRoot!.querySelectorAll('activity-item-row');
       if (activityRows.length) {
-        const activityNameEl = activityRows[activityRows.length - 1].shadowRoot!.querySelector(
+        const rowIndex = focusLastRow ? activityRows.length - 1 : 0;
+        const activityNameEl = activityRows[rowIndex].shadowRoot!.querySelector(
           '#activityName'
         ) as PaperTextareaElement;
         if (activityNameEl) {
@@ -127,7 +128,7 @@ export class ActivityItemsTable extends LitElement {
   updateActivityItem(index: number, item: Partial<InterventionActivityItem> | null): void {
     if (item === null) {
       this.activityItems.splice(index, 1);
-      this.setFocusOnLastActivity();
+      this.setFocusOnActivityRow(false);
     } else {
       this.activityItems.splice(index, 1, item);
     }
