@@ -14,11 +14,12 @@ import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-s
 import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {translate, get as getTranslation} from 'lit-translate';
 import '../../common/components/activity/activity-items-table';
-import {formatCurrency, getTotal} from '../../common/components/activity/get-total.helper';
+import {getTotal} from '../../common/components/activity/get-total.helper';
 import {cloneDeep} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {AnyObject, ManagementBudgetItem} from '@unicef-polymer/etools-types';
 import {ActivityItemsTable} from '../../common/components/activity/activity-items-table';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
+import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 
 /**
  * @customElement
@@ -268,7 +269,8 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
   }
 
   getSumValue(field: 'cso_cash' | 'unicef_cash'): string {
-    return formatCurrency((this.items || []).reduce((sum: number, item: AnyObject) => sum + Number(item[field]), 0));
+    const total = (this.items || []).reduce((sum: number, item: AnyObject) => sum + Number(item[field]), 0);
+    return displayCurrencyAmount(String(total), '0', 2);
   }
 
   getTotalValue(): string {
