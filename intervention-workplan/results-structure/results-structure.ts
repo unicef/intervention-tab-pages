@@ -55,6 +55,7 @@ import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import ContentPanelMixin from '@unicef-polymer/etools-modules-common/dist/mixins/content-panel-mixin';
 import {_sendRequest} from '@unicef-polymer/etools-modules-common/dist/utils/request-helper';
+import {elevation1, elevation3} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 
 const RESULT_VIEW = 'result_view';
 const BUDGET_VIEW = 'budget_view';
@@ -98,7 +99,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           background-color: #d0d0d0;
           color: rgb(3 114 102);
           cursor: pointer;
-          box-shadow: var(--paper-material-elevation-1_-_box-shadow);
+          ${elevation1};
         }
         .view-toggle-button[active] {
           background-color: #009688;
@@ -106,7 +107,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         }
         .view-toggle-button:focus {
           outline: 0;
-          box-shadow: var(--paper-material-elevation-3_-_box-shadow) !important;
+          ${elevation3}
         }
         .no-results {
           padding: 24px;
