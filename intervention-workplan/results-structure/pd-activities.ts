@@ -217,8 +217,8 @@ export class PdActivities extends CommentsMixin(LitElement) {
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
-        content: (translate('DELETE_ACTIVITY_PROMPT') as unknown) as string,
-        confirmBtnText: (translate('GENERAL.DELETE') as unknown) as string
+        content: translate('DELETE_ACTIVITY_PROMPT') as unknown as string,
+        confirmBtnText: translate('GENERAL.DELETE') as unknown as string
       }
     }).then(({confirmed}) => {
       return confirmed;

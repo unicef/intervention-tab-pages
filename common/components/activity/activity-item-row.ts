@@ -175,7 +175,7 @@ export class ActivityItemRow extends LitElement {
                 ${getTotal(this.activityItem.cso_cash || 0, this.activityItem.unicef_cash || 0)}
               </span>
             </div>
-             ${!this.readonly
+            ${!this.readonly
               ? html`<div class="grid-cell end remove" data-col-header-label="${translate('GENERAL.DELETE')}">
                   <iron-icon
                     id="btnRemove"
