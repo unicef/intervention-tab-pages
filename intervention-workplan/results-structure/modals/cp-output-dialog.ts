@@ -165,7 +165,6 @@ export class CpOutputDialog extends LitElement {
     if (!this.cpOutputId) {
       body.cp_output = this.selectedCpOutput;
     }
-
     sendRequest({
       endpoint,
       body,
