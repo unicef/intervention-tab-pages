@@ -104,6 +104,12 @@ export class PdIndicator extends CommentsMixin(LitElement) {
         .font-bold {
           font-weight: bold;
         }
+
+        .indicator-title {
+          line-height: 28px !important;
+          padding-top: 8px;
+          padding-bottom: 8px;
+        }
       </style>
       <etools-data-table-row
         secondary-bg-on-hover
@@ -113,7 +119,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
       >
         <div slot="row-data" class="layout-horizontal align-items-center editable-row">
           <!--    Indicator name    -->
-          <div class="text flex-auto">
+          <div class="text flex-auto indicator-title">
             ${this.getIndicatorDisplayType(this.indicator)} ${this.addInactivePrefix(this.indicator)}
             ${(this.indicator.indicator ? this.indicator.indicator.title : this.indicator.cluster_indicator_title) ||
             '—'}
