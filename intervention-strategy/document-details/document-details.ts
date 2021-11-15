@@ -161,7 +161,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
           </paper-textarea-with-icon>
         </div>
 
-        <div class="row-padding-v">
+        <div class="layout-horizontal row-padding-v">
           <paper-textarea-with-icon
             id="otherPartnersInvolved"
             label=${translate(translatesMap.other_partners_involved)}

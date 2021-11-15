@@ -66,8 +66,9 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
-        <div class="row-padding-v">
+        <div class="layout-horizontal row-padding-v">
           <paper-textarea-with-icon
+            class="w100"
             id="ip_program_contribution"
             label=${translate(translatesMap.ip_program_contribution)}
             always-float-label
