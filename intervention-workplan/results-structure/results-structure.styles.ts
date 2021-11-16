@@ -93,7 +93,9 @@ export const ResultStructureStyles: CSSResult = css`
     min-height: 48px;
   }
   div[slot='row-data'] > div {
-    line-height: 48px;
+    line-height: 26px;
+    padding-top: 8px;
+    padding-bottom: 8px;
   }
   .higher-slot {
     margin: 0px;

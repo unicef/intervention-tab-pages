@@ -109,7 +109,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
             related-to-description=" Activity - ${activity.name}"
             comments-container
           >
-            <div slot="row-data" class="layout-horizontal editable-row">
+            <div slot="row-data" class="layout-horizontal align-items-center editable-row">
               <!--    PD Activity name    -->
               <div class="text flex-auto">${activity.name || '-'}</div>
 
