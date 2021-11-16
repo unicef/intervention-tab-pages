@@ -109,7 +109,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
             related-to-description=" Activity - ${activity.name}"
             comments-container
           >
-            <div slot="row-data" class="layout-horizontal editable-row">
+            <div slot="row-data" class="layout-horizontal align-items-center editable-row">
               <!--    PD Activity name    -->
               <div class="text flex-auto">${activity.name || '-'}</div>
 
@@ -217,8 +217,8 @@ export class PdActivities extends CommentsMixin(LitElement) {
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
-        content: (translate('DELETE_ACTIVITY_PROMPT') as unknown) as string,
-        confirmBtnText: (translate('GENERAL.DELETE') as unknown) as string
+        content: translate('DELETE_ACTIVITY_PROMPT') as unknown as string,
+        confirmBtnText: translate('GENERAL.DELETE') as unknown as string
       }
     }).then(({confirmed}) => {
       return confirmed;
