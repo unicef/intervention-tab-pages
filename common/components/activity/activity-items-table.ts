@@ -88,10 +88,15 @@ export class ActivityItemsTable extends LitElement {
   updated(changedProperties: PropertyValues): void {
     super.updated(changedProperties);
 
-    const changedActivityItems = changedProperties.get('activityItems') as [];
+    this.resizeDialogIfItemsNumberChanged(changedProperties.get('activityItems') as []);
+  }
+
+  resizeDialogIfItemsNumberChanged(changedActivityItems?: []) {
     if (changedActivityItems && changedActivityItems.length !== this.activityItems.length) {
       // resize dialog if the number of items changed
-      this.resizeDialog();
+      setTimeout(() => {
+        this.resizeDialog();
+      }, 200);
     }
   }
 
