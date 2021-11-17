@@ -41,22 +41,7 @@ export class ActivityItemsTable extends LitElement {
     ];
   }
 
-  private _activityItems!: Partial<InterventionActivityItem>[];
-
-  @property({type: Array}) set activityItems(activityItems: Partial<InterventionActivityItem>[]) {
-    this._activityItems = activityItems;
-    if (activityItems && activityItems.length) {
-      this.requestUpdate();
-      setTimeout(() => {
-        this.resizeDialog();
-      }, 400);
-    }
-  }
-
-  get activityItems() {
-    return this._activityItems;
-  }
-
+  @property({type: Array}) activityItems!: Partial<InterventionActivityItem>[];
   @property() readonly: boolean | undefined = false;
   @property() dialogElement!: EtoolsDialog;
   @property({type: String})
@@ -98,6 +83,16 @@ export class ActivityItemsTable extends LitElement {
         ? html`<iron-icon id="btnAddItem" icon="add" tabIndex="0" @click="${() => this.addNew()}"></iron-icon>`
         : html``}
     `;
+  }
+
+  updated(changedProperties: PropertyValues): void {
+    super.updated(changedProperties);
+
+    const changedActivityItems = changedProperties.get('activityItems') as [];
+    if (changedActivityItems && changedActivityItems.length !== this.activityItems.length) {
+      // resize dialog if the number of items changed
+      this.resizeDialog();
+    }
   }
 
   firstUpdated(changedProperties: PropertyValues): void {
