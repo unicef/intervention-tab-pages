@@ -41,7 +41,7 @@ export class ActivityItemsTable extends LitElement {
     ];
   }
 
-  @property({type: Array}) activityItems!: Partial<InterventionActivityItem>[];
+  @property() activityItems: Partial<InterventionActivityItem>[] = [];
   @property() readonly: boolean | undefined = false;
   @property() dialogElement!: EtoolsDialog;
   @property({type: String})
