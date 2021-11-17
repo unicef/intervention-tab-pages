@@ -93,7 +93,6 @@ export class ActivityItemsTable extends LitElement {
 
   resizeDialogIfItemsNumberChanged(changedActivityItems?: []) {
     if (changedActivityItems && changedActivityItems.length !== this.activityItems.length) {
-      // resize dialog if the number of items changed
       setTimeout(() => {
         this.resizeDialog();
       }, 200);
