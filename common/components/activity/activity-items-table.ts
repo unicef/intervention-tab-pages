@@ -41,7 +41,22 @@ export class ActivityItemsTable extends LitElement {
     ];
   }
 
-  @property() activityItems: Partial<InterventionActivityItem>[] = [];
+  private _activityItems!: Partial<InterventionActivityItem>[];
+
+  @property({type: Array}) set activityItems(activityItems: Partial<InterventionActivityItem>[]) {
+    this._activityItems = activityItems;
+    if (activityItems && activityItems.length) {
+      this.requestUpdate();
+      setTimeout(() => {
+        this.resizeDialog();
+      }, 400);
+    }
+  }
+
+  get activityItems() {
+    return this._activityItems;
+  }
+
   @property() readonly: boolean | undefined = false;
   @property() dialogElement!: EtoolsDialog;
   @property({type: String})
@@ -100,7 +115,6 @@ export class ActivityItemsTable extends LitElement {
         name: ''
       }
     ];
-    this.resizeDialog();
     this.setFocusOnActivityRow();
   }
 
