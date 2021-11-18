@@ -85,6 +85,20 @@ export class ActivityItemsTable extends LitElement {
     `;
   }
 
+  updated(changedProperties: PropertyValues): void {
+    super.updated(changedProperties);
+
+    this.resizeDialogIfItemsNumberChanged(changedProperties.get('activityItems') as []);
+  }
+
+  resizeDialogIfItemsNumberChanged(changedActivityItems?: []) {
+    if (changedActivityItems && changedActivityItems.length !== this.activityItems.length) {
+      setTimeout(() => {
+        this.resizeDialog();
+      }, 300);
+    }
+  }
+
   firstUpdated(changedProperties: PropertyValues): void {
     super.firstUpdated(changedProperties);
 
@@ -100,7 +114,6 @@ export class ActivityItemsTable extends LitElement {
         name: ''
       }
     ];
-    this.resizeDialog();
     this.setFocusOnActivityRow();
   }
 
