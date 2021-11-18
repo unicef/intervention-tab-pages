@@ -52,7 +52,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
         }
 
         div.col-1.yearContainer {
-          min-width: 100px;
+          min-width: 110px;
         }
 
         .error-msg {
