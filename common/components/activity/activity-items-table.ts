@@ -95,7 +95,7 @@ export class ActivityItemsTable extends LitElement {
     if (changedActivityItems && changedActivityItems.length !== this.activityItems.length) {
       setTimeout(() => {
         this.resizeDialog();
-      }, 200);
+      }, 300);
     }
   }
 
