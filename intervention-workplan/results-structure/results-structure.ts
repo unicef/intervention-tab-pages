@@ -171,7 +171,8 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
   @property({type: Boolean}) thereAreInactiveIndicators = false;
   @property({type: Boolean}) showInactiveIndicators = false;
 
-  private intervention!: Intervention;
+  @property({type: Object})
+  intervention!: Intervention;
 
   viewTabs = [
     {
@@ -360,6 +361,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                         .pdOutputId="${pdOutput.id}"
                         .readonly="${!this.permissions.edit.result_links || this.commentMode}"
                         .showInactiveIndicators="${this.showInactiveIndicators}"
+                        .inAmendment="${this.intervention.in_amendment}"
                       ></pd-indicators>
                       <pd-activities
                         .activities="${pdOutput.activities}"

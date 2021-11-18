@@ -70,6 +70,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
   @property() pdOutputId!: string;
   @property({type: Boolean}) readonly!: boolean;
   @property({type: Boolean}) showInactiveIndicators!: boolean;
+  @property({type: Boolean}) inAmendment!: boolean;
 
   /** On create/edit indicator only sections already saved on the intervention can be selected */
   set interventionSections(ids: string[]) {
@@ -135,6 +136,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
             .sectionClusterNames="${this.getSectionAndCluster(indicator.section, indicator.cluster_name)}"
             .interventionStatus="${this.interventionStatus}"
             .readonly="${this.readonly}"
+            .inAmendment="${this.inAmendment}"
             ?hidden="${this._hideIndicator(indicator, this.showInactiveIndicators)}"
             ?cluster-indicator="${indicator.cluster_indicator_id}"
             ?high-frequency-indicator="${indicator.is_high_frequency}"
