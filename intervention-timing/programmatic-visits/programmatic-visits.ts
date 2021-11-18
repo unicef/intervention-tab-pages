@@ -48,11 +48,11 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
         }
 
         div.col-1 {
-          min-width: 85px;
+          min-width: 100px;
         }
 
         div.col-1.yearContainer {
-          min-width: 100px;
+          min-width: 110px;
         }
 
         .error-msg {
@@ -82,6 +82,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
         etools-content-panel::part(ecp-content) {
           padding: 8px 24px 16px 24px;
         }
+
       </style>
 
       <etools-content-panel
@@ -198,7 +199,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
               </div>
             </div>
             <div class="item-content">
-              <div class="row-h">
+              <div class="row-h layout-wrap">
                 <div class="col col-1 yearContainer">
                   <etools-dropdown
                     .id="year_${index}"
