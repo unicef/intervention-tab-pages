@@ -484,5 +484,7 @@
   "HUMANITARIAN_REPORT_TOOLTIP": "In situatii umanitare caracterizate prin schimbari rapide, UNICEF  poate cere partenerilor sa depuna Rapoarte Umanitares lunar, sau mai des, pt a obtine actualizari despre statusul indicatorilor umanitari cu frecventa ridicata. Rapoartele umanitare au un format simplificat si nu necesita raportare narativa.",
   "SPECIAL_REPORT_TOOLTIP": "In anumite circumstante, UNICEF poate solicita partenerilor sa depuna un Rapoarte Speciale pe langa standardele Rapoarte de Progres Trimestriale. Rapoartele speciale pot fi cerute pt motive diferite, inclusiv pt a indeplini cerintele donatorilor, si nu au un format standard. UNICEF se straduieste sa reduca numarul de rapoarte speciale cerute.",
   "PROGRAMME_DOCUMENT_TOOLTIP": "Programme Document e folosit pt interventii unde numerarul si aportul <br> de aprovizionare planificate de UNICEF e ≥$100,000 <br> si nu e parte a unui raspuns umanitar.",
-  "SIMPLIFIED_PROGRAMME_DOCUMENT_TOOLTIP": "Simplified Programme Document e folosit pentru toate raspunsurile umanitare. <br> Dar si pentru  interventii small-scale unde numerarul <br> si aportul de aprovizionare UNICEF e <$100,000."
+  "SIMPLIFIED_PROGRAMME_DOCUMENT_TOOLTIP": "Simplified Programme Document e folosit pentru toate raspunsurile umanitare. <br> Dar si pentru  interventii small-scale unde numerarul <br> si aportul de aprovizionare UNICEF e <$100,000.",
+  "EDIT": "Editeaza",
+  "DELETE": "Sterge"
 }
