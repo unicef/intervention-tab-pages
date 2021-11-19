@@ -79,6 +79,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         ?show-spinner="${this.loadingInProcess}"
         @close="${() => this.onClose()}"
         @confirm-btn-clicked="${this.onSaveClick}"
+        .hideConfirmBtn="${this.readonly}"
       >
         <div class="row-padding-v">
           <paper-input
@@ -115,6 +116,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
                     .value="${this.data[this.getPropertyName('partner')]}"
                     @value-changed="${({detail}: CustomEvent) =>
                       this.valueChanged(detail, this.getPropertyName('partner'))}"
+                      ?readonly="${this.readonly}"
                   >
                   </etools-currency-amount-input>
 
@@ -125,6 +127,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
                     .value="${this.data[this.getPropertyName('unicef')]}"
                     @value-changed="${({detail}: CustomEvent) =>
                       this.valueChanged(detail, this.getPropertyName('unicef'))}"
+                      ?readonly="${this.readonly}"
                   >
                   </etools-currency-amount-input>
                 </div>`
@@ -160,6 +163,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
             ?checked="${this.useInputLevel}"
             @checked-changed="${this.inputLevelChange}"
             class="col-5"
+            ?disabled="${this.readonly}"
           >
             ${translate('USE_INPUT_LEVEL')}
           </paper-toggle-button>
@@ -169,6 +173,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
           ?hidden="${!this.useInputLevel}"
           .activityItems="${this.items || []}"
           .currency="${this.currency}"
+          .readonly="${this.readonly}"
           @activity-items-changed="${({detail}: CustomEvent) => {
             this.items = detail;
             this.requestUpdate();
@@ -182,9 +187,10 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
     if (!data) {
       return;
     }
-    const {activity, interventionId}: any = data;
+    const {activity, interventionId, readonly}: any = data;
     this.items = (activity.items || []).filter((row: ManagementBudgetItem) => row.kind === activity.kind);
     this.useInputLevel = Boolean((this.items || []).length);
+    this.readonly = readonly;
 
     setTimeout(() => {
       // timeout to avoid inputLevelChange method reseting totals to 0
@@ -205,6 +211,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
   @property() useInputLevel = false;
   @property({type: String}) currency = '';
   @property({type: Array}) items: ManagementBudgetItem[] = [];
+  @property({type: Boolean}) readonly = false;
   @query('etools-dialog') private dialogElement!: EtoolsDialog;
   @query('activity-items-table') private activityItemsTable!: ActivityItemsTable;
 
