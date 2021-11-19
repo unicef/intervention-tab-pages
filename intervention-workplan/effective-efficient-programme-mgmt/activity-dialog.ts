@@ -72,7 +72,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         id="activityDialog"
         size="lg"
         keep-dialog-open
-        dialog-title=${translate('EDIT_ACTIVITY')}
+        dialog-title=${this.readonly ? translate('VIEW_ACTIVITY') : translate('EDIT_ACTIVITY')}
         ok-btn-text=${translate('GENERAL.SAVE')}
         cancel-btn-text=${translate('GENERAL.CANCEL')}
         ?opened="${this.dialogOpened}"
