@@ -132,7 +132,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
           <div class="hover-block">
             <paper-icon-button
               icon="icons:create"
-              ?hidden="${!this.indicator.is_active || this.readonly}"
+              ?hidden="${!this._canEdit()}"
               @click="${() => this.openIndicatorDialog(this.indicator, false)}"
               title="${translate('EDIT')}"
             ></paper-icon-button>
@@ -281,7 +281,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
   }
 
   _canDeactivate(): boolean {
-    if (this.inAmendment && this.indicator.is_active) {
+    if (this.inAmendment && this.indicator.is_active && !this.readonly) {
       return true;
     }
 
@@ -292,6 +292,10 @@ export class PdIndicator extends CommentsMixin(LitElement) {
       return true;
     }
     return false;
+  }
+
+  _canEdit() {
+    return this.indicator.is_active && !this.readonly;
   }
 
   _canView() {
