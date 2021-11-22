@@ -6,6 +6,7 @@ import './general-review-information/general-review-information';
 import './review-members/review-members';
 import './reviews-list/reviews-list';
 import './overall-approval/overall-approval';
+import './cfei-notification/cfei-notification';
 import {NO_REVIEW, PRC_REVIEW} from './review.const';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
@@ -16,11 +17,14 @@ export class InterventionReviewTab extends connectStore(LitElement) {
   @property() canEditPRCReviews = false;
   @property() review: InterventionReview | null = null;
   @property() unicefUsers: User[] = [];
+  @property() cfeiNumber = '';
   private interventionId: number | null = null;
 
   render() {
     // language=HTML
     return html`
+      ${this.cfeiNumber ? html`<cfei-notification .cfeiNumber="${this.cfeiNumber}"></cfei-notification>` : ''}
+
       <general-review-information .review="${this.review}"></general-review-information>
 
       ${this.review && this.review.review_type != NO_REVIEW
@@ -60,6 +64,7 @@ export class InterventionReviewTab extends connectStore(LitElement) {
     this.canEditReview = state.interventions.current.permissions!.edit.reviews || false;
     this.canEditPRCReviews = state.interventions.current.permissions!.edit.prc_reviews || false;
     this.interventionId = state.interventions.current.id;
+    this.cfeiNumber = state.interventions.current.cfei_number || '';
   }
 
   static get styles(): CSSResult {
