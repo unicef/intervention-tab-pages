@@ -19,7 +19,7 @@ export class ExportInterventionData extends LitElement {
     return [
       css`
         paper-menu-button {
-          padding: 0px 24px;
+          padding: 0px 24px 0px 12px;
         }
         paper-button {
           height: 40px;
