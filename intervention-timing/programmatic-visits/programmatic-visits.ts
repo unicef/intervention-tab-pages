@@ -82,6 +82,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
         etools-content-panel::part(ecp-content) {
           padding: 8px 24px 16px 24px;
         }
+
       </style>
 
       <etools-content-panel
