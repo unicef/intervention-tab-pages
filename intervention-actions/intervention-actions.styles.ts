@@ -5,6 +5,7 @@ export const InterventionActionsStyles: CSSResult = css`
   :host {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     --green-color: #009688;
     --light-green-color: #00b3a1;
     --back-color: #233944;
@@ -72,5 +73,11 @@ export const InterventionActionsStyles: CSSResult = css`
   .option-button {
     height: 36px;
     border-left: 2px solid rgba(255, 255, 255, 0.12);
+  }
+  @media (max-width: 770px) {
+    :host {
+      flex-direction: column !important;
+      align-items: center;
+    }
   }
 `;

@@ -44,8 +44,9 @@ export class InterventionPageContentHeader extends LitElement {
         }
         .title-row {
           align-items: center;
-          margin: 15px 0 0;
           padding: 0 24px;
+          flex-wrap: wrap;
+          justify-content: space-between;
         }
         .title-row h1 {
           @apply --page-title;
@@ -67,13 +68,10 @@ export class InterventionPageContentHeader extends LitElement {
           }
         }
 
-        @media (max-width: 1100px) {
+        @media (max-width: 1300px) {
           .content-header-row {
             display: flex;
             flex-direction: column;
-          }
-          .row-actions {
-            margin-top: 20px;
           }
         }
 
@@ -86,12 +84,12 @@ export class InterventionPageContentHeader extends LitElement {
           }
         }
         @media (max-width: 770px) {
-          .flex-block {
+          .flex-block, .row-actions {
             flex-direction: column !important;
             align-items: center;
           }
-          .modeContainer {
-            margin-bottom: 8px;
+          .vb {
+            display: none;
           }
         }
         .statusContainer {
@@ -100,6 +98,8 @@ export class InterventionPageContentHeader extends LitElement {
         .vb {
           border-left: 2px solid var(--light-hex-divider-color);
           padding: 0 20px;
+          height: 30px;
+          margin-top: 15px;
         }
         .title {
           padding-right: 20px;
@@ -115,13 +115,19 @@ export class InterventionPageContentHeader extends LitElement {
           align-items: center;
         }
         .flex-block {
-          flex: 1;
-          min-width: 0;
           display: flex;
           flex-direction: row;
+          flex-wrap: wrap;
+          align-items: center;
+        }
+        .flex-block > :not(.vb) {
+          margin-top: 15px !important;
         }
         .none-flex {
           flex: none;
+        }
+        .row-actions{
+          margin-top: 15px;
         }
       </style>
 
