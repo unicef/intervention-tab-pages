@@ -96,7 +96,9 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
           .columns="${this.columns}"
           .extraCSS="${this.getTableStyle()}"
           .showEdit=${this.canEdit}
+          .showView=${!this.canEdit}
           @edit-item="${this.openActivityDialog}"
+          @view-item="${this.openActivityDialog}"
           .getChildRowTemplateMethod="${this.getChildRowTemplate.bind(this)}"
         >
         </etools-table>
@@ -219,7 +221,8 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
       dialogData: {
         activity: {...event.detail, items: this.data.items},
         interventionId: this.interventionId,
-        currency: this.data.currency
+        currency: this.data.currency,
+        readonly: !this.canEdit
       }
     });
   }
