@@ -20,4 +20,5 @@ export class OtherPermissions extends ModelsBase {
   }
   planned_budget = true;
   document_type = true;
+  document_currency = true;
 }
