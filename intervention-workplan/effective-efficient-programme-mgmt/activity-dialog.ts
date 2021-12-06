@@ -20,6 +20,7 @@ import {AnyObject, ManagementBudgetItem} from '@unicef-polymer/etools-types';
 import {ActivityItemsTable} from '../../common/components/activity/activity-items-table';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {removeCurrencyAmountDelimiter} from '../../utils/utils';
 
 /**
  * @customElement
@@ -229,13 +230,16 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
       row.kind = this.data.kind;
     });
     this.loadingInProcess = true;
-    this.data.items = this.data.items.concat(this.items);
+
+    const patchData = cloneDeep(this.data);
+    patchData.items = patchData.items.concat(this.items);
+    this.formatDataBeforeSave(patchData);
     sendRequest({
       endpoint: getEndpoint(interventionEndpoints.interventionBudgetUpdate, {
         interventionId: this.interventionId
       }),
       method: 'PATCH',
-      body: this.data
+      body: patchData
     })
       .then(({intervention}) => {
         getStore().dispatch(updateCurrentIntervention(intervention));
@@ -293,5 +297,11 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
   validateActivityItems(): AnyObject | undefined {
     const itemsTable: ActivityItemsTable | null = this.shadowRoot!.querySelector('activity-items-table');
     return itemsTable !== null ? itemsTable.validate() : undefined;
+  }
+
+  formatDataBeforeSave(data: any) {
+    [this.getPropertyName('unicef'), this.getPropertyName('partner')].forEach((prop) => {
+      data[prop] = removeCurrencyAmountDelimiter(data[prop]);
+    });
   }
 }
