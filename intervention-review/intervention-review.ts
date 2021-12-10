@@ -18,6 +18,13 @@ export class InterventionReviewTab extends connectStore(LitElement) {
   @property() review: InterventionReview | null = null;
   @property() unicefUsers: User[] = [];
   @property() cfeiNumber = '';
+
+  get linkUrl(): string {
+    return `https://www.unpartnerportal.org/cfei/open?agency=1&displayID=${encodeURIComponent(
+      this.cfeiNumber
+    )}&page=1&page_size=10`;
+  }
+
   private interventionId: number | null = null;
 
   render() {
@@ -28,7 +35,7 @@ export class InterventionReviewTab extends connectStore(LitElement) {
             <div class="text">
               This PD was completed after a selection in UNPP where a committee has approved, please review the work
               done in UNPP by clicking thislink:
-              <a href="test" target="_blank">Go to UNPP</a>
+              <a href="${this.linkUrl}" target="_blank">Go to UNPP</a>
             </div>
           </reason-display>`
         : ''}
