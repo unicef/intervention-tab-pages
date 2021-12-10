@@ -157,7 +157,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               placeholder="&#8212;"
               .options="${this.currencies}"
               .selected="${this.data.planned_budget.currency}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_budget)}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.document_currency)}"
               @etools-selected-item-changed="${({detail}: CustomEvent) => {
                 if (detail === undefined || detail.selectedItem === null) {
                   return;
