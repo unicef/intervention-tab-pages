@@ -6,7 +6,7 @@ import './general-review-information/general-review-information';
 import './review-members/review-members';
 import './reviews-list/reviews-list';
 import './overall-approval/overall-approval';
-import './cfei-notification/cfei-notification';
+import '@unicef-polymer/etools-modules-common/dist/components/cancel/reason-display';
 import {NO_REVIEW, PRC_REVIEW} from './review.const';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
@@ -23,7 +23,15 @@ export class InterventionReviewTab extends connectStore(LitElement) {
   render() {
     // language=HTML
     return html`
-      ${this.cfeiNumber ? html`<cfei-notification .cfeiNumber="${this.cfeiNumber}"></cfei-notification>` : ''}
+      ${this.cfeiNumber
+        ? html`<reason-display title="CFEI Notification" .cfeiNumber="${this.cfeiNumber}">
+            <div class="text">
+              This PD was completed after a selection in UNPP where a committee has approved, please review the work
+              done in UNPP by clicking thislink:
+              <a href="test" target="_blank">Go to UNPP</a>
+            </div>
+          </reason-display>`
+        : ''}
 
       <general-review-information .review="${this.review}"></general-review-information>
 
@@ -68,9 +76,15 @@ export class InterventionReviewTab extends connectStore(LitElement) {
   }
 
   static get styles(): CSSResult {
+    // language=css
     return css`
       *[hidden] {
         display: none !important;
+      }
+      reason-display {
+        --flag-color: var(--warning-color);
+        --text-wrap: none;
+        --text-padding: 26px 24px 26px 80px;
       }
     `;
   }
