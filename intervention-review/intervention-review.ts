@@ -34,7 +34,7 @@ export class InterventionReviewTab extends connectStore(LitElement) {
         ? html`<reason-display title="CFEI Notification" .cfeiNumber="${this.cfeiNumber}">
             <div class="text">
               This PD was completed after a selection in UNPP where a committee has approved, please review the work
-              done in UNPP by clicking thislink:
+              done in UNPP by clicking this link:
               <a href="${this.linkUrl}" target="_blank">Go to UNPP</a>
             </div>
           </reason-display>`
