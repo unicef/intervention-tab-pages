@@ -26,6 +26,8 @@ const CONSTANTS = {
   },
   STATUSES: {
     Draft: 'Draft',
+    Review: 'Review',
+    Signature: 'Signature',
     Signed: 'Signed',
     Active: 'Active',
     Suspended: 'Suspended',
