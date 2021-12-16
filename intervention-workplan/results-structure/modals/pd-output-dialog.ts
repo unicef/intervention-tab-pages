@@ -140,6 +140,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
     if (this.loadingInProcess) {
       return;
     }
+
     if (!validateRequiredFields(this)) {
       return;
     }
@@ -170,7 +171,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
       .then(() => {
         fireEvent(this, 'dialog-closed', {confirmed: true});
       })
-      .catch((error) => {
+      .catch((error: any) => {
         this.loadingInProcess = false;
         this.errors = (error && error.response) || {};
         fireEvent(this, 'toast', {text: getTranslation('ERR_SAVE_PD_OUTPUT')});

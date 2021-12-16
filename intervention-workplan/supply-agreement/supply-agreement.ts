@@ -166,19 +166,19 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   @property({type: Array})
   columns: EtoolsTableColumn[] = [
     {
-      label: (translate('ITEM_ALL_PRICES') as unknown) as string,
+      label: translate('ITEM_ALL_PRICES') as unknown as string,
       name: 'title',
       type: EtoolsTableColumnType.Text,
       cssClass: 'col_title'
     },
     {
-      label: (translate('NUMBER_UNITS') as unknown) as string,
+      label: translate('NUMBER_UNITS') as unknown as string,
       name: 'unit_number',
       type: EtoolsTableColumnType.Number,
       cssClass: 'col_nowrap'
     },
     {
-      label: (translate('PRICE_UNIT') as unknown) as string,
+      label: translate('PRICE_UNIT') as unknown as string,
       name: 'unit_price',
       type: EtoolsTableColumnType.Number,
       cssClass: 'col_nowrap'
@@ -190,7 +190,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       type: EtoolsTableColumnType.Number
     },
     {
-      label: (translate('PROVIDED_BY') as unknown) as string,
+      label: translate('PROVIDED_BY') as unknown as string,
       name: 'provided_by',
       cssClass: 'col_nowrap',
       type: EtoolsTableColumnType.Custom,
@@ -297,9 +297,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
     super.stateChanged(state);
   }
   currencyDisplayForTotal() {
-    if (!this.columns[3].label) {
-      this.columns[3].label = getTranslation('TOTAL_PRICE') + ' (' + this.intervention?.planned_budget?.currency + ')';
-    }
+    this.columns[3].label = getTranslation('TOTAL_PRICE') + ' (' + this.intervention?.planned_budget?.currency + ')';
   }
 
   cancelSupply() {

@@ -18,6 +18,7 @@ import {AsyncAction, InterventionActivity, InterventionQuarter} from '@unicef-po
 import {translate} from 'lit-translate';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import {translatesMap} from '../../utils/intervention-labels-map';
+import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 
 @customElement('pd-activities')
 export class PdActivities extends CommentsMixin(LitElement) {
@@ -108,20 +109,24 @@ export class PdActivities extends CommentsMixin(LitElement) {
             related-to-description=" Activity - ${activity.name}"
             comments-container
           >
-            <div slot="row-data" class="layout-horizontal editable-row">
+            <div slot="row-data" class="layout-horizontal align-items-center editable-row">
               <!--    PD Activity name    -->
               <div class="text flex-auto">${activity.name || '-'}</div>
 
               <!--    CSO Cash    -->
-              <div class="text number-data flex-none">${this.formatCurrency(activity.cso_cash || 0)}</div>
+              <div class="text number-data flex-none">
+                ${displayCurrencyAmount(String(activity.cso_cash || 0), '0', 2)}
+              </div>
 
               <!--    UNICEF Cash    -->
-              <div class="text number-data flex-none">${this.formatCurrency(activity.unicef_cash || 0)}</div>
+              <div class="text number-data flex-none">
+                ${displayCurrencyAmount(String(activity.unicef_cash || 0), '0', 2)}
+              </div>
 
               <!--    Total    -->
               <div class="text number-data flex-none">
                 <!--       TODO: use field from backend         -->
-                ${this.formatCurrency(this.getTotal(activity.cso_cash, activity.unicef_cash))}
+                ${displayCurrencyAmount(String(this.getTotal(activity.cso_cash, activity.unicef_cash)), '0', 2)}
               </div>
 
               <div class="hover-block">
@@ -190,10 +195,6 @@ export class PdActivities extends CommentsMixin(LitElement) {
     return [{element, relatedTo, relatedToDescription}];
   }
 
-  formatCurrency(value: string | number): string {
-    return String(value).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
-  }
-
   getTotal(partner: string, unicef: string): number {
     return (Number(partner) || 0) + (Number(unicef) || 0);
   }
@@ -216,8 +217,8 @@ export class PdActivities extends CommentsMixin(LitElement) {
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
-        content: (translate('DELETE_ACTIVITY_PROMPT') as unknown) as string,
-        confirmBtnText: (translate('GENERAL.DELETE') as unknown) as string
+        content: translate('DELETE_ACTIVITY_PROMPT') as unknown as string,
+        confirmBtnText: translate('GENERAL.DELETE') as unknown as string
       }
     }).then(({confirmed}) => {
       return confirmed;

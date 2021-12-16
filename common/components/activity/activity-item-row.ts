@@ -167,8 +167,16 @@ export class ActivityItemRow extends LitElement {
                 error-message=""
               ></etools-currency-amount-input>
             </div>
+            <div
+              class="grid-cell last-cell end ${!this.lastItem && this.readonly ? 'border' : ''}"
+              data-col-header-label="${translate('TOTAL_CASH')} (${this.currency})"
+            >
+              <span class="total">
+                ${getTotal(this.activityItem.cso_cash || 0, this.activityItem.unicef_cash || 0)}
+              </span>
+            </div>
             ${!this.readonly
-              ? html`<div class="grid-cell remove" data-col-header-label="${translate('GENERAL.DELETE')}">
+              ? html`<div class="grid-cell end remove" data-col-header-label="${translate('GENERAL.DELETE')}">
                   <iron-icon
                     id="btnRemove"
                     icon="close"
@@ -178,15 +186,6 @@ export class ActivityItemRow extends LitElement {
                   ></iron-icon>
                 </div>`
               : html`<div class="${!this.lastItem ? 'border' : ''}"></div>`}
-
-            <div
-              class="grid-cell last-cell end ${!this.lastItem && this.readonly ? 'border' : ''}"
-              data-col-header-label="${translate('TOTAL_CASH')} (${this.currency})"
-            >
-              <span class="total">
-                ${getTotal(this.activityItem.cso_cash || 0, this.activityItem.unicef_cash || 0)}
-              </span>
-            </div>
           </div>
         `
       : html``;

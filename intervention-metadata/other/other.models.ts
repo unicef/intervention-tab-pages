@@ -18,6 +18,6 @@ export class OtherPermissions extends ModelsBase {
     super();
     this.setObjProperties(permissions);
   }
-  planned_budget = true;
   document_type = true;
+  document_currency = true;
 }

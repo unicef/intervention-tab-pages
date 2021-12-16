@@ -1,5 +1,5 @@
-// import 'leaflet';
 import {Map, Marker} from 'leaflet';
+declare const L: any;
 
 const TILE_LAYER: Readonly<string> = 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png';
 const TILE_LAYER_LABELS: Readonly<string> = 'https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png';
@@ -39,7 +39,7 @@ export class MapHelper {
   dynamicMarker: IMarker | null = null;
   markerClusters: any | null = null;
 
-  initMap(element?: HTMLElement | null): Map | never {
+  initMap(element?: HTMLElement | null): Map | null {
     if (!element) {
       throw new Error('Please provide HTMLElement for map initialization!');
     }
@@ -64,7 +64,7 @@ export class MapHelper {
     const markers: Marker[] = [];
     let marker: IMarker;
     (markersData || []).forEach((mark: MarkerDataObj) => {
-      marker = L.marker(mark.coords).bindPopup(`<b>${mark.popup}</b>`)
+      marker = L.marker(mark.coords).bindPopup(`<b>${mark.popup}</b>`);
       marker.staticData = mark.staticData;
       if (onclick) {
         marker.on('click', function (e) {

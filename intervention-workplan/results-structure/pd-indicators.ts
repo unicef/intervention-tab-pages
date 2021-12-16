@@ -44,6 +44,7 @@ import {
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
+import '@unicef-polymer/etools-modules-common/dist/components/info-icon-tooltip';
 
 @customElement('pd-indicators')
 export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)) {
@@ -69,6 +70,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
   @property() pdOutputId!: string;
   @property({type: Boolean}) readonly!: boolean;
   @property({type: Boolean}) showInactiveIndicators!: boolean;
+  @property({type: Boolean}) inAmendment!: boolean;
 
   /** On create/edit indicator only sections already saved on the intervention can be selected */
   set interventionSections(ids: string[]) {
@@ -109,6 +111,11 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
       <div class="row-h align-items-center header" ?hidden="${!this.indicators.length && this.readonly}">
         <div class="heading flex-auto">
           ${translate(translatesMap.applied_indicators)}
+          <info-icon-tooltip
+            id="iit-ind"
+            .tooltipText="${translate('INDICATOR_TOOLTIP')}"
+            ?hidden="${this.readonly}"
+          ></info-icon-tooltip>
           <paper-icon-button
             class="add-box"
             icon="add-box"
@@ -129,6 +136,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
             .sectionClusterNames="${this.getSectionAndCluster(indicator.section, indicator.cluster_name)}"
             .interventionStatus="${this.interventionStatus}"
             .readonly="${this.readonly}"
+            .inAmendment="${this.inAmendment}"
             ?hidden="${this._hideIndicator(indicator, this.showInactiveIndicators)}"
             ?cluster-indicator="${indicator.cluster_indicator_id}"
             ?high-frequency-indicator="${indicator.is_high_frequency}"
@@ -205,8 +213,8 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
-        content: (translate('DEACTIVATE_PROMPT') as unknown) as string,
-        confirmBtnText: (translate('DEACTIVATE') as unknown) as string
+        content: translate('DEACTIVATE_PROMPT') as unknown as string,
+        confirmBtnText: translate('DEACTIVATE') as unknown as string
       }
     }).then(({confirmed}) => {
       return confirmed;
@@ -240,8 +248,8 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
-        content: (translate('DELETE_PROMPT') as unknown) as string,
-        confirmBtnText: (translate('GENERAL.DELETE') as unknown) as string
+        content: translate('DELETE_PROMPT') as unknown as string,
+        confirmBtnText: translate('GENERAL.DELETE') as unknown as string
       }
     }).then(({confirmed}) => {
       return confirmed;

@@ -135,7 +135,7 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
   editMode = true;
 
   @property({type: String})
-  deleteConfirmationMessage = (translate('DELETE_FR_PROMPT') as unknown) as string;
+  deleteConfirmationMessage = translate('DELETE_FR_PROMPT') as unknown as string;
 
   @property({type: Boolean})
   disableConfirmBtn = true;

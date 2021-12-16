@@ -243,10 +243,10 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
     if (!this.initialReportingReq || !this.initialReportingReq.length) {
       return false;
     }
-    return (
-      this.interventionStart != this.qprData[0].start_date ||
-      this.interventionEnd != this.qprData[this.qprData.length - 1].end_date
-    );
+    return this.qprData && this.qprData.length
+      ? this.interventionStart != this.qprData[0].start_date ||
+          this.interventionEnd != this.qprData[this.qprData.length - 1].end_date
+      : true;
   }
 
   _duplicateDueDate(dueDate: any) {

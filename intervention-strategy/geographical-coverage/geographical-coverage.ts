@@ -24,6 +24,7 @@ import {AnyObject, AsyncAction, LocationObject, Permission, Site} from '@unicef-
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
+import '@unicef-polymer/etools-modules-common/dist/components/info-icon-tooltip';
 
 /**
  * @customElement
@@ -87,6 +88,10 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         etools-content-panel::part(ecp-content) {
           padding: 8px 24px 16px 24px;
         }
+
+        info-icon-tooltip {
+          --iit-margin: 8px 0 8px -15px;
+        }
       </style>
 
       <etools-content-panel
@@ -95,6 +100,13 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         comment-element="geographical-coverage"
         comment-description="Geographical Coverage"
       >
+        <div slot="after-title">
+          <info-icon-tooltip
+            id="iit-geo"
+            ?hidden="${!this.canEditAtLeastOneField}"
+            .tooltipText="${translate('GEOGRAPHICAL_COVERAGE_INFO')}"
+          ></info-icon-tooltip>
+        </div>
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="flex-c layout-horizontal row-padding-v">

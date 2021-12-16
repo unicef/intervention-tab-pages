@@ -179,7 +179,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
                   </div>
                   <div class="info-block">
                     <div class="label">${translate('SIGNED_AMENDMENT')}</div>
-                    <div class="value">
+                    <div class="value" ?hidden="${!item.signed_amendment_attachment}">
                       <iron-icon icon="attachment" class="attachment"></iron-icon>
                       <span class="break-word file-label">
                         <a href="${item.signed_amendment_attachment}" target="_blank" download>
@@ -187,6 +187,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
                         </a>
                       </span>
                     </div>
+                    <div class="value" ?hidden="${item.signed_amendment_attachment}">&#8212;</div>
                   </div>
 
                   <div class="info-block">

@@ -11,6 +11,7 @@ import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
 import {AsyncAction, ResultIndicator, GenericObject} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 
 @customElement('cp-output-dialog')
 export class CpOutputDialog extends LitElement {
@@ -180,7 +181,7 @@ export class CpOutputDialog extends LitElement {
       .catch((error) => {
         this.loadingInProcess = false;
         this.errors = (error && error.response) || {};
-        fireEvent(this, 'toast', {text: getTranslation('CAN_NOT_SAVE_IND')});
+        fireEvent(this, 'toast', {text: formatServerErrorAsText(error)});
       });
   }
 

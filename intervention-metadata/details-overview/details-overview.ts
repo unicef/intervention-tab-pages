@@ -20,6 +20,7 @@ import {Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes
 import {TABS} from '../../common/constants';
 import CONSTANTS from '../../common/constants';
 import {StaticPartner} from '@unicef-polymer/etools-types';
+import '@unicef-polymer/etools-modules-common/dist/components/info-icon-tooltip';
 
 /**
  * @customElement
@@ -45,25 +46,9 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
           margin-right: 20px;
           padding-left: 0px;
         }
-        .container-width {
-          width: 100%;
-          display: flex;
-          justify-content: flex-start;
-          flex-wrap: wrap;
-        }
-        @media (max-width: 1420px) {
-          .container-width {
-            width: 100%;
-          }
-        }
       </style>
-      <section
-        class="elevation table not-allowed"
-        elevation="1"
-        comment-element="details"
-        comment-description="Details"
-      >
-        <div class="container-width">
+      <section class="elevation" elevation="1" comment-element="details" comment-description="Details">
+        <div class="table not-allowed">
           <div class="data-column">
             <label class="paper-label">${translate('DOCUMENT_TYPE')}</label>
             <div class="input-label" ?empty="${!this.interventionOverview.document_type}">
@@ -104,12 +89,9 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
               ${formatDate(this.interventionPartner?.psea_assessment_date)}
             </div>
           </div>
-
-          <etools-info-tooltip icon="icons:info" position="left" id="not-allowed-icon">
-            <span slot="message">
-              <span>${translate('METADATA_TOOLTIP')}</span>
-            </span>
-          </etools-info-tooltip>
+        </div>
+        <div class="icon-tooltip-div">
+          <info-icon-tooltip .tooltipText="${translate('METADATA_TOOLTIP')}" position="left"> </info-icon-tooltip>
         </div>
       </section>
     `;

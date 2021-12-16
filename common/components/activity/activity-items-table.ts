@@ -61,8 +61,8 @@ export class ActivityItemsTable extends LitElement {
         <div class="grid-cell header-cell end">${translate('TOTAL_COST')}</div>
         <div class="grid-cell header-cell end">${translate('PARTNER_CASH')}</div>
         <div class="grid-cell header-cell end">${translate('UNICEF_CASH')}</div>
-        <div class="grid-cell header-cell"></div>
         <div class="grid-cell header-cell end">${translate('TOTAL_CASH')} (${this.currency})</div>
+        <div class="grid-cell header-cell"></div>
       </div>
 
       ${this.activityItems.map(
@@ -85,6 +85,20 @@ export class ActivityItemsTable extends LitElement {
     `;
   }
 
+  updated(changedProperties: PropertyValues): void {
+    super.updated(changedProperties);
+
+    this.resizeDialogIfItemsNumberChanged(changedProperties.get('activityItems') as []);
+  }
+
+  resizeDialogIfItemsNumberChanged(changedActivityItems?: []) {
+    if (changedActivityItems && changedActivityItems.length !== this.activityItems.length) {
+      setTimeout(() => {
+        this.resizeDialog();
+      }, 300);
+    }
+  }
+
   firstUpdated(changedProperties: PropertyValues): void {
     super.firstUpdated(changedProperties);
 
@@ -100,8 +114,7 @@ export class ActivityItemsTable extends LitElement {
         name: ''
       }
     ];
-    this.resizeDialog();
-    this.setFocusOnFirstActivity();
+    this.setFocusOnActivityRow();
   }
 
   resizeDialog() {
@@ -110,11 +123,14 @@ export class ActivityItemsTable extends LitElement {
     }
   }
 
-  setFocusOnFirstActivity() {
+  setFocusOnActivityRow(focusLastRow = true) {
     setTimeout(() => {
       const activityRows = this.shadowRoot!.querySelectorAll('activity-item-row');
       if (activityRows.length) {
-        const activityNameEl = activityRows[0].shadowRoot!.querySelector('#activityName') as PaperTextareaElement;
+        const rowIndex = focusLastRow ? activityRows.length - 1 : 0;
+        const activityNameEl = activityRows[rowIndex].shadowRoot!.querySelector(
+          '#activityName'
+        ) as PaperTextareaElement;
         if (activityNameEl) {
           activityNameEl.focus();
         }
@@ -125,7 +141,7 @@ export class ActivityItemsTable extends LitElement {
   updateActivityItem(index: number, item: Partial<InterventionActivityItem> | null): void {
     if (item === null) {
       this.activityItems.splice(index, 1);
-      this.setFocusOnFirstActivity();
+      this.setFocusOnActivityRow(false);
     } else {
       this.activityItems.splice(index, 1, item);
     }

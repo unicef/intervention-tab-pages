@@ -27,6 +27,8 @@ import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
+import '@unicef-polymer/etools-modules-common/dist/components/info-icon-tooltip';
+import '../../common/paper-textarea-with-icon';
 
 /**
  * @customElement
@@ -64,8 +66,9 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
-        <div class="row-padding-v">
-          <paper-textarea
+        <div class="layout-horizontal row-padding-v">
+          <paper-textarea-with-icon
+            class="w100"
             id="ip_program_contribution"
             label=${translate(translatesMap.ip_program_contribution)}
             always-float-label
@@ -78,7 +81,13 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
             rows="${detailsTextareaRowsCount(this.editMode)}"
             .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.ip_program_contribution)}"
           >
-          </paper-textarea>
+            <info-icon-tooltip
+              id="iit-non-fin"
+              slot="after-label"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit?.ip_program_contribution)}"
+              .tooltipText="${translate('PARTNER_NON_FINANCIAL_CONTRIBUTION_TOOLTIP')}"
+            ></info-icon-tooltip>
+          </paper-textarea-with-icon>
         </div>
 
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}

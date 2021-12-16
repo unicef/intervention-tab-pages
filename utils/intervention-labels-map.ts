@@ -69,5 +69,6 @@ export const translatesMap: GenericObject = {
   unit_price: 'PRICE_UNIT',
   unicef_product_number: 'UNICEF_PRODUCT_NUMBER',
   ll_results: 'PROGRAM_DOCUMENT_OUTPUT',
+  activation_protocol: 'ACTIVATION_PROTOCOL',
   required_in_status: 'REQUIRED_ERROR'
 };

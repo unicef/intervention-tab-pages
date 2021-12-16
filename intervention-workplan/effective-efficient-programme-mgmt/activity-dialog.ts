@@ -14,11 +14,13 @@ import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-s
 import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {translate, get as getTranslation} from 'lit-translate';
 import '../../common/components/activity/activity-items-table';
-import {formatCurrency, getTotal} from '../../common/components/activity/get-total.helper';
+import {getTotal} from '../../common/components/activity/get-total.helper';
 import {cloneDeep} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {AnyObject, ManagementBudgetItem} from '@unicef-polymer/etools-types';
 import {ActivityItemsTable} from '../../common/components/activity/activity-items-table';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
+import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {removeCurrencyAmountDelimiter} from '../../utils/utils';
 
 /**
  * @customElement
@@ -71,13 +73,14 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         id="activityDialog"
         size="lg"
         keep-dialog-open
-        dialog-title=${translate('EDIT_ACTIVITY')}
+        dialog-title=${this.readonly ? translate('VIEW_ACTIVITY') : translate('EDIT_ACTIVITY')}
         ok-btn-text=${translate('GENERAL.SAVE')}
         cancel-btn-text=${translate('GENERAL.CANCEL')}
         ?opened="${this.dialogOpened}"
         ?show-spinner="${this.loadingInProcess}"
         @close="${() => this.onClose()}"
         @confirm-btn-clicked="${this.onSaveClick}"
+        .hideConfirmBtn="${this.readonly}"
       >
         <div class="row-padding-v">
           <paper-input
@@ -114,6 +117,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
                     .value="${this.data[this.getPropertyName('partner')]}"
                     @value-changed="${({detail}: CustomEvent) =>
                       this.valueChanged(detail, this.getPropertyName('partner'))}"
+                      ?readonly="${this.readonly}"
                   >
                   </etools-currency-amount-input>
 
@@ -124,6 +128,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
                     .value="${this.data[this.getPropertyName('unicef')]}"
                     @value-changed="${({detail}: CustomEvent) =>
                       this.valueChanged(detail, this.getPropertyName('unicef'))}"
+                      ?readonly="${this.readonly}"
                   >
                   </etools-currency-amount-input>
                 </div>`
@@ -159,6 +164,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
             ?checked="${this.useInputLevel}"
             @checked-changed="${this.inputLevelChange}"
             class="col-5"
+            ?disabled="${this.readonly}"
           >
             ${translate('USE_INPUT_LEVEL')}
           </paper-toggle-button>
@@ -168,6 +174,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
           ?hidden="${!this.useInputLevel}"
           .activityItems="${this.items || []}"
           .currency="${this.currency}"
+          .readonly="${this.readonly}"
           @activity-items-changed="${({detail}: CustomEvent) => {
             this.items = detail;
             this.requestUpdate();
@@ -181,17 +188,21 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
     if (!data) {
       return;
     }
-    const {activity, interventionId}: any = data;
-    this.data = activity;
-    this.items = (this.data.items || []).filter((row: ManagementBudgetItem) => row.kind === this.data.kind);
-    this.data.items = (this.data.items || []).filter((row: ManagementBudgetItem) => row.kind !== this.data.kind);
-    this.originalData = cloneDeep(this.data);
-    this.data[this.getPropertyName('partner')] = this.data.partner_contribution;
-    this.data[this.getPropertyName('unicef')] = this.data.unicef_cash;
-
-    this.interventionId = interventionId;
-    this.currency = data.currency || '';
+    const {activity, interventionId, readonly}: any = data;
+    this.items = (activity.items || []).filter((row: ManagementBudgetItem) => row.kind === activity.kind);
     this.useInputLevel = Boolean((this.items || []).length);
+    this.readonly = readonly;
+
+    setTimeout(() => {
+      // timeout to avoid inputLevelChange method reseting totals to 0
+      this.data = activity;
+      this.data.items = (this.data.items || []).filter((row: ManagementBudgetItem) => row.kind !== this.data.kind);
+      this.originalData = cloneDeep(this.data);
+      this.data[this.getPropertyName('partner')] = this.data.partner_contribution; // ?
+      this.data[this.getPropertyName('unicef')] = this.data.unicef_cash; // ?
+      this.interventionId = interventionId;
+      this.currency = data.currency || '';
+    });
   }
 
   private interventionId = '';
@@ -201,7 +212,9 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
   @property() useInputLevel = false;
   @property({type: String}) currency = '';
   @property({type: Array}) items: ManagementBudgetItem[] = [];
+  @property({type: Boolean}) readonly = false;
   @query('etools-dialog') private dialogElement!: EtoolsDialog;
+  @query('activity-items-table') private activityItemsTable!: ActivityItemsTable;
 
   onSaveClick() {
     const activityItemsValidationSummary = this.validateActivityItems();
@@ -217,13 +230,16 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
       row.kind = this.data.kind;
     });
     this.loadingInProcess = true;
-    this.data.items = this.data.items.concat(this.items);
+
+    const patchData = cloneDeep(this.data);
+    patchData.items = patchData.items.concat(this.items);
+    this.formatDataBeforeSave(patchData);
     sendRequest({
       endpoint: getEndpoint(interventionEndpoints.interventionBudgetUpdate, {
         interventionId: this.interventionId
       }),
       method: 'PATCH',
-      body: this.data
+      body: patchData
     })
       .then(({intervention}) => {
         getStore().dispatch(updateCurrentIntervention(intervention));
@@ -252,13 +268,20 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
     if (this.useInputLevel) {
       this.data[this.getPropertyName('unicef')] = '0';
       this.data[this.getPropertyName('partner')] = '0';
+      if ((!this.items || !this.items.length) && this.activityItemsTable) {
+        // add by default a row in activity items table if we have none
+        setTimeout(() => {
+          this.activityItemsTable.addNew();
+        }, 100);
+      }
     } else {
       this.items = [];
     }
   }
 
   getSumValue(field: 'cso_cash' | 'unicef_cash'): string {
-    return formatCurrency((this.items || []).reduce((sum: number, item: AnyObject) => sum + Number(item[field]), 0));
+    const total = (this.items || []).reduce((sum: number, item: AnyObject) => sum + Number(item[field]), 0);
+    return displayCurrencyAmount(String(total), '0', 2);
   }
 
   getTotalValue(): string {
@@ -274,5 +297,11 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
   validateActivityItems(): AnyObject | undefined {
     const itemsTable: ActivityItemsTable | null = this.shadowRoot!.querySelector('activity-items-table');
     return itemsTable !== null ? itemsTable.validate() : undefined;
+  }
+
+  formatDataBeforeSave(data: any) {
+    [this.getPropertyName('unicef'), this.getPropertyName('partner')].forEach((prop) => {
+      data[prop] = removeCurrencyAmountDelimiter(data[prop]);
+    });
   }
 }

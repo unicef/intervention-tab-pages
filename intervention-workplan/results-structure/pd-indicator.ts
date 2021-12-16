@@ -20,6 +20,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
   @property({type: Array}) locationNames: {name: string; adminLevel: string}[] = [];
   @property({type: String}) sectionClusterNames = '';
   @property({type: String}) interventionStatus = '';
+  @property({type: Boolean}) inAmendment!: boolean;
 
   render() {
     return html`
@@ -131,23 +132,27 @@ export class PdIndicator extends CommentsMixin(LitElement) {
           <div class="hover-block">
             <paper-icon-button
               icon="icons:create"
-              ?hidden="${!this.indicator.is_active || this.readonly}"
+              ?hidden="${!this._canEdit()}"
               @click="${() => this.openIndicatorDialog(this.indicator, false)}"
+              title="${translate('EDIT')}"
             ></paper-icon-button>
             <paper-icon-button
               icon="icons:visibility"
               @click="${() => this.openIndicatorDialog(this.indicator, true)}"
-              ?hidden="${!this.readonly}"
+              ?hidden="${!this._canView()}"
+              title="${translate('VIEW')}"
             ></paper-icon-button>
             <paper-icon-button
               icon="icons:block"
               ?hidden="${!this._canDeactivate()}"
               @click="${() => this.openDeactivationDialog(String(this.indicator.id))}"
+              title="${translate('DEACTIVATE')}"
             ></paper-icon-button>
             <paper-icon-button
               icon="icons:delete"
               ?hidden="${!this._canDelete()}"
               @click="${() => this.openDeletionDialog(String(this.indicator.id))}"
+              title="${translate('DELETE')}"
             ></paper-icon-button>
           </div>
         </div>
@@ -276,7 +281,10 @@ export class PdIndicator extends CommentsMixin(LitElement) {
   }
 
   _canDeactivate(): boolean {
-    // TODO: refactor this after status draft comes as development
+    if (this.inAmendment && this.indicator.is_active && !this.readonly) {
+      return true;
+    }
+
     if (this.interventionStatus === 'draft' || this.interventionStatus === 'development') {
       return false;
     }
@@ -286,7 +294,19 @@ export class PdIndicator extends CommentsMixin(LitElement) {
     return false;
   }
 
+  _canEdit() {
+    return this.indicator.is_active && !this.readonly;
+  }
+
+  _canView() {
+    return this.readonly || !this.indicator.is_active;
+  }
+
   _canDelete(): boolean {
+    if (this.inAmendment) {
+      // only Deactivate should be av. in amendment
+      return false;
+    }
     // TODO: refactor this after status draft comes as development
     if ((this.interventionStatus === 'draft' || this.interventionStatus === 'development') && !this.readonly) {
       return true;

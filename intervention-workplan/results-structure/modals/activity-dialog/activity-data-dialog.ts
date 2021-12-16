@@ -4,7 +4,7 @@ import '@polymer/paper-input/paper-textarea';
 import '@polymer/paper-toggle-button';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import '../../../../common/components/activity/activity-items-table';
-import {formatCurrency, getTotal} from '../../../../common/components/activity/get-total.helper';
+import {getTotal} from '../../../../common/components/activity/get-total.helper';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {interventionEndpoints} from '../../../../utils/intervention-endpoints';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
@@ -22,8 +22,9 @@ import {DataMixin} from '@unicef-polymer/etools-modules-common/dist/mixins/data-
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
-import {getDifference} from '@unicef-polymer/etools-modules-common/dist/mixins/objects-diff';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
+import cloneDeep from 'lodash-es/cloneDeep';
+import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 
 @customElement('activity-data-dialog')
 export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitElement) {
@@ -58,10 +59,13 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
     sendRequest({
       endpoint: this.endpoint
     }).then((data: InterventionActivity) => {
-      this.data = data;
       this.useInputLevel = Boolean(data.items.length);
-      this.loadingInProcess = false;
-      this.spinnerText = 'Saving data...';
+      setTimeout(() => {
+        // Avoid reset caused by inputLevelChange method
+        this.data = data;
+        this.loadingInProcess = false;
+        this.spinnerText = 'Saving data...';
+      }, 100);
     });
   }
 
@@ -249,12 +253,12 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
   }
 
   getSumValue(field: 'cso_cash' | 'unicef_cash'): string {
-    return formatCurrency(
-      (this.editedData.items || []).reduce(
-        (sum: number, item: Partial<InterventionActivityItem>) => sum + Number(item[field]),
-        0
-      )
+    const columnTotal = (this.editedData.items || []).reduce(
+      (sum: number, item: Partial<InterventionActivityItem>) => sum + Number(item[field]),
+      0
     );
+
+    return displayCurrencyAmount(String(columnTotal), '0', 2);
   }
 
   getTotalValue(): string {
@@ -294,15 +298,6 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
       return;
     }
 
-    // get changed fields
-    const diff: Partial<InterventionActivity> = getDifference<InterventionActivity>(
-      this.isEditDialog ? (this.originalData as InterventionActivity) : {},
-      this.editedData,
-      {
-        toRequest: true,
-        nestedFields: ['items']
-      }
-    );
     const activityItemsValidationSummary = this.validateActivityItems();
     if (activityItemsValidationSummary) {
       fireEvent(this, 'toast', {
@@ -318,22 +313,44 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
       });
       return;
     }
+
     this.loadingInProcess = true;
+    // const dataToSave = this.getChangedFields();
+
+    const dataToSave = cloneDeep(this.editedData);
+    if (dataToSave.items?.length) {
+      // Let backend calculate these
+      delete dataToSave.unicef_cash;
+      delete dataToSave.cso_cash;
+    }
     sendRequest({
       endpoint: this.endpoint,
       method: this.isEditDialog ? 'PATCH' : 'POST',
-      body: this.isEditDialog ? {id: this.editedData.id, ...diff} : diff
+      body: this.isEditDialog ? {id: this.editedData.id, ...dataToSave} : dataToSave
     })
       .then((response: any) => getStore().dispatch(updateCurrentIntervention(response.intervention)))
       .then(() => {
         fireEvent(this, 'dialog-closed', {confirmed: true});
       })
-      .catch((error) => {
+      .catch((error: any) => {
         this.loadingInProcess = false;
         this.errors = (error && error.response) || {};
         fireEvent(this, 'toast', {text: formatServerErrorAsText(error)});
       });
   }
+
+  // private getChangedFields() {
+  //   const diff: Partial<InterventionActivity> = getDifference<InterventionActivity>(
+  //     this.isEditDialog ? (this.originalData as InterventionActivity) : {},
+  //     this.editedData,
+  //     {
+  //       toRequest: true,
+  //       nestedFields: ['items']
+  //     }
+  //   );
+
+  //   return diff;
+  // }
 
   validateActivityItems(): AnyObject | undefined {
     const itemsTable: ActivityItemsTable | null = this.shadowRoot!.querySelector('activity-items-table');

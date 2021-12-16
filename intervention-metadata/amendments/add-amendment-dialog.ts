@@ -1,5 +1,4 @@
 import {LitElement, html, property, customElement} from 'lit-element';
-import {get as getTranslation} from 'lit-translate';
 import '@polymer/paper-input/paper-input';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
@@ -16,7 +15,7 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {AnyObject, InterventionAmendment, LabelAndValue} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {AmendmentsKind, AmendmentsKindTranslateKeys} from './pd-amendments.models';
+import {AmendmentsKind} from './pd-amendments.models';
 import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin.js';
 
@@ -159,22 +158,22 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
     types.forEach((amdType: string) => {
       switch (amdType) {
         case 'admin_error':
-          messages.push((translate('ADMIN_ERR_MSG') as unknown) as string);
+          messages.push(translate('ADMIN_ERR_MSG') as unknown as string);
           break;
         case 'budget_lte_20':
-          messages.push((translate('BUDGET_LTE_20_MSG') as unknown) as string);
+          messages.push(translate('BUDGET_LTE_20_MSG') as unknown as string);
           break;
         case 'budget_gt_20':
-          messages.push((translate('BUDGET_GT_20_MSG') as unknown) as string);
+          messages.push(translate('BUDGET_GT_20_MSG') as unknown as string);
           break;
         case 'no_cost':
-          messages.push((translate('NO_COST_EXTENSION_MSG') as unknown) as string);
+          messages.push(translate('NO_COST_EXTENSION_MSG') as unknown as string);
           break;
         case 'change':
-          messages.push((translate('CHANGE_MSG') as unknown) as string);
+          messages.push(translate('CHANGE_MSG') as unknown as string);
           break;
         case 'other':
-          messages.push((translate('OTHER') as unknown) as string);
+          messages.push(translate('OTHER') as unknown as string);
           break;
       }
     });

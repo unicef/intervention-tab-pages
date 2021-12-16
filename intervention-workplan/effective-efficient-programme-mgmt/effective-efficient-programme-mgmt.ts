@@ -27,6 +27,7 @@ import {AnyObject} from '@unicef-polymer/etools-types';
 import {get as getTranslation, translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
+import '@unicef-polymer/etools-modules-common/dist/components/info-icon-tooltip';
 
 const customStyles = html`
   <style>
@@ -67,6 +68,9 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         .pad-right {
           padding-right: 6px;
         }
+        info-icon-tooltip {
+          --iit-margin: 8px 0 8px -15px;
+        }
       </style>
 
       <etools-content-panel
@@ -75,6 +79,13 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         comment-element="programme-management"
         comment-description=${translate(translatesMap.management_budgets)}
       >
+        <div slot="after-title">
+          <info-icon-tooltip
+            id="iit-eepm"
+            ?hidden="${!this.canEdit}"
+            .tooltipText="${translate('EFFECTIVE_AND_EFFICIENT_PRGMT_MNGMT_INFO')}"
+          ></info-icon-tooltip>
+        </div>
         <div slot="panel-btns">
           <label class="paper-label font-bold pad-right">${translate('TOTAL')}</label
           ><label class="font-bold-12">${this.data.currency} ${this.total_amount}</label>
@@ -85,7 +96,9 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
           .columns="${this.columns}"
           .extraCSS="${this.getTableStyle()}"
           .showEdit=${this.canEdit}
+          .showView=${!this.canEdit}
           @edit-item="${this.openActivityDialog}"
+          @view-item="${this.openActivityDialog}"
           .getChildRowTemplateMethod="${this.getChildRowTemplate.bind(this)}"
         >
         </etools-table>
@@ -108,17 +121,17 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
   @property({type: Array})
   columns: EtoolsTableColumn[] = [
     {
-      label: (translate('ITEM_PD_CURRENCY') as unknown) as string,
+      label: translate('ITEM_PD_CURRENCY') as unknown as string,
       name: 'title',
       type: EtoolsTableColumnType.Text
     },
     {
-      label: (translate('PARTNER_CASH') as unknown) as string,
+      label: translate('PARTNER_CASH') as unknown as string,
       name: 'partner_contribution',
       type: EtoolsTableColumnType.Number
     },
     {
-      label: (translate('UNICEF_CASH') as unknown) as string,
+      label: translate('UNICEF_CASH') as unknown as string,
       name: 'unicef_cash',
       type: EtoolsTableColumnType.Number
     },
@@ -162,9 +175,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
   }
 
   currencyDisplayForTotal() {
-    if (!this.columns[3].label) {
-      this.columns[3].label = getTranslation('GENERAL.TOTAL') + ' (' + this.data.currency + ')';
-    }
+    this.columns[3].label = getTranslation('GENERAL.TOTAL') + ' (' + this.data.currency + ')';
   }
 
   formatData(data: ProgrammeManagement) {
@@ -205,13 +216,13 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
   }
 
   openActivityDialog(event: CustomEvent) {
-    event.detail.items = this.data.items;
     openDialog({
       dialog: 'activity-dialog',
       dialogData: {
-        activity: event.detail,
+        activity: {...event.detail, items: this.data.items},
         interventionId: this.interventionId,
-        currency: this.data.currency
+        currency: this.data.currency,
+        readonly: !this.canEdit
       }
     });
   }

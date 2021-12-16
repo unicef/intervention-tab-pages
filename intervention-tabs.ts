@@ -233,7 +233,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     },
     {
       tab: TABS.Timing,
-      tabLabel: (getTranslation('TIMING_TAB') as unknown) as string,
+      tabLabel: getTranslation('TIMING_TAB') as unknown as string,
       hidden: false
     }
   ];
@@ -389,6 +389,8 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     return (
       [
         CONSTANTS.STATUSES.Draft.toLowerCase(),
+        CONSTANTS.STATUSES.Review.toLowerCase(),
+        CONSTANTS.STATUSES.Signature.toLowerCase(),
         CONSTANTS.STATUSES.Signed.toLowerCase(),
         CONSTANTS.STATUSES.Active.toLowerCase()
       ].indexOf(status) > -1 &&
@@ -464,7 +466,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       const pasteTo = this.pageTabs.findIndex((x) => x.tab === TABS.Progress);
       this.pageTabs.splice(pasteTo, 0, {
         tab: TABS.Attachments,
-        tabLabel: (getTranslation('ATTACHMENTS_TAB') as unknown) as string,
+        tabLabel: getTranslation('ATTACHMENTS_TAB') as unknown as string,
         hidden: false
       });
     } else if (tabIndex !== -1 && !canView) {
@@ -597,7 +599,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   }
 
   goToPageNotFound() {
-    history.pushState(window.history.state, '', 'page-not-found');
+    history.pushState(window.history.state, '', 'not-found');
     window.dispatchEvent(new CustomEvent('popstate'));
   }
 
