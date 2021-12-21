@@ -34,7 +34,8 @@ import {
   REVIEW,
   SIGN,
   ACCEPT_ON_BEHALF_OF_PARTNER,
-  SIGN_BUDGET_OWNER
+  SIGN_BUDGET_OWNER,
+  DELETE
 } from './intervention-actions.constants';
 import {PaperMenuButton} from '@polymer/paper-menu-button/paper-menu-button';
 import {updateCurrentIntervention} from '../common/actions/interventions';
@@ -45,6 +46,7 @@ import {Intervention} from '@unicef-polymer/etools-types';
 import {get as getTranslation} from 'lit-translate';
 import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
 import {translatesMap} from '../utils/intervention-labels-map';
+import {DEFAULT_ROUTE, updateAppLocation} from '../../../../../routing/routes';
 
 @customElement('intervention-actions')
 export class InterventionActions extends LitElement {
@@ -206,10 +208,7 @@ export class InterventionActions extends LitElement {
       return;
     }
 
-    const endpoint = getEndpoint(interventionEndpoints.interventionAction, {
-      interventionId: this.interventionPartial.id,
-      action
-    });
+    const endpoint = this.determineEndpoint(action);
     fireEvent(this, 'global-loading', {
       active: true,
       loadingSource: 'intervention-actions'
@@ -217,11 +216,13 @@ export class InterventionActions extends LitElement {
     sendRequest({
       endpoint,
       body,
-      method: 'PATCH'
+      method: action === DELETE ? 'DELETE' : 'PATCH'
     })
       .then((intervention: Intervention) => {
         if (action === AMENDMENT_MERGE) {
           this.redirectToTabPage(intervention.id, 'metadata');
+        } else if (action === DELETE) {
+          updateAppLocation(DEFAULT_ROUTE);
         } else {
           getStore().dispatch(updateCurrentIntervention(intervention));
           if (action === REVIEW) {
@@ -243,6 +244,22 @@ export class InterventionActions extends LitElement {
           })
         });
       });
+  }
+
+  determineEndpoint(action: string) {
+    let endpoint = null;
+    if (action === DELETE) {
+      endpoint = getEndpoint(interventionEndpoints.interventionAction, {
+        interventionId: this.interventionPartial.id,
+        action
+      });
+    } else {
+      endpoint = getEndpoint(interventionEndpoints.interventionAction, {
+        interventionId: this.interventionPartial.id,
+        action
+      });
+    }
+    return endpoint;
   }
 
   private isActionWithInput(action: string) {
