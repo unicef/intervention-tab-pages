@@ -208,6 +208,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         :host {
           display: block;
           margin-bottom: 24px;
+          --paper-tooltip-background: #818181;
         }
 
         etools-data-table-row::part(edt-list-row-wrapper) {
