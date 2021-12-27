@@ -221,12 +221,7 @@ export class InterventionActions extends LitElement {
         if (action === AMENDMENT_MERGE) {
           this.redirectToTabPage(intervention.id, 'metadata');
         } else if (action === DELETE) {
-          getStore().dispatch(setShouldReGetList(true));
-          fireEvent(this, 'global-loading', {
-            active: false,
-            loadingSource: 'intervention-actions'
-          });
-          this.redirectToList();
+          this.handlePDDeleted();
         } else {
           getStore().dispatch(updateCurrentIntervention(intervention));
           if (action === REVIEW) {
@@ -248,6 +243,25 @@ export class InterventionActions extends LitElement {
           })
         });
       });
+  }
+  private handlePDDeleted() {
+    fireEvent(this, 'global-loading', {
+      active: false,
+      loadingSource: 'intervention-actions'
+    });
+
+    if (window.location.href.includes('/pmp/')) {
+      fireEvent(this, 'intervention-deleted', {
+        id: this.interventionPartial.id
+      });
+    } else {
+      getStore().dispatch(setShouldReGetList(true));
+      fireEvent(this, 'toast', {
+        text: 'PD/SPD successfully deleted.',
+        showCloseBtn: true
+      });
+      this.redirectToList();
+    }
   }
 
   determineEndpoint(action: string) {
