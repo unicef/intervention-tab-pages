@@ -46,7 +46,6 @@ import {Intervention} from '@unicef-polymer/etools-types';
 import {get as getTranslation} from 'lit-translate';
 import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
 import {translatesMap} from '../utils/intervention-labels-map';
-import {DEFAULT_ROUTE, updateAppLocation} from '../../../../../routing/routes';
 
 @customElement('intervention-actions')
 export class InterventionActions extends LitElement {
@@ -227,7 +226,7 @@ export class InterventionActions extends LitElement {
             active: false,
             loadingSource: 'intervention-actions'
           });
-          updateAppLocation(DEFAULT_ROUTE);
+          this.redirectToList();
         } else {
           getStore().dispatch(updateCurrentIntervention(intervention));
           if (action === REVIEW) {
@@ -272,6 +271,11 @@ export class InterventionActions extends LitElement {
 
   private redirectToTabPage(id: number | null, tabName: string) {
     history.pushState(window.history.state, '', `${ROOT_PATH}interventions/${id}/${tabName}`);
+    window.dispatchEvent(new CustomEvent('popstate'));
+  }
+
+  private redirectToList() {
+    history.pushState(window.history.state, '', `${ROOT_PATH}interventions/list}`);
     window.dispatchEvent(new CustomEvent('popstate'));
   }
 
