@@ -275,7 +275,7 @@ export class InterventionActions extends LitElement {
   }
 
   private redirectToList() {
-    history.pushState(window.history.state, '', `${ROOT_PATH}interventions/list}`);
+    history.pushState(window.history.state, '', `${ROOT_PATH}interventions/list`);
     window.dispatchEvent(new CustomEvent('popstate'));
   }
 
