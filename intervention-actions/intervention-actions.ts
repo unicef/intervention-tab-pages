@@ -38,7 +38,7 @@ import {
   DELETE
 } from './intervention-actions.constants';
 import {PaperMenuButton} from '@polymer/paper-menu-button/paper-menu-button';
-import {updateCurrentIntervention} from '../common/actions/interventions';
+import {setShouldReGetList, updateCurrentIntervention} from '../common/actions/interventions';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {defaultKeyTranslate, formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {GenericObject} from '@unicef-polymer/etools-types';
@@ -222,6 +222,11 @@ export class InterventionActions extends LitElement {
         if (action === AMENDMENT_MERGE) {
           this.redirectToTabPage(intervention.id, 'metadata');
         } else if (action === DELETE) {
+          getStore().dispatch(setShouldReGetList(true));
+          fireEvent(this, 'global-loading', {
+            active: false,
+            loadingSource: 'intervention-actions'
+          });
           updateAppLocation(DEFAULT_ROUTE);
         } else {
           getStore().dispatch(updateCurrentIntervention(intervention));
@@ -247,19 +252,10 @@ export class InterventionActions extends LitElement {
   }
 
   determineEndpoint(action: string) {
-    let endpoint = null;
-    if (action === DELETE) {
-      endpoint = getEndpoint(interventionEndpoints.interventionAction, {
-        interventionId: this.interventionPartial.id,
-        action
-      });
-    } else {
-      endpoint = getEndpoint(interventionEndpoints.interventionAction, {
-        interventionId: this.interventionPartial.id,
-        action
-      });
-    }
-    return endpoint;
+    return getEndpoint(interventionEndpoints.interventionAction, {
+      interventionId: this.interventionPartial.id,
+      action
+    });
   }
 
   private isActionWithInput(action: string) {
