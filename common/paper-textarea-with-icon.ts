@@ -1,4 +1,3 @@
-/* eslint-disable lit-a11y/aria-attrs */
 /**
 @license
 Copyright (c) 2015 The Polymer Project Authors. All rights reserved.

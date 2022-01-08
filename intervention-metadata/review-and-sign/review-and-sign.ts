@@ -388,10 +388,8 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
     // @ts-ignore
     const uploadElem = this.shadowRoot?.querySelector('#signedIntervFile') as EtoolsUpload;
     // @ts-ignore
-    if (uploadElem && uploadElem.uploadInProgress) {
-      uploadElem._cancelUpload();
-      getStore().dispatch({type: 'DECREASE_UPLOADS_IN_PROGRESS'});
-    }
+    uploadElem._cancelUpload();
+
     this.decreaseUnsavedUploads();
     this.justUploaded = false;
   }

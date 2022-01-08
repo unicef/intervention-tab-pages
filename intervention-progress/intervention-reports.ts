@@ -385,7 +385,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
     if (rows && rows.length) {
       for (let i = 0; i < rows.length; i++) {
         if (rows[i].detailsOpened) {
-          rows[i].set('detailsOpened', false);
+          rows[i]['detailsOpened'] = false;
         }
       }
     }
