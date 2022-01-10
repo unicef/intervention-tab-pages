@@ -15,7 +15,7 @@ import {TABS} from '../../common/constants';
 import FrNumbersConsistencyMixin from '@unicef-polymer/etools-modules-common/dist/mixins/fr-numbers-consistency-mixin';
 import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/fr-warnings-styles';
 import {customIcons} from '@unicef-polymer/etools-modules-common/dist/styles/custom-icons';
-import '@unicef-polymer/etools-modules-common/dist/components/info-icon-tooltip';
+import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 

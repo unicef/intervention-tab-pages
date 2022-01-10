@@ -5,7 +5,7 @@ import '@polymer/paper-radio-group';
 import '@unicef-polymer/etools-loading/etools-loading';
 import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import '@unicef-polymer/etools-modules-common/dist/components/info-icon-tooltip';
+import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
