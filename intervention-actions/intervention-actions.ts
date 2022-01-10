@@ -1,4 +1,3 @@
-/* eslint-disable lit-a11y/click-events-have-key-events */
 import {CSSResultArray, LitElement, TemplateResult, html, property, customElement} from 'lit-element';
 import {arrowLeftIcon} from '@unicef-polymer/etools-modules-common/dist/styles/app-icons';
 import '@polymer/paper-button/paper-button';
@@ -24,7 +23,7 @@ import {
   BACK_ACTIONS,
   CANCEL,
   EXPORT_ACTIONS,
-  namesMap,
+  ActionNamesMap,
   SEND_TO_PARTNER,
   SEND_TO_UNICEF,
   SIGNATURE,
@@ -66,7 +65,7 @@ export class InterventionActions extends LitElement {
     this.dir = getComputedStyle(document.body).direction;
   }
 
-  private actionsNamesMap = new Proxy(namesMap, {
+  private actionsNamesMap = new Proxy(ActionNamesMap, {
     get(target: GenericObject<string>, property: string): string {
       return target[property] || property.replace('_', ' ');
     }

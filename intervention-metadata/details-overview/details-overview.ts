@@ -20,7 +20,7 @@ import {Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes
 import {TABS} from '../../common/constants';
 import CONSTANTS from '../../common/constants';
 import {StaticPartner} from '@unicef-polymer/etools-types';
-import '@unicef-polymer/etools-modules-common/dist/components/info-icon-tooltip';
+import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 
 /**
  * @customElement

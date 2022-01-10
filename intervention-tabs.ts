@@ -389,6 +389,8 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     return (
       [
         CONSTANTS.STATUSES.Draft.toLowerCase(),
+        CONSTANTS.STATUSES.Review.toLowerCase(),
+        CONSTANTS.STATUSES.Signature.toLowerCase(),
         CONSTANTS.STATUSES.Signed.toLowerCase(),
         CONSTANTS.STATUSES.Active.toLowerCase()
       ].indexOf(status) > -1 &&

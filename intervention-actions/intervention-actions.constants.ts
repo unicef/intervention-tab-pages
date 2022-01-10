@@ -36,7 +36,7 @@ export const ACTIONS_WITH_INPUT = [
 ];
 export const ACTIONS_WITHOUT_CONFIRM = [PRC_REVIEW, REJECT_REVIEW, SIGN];
 
-export const namesMap: GenericObject<string> = {
+export const ActionNamesMap: GenericObject<string> = {
   [EXPORT_COMMENTS]: getTranslation('EXPORT_COMMENTS'),
   [EXPORT_PDF]: getTranslation('EXPORT_PDF'),
   [EXPORT_XLS]: getTranslation('EXPORT_XLS'),

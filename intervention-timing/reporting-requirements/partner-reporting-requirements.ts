@@ -1,4 +1,3 @@
-/* eslint-disable lit-a11y/click-events-have-key-events */
 import {LitElement, customElement, html, property, PropertyValues} from 'lit-element';
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-selector/iron-selector';
@@ -30,7 +29,7 @@ import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-commo
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {sectionContentStyles} from '@unicef-polymer/etools-modules-common/dist/styles/content-section-styles-polymer';
-import '@unicef-polymer/etools-modules-common/dist/components/info-icon-tooltip';
+import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 
 /**
  * @polymer

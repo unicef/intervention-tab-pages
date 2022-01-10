@@ -1,4 +1,3 @@
-/* eslint-disable lit-a11y/click-events-have-key-events */
 import {LitElement, html, TemplateResult, CSSResultArray, customElement, property} from 'lit-element';
 import '@polymer/iron-icons';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';

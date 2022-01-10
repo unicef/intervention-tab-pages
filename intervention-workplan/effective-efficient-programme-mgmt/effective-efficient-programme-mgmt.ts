@@ -27,7 +27,7 @@ import {AnyObject} from '@unicef-polymer/etools-types';
 import {get as getTranslation, translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
-import '@unicef-polymer/etools-modules-common/dist/components/info-icon-tooltip';
+import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 
 const customStyles = html`
   <style>

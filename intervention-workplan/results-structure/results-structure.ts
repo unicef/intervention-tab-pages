@@ -1,4 +1,3 @@
-/* eslint-disable lit-a11y/click-events-have-key-events */
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {css, html, CSSResultArray, customElement, LitElement, property} from 'lit-element';
 import {repeat} from 'lit-html/directives/repeat';
