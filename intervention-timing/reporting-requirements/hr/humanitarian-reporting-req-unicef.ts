@@ -95,7 +95,7 @@ export class HumanitarianReportingReqUnicef extends PaginationMixin(ReportingReq
     this.paginator = {...this.paginator, page: 1, page_size: 10, count: this.reportingRequirements.length};
   }
 
-  public _paginate(pageNumber: number, pageSize: number) {
+  _paginate(pageNumber: number, pageSize: number) {
     if (!this.reportingRequirements) {
       return;
     }
