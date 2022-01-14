@@ -5,6 +5,7 @@ import '@polymer/paper-radio-button/paper-radio-button.js';
 import '@polymer/paper-checkbox/paper-checkbox.js';
 import '@polymer/paper-toggle-button/paper-toggle-button.js';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi.js';
+import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
 import IndicatorsCommonMixin from './mixins/indicators-common-mixin';
 import {LitElement, html, property, customElement} from 'lit-element';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
