@@ -51,7 +51,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
                 class="fr-nr-warn currency-mismatch"
                 icon-first
                 custom-icon
-                ?hide-tooltip="${this.getTooltip}"
+                ?hide-tooltip="${this.currenciesMatch()}"
               >
                 <label class="input-label" ?empty="${!this.budgetSummary.currency}">
                   ${this.budgetSummary.currency}
@@ -200,11 +200,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
     return !value && value !== 0;
   }
 
-  getTooltip() {
-    if (this.budgetSummary.currency) {
-      // meaning we do not have currency set, so no need to show tooltip at this moment
-      return true;
-    }
+  currenciesMatch() {
     return this.allCurrenciesMatch(this.frsDetails.currencies_match, this.frsDetails.frs, this.budgetSummary.currency);
   }
 }
