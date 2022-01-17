@@ -16,13 +16,14 @@ import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/di
 import get from 'lodash-es/get';
 import '@unicef-polymer/etools-upload/etools-upload';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
+import {AsyncAction, Intervention, Permission} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import ReportingRequirementsCommonMixin from '../reporting-requirements/mixins/reporting-requirements-common-mixin';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import UploadsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uploads-mixin';
 import FrNumbersConsistencyMixin from '@unicef-polymer/etools-modules-common/dist/mixins/fr-numbers-consistency-mixin';
+import {customIcons} from '@unicef-polymer/etools-modules-common/dist/styles/custom-icons';
 import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 
@@ -44,7 +45,7 @@ export class InterventionDates extends CommentsMixin(
     }
     // language=HTML
     return html`
-      ${sharedStyles}
+      ${customIcons} ${sharedStyles}
       <style>
         :host {
           display: block;
@@ -74,7 +75,7 @@ export class InterventionDates extends CommentsMixin(
               icon-first
               custom-icon
               form-field-align
-              ?hide-tooltip="${!this.frsConsistencyWarningIsActive(this._frsStartConsistencyWarning)}"
+              ?hide-tooltip="${!this._frsStartConsistencyWarning}"
             >
               <datepicker-lite
                 slot="field"
@@ -102,7 +103,7 @@ export class InterventionDates extends CommentsMixin(
               custom-icon
               icon-first
               form-field-align
-              ?hide-tooltip="${!this.frsConsistencyWarningIsActive(this._frsEndConsistencyWarning)}"
+              ?hide-tooltip="${!this._frsEndConsistencyWarning}"
             >
               <datepicker-lite
                 slot="field"
@@ -160,10 +161,10 @@ export class InterventionDates extends CommentsMixin(
   data!: ProgrammeDocDates;
 
   @property({type: String})
-  _frsStartConsistencyWarning = '';
+  _frsStartConsistencyWarning: string | boolean = '';
 
   @property({type: String})
-  _frsEndConsistencyWarning = '';
+  _frsEndConsistencyWarning: string | boolean = '';
 
   @property({type: Object})
   permissions!: Permission<InterventionDatesPermissions>;
@@ -186,7 +187,23 @@ export class InterventionDates extends CommentsMixin(
     this.originalData = cloneDeep(this.data);
     this.permissions = selectInterventionDatesPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
+    this.checkIntervDateConsistency(state.interventions.current);
     super.stateChanged(state);
+  }
+
+  checkIntervDateConsistency(intervention: Intervention) {
+    this._frsStartConsistencyWarning = this.checkFrsAndIntervDateConsistency(
+      this.data.start,
+      intervention.frs_details.earliest_start_date,
+      getTranslation(translatesMap.start),
+      true
+    );
+    this._frsEndConsistencyWarning = this.checkFrsAndIntervDateConsistency(
+      this.data.end,
+      intervention.frs_details.earliest_start_date,
+      getTranslation(translatesMap.end),
+      true
+    );
   }
 
   private hideActivationLetter(interventionStatus: string, isContingencyPd: boolean) {
