@@ -154,7 +154,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
           <paper-button
             class="secondary-btn see-locations f-left"
             @click="${this.openSitesDialog}"
-            ?hidden="${!this.editMode}"
+            ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.sites)}"
             title=${translate('SELECT_LOCATION_BY_SITE_FROM_MAP')}
           >
             <iron-icon icon="add"></iron-icon>
