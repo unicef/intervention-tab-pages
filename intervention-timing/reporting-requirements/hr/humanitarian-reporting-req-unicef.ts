@@ -48,7 +48,7 @@ export class HumanitarianReportingReqUnicef extends PaginationMixin(ReportingReq
       </div>
 
       <div class="flex-c" ?hidden="${this._empty(this.reportingRequirements)}">
-        <hru-list id="hruList" .hruData="${this.paginatedEngagements}" disable-sorting use-pagination-index> </hru-list>
+        <hru-list id="hruList" .hruData="${this.paginatedReports}" disable-sorting use-pagination-index> </hru-list>
 
         <etools-data-table-footer
           .pageSize="${this.paginator.page_size}"
@@ -68,7 +68,7 @@ export class HumanitarianReportingReqUnicef extends PaginationMixin(ReportingReq
   expectedResults!: [];
 
   @property({type: Array})
-  paginatedEngagements!: any[];
+  paginatedReports!: any[];
 
   @property({type: Date})
   interventionStart!: Date;
@@ -99,7 +99,7 @@ export class HumanitarianReportingReqUnicef extends PaginationMixin(ReportingReq
     if (!this.reportingRequirements) {
       return;
     }
-    this.paginatedEngagements = (this.reportingRequirements || []).slice(
+    this.paginatedReports = (this.reportingRequirements || []).slice(
       (pageNumber - 1) * pageSize,
       pageNumber * pageSize
     );
