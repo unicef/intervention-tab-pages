@@ -1,5 +1,6 @@
 import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi.js';
+import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
 import IndicatorsCommonMixin from './mixins/indicators-common-mixin';
 import EndpointsLitMixin from '@unicef-polymer/etools-modules-common/dist/mixins/endpoints-mixin-lit';
 import {PaperInputElement} from '@polymer/paper-input/paper-input';
@@ -253,40 +254,31 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
         ? html`
             <div class="row-h flex-c">
               <div class="col col-4">
-                <paper-input
+                <etools-currency-amount-input
                   id="baselineEl"
                   label=${translate('BASELINE')}
-                  placeholder="&#8212;"
-                  .value="${this.indicator.baseline.v}"
-                  allowed-pattern="[0-9.,]"
-                  .pattern="${this.numberPattern}"
-                  auto-validate
-                  error-message=${translate('INVALID_NUMBER')}
-                  ?readonly="${this.readonly}"
+                  .value="${this.indicator.baseline.v ?? ''}"
                   @value-changed="${({detail}: CustomEvent) => {
                     this.indicator.baseline.v = detail.value;
                     this._baselineChanged(this.indicator.baseline.v);
                   }}"
-                >
-                </paper-input>
+                  error-message=${translate('INVALID_NUMBER')}
+                  ?readonly="${this.readonly}"
+                ></etools-currency-amount-input>
               </div>
               <div class="col col-4">
-                <paper-input
+                <etools-currency-amount-input
                   id="targetEl"
                   label=${translate('TARGET')}
-                  placeholder="&#8212;"
-                  .value="${this.indicator.target.v}"
                   required
-                  allowed-pattern="[0-9.,]"
-                  .pattern="${this.numberPattern}"
-                  auto-validate
-                  error-message=${translate('VALID_TARGET_ERR')}
-                  ?readonly="${this.readonly}"
+                  .value="${this.indicator.target.v ?? ''}"
                   @value-changed="${({detail}: CustomEvent) => {
                     this.indicator.target.v = detail.value;
+                    this._targetChanged(this.indicator.target.v);
                   }}"
-                >
-                </paper-input>
+                  error-message=${translate('VALID_TARGET_ERR')}
+                  ?readonly="${this.readonly}"
+                ></etools-currency-amount-input>
               </div>
             </div>
           `
