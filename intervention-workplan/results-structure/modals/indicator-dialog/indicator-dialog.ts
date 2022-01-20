@@ -233,14 +233,14 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   readonly: boolean | undefined = false;
 
   protected llResultId!: string; /** aka pdOutputId */
-  private prpServerOn!: boolean;
+  // private prpServerOn!: boolean;
 
   set dialogData(data: IndicatorDialogData) {
     this.sectionOptions = data.sectionOptions;
     this.locationOptions = data.locationOptions;
     this.data = data.indicator ? data.indicator : new Indicator();
     this.llResultId = data.llResultId;
-    this.prpServerOn = data.prpServerOn;
+    // this.prpServerOn = data.prpServerOn;
     this.currentUser = getStore().getState().user.data;
     this.interventionStatus = getStore().getState().interventions.current?.status || '';
     this.readonly = data.readonly;
