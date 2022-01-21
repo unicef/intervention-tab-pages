@@ -183,12 +183,12 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
     this.intervention = state.interventions.current;
     this.frsDetails = this.intervention.frs_details;
     if (isUnicefUser(state)) {
-      this.setFrsConsistency();
+      this.setFrsConsistencyWarning();
     }
     super.stateChanged(state);
   }
 
-  setFrsConsistency(): void {
+  setFrsConsistencyWarning(): void {
     const warn = this.checkFrsAndUnicefCashAmountsConsistency(
       this.budgetSummary.unicef_cash_local!,
       this.frsDetails.total_frs_amt,
