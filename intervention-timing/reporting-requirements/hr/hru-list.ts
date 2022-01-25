@@ -72,7 +72,7 @@ export class HruList extends ReportingReqPastDatesCheckMixin(ReportingRequiremen
   @property({type: Object})
   hruMainEl!: LitElement & {_getIndex(idx: any): number};
 
-  @property({type: Boolean})
+  @property({type: Boolean, attribute: 'use-pagination-index'})
   usePaginationIndex = false;
 
   @property({type: Boolean})

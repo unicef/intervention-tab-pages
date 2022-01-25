@@ -79,11 +79,6 @@ export class HumanitarianReportingReqUnicef extends PaginationMixin(ReportingReq
   connectedCallback() {
     super.connectedCallback();
     this.addEventListener('reporting-requirements-loaded', this.dataWasLoaded as any);
-
-    const hruListEl = this.shadowRoot!.querySelector('hruList') as HruListEl;
-    if (hruListEl) {
-      hruListEl.hruMainEl = this as any;
-    }
   }
 
   disconnectedCallback() {
@@ -93,6 +88,11 @@ export class HumanitarianReportingReqUnicef extends PaginationMixin(ReportingReq
 
   dataWasLoaded() {
     this.paginator = {...this.paginator, page: 1, page_size: 10, count: this.reportingRequirements.length};
+
+    const hruListEl = this.shadowRoot!.querySelector('#hruList') as HruListEl;
+    if (hruListEl) {
+      hruListEl.hruMainEl = this as any;
+    }
   }
 
   _paginate(pageNumber: number, pageSize: number) {
