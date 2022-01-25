@@ -200,7 +200,7 @@ export class InterventionDates extends CommentsMixin(
     );
     this._frsEndConsistencyWarning = this.checkFrsAndIntervDateConsistency(
       this.data.end,
-      intervention.frs_details.earliest_start_date,
+      intervention.frs_details.latest_end_date,
       getTranslation(translatesMap.end),
       true
     );
