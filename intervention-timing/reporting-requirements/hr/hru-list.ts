@@ -11,6 +11,7 @@ import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-s
 import {translate} from 'lit-translate';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {EtoolsPaginator} from '@unicef-polymer/etools-table/pagination/etools-pagination';
 
 /**
  * @polymer
@@ -69,14 +70,11 @@ export class HruList extends ReportingReqPastDatesCheckMixin(ReportingRequiremen
   @property({type: Boolean})
   _listItemEditable = false;
 
-  @property({type: Object})
-  hruMainEl!: LitElement & {_getIndex(idx: any): number};
-
-  @property({type: Boolean, attribute: 'use-pagination-index'})
-  usePaginationIndex = false;
-
   @property({type: Boolean})
   disableSorting = false;
+
+  @property({type: Object})
+  paginator: EtoolsPaginator | null = null;
 
   _interventionId!: number;
 
@@ -108,8 +106,8 @@ export class HruList extends ReportingReqPastDatesCheckMixin(ReportingRequiremen
   }
 
   _getIndex(index: number) {
-    if (this.usePaginationIndex) {
-      return this.hruMainEl._getIndex(index);
+    if (this.paginator) {
+      return index + 1 + this.paginator.page_size * (this.paginator.page - 1);
     }
     return index + 1;
   }
