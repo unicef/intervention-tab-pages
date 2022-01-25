@@ -83,7 +83,6 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
       <etools-dialog
         id="indicatorDialog"
         size="lg"
-        dialog-title=${translate('INDICATOR')}
         no-padding
         opened
         @close="${this.onClose}"
