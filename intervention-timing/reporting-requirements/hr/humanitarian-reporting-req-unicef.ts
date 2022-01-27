@@ -48,7 +48,8 @@ export class HumanitarianReportingReqUnicef extends PaginationMixin(ReportingReq
       </div>
 
       <div class="flex-c" ?hidden="${this._empty(this.reportingRequirements)}">
-        <hru-list id="hruList" .hruData="${this.paginatedReports}" disable-sorting use-pagination-index> </hru-list>
+        <hru-list id="hruList" .hruData="${this.paginatedReports}" .paginator="${this.paginator}" disable-sorting>
+        </hru-list>
 
         <etools-data-table-footer
           .pageSize="${this.paginator.page_size}"
@@ -79,11 +80,6 @@ export class HumanitarianReportingReqUnicef extends PaginationMixin(ReportingReq
   connectedCallback() {
     super.connectedCallback();
     this.addEventListener('reporting-requirements-loaded', this.dataWasLoaded as any);
-
-    const hruListEl = this.shadowRoot!.querySelector('hruList') as HruListEl;
-    if (hruListEl) {
-      hruListEl.hruMainEl = this as any;
-    }
   }
 
   disconnectedCallback() {
@@ -152,10 +148,6 @@ export class HumanitarianReportingReqUnicef extends PaginationMixin(ReportingReq
       }
       this._reportingRequirementsSaved(response);
     });
-  }
-
-  _getIndex(index: number) {
-    return index + 1 + this.paginator.page_size * (this.paginator.page - 1);
   }
 
   _thereAreHFIndicators(expectedResults: ExpectedResult[]) {
