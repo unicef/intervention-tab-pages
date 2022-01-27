@@ -201,6 +201,10 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
   }
 
   currenciesMatch() {
+    if (!this.frsDetails.frs.length) {
+      // if no FR number added, hide currency-mismatch tooltip
+      return true;
+    }
     return this.allCurrenciesMatch(this.frsDetails.currencies_match, this.frsDetails.frs, this.budgetSummary.currency);
   }
 }
