@@ -89,7 +89,7 @@ export class InterventionReviewTab extends connectStore(LitElement) {
         display: none !important;
       }
       reason-display {
-        --flag-color: var(--warning-color);
+        --flag-color: #ff9044;
         --text-wrap: none;
         --text-padding: 26px 24px 26px 80px;
       }
