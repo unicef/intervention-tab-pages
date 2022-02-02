@@ -487,5 +487,6 @@
   "SIMPLIFIED_PROGRAMME_DOCUMENT_TOOLTIP": "Simplified Programme Document e folosit pentru toate raspunsurile umanitare. <br> Dar si pentru  interventii small-scale unde numerarul <br> si aportul de aprovizionare UNICEF e <$100,000.",
   "EDIT": "Editeaza",
   "DELETE": "Sterge",
-  "VIEW_ACTIVITY": "Vizualizare Activitate"
+  "VIEW_ACTIVITY": "Vizualizare Activitate",
+  "SEND_BACK_BY_SECRETARY": "Send Back by Secretary"
 }
