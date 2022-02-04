@@ -73,7 +73,6 @@ export class InterventionActions extends LitElement {
   });
 
   protected render(): TemplateResult {
-    // this.actions.push('send_back_review');
     const actions: Set<string> = new Set(this.actions);
     const exportActions: string[] = EXPORT_ACTIONS.filter((action: string) => actions.has(action));
     const backAction: string | undefined = BACK_ACTIONS.find((action: string) => actions.has(action));
