@@ -18,7 +18,6 @@ export class InterventionReviewTab extends connectStore(LitElement) {
   @property() review: InterventionReview | null = null;
   @property() unicefUsers: User[] = [];
   @property() cfeiNumber = '';
-  @property() secretary_comment = 'Test';
 
   get linkUrl(): string {
     return `https://www.unpartnerportal.org/cfei/open?agency=1&displayID=${encodeURIComponent(
@@ -31,9 +30,9 @@ export class InterventionReviewTab extends connectStore(LitElement) {
   render() {
     // language=HTML
     return html`
-      ${this.secretary_comment
+      ${this.review?.sent_back_comment
         ? html`<reason-display title="Secretary Comment">
-            <div class="text">${this.secretary_comment}</div>
+            <div class="text">${this.review?.sent_back_comment}</div>
           </reason-display>`
         : ''}
       ${this.cfeiNumber

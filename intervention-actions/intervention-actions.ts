@@ -35,7 +35,7 @@ import {
   SIGN,
   ACCEPT_ON_BEHALF_OF_PARTNER,
   SIGN_BUDGET_OWNER,
-  SEND_BACK_BY_SECRETARY
+  SEND_BACK_REVIEW
 } from './intervention-actions.constants';
 import {PaperMenuButton} from '@polymer/paper-menu-button/paper-menu-button';
 import {updateCurrentIntervention} from '../common/actions/interventions';
@@ -73,7 +73,7 @@ export class InterventionActions extends LitElement {
   });
 
   protected render(): TemplateResult {
-    this.actions.push('send_back_by_secretary');
+    // this.actions.push('send_back_review');
     const actions: Set<string> = new Set(this.actions);
     const exportActions: string[] = EXPORT_ACTIONS.filter((action: string) => actions.has(action));
     const backAction: string | undefined = BACK_ACTIONS.find((action: string) => actions.has(action));
@@ -294,7 +294,7 @@ export class InterventionActions extends LitElement {
         return null;
       }
 
-      return {secretary_comment: response.comment};
+      return {sent_back_comment: response.comment};
     });
   }
 
@@ -370,7 +370,7 @@ export class InterventionActions extends LitElement {
     switch (action) {
       case CANCEL:
         return this.openCommentDialog(action);
-      case SEND_BACK_BY_SECRETARY:
+      case SEND_BACK_REVIEW:
         return this.openSentBackBySecretaryCommentDialog(action);
       case TERMINATE:
         return this.openTermiantionDialog();
