@@ -57,7 +57,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
           <!-- Amendment Type -->
           <etools-dropdown-multi
             id="amendment-types"
-            label=${translate('AMENDMENT_TYPES')}
+            label="${translate('AMENDMENT_TYPES')}"
             placeholder="&#8212;"
             .options="${this.filteredAmendmentTypes}"
             .selectedValues="${this.data.types}"
@@ -65,7 +65,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
             required
             option-label="label"
             option-value="value"
-            error-message=${translate('TYPE_ERR')}
+            error-message="${translate('TYPE_ERR')}"
             trigger-value-change-event
             @etools-selected-items-changed="${({detail}: CustomEvent) => {
               this.selectedItemsChanged(detail, 'types', 'value');
@@ -75,18 +75,18 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
           </etools-dropdown-multi>
         </div>
         <div class="row-h flex-c" ?hidden="${!this.data.types || !this.data.types!.length}">
-          <etools-warn-message .messages="${this.warnMessages}"></etools-warn-message>
+          <etools-warn-message-lit .messages="${this.warnMessages}"></etools-warn-message-lit>
         </div>
         </div>
         <div class="row-h" ?hidden="${!this.showOtherInput}">
           <paper-input
             id="other"
             placeholder="&#8212;"
-            label=${translate('OTHER')}
+            label="${translate('OTHER')}"
             invalid
             ?required="${this.showOtherInput}"
             auto-validate
-            error-message=${translate('GENERAL.REQUIRED_FIELD')}
+            error-message="${translate('GENERAL.REQUIRED_FIELD')}"
             .value="${this.data.other_description}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'other_description')}"
           >
