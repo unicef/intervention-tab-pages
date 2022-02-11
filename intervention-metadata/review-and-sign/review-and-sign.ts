@@ -317,40 +317,43 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
     }
 
     if (state.interventions.current) {
-      this.data = cloneDeep(selectReviewData(state));
-      this.originalData = cloneDeep(this.data);
-      const permissions = selectDatesAndSignaturesPermissions(state);
-      if (!isJsonStrMatch(this.permissions, permissions)) {
-        this.permissions = permissions;
-        this.set_canEditAtLeastOneField(this.permissions.edit);
-      }
-      const agreements = state.agreements.list;
-      if (!isEmpty(agreements)) {
-        const agreementData = this.filterAgreementsById(agreements!, this.data.agreement);
-        this.agreementAuthorizedOfficers = this.getAuthorizedOfficersList(agreementData);
-        const changed = this.handleUsersNoLongerAssignedToCurrentCountry(
-          this.agreementAuthorizedOfficers as User[],
-          this.data.partner_authorized_officer_signatory
-            ? [this.data.partner_authorized_officer_signatory as MinimalUser]
-            : []
-        );
-        if (changed) {
-          this.agreementAuthorizedOfficers = [...this.agreementAuthorizedOfficers];
+      const reviewData = selectReviewData(state);
+      if (!isJsonStrMatch(this.originalData, reviewData)) {
+        this.data = cloneDeep(reviewData);
+        this.originalData = cloneDeep(this.data);
+        const permissions = selectDatesAndSignaturesPermissions(state);
+        if (!isJsonStrMatch(this.permissions, permissions)) {
+          this.permissions = permissions;
+          this.set_canEditAtLeastOneField(this.permissions.edit);
         }
-      }
-      super.stateChanged(state);
+        const agreements = state.agreements.list;
+        if (!isEmpty(agreements)) {
+          const agreementData = this.filterAgreementsById(agreements!, this.data.agreement);
+          this.agreementAuthorizedOfficers = this.getAuthorizedOfficersList(agreementData);
+          const changed = this.handleUsersNoLongerAssignedToCurrentCountry(
+            this.agreementAuthorizedOfficers as User[],
+            this.data.partner_authorized_officer_signatory
+              ? [this.data.partner_authorized_officer_signatory as MinimalUser]
+              : []
+          );
+          if (changed) {
+            this.agreementAuthorizedOfficers = [...this.agreementAuthorizedOfficers];
+          }
+        }
 
-      const pdUsers = this.data.unicef_signatory ? [this.data.unicef_signatory] : [];
-      if (this.isUnicefUser) {
-        // Partner user can not edit this field
-        const changed = this.handleUsersNoLongerAssignedToCurrentCountry(this.signedByUnicefUsers as User[], pdUsers);
-        if (changed) {
-          this.signedByUnicefUsers = [...this.signedByUnicefUsers];
+        const pdUsers = this.data.unicef_signatory ? [this.data.unicef_signatory] : [];
+        if (this.isUnicefUser) {
+          // Partner user can not edit this field
+          const changed = this.handleUsersNoLongerAssignedToCurrentCountry(this.signedByUnicefUsers as User[], pdUsers);
+          if (changed) {
+            this.signedByUnicefUsers = [...this.signedByUnicefUsers];
+          }
+        } else {
+          this.signedByUnicefUsers = pdUsers;
         }
-      } else {
-        this.signedByUnicefUsers = pdUsers;
       }
     }
+    super.stateChanged(state);
   }
 
   getAuthorizedOfficersList(agreementData: any) {
