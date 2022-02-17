@@ -315,7 +315,8 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   }
 
   public stateChanged(state: RootState) {
-    const notInterventionTabs: boolean = currentPage(state) !== 'interventions' || currentSubpage(state) === 'list';
+    const notInterventionTabs: boolean =
+      currentPage(state) !== 'interventions' || currentSubpage(state) === 'list' || currentSubpage(state) === 'new';
     const needToReset = Boolean(notInterventionTabs && (this._routeDetails || this.intervention));
     if (needToReset) {
       this.resetPageData();
