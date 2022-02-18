@@ -289,7 +289,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
 
   connectedCallback() {
     super.connectedCallback();
-    this._showInterventionPageLoadingMessage();
+    // this._showInterventionPageLoadingMessage();
     const commentsEndpoints: CommentsEndpoints = {
       saveComments: interventionEndpoints.comments,
       deleteComment: interventionEndpoints.deleteComment,
@@ -634,6 +634,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       active: true,
       loadingSource: 'interv-page'
     });
+    console.log('intervention-tabs');
   }
 
   private resetPageData(): void {
