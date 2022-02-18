@@ -633,8 +633,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       message: 'Loading...',
       active: true,
       loadingSource: 'interv-page'
-    });
-    console.log('intervention-tabs');
+    });   
   }
 
   private resetPageData(): void {
