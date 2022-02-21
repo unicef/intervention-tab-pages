@@ -38,7 +38,7 @@ export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadsMixin(L
     // language=HTML
     if (!this.data || !this.permissions) {
       return html` ${sharedStyles}
-        <etools-loading loading-text="Loading..." active></etools-loading>`;
+        <etools-loading id="prc-doc" loading-text="Loading..." active></etools-loading>`;
     }
     return html`
       ${sharedStyles}

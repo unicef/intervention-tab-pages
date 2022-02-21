@@ -47,7 +47,7 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
       return html``;
     }
     if (!this.intervention) {
-      return html`<etools-loading loading-text="Loading..." active></etools-loading>`;
+      return html`<etools-loading id="fund-res" loading-text="Loading..." active></etools-loading>`;
     }
     return html`
       ${customIcons} ${sharedStyles}

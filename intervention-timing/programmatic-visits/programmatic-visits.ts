@@ -36,7 +36,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
   render() {
     if (!this.data) {
       return html` ${sharedStyles}
-        <etools-loading loading-text="Loading..." active></etools-loading>`;
+        <etools-loading id="pv" loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`
