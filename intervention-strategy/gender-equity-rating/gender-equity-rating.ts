@@ -38,7 +38,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
   render() {
     if (!this.data || !this.ratings || !this.permissions) {
       return html` ${sharedStyles}
-        <etools-loading id="ger" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="ger" loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`

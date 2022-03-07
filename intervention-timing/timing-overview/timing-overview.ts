@@ -29,7 +29,7 @@ export class TimingOverview extends CommentsMixin(LitElement) {
       return html` <style>
           ${sharedStyles}
         </style>
-        <etools-loading id="overv" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="overv" loading-text="Loading..." active></etools-loading>`;
     }
     return html`
       ${sharedStyles}${InfoElementStyles}
