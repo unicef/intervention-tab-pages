@@ -34,10 +34,11 @@ import {
   REVIEW,
   SIGN,
   ACCEPT_ON_BEHALF_OF_PARTNER,
-  SIGN_BUDGET_OWNER
+  SIGN_BUDGET_OWNER,
+  DELETE
 } from './intervention-actions.constants';
 import {PaperMenuButton} from '@polymer/paper-menu-button/paper-menu-button';
-import {updateCurrentIntervention} from '../common/actions/interventions';
+import {setShouldReGetList, updateCurrentIntervention} from '../common/actions/interventions';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {defaultKeyTranslate, formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {GenericObject} from '@unicef-polymer/etools-types';
@@ -206,10 +207,7 @@ export class InterventionActions extends LitElement {
       return;
     }
 
-    const endpoint = getEndpoint(interventionEndpoints.interventionAction, {
-      interventionId: this.interventionPartial.id,
-      action
-    });
+    const endpoint = this.determineEndpoint(action);
     fireEvent(this, 'global-loading', {
       active: true,
       loadingSource: 'intervention-actions'
@@ -217,11 +215,13 @@ export class InterventionActions extends LitElement {
     sendRequest({
       endpoint,
       body,
-      method: 'PATCH'
+      method: action === DELETE ? 'DELETE' : 'PATCH'
     })
       .then((intervention: Intervention) => {
         if (action === AMENDMENT_MERGE) {
           this.redirectToTabPage(intervention.id, 'metadata');
+        } else if (action === DELETE) {
+          this.handlePDDeleted();
         } else {
           getStore().dispatch(updateCurrentIntervention(intervention));
           if (action === REVIEW) {
@@ -244,6 +244,32 @@ export class InterventionActions extends LitElement {
         });
       });
   }
+  private handlePDDeleted() {
+    fireEvent(this, 'global-loading', {
+      active: false,
+      loadingSource: 'intervention-actions'
+    });
+
+    if (window.location.href.includes('/pmp/')) {
+      fireEvent(this, 'intervention-deleted', {
+        id: this.interventionPartial.id
+      });
+    } else {
+      getStore().dispatch(setShouldReGetList(true));
+      fireEvent(this, 'toast', {
+        text: 'PD/SPD successfully deleted.',
+        showCloseBtn: true
+      });
+      this.redirectToList();
+    }
+  }
+
+  determineEndpoint(action: string) {
+    return getEndpoint(interventionEndpoints.interventionAction, {
+      interventionId: this.interventionPartial.id,
+      action
+    });
+  }
 
   private isActionWithInput(action: string) {
     if (ACTIONS_WITH_INPUT.includes(action)) {
@@ -259,6 +285,11 @@ export class InterventionActions extends LitElement {
 
   private redirectToTabPage(id: number | null, tabName: string) {
     history.pushState(window.history.state, '', `${ROOT_PATH}interventions/${id}/${tabName}`);
+    window.dispatchEvent(new CustomEvent('popstate'));
+  }
+
+  private redirectToList() {
+    history.pushState(window.history.state, '', `${ROOT_PATH}interventions/list`);
     window.dispatchEvent(new CustomEvent('popstate'));
   }
 

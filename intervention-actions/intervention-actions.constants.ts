@@ -22,6 +22,7 @@ export const AMENDMENT_MERGE = 'amendment_merge';
 export const TERMINATE = 'terminate';
 export const REJECT_REVIEW = 'reject_review';
 export const ACCEPT_ON_BEHALF_OF_PARTNER = 'accept_on_behalf_of_partner';
+export const DELETE = 'delete';
 
 export const EXPORT_ACTIONS = [EXPORT_PDF, EXPORT_XLS, EXPORT_COMMENTS, EXPORT_RESULTS];
 export const BACK_ACTIONS = [SEND_TO_PARTNER, SEND_TO_UNICEF, UNLOCK, REJECT_REVIEW];
@@ -51,5 +52,6 @@ export const ActionNamesMap: GenericObject<string> = {
   [SIGN_BUDGET_OWNER]: getTranslation('SIGN_BUDGET_OWNER'),
   [TERMINATE]: getTranslation('TERMINATE'),
   [REJECT_REVIEW]: getTranslation('REJECT_REVIEW'),
-  [ACCEPT_ON_BEHALF_OF_PARTNER]: getTranslation('ACCEPT_ON_BEHALF_OF_PARTNER')
+  [ACCEPT_ON_BEHALF_OF_PARTNER]: getTranslation('ACCEPT_ON_BEHALF_OF_PARTNER'),
+  [DELETE]: getTranslation('DELETE')
 };
