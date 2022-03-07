@@ -49,7 +49,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
   render() {
     if (!this.data || !this.permissions) {
       return html` ${sharedStyles}
-        <etools-loading loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="revAndSign" loading-text="Loading..." active></etools-loading>`;
     }
     return html`
     ${sharedStyles}

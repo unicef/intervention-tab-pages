@@ -39,7 +39,7 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
     // language=HTML
     if (!this.data || !this.cashTransferModalities) {
       return html` ${sharedStyles}
-        <etools-loading loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="financial" loading-text="Loading..." active></etools-loading>`;
     }
     return html`
       ${sharedStyles}

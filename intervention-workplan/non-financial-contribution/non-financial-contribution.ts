@@ -42,7 +42,7 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
   render() {
     if (!this.data || !this.permissions) {
       return html` ${sharedStyles}
-        <etools-loading loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="non-f" loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`

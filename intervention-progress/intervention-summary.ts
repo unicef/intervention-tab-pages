@@ -28,7 +28,7 @@ export class InterventionSummary extends connectStore(LitElement) {
   render() {
     if ((this.isUnicefUser && !this.interventionCpOutputs) || !this.intervention || !this.interventionAgreement) {
       return html` ${sharedStyles}
-        <etools-loading loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="summary" loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`
