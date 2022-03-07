@@ -230,7 +230,7 @@ export class GroupedLocationsDialog extends LitElement {
     for (i = 0; i < this.interventionLocations.length; i++) {
       const grouping = new GroupedLocations();
 
-      if (this.interventionLocations[i].gateway.name === selectedAdminLevelName) {
+      if (this.interventionLocations[i].admin_level_name === selectedAdminLevelName) {
         // gateway.name is location_type
         grouping.adminLevelLocation = this.interventionLocations[i];
         groupedLocations.push(grouping);
@@ -288,7 +288,7 @@ export class GroupedLocationsDialog extends LitElement {
     if (!parentLoc) {
       return null;
     }
-    if (parentLoc.gateway.name === adminLevel) {
+    if (parentLoc.admin_level_name === adminLevel) {
       return parentLoc;
     }
     return this._findAdminLevelParent(parentLoc, adminLevel);

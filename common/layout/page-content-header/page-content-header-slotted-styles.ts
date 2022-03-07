@@ -11,6 +11,8 @@ export const pageContentHeaderSlottedStyles = css`
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+    place-content: flex-end;
+    flex-wrap: wrap;
   }
   @media (max-width: 576px) {
     .content-header-actions {
