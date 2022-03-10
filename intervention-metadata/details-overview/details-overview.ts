@@ -34,7 +34,7 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
     // language=HTML
     if (!this.interventionOverview) {
       return html` ${sharedStyles}
-        <etools-loading loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="details-overview" loading-text="Loading..." active></etools-loading>`;
     }
     return html`
       ${InfoElementStyles} ${sharedStyles}

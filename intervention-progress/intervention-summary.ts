@@ -28,7 +28,7 @@ export class InterventionSummary extends connectStore(LitElement) {
   render() {
     if ((this.isUnicefUser && !this.interventionCpOutputs) || !this.intervention || !this.interventionAgreement) {
       return html` ${sharedStyles}
-        <etools-loading loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="summary" loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`
@@ -36,7 +36,6 @@ export class InterventionSummary extends connectStore(LitElement) {
     <style>
        :host {
         width: 100%;
-        --paper-input-container-underline-disabled_-_display: none;
       }
 
       .block {
@@ -156,8 +155,8 @@ export class InterventionSummary extends connectStore(LitElement) {
               type="number"
               .value="${this.intervention.management_budgets?.total}"
               placeholder="&#8212;"
-              no-label-float
-              disabled
+              no-label-float              
+              readonly
               tabindex="-1"
             >
             </etools-currency-amount-input>
@@ -185,7 +184,7 @@ export class InterventionSummary extends connectStore(LitElement) {
               type="number"
               placeholder="&#8212;"
               no-label-float
-              disabled
+              readonly
               tabindex="-1"
             >
             </etools-currency-amount-input>
@@ -199,7 +198,7 @@ export class InterventionSummary extends connectStore(LitElement) {
               type="number"
               placeholder="&#8212;"
               no-label-float
-              disabled
+              readonly
               tabindex="-1"
             >
             </etools-currency-amount-input>
@@ -213,7 +212,7 @@ export class InterventionSummary extends connectStore(LitElement) {
               type="number"
               placeholder="&#8212;"
               no-label-float
-              disabled
+              readonly
               tabindex="-1"
             >
             </etools-currency-amount-input>

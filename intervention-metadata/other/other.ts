@@ -35,7 +35,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   render() {
     if (!this.data || !this.permissions) {
       return html` ${sharedStyles}
-        <etools-loading loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="other" loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`

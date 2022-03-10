@@ -36,7 +36,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
   render() {
     if (!this.data || !this.permissions) {
       return html` ${sharedStyles}
-        <etools-loading loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="hq" loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`
