@@ -330,7 +330,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                     <div slot="row-data" class="layout-horizontal align-items-center editable-row higher-slot">
                       <div class="flex-1 flex-fix">
                         <div class="heading">${translate(translatesMap.ll_results)}</div>
-                        <div class="data bold-data">${pdOutput.name}</div>
+                        <div class="data bold-data">${pdOutput.code}&nbsp;${pdOutput.name}</div>
                       </div>
 
                       <div class="flex-none" ?hidden="${!this.showActivities}">
