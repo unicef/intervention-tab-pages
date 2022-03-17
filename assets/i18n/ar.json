@@ -489,5 +489,6 @@
   "SIMPLIFIED_PROGRAMME_DOCUMENT_TOOLTIP": "The Simplified Programme Document is used for all humanitarian response. <br> It is also used for small-scale programme interventions where the UNICEF <br> cash and supply contribution is <$100,000.",
   "EDIT": "Edit",
   "DELETE": "Delete",
-  "VIEW_ACTIVITY": "View Activity"
+  "VIEW_ACTIVITY": "View Activity",
+  "SEND_BACK_REVIEW": "Send Back Review"
 }

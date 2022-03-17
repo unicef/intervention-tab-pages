@@ -34,7 +34,8 @@ import {
   REVIEW,
   SIGN,
   ACCEPT_ON_BEHALF_OF_PARTNER,
-  SIGN_BUDGET_OWNER
+  SIGN_BUDGET_OWNER,
+  SEND_BACK_REVIEW
 } from './intervention-actions.constants';
 import {PaperMenuButton} from '@polymer/paper-menu-button/paper-menu-button';
 import {updateCurrentIntervention} from '../common/actions/interventions';
@@ -266,8 +267,8 @@ export class InterventionActions extends LitElement {
     return openDialog({
       dialog: 'reason-popup',
       dialogData: {
-        popupTitle: `${this.actionsNamesMap[action]} reason`,
-        label: `${this.actionsNamesMap[action]} comment`
+        popupTitle: `${this.actionsNamesMap[action]} Reason`,
+        label: `${this.actionsNamesMap[action]} Comment`
       }
     }).then(({confirmed, response}) => {
       if (!confirmed || !response) {
@@ -277,6 +278,22 @@ export class InterventionActions extends LitElement {
         return {cancel_justification: response.comment};
       }
       return null;
+    });
+  }
+
+  private openSentBackBySecretaryCommentDialog(action: string): Promise<any> {
+    return openDialog({
+      dialog: 'reason-popup',
+      dialogData: {
+        popupTitle: `${this.actionsNamesMap[action]} Reason`,
+        label: `${this.actionsNamesMap[action]} Comment`
+      }
+    }).then(({confirmed, response}) => {
+      if (!confirmed || !response) {
+        return null;
+      }
+
+      return {sent_back_comment: response.comment};
     });
   }
 
@@ -352,6 +369,8 @@ export class InterventionActions extends LitElement {
     switch (action) {
       case CANCEL:
         return this.openCommentDialog(action);
+      case SEND_BACK_REVIEW:
+        return this.openSentBackBySecretaryCommentDialog(action);
       case TERMINATE:
         return this.openTermiantionDialog();
       case REVIEW:
