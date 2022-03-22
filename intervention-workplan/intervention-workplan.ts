@@ -153,7 +153,7 @@ export class InterventionWorkplan extends LitElement {
             <td></td>
             <td>1,234.00</td>
             <td>4,567.00</td>
-            <td>5,567.00</td>
+            <td>USD 5,567.00</td>
           </tr>
           <tr class="add blue">
             <td></td>
@@ -192,7 +192,7 @@ export class InterventionWorkplan extends LitElement {
             <td></td>
             <td>1,234.00</td>
             <td>4,567.00</td>
-            <td>5,567.00</td>
+            <td>USD 5,567.00</td>
           </tr>
           <tr class="add">
             <td></td>
@@ -240,7 +240,7 @@ export class InterventionWorkplan extends LitElement {
             <td></td>
             <td>1,234.00</td>
             <td>4,567.00</td>
-            <td>5,567.00</td>
+            <td>USD 5,567.00</td>
           </tr>
           
         </tbody>
