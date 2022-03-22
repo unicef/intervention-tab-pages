@@ -1,7 +1,7 @@
 import {LitElement, customElement, html, css, property} from 'lit-element';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import './workplan-editor-link';
-import './budget-summary-editor/budget-summary-editor';
+import '../intervention-workplan/budget-summary/budget-summary';
 import {TABS} from '../common/constants';
 import {translate} from 'lit-translate';
 
@@ -19,7 +19,7 @@ export class InterventionWorkplanEditor extends LitElement {
           ${translate('BACK_TO_WORKPLAN')}
         </workplan-editor-link>
 
-        <budget-summary-editor></budget-summary-editor>
+        <budget-summary embeded></budget-summary>
       </div>
     `;
   }
