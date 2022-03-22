@@ -60,6 +60,7 @@ export const TABS = {
   Metadata: 'metadata',
   Strategy: 'strategy',
   Workplan: 'workplan',
+  WorkplanEditor: 'workplan-editor',
   Timing: 'timing',
   Attachments: 'attachments',
   Review: 'review',
