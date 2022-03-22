@@ -488,5 +488,7 @@
   "EDIT": "Editeaza",
   "DELETE": "Sterge",
   "VIEW_ACTIVITY": "Vizualizare Activitate",
-  "SEND_BACK_REVIEW": "Send Back Review"
+  "SEND_BACK_REVIEW": "Send Back Review",
+  "BACK_TO_WORKPLAN": "back to standart view",
+  "GO_TO_WORKPLAN_EDITOR": "Open in Editor"
 }
