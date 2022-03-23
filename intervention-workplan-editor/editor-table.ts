@@ -1,12 +1,19 @@
-import {customElement, html, LitElement} from 'lit-element';
+import {customElement, html, LitElement, property} from 'lit-element';
 import {EditorTableStyles} from './editor-table-styles';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/iron-icons';
 import '@polymer/paper-input/paper-textarea';
+import './time-intervals/time-intervals';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {InterventionQuarter} from '@unicef-polymer/etools-types';
+import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
+import {RootState} from '../common/types/store.types';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import get from 'lodash-es/get';
+import {TABS} from '../common/constants';
 
 @customElement('editor-table')
-export class EditorTable extends LitElement {
+export class EditorTable extends connectStore(LitElement) {
   static get styles() {
     return [EditorTableStyles];
   }
@@ -125,7 +132,14 @@ export class EditorTable extends LitElement {
                 ></paper-textarea>
               </div>
             </td>
-            <td></td>
+            <td>
+              <time-intervals
+                ?readonly="${this.readonly}"
+                .quarters="${this.quarters}"
+                .selectedTimeFrames="${this.selectedIntervals}"
+                @intervals-changed="${(event: CustomEvent) => (this.selectedIntervals = event.detail)}"
+              ></time-intervals>
+            </td>
             <td>1,234.00</td>
             <td>4,567.00</td>
             <td>5,567.00</td>
@@ -178,5 +192,21 @@ export class EditorTable extends LitElement {
         </tbody>
       </table>
     `;
+  }
+
+  @property() readonly = false;
+  @property() quarters: InterventionQuarter[] = [];
+  @property() selectedIntervals: number[] = [14, 15];
+
+  public stateChanged(state: RootState) {
+    if (
+      (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan) &&
+        pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.WorkplanEditor)) ||
+      !state.interventions.current
+    ) {
+      return;
+    }
+    this.quarters = state.interventions.current?.quarters || [];
+    super.stateChanged(state);
   }
 }
