@@ -49,5 +49,5 @@ export class InterventionWorkplan extends LitElement {
       active: false,
       loadingSource: 'interv-page'
     });
-  }
+  } 
 }

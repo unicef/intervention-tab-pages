@@ -4,6 +4,7 @@ import './workplan-editor-link';
 import '../intervention-workplan/budget-summary/budget-summary';
 import {TABS} from '../common/constants';
 import {translate} from 'lit-translate';
+import './editor-table';
 
 /**
  * @customElement
@@ -21,6 +22,7 @@ export class InterventionWorkplanEditor extends LitElement {
 
         <budget-summary embeded></budget-summary>
       </div>
+      <editor-table></editor-table>
     `;
   }
 
