@@ -202,7 +202,10 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                         .value="${item.unicef_cash}"
                       ></etools-currency-amount-input>
                     </td>
-                    <td class="padd-top-40">${this.getTotal(item.cso_cash || 0, item.unicef_cash || 0)}</td>
+                    <td class="padd-top-40">
+                      ${this.intervention.planned_budget.currency}
+                      ${this.getTotal(item.cso_cash || 0, item.unicef_cash || 0)}
+                    </td>
                   </tr>
                 </tbody>
               `
