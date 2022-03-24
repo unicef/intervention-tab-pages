@@ -32,6 +32,12 @@ import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-inpu
 import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
 import '@polymer/paper-button/paper-button';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {interventionEndpoints} from '../utils/intervention-endpoints';
+import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {updateCurrentIntervention} from '../common/actions/interventions';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 
 @customElement('editor-table')
 export class EditorTable extends connectStore(LitElement) {
@@ -365,10 +371,34 @@ export class EditorTable extends connectStore(LitElement) {
       this.requestUpdate();
       return;
     }
+
     fireEvent(this, 'global-loading', {
       active: true,
       loadingSource: this.localName
     });
+
+    const endpoint: EtoolsRequestEndpoint = pdOutput.id
+      ? getEndpoint(interventionEndpoints.pdDetails, {pd_id: pdOutput.id, intervention_id: this.interventionId})
+      : getEndpoint(interventionEndpoints.createPd, {intervention_id: this.interventionId});
+
+    sendRequest({
+      endpoint,
+      method: pdOutput.id ? 'PATCH' : 'POST',
+      body: pdOutput.id ? {id: pdOutput.id, name: pdOutput.name} : {name: pdOutput.name}
+    })
+      .then((response) => getStore().dispatch(updateCurrentIntervention(response.intervention)))
+      .then(() => {
+        fireEvent(this, 'dialog-closed', {confirmed: true});
+      })
+      .catch((error: any) => {
+        parseRequestErrorsAndShowAsToastMsgs(error, this);
+      })
+      .finally(() =>
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: this.localName
+        })
+      );
   }
 
   validatePdOutput(pdOutput: ResultLinkLowerResult) {
