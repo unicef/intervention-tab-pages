@@ -1,5 +1,5 @@
 import {customElement, html, LitElement, property} from 'lit-element';
-import {EditorTableStyles} from './editor-table-styles';
+import {EditorTableStyles} from './editor-utils/editor-table-styles';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/iron-icons';
 import '@polymer/paper-input/paper-textarea';
@@ -38,9 +38,10 @@ import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {updateCurrentIntervention} from '../common/actions/interventions';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {ActivitiesMixin} from './editor-utils/activities-mixin';
 
 @customElement('editor-table')
-export class EditorTable extends connectStore(LitElement) {
+export class EditorTable extends connectStore(ActivitiesMixin(LitElement)) {
   static get styles() {
     return [EditorTableStyles];
   }
@@ -125,13 +126,8 @@ export class EditorTable extends connectStore(LitElement) {
                         required
                         .invalid="${pdOutput.invalid}"
                         error-message="This field is required"
-                        @value-changed="${({detail}: CustomEvent) => {
-                          if (detail.value == pdOutput.name) {
-                            return;
-                          }
-                          pdOutput.name = detail.value;
-                          this.requestUpdate();
-                        }}"
+                        @value-changed="${({detail}: CustomEvent) =>
+                          this.updateModelValue(pdOutput, 'name', detail.value)}"
                       ></paper-textarea>
                     </td>
                     <td colspan="3"></td>
@@ -144,7 +140,11 @@ export class EditorTable extends connectStore(LitElement) {
                     <td></td>
                     <td colspan="3">
                       <span ?hidden="${pdOutput.inEditMode}"
-                        ><paper-icon-button icon="add-box"></paper-icon-button> Add New Activity</span
+                        ><paper-icon-button
+                          icon="add-box"
+                          @click="${() => this.addNewActivity(pdOutput)}"
+                        ></paper-icon-button>
+                        Add New Activity</span
                       >
                     </td>
                     <td colspan="3"></td>
@@ -159,141 +159,7 @@ export class EditorTable extends connectStore(LitElement) {
                     </td>
                   </tr>
                 </tbody>
-
-                ${pdOutput.activities?.map(
-                  (activity: InterventionActivity) => html`
-                    <thead>
-                      <tr class="edit">
-                        <td class="first-col"></td>
-                        <td colspan="3"></td>
-                        <td class="col-g"></td>
-                        <td class="col-g"></td>
-                        <td class="col-g"></td>
-                        <td class="col-6">
-                          <paper-icon-button
-                            icon="create"
-                            ?hidden="${activity.inEditMode}"
-                            @click="${() => {
-                              activity.inEditMode = true;
-                              this.requestUpdate();
-                            }}"
-                          ></paper-icon-button>
-                        </td>
-                      </tr>
-                      <tr class="header">
-                        <td></td>
-                        <td colspan="3">Activity</td>
-                        <td>Time Periods</td>
-                        <td>CSO Contribution</td>
-                        <td>UNICEF Cash</td>
-                        <td>Total</td>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr class="text border-b">
-                        <td>${activity.code}</td>
-                        <td colspan="3">
-                          <paper-textarea
-                            no-label-float
-                            .value="${activity.name}"
-                            ?readonly="${!activity.inEditMode}"
-                          ></paper-textarea>
-                          <div class="pad-top-8">
-                            <paper-textarea
-                              placeholder="-"
-                              label="Other Notes"
-                              always-float-label
-                              ?readonly="${!activity.inEditMode}"
-                              .value="${activity.context_details}"
-                            ></paper-textarea>
-                          </div>
-                        </td>
-                        <td></td>
-                        <td>
-                          <etools-currency-amount-input
-                            no-label-float
-                            .value="${activity.cso_cash}"
-                            ?readonly="${!activity.inEditMode}"
-                          ></etools-currency-amount-input>
-                        </td>
-                        <td>
-                          <etools-currency-amount-input
-                            no-label-float
-                            .value="${activity.unicef_cash}"
-                            ?readonly="${!activity.inEditMode}"
-                          ></etools-currency-amount-input>
-                        </td>
-                        <td>
-                          ${this.intervention.planned_budget.currency}
-                          <span class="b"
-                            >${displayCurrencyAmount(
-                              String(this.getTotal(activity.cso_cash, activity.unicef_cash)),
-                              '0',
-                              2
-                            )}
-                          </span>
-                        </td>
-                      </tr>
-                    </tbody>
-
-                    ${activity.items?.map(
-                      (item: InterventionActivityItem) => html`
-                        <thead>
-                          <tr class="header border-b">
-                            <td class="first-col"></td>
-                            <td class="col-30">Item Description</td>
-                            <td class="col-10">Unit</td>
-                            <td class="col-10">Number Of Units</td>
-                            <td class="col-g">Price/Unit</td>
-                            <td class="col-g">Partner Cash</td>
-                            <td class="col-g">UNICEF CASH</td>
-                            <td class="col-g">Total</td>
-                          </tr>
-                          <tr class="border-b">
-                            <td></td>
-                            <td><paper-icon-button icon="add-box"></paper-icon-button> Add New Item</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                          </tr>
-                        </thead>
-                        <tbody class="odd">
-                          <tr>
-                            <td>${item.code || 'N/A'}</td>
-                            <td><paper-textarea no-label-float .value="${item.name}"></paper-textarea></td>
-                            <td><paper-input .value="${item.unit}"></paper-input></td>
-                            <td>
-                              <etools-currency-amount-input
-                                no-label-float
-                                .value="${item.no_units}"
-                              ></etools-currency-amount-input>
-                            </td>
-                            <td>
-                              <etools-currency-amount-input
-                                no-label-float.value="${item.unit_price}"
-                              ></etools-currency-amount-input>
-                            </td>
-                            <td>
-                              <etools-currency-amount-input
-                                no-label-float.value="${item.cso_cash}"
-                              ></etools-currency-amount-input>
-                            </td>
-                            <td>
-                              <etools-currency-amount-input
-                                no-label-float
-                                .value="${item.unicef_cash}"
-                              ></etools-currency-amount-input>
-                            </td>
-                            <td>${this.getTotal(item.cso_cash || 0, item.unicef_cash || 0)}</td>
-                          </tr>
-                        </tbody>
-                      `
-                    )}
-                  `
-                )}
+                ${this.renderActivities(pdOutput, resultIndex, pdOutputIndex)}
               `
             )}
           `
@@ -356,12 +222,13 @@ export class EditorTable extends connectStore(LitElement) {
     this.intervention = cloneDeep(currentIntervention(state));
   }
 
-  getTotal(partner: string, unicef: string): number {
-    return (Number(partner) || 0) + (Number(unicef) || 0);
-  }
-
   addNewPDOutput(llResults: Partial<ResultLinkLowerResult>[]) {
     llResults.unshift({name: '', total: '0', inEditMode: true});
+    this.requestUpdate();
+  }
+
+  addNewActivity(pdOutput: Partial<ResultLinkLowerResult>) {
+    pdOutput.activities?.unshift({name: '', total: '0', inEditMode: true});
     this.requestUpdate();
   }
 
@@ -422,6 +289,14 @@ export class EditorTable extends connectStore(LitElement) {
     pdOutput.invalid = false;
     pdOutput.inEditMode = false;
 
+    this.requestUpdate();
+  }
+
+  updateModelValue(model: any, property: string, newVal: any) {
+    if (newVal == model[property]) {
+      return;
+    }
+    model[property] = newVal;
     this.requestUpdate();
   }
 }

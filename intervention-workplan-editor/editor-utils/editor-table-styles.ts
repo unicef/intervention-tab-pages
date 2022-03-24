@@ -124,4 +124,14 @@ export const EditorTableStyles = css`
   .justify-right {
     justify-content: flex-end;
   }
+  tr.activity-items-row > td {
+    padding-bottom: 16px;
+  }
+
+  .v-middle {
+    vertical-align: middle;
+  }
+  .padd-top-40 {
+    padding-top: 40px;
+  }
 `;
