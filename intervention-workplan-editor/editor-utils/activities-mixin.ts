@@ -1,19 +1,24 @@
+import {Constructor, html, LitElement, property} from 'lit-element';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
-import {InterventionActivity, InterventionActivityItem} from '@unicef-polymer/etools-types';
+import {InterventionActivity, InterventionActivityItem, InterventionQuarter} from '@unicef-polymer/etools-types';
 import {
   ExpectedResult,
   Intervention,
   ResultLinkLowerResult
 } from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
-import {Constructor, html, LitElement, property} from 'lit-element';
+import '../time-intervals/time-intervals';
+import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {ActivityItemsMixin} from './activity-item-mixin';
 
 export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T) {
-  return class ActivitiesClass extends baseClass {
+  return class ActivitiesClass extends ActivityItemsMixin(baseClass) {
     @property({type: Array})
     originalResultLink!: ExpectedResult[];
 
     @property({type: Object})
     intervention!: Intervention;
+
+    quarters: InterventionQuarter[] = [];
 
     renderActivities(pdOutput: ResultLinkLowerResult, resultIndex: number, pdOutputIndex: number) {
       return html`
@@ -71,7 +76,21 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     ></paper-textarea>
                   </div>
                 </td>
-                <td></td>
+                <td>
+                  <div class="flex-h justify-right">
+                    <time-intervals
+                      .quarters="${this.quarters}"
+                      .selectedTimeFrames="${activity.time_frames}"
+                      @intervals-changed="${(event: CustomEvent) => {
+                        if (isJsonStrMatch(activity.time_frames, event.detail)) {
+                          return;
+                        }
+                        activity.time_frames = event.detail;
+                        this.requestUpdate();
+                      }}"
+                    ></time-intervals>
+                  </div>
+                </td>
                 <td>
                   <etools-currency-amount-input
                     no-label-float
@@ -93,7 +112,11 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td>
                   ${this.intervention.planned_budget.currency}
                   <span class="b"
-                    >${displayCurrencyAmount(String(this.getTotal(activity.cso_cash, activity.unicef_cash)), '0', 2)}
+                    >${displayCurrencyAmount(
+                      String(this.getTotalForActivity(activity.cso_cash, activity.unicef_cash)),
+                      '0',
+                      2
+                    )}
                   </span>
                 </td>
               </tr>
@@ -146,76 +169,13 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td></td>
               </tr>
             </thead>
-            ${activity.items?.map(
-              (item: InterventionActivityItem) => html`
-                <tbody class="odd">
-                  <tr class="activity-items-row">
-                    <td class="v-middle">${item.code || 'N/A'}</td>
-                    <td>
-                      <paper-textarea
-                        always-float-label
-                        label="Item Description"
-                        required
-                        error-message="This field is required"
-                        auto-validate
-                        .value="${item.name}"
-                      ></paper-textarea>
-                    </td>
-                    <td>
-                      <paper-input
-                        always-float-label
-                        label="Unit"
-                        required
-                        auto-validate
-                        .value="${item.unit}"
-                      ></paper-input>
-                    </td>
-                    <td>
-                      <etools-currency-amount-input
-                        label="N. of Units"
-                        required
-                        auto-validate
-                        .value="${item.no_units}"
-                      ></etools-currency-amount-input>
-                    </td>
-                    <td>
-                      <etools-currency-amount-input
-                        label="Price/Unit"
-                        required
-                        auto-validate
-                        .value="${item.unit_price}"
-                      ></etools-currency-amount-input>
-                    </td>
-                    <td>
-                      <etools-currency-amount-input
-                        label="Partner Cash"
-                        required
-                        auto-validate
-                        .value="${item.cso_cash}"
-                      ></etools-currency-amount-input>
-                    </td>
-                    <td>
-                      <etools-currency-amount-input
-                        label="Total"
-                        required
-                        auto-validate
-                        .value="${item.unicef_cash}"
-                      ></etools-currency-amount-input>
-                    </td>
-                    <td class="padd-top-40">
-                      ${this.intervention.planned_budget.currency}
-                      ${this.getTotal(item.cso_cash || 0, item.unicef_cash || 0)}
-                    </td>
-                  </tr>
-                </tbody>
-              `
-            )}
+            ${this.renderActivityItems(activity)}
           `
         )}
       `;
     }
 
-    getTotal(partner: string, unicef: string): number {
+    getTotalForActivity(partner: string, unicef: string): number {
       return (Number(partner) || 0) + (Number(unicef) || 0);
     }
 

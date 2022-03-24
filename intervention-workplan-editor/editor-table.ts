@@ -3,7 +3,6 @@ import {EditorTableStyles} from './editor-utils/editor-table-styles';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/iron-icons';
 import '@polymer/paper-input/paper-textarea';
-import './time-intervals/time-intervals';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {TABS} from '../common/constants';
