@@ -65,7 +65,7 @@ export const EditorTableStyles = css`
     background-color: #eeeeee;
   }
 
-  td:nth-child(n + 3) {
+  td:nth-child(n + 4) {
     text-align: right;
   }
 

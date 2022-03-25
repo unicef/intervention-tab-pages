@@ -50,7 +50,7 @@ export class EditorTable extends connectStore(ActivitiesMixin(LitElement)) {
       ${sharedStyles}
       <table>
         ${repeat(
-          this.resultLinks,
+          this.resultStructureDetails,
           (result: ExpectedResult) => result.id,
           (result, resultIndex) => html`
             <thead>
@@ -168,19 +168,19 @@ export class EditorTable extends connectStore(ActivitiesMixin(LitElement)) {
     `;
   }
 
-  get resultLinks(): ExpectedResult[] {
-    return this._resultLinks || [];
-  }
-  set resultLinks(data: ExpectedResult[]) {
-    this._resultLinks = data.sort(
-      (linkA, linkB) => Number(Boolean(linkB.cp_output)) - Number(Boolean(linkA.cp_output))
-    );
-  }
+  // get resultLinks(): ExpectedResult[] {
+  //   return this._resultLinks || [];
+  // }
+  // set resultLinks(data: ExpectedResult[]) {
+  //   this._resultLinks = data.sort(
+  //     (linkA, linkB) => Number(Boolean(linkB.cp_output)) - Number(Boolean(linkA.cp_output))
+  //   );
+  // }
   @property() interventionId!: number | null;
   @property() interventionStatus!: string;
 
   quarters: InterventionQuarter[] = [];
-  originalResultLink: ExpectedResult[] = [];
+  originalResultStructureDetails: ExpectedResult[] = [];
 
   @property({type: Boolean}) isUnicefUser = true;
   @property({type: Object})
@@ -197,6 +197,9 @@ export class EditorTable extends connectStore(ActivitiesMixin(LitElement)) {
   @property({type: Boolean})
   readonly = false;
 
+  @property({type: Object})
+  resultStructureDetails!: ExpectedResult;
+
   private prevInterventionId: number | null = null;
 
   stateChanged(state: RootState) {
@@ -207,19 +210,28 @@ export class EditorTable extends connectStore(ActivitiesMixin(LitElement)) {
     if (!selectInterventionId(state)) {
       return;
     }
-    this.resultLinks = selectInterventionResultLinks(state);
-    this.originalResultLink = cloneDeep(this.resultLinks);
-    if (this.prevInterventionId != selectInterventionId(state)) {
-      // request
-    }
-
-    this.permissions = selectResultLinksPermissions(state);
     this.interventionId = selectInterventionId(state);
+    this.permissions = selectResultLinksPermissions(state);
+
     this.interventionStatus = selectInterventionStatus(state);
     this.quarters = selectInterventionQuarters(state);
-    // this.cpOutputs = (state.commonData && state.commonData.cpOutputs) || [];
     this.isUnicefUser = isUnicefUser(state);
     this.intervention = cloneDeep(currentIntervention(state));
+    // this.resultLinks = selectInterventionResultLinks(state);
+
+    if (this.prevInterventionId != selectInterventionId(state)) {
+      this.getResultLinksDetails();
+      this.prevInterventionId = this.interventionId;
+    }
+  }
+
+  getResultLinksDetails() {
+    sendRequest({endpoint: getEndpoint(interventionEndpoints.resultLinksDetails, {id: this.intervention.id})}).then(
+      (response: any) => {
+        this.resultStructureDetails = response.result_links;
+        this.originalResultStructureDetails = cloneDeep(this.resultStructureDetails);
+      }
+    );
   }
 
   addNewPDOutput(llResults: Partial<ResultLinkLowerResult>[]) {
@@ -284,7 +296,7 @@ export class EditorTable extends connectStore(ActivitiesMixin(LitElement)) {
     if (!pdOutput.id) {
       llResults.shift();
     } else {
-      pdOutput.name = this.originalResultLink[resultIndex].ll_results[pdOutputIndex].name;
+      pdOutput.name = this.originalResultStructureDetails[resultIndex].ll_results[pdOutputIndex].name;
     }
     pdOutput.invalid = false;
     pdOutput.inEditMode = false;

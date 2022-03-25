@@ -12,6 +12,7 @@ export interface EtoolsEndpoints {
   partnerT2fProgrammaticVisits: EtoolsEndpoint;
   partnerTPMActivities: EtoolsEndpoint;
   interventionTPMActivities: EtoolsEndpoint;
+  resultLinksDetails: EtoolsEndpoint;
   resultLinks: EtoolsEndpoint;
   ramIndicators: EtoolsEndpoint;
   resultLinkGetDelete: EtoolsEndpoint;
@@ -90,6 +91,9 @@ export const interventionEndpoints: EtoolsEndpoints = {
   interventionTPMActivities: {
     template:
       '/api/tpm/activities/?tpm_visit__status=unicef_approved&date__year=<%=year%>&intervention=<%=interventionId%>'
+  },
+  resultLinksDetails: {
+    template: '/api/pmp/v3/interventions/<%=id%>/results-structure/'
   },
   resultLinks: {
     template: '/api/v2/interventions/<%=id%>/result-links/'

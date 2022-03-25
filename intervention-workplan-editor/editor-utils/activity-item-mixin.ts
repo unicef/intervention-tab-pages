@@ -9,6 +9,9 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
     intervention!: Intervention;
 
     renderActivityItems(activity: InterventionActivity) {
+      if (!activity.items) {
+        return '';
+      }
       return html`${activity.items?.map(
         (item: InterventionActivityItem) => html`
           <tbody class="odd">
@@ -18,9 +21,12 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                 <paper-textarea
                   always-float-label
                   label="Item Description"
+                  ?readonly="${!activity.itemsInEditMode}"
+                  .invalid="${item.invalid?.name}"
                   required
                   error-message="This field is required"
-                  auto-validate
+                  .autoValidate="${item.autovalidate?.name}"
+                  @focus="${() => this.setAutoValidate(item, 'name')}"
                   .value="${item.name}"
                   @value-changed="${({detail}: CustomEvent) => this.updateModelValue(item, 'name', detail.value)}"
                 ></paper-textarea>
@@ -29,6 +35,8 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                 <paper-input
                   always-float-label
                   label="Unit"
+                  ?readonly="${!activity.itemsInEditMode}"
+                  .invalid="${item.invalid?.unit}"
                   required
                   .autoValidate="${item.autovalidate?.unit}"
                   @focus="${() => this.setAutoValidate(item, 'unit')}"
@@ -40,6 +48,8 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
               <td>
                 <etools-currency-amount-input
                   label="N. of Units"
+                  ?readonly="${!activity.itemsInEditMode}"
+                  .invalid="${item.invalid?.no_units}"
                   required
                   auto-validate
                   error-message="This field is required"
@@ -57,6 +67,8 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
               <td>
                 <etools-currency-amount-input
                   label="Price/Unit"
+                  ?readonly="${!activity.itemsInEditMode}"
+                  .invalid="${item.invalid?.unit_price}"
                   required
                   auto-validate
                   error-message="This field is required"
@@ -74,6 +86,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
               <td>
                 <etools-currency-amount-input
                   label="Partner Cash"
+                  ?readonly="${!activity.itemsInEditMode}"
                   required
                   auto-validate
                   error-message="Incorrect value"
@@ -93,6 +106,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
               <td>
                 <etools-currency-amount-input
                   label="Unicef Cash"
+                  ?readonly="${!activity.itemsInEditMode}"
                   required
                   auto-validate
                   error-message="Incorrect value"

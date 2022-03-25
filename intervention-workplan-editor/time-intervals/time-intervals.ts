@@ -63,6 +63,7 @@ export class TimeIntervals extends LitElement {
     return [
       css`
         :host {
+          position: relative;
           display: flex;
           flex-wrap: wrap;
           gap: 4px;

@@ -20,7 +20,7 @@ import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-pa
 export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T) {
   return class ActivitiesClass extends ActivityItemsMixin(baseClass) {
     @property({type: Array})
-    originalResultLink!: ExpectedResult[];
+    originalResultStructureDetails!: ExpectedResult[];
 
     @property({type: Object})
     intervention!: Intervention;
@@ -44,6 +44,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     ?hidden="${activity.inEditMode}"
                     @click="${() => {
                       activity.inEditMode = true;
+                      activity.itemsInEditMode = true;
                       this.requestUpdate();
                     }}"
                   ></paper-icon-button>
@@ -67,7 +68,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     .value="${activity.name}"
                     ?readonly="${!activity.inEditMode}"
                     required
-                    .invalid="${activity.invalid}"
+                    .invalid="${activity.invalid?.name}"
                     error-message="This field is required"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue(activity, 'name', detail.value)}"
                   ></paper-textarea>
@@ -86,6 +87,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td>
                   <div class="flex-h justify-right">
                     <time-intervals
+                      tabindex="0"
                       .invalid="${activity.invalid?.time_frames}"
                       .quarters="${this.quarters}"
                       .selectedTimeFrames="${activity.time_frames}"
@@ -204,11 +206,12 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       } else {
         Object.assign(
           activity,
-          this.originalResultLink[resultIndex].ll_results[pdOutputIndex].activities[activityIndex]
+          this.originalResultStructureDetails[resultIndex].ll_results[pdOutputIndex].activities[activityIndex]
         );
       }
       activity.invalid = false;
       activity.inEditMode = false;
+      activity.itemsInEditMode = false;
 
       this.requestUpdate();
     }
@@ -253,7 +256,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       }
       return !Object.keys(activity.invalid).length;
     }
-    validateActivityItems(activity) {
+    validateActivityItems(activity: InterventionActivity) {
       if (!activity.items || !activity.items.length) {
         return true;
       }
@@ -271,7 +274,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
           invalid = true;
         }
       });
-      return invalid;
+      return !invalid;
     }
 
     saveActivity(activity: InterventionActivity, pdOutputId: string, interventionId: string) {
