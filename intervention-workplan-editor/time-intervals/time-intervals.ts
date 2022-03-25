@@ -10,12 +10,15 @@ export class TimeIntervals extends LitElement {
   @property() quarters: InterventionQuarter[] = [];
   @property() selectedTimeFrames: number[] = [];
   @property({type: Boolean, reflect: true, attribute: true}) readonly: boolean | undefined = false;
+  @property({type: Boolean})
+  invalid = false;
   protected render(): TemplateResult | TemplateResult[] {
     return this.quarters.length
-      ? this.quarters.map(
-          (quarter: InterventionQuarter) =>
-            html`<div class="quarter ${this.isSelected(quarter) ? 'selected' : ''}">${quarter.name}</div>`
-        )
+      ? html`${this.quarters.map(
+            (quarter: InterventionQuarter) =>
+              html`<div class="quarter ${this.isSelected(quarter) ? 'selected' : ''}">${quarter.name}</div>`
+          )}
+          <div ?hidden="${!this.invalid}" class="invalid">Pls select Time Periods</div>`
       : html`
           <div>-</div>
           <etools-info-tooltip class="" icon-first custom-icon>
@@ -43,6 +46,9 @@ export class TimeIntervals extends LitElement {
       }
     }).then(({confirmed, response}) => {
       if (confirmed) {
+        if (response && response.length) {
+          this.invalid = false;
+        }
         fireEvent(this, 'intervals-changed', response);
       }
     });
@@ -57,14 +63,12 @@ export class TimeIntervals extends LitElement {
     return [
       css`
         :host {
-          position: relative;
           display: flex;
           flex-wrap: wrap;
           gap: 4px;
           cursor: pointer;
         }
         .quarter {
-          position: relative;
           height: 29px;
           width: 29px;
           display: flex;
@@ -80,6 +84,11 @@ export class TimeIntervals extends LitElement {
         }
         .quarter.selected {
           background-color: #558a5b;
+        }
+        .invalid {
+          color: var(--error-color);
+          padding: 4px 0;
+          font-size: 12px;
         }
       `
     ];

@@ -228,7 +228,7 @@ export class EditorTable extends connectStore(ActivitiesMixin(LitElement)) {
   }
 
   addNewActivity(pdOutput: Partial<ResultLinkLowerResult>) {
-    pdOutput.activities?.unshift({name: '', total: '0', inEditMode: true});
+    pdOutput.activities?.unshift({name: '', total: '0', time_frames: [], inEditMode: true});
     this.requestUpdate();
   }
 

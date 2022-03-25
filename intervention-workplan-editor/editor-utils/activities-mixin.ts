@@ -7,8 +7,15 @@ import {
   ResultLinkLowerResult
 } from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
 import '../time-intervals/time-intervals';
-import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {cloneDeep, isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {ActivityItemsMixin} from './activity-item-mixin';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {sendRequest} from '@unicef-polymer/etools-ajax';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {updateCurrentIntervention} from '../../common/actions/interventions';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 
 export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T) {
   return class ActivitiesClass extends ActivityItemsMixin(baseClass) {
@@ -79,9 +86,13 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td>
                   <div class="flex-h justify-right">
                     <time-intervals
+                      .invalid="${activity.invalid?.time_frames}"
                       .quarters="${this.quarters}"
                       .selectedTimeFrames="${activity.time_frames}"
                       @intervals-changed="${(event: CustomEvent) => {
+                        if (event.detail == undefined) {
+                          return;
+                        }
                         if (isJsonStrMatch(activity.time_frames, event.detail)) {
                           return;
                         }
@@ -133,7 +144,9 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td></td>
                 <td class="h-center">
                   <div class="flex-h justify-right" ?hidden="${!(activity.inEditMode || activity.itemsInEditMode)}">
-                    <paper-button @click="${() => this.saveActivity(activity)}">Save</paper-button>
+                    <paper-button @click="${() => this.saveActivity(activity, pdOutput.id, this.intervention.id)}"
+                      >Save</paper-button
+                    >
                     <paper-icon-button
                       icon="close"
                       @click="${() =>
@@ -228,6 +241,79 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       }
     }
 
-    saveActivity(activity: InterventionActivity) {}
+    validateActivity(activity: InterventionActivity) {
+      activity.invalid = {};
+      if (!activity.name) {
+        activity.invalid.name = true;
+      }
+      if (this.quarters && this.quarters.length) {
+        if (!(activity.time_frames && activity.time_frames.length)) {
+          activity.invalid.time_frames = true;
+        }
+      }
+      return !Object.keys(activity.invalid).length;
+    }
+    validateActivityItems(activity) {
+      if (!activity.items || !activity.items.length) {
+        return true;
+      }
+
+      let invalid = false;
+      activity.items.forEach((item: InterventionActivityItem) => {
+        item.invalid = {};
+        item.invalid.name = !item.name;
+        item.invalid.no_units = !item.no_units;
+        item.invalid.unit_price = !item.unit_price;
+        if (item.no_units && item.unit_price) {
+          this.validateCsoAndUnicefCash(item);
+        }
+        if (Object.values(item.invalid).some((val: boolean) => val === true)) {
+          invalid = true;
+        }
+      });
+      return invalid;
+    }
+
+    saveActivity(activity: InterventionActivity, pdOutputId: string, interventionId: string) {
+      if (!this.validateActivity(activity) || !this.validateActivityItems(activity)) {
+        this.requestUpdate();
+        fireEvent(this, 'toast', {
+          text: 'Please fix validation errors'
+        });
+        return;
+      }
+      fireEvent(this, 'global-loading', {
+        active: true,
+        loadingSource: this.localName
+      });
+
+      const activityToSave = cloneDeep(activity);
+      if (activityToSave.items?.length) {
+        // Let backend calculate these
+        delete activityToSave.unicef_cash;
+        delete activityToSave.cso_cash;
+      }
+      sendRequest({
+        endpoint: this._getEndpoint(activity.id, pdOutputId, interventionId),
+        method: activity.id ? 'PATCH' : 'POST',
+        body: activityToSave
+      })
+        .then((response: any) => getStore().dispatch(updateCurrentIntervention(response.intervention)))
+        .catch((error: any) => {
+          fireEvent(this, 'toast', {text: formatServerErrorAsText(error)});
+        })
+        .finally(() => {
+          fireEvent(this, 'global-loading', {
+            active: false,
+            loadingSource: this.localName
+          });
+        });
+    }
+
+    _getEndpoint(activityId: any, pdOutputId: string, interventionId: string) {
+      return activityId
+        ? getEndpoint(interventionEndpoints.pdActivityDetails, {activityId, pdOutputId, interventionId})
+        : getEndpoint(interventionEndpoints.pdActivities, {pdOutputId, interventionId});
+    }
   };
 }
