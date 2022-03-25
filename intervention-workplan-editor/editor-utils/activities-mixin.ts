@@ -53,7 +53,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
               <tr class="header">
                 <td></td>
                 <td colspan="3">Activity</td>
-                <td>Time Periods</td>
+                <td class="a-right">Time Periods</td>
                 <td>CSO Contribution</td>
                 <td>UNICEF Cash</td>
                 <td>Total</td>
@@ -168,7 +168,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td class="col-g">Price/Unit</td>
                 <td class="col-g">Partner Cash</td>
                 <td class="col-g">UNICEF CASH</td>
-                <td class="col-g">Total</td>
+                <td class="col-g">Total (${this.intervention.planned_budget.currency})</td>
               </tr>
               <tr>
                 <td></td>
@@ -229,6 +229,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       }
       activity.items?.unshift({name: '', inEditMode: true});
       activity.itemsInEditMode = true;
+
       this.requestUpdate();
     }
 

@@ -123,10 +123,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   }}"
                 ></etools-currency-amount-input>
               </td>
-              <td class="padd-top-40">
-                ${this.intervention.planned_budget.currency}
-                ${this.getTotalForItem(item.no_units || 0, item.unit_price || 0)}
-              </td>
+              <td class="padd-top-40">${this.getTotalForItem(item.no_units || 0, item.unit_price || 0)}</td>
             </tr>
           </tbody>
         `
