@@ -6,7 +6,7 @@ import {DataMixin} from '@unicef-polymer/etools-modules-common/dist/mixins/data-
 import {getDifference} from '@unicef-polymer/etools-modules-common/dist/mixins/objects-diff';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
-import {getIntervention} from '../../../common/actions/interventions';
+import {getIntervention, updateCurrentIntervention} from '../../../common/actions/interventions';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 import {AsyncAction, CpOutput} from '@unicef-polymer/etools-types';
@@ -163,11 +163,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
       method: this.isEditDialog ? 'PATCH' : 'POST',
       body: this.isEditDialog ? {id: this.editedData.id, ...diff} : diff
     })
-      .then(() =>
-        getStore()
-          .dispatch<AsyncAction>(getIntervention(String(this.interventionId)))
-          .catch(() => Promise.resolve())
-      )
+      .then((response: any) => getStore().dispatch(updateCurrentIntervention(response.intervention)))
       .then(() => {
         fireEvent(this, 'dialog-closed', {confirmed: true});
       })
