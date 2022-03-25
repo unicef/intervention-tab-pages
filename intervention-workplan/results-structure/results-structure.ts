@@ -65,75 +65,6 @@ const COMBINED_VIEW = 'combined_view';
  */
 @customElement('results-structure')
 export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement)) {
-  static get styles(): CSSResultArray {
-    // language=CSS
-    return [
-      gridLayoutStylesLit,
-      ResultStructureStyles,
-      buttonsStyles,
-      css`
-        iron-icon[icon='create'] {
-          margin-left: 50px;
-        }
-        #view-menu-button {
-          display: none;
-          height: 28px;
-        }
-        #view-menu-button paper-button {
-          height: 28px;
-          background: var(--secondary-background-color);
-          padding-right: 0;
-        }
-        #view-menu-button paper-button iron-icon {
-          margin: 0 7px;
-        }
-        .view-toggle-button {
-          display: flex;
-          height: 28px;
-          margin-left: 4px;
-          padding: 0 19px;
-          font-weight: 500;
-          font-size: 14px;
-          border-radius: 50px;
-          background-color: #d0d0d0;
-          color: rgb(3 114 102);
-          cursor: pointer;
-          ${elevation1};
-        }
-        .view-toggle-button[active] {
-          background-color: #009688;
-          color: #fff;
-        }
-        .view-toggle-button:focus {
-          outline: 0;
-          ${elevation3}
-        }
-        .no-results {
-          padding: 24px;
-        }
-        .pdOtputMargin {
-          margin: 0 4px;
-        }
-        .pdOtputMargin.unicef-user .editable-row .hover-block {
-          background-color: rgb(240, 240, 240);
-        }
-        .pdOtputMargin.partner .editable-row .hover-block {
-          background-color: rgb(240, 240, 240);
-        }
-        #showInactive {
-          margin-right: 8px;
-        }
-        @media (max-width: 1100px) {
-          #view-menu-button {
-            display: block;
-          }
-          .view-toggle-button {
-            display: none;
-          }
-        }
-      `
-    ];
-  }
   get viewType(): string {
     if (this.showActivities && this.showIndicators) {
       return COMBINED_VIEW;
@@ -204,47 +135,9 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     // language=HTML
     return html`
       ${sharedStyles}
-      <style>
-        :host {
-          display: block;
-          margin-bottom: 24px;
-          --paper-tooltip-background: #818181;
-        }
-
-        etools-data-table-row::part(edt-list-row-wrapper) {
-          padding: 0 12px 0 0;
-          background-color: var(--secondary-background-color);
-          min-height: 48px;
-          border-bottom: 1px solid var(--main-border-color) !important;
-        }
-
-        etools-data-table-row::part(edt-list-row-collapse-wrapper) {
-          padding: 0 !important;
-          border-bottom: none !important;
-        }
-
-        .export-res-btn {
-          height: 28px;
-        }
-
-        etools-content-panel::part(ecp-header) {
-          position: relative;
-          border-bottom: 1px groove var(--dark-divider-color);
-        }
-
-        .add-cp {
-          opacity: 0.84;
-          margin-left: 6px;
-        }
-
-        .no-wrap {
-          white-space: nowrap;
-        }
-      </style>
-
       <etools-content-panel
-        show-expand-btn
         panel-title="${translate(translatesMap.result_links)} (${this.noOfPdOutputs})"
+        elevation="0"
       >
         <div slot="panel-btns" class="layout-horizontal align-items-center">
           <paper-toggle-button
@@ -286,21 +179,28 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
               </div>
             `
           )}
-          <etools-info-tooltip
-            custom-icon
-            position="top"
-            ?hide-tooltip="${!this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
-          >
-            <paper-icon-button
-              slot="custom-icon"
-              class="add-cp"
-              icon="add-box"
-              tabindex="0"
-              ?hidden="${!this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
-              @click="${() => this.openCpOutputDialog()}"
-            ></paper-icon-button>
-            <span class="no-wrap" slot="message">${translate('ADD_CP_OUTPUT')}</span>
-          </etools-info-tooltip>
+        </div>
+
+        <!--    CP output ADD button     -->
+        <div
+          class="add-button"
+          @click="${() => this.openCpOutputDialog()}"
+          ?hidden="${!this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
+        >
+          <paper-icon-button slot="custom-icon" icon="add-box" tabindex="0"></paper-icon-button>
+          <span class="no-wrap">${translate('ADD_CP_OUTPUT')}</span>
+        </div>
+
+        <!--    PD output ADD button for non Unicef users     -->
+        <div
+          class="pd-add-section"
+          ?hidden="${this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
+        >
+          <div class="pd-title">Program Document Output(s)</div>
+          <div class="add-button" @click="${() => this.openPdOutputDialog()}">
+            <paper-icon-button slot="custom-icon" icon="add-box" tabindex="0"></paper-icon-button>
+            <span class="no-wrap">${translate('ADD_PD_OUTPUT')}</span>
+          </div>
         </div>
         ${repeat(
           this.resultLinks,
@@ -315,25 +215,33 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
               .showActivities="${this.showActivities}"
               .currency="${this.intervention.planned_budget.currency}"
               .readonly="${!this.permissions.edit.result_links || this.commentMode}"
-              @add-pd="${() => this.openPdOutputDialog({}, result.cp_output)}"
               @edit-cp-output="${() => this.openCpOutputDialog(result)}"
               @delete-cp-output="${() => this.openDeleteCpOutputDialog(result.id)}"
             >
+              ${!this.isUnicefUser || !result.cp_output || !this.permissions.edit.result_links || this.commentMode
+                ? ''
+                : html`
+                    <div class="pd-title">Program Document Output(s)</div>
+                    <div class="add-button pd-add" @click="${() => this.openPdOutputDialog({}, result.cp_output)}">
+                      <paper-icon-button slot="custom-icon" icon="add-box" tabindex="0"></paper-icon-button>
+                      <span class="no-wrap">${translate('ADD_PD_OUTPUT')}</span>
+                    </div>
+                  `}
               ${result.ll_results.map(
                 (pdOutput: ResultLinkLowerResult) => html`
                   <etools-data-table-row
-                    class="pdOtputMargin ${this.isUnicefUser ? 'unicef-user' : 'partner'}"
+                    class="pdOutputMargin ${this.isUnicefUser ? 'unicef-user' : 'partner'}"
                     related-to="pd-output-${pdOutput.id}"
                     related-to-description=" PD Output - ${pdOutput.name}"
                     comments-container
+                    secondary-bg-on-hover
                   >
                     <div slot="row-data" class="layout-horizontal align-items-center editable-row higher-slot">
                       <div class="flex-1 flex-fix">
-                        <div class="heading">${translate(translatesMap.ll_results)}</div>
                         <div class="data bold-data">${pdOutput.code}&nbsp;${pdOutput.name}</div>
                       </div>
 
-                      <div class="flex-none" ?hidden="${!this.showActivities}">
+                      <div class="flex-none total-cache" ?hidden="${!this.showActivities}">
                         <div class="heading">${translate('TOTAL_CASH_BUDGET')}</div>
                         <div class="data">
                           ${this.intervention.planned_budget.currency} ${displayCurrencyAmount(pdOutput.total, '0.00')}
@@ -380,14 +288,6 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           `
         )}
         ${!this.resultLinks.length ? html` <div class="no-results">${translate('NO_RESULTS_ADDED')}</div> ` : ''}
-
-        <div
-          ?hidden="${this.isUnicefUser || this.commentMode || !this.permissions.edit.result_links}"
-          class="add-pd white row-h align-items-center"
-          @click="${() => this.openPdOutputDialog()}"
-        >
-          <paper-icon-button icon="add-box"></paper-icon-button>${translate('ADD_PD_OUTPUT')}
-        </div>
       </etools-content-panel>
     `;
   }
@@ -399,7 +299,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
   firstUpdated(): void {
     super.firstUpdated();
 
-    this.shadowRoot!.querySelectorAll('#view-toggle-button, .add-cp, iron-icon').forEach((el) =>
+    this.shadowRoot!.querySelectorAll('#view-toggle-button, .add-button paper-icon-button, iron-icon').forEach((el) =>
       callClickOnSpacePushListener(el)
     );
     this.shadowRoot!.querySelectorAll('#clickable').forEach((el) => callClickOnEnterPushListener(el));
@@ -582,5 +482,163 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
       this.showInactiveIndicators = element.checked;
       this.requestUpdate();
     }
+  }
+
+  static get styles(): CSSResultArray {
+    // language=CSS
+    return [
+      gridLayoutStylesLit,
+      ResultStructureStyles,
+      buttonsStyles,
+      css`
+        iron-icon[icon='create'] {
+          margin-left: 50px;
+        }
+        #view-menu-button {
+          display: none;
+          height: 28px;
+        }
+        #view-menu-button paper-button {
+          height: 28px;
+          background: var(--secondary-background-color);
+          padding-right: 0;
+        }
+        #view-menu-button paper-button iron-icon {
+          margin: 0 7px;
+        }
+        .view-toggle-button {
+          display: flex;
+          height: 28px;
+          margin-left: 4px;
+          padding: 0 19px;
+          font-weight: 500;
+          font-size: 14px;
+          border-radius: 50px;
+          background-color: #d0d0d0;
+          color: rgb(3 114 102);
+          cursor: pointer;
+          ${elevation1};
+        }
+        .view-toggle-button[active] {
+          background-color: #009688;
+          color: #fff;
+        }
+        .view-toggle-button:focus {
+          outline: 0;
+          ${elevation3}
+        }
+        .no-results {
+          padding: 24px;
+        }
+        .pdOutputMargin.unicef-user .editable-row .hover-block,
+        .pdOutputMargin.partner .editable-row .hover-block {
+          background: linear-gradient(270deg, #c4c4c4 71.65%, rgba(196, 196, 196, 0) 100%);
+          padding-left: 20px;
+        }
+        #showInactive {
+          margin-right: 8px;
+        }
+        .add-button {
+          display: flex;
+          width: min-content;
+          align-items: center;
+          padding: 16px 13px;
+          cursor: pointer;
+          font-size: 15px;
+          font-weight: 500;
+          line-height: 18px;
+          color: #444444;
+        }
+        .add-button:hover {
+          color: #212121;
+        }
+        .add-button.pd-add {
+          padding-left: 31px;
+        }
+        .add-button:not(:last-child) {
+          padding-bottom: 0;
+        }
+        .pd-title {
+          padding: 32px 42px 0 22px;
+          font-size: 16px;
+          font-weight: 500;
+          line-height: 19px;
+        }
+        cp-output-level .pd-title {
+          padding: 32px 42px 0;
+        }
+        .pd-add-section {
+          background-color: var(--secondary-background-color);
+        }
+        etools-data-table-row {
+          position: relative;
+        }
+        etools-data-table-row:not(:last-child):after {
+          content: '';
+          display: block;
+          position: absolute;
+          width: calc(100% - 14px);
+          left: 7px;
+          bottom: 0;
+          height: 1px;
+          background-color: #c4c4c4;
+        }
+        :host {
+          display: block;
+          margin-bottom: 24px;
+          --paper-tooltip-background: #818181;
+        }
+
+        etools-data-table-row::part(edt-list-row-wrapper) {
+          padding: 0 12px 0 23px;
+          background-color: var(--secondary-background-color);
+          min-height: 48px;
+          border-bottom: none;
+        }
+        etools-data-table-row::part(edt-list-row-wrapper):hover {
+          background-color: #c4c4c4;
+        }
+
+        etools-data-table-row::part(edt-list-row-collapse-wrapper) {
+          padding: 0 !important;
+          border-bottom: none !important;
+        }
+        .export-res-btn {
+          height: 28px;
+        }
+        .no-wrap {
+          white-space: nowrap;
+        }
+        etools-content-panel {
+          box-shadow: 0 2px 7px 3px rgba(0, 0, 0, 0.15);
+        }
+        etools-content-panel::part(ecp-header) {
+          border-bottom: none;
+        }
+        etools-content-panel::part(ecp-header) {
+          position: relative;
+          height: 66px;
+          padding: 13px 16px;
+        }
+        etools-content-panel::part(ecp-header):after {
+          content: '';
+          position: absolute;
+          display: block;
+          width: calc(100% - 14px);
+          left: 7px;
+          bottom: 0;
+          height: 1px;
+          background-color: #c4c4c4;
+        }
+        @media (max-width: 1100px) {
+          #view-menu-button {
+            display: block;
+          }
+          .view-toggle-button {
+            display: none;
+          }
+        }
+      `
+    ];
   }
 }

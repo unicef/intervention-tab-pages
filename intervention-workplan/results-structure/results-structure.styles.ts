@@ -12,6 +12,22 @@ export const ResultStructureStyles: CSSResult = css`
     line-height: 24px;
     color: var(--primary-text-color);
   }
+  .total-cache .heading {
+    font-size: 14px;
+    margin-bottom: 10px;
+    text-align: right;
+  }
+  .total-cache .data {
+    font-size: 20px;
+    font-weight: 900;
+    line-height: 23px;
+  }
+  .total-cache .currency {
+    margin-right: 4px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19px;
+  }
   .bold-data {
     font-weight: bold;
     font-size: 16px;
