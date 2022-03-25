@@ -95,7 +95,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                   <etools-currency-amount-input
                     no-label-float
                     .value="${activity.cso_cash}"
-                    ?readonly="${!activity.inEditMode}"
+                    ?readonly="${this.isReadonlyForActivityCash(activity.inEditMode, activity.items)}"
                     @value-changed="${({detail}: CustomEvent) =>
                       this.updateModelValue(activity, 'cso_cash', detail.value)}"
                   ></etools-currency-amount-input>
@@ -104,7 +104,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                   <etools-currency-amount-input
                     no-label-float
                     .value="${activity.unicef_cash}"
-                    ?readonly="${!activity.inEditMode}"
+                    ?readonly="${this.isReadonlyForActivityCash(activity.inEditMode, activity.items)}"
                     @value-changed="${({detail}: CustomEvent) =>
                       this.updateModelValue(activity, 'unicef_cash', detail.value)}"
                   ></etools-currency-amount-input>
@@ -214,6 +214,18 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       activity.items?.unshift({name: '', inEditMode: true});
       activity.itemsInEditMode = true;
       this.requestUpdate();
+    }
+
+    isReadonlyForActivityCash(inEditMode: boolean, items?: InterventionActivityItem[]) {
+      if (!inEditMode) {
+        return true;
+      } else {
+        if (items && items.length) {
+          return true;
+        } else {
+          return false;
+        }
+      }
     }
 
     saveActivity(activity: InterventionActivity) {}

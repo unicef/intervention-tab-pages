@@ -62,7 +62,7 @@ export const EditorTableStyles = css`
   }
 
   tbody.odd tr:nth-child(odd) {
-    background-color: #e2e1e1;
+    background-color: #eeeeee;
   }
 
   td:nth-child(n + 3) {
@@ -73,7 +73,7 @@ export const EditorTableStyles = css`
     background-color: #b6d5f1;
   }
   .gray-1 {
-    background-color: #eae9e9;
+    background-color: #eeeeee;
   }
   .b {
     font-weight: 600;
