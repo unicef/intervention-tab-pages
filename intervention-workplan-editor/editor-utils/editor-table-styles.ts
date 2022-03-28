@@ -134,7 +134,7 @@ export const EditorTableStyles = css`
   .v-middle {
     vertical-align: middle;
   }
-  .padd-top-40 {
-    padding-top: 40px;
+  .l-height-61 {
+    line-height: 61px;
   }
 `;

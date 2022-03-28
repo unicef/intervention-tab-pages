@@ -11,7 +11,6 @@ import {RootState} from '../../../../../redux/store';
 import {
   selectInterventionId,
   selectInterventionQuarters,
-  selectInterventionResultLinks,
   selectInterventionStatus,
   selectResultLinksPermissions
 } from '../intervention-workplan/results-structure/results-structure.selectors';
@@ -21,11 +20,7 @@ import {
   Intervention,
   ResultLinkLowerResult
 } from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
-import {
-  InterventionActivity,
-  InterventionActivityItem,
-  InterventionQuarter
-} from '@unicef-polymer/etools-types/dist/intervention.types';
+import {InterventionQuarter} from '@unicef-polymer/etools-types/dist/intervention.types';
 import {cloneDeep} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {repeat} from 'lit-html/directives/repeat';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
@@ -39,9 +34,11 @@ import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-s
 import {updateCurrentIntervention} from '../common/actions/interventions';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {ActivitiesMixin} from './editor-utils/activities-mixin';
+import {CommentsMixin} from '../common/components/comments/comments-mixin';
+import {ExpectedResultExtended, ResultLinkLowerResultExtended} from './editor-utils/types';
 
 @customElement('editor-table')
-export class EditorTable extends connectStore(ActivitiesMixin(LitElement)) {
+export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
   static get styles() {
     return [EditorTableStyles];
   }
@@ -91,7 +88,7 @@ export class EditorTable extends connectStore(ActivitiesMixin(LitElement)) {
               </tr>
             </tbody>
             ${result.ll_results.map(
-              (pdOutput: ResultLinkLowerResult, pdOutputIndex) => html`
+              (pdOutput: ResultLinkLowerResultExtended, pdOutputIndex) => html`
                 <thead class="gray-1">
                   <tr class="edit">
                     <td class="first-col"></td>
@@ -115,7 +112,11 @@ export class EditorTable extends connectStore(ActivitiesMixin(LitElement)) {
                     <td class="money">Total</td>
                   </tr>
                 </thead>
-                <tbody class="gray-1">
+                <tbody
+                  class="gray-1"
+                  comment-element="pd-output-${pdOutput.id}"
+                  comment-description=" PD Output - ${pdOutput.name}"
+                >
                   <tr class="text">
                     <td>${pdOutput.code}</td>
                     <td colspan="3" class="b">
@@ -180,7 +181,7 @@ export class EditorTable extends connectStore(ActivitiesMixin(LitElement)) {
   @property() interventionStatus!: string;
 
   quarters: InterventionQuarter[] = [];
-  originalResultStructureDetails: ExpectedResult[] = [];
+  originalResultStructureDetails: ExpectedResultExtended[] = [];
 
   @property({type: Boolean}) isUnicefUser = true;
   @property({type: Object})
@@ -189,7 +190,7 @@ export class EditorTable extends connectStore(ActivitiesMixin(LitElement)) {
     required: {result_links?: boolean};
   };
 
-  @property() private _resultLinks: ExpectedResult[] | null = [];
+  // @property() private _resultLinks: ExpectedResult[] | null = [];
 
   @property({type: Object})
   intervention!: Intervention;
@@ -198,7 +199,7 @@ export class EditorTable extends connectStore(ActivitiesMixin(LitElement)) {
   readonly = false;
 
   @property({type: Object})
-  resultStructureDetails!: ExpectedResult;
+  resultStructureDetails!: ExpectedResultExtended[];
 
   private refreshResultStructure = false;
   private prevInterventionId: number | null = null;
@@ -225,6 +226,7 @@ export class EditorTable extends connectStore(ActivitiesMixin(LitElement)) {
       this.prevInterventionId = this.interventionId;
       this.refreshResultStructure = false;
     }
+    super.stateChanged(state);
   }
 
   getResultLinksDetails() {
@@ -236,17 +238,17 @@ export class EditorTable extends connectStore(ActivitiesMixin(LitElement)) {
     );
   }
 
-  addNewPDOutput(llResults: Partial<ResultLinkLowerResult>[]) {
+  addNewPDOutput(llResults: Partial<ResultLinkLowerResultExtended>[]) {
     llResults.unshift({name: '', total: '0', inEditMode: true});
     this.requestUpdate();
   }
 
-  addNewActivity(pdOutput: Partial<ResultLinkLowerResult>) {
+  addNewActivity(pdOutput: Partial<ResultLinkLowerResultExtended>) {
     pdOutput.activities?.unshift({name: '', total: '0', time_frames: [], inEditMode: true});
     this.requestUpdate();
   }
 
-  savePdOutput(pdOutput: ResultLinkLowerResult) {
+  savePdOutput(pdOutput: ResultLinkLowerResultExtended) {
     if (!this.validatePdOutput(pdOutput)) {
       pdOutput.invalid = true;
       this.requestUpdate();
@@ -282,7 +284,7 @@ export class EditorTable extends connectStore(ActivitiesMixin(LitElement)) {
       );
   }
 
-  validatePdOutput(pdOutput: ResultLinkLowerResult) {
+  validatePdOutput(pdOutput: ResultLinkLowerResultExtended) {
     if (!pdOutput.name) {
       return false;
     }
@@ -290,8 +292,8 @@ export class EditorTable extends connectStore(ActivitiesMixin(LitElement)) {
   }
 
   cancelPdOutput(
-    llResults: Partial<ResultLinkLowerResult>[],
-    pdOutput: ResultLinkLowerResult,
+    llResults: Partial<ResultLinkLowerResultExtended>[],
+    pdOutput: ResultLinkLowerResultExtended,
     resultIndex: number,
     pdOutputIndex: number
   ) {

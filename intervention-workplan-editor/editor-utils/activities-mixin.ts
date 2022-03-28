@@ -1,11 +1,7 @@
 import {Constructor, html, LitElement, property} from 'lit-element';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
-import {InterventionActivity, InterventionActivityItem, InterventionQuarter} from '@unicef-polymer/etools-types';
-import {
-  ExpectedResult,
-  Intervention,
-  ResultLinkLowerResult
-} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
+import {InterventionQuarter} from '@unicef-polymer/etools-types';
+import {Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
 import '../time-intervals/time-intervals';
 import {cloneDeep, isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {ActivityItemsMixin} from './activity-item-mixin';
@@ -17,11 +13,17 @@ import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {repeat} from 'lit-html/directives/repeat';
+import {
+  ExpectedResultExtended,
+  InterventionActivityExtended,
+  InterventionActivityItemExtended,
+  ResultLinkLowerResultExtended
+} from './types';
 
 export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T) {
   return class ActivitiesClass extends ActivityItemsMixin(baseClass) {
     @property({type: Array})
-    originalResultStructureDetails!: ExpectedResult[];
+    originalResultStructureDetails!: ExpectedResultExtended[];
 
     @property({type: Object})
     intervention!: Intervention;
@@ -29,12 +31,12 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
     refreshResultStructure = false;
     quarters: InterventionQuarter[] = [];
 
-    renderActivities(pdOutput: ResultLinkLowerResult, resultIndex: number, pdOutputIndex: number) {
+    renderActivities(pdOutput: ResultLinkLowerResultExtended, resultIndex: number, pdOutputIndex: number) {
       return html`
         ${repeat(
           pdOutput.activities,
-          (pdOutput: ResultLinkLowerResult) => pdOutput.id,
-          (activity: InterventionActivity, activityIndex: number) => html`
+          (pdOutput: ResultLinkLowerResultExtended) => pdOutput.id,
+          (activity: InterventionActivityExtended, activityIndex: number) => html`
             <thead>
               <tr class="edit">
                 <td class="first-col"></td>
@@ -63,7 +65,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td>Total</td>
               </tr>
             </thead>
-            <tbody>
+            <tbody comment-element="activity-${activity.id}" comment-description=" Activity - ${activity.name}">
               <tr class="text">
                 <td>${activity.code}</td>
                 <td colspan="3">
@@ -199,8 +201,8 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
     }
 
     cancelActivity(
-      activities: Partial<InterventionActivity>[],
-      activity: InterventionActivity,
+      activities: Partial<InterventionActivityExtended>[],
+      activity: InterventionActivityExtended,
       resultIndex: number,
       pdOutputIndex: number,
       activityIndex: number
@@ -213,7 +215,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
           this.originalResultStructureDetails[resultIndex].ll_results[pdOutputIndex].activities[activityIndex]
         );
       }
-      activity.invalid = false;
+      activity.invalid = {name: false, context_details: false, time_frames: false};
       activity.inEditMode = false;
       activity.itemsInEditMode = false;
 
@@ -227,7 +229,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       this.requestUpdate();
     }
 
-    addNewItem(activity: Partial<InterventionActivity>) {
+    addNewItem(activity: Partial<InterventionActivityExtended>) {
       if (!activity.items) {
         activity.items = [];
       }
@@ -237,7 +239,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       this.requestUpdate();
     }
 
-    isReadonlyForActivityCash(inEditMode: boolean, items?: InterventionActivityItem[]) {
+    isReadonlyForActivityCash(inEditMode: boolean, items?: InterventionActivityItemExtended[]) {
       if (!inEditMode) {
         return true;
       } else {
@@ -249,7 +251,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       }
     }
 
-    validateActivity(activity: InterventionActivity) {
+    validateActivity(activity: InterventionActivityExtended) {
       activity.invalid = {};
       if (!activity.name) {
         activity.invalid.name = true;
@@ -261,13 +263,13 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       }
       return !Object.keys(activity.invalid).length;
     }
-    validateActivityItems(activity: InterventionActivity) {
+    validateActivityItems(activity: InterventionActivityExtended) {
       if (!activity.items || !activity.items.length) {
         return true;
       }
 
       let invalid = false;
-      activity.items.forEach((item: InterventionActivityItem) => {
+      activity.items.forEach((item: InterventionActivityItemExtended) => {
         item.invalid = {};
         item.invalid.name = !item.name;
         item.invalid.no_units = !item.no_units;
@@ -282,7 +284,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       return !invalid;
     }
 
-    saveActivity(activity: InterventionActivity, pdOutputId: string, interventionId: string) {
+    saveActivity(activity: InterventionActivityExtended, pdOutputId: number, interventionId: number | null) {
       if (!this.validateActivity(activity) || !this.validateActivityItems(activity)) {
         this.requestUpdate();
         fireEvent(this, 'toast', {
@@ -302,7 +304,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
         delete activityToSave.cso_cash;
       }
       sendRequest({
-        endpoint: this._getEndpoint(activity.id, pdOutputId, interventionId),
+        endpoint: this._getEndpoint(activity.id, String(pdOutputId), interventionId),
         method: activity.id ? 'PATCH' : 'POST',
         body: activityToSave
       })
