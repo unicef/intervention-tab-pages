@@ -16,6 +16,7 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {repeat} from 'lit-html/directives/repeat';
 
 export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T) {
   return class ActivitiesClass extends ActivityItemsMixin(baseClass) {
@@ -25,11 +26,14 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
     @property({type: Object})
     intervention!: Intervention;
 
+    refreshResultStructure = false;
     quarters: InterventionQuarter[] = [];
 
     renderActivities(pdOutput: ResultLinkLowerResult, resultIndex: number, pdOutputIndex: number) {
       return html`
-        ${pdOutput.activities?.map(
+        ${repeat(
+          pdOutput.activities,
+          (pdOutput: ResultLinkLowerResult) => pdOutput.id,
           (activity: InterventionActivity, activityIndex: number) => html`
             <thead>
               <tr class="edit">
@@ -302,7 +306,10 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
         method: activity.id ? 'PATCH' : 'POST',
         body: activityToSave
       })
-        .then((response: any) => getStore().dispatch(updateCurrentIntervention(response.intervention)))
+        .then((response: any) => {
+          getStore().dispatch(updateCurrentIntervention(response.intervention));
+          this.refreshResultStructure = true;
+        })
         .catch((error: any) => {
           fireEvent(this, 'toast', {text: formatServerErrorAsText(error)});
         })

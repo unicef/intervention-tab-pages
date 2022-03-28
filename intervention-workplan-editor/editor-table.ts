@@ -200,6 +200,7 @@ export class EditorTable extends connectStore(ActivitiesMixin(LitElement)) {
   @property({type: Object})
   resultStructureDetails!: ExpectedResult;
 
+  private refreshResultStructure = false;
   private prevInterventionId: number | null = null;
 
   stateChanged(state: RootState) {
@@ -219,9 +220,10 @@ export class EditorTable extends connectStore(ActivitiesMixin(LitElement)) {
     this.intervention = cloneDeep(currentIntervention(state));
     // this.resultLinks = selectInterventionResultLinks(state);
 
-    if (this.prevInterventionId != selectInterventionId(state)) {
+    if (this.prevInterventionId != selectInterventionId(state) || this.refreshResultStructure) {
       this.getResultLinksDetails();
       this.prevInterventionId = this.interventionId;
+      this.refreshResultStructure = false;
     }
   }
 
