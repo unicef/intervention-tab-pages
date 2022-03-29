@@ -27,6 +27,9 @@ export class ActivityTimeFrames extends LitElement {
           flex-direction: column;
           align-items: center;
         }
+        *[hidden] {
+          display: none !important;
+        }
         .title {
           font-weight: 500;
           font-size: 16px;
@@ -109,10 +112,13 @@ export class ActivityTimeFrames extends LitElement {
   @property() private _timeFrames: [string, ActivityTime[]][] = [];
   @property() selectedTimeFrames: number[] = [];
   @property() readonly: boolean | undefined = false;
+  @property({type: Boolean, attribute: 'hide-label', reflect: true}) hideLabel = false;
 
   protected render(): TemplateResult {
     return html`
-      <label class="paper-label layout-horizontal center-align" required>${translate('ACTIVITY_TIMES')}</label>
+      <label class="paper-label layout-horizontal center-align" required ?hidden="${this.hideLabel}">
+        ${translate('ACTIVITY_TIMES')}
+      </label>
       <div class="layout-horizontal center-align time-frame-container">
         ${!this._timeFrames.length ? html`${translate('ACTIVITY_TIMES_MSG')}` : html``}
         ${this._timeFrames.map(
