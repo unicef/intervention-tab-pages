@@ -31,6 +31,9 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
 import {ActivitiesMixin} from './editor-utils/activities-mixin';
 import {CommentsMixin} from '../common/components/comments/comments-mixin';
 import {ExpectedResultExtended, ResultLinkLowerResultExtended} from './editor-utils/types';
+import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {translate} from 'lit-translate/directives/translate';
+import {AsyncAction} from '@unicef-polymer/etools-types';
 
 @customElement('editor-table')
 export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
@@ -107,6 +110,11 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
                           pdOutput.inEditMode = true;
                           this.requestUpdate();
                         }}"
+                      ></paper-icon-button>
+                      <paper-icon-button
+                        icon="delete"
+                        ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
+                        @click="${() => this.openDeletePdOutputDialog(pdOutput.id)}"
                       ></paper-icon-button>
                     </td>
                   </tr>
@@ -328,6 +336,35 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
     pdOutput.inEditMode = false;
 
     this.requestUpdate();
+  }
+
+  async openDeletePdOutputDialog(lower_result_id: number) {
+    const confirmed = await openDialog({
+      dialog: 'are-you-sure',
+      dialogData: {
+        content: translate('REMOVE_PD_MSG'),
+        confirmBtnText: translate('CONFIRM_BTN_TXT')
+      }
+    }).then(({confirmed}) => {
+      return confirmed;
+    });
+
+    if (confirmed) {
+      this.deletePDOutputFromPD(lower_result_id);
+    }
+  }
+
+  deletePDOutputFromPD(lower_result_id: number) {
+    const endpoint = getEndpoint(interventionEndpoints.lowerResultsDelete, {
+      lower_result_id,
+      intervention_id: this.interventionId
+    });
+    sendRequest({
+      method: 'DELETE',
+      endpoint: endpoint
+    }).then(() => {
+      this.getResultLinksDetails();
+    });
   }
 
   updateModelValue(model: any, property: string, newVal: any) {
