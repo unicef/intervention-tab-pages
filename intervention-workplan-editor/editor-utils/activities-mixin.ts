@@ -53,7 +53,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td class="col-g"></td>
                 <td class="col-g"></td>
                 <td class="col-g"></td>
-                <td class="col-6">
+                <td class="col-6" colspan="2">
                   <paper-icon-button
                     icon="create"
                     ?hidden="${activity.inEditMode || !this.permissions.edit.result_links}"
@@ -71,7 +71,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td class="a-right">Time Periods</td>
                 <td>CSO Contribution</td>
                 <td>UNICEF Cash</td>
-                <td>Total</td>
+                <td colspan="2">Total</td>
               </tr>
             </thead>
             <tbody comment-element="activity-${activity.id}" comment-description=" Activity - ${activity.name}">
@@ -138,7 +138,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                       this.updateModelValue(activity, 'unicef_cash', detail.value)}"
                   ></etools-currency-amount-input>
                 </td>
-                <td>
+                <td colspan="2">
                   ${this.intervention.planned_budget.currency}
                   <span class="b"
                     >${displayCurrencyAmount(
@@ -160,7 +160,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td></td>
                 <td></td>
                 <td></td>
-                <td class="h-center">
+                <td class="h-center" colspan="2">
                   <div class="flex-h justify-right" ?hidden="${!(activity.inEditMode || activity.itemsInEditMode)}">
                     <paper-button @click="${() => this.saveActivity(activity, pdOutput.id, this.intervention.id)}"
                       >Save</paper-button
@@ -184,7 +184,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td class="col-g">Price/Unit</td>
                 <td class="col-g">Partner Cash</td>
                 <td class="col-g">UNICEF CASH</td>
-                <td class="col-g">Total (${this.intervention.planned_budget.currency})</td>
+                <td class="col-g" colspan="2">Total (${this.intervention.planned_budget.currency})</td>
               </tr>
               <tr ?hidden="${!this.permissions.edit.result_links}">
                 <td></td>
@@ -197,7 +197,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
+                <td colspan="2"></td>
               </tr>
             </thead>
             ${this.renderActivityItems(activity)}

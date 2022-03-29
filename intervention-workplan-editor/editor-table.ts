@@ -14,11 +14,7 @@ import {
   selectResultLinksPermissions
 } from '../intervention-workplan/results-structure/results-structure.selectors';
 import {currentIntervention, isUnicefUser} from '../common/selectors';
-import {
-  ExpectedResult,
-  Intervention,
-  ResultLinkLowerResult
-} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
+import {ExpectedResult, Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
 import {InterventionQuarter} from '@unicef-polymer/etools-types/dist/intervention.types';
 import {cloneDeep} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {repeat} from 'lit-html/directives/repeat';
@@ -44,6 +40,15 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
   render() {
     return html`
       ${sharedStyles}
+      <style>
+        paper-textarea {
+          outline: none;
+          flex: auto;
+          --paper-input-container-input: {
+            display: block;
+          }
+        }
+      </style>
       <table>
         ${repeat(
           this.resultStructureDetails,
@@ -54,13 +59,13 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
                 <td class="first-col"></td>
                 <td colspan="3"></td>
                 <td colspan="3"></td>
-                <td class="col-6"></td>
+                <td class="col-6" colspan="2"></td>
               </tr>
               <tr class="header blue">
                 <td>ID</td>
                 <td colspan="3">Country Programme Output</td>
                 <td colspan="3"></td>
-                <td class="money">Total</td>
+                <td colspan="2">Total</td>
               </tr>
             </thead>
             <tbody>
@@ -68,7 +73,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
                 <td>${result.code}</td>
                 <td colspan="3" class="b">${result.cp_output_name}</td>
                 <td colspan="3"></td>
-                <td class="money">
+                <td colspan="2">
                   ${this.intervention.planned_budget.currency}
                   <span class="b">${displayCurrencyAmount(result.total, '0.00')}</span>
                 </td>
@@ -84,7 +89,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
                   Add New PD Output
                 </td>
                 <td colspan="3"></td>
-                <td></td>
+                <td colspan="2"></td>
               </tr>
             </tbody>
             ${result.ll_results.map(
@@ -94,7 +99,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
                     <td class="first-col"></td>
                     <td colspan="3"></td>
                     <td colspan="3"></td>
-                    <td class="col-6">
+                    <td class="col-6" colspan="2">
                       <paper-icon-button
                         icon="create"
                         ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
@@ -109,7 +114,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
                     <td></td>
                     <td colspan="3">PD Output</td>
                     <td colspan="3"></td>
-                    <td class="money">Total</td>
+                    <td colspan="2">Total</td>
                   </tr>
                 </thead>
                 <tbody
@@ -132,7 +137,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
                       ></paper-textarea>
                     </td>
                     <td colspan="3"></td>
-                    <td class="money">
+                    <td colspan="2">
                       ${this.intervention.planned_budget.currency}
                       <span class="b">${displayCurrencyAmount(pdOutput.total, '0.00')}</span>
                     </td>
@@ -149,7 +154,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
                       >
                     </td>
                     <td colspan="3"></td>
-                    <td class="h-center">
+                    <td class="h-center" colspan="2">
                       <div class="flex-h justify-right" ?hidden="${!pdOutput.inEditMode}">
                         <paper-button @click="${() => this.savePdOutput(pdOutput, result.cp_output)}"
                           >Save</paper-button

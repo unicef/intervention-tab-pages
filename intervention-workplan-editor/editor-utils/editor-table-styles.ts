@@ -68,6 +68,9 @@ export const EditorTableStyles = css`
   td:nth-child(n + 4) {
     text-align: right;
   }
+  td:nth-child(n-1) {
+    border-right: none;
+  }
   td.a-right {
     text-align: right;
   }
@@ -127,5 +130,13 @@ export const EditorTableStyles = css`
 
   .v-middle {
     vertical-align: middle;
+  }
+  .del-item {
+    vertical-align: bottom;
+    padding-left: 0;
+  }
+  paper-icon-button#delItem {
+    padding: 0;
+    width: 25px;
   }
 `;

@@ -5,6 +5,7 @@ import {html, LitElement} from 'lit-element';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {InterventionActivityExtended, InterventionActivityItemExtended} from './types';
 import {repeat} from 'lit-html/directives/repeat';
+import '@polymer/paper-input/paper-textarea';
 
 export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass: T) {
   return class ActivityItemsClass extends baseClass {
@@ -18,8 +19,8 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       return html`<tbody class="odd">
         ${repeat(
           activity.items || [],
-          (item: InterventionActivityItemExtended) => item.name,
-          (item: InterventionActivityItemExtended) => html`
+          (item: InterventionActivityItemExtended) => item.id,
+          (item: InterventionActivityItemExtended, itemIndex: number) => html`
             <tr class="activity-items-row">
               <td>
                 <paper-input readonly .value="${item.code || 'N/A'}"></paper-input>
@@ -136,10 +137,24 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   .value="${this.getTotalForItem(item.no_units || 0, item.unit_price || 0)}"
                 ></paper-input>
               </td>
+              <td class="del-item">
+                <paper-icon-button
+                  id="delItem"
+                  icon="delete"
+                  tabindex="0"
+                  ?hidden="${!activity.itemsInEditMode}"
+                  @click="${() => this.removeItem(activity, itemIndex)}"
+                ></paper-icon-button>
+              </td>
             </tr>
           `
         )}
       </tbody>`;
+    }
+
+    removeItem(activity: InterventionActivityExtended, itemIndex: number) {
+      activity.items.splice(itemIndex, 1);
+      this.requestUpdate();
     }
 
     getLabel(itemsInEditMode: boolean, label: string) {
