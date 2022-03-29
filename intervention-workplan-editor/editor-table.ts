@@ -4,7 +4,6 @@ import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/iron-icons';
 import '@polymer/paper-input/paper-textarea';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {TABS} from '../common/constants';
 import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import {RootState} from '../../../../../redux/store';
@@ -152,7 +151,9 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
                     <td colspan="3"></td>
                     <td class="h-center">
                       <div class="flex-h justify-right" ?hidden="${!pdOutput.inEditMode}">
-                        <paper-button @click="${() => this.savePdOutput(pdOutput)}">Save</paper-button>
+                        <paper-button @click="${() => this.savePdOutput(pdOutput, result.cp_output)}"
+                          >Save</paper-button
+                        >
                         <paper-icon-button
                           icon="close"
                           @click="${() => this.cancelPdOutput(result.ll_results, pdOutput, resultIndex, pdOutputIndex)}"
@@ -170,14 +171,18 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
     `;
   }
 
-  // get resultLinks(): ExpectedResult[] {
-  //   return this._resultLinks || [];
-  // }
-  // set resultLinks(data: ExpectedResult[]) {
-  //   this._resultLinks = data.sort(
-  //     (linkA, linkB) => Number(Boolean(linkB.cp_output)) - Number(Boolean(linkA.cp_output))
-  //   );
-  // }
+  private _resultStructureDetails: ExpectedResultExtended[] = [];
+  @property({type: Array})
+  get resultStructureDetails(): ExpectedResultExtended[] {
+    return this._resultStructureDetails || [];
+  }
+  set resultStructureDetails(data: ExpectedResultExtended[]) {
+    // data.forEach((r) => {
+    //   r.ll_results = r.ll_results.sort((a, b) => Number(b.id) - Number(a.id));
+    //   r.ll_results.forEach((l) => (l.activities = l.activities.sort((a, b) => Number(b.id) - Number(a.id))));
+    // });
+    this._resultStructureDetails = data.sort((a, b) => Number(Boolean(b.id)) - Number(Boolean(a.id)));
+  }
   @property() interventionId!: number | null;
   @property() interventionStatus!: string;
 
@@ -198,9 +203,6 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
 
   @property({type: Boolean})
   readonly = false;
-
-  @property({type: Object})
-  resultStructureDetails!: ExpectedResultExtended[];
 
   private refreshResultStructure = false;
   private prevInterventionId: number | null = null;
@@ -231,10 +233,19 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
   }
 
   getResultLinksDetails() {
+    fireEvent(this, 'global-loading', {
+      active: true,
+      loadingSource: this.localName
+    });
     sendRequest({endpoint: getEndpoint(interventionEndpoints.resultLinksDetails, {id: this.intervention.id})}).then(
       (response: any) => {
         this.resultStructureDetails = response.result_links;
         this.originalResultStructureDetails = cloneDeep(this.resultStructureDetails);
+        this.requestUpdate();
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: this.localName
+        });
       }
     );
   }
@@ -249,7 +260,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
     this.requestUpdate();
   }
 
-  savePdOutput(pdOutput: ResultLinkLowerResultExtended) {
+  savePdOutput(pdOutput: ResultLinkLowerResultExtended, cpOutputId: number) {
     if (!this.validatePdOutput(pdOutput)) {
       pdOutput.invalid = true;
       this.requestUpdate();
@@ -262,15 +273,20 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
     });
 
     const endpoint: EtoolsRequestEndpoint = pdOutput.id
-      ? getEndpoint(interventionEndpoints.pdDetails, {pd_id: pdOutput.id, intervention_id: this.interventionId})
-      : getEndpoint(interventionEndpoints.createPd, {intervention_id: this.interventionId});
+      ? getEndpoint(interventionEndpoints.pdOutputDetails, {pd_id: pdOutput.id, intervention_id: this.interventionId})
+      : getEndpoint(interventionEndpoints.createPdOutput, {intervention_id: this.interventionId});
 
     sendRequest({
       endpoint,
       method: pdOutput.id ? 'PATCH' : 'POST',
-      body: pdOutput.id ? {id: pdOutput.id, name: pdOutput.name} : {name: pdOutput.name}
+      body: pdOutput.id
+        ? {id: pdOutput.id, name: pdOutput.name, cp_output: cpOutputId}
+        : {name: pdOutput.name, cp_output: cpOutputId}
     })
-      .then((response) => getStore().dispatch(updateCurrentIntervention(response.intervention)))
+      .then((response) => {
+        this.refreshResultStructure = true;
+        getStore().dispatch(updateCurrentIntervention(response.intervention));
+      })
       .then(() => {
         fireEvent(this, 'dialog-closed', {confirmed: true});
       })

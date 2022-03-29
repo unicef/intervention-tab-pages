@@ -16,8 +16,8 @@ export interface EtoolsEndpoints {
   resultLinks: EtoolsEndpoint;
   ramIndicators: EtoolsEndpoint;
   resultLinkGetDelete: EtoolsEndpoint;
-  pdDetails: EtoolsEndpoint;
-  createPd: EtoolsEndpoint;
+  pdOutputDetails: EtoolsEndpoint;
+  createPdOutput: EtoolsEndpoint;
   pdActivityDetails: EtoolsEndpoint;
   pdActivities: EtoolsEndpoint;
   interventionBudgetUpdate: EtoolsEndpoint;
@@ -104,10 +104,10 @@ export const interventionEndpoints: EtoolsEndpoints = {
   ramIndicators: {
     template: '/api/v2/reports/results/<%=id%>/indicators/'
   },
-  pdDetails: {
+  pdOutputDetails: {
     template: '/api/pmp/v3/interventions/<%=intervention_id%>/pd-outputs/<%=pd_id%>/'
   },
-  createPd: {
+  createPdOutput: {
     template: '/api/pmp/v3/interventions/<%=intervention_id%>/pd-outputs/'
   },
   pdActivities: {

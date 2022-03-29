@@ -38,10 +38,13 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
     quarters: InterventionQuarter[] = [];
 
     renderActivities(pdOutput: ResultLinkLowerResultExtended, resultIndex: number, pdOutputIndex: number) {
+      if (!pdOutput || !pdOutput.activities) {
+        return '';
+      }
       return html`
         ${repeat(
-          pdOutput.activities,
-          (pdOutput: ResultLinkLowerResultExtended) => pdOutput.id,
+          pdOutput.activities || [],
+          (activity: InterventionActivityExtended) => activity.id,
           (activity: InterventionActivityExtended, activityIndex: number) => html`
             <thead>
               <tr class="edit">
@@ -316,8 +319,8 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
         body: activityToSave
       })
         .then((response: any) => {
-          getStore().dispatch(updateCurrentIntervention(response.intervention));
           this.refreshResultStructure = true;
+          getStore().dispatch(updateCurrentIntervention(response.intervention));
         })
         .catch((error: any) => {
           fireEvent(this, 'toast', {text: formatServerErrorAsText(error)});

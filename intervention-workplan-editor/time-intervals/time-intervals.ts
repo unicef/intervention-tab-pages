@@ -12,6 +12,7 @@ export class TimeIntervals extends LitElement {
   @property({type: Boolean, reflect: true, attribute: true}) readonly: boolean | undefined = false;
   @property({type: Boolean})
   invalid = false;
+
   protected render(): TemplateResult | TemplateResult[] {
     return this.quarters.length
       ? html`${this.quarters.map(
@@ -20,7 +21,6 @@ export class TimeIntervals extends LitElement {
           )}
           <div ?hidden="${!this.invalid}" class="invalid">Pls select Time Periods</div>`
       : html`
-          <div>-</div>
           <etools-info-tooltip class="" icon-first custom-icon>
             <iron-icon icon="info" slot="custom-icon"></iron-icon>
             <div slot="message">${translate('ACTIVITY_TIMES_MSG')}</div>
@@ -90,6 +90,9 @@ export class TimeIntervals extends LitElement {
           color: var(--error-color);
           padding: 4px 0;
           font-size: 12px;
+        }
+        iron-icon {
+          color: var(--primary-color);
         }
       `
     ];

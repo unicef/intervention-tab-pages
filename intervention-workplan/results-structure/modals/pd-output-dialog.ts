@@ -147,8 +147,11 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
     this.loadingInProcess = true;
     // get endpoint
     const endpoint: EtoolsRequestEndpoint = this.isEditDialog
-      ? getEndpoint(interventionEndpoints.pdDetails, {pd_id: this.editedData.id, intervention_id: this.interventionId})
-      : getEndpoint(interventionEndpoints.createPd, {intervention_id: this.interventionId});
+      ? getEndpoint(interventionEndpoints.pdOutputDetails, {
+          pd_id: this.editedData.id,
+          intervention_id: this.interventionId
+        })
+      : getEndpoint(interventionEndpoints.createPdOutput, {intervention_id: this.interventionId});
 
     // get changed fields
     const diff: Partial<ResultLinkLowerResult> = getDifference<ResultLinkLowerResult>(

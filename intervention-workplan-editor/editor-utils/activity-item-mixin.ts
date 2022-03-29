@@ -12,12 +12,12 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
     intervention!: Intervention;
 
     renderActivityItems(activity: InterventionActivityExtended) {
-      if (!activity.items) {
+      if (!activity || !activity.items) {
         return '';
       }
       return html`<tbody class="odd">
         ${repeat(
-          activity.items,
+          activity.items || [],
           (item: InterventionActivityItemExtended) => item.name,
           (item: InterventionActivityItemExtended) => html`
             <tr class="activity-items-row">

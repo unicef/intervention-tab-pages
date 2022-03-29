@@ -76,7 +76,7 @@ export const EditorTableStyles = css`
     background-color: #b6d5f1;
   }
   .gray-1 {
-    background-color: #eeeeee;
+    background-color: #f7f6f6;
   }
   .b {
     font-weight: 600;
