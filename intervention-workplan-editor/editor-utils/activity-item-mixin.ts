@@ -18,7 +18,9 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
         ${activity.items?.map(
           (item: InterventionActivityItemExtended) => html`
             <tr class="activity-items-row">
-              <td class="v-middle">${item.code || 'N/A'}</td>
+              <td>
+                <paper-input readonly .value="${item.code || 'N/A'}"></paper-input>
+              </td>
               <td>
                 <paper-textarea
                   always-float-label
@@ -125,7 +127,12 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   }}"
                 ></etools-currency-amount-input>
               </td>
-              <td class="l-height-61">${this.getTotalForItem(item.no_units || 0, item.unit_price || 0)}</td>
+              <td>
+                <paper-input
+                  readonly
+                  .value="${this.getTotalForItem(item.no_units || 0, item.unit_price || 0)}"
+                ></paper-input>
+              </td>
             </tr>
           `
         )}

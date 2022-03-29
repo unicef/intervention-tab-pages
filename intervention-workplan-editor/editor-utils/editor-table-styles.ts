@@ -128,7 +128,4 @@ export const EditorTableStyles = css`
   .v-middle {
     vertical-align: middle;
   }
-  .l-height-61 {
-    line-height: 61px;
-  }
 `;
