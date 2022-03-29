@@ -85,12 +85,6 @@ export const EditorTableStyles = css`
     border-bottom: 1px solid #b8b8b8;
   }
 
-  paper-icon-button[icon='add-box'] {
-    padding-left: 0;
-  }
-  paper-icon-button[icon='create'] {
-    padding-top: 0;
-  }
   paper-icon-button {
     color: var(--secondary-text-color);
   }

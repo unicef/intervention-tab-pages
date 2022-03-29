@@ -1,21 +1,22 @@
-import {Intervention, InterventionActivity, InterventionActivityItem} from '@unicef-polymer/etools-types';
+import {Intervention} from '@unicef-polymer/etools-types';
 import {Constructor} from '@unicef-polymer/etools-types/dist/global.types';
 import '@polymer/paper-input/paper-input';
 import {html, LitElement} from 'lit-element';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {InterventionActivityExtended, InterventionActivityItemExtended} from './types';
 
 export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass: T) {
   return class ActivityItemsClass extends baseClass {
     @property({type: Object})
     intervention!: Intervention;
 
-    renderActivityItems(activity: InterventionActivity) {
+    renderActivityItems(activity: InterventionActivityExtended) {
       if (!activity.items) {
         return '';
       }
       return html`<tbody class="odd">
         ${activity.items?.map(
-          (item: InterventionActivityItem) => html`
+          (item: InterventionActivityItemExtended) => html`
             <tr class="activity-items-row">
               <td class="v-middle">${item.code || 'N/A'}</td>
               <td>
@@ -135,7 +136,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       return itemsInEditMode ? label : '';
     }
 
-    setAutoValidate(item: InterventionActivityItem, prop: string) {
+    setAutoValidate(item: InterventionActivityItemExtended, prop: string) {
       if (!item.autovalidate) {
         item.autovalidate = {};
       }
@@ -143,8 +144,8 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       this.requestUpdate();
     }
 
-    updateUnicefCash(item: InterventionActivityItem) {
-      if (isNaN(item.cso_cash)) {
+    updateUnicefCash(item: InterventionActivityItemExtended) {
+      if (isNaN(Number(item.cso_cash))) {
         return;
       }
       let total = Number(item.no_units) * Number(item.unit_price);
@@ -159,8 +160,8 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       this.validateCsoAndUnicefCash(item);
     }
 
-    updateCsoCash(item: InterventionActivityItem) {
-      if (isNaN(item.unicef_cash)) {
+    updateCsoCash(item: InterventionActivityItemExtended) {
+      if (isNaN(Number(item.unicef_cash))) {
         return;
       }
       let total = Number(item.no_units) * Number(item.unit_price);
@@ -181,8 +182,8 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       return displayCurrencyAmount(String(total), '0', 2);
     }
 
-    validateCsoAndUnicefCash(item: InterventionActivityItem) {
-      if (item.no_units == 0 || item.unit_price == 0) {
+    validateCsoAndUnicefCash(item: InterventionActivityItemExtended) {
+      if (Number(item.no_units) == 0 || Number(item.unit_price) == 0) {
         return;
       }
 

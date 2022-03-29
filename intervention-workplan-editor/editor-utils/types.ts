@@ -40,7 +40,15 @@ export interface ResultLinkLowerResult {
 
 export type InterventionActivityItemExtended = InterventionActivityItem & {
   inEditMode: boolean;
-  invalid: {name: boolean; no_units: boolean; unit_price: boolean};
+  invalid: {
+    name: boolean;
+    unit: boolean;
+    no_units: boolean;
+    unit_price: boolean;
+    cso_cash: boolean;
+    unicef_cash: boolean;
+  };
+  autovalidate: {name: boolean; unit: boolean};
 };
 
 export type InterventionActivityExtended = InterventionActivity & {
