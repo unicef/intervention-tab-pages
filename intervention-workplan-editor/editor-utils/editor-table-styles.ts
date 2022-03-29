@@ -65,11 +65,15 @@ export const EditorTableStyles = css`
     background-color: #e2e1e1;
   }
 
+  td:nth-child(n + 3) {
+    text-align: right;
+  }
+
   .blue {
     background-color: #b6d5f1;
   }
   .gray-1 {
-    background-color: #e2e1e1;
+    background-color: #eae9e9;
   }
   .b {
     font-weight: 600;
@@ -84,9 +88,11 @@ export const EditorTableStyles = css`
   paper-icon-button[icon='create'] {
     padding-top: 0;
   }
-
   paper-icon-button {
     color: var(--secondary-text-color);
+  }
+  paper-icon-button[icon='close'] {
+    color: red;
   }
 
   paper-textarea {
@@ -97,7 +103,35 @@ export const EditorTableStyles = css`
     --paper-input-container-label-floating_-_font-weight: 600;
   }
 
+  etools-currency-amount-input {
+    text-align: right;
+  }
+
+  paper-button {
+    color: white;
+    background-color: var(--primary-color);
+    padding: 5px;
+    border-radius: 7px;
+  }
+
   .pad-top-8 {
     padding-top: 8px;
+  }
+
+  .flex-h {
+    display: flex;
+  }
+  .justify-right {
+    justify-content: flex-end;
+  }
+  tr.activity-items-row > td {
+    padding-bottom: 16px;
+  }
+
+  .v-middle {
+    vertical-align: middle;
+  }
+  .padd-top-40 {
+    padding-top: 40px;
   }
 `;
