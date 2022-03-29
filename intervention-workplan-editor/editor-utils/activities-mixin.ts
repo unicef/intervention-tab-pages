@@ -28,6 +28,12 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
     @property({type: Object})
     intervention!: Intervention;
 
+    @property({type: Object})
+    permissions!: {
+      edit: {result_links?: boolean};
+      required: {result_links?: boolean};
+    };
+
     refreshResultStructure = false;
     quarters: InterventionQuarter[] = [];
 
@@ -47,7 +53,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td class="col-6">
                   <paper-icon-button
                     icon="create"
-                    ?hidden="${activity.inEditMode}"
+                    ?hidden="${activity.inEditMode || !this.permissions.edit.result_links}"
                     @click="${() => {
                       activity.inEditMode = true;
                       activity.itemsInEditMode = true;
@@ -93,6 +99,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td>
                   <div class="flex-h justify-right">
                     <time-intervals
+                      .readonly="${!this.permissions.edit.result_links}"
                       tabindex="0"
                       .invalid="${activity.invalid?.time_frames}"
                       .quarters="${this.quarters}"
@@ -142,7 +149,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
               <tr class="add">
                 <td></td>
                 <td colspan="3">
-                  <span ?hidden="${activity.items?.length}">
+                  <span ?hidden="${activity.items?.length || !this.permissions.edit.result_links}">
                     <paper-icon-button icon="add-box" @click="${() => this.addNewItem(activity)}"></paper-icon-button>
                     Add New Item
                   </span>
@@ -176,7 +183,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td class="col-g">UNICEF CASH</td>
                 <td class="col-g">Total (${this.intervention.planned_budget.currency})</td>
               </tr>
-              <tr>
+              <tr ?hidden="${!this.permissions.edit.result_links}">
                 <td></td>
                 <td>
                   <paper-icon-button icon="add-box" @click="${() => this.addNewItem(activity)}"></paper-icon-button> Add

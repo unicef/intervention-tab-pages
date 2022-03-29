@@ -79,6 +79,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
                 <td colspan="3">
                   <paper-icon-button
                     icon="add-box"
+                    ?hidden="${!this.permissions.edit.result_links}"
                     @click="${() => this.addNewPDOutput(result.ll_results)}"
                   ></paper-icon-button>
                   Add New PD Output
@@ -97,7 +98,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
                     <td class="col-6">
                       <paper-icon-button
                         icon="create"
-                        ?hidden="${pdOutput.inEditMode}"
+                        ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
                         @click="${() => {
                           pdOutput.inEditMode = true;
                           this.requestUpdate();
@@ -140,7 +141,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
                   <tr class="add">
                     <td></td>
                     <td colspan="3">
-                      <span ?hidden="${pdOutput.inEditMode}"
+                      <span ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
                         ><paper-icon-button
                           icon="add-box"
                           @click="${() => this.addNewActivity(pdOutput)}"
