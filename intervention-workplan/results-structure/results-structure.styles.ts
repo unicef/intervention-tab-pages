@@ -126,4 +126,25 @@ export const ResultStructureStyles: CSSResult = css`
   div[slot='panel-btns'] {
     opacity: 1;
   }
+  .add-button {
+    display: flex;
+    width: min-content;
+    align-items: center;
+    padding: 16px 13px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 18px;
+    color: #444444;
+    white-space: nowrap;
+  }
+  .add-button:hover {
+    color: #212121;
+  }
+  .add-button.pd-add {
+    padding-left: 31px;
+  }
+  .add-button:not(:last-child) {
+    padding-bottom: 0;
+  }
 `;

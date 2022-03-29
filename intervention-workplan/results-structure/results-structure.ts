@@ -218,6 +218,12 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
               @edit-cp-output="${() => this.openCpOutputDialog(result)}"
               @delete-cp-output="${() => this.openDeleteCpOutputDialog(result.id)}"
             >
+              <div
+                class="no-results"
+                ?hidden="${!this.isUnicefUser || this.permissions.edit.result_links || result.ll_results.length}"
+              >
+                ${translate('NO_PDS_ADDED')}
+              </div>
               ${!this.isUnicefUser || !result.cp_output || !this.permissions.edit.result_links || this.commentMode
                 ? ''
                 : html`
@@ -248,15 +254,13 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                         </div>
                       </div>
 
-                      <div class="hover-block">
+                      <div class="hover-block" ?hidden="${!this.permissions.edit.result_links}">
                         <paper-icon-button
                           icon="icons:create"
-                          ?hidden="${!this.permissions.edit.result_links}"
                           @click="${() => this.openPdOutputDialog(pdOutput, result.cp_output)}"
                         ></paper-icon-button>
                         <paper-icon-button
                           icon="icons:delete"
-                          ?hidden="${!this.permissions.edit.result_links}"
                           @click="${() => this.openDeletePdOutputDialog(pdOutput.id)}"
                         ></paper-icon-button>
                       </div>
@@ -538,26 +542,6 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         #showInactive {
           margin-right: 8px;
         }
-        .add-button {
-          display: flex;
-          width: min-content;
-          align-items: center;
-          padding: 16px 13px;
-          cursor: pointer;
-          font-size: 15px;
-          font-weight: 500;
-          line-height: 18px;
-          color: #444444;
-        }
-        .add-button:hover {
-          color: #212121;
-        }
-        .add-button.pd-add {
-          padding-left: 31px;
-        }
-        .add-button:not(:last-child) {
-          padding-bottom: 0;
-        }
         .pd-title {
           padding: 32px 42px 0 22px;
           font-size: 16px;
@@ -573,6 +557,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         etools-data-table-row {
           position: relative;
         }
+        etools-data-table-row.partner:after,
         etools-data-table-row:not(:last-child):after {
           content: '';
           display: block;
@@ -582,6 +567,9 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           bottom: 0;
           height: 1px;
           background-color: #c4c4c4;
+        }
+        cp-output-level:last-child etools-data-table-row:last-child:after {
+          content: none;
         }
         :host {
           display: block;
