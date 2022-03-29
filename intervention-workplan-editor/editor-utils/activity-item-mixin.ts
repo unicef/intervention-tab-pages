@@ -4,6 +4,7 @@ import '@polymer/paper-input/paper-input';
 import {html, LitElement} from 'lit-element';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {InterventionActivityExtended, InterventionActivityItemExtended} from './types';
+import {repeat} from 'lit-html/directives/repeat';
 
 export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass: T) {
   return class ActivityItemsClass extends baseClass {
@@ -15,7 +16,9 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
         return '';
       }
       return html`<tbody class="odd">
-        ${activity.items?.map(
+        ${repeat(
+          activity.items,
+          (item: InterventionActivityItemExtended) => item.name,
           (item: InterventionActivityItemExtended) => html`
             <tr class="activity-items-row">
               <td>
@@ -102,7 +105,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                     }
                     item.cso_cash = detail.value;
 
-                    this.updateUnicefCash(item);
+                    this.updateUnicefCash(item, activity);
                     this.requestUpdate();
                   }}"
                 ></etools-currency-amount-input>
@@ -122,7 +125,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                     }
                     item.unicef_cash = detail.value;
 
-                    this.updateCsoCash(item);
+                    this.updateCsoCash(item, activity);
                     this.requestUpdate();
                   }}"
                 ></etools-currency-amount-input>
@@ -151,36 +154,52 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       this.requestUpdate();
     }
 
-    updateUnicefCash(item: InterventionActivityItemExtended) {
+    updateUnicefCash(item: InterventionActivityItemExtended, activity: InterventionActivityExtended) {
       if (isNaN(Number(item.cso_cash))) {
         return;
       }
-      let total = Number(item.no_units) * Number(item.unit_price);
-      total = Number(total.toFixed(2)); // 1.1*6 =6.0000000000000005
+      const total = this._getItemTotal(item);
       if (Number(item.cso_cash) > total) {
-        item.invalid.cso_cash = true;
+        item.invalid = {cso_cash: true};
         return;
       } else {
-        item.invalid.cso_cash = false;
+        item.invalid = {cso_cash: false};
       }
       item.unicef_cash = String(total - Number(item.cso_cash));
+
       this.validateCsoAndUnicefCash(item);
+
+      this.calculateActivityTotals(activity);
     }
 
-    updateCsoCash(item: InterventionActivityItemExtended) {
+    _getItemTotal(item: InterventionActivityItemExtended) {
+      let total = Number(item.no_units) * Number(item.unit_price);
+      total = Number(total.toFixed(2)); // 1.1*6 =6.0000000000000005
+      return total;
+    }
+    updateCsoCash(item: InterventionActivityItemExtended, activity: InterventionActivityExtended) {
       if (isNaN(Number(item.unicef_cash))) {
         return;
       }
-      let total = Number(item.no_units) * Number(item.unit_price);
-      total = Number(total.toFixed(2));
+      const total = this._getItemTotal(item);
       if (Number(item.unicef_cash) > total) {
-        item.invalid.unicef_cash = true;
+        item.invalid = {unicef_cash: true};
         return;
       } else {
-        item.invalid.unicef_cash = false;
+        item.invalid = {unicef_cash: false};
       }
       item.cso_cash = String(total - Number(item.unicef_cash));
+
       this.validateCsoAndUnicefCash(item);
+      this.calculateActivityTotals(activity);
+    }
+
+    calculateActivityTotals(activity: InterventionActivityExtended) {
+      if (!(activity.items && activity.items.length)) {
+        return;
+      }
+      activity.cso_cash = activity.items.reduce((sum: number, item) => sum + Number(item.cso_cash), 0);
+      activity.unicef_cash = activity.items.reduce((sum: number, item) => sum + Number(item.unicef_cash), 0);
     }
 
     getTotalForItem(noOfUnits: string, pricePerUnit: string) {
