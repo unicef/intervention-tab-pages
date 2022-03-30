@@ -82,9 +82,9 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
                   <span class="b">${displayCurrencyAmount(result.total, '0.00')}</span>
                 </td>
               </tr>
-              <tr class="add blue">
+              <tr class="add blue" type="cp-output">
                 <td></td>
-                <td colspan="3">
+                <td colspan="3" tabindex="0" arrow-nav="prev-tbody next-tbody">
                   <paper-icon-button
                     icon="add-box"
                     ?hidden="${!this.permissions.edit.result_links}"
@@ -131,9 +131,9 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
                   comment-element="pd-output-${pdOutput.id}"
                   comment-description=" PD Output - ${pdOutput.name}"
                 >
-                  <tr class="text">
+                  <tr class="text" type="pd-output">
                     <td>${pdOutput.code}</td>
-                    <td colspan="3" class="b" focusable>
+                    <td colspan="3" class="b" tabindex="0" arrow-nav="prev-tbody">
                       <paper-textarea
                         no-label-float
                         .value="${pdOutput.name}"
@@ -151,9 +151,13 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
                       <span class="b">${displayCurrencyAmount(pdOutput.total, '0.00')}</span>
                     </td>
                   </tr>
-                  <tr class="add">
+                  <tr class="add" type="pd-output">
                     <td></td>
-                    <td colspan="3">
+                    <td
+                      colspan="3"
+                      tabindex="${pdOutput.inEditMode || !this.permissions.edit.result_links ? '-1' : '0'}"
+                      arrow-nav="next-tbody"
+                    >
                       <span ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
                         ><paper-icon-button
                           icon="add-box"
@@ -218,8 +222,20 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
   @property({type: Boolean})
   readonly = false;
 
+  private _navigateWithArrows!: (event: KeyboardEvent) => void;
   private refreshResultStructure = false;
   private prevInterventionId: number | null = null;
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.addArrowNavListener();
+    setTimeout(() => {
+      const firstFocusableTd = this.shadowRoot!.querySelector<HTMLElement>('td[tabindex="0"]');
+      if (firstFocusableTd) {
+        firstFocusableTd.focus();
+      }
+    }, 3000);
+  }
 
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(state.app?.routeDetails, 'interventions', TABS.WorkplanEditor)) {
@@ -375,5 +391,148 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
     }
     model[property] = newVal;
     this.requestUpdate();
+  }
+
+  navigateWithArrows(event: KeyboardEvent) {
+    if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) {
+      return;
+    }
+
+    const currentTd = this._getActiveTd(event.path[0]);
+    if (!currentTd) {
+      return;
+    }
+    const currentTr = currentTd.parentElement;
+    const currentItemType = currentTr!.getAttribute('type');
+    let tdIndex = Array.from(currentTr!.children).indexOf(currentTd);
+
+    // const navAidArr = this._getNavigationAid(currentTd); TODO - remove arrow-nav att
+
+    switch (event.key) {
+      case 'ArrowLeft':
+        // currentTd.previousElementSibling.getElementsByTagName('input')[0].focus();
+
+        break;
+      case 'ArrowRight':
+        //  currentTd.nextElementSibling.getElementsByTagName('input')[0].focus();
+        break;
+      case 'ArrowUp':
+        {
+          const prevTr = this._determinePrevTr(currentTd);
+          if (!prevTr) {
+            return;
+          }
+          const prevItemType = prevTr!.getAttribute('type');
+          let tdToFocus = null;
+          if (currentItemType === prevItemType) {
+            tdToFocus = prevTr.children[tdIndex];
+          } else {
+            tdToFocus = prevTr.querySelector<HTMLElement>('td[tabindex="0"]');
+          }
+          if (tdToFocus) {
+            tdToFocus.focus();
+          }
+        }
+        break;
+      case 'ArrowDown':
+        {
+          const nextTr = this._determineNextTr(currentTd);
+          if (!nextTr) {
+            return;
+          }
+          const nextItemType = nextTr!.getAttribute('type');
+          let tdToFocus = null;
+          if (currentItemType === nextItemType) {
+            tdToFocus = nextTr.children[tdIndex];
+          } else {
+            tdToFocus = nextTr.querySelector<HTMLElement>('td[tabindex="0"]');
+          }
+          if (tdToFocus) {
+            tdToFocus.focus();
+          }
+        }
+        //   Array.from( currentTr.nextElementSibling.children )[index].getElementsByTagName('input')[0].focus();
+        break;
+    }
+  }
+
+  _determineNextTr(currentTd: HTMLTableCellElement): HTMLTableRowElement | null | undefined {
+    let nextTr = this._getNextTr(currentTd);
+    if (!nextTr) {
+      const nextTbody = this._getNextTbody(currentTd);
+
+      nextTr = nextTbody?.querySelector<HTMLTableCellElement>('td[tabindex="0"]')?.parentElement;
+    }
+    return nextTr;
+  }
+  _determinePrevTr(currentTd: HTMLTableCellElement) {
+    let prevTr = this._getPrevTr(currentTd);
+    if (!prevTr) {
+      const prevTbody = this._getPrevTbody(currentTd);
+      const tdList = prevTbody?.querySelectorAll<HTMLTableCellElement>('td[tabindex="0"]');
+      if (tdList?.length) {
+        prevTr = tdList[tdList?.length - 1].parentElement;
+      }
+    }
+    return prevTr;
+  }
+  _getNextTbody(activeTd: HTMLTableCellElement) {
+    let nextTbody = activeTd.parentElement?.parentElement?.nextElementSibling;
+    while (nextTbody?.localName === 'thead') {
+      nextTbody = nextTbody.nextElementSibling;
+    }
+    if (nextTbody && nextTbody.children.length === 0) {
+      nextTbody = nextTbody.nextElementSibling?.nextElementSibling; // double next in order to skip thead
+    }
+    return nextTbody;
+  }
+  _getPrevTbody(activeTd: HTMLTableCellElement) {
+    let prevTbody = activeTd.parentElement?.parentElement?.previousElementSibling;
+    while (prevTbody?.localName === 'thead') {
+      prevTbody = prevTbody.previousElementSibling;
+    }
+    if (prevTbody && prevTbody.children.length === 0) {
+      prevTbody = prevTbody.previousElementSibling?.previousElementSibling; // double next in order to skip thead
+    }
+    return prevTbody;
+  }
+
+  _getNextTr(activeTd: HTMLTableCellElement): HTMLTableRowElement | null | undefined {
+    let nextTr = activeTd.parentElement?.nextElementSibling as HTMLTableRowElement;
+    if (nextTr) {
+      if (!nextTr.querySelector<HTMLTableCellElement>('td[tabindex="0"]')) {
+        nextTr = null;
+      }
+    }
+    return nextTr;
+  }
+  _getPrevTr(activeTd: HTMLTableCellElement) {
+    let prevTr = activeTd.parentElement?.previousElementSibling as HTMLTableRowElement;
+    if (prevTr) {
+      if (!prevTr.querySelector<HTMLTableCellElement>('td[tabindex="0"]')) {
+        prevTr = null;
+      }
+    }
+    return prevTr;
+  }
+
+  _getActiveTd(activeEl: HTMLTableCellElement) {
+    if (activeEl.localName === 'td') {
+      return activeEl;
+    }
+    activeEl = activeEl.closest('td')!;
+    return activeEl;
+  }
+  _getNavigationAid(activeEl: HTMLTableCellElement) {
+    const navAid = activeEl.getAttribute('arrow-nav');
+    if (!navAid) {
+      return null;
+    }
+    return navAid.split(' ');
+  }
+
+  addArrowNavListener() {
+    this._navigateWithArrows = this.navigateWithArrows.bind(this);
+    this.addEventListener('keydown', this._navigateWithArrows);
   }
 }

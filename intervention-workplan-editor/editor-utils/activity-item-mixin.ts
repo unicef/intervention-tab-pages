@@ -12,11 +12,30 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
     @property({type: Object})
     intervention!: Intervention;
 
+    @property({type: Object})
+    permissions!: {
+      edit: {result_links?: boolean};
+      required: {result_links?: boolean};
+    };
+
     renderActivityItems(activity: InterventionActivityExtended) {
-      if (!activity || !activity.items) {
+      if (!activity || !activity.items || !activity.items.length) {
         return '';
       }
       return html`<tbody class="odd">
+        <tr ?hidden="${!this.permissions.edit.result_links}">
+          <td></td>
+          <td>
+            <paper-icon-button icon="add-box" @click="${() => this.addNewItem(activity)}"></paper-icon-button> Add New
+            Item
+          </td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td colspan="2"></td>
+        </tr>
         ${repeat(
           activity.items || [],
           (item: InterventionActivityItemExtended) => item.id,
@@ -25,7 +44,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
               <td>
                 <paper-input readonly .value="${item.code || 'N/A'}"></paper-input>
               </td>
-              <td>
+              <td tabindex="0">
                 <paper-textarea
                   always-float-label
                   label=${this.getLabel(activity.itemsInEditMode, 'Item Description')}
@@ -39,7 +58,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   @value-changed="${({detail}: CustomEvent) => this.updateModelValue(item, 'name', detail.value)}"
                 ></paper-textarea>
               </td>
-              <td>
+              <td tabindex="0">
                 <paper-input
                   always-float-label
                   label=${this.getLabel(activity.itemsInEditMode, 'Unit')}
@@ -53,7 +72,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   @value-changed="${({detail}: CustomEvent) => this.updateModelValue(item, 'unit', detail.value)}"
                 ></paper-input>
               </td>
-              <td>
+              <td tabindex="0">
                 <etools-currency-amount-input
                   label=${this.getLabel(activity.itemsInEditMode, 'N. of Units')}
                   ?readonly="${!activity.itemsInEditMode}"
@@ -72,7 +91,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   }}"
                 ></etools-currency-amount-input>
               </td>
-              <td>
+              <td tabindex="0">
                 <etools-currency-amount-input
                   label=${this.getLabel(activity.itemsInEditMode, 'Price/Unit')}
                   ?readonly="${!activity.itemsInEditMode}"
@@ -91,7 +110,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   }}"
                 ></etools-currency-amount-input>
               </td>
-              <td>
+              <td tabindex="0">
                 <etools-currency-amount-input
                   label=${this.getLabel(activity.itemsInEditMode, 'Partner Cash')}
                   ?readonly="${!activity.itemsInEditMode}"
@@ -111,7 +130,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   }}"
                 ></etools-currency-amount-input>
               </td>
-              <td>
+              <td tabindex="0">
                 <etools-currency-amount-input
                   label=${this.getLabel(activity.itemsInEditMode, 'UNICEF Cash')}
                   ?readonly="${!activity.itemsInEditMode}"
@@ -137,7 +156,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   .value="${this.getTotalForItem(item.no_units || 0, item.unit_price || 0)}"
                 ></paper-input>
               </td>
-              <td class="del-item">
+              <td class="del-item" tabindex="${!activity.itemsInEditMode ? '-1' : '0'}">
                 <paper-icon-button
                   id="delItem"
                   icon="delete"
@@ -237,6 +256,16 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       } else {
         item.invalid = {...item.invalid, ...{cso_cash: false, unicef_cash: false}};
       }
+    }
+
+    addNewItem(activity: Partial<InterventionActivityExtended>) {
+      if (!activity.items) {
+        activity.items = [];
+      }
+      activity.items?.unshift({name: '', inEditMode: true});
+      activity.itemsInEditMode = true;
+
+      this.requestUpdate();
     }
 
     updateModelValue(model: any, property: string, newVal: any) {
