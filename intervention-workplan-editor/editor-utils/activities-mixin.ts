@@ -1,24 +1,42 @@
-import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
-import {InterventionActivity, InterventionActivityItem} from '@unicef-polymer/etools-types';
-import {
-  ExpectedResult,
-  Intervention,
-  ResultLinkLowerResult
-} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
 import {Constructor, html, LitElement, property} from 'lit-element';
+import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {InterventionQuarter} from '@unicef-polymer/etools-types';
+import {Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
+import '../time-intervals/time-intervals';
+import {cloneDeep, isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {ActivityItemsMixin} from './activity-item-mixin';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {sendRequest} from '@unicef-polymer/etools-ajax';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {updateCurrentIntervention} from '../../common/actions/interventions';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {repeat} from 'lit-html/directives/repeat';
+import {
+  ExpectedResultExtended,
+  InterventionActivityExtended,
+  InterventionActivityItemExtended,
+  ResultLinkLowerResultExtended
+} from './types';
 
 export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T) {
-  return class ActivitiesClass extends baseClass {
+  return class ActivitiesClass extends ActivityItemsMixin(baseClass) {
     @property({type: Array})
-    originalResultLink!: ExpectedResult[];
+    originalResultStructureDetails!: ExpectedResultExtended[];
 
     @property({type: Object})
     intervention!: Intervention;
 
-    renderActivities(pdOutput: ResultLinkLowerResult, resultIndex: number, pdOutputIndex: number) {
+    refreshResultStructure = false;
+    quarters: InterventionQuarter[] = [];
+
+    renderActivities(pdOutput: ResultLinkLowerResultExtended, resultIndex: number, pdOutputIndex: number) {
       return html`
-        ${pdOutput.activities?.map(
-          (activity: InterventionActivity, activityIndex: number) => html`
+        ${repeat(
+          pdOutput.activities,
+          (pdOutput: ResultLinkLowerResultExtended) => pdOutput.id,
+          (activity: InterventionActivityExtended, activityIndex: number) => html`
             <thead>
               <tr class="edit">
                 <td class="first-col"></td>
@@ -32,6 +50,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     ?hidden="${activity.inEditMode}"
                     @click="${() => {
                       activity.inEditMode = true;
+                      activity.itemsInEditMode = true;
                       this.requestUpdate();
                     }}"
                   ></paper-icon-button>
@@ -40,13 +59,13 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
               <tr class="header">
                 <td></td>
                 <td colspan="3">Activity</td>
-                <td>Time Periods</td>
+                <td class="a-right">Time Periods</td>
                 <td>CSO Contribution</td>
                 <td>UNICEF Cash</td>
                 <td>Total</td>
               </tr>
             </thead>
-            <tbody>
+            <tbody comment-element="activity-${activity.id}" comment-description=" Activity - ${activity.name}">
               <tr class="text">
                 <td>${activity.code}</td>
                 <td colspan="3">
@@ -55,7 +74,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     .value="${activity.name}"
                     ?readonly="${!activity.inEditMode}"
                     required
-                    .invalid="${activity.invalid}"
+                    .invalid="${activity.invalid?.name}"
                     error-message="This field is required"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue(activity, 'name', detail.value)}"
                   ></paper-textarea>
@@ -71,12 +90,31 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     ></paper-textarea>
                   </div>
                 </td>
-                <td></td>
+                <td>
+                  <div class="flex-h justify-right">
+                    <time-intervals
+                      tabindex="0"
+                      .invalid="${activity.invalid?.time_frames}"
+                      .quarters="${this.quarters}"
+                      .selectedTimeFrames="${activity.time_frames}"
+                      @intervals-changed="${(event: CustomEvent) => {
+                        if (event.detail == undefined) {
+                          return;
+                        }
+                        if (isJsonStrMatch(activity.time_frames, event.detail)) {
+                          return;
+                        }
+                        activity.time_frames = event.detail;
+                        this.requestUpdate();
+                      }}"
+                    ></time-intervals>
+                  </div>
+                </td>
                 <td>
                   <etools-currency-amount-input
                     no-label-float
                     .value="${activity.cso_cash}"
-                    ?readonly="${!activity.inEditMode}"
+                    ?readonly="${this.isReadonlyForActivityCash(activity.inEditMode, activity.items)}"
                     @value-changed="${({detail}: CustomEvent) =>
                       this.updateModelValue(activity, 'cso_cash', detail.value)}"
                   ></etools-currency-amount-input>
@@ -85,7 +123,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                   <etools-currency-amount-input
                     no-label-float
                     .value="${activity.unicef_cash}"
-                    ?readonly="${!activity.inEditMode}"
+                    ?readonly="${this.isReadonlyForActivityCash(activity.inEditMode, activity.items)}"
                     @value-changed="${({detail}: CustomEvent) =>
                       this.updateModelValue(activity, 'unicef_cash', detail.value)}"
                   ></etools-currency-amount-input>
@@ -93,7 +131,11 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td>
                   ${this.intervention.planned_budget.currency}
                   <span class="b"
-                    >${displayCurrencyAmount(String(this.getTotal(activity.cso_cash, activity.unicef_cash)), '0', 2)}
+                    >${displayCurrencyAmount(
+                      String(this.getTotalForActivity(activity.cso_cash, activity.unicef_cash)),
+                      '0',
+                      2
+                    )}
                   </span>
                 </td>
               </tr>
@@ -110,7 +152,9 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td></td>
                 <td class="h-center">
                   <div class="flex-h justify-right" ?hidden="${!(activity.inEditMode || activity.itemsInEditMode)}">
-                    <paper-button @click="${() => this.saveActivity(activity)}">Save</paper-button>
+                    <paper-button @click="${() => this.saveActivity(activity, pdOutput.id, this.intervention.id)}"
+                      >Save</paper-button
+                    >
                     <paper-icon-button
                       icon="close"
                       @click="${() =>
@@ -130,7 +174,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td class="col-g">Price/Unit</td>
                 <td class="col-g">Partner Cash</td>
                 <td class="col-g">UNICEF CASH</td>
-                <td class="col-g">Total</td>
+                <td class="col-g">Total (${this.intervention.planned_budget.currency})</td>
               </tr>
               <tr>
                 <td></td>
@@ -146,82 +190,19 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td></td>
               </tr>
             </thead>
-            ${activity.items?.map(
-              (item: InterventionActivityItem) => html`
-                <tbody class="odd">
-                  <tr class="activity-items-row">
-                    <td class="v-middle">${item.code || 'N/A'}</td>
-                    <td>
-                      <paper-textarea
-                        always-float-label
-                        label="Item Description"
-                        required
-                        error-message="This field is required"
-                        auto-validate
-                        .value="${item.name}"
-                      ></paper-textarea>
-                    </td>
-                    <td>
-                      <paper-input
-                        always-float-label
-                        label="Unit"
-                        required
-                        auto-validate
-                        .value="${item.unit}"
-                      ></paper-input>
-                    </td>
-                    <td>
-                      <etools-currency-amount-input
-                        label="N. of Units"
-                        required
-                        auto-validate
-                        .value="${item.no_units}"
-                      ></etools-currency-amount-input>
-                    </td>
-                    <td>
-                      <etools-currency-amount-input
-                        label="Price/Unit"
-                        required
-                        auto-validate
-                        .value="${item.unit_price}"
-                      ></etools-currency-amount-input>
-                    </td>
-                    <td>
-                      <etools-currency-amount-input
-                        label="Partner Cash"
-                        required
-                        auto-validate
-                        .value="${item.cso_cash}"
-                      ></etools-currency-amount-input>
-                    </td>
-                    <td>
-                      <etools-currency-amount-input
-                        label="Total"
-                        required
-                        auto-validate
-                        .value="${item.unicef_cash}"
-                      ></etools-currency-amount-input>
-                    </td>
-                    <td class="padd-top-40">
-                      ${this.intervention.planned_budget.currency}
-                      ${this.getTotal(item.cso_cash || 0, item.unicef_cash || 0)}
-                    </td>
-                  </tr>
-                </tbody>
-              `
-            )}
+            ${this.renderActivityItems(activity)}
           `
         )}
       `;
     }
 
-    getTotal(partner: string, unicef: string): number {
+    getTotalForActivity(partner: string, unicef: string): number {
       return (Number(partner) || 0) + (Number(unicef) || 0);
     }
 
     cancelActivity(
-      activities: Partial<InterventionActivity>[],
-      activity: InterventionActivity,
+      activities: Partial<InterventionActivityExtended>[],
+      activity: InterventionActivityExtended,
       resultIndex: number,
       pdOutputIndex: number,
       activityIndex: number
@@ -231,11 +212,12 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       } else {
         Object.assign(
           activity,
-          this.originalResultLink[resultIndex].ll_results[pdOutputIndex].activities[activityIndex]
+          this.originalResultStructureDetails[resultIndex].ll_results[pdOutputIndex].activities[activityIndex]
         );
       }
-      activity.invalid = false;
+      activity.invalid = {name: false, context_details: false, time_frames: false};
       activity.inEditMode = false;
+      activity.itemsInEditMode = false;
 
       this.requestUpdate();
     }
@@ -247,15 +229,104 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       this.requestUpdate();
     }
 
-    addNewItem(activity: Partial<InterventionActivity>) {
+    addNewItem(activity: Partial<InterventionActivityExtended>) {
       if (!activity.items) {
         activity.items = [];
       }
       activity.items?.unshift({name: '', inEditMode: true});
       activity.itemsInEditMode = true;
+
       this.requestUpdate();
     }
 
-    saveActivity(activity: InterventionActivity) {}
+    isReadonlyForActivityCash(inEditMode: boolean, items?: InterventionActivityItemExtended[]) {
+      if (!inEditMode) {
+        return true;
+      } else {
+        if (items && items.length) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    }
+
+    validateActivity(activity: InterventionActivityExtended) {
+      activity.invalid = {};
+      if (!activity.name) {
+        activity.invalid.name = true;
+      }
+      if (this.quarters && this.quarters.length) {
+        if (!(activity.time_frames && activity.time_frames.length)) {
+          activity.invalid.time_frames = true;
+        }
+      }
+      return !Object.keys(activity.invalid).length;
+    }
+    validateActivityItems(activity: InterventionActivityExtended) {
+      if (!activity.items || !activity.items.length) {
+        return true;
+      }
+
+      let invalid = false;
+      activity.items.forEach((item: InterventionActivityItemExtended) => {
+        item.invalid = {};
+        item.invalid.name = !item.name;
+        item.invalid.no_units = !item.no_units;
+        item.invalid.unit_price = !item.unit_price;
+        if (item.no_units && item.unit_price) {
+          this.validateCsoAndUnicefCash(item);
+        }
+        if (Object.values(item.invalid).some((val: boolean) => val === true)) {
+          invalid = true;
+        }
+      });
+      return !invalid;
+    }
+
+    saveActivity(activity: InterventionActivityExtended, pdOutputId: number, interventionId: number | null) {
+      if (!this.validateActivity(activity) || !this.validateActivityItems(activity)) {
+        this.requestUpdate();
+        fireEvent(this, 'toast', {
+          text: 'Please fix validation errors'
+        });
+        return;
+      }
+      fireEvent(this, 'global-loading', {
+        active: true,
+        loadingSource: this.localName
+      });
+
+      const activityToSave = cloneDeep(activity);
+      if (activityToSave.items?.length) {
+        // Let backend calculate these
+        delete activityToSave.unicef_cash;
+        delete activityToSave.cso_cash;
+      }
+      sendRequest({
+        endpoint: this._getEndpoint(activity.id, String(pdOutputId), interventionId),
+        method: activity.id ? 'PATCH' : 'POST',
+        body: activityToSave
+      })
+        .then((response: any) => {
+          getStore().dispatch(updateCurrentIntervention(response.intervention));
+          this.refreshResultStructure = true;
+        })
+        .catch((error: any) => {
+          fireEvent(this, 'toast', {text: formatServerErrorAsText(error)});
+        })
+        .finally(() => {
+          fireEvent(this, 'global-loading', {
+            active: false,
+            loadingSource: this.localName
+          });
+        });
+    }
+
+    _getEndpoint(activityId: any, pdOutputId: string, interventionId: string) {
+      return activityId
+        ? getEndpoint(interventionEndpoints.pdActivityDetails, {activityId, pdOutputId, interventionId})
+        : getEndpoint(interventionEndpoints.pdActivities, {pdOutputId, interventionId});
+    }
   };
 }

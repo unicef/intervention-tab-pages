@@ -3,7 +3,6 @@ import {EditorTableStyles} from './editor-utils/editor-table-styles';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/iron-icons';
 import '@polymer/paper-input/paper-textarea';
-import './time-intervals/time-intervals';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {TABS} from '../common/constants';
@@ -12,7 +11,6 @@ import {RootState} from '../../../../../redux/store';
 import {
   selectInterventionId,
   selectInterventionQuarters,
-  selectInterventionResultLinks,
   selectInterventionStatus,
   selectResultLinksPermissions
 } from '../intervention-workplan/results-structure/results-structure.selectors';
@@ -22,11 +20,7 @@ import {
   Intervention,
   ResultLinkLowerResult
 } from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
-import {
-  InterventionActivity,
-  InterventionActivityItem,
-  InterventionQuarter
-} from '@unicef-polymer/etools-types/dist/intervention.types';
+import {InterventionQuarter} from '@unicef-polymer/etools-types/dist/intervention.types';
 import {cloneDeep} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {repeat} from 'lit-html/directives/repeat';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
@@ -40,9 +34,11 @@ import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-s
 import {updateCurrentIntervention} from '../common/actions/interventions';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {ActivitiesMixin} from './editor-utils/activities-mixin';
+import {CommentsMixin} from '../common/components/comments/comments-mixin';
+import {ExpectedResultExtended, ResultLinkLowerResultExtended} from './editor-utils/types';
 
 @customElement('editor-table')
-export class EditorTable extends connectStore(ActivitiesMixin(LitElement)) {
+export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
   static get styles() {
     return [EditorTableStyles];
   }
@@ -51,7 +47,7 @@ export class EditorTable extends connectStore(ActivitiesMixin(LitElement)) {
       ${sharedStyles}
       <table>
         ${repeat(
-          this.resultLinks,
+          this.resultStructureDetails,
           (result: ExpectedResult) => result.id,
           (result, resultIndex) => html`
             <thead>
@@ -92,7 +88,7 @@ export class EditorTable extends connectStore(ActivitiesMixin(LitElement)) {
               </tr>
             </tbody>
             ${result.ll_results.map(
-              (pdOutput: ResultLinkLowerResult, pdOutputIndex) => html`
+              (pdOutput: ResultLinkLowerResultExtended, pdOutputIndex) => html`
                 <thead class="gray-1">
                   <tr class="edit">
                     <td class="first-col"></td>
@@ -116,7 +112,11 @@ export class EditorTable extends connectStore(ActivitiesMixin(LitElement)) {
                     <td class="money">Total</td>
                   </tr>
                 </thead>
-                <tbody class="gray-1">
+                <tbody
+                  class="gray-1"
+                  comment-element="pd-output-${pdOutput.id}"
+                  comment-description=" PD Output - ${pdOutput.name}"
+                >
                   <tr class="text">
                     <td>${pdOutput.code}</td>
                     <td colspan="3" class="b">
@@ -169,19 +169,19 @@ export class EditorTable extends connectStore(ActivitiesMixin(LitElement)) {
     `;
   }
 
-  get resultLinks(): ExpectedResult[] {
-    return this._resultLinks || [];
-  }
-  set resultLinks(data: ExpectedResult[]) {
-    this._resultLinks = data.sort(
-      (linkA, linkB) => Number(Boolean(linkB.cp_output)) - Number(Boolean(linkA.cp_output))
-    );
-  }
+  // get resultLinks(): ExpectedResult[] {
+  //   return this._resultLinks || [];
+  // }
+  // set resultLinks(data: ExpectedResult[]) {
+  //   this._resultLinks = data.sort(
+  //     (linkA, linkB) => Number(Boolean(linkB.cp_output)) - Number(Boolean(linkA.cp_output))
+  //   );
+  // }
   @property() interventionId!: number | null;
   @property() interventionStatus!: string;
 
   quarters: InterventionQuarter[] = [];
-  originalResultLink: ExpectedResult[] = [];
+  originalResultStructureDetails: ExpectedResultExtended[] = [];
 
   @property({type: Boolean}) isUnicefUser = true;
   @property({type: Object})
@@ -190,7 +190,7 @@ export class EditorTable extends connectStore(ActivitiesMixin(LitElement)) {
     required: {result_links?: boolean};
   };
 
-  @property() private _resultLinks: ExpectedResult[] | null = [];
+  // @property() private _resultLinks: ExpectedResult[] | null = [];
 
   @property({type: Object})
   intervention!: Intervention;
@@ -198,6 +198,10 @@ export class EditorTable extends connectStore(ActivitiesMixin(LitElement)) {
   @property({type: Boolean})
   readonly = false;
 
+  @property({type: Object})
+  resultStructureDetails!: ExpectedResultExtended[];
+
+  private refreshResultStructure = false;
   private prevInterventionId: number | null = null;
 
   stateChanged(state: RootState) {
@@ -208,32 +212,43 @@ export class EditorTable extends connectStore(ActivitiesMixin(LitElement)) {
     if (!selectInterventionId(state)) {
       return;
     }
-    this.resultLinks = selectInterventionResultLinks(state);
-    this.originalResultLink = cloneDeep(this.resultLinks);
-    if (this.prevInterventionId != selectInterventionId(state)) {
-      // request
-    }
-
-    this.permissions = selectResultLinksPermissions(state);
     this.interventionId = selectInterventionId(state);
+    this.permissions = selectResultLinksPermissions(state);
+
     this.interventionStatus = selectInterventionStatus(state);
     this.quarters = selectInterventionQuarters(state);
-    // this.cpOutputs = (state.commonData && state.commonData.cpOutputs) || [];
     this.isUnicefUser = isUnicefUser(state);
     this.intervention = cloneDeep(currentIntervention(state));
+    // this.resultLinks = selectInterventionResultLinks(state);
+
+    if (this.prevInterventionId != selectInterventionId(state) || this.refreshResultStructure) {
+      this.getResultLinksDetails();
+      this.prevInterventionId = this.interventionId;
+      this.refreshResultStructure = false;
+    }
+    super.stateChanged(state);
   }
 
-  addNewPDOutput(llResults: Partial<ResultLinkLowerResult>[]) {
+  getResultLinksDetails() {
+    sendRequest({endpoint: getEndpoint(interventionEndpoints.resultLinksDetails, {id: this.intervention.id})}).then(
+      (response: any) => {
+        this.resultStructureDetails = response.result_links;
+        this.originalResultStructureDetails = cloneDeep(this.resultStructureDetails);
+      }
+    );
+  }
+
+  addNewPDOutput(llResults: Partial<ResultLinkLowerResultExtended>[]) {
     llResults.unshift({name: '', total: '0', inEditMode: true});
     this.requestUpdate();
   }
 
-  addNewActivity(pdOutput: Partial<ResultLinkLowerResult>) {
-    pdOutput.activities?.unshift({name: '', total: '0', inEditMode: true});
+  addNewActivity(pdOutput: Partial<ResultLinkLowerResultExtended>) {
+    pdOutput.activities?.unshift({name: '', total: '0', time_frames: [], inEditMode: true});
     this.requestUpdate();
   }
 
-  savePdOutput(pdOutput: ResultLinkLowerResult) {
+  savePdOutput(pdOutput: ResultLinkLowerResultExtended) {
     if (!this.validatePdOutput(pdOutput)) {
       pdOutput.invalid = true;
       this.requestUpdate();
@@ -269,7 +284,7 @@ export class EditorTable extends connectStore(ActivitiesMixin(LitElement)) {
       );
   }
 
-  validatePdOutput(pdOutput: ResultLinkLowerResult) {
+  validatePdOutput(pdOutput: ResultLinkLowerResultExtended) {
     if (!pdOutput.name) {
       return false;
     }
@@ -277,15 +292,15 @@ export class EditorTable extends connectStore(ActivitiesMixin(LitElement)) {
   }
 
   cancelPdOutput(
-    llResults: Partial<ResultLinkLowerResult>[],
-    pdOutput: ResultLinkLowerResult,
+    llResults: Partial<ResultLinkLowerResultExtended>[],
+    pdOutput: ResultLinkLowerResultExtended,
     resultIndex: number,
     pdOutputIndex: number
   ) {
     if (!pdOutput.id) {
       llResults.shift();
     } else {
-      pdOutput.name = this.originalResultLink[resultIndex].ll_results[pdOutputIndex].name;
+      pdOutput.name = this.originalResultStructureDetails[resultIndex].ll_results[pdOutputIndex].name;
     }
     pdOutput.invalid = false;
     pdOutput.inEditMode = false;
