@@ -34,11 +34,12 @@ import {ExpectedResultExtended, ResultLinkLowerResultExtended} from './editor-ut
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import {translate} from 'lit-translate/directives/translate';
 import {AsyncAction} from '@unicef-polymer/etools-types';
+import {EditorTableArrowKeysStyles} from './editor-utils/editor-table-arrow-keys-styles';
 
 @customElement('editor-table')
 export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
   static get styles() {
-    return [EditorTableStyles];
+    return [EditorTableStyles, EditorTableArrowKeysStyles];
   }
   render() {
     return html`
@@ -132,7 +133,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
                 >
                   <tr class="text">
                     <td>${pdOutput.code}</td>
-                    <td colspan="3" class="b">
+                    <td colspan="3" class="b" focusable>
                       <paper-textarea
                         no-label-float
                         .value="${pdOutput.name}"
