@@ -26,7 +26,7 @@ import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endp
 import {interventionEndpoints} from '../utils/intervention-endpoints';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
-import {updateCurrentIntervention} from '../common/actions/interventions';
+import {getIntervention, updateCurrentIntervention} from '../common/actions/interventions';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {ActivitiesMixin} from './editor-utils/activities-mixin';
 import {CommentsMixin} from '../common/components/comments/comments-mixin';
@@ -364,6 +364,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
       endpoint: endpoint
     }).then(() => {
       this.getResultLinksDetails();
+      getStore().dispatch<AsyncAction>(getIntervention());
     });
   }
 

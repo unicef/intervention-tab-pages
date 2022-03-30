@@ -1,6 +1,6 @@
 import {Constructor, html, LitElement, property} from 'lit-element';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
-import {InterventionQuarter} from '@unicef-polymer/etools-types';
+import {AsyncAction, InterventionQuarter} from '@unicef-polymer/etools-types';
 import {Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
 import '../time-intervals/time-intervals';
 import {cloneDeep, isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
@@ -9,7 +9,7 @@ import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-c
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {updateCurrentIntervention} from '../../common/actions/interventions';
+import {getIntervention, updateCurrentIntervention} from '../../common/actions/interventions';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {repeat} from 'lit-html/directives/repeat';
@@ -19,6 +19,8 @@ import {
   InterventionActivityItemExtended,
   ResultLinkLowerResultExtended
 } from './types';
+import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {translate} from 'lit-translate/directives/translate';
 
 export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T) {
   return class ActivitiesClass extends ActivityItemsMixin(baseClass) {
@@ -62,6 +64,11 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                       activity.itemsInEditMode = true;
                       this.requestUpdate();
                     }}"
+                  ></paper-icon-button>
+                  <paper-icon-button
+                    icon="icons:delete"
+                    ?hidden="${activity.inEditMode || !this.permissions.edit.result_links}"
+                    @click="${() => this.openDeleteDialog(activity.id, pdOutput.id)}"
                   ></paper-icon-button>
                 </td>
               </tr>
@@ -337,6 +344,42 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       return activityId
         ? getEndpoint(interventionEndpoints.pdActivityDetails, {activityId, pdOutputId, interventionId})
         : getEndpoint(interventionEndpoints.pdActivities, {pdOutputId, interventionId});
+    }
+
+    async openDeleteDialog(activityId: number, pdOutputId: number) {
+      const confirmed = await openDialog({
+        dialog: 'are-you-sure',
+        dialogData: {
+          content: translate('DELETE_ACTIVITY_PROMPT') as unknown as string,
+          confirmBtnText: translate('GENERAL.DELETE') as unknown as string
+        }
+      }).then(({confirmed}) => {
+        return confirmed;
+      });
+
+      if (confirmed) {
+        this.deleteActivity(activityId, pdOutputId);
+      }
+    }
+
+    deleteActivity(activityId: number, pdOutputId: number) {
+      const endpoint = getEndpoint(interventionEndpoints.pdActivityDetails, {
+        activityId: activityId,
+        interventionId: this.intervention.id,
+        pdOutputId: pdOutputId
+      });
+      sendRequest({
+        method: 'DELETE',
+        endpoint: endpoint
+      })
+        .then(() => {
+          // @ts-ignore
+          this.getResultLinksDetails();
+          getStore().dispatch<AsyncAction>(getIntervention());
+        })
+        .catch((err: any) => {
+          fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
+        });
     }
   };
 }
