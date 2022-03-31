@@ -30,7 +30,7 @@ export class InterventionPageContentHeader extends LitElement {
             font-weight: normal;
             text-transform: capitalize;
             font-size: 24px;
-            line-height: 1.3;
+            line-height: 18px;
             min-height: 31px;
           }
         }
@@ -44,7 +44,7 @@ export class InterventionPageContentHeader extends LitElement {
         }
         .title-row {
           align-items: center;
-          padding: 0 24px;
+          padding: 0 12px 0 24px;
           flex-wrap: wrap;
           justify-content: space-between;
         }
@@ -97,15 +97,16 @@ export class InterventionPageContentHeader extends LitElement {
         }
         .vb {
           border-left: 2px solid var(--light-hex-divider-color);
-          padding: 0 20px;
+          padding: 0 10px;
           height: 30px;
           margin-top: 15px;
         }
         .title {
-          padding-right: 20px;
+          padding-right: 10px;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
+          width: 300px;
         }
         .cont {
           display: flex;
