@@ -126,7 +126,7 @@ export const ResultStructureStyles: CSSResult = css`
     display: flex;
     width: min-content;
     align-items: center;
-    padding: 16px 13px;
+    padding: 16px 13px 0;
     cursor: pointer;
     font-size: 15px;
     font-weight: 500;
@@ -139,8 +139,5 @@ export const ResultStructureStyles: CSSResult = css`
   }
   .add-button.pd-add {
     padding-left: 31px;
-  }
-  .add-button:not(:last-child) {
-    padding-bottom: 0;
   }
 `;

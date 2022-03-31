@@ -23,16 +23,13 @@ import './modals/pd-output-dialog';
 import './modals/cp-output-dialog';
 import '@polymer/paper-item';
 import '@polymer/paper-listbox';
+import './display-controls';
 import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {RootState} from '../../common/types/store.types';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import {TABS} from '../../common/constants';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {
-  callClickOnSpacePushListener,
-  callClickOnEnterPushListener,
-  pageIsNotCurrentlyActive
-} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import get from 'lodash-es/get';
 import {getIntervention, updateCurrentIntervention} from '../../common/actions/interventions';
@@ -54,26 +51,12 @@ import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import ContentPanelMixin from '@unicef-polymer/etools-modules-common/dist/mixins/content-panel-mixin';
 import {_sendRequest} from '@unicef-polymer/etools-modules-common/dist/utils/request-helper';
-import {elevation1, elevation3} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
-
-const RESULT_VIEW = 'result_view';
-const BUDGET_VIEW = 'budget_view';
-const COMBINED_VIEW = 'combined_view';
 
 /**
  * @customElement
  */
 @customElement('results-structure')
 export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement)) {
-  get viewType(): string {
-    if (this.showActivities && this.showIndicators) {
-      return COMBINED_VIEW;
-    } else if (this.showActivities) {
-      return BUDGET_VIEW;
-    } else {
-      return RESULT_VIEW;
-    }
-  }
   get resultLinks(): ExpectedResult[] {
     return this._resultLinks || [];
   }
@@ -104,27 +87,6 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
   @property({type: Object})
   intervention!: Intervention;
 
-  viewTabs = [
-    {
-      name: translate('RESULT_VIEW'),
-      type: RESULT_VIEW,
-      showIndicators: true,
-      showActivities: false
-    },
-    {
-      name: translate('COMBINED_VIEW'),
-      type: COMBINED_VIEW,
-      showIndicators: true,
-      showActivities: true
-    },
-    {
-      name: translate('BUDGET_VIEW'),
-      type: BUDGET_VIEW,
-      showIndicators: false,
-      showActivities: true
-    }
-  ];
-
   private cpOutputs: CpOutput[] = [];
 
   render() {
@@ -135,50 +97,20 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     // language=HTML
     return html`
       ${sharedStyles}
+      <display-controls
+        .showIndicators="${this.showIndicators}"
+        .showActivities="${this.showActivities}"
+        @show-inactive-changed="${this.inactiveChange}"
+        @tab-view-changed="${this.updateTableView}"
+      ></display-controls>
+
       <etools-content-panel
         panel-title="${translate(translatesMap.result_links)} (${this.noOfPdOutputs})"
         elevation="0"
       >
-        <div slot="panel-btns" class="layout-horizontal align-items-center">
-          <paper-toggle-button
-            id="showInactive"
-            ?hidden="${!this.thereAreInactiveIndicators}"
-            ?checked="${this.showInactiveIndicators}"
-            @iron-change=${this.inactiveChange}
-          >
-            ${translate('SHOW_INACTIVE')}
-          </paper-toggle-button>
-
-          <paper-menu-button id="view-menu-button" close-on-activate horizontal-align="right">
-            <paper-button slot="dropdown-trigger" class="dropdown-trigger">
-              ${translate('VIEW')}
-              <iron-icon icon="expand-more"></iron-icon>
-            </paper-button>
-            <paper-listbox slot="dropdown-content" attr-for-selected="name" .selected="${this.viewType}">
-              ${this.viewTabs.map(
-                (tab) =>
-                  html` <paper-item
-                    @click="${() => this.updateTableView(tab.showIndicators, tab.showActivities)}"
-                    name="${tab.type}"
-                  >
-                    ${tab.name}
-                  </paper-item>`
-              )}
-            </paper-listbox>
-          </paper-menu-button>
-          ${this.viewTabs.map(
-            (tab) => html`
-              <div
-                class="view-toggle-button layout-horizontal align-items-center"
-                ?active="${tab.type === this.viewType}"
-                tabindex="0"
-                id="clickable"
-                @click="${() => this.updateTableView(tab.showIndicators, tab.showActivities)}"
-              >
-                ${tab.name}
-              </div>
-            `
-          )}
+        <div slot="panel-btns" class="total-result layout-horizontal bottom-aligned" ?hidden="${!this.showActivities}">
+          <div class="heading">${translate('TOTAL')}</div>
+          <div class="data">${this.intervention.planned_budget.currency} <b>${this.getTotal()}</b></div>
         </div>
 
         <!--    CP output ADD button     -->
@@ -300,15 +232,6 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     super.connectedCallback();
   }
 
-  firstUpdated(): void {
-    super.firstUpdated();
-
-    this.shadowRoot!.querySelectorAll('#view-toggle-button, .add-button paper-icon-button, iron-icon').forEach((el) =>
-      callClickOnSpacePushListener(el)
-    );
-    this.shadowRoot!.querySelectorAll('#clickable').forEach((el) => callClickOnEnterPushListener(el));
-  }
-
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan)) {
       return;
@@ -325,6 +248,14 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     super.stateChanged(state);
   }
 
+  getTotal(): string {
+    const total: number = this.resultLinks.reduce(
+      (sum: number, result: ExpectedResult) => sum + Number(result.total),
+      0
+    );
+    return displayCurrencyAmount(String(total), '0.00');
+  }
+
   getSpecialElements(container: HTMLElement): CommentElementMeta[] {
     const element: HTMLElement = container.shadowRoot!.querySelector('#wrapper') as HTMLElement;
     const relatedTo: string = container.getAttribute('related-to') as string;
@@ -332,9 +263,9 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     return [{element, relatedTo, relatedToDescription}];
   }
 
-  updateTableView(indicators: boolean, activities: boolean): void {
-    this.showIndicators = indicators;
-    this.showActivities = activities;
+  updateTableView({detail}: CustomEvent): void {
+    this.showIndicators = detail.showIndicators;
+    this.showActivities = detail.showActivities;
   }
 
   openPdOutputDialog(): void;
@@ -481,11 +412,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     if (!e.detail) {
       return;
     }
-    const element = e.currentTarget as HTMLInputElement;
-    if (this.showInactiveIndicators !== element.checked) {
-      this.showInactiveIndicators = element.checked;
-      this.requestUpdate();
-    }
+    this.showInactiveIndicators = e.detail.value;
   }
 
   static get styles(): CSSResultArray {
@@ -498,39 +425,6 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         iron-icon[icon='create'] {
           margin-left: 50px;
         }
-        #view-menu-button {
-          display: none;
-          height: 28px;
-        }
-        #view-menu-button paper-button {
-          height: 28px;
-          background: var(--secondary-background-color);
-          padding-right: 0;
-        }
-        #view-menu-button paper-button iron-icon {
-          margin: 0 7px;
-        }
-        .view-toggle-button {
-          display: flex;
-          height: 28px;
-          margin-left: 4px;
-          padding: 0 19px;
-          font-weight: 500;
-          font-size: 14px;
-          border-radius: 50px;
-          background-color: #d0d0d0;
-          color: rgb(3 114 102);
-          cursor: pointer;
-          ${elevation1};
-        }
-        .view-toggle-button[active] {
-          background-color: #009688;
-          color: #fff;
-        }
-        .view-toggle-button:focus {
-          outline: 0;
-          ${elevation3}
-        }
         .no-results {
           padding: 24px;
         }
@@ -538,9 +432,6 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         .pdOutputMargin.partner .editable-row .hover-block {
           background: linear-gradient(270deg, #c4c4c4 71.65%, rgba(196, 196, 196, 0) 100%);
           padding-left: 20px;
-        }
-        #showInactive {
-          margin-right: 8px;
         }
         .pd-title {
           padding: 32px 42px 0 22px;
@@ -597,6 +488,19 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         .no-wrap {
           white-space: nowrap;
         }
+        .total-result {
+          padding-bottom: 6px;
+        }
+        .total-result b {
+          font-size: 22px;
+          font-weight: 900;
+          line-height: 23px;
+        }
+        .total-result .heading {
+          font-size: 14px;
+          margin-right: 10px;
+          line-height: 23px;
+        }
         etools-content-panel {
           box-shadow: 0 2px 7px 3px rgba(0, 0, 0, 0.15);
         }
@@ -618,13 +522,9 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           height: 1px;
           background-color: #c4c4c4;
         }
-        @media (max-width: 1100px) {
-          #view-menu-button {
-            display: block;
-          }
-          .view-toggle-button {
-            display: none;
-          }
+        .pd-add-section .add-button,
+        etools-content-panel > .add-button {
+          padding-bottom: 10px;
         }
       `
     ];
