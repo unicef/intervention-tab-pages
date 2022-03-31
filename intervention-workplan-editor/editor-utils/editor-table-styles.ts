@@ -62,10 +62,16 @@ export const EditorTableStyles = css`
   }
 
   tbody.odd tr:nth-child(odd) {
-    background-color: #e2e1e1;
+    background-color: #eeeeee;
   }
 
-  td:nth-child(n + 3) {
+  td:nth-child(n + 4) {
+    text-align: right;
+  }
+  td:nth-child(n-1) {
+    border-right: none;
+  }
+  td.a-right {
     text-align: right;
   }
 
@@ -73,7 +79,7 @@ export const EditorTableStyles = css`
     background-color: #b6d5f1;
   }
   .gray-1 {
-    background-color: #eae9e9;
+    background-color: #f7f6f6;
   }
   .b {
     font-weight: 600;
@@ -82,12 +88,6 @@ export const EditorTableStyles = css`
     border-bottom: 1px solid #b8b8b8;
   }
 
-  paper-icon-button[icon='add-box'] {
-    padding-left: 0;
-  }
-  paper-icon-button[icon='create'] {
-    padding-top: 0;
-  }
   paper-icon-button {
     color: var(--secondary-text-color);
   }
@@ -131,7 +131,12 @@ export const EditorTableStyles = css`
   .v-middle {
     vertical-align: middle;
   }
-  .padd-top-40 {
-    padding-top: 40px;
+  .del-item {
+    vertical-align: bottom;
+    padding-left: 0;
+  }
+  paper-icon-button#delItem {
+    padding: 0;
+    width: 25px;
   }
 `;
