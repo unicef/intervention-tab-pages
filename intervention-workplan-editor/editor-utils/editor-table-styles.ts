@@ -68,6 +68,9 @@ export const EditorTableStyles = css`
   td:nth-child(n + 4) {
     text-align: right;
   }
+  td:nth-child(n-1) {
+    border-right: none;
+  }
   td.a-right {
     text-align: right;
   }
@@ -76,7 +79,7 @@ export const EditorTableStyles = css`
     background-color: #b6d5f1;
   }
   .gray-1 {
-    background-color: #eeeeee;
+    background-color: #f7f6f6;
   }
   .b {
     font-weight: 600;
@@ -128,7 +131,12 @@ export const EditorTableStyles = css`
   .v-middle {
     vertical-align: middle;
   }
-  .l-height-61 {
-    line-height: 61px;
+  .del-item {
+    vertical-align: bottom;
+    padding-left: 0;
+  }
+  paper-icon-button#delItem {
+    padding: 0;
+    width: 25px;
   }
 `;
