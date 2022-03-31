@@ -160,20 +160,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
                 ?hidden="${this._hideRepReqEditBtn(this.isReadonly, this.hrUnicefRequirementsCount)}"
               ></paper-icon-button>
             </div>
-            ${this.isUnicefUser
-              ? html` <div
-                  name="humanitarianCluster"
-                  title=${translate('HUMANITARIAN_REPORTS_CLUSTER')}
-                  class="nav-menu-item"
-                  ?selected="${this.isSelected('humanitarianCluster')}"
-                  @click="${this.selectType}"
-                  tabindex="0"
-                  id="clickable"
-                >
-                  ${translate('HUMANITARIAN_REPORTS_CLUSTER')} (${this.hrClusterRequirementsCount})
-                </div>`
-              : html``}
-
+            ${this.getHumanitarianLink(this.hrClusterRequirementsCount)}
             <div
               name="special"
               title=${translate('SPECIAL_REPORT')}
@@ -370,5 +357,23 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
 
   isSelected(type: string): boolean {
     return type === this.selectedReportType;
+  }
+
+  getHumanitarianLink(hrClusterRequirementsCount: number) {
+    // The link it's hidden for the moment (#28753)
+    return html``;
+    return this.isUnicefUser
+      ? html` <div
+          name="humanitarianCluster"
+          title=${translate('HUMANITARIAN_REPORTS_CLUSTER')}
+          class="nav-menu-item"
+          ?selected="${this.isSelected('humanitarianCluster')}"
+          @click="${this.selectType}"
+          tabindex="0"
+          id="clickable"
+        >
+          ${translate('HUMANITARIAN_REPORTS_CLUSTER')} (${hrClusterRequirementsCount})
+        </div>`
+      : html``;
   }
 }
