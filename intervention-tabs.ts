@@ -155,13 +155,25 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
         etools-content-panel::part(ecp-content) {
           padding: 8px 24px 16px 24px;
         }
+        .intervention-partner {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          font-size: 18px;
+          font-weight: 700;
+          display: block;
+        }
+        .intervention-number {
+          font-size: 16px;
+        }
       </style>
 
       <!-- Loading PRP country data -->
       <prp-country-data></prp-country-data>
 
       <intervention-page-content-header with-tabs-visible>
-        <span slot="page-title">${this.intervention.number}</span>
+        <span class="intervention-partner" slot="page-title">${this.intervention.partner}</span>
+        <span class="intervention-number" slot="page-title">${this.intervention.number}</span>
         <div slot="mode">
           <paper-toggle-button id="commentMode" ?checked="${this.commentMode}" @iron-change="${this.commentModeChange}"
             >${translate('GENERAL.COMMENT_MODE')}</paper-toggle-button

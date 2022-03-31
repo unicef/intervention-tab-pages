@@ -19,18 +19,17 @@ export class ExportInterventionData extends LitElement {
     return [
       css`
         paper-menu-button {
-          padding: 0px 24px;
+          padding: 0px;
         }
         paper-button {
           height: 40px;
-          padding: 0px 5px;
-          margin-left: 10px;
+          padding: 0px;
+          min-width: 20px;
           font-weight: bold;
           color: var(--secondary-text-color);
         }
 
         paper-button iron-icon {
-          margin-right: 10px;
           color: var(--secondary-text-color);
         }
 
@@ -65,8 +64,7 @@ export class ExportInterventionData extends LitElement {
       </style>
       <paper-menu-button id="pdExportMenuBtn" close-on-activate horizontal-align="right">
         <paper-button slot="dropdown-trigger" class="dropdown-trigger">
-          <iron-icon icon="file-download"></iron-icon>
-          Export
+          <iron-icon icon="more-vert"></iron-icon>
         </paper-button>
         <paper-listbox slot="dropdown-content">
           ${this.exportLinks.map(

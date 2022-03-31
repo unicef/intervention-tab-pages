@@ -80,8 +80,8 @@ export class InterventionActions extends LitElement {
       (action: string) => !exportActions.includes(action) && action !== backAction
     );
     return html`
-      ${this.renderExport(exportActions)}${this.renderBackAction(backAction)}
-      ${this.renderGroupedActions(mainAction, groupedActions)}
+      ${this.renderBackAction(backAction)}${this.renderGroupedActions(mainAction, groupedActions)}
+      ${this.renderExport(exportActions)}
     `;
   }
 

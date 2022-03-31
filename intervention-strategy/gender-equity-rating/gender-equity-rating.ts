@@ -61,6 +61,10 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         info-icon-tooltip {
           --iit-icon-size: 18px;
         }
+        #iit-ger {
+          --iit-margin: 8px 0 8px -15px;
+          --iit-icon-size: 24px;
+        }
       </style>
 
       <etools-content-panel
@@ -69,7 +73,13 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         comment-element="gender-equity-sustainability"
         comment-description=${translate('GENDER_EQUITY_SUSTAINABILITY')}
       >
-        <div slot="panel-btns">
+        <div slot="after-title">
+          <info-icon-tooltip
+            id="iit-ger"
+            .tooltipHtml="${this.getRatingInfoHtml()}"
+          ></info-icon-tooltip>
+        </div>
+       <div slot="panel-btns">
           <paper-icon-button
             ?hidden="${this.hideEditIcon(this.editMode, this.canEditAtLeastOneField)}"
             @click="${this.allowEdit}"
@@ -259,5 +269,40 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
       .catch((error: any) => {
         console.log(error);
       });
+  }
+
+  getRatingInfoHtml() {
+    return html`
+      <style>
+        .rating-info {
+          display: flex;
+          flex-direction: column;
+          padding: 6px;
+          margin: 10px 0px;
+          width: 100%;
+          box-sizing: border-box;
+          border: solid 1px var(--secondary-background-color);
+        }
+        .no-bold {
+          font-weight: normal;
+        }
+      </style>
+      <div class="rating-info">
+        <span>${translate('SUSTAINABILITY_NONE')}:</span>
+        <span class="no-bold">${translate('SUSTAINABILITY_NONE_TOOLTIP')}</span>
+      </div>
+      <div class="rating-info">
+        <span>${translate('SUSTAINABILITY_MARGINAL')}:</span>
+        <span class="no-bold">${translate('SUSTAINABILITY_MARGINAL_TOOLTIP')}</span>
+      </div>
+      <div class="rating-info">
+        <span>${translate('SUSTAINABILITY_SIGNIFICANT')}:</span>
+        <span class="no-bold">${translate('SUSTAINABILITY_SIGNIFICANT_TOOLTIP')}</span>
+      </div>
+      <div class="rating-info">
+        <span>${translate('SUSTAINABILITY_PRINCIPAL')}:</span>
+        <span class="no-bold">${translate('SUSTAINABILITY_PRINCIPAL_TOOLTIP')}</span>
+      </div>
+    `;
   }
 }
