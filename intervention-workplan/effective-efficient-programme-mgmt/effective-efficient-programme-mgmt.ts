@@ -67,6 +67,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         }
         .pad-right {
           padding-right: 6px;
+          text-transform: uppercase;
         }
         info-icon-tooltip {
           --iit-margin: 8px 0 8px -15px;

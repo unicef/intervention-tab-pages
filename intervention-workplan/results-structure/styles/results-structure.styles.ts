@@ -82,10 +82,6 @@ export const ResultStructureStyles: CSSResult = css`
     border-top: 1px solid var(--main-border-color);
     background-color: var(--primary-background-color);
   }
-  .number-data {
-    width: 100px;
-    margin-left: 10px;
-  }
   iron-icon {
     margin: 0 15px;
     opacity: 0.9;
@@ -130,7 +126,7 @@ export const ResultStructureStyles: CSSResult = css`
     display: flex;
     width: min-content;
     align-items: center;
-    padding: 16px 13px;
+    padding: 16px 13px 0;
     cursor: pointer;
     font-size: 15px;
     font-weight: 500;
@@ -143,8 +139,5 @@ export const ResultStructureStyles: CSSResult = css`
   }
   .add-button.pd-add {
     padding-left: 31px;
-  }
-  .add-button:not(:last-child) {
-    padding-bottom: 0;
   }
 `;
