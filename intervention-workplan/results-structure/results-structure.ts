@@ -522,6 +522,10 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           height: 1px;
           background-color: #c4c4c4;
         }
+        .pd-add-section .add-button,
+        etools-content-panel > .add-button {
+          padding-bottom: 10px;
+        }
       `
     ];
   }
