@@ -10,7 +10,7 @@ import {
   selectInterventionResultLinks,
   selectResultLinksPermissions
 } from './results-structure.selectors';
-import {ResultStructureStyles} from './results-structure.styles';
+import {ResultStructureStyles} from './styles/results-structure.styles';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import '@unicef-polymer/etools-content-panel';
 import '@polymer/paper-toggle-button/paper-toggle-button';

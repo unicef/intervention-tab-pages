@@ -1,19 +1,90 @@
-import {LitElement, html, customElement, property, TemplateResult} from 'lit-element';
+import {LitElement, html, customElement, property, TemplateResult, css} from 'lit-element';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import {ResultStructureStyles} from './results-structure.styles';
+import {ResultStructureStyles} from './styles/results-structure.styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {Disaggregation, DisaggregationValue} from '@unicef-polymer/etools-types';
 import {Indicator} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
 
 @customElement('pd-indicator')
 export class PdIndicator extends CommentsMixin(LitElement) {
+  // language=css
   static get styles() {
-    return [gridLayoutStylesLit, ResultStructureStyles];
+    return [
+      gridLayoutStylesLit,
+      ResultStructureStyles,
+      ActivitiesAndIndicatorsStyles,
+      css`
+        :host {
+          display: block;
+          position: relative;
+        }
+        .table-row {
+          gap: 0;
+          flex-direction: column;
+        }
+        .main-info {
+          display: flex;
+        }
+        .main-info .indicator {
+          width: 60%;
+          flex: none;
+          gap: 10px;
+          text-align: left;
+        }
+        .main-info > div:not(.indicator) {
+          flex: 1;
+        }
+        .number-data {
+          text-align: right;
+        }
+        .hf-mark {
+          margin: 6px auto;
+          width: 15px;
+          height: 15px;
+          border-radius: 50%;
+          background-color: #2073b7;
+        }
+        .details-heading {
+          margin-bottom: 12px;
+          font-size: 16px;
+          font-weight: 700;
+          line-height: 16px;
+          color: #5c5c5c;
+        }
+        .details-container {
+          text-align: left;
+          padding-left: 0;
+        }
+        .details-list-item {
+          font-size: 16px;
+          font-weight: 400;
+          line-height: 26px;
+          color: #212121;
+        }
+        .table-row .details {
+          display: flex;
+          overflow: hidden;
+          height: 0;
+          transform: scaleY(0);
+          transform-origin: top;
+          transition: 0.25s;
+          padding-top: 0;
+          flex: none;
+        }
+        .details.opened {
+          flex: 1 1 0%;
+          height: auto;
+          padding-top: 32px;
+          transform: scaleY(1);
+        }
+      `
+    ];
   }
   @property() private disaggregations: Disaggregation[] = [];
   @property({type: Array}) indicator!: Indicator;
@@ -22,180 +93,112 @@ export class PdIndicator extends CommentsMixin(LitElement) {
   @property({type: String}) sectionClusterNames = '';
   @property({type: String}) interventionStatus = '';
   @property({type: Boolean}) inAmendment!: boolean;
+  @property({type: Boolean}) detailsOpened = false;
 
   render() {
     return html`
       ${sharedStyles}
       <style>
-        :host {
-          --indicator-blue: #a4c4e1;
-          --indicator-green: #c4d7c6;
-        }
-        etools-data-table-row::part(edt-icon-wrapper) {
-          padding: 0 0 !important;
-          margin-right: 16px !important;
-        }
-        .editable-row .hover-block {
-          background-color: rgb(189, 211, 230);
-        }
-
-        etools-data-table-row::part(edt-list-row-wrapper):hover {
-          background-color: rgb(189, 211, 230);
-        }
-
-        :host([high-frequency-indicator]) etools-data-table-row::part(edt-icon-wrapper) {
-          background: var(--indicator-blue)
-            linear-gradient(
-              135deg,
-              #066ac7 12.5%,
-              #a4c4e1 12.5%,
-              #a4c4e1 50%,
-              #066ac7 50%,
-              #066ac7 62.5%,
-              #a4c4e1 62.5%,
-              #a4c4e1 100%
-            )
-            center/5.66px 5.66px;
-        }
-        :host([cluster-indicator]) etools-data-table-row::part(edt-icon-wrapper) {
-          background: var(--indicator-green)
-            linear-gradient(
-              135deg,
-              #066ac7 12.5%,
-              #c4d7c6 12.5%,
-              #c4d7c6 50%,
-              #066ac7 50%,
-              #066ac7 62.5%,
-              #c4d7c6 62.5%,
-              #c4d7c6 100%
-            )
-            center/5.66px 5.66px;
-        }
-        etools-data-table-row {
-          --blue-background: #b6d5f1;
-          --blue-background-dark: #a4c4e1;
-          display: block;
-        }
-
-        etools-data-table-row::part(edt-list-row-collapse-wrapper) {
-          margin-bottom: 0;
-        }
-
-        etools-data-table-row::part(edt-list-row-wrapper) {
-          align-items: stretch;
-          background-color: var(--blue-background);
-          border: 1px solid var(--main-border-color) !important;
-          border-bottom: none !important;
-        }
-
-        .indicatorType {
-          font-weight: 600;
-          font-size: 16px;
-          margin-right: 4px;
-        }
-        div[slot='row-data-details'] {
-          --blue-background-dark: #a4c4e1;
-          background: var(--blue-background-dark);
-          max-height: 220px;
-          overflow: auto;
-        }
-        etools-data-table-row::part(edt-list-row-collapse-wrapper) {
-          padding: 0;
-          margin: 0;
-        }
         .font-bold {
           font-weight: bold;
         }
       </style>
-      <etools-data-table-row
-        secondary-bg-on-hover
+      <div
+        class="table-row"
         related-to="indicator-${this.indicator.id}"
         related-to-description="Indicator - ${this.indicator.indicator?.title}"
         comments-container
+        @paper-dropdown-open="${(event: CustomEvent) => (event.currentTarget as HTMLElement)!.classList.add('active')}"
+        @paper-dropdown-close="${(event: CustomEvent) =>
+          (event.currentTarget as HTMLElement)!.classList.remove('active')}"
       >
-        <div slot="row-data" class="layout-horizontal align-items-center editable-row">
+        <div class="main-info">
           <!--    Indicator name    -->
-          <div class="text flex-auto">
-            ${this.getIndicatorDisplayType(this.indicator)} ${this.addInactivePrefix(this.indicator)}
-            ${(this.indicator.indicator ? this.indicator.indicator.title : this.indicator.cluster_indicator_title) ||
-            '—'}
+          <div class="indicator">
+            <div class="name">
+              ${this.getIndicatorDisplayType(this.indicator)} ${this.addInactivePrefix(this.indicator)}
+              ${(this.indicator.indicator ? this.indicator.indicator.title : this.indicator.cluster_indicator_title) ||
+              '—'}
+            </div>
+            <div class="item-link" @click="${() => (this.detailsOpened = !this.detailsOpened)}">
+              ${this.detailsOpened ? 'hide' : 'see'} ${translate('LOCATIONS')} (${this.locationNames.length})
+              ${translate('AND')} ${translate('DISAGGREGATIONS')} (${this.indicator.disaggregation.length})
+            </div>
           </div>
 
+          <div><div class="hf-mark" ?hidden="${!this.indicator.is_high_frequency}"></div></div>
           <!--    Baseline    -->
-          <div class="text number-data flex-none">
-            ${this._displayBaselineOrTarget(this.indicator.baseline, this.indicator)}
-          </div>
+          <div class="number-data">${this._displayBaselineOrTarget(this.indicator.baseline, this.indicator)}</div>
 
           <!--    Target    -->
-          <div class="text number-data flex-none">
-            ${this._displayBaselineOrTarget(this.indicator.target, this.indicator)}
-          </div>
-          <div class="hover-block">
-            <paper-icon-button
-              icon="icons:create"
-              ?hidden="${!this._canEdit()}"
-              @click="${() => this.openIndicatorDialog(this.indicator, false)}"
-              title="${translate('EDIT')}"
-            ></paper-icon-button>
-            <paper-icon-button
-              icon="icons:visibility"
-              @click="${() => this.openIndicatorDialog(this.indicator, true)}"
-              ?hidden="${!this._canView()}"
-              title="${translate('VIEW')}"
-            ></paper-icon-button>
-            <paper-icon-button
-              icon="icons:block"
-              ?hidden="${!this._canDeactivate()}"
-              @click="${() => this.openDeactivationDialog(String(this.indicator.id))}"
-              title="${translate('DEACTIVATE')}"
-            ></paper-icon-button>
-            <paper-icon-button
-              icon="icons:delete"
-              ?hidden="${!this._canDelete()}"
-              @click="${() => this.openDeletionDialog(String(this.indicator.id))}"
-              title="${translate('DELETE')}"
-            ></paper-icon-button>
-          </div>
+          <div class="number-data">${this._displayBaselineOrTarget(this.indicator.target, this.indicator)}</div>
         </div>
+        <div class="details ${this.detailsOpened ? 'opened' : ''}">${this.additionalTemplate()}</div>
 
-        <!--    Indicator row collapsible Details    -->
-        <div slot="row-data-details" class="row-h">
-          <!--    Locations    -->
-          <div class="details-container-locations">
-            <div class="text details-heading">${translate('LOCATIONS')}</div>
-            <div class="details-text">
-              ${this.locationNames.length
-                ? this.locationNames.map(
-                    (name) =>
-                      html`
-                        <div class="details-list-item">
-                          <span class="font-bold">${name.name}</span>
-                          ${name.adminLevel}
-                        </div>
-                      `
-                  )
-                : '-'}
-            </div>
-          </div>
-
-          <!--    Section and Cluster    -->
-          <div class="details-container">
-            <div class="text details-heading">${translate('SECTION_CLUSTER')}</div>
-            <div class="details-text">${this.sectionClusterNames}</div>
-          </div>
-
-          <!--    Disaggregations    -->
-          <div class="details-container">
-            <div class="text details-heading">${translate('DISAGGREGATION')}</div>
-            <div class="details-text">
-              ${this.indicator.disaggregation.length
-                ? this.indicator.disaggregation.map((disaggregation: string) => this.getDisaggregation(disaggregation))
-                : '—'}
-            </div>
-          </div>
+        <div class="show-actions" ?hidden="${this.commentMode}">
+          <paper-menu-button id="view-menu-button" close-on-activate horizontal-align="right">
+            <paper-icon-button slot="dropdown-trigger" icon="icons:more-vert" tabindex="0"></paper-icon-button>
+            <paper-listbox slot="dropdown-content">
+              <div
+                class="action"
+                ?hidden="${!this._canEdit() && !this._canView()}"
+                @click="${() => this.openIndicatorDialog(this.indicator, this.readonly)}"
+              >
+                <iron-icon icon="${this._canEdit() ? 'create' : 'visibility'}"></iron-icon>
+                ${this._canEdit() ? translate('EDIT') : translate('VIEW')}
+              </div>
+              <div
+                class="action"
+                ?hidden="${!this._canDeactivate()}"
+                @click="${() => this.openDeactivationDialog(String(this.indicator.id))}"
+              >
+                <iron-icon icon="icons:block"></iron-icon>
+                ${translate('DEACTIVATE')}
+              </div>
+              <div
+                class="action delete-action"
+                ?hidden="${!this._canDelete()}"
+                @click="${() => this.openDeletionDialog(String(this.indicator.id))}"
+              >
+                <iron-icon icon="delete"></iron-icon>
+                ${translate('DELETE')}
+              </div>
+            </paper-listbox>
+          </paper-menu-button>
         </div>
-      </etools-data-table-row>
+      </div>
     `;
+  }
+
+  additionalTemplate() {
+    return html` <!--    Indicator row collapsible Details    -->
+      <!--    Locations    -->
+      <div class="details-container">
+        <div class="details-heading">${translate('LOCATIONS')}</div>
+        <div class="details-text">
+          ${this.locationNames.length
+            ? this.locationNames.map(
+                (name) =>
+                  html`
+                    <div class="details-list-item">
+                      <span class="font-bold">${name.name}</span>
+                      ${name.adminLevel}
+                    </div>
+                  `
+              )
+            : '-'}
+        </div>
+      </div>
+
+      <!--    Disaggregations    -->
+      <div class="details-container">
+        <div class="details-heading">${translate('DISAGGREGATION')}</div>
+        <div class="details-text">
+          ${this.indicator.disaggregation.length
+            ? this.indicator.disaggregation.map((disaggregation: string) => this.getDisaggregation(disaggregation))
+            : '—'}
+        </div>
+      </div>`;
   }
 
   getSpecialElements(container: HTMLElement): CommentElementMeta[] {

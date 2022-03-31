@@ -8,7 +8,7 @@ import {
   PropertyValues,
   TemplateResult
 } from 'lit-element';
-import {ResultStructureStyles} from './results-structure.styles';
+import {ResultStructureStyles} from './styles/results-structure.styles';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import '@unicef-polymer/etools-data-table/etools-data-table.js';
 import '@polymer/paper-icon-button/paper-icon-button';

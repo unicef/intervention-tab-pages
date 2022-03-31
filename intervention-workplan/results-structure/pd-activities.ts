@@ -1,5 +1,5 @@
 import {LitElement, html, TemplateResult, CSSResultArray, css, customElement, property} from 'lit-element';
-import {ResultStructureStyles} from './results-structure.styles';
+import {ResultStructureStyles} from './styles/results-structure.styles';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/iron-icons';
@@ -19,6 +19,7 @@ import {AsyncAction, InterventionActivity, InterventionQuarter} from '@unicef-po
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
 
 @customElement('pd-activities')
 export class PdActivities extends CommentsMixin(LitElement) {
@@ -75,7 +76,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
                       <div><b>${activity.code}</b>&nbsp;${activity.name || '-'}</div>
                       <div class="details">${activity.context_details || '-'}</div>
                       <div
-                        class="activity-item-link"
+                        class="item-link"
                         ?hidden="${!activity.items?.length}"
                         @click="${() => this.openDialog(activity, this.readonly)}"
                       >
@@ -93,13 +94,13 @@ export class PdActivities extends CommentsMixin(LitElement) {
                     </div>
 
                     <!--    CSO Cash    -->
-                    <div class="cache-data">${displayCurrencyAmount(String(activity.cso_cash || 0), '0', 2)}</div>
+                    <div class="number-data">${displayCurrencyAmount(String(activity.cso_cash || 0), '0', 2)}</div>
 
                     <!--    UNICEF Cash    -->
-                    <div class="cache-data">${displayCurrencyAmount(String(activity.unicef_cash || 0), '0', 2)}</div>
+                    <div class="number-data">${displayCurrencyAmount(String(activity.unicef_cash || 0), '0', 2)}</div>
 
                     <!--    Total    -->
-                    <div class="cache-data">
+                    <div class="number-data">
                       <!--       TODO: use field from backend         -->
                       <b>
                         ${displayCurrencyAmount(String(this.getTotal(activity.cso_cash, activity.unicef_cash)), '0', 2)}
@@ -116,7 +117,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
                         <paper-listbox slot="dropdown-content">
                           <div class="action" @click="${() => this.openDialog(activity, this.readonly)}">
                             <iron-icon icon="${this.readonly ? 'visibility' : 'create'}"></iron-icon>
-                            ${this.readonly ? 'View' : 'Edit'}
+                            ${this.readonly ? translate('VIEW') : translate('EDIT')}
                           </div>
                           <div
                             class="action delete-action"
@@ -124,7 +125,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
                             @click="${() => this.openDeleteDialog(String(activity.id))}"
                           >
                             <iron-icon icon="delete"></iron-icon>
-                            Delete
+                            ${translate('DELETE')}
                           </div>
                         </paper-listbox>
                       </paper-menu-button>
@@ -217,50 +218,13 @@ export class PdActivities extends CommentsMixin(LitElement) {
     return [
       gridLayoutStylesLit,
       ResultStructureStyles,
+      ActivitiesAndIndicatorsStyles,
       css`
         :host {
-          --green-background: #c4d7c7;
-          --green-background-dark: #b0c8b3;
+          --main-background: #c4d7c7;
+          --main-background-dark: #b0c8b3;
           display: block;
-          background: var(--green-background);
-        }
-        .details-container.full {
-          width: 70%;
-        }
-
-        div[slot='row-data'] {
-          min-height: 53px;
-        }
-        .title-text {
-          font-size: 16px;
-          font-weight: 500;
-          line-height: 26px;
-        }
-        .table-row {
-          display: flex;
-          position: relative;
-          gap: 10px;
-          font-size: 16px;
-          font-weight: 400;
-          line-height: 26px;
-          color: #212121;
-          padding: 19px 40px 19px 24px !important;
-        }
-        .table-head {
-          padding: 22px 40px 22px 24px !important;
-          font-size: 16px;
-          font-weight: 700;
-          line-height: 16px;
-          color: #5c5c5c;
-        }
-        .table-row > div:first-child {
-          width: 40%;
-          flex: none;
-        }
-        .table-row div:not(:first-child) {
-          text-align: center;
-          flex: 1;
-          min-width: 0;
+          background: var(--main-background);
         }
         .activity-data div {
           text-align: left !important;
@@ -268,94 +232,18 @@ export class PdActivities extends CommentsMixin(LitElement) {
           font-weight: 400;
           line-height: 26px;
         }
-        .activity-data .activity-item-link {
-          margin-top: 7px;
-          font-size: 16px;
-          font-weight: 700;
-          line-height: 26px;
-          color: #2073b7;
-          text-decoration: underline;
-          cursor: pointer;
-        }
-        .table-row div.cache-data {
+        .table-row div.number-data {
           display: flex;
           align-items: center;
           justify-content: flex-end;
         }
-        .table-row:not(:last-child):not(.table-head):after {
-          content: '';
-          display: block;
-          position: absolute;
-          width: calc(100% - 14px);
-          left: 7px;
-          bottom: 0;
-          height: 1px;
-          background-color: #c4c4c4;
-        }
-        .show-actions {
-          position: absolute;
-          display: none;
-          top: 0;
-          right: 0;
-        }
-        .table-row.active .show-actions,
-        .table-row:hover .show-actions {
-          display: block;
-        }
-        .table-row.active,
-        .table-row:not(.table-head):hover {
-          background-color: var(--green-background-dark);
-        }
-        .action {
-          display: flex;
-          align-items: center;
-          font-size: 16px;
-          font-weight: 400;
-          line-height: 19px;
-          padding: 10px 14px;
-          color: #000000;
-          white-space: nowrap;
-          text-align: left;
-          cursor: pointer;
-        }
-        .action iron-icon {
-          margin: 0 11px 0 0;
-        }
-        .action:hover {
-          background-color: var(--secondary-background-color);
-        }
-        .delete-action {
-          color: #e14f4f;
-        }
         time-intervals {
           justify-content: center;
         }
-        etools-data-table-row {
-          --list-bg-color: var(--green-background);
-        }
-
-        etools-data-table-row::part(edt-list-row-collapse-wrapper) {
-          padding: 0 !important;
-          background-color: var(--green-background);
-          border-top: 1px solid var(--main-border-color);
-        }
-        etools-data-table-row::part(edt-list-row-wrapper) {
-          background-color: var(--green-background);
-          min-height: 48px;
-          border: 1px solid var(--main-border-color) !important;
-          border-bottom: none !important;
-        }
-        etools-data-table-row::part(edt-icon-wrapper) {
-          padding: 0 0 0 38px !important;
-          margin-right: 16px !important;
-        }
-
-        .editable-row .hover-block {
-          background-color: rgb(199, 212, 200);
-        }
-
-        etools-data-table-row::part(edt-list-row-wrapper):hover {
-          background-color: #c4d7c7;
+        .table-row > div:first-child {
+          width: 40%;
+          flex: none;
+          text-align: left;
         }
       `
     ];
