@@ -13,79 +13,6 @@ import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.s
 
 @customElement('pd-indicator')
 export class PdIndicator extends CommentsMixin(LitElement) {
-  // language=css
-  static get styles() {
-    return [
-      gridLayoutStylesLit,
-      ResultStructureStyles,
-      ActivitiesAndIndicatorsStyles,
-      css`
-        :host {
-          display: block;
-          position: relative;
-        }
-        .table-row {
-          gap: 0;
-          flex-direction: column;
-        }
-        .main-info {
-          display: flex;
-        }
-        .main-info .indicator {
-          width: 60%;
-          flex: none;
-          gap: 10px;
-          text-align: left;
-        }
-        .main-info > div:not(.indicator) {
-          flex: 1;
-        }
-        .number-data {
-          text-align: right;
-        }
-        .hf-mark {
-          margin: 6px auto;
-          width: 15px;
-          height: 15px;
-          border-radius: 50%;
-          background-color: #2073b7;
-        }
-        .details-heading {
-          margin-bottom: 12px;
-          font-size: 16px;
-          font-weight: 700;
-          line-height: 16px;
-          color: #5c5c5c;
-        }
-        .details-container {
-          text-align: left;
-          padding-left: 0;
-        }
-        .details-list-item {
-          font-size: 16px;
-          font-weight: 400;
-          line-height: 26px;
-          color: #212121;
-        }
-        .table-row .details {
-          display: flex;
-          overflow: hidden;
-          height: 0;
-          transform: scaleY(0);
-          transform-origin: top;
-          transition: 0.25s;
-          padding-top: 0;
-          flex: none;
-        }
-        .details.opened {
-          flex: 1 1 0%;
-          height: auto;
-          padding-top: 32px;
-          transform: scaleY(1);
-        }
-      `
-    ];
-  }
   @property() private disaggregations: Disaggregation[] = [];
   @property({type: Array}) indicator!: Indicator;
   @property({type: Boolean}) readonly!: boolean;
@@ -316,5 +243,79 @@ export class PdIndicator extends CommentsMixin(LitElement) {
       return true;
     }
     return false;
+  }
+  // language=css
+  static get styles() {
+    return [
+      gridLayoutStylesLit,
+      ResultStructureStyles,
+      ActivitiesAndIndicatorsStyles,
+      css`
+        :host {
+          display: block;
+          position: relative;
+        }
+        .table-row {
+          gap: 0;
+          flex-direction: column;
+        }
+        .main-info {
+          display: flex;
+          gap: 10px;
+        }
+        .main-info .indicator {
+          width: 60%;
+          flex: none;
+          gap: 10px;
+          text-align: left;
+        }
+        .main-info > div:not(.indicator) {
+          flex: 1;
+        }
+        .number-data {
+          text-align: right;
+        }
+        .hf-mark {
+          margin: 6px auto;
+          width: 15px;
+          height: 15px;
+          border-radius: 50%;
+          background-color: #2073b7;
+        }
+        .details-heading {
+          margin-bottom: 12px;
+          font-size: 16px;
+          font-weight: 700;
+          line-height: 16px;
+          color: #5c5c5c;
+        }
+        .details-container {
+          text-align: left;
+          padding-left: 0;
+        }
+        .details-list-item {
+          font-size: 16px;
+          font-weight: 400;
+          line-height: 26px;
+          color: #212121;
+        }
+        .table-row .details {
+          display: flex;
+          overflow: hidden;
+          height: 0;
+          transform: scaleY(0);
+          transform-origin: top;
+          transition: 0.25s;
+          padding-top: 0;
+          flex: none;
+        }
+        .details.opened {
+          flex: 1 1 0%;
+          height: auto;
+          padding-top: 32px;
+          transform: scaleY(1);
+        }
+      `
+    ];
   }
 }

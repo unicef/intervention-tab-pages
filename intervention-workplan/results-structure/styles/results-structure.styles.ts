@@ -82,10 +82,6 @@ export const ResultStructureStyles: CSSResult = css`
     border-top: 1px solid var(--main-border-color);
     background-color: var(--primary-background-color);
   }
-  .number-data {
-    width: 100px;
-    margin-left: 10px;
-  }
   iron-icon {
     margin: 0 15px;
     opacity: 0.9;
