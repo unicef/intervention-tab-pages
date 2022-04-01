@@ -87,6 +87,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td colspan="3" tabindex="0">
                   <paper-textarea
                     no-label-float
+                    input
                     .value="${activity.name}"
                     ?readonly="${!activity.inEditMode}"
                     required
@@ -97,6 +98,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                   <div class="pad-top-8">
                     <paper-textarea
                       placeholder="-"
+                      input
                       label="Other Notes"
                       always-float-label
                       ?readonly="${!activity.inEditMode}"
@@ -130,6 +132,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td tabindex="${this.isReadonlyForActivityCash(activity.inEditMode, activity.items) ? '-1' : '0'}">
                   <etools-currency-amount-input
                     no-label-float
+                    input
                     .value="${activity.cso_cash}"
                     ?readonly="${this.isReadonlyForActivityCash(activity.inEditMode, activity.items)}"
                     @value-changed="${({detail}: CustomEvent) =>
@@ -139,6 +142,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td tabindex="${this.isReadonlyForActivityCash(activity.inEditMode, activity.items) ? '-1' : '0'}">
                   <etools-currency-amount-input
                     no-label-float
+                    input
                     .value="${activity.unicef_cash}"
                     ?readonly="${this.isReadonlyForActivityCash(activity.inEditMode, activity.items)}"
                     @value-changed="${({detail}: CustomEvent) =>
@@ -156,7 +160,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                   </span>
                 </td>
               </tr>
-              <tr class="add" type="activity" arrow-nav="next-tbody">
+              <tr class="add" type="activity">
                 <td></td>
                 <td
                   colspan="3"

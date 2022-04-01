@@ -23,9 +23,9 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
         return '';
       }
       return html`<tbody class="odd">
-        <tr ?hidden="${!this.permissions.edit.result_links}">
+        <tr ?hidden="${!this.permissions.edit.result_links}" type="add-item">
           <td></td>
-          <td>
+          <td tabindex="0">
             <paper-icon-button icon="add-box" @click="${() => this.addNewItem(activity)}"></paper-icon-button> Add New
             Item
           </td>
@@ -40,13 +40,14 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
           activity.items || [],
           (item: InterventionActivityItemExtended) => item.id,
           (item: InterventionActivityItemExtended, itemIndex: number) => html`
-            <tr class="activity-items-row">
+            <tr class="activity-items-row" type="a-item">
               <td>
                 <paper-input readonly .value="${item.code || 'N/A'}"></paper-input>
               </td>
               <td tabindex="0">
                 <paper-textarea
                   always-float-label
+                  input
                   label=${this.getLabel(activity.itemsInEditMode, 'Item Description')}
                   ?readonly="${!activity.itemsInEditMode}"
                   .invalid="${item.invalid?.name}"
@@ -60,6 +61,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
               </td>
               <td tabindex="0">
                 <paper-input
+                  input
                   always-float-label
                   label=${this.getLabel(activity.itemsInEditMode, 'Unit')}
                   ?readonly="${!activity.itemsInEditMode}"
@@ -75,6 +77,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
               <td tabindex="0">
                 <etools-currency-amount-input
                   label=${this.getLabel(activity.itemsInEditMode, 'N. of Units')}
+                  input
                   ?readonly="${!activity.itemsInEditMode}"
                   .invalid="${item.invalid?.no_units}"
                   required
@@ -94,6 +97,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
               <td tabindex="0">
                 <etools-currency-amount-input
                   label=${this.getLabel(activity.itemsInEditMode, 'Price/Unit')}
+                  input
                   ?readonly="${!activity.itemsInEditMode}"
                   .invalid="${item.invalid?.unit_price}"
                   required
@@ -113,6 +117,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
               <td tabindex="0">
                 <etools-currency-amount-input
                   label=${this.getLabel(activity.itemsInEditMode, 'Partner Cash')}
+                  input
                   ?readonly="${!activity.itemsInEditMode}"
                   required
                   auto-validate
@@ -133,6 +138,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
               <td tabindex="0">
                 <etools-currency-amount-input
                   label=${this.getLabel(activity.itemsInEditMode, 'UNICEF Cash')}
+                  input
                   ?readonly="${!activity.itemsInEditMode}"
                   required
                   auto-validate
