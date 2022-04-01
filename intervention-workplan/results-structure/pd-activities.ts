@@ -52,10 +52,10 @@ export class PdActivities extends CommentsMixin(LitElement) {
 
           <div class="table-row table-head align-items-center" ?hidden="${this.readonly}">
             <div>${translate('ACTIVITY_NAME')}</div>
-            <div>${translate('TIME_PERIODS')}</div>
-            <div>${translate('PARTNER_CASH')}</div>
-            <div>${translate('UNICEF_CASH')}</div>
-            <div>${translate('GENERAL.TOTAL')} (${this.currency})</div>
+            <div class="fixed-cell time-intervals">${translate('TIME_PERIODS')}</div>
+            <div class="fixed-cell activity-budget">${translate('PARTNER_CASH')}</div>
+            <div class="fixed-cell activity-budget">${translate('UNICEF_CASH')}</div>
+            <div class="fixed-cell activity-budget">${translate('GENERAL.TOTAL')} (${this.currency})</div>
           </div>
 
           ${this.activities.length
@@ -85,7 +85,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
                     </div>
 
                     <!--    Time intervals    -->
-                    <div>
+                    <div class="fixed-cell time-intervals">
                       <time-intervals
                         .quarters="${this.quarters}"
                         .selectedTimeFrames="${activity.time_frames}"
@@ -94,13 +94,17 @@ export class PdActivities extends CommentsMixin(LitElement) {
                     </div>
 
                     <!--    CSO Cash    -->
-                    <div class="number-data">${displayCurrencyAmount(String(activity.cso_cash || 0), '0', 2)}</div>
+                    <div class="number-data fixed-cell activity-budget">
+                      ${displayCurrencyAmount(String(activity.cso_cash || 0), '0', 2)}
+                    </div>
 
                     <!--    UNICEF Cash    -->
-                    <div class="number-data">${displayCurrencyAmount(String(activity.unicef_cash || 0), '0', 2)}</div>
+                    <div class="number-data fixed-cell activity-budget">
+                      ${displayCurrencyAmount(String(activity.unicef_cash || 0), '0', 2)}
+                    </div>
 
                     <!--    Total    -->
-                    <div class="number-data">
+                    <div class="number-data fixed-cell activity-budget">
                       <!--       TODO: use field from backend         -->
                       <b>
                         ${displayCurrencyAmount(String(this.getTotal(activity.cso_cash, activity.unicef_cash)), '0', 2)}
@@ -240,10 +244,17 @@ export class PdActivities extends CommentsMixin(LitElement) {
         time-intervals {
           justify-content: center;
         }
+        div.time-intervals {
+          max-width: 160px;
+          width: 15%;
+        }
         .table-row > div:first-child {
-          width: 40%;
-          flex: none;
+          flex: auto;
+          min-width: 0;
           text-align: left;
+        }
+        div.activity-budget {
+          min-width: 120px;
         }
       `
     ];

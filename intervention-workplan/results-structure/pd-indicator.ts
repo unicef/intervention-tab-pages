@@ -53,12 +53,18 @@ export class PdIndicator extends CommentsMixin(LitElement) {
             </div>
           </div>
 
-          <div><div class="hf-mark" ?hidden="${!this.indicator.is_high_frequency}"></div></div>
+          <div class="fixed-cell high-frequency">
+            <div class="hf-mark" ?hidden="${!this.indicator.is_high_frequency}"></div>
+          </div>
           <!--    Baseline    -->
-          <div class="number-data">${this._displayBaselineOrTarget(this.indicator.baseline, this.indicator)}</div>
+          <div class="number-data fixed-cell">
+            ${this._displayBaselineOrTarget(this.indicator.baseline, this.indicator)}
+          </div>
 
           <!--    Target    -->
-          <div class="number-data">${this._displayBaselineOrTarget(this.indicator.target, this.indicator)}</div>
+          <div class="number-data fixed-cell">
+            ${this._displayBaselineOrTarget(this.indicator.target, this.indicator)}
+          </div>
         </div>
         <div class="details ${this.detailsOpened ? 'opened' : ''}">${this.additionalTemplate()}</div>
 
@@ -264,9 +270,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
           gap: 10px;
         }
         .main-info .indicator {
-          width: 60%;
-          flex: none;
-          gap: 10px;
+          flex: auto;
           text-align: left;
         }
         .main-info > div:not(.indicator) {

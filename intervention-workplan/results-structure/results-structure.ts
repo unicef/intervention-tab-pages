@@ -177,6 +177,10 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                     <div slot="row-data" class="layout-horizontal align-items-center editable-row higher-slot">
                       <div class="flex-1 flex-fix">
                         <div class="data bold-data">${pdOutput.code}&nbsp;${pdOutput.name}</div>
+                        <div class="count">
+                          <div><b>${pdOutput.activities.length}</b> ${translate('ACTIVITIES')}</div>
+                          <div><b>${pdOutput.applied_indicators.length}</b> ${translate('INDICATORS')}</div>
+                        </div>
                       </div>
 
                       <div class="flex-none total-cache" ?hidden="${!this.showActivities}">
@@ -525,6 +529,16 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         .pd-add-section .add-button,
         etools-content-panel > .add-button {
           padding-bottom: 10px;
+        }
+        .count {
+          display: flex;
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 16px;
+          padding: 10px 0px 4px;
+        }
+        .count div:first-child {
+          margin-right: 20px;
         }
       `
     ];
