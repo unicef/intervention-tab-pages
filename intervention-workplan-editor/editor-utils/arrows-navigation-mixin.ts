@@ -2,11 +2,11 @@ import {Constructor, LitElement} from 'lit-element';
 /**
  * Notes about the functionality:
  * - Only cells that contain editable inputs can be reached through arrows navigation
- * - Once the cell in focused it can be made editable pressing Enter key
+ * - Once the cell is focused, it can be made editable pressing Enter key
  * - While the focus is in the editable field,
- *  Escape has to be pressed to make the arrow key navigation functinable again
- * - Navigating to a row that contains an item of a different type (activity to activity item for ex.),
- *  resets the cell index given the differences in cell number
+ *  Escape has to be pressed to make the arrow key navigation functional again
+ * - Navigating to a row that contains an item of a different type (activity to activity-item for ex.),
+ *  will reset the cell index given the differences in cell number betwen rows
  * - Pressing left or right when there is no editable cell in that direction does nothing;
  *  In this case, to get to next line use up/down.
  * @param baseClass
