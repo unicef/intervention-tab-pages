@@ -12,6 +12,22 @@ export const ResultStructureStyles: CSSResult = css`
     line-height: 24px;
     color: var(--primary-text-color);
   }
+  .total-cache .heading {
+    font-size: 14px;
+    margin-bottom: 10px;
+    text-align: right;
+  }
+  .total-cache .data {
+    font-size: 20px;
+    font-weight: 900;
+    line-height: 23px;
+  }
+  .total-cache .currency {
+    margin-right: 4px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19px;
+  }
   .bold-data {
     font-weight: bold;
     font-size: 16px;
@@ -66,10 +82,6 @@ export const ResultStructureStyles: CSSResult = css`
     border-top: 1px solid var(--main-border-color);
     background-color: var(--primary-background-color);
   }
-  .number-data {
-    width: 100px;
-    margin-left: 10px;
-  }
   iron-icon {
     margin: 0 15px;
     opacity: 0.9;
@@ -109,5 +121,23 @@ export const ResultStructureStyles: CSSResult = css`
   }
   div[slot='panel-btns'] {
     opacity: 1;
+  }
+  .add-button {
+    display: flex;
+    width: min-content;
+    align-items: center;
+    padding: 16px 13px 0;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 18px;
+    color: #444444;
+    white-space: nowrap;
+  }
+  .add-button:hover {
+    color: #212121;
+  }
+  .add-button.pd-add {
+    padding-left: 31px;
   }
 `;
