@@ -93,9 +93,9 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
 
           <div class="table-row table-head align-items-center" ?hidden="${this.readonly}">
             <div class="indicator">${translate('INDICATOR')}</div>
-            <div>${translate('INDICATOR_HF')}</div>
-            <div>${translate('BASELINE')}</div>
-            <div>${translate('TARGET')}</div>
+            <div class="fixed-cell high-frequency">${translate('INDICATOR_HF')}</div>
+            <div class="fixed-cell">${translate('BASELINE')}</div>
+            <div class="fixed-cell">${translate('TARGET')}</div>
           </div>
           ${this.indicators.length
             ? this.indicators.map(
@@ -291,8 +291,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
           background: var(--main-background);
         }
         .table-row .indicator {
-          width: 60%;
-          flex: none;
+          flex: auto;
           text-align: left;
         }
         etools-data-table-row::part(edt-list-row-collapse-wrapper) {

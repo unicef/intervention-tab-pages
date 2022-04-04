@@ -87,6 +87,15 @@ export const ActivitiesAndIndicatorsStyles: CSSResult = css`
     text-decoration: underline;
     cursor: pointer;
   }
+  div.fixed-cell {
+    max-width: 130px;
+    min-width: 80px;
+    flex: none !important;
+    width: 10%;
+  }
+  div.high-frequency {
+    max-width: 60px;
+  }
   etools-data-table-row {
     --list-bg-color: var(--main-background);
   }
