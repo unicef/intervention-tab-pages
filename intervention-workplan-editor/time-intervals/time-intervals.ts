@@ -10,6 +10,7 @@ export class TimeIntervals extends LitElement {
   @property() quarters: InterventionQuarter[] = [];
   @property() selectedTimeFrames: number[] = [];
   @property({type: Boolean, reflect: true, attribute: true}) readonly: boolean | undefined = false;
+  @property({type: Boolean, reflect: true, attribute: 'without-popup'}) withoutPopup: boolean | undefined = false;
   @property({type: Boolean})
   invalid = false;
 
@@ -34,7 +35,7 @@ export class TimeIntervals extends LitElement {
   }
 
   openDialog(): void {
-    if (!this.quarters.length) {
+    if (!this.quarters.length || this.withoutPopup) {
       return;
     }
     openDialog<any>({
