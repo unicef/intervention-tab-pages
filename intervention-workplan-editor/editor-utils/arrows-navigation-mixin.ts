@@ -46,11 +46,15 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
           }
           const input: any = currentTd.querySelector('[input]');
           if (input) {
-            input.focus();
+            if (input.localName == 'etools-currency-amount-input') {
+              input.shadowRoot.querySelector('paper-input').focus();
+            } else {
+              input.focus();
+            }
           }
           break;
         }
-        case 'Esc': {
+        case 'Escape': {
           this.lastFocusedTd.focus();
           break;
         }
