@@ -1,5 +1,17 @@
 import {Constructor, LitElement} from 'lit-element';
-
+/**
+ * Notes about the functionality:
+ * - Only cells that contain editable inputs can be reached through arrows navigation
+ * - Once the cell in focused it can be made editable pressing Enter key
+ * - While the focus is in the editable field,
+ *  Escape has to be pressed to make the arrow key navigation functinable again
+ * - Navigating to a row that contains an item of a different type (activity to activity item for ex.),
+ *  resets the cell index given the differences in cell number
+ * - Pressing left or right when there is no editable cell in that direction does nothing;
+ *  In this case, to get to next line use up/down.
+ * @param baseClass
+ * @returns
+ */
 export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseClass: T) {
   return class ArrowsNavigationClass extends baseClass {
     private _navigateWithArrows!: (event: KeyboardEvent) => void;
@@ -10,8 +22,24 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
       this.addEventListener('keydown', this._navigateWithArrows);
     }
 
+    focusFirstTd() {
+      const focusableTds = Array.from(this.shadowRoot!.querySelectorAll<HTMLTableCellElement>('td[tabindex="0"]'));
+      this.setLastFocusedTdOnClick(focusableTds);
+      const firstFocusableTd = focusableTds[0];
+      if (firstFocusableTd) {
+        firstFocusableTd.focus();
+        this.lastFocusedTd = firstFocusableTd;
+      }
+    }
+
+    setLastFocusedTdOnClick(focusableTds: HTMLTableCellElement[]) {
+      focusableTds.forEach((td: HTMLTableCellElement) =>
+        td.addEventListener('click', (e) => (this.lastFocusedTd = e.target))
+      );
+    }
+
     navigateWithArrows(event: KeyboardEvent) {
-      if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Enter', 'Esc'].includes(event.key)) {
+      if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Enter', 'Escape'].includes(event.key)) {
         return;
       }
 
@@ -185,6 +213,13 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
       }
       activeEl = activeEl.closest('td')!;
       return activeEl;
+    }
+
+    handleEsc(event: KeyboardEvent) {
+      console.log(event);
+      if (event.key == 'Escape') {
+        this.lastFocusedTd.focus();
+      }
     }
   };
 }

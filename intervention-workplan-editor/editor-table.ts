@@ -143,6 +143,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                         required
                         .invalid="${pdOutput.invalid}"
                         error-message="This field is required"
+                        @keydown="${(e: any) => this.handleEsc(e)}"
                         @value-changed="${({detail}: CustomEvent) =>
                           this.updateModelValue(pdOutput, 'name', detail.value)}"
                       ></paper-textarea>
@@ -229,14 +230,10 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
 
   connectedCallback() {
     super.connectedCallback();
-    this.addArrowNavListener();
     setTimeout(() => {
-      const firstFocusableTd = this.shadowRoot!.querySelector<HTMLElement>('td[tabindex="0"]');
-      if (firstFocusableTd) {
-        firstFocusableTd.focus();
-        this.lastFocusedTd = firstFocusableTd;
-      }
-    }, 3000);
+      this.addArrowNavListener();
+      this.focusFirstTd();
+    }, 2000);
   }
 
   stateChanged(state: RootState) {

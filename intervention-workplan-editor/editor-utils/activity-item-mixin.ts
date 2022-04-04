@@ -18,6 +18,8 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       required: {result_links?: boolean};
     };
 
+    handleEsc!: (event: KeyboardEvent) => void;
+
     renderActivityItems(activity: InterventionActivityExtended) {
       if (!activity || !activity.items || !activity.items.length) {
         return '';
@@ -56,6 +58,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   .autoValidate="${item.autovalidate?.name}"
                   @focus="${() => this.setAutoValidate(item, 'name')}"
                   .value="${item.name}"
+                  @keydown="${(e: any) => this.handleEsc(e)}"
                   @value-changed="${({detail}: CustomEvent) => this.updateModelValue(item, 'name', detail.value)}"
                 ></paper-textarea>
               </td>
@@ -71,6 +74,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   @focus="${() => this.setAutoValidate(item, 'unit')}"
                   error-message="This field is required"
                   .value="${item.unit}"
+                  @keydown="${(e: any) => this.handleEsc(e)}"
                   @value-changed="${({detail}: CustomEvent) => this.updateModelValue(item, 'unit', detail.value)}"
                 ></paper-input>
               </td>
@@ -84,6 +88,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   auto-validate
                   error-message="This field is required"
                   .value="${item.no_units}"
+                  @keydown="${(e: any) => this.handleEsc(e)}"
                   @value-changed="${({detail}: CustomEvent) => {
                     if (item.no_units == detail.value) {
                       return;
@@ -104,6 +109,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   auto-validate
                   error-message="This field is required"
                   .value="${item.unit_price}"
+                  @keydown="${(e: any) => this.handleEsc(e)}"
                   @value-changed="${({detail}: CustomEvent) => {
                     if (item.unit_price == detail.value) {
                       return;
@@ -124,6 +130,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   error-message="Incorrect value"
                   .invalid="${item.invalid?.cso_cash}"
                   .value="${item.cso_cash}"
+                  @keydown="${(e: any) => this.handleEsc(e)}"
                   @value-changed="${({detail}: CustomEvent) => {
                     if (item.cso_cash == detail.value) {
                       return;
@@ -145,6 +152,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   error-message="Incorrect value"
                   .invalid="${item.invalid?.unicef_cash}"
                   .value="${item.unicef_cash}"
+                  @keydown="${(e: any) => this.handleEsc(e)}"
                   @value-changed="${({detail}: CustomEvent) => {
                     if (item.unicef_cash == detail.value) {
                       return;
@@ -238,11 +246,11 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       if (!(activity.items && activity.items.length)) {
         return;
       }
-      activity.cso_cash = activity.items.reduce((sum: number, item) => sum + Number(item.cso_cash), 0);
-      activity.unicef_cash = activity.items.reduce((sum: number, item) => sum + Number(item.unicef_cash), 0);
+      activity.cso_cash = String(activity.items.reduce((sum: number, item) => sum + Number(item.cso_cash), 0));
+      activity.unicef_cash = String(activity.items.reduce((sum: number, item) => sum + Number(item.unicef_cash), 0));
     }
 
-    getTotalForItem(noOfUnits: string, pricePerUnit: string) {
+    getTotalForItem(noOfUnits: number, pricePerUnit: number | string) {
       let total = (Number(noOfUnits) || 0) * (Number(pricePerUnit) || 0);
       total = Number(total.toFixed(2));
       return displayCurrencyAmount(String(total), '0', 2);
@@ -268,6 +276,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       if (!activity.items) {
         activity.items = [];
       }
+      // @ts-ignore
       activity.items?.unshift({name: '', inEditMode: true});
       activity.itemsInEditMode = true;
 

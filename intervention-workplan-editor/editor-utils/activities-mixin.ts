@@ -36,6 +36,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       required: {result_links?: boolean};
     };
 
+    handleEsc!: (event: KeyboardEvent) => void;
     refreshResultStructure = false;
     quarters: InterventionQuarter[] = [];
 
@@ -93,6 +94,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     required
                     .invalid="${activity.invalid?.name}"
                     error-message="This field is required"
+                    @keydown="${(e: any) => this.handleEsc(e)}"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue(activity, 'name', detail.value)}"
                   ></paper-textarea>
                   <div class="pad-top-8">
@@ -103,6 +105,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                       always-float-label
                       ?readonly="${!activity.inEditMode}"
                       .value="${activity.context_details}"
+                      @keydown="${(e: any) => this.handleEsc(e)}"
                       @value-changed="${({detail}: CustomEvent) =>
                         this.updateModelValue(activity, 'context_details', detail.value)}"
                     ></paper-textarea>
@@ -126,6 +129,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                         activity.time_frames = event.detail;
                         this.requestUpdate();
                       }}"
+                      @keydown="${(e: any) => this.handleEsc(e)}"
                     ></time-intervals>
                   </div>
                 </td>
@@ -135,6 +139,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     input
                     .value="${activity.cso_cash}"
                     ?readonly="${this.isReadonlyForActivityCash(activity.inEditMode, activity.items)}"
+                    @keydown="${(e: any) => this.handleEsc(e)}"
                     @value-changed="${({detail}: CustomEvent) =>
                       this.updateModelValue(activity, 'cso_cash', detail.value)}"
                   ></etools-currency-amount-input>
@@ -145,6 +150,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     input
                     .value="${activity.unicef_cash}"
                     ?readonly="${this.isReadonlyForActivityCash(activity.inEditMode, activity.items)}"
+                    @keydown="${(e: any) => this.handleEsc(e)}"
                     @value-changed="${({detail}: CustomEvent) =>
                       this.updateModelValue(activity, 'unicef_cash', detail.value)}"
                   ></etools-currency-amount-input>
