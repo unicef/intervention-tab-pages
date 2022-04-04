@@ -34,7 +34,10 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
 
     setLastFocusedTdOnClick(focusableTds: HTMLTableCellElement[]) {
       focusableTds.forEach((td: HTMLTableCellElement) =>
-        td.addEventListener('click', (e) => (this.lastFocusedTd = e.target))
+        td.addEventListener('click', (e) => {
+          this.lastFocusedTd = e.target;
+          this.handleClickOnReadonlyInput(e);
+        })
       );
     }
 
@@ -131,6 +134,10 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
             tdToFocus = null;
             if (currentItemType === nextItemType) {
               tdToFocus = nextTr.children[tdIndex];
+              if (String(tdToFocus.getAttribute('tabindex')) !== '0') {
+                // covers going to the row with add, which has just one navigable column
+                tdToFocus = nextTr.querySelector('td[tabindex="0"]');
+              }
             } else {
               tdToFocus = nextTr.querySelector<HTMLElement>('td[tabindex="0"]');
             }
@@ -215,9 +222,20 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
       return activeEl;
     }
 
+    /**
+     * To re-enable arrow nav when the focus is in an input field
+     */
     handleEsc(event: KeyboardEvent) {
-      console.log(event);
       if (event.key == 'Escape') {
+        this.lastFocusedTd.focus();
+      }
+    }
+    /**
+     * Clicking on an readonly input moves the focus away from the table cell and arrow nav doesn't work
+     * This method moves the focus on the <td>
+     */
+    handleClickOnReadonlyInput(event: MouseEvent) {
+      if ((event.target as HTMLElement)!.hasAttribute('readonly')) {
         this.lastFocusedTd.focus();
       }
     }
