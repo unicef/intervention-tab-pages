@@ -86,12 +86,12 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
               <tr class="add blue" type="cp-output">
                 <td></td>
                 <td colspan="3" tabindex="0">
-                  <div class="icon" @click="${() => this.addNewPDOutput(result.ll_results)}">
-                    <paper-icon-button
-                      icon="add-box"
-                      tabindex="0"
-                      ?hidden="${!this.permissions.edit.result_links}"
-                    ></paper-icon-button>
+                  <div
+                    class="icon"
+                    @click="${() => this.addNewPDOutput(result.ll_results)}"
+                    ?hidden="${!this.permissions.edit.result_links}"
+                  >
+                    <paper-icon-button icon="add-box" tabindex="0"></paper-icon-button>
                     ${translate('ADD_NEW_PD_OUTPUT')}
                   </div>
                 </td>
