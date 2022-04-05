@@ -59,7 +59,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
           this.resultStructureDetails,
           (result: ExpectedResult) => result.id,
           (result, resultIndex) => html`
-            <thead>
+            <thead ?hidden="${!this.isUnicefUser}">
               <tr class="edit blue">
                 <td class="first-col"></td>
                 <td colspan="3"></td>
@@ -74,7 +74,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
               </tr>
             </thead>
             <tbody>
-              <tr class="text blue">
+              <tr class="text blue" ?hidden="${!this.isUnicefUser}">
                 <td>${result.code}</td>
                 <td colspan="3" class="b">${result.cp_output_name}</td>
                 <td colspan="3"></td>
@@ -144,7 +144,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                         ?readonly="${!pdOutput.inEditMode}"
                         required
                         .invalid="${pdOutput.invalid}"
-                        error-message="This field is required"
+                        error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
                         @keydown="${(e: any) => this.handleEsc(e)}"
                         @value-changed="${({detail}: CustomEvent) =>
                           this.updateModelValue(pdOutput, 'name', detail.value)}"
@@ -162,11 +162,12 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                       colspan="3"
                       tabindex="${pdOutput.inEditMode || !this.permissions.edit.result_links ? '-1' : '0'}"
                     >
-                      <div class="icon" ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}">
-                        <paper-icon-button
-                          icon="add-box"
-                          @click="${() => this.addNewActivity(pdOutput)}"
-                        ></paper-icon-button>
+                      <div
+                        class="icon"
+                        @click="${() => this.addNewActivity(pdOutput)}"
+                        ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
+                      >
+                        <paper-icon-button icon="add-box"></paper-icon-button>
                         ${translate('ADD_NEW_ACTIVITY')}
                       </div>
                     </td>

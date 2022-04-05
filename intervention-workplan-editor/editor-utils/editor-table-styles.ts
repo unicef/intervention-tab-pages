@@ -100,6 +100,9 @@ export const EditorTableStyles = css`
   paper-icon-button[icon='create']:hover {
     color: #212121;
   }
+  div.icon {
+    display: inline-block;
+  }
 
   div.icon:hover {
     color: #212121;
