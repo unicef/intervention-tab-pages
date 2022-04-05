@@ -27,7 +27,7 @@ export const EditorTableStyles = css`
   td.col-g {
     width: 12.5%;
   }
-  td.col-6 {
+  td.last-col {
     width: 12.5%;
     vertical-align: top;
     text-align: right;
@@ -93,6 +93,21 @@ export const EditorTableStyles = css`
   }
   paper-icon-button[icon='close'] {
     color: red;
+  }
+  paper-icon-button[icon='delete']:hover {
+    color: #212121;
+  }
+  paper-icon-button[icon='create']:hover {
+    color: #212121;
+  }
+
+  div.icon:hover {
+    color: #212121;
+    cursor: pointer;
+  }
+
+  div.icon paper-icon-button:hover {
+    color: #212121;
   }
 
   paper-textarea {

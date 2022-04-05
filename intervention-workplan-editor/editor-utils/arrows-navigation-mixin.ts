@@ -59,6 +59,10 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
       let tdToFocus: any = null;
       switch (event.key) {
         case 'Enter': {
+          // @ts-ignore
+          if (event.path[0].localName === 'paper-icon-button') {
+            return;
+          }
           let actionBtn: any = currentTd.querySelector('paper-icon-button[icon="add-box"]');
           if (!actionBtn) {
             const thead = currentTd.closest('tbody')?.previousElementSibling;

@@ -64,7 +64,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                 <td class="first-col"></td>
                 <td colspan="3"></td>
                 <td colspan="3"></td>
-                <td class="col-6" colspan="2"></td>
+                <td class="last-col" colspan="2"></td>
               </tr>
               <tr class="header blue">
                 <td>ID</td>
@@ -86,12 +86,14 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
               <tr class="add blue" type="cp-output">
                 <td></td>
                 <td colspan="3" tabindex="0">
-                  <paper-icon-button
-                    icon="add-box"
-                    ?hidden="${!this.permissions.edit.result_links}"
-                    @click="${() => this.addNewPDOutput(result.ll_results)}"
-                  ></paper-icon-button>
-                  Add New PD Output
+                  <div class="icon" @click="${() => this.addNewPDOutput(result.ll_results)}">
+                    <paper-icon-button
+                      icon="add-box"
+                      tabindex="0"
+                      ?hidden="${!this.permissions.edit.result_links}"
+                    ></paper-icon-button>
+                    Add New PD Output
+                  </div>
                 </td>
                 <td colspan="3"></td>
                 <td colspan="2"></td>
@@ -104,7 +106,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                     <td class="first-col"></td>
                     <td colspan="3"></td>
                     <td colspan="3"></td>
-                    <td class="col-6" colspan="2">
+                    <td class="last-col" colspan="2">
                       <paper-icon-button
                         icon="create"
                         ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
@@ -160,13 +162,13 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                       colspan="3"
                       tabindex="${pdOutput.inEditMode || !this.permissions.edit.result_links ? '-1' : '0'}"
                     >
-                      <span ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
-                        ><paper-icon-button
+                      <div class="icon" ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}">
+                        <paper-icon-button
                           icon="add-box"
                           @click="${() => this.addNewActivity(pdOutput)}"
                         ></paper-icon-button>
-                        Add New Activity</span
-                      >
+                        Add New Activity
+                      </div>
                     </td>
                     <td colspan="3"></td>
                     <td class="h-center" colspan="2">
@@ -283,13 +285,18 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
   }
 
   addNewPDOutput(llResults: Partial<ResultLinkLowerResultExtended>[]) {
-    llResults.unshift({name: '', total: '0', inEditMode: true});
-    this.requestUpdate();
+    if (!llResults.find((ll) => !ll.id)) {
+      llResults.unshift({name: '', total: '0', inEditMode: true});
+      this.requestUpdate();
+    }
   }
 
   addNewActivity(pdOutput: Partial<ResultLinkLowerResultExtended>) {
-    pdOutput.activities?.unshift({name: '', total: '0', time_frames: [], inEditMode: true});
-    this.requestUpdate();
+    if (!pdOutput.activities?.find((a) => !a.id)) {
+      // @ts-ignore
+      pdOutput.activities?.unshift({name: '', total: '0', time_frames: [], inEditMode: true});
+      this.requestUpdate();
+    }
   }
 
   savePdOutput(pdOutput: ResultLinkLowerResultExtended, cpOutputId: number) {

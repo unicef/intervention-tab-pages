@@ -56,7 +56,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td class="col-g"></td>
                 <td class="col-g"></td>
                 <td class="col-g"></td>
-                <td class="col-6" colspan="2">
+                <td class="last-col" colspan="2">
                   <paper-icon-button
                     icon="create"
                     ?hidden="${activity.inEditMode || !this.permissions.edit.result_links}"
@@ -172,10 +172,14 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                   colspan="3"
                   tabindex="${activity.items?.length || !this.permissions.edit.result_links ? '-1' : '0'}"
                 >
-                  <span ?hidden="${activity.items?.length || !this.permissions.edit.result_links}">
-                    <paper-icon-button icon="add-box" @click="${() => this.addNewItem(activity)}"></paper-icon-button>
+                  <div
+                    class="icon"
+                    @click="${() => this.addNewItem(activity)}"
+                    ?hidden="${activity.items?.length || !this.permissions.edit.result_links}"
+                  >
+                    <paper-icon-button icon="add-box"></paper-icon-button>
                     Add New Item
-                  </span>
+                  </div>
                 </td>
                 <td></td>
                 <td></td>
