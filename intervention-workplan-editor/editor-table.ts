@@ -99,7 +99,9 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                 <td colspan="2"></td>
               </tr>
             </tbody>
-            ${result.ll_results.map(
+            ${repeat(
+              result.ll_results,
+              (pdOutput: ResultLinkLowerResultExtended) => pdOutput.id,
               (pdOutput: ResultLinkLowerResultExtended, pdOutputIndex) => html`
                 <thead class="gray-1">
                   <tr class="edit">
