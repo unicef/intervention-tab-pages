@@ -109,7 +109,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         elevation="0"
       >
         <div slot="panel-btns" class="total-result layout-horizontal bottom-aligned" ?hidden="${!this.showActivities}">
-          <div class="heading">${translate('TOTAL')}</div>
+          <div class="heading">${translate('TOTAL')}:</div>
           <div class="data">${this.intervention.planned_budget.currency} <b>${this.getTotal()}</b></div>
         </div>
 

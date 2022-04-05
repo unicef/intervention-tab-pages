@@ -6,6 +6,7 @@ import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-inpu
 import {InterventionActivityExtended, InterventionActivityItemExtended} from './types';
 import {repeat} from 'lit-html/directives/repeat';
 import '@polymer/paper-input/paper-textarea';
+import {translate} from 'lit-translate';
 
 export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass: T) {
   return class ActivityItemsClass extends baseClass {
@@ -29,7 +30,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
           <td></td>
           <td tabindex="0">
             <div class="icon" @click="${() => this.addNewItem(activity)}">
-              <paper-icon-button icon="add-box"></paper-icon-button> Add New Item
+              <paper-icon-button icon="add-box"></paper-icon-button> ${translate('ADD_NEW_ITEM')}
             </div>
           </td>
           <td></td>
@@ -55,7 +56,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   ?readonly="${!activity.itemsInEditMode}"
                   .invalid="${item.invalid?.name}"
                   required
-                  error-message="This field is required"
+                  error-message="${translate('THIS_FIELD_IS_REQURED')}"
                   .autoValidate="${item.autovalidate?.name}"
                   @focus="${() => this.setAutoValidate(item, 'name')}"
                   .value="${item.name}"
@@ -73,7 +74,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   required
                   .autoValidate="${item.autovalidate?.unit}"
                   @focus="${() => this.setAutoValidate(item, 'unit')}"
-                  error-message="This field is required"
+                  error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
                   .value="${item.unit}"
                   @keydown="${(e: any) => this.handleEsc(e)}"
                   @value-changed="${({detail}: CustomEvent) => this.updateModelValue(item, 'unit', detail.value)}"
@@ -87,7 +88,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   .invalid="${item.invalid?.no_units}"
                   required
                   auto-validate
-                  error-message="This field is required"
+                  error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
                   .value="${item.no_units}"
                   @keydown="${(e: any) => this.handleEsc(e)}"
                   @value-changed="${({detail}: CustomEvent) => {
@@ -108,7 +109,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   .invalid="${item.invalid?.unit_price}"
                   required
                   auto-validate
-                  error-message="This field is required"
+                  error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
                   .value="${item.unit_price}"
                   @keydown="${(e: any) => this.handleEsc(e)}"
                   @value-changed="${({detail}: CustomEvent) => {
@@ -128,7 +129,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   ?readonly="${!activity.itemsInEditMode}"
                   required
                   auto-validate
-                  error-message="Incorrect value"
+                  error-message="${translate('INCORRECT_VALUE')}"
                   .invalid="${item.invalid?.cso_cash}"
                   .value="${item.cso_cash}"
                   @keydown="${(e: any) => this.handleEsc(e)}"
@@ -150,7 +151,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   ?readonly="${!activity.itemsInEditMode}"
                   required
                   auto-validate
-                  error-message="Incorrect value"
+                  error-message="${translate('INCORRECT_VALUE')}"
                   .invalid="${item.invalid?.unicef_cash}"
                   .value="${item.unicef_cash}"
                   @keydown="${(e: any) => this.handleEsc(e)}"

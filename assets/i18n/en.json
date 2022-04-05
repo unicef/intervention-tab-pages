@@ -236,7 +236,7 @@
   "COMBINED_VIEW": "Combined view",
   "BUDGET_VIEW": "Budget view",
   "EFFECTIVE_EFFICIENT_PROG_MGM": "Effective and Efficient Programme Management",
-  "TOTAL": "Total:",
+  "TOTAL": "Total",
   "ITEM_PD_CURRENCY": "Item (all prices in PD currency)",
   "TITLE_1": "In-country management and support staff",
   "DESCRIPTION_1": "Contribution for In-country management and support staff prorated to their contribution to the programme (representation, planning, coordination, logistics, administration, finance)",
@@ -513,5 +513,13 @@
   "VIEW_ACTIVITY": "View Activity",
   "SEND_BACK_REVIEW": "Send Back Review",
   "BACK_TO_WORKPLAN": "back to standart view",
-  "GO_TO_WORKPLAN_EDITOR": "Open in Editor"
+  "GO_TO_WORKPLAN_EDITOR": "Open in Editor",
+  "ID": "ID",
+  "ADD_NEW_PD_OUTPUT": "Add New PD Output",
+  "ADD_NEW_ACTIVITY": "Add New Activity",
+  "THIS_FIELD_IS_REQUIRED": "This field is required",
+  "ACTIVITY": "Activity",
+  "PARTNER_CONTRIBUTION": "Partner Contribution",
+  "ADD_NEW_ITEM": "Add New Item",
+  "INCORRECT_VALUE": "Incorrect value"
 }

@@ -88,7 +88,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
           ></info-icon-tooltip>
         </div>
         <div slot="panel-btns">
-          <label class="paper-label font-bold pad-right">${translate('TOTAL')}</label
+          <label class="paper-label font-bold pad-right">${translate('TOTAL')}:</label
           ><label class="font-bold-12">${this.data.currency} ${this.total_amount}</label>
         </div>
 

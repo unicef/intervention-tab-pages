@@ -67,10 +67,10 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                 <td class="last-col" colspan="2"></td>
               </tr>
               <tr class="header blue">
-                <td>ID</td>
-                <td colspan="3">Country Programme Output</td>
+                <td>${translate('ID')}</td>
+                <td colspan="3">${translate('COUNTRY_PROGRAME_OUTPUT')}</td>
                 <td colspan="3"></td>
-                <td colspan="2">Total</td>
+                <td colspan="2">${translate('TOTAL')}</td>
               </tr>
             </thead>
             <tbody>
@@ -92,7 +92,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                       tabindex="0"
                       ?hidden="${!this.permissions.edit.result_links}"
                     ></paper-icon-button>
-                    Add New PD Output
+                    ${translate('ADD_NEW_PD_OUTPUT')}
                   </div>
                 </td>
                 <td colspan="3"></td>
@@ -124,9 +124,9 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                   </tr>
                   <tr class="header">
                     <td></td>
-                    <td colspan="3">PD Output</td>
+                    <td colspan="3">${translate('PD_OUTPUT')}</td>
                     <td colspan="3"></td>
-                    <td colspan="2">Total</td>
+                    <td colspan="2">${translate('TOTAL')}</td>
                   </tr>
                 </thead>
                 <tbody
@@ -167,14 +167,14 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                           icon="add-box"
                           @click="${() => this.addNewActivity(pdOutput)}"
                         ></paper-icon-button>
-                        Add New Activity
+                        ${translate('ADD_NEW_ACTIVITY')}
                       </div>
                     </td>
                     <td colspan="3"></td>
                     <td class="h-center" colspan="2">
                       <div class="flex-h justify-right" ?hidden="${!pdOutput.inEditMode}">
                         <paper-button @click="${() => this.savePdOutput(pdOutput, result.cp_output)}"
-                          >Save</paper-button
+                          >${translate('GENERAL.SAVE')}</paper-button
                         >
                         <paper-icon-button
                           icon="close"

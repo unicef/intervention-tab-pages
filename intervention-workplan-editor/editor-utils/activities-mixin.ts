@@ -75,11 +75,11 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
               </tr>
               <tr class="header">
                 <td></td>
-                <td colspan="3">Activity</td>
-                <td class="a-right">Time Periods</td>
-                <td>CSO Contribution</td>
-                <td>UNICEF Cash</td>
-                <td colspan="2">Total</td>
+                <td colspan="3">${translate('ACTIVITY')}</td>
+                <td class="a-right">${translate('TIME_PERIODS')}</td>
+                <td>${translate('PARTNER_CONTRIBUTION')}</td>
+                <td>${translate('UNICEF_CASH')}</td>
+                <td colspan="2">${translate('GENERAL.TOTAL')}</td>
               </tr>
             </thead>
             <tbody comment-element="activity-${activity.id}" comment-description=" Activity - ${activity.name}">
@@ -178,7 +178,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     ?hidden="${activity.items?.length || !this.permissions.edit.result_links}"
                   >
                     <paper-icon-button icon="add-box"></paper-icon-button>
-                    Add New Item
+                    ${translate('ADD_NEW_ITEM')}
                   </div>
                 </td>
                 <td></td>
@@ -187,7 +187,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td class="h-center" colspan="2">
                   <div class="flex-h justify-right" ?hidden="${!(activity.inEditMode || activity.itemsInEditMode)}">
                     <paper-button @click="${() => this.saveActivity(activity, pdOutput.id, this.intervention.id)}"
-                      >Save</paper-button
+                      >${translate('GENERAL.SAVE')}</paper-button
                     >
                     <paper-icon-button
                       icon="close"
@@ -202,13 +202,13 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
             <thead ?hidden="${!activity.items || !activity.items.length}">
               <tr class="header border-b">
                 <td class="first-col"></td>
-                <td class="col-30">Item Description</td>
-                <td class="col-10">Unit</td>
-                <td class="col-10">Number Of Units</td>
-                <td class="col-g">Price/Unit</td>
-                <td class="col-g">Partner Cash</td>
-                <td class="col-g">UNICEF CASH</td>
-                <td class="col-g" colspan="2">Total (${this.intervention.planned_budget.currency})</td>
+                <td class="col-30">${translate('ITEM_DESCRIPTION')}</td>
+                <td class="col-10">${translate('UNIT')}</td>
+                <td class="col-10">${translate('NUMBER_UNITS')}</td>
+                <td class="col-g">${translate('PRICE_UNIT')}</td>
+                <td class="col-g">${translate('PARTNER_CASH')}</td>
+                <td class="col-g">${translate('UNICEF_CASH')}</td>
+                <td class="col-g" colspan="2">${translate('TOTAL')} (${this.intervention.planned_budget.currency})</td>
               </tr>
             </thead>
             ${this.renderActivityItems(activity)}
