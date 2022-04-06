@@ -67,7 +67,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     }}"
                   ></paper-icon-button>
                   <paper-icon-button
-                    icon="icons:delete"
+                    icon="delete"
                     ?hidden="${activity.inEditMode || !this.permissions.edit.result_links}"
                     @click="${() => this.openDeleteDialog(activity.id, pdOutput.id)}"
                   ></paper-icon-button>
