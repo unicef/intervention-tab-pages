@@ -89,11 +89,12 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                   <paper-textarea
                     no-label-float
                     input
+                    class="name"
                     .value="${activity.name}"
                     ?readonly="${!activity.inEditMode}"
                     required
                     .invalid="${activity.invalid?.name}"
-                    error-message="This field is required"
+                    error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
                     @keydown="${(e: any) => this.handleEsc(e)}"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue(activity, 'name', detail.value)}"
                   ></paper-textarea>

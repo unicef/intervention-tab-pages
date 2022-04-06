@@ -52,6 +52,11 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
           --paper-input-container-input: {
             display: block;
           }
+          --paper-input-container-label-floating_-_font-weight: 600;
+          --paper-font-subhead_-_font-weight: 600;
+          --paper-input-container-label-floating {
+            font-weight: 600;
+          }
         }
       </style>
       <table>

@@ -44,19 +44,24 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
           activity.items || [],
           (item: InterventionActivityItemExtended) => item.id,
           (item: InterventionActivityItemExtended, itemIndex: number) => html`
-            <tr class="activity-items-row" type="a-item">
+            <tr class="activity-items-row ${activity.itemsInEditMode ? '' : 'readonly'}" type="a-item">
               <td>
-                <paper-input readonly .value="${item.code || 'N/A'}"></paper-input>
+                <paper-input
+                  .noLabelFloat="${!activity.itemsInEditMode}"
+                  readonly
+                  .value="${item.code || 'N/A'}"
+                ></paper-input>
               </td>
               <td tabindex="0">
                 <paper-textarea
-                  always-float-label
+                  .alwaysFloatLabel="${activity.itemsInEditMode}"
+                  .noLabelFloat="${!activity.itemsInEditMode}"
                   input
                   label=${this.getLabel(activity.itemsInEditMode, 'Item Description')}
                   ?readonly="${!activity.itemsInEditMode}"
                   .invalid="${item.invalid?.name}"
                   required
-                  error-message="${translate('THIS_FIELD_IS_REQURED')}"
+                  error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
                   .autoValidate="${item.autovalidate?.name}"
                   @focus="${() => this.setAutoValidate(item, 'name')}"
                   .value="${item.name}"
@@ -67,7 +72,8 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
               <td tabindex="0">
                 <paper-input
                   input
-                  always-float-label
+                  .alwaysFloatLabel="${activity.itemsInEditMode}"
+                  .noLabelFloat="${!activity.itemsInEditMode}"
                   label=${this.getLabel(activity.itemsInEditMode, 'Unit')}
                   ?readonly="${!activity.itemsInEditMode}"
                   .invalid="${item.invalid?.unit}"
@@ -83,6 +89,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
               <td tabindex="0">
                 <etools-currency-amount-input
                   label=${this.getLabel(activity.itemsInEditMode, 'N. of Units')}
+                  .noLabelFloat="${!activity.itemsInEditMode}"
                   input
                   ?readonly="${!activity.itemsInEditMode}"
                   .invalid="${item.invalid?.no_units}"
@@ -104,6 +111,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
               <td tabindex="0">
                 <etools-currency-amount-input
                   label=${this.getLabel(activity.itemsInEditMode, 'Price/Unit')}
+                  .noLabelFloat="${!activity.itemsInEditMode}"
                   input
                   ?readonly="${!activity.itemsInEditMode}"
                   .invalid="${item.invalid?.unit_price}"
@@ -125,6 +133,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
               <td tabindex="0">
                 <etools-currency-amount-input
                   label=${this.getLabel(activity.itemsInEditMode, 'Partner Cash')}
+                  .noLabelFloat="${!activity.itemsInEditMode}"
                   input
                   ?readonly="${!activity.itemsInEditMode}"
                   required
@@ -147,6 +156,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
               <td tabindex="0">
                 <etools-currency-amount-input
                   label=${this.getLabel(activity.itemsInEditMode, 'UNICEF Cash')}
+                  .noLabelFloat="${!activity.itemsInEditMode}"
                   input
                   ?readonly="${!activity.itemsInEditMode}"
                   required
@@ -169,6 +179,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
               <td>
                 <paper-input
                   readonly
+                  .noLabelFloat="${!activity.itemsInEditMode}"
                   .value="${this.getTotalForItem(item.no_units || 0, item.unit_price || 0)}"
                 ></paper-input>
               </td>

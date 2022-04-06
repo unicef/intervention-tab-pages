@@ -113,14 +113,6 @@ export const EditorTableStyles = css`
     color: #212121;
   }
 
-  paper-textarea {
-    --paper-input-container-label-floating: {
-      font-weight: 600 !important;
-      color: var(--secondary-text-color);
-    }
-    --paper-input-container-label-floating_-_font-weight: 600;
-  }
-
   etools-currency-amount-input {
     text-align: right;
   }
@@ -142,7 +134,7 @@ export const EditorTableStyles = css`
   .justify-right {
     justify-content: flex-end;
   }
-  tr.activity-items-row > td {
+  tr.activity-items-row:not(.readonly) > td {
     padding-bottom: 16px;
   }
 
