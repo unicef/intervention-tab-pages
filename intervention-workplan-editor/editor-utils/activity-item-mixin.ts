@@ -44,7 +44,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
           activity.items || [],
           (item: InterventionActivityItemExtended) => item.id,
           (item: InterventionActivityItemExtended, itemIndex: number) => html`
-            <tr class="activity-items-row ${activity.itemsInEditMode ? '' : 'readonly'}" type="a-item">
+            <tr class="activity-items-row ${activity.itemsInEditMode ? '' : 'readonly-mode'}" type="a-item">
               <td>
                 <paper-input
                   .noLabelFloat="${!activity.itemsInEditMode}"

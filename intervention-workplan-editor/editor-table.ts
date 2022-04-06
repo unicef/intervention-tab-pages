@@ -64,7 +64,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
           this.resultStructureDetails,
           (result: ExpectedResult) => result.id,
           (result, resultIndex) => html`
-            <thead ?hidden="${!this.isUnicefUser}">
+            <tbody thead ?hidden="${!this.isUnicefUser}">
               <tr class="edit blue">
                 <td class="first-col"></td>
                 <td colspan="3"></td>
@@ -77,7 +77,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                 <td colspan="3"></td>
                 <td colspan="2">${translate('TOTAL')}</td>
               </tr>
-            </thead>
+            </tbody>
             <tbody>
               <tr class="text blue" ?hidden="${!this.isUnicefUser}">
                 <td>${result.code}</td>
@@ -108,7 +108,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
               result.ll_results,
               (pdOutput: ResultLinkLowerResultExtended) => pdOutput.id,
               (pdOutput: ResultLinkLowerResultExtended, pdOutputIndex) => html`
-                <thead class="gray-1">
+                <tbody thead class="gray-1">
                   <tr class="edit">
                     <td class="first-col"></td>
                     <td colspan="3"></td>
@@ -135,7 +135,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                     <td colspan="3"></td>
                     <td colspan="2">${translate('TOTAL')}</td>
                   </tr>
-                </thead>
+                </tbody>
                 <tbody
                   class="gray-1"
                   comment-element="pd-output-${pdOutput.id}"

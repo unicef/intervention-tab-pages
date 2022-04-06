@@ -134,10 +134,10 @@ export const EditorTableStyles = css`
   .justify-right {
     justify-content: flex-end;
   }
-  tr.activity-items-row:not(.readonly) > td {
+  tr.activity-items-row:not(.readonly-mode) > td {
     padding-bottom: 16px;
   }
-  tr.activity-items-row.readonly > td {
+  tr.activity-items-row.readonly-mode > td {
     padding-top: 1px;
     padding-bottom: 1px;
   }

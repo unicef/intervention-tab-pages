@@ -180,21 +180,21 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     }
     _getNextTbody(activeTd: HTMLTableCellElement) {
       let nextTbody = activeTd.parentElement?.parentElement?.nextElementSibling;
-      while (nextTbody?.localName === 'thead') {
+      while (nextTbody?.hasAttribute('thead')) {
         nextTbody = nextTbody.nextElementSibling;
       }
       if (nextTbody && nextTbody.children.length === 0) {
-        nextTbody = nextTbody.nextElementSibling?.nextElementSibling; // double next in order to skip thead
+        nextTbody = nextTbody.nextElementSibling?.nextElementSibling; // double next in order to skip header tbody
       }
       return nextTbody;
     }
     _getPrevTbody(activeTd: HTMLTableCellElement) {
       let prevTbody = activeTd.parentElement?.parentElement?.previousElementSibling;
-      while (prevTbody?.localName === 'thead') {
+      while (prevTbody?.hasAttribute('thead')) {
         prevTbody = prevTbody.previousElementSibling;
       }
       if (prevTbody && prevTbody.children.length === 0) {
-        prevTbody = prevTbody.previousElementSibling?.previousElementSibling; // double next in order to skip thead
+        prevTbody = prevTbody.previousElementSibling?.previousElementSibling; // double next in order to skip header tbody
       }
       return prevTbody;
     }
