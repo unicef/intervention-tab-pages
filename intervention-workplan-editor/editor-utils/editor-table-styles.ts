@@ -137,6 +137,10 @@ export const EditorTableStyles = css`
   tr.activity-items-row:not(.readonly) > td {
     padding-bottom: 16px;
   }
+  tr.activity-items-row.readonly > td {
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
 
   .v-middle {
     vertical-align: middle;
