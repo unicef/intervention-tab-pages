@@ -77,11 +77,11 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
         }
         :host([data-active-tab='workplan-editor']) intervention-page-content-header {
           min-height: 0;
-          filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.15));
           border-bottom: none;
+          box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.15);
         }
         :host([data-active-tab='workplan-editor']) .page-content {
-          margin: 0;
+          margin: 4px 0 0;
         }
         .page-content {
           margin: 24px;
