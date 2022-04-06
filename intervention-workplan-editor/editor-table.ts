@@ -137,7 +137,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                   comment-description=" PD Output - ${pdOutput.name}"
                 >
                   <tr class="text" type="pd-output">
-                    <td>${pdOutput.code}</td>
+                    <td class="padd-top-15">${pdOutput.code}</td>
                     <td colspan="3" class="b" tabindex="0">
                       <paper-textarea
                         no-label-float

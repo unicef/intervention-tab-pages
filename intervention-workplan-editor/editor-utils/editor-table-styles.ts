@@ -157,4 +157,7 @@ export const EditorTableStyles = css`
     padding: 0;
     width: 25px;
   }
+  .padd-top-15 {
+    padding-top: 16px;
+  }
 `;

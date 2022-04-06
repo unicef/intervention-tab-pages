@@ -84,7 +84,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
             </thead>
             <tbody comment-element="activity-${activity.id}" comment-description=" Activity - ${activity.name}">
               <tr class="text" type="activity">
-                <td>${activity.code}</td>
+                <td class="padd-top-15">${activity.code}</td>
                 <td colspan="3" tabindex="0">
                   <paper-textarea
                     no-label-float
@@ -155,7 +155,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                       this.updateModelValue(activity, 'unicef_cash', detail.value)}"
                   ></etools-currency-amount-input>
                 </td>
-                <td colspan="2">
+                <td colspan="2" class="padd-top-15">
                   ${this.intervention.planned_budget.currency}
                   <span class="b"
                     >${displayCurrencyAmount(
