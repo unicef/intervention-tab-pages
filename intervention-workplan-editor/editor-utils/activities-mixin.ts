@@ -49,7 +49,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
           pdOutput.activities || [],
           (activity: InterventionActivityExtended) => activity.id,
           (activity: InterventionActivityExtended, activityIndex: number) => html`
-            <thead>
+            <tbody thead>
               <tr class="edit">
                 <td class="first-col"></td>
                 <td colspan="3"></td>
@@ -81,7 +81,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td>${translate('UNICEF_CASH')}</td>
                 <td colspan="2">${translate('GENERAL.TOTAL')}</td>
               </tr>
-            </thead>
+            </tbody>
             <tbody comment-element="activity-${activity.id}" comment-description=" Activity - ${activity.name}">
               <tr class="text" type="activity">
                 <td class="padd-top-15">${activity.code}</td>
@@ -200,7 +200,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
               </tr>
             </tbody>
 
-            <thead ?hidden="${!activity.items || !activity.items.length}">
+            <tbody thead ?hidden="${!activity.items || !activity.items.length}">
               <tr class="header border-b">
                 <td class="first-col"></td>
                 <td class="col-30">${translate('ITEM_DESCRIPTION')}</td>
@@ -211,7 +211,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td class="col-g">${translate('UNICEF_CASH')}</td>
                 <td class="col-g" colspan="2">${translate('TOTAL')} (${this.intervention.planned_budget.currency})</td>
               </tr>
-            </thead>
+            </tbody>
             ${this.renderActivityItems(activity)}
           `
         )}
