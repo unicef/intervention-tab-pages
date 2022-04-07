@@ -39,16 +39,25 @@ export interface ResultLinkLowerResult {
 }
 
 export type InterventionActivityItemExtended = InterventionActivityItem & {
+  id: number;
+  code: string;
   inEditMode: boolean;
-  invalid: {
-    name: boolean;
-    unit: boolean;
-    no_units: boolean;
-    unit_price: boolean;
-    cso_cash: boolean;
-    unicef_cash: boolean;
-  };
-  autovalidate: {name: boolean; unit: boolean};
+  invalid: Partial<InvalidItem>;
+  autovalidate: Partial<AutovalidateItem>;
+};
+
+type AutovalidateItem = {
+  name: boolean;
+  unit: boolean;
+  [prop: string]: boolean;
+};
+type InvalidItem = {
+  name: boolean;
+  unit: boolean;
+  no_units: boolean;
+  unit_price: boolean;
+  cso_cash: boolean;
+  unicef_cash: boolean;
 };
 
 export type InterventionActivityExtended = InterventionActivity & {

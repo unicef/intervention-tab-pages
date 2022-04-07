@@ -34,11 +34,13 @@ import {ExpectedResultExtended, ResultLinkLowerResultExtended} from './editor-ut
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import {translate} from 'lit-translate/directives/translate';
 import {AsyncAction} from '@unicef-polymer/etools-types';
+import {EditorTableArrowKeysStyles} from './editor-utils/editor-table-arrow-keys-styles';
+import {ArrowsNavigationMixin} from './editor-utils/arrows-navigation-mixin';
 
 @customElement('editor-table')
-export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
+export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationMixin(LitElement))) {
   static get styles() {
-    return [EditorTableStyles];
+    return [EditorTableStyles, EditorTableArrowKeysStyles];
   }
   render() {
     return html`
@@ -81,9 +83,9 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
                   <span class="b">${displayCurrencyAmount(result.total, '0.00')}</span>
                 </td>
               </tr>
-              <tr class="add blue">
+              <tr class="add blue" type="cp-output">
                 <td></td>
-                <td colspan="3">
+                <td colspan="3" tabindex="0">
                   <paper-icon-button
                     icon="add-box"
                     ?hidden="${!this.permissions.edit.result_links}"
@@ -130,16 +132,18 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
                   comment-element="pd-output-${pdOutput.id}"
                   comment-description=" PD Output - ${pdOutput.name}"
                 >
-                  <tr class="text">
+                  <tr class="text" type="pd-output">
                     <td>${pdOutput.code}</td>
-                    <td colspan="3" class="b">
+                    <td colspan="3" class="b" tabindex="0">
                       <paper-textarea
                         no-label-float
+                        input
                         .value="${pdOutput.name}"
                         ?readonly="${!pdOutput.inEditMode}"
                         required
                         .invalid="${pdOutput.invalid}"
                         error-message="This field is required"
+                        @keydown="${(e: any) => this.handleEsc(e)}"
                         @value-changed="${({detail}: CustomEvent) =>
                           this.updateModelValue(pdOutput, 'name', detail.value)}"
                       ></paper-textarea>
@@ -150,9 +154,12 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
                       <span class="b">${displayCurrencyAmount(pdOutput.total, '0.00')}</span>
                     </td>
                   </tr>
-                  <tr class="add">
+                  <tr class="add" type="pd-output">
                     <td></td>
-                    <td colspan="3">
+                    <td
+                      colspan="3"
+                      tabindex="${pdOutput.inEditMode || !this.permissions.edit.result_links ? '-1' : '0'}"
+                    >
                       <span ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
                         ><paper-icon-button
                           icon="add-box"
@@ -217,8 +224,17 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
   @property({type: Boolean})
   readonly = false;
 
+  private lastFocusedTd: any = null;
   private refreshResultStructure = false;
   private prevInterventionId: number | null = null;
+
+  connectedCallback() {
+    super.connectedCallback();
+    setTimeout(() => {
+      this.addArrowNavListener();
+      this.focusFirstTd();
+    }, 2000);
+  }
 
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(state.app?.routeDetails, 'interventions', TABS.WorkplanEditor)) {
@@ -243,6 +259,9 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
       this.refreshResultStructure = false;
     }
     super.stateChanged(state);
+    if (this.lastFocusedTd) {
+      this.lastFocusedTd.focus();
+    }
   }
 
   getResultLinksDetails() {

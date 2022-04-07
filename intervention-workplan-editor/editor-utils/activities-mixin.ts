@@ -36,6 +36,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       required: {result_links?: boolean};
     };
 
+    handleEsc!: (event: KeyboardEvent) => void;
     refreshResultStructure = false;
     quarters: InterventionQuarter[] = [];
 
@@ -82,31 +83,35 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
               </tr>
             </thead>
             <tbody comment-element="activity-${activity.id}" comment-description=" Activity - ${activity.name}">
-              <tr class="text">
+              <tr class="text" type="activity">
                 <td>${activity.code}</td>
-                <td colspan="3">
+                <td colspan="3" tabindex="0">
                   <paper-textarea
                     no-label-float
+                    input
                     .value="${activity.name}"
                     ?readonly="${!activity.inEditMode}"
                     required
                     .invalid="${activity.invalid?.name}"
                     error-message="This field is required"
+                    @keydown="${(e: any) => this.handleEsc(e)}"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue(activity, 'name', detail.value)}"
                   ></paper-textarea>
                   <div class="pad-top-8">
                     <paper-textarea
                       placeholder="-"
+                      input
                       label="Other Notes"
                       always-float-label
                       ?readonly="${!activity.inEditMode}"
                       .value="${activity.context_details}"
+                      @keydown="${(e: any) => this.handleEsc(e)}"
                       @value-changed="${({detail}: CustomEvent) =>
                         this.updateModelValue(activity, 'context_details', detail.value)}"
                     ></paper-textarea>
                   </div>
                 </td>
-                <td>
+                <td tabindex="0">
                   <div class="flex-h justify-right">
                     <time-intervals
                       .readonly="${!this.permissions.edit.result_links}"
@@ -124,23 +129,28 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                         activity.time_frames = event.detail;
                         this.requestUpdate();
                       }}"
+                      @keydown="${(e: any) => this.handleEsc(e)}"
                     ></time-intervals>
                   </div>
                 </td>
-                <td>
+                <td tabindex="${activity.items && activity.items.length ? '-1' : '0'}">
                   <etools-currency-amount-input
                     no-label-float
+                    input
                     .value="${activity.cso_cash}"
                     ?readonly="${this.isReadonlyForActivityCash(activity.inEditMode, activity.items)}"
+                    @keydown="${(e: any) => this.handleEsc(e)}"
                     @value-changed="${({detail}: CustomEvent) =>
                       this.updateModelValue(activity, 'cso_cash', detail.value)}"
                   ></etools-currency-amount-input>
                 </td>
-                <td>
+                <td tabindex="${activity.items && activity.items.length ? '-1' : '0'}">
                   <etools-currency-amount-input
                     no-label-float
+                    input
                     .value="${activity.unicef_cash}"
                     ?readonly="${this.isReadonlyForActivityCash(activity.inEditMode, activity.items)}"
+                    @keydown="${(e: any) => this.handleEsc(e)}"
                     @value-changed="${({detail}: CustomEvent) =>
                       this.updateModelValue(activity, 'unicef_cash', detail.value)}"
                   ></etools-currency-amount-input>
@@ -156,9 +166,12 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                   </span>
                 </td>
               </tr>
-              <tr class="add">
+              <tr class="add" type="activity">
                 <td></td>
-                <td colspan="3">
+                <td
+                  colspan="3"
+                  tabindex="${activity.items?.length || !this.permissions.edit.result_links ? '-1' : '0'}"
+                >
                   <span ?hidden="${activity.items?.length || !this.permissions.edit.result_links}">
                     <paper-icon-button icon="add-box" @click="${() => this.addNewItem(activity)}"></paper-icon-button>
                     Add New Item
@@ -192,19 +205,6 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td class="col-g">Partner Cash</td>
                 <td class="col-g">UNICEF CASH</td>
                 <td class="col-g" colspan="2">Total (${this.intervention.planned_budget.currency})</td>
-              </tr>
-              <tr ?hidden="${!this.permissions.edit.result_links}">
-                <td></td>
-                <td>
-                  <paper-icon-button icon="add-box" @click="${() => this.addNewItem(activity)}"></paper-icon-button> Add
-                  New Item
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td colspan="2"></td>
               </tr>
             </thead>
             ${this.renderActivityItems(activity)}
@@ -243,16 +243,6 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
         return;
       }
       model[property] = newVal;
-      this.requestUpdate();
-    }
-
-    addNewItem(activity: Partial<InterventionActivityExtended>) {
-      if (!activity.items) {
-        activity.items = [];
-      }
-      activity.items?.unshift({name: '', inEditMode: true});
-      activity.itemsInEditMode = true;
-
       this.requestUpdate();
     }
 

@@ -12,22 +12,44 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
     @property({type: Object})
     intervention!: Intervention;
 
+    @property({type: Object})
+    permissions!: {
+      edit: {result_links?: boolean};
+      required: {result_links?: boolean};
+    };
+
+    handleEsc!: (event: KeyboardEvent) => void;
+
     renderActivityItems(activity: InterventionActivityExtended) {
-      if (!activity || !activity.items) {
+      if (!activity || !activity.items || !activity.items.length) {
         return '';
       }
       return html`<tbody class="odd">
+        <tr ?hidden="${!this.permissions.edit.result_links}" type="add-item">
+          <td></td>
+          <td tabindex="0">
+            <paper-icon-button icon="add-box" @click="${() => this.addNewItem(activity)}"></paper-icon-button> Add New
+            Item
+          </td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td colspan="2"></td>
+        </tr>
         ${repeat(
           activity.items || [],
           (item: InterventionActivityItemExtended) => item.id,
           (item: InterventionActivityItemExtended, itemIndex: number) => html`
-            <tr class="activity-items-row">
+            <tr class="activity-items-row" type="a-item">
               <td>
                 <paper-input readonly .value="${item.code || 'N/A'}"></paper-input>
               </td>
-              <td>
+              <td tabindex="0">
                 <paper-textarea
                   always-float-label
+                  input
                   label=${this.getLabel(activity.itemsInEditMode, 'Item Description')}
                   ?readonly="${!activity.itemsInEditMode}"
                   .invalid="${item.invalid?.name}"
@@ -36,11 +58,13 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   .autoValidate="${item.autovalidate?.name}"
                   @focus="${() => this.setAutoValidate(item, 'name')}"
                   .value="${item.name}"
+                  @keydown="${(e: any) => this.handleEsc(e)}"
                   @value-changed="${({detail}: CustomEvent) => this.updateModelValue(item, 'name', detail.value)}"
                 ></paper-textarea>
               </td>
-              <td>
+              <td tabindex="0">
                 <paper-input
+                  input
                   always-float-label
                   label=${this.getLabel(activity.itemsInEditMode, 'Unit')}
                   ?readonly="${!activity.itemsInEditMode}"
@@ -50,18 +74,21 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   @focus="${() => this.setAutoValidate(item, 'unit')}"
                   error-message="This field is required"
                   .value="${item.unit}"
+                  @keydown="${(e: any) => this.handleEsc(e)}"
                   @value-changed="${({detail}: CustomEvent) => this.updateModelValue(item, 'unit', detail.value)}"
                 ></paper-input>
               </td>
-              <td>
+              <td tabindex="0">
                 <etools-currency-amount-input
                   label=${this.getLabel(activity.itemsInEditMode, 'N. of Units')}
+                  input
                   ?readonly="${!activity.itemsInEditMode}"
                   .invalid="${item.invalid?.no_units}"
                   required
                   auto-validate
                   error-message="This field is required"
                   .value="${item.no_units}"
+                  @keydown="${(e: any) => this.handleEsc(e)}"
                   @value-changed="${({detail}: CustomEvent) => {
                     if (item.no_units == detail.value) {
                       return;
@@ -72,15 +99,17 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   }}"
                 ></etools-currency-amount-input>
               </td>
-              <td>
+              <td tabindex="0">
                 <etools-currency-amount-input
                   label=${this.getLabel(activity.itemsInEditMode, 'Price/Unit')}
+                  input
                   ?readonly="${!activity.itemsInEditMode}"
                   .invalid="${item.invalid?.unit_price}"
                   required
                   auto-validate
                   error-message="This field is required"
                   .value="${item.unit_price}"
+                  @keydown="${(e: any) => this.handleEsc(e)}"
                   @value-changed="${({detail}: CustomEvent) => {
                     if (item.unit_price == detail.value) {
                       return;
@@ -91,15 +120,17 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   }}"
                 ></etools-currency-amount-input>
               </td>
-              <td>
+              <td tabindex="0">
                 <etools-currency-amount-input
                   label=${this.getLabel(activity.itemsInEditMode, 'Partner Cash')}
+                  input
                   ?readonly="${!activity.itemsInEditMode}"
                   required
                   auto-validate
                   error-message="Incorrect value"
                   .invalid="${item.invalid?.cso_cash}"
                   .value="${item.cso_cash}"
+                  @keydown="${(e: any) => this.handleEsc(e)}"
                   @value-changed="${({detail}: CustomEvent) => {
                     if (item.cso_cash == detail.value) {
                       return;
@@ -111,15 +142,17 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   }}"
                 ></etools-currency-amount-input>
               </td>
-              <td>
+              <td tabindex="0">
                 <etools-currency-amount-input
                   label=${this.getLabel(activity.itemsInEditMode, 'UNICEF Cash')}
+                  input
                   ?readonly="${!activity.itemsInEditMode}"
                   required
                   auto-validate
                   error-message="Incorrect value"
                   .invalid="${item.invalid?.unicef_cash}"
                   .value="${item.unicef_cash}"
+                  @keydown="${(e: any) => this.handleEsc(e)}"
                   @value-changed="${({detail}: CustomEvent) => {
                     if (item.unicef_cash == detail.value) {
                       return;
@@ -137,7 +170,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   .value="${this.getTotalForItem(item.no_units || 0, item.unit_price || 0)}"
                 ></paper-input>
               </td>
-              <td class="del-item">
+              <td class="del-item" tabindex="${!activity.itemsInEditMode ? '-1' : '0'}">
                 <paper-icon-button
                   id="delItem"
                   icon="delete"
@@ -213,11 +246,11 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       if (!(activity.items && activity.items.length)) {
         return;
       }
-      activity.cso_cash = activity.items.reduce((sum: number, item) => sum + Number(item.cso_cash), 0);
-      activity.unicef_cash = activity.items.reduce((sum: number, item) => sum + Number(item.unicef_cash), 0);
+      activity.cso_cash = String(activity.items.reduce((sum: number, item) => sum + Number(item.cso_cash), 0));
+      activity.unicef_cash = String(activity.items.reduce((sum: number, item) => sum + Number(item.unicef_cash), 0));
     }
 
-    getTotalForItem(noOfUnits: string, pricePerUnit: string) {
+    getTotalForItem(noOfUnits: number, pricePerUnit: number | string) {
       let total = (Number(noOfUnits) || 0) * (Number(pricePerUnit) || 0);
       total = Number(total.toFixed(2));
       return displayCurrencyAmount(String(total), '0', 2);
@@ -237,6 +270,17 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       } else {
         item.invalid = {...item.invalid, ...{cso_cash: false, unicef_cash: false}};
       }
+    }
+
+    addNewItem(activity: Partial<InterventionActivityExtended>) {
+      if (!activity.items) {
+        activity.items = [];
+      }
+      // @ts-ignore
+      activity.items?.unshift({name: '', inEditMode: true});
+      activity.itemsInEditMode = true;
+
+      this.requestUpdate();
     }
 
     updateModelValue(model: any, property: string, newVal: any) {
