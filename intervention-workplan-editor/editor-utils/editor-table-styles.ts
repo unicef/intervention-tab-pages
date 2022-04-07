@@ -143,7 +143,7 @@ export const EditorTableStyles = css`
   }
 
   tr.activity-items-row > td {
-    vertical-align: middle;
+    vertical-align: bottom;
   }
 
   .v-middle {
