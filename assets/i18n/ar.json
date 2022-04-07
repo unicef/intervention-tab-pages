@@ -236,7 +236,6 @@
   "EFFECTIVE_EFFICIENT_PROG_MGM": "إدارة برنامج فعالة وكفؤة",
   "TOTAL": "مجموع:",
   "ITEM_PD_CURRENCY": "البند (جميع الأسعار بعملة PD)",
-  "PARTNER_CONTRIBUTION": "مساهمة الشريك",
   "TITLE_1": "فريق الإدارة والدعم داخل الدولة",
   "DESCRIPTION_1": "المساهمة في الإدارة وموظفي الدعم داخل الدولة مقسمة بالتناسب على مساهمتهم في البرنامج (التمثيل ، التخطيط ، التنسيق ، اللوجستيات ، الإدارة ، المالية)",
   "TITLE_2": "تكاليف التشغيل",
@@ -510,5 +509,13 @@
   "VIEW_ACTIVITY": "View Activity",
   "SEND_BACK_REVIEW": "Send Back Review",
   "BACK_TO_WORKPLAN": "back to standart view",
-  "GO_TO_WORKPLAN_EDITOR": "Open in Editor"
+  "GO_TO_WORKPLAN_EDITOR": "Open in Editor",
+  "ID": "ID",
+  "ADD_NEW_PD_OUTPUT": "Add New PD Output",
+  "ADD_NEW_ACTIVITY": "Add New Activity",
+  "THIS_FIELD_IS_REQUIRED": "This field is required",
+  "ACTIVITY": "Activity",
+  "PARTNER_CONTRIBUTION": "مساهمة الشريك",
+  "ADD_NEW_ITEM": "Add New Item",
+  "INCORRECT_VALUE": "Incorrect value"
 }

@@ -56,7 +56,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td class="col-g"></td>
                 <td class="col-g"></td>
                 <td class="col-g"></td>
-                <td class="col-6" colspan="2">
+                <td class="last-col" colspan="2">
                   <paper-icon-button
                     icon="create"
                     ?hidden="${activity.inEditMode || !this.permissions.edit.result_links}"
@@ -67,7 +67,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     }}"
                   ></paper-icon-button>
                   <paper-icon-button
-                    icon="icons:delete"
+                    icon="delete"
                     ?hidden="${activity.inEditMode || !this.permissions.edit.result_links}"
                     @click="${() => this.openDeleteDialog(activity.id, pdOutput.id)}"
                   ></paper-icon-button>
@@ -75,25 +75,26 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
               </tr>
               <tr class="header">
                 <td></td>
-                <td colspan="3">Activity</td>
-                <td class="a-right">Time Periods</td>
-                <td>CSO Contribution</td>
-                <td>UNICEF Cash</td>
-                <td colspan="2">Total</td>
+                <td colspan="3">${translate('ACTIVITY')}</td>
+                <td class="a-right">${translate('TIME_PERIODS')}</td>
+                <td>${translate('PARTNER_CONTRIBUTION')}</td>
+                <td>${translate('UNICEF_CASH')}</td>
+                <td colspan="2">${translate('GENERAL.TOTAL')}</td>
               </tr>
             </thead>
             <tbody comment-element="activity-${activity.id}" comment-description=" Activity - ${activity.name}">
               <tr class="text" type="activity">
-                <td>${activity.code}</td>
+                <td class="padd-top-15">${activity.code}</td>
                 <td colspan="3" tabindex="0">
                   <paper-textarea
                     no-label-float
                     input
+                    class="name"
                     .value="${activity.name}"
                     ?readonly="${!activity.inEditMode}"
                     required
                     .invalid="${activity.invalid?.name}"
-                    error-message="This field is required"
+                    error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
                     @keydown="${(e: any) => this.handleEsc(e)}"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue(activity, 'name', detail.value)}"
                   ></paper-textarea>
@@ -155,7 +156,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                       this.updateModelValue(activity, 'unicef_cash', detail.value)}"
                   ></etools-currency-amount-input>
                 </td>
-                <td colspan="2">
+                <td colspan="2" class="padd-top-15">
                   ${this.intervention.planned_budget.currency}
                   <span class="b"
                     >${displayCurrencyAmount(
@@ -172,10 +173,14 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                   colspan="3"
                   tabindex="${activity.items?.length || !this.permissions.edit.result_links ? '-1' : '0'}"
                 >
-                  <span ?hidden="${activity.items?.length || !this.permissions.edit.result_links}">
-                    <paper-icon-button icon="add-box" @click="${() => this.addNewItem(activity)}"></paper-icon-button>
-                    Add New Item
-                  </span>
+                  <div
+                    class="icon"
+                    @click="${() => this.addNewItem(activity)}"
+                    ?hidden="${activity.items?.length || !this.permissions.edit.result_links}"
+                  >
+                    <paper-icon-button icon="add-box"></paper-icon-button>
+                    ${translate('ADD_NEW_ITEM')}
+                  </div>
                 </td>
                 <td></td>
                 <td></td>
@@ -183,7 +188,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td class="h-center" colspan="2">
                   <div class="flex-h justify-right" ?hidden="${!(activity.inEditMode || activity.itemsInEditMode)}">
                     <paper-button @click="${() => this.saveActivity(activity, pdOutput.id, this.intervention.id)}"
-                      >Save</paper-button
+                      >${translate('GENERAL.SAVE')}</paper-button
                     >
                     <paper-icon-button
                       icon="close"
@@ -198,13 +203,13 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
             <thead ?hidden="${!activity.items || !activity.items.length}">
               <tr class="header border-b">
                 <td class="first-col"></td>
-                <td class="col-30">Item Description</td>
-                <td class="col-10">Unit</td>
-                <td class="col-10">Number Of Units</td>
-                <td class="col-g">Price/Unit</td>
-                <td class="col-g">Partner Cash</td>
-                <td class="col-g">UNICEF CASH</td>
-                <td class="col-g" colspan="2">Total (${this.intervention.planned_budget.currency})</td>
+                <td class="col-30">${translate('ITEM_DESCRIPTION')}</td>
+                <td class="col-10">${translate('UNIT')}</td>
+                <td class="col-10">${translate('NUMBER_UNITS')}</td>
+                <td class="col-g">${translate('PRICE_UNIT')}</td>
+                <td class="col-g">${translate('PARTNER_CASH')}</td>
+                <td class="col-g">${translate('UNICEF_CASH')}</td>
+                <td class="col-g" colspan="2">${translate('TOTAL')} (${this.intervention.planned_budget.currency})</td>
               </tr>
             </thead>
             ${this.renderActivityItems(activity)}

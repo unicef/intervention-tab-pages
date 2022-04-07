@@ -27,7 +27,7 @@ export const EditorTableStyles = css`
   td.col-g {
     width: 12.5%;
   }
-  td.col-6 {
+  td.last-col {
     width: 12.5%;
     vertical-align: top;
     text-align: right;
@@ -79,7 +79,7 @@ export const EditorTableStyles = css`
     background-color: #b6d5f1;
   }
   .gray-1 {
-    background-color: #f7f6f6;
+    background-color: #efefef;
   }
   .b {
     font-weight: 600;
@@ -94,13 +94,23 @@ export const EditorTableStyles = css`
   paper-icon-button[icon='close'] {
     color: red;
   }
+  paper-icon-button[icon='delete']:hover {
+    color: #212121;
+  }
+  paper-icon-button[icon='create']:hover {
+    color: #212121;
+  }
+  div.icon {
+    display: inline-block;
+  }
 
-  paper-textarea {
-    --paper-input-container-label-floating: {
-      font-weight: 600 !important;
-      color: var(--secondary-text-color);
-    }
-    --paper-input-container-label-floating_-_font-weight: 600;
+  div.icon:hover {
+    color: #212121;
+    cursor: pointer;
+  }
+
+  div.icon paper-icon-button:hover {
+    color: #212121;
   }
 
   etools-currency-amount-input {
@@ -124,8 +134,12 @@ export const EditorTableStyles = css`
   .justify-right {
     justify-content: flex-end;
   }
-  tr.activity-items-row > td {
+  tr.activity-items-row:not(.readonly) > td {
     padding-bottom: 16px;
+  }
+  tr.activity-items-row.readonly > td {
+    padding-top: 1px;
+    padding-bottom: 1px;
   }
 
   .v-middle {
@@ -138,5 +152,8 @@ export const EditorTableStyles = css`
   paper-icon-button#delItem {
     padding: 0;
     width: 25px;
+  }
+  .padd-top-15 {
+    padding-top: 16px;
   }
 `;

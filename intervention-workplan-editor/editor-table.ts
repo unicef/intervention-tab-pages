@@ -52,6 +52,11 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
           --paper-input-container-input: {
             display: block;
           }
+          --paper-input-container-label-floating_-_font-weight: 600;
+          --paper-font-subhead_-_font-weight: 600;
+          --paper-input-container-label-floating {
+            font-weight: 600;
+          }
         }
       </style>
       <table>
@@ -59,22 +64,22 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
           this.resultStructureDetails,
           (result: ExpectedResult) => result.id,
           (result, resultIndex) => html`
-            <thead>
+            <thead ?hidden="${!this.isUnicefUser}">
               <tr class="edit blue">
                 <td class="first-col"></td>
                 <td colspan="3"></td>
                 <td colspan="3"></td>
-                <td class="col-6" colspan="2"></td>
+                <td class="last-col" colspan="2"></td>
               </tr>
               <tr class="header blue">
-                <td>ID</td>
-                <td colspan="3">Country Programme Output</td>
+                <td>${translate('ID')}</td>
+                <td colspan="3">${translate('COUNTRY_PROGRAME_OUTPUT')}</td>
                 <td colspan="3"></td>
-                <td colspan="2">Total</td>
+                <td colspan="2">${translate('TOTAL')}</td>
               </tr>
             </thead>
             <tbody>
-              <tr class="text blue">
+              <tr class="text blue" ?hidden="${!this.isUnicefUser}">
                 <td>${result.code}</td>
                 <td colspan="3" class="b">${result.cp_output_name}</td>
                 <td colspan="3"></td>
@@ -86,25 +91,29 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
               <tr class="add blue" type="cp-output">
                 <td></td>
                 <td colspan="3" tabindex="0">
-                  <paper-icon-button
-                    icon="add-box"
-                    ?hidden="${!this.permissions.edit.result_links}"
+                  <div
+                    class="icon"
                     @click="${() => this.addNewPDOutput(result.ll_results)}"
-                  ></paper-icon-button>
-                  Add New PD Output
+                    ?hidden="${!this.permissions.edit.result_links}"
+                  >
+                    <paper-icon-button icon="add-box" tabindex="0"></paper-icon-button>
+                    ${translate('ADD_NEW_PD_OUTPUT')}
+                  </div>
                 </td>
                 <td colspan="3"></td>
                 <td colspan="2"></td>
               </tr>
             </tbody>
-            ${result.ll_results.map(
+            ${repeat(
+              result.ll_results,
+              (pdOutput: ResultLinkLowerResultExtended) => pdOutput.id,
               (pdOutput: ResultLinkLowerResultExtended, pdOutputIndex) => html`
                 <thead class="gray-1">
                   <tr class="edit">
                     <td class="first-col"></td>
                     <td colspan="3"></td>
                     <td colspan="3"></td>
-                    <td class="col-6" colspan="2">
+                    <td class="last-col" colspan="2">
                       <paper-icon-button
                         icon="create"
                         ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
@@ -122,9 +131,9 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                   </tr>
                   <tr class="header">
                     <td></td>
-                    <td colspan="3">PD Output</td>
+                    <td colspan="3">${translate('PD_OUTPUT')}</td>
                     <td colspan="3"></td>
-                    <td colspan="2">Total</td>
+                    <td colspan="2">${translate('TOTAL')}</td>
                   </tr>
                 </thead>
                 <tbody
@@ -133,7 +142,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                   comment-description=" PD Output - ${pdOutput.name}"
                 >
                   <tr class="text" type="pd-output">
-                    <td>${pdOutput.code}</td>
+                    <td class="padd-top-15">${pdOutput.code}</td>
                     <td colspan="3" class="b" tabindex="0">
                       <paper-textarea
                         no-label-float
@@ -142,7 +151,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                         ?readonly="${!pdOutput.inEditMode}"
                         required
                         .invalid="${pdOutput.invalid}"
-                        error-message="This field is required"
+                        error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
                         @keydown="${(e: any) => this.handleEsc(e)}"
                         @value-changed="${({detail}: CustomEvent) =>
                           this.updateModelValue(pdOutput, 'name', detail.value)}"
@@ -160,19 +169,20 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                       colspan="3"
                       tabindex="${pdOutput.inEditMode || !this.permissions.edit.result_links ? '-1' : '0'}"
                     >
-                      <span ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
-                        ><paper-icon-button
-                          icon="add-box"
-                          @click="${() => this.addNewActivity(pdOutput)}"
-                        ></paper-icon-button>
-                        Add New Activity</span
+                      <div
+                        class="icon"
+                        @click="${() => this.addNewActivity(pdOutput)}"
+                        ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
                       >
+                        <paper-icon-button icon="add-box"></paper-icon-button>
+                        ${translate('ADD_NEW_ACTIVITY')}
+                      </div>
                     </td>
                     <td colspan="3"></td>
                     <td class="h-center" colspan="2">
                       <div class="flex-h justify-right" ?hidden="${!pdOutput.inEditMode}">
                         <paper-button @click="${() => this.savePdOutput(pdOutput, result.cp_output)}"
-                          >Save</paper-button
+                          >${translate('GENERAL.SAVE')}</paper-button
                         >
                         <paper-icon-button
                           icon="close"
@@ -283,13 +293,18 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
   }
 
   addNewPDOutput(llResults: Partial<ResultLinkLowerResultExtended>[]) {
-    llResults.unshift({name: '', total: '0', inEditMode: true});
-    this.requestUpdate();
+    if (!llResults.find((ll) => !ll.id)) {
+      llResults.unshift({name: '', total: '0', inEditMode: true});
+      this.requestUpdate();
+    }
   }
 
   addNewActivity(pdOutput: Partial<ResultLinkLowerResultExtended>) {
-    pdOutput.activities?.unshift({name: '', total: '0', time_frames: [], inEditMode: true});
-    this.requestUpdate();
+    if (!pdOutput.activities?.find((a) => !a.id)) {
+      // @ts-ignore
+      pdOutput.activities?.unshift({name: '', total: '0', time_frames: [], inEditMode: true});
+      this.requestUpdate();
+    }
   }
 
   savePdOutput(pdOutput: ResultLinkLowerResultExtended, cpOutputId: number) {
