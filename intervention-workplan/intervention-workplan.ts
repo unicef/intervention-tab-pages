@@ -6,7 +6,6 @@ import './effective-efficient-programme-mgmt/effective-efficient-programme-mgmt'
 import './non-financial-contribution/non-financial-contribution';
 import './hq-contribution/hq-contribution';
 import '../intervention-workplan-editor/workplan-editor-link';
-import '../common/components/comments-panels/comments-panels';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {TABS} from '../common/constants';
 import {translate} from 'lit-translate';
@@ -40,7 +39,6 @@ export class InterventionWorkplan extends LitElement {
       <hq-contribution></hq-contribution>
       <supply-agreements></supply-agreements>
       <non-financial-contribution></non-financial-contribution>
-      <comments-panels></comments-panel>
     `;
   }
 

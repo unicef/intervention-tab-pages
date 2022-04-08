@@ -1,94 +1,49 @@
-import {
-  customElement,
-  LitElement,
-  html,
-  TemplateResult,
-  property,
-  CSSResultArray,
-  css,
-  query,
-  PropertyValues,
-  queryAll
-} from 'lit-element';
+import {customElement, html, TemplateResult, property, CSSResultArray, css, query, queryAll} from 'lit-element';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import '@polymer/paper-input/paper-textarea';
 import './comment';
-import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
-import {addComment, updateComment} from './comments.actions';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
-import {RootState} from '../../types/store.types';
-import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
-import {PaperTextareaElement} from '@polymer/paper-input/paper-textarea';
 import {InterventionComment, GenericObject} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate, get} from 'lit-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {setTextareasMaxHeight} from '@unicef-polymer/etools-modules-common/dist/utils/textarea-max-rows-helper';
-import {CommentsEndpoints} from './comments-types';
+import {CommentsItemsNameMap} from './comments-items-name-map';
+import {EditComments} from './edit-comments-base';
+import {PaperTextareaElement} from '@polymer/paper-input/paper-textarea';
 
 @customElement('comments-dialog')
-export class CommentsDialog extends connectStore(LitElement) {
-  static get styles(): CSSResultArray {
-    // language=css
-    return [
-      css`
-        .message-input {
-          display: flex;
-          align-items: flex-end;
-          padding: 16px 10px 8px 25px;
-          border-top: 1px solid var(--light-divider-color);
-          margin-bottom: 0;
-        }
-        .container {
-          display: flex;
-          flex-direction: column;
-          padding: 24px;
-        }
-        comment-element[my-comment] {
-          align-self: flex-end;
-        }
-        .cancel-btn {
-          color: var(--primary-text-color, rgba(0, 0, 0, 0.87));
-        }
-        .send-btn {
-          background: var(--primary-color);
-          color: #ffffff;
-        }
-        .no-comments {
-          font-size: 15px;
-          font-style: italic;
-          line-height: 16px;
-          color: var(--secondary-text-color);
-        }
-      `
-    ];
-  }
-  @property() commentsDialogTitle = '';
-  @property() dialogOpened = true;
-  @property() comments: (InterventionComment & {loadingError?: boolean})[] = [];
+export class CommentsDialog extends EditComments {
   @queryAll('paper-textarea') textareas!: PaperTextareaElement[];
-  @property() endpoints!: CommentsEndpoints;
+  @property() dialogOpened = true;
+
+  get dialogTitle(): string {
+    if (!this.relatedTo) {
+      return '';
+    }
+    const relatedToKey: string = this.relatedTo.replace(/(.+?)-\d+/, '$1');
+    const itemType = CommentsItemsNameMap[relatedToKey];
+    if (itemType) {
+      const description = this.relatedToDescription ? ` - ${this.relatedToDescription}` : '';
+      return `Comments on: ${get(CommentsItemsNameMap[relatedToKey])}${description}`;
+    } else if (this.relatedToDescription) {
+      return `Comments on: ${this.relatedToDescription}`;
+    } else {
+      return '';
+    }
+  }
 
   set dialogData({interventionId, relatedTo, relatedToDescription, endpoints}: any) {
     this.interventionId = interventionId;
     this.relatedTo = relatedTo;
     this.endpoints = endpoints;
-    this.commentsDialogTitle = `Comments on: ${relatedToDescription}`;
+    this.relatedToDescription = relatedToDescription;
     const comments: GenericObject<InterventionComment[]> =
       getStore().getState().commentsData.collection[interventionId];
     const relatedToComments: InterventionComment[] = (comments && comments[relatedTo]) || [];
     this.comments = [...relatedToComments];
     this.requestUpdate().then(() => this.scrollDown());
   }
-  private interventionId!: number;
-  private relatedTo!: string;
-
-  private resolvingCollection: Set<number> = new Set();
-  private deletingCollection: Set<number> = new Set();
-  private newMessageText = '';
-  private currentUser: any;
   private dialogHeight?: number;
   @query('etools-dialog') private dialogElement!: EtoolsDialog;
 
@@ -111,7 +66,7 @@ export class CommentsDialog extends connectStore(LitElement) {
         size="md"
         keep-dialog-open
         ?opened="${this.dialogOpened}"
-        dialog-title="${this.commentsDialogTitle}"
+        dialog-title="${this.dialogTitle}"
         @close="${this.onClose}"
         no-padding
       >
@@ -150,141 +105,8 @@ export class CommentsDialog extends connectStore(LitElement) {
     `;
   }
 
-  protected firstUpdated(_changedProperties: PropertyValues): void {
-    super.firstUpdated(_changedProperties);
-    setTextareasMaxHeight(this.textareas);
-  }
-
-  stateChanged(state: RootState): void {
-    if (this.currentUser) {
-      return;
-    }
-    const {user, first_name, last_name, middle_name, name} = state.user.data!;
-    // take fields to correspond the shape of user object inside comment object
-    this.currentUser = {
-      id: user,
-      first_name,
-      last_name,
-      middle_name,
-      name
-    };
-  }
-
   onClose(): void {
     fireEvent(this, 'dialog-closed', {confirmed: false});
-  }
-
-  isResolving(id: number): boolean {
-    return this.resolvingCollection.has(id);
-  }
-
-  isDeleting(id: number): boolean {
-    return this.deletingCollection.has(id);
-  }
-
-  resolveComment(id: number, index: number): void {
-    this.requestUpdate();
-    this.resolvingCollection.add(id);
-    sendRequest({
-      endpoint: getEndpoint(this.endpoints.resolveComment, {interventionId: this.interventionId, commentId: id}),
-      method: 'POST'
-    })
-      .then((updatedComment: InterventionComment) => {
-        this.resolvingCollection.delete(id);
-        this.comments[index] = updatedComment;
-        getStore().dispatch(updateComment(this.relatedTo, updatedComment, this.interventionId));
-        this.requestUpdate();
-      })
-      .catch(() => {
-        this.resolvingCollection.delete(id);
-        fireEvent(this, 'toast', {text: 'Can not resolve comment. Try again'});
-        this.requestUpdate();
-      });
-  }
-
-  deleteComment(id: number, index: number): void {
-    if (!id) {
-      this.deleteNotUploaded(index);
-      return;
-    }
-    this.requestUpdate();
-    this.deletingCollection.add(id);
-    sendRequest({
-      endpoint: getEndpoint(this.endpoints.deleteComment, {interventionId: this.interventionId, commentId: id}),
-      method: 'POST'
-    })
-      .then((updatedComment: InterventionComment) => {
-        this.deletingCollection.delete(id);
-        this.comments[index] = updatedComment;
-        getStore().dispatch(updateComment(this.relatedTo, updatedComment, this.interventionId));
-        this.requestUpdate();
-      })
-      .catch(() => {
-        this.deletingCollection.delete(id);
-        fireEvent(this, 'toast', {text: 'Can not delete comment. Try again'});
-        this.requestUpdate();
-      });
-  }
-
-  // comment argument will be provide for 'retry' functionality (after send error)
-  addComment(comment?: any): void {
-    if (!comment && !this.newMessageText) {
-      return;
-    }
-    this.requestUpdate().then(() => {
-      if (!comment) {
-        // scroll down if comment is new
-        this.scrollDown();
-        this.dialogElement.notifyResize();
-      }
-    });
-    // take existing comment
-    const body = comment || {
-      text: this.newMessageText,
-      user: this.currentUser,
-      related_to: this.relatedTo
-    };
-    this.comments.push(body);
-    if (!comment) {
-      this.newMessageText = '';
-    }
-    sendRequest({
-      endpoint: getEndpoint(this.endpoints.saveComments, {interventionId: this.interventionId}),
-      method: 'POST',
-      body
-    })
-      .then((newComment: InterventionComment) => {
-        // remove old comment
-        const index: number = this.comments.indexOf(body);
-        this.comments.splice(index, 1);
-        // add newly created comment to the end of comments array
-        this.comments.push(newComment);
-        getStore().dispatch(addComment(this.relatedTo, newComment, this.interventionId));
-        this.requestUpdate().then(() => {
-          if (comment) {
-            this.scrollDown();
-          }
-        });
-      })
-      .catch(() => {
-        const index: number = this.comments.indexOf(body);
-        this.comments.splice(index, 1, {
-          ...body,
-          loadingError: true
-        });
-        this.requestUpdate();
-      });
-  }
-
-  deleteNotUploaded(index: number): void {
-    this.comments.splice(index, 1);
-    this.requestUpdate();
-  }
-
-  retry(index: number): void {
-    const [commentForRetry] = this.comments.splice(index, 1);
-    commentForRetry.loadingError = false;
-    this.addComment({...commentForRetry});
   }
 
   onKeyup(event: KeyboardEvent): void {
@@ -301,15 +123,10 @@ export class CommentsDialog extends connectStore(LitElement) {
     }
   }
 
-  onKeydown(event: KeyboardEvent): void {
-    if (event.key === 'Enter' && !event.ctrlKey) {
-      event.preventDefault();
-    }
-  }
-
-  private scrollDown(): void {
+  scrollDown(): void {
     if (this.dialogElement) {
       this.dialogElement.scrollDown();
+      this.dialogElement.notifyResize();
     }
   }
 
@@ -320,5 +137,40 @@ export class CommentsDialog extends connectStore(LitElement) {
       this.dialogElement.notifyResize();
       this.dialogHeight = height;
     }
+  }
+  static get styles(): CSSResultArray {
+    // language=css
+    return [
+      css`
+        .message-input {
+          display: flex;
+          align-items: flex-end;
+          padding: 16px 10px 8px 25px;
+          border-top: 1px solid var(--light-divider-color);
+          margin-bottom: 0;
+        }
+        .container {
+          display: flex;
+          flex-direction: column;
+          padding: 24px;
+        }
+        comment-element[my-comment] {
+          align-self: flex-end;
+        }
+        .cancel-btn {
+          color: var(--primary-text-color, rgba(0, 0, 0, 0.87));
+        }
+        .send-btn {
+          background: var(--primary-color);
+          color: #ffffff;
+        }
+        .no-comments {
+          font-size: 15px;
+          font-style: italic;
+          line-height: 16px;
+          color: var(--secondary-text-color);
+        }
+      `
+    ];
   }
 }

@@ -1,29 +1,21 @@
-import {customElement, LitElement, html, TemplateResult, css, CSSResultArray, property} from 'lit-element';
+import {customElement, html, TemplateResult, css, CSSResultArray, query, property} from 'lit-element';
 import {CommentPanelsStyles} from '../common-comments.styles';
 import './messages-panel-header';
 import './message-item';
 import {translate} from 'lit-translate';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {EditComments} from '../../comments/edit-comments-base';
 
 @customElement('messages-panel')
-export class MessagesPanel extends LitElement {
-  @property() newMessageText = '';
-  @property() comment = {
-    id: 1,
-    user: {
-      id: 3739,
-      name: 'John Doe',
-      first_name: 'John',
-      middle_name: '',
-      last_name: 'Doe'
-    },
-    users_related: [],
-    text: 'Please check if the amunt of cash is correct. It doesn’t seem like it is at the moment',
-    state: 'active',
-    created: '2022-04-04T10:25:47.043401Z',
-    related_to_description: '',
-    related_to: 'budget-summary'
-  };
+export class MessagesPanel extends EditComments {
+  @query('#messages-container') container?: HTMLElement;
+  @property() relatedToKey = '';
+  set collectionId(collectionId: string) {
+    if (!collectionId) {
+      return;
+    }
+    this.requestUpdate().then(() => this.scrollDown());
+  }
   protected render(): TemplateResult {
     return html`
       <style>
@@ -38,11 +30,21 @@ export class MessagesPanel extends LitElement {
           }
         }
       </style>
-      <messages-panel-header></messages-panel-header>
+      <messages-panel-header .relatedToKey="${this.relatedToKey}"></messages-panel-header>
       <div class="data-container layout-vertical">
-        <div class="messages">
-          <message-item .comment="${this.comment}" my-comment></message-item>
-          <message-item .comment="${this.comment}"></message-item>
+        <div class="messages" id="messages-container">
+          ${this.comments?.map(
+            (comment, index) => html`<message-item
+              ?my-comment="${comment.user.id === this.currentUser.id}"
+              .resolving="${this.isResolving(comment.id)}"
+              .deleting="${this.isDeleting(comment.id)}"
+              @resolve="${() => this.resolveComment(comment.id, index)}"
+              @delete="${() => this.deleteComment(comment.id, index)}"
+              @retry="${() => this.retry(index)}"
+              .comment="${comment}"
+              my-comment
+            ></message-item>`
+          )}
         </div>
 
         <div class="message-input">
@@ -64,26 +66,11 @@ export class MessagesPanel extends LitElement {
     `;
   }
 
-  onKeyup(event: KeyboardEvent): void {
-    if (event.key !== 'Enter') {
-      // this.updateHeight();
+  scrollDown(): void {
+    if (!this.container) {
       return;
     }
-    if (event.ctrlKey) {
-      this.newMessageText += '\n';
-      this.requestUpdate();
-      // this.updateHeight();
-    } else {
-      this.addComment();
-    }
-  }
-
-  addComment(): void {}
-
-  onKeydown(event: KeyboardEvent): void {
-    if (event.key === 'Enter' && !event.ctrlKey) {
-      event.preventDefault();
-    }
+    this.container.scrollTop = this.container.scrollHeight;
   }
 
   static get styles(): CSSResultArray {
@@ -107,6 +94,8 @@ export class MessagesPanel extends LitElement {
         }
         .messages {
           flex: 1;
+          min-height: 0;
+          overflow-y: auto;
           display: flex;
           flex-direction: column;
           gap: 16px;
@@ -118,6 +107,7 @@ export class MessagesPanel extends LitElement {
           align-items: flex-end;
           padding: 12px 20px 11px 25px;
           border-top: 1px solid var(--light-divider-color);
+          background-color: var(--primary-background-color);
           margin-bottom: 0;
         }
         .send-btn {

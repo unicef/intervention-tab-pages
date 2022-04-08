@@ -1,11 +1,12 @@
-import {customElement, LitElement, html, TemplateResult, CSSResultArray, css} from 'lit-element';
+import {customElement, LitElement, html, TemplateResult, CSSResultArray, property} from 'lit-element';
 import {CommentPanelsStyles} from '../common-comments.styles';
 
 @customElement('comments-panel-header')
 export class CommentsPanelHeader extends LitElement {
+  @property() count = 0;
   protected render(): TemplateResult {
     return html`
-      <div>Comments Panel <b>(15)</b></div>
+      <div>Comments Panel <b>(${this.count})</b></div>
       <div class="buttons">
         <svg width="20" height="16" viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
           <line x1="18.5" y1="1.5" x2="1.5" y2="1.5" stroke="white" stroke-width="3" stroke-linecap="round" />

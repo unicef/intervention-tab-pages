@@ -66,12 +66,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
         }
       </style>
 
-      <etools-content-panel
-        show-expand-btn
-        panel-title=${translate('OTHER')}
-        comment-element="other-metadata"
-        comment-description=${translate('OTHER')}
-      >
+      <etools-content-panel show-expand-btn panel-title=${translate('OTHER')} comment-element="other-metadata">
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="layout-horizontal row-padding-v">

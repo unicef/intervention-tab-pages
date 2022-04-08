@@ -78,7 +78,6 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         show-expand-btn
         panel-title=${translate(translatesMap.management_budgets)}
         comment-element="programme-management"
-        comment-description=${translate(translatesMap.management_budgets)}
       >
         <div slot="after-title">
           <info-icon-tooltip

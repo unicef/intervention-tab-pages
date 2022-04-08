@@ -170,7 +170,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                   <etools-data-table-row
                     class="pdOutputMargin ${this.isUnicefUser ? 'unicef-user' : 'partner'}"
                     related-to="pd-output-${pdOutput.id}"
-                    related-to-description=" PD Output - ${pdOutput.name}"
+                    related-to-description="${pdOutput.name}"
                     comments-container
                     secondary-bg-on-hover
                   >

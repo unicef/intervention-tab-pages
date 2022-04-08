@@ -64,7 +64,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
                   <div
                     class="table-row"
                     related-to="activity-${activity.id}"
-                    related-to-description=" Activity - ${activity.name}"
+                    related-to-description="${activity.name}"
                     comments-container
                     @paper-dropdown-open="${(event: CustomEvent) =>
                       (event.currentTarget as HTMLElement)!.classList.add('active')}"

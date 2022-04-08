@@ -3,23 +3,66 @@ import {CommentPanelsStyles} from '../common-comments.styles';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import './comments-group';
 import './comments-panel-header';
+import {CommentsCollection} from '../../comments/comments.reducer';
+import {CommentsDescription, CommentsItemsNameMap} from '../../comments/comments-items-name-map';
+
+export type CommentItemData = {
+  relatedTo: string;
+  // translate key that describes type of element - Budget Summary/Attachments/PD Output after translate
+  relatedToTranslateKey: string;
+  // comments count
+  count: number;
+  // description provided by [comment-element] or [comment-container]
+  // (Now like name for activity/indicator/pd or prp tab type)
+  relatedToDescription: string;
+  // translate key for regular tabs that hasn't provided description (relatedToDescription)
+  // would be taken from CommentsDescription mapping
+  fieldDescription: string | null;
+};
 
 @customElement('comments-list')
 export class CommentsList extends LitElement {
+  set commentsCollection(collection: CommentsCollection) {
+    this.commentsGroups = Object.entries(collection || {}).map(([relatedTo, comments]) => {
+      const relatedToKey: string = relatedTo.replace(/(.+?)-\d+/, '$1');
+      const relatedToTranslateKey = CommentsItemsNameMap[relatedToKey];
+      const commentWithDescription = comments.find(({related_to_description}) => related_to_description);
+      const relatedToDescription = commentWithDescription?.related_to_description || '';
+      const fieldDescription = CommentsDescription[relatedToKey] || null;
+      return {
+        relatedToTranslateKey,
+        relatedToDescription,
+        fieldDescription,
+        relatedTo,
+        count: comments.length
+      };
+    });
+    this.requestUpdate();
+  }
+
+  commentsGroups: CommentItemData[] = [];
+
   protected render(): TemplateResult {
     return html`
-      <comments-panel-header></comments-panel-header>
+      <comments-panel-header .count="${this.commentsGroups.length}"></comments-panel-header>
       <div class="data-container">
-        <comments-group @click="${this.showMessages}"></comments-group>
-        <comments-group></comments-group>
-        <comments-group></comments-group>
-        <comments-group></comments-group>
+        ${this.commentsGroups.map((group) => {
+          return html`
+            <comments-group
+              .relatedTo="${group.relatedToTranslateKey}"
+              .relatedToDescription="${group.relatedToDescription}"
+              .fieldDescription="${group.fieldDescription}"
+              .commentsCount="${group.count}"
+              @click="${() => this.showMessages(group)}"
+            ></comments-group>
+          `;
+        })}
       </div>
     `;
   }
 
-  showMessages(): void {
-    fireEvent(this, 'show-messages');
+  showMessages(commentsGroup: CommentItemData): void {
+    fireEvent(this, 'show-messages', {commentsGroup});
   }
 
   static get styles(): CSSResultArray {

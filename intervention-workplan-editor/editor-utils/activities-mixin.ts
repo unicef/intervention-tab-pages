@@ -81,7 +81,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td colspan="2">Total</td>
               </tr>
             </thead>
-            <tbody comment-element="activity-${activity.id}" comment-description=" Activity - ${activity.name}">
+            <tbody comment-element="activity-${activity.id}" comment-description="${activity.name}">
               <tr class="text">
                 <td>${activity.code}</td>
                 <td colspan="3">

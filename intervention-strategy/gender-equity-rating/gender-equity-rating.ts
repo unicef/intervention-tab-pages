@@ -71,7 +71,6 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         show-expand-btn
         panel-title=${translate('GENDER_EQUITY_SUSTAINABILITY')}
         comment-element="gender-equity-sustainability"
-        comment-description=${translate('GENDER_EQUITY_SUSTAINABILITY')}
       >
         <div slot="after-title">
           <info-icon-tooltip

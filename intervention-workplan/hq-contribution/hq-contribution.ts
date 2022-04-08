@@ -69,7 +69,6 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
         show-expand-btn
         panel-title=${translate('HEADQUARTERS_CONTRIBUTION_TITLE')}
         comment-element="hq-contribution"
-        comment-description=${translate('HEADQUARTERS_CONTRIBUTION_TITLE')}
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 

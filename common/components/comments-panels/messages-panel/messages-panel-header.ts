@@ -1,12 +1,14 @@
-import {customElement, LitElement, html, TemplateResult, CSSResultArray} from 'lit-element';
+import {customElement, LitElement, html, TemplateResult, CSSResultArray, property} from 'lit-element';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {CommentPanelsStyles} from '../common-comments.styles';
+import {translate} from 'lit-translate';
 
 @customElement('messages-panel-header')
 export class MessagesPanelHeader extends LitElement {
+  @property() relatedToKey = '';
   protected render(): TemplateResult {
     return html`
-      <div>Comments on <b>section 3</b></div>
+      <div>Comments on <b>${this.relatedToKey ? translate(this.relatedToKey) : ''}</b></div>
       <div class="buttons">
         <svg
           @click="${this.hideMessages}"
