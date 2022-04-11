@@ -1,4 +1,4 @@
-import {customElement, LitElement, html, TemplateResult, CSSResultArray} from 'lit-element';
+import {customElement, LitElement, html, TemplateResult, CSSResultArray, property} from 'lit-element';
 import {CommentPanelsStyles} from '../common-comments.styles';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import './comments-group';
@@ -22,6 +22,7 @@ export type CommentItemData = {
 
 @customElement('comments-list')
 export class CommentsList extends LitElement {
+  @property() selectedGroup: string | null = null;
   set commentsCollection(collection: CommentsCollection) {
     this.commentsGroups = Object.entries(collection || {}).map(([relatedTo, comments]) => {
       const relatedToKey: string = relatedTo.replace(/(.+?)-\d+/, '$1');
@@ -49,6 +50,7 @@ export class CommentsList extends LitElement {
         ${this.commentsGroups.map((group) => {
           return html`
             <comments-group
+              ?opened="${group.relatedTo === this.selectedGroup}"
               .relatedTo="${group.relatedToTranslateKey}"
               .relatedToDescription="${group.relatedToDescription}"
               .fieldDescription="${group.fieldDescription}"

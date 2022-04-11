@@ -7,7 +7,6 @@ import '../comments-panels/comments-panels';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {Constructor, InterventionComment} from '@unicef-polymer/etools-types';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
-import {CommentsPanels} from '../comments-panels/comments-panels';
 
 type MetaData = CommentElementMeta & {
   oldStyles: string;
@@ -20,8 +19,6 @@ export type CommentElementMeta = {
   relatedToDescription: string;
   element: HTMLElement;
 };
-
-let panel: CommentsPanels;
 /**
  * - !CommentsMixin uses connect mixin, so don't use it in your component!
  * - !If you use stateChanged inside your component remember to call super.stateChanged() at the end of your method!
@@ -127,10 +124,6 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         this.updateCounterAndColor(meta);
         this.registerListener(meta);
       });
-      if (!panel) {
-        panel = document.createElement('comments-panels');
-      }
-      document.body.append(panel);
     }
 
     private stopCommentMode(): void {
@@ -140,7 +133,6 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         meta.counter.remove();
         meta.overlay.remove();
       }
-      panel.remove();
     }
 
     private createMataData(element: HTMLElement, relatedTo: string, relatedToDescription: string): MetaData {

@@ -16,6 +16,7 @@ export const CommentPanelsStyles: CSSResult = css`
     height: 550px;
     overflow: hidden;
     z-index: 15;
+    transition: 0.5s;
   }
   .data-container {
     flex: auto;
