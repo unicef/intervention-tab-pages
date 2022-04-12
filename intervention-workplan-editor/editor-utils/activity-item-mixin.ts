@@ -60,6 +60,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   label=${this.getLabel(activity.itemsInEditMode, 'Item Description')}
                   ?readonly="${!activity.itemsInEditMode}"
                   .invalid="${item.invalid?.name}"
+                  @invalid-changed="${(e: CustomEvent) => (item.invalid = {...item.invalid, name: e.detail.value})}"
                   required
                   error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
                   .autoValidate="${item.autovalidate?.name}"
@@ -77,6 +78,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   label=${this.getLabel(activity.itemsInEditMode, 'Unit')}
                   ?readonly="${!activity.itemsInEditMode}"
                   .invalid="${item.invalid?.unit}"
+                  @invalid-changed="${(e: CustomEvent) => (item.invalid = {...item.invalid, unit: e.detail.value})}"
                   required
                   .autoValidate="${item.autovalidate?.unit}"
                   @focus="${() => this.setAutoValidate(item, 'unit')}"
@@ -93,6 +95,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   input
                   ?readonly="${!activity.itemsInEditMode}"
                   .invalid="${item.invalid?.no_units}"
+                  @invalid-changed="${(e: CustomEvent) => (item.invalid = {...item.invalid, no_units: e.detail.value})}"
                   required
                   auto-validate
                   error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
@@ -115,6 +118,8 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   input
                   ?readonly="${!activity.itemsInEditMode}"
                   .invalid="${item.invalid?.unit_price}"
+                  @invalid-changed="${(e: CustomEvent) =>
+                    (item.invalid = {...item.invalid, unit_price: e.detail.value})}"
                   required
                   auto-validate
                   error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
@@ -140,6 +145,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   auto-validate
                   error-message="${translate('INCORRECT_VALUE')}"
                   .invalid="${item.invalid?.cso_cash}"
+                  @invalid-changed="${(e: CustomEvent) => (item.invalid = {...item.invalid, cso_cash: e.detail.value})}"
                   .value="${item.cso_cash}"
                   @keydown="${(e: any) => this.handleEsc(e)}"
                   @value-changed="${({detail}: CustomEvent) => {
@@ -163,6 +169,8 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   auto-validate
                   error-message="${translate('INCORRECT_VALUE')}"
                   .invalid="${item.invalid?.unicef_cash}"
+                  @invalid-changed="${(e: CustomEvent) =>
+                    (item.invalid = {...item.invalid, unicef_cash: e.detail.value})}"
                   .value="${item.unicef_cash}"
                   @keydown="${(e: any) => this.handleEsc(e)}"
                   @value-changed="${({detail}: CustomEvent) => {
@@ -170,7 +178,6 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                       return;
                     }
                     item.unicef_cash = detail.value;
-
                     this.updateCsoCash(item, activity);
                     this.requestUpdate();
                   }}"

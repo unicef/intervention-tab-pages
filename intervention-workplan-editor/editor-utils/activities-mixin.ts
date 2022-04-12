@@ -229,18 +229,25 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       pdOutputIndex: number,
       activityIndex: number
     ) {
+      activity.invalid = {name: false, context_details: false, time_frames: false};
+      activity.items.forEach((i: any) => {
+        if (i.invalid) {
+          Object.keys(i.invalid).forEach((key) => (i.invalid[key] = false));
+        }
+      });
+      activity.inEditMode = false;
+      activity.itemsInEditMode = false;
+
       if (!activity.id) {
         activities.shift();
       } else {
         Object.assign(
           activity,
-          this.originalResultStructureDetails[resultIndex].ll_results[pdOutputIndex].activities[activityIndex]
+          cloneDeep(
+            this.originalResultStructureDetails[resultIndex].ll_results[pdOutputIndex].activities[activityIndex]
+          )
         );
       }
-      activity.invalid = {name: false, context_details: false, time_frames: false};
-      activity.inEditMode = false;
-      activity.itemsInEditMode = false;
-
       this.requestUpdate();
     }
     updateModelValue(model: any, property: string, newVal: any) {
@@ -284,6 +291,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       activity.items.forEach((item: InterventionActivityItemExtended) => {
         item.invalid = {};
         item.invalid.name = !item.name;
+        item.invalid.unit = !item.unit;
         item.invalid.no_units = !item.no_units;
         item.invalid.unit_price = !item.unit_price;
         if (item.no_units && item.unit_price) {
