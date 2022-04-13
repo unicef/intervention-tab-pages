@@ -96,7 +96,7 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
         case 'ArrowLeft':
           {
             tdToFocus = currentTd.previousElementSibling;
-            while (tdToFocus.getAttribute('tabindex') != '0') {
+            while (tdToFocus.getAttribute('tabindex') !== '0') {
               tdToFocus = tdToFocus.previousElementSibling;
               if (!tdToFocus) {
                 break;
@@ -111,7 +111,7 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
         case 'ArrowRight':
           {
             tdToFocus = currentTd.nextElementSibling;
-            while (tdToFocus.getAttribute('tabindex') != '0') {
+            while (tdToFocus.getAttribute('tabindex') !== '0') {
               tdToFocus = tdToFocus.nextElementSibling;
               if (!tdToFocus) {
                 break;
