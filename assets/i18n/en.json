@@ -501,5 +501,6 @@
   "EDIT": "Edit",
   "DELETE": "Delete",
   "VIEW_ACTIVITY": "View Activity",
-  "SEND_BACK_REVIEW": "Send Back Review"
+  "SEND_BACK_REVIEW": "Send Back Review",
+  "CONFIDENTIAL": "Confidential"
 }
