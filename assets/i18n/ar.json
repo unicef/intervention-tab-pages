@@ -517,5 +517,6 @@
   "ACTIVITY": "Activity",
   "PARTNER_CONTRIBUTION": "مساهمة الشريك",
   "ADD_NEW_ITEM": "Add New Item",
-  "INCORRECT_VALUE": "Incorrect value"
+  "INCORRECT_VALUE": "Incorrect value",
+  "CONFIDENTIAL": "Confidential"
 }
