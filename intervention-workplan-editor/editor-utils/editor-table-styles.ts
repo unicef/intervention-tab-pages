@@ -142,6 +142,10 @@ export const EditorTableStyles = css`
     padding-bottom: 1px;
   }
 
+  tr.activity-items-row.readonly-mode > td:last-of-type {
+    border-left: none;
+  }
+
   tr.activity-items-row > td {
     vertical-align: bottom;
   }
