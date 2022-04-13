@@ -22,6 +22,7 @@ import {OtherData, OtherPermissions} from './other.models';
 import {selectOtherData, selectOtherPermissions} from './other.selectors';
 import CONSTANTS from '../../common/constants';
 import {translatesMap} from '../../utils/intervention-labels-map';
+import '@polymer/paper-input/paper-textarea';
 
 /**
  * @customElement
@@ -171,10 +172,31 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
           </div>
         </div>
 
+        <div class="layout-horizontal row-padding-v">
+          <paper-textarea
+            id="confidential"
+            class="w100"
+            label=${translate('CONFIDENTIAL')}
+            always-float-label
+            placeholder="—"
+            .autoValidate="${this.autoValidate}"
+            .value="${this.data.confidential}"
+            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'confidential')}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit?.confidential)}"
+            ?required="${this.permissions.required.confidential}"
+            @focus="${() => (this.autoValidate = true)}"
+            error-message="This field is required"
+          >
+          </paper-textarea>
+        </div>
+
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
       </etools-content-panel>
     `;
   }
+
+  @property({type: Boolean})
+  autoValidate = false;
 
   @property({type: Object})
   originalData!: OtherData;

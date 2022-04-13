@@ -516,5 +516,6 @@
   "ACTIVITY": "Activity",
   "PARTNER_CONTRIBUTION": "Partner Contribution",
   "ADD_NEW_ITEM": "Add New Item",
-  "INCORRECT_VALUE": "Incorrect value"
+  "INCORRECT_VALUE": "Incorrect value",
+  "CONFIDENTIAL": "Confidential"
 }
