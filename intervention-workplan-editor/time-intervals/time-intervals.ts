@@ -48,7 +48,7 @@ export class TimeIntervals extends LitElement {
                 </paper-tooltip>
               `
           )}
-          <div ?hidden="${!this.invalid}" class="invalid">Pls select Time Periods</div>`
+          <div ?hidden="${!this.invalid}" class="invalid">${translate('PLS_SELECT_TIME_PERIODS')}</div>`
       : html`
           <etools-info-tooltip class="" icon-first custom-icon>
             <iron-icon icon="info" slot="custom-icon"></iron-icon>

@@ -512,7 +512,7 @@
   "SELECT": "Select",
   "VIEW_ACTIVITY": "View Activity",
   "SEND_BACK_REVIEW": "Send Back Review",
-  "BACK_TO_WORKPLAN": "back to standart view",
+  "BACK_TO_WORKPLAN": "back to standard view",
   "GO_TO_WORKPLAN_EDITOR": "Open in Editor",
   "ID": "ID",
   "ADD_NEW_PD_OUTPUT": "Add New PD Output",
@@ -522,5 +522,6 @@
   "PARTNER_CONTRIBUTION": "Partner Contribution",
   "ADD_NEW_ITEM": "Add New Item",
   "INCORRECT_VALUE": "Incorrect value",
-  "CONFIDENTIAL": "Confidential"
+  "CONFIDENTIAL": "Confidential",
+  "PLS_SELECT_TIME_PERIODS": "Please select Time Periods"
 }
