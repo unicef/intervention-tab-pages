@@ -77,7 +77,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td></td>
                 <td colspan="3">${translate('ACTIVITY')}</td>
                 <td class="a-right">${translate('TIME_PERIODS')}</td>
-                <td>${translate('PARTNER_CONTRIBUTION')}</td>
+                <td>${translate('PARTNER_CASH')}</td>
                 <td>${translate('UNICEF_CASH')}</td>
                 <td colspan="2">${translate('GENERAL.TOTAL')}</td>
               </tr>
@@ -201,11 +201,11 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
             </tbody>
 
             <tbody thead ?hidden="${!activity.items || !activity.items.length}">
-              <tr class="header border-b">
+              <tr class="header">
                 <td class="first-col"></td>
-                <td class="col-30">${translate('ITEM_DESCRIPTION')}</td>
-                <td class="col-10">${translate('UNIT')}</td>
-                <td class="col-10">${translate('NUMBER_UNITS')}</td>
+                <td class="col-44p">${translate('ITEM_DESCRIPTION')}</td>
+                <td class="col-6p">${translate('UNIT')}</td>
+                <td class="col-6p">${translate('NUMBER_UNITS')}</td>
                 <td class="col-g">${translate('PRICE_UNIT')}</td>
                 <td class="col-g">${translate('PARTNER_CASH')}</td>
                 <td class="col-g">${translate('UNICEF_CASH')}</td>
