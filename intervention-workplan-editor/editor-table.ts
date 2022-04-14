@@ -36,6 +36,7 @@ import {translate} from 'lit-translate/directives/translate';
 import {AsyncAction} from '@unicef-polymer/etools-types';
 import {EditorTableArrowKeysStyles} from './editor-utils/editor-table-arrow-keys-styles';
 import {ArrowsNavigationMixin} from './editor-utils/arrows-navigation-mixin';
+import {updateSmallMenu} from '../../../../../redux/actions/app';
 
 @customElement('editor-table')
 export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationMixin(LitElement))) {
@@ -254,6 +255,9 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
     if (!selectInterventionId(state)) {
       return;
     }
+    if (!state.app?.smallMenu) {
+      getStore().dispatch(updateSmallMenu(true));
+    }
     this.interventionId = selectInterventionId(state);
     this.permissions = selectResultLinksPermissions(state);
 
@@ -261,7 +265,6 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
     this.quarters = selectInterventionQuarters(state);
     this.isUnicefUser = isUnicefUser(state);
     this.intervention = cloneDeep(currentIntervention(state));
-    // this.resultLinks = selectInterventionResultLinks(state);
 
     if (this.prevInterventionId != selectInterventionId(state) || this.refreshResultStructure) {
       this.getResultLinksDetails();
