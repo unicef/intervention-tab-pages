@@ -54,7 +54,9 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
     protected firstUpdated() {
       this.rendered = true;
       if (this.commentsModeEnabled) {
-        this.startCommentMode();
+        setTimeout(() => {
+          this.startCommentMode();
+        }, 300);
       }
     }
 
@@ -106,6 +108,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         '[comment-element], [comments-container]'
       );
       this.metaDataCollection = Array.from(elements)
+        .filter((element) => !!element)
         .map((element: HTMLElement) => {
           if (element.hasAttribute('comments-container')) {
             return this.getMetaFromContainer(element);
@@ -183,9 +186,11 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
     }
 
     private getMetaFromContainer(container: HTMLElement): MetaData[] {
-      return this.getSpecialElements(container).map(({element, relatedTo, relatedToDescription}: CommentElementMeta) =>
-        this.createMataData(element, relatedTo, relatedToDescription)
-      );
+      return this.getSpecialElements(container)
+        .filter(({element}) => !!element)
+        .map(({element, relatedTo, relatedToDescription}: CommentElementMeta) => {
+          return this.createMataData(element, relatedTo, relatedToDescription);
+        });
     }
 
     private updateCounterAndColor(meta: MetaData): void {
