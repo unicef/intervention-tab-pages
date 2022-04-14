@@ -26,7 +26,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
         return '';
       }
       return html`<tbody class="odd">
-        <tr ?hidden="${!this.permissions.edit.result_links}" type="add-item">
+        <tr ?hidden="${!this.permissions.edit.result_links}" type="add-item" style="background-color:white;">
           <td></td>
           <td tabindex="0">
             <div class="icon" @click="${() => this.addNewItem(activity)}">
@@ -183,7 +183,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   }}"
                 ></etools-currency-amount-input>
               </td>
-              <td>
+              <td class="total">
                 <paper-input
                   readonly
                   .noLabelFloat="${!activity.itemsInEditMode}"

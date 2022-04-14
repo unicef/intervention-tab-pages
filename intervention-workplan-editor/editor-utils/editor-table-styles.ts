@@ -13,22 +13,22 @@ export const EditorTableStyles = css`
   }
 
   td.first-col {
-    width: 60px;
+    width: 50px;
     text-align: center;
     vertical-align: middle;
     padding: 6px;
   }
-  td.col-10 {
-    width: 10%;
+  td.col-6p {
+    width: 6%;
   }
-  td.col-30 {
-    width: 30%;
+  td.col-44p {
+    width: 44%;
   }
   td.col-g {
-    width: 12.5%;
+    width: 10%;
   }
   td.last-col {
-    width: 12.5%;
+    width: 10%;
     vertical-align: top;
     text-align: right;
   }
@@ -61,16 +61,14 @@ export const EditorTableStyles = css`
     border-right: none;
   }
 
-  tbody.odd tr:nth-child(odd) {
+  tbody.odd tr:nth-child(even) {
     background-color: #eeeeee;
   }
 
   td:nth-child(n + 4) {
     text-align: right;
   }
-  td:nth-child(n-1) {
-    border-right: none;
-  }
+
   td.a-right {
     text-align: right;
   }
@@ -83,9 +81,6 @@ export const EditorTableStyles = css`
   }
   .b {
     font-weight: 600;
-  }
-  .border-b {
-    border-bottom: 1px solid #b8b8b8;
   }
 
   paper-icon-button {
@@ -144,10 +139,17 @@ export const EditorTableStyles = css`
 
   tr.activity-items-row.readonly-mode > td:last-of-type {
     border-left: none;
+    border-right: none;
   }
 
+  tr.activity-items-row > td.total {
+    border-right: none;
+    --paper-input-container-input_-_font-weight: 600;
+  }
   tr.activity-items-row > td {
     vertical-align: bottom;
+    border-bottom: none;
+    border-top: none;
   }
 
   .v-middle {
