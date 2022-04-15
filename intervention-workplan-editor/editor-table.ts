@@ -39,6 +39,7 @@ import {updateSmallMenu} from '../../../../../redux/actions/app';
 import {RootState} from '../common/types/store.types';
 
 @customElement('editor-table')
+// @ts-ignore
 export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationMixin(LitElement))) {
   static get styles() {
     return [EditorTableStyles, EditorTableArrowKeysStyles];
