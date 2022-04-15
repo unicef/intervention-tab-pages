@@ -1,3 +1,4 @@
+// @ts-ignore
 import {Constructor, html, LitElement, property} from 'lit-element';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {AsyncAction, InterventionQuarter} from '@unicef-polymer/etools-types';
