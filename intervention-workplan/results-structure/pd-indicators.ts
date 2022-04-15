@@ -74,7 +74,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
     // language=HTML
     return html`
       ${sharedStyles}
-      <etools-data-table-row>
+      <etools-data-table-row .detailsOpened="${true}">
         <div slot="row-data" class="layout-horizontal align-items-center editable-row">
           <div class="title-text flex-auto">
             ${translate(translatesMap.applied_indicators)} (${this.indicators.length})
@@ -92,10 +92,10 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
           </div>
 
           <div class="table-row table-head align-items-center" ?hidden="${this.readonly}">
-            <div class="indicator">${translate('INDICATOR')}</div>
-            <div class="fixed-cell high-frequency">${translate('INDICATOR_HF')}</div>
-            <div class="fixed-cell">${translate('BASELINE')}</div>
-            <div class="fixed-cell">${translate('TARGET')}</div>
+            <div class="flex-1 left-align">${translate('INDICATOR')}</div>
+            <div class="flex-1 secondary-cell center">${translate('INDICATOR_HF')}</div>
+            <div class="flex-1 secondary-cell right">${translate('BASELINE')}</div>
+            <div class="flex-1 secondary-cell right">${translate('TARGET')}</div>
           </div>
           ${this.indicators.length
             ? this.indicators.map(
@@ -122,10 +122,10 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
                   ${this.readonly
                     ? translate('THERE_ARE_NO_PD_INDICATORS')
                     : html`
-                        <div class="indicator">-</div>
-                        <div>-</div>
-                        <div>-</div>
-                        <div>-</div>
+                        <div class="flex-1 left-align">-</div>
+                        <div class="flex-1 secondary-cell center">-</div>
+                        <div class="flex-1 secondary-cell right">-</div>
+                        <div class="flex-1 secondary-cell right">-</div>
                       `}
                 </div>
               `}

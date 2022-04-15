@@ -41,7 +41,7 @@ export class CpOutputLevel extends LitElement {
             <div class="divider"></div>
             <etools-data-table-row secondary-bg-on-hover details-opened>
               <div slot="row-data" class="editable-row">
-                <div class="layout-horizontal higher-slot">
+                <div class="layout-horizontal cp-output-row">
                   <!--      If PD is associated with CP Output      -->
                   ${this.resultLink.cp_output
                     ? html`
@@ -173,10 +173,6 @@ export class CpOutputLevel extends LitElement {
         .alert {
           color: var(--error-color);
         }
-        .editable-row .hover-block {
-          background: linear-gradient(270deg, #c4c4c4 71.65%, rgba(196, 196, 196, 0) 100%);
-          padding-left: 20px;
-        }
         .show-more-btn {
           margin: 0;
           padding: 0;
@@ -189,8 +185,13 @@ export class CpOutputLevel extends LitElement {
           margin: 2px;
           list-style: circle;
         }
+        .cp-output-row {
+          line-height: 26px;
+          padding-top: 8px;
+          padding-bottom: 3px;
+        }
         :host div.outputs-count {
-          padding: 0 0 23px;
+          padding: 0 0 9px;
           font-family: Roboto;
           font-size: 14px;
           font-weight: 400;
@@ -210,15 +211,14 @@ export class CpOutputLevel extends LitElement {
           padding: 0 !important;
           border: none;
         }
+        etools-data-table-row::part(edt-icon-wrapper) {
+          padding: 11px 7px 0 9px;
+          align-self: flex-start;
+        }
         etools-data-table-row::part(edt-list-row-wrapper) {
           border-bottom: none !important;
           padding-left: 4px;
-        }
-        .higher-slot .heading {
-          margin-top: 23px;
-        }
-        .higher-slot .data {
-          margin-bottom: 23px;
+          padding-right: 16px;
         }
         .editable-row:hover .hover-block {
           opacity: 1;

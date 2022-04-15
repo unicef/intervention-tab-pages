@@ -174,7 +174,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                     comments-container
                     secondary-bg-on-hover
                   >
-                    <div slot="row-data" class="layout-horizontal align-items-center editable-row higher-slot">
+                    <div slot="row-data" class="layout-horizontal editable-row pd-output-row">
                       <div class="flex-1 flex-fix">
                         <div class="data bold-data">${pdOutput.code}&nbsp;${pdOutput.name}</div>
                         <div class="count">
@@ -203,14 +203,6 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                     </div>
 
                     <div slot="row-data-details">
-                      <pd-indicators
-                        ?hidden="${!this.showIndicators}"
-                        .indicators="${pdOutput.applied_indicators}"
-                        .pdOutputId="${pdOutput.id}"
-                        .readonly="${!this.permissions.edit.result_links || this.commentMode}"
-                        .showInactiveIndicators="${this.showInactiveIndicators}"
-                        .inAmendment="${this.intervention.in_amendment}"
-                      ></pd-indicators>
                       <pd-activities
                         .activities="${pdOutput.activities}"
                         .interventionId="${this.interventionId}"
@@ -220,6 +212,14 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                         .readonly="${!this.permissions.edit.result_links || this.commentMode}"
                         .currency="${this.intervention.planned_budget.currency}"
                       ></pd-activities>
+                      <pd-indicators
+                        ?hidden="${!this.showIndicators}"
+                        .indicators="${pdOutput.applied_indicators}"
+                        .pdOutputId="${pdOutput.id}"
+                        .readonly="${!this.permissions.edit.result_links || this.commentMode}"
+                        .showInactiveIndicators="${this.showInactiveIndicators}"
+                        .inAmendment="${this.intervention.in_amendment}"
+                      ></pd-indicators>
                     </div>
                   </etools-data-table-row>
                 `
@@ -432,22 +432,20 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         .no-results {
           padding: 24px;
         }
-        .pdOutputMargin.unicef-user .editable-row .hover-block,
-        .pdOutputMargin.partner .editable-row .hover-block {
-          background: linear-gradient(270deg, #c4c4c4 71.65%, rgba(196, 196, 196, 0) 100%);
-          padding-left: 20px;
-        }
         .pd-title {
-          padding: 32px 42px 0 22px;
+          padding: 32px 42px 0px 22px;
           font-size: 16px;
           font-weight: 500;
           line-height: 19px;
         }
         cp-output-level .pd-title {
-          padding: 32px 42px 0;
+          padding: 8px 16px;
         }
         .pd-add-section {
           background-color: var(--secondary-background-color);
+        }
+        .pd-add {
+          padding: 0 5px 0;
         }
         etools-data-table-row {
           position: relative;
@@ -473,10 +471,15 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         }
 
         etools-data-table-row::part(edt-list-row-wrapper) {
-          padding: 0 12px 0 23px;
           background-color: var(--secondary-background-color);
           min-height: 48px;
           border-bottom: none;
+        }
+        etools-data-table-row::part(edt-icon-wrapper) {
+          min-height: 0;
+          line-height: normal;
+          padding: 4px 8px 0 13px;
+          align-self: flex-start;
         }
         etools-data-table-row::part(edt-list-row-wrapper):hover {
           background-color: #c4c4c4;
@@ -485,6 +488,11 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         etools-data-table-row::part(edt-list-row-collapse-wrapper) {
           padding: 0 !important;
           border-bottom: none !important;
+        }
+        div.pd-output-row > div {
+          line-height: 26px;
+          padding-top: 6px;
+          padding-bottom: 4px;
         }
         .export-res-btn {
           height: 28px;
@@ -526,16 +534,12 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           height: 1px;
           background-color: #c4c4c4;
         }
-        .pd-add-section .add-button,
-        etools-content-panel > .add-button {
-          padding-bottom: 10px;
-        }
         .count {
           display: flex;
           font-size: 14px;
           font-weight: 400;
           line-height: 16px;
-          padding: 10px 0px 4px;
+          padding: 6px 0 4px;
         }
         .count div:first-child {
           margin-right: 20px;

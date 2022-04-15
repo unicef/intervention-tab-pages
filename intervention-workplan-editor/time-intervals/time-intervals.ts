@@ -98,6 +98,7 @@ export class TimeIntervals extends LitElement {
           gap: 4px;
           cursor: pointer;
           place-content: center;
+          max-width: 128px;
         }
         .quarter {
           height: 29px;
