@@ -15,7 +15,7 @@ import {translate} from 'lit-translate';
  */
 @customElement('intervention-workplan')
 export class InterventionWorkplan extends LitElement {
-  @property() interventionId: number;
+  @property() interventionId!: number;
   render() {
     // language=HTML
     return html`
@@ -49,5 +49,5 @@ export class InterventionWorkplan extends LitElement {
       active: false,
       loadingSource: 'interv-page'
     });
-  } 
+  }
 }

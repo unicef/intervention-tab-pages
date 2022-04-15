@@ -24,12 +24,15 @@ import {translate} from 'lit-translate/directives/translate';
 
 export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T) {
   return class ActivitiesClass extends ActivityItemsMixin(baseClass) {
+    // @ts-ignore
     @property({type: Array})
     originalResultStructureDetails!: ExpectedResultExtended[];
 
+    // @ts-ignore
     @property({type: Object})
     intervention!: Intervention;
 
+    // @ts-ignore
     @property({type: Object})
     permissions!: {
       edit: {result_links?: boolean};
@@ -187,7 +190,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td></td>
                 <td class="h-center" colspan="2">
                   <div class="flex-h justify-right" ?hidden="${!(activity.inEditMode || activity.itemsInEditMode)}">
-                    <paper-button @click="${() => this.saveActivity(activity, pdOutput.id, this.intervention.id)}"
+                    <paper-button @click="${() => this.saveActivity(activity, pdOutput.id, this.intervention.id!)}"
                       >${translate('GENERAL.SAVE')}</paper-button
                     >
                     <paper-icon-button
@@ -304,7 +307,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       return !invalid;
     }
 
-    saveActivity(activity: InterventionActivityExtended, pdOutputId: number, interventionId: number | null) {
+    saveActivity(activity: InterventionActivityExtended, pdOutputId: number, interventionId: number) {
       if (!this.validateActivity(activity) || !this.validateActivityItems(activity)) {
         this.requestUpdate();
         fireEvent(this, 'toast', {
@@ -324,7 +327,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
         delete activityToSave.cso_cash;
       }
       sendRequest({
-        endpoint: this._getEndpoint(activity.id, String(pdOutputId), interventionId),
+        endpoint: this._getEndpoint(activity.id, String(pdOutputId), String(interventionId)),
         method: activity.id ? 'PATCH' : 'POST',
         body: activityToSave
       })

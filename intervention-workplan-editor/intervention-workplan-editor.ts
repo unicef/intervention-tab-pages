@@ -11,7 +11,7 @@ import './editor-table';
  */
 @customElement('intervention-workplan-editor')
 export class InterventionWorkplanEditor extends LitElement {
-  @property() interventionId: number;
+  @property() interventionId!: number;
   render() {
     // language=HTML
     return html`

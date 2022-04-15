@@ -10,9 +10,11 @@ import {translate} from 'lit-translate';
 
 export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass: T) {
   return class ActivityItemsClass extends baseClass {
+    // @ts-ignore
     @property({type: Object})
     intervention!: Intervention;
 
+    // @ts-ignore
     @property({type: Object})
     permissions!: {
       edit: {result_links?: boolean};

@@ -6,7 +6,6 @@ import '@polymer/paper-input/paper-textarea';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {TABS} from '../common/constants';
 import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
-import {RootState} from '../../../../../redux/store';
 import {
   selectInterventionId,
   selectInterventionQuarters,
@@ -37,6 +36,7 @@ import {AsyncAction} from '@unicef-polymer/etools-types';
 import {EditorTableArrowKeysStyles} from './editor-utils/editor-table-arrow-keys-styles';
 import {ArrowsNavigationMixin} from './editor-utils/arrows-navigation-mixin';
 import {updateSmallMenu} from '../../../../../redux/actions/app';
+import {RootState} from '../common/types/store.types';
 
 @customElement('editor-table')
 export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationMixin(LitElement))) {
@@ -208,10 +208,6 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
     return this._resultStructureDetails || [];
   }
   set resultStructureDetails(data: ExpectedResultExtended[]) {
-    // data.forEach((r) => {
-    //   r.ll_results = r.ll_results.sort((a, b) => Number(b.id) - Number(a.id));
-    //   r.ll_results.forEach((l) => (l.activities = l.activities.sort((a, b) => Number(b.id) - Number(a.id))));
-    // });
     this._resultStructureDetails = data.sort((a, b) => Number(Boolean(b.id)) - Number(Boolean(a.id)));
   }
   @property() interventionId!: number | null;
@@ -226,8 +222,6 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
     edit: {result_links?: boolean};
     required: {result_links?: boolean};
   };
-
-  // @property() private _resultLinks: ExpectedResult[] | null = [];
 
   @property({type: Object})
   intervention!: Intervention;
