@@ -206,7 +206,8 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
         prevTbody = prevTbody.previousElementSibling;
       }
       if (prevTbody && prevTbody.children.length === 0) {
-        prevTbody = prevTbody.previousElementSibling?.previousElementSibling; // double next in order to skip header tbody
+        // double next in order to skip header tbody
+        prevTbody = prevTbody.previousElementSibling?.previousElementSibling;
       }
       return prevTbody;
     }
