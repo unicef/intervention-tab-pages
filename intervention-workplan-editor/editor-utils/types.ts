@@ -63,9 +63,11 @@ type InvalidItem = {
 export type InterventionActivityExtended = InterventionActivity & {
   inEditMode: boolean;
   itemsInEditMode: boolean;
-  invalid: {name: boolean; context_details: boolean; time_frames: boolean};
+  invalid: Partial<ItemInvalid>;
   total: string;
 };
+
+type ItemInvalid = {name: boolean; context_details: boolean; time_frames: boolean};
 
 export type ResultLinkLowerResultExtended = ResultLinkLowerResult & {
   inEditMode: boolean;

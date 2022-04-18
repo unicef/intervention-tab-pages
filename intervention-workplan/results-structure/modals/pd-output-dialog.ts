@@ -6,10 +6,10 @@ import {DataMixin} from '@unicef-polymer/etools-modules-common/dist/mixins/data-
 import {getDifference} from '@unicef-polymer/etools-modules-common/dist/mixins/objects-diff';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
-import {getIntervention, updateCurrentIntervention} from '../../../common/actions/interventions';
+import {updateCurrentIntervention} from '../../../common/actions/interventions';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
-import {AsyncAction, CpOutput} from '@unicef-polymer/etools-types';
+import {CpOutput} from '@unicef-polymer/etools-types';
 import {ResultLinkLowerResult} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';

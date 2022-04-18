@@ -1,3 +1,4 @@
+// @ts-ignore
 import {Constructor, html, LitElement, property} from 'lit-element';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {AsyncAction, InterventionQuarter} from '@unicef-polymer/etools-types';
@@ -24,12 +25,15 @@ import {translate} from 'lit-translate/directives/translate';
 
 export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T) {
   return class ActivitiesClass extends ActivityItemsMixin(baseClass) {
+    // @ts-ignore
     @property({type: Array})
     originalResultStructureDetails!: ExpectedResultExtended[];
 
+    // @ts-ignore
     @property({type: Object})
     intervention!: Intervention;
 
+    // @ts-ignore
     @property({type: Object})
     permissions!: {
       edit: {result_links?: boolean};
@@ -77,7 +81,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td></td>
                 <td colspan="3">${translate('ACTIVITY')}</td>
                 <td class="a-right">${translate('TIME_PERIODS')}</td>
-                <td>${translate('PARTNER_CONTRIBUTION')}</td>
+                <td>${translate('PARTNER_CASH')}</td>
                 <td>${translate('UNICEF_CASH')}</td>
                 <td colspan="2">${translate('GENERAL.TOTAL')}</td>
               </tr>
@@ -187,7 +191,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td></td>
                 <td class="h-center" colspan="2">
                   <div class="flex-h justify-right" ?hidden="${!(activity.inEditMode || activity.itemsInEditMode)}">
-                    <paper-button @click="${() => this.saveActivity(activity, pdOutput.id, this.intervention.id)}"
+                    <paper-button @click="${() => this.saveActivity(activity, pdOutput.id, this.intervention.id!)}"
                       >${translate('GENERAL.SAVE')}</paper-button
                     >
                     <paper-icon-button
@@ -201,11 +205,11 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
             </tbody>
 
             <tbody thead ?hidden="${!activity.items || !activity.items.length}">
-              <tr class="header border-b">
+              <tr class="header">
                 <td class="first-col"></td>
-                <td class="col-30">${translate('ITEM_DESCRIPTION')}</td>
-                <td class="col-10">${translate('UNIT')}</td>
-                <td class="col-10">${translate('NUMBER_UNITS')}</td>
+                <td class="col-44p">${translate('ITEM_DESCRIPTION')}</td>
+                <td class="col-6p">${translate('UNIT')}</td>
+                <td class="col-6p">${translate('NUMBER_UNITS')}</td>
                 <td class="col-g">${translate('PRICE_UNIT')}</td>
                 <td class="col-g">${translate('PARTNER_CASH')}</td>
                 <td class="col-g">${translate('UNICEF_CASH')}</td>
@@ -304,7 +308,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       return !invalid;
     }
 
-    saveActivity(activity: InterventionActivityExtended, pdOutputId: number, interventionId: number | null) {
+    saveActivity(activity: InterventionActivityExtended, pdOutputId: number, interventionId: number) {
       if (!this.validateActivity(activity) || !this.validateActivityItems(activity)) {
         this.requestUpdate();
         fireEvent(this, 'toast', {
@@ -324,7 +328,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
         delete activityToSave.cso_cash;
       }
       sendRequest({
-        endpoint: this._getEndpoint(activity.id, String(pdOutputId), interventionId),
+        endpoint: this._getEndpoint(activity.id, String(pdOutputId), String(interventionId)),
         method: activity.id ? 'PATCH' : 'POST',
         body: activityToSave
       })
