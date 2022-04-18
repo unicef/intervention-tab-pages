@@ -134,10 +134,9 @@ export class PdIndicator extends CommentsMixin(LitElement) {
       </div>`;
   }
 
-  getSpecialElements(container: HTMLElement): CommentElementMeta[] {
-    const element: HTMLElement = container.shadowRoot!.querySelector('#wrapper') as HTMLElement;
-    const relatedTo: string = container.getAttribute('related-to') as string;
-    const relatedToDescription = container.getAttribute('related-to-description') as string;
+  getSpecialElements(element: HTMLElement): CommentElementMeta[] {
+    const relatedTo: string = element.getAttribute('related-to') as string;
+    const relatedToDescription = element.getAttribute('related-to-description') as string;
     return [{element, relatedTo, relatedToDescription}];
   }
   openDeactivationDialog(indicatorId: string) {
