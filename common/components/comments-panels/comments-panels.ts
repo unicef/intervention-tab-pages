@@ -8,12 +8,15 @@ import {RootState} from '../../types/store.types';
 import {InterventionComment} from '@unicef-polymer/etools-types';
 import {CommentsEndpoints} from '../comments/comments-types';
 import {CommentItemData} from './comments-list/comments-list';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {buildUrlQueryString} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 
 @customElement('comments-panels')
 export class CommentsPanels extends connectStore(LitElement) {
   @property() messagesOpened = false;
   @property() commentsCollection?: CommentsCollection;
   @property() comments: InterventionComment[] = [];
+  @property() minimized = false;
 
   interventionId?: number;
   endpoints?: CommentsEndpoints;
@@ -23,6 +26,9 @@ export class CommentsPanels extends connectStore(LitElement) {
     return html`
       <comments-list
         @show-messages="${(event: CustomEvent) => this.openCollection(event.detail.commentsGroup)}"
+        @close-comments-panels="${this.closePanels}"
+        @toggle-minimize="${this.toggleMinimize}"
+        .selectedGroup="${this.openedCollection?.relatedTo}"
         .commentsCollection="${this.commentsCollection}"
       ></comments-list>
       <messages-panel
@@ -39,8 +45,12 @@ export class CommentsPanels extends connectStore(LitElement) {
     `;
   }
 
+  disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.closeCollection();
+  }
+
   stateChanged(state: RootState): void {
-    console.log('testestsetsetset')
     const commentsState = state.commentsData;
     const currentInterventionId =
       Number(state.app.routeDetails?.params?.interventionId) || state.interventions?.current?.id || null;
@@ -67,6 +77,26 @@ export class CommentsPanels extends connectStore(LitElement) {
     this.comments = [];
   }
 
+  closePanels(): void {
+    const routeDetails = getStore().getState().app.routeDetails;
+    const queryParams = {...(routeDetails!.queryParams || {})};
+    delete queryParams['comment_mode'];
+    const stringParams: string = buildUrlQueryString(queryParams);
+    const path: string = routeDetails!.path + (stringParams !== '' ? `?${stringParams}` : '');
+    history.pushState(window.history.state, '', path);
+    window.dispatchEvent(new CustomEvent('popstate'));
+  }
+
+  toggleMinimize(): void {
+    this.minimized = !this.minimized;
+    if (this.minimized) {
+      this.dataset.minimized = '';
+      this.closeCollection();
+    } else {
+      delete this.dataset.minimized;
+    }
+  }
+
   static get styles(): CSSResultArray {
     // language=css
     return [
@@ -81,6 +111,10 @@ export class CommentsPanels extends connectStore(LitElement) {
           margin: 0 18px;
           width: calc(100% - 36px);
           max-width: 450px;
+        }
+        :host([data-minimized]) messages-panel,
+        :host([data-minimized]) comments-list {
+          height: 64px;
         }
       `
     ];

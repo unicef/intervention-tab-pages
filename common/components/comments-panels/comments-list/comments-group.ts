@@ -36,12 +36,16 @@ export class CommentsGroup extends LitElement {
           display: flex;
           padding: 21px 24px 24px 13px;
           cursor: pointer;
+          border-bottom: 1px solid #c4c4c4;
         }
         :host(:not(:last-child)) {
           border-bottom: 1px solid #c4c4c4;
         }
         :host(:hover) {
           background-color: #eeeeee;
+        }
+        :host([opened]) {
+          background-color: #dff1ef;
         }
         .counter {
           flex: none;

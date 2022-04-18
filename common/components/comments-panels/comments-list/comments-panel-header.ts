@@ -1,5 +1,6 @@
 import {customElement, LitElement, html, TemplateResult, CSSResultArray, property} from 'lit-element';
 import {CommentPanelsStyles} from '../common-comments.styles';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 
 @customElement('comments-panel-header')
 export class CommentsPanelHeader extends LitElement {
@@ -8,14 +9,28 @@ export class CommentsPanelHeader extends LitElement {
     return html`
       <div>Comments Panel <b>(${this.count})</b></div>
       <div class="buttons">
-        <svg width="20" height="16" viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg
+          width="20"
+          height="16"
+          viewBox="0 0 20 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          @click="${() => this.toggleMinimize()}"
+        >
           <line x1="18.5" y1="1.5" x2="1.5" y2="1.5" stroke="white" stroke-width="3" stroke-linecap="round" />
           <path
             d="M8.29359 5.79139C9.0735 4.51559 10.9265 4.51559 11.7064 5.79139L15.9339 12.7068C16.7486 14.0395 15.7895 15.75 14.2275 15.75H5.77249C4.2105 15.75 3.25139 14.0395 4.06609 12.7069L8.29359 5.79139Z"
             fill="white"
           />
         </svg>
-        <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg
+          width="17"
+          height="17"
+          viewBox="0 0 17 17"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          @click="${() => this.closePanel()}"
+        >
           <path
             d="M1.61153 16.9927C1.19474 17.0173 0.784834 16.8771 0.46826 16.6018C-0.156087 15.9664 -0.156087 14.9403 0.46826 14.3049L14.1394 0.474726C14.7888 -0.139983 15.8078 -0.105812 16.4154 0.551115C16.9649 1.14517 16.9969 2.05825 16.4904 2.69018L2.73869 16.6018C2.4262 16.8731 2.02287 17.013 1.61153 16.9927Z"
             fill="white"
@@ -28,6 +43,15 @@ export class CommentsPanelHeader extends LitElement {
       </div>
     `;
   }
+
+  closePanel(): void {
+    fireEvent(this, 'close-comments-panels');
+  }
+
+  toggleMinimize(): void {
+    fireEvent(this, 'toggle-minimize');
+  }
+
   static get styles(): CSSResultArray {
     // language=css
     return [CommentPanelsStyles];
