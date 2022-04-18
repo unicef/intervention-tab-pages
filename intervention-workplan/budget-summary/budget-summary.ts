@@ -38,7 +38,6 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
         }
         :host([embeded]) section {
           box-shadow: none;
-          margin-top: 30px;
         }
         .table {
           padding: 0;
