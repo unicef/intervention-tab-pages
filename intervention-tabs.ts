@@ -41,6 +41,9 @@ import {RootState} from './common/types/store.types';
 import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from './utils/intervention-endpoints';
 import {CommentsEndpoints} from '../intervention-tab-pages/common/components/comments/comments-types';
+import {CommentsPanels} from './common/components/comments-panels/comments-panels';
+
+const commentPanel: CommentsPanels = document.createElement('comments-panels') as CommentsPanels;
 
 const MOCKUP_STATUSES = [
   ['draft', 'Draft'],
@@ -349,6 +352,8 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     const notInterventionTabs: boolean =
       currentPage(state) !== 'interventions' || currentSubpage(state) === 'list' || currentSubpage(state) === 'new';
     const needToReset = Boolean(notInterventionTabs && (this._routeDetails || this.intervention));
+    const commentsState = Boolean(state.app?.routeDetails?.queryParams?.comment_mode);
+    this.checkCommentsMode(commentsState);
     if (needToReset) {
       this.resetPageData();
     }
@@ -401,12 +406,24 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     // on routing change
     if (!isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)) {
       this._routeDetails = cloneDeep(state.app!.routeDetails);
-      this.commentMode = Boolean(this._routeDetails?.queryParams?.comment_mode);
-      setTimeout(() => {
-        getStore().dispatch(enableCommentMode(this.commentMode));
-      }, 10);
       fireEvent(this, 'scroll-up');
     }
+  }
+
+  checkCommentsMode(newState: boolean): void {
+    if (this.commentMode === newState) {
+      return;
+    }
+    this.commentMode = newState;
+
+    if (!this.commentMode && commentPanel.isConnected) {
+      commentPanel.remove();
+    } else if (this.commentMode && !commentPanel.isConnected) {
+      document.body.append(commentPanel);
+    }
+    setTimeout(() => {
+      getStore().dispatch(enableCommentMode(this.commentMode));
+    }, 10);
   }
 
   checkExportOptionsAvailability(availableActions: string[], intervention: Intervention) {

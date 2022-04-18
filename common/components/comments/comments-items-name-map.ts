@@ -1,0 +1,58 @@
+import {GenericObject} from '@unicef-polymer/etools-types';
+import {translatesMap} from '../../../utils/intervention-labels-map';
+
+export const CommentsItemsNameMap: GenericObject<string> = {
+  attachments: 'ATTACHMENTS',
+  'prc-document': 'PRC_REVIEW_DOC_TITLE',
+  amendments: 'AMENDMENTS',
+  details: 'DETAILS',
+  financial: 'FINANCIAL',
+  'fund-reservations': 'FUND_RESERVATIONS',
+  'other-metadata': 'OTHER',
+  'partner-details': 'PARTNER_DETAILS',
+  'signatures-and-dates': 'SIGNATURES_DATES',
+  'unicef-details': 'UNICEF_DETAILS',
+  'document-details': 'DOCUMENT_DETAILS',
+  'gender-equity-sustainability': 'GENDER_EQUITY_SUSTAINABILITY',
+  'geographical-coverage': 'GEOGRAPHICAL_COVERAGE',
+  risks: translatesMap.risks,
+  'activity-timeframes': 'ACTIVITY_TIMEFRAMES',
+  'programme-document-dates': 'PROGRAMME_DOC_DATES',
+  'programmatic-visits': 'PROGRAMATIC_VISITS',
+  'timing-overview': 'OVERVIEW',
+  'pd-output': 'PD_OUTPUT',
+  activity: 'ACTIVITY',
+  'budget-summary': 'BUDGET_SUMMARY',
+  'programme-management': translatesMap.management_budgets,
+  'hq-contribution': 'HEADQUARTERS_CONTRIBUTION_TITLE',
+  'non-financial-contribution': 'PARTNER_NON_FINANCIAL_CONTRIBUTION',
+  'supply-agreement': translatesMap.supply_items,
+  indicator: 'INDICATOR',
+  prp: 'PARTNER_REPORTING_REQUIREMENTS'
+};
+
+export const CommentsDescription: GenericObject<string> = {
+  attachments: 'ATTACHMENTS_DESCRIPTION',
+  'prc-document': 'PRC_REVIEW_DOC_DESCRIPTION',
+  amendments: 'AMENDMENTS_DESCRIPTION',
+  details: 'DETAILS_DESCRIPTION',
+  financial: 'FINANCIAL_DESCRIPTION',
+  'fund-reservations': 'FUND_RESERVATIONS_DESCRIPTION',
+  'other-metadata': 'OTHER_DESCRIPTION',
+  'partner-details': 'PARTNER_DETAILS_DESCRIPTION',
+  'signatures-and-dates': 'SIGNATURES_DATES_DESCRIPTION',
+  'unicef-details': 'UNICEF_DETAILS_DESCRIPTION',
+  'document-details': 'DOCUMENT_DETAILS_DESCRIPTION',
+  'gender-equity-sustainability': 'GENDER_EQUITY_SUSTAINABILITY_DESCRIPTION',
+  'geographical-coverage': 'GEOGRAPHICAL_COVERAGE_DESCRIPTION',
+  risks: `${translatesMap.risks}_DESCRIPTION`,
+  'activity-timeframes': 'ACTIVITY_TIMEFRAMES_DESCRIPTION',
+  'programme-document-dates': 'PROGRAMME_DOC_DATES_DESCRIPTION',
+  'programmatic-visits': 'PROGRAMATIC_VISITS_DESCRIPTION',
+  'timing-overview': 'OVERVIEW_DESCRIPTION',
+  'budget-summary': 'BUDGET_SUMMARY_DESCRIPTION',
+  'programme-management': `${translatesMap.management_budgets}_DESCRIPTION`,
+  'hq-contribution': 'HEADQUARTERS_CONTRIBUTION_DESCRIPTION',
+  'non-financial-contribution': 'PARTNER_NON_FINANCIAL_CONTRIBUTION_DESCRIPTION',
+  'supply-agreement': `${translatesMap.supply_items}_DESCRIPTION`
+};

@@ -125,11 +125,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
                     <td colspan="2">Total</td>
                   </tr>
                 </thead>
-                <tbody
-                  class="gray-1"
-                  comment-element="pd-output-${pdOutput.id}"
-                  comment-description=" PD Output - ${pdOutput.name}"
-                >
+                <tbody class="gray-1" comment-element="pd-output-${pdOutput.id}" comment-description="${pdOutput.name}">
                   <tr class="text">
                     <td>${pdOutput.code}</td>
                     <td colspan="3" class="b">

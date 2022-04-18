@@ -32,9 +32,8 @@ export class PdIndicator extends CommentsMixin(LitElement) {
       </style>
       <div
         class="table-row"
-        related-to="indicator-${this.indicator.id}"
-        related-to-description="Indicator - ${this.indicator.indicator?.title}"
-        comments-container
+        comment-element="indicator-${this.indicator.id}"
+        comment-description="${this.indicator.indicator?.title}"
         @paper-dropdown-open="${(event: CustomEvent) => (event.currentTarget as HTMLElement)!.classList.add('active')}"
         @paper-dropdown-close="${(event: CustomEvent) =>
           (event.currentTarget as HTMLElement)!.classList.remove('active')}"

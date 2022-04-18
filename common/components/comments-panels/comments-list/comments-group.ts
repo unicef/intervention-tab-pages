@@ -1,18 +1,27 @@
-import {css, CSSResultArray, customElement, LitElement, html, TemplateResult} from 'lit-element';
+import {css, CSSResultArray, customElement, LitElement, html, TemplateResult, property} from 'lit-element';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {translate} from 'lit-translate';
 
 @customElement('comments-group')
 export class CommentsGroup extends LitElement {
+  @property({type: Number}) commentsCount = 0;
+  @property({type: String}) relatedTo = '';
+  @property({type: String}) relatedToDescription = '';
+  @property({type: String}) fieldDescription = '';
+
   protected render(): TemplateResult {
     return html`
-      <div class="counter">5</div>
+      <div class="counter">${this.commentsCount}</div>
       <div class="comment flex-auto">
         <div class="layout-horizontal space-between">
-          <div class="title">Comments on <b>section 2.2</b></div>
+          <div class="title">
+            Comments on
+            <b>${this.relatedTo ? translate(this.relatedTo) : ''}</b>
+          </div>
           <div class="date">17/02/2022</div>
         </div>
         <div class="description">
-          Capacity of national systems to scale upquality nutrition-sensitive interventions- 3750/A0/06/200/003]
+          ${this.relatedToDescription}${this.fieldDescription ? translate(this.fieldDescription) : ''}
         </div>
       </div>
     `;
@@ -27,12 +36,16 @@ export class CommentsGroup extends LitElement {
           display: flex;
           padding: 21px 24px 24px 13px;
           cursor: pointer;
+          border-bottom: 1px solid #c4c4c4;
         }
         :host(:not(:last-child)) {
           border-bottom: 1px solid #c4c4c4;
         }
         :host(:hover) {
           background-color: #eeeeee;
+        }
+        :host([opened]) {
+          background-color: #dff1ef;
         }
         .counter {
           flex: none;

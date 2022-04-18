@@ -3,6 +3,7 @@ import {LitElement} from 'lit-element';
 import {CommentsCollection} from './comments.reducer';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import './comments-dialog';
+import '../comments-panels/comments-panels';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {Constructor, InterventionComment} from '@unicef-polymer/etools-types';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
@@ -18,7 +19,6 @@ export type CommentElementMeta = {
   relatedToDescription: string;
   element: HTMLElement;
 };
-
 /**
  * - !CommentsMixin uses connect mixin, so don't use it in your component!
  * - !If you use stateChanged inside your component remember to call super.stateChanged() at the end of your method!
@@ -67,8 +67,12 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
       }
 
       const {commentsModeEnabled, collection} = commentsState;
-      const needToUpdate = collection[this.currentInterventionId] !== this.comments && this.commentsModeEnabled;
-      this.comments = collection[this.currentInterventionId] || {};
+      const needToUpdate =
+        this.commentsModeEnabled &&
+        Object.entries(collection[this.currentInterventionId]).some(
+          ([relatedTo, comments]) => comments !== this.comments[relatedTo]
+        );
+      this.comments = {...(collection[this.currentInterventionId] || {})};
 
       if (needToUpdate) {
         // we need to update comments state if mode was enabled before the data was fetched
@@ -111,7 +115,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
             return this.getMetaFromContainer(element);
           }
           const relatedTo: string | null = element.getAttribute('comment-element');
-          const relatedToDescription = element.getAttribute('comment-description') || relatedTo;
+          const relatedToDescription = element.getAttribute('comment-description') || '';
           return !relatedTo ? null : this.createMataData(element, relatedTo, relatedToDescription as string);
         })
         .flat()
