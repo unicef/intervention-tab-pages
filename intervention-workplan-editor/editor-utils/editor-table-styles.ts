@@ -152,6 +152,9 @@ export const EditorTableStyles = css`
     border-bottom: none;
     border-top: none;
   }
+  tr.activity-items-row:last-of-type {
+    border-bottom: 1px solid #b8b8b8 !important;
+  }
 
   .v-middle {
     vertical-align: middle;
