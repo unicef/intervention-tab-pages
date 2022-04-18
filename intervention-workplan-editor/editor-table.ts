@@ -54,12 +54,19 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
           --paper-input-container-input: {
             display: block;
           }
-
+          --iron-autogrow-textarea: {
+            overflow: auto;
+            padding: 0;
+            max-height: 96px;
+          }
           --paper-input-container-label-floating_-_font-weight: 600;
           --paper-font-subhead_-_font-weight: 600;
           --paper-input-container-label-floating {
             font-weight: 600;
           }
+        }
+        paper-textarea[readonly] {
+          --iron-autogrow-textarea_-_overflow: hidden;
         }
       </style>
       <table>
