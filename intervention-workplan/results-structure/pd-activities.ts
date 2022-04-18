@@ -40,7 +40,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
     // language=HTML
     return html`
       ${sharedStyles}
-      <etools-data-table-row>
+      <etools-data-table-row .detailsOpened="${true}">
         <div slot="row-data" class="layout-horizontal align-items-center editable-row">
           <div class="title-text flex-auto">${translate(translatesMap.activities)} (${this.activities.length})</div>
         </div>
@@ -51,18 +51,18 @@ export class PdActivities extends CommentsMixin(LitElement) {
           </div>
 
           <div class="table-row table-head align-items-center" ?hidden="${this.readonly}">
-            <div>${translate('ACTIVITY_NAME')}</div>
-            <div class="fixed-cell time-intervals">${translate('TIME_PERIODS')}</div>
-            <div class="fixed-cell activity-budget">${translate('PARTNER_CASH')}</div>
-            <div class="fixed-cell activity-budget">${translate('UNICEF_CASH')}</div>
-            <div class="fixed-cell activity-budget">${translate('GENERAL.TOTAL')} (${this.currency})</div>
+            <div class="flex-1 left-align layout-vertical">${translate('ACTIVITY_NAME')}</div>
+            <div class="flex-1 secondary-cell center">${translate('TIME_PERIODS')}</div>
+            <div class="flex-1 secondary-cell right">${translate('PARTNER_CASH')}</div>
+            <div class="flex-1 secondary-cell right">${translate('UNICEF_CASH')}</div>
+            <div class="flex-1 secondary-cell right">${translate('GENERAL.TOTAL')} (${this.currency})</div>
           </div>
 
           ${this.activities.length
             ? this.activities.map(
                 (activity: InterventionActivity) => html`
                   <div
-                    class="table-row"
+                    class="table-row editable-row"
                     related-to="activity-${activity.id}"
                     related-to-description=" Activity - ${activity.name}"
                     comments-container
@@ -72,7 +72,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
                       (event.currentTarget as HTMLElement)!.classList.remove('active')}"
                   >
                     <!--    Activity Data: code / name / other info / items link    -->
-                    <div class="activity-data">
+                    <div class="flex-1 left-align layout-vertical">
                       <div><b>${activity.code}</b>&nbsp;${activity.name || '-'}</div>
                       <div class="details">${activity.context_details || '-'}</div>
                       <div
@@ -85,7 +85,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
                     </div>
 
                     <!--    Time intervals    -->
-                    <div class="fixed-cell time-intervals">
+                    <div class="flex-1 secondary-cell center">
                       <time-intervals
                         .quarters="${this.quarters}"
                         .selectedTimeFrames="${activity.time_frames}"
@@ -94,24 +94,24 @@ export class PdActivities extends CommentsMixin(LitElement) {
                     </div>
 
                     <!--    CSO Cash    -->
-                    <div class="number-data fixed-cell activity-budget">
+                    <div class="flex-1 secondary-cell right">
                       ${displayCurrencyAmount(String(activity.cso_cash || 0), '0', 2)}
                     </div>
 
                     <!--    UNICEF Cash    -->
-                    <div class="number-data fixed-cell activity-budget">
+                    <div class="flex-1 secondary-cell right">
                       ${displayCurrencyAmount(String(activity.unicef_cash || 0), '0', 2)}
                     </div>
 
                     <!--    Total    -->
-                    <div class="number-data fixed-cell activity-budget">
+                    <div class="flex-1 secondary-cell right">
                       <!--       TODO: use field from backend         -->
                       <b>
                         ${displayCurrencyAmount(String(this.getTotal(activity.cso_cash, activity.unicef_cash)), '0', 2)}
                       </b>
                     </div>
 
-                    <div class="show-actions" ?hidden="${this.commentMode}">
+                    <div class="show-actions hover-block" ?hidden="${this.commentMode}">
                       <paper-menu-button id="view-menu-button" close-on-activate horizontal-align="right">
                         <paper-icon-button
                           slot="dropdown-trigger"
@@ -142,11 +142,11 @@ export class PdActivities extends CommentsMixin(LitElement) {
                   ${this.readonly
                     ? translate('THERE_ARE_NO_PD_ACTIVITIES')
                     : html`
-                        <div>-</div>
-                        <div>-</div>
-                        <div>-</div>
-                        <div>-</div>
-                        <div>-</div>
+                        <div class="flex-1 left-align layout-vertical">-</div>
+                        <div class="flex-1 secondary-cell center">-</div>
+                        <div class="flex-1 secondary-cell right">-</div>
+                        <div class="flex-1 secondary-cell right">-</div>
+                        <div class="flex-1 secondary-cell right">-</div>
                       `}
                 </div>
               `}
@@ -241,20 +241,13 @@ export class PdActivities extends CommentsMixin(LitElement) {
           align-items: center;
           justify-content: flex-end;
         }
-        time-intervals {
-          justify-content: center;
-        }
         div.time-intervals {
           max-width: 160px;
           width: 15%;
         }
-        .table-row > div:first-child {
-          flex: auto;
-          min-width: 0;
-          text-align: left;
-        }
-        div.activity-budget {
-          min-width: 120px;
+        div.editable-row .hover-block {
+          background: linear-gradient(270deg, #b0c8b3 71.65%, rgba(196, 196, 196, 0) 100%);
+          padding-left: 20px;
         }
       `
     ];

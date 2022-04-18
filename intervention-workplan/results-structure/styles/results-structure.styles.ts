@@ -21,6 +21,7 @@ export const ResultStructureStyles: CSSResult = css`
     font-size: 20px;
     font-weight: 900;
     line-height: 23px;
+    text-align: right;
   }
   .total-cache .currency {
     margin-right: 4px;
@@ -101,17 +102,7 @@ export const ResultStructureStyles: CSSResult = css`
     align-items: center;
   }
   div[slot='row-data'] {
-    margin: 0px;
-    min-height: 48px;
-  }
-  div[slot='row-data'] > div {
-    line-height: 26px;
-    padding-top: 8px;
-    padding-bottom: 8px;
-  }
-  .higher-slot {
-    margin: 0px;
-    min-height: 65px !important;
+    margin: 0;
   }
   .empty-row {
     padding-inline: 56px 16px;
@@ -126,7 +117,7 @@ export const ResultStructureStyles: CSSResult = css`
     display: flex;
     width: min-content;
     align-items: center;
-    padding: 16px 13px 0;
+    padding: 5px 5px 0;
     cursor: pointer;
     font-size: 15px;
     font-weight: 500;
@@ -137,7 +128,8 @@ export const ResultStructureStyles: CSSResult = css`
   .add-button:hover {
     color: #212121;
   }
-  .add-button.pd-add {
-    padding-left: 31px;
+  div.editable-row .hover-block {
+    background: linear-gradient(270deg, #c4c4c4 71.65%, rgba(196, 196, 196, 0) 100%);
+    padding-left: 20px;
   }
 `;

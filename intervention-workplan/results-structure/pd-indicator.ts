@@ -31,7 +31,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
         }
       </style>
       <div
-        class="table-row"
+        class="table-row editable-row"
         related-to="indicator-${this.indicator.id}"
         related-to-description="Indicator - ${this.indicator.indicator?.title}"
         comments-container
@@ -41,34 +41,34 @@ export class PdIndicator extends CommentsMixin(LitElement) {
       >
         <div class="main-info">
           <!--    Indicator name    -->
-          <div class="indicator">
+          <div class="flex-1 left-align layout-vertical">
             <div class="name">
               ${this.getIndicatorDisplayType(this.indicator)} ${this.addInactivePrefix(this.indicator)}
               ${(this.indicator.indicator ? this.indicator.indicator.title : this.indicator.cluster_indicator_title) ||
               '—'}
             </div>
             <div class="item-link" @click="${() => (this.detailsOpened = !this.detailsOpened)}">
-              ${this.detailsOpened ? 'hide' : 'see'} ${translate('LOCATIONS')} (${this.locationNames.length})
-              ${translate('AND')} ${translate('DISAGGREGATIONS')} (${this.indicator.disaggregation.length})
+              ${this.detailsOpened ? 'hide' : 'see'} ${this.locationNames.length} ${translate('LOCATIONS')}
+              ${translate('AND')} ${this.indicator.disaggregation.length} ${translate('DISAGGREGATIONS')}
             </div>
           </div>
 
-          <div class="fixed-cell high-frequency">
+          <div class="flex-1 secondary-cell center">
             <div class="hf-mark" ?hidden="${!this.indicator.is_high_frequency}"></div>
           </div>
           <!--    Baseline    -->
-          <div class="number-data fixed-cell">
+          <div class="flex-1 secondary-cell right">
             ${this._displayBaselineOrTarget(this.indicator.baseline, this.indicator)}
           </div>
 
           <!--    Target    -->
-          <div class="number-data fixed-cell">
+          <div class="flex-1 secondary-cell right">
             ${this._displayBaselineOrTarget(this.indicator.target, this.indicator)}
           </div>
         </div>
         <div class="details ${this.detailsOpened ? 'opened' : ''}">${this.additionalTemplate()}</div>
 
-        <div class="show-actions" ?hidden="${this.commentMode}">
+        <div class="show-actions hover-block" ?hidden="${this.commentMode}">
           <paper-menu-button id="view-menu-button" close-on-activate horizontal-align="right">
             <paper-icon-button slot="dropdown-trigger" icon="icons:more-vert" tabindex="0"></paper-icon-button>
             <paper-listbox slot="dropdown-content">
@@ -268,23 +268,6 @@ export class PdIndicator extends CommentsMixin(LitElement) {
           display: flex;
           gap: 10px;
         }
-        .main-info .indicator {
-          flex: auto;
-          text-align: left;
-        }
-        .main-info > div:not(.indicator) {
-          flex: 1;
-        }
-        .number-data {
-          text-align: right;
-        }
-        .hf-mark {
-          margin: 6px auto;
-          width: 15px;
-          height: 15px;
-          border-radius: 50%;
-          background-color: #2073b7;
-        }
         .details-heading {
           margin-bottom: 12px;
           font-size: 16px;
@@ -315,8 +298,18 @@ export class PdIndicator extends CommentsMixin(LitElement) {
         .details.opened {
           flex: 1 1 0%;
           height: auto;
-          padding-top: 32px;
+          padding-top: 16px;
           transform: scaleY(1);
+        }
+        div.editable-row .hover-block {
+          background: linear-gradient(270deg, #a4c4e1 71.65%, rgba(196, 196, 196, 0) 100%);
+          padding-left: 20px;
+        }
+        .hf-mark {
+          width: 15px;
+          height: 15px;
+          border-radius: 50%;
+          background-color: #2073b7;
         }
       `
     ];
