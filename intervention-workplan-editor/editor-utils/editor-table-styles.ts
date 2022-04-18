@@ -9,12 +9,12 @@ export const EditorTableStyles = css`
   td {
     border: 1px solid #b8b8b8;
     vertical-align: top;
-    padding: 8px 10px;
+    padding: 6px 10px;
   }
 
   td.first-col {
     width: 50px;
-    text-align: center;
+    text-align: left;
     vertical-align: middle;
     padding: 6px;
   }
@@ -44,6 +44,7 @@ export const EditorTableStyles = css`
     border-top: none;
     font-size: smaller;
     font-weight: bold;
+    padding-bottom: 2px !important;
   }
   tr.text > td {
     border-bottom: none;
@@ -165,5 +166,18 @@ export const EditorTableStyles = css`
   }
   .padd-top-15 {
     padding-top: 16px;
+  }
+  tr.no-b-border > td {
+    border-bottom: none;
+  }
+  td.no-l-r-border {
+    border-left: none;
+    border-right: none;
+  }
+  td.no-r-border {
+    border-right: none;
+  }
+  td.no-l-border {
+    border-left: none;
   }
 `;

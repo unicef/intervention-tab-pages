@@ -54,6 +54,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
           --paper-input-container-input: {
             display: block;
           }
+
           --paper-input-container-label-floating_-_font-weight: 600;
           --paper-font-subhead_-_font-weight: 600;
           --paper-input-container-label-floating {
@@ -67,7 +68,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
           (result: ExpectedResult) => result.id,
           (result, resultIndex) => html`
             <tbody thead ?hidden="${!this.isUnicefUser}">
-              <tr class="edit blue">
+              <tr class="no-b-border blue">
                 <td class="first-col"></td>
                 <td colspan="3"></td>
                 <td colspan="3"></td>
