@@ -37,12 +37,13 @@ import {EditorTableArrowKeysStyles} from './editor-utils/editor-table-arrow-keys
 import {ArrowsNavigationMixin} from './editor-utils/arrows-navigation-mixin';
 import {updateSmallMenu} from '../../../../../redux/actions/app';
 import {RootState} from '../common/types/store.types';
+import {EditorHoverStyles} from './editor-utils/editor-hover-styles';
 
 @customElement('editor-table')
 // @ts-ignore
 export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationMixin(LitElement))) {
   static get styles() {
-    return [EditorTableStyles, EditorTableArrowKeysStyles];
+    return [EditorTableStyles, EditorTableArrowKeysStyles, EditorHoverStyles];
   }
   render() {
     return html`
@@ -74,22 +75,16 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
           this.resultStructureDetails,
           (result: ExpectedResult) => result.id,
           (result, resultIndex) => html`
-            <tbody thead ?hidden="${!this.isUnicefUser}">
-              <tr class="no-b-border blue">
-                <td class="first-col"></td>
-                <td colspan="3"></td>
-                <td colspan="3"></td>
-                <td class="last-col" colspan="2"></td>
-              </tr>
-              <tr class="header blue">
+            <tbody thead ?hidden="${!this.isUnicefUser}" class="heavy-blue">
+              <tr class="header">
                 <td>${translate('ID')}</td>
                 <td colspan="3">${translate('COUNTRY_PROGRAME_OUTPUT')}</td>
                 <td colspan="3"></td>
                 <td colspan="2">${translate('TOTAL')}</td>
               </tr>
             </tbody>
-            <tbody>
-              <tr class="text blue" ?hidden="${!this.isUnicefUser}">
+            <tbody hoverable class="heavy-blue">
+              <tr class="text" ?hidden="${!this.isUnicefUser}">
                 <td>${result.code}</td>
                 <td colspan="3" class="b">${result.cp_output_name}</td>
                 <td colspan="3"></td>
@@ -98,47 +93,26 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                   <span class="b">${displayCurrencyAmount(result.total, '0.00')}</span>
                 </td>
               </tr>
-              <tr class="add blue" type="cp-output">
+              <tr class="add action-btns" type="cp-output">
                 <td></td>
-                <td colspan="3" tabindex="0">
+                <td colspan="3"></td>
+                <td colspan="3"></td>
+                <td colspan="2" class="action-btns" tabindex="0">
                   <div
-                    class="icon"
+                    class="icon action-btns"
                     @click="${() => this.addNewPDOutput(result.ll_results)}"
                     ?hidden="${!this.permissions.edit.result_links}"
                   >
                     <paper-icon-button icon="add-box" tabindex="0"></paper-icon-button>
-                    ${translate('ADD_NEW_PD_OUTPUT')}
                   </div>
                 </td>
-                <td colspan="3"></td>
-                <td colspan="2"></td>
               </tr>
             </tbody>
             ${repeat(
               result.ll_results,
               (pdOutput: ResultLinkLowerResultExtended) => pdOutput.id,
               (pdOutput: ResultLinkLowerResultExtended, pdOutputIndex) => html`
-                <tbody thead class="gray-1">
-                  <tr class="edit">
-                    <td class="first-col"></td>
-                    <td colspan="3"></td>
-                    <td colspan="3"></td>
-                    <td class="last-col" colspan="2">
-                      <paper-icon-button
-                        icon="create"
-                        ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
-                        @click="${() => {
-                          pdOutput.inEditMode = true;
-                          this.requestUpdate();
-                        }}"
-                      ></paper-icon-button>
-                      <paper-icon-button
-                        icon="delete"
-                        ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
-                        @click="${() => this.openDeletePdOutputDialog(pdOutput.id)}"
-                      ></paper-icon-button>
-                    </td>
-                  </tr>
+                <tbody thead class="lighter-blue">
                   <tr class="header">
                     <td></td>
                     <td colspan="3">${translate('PD_OUTPUT')}</td>
@@ -147,7 +121,8 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                   </tr>
                 </tbody>
                 <tbody
-                  class="gray-1"
+                  hoverable
+                  class="lighter-blue"
                   comment-element="pd-output-${pdOutput.id}"
                   comment-description=" PD Output - ${pdOutput.name}"
                 >
@@ -173,23 +148,37 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                       <span class="b">${displayCurrencyAmount(pdOutput.total, '0.00')}</span>
                     </td>
                   </tr>
-                  <tr class="add" type="pd-output">
+                  <tr class="add action-btns" type="pd-output">
                     <td></td>
-                    <td
-                      colspan="3"
-                      tabindex="${pdOutput.inEditMode || !this.permissions.edit.result_links ? '-1' : '0'}"
-                    >
-                      <div
-                        class="icon"
-                        @click="${() => this.addNewActivity(pdOutput)}"
-                        ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
-                      >
-                        <paper-icon-button icon="add-box"></paper-icon-button>
-                        ${translate('ADD_NEW_ACTIVITY')}
-                      </div>
-                    </td>
                     <td colspan="3"></td>
-                    <td class="h-center" colspan="2">
+                    <td colspan="3"></td>
+                    <td
+                      class="h-center action-btns"
+                      colspan="2"
+                      tabindex="${!this.permissions.edit.result_links ? '-1' : '0'}"
+                    >
+                      <div class="action-btns">
+                        <paper-icon-button
+                          icon="create"
+                          ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
+                          @click="${() => {
+                            pdOutput.inEditMode = true;
+                            this.requestUpdate();
+                          }}"
+                        ></paper-icon-button>
+                        <div
+                          class="icon"
+                          @click="${() => this.addNewActivity(pdOutput)}"
+                          ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
+                        >
+                          <paper-icon-button icon="add-box"></paper-icon-button>
+                        </div>
+                        <paper-icon-button
+                          icon="delete"
+                          ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
+                          @click="${() => this.openDeletePdOutputDialog(pdOutput.id)}"
+                        ></paper-icon-button>
+                      </div>
                       <div class="flex-h justify-right" ?hidden="${!pdOutput.inEditMode}">
                         <paper-button @click="${() => this.savePdOutput(pdOutput, result.cp_output)}"
                           >${translate('GENERAL.SAVE')}</paper-button

@@ -45,6 +45,10 @@ export const EditorTableStyles = css`
     font-size: smaller;
     font-weight: bold;
     padding-bottom: 2px !important;
+    padding-top: 26px;
+  }
+  tr.header.no-padd > td {
+    padding-top: 4px;
   }
   tr.text > td {
     border-bottom: none;
@@ -63,7 +67,7 @@ export const EditorTableStyles = css`
   }
 
   tbody.odd tr:nth-child(even) {
-    background-color: #eeeeee;
+    background-color: innherit;
   }
 
   td:nth-child(n + 4) {
@@ -74,9 +78,6 @@ export const EditorTableStyles = css`
     text-align: right;
   }
 
-  .blue {
-    background-color: #b6d5f1;
-  }
   .gray-1 {
     background-color: #efefef;
   }
@@ -85,7 +86,7 @@ export const EditorTableStyles = css`
   }
 
   paper-icon-button {
-    color: var(--secondary-text-color);
+    color: #504e4e;
   }
   paper-icon-button[icon='close'] {
     color: red;
@@ -162,6 +163,7 @@ export const EditorTableStyles = css`
   .del-item {
     vertical-align: bottom;
     padding-left: 0;
+    position: relative;
   }
   paper-icon-button#delItem {
     padding: 0;
@@ -182,5 +184,13 @@ export const EditorTableStyles = css`
   }
   td.no-l-border {
     border-left: none;
+  }
+
+  .heavy-blue {
+    background-color: #a6dbff;
+  }
+
+  .lighter-blue {
+    background-color: #ccebff;
   }
 `;

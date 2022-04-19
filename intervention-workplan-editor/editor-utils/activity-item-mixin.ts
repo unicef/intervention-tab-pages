@@ -185,21 +185,29 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   }}"
                 ></etools-currency-amount-input>
               </td>
-              <td class="total">
+              <td class="total del-item action-btns" colspan="2">
                 <paper-input
                   readonly
                   .noLabelFloat="${!activity.itemsInEditMode}"
                   .value="${this.getTotalForItem(item.no_units || 0, item.unit_price || 0)}"
                 ></paper-input>
-              </td>
-              <td class="del-item" tabindex="${!activity.itemsInEditMode ? '-1' : '0'}">
-                <paper-icon-button
-                  id="delItem"
-                  icon="delete"
-                  tabindex="0"
-                  ?hidden="${!activity.itemsInEditMode}"
-                  @click="${() => this.removeItem(activity, itemIndex)}"
-                ></paper-icon-button>
+                <div class="hover-block">
+                  <paper-icon-button
+                    icon="create"
+                    ?hidden="${activity.inEditMode || !this.permissions.edit.result_links}"
+                    @click="${() => {
+                      activity.inEditMode = true;
+                      activity.itemsInEditMode = true;
+                      this.requestUpdate();
+                    }}"
+                  ></paper-icon-button>
+                  <paper-icon-button
+                    id="delItem"
+                    icon="delete"
+                    tabindex="0"
+                    @click="${() => this.removeItem(activity, itemIndex)}"
+                  ></paper-icon-button>
+                </div>
               </td>
             </tr>
           `

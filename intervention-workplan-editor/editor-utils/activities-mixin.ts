@@ -54,29 +54,6 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
           (activity: InterventionActivityExtended) => activity.id,
           (activity: InterventionActivityExtended, activityIndex: number) => html`
             <tbody thead>
-              <tr class="edit">
-                <td class="first-col"></td>
-                <td colspan="3"></td>
-                <td class="col-g"></td>
-                <td class="col-g"></td>
-                <td class="col-g"></td>
-                <td class="last-col" colspan="2">
-                  <paper-icon-button
-                    icon="create"
-                    ?hidden="${activity.inEditMode || !this.permissions.edit.result_links}"
-                    @click="${() => {
-                      activity.inEditMode = true;
-                      activity.itemsInEditMode = true;
-                      this.requestUpdate();
-                    }}"
-                  ></paper-icon-button>
-                  <paper-icon-button
-                    icon="delete"
-                    ?hidden="${activity.inEditMode || !this.permissions.edit.result_links}"
-                    @click="${() => this.openDeleteDialog(activity.id, pdOutput.id)}"
-                  ></paper-icon-button>
-                </td>
-              </tr>
               <tr class="header">
                 <td></td>
                 <td colspan="3">${translate('ACTIVITY')}</td>
@@ -86,7 +63,11 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td colspan="2">${translate('GENERAL.TOTAL')}</td>
               </tr>
             </tbody>
-            <tbody comment-element="activity-${activity.id}" comment-description=" Activity - ${activity.name}">
+            <tbody
+              hoverable
+              comment-element="activity-${activity.id}"
+              comment-description=" Activity - ${activity.name}"
+            >
               <tr class="text" type="activity">
                 <td class="padd-top-15">${activity.code}</td>
                 <td colspan="3" tabindex="0">
@@ -171,25 +152,40 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                   </span>
                 </td>
               </tr>
-              <tr class="add" type="activity">
+              <tr class="add action-btns" type="activity">
+                <td></td>
+                <td colspan="3"></td>
+                <td></td>
+                <td></td>
                 <td></td>
                 <td
-                  colspan="3"
-                  tabindex="${activity.items?.length || !this.permissions.edit.result_links ? '-1' : '0'}"
+                  class="h-center action-btns"
+                  colspan="2"
+                  tabindex="${this.permissions.edit.result_links ? '0' : '-1'}"
                 >
-                  <div
-                    class="icon"
-                    @click="${() => this.addNewItem(activity)}"
-                    ?hidden="${activity.items?.length || !this.permissions.edit.result_links}"
-                  >
-                    <paper-icon-button icon="add-box"></paper-icon-button>
-                    ${translate('ADD_NEW_ITEM')}
+                  <div class="action-btns">
+                    <paper-icon-button
+                      icon="create"
+                      ?hidden="${activity.inEditMode || !this.permissions.edit.result_links}"
+                      @click="${() => {
+                        activity.inEditMode = true;
+                        activity.itemsInEditMode = true;
+                        this.requestUpdate();
+                      }}"
+                    ></paper-icon-button>
+                    <div
+                      class="icon"
+                      @click="${() => this.addNewItem(activity)}"
+                      ?hidden="${activity.items?.length || !this.permissions.edit.result_links}"
+                    >
+                      <paper-icon-button icon="add-box"></paper-icon-button>
+                    </div>
+                    <paper-icon-button
+                      icon="delete"
+                      ?hidden="${activity.inEditMode || !this.permissions.edit.result_links}"
+                      @click="${() => this.openDeleteDialog(activity.id, pdOutput.id)}"
+                    ></paper-icon-button>
                   </div>
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td class="h-center" colspan="2">
                   <div class="flex-h justify-right" ?hidden="${!(activity.inEditMode || activity.itemsInEditMode)}">
                     <paper-button @click="${() => this.saveActivity(activity, pdOutput.id, this.intervention.id!)}"
                       >${translate('GENERAL.SAVE')}</paper-button
@@ -205,7 +201,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
             </tbody>
 
             <tbody thead ?hidden="${!activity.items || !activity.items.length}">
-              <tr class="header">
+              <tr class="header no-padd">
                 <td class="first-col"></td>
                 <td class="col-44p">${translate('ITEM_DESCRIPTION')}</td>
                 <td class="col-6p">${translate('UNIT')}</td>
