@@ -4,6 +4,9 @@ export const EditorHoverStyles = css`
   tbody[hoverable]:hover {
     background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
   }
+  tbody[hoverable] > tr.action-btns:not([type='cp-output']) {
+    height: 80px;
+  }
 
   tbody[hoverable] > tr.action-btns > td.action-btns > div.action-btns {
     opacity: 0;
@@ -13,11 +16,6 @@ export const EditorHoverStyles = css`
   }
   tbody[hoverable]:focus-within > tr.action-btns > td.action-btns > div.action-btns {
     opacity: 1;
-  }
-
-  tbody[hoverable] > tr.action-btns > td {
-    padding: 0;
-    padding-bottom: 6px;
   }
 
   .activity-items-row:hover {

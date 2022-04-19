@@ -51,7 +51,6 @@ export const EditorTableStyles = css`
     padding-top: 4px;
   }
   tr.text > td {
-    border-bottom: none;
     border-top: none;
   }
 
@@ -150,8 +149,6 @@ export const EditorTableStyles = css`
   }
   tr.activity-items-row > td {
     vertical-align: bottom;
-    border-bottom: none;
-    border-top: none;
   }
   tr.activity-items-row:last-of-type {
     border-bottom: 1px solid #b8b8b8 !important;

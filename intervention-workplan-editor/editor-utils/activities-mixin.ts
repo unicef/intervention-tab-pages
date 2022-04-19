@@ -53,7 +53,11 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
           pdOutput.activities || [],
           (activity: InterventionActivityExtended) => activity.id,
           (activity: InterventionActivityExtended, activityIndex: number) => html`
-            <tbody thead>
+            <tbody
+              hoverable
+              comment-element="activity-${activity.id}"
+              comment-description=" Activity - ${activity.name}"
+            >
               <tr class="header">
                 <td></td>
                 <td colspan="3">${translate('ACTIVITY')}</td>
@@ -62,13 +66,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td>${translate('UNICEF_CASH')}</td>
                 <td colspan="2">${translate('GENERAL.TOTAL')}</td>
               </tr>
-            </tbody>
-            <tbody
-              hoverable
-              comment-element="activity-${activity.id}"
-              comment-description=" Activity - ${activity.name}"
-            >
-              <tr class="text" type="activity">
+              <tr class="text action-btns" type="activity">
                 <td class="padd-top-15">${activity.code}</td>
                 <td colspan="3" tabindex="0">
                   <paper-textarea
@@ -141,29 +139,23 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                       this.updateModelValue(activity, 'unicef_cash', detail.value)}"
                   ></etools-currency-amount-input>
                 </td>
-                <td colspan="2" class="padd-top-15">
-                  ${this.intervention.planned_budget.currency}
-                  <span class="b"
-                    >${displayCurrencyAmount(
-                      String(this.getTotalForActivity(activity.cso_cash, activity.unicef_cash)),
-                      '0',
-                      2
-                    )}
-                  </span>
-                </td>
-              </tr>
-              <tr class="add action-btns" type="activity">
-                <td></td>
-                <td colspan="3"></td>
-                <td></td>
-                <td></td>
-                <td></td>
                 <td
-                  class="h-center action-btns"
                   colspan="2"
+                  class="padd-top-15 action-btns"
+                  style="position: relative;"
                   tabindex="${this.permissions.edit.result_links ? '0' : '-1'}"
                 >
-                  <div class="action-btns">
+                  <div>
+                    ${this.intervention.planned_budget.currency}
+                    <span class="b">
+                      ${displayCurrencyAmount(
+                        String(this.getTotalForActivity(activity.cso_cash, activity.unicef_cash)),
+                        '0',
+                        2
+                      )}
+                    </span>
+                  </div>
+                  <div class="action-btns" style="position:absolute; bottom: 5px; right: 10px;">
                     <paper-icon-button
                       icon="create"
                       ?hidden="${activity.inEditMode || !this.permissions.edit.result_links}"

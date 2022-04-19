@@ -75,16 +75,14 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
           this.resultStructureDetails,
           (result: ExpectedResult) => result.id,
           (result, resultIndex) => html`
-            <tbody thead ?hidden="${!this.isUnicefUser}" class="heavy-blue">
-              <tr class="header">
+            <tbody hoverable class="heavy-blue">
+              <tr class="header" ?hidden="${!this.isUnicefUser}">
                 <td>${translate('ID')}</td>
                 <td colspan="3">${translate('COUNTRY_PROGRAME_OUTPUT')}</td>
                 <td colspan="3"></td>
                 <td colspan="2">${translate('TOTAL')}</td>
               </tr>
-            </tbody>
-            <tbody hoverable class="heavy-blue">
-              <tr class="text" ?hidden="${!this.isUnicefUser}">
+              <tr class="text no-b-border" ?hidden="${!this.isUnicefUser}">
                 <td>${result.code}</td>
                 <td colspan="3" class="b">${result.cp_output_name}</td>
                 <td colspan="3"></td>
@@ -112,21 +110,19 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
               result.ll_results,
               (pdOutput: ResultLinkLowerResultExtended) => pdOutput.id,
               (pdOutput: ResultLinkLowerResultExtended, pdOutputIndex) => html`
-                <tbody thead class="lighter-blue">
-                  <tr class="header">
-                    <td></td>
-                    <td colspan="3">${translate('PD_OUTPUT')}</td>
-                    <td colspan="3"></td>
-                    <td colspan="2">${translate('TOTAL')}</td>
-                  </tr>
-                </tbody>
                 <tbody
                   hoverable
                   class="lighter-blue"
                   comment-element="pd-output-${pdOutput.id}"
                   comment-description=" PD Output - ${pdOutput.name}"
                 >
-                  <tr class="text" type="pd-output">
+                  <tr class="header">
+                    <td></td>
+                    <td colspan="3">${translate('PD_OUTPUT')}</td>
+                    <td colspan="3"></td>
+                    <td colspan="2">${translate('TOTAL')}</td>
+                  </tr>
+                  <tr class="text action-btns" type="pd-output">
                     <td class="padd-top-15">${pdOutput.code}</td>
                     <td colspan="3" class="b" tabindex="0">
                       <paper-textarea
@@ -143,21 +139,17 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                       ></paper-textarea>
                     </td>
                     <td colspan="3"></td>
-                    <td colspan="2">
-                      ${this.intervention.planned_budget.currency}
-                      <span class="b">${displayCurrencyAmount(pdOutput.total, '0.00')}</span>
-                    </td>
-                  </tr>
-                  <tr class="add action-btns" type="pd-output">
-                    <td></td>
-                    <td colspan="3"></td>
-                    <td colspan="3"></td>
                     <td
-                      class="h-center action-btns"
                       colspan="2"
+                      class="action-btns"
+                      style="position:relative;"
                       tabindex="${!this.permissions.edit.result_links ? '-1' : '0'}"
                     >
-                      <div class="action-btns">
+                      <div>
+                        ${this.intervention.planned_budget.currency}
+                        <span class="b">${displayCurrencyAmount(pdOutput.total, '0.00')}</span>
+                      </div>
+                      <div class="action-btns" style="position: absolute; bottom: 5px; right: 10px;">
                         <paper-icon-button
                           icon="create"
                           ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
