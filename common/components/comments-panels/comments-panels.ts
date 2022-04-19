@@ -10,6 +10,7 @@ import {CommentsEndpoints} from '../comments/comments-types';
 import {CommentItemData} from './comments-list/comments-list';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {buildUrlQueryString} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {ComponentsPosition} from '../comments/comments-items-name-map';
 
 @customElement('comments-panels')
 export class CommentsPanels extends connectStore(LitElement) {
@@ -70,6 +71,11 @@ export class CommentsPanels extends connectStore(LitElement) {
   openCollection(commentsGroup: CommentItemData) {
     this.openedCollection = commentsGroup;
     this.comments = [...this.commentsCollection![this.openedCollection.relatedTo]];
+    const relatedToKey: string = this.openedCollection.relatedTo.replace(/(.+?)-\d+/, '$1');
+    const expectedTab: string = ComponentsPosition[relatedToKey];
+    const path = `interventions/${this.interventionId}/${expectedTab}${location.search}`;
+    history.pushState(window.history.state, '', path);
+    window.dispatchEvent(new CustomEvent('popstate'));
   }
 
   closeCollection(): void {
