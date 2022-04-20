@@ -160,7 +160,6 @@ export const EditorTableStyles = css`
   .del-item {
     vertical-align: bottom;
     padding-left: 0;
-    position: relative;
   }
   paper-icon-button#delItem {
     padding: 0;

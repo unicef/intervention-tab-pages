@@ -184,7 +184,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   }}"
                 ></etools-currency-amount-input>
               </td>
-              <td class="total del-item action-btns" colspan="2">
+              <td class="total action-btns" style="position:relative;">
                 <paper-input
                   readonly
                   .noLabelFloat="${!activity.itemsInEditMode}"
@@ -210,6 +210,15 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                     @click="${() => this.removeItem(activity, pdOutput, itemIndex)}"
                   ></paper-icon-button>
                 </div>
+              </td>
+              <td class="del-item" tabindex="${!activity.itemsInEditMode ? '-1' : '0'}">
+                <paper-icon-button
+                  id="delItem"
+                  icon="delete"
+                  tabindex="0"
+                  ?hidden="${!activity.itemsInEditMode}"
+                  @click="${() => this.removeItem(activity, pdOutput, itemIndex)}"
+                ></paper-icon-button>
               </td>
             </tr>
           `
@@ -266,10 +275,13 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
         }
       }).then(({confirmed}) => confirmed);
       if (confirmed) {
+        const hasId = !!activity.items[itemIndex].id;
         activity.items.splice(itemIndex, 1);
         this.requestUpdate();
         // @ts-ignore
-        this.saveActivity(activity, pdOutput.id, this.intervention.id!);
+        if (hasId) {
+          this.saveActivity(activity, pdOutput.id, this.intervention.id!);
+        }
       }
     }
 

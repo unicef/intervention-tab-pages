@@ -66,7 +66,9 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
           if (event.path[0].localName === 'paper-icon-button') {
             return;
           }
-          let actionBtn: any = currentTd.querySelector('paper-icon-button[icon="add-box"]');
+          let actionBtn: any =
+            currentTd.querySelector('paper-icon-button[icon="create"]') ||
+            currentTd.querySelector('paper-icon-button[icon="add-box"]');
           if (!actionBtn) {
             const tr = currentTd.parentElement;
             if (tr) {
