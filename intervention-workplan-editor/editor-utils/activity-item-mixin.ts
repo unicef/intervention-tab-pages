@@ -8,6 +8,7 @@ import {repeat} from 'lit-html/directives/repeat';
 import '@polymer/paper-input/paper-textarea';
 import {translate} from 'lit-translate';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {PaperIconButtonElement} from '@polymer/paper-icon-button';
 
 export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass: T) {
   return class ActivityItemsClass extends baseClass {
@@ -29,20 +30,6 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
         return '';
       }
       return html`<tbody class="odd">
-        <tr ?hidden="${!this.permissions.edit.result_links}" type="add-item">
-          <td></td>
-          <td tabindex="0">
-            <div class="icon" @click="${() => this.addNewItem(activity)}">
-              <paper-icon-button icon="add-box"></paper-icon-button> ${translate('ADD_NEW_ITEM')}
-            </div>
-          </td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td colspan="2"></td>
-        </tr>
         ${repeat(
           activity.items || [],
           (item: InterventionActivityItemExtended) => item.id,
@@ -199,11 +186,13 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                 <div class="hover-block">
                   <paper-icon-button
                     icon="create"
-                    ?hidden="${activity.inEditMode || !this.permissions.edit.result_links}"
-                    @click="${() => {
+                    ?hidden="${!this.permissions.edit.result_links}"
+                    @click="${(e: CustomEvent) => {
                       activity.inEditMode = true;
                       activity.itemsInEditMode = true;
                       this.requestUpdate();
+
+                      this.preserveFocuOnRow(e.target);
                     }}"
                   ></paper-icon-button>
                   <paper-icon-button
@@ -217,6 +206,20 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
             </tr>
           `
         )}
+        <tr ?hidden="${!this.permissions.edit.result_links}" type="add-item">
+          <td></td>
+          <td tabindex="0">
+            <div class="icon" @click="${(e: CustomEvent) => this.addNewItem(e, activity)}">
+              <paper-icon-button icon="add-box"></paper-icon-button> ${translate('ADD_NEW_ITEM')}
+            </div>
+          </td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td colspan="2"></td>
+        </tr>
       </tbody>`;
     }
 
@@ -321,15 +324,43 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       }
     }
 
-    addNewItem(activity: Partial<InterventionActivityExtended>) {
+    addNewItem(e: CustomEvent, activity: Partial<InterventionActivityExtended>) {
       if (!activity.items) {
         activity.items = [];
       }
       // @ts-ignore
-      activity.items?.unshift({name: '', inEditMode: true});
+      activity.items?.push({name: '', inEditMode: true});
       activity.itemsInEditMode = true;
-
       this.requestUpdate();
+      this.moveFocusToTheJustAddedItem(e.target);
+    }
+
+    moveFocusToTheJustAddedItem(target: PaperIconButtonElement) {
+      let targetTrParent = (target as PaperIconButtonElement).parentElement;
+      while (targetTrParent?.localName != 'tr') {
+        // @ts-ignore
+        targetTrParent = targetTrParent?.parentElement;
+      }
+      setTimeout(() => {
+        const itemDescTd = targetTrParent?.previousElementSibling?.children[1];
+        // @ts-ignore
+        this.lastFocusedTd = itemDescTd;
+        itemDescTd?.querySelector('paper-textarea')?.focus();
+      });
+    }
+
+    preserveFocuOnRow(target: PaperIconButtonElement) {
+      let targetTrParent = (target as PaperIconButtonElement).parentElement;
+      while (targetTrParent?.localName != 'tr') {
+        // @ts-ignore
+        targetTrParent = targetTrParent?.parentElement;
+      }
+      setTimeout(() => {
+        const itemDescTd = targetTrParent?.children[1];
+        // @ts-ignore
+        this.lastFocusedTd = itemDescTd;
+        itemDescTd?.querySelector('paper-textarea')?.focus();
+      });
     }
 
     updateModelValue(model: any, property: string, newVal: any) {
