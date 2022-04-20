@@ -208,7 +208,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td class="col-g" colspan="2">${translate('TOTAL')} (${this.intervention.planned_budget.currency})</td>
               </tr>
             </tbody>
-            ${this.renderActivityItems(activity)}
+            ${this.renderActivityItems(activity, pdOutput)}
           `
         )}
       `;

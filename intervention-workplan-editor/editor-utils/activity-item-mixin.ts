@@ -3,10 +3,11 @@ import {Constructor} from '@unicef-polymer/etools-types/dist/global.types';
 import '@polymer/paper-input/paper-input';
 import {html, LitElement} from 'lit-element';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
-import {InterventionActivityExtended, InterventionActivityItemExtended} from './types';
+import {InterventionActivityExtended, InterventionActivityItemExtended, ResultLinkLowerResultExtended} from './types';
 import {repeat} from 'lit-html/directives/repeat';
 import '@polymer/paper-input/paper-textarea';
 import {translate} from 'lit-translate';
+import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 
 export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass: T) {
   return class ActivityItemsClass extends baseClass {
@@ -23,7 +24,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
 
     handleEsc!: (event: KeyboardEvent) => void;
 
-    renderActivityItems(activity: InterventionActivityExtended) {
+    renderActivityItems(activity: InterventionActivityExtended, pdOutput: ResultLinkLowerResultExtended) {
       if (!activity || !activity.items || !activity.items.length) {
         return '';
       }
@@ -209,7 +210,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                     id="delItem"
                     icon="delete"
                     tabindex="0"
-                    @click="${() => this.removeItem(activity, itemIndex)}"
+                    @click="${() => this.removeItem(activity, pdOutput, itemIndex)}"
                   ></paper-icon-button>
                 </div>
               </td>
@@ -219,9 +220,23 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       </tbody>`;
     }
 
-    removeItem(activity: InterventionActivityExtended, itemIndex: number) {
-      activity.items.splice(itemIndex, 1);
-      this.requestUpdate();
+    async removeItem(
+      activity: InterventionActivityExtended,
+      pdOutput: ResultLinkLowerResultExtended,
+      itemIndex: number
+    ) {
+      const confirmed = await openDialog({
+        dialog: 'are-you-sure',
+        dialogData: {
+          content: 'Are you sure you want to delete this activity item?'
+        }
+      }).then(({confirmed}) => confirmed);
+      if (confirmed) {
+        activity.items.splice(itemIndex, 1);
+        this.requestUpdate();
+        // @ts-ignore
+        this.saveActivity(activity, pdOutput.id, this.intervention.id!);
+      }
     }
 
     getLabel(itemsInEditMode: boolean, label: string) {
