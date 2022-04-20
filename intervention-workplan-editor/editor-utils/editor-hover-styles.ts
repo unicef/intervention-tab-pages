@@ -40,7 +40,7 @@ export const EditorHoverStyles = css`
 
   .align-bottom {
     position: absolute;
-    bottom: 5px;
+    bottom: 8px;
     right: 10px;
   }
 `;

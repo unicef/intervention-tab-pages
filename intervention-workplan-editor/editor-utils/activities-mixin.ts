@@ -227,11 +227,14 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       activityIndex: number
     ) {
       activity.invalid = {name: false, context_details: false, time_frames: false};
-      activity.items.forEach((i: any) => {
-        if (i.invalid) {
-          Object.keys(i.invalid).forEach((key) => (i.invalid[key] = false));
-        }
-      });
+      if (activity.items) {
+        activity.items.forEach((i: any) => {
+          if (i.invalid) {
+            Object.keys(i.invalid).forEach((key) => (i.invalid[key] = false));
+          }
+        });
+      }
+
       activity.inEditMode = false;
       activity.itemsInEditMode = false;
 

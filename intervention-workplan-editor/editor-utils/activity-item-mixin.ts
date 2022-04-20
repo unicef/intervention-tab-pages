@@ -227,7 +227,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
           <td colspan="2">
             <div
               class="flex-h justify-right"
-              ?hidden="${!((activity.inEditMode || activity.itemsInEditMode) && activity.items?.length > 4)}"
+              ?hidden="${!((activity.inEditMode || activity.itemsInEditMode) && activity.items?.length > 3)}"
             >
               <paper-button @click="${() => this.saveActivity(activity, pdOutput.id, this.intervention.id!)}"
                 >${translate('GENERAL.SAVE')}</paper-button
@@ -371,7 +371,6 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
           focusClue === 'focusAbove' ? targetTrParent?.previousElementSibling : targetTrParent?.nextElementSibling
         )?.children[1];
         // @ts-ignore
-        this.lastFocusedTd = itemDescTd;
         itemDescTd?.querySelector('paper-textarea')?.focus();
       });
     }
@@ -381,7 +380,6 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       setTimeout(() => {
         const itemDescTd = targetTrParent?.children[1];
         // @ts-ignore
-        this.lastFocusedTd = itemDescTd;
         itemDescTd?.querySelector('paper-textarea')?.focus();
       });
     }

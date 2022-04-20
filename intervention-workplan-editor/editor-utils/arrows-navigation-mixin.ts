@@ -33,12 +33,17 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     }
 
     setLastFocusedTdOnClick(focusableTds: HTMLTableCellElement[]) {
-      focusableTds.forEach((td: HTMLTableCellElement) =>
+      focusableTds.forEach((td: HTMLTableCellElement) => {
         td.addEventListener('click', (e) => {
           this.lastFocusedTd = e.target;
+          console.log('click', this.lastFocusedTd);
           this.handleClickOnReadonlyInput(e);
-        })
-      );
+        });
+        td.addEventListener('focus', (e) => {
+          this.lastFocusedTd = e.target;
+          console.log(this.lastFocusedTd);
+        });
+      });
     }
 
     navigateWithArrows(event: KeyboardEvent) {
