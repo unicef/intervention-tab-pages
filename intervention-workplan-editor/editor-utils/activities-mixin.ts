@@ -156,7 +156,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                       )}
                     </span>
                   </div>
-                  <div class="action-btns" style="position:absolute; bottom: 5px; right: 10px;">
+                  <div class="action-btns align-bottom">
                     <paper-icon-button
                       icon="create"
                       ?hidden="${activity.inEditMode || !this.permissions.edit.result_links}"
@@ -179,7 +179,10 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                       @click="${() => this.openDeleteDialog(activity.id, pdOutput.id)}"
                     ></paper-icon-button>
                   </div>
-                  <div class="flex-h justify-right" ?hidden="${!(activity.inEditMode || activity.itemsInEditMode)}">
+                  <div
+                    class="flex-h justify-right align-bottom"
+                    ?hidden="${!(activity.inEditMode || activity.itemsInEditMode)}"
+                  >
                     <paper-button @click="${() => this.saveActivity(activity, pdOutput.id, this.intervention.id!)}"
                       >${translate('GENERAL.SAVE')}</paper-button
                     >

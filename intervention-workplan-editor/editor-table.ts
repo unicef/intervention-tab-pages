@@ -150,7 +150,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                         ${this.intervention.planned_budget.currency}
                         <span class="b">${displayCurrencyAmount(pdOutput.total, '0.00')}</span>
                       </div>
-                      <div class="action-btns" style="position: absolute; bottom: 5px; right: 10px;">
+                      <div class="action-btns align-bottom">
                         <paper-icon-button
                           icon="create"
                           ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
@@ -172,7 +172,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                           @click="${() => this.openDeletePdOutputDialog(pdOutput.id)}"
                         ></paper-icon-button>
                       </div>
-                      <div class="flex-h justify-right" ?hidden="${!pdOutput.inEditMode}">
+                      <div class="flex-h justify-right align-bottom" ?hidden="${!pdOutput.inEditMode}">
                         <paper-button @click="${() => this.savePdOutput(pdOutput, result.cp_output)}"
                           >${translate('GENERAL.SAVE')}</paper-button
                         >

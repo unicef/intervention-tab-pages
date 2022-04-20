@@ -37,4 +37,10 @@ export const EditorHoverStyles = css`
   tr.activity-items-row:not([in-edit-mode]):hover > td.action-btns > div.hover-block {
     opacity: 1;
   }
+
+  .align-bottom {
+    position: absolute;
+    bottom: 5px;
+    right: 10px;
+  }
 `;
