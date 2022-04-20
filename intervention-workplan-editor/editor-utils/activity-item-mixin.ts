@@ -391,7 +391,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       });
     }
 
-    preserveFocuOnRow(target: PaperIconButtonElement) {
+    preserveFocuOnRow(target: any) {
       const targetTrParent = this.getTrParent(target);
       setTimeout(() => {
         const itemDescTd = targetTrParent?.children[1];
