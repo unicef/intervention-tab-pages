@@ -28,7 +28,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
         return '';
       }
       return html`<tbody class="odd">
-        <tr ?hidden="${!this.permissions.edit.result_links}" type="add-item" style="background-color:white;">
+        <tr ?hidden="${!this.permissions.edit.result_links}" type="add-item">
           <td></td>
           <td tabindex="0">
             <div class="icon" @click="${() => this.addNewItem(activity)}">
