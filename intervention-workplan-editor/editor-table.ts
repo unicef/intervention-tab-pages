@@ -115,6 +115,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                   class="lighter-blue"
                   comment-element="pd-output-${pdOutput.id}"
                   comment-description=" PD Output - ${pdOutput.name}"
+                  ?in-edit-mode="${pdOutput.inEditMode}"
                 >
                   <tr class="header">
                     <td></td>

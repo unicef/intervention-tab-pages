@@ -57,6 +57,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
               hoverable
               comment-element="activity-${activity.id}"
               comment-description=" Activity - ${activity.name}"
+              ?in-edit-mode="${activity.inEditMode}"
             >
               <tr class="header">
                 <td></td>
