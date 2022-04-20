@@ -37,7 +37,15 @@ export const EditorHoverStyles = css`
     background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
   }
 
+  .activity-items-row[has-edit-permissions][new-item]:hover {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
+  }
+
   tr.activity-items-row[has-edit-permissions]:not([in-edit-mode]):hover > td.action-btns > div.hover-block {
+    opacity: 1;
+  }
+
+  tr.activity-items-row[has-edit-permissions][new-item]:hover > td.action-btns > div.hover-block {
     opacity: 1;
   }
 

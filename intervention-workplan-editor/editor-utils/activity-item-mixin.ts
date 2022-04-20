@@ -45,6 +45,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
               type="a-item"
               ?in-edit-mode="${activity.itemsInEditMode}"
               ?has-edit-permissions="${this.permissions.edit.result_links}"
+              ?new-item="${!item.id}"
             >
               <td>
                 <paper-input
@@ -184,7 +185,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   }}"
                 ></etools-currency-amount-input>
               </td>
-              <td class="total action-btns" style="position:relative;">
+              <td class="total action-btns" style="position:relative;" colspan="2">
                 <paper-input
                   readonly
                   .noLabelFloat="${!activity.itemsInEditMode}"
@@ -193,7 +194,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                 <div class="hover-block">
                   <paper-icon-button
                     icon="create"
-                    ?hidden="${!this.permissions.edit.result_links}"
+                    ?hidden="${!this.permissions.edit.result_links || !item.id}"
                     @click="${(e: CustomEvent) => {
                       activity.inEditMode = true;
                       activity.itemsInEditMode = true;
@@ -210,15 +211,6 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                     @click="${() => this.removeItem(activity, pdOutput, itemIndex)}"
                   ></paper-icon-button>
                 </div>
-              </td>
-              <td class="del-item" tabindex="${!activity.itemsInEditMode ? '-1' : '0'}">
-                <paper-icon-button
-                  id="delItem"
-                  icon="delete"
-                  tabindex="0"
-                  ?hidden="${!activity.itemsInEditMode}"
-                  @click="${() => this.removeItem(activity, pdOutput, itemIndex)}"
-                ></paper-icon-button>
               </td>
             </tr>
           `
