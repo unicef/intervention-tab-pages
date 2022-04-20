@@ -25,7 +25,13 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
 
     handleEsc!: (event: KeyboardEvent) => void;
 
-    renderActivityItems(activity: InterventionActivityExtended, pdOutput: ResultLinkLowerResultExtended) {
+    renderActivityItems(
+      activity: InterventionActivityExtended,
+      pdOutput: ResultLinkLowerResultExtended,
+      resultIndex: number,
+      pdOutputIndex: number,
+      activityIndex: number
+    ) {
       if (!activity || !activity.items || !activity.items.length) {
         return '';
       }
@@ -209,7 +215,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
         <tr ?hidden="${!this.permissions.edit.result_links}" type="add-item">
           <td></td>
           <td tabindex="0">
-            <div class="icon" @click="${(e: CustomEvent) => this.addNewItem(e, activity)}">
+            <div class="icon" @click="${(e: CustomEvent) => this.addNewItem(e, activity, 'focusAbove')}">
               <paper-icon-button icon="add-box"></paper-icon-button> ${translate('ADD_NEW_ITEM')}
             </div>
           </td>
@@ -218,10 +224,33 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
           <td></td>
           <td></td>
           <td></td>
-          <td colspan="2"></td>
+          <td colspan="2">
+            <div
+              class="flex-h justify-right"
+              ?hidden="${!((activity.inEditMode || activity.itemsInEditMode) && activity.items?.length > 4)}"
+            >
+              <paper-button @click="${() => this.saveActivity(activity, pdOutput.id, this.intervention.id!)}"
+                >${translate('GENERAL.SAVE')}</paper-button
+              >
+              <paper-icon-button
+                icon="close"
+                @click="${() =>
+                  this.cancelActivity(pdOutput.activities, activity, resultIndex, pdOutputIndex, activityIndex)}"
+              ></paper-icon-button>
+            </div>
+          </td>
         </tr>
       </tbody>`;
     }
+
+    saveActivity!: (activity: InterventionActivityExtended, pdOutputId: number, interventionId: number) => void;
+    cancelActivity!: (
+      activities: Partial<InterventionActivityExtended>[],
+      activity: InterventionActivityExtended,
+      resultIndex: number,
+      pdOutputIndex: number,
+      activityIndex: number
+    ) => void;
 
     async removeItem(
       activity: InterventionActivityExtended,
@@ -324,7 +353,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       }
     }
 
-    addNewItem(e: CustomEvent, activity: Partial<InterventionActivityExtended>) {
+    addNewItem(e: CustomEvent, activity: Partial<InterventionActivityExtended>, focusClue: string) {
       if (!activity.items) {
         activity.items = [];
       }
@@ -332,17 +361,15 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       activity.items?.push({name: '', inEditMode: true});
       activity.itemsInEditMode = true;
       this.requestUpdate();
-      this.moveFocusToTheJustAddedItem(e.target);
+      this.moveFocusToTheJustAddedItem(e.target, focusClue);
     }
 
-    moveFocusToTheJustAddedItem(target: PaperIconButtonElement) {
-      let targetTrParent = (target as PaperIconButtonElement).parentElement;
-      while (targetTrParent?.localName != 'tr') {
-        // @ts-ignore
-        targetTrParent = targetTrParent?.parentElement;
-      }
+    moveFocusToTheJustAddedItem(target: PaperIconButtonElement, focusClue: string) {
+      const targetTrParent = this.getTrParent(target);
       setTimeout(() => {
-        const itemDescTd = targetTrParent?.previousElementSibling?.children[1];
+        const itemDescTd = (
+          focusClue === 'focusAbove' ? targetTrParent?.previousElementSibling : targetTrParent?.nextElementSibling
+        )?.children[1];
         // @ts-ignore
         this.lastFocusedTd = itemDescTd;
         itemDescTd?.querySelector('paper-textarea')?.focus();
@@ -350,17 +377,22 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
     }
 
     preserveFocuOnRow(target: PaperIconButtonElement) {
-      let targetTrParent = (target as PaperIconButtonElement).parentElement;
-      while (targetTrParent?.localName != 'tr') {
-        // @ts-ignore
-        targetTrParent = targetTrParent?.parentElement;
-      }
+      const targetTrParent = this.getTrParent(target);
       setTimeout(() => {
         const itemDescTd = targetTrParent?.children[1];
         // @ts-ignore
         this.lastFocusedTd = itemDescTd;
         itemDescTd?.querySelector('paper-textarea')?.focus();
       });
+    }
+
+    getTrParent(element: any) {
+      let trParent = element.parentElement;
+      while (trParent?.localName != 'tr') {
+        // @ts-ignore
+        trParent = trParent?.parentElement;
+      }
+      return trParent;
     }
 
     updateModelValue(model: any, property: string, newVal: any) {

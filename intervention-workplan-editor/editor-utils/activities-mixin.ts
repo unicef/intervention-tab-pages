@@ -168,7 +168,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     ></paper-icon-button>
                     <div
                       class="icon"
-                      @click="${() => this.addNewItem(activity)}"
+                      @click="${(e: CustomEvent) => this.addNewItem(e, activity, 'focusBelow')}"
                       ?hidden="${activity.items?.length || !this.permissions.edit.result_links}"
                     >
                       <paper-icon-button icon="add-box"></paper-icon-button>
@@ -208,7 +208,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td class="col-g" colspan="2">${translate('TOTAL')} (${this.intervention.planned_budget.currency})</td>
               </tr>
             </tbody>
-            ${this.renderActivityItems(activity, pdOutput)}
+            ${this.renderActivityItems(activity, pdOutput, resultIndex, pdOutputIndex, activityIndex)}
           `
         )}
       `;
@@ -218,6 +218,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       return (Number(partner) || 0) + (Number(unicef) || 0);
     }
 
+    // @ts-ignore
     cancelActivity(
       activities: Partial<InterventionActivityExtended>[],
       activity: InterventionActivityExtended,
@@ -300,6 +301,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       return !invalid;
     }
 
+    // @ts-ignore
     saveActivity(activity: InterventionActivityExtended, pdOutputId: number, interventionId: number) {
       if (!this.validateActivity(activity) || !this.validateActivityItems(activity)) {
         this.requestUpdate();
