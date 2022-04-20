@@ -58,6 +58,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
               comment-element="activity-${activity.id}"
               comment-description=" Activity - ${activity.name}"
               ?in-edit-mode="${activity.inEditMode || activity.itemsInEditMode}"
+              ?has-edit-permissions="${this.permissions.edit.result_links}"
             >
               <tr class="header">
                 <td></td>

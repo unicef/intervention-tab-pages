@@ -116,6 +116,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                   comment-element="pd-output-${pdOutput.id}"
                   comment-description=" PD Output - ${pdOutput.name}"
                   ?in-edit-mode="${pdOutput.inEditMode}"
+                  ?has-edit-permissions="${this.permissions.edit.result_links}"
                 >
                   <tr class="header">
                     <td></td>

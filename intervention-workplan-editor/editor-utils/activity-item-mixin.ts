@@ -44,6 +44,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
               class="activity-items-row ${activity.itemsInEditMode ? '' : 'readonly-mode'}"
               type="a-item"
               ?in-edit-mode="${activity.itemsInEditMode}"
+              ?has-edit-permissions="${this.permissions.edit.result_links}"
             >
               <td>
                 <paper-input
@@ -205,6 +206,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                     id="delItem"
                     icon="delete"
                     tabindex="0"
+                    ?hidden="${!this.permissions.edit.result_links}"
                     @click="${() => this.removeItem(activity, pdOutput, itemIndex)}"
                   ></paper-icon-button>
                 </div>

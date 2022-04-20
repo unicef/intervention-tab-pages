@@ -36,12 +36,10 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
       focusableTds.forEach((td: HTMLTableCellElement) => {
         td.addEventListener('click', (e) => {
           this.lastFocusedTd = e.target;
-          console.log('click', this.lastFocusedTd);
           this.handleClickOnReadonlyInput(e);
         });
         td.addEventListener('focus', (e) => {
           this.lastFocusedTd = e.target;
-          console.log(this.lastFocusedTd);
         });
       });
     }
@@ -70,14 +68,14 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
           }
           let actionBtn: any = currentTd.querySelector('paper-icon-button[icon="add-box"]');
           if (!actionBtn) {
-            const thead = currentTd.closest('tbody')?.previousElementSibling;
-            if (thead) {
+            const tr = currentTd.parentElement;
+            if (tr) {
               if (currentItemType === 'a-item') {
-                actionBtn = thead.previousElementSibling?.previousElementSibling?.querySelector(
+                actionBtn = tr.parentElement!.previousElementSibling?.previousElementSibling?.querySelector(
                   'paper-icon-button[icon="create"]'
                 );
               } else {
-                actionBtn = thead.querySelector('paper-icon-button[icon="create"]');
+                actionBtn = tr.querySelector('paper-icon-button[icon="create"]');
               }
             }
           }
