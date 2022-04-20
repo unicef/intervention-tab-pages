@@ -8,7 +8,6 @@ import {repeat} from 'lit-html/directives/repeat';
 import '@polymer/paper-input/paper-textarea';
 import {translate} from 'lit-translate';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
-import {PaperIconButtonElement} from '@polymer/paper-icon-button';
 
 export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass: T) {
   return class ActivityItemsClass extends baseClass {
