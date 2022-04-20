@@ -75,7 +75,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
           this.resultStructureDetails,
           (result: ExpectedResult) => result.id,
           (result, resultIndex) => html`
-            <tbody hoverable class="heavy-blue">
+            <tbody hoverable class="heavy-blue" ?has-edit-permissions="${this.permissions.edit.result_links}">
               <tr class="header" ?hidden="${!this.isUnicefUser}">
                 <td>${translate('ID')}</td>
                 <td colspan="3">${translate('COUNTRY_PROGRAME_OUTPUT')}</td>

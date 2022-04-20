@@ -378,11 +378,13 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       this.moveFocusToTheJustAddedItem(e.target, focusClue);
     }
 
-    moveFocusToTheJustAddedItem(target: PaperIconButtonElement, focusClue: string) {
+    moveFocusToTheJustAddedItem(target: any, focusClue: string) {
       const targetTrParent = this.getTrParent(target);
       setTimeout(() => {
         const itemDescTd = (
-          focusClue === 'focusAbove' ? targetTrParent?.previousElementSibling : targetTrParent?.nextElementSibling
+          focusClue === 'focusAbove'
+            ? targetTrParent?.previousElementSibling
+            : targetTrParent?.parentElement.nextElementSibling.nextElementSibling.children[0]
         )?.children[1];
         // @ts-ignore
         itemDescTd?.querySelector('paper-textarea')?.focus();
