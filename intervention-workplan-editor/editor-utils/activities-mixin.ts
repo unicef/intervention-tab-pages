@@ -301,8 +301,8 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
         item.invalid = {};
         item.invalid.name = !item.name;
         item.invalid.unit = !item.unit;
-        item.invalid.no_units = !item.no_units;
-        item.invalid.unit_price = !item.unit_price;
+        item.invalid.no_units = !item.no_units || Number(item.no_units) == 0;
+        item.invalid.unit_price = !item.unit_price || Number(item.unit_price) == 0;
         if (item.no_units && item.unit_price) {
           this.validateCsoAndUnicefCash(item);
         }

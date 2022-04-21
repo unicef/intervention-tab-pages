@@ -31,6 +31,7 @@ export const EditorHoverStyles = css`
     align-items: center;
     justify-content: flex-end;
     background-color: #d2cfcf;
+    min-width: 40px;
   }
 
   .activity-items-row[has-edit-permissions]:not([in-edit-mode]):hover {

@@ -101,6 +101,11 @@ export const EditorTableStyles = css`
     text-align: right;
   }
 
+  div.icon:hover {
+    color: #212121;
+    cursor: pointer;
+  }
+
   paper-button {
     color: white;
     background-color: var(--primary-color);
