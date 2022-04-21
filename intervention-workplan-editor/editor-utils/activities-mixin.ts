@@ -85,6 +85,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                   ></paper-textarea>
                   <div class="pad-top-8">
                     <paper-textarea
+                      class="other"
                       placeholder="-"
                       input
                       label="Other Notes"
@@ -157,7 +158,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                       )}
                     </span>
                   </div>
-                  <div class="action-btns align-bottom">
+                  <div class="action-btns align-bottom flex-h">
                     <paper-icon-button
                       icon="create"
                       ?hidden="${activity.inEditMode || !this.permissions.edit.result_links}"
@@ -167,13 +168,20 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                         this.requestUpdate();
                       }}"
                     ></paper-icon-button>
-                    <div
-                      class="icon"
-                      @click="${(e: CustomEvent) => this.addNewItem(e, activity, 'focusBelow')}"
-                      ?hidden="${activity.items?.length || !this.permissions.edit.result_links}"
+                    <etools-info-tooltip
+                      position="top"
+                      custom-icon
+                      ?hide-tooltip="${!this.permissions.edit.result_links}"
+                      style="justify-content:end;"
                     >
-                      <paper-icon-button icon="add-box"></paper-icon-button>
-                    </div>
+                      <paper-icon-button
+                        icon="add-box"
+                        slot="custom-icon"
+                        @click="${(e: CustomEvent) => this.addNewItem(e, activity, 'focusBelow')}"
+                        ?hidden="${activity.items?.length || !this.permissions.edit.result_links}"
+                      ></paper-icon-button>
+                      <span class="no-wrap" slot="message">${translate('ADD_NEW_ITEM')}</span>
+                    </etools-info-tooltip>
                     <paper-icon-button
                       icon="delete"
                       ?hidden="${activity.inEditMode || !this.permissions.edit.result_links}"

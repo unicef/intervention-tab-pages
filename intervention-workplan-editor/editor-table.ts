@@ -38,6 +38,7 @@ import {ArrowsNavigationMixin} from './editor-utils/arrows-navigation-mixin';
 import {updateSmallMenu} from '../../../../../redux/actions/app';
 import {RootState} from '../common/types/store.types';
 import {EditorHoverStyles} from './editor-utils/editor-hover-styles';
+import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 
 @customElement('editor-table')
 // @ts-ignore
@@ -65,6 +66,14 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
           --paper-input-container-label-floating {
             font-weight: 600;
           }
+        }
+        paper-textarea.other[readonly] {
+          --iron-autogrow-textarea: {
+            overflow: auto;
+            padding: 0;
+            max-height: 20px;
+          }
+          --iron-autogrow-textarea_-_overflow: hidden;
         }
         paper-textarea[readonly] {
           --iron-autogrow-textarea_-_overflow: hidden;
@@ -96,12 +105,23 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                 <td colspan="3"></td>
                 <td colspan="3"></td>
                 <td colspan="2" class="action-btns" tabindex="0">
-                  <div
-                    class="icon action-btns"
-                    @click="${() => this.addNewPDOutput(result.ll_results)}"
-                    ?hidden="${!this.permissions.edit.result_links}"
-                  >
-                    <paper-icon-button icon="add-box" tabindex="0"></paper-icon-button>
+                  <div class="action-btns">
+                    <etools-info-tooltip
+                      position="left"
+                      custom-icon
+                      ?hide-tooltip="${!this.permissions.edit.result_links}"
+                      style="justify-content:end;"
+                    >
+                      <paper-icon-button
+                        id="add-pd-output-${result.id}"
+                        slot="custom-icon"
+                        @click="${() => this.addNewPDOutput(result.ll_results)}"
+                        ?hidden="${!this.permissions.edit.result_links}"
+                        icon="add-box"
+                        tabindex="0"
+                      ></paper-icon-button>
+                      <span class="no-wrap" slot="message">${translate('ADD_PD_OUTPUT')}</span>
+                    </etools-info-tooltip>
                   </div>
                 </td>
               </tr>
@@ -151,7 +171,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                         ${this.intervention.planned_budget.currency}
                         <span class="b">${displayCurrencyAmount(pdOutput.total, '0.00')}</span>
                       </div>
-                      <div class="action-btns align-bottom">
+                      <div class="action-btns align-bottom flex-h action-btns">
                         <paper-icon-button
                           icon="create"
                           ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
@@ -160,13 +180,20 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                             this.requestUpdate();
                           }}"
                         ></paper-icon-button>
-                        <div
-                          class="icon"
-                          @click="${() => this.addNewActivity(pdOutput)}"
-                          ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
+                        <etools-info-tooltip
+                          position="top"
+                          custom-icon
+                          ?hide-tooltip="${!this.permissions.edit.result_links}"
+                          style="justify-content:end;"
                         >
-                          <paper-icon-button icon="add-box"></paper-icon-button>
-                        </div>
+                          <paper-icon-button
+                            icon="add-box"
+                            slot="custom-icon"
+                            @click="${() => this.addNewActivity(pdOutput)}"
+                            ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
+                          ></paper-icon-button>
+                          <span class="no-wrap" slot="message">${translate('ADD_NEW_ACTIVITY')}</span>
+                        </etools-info-tooltip>
                         <paper-icon-button
                           icon="delete"
                           ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"

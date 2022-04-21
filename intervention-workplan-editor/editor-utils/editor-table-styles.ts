@@ -65,10 +65,6 @@ export const EditorTableStyles = css`
     border-right: none;
   }
 
-  tbody.odd tr:nth-child(even) {
-    background-color: innherit;
-  }
-
   td:nth-child(n + 4) {
     text-align: right;
   }
@@ -78,7 +74,7 @@ export const EditorTableStyles = css`
   }
 
   .gray-1 {
-    background-color: #efefef;
+    background-color: #e4e4e4;
   }
   .b {
     font-weight: 600;
@@ -96,16 +92,8 @@ export const EditorTableStyles = css`
   paper-icon-button[icon='create']:hover {
     color: #212121;
   }
-  div.icon {
-    display: inline-block;
-  }
 
-  div.icon:hover {
-    color: #212121;
-    cursor: pointer;
-  }
-
-  div.icon paper-icon-button:hover {
+  paper-icon-button:hover {
     color: #212121;
   }
 

@@ -8,16 +8,16 @@ export const EditorHoverStyles = css`
     height: 80px;
   }
 
-  tbody[hoverable] > tr.action-btns > td.action-btns > div.action-btns {
+  tbody[hoverable] > tr.action-btns > td.action-btns > .action-btns {
     opacity: 0;
   }
-  tbody[hoverable][has-edit-permissions]:not([in-edit-mode]):hover > tr.action-btns > td.action-btns > div.action-btns {
+  tbody[hoverable][has-edit-permissions]:not([in-edit-mode]):hover > tr.action-btns > td.action-btns > .action-btns {
     opacity: 1;
   }
   tbody[hoverable][has-edit-permissions]:not([in-edit-mode]):focus-within
     > tr.action-btns
     > td.action-btns
-    > div.action-btns {
+    > .action-btns {
     opacity: 1;
   }
 
@@ -30,7 +30,7 @@ export const EditorHoverStyles = css`
     flex-direction: row;
     align-items: center;
     justify-content: flex-end;
-    background-color: #e6e5e5;
+    background-color: #d2cfcf;
   }
 
   .activity-items-row[has-edit-permissions]:not([in-edit-mode]):hover {
