@@ -48,8 +48,8 @@ export class PdIndicator extends CommentsMixin(LitElement) {
               '—'}
             </div>
             <div class="item-link" @click="${() => (this.detailsOpened = !this.detailsOpened)}">
-              ${this.detailsOpened ? 'hide' : 'see'} ${this.locationNames.length} ${translate('LOCATIONS')}
-              ${translate('AND')} ${this.indicator.disaggregation.length} ${translate('DISAGGREGATIONS')}
+              ${this.detailsOpened ? 'hide' : 'show'} ${this.locationNames.length} ${translate('LOCATIONS')} |
+              ${this.indicator.disaggregation.length} ${translate('DISAGGREGATIONS')}
             </div>
           </div>
 
@@ -207,6 +207,8 @@ export class PdIndicator extends CommentsMixin(LitElement) {
     const displayType = indicator.indicator ? indicator.indicator!.display_type : '';
     if (unit === 'percentage' && displayType === 'ratio') {
       return item.v + ' / ' + item.d;
+    } else if (unit === 'percentage') {
+      return item.v;
     }
 
     return displayCurrencyAmount(String(item.v), '0.00');
@@ -263,6 +265,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
         .table-row {
           gap: 0;
           flex-direction: column;
+          padding-right: 35px;
         }
         .main-info {
           display: flex;

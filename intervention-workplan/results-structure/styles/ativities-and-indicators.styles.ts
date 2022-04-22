@@ -20,7 +20,6 @@ export const ActivitiesAndIndicatorsStyles: CSSResult = css`
   .table-head {
     padding: 4px 16px !important;
     font-size: 16px;
-    font-weight: 700;
     line-height: 16px;
     color: #5c5c5c;
   }
@@ -94,10 +93,10 @@ export const ActivitiesAndIndicatorsStyles: CSSResult = css`
   .item-link {
     margin-top: 7px;
     font-size: 16px;
-    font-weight: 500;
     line-height: 26px;
-    color: #2073b7;
+    color: #5c5c5c;
     cursor: pointer;
+    text-transform: lowercase;
   }
   etools-data-table-row {
     --list-bg-color: var(--main-background);

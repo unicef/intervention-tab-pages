@@ -46,6 +46,7 @@ import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-commo
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
+import {EtoolsDataTableRow} from '@unicef-polymer/etools-data-table/etools-data-table-row';
 
 @customElement('pd-indicators')
 export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)) {
@@ -156,6 +157,11 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
     );
   }
 
+  openAllRows(): void {
+    const row: EtoolsDataTableRow = this.shadowRoot!.querySelector('etools-data-table-row') as EtoolsDataTableRow;
+    row.detailsOpened = true;
+  }
+
   computeAvailableOptionsForIndicators(intervention: Intervention) {
     if (!isJsonStrMatch(this.interventionLocations, intervention.flat_locations)) {
       this.interventionLocations = intervention.flat_locations;
@@ -169,6 +175,10 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
   }
 
   openIndicatorDialog(indicator?: Indicator, readonly?: boolean) {
+    if (!this.indicatorLocationOptions?.length) {
+      fireEvent(this, 'toast', {text: 'Please, select PD locations first'});
+      return;
+    }
     openDialog<IndicatorDialogData>({
       dialog: 'indicator-dialog',
       dialogData: {
@@ -290,9 +300,8 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
           display: block;
           background: var(--main-background);
         }
-        .table-row .indicator {
-          flex: auto;
-          text-align: left;
+        .table-row {
+          padding-right: 35px !important;
         }
         etools-data-table-row::part(edt-list-row-collapse-wrapper) {
           border-bottom: none;
