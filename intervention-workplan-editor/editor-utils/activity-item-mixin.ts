@@ -209,6 +209,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
               <td class="total action-btns" style="position:relative;" colspan="2">
                 <paper-input
                   readonly
+                  class="bold"
                   .noLabelFloat="${!activity.itemsInEditMode}"
                   .value="${this.getTotalForItem(item.no_units || 0, item.unit_price || 0)}"
                 ></paper-input>

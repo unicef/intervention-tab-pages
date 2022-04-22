@@ -55,11 +55,14 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
           flex: auto;
           --paper-input-container-input: {
             display: block;
+            text-overflow: hidden;
           }
+
           --iron-autogrow-textarea: {
             overflow: auto;
             padding: 0;
             max-height: 96px;
+            font-weight: bold;
           }
           --paper-input-container-label-floating_-_font-weight: 600;
           --paper-font-subhead_-_font-weight: 600;
@@ -67,16 +70,24 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
             font-weight: 600;
           }
         }
-        paper-textarea.other[readonly] {
-          --iron-autogrow-textarea: {
-            overflow: auto;
-            padding: 0;
-            max-height: 20px;
-          }
-          --iron-autogrow-textarea_-_overflow: hidden;
-        }
         paper-textarea[readonly] {
           --iron-autogrow-textarea_-_overflow: hidden;
+        }
+        paper-textarea.bold {
+          --iron-autogrow-textarea_-_font-weight: bold;
+        }
+        paper-textarea.other[readonly] {
+          --iron-autogrow-textarea_-_font-weight: 400;
+          --iron-autogrow-textarea_-_overflow: hidden;
+          --iron-autogrow-textarea_-_max-height: 21px;
+        }
+        .activity-items-row paper-textarea {
+          --iron-autogrow-textarea_-_font-weight: 400;
+        }
+        .activity-items-row paper-input.bold {
+          --paper-input-container-input: {
+            font-weight: bold;
+          }
         }
       </style>
       <table>
@@ -149,6 +160,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                     <td colspan="3" class="b" tabindex="0">
                       <paper-textarea
                         no-label-float
+                        class="bold"
                         input
                         .value="${pdOutput.name}"
                         ?readonly="${!pdOutput.inEditMode}"

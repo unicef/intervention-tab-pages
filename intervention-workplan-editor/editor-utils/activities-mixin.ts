@@ -74,7 +74,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                   <paper-textarea
                     no-label-float
                     input
-                    class="name"
+                    class="name bold"
                     .value="${activity.name}"
                     ?readonly="${!activity.inEditMode}"
                     required
