@@ -69,8 +69,8 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td colspan="2">${translate('GENERAL.TOTAL')}</td>
               </tr>
               <tr class="text action-btns" type="activity">
-                <td class="padd-top-15">${activity.code}</td>
-                <td colspan="3" tabindex="0">
+                <td class="padd-top-10">${activity.code}</td>
+                <td colspan="3" tabindex="0" class="no-top-padding">
                   <paper-textarea
                     no-label-float
                     input
@@ -144,7 +144,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 </td>
                 <td
                   colspan="2"
-                  class="padd-top-15 action-btns"
+                  class="padd-top-10 action-btns"
                   style="position: relative;"
                   tabindex="${this.permissions.edit.result_links ? '0' : '-1'}"
                 >

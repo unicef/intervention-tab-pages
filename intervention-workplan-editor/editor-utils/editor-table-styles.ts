@@ -158,8 +158,8 @@ export const EditorTableStyles = css`
     padding: 0;
     width: 25px;
   }
-  .padd-top-15 {
-    padding-top: 16px;
+  .padd-top-10 {
+    padding-top: 10px;
   }
   tr.no-b-border > td {
     border-bottom: none;
@@ -173,6 +173,9 @@ export const EditorTableStyles = css`
   }
   td.no-l-border {
     border-left: none;
+  }
+  .no-top-padding {
+    padding-top: 0;
   }
 
   .heavy-blue {

@@ -156,8 +156,8 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                     <td colspan="2">${translate('TOTAL')}</td>
                   </tr>
                   <tr class="text action-btns" type="pd-output">
-                    <td class="padd-top-15">${pdOutput.code}</td>
-                    <td colspan="3" class="b" tabindex="0">
+                    <td class="padd-top-10">${pdOutput.code}</td>
+                    <td colspan="3" class="b no-top-padding" tabindex="0">
                       <paper-textarea
                         no-label-float
                         class="bold"
