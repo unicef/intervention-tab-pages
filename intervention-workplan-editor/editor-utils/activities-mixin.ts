@@ -29,6 +29,9 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
     @property({type: Array})
     originalResultStructureDetails!: ExpectedResultExtended[];
 
+    @property({type: Array})
+    resultStructureDetails!: ExpectedResultExtended[];
+
     // @ts-ignore
     @property({type: Object})
     intervention!: Intervention;
@@ -252,14 +255,21 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       if (!activity.id) {
         activities.shift();
       } else {
-        Object.assign(
-          activity,
-          cloneDeep(
-            this.originalResultStructureDetails[resultIndex].ll_results[pdOutputIndex].activities[activityIndex]
-          )
-        );
+        Object.assign(activity, cloneDeep(this.getOriginalActivity(resultIndex, pdOutputIndex, activityIndex)));
       }
       this.requestUpdate();
+    }
+
+    getOriginalActivity(resultIndex: number, pdOutputIndex: number, activityIndex: number) {
+      // Covers case when a new Activity is added while the cancelled one is already in edit mode,
+      // thus changing the index
+      let originalActivityIndex = activityIndex;
+      if (this.resultStructureDetails[resultIndex].ll_results[pdOutputIndex].activities.find((a) => !a.id)) {
+        originalActivityIndex = originalActivityIndex - 1;
+      }
+      return this.originalResultStructureDetails[resultIndex].ll_results[pdOutputIndex].activities[
+        originalActivityIndex
+      ];
     }
     updateModelValue(model: any, property: string, newVal: any) {
       if (newVal == model[property]) {

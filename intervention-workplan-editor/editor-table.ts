@@ -399,12 +399,23 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
     if (!pdOutput.id) {
       llResults.shift();
     } else {
-      pdOutput.name = this.originalResultStructureDetails[resultIndex].ll_results[pdOutputIndex].name;
+      pdOutput.name = this.getOriginalPDOutput(resultIndex, pdOutputIndex).name;
     }
     pdOutput.invalid = false;
     pdOutput.inEditMode = false;
 
     this.requestUpdate();
+  }
+
+  getOriginalPDOutput(resultIndex: number, pdOutputIndex: number) {
+    // Covers case when a new PD Output is added while the cancelled one is already in edit mode,
+    // thus changing the index
+    let originalPdOutputIndex = pdOutputIndex;
+
+    if (this.resultStructureDetails[resultIndex].ll_results.find((pdOutput) => !pdOutput.id)) {
+      originalPdOutputIndex = originalPdOutputIndex - 1;
+    }
+    return this.originalResultStructureDetails[resultIndex].ll_results[originalPdOutputIndex];
   }
 
   async openDeletePdOutputDialog(lower_result_id: number) {
