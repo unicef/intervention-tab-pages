@@ -45,7 +45,7 @@ export const EditorTableStyles = css`
     font-size: smaller;
     font-weight: bold;
     padding-bottom: 2px !important;
-    padding-top: 20px;
+    padding-top: 18px;
   }
   tr.header.no-padd > td {
     padding-top: 4px;
@@ -154,10 +154,7 @@ export const EditorTableStyles = css`
     vertical-align: bottom;
     padding-left: 0;
   }
-  paper-icon-button#delItem {
-    padding: 0;
-    width: 25px;
-  }
+
   .padd-top-10 {
     padding-top: 10px;
   }

@@ -46,6 +46,10 @@ export const EditorHoverStyles = css`
     opacity: 1;
   }
 
+  tr.activity-items-row[has-edit-permissions]:not([in-edit-mode]) > td.action-btns:focus-within > div.hover-block {
+    opacity: 1;
+  }
+
   tr.activity-items-row[has-edit-permissions][new-item]:hover > td.action-btns > div.hover-block {
     opacity: 1;
   }
