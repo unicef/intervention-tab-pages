@@ -10,23 +10,23 @@ import {
   PropertyValues,
   queryAll
 } from 'lit-element';
-import {fireEvent} from '../../../utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import '@polymer/paper-input/paper-textarea';
 import './comment';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getEndpoint} from '../../../utils/endpoint-helper';
-import {interventionEndpoints} from '../../../utils/intervention-endpoints';
-import {getStore} from '../../../utils/redux-store-access';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {addComment, updateComment} from './comments.actions';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {RootState} from '../../types/store.types';
-import {connectStore} from '../../mixins/connect-store-mixin';
+import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {PaperTextareaElement} from '@polymer/paper-input/paper-textarea';
-import {setTextareasMaxHeight} from '../../../utils/textarea-max-rows-helper';
 import {InterventionComment, GenericObject} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {sharedStyles} from '../../styles/shared-styles-lit';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {setTextareasMaxHeight} from '@unicef-polymer/etools-modules-common/dist/utils/textarea-max-rows-helper';
+import {CommentsEndpoints} from './comments-types';
 
 @customElement('comments-dialog')
 export class CommentsDialog extends connectStore(LitElement) {
@@ -69,14 +69,15 @@ export class CommentsDialog extends connectStore(LitElement) {
   @property() dialogOpened = true;
   @property() comments: (InterventionComment & {loadingError?: boolean})[] = [];
   @queryAll('paper-textarea') textareas!: PaperTextareaElement[];
+  @property() endpoints!: CommentsEndpoints;
 
-  set dialogData({interventionId, relatedTo, relatedToDescription}: any) {
+  set dialogData({interventionId, relatedTo, relatedToDescription, endpoints}: any) {
     this.interventionId = interventionId;
     this.relatedTo = relatedTo;
+    this.endpoints = endpoints;
     this.commentsDialogTitle = `Comments on: ${relatedToDescription}`;
-    const comments: GenericObject<InterventionComment[]> = getStore().getState().commentsData.collection[
-      interventionId
-    ];
+    const comments: GenericObject<InterventionComment[]> =
+      getStore().getState().commentsData.collection[interventionId];
     const relatedToComments: InterventionComment[] = (comments && comments[relatedTo]) || [];
     this.comments = [...relatedToComments];
     this.requestUpdate().then(() => this.scrollDown());
@@ -93,8 +94,9 @@ export class CommentsDialog extends connectStore(LitElement) {
 
   protected render(): TemplateResult {
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} etools-dialog::part(ed-scrollable) {
+        etools-dialog::part(ed-scrollable) {
           margin-top: 0 !important;
         }
         paper-textarea {
@@ -184,7 +186,7 @@ export class CommentsDialog extends connectStore(LitElement) {
     this.requestUpdate();
     this.resolvingCollection.add(id);
     sendRequest({
-      endpoint: getEndpoint(interventionEndpoints.resolveComment, {interventionId: this.interventionId, commentId: id}),
+      endpoint: getEndpoint(this.endpoints.resolveComment, {interventionId: this.interventionId, commentId: id}),
       method: 'POST'
     })
       .then((updatedComment: InterventionComment) => {
@@ -208,7 +210,7 @@ export class CommentsDialog extends connectStore(LitElement) {
     this.requestUpdate();
     this.deletingCollection.add(id);
     sendRequest({
-      endpoint: getEndpoint(interventionEndpoints.deleteComment, {interventionId: this.interventionId, commentId: id}),
+      endpoint: getEndpoint(this.endpoints.deleteComment, {interventionId: this.interventionId, commentId: id}),
       method: 'POST'
     })
       .then((updatedComment: InterventionComment) => {
@@ -247,7 +249,7 @@ export class CommentsDialog extends connectStore(LitElement) {
       this.newMessageText = '';
     }
     sendRequest({
-      endpoint: getEndpoint(interventionEndpoints.comments, {interventionId: this.interventionId}),
+      endpoint: getEndpoint(this.endpoints.saveComments, {interventionId: this.interventionId}),
       method: 'POST',
       body
     })

@@ -1,4 +1,3 @@
-/* eslint-disable lit-a11y/click-events-have-key-events */
 import {LitElement, customElement, html, property, PropertyValues} from 'lit-element';
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-selector/iron-selector';
@@ -11,8 +10,7 @@ import './qpr/quarterly-reporting-requirements';
 import './hr/humanitarian-reporting-req-unicef';
 import './hr/humanitarian-reporting-req-cluster';
 import './srr/special-reporting-requirements';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {sectionContentStyles} from '../../common/styles/content-section-styles-polymer';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 
 import {HumanitarianReportingReqUnicefEl} from './hr/humanitarian-reporting-req-unicef';
 import {QuarterlyReportingRequirementsEL} from './qpr/quarterly-reporting-requirements';
@@ -21,14 +19,17 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import {RootState} from '../../common/types/store.types';
 import {ReportingRequirementsPermissions} from './reportingRequirementsPermissions.models';
 import {selectReportingRequirementsPermissions} from './reportingRequirementsPermissions.selectors';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import {isUnicefUser} from '../../common/selectors';
-import {connectStore} from '../../common/mixins/connect-store-mixin';
+import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {AnyObject, Permission} from '@unicef-polymer/etools-types';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {buttonsStyles} from '../../common/styles/button-styles';
-import {callClickOnSpacePushListener} from '../../utils/common-methods';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import {translate} from 'lit-translate';
+import {translatesMap} from '../../utils/intervention-labels-map';
+import {sectionContentStyles} from '@unicef-polymer/etools-modules-common/dist/styles/content-section-styles-polymer';
+import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 
 /**
  * @polymer
@@ -41,9 +42,9 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
   }
   render() {
     return html`
-      ${sectionContentStyles}
+      ${sectionContentStyles} ${sharedStyles}
       <style>
-        ${sharedStyles} :host {
+        :host {
           display: block;
           margin-bottom: 24px;
           width: 100%;
@@ -103,11 +104,15 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
           color: var(--primary-text-color);
           margin-left: 16px;
         }
+
+        info-icon-tooltip {
+          --iit-margin: 0 5px 0 0;
+        }
       </style>
       <etools-content-panel
         show-expand-btn
         class="content-section"
-        panel-title=${translate('PARTNER_REPORTING_REQUIREMENTS')}
+        panel-title=${translate(translatesMap.reporting_requirements)}
       >
         <div class="flex-c layout-horizontal">
           <div class="reports-menu nav-menu">
@@ -120,10 +125,12 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
               tabindex="0"
               id="clickable"
             >
-              <span
-                >${translate('QUARTERLY_PROGRESS_REPORTS')}
-                (${this.qprRequirementsCount})</span
-              >
+              <info-icon-tooltip
+                id="iit-qpr"
+                ?hidden="${this.isReadonly}"
+                .tooltipText="${translate('QUARTERLY_PROGRESS_REPORT_TOOLTIP')}"
+              ></info-icon-tooltip>
+              <span>${translate('QUARTERLY_PROGRESS_REPORTS')} (${this.qprRequirementsCount})</span>
               <paper-icon-button
                 class="edit-rep-req"
                 icon="create"
@@ -140,10 +147,12 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
               tabindex="0"
               id="clickable"
             >
-              <span
-                >${translate('HUMANITARIAN_REPORTS_UNICEF')}
-                (${this.hrUnicefRequirementsCount})</span
-              >
+              <info-icon-tooltip
+                id="iit-hrr"
+                ?hidden="${this.isReadonly}"
+                .tooltipText="${translate('HUMANITARIAN_REPORT_TOOLTIP')}"
+              ></info-icon-tooltip>
+              <span>${translate('HUMANITARIAN_REPORTS_UNICEF')} (${this.hrUnicefRequirementsCount})</span>
               <paper-icon-button
                 class="edit-rep-req"
                 icon="create"
@@ -151,21 +160,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
                 ?hidden="${this._hideRepReqEditBtn(this.isReadonly, this.hrUnicefRequirementsCount)}"
               ></paper-icon-button>
             </div>
-            ${this.isUnicefUser
-              ? html` <div
-                  name="humanitarianCluster"
-                  title=${translate('HUMANITARIAN_REPORTS_CLUSTER')}
-                  class="nav-menu-item"
-                  ?selected="${this.isSelected('humanitarianCluster')}"
-                  @click="${this.selectType}"
-                  tabindex="0"
-                  id="clickable"
-                >
-                  ${translate('HUMANITARIAN_REPORTS_CLUSTER')}
-                  (${this.hrClusterRequirementsCount})
-                </div>`
-              : html``}
-
+            ${this.getHumanitarianLink(this.hrClusterRequirementsCount)}
             <div
               name="special"
               title=${translate('SPECIAL_REPORT')}
@@ -175,8 +170,12 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
               tabindex="0"
               id="clickable"
             >
-              ${translate('SPECIAL_REPORT')}
-              (${this.specialRequirementsCount})
+              <info-icon-tooltip
+                id="iit-sp"
+                ?hidden="${this.isReadonly}"
+                .tooltipText="${translate('SPECIAL_REPORT_TOOLTIP')}"
+              ></info-icon-tooltip>
+              ${translate('SPECIAL_REPORT')} (${this.specialRequirementsCount})
             </div>
           </div>
           <div class="flex-c reporting-req-data">
@@ -193,6 +192,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
                 .interventionStart="${this.interventionStart}"
                 .interventionEnd="${this.interventionEnd}"
                 .requirementsCount="${this.qprRequirementsCount}"
+                .interventionStatus="${this.intervention?.status}"
                 .editMode="${!this.isReadonly}"
                 @count-changed=${(e: CustomEvent) => this.updateQPRCount(e.detail)}
               >
@@ -357,5 +357,23 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
 
   isSelected(type: string): boolean {
     return type === this.selectedReportType;
+  }
+
+  getHumanitarianLink(hrClusterRequirementsCount: number) {
+    // The link it's hidden for the moment (#28753)
+    return html``;
+    return this.isUnicefUser
+      ? html` <div
+          name="humanitarianCluster"
+          title=${translate('HUMANITARIAN_REPORTS_CLUSTER')}
+          class="nav-menu-item"
+          ?selected="${this.isSelected('humanitarianCluster')}"
+          @click="${this.selectType}"
+          tabindex="0"
+          id="clickable"
+        >
+          ${translate('HUMANITARIAN_REPORTS_CLUSTER')} (${hrClusterRequirementsCount})
+        </div>`
+      : html``;
   }
 }

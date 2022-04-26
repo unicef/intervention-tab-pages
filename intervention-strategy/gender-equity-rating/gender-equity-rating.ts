@@ -5,22 +5,27 @@ import '@polymer/paper-radio-group';
 import '@unicef-polymer/etools-loading/etools-loading';
 import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import {buttonsStyles} from '../../common/styles/button-styles';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
+import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {selectGenderEquityRating, selectGenderEquityRatingPermissions} from './genderEquityRating.selectors';
 import {GenderEquityRatingPermissions, GenderEquityRating} from './genderEquityRating.models';
-import {getStore} from '../../utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {RootState} from '../../common/types/store.types';
 import {patchIntervention} from '../../common/actions/interventions';
-import {isJsonStrMatch} from '../../utils/utils';
-import {pageIsNotCurrentlyActive, detailsTextareaRowsCount} from '../../utils/common-methods';
+import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {
+  pageIsNotCurrentlyActive,
+  detailsTextareaRowsCount
+} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AnyObject, AsyncAction, Permission} from '@unicef-polymer/etools-types';
+import {AsyncAction, LabelAndValue, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {translatesMap} from '../../utils/intervention-labels-map';
 
 /**
  * @customElement
@@ -32,15 +37,14 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
   }
   render() {
     if (!this.data || !this.ratings || !this.permissions) {
-      return html`<style>
-          ${sharedStyles}
-        </style>
-        <etools-loading loading-text="Loading..." active></etools-loading>`;
+      return html` ${sharedStyles}
+        <etools-loading source="ger" loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`
+     ${sharedStyles}
       <style>
-        ${sharedStyles} :host {
+       :host {
           display: block;
           margin-bottom: 24px;
         }
@@ -54,6 +58,13 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         etools-content-panel::part(ecp-content) {
           padding: 8px 24px 16px 24px;
         }
+        info-icon-tooltip {
+          --iit-icon-size: 18px;
+        }
+        #iit-ger {
+          --iit-margin: 8px 0 8px -15px;
+          --iit-icon-size: 24px;
+        }
       </style>
 
       <etools-content-panel
@@ -62,7 +73,13 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         comment-element="gender-equity-sustainability"
         comment-description=${translate('GENDER_EQUITY_SUSTAINABILITY')}
       >
-        <div slot="panel-btns">
+        <div slot="after-title">
+          <info-icon-tooltip
+            id="iit-ger"
+            .tooltipHtml="${this.getRatingInfoHtml()}"
+          ></info-icon-tooltip>
+        </div>
+       <div slot="panel-btns">
           <paper-icon-button
             ?hidden="${this.hideEditIcon(this.editMode, this.canEditAtLeastOneField)}"
             @click="${this.allowEdit}"
@@ -73,81 +90,95 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
 
         <div class="row-padding-v pb-20">
           <div class="w100">
-            <label class="paper-label">${translate('GENDER_RATING')}</label>
+            <label class="paper-label">${translate(translatesMap.gender_rating)}</label>
+            <info-icon-tooltip id="iit-gender" ?hidden=${!this.editMode}
+              .tooltipText=${translate('GENDER_RATING_INFO')}>
+            </info-icon-tooltip>
           </div>
-          <paper-radio-group
-            selected="${this.data.gender_rating}"
-            @selected-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'gender_rating')}"
-          >
-            ${this._getRatingRadioButtonsTemplate(this.ratings, this.permissions.edit.gender_rating)}
-          </paper-radio-group>
+          ${this._getRatingRadioButtonGroupTemplate(
+            this.editMode,
+            this.data.gender_rating,
+            'gender_rating',
+            this.ratings,
+            this.permissions.edit.gender_rating
+          )}
           <div class="col col-12 pl-none">
             <paper-textarea
-              label=${translate('GENDER_NARATIVE')}
+              label=${translate(translatesMap.gender_narrative)}
               always-float-label
               class="w100"
               placeholder="&#8212;"
-              rows="${detailsTextareaRowsCount(this.editMode)}"
-              max-rows="4"
               .value="${this.data.gender_narrative}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'gender_narrative')}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.gender_narrative)}"
               ?required="${this.permissions.required.gender_narrative}"
               maxlength="3000"
+              rows="${detailsTextareaRowsCount(this.editMode)}"
+              .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.gender_narrative)}"
             >
             </paper-textarea>
           </div>
         </div>
+
         <div class="row-padding-v pb-20">
           <div class="w100">
-            <label class="paper-label">${translate('SUSTAINABILITY_RATING')}</label>
+            <label class="paper-label">${translate(translatesMap.equity_rating)}</label>
+            <info-icon-tooltip id="iit-equity" ?hidden=${!this.editMode}
+              .tooltipText=${translate('EQUITY_RATING_INFO')}>
+            </info-icon-tooltip>
           </div>
-          <paper-radio-group
-            .selected="${this.data.sustainability_rating}"
-            @selected-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'sustainability_rating')}"
-          >
-            ${this._getRatingRadioButtonsTemplate(this.ratings, this.permissions.edit.sustainability_rating)}
-          </paper-radio-group>
+          ${this._getRatingRadioButtonGroupTemplate(
+            this.editMode,
+            this.data.equity_rating,
+            'equity_rating',
+            this.ratings,
+            this.permissions.edit.equity_rating
+          )}
           <div class="col col-12 pl-none">
             <paper-textarea
-              label=${translate('SUSTAINABILITY_NARRATIVE')}
+              label=${translate(translatesMap.equity_narrative)}
               always-float-label
               class="w100"
               placeholder="&#8212;"
-              rows="${detailsTextareaRowsCount(this.editMode)}"
-              max-rows="4"
-              .value="${this.data.sustainability_narrative}"
-              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'sustainability_narrative')}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.sustainability_narrative)}"
-              ?required="${this.permissions.required.sustainability_narrative}"
-              maxlength="3000"
-            >
-            </paper-textarea>
-          </div>
-        </div>
-        <div class="row-padding-v pb-20">
-          <div class="w100">
-            <label class="paper-label">${translate('EQUITY_RATING')}</label>
-          </div>
-          <paper-radio-group
-            .selected="${this.data.equity_rating}"
-            @selected-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'equity_rating')}"
-          >
-            ${this._getRatingRadioButtonsTemplate(this.ratings, this.permissions.edit.equity_rating)}
-          </paper-radio-group>
-          <div class="col col-12 pl-none">
-            <paper-textarea
-              label=${translate('EQUITY_NARATIVE')}
-              always-float-label
-              class="w100"
-              placeholder="&#8212;"
-              rows="${detailsTextareaRowsCount(this.editMode)}"
-              max-rows="4"
               .value="${this.data.equity_narrative}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'equity_narrative')}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.equity_narrative)}"
               ?required="${this.permissions.required.equity_narrative}"
               maxlength="3000"
+              rows="${detailsTextareaRowsCount(this.editMode)}"
+              .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.equity_narrative)}"
+            >
+            </paper-textarea>
+          </div>
+        </div>
+
+        <div class="row-padding-v pb-20">
+          <div class="w100">
+            <label class="paper-label">${translate(translatesMap.sustainability_rating)}</label>
+            <info-icon-tooltip id="iit-sust" ?hidden=${!this.editMode}
+              .tooltipText=${translate('SUSTAINABILITY_RATING_INFO')}>
+            </info-icon-tooltip>
+          </div>
+          ${this._getRatingRadioButtonGroupTemplate(
+            this.editMode,
+            this.data.sustainability_rating,
+            'sustainability_rating',
+            this.ratings,
+            this.permissions.edit.sustainability_rating
+          )}
+          <div class="col col-12 pl-none">
+            <paper-textarea
+              label=${translate(translatesMap.sustainability_narrative)}
+              always-float-label
+              class="w100"
+              placeholder="&#8212;"
+              .value="${this.data.sustainability_narrative}"
+              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'sustainability_narrative')}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.sustainability_narrative)}"
+              ?required="${this.permissions.required.sustainability_narrative}"
+              maxlength="3000"
+              rows="${detailsTextareaRowsCount(this.editMode)}"
+              .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.sustainability_narrative)}"
             >
             </paper-textarea>
           </div>
@@ -163,7 +194,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
   permissions!: Permission<GenderEquityRatingPermissions>;
 
   @property({type: Array})
-  ratings!: AnyObject[];
+  ratings!: LabelAndValue[];
 
   @property({type: Object})
   data!: GenderEquityRating;
@@ -194,10 +225,28 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
       this.set_canEditAtLeastOneField(this.permissions.edit);
     }
   }
+  _getRatingRadioButtonGroupTemplate(
+    editMode: boolean,
+    ratingSelected: string,
+    ratingKey: string,
+    ratings: LabelAndValue[],
+    permission: boolean
+  ) {
+    const ratingText = editMode ? '' : ratings.find((r) => r.value === ratingSelected)?.label || '';
 
-  _getRatingRadioButtonsTemplate(ratings: AnyObject[], permission: boolean) {
+    return editMode
+      ? html`<paper-radio-group
+          selected="${ratingSelected}"
+          @selected-changed="${({detail}: CustomEvent) => this.valueChanged(detail, ratingKey)}"
+        >
+          ${this._getRatingRadioButtonsTemplate(ratings, permission)}
+        </paper-radio-group>`
+      : html`<label>${ratingText}</label>`;
+  }
+
+  _getRatingRadioButtonsTemplate(ratings: LabelAndValue[], permission: boolean) {
     return ratings.map(
-      (r: AnyObject) =>
+      (r: LabelAndValue) =>
         html`<paper-radio-button
           class="${this.isReadonly(this.editMode, permission) ? 'readonly' : ''}"
           name="${r.value}"
@@ -220,5 +269,40 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
       .catch((error: any) => {
         console.log(error);
       });
+  }
+
+  getRatingInfoHtml() {
+    return html`
+      <style>
+        .rating-info {
+          display: flex;
+          flex-direction: column;
+          padding: 6px;
+          margin: 10px 0px;
+          width: 100%;
+          box-sizing: border-box;
+          border: solid 1px var(--secondary-background-color);
+        }
+        .no-bold {
+          font-weight: normal;
+        }
+      </style>
+      <div class="rating-info">
+        <span>${translate('SUSTAINABILITY_NONE')}:</span>
+        <span class="no-bold">${translate('SUSTAINABILITY_NONE_TOOLTIP')}</span>
+      </div>
+      <div class="rating-info">
+        <span>${translate('SUSTAINABILITY_MARGINAL')}:</span>
+        <span class="no-bold">${translate('SUSTAINABILITY_MARGINAL_TOOLTIP')}</span>
+      </div>
+      <div class="rating-info">
+        <span>${translate('SUSTAINABILITY_SIGNIFICANT')}:</span>
+        <span class="no-bold">${translate('SUSTAINABILITY_SIGNIFICANT_TOOLTIP')}</span>
+      </div>
+      <div class="rating-info">
+        <span>${translate('SUSTAINABILITY_PRINCIPAL')}:</span>
+        <span class="no-bold">${translate('SUSTAINABILITY_PRINCIPAL_TOOLTIP')}</span>
+      </div>
+    `;
   }
 }

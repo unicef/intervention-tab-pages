@@ -1,16 +1,16 @@
 import {LitElement, html, TemplateResult, property, customElement, CSSResultArray, css} from 'lit-element';
-import {fireEvent} from '../../utils/fire-custom-event';
-import {getEndpoint} from '../../utils/endpoint-helper';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import '@unicef-polymer/etools-upload/etools-upload.js';
 import '@polymer/paper-checkbox';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
-import {getStore} from '../../utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
-import {validateRequiredFields} from '../../utils/validation-helper';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {connectStore} from '../../common/mixins/connect-store-mixin';
+import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {IdAndName, GenericObject, ReviewAttachment} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 
@@ -54,8 +54,9 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
 
   protected render(): TemplateResult {
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} etools-dialog::part(ed-scrollable) {
+        etools-dialog::part(ed-scrollable) {
           margin-top: 0 !important;
         }
 
@@ -100,7 +101,7 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
           <!-- Attachment -->
           <etools-upload
             label=${translate('ATTACHMENT')}
-            accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt"
+            accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt,.xml,.xls,.xlt,.xlsx,.xlsm,.xlsb,.xltx,.xltm"
             .showDeleteBtn="${false}"
             ?readonly="${this.data.id}"
             required

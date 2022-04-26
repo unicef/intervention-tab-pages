@@ -1,18 +1,28 @@
-import {LitElement, html} from 'lit-element';
+import {LitElement, html, property} from 'lit-element';
 import './partner-details/partner-info';
 import './details-overview/details-overview';
 import './unicef-details/unicef-details';
-import './geographical-coverage/geographical-coverage';
 import './amendments/pd-amendments';
 import './fund-reservations/fund-reservations';
 import './review-and-sign/review-and-sign';
 import './other/other';
-import {fireEvent} from '../utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {RootState} from '../common/types/store.types';
+import {InterventionPermissionsFields, Permission} from '@unicef-polymer/etools-types';
+import {currentInterventionPermissions, currentPage, currentSubpage} from '../common/selectors';
+import {selectDatesAndSignaturesPermissions} from '../common/managementDocument.selectors';
+import './financial/financial-component';
+import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 
 /**
  * @customElement
  */
-export class InterventionMetadata extends LitElement {
+export class InterventionMetadata extends connectStore(LitElement) {
+  @property({type: Object})
+  permissions!: Permission<InterventionPermissionsFields>;
+
+  @property() showSignatureAndDates = false;
+
   render() {
     // language=HTML
     return html`
@@ -21,10 +31,10 @@ export class InterventionMetadata extends LitElement {
       <details-overview></details-overview>
       <partner-info></partner-info>
       <unicef-details></unicef-details>
-      <geographical-coverage></geographical-coverage>
-      <fund-reservations></fund-reservations>
-      <pd-amendments></pd-amendments>
-      <review-and-sign></review-and-sign>
+      <financial-component></financial-component>
+      ${this.permissions?.view!.frs ? html`<fund-reservations></fund-reservations>` : ''}
+      ${this.permissions?.view!.amendments ? html`<pd-amendments></pd-amendments>` : ''}
+      ${this.showSignatureAndDates ? html`<review-and-sign></review-and-sign>` : ''}
       <other-metadata></other-metadata>
     `;
   }
@@ -36,6 +46,21 @@ export class InterventionMetadata extends LitElement {
       active: false,
       loadingSource: 'interv-page'
     });
+  }
+
+  stateChanged(state: RootState): void {
+    if (currentPage(state) !== 'interventions' || currentSubpage(state) !== 'metadata') {
+      return;
+    }
+    this.permissions = currentInterventionPermissions(state);
+    if (this.permissions) {
+      this.setShowSignatureAndDates(state);
+    }
+  }
+
+  setShowSignatureAndDates(state: RootState) {
+    const viewPerm = selectDatesAndSignaturesPermissions(state)?.view;
+    this.showSignatureAndDates = Object.values(viewPerm).some((perm) => perm === true);
   }
 }
 

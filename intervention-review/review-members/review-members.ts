@@ -1,17 +1,17 @@
 import {LitElement, TemplateResult, html, customElement, property, CSSResultArray, css} from 'lit-element';
 import {InterventionReview, User} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {sharedStyles, sharedStylesContent} from '../../common/styles/shared-styles-lit';
-import {fireEvent} from '../../utils/fire-custom-event';
-import {getEndpoint} from '../../utils/endpoint-helper';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getStore} from '../../utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
-import {buttonsStyles} from '../../common/styles/button-styles';
-import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
-import {cloneDeep} from 'lodash-es';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
+import cloneDeep from 'lodash-es/cloneDeep';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import '@polymer/paper-button/paper-button';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
@@ -66,9 +66,7 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
   render(): TemplateResult {
     // language=HTML
     return html`
-      <style>
-        ${sharedStylesContent}
-      </style>
+      ${sharedStyles}
       <etools-content-panel class="content-section" panel-title="${translate('REVIEW_MEMBERS')}">
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 

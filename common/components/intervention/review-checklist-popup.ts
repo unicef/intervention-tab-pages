@@ -1,22 +1,23 @@
 import {LitElement, TemplateResult, html, property, customElement, css} from 'lit-element';
-import {gridLayoutStylesLit} from '../../styles/grid-layout-styles-lit';
-import {sharedStyles} from '../../styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {AnyObject, AsyncAction, GenericObject, InterventionReview} from '@unicef-polymer/etools-types';
-import {fireEvent} from '../../../utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {translate} from 'lit-translate';
-import {buttonsStyles} from '../../styles/button-styles';
-import {getStore} from '../../../utils/redux-store-access';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getEndpoint} from '../../../utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
-import {loadReviews} from '../../actions/officers-reviews';
+import {loadPrcMembersIndividualReviews} from '../../actions/officers-reviews';
 import {REVIEW_ANSVERS, REVIEW_QUESTIONS} from '../../../intervention-review/review.const';
 import {updateCurrentIntervention} from '../../actions/interventions';
-import {getDifference} from '../../mixins/objects-diff';
-import {cloneDeep} from '../../../utils/utils';
+import {getDifference} from '@unicef-polymer/etools-modules-common/dist/mixins/objects-diff';
+import {cloneDeep} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import '@polymer/paper-radio-group';
 import '@polymer/paper-checkbox/paper-checkbox';
 import '@polymer/paper-input/paper-textarea';
+import {formatDate, getTodayDateStr} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
 
 @customElement('review-checklist-popup')
 export class ReviewChecklistPopup extends LitElement {
@@ -37,7 +38,6 @@ export class ReviewChecklistPopup extends LitElement {
         }
         .form-container {
           padding: 0 24px;
-          max-height: 350px;
         }
         .likert-scale {
           padding-top: 16px;
@@ -88,18 +88,31 @@ export class ReviewChecklistPopup extends LitElement {
 
   protected render(): TemplateResult {
     return html`
-      <style>
-        ${sharedStyles}
-      </style>
+      ${sharedStyles}
+
       <etools-dialog
         no-padding
         keep-dialog-open
         opened
-        size="md"
+        size="lg"
         dialog-title="${translate('REVIEW_CHECKLIST')}"
         ?show-spinner="${this.requestInProcess}"
       >
         <div class="form-container">
+          ${this.isOverallReview
+            ? html`
+                <div class="col col-12 pl-none">
+                  <datepicker-lite
+                    label="${translate('REVIEW_DATE_PRC')}"
+                    .value="${this.review?.review_date || getTodayDateStr()}"
+                    selected-date-display-format="D MMM YYYY"
+                    fire-date-has-changed
+                    @date-has-changed="${(e: CustomEvent) => this.dateHasChanged(e.detail)}"
+                  >
+                  </datepicker-lite>
+                </div>
+              `
+            : ''}
           ${Object.entries(this.questions).map(([field, question]: [string, string], index: number) =>
             this.generateLikertScale(field as keyof InterventionReview, question, index)
           )}
@@ -174,6 +187,11 @@ export class ReviewChecklistPopup extends LitElement {
     this.requestUpdate();
   }
 
+  dateHasChanged(detail: {date: Date}) {
+    const newValue = detail.date ? formatDate(detail.date, 'YYYY-MM-DD') : null;
+    this.valueChanged(newValue, 'review_date');
+  }
+
   saveReview(): void {
     const interventionId = getStore().getState().app.routeDetails.params!.interventionId;
     const userId = getStore().getState().user.data!.user;
@@ -194,7 +212,9 @@ export class ReviewChecklistPopup extends LitElement {
       body
     })
       .then(({intervention}: any) => getStore().dispatch(updateCurrentIntervention(intervention)))
-      .then(() => (!this.isOverallReview ? getStore().dispatch<AsyncAction>(loadReviews(reviewId)) : null))
+      .then(() =>
+        !this.isOverallReview ? getStore().dispatch<AsyncAction>(loadPrcMembersIndividualReviews(reviewId)) : null
+      )
       .then(() => this.close(true))
       .catch((err: any) => {
         const errorText = err?.response?.detail || 'Try again later';

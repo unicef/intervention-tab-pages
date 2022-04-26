@@ -3,15 +3,15 @@ import '@polymer/paper-button/paper-button';
 import '@polymer/paper-toggle-button/paper-toggle-button';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@unicef-polymer/etools-loading/etools-loading';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '../../common/styles/button-styles';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {resetRequiredFields} from '../../utils/validation-helper';
-import {getStore} from '../../utils/redux-store-access';
-import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {resetRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {patchIntervention} from '../../common/actions/interventions';
-import {isJsonStrMatch} from '../../utils/utils';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import {RootState} from '../../common/types/store.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
@@ -21,6 +21,8 @@ import {translate} from 'lit-translate';
 import {OtherData, OtherPermissions} from './other.models';
 import {selectOtherData, selectOtherPermissions} from './other.selectors';
 import CONSTANTS from '../../common/constants';
+import {translatesMap} from '../../utils/intervention-labels-map';
+import '@polymer/paper-input/paper-textarea';
 
 /**
  * @customElement
@@ -33,15 +35,14 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
 
   render() {
     if (!this.data || !this.permissions) {
-      return html`<style>
-          ${sharedStyles}
-        </style>
-        <etools-loading loading-text="Loading..." active></etools-loading>`;
+      return html` ${sharedStyles}
+        <etools-loading source="other" loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} :host {
+        :host {
           display: block;
           margin-bottom: 24px;
         }
@@ -62,7 +63,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
         }
 
         paper-toggle-button {
-          margin: 25px 0;
+          margin-top: 25px;
         }
       </style>
 
@@ -86,8 +87,12 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               required
               .options="${this.documentTypes}"
               .selected="${this.data.document_type}"
-              @etools-selected-item-changed="${({detail}: CustomEvent) =>
-                this.documentTypeChanged(detail.selectedItem && detail.selectedItem.value)}"
+              @etools-selected-item-changed="${({detail}: CustomEvent) => {
+                if (!detail.selectedItem) {
+                  return;
+                }
+                this.documentTypeChanged(detail.selectedItem && detail.selectedItem.value);
+              }}"
               trigger-value-change-event
               hide-search
               @focus="${() => resetRequiredFields(this)}"
@@ -116,12 +121,31 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
                 <paper-toggle-button
                   ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.document_type)}"
                   ?checked="${this.data.contingency_pd}"
-                  @checked-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'contingency_pd')}"
+                  @checked-changed="${({detail}: CustomEvent) => {
+                    this.valueChanged(detail, 'contingency_pd');
+                    this.data.activation_protocol = '';
+                  }}"
                 >
                   ${translate('CONTINGENCY_DOC')}
                 </paper-toggle-button>
               </div>
             </div>
+          </div>
+        </div>
+        <div class="layout-horizontal row-padding-v" ?hidden="${!this.data.contingency_pd}">
+          <div class="col col-4">
+            <paper-input
+              class="w100"
+              label=${translate('ACTIVATION_PROTOCOL')}
+              placeholder="&#8212;"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.document_type)}"
+              ?required="${this.data.contingency_pd}"
+              .autoValidate="${this.autoValidateProtocol}"
+              @focus="${() => (this.autoValidateProtocol = true)}"
+              .value="${this.data.activation_protocol}"
+              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'activation_protocol')}"
+            >
+            </paper-input>
           </div>
         </div>
         <div class="layout-horizontal row-padding-v">
@@ -130,11 +154,11 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               id="currencyDd"
               option-value="value"
               option-label="label"
-              label=${translate('DOCUMENT_CURRENCY')}
+              label=${translate(translatesMap.currency)}
               placeholder="&#8212;"
               .options="${this.currencies}"
               .selected="${this.data.planned_budget.currency}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_budget)}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.document_currency)}"
               @etools-selected-item-changed="${({detail}: CustomEvent) => {
                 if (detail === undefined || detail.selectedItem === null) {
                   return;
@@ -148,10 +172,31 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
           </div>
         </div>
 
+        <div class="layout-horizontal row-padding-v">
+          <paper-textarea
+            id="confidential"
+            class="w100"
+            label=${translate('CONFIDENTIAL')}
+            always-float-label
+            placeholder="—"
+            .autoValidate="${this.autoValidate}"
+            .value="${this.data.confidential}"
+            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'confidential')}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit?.confidential)}"
+            ?required="${this.permissions.required.confidential}"
+            @focus="${() => (this.autoValidate = true)}"
+            error-message="This field is required"
+          >
+          </paper-textarea>
+        </div>
+
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
       </etools-content-panel>
     `;
   }
+
+  @property({type: Boolean})
+  autoValidate = false;
 
   @property({type: Object})
   originalData!: OtherData;
@@ -170,6 +215,9 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
 
   @property({type: Array})
   currencies!: LabelAndValue[];
+
+  @property({type: Boolean})
+  autoValidateProtocol = false;
 
   get isSPD(): boolean {
     return this.data.document_type === CONSTANTS.DOCUMENT_TYPES.SPD;
@@ -203,6 +251,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
     if (type !== CONSTANTS.DOCUMENT_TYPES.SPD) {
       this.data.humanitarian_flag = false;
       this.data.contingency_pd = false;
+      this.data.activation_protocol = '';
     }
     this.data.document_type = type;
     this.requestUpdate();

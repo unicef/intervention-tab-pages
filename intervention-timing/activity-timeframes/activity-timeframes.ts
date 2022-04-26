@@ -2,10 +2,10 @@ import {LitElement, html, TemplateResult, customElement, CSSResultArray, propert
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {RootState} from '../../common/types/store.types';
 import {ActivityTime, groupByYear, GroupedActivityTime, serializeTimeFrameData} from '../../utils/timeframes.helper';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {ActivityTimeframesStyles} from './activity-timeframes.styles';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
-import {get} from 'lodash-es';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {
   InterventionActivity,
@@ -13,7 +13,7 @@ import {
   InterventionQuarter,
   InterventionActivityTimeframe
 } from '@unicef-polymer/etools-types';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {Intervention, ResultLinkLowerResult, ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 
@@ -36,8 +36,9 @@ export class ActivityTimeframes extends CommentsMixin(LitElement) {
     const timeFrames: GroupedActivityTime[] = this.getTimeFrames();
     const mappedActivities: GenericObject<InterventionActivity[]> = this.getActivities();
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} etools-content-panel::part(ecp-content) {
+        etools-content-panel::part(ecp-content) {
           padding: 8px 24px 16px 24px;
         }
       </style>

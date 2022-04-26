@@ -8,20 +8,20 @@ import '@unicef-polymer/etools-date-time/datepicker-lite';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import './hru-list.js';
 import CONSTANTS from '../../../common/constants';
-import {fireEvent} from '../../../utils/fire-custom-event';
-import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
-import {convertDate} from '../../../utils/date-utils';
-import {getEndpoint} from '../../../utils/endpoint-helper';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {convertDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
-import {isEmptyObject} from '../../../utils/utils';
-import {connectStore} from '../../../common/mixins/connect-store-mixin';
+import {isEmptyObject} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {AnyObject} from '@unicef-polymer/etools-types';
-import {buttonsStyles} from '../../../common/styles/button-styles.js';
 import {translate, get as getTranslation} from 'lit-translate';
-import {sharedStyles} from '../../../common/styles/shared-styles-lit.js';
+import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin.js';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit.js';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles.js';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit.js';
 
 /**
  * @polymer
@@ -36,8 +36,9 @@ export class EditHruDialog extends connectStore(LitElement) {
   }
   render() {
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles}*[hidden] {
+        *[hidden] {
           display: none !important;
         }
 
@@ -55,6 +56,9 @@ export class EditHruDialog extends connectStore(LitElement) {
 
         calendar-lite {
           position: relative;
+        }
+        #dtPickerStDate::part(dp-calendar) {
+          height: 390px;
         }
       </style>
 
@@ -97,9 +101,7 @@ export class EditHruDialog extends connectStore(LitElement) {
             </calendar-lite>
           </div>
           <div class="col col-6">
-            <div class="row-h" ?hidden="${!this._empty(this.hruData.length)}">
-              ${translate('NO_DATES_ADDED')}
-            </div>
+            <div class="row-h" ?hidden="${!this._empty(this.hruData.length)}">${translate('NO_DATES_ADDED')}</div>
             <hru-list
               id="hruList"
               class="flex-c"
@@ -175,7 +177,7 @@ export class EditHruDialog extends connectStore(LitElement) {
     }
     const stDt = this.interventionStart instanceof Date ? this.interventionStart : convertDate(this.interventionStart);
     if (stDt) {
-      return dayjs(stDt).add(-1, 'days').toDate();
+      return dayjs(stDt).toDate();
     }
     return null;
   }

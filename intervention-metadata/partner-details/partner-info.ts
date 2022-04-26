@@ -7,20 +7,20 @@ import '@unicef-polymer/etools-loading/etools-loading';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import {buttonsStyles} from '../../common/styles/button-styles';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {PartnerInfo, PartnerInfoPermissions} from './partnerInfo.models';
-import {getStore} from '../../utils/redux-store-access';
-import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {patchIntervention} from '../../common/actions/interventions';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
-import {getEndpoint} from '../../utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
-import {isJsonStrMatch} from '../../utils/utils';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import isEmpty from 'lodash-es/isEmpty';
 import {RootState} from '../../common/types/store.types';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
@@ -39,8 +39,9 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
   render() {
     // language=HTML
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} :host {
+        :host {
           display: block;
           margin-bottom: 24px;
         }
@@ -102,14 +103,12 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
             </paper-input>
           </div>
           <div class="col col-5 layout-vertical">
-            <label for="agreementAuthOff" class="paper-label"
-              >${translate('AGREEMENT_AUTHORIZED_OFFICERS')}</label
-            >
+            <label for="agreementAuthOff" class="paper-label">${translate('AGREEMENT_AUTHORIZED_OFFICERS')}</label>
             <div id="agreementAuthOff">${this.renderAgreementAuthorizedOfficers(this.agreementAuthorizedOfficers)}</div>
           </div>
         </div>
         <div class="row-padding-v">
-          <div class="col col-7 layout-vertical">
+          <div class="col col-7 layout-vertical" ?hidden="${!this.permissions?.view!.partner_focal_points}">
             <etools-dropdown-multi
               label=${translate('PARTNER_FOCAL_POINTS')}
               .selectedValues="${this.data?.partner_focal_points?.map((f: any) => f.id)}"
@@ -124,9 +123,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
             >
             </etools-dropdown-multi>
             ${this.isReadonly(this.editMode, this.permissions?.edit.partner_focal_points)
-              ? html`<label for="focalPointsDetails" class="paper-label"
-                    >${translate('PARTNER_FOCAL_POINTS')}</label
-                  >
+              ? html`<label for="focalPointsDetails" class="paper-label">${translate('PARTNER_FOCAL_POINTS')}</label>
                   <div id="focalPointsDetails">
                     ${this.renderReadonlyUserDetails(
                       this.originalData?.partner_focal_points ? this.originalData?.partner_focal_points : []

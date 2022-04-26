@@ -30,10 +30,6 @@ export class ReviewDataPermission extends ModelsBase {
     super();
     this.setObjProperties(permissions);
   }
-  submission_date = true;
-  prc_review_attachment = true;
-  submission_date_prc = true;
-  review_date_prc = true;
   partner_authorized_officer_signatory = true;
   signed_by_partner_date = true;
   signed_by_unicef_date = true;

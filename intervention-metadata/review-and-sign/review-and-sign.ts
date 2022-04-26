@@ -8,31 +8,33 @@ import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@unicef-polymer/etools-upload/etools-upload';
 
 import '@unicef-polymer/etools-date-time/datepicker-lite';
-import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
-import UploadMixin from '../../common/mixins/uploads-mixin';
+import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
+import UploadMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uploads-mixin';
 import CONSTANTS from '../../common/constants';
-import {sectionContentStyles} from '../../common/styles/content-section-styles-polymer';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {getStore} from '../../utils/redux-store-access';
-import {isJsonStrMatch} from '../../utils/utils';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 
 import {RootState} from '../../common/types/store.types';
-import {selectReviewData, selectReviewDataPermissions} from './managementDocument.selectors';
+import {selectReviewData, selectDatesAndSignaturesPermissions} from '../../common/managementDocument.selectors';
 import {ReviewDataPermission, ReviewData} from './managementDocument.model';
-import {getEndpoint} from '../../utils/endpoint-helper';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {isEmpty, cloneDeep} from 'lodash-es';
-import {buttonsStyles} from '../../common/styles/button-styles';
+import isEmpty from 'lodash-es/isEmpty';
+import cloneDeep from 'lodash-es/cloneDeep';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import {getDifference} from '@unicef-polymer/etools-modules-common/dist/mixins/objects-diff';
 import {patchIntervention} from '../../common/actions/interventions';
-import {formatDate} from '../../utils/date-utils';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {formatDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, MinimalUser, Permission, User} from '@unicef-polymer/etools-types';
 import {MinimalAgreement} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {getDifference} from '../../common/mixins/objects-diff';
+import {sectionContentStyles} from '@unicef-polymer/etools-modules-common/dist/styles/content-section-styles-polymer';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {EtoolsUpload} from '@unicef-polymer/etools-upload/etools-upload';
 
 /**
  * @customElement
@@ -46,14 +48,13 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
   }
   render() {
     if (!this.data || !this.permissions) {
-      return html` <style>
-          ${sharedStyles}
-        </style>
-        <etools-loading loading-text="Loading..." active></etools-loading>`;
+      return html` ${sharedStyles}
+        <etools-loading source="revAndSign" loading-text="Loading..." active></etools-loading>`;
     }
     return html`
+    ${sharedStyles}
       <style>
-        ${sectionContentStyles}${sharedStyles}:host {
+        ${sectionContentStyles}:host {
           display: flex;
           flex-direction: column;
           width: 100%;
@@ -169,9 +170,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
             <!-- Signed by UNICEF Authorized Officer -->
             <paper-input-container>
               <div slot="input" class="paper-input-input">
-                <span class="input-value"> ${translate(
-                  'SIGNED_UNICEF_AUTH_OFFICER'
-                )}</span>
+                <span class="input-value"> ${translate('SIGNED_UNICEF_AUTH_OFFICER')}</span>
               </div>
             </paper-input-container>
           </div>
@@ -222,9 +221,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
             </etools-dropdown>
             ${
               this.isReadonly(this.editMode, this.permissions?.edit.unicef_signatory)
-                ? html`<label for="unicefSignatory" class="paper-label"
-                      >${translate('SIGNED_UNICEF')}</label
-                    >
+                ? html`<label for="unicefSignatory" class="paper-label">${translate('SIGNED_UNICEF')}</label>
                     <div id="unicefSignatory">
                       ${this.renderReadonlyUserDetails(
                         this.originalData?.unicef_signatory ? [this.originalData?.unicef_signatory] : []
@@ -235,7 +232,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
           </div>
         </div>
         <div class="layout-horizontal row-padding-v">
-          <div class="col col-6">
+          <div class="col col-8">
             <!-- Signed PD/SPD -->
             <etools-upload
               id="signedIntervFile"
@@ -243,21 +240,21 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
               accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt"
               .fileUrl="${this.data.signed_pd_attachment}"
               .uploadEndpoint="${this.uploadEndpoint}"
-              @upload-finished="${this._signedPDUploadFinished}"
               .showDeleteBtn="${this.showSignedPDDeleteBtn(this.data.status)}"
               @delete-file="${this._signedPDDocDelete}"
               ?auto-validate="${this.editMode}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.signed_pd_attachment)}"
               ?required="${this.permissions.required.signed_pd_attachment}"
               error-message=${translate('SELECT_SIGNED_PD_SPD_DOC')}
-              @upload-started="${this._onUploadStarted}"
+              @upload-started="${this.__onUploadStarted}"
+              @upload-finished="${this._signedPDUploadFinished}"
               @change-unsaved-file="${this._onChangeUnsavedFile}"
             >
             </etools-upload>
           </div>
         </div>
         <div class="layout-horizontal row-padding-v">
-          <div class="col col-6">
+          <div class="col col-8">
             <!-- TERMINATION DOC -->
             <etools-upload
               id="terminationDoc"
@@ -272,6 +269,9 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
       </etools-content-panel>
     `;
   }
+
+  @property({type: String})
+  uploadEndpoint: string = getEndpoint(interventionEndpoints.attachmentsUpload).url;
 
   @property({type: Object})
   originalData!: ReviewData;
@@ -294,15 +294,19 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
   @property({type: String})
   unicefDateValidatorErrorMessage!: string;
 
-  @property({type: String})
-  uploadEndpoint: string = getEndpoint(interventionEndpoints.attachmentsUpload).url;
-
   @property({type: Boolean})
   isUnicefUser = false;
+
+  private justUploaded = false;
 
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata')) {
       return;
+    }
+
+    if (state.uploadStatus.uploadsInProgress || state.uploadStatus.unsavedUploads || this.justUploaded) {
+      setTimeout(() => (this.justUploaded = false), 200);
+      return; // Prevent upload related redux store changes (UploadMixin) from reseting data selected in other fields
     }
 
     if (!isJsonStrMatch(this.signedByUnicefUsers, state.commonData!.unicefUsersData)) {
@@ -313,40 +317,43 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
     }
 
     if (state.interventions.current) {
-      this.data = selectReviewData(state);
-      this.originalData = cloneDeep(this.data);
-      const permissions = selectReviewDataPermissions(state);
-      if (!isJsonStrMatch(this.permissions, permissions)) {
-        this.permissions = permissions;
-        this.set_canEditAtLeastOneField(this.permissions.edit);
-      }
-      const agreements = state.agreements.list;
-      if (!isEmpty(agreements)) {
-        const agreementData = this.filterAgreementsById(agreements!, this.data.agreement);
-        this.agreementAuthorizedOfficers = this.getAuthorizedOfficersList(agreementData);
-        const changed = this.handleUsersNoLongerAssignedToCurrentCountry(
-          this.agreementAuthorizedOfficers as User[],
-          this.data.partner_authorized_officer_signatory
-            ? [this.data.partner_authorized_officer_signatory as MinimalUser]
-            : []
-        );
-        if (changed) {
-          this.agreementAuthorizedOfficers = [...this.agreementAuthorizedOfficers];
+      const reviewData = selectReviewData(state);
+      if (!isJsonStrMatch(this.originalData, reviewData)) {
+        this.data = cloneDeep(reviewData);
+        this.originalData = cloneDeep(this.data);
+        const permissions = selectDatesAndSignaturesPermissions(state);
+        if (!isJsonStrMatch(this.permissions, permissions)) {
+          this.permissions = permissions;
+          this.set_canEditAtLeastOneField(this.permissions.edit);
         }
-      }
-      super.stateChanged(state);
+        const agreements = state.agreements.list;
+        if (!isEmpty(agreements)) {
+          const agreementData = this.filterAgreementsById(agreements!, this.data.agreement);
+          this.agreementAuthorizedOfficers = this.getAuthorizedOfficersList(agreementData);
+          const changed = this.handleUsersNoLongerAssignedToCurrentCountry(
+            this.agreementAuthorizedOfficers as User[],
+            this.data.partner_authorized_officer_signatory
+              ? [this.data.partner_authorized_officer_signatory as MinimalUser]
+              : []
+          );
+          if (changed) {
+            this.agreementAuthorizedOfficers = [...this.agreementAuthorizedOfficers];
+          }
+        }
 
-      const pdUsers = this.data.unicef_signatory ? [this.data.unicef_signatory] : [];
-      if (this.isUnicefUser) {
-        // Partner user can not edit this field
-        const changed = this.handleUsersNoLongerAssignedToCurrentCountry(this.signedByUnicefUsers as User[], pdUsers);
-        if (changed) {
-          this.signedByUnicefUsers = [...this.signedByUnicefUsers];
+        const pdUsers = this.data.unicef_signatory ? [this.data.unicef_signatory] : [];
+        if (this.isUnicefUser) {
+          // Partner user can not edit this field
+          const changed = this.handleUsersNoLongerAssignedToCurrentCountry(this.signedByUnicefUsers as User[], pdUsers);
+          if (changed) {
+            this.signedByUnicefUsers = [...this.signedByUnicefUsers];
+          }
+        } else {
+          this.signedByUnicefUsers = pdUsers;
         }
-      } else {
-        this.signedByUnicefUsers = pdUsers;
       }
     }
+    super.stateChanged(state);
   }
 
   getAuthorizedOfficersList(agreementData: any) {
@@ -375,6 +382,21 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
   _hideDeleteBtn(status: string, fileUrl: string) {
     return this._isDraft(status) && fileUrl;
   }
+  __onUploadStarted(e: CustomEvent) {
+    this.justUploaded = true;
+    this._onUploadStarted(e);
+  }
+
+  cancel() {
+    super.cancel();
+    // @ts-ignore
+    const uploadElem = this.shadowRoot?.querySelector('#signedIntervFile') as EtoolsUpload;
+    // @ts-ignore
+    uploadElem._cancelUpload();
+
+    this.decreaseUnsavedUploads();
+    this.justUploaded = false;
+  }
 
   validate() {
     let valid = true;
@@ -400,10 +422,14 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
       this.data.signed_pd_attachment = response.id;
       this.requestUpdate();
     }
+    this.justUploaded = true;
+    // Called also after upload was cancelled
+    this._onUploadFinished(e.detail.success);
   }
 
   _signedPDDocDelete(_e: CustomEvent) {
     this.data.signed_pd_attachment = null;
+    this._onUploadDelete();
   }
 
   showSignedPDDeleteBtn(status: string) {
@@ -425,6 +451,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
         patchIntervention(this.formatUserData(getDifference<ReviewData>(this.originalData, this.data)))
       )
       .then(() => {
+        this._onUploadSaved();
         this.editMode = false;
       });
   }

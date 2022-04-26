@@ -1,28 +1,34 @@
 import {customElement, html, LitElement, property} from 'lit-element';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import '@unicef-polymer/etools-dropdown';
-import '../../styles/shared-styles-lit';
-import {sharedStyles} from '../../styles/shared-styles-lit';
-import {fireEvent} from '../../../utils/fire-custom-event';
+import '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {LabelAndValue} from '@unicef-polymer/etools-types';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {translate} from 'lit-translate';
-import {NON_PRC_REVIEW, PRC_REVIEW, REVIEW_TYPES} from '../../../intervention-review/review.const';
+import {NO_REVIEW, NON_PRC_REVIEW, PRC_REVIEW} from '../../../intervention-review/review.const';
+import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
+import {RootState} from '../../types/store.types';
+import {get as getTranslation} from 'lit-translate';
 
+const PRC = {label: getTranslation('PRC_REVIEW'), value: PRC_REVIEW};
+const NON_PRC = {label: getTranslation('NON_PRC_REVIEW'), value: NON_PRC_REVIEW};
+const WITHOUT = {label: getTranslation('NO_REVIEW'), value: NO_REVIEW};
 /**
  * @LitElement
  * @customElement
  */
 @customElement('start-review')
-export class StartReview extends LitElement {
+export class StartReview extends connectStore(LitElement) {
   @property() type = '';
-  @property() reviewTypes = [
-    {label: REVIEW_TYPES.get(PRC_REVIEW), value: PRC_REVIEW},
-    {label: REVIEW_TYPES.get(NON_PRC_REVIEW), value: NON_PRC_REVIEW}
-  ];
+
+  @property() reviewTypes: LabelAndValue[] = [];
 
   render() {
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} .row {
+        .row {
           padding: 12px 24px;
         }
         etools-dropdown {
@@ -36,7 +42,7 @@ export class StartReview extends LitElement {
         opened
         size="md"
         ok-btn-text="${translate('START')}"
-        dialog-title="${translate('START_REVIEW')}"
+        dialog-title="${translate('SEND_FOR_REVIEW')}"
         @confirm-btn-clicked="${() => this.startReview()}"
       >
         <div class="row">
@@ -51,6 +57,10 @@ export class StartReview extends LitElement {
         </div>
       </etools-dialog>
     `;
+  }
+
+  stateChanged(state: RootState) {
+    this.reviewTypes = state.interventions?.current?.in_amendment ? [PRC, NON_PRC, WITHOUT] : [PRC, NON_PRC];
   }
 
   startReview(): void {

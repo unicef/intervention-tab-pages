@@ -7,17 +7,17 @@ import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-loading/etools-loading';
 import '@polymer/paper-input/paper-input';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import {buttonsStyles} from '../../common/styles/button-styles';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {selectPdUnicefDetails, selectPdUnicefDetailsPermissions} from './pdUnicefDetails.selectors';
 import {PdUnicefDetailsPermissions, PdUnicefDetails} from './pdUnicefDetails.models';
-import {getStore} from '../../utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {patchIntervention} from '../../common/actions/interventions';
 import {RootState} from '../../common/types/store.types';
-import {isJsonStrMatch} from '../../utils/utils';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
@@ -26,6 +26,7 @@ import {AnyObject, CountryProgram, Permission, AsyncAction, User} from '@unicef-
 import isEmpty from 'lodash-es/isEmpty';
 import uniqBy from 'lodash-es/uniqBy';
 import {translate} from 'lit-translate';
+import {translatesMap} from '../../utils/intervention-labels-map';
 
 /**
  * @customElement
@@ -38,14 +39,13 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
   render() {
     // language=HTML
     if (!this.data) {
-      return html`<style>
-          ${sharedStyles}
-        </style>
-        <etools-loading loading-text="Loading..." active></etools-loading>`;
+      return html` ${sharedStyles}
+        <etools-loading source="unicefDetails" loading-text="Loading..." active></etools-loading>`;
     }
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} :host {
+        :host {
           display: block;
           margin-bottom: 24px;
         }
@@ -73,7 +73,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
           <div class="col col-4">
             <etools-dropdown-multi
               id="officeInput"
-              label=${translate('UNICEF_OFFICES')}
+              label=${translate(translatesMap.offices)}
               class="row-padding-v"
               .options="${this.office_list}"
               option-label="name"
@@ -90,7 +90,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
           <div class="col col-4">
             <etools-dropdown-multi
               id="sectionInput"
-              label=${translate('UNICEF_SECTIONS')}
+              label=${translate(translatesMap.sections)}
               class="row-padding-v"
               .options="${this.section_list}"
               option-label="name"
@@ -119,36 +119,37 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
           </div>
         </div>
         <div class="layout-horizontal row-padding-v">
-          <div class="col col-4">
-            <etools-dropdown-multi
-              id="focalPointInput"
-              label=${translate('UNICEF_FOCAL_POINTS')}
-              class="row-padding-v"
-              .options="${this.users_list}"
-              option-label="name"
-              option-value="id"
-              .selectedValues="${this.data.unicef_focal_points.map((u: any) => u.id)}"
-              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.unicef_focal_points)}"
-              ?required="${this.permissions.required.unicef_focal_points}"
-              @etools-selected-items-changed="${({detail}: CustomEvent) =>
-                this.selectedUsersChanged(detail, 'unicef_focal_points')}"
-              trigger-value-change-event
-            >
-            </etools-dropdown-multi>
-            <div
-              class="padd-top"
-              ?hidden="${!this.isReadonly(this.editMode, this.permissions.edit.unicef_focal_points)}"
-            >
-              <label for="focalPointInput" class="paper-label"
-                >${translate('UNICEF_FOCAL_POINTS')}</label
-              >
-              <div id="focalPointDetails">
-                ${this.renderReadonlyUserDetails(
-                  this.originalData?.unicef_focal_points ? this.originalData?.unicef_focal_points! : []
-                )}
-              </div>
-            </div>
-          </div>
+          ${this.permissions.view!.unicef_focal_points
+            ? html`<div class="col col-4">
+                <etools-dropdown-multi
+                  id="focalPointInput"
+                  label=${translate('UNICEF_FOCAL_POINTS')}
+                  class="row-padding-v"
+                  .options="${this.users_list}"
+                  option-label="name"
+                  option-value="id"
+                  .selectedValues="${this.data.unicef_focal_points.map((u: any) => u.id)}"
+                  ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.unicef_focal_points)}"
+                  ?required="${this.permissions.required.unicef_focal_points}"
+                  @etools-selected-items-changed="${({detail}: CustomEvent) =>
+                    this.selectedUsersChanged(detail, 'unicef_focal_points')}"
+                  trigger-value-change-event
+                >
+                </etools-dropdown-multi>
+                <div
+                  class="padd-top"
+                  ?hidden="${!this.isReadonly(this.editMode, this.permissions.edit.unicef_focal_points)}"
+                >
+                  <label for="focalPointInput" class="paper-label">${translate('UNICEF_FOCAL_POINTS')}</label>
+                  <div id="focalPointDetails">
+                    ${this.renderReadonlyUserDetails(
+                      this.originalData?.unicef_focal_points ? this.originalData?.unicef_focal_points! : []
+                    )}
+                  </div>
+                </div>
+              </div>`
+            : ''}
+
           <div class="col col-4" ?hidden="${!this.isUnicefUser}">
             <etools-dropdown
               id="budgetOwnerInput"
@@ -168,9 +169,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
             </etools-dropdown>
 
             <div class="padd-top" ?hidden="${!this.isReadonly(this.editMode, this.permissions.edit.budget_owner)}">
-              <label for="budgetOwnerInput" class="paper-label"
-                >${translate('UNICEF_BUDGET_OWNER')}</label
-              >
+              <label for="budgetOwnerInput" class="paper-label">${translate('UNICEF_BUDGET_OWNER')}</label>
               <div id="budgetOwnerDetails">
                 ${this.renderReadonlyUserDetails(
                   this.originalData?.budget_owner ? [this.originalData?.budget_owner!] : []

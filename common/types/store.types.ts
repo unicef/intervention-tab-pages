@@ -5,14 +5,17 @@ import {
   EnvFlags,
   LabelAndValue,
   LocationObject,
+  Site,
   MinimalAgreement,
   RouteDetails,
   Intervention,
   CpOutput,
   Section,
   GenericObject,
-  EtoolsUser, InterventionReview,
+  EtoolsUser
 } from '@unicef-polymer/etools-types';
+import {CommentsEndpoints} from '../components/comments/comments-types';
+import {UploadStatusState} from '../reducers/upload-status';
 
 export interface AppState {
   routeDetails: RouteDetails;
@@ -27,6 +30,7 @@ export interface AppState {
 export interface InterventionsState {
   current: Intervention | null;
   partnerReportingRequirements: PartnerReportingRequirements;
+  interventionLoading: number | null;
 }
 
 export interface AgreementsState {
@@ -42,6 +46,7 @@ export interface CommonDataState {
   unicefUsersData: [];
   partners: AnyObject[];
   locations: LocationObject[];
+  sites: Site[];
   sections: Section[];
   disaggregations: Disaggregation[];
   cpOutputs: CpOutput[];
@@ -61,14 +66,16 @@ export interface CommonDataState {
 export interface RootState {
   app: AppState;
   interventions: InterventionsState;
-  reviews: any[];
+  prcIndividualReviews: any[];
   agreements: AgreementsState;
   user: UserState;
   commonData: CommonDataState;
   commentsData: {
     commentsModeEnabled: boolean;
     collection: GenericObject<CommentsCollection>;
+    endpoints: CommentsEndpoints;
   };
+  uploadStatus: UploadStatusState;
 }
 
 export interface PartnerReportingRequirements {

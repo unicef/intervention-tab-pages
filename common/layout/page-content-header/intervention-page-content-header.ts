@@ -18,7 +18,7 @@ export class InterventionPageContentHeader extends LitElement {
           display: flex;
           flex-direction: column;
           justify-content: flex-start;
-          flex: 1;
+          flex: none;
 
           background-color: var(--primary-background-color);
           padding: 0;
@@ -30,7 +30,7 @@ export class InterventionPageContentHeader extends LitElement {
             font-weight: normal;
             text-transform: capitalize;
             font-size: 24px;
-            line-height: 1.3;
+            line-height: 18px;
             min-height: 31px;
           }
         }
@@ -44,8 +44,9 @@ export class InterventionPageContentHeader extends LitElement {
         }
         .title-row {
           align-items: center;
-          margin: 15px 0 0;
-          padding: 0 24px;
+          padding: 0 12px 0 24px;
+          flex-wrap: wrap;
+          justify-content: space-between;
         }
         .title-row h1 {
           @apply --page-title;
@@ -67,13 +68,10 @@ export class InterventionPageContentHeader extends LitElement {
           }
         }
 
-        @media (max-width: 1100px) {
+        @media (max-width: 1300px) {
           .content-header-row {
             display: flex;
             flex-direction: column;
-          }
-          .content-header-row div:last-child {
-            margin-top: 20px;
           }
         }
 
@@ -85,18 +83,30 @@ export class InterventionPageContentHeader extends LitElement {
             padding: 0 5px 5px 5px;
           }
         }
+        @media (max-width: 770px) {
+          .flex-block, .row-actions {
+            flex-direction: column !important;
+            align-items: center;
+          }
+          .vb {
+            display: none;
+          }
+        }
         .statusContainer {
           padding-left: 20px;
         }
         .vb {
           border-left: 2px solid var(--light-hex-divider-color);
-          padding: 0 20px;
+          padding: 0 10px;
+          height: 30px;
+          margin-top: 15px;
         }
         .title {
-          padding-right: 20px;
+          padding-right: 10px;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
+          width: 300px;
         }
         .cont {
           display: flex;
@@ -106,13 +116,19 @@ export class InterventionPageContentHeader extends LitElement {
           align-items: center;
         }
         .flex-block {
-          flex: 1;
-          min-width: 0;
           display: flex;
-          flex-direction: row
+          flex-direction: row;
+          flex-wrap: wrap;
+          align-items: center;
+        }
+        .flex-block > :not(.vb) {
+          margin-top: 15px !important;
         }
         .none-flex {
           flex: none;
+        }
+        .row-actions{
+          margin-top: 15px;
         }
       </style>
 
@@ -129,7 +145,7 @@ export class InterventionPageContentHeader extends LitElement {
             <slot name="statusFlag"></slot>
           </div>
         </div>
-        <div>
+        <div class="row-actions">
           <slot name="title-row-actions"></slot>
         </div>
       </div>

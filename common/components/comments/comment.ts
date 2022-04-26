@@ -1,7 +1,6 @@
-/* eslint-disable lit-a11y/click-events-have-key-events */
 import {LitElement, html, TemplateResult, CSSResultArray, customElement, property} from 'lit-element';
 import '@polymer/iron-icons';
-import {fireEvent} from '../../../utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {CommentStyles} from './comment.styles';
 import {InterventionComment} from '@unicef-polymer/etools-types';
 declare const dayjs: any;
@@ -14,16 +13,20 @@ export class CommentElement extends LitElement {
   }
 
   @property({type: Boolean, reflect: true, attribute: 'my-comment'}) myComment!: boolean;
-  @property() comment!: InterventionComment & {loadingError?: boolean; date: string};
+  @property() comment!: InterventionComment & {loadingError?: boolean; created: string};
   @property() resolving = false;
   @property() deleting = false;
 
   get authorAvatar(): string {
-    return !this.comment ? '' : `${this.comment.user.first_name[0]}${this.comment.user.last_name[0]}`;
+    return !this.comment
+      ? ''
+      : `${this.comment.user.first_name ? this.comment.user.first_name[0] : ''}${
+          this.comment.user.last_name ? this.comment.user.last_name[0] : ''
+        }`;
   }
 
   get date(): string {
-    const date = dayjs(this.comment.date);
+    const date = dayjs(this.comment.created);
     return `${date.format('MMM DD YYYY')} at ${date.format('HH:mm')}`;
   }
 

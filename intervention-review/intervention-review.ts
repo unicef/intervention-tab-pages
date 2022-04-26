@@ -1,14 +1,15 @@
 import {LitElement, customElement, html, property, CSSResult, css} from 'lit-element';
-import {fireEvent} from '../utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {RootState} from '../common/types/store.types';
-import {pageIsNotCurrentlyActive} from '../utils/common-methods';
 import {InterventionReview, User} from '@unicef-polymer/etools-types';
-import {connectStore} from '../common/mixins/connect-store-mixin';
 import './general-review-information/general-review-information';
 import './review-members/review-members';
 import './reviews-list/reviews-list';
 import './overall-approval/overall-approval';
-import {PRC_REVIEW} from './review.const';
+import '@unicef-polymer/etools-modules-common/dist/components/cancel/reason-display';
+import {NO_REVIEW, PRC_REVIEW} from './review.const';
+import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 
 @customElement('intervention-review')
 export class InterventionReviewTab extends connectStore(LitElement) {
@@ -16,14 +17,38 @@ export class InterventionReviewTab extends connectStore(LitElement) {
   @property() canEditPRCReviews = false;
   @property() review: InterventionReview | null = null;
   @property() unicefUsers: User[] = [];
+  @property() cfeiNumber = '';
+  @property() interventionStatus = '';
+
+  get linkUrl(): string {
+    return `https://www.unpartnerportal.org/cfei/open?agency=1&displayID=${encodeURIComponent(
+      this.cfeiNumber
+    )}&page=1&page_size=10`;
+  }
+
   private interventionId: number | null = null;
 
   render() {
     // language=HTML
     return html`
+      ${this.review?.sent_back_comment && ['draft', 'development'].includes(this.interventionStatus)
+        ? html`<reason-display title="Secretary Comment">
+            <div class="text">${this.review?.sent_back_comment}</div>
+          </reason-display>`
+        : ''}
+      ${this.cfeiNumber
+        ? html`<reason-display title="CFEI Notification" .cfeiNumber="${this.cfeiNumber}">
+            <div class="text">
+              This PD was completed after a selection in UNPP where a committee has approved, please review the work
+              done in UNPP by clicking this link:
+              <a href="${this.linkUrl}" target="_blank">Go to UNPP</a>
+            </div>
+          </reason-display>`
+        : ''}
+
       <general-review-information .review="${this.review}"></general-review-information>
 
-      ${this.review
+      ${this.review && this.review.review_type != NO_REVIEW
         ? html`<review-members
               .review="${this.review}"
               .interventionId="${this.interventionId}"
@@ -60,12 +85,20 @@ export class InterventionReviewTab extends connectStore(LitElement) {
     this.canEditReview = state.interventions.current.permissions!.edit.reviews || false;
     this.canEditPRCReviews = state.interventions.current.permissions!.edit.prc_reviews || false;
     this.interventionId = state.interventions.current.id;
+    this.interventionStatus = state.interventions.current.status;
+    this.cfeiNumber = state.interventions.current.cfei_number || '';
   }
 
   static get styles(): CSSResult {
+    // language=css
     return css`
       *[hidden] {
         display: none !important;
+      }
+      reason-display {
+        --flag-color: #ff9044;
+        --text-wrap: none;
+        --text-padding: 26px 24px 26px 80px;
       }
     `;
   }

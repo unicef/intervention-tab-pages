@@ -8,3 +8,13 @@ export class PdAmendmentPermissions extends ModelsBase {
   }
   amendments = true;
 }
+
+export enum AmendmentsKind {
+  normal = 'normal',
+  contingency = 'contingency'
+}
+
+export const AmendmentsKindTranslateKeys = {
+  [AmendmentsKind.normal]: 'NORMAL',
+  [AmendmentsKind.contingency]: 'CONTINGENCY'
+};

@@ -4,15 +4,15 @@ import CONSTANTS from '../../../common/constants';
 import GenerateQuarterlyReportingRequirementsMixin from '../mixins/generate-quarterly-reporting-requirements-mixin';
 
 import '@polymer/paper-button/paper-button.js';
-import {fireEvent} from '../../../utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 
 import './edit-qpr-dialog';
 import './qpr-list';
-import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '../../../common/styles/button-styles';
 import {translate, get as getTranslation} from 'lit-translate';
-import {sharedStyles} from '../../../common/styles/shared-styles-lit';
-import {openDialog} from '../../../utils/dialog';
+import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 
 /**
  * @polymer
@@ -31,8 +31,9 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
   }
   render() {
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} *[hidden] {
+        *[hidden] {
           display: none !important;
         }
       </style>
@@ -42,9 +43,7 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
       </div>
 
       <div ?hidden="${!this._empty(this.reportingRequirements)}">
-        <div class="row-h">
-          ${translate('NO_QUARTERLY_REPORTING_REQUIREMENTS')}
-        </div>
+        <div class="row-h">${translate('NO_QUARTERLY_REPORTING_REQUIREMENTS')}</div>
         <div class="row-h" ?hidden="${!this.editMode}">
           <paper-button class="secondary-btn" @click="${this.openQuarterlyRepRequirementsDialog}">
             ${translate('ADD_REQUIREMENTS')}
@@ -53,6 +52,9 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
       </div>
     `;
   }
+
+  @property({type: String})
+  interventionStatus = '';
 
   @property({type: String})
   interventionStart!: string;
@@ -84,7 +86,11 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
       dialog: 'edit-qpr-dialog',
       dialogData: {
         qprData: qprData,
-        interventionId: this.interventionId
+        interventionId: this.interventionId,
+        interventionStart: this.interventionStart,
+        interventionEnd: this.interventionEnd,
+        interventionStatus: this.interventionStatus,
+        initialReportingReq: this.reportingRequirements
       }
     }).then(({confirmed, response}) => {
       if (!confirmed || !response) {

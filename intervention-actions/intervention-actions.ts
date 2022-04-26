@@ -1,41 +1,51 @@
-/* eslint-disable lit-a11y/click-events-have-key-events */
 import {CSSResultArray, LitElement, TemplateResult, html, property, customElement} from 'lit-element';
-import {arrowLeftIcon} from '../common/styles/app-icons';
-import '@polymer/paper-button';
-import '@polymer/paper-menu-button';
+import {arrowLeftIcon} from '@unicef-polymer/etools-modules-common/dist/styles/app-icons';
+import '@polymer/paper-button/paper-button';
+import '@polymer/paper-menu-button/paper-menu-button';
 import '@polymer/paper-icon-button';
 import '../common/layout/export-intervention-data';
-import './reason-popup';
-import {getEndpoint} from '../utils/endpoint-helper';
+import '@unicef-polymer/etools-modules-common/dist/components/cancel/reason-popup';
+import './accept-for-partner';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {fireEvent} from '../utils/fire-custom-event';
-import {openDialog} from '../utils/dialog';
-import '../common/layout/are-you-sure';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import '../common/components/intervention/pd-termination';
 import '../common/components/intervention/start-review';
 import '../common/components/intervention/review-checklist-popup';
 import {InterventionActionsStyles} from './intervention-actions.styles';
 import {
+  ACCEPT_REVIEW,
   ACTIONS_WITH_INPUT,
-  ACTIONS_WITHOUT_CONFIRM,
+  AMENDMENT_MERGE,
   BACK_ACTIONS,
   CANCEL,
   EXPORT_ACTIONS,
-  namesMap,
+  ActionNamesMap,
+  SEND_TO_PARTNER,
+  SEND_TO_UNICEF,
+  SIGNATURE,
+  TERMINATE,
+  ACTIONS_WITHOUT_CONFIRM,
   PRC_REVIEW,
   REJECT_REVIEW,
   REVIEW,
   SIGN,
-  TERMINATE
+  ACCEPT_ON_BEHALF_OF_PARTNER,
+  SIGN_BUDGET_OWNER,
+  SEND_BACK_REVIEW
 } from './intervention-actions.constants';
 import {PaperMenuButton} from '@polymer/paper-menu-button/paper-menu-button';
 import {updateCurrentIntervention} from '../common/actions/interventions';
-import {getStore} from '../utils/redux-store-access';
-import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {defaultKeyTranslate, formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {GenericObject} from '@unicef-polymer/etools-types';
 import {Intervention} from '@unicef-polymer/etools-types';
 import {get as getTranslation} from 'lit-translate';
+import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
+import {translatesMap} from '../utils/intervention-labels-map';
 
 @customElement('intervention-actions')
 export class InterventionActions extends LitElement {
@@ -45,15 +55,18 @@ export class InterventionActions extends LitElement {
 
   @property() actions: string[] = [];
   @property({type: String}) dir = 'ltr';
-  interventionId!: number;
-  activeStatus!: string;
+  @property({type: Object})
+  interventionPartial!: Partial<Intervention>;
+
+  @property({type: Boolean})
+  userIsBudgetOwner = false;
 
   connectedCallback() {
     super.connectedCallback();
     this.dir = getComputedStyle(document.body).direction;
   }
 
-  private actionsNamesMap = new Proxy(namesMap, {
+  private actionsNamesMap = new Proxy(ActionNamesMap, {
     get(target: GenericObject<string>, property: string): string {
       return target[property] || property.replace('_', ' ');
     }
@@ -67,8 +80,8 @@ export class InterventionActions extends LitElement {
       (action: string) => !exportActions.includes(action) && action !== backAction
     );
     return html`
-      ${this.renderExport(exportActions)}${this.renderBackAction(backAction)}
-      ${this.renderGroupedActions(mainAction, groupedActions)}
+      ${this.renderBackAction(backAction)}${this.renderGroupedActions(mainAction, groupedActions)}
+      ${this.renderExport(exportActions)}
     `;
   }
 
@@ -81,7 +94,7 @@ export class InterventionActions extends LitElement {
       ? html`
           <export-intervention-data
             .exportLinks="${preparedExportActions}"
-            .interventionId="${this.interventionId}"
+            .interventionId="${this.interventionPartial.id}"
           ></export-intervention-data>
         `
       : html``;
@@ -104,7 +117,7 @@ export class InterventionActions extends LitElement {
     return mainAction
       ? html`
           <paper-button class="${className}" @click="${() => this.processAction(mainAction)}">
-            ${this.actionsNamesMap[mainAction]} ${this.getAdditionalTransitions(actions)}
+            ${this.getMainActionTranslatedText(mainAction)} ${this.getAdditionalTransitions(actions)}
           </paper-button>
         `
       : html``;
@@ -137,29 +150,37 @@ export class InterventionActions extends LitElement {
     let message = '';
     let btn = '';
     switch (action) {
-      case 'signature':
+      case SIGNATURE:
         btn = getTranslation('SEND');
         message = getTranslation('SEND_FOR_SIGNATURE');
         break;
-      case 'accept_review':
+      case ACCEPT_REVIEW:
         btn = getTranslation('SEND');
         message = getTranslation('SEND_FOR_ACCEPT_REVIEW');
         break;
-      case 'cancel':
+      case CANCEL:
         btn = getTranslation('GENERAL.YES');
         message = getTranslation('CANCEL_PROMPT');
         break;
-      case 'send_to_partner':
+      case AMENDMENT_MERGE:
+        btn = getTranslation('GENERAL.YES');
+        message = getTranslation('AMENDMENT_MERGE');
+        break;
+      case SEND_TO_PARTNER:
         btn = getTranslation('GENERAL.YES');
         message = getTranslation('SEND_TO_PARTNER_PROMPT');
         break;
-      case 'send_to_unicef':
+      case SEND_TO_UNICEF:
         btn = getTranslation('GENERAL.YES');
         message = getTranslation('SEND_TO_UNICEF_PROMPT');
         break;
-      case 'terminate':
+      case TERMINATE:
         btn = getTranslation('CONTINUE');
         message = getTranslation('TERMINATE_PROMPT');
+        break;
+      case REVIEW:
+        btn = getTranslation('ACCEPT');
+        message = getTranslation('REVIEW_PROMPT');
         break;
       default:
         btn = this.actionsNamesMap[action];
@@ -180,13 +201,14 @@ export class InterventionActions extends LitElement {
     if (!(await this.confirmAction(action))) {
       return;
     }
-    const body = ACTIONS_WITH_INPUT.includes(action) ? await this.openActionsWithInputsDialogs(action) : {};
+
+    const body = this.isActionWithInput(action) ? await this.openActionsWithInputsDialogs(action) : {};
     if (body === null) {
       return;
     }
 
     const endpoint = getEndpoint(interventionEndpoints.interventionAction, {
-      interventionId: this.interventionId,
+      interventionId: this.interventionPartial.id,
       action
     });
     fireEvent(this, 'global-loading', {
@@ -199,7 +221,14 @@ export class InterventionActions extends LitElement {
       method: 'PATCH'
     })
       .then((intervention: Intervention) => {
-        getStore().dispatch(updateCurrentIntervention(intervention));
+        if (action === AMENDMENT_MERGE) {
+          this.redirectToTabPage(intervention.id, 'metadata');
+        } else {
+          getStore().dispatch(updateCurrentIntervention(intervention));
+          if (action === REVIEW) {
+            this.redirectToTabPage(intervention.id, REVIEW);
+          }
+        }
       })
       .finally(() => {
         fireEvent(this, 'global-loading', {
@@ -207,17 +236,39 @@ export class InterventionActions extends LitElement {
           loadingSource: 'intervention-actions'
         });
       })
-      .catch((err: any) => {
-        fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
+      .catch((error: any) => {
+        fireEvent(this, 'toast', {
+          text: formatServerErrorAsText(error, (key) => {
+            const labelKey = translatesMap[key];
+            return labelKey ? getTranslation(labelKey) : defaultKeyTranslate(key);
+          })
+        });
       });
+  }
+
+  private isActionWithInput(action: string) {
+    if (ACTIONS_WITH_INPUT.includes(action)) {
+      if (action == ACCEPT_ON_BEHALF_OF_PARTNER) {
+        if (this.interventionPartial.submission_date || this.interventionPartial.in_amendment) {
+          return false;
+        }
+      }
+      return true;
+    }
+    return false;
+  }
+
+  private redirectToTabPage(id: number | null, tabName: string) {
+    history.pushState(window.history.state, '', `${ROOT_PATH}interventions/${id}/${tabName}`);
+    window.dispatchEvent(new CustomEvent('popstate'));
   }
 
   private openCommentDialog(action: string): Promise<any> {
     return openDialog({
       dialog: 'reason-popup',
       dialogData: {
-        popupTitle: `${this.actionsNamesMap[action]} reason`,
-        label: `${this.actionsNamesMap[action]} comment`
+        popupTitle: `${this.actionsNamesMap[action]} Reason`,
+        label: `${this.actionsNamesMap[action]} Comment`
       }
     }).then(({confirmed, response}) => {
       if (!confirmed || !response) {
@@ -230,11 +281,27 @@ export class InterventionActions extends LitElement {
     });
   }
 
+  private openSentBackBySecretaryCommentDialog(action: string): Promise<any> {
+    return openDialog({
+      dialog: 'reason-popup',
+      dialogData: {
+        popupTitle: `${this.actionsNamesMap[action]} Reason`,
+        label: `${this.actionsNamesMap[action]} Comment`
+      }
+    }).then(({confirmed, response}) => {
+      if (!confirmed || !response) {
+        return null;
+      }
+
+      return {sent_back_comment: response.comment};
+    });
+  }
+
   private openTermiantionDialog() {
     return openDialog({
       dialog: 'pd-termination',
       dialogData: {
-        interventionId: this.interventionId
+        interventionId: this.interventionPartial.id
       }
     }).then(({confirmed, response}) => {
       if (!confirmed || !response) {
@@ -275,6 +342,22 @@ export class InterventionActions extends LitElement {
     });
   }
 
+  private openAcceptForPartner() {
+    return openDialog({
+      dialog: 'accept-for-partner',
+      dialogData: {
+        interventionId: this.interventionPartial.id
+      }
+    }).then(({confirmed, response}) => {
+      if (!confirmed || !response) {
+        return null;
+      }
+      return {
+        submission_date: response.submission_date
+      };
+    });
+  }
+
   private closeDropdown(): void {
     const element: PaperMenuButton | null = this.shadowRoot!.querySelector('paper-menu-button');
     if (element) {
@@ -286,6 +369,8 @@ export class InterventionActions extends LitElement {
     switch (action) {
       case CANCEL:
         return this.openCommentDialog(action);
+      case SEND_BACK_REVIEW:
+        return this.openSentBackBySecretaryCommentDialog(action);
       case TERMINATE:
         return this.openTermiantionDialog();
       case REVIEW:
@@ -296,8 +381,17 @@ export class InterventionActions extends LitElement {
         return this.openReviewDialog({rejectPopup: true});
       case SIGN:
         return this.openReviewDialog({approvePopup: true});
+      case ACCEPT_ON_BEHALF_OF_PARTNER:
+        return this.openAcceptForPartner();
       default:
         return;
     }
+  }
+
+  private getMainActionTranslatedText(mainAction: string) {
+    if (this.interventionPartial.status === 'review' && this.userIsBudgetOwner && mainAction === 'sign') {
+      return this.actionsNamesMap[SIGN_BUDGET_OWNER];
+    }
+    return this.actionsNamesMap[mainAction];
   }
 }

@@ -9,6 +9,8 @@ export class DocumentDetails extends ModelsBase {
   title = '';
   context = '';
   implementation_strategy = '';
+  capacity_development = '';
+  other_partners_involved = '';
 }
 
 export class DocumentDetailsPermissions extends ModelsBase {
@@ -19,4 +21,6 @@ export class DocumentDetailsPermissions extends ModelsBase {
   title = true;
   context = true;
   implementation_strategy = true;
+  capacity_development = true;
+  other_partners_involved = true;
 }

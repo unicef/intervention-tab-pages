@@ -1,36 +1,30 @@
 import {LitElement, html, property, customElement} from 'lit-element';
-import {fireEvent} from '../../../utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import CONSTANTS from '../../../common/constants';
 import '@polymer/paper-button/paper-button.js';
 import './edit-hru-dialog.js';
 import './hru-list.js';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
-import FrontendPaginationMixin from '../mixins/frontend-pagination-mixin';
-import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
-import {HruListEl} from './hru-list.js';
 import {ExpectedResult} from '@unicef-polymer/etools-types';
-import {buttonsStyles} from '../../../common/styles/button-styles';
 import {translate, get as getTranslation} from 'lit-translate';
-import {openDialog} from '../../../utils/dialog';
+import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import PaginationMixin from '@unicef-polymer/etools-modules-common/dist/mixins/pagination-mixin';
 
 /**
  * @customElement
  * @polymer
  * @mixinFunction
  * @appliesMixin ReportingRequirementsCommonMixin
- * @appliesMixin FrontendPaginationMixin
+ * @appliesMixin PaginationMixin
  */
 @customElement('humanitarian-reporting-req-unicef')
-export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
-  ReportingRequirementsCommonMixin(LitElement)
-) {
+export class HumanitarianReportingReqUnicef extends PaginationMixin(ReportingRequirementsCommonMixin(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
   render() {
-    if (this.reportingRequirements.length) {
-      this._paginationChanged(this.pagination.pageNumber, this.pagination.pageSize, this.reportingRequirements);
-    }
     return html`
       <style>
         :host {
@@ -40,11 +34,8 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
           display: none !important;
         }
       </style>
-
       <div ?hidden="${!this._empty(this.reportingRequirements)}">
-        <div class="row-h">
-          ${translate('NO_HUMANITARIAN_REPORT')}
-        </div>
+        <div class="row-h">${translate('NO_HUMANITARIAN_REPORT')}</div>
         <div class="row-h" ?hidden="${!this._showAdd(this.expectedResults, this.editMode)}">
           <paper-button class="secondary-btn" @click="${this.openUnicefHumanitarianRepReqDialog}">
             ${translate('ADD_REQUIREMENTS')}
@@ -56,13 +47,17 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
       </div>
 
       <div class="flex-c" ?hidden="${this._empty(this.reportingRequirements)}">
-        <hru-list id="hruList" .hruData="${this.dataItems}" disable-sorting use-pagination-index> </hru-list>
+        <hru-list id="hruList" .hruData="${this.paginatedReports}" .paginator="${this.paginator}" disable-sorting>
+        </hru-list>
+
         <etools-data-table-footer
-          .pageSize="${this.pagination.pageSize}"
-          .pageNumberr="${this.pagination.pageNumber}"
-          .totalResults="${this.pagination.totalResults}"
-          @page-size-changed="${this._pageSizeChanged}"
-          @page-number-changed="${this._pageNumberChanged}"
+          .pageSize="${this.paginator.page_size}"
+          .pageNumber="${this.paginator.page}"
+          .totalResults="${this.paginator.count}"
+          .visibleRange="${this.paginator.visible_range}"
+          @visible-range-changed="${this.visibleRangeChanged}"
+          @page-size-changed="${this.pageSizeChanged}"
+          @page-number-changed="${this.pageNumberChanged}"
         >
         </etools-data-table-footer>
       </div>
@@ -72,6 +67,9 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
   @property({type: Array})
   expectedResults!: [];
 
+  @property({type: Array})
+  paginatedReports!: any[];
+
   @property({type: Date})
   interventionStart!: Date;
 
@@ -80,18 +78,35 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
 
   connectedCallback() {
     super.connectedCallback();
-    if (this.reportingRequirements) {
-      this._paginationChanged(1, 10, this.reportingRequirements);
+    this.addEventListener('reporting-requirements-loaded', this.dataWasLoaded as any);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.removeEventListener('reporting-requirements-loaded', this.dataWasLoaded as any);
+  }
+
+  dataWasLoaded() {
+    this.paginator = {...this.paginator, page: 1, page_size: 10, count: this.reportingRequirements.length};
+  }
+
+  _paginate(pageNumber: number, pageSize: number) {
+    if (!this.reportingRequirements) {
+      return;
     }
-    const hruListEl = this.shadowRoot!.querySelector('hruList') as HruListEl;
-    if (hruListEl) {
-      hruListEl.hruMainEl = this;
-    }
+    this.paginatedReports = (this.reportingRequirements || []).slice(
+      (pageNumber - 1) * pageSize,
+      pageNumber * pageSize
+    );
+  }
+
+  paginatorChanged() {
+    this._paginate(this.paginator.page, this.paginator.page_size);
   }
 
   _reportingRequirementsSaved(reportingRequirements: any[]) {
     this._onReportingRequirementsSaved(reportingRequirements);
-    this.pagination.pageNumber = 1;
+    this.paginator = {...this.paginator, page: 1};
     this.updateReportingRequirements(reportingRequirements, CONSTANTS.REQUIREMENTS_REPORT_TYPE.HR);
   }
 
@@ -132,17 +147,6 @@ export class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(
       }
       this._reportingRequirementsSaved(response);
     });
-  }
-
-  setTotalResults(interventionId: number, reportingRequirements: any) {
-    if (typeof interventionId === 'undefined' || typeof reportingRequirements === 'undefined') {
-      return;
-    }
-    this.pagination.totalResults = reportingRequirements.length;
-  }
-
-  _getIndex(index: number) {
-    return index + 1 + this.pagination.pageSize * (this.pagination.pageNumber - 1);
   }
 
   _thereAreHFIndicators(expectedResults: ExpectedResult[]) {

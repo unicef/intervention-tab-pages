@@ -25,6 +25,7 @@ export interface EtoolsEndpoints {
   attachmentsUpload: EtoolsEndpoint;
   supplyItemsUpload: EtoolsEndpoint;
   interventionAmendmentAdd: EtoolsEndpoint;
+  interventionAmendmentDelete: EtoolsEndpoint;
   frNumbersDetails: EtoolsEndpoint;
   comments: EtoolsEndpoint;
   resolveComment: EtoolsEndpoint;
@@ -46,7 +47,8 @@ export interface EtoolsEndpoints {
   hrClusterReportingRequirements: EtoolsEndpoint;
   getPRPCountries: EtoolsEndpoint;
   downloadComment: EtoolsEndpoint;
-  downloadPDPdf: EtoolsEndpoint;
+  exportPdf: EtoolsEndpoint;
+  exportXls: EtoolsEndpoint;
   interventionReview: EtoolsEndpoint;
   sendReviewNotification: EtoolsEndpoint;
   officersReviews: EtoolsEndpoint;
@@ -127,6 +129,9 @@ export const interventionEndpoints: EtoolsEndpoints = {
   },
   interventionAmendmentAdd: {
     template: '/api/v2/interventions/<%=intervId%>/amendments/'
+  },
+  interventionAmendmentDelete: {
+    template: '/api/v2/interventions/amendments/<%=amendmentId%>/'
   },
   frNumbersDetails: {
     url: '/api/v2/funds/frs'
@@ -214,7 +219,10 @@ export const interventionEndpoints: EtoolsEndpoints = {
     token: 'prp',
     cachingKey: 'prpCountries'
   },
-  downloadPDPdf: {
+  exportPdf: {
     template: '/api/pmp/v3/interventions/<%=interventionId%>/pdf'
+  },
+  exportXls: {
+    template: '/api/pmp/v3/interventions/<%=interventionId%>/xls'
   }
 };

@@ -2,43 +2,45 @@ import '@polymer/paper-button/paper-button';
 import '@polymer/paper-toggle-button';
 
 import './common/layout/page-content-header/intervention-page-content-header';
-import './common/layout/etools-tabs';
-import './common/components/cancel/cancel-justification';
+import '@unicef-polymer/etools-modules-common/dist/layout/etools-tabs';
+import '@unicef-polymer/etools-modules-common/dist/components/cancel/reason-display';
 // eslint-disable-next-line max-len
-import './common/layout/status/etools-status';
+import '@unicef-polymer/etools-modules-common/dist/layout/status/etools-status';
 import './intervention-actions/intervention-actions';
 import './common/components/prp-country-data/prp-country-data';
-import {customElement, LitElement, html, property, css} from 'lit-element';
+import {customElement, LitElement, html, property, css, query} from 'lit-element';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
-import {getStore, getStoreAsync} from './utils/redux-store-access';
-import {
-  selectAvailableActions,
-  currentPage,
-  currentSubpage,
-  isUnicefUser,
-  currentSubSubpage,
-  currentUser
-} from './common/selectors';
-import {elevationStyles} from './common/styles/elevation-styles';
-import {RootState} from './common/types/store.types';
-import {getIntervention, updateCurrentIntervention} from './common/actions/interventions';
-import {sharedStyles} from './common/styles/shared-styles-lit';
-import {isJsonStrMatch} from './utils/utils';
+import {getStore, getStoreAsync} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {currentPage, currentSubpage, isUnicefUser, currentSubSubpage, currentUser} from './common/selectors';
+import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
+import {getIntervention} from './common/actions/interventions';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {pageContentHeaderSlottedStyles} from './common/layout/page-content-header/page-content-header-slotted-styles';
-import {fireEvent} from './utils/fire-custom-event';
-import {buildUrlQueryString} from './utils/utils';
-import {enableCommentMode, getComments} from './common/components/comments/comments.actions';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {buildUrlQueryString} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {enableCommentMode, getComments, setCommentsEndpoint} from './common/components/comments/comments.actions';
 import {commentsData} from './common/components/comments/comments.reducer';
 import {Store} from 'redux';
-import {connectStore} from './common/mixins/connect-store-mixin';
-import {EnvFlags, Intervention} from '@unicef-polymer/etools-types';
+import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
+import {EnvFlags, ExpectedResult, Intervention} from '@unicef-polymer/etools-types';
 import {AsyncAction, RouteDetails} from '@unicef-polymer/etools-types';
 import {interventions} from './common/reducers/interventions';
 import {translate, get as getTranslation} from 'lit-translate';
-import {EtoolsTabs} from './common/layout/etools-tabs';
-import {reviews} from './common/reducers/officers-reviews';
-import {TABS} from './common/constants';
+import {EtoolsTabs} from '@unicef-polymer/etools-modules-common/dist/layout/etools-tabs';
+import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
+import {prcIndividualReviews} from './common/reducers/officers-reviews';
+import {uploadStatus} from './common/reducers/upload-status';
+import CONSTANTS, {TABS} from './common/constants';
+import UploadMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uploads-mixin';
+import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
+import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {RESET_UNSAVED_UPLOADS, RESET_UPLOADS_IN_PROGRESS} from './common/actions/actionsContants';
+import {RootState} from './common/types/store.types';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {interventionEndpoints} from './utils/intervention-endpoints';
+import {CommentsEndpoints} from '../intervention-tab-pages/common/components/comments/comments-types';
 
 const MOCKUP_STATUSES = [
   ['draft', 'Draft'],
@@ -53,14 +55,45 @@ const MOCKUP_STATUSES = [
  * @customElement
  */
 @customElement('intervention-tabs')
-export class InterventionTabs extends connectStore(LitElement) {
+export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   static get styles() {
+    // language=css
     return [
       elevationStyles,
       pageContentHeaderSlottedStyles,
       css`
+        :host {
+          flex: 1;
+          width: 100%;
+          flex-direction: column;
+        }
+        :host(:not([hidden])) {
+          display: flex !important;
+        }
+        :host([is-in-amendment]) {
+          border: 5px solid #ffd28b;
+          box-sizing: border-box;
+        }
         .page-content {
           margin: 24px;
+          flex: 1;
+        }
+        .amendment-info {
+          position: sticky;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          padding: 0 20px;
+          box-sizing: border-box;
+          display: flex;
+          align-items: center;
+          background-color: #ffd28b;
+          height: 50px;
+        }
+        .amendment-info a {
+          margin-left: 7px;
+          cursor: pointer;
+          text-decoration: underline;
         }
         @media (max-width: 576px) {
           .page-content {
@@ -78,13 +111,14 @@ export class InterventionTabs extends connectStore(LitElement) {
     // main template
     // language=HTML
     return html`
+      ${sharedStyles}
       <style>
         :host {
           --ecp-header-bg: #ffffff;
           --ecp-header-color: var(--primary-text-color);
         }
 
-        ${sharedStyles} etools-status {
+        etools-status {
           justify-content: center;
         }
         .flag {
@@ -112,13 +146,25 @@ export class InterventionTabs extends connectStore(LitElement) {
         etools-content-panel::part(ecp-content) {
           padding: 8px 24px 16px 24px;
         }
+        .intervention-partner {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          font-size: 18px;
+          font-weight: 700;
+          display: block;
+        }
+        .intervention-number {
+          font-size: 16px;
+        }
       </style>
 
       <!-- Loading PRP country data -->
       <prp-country-data></prp-country-data>
 
       <intervention-page-content-header with-tabs-visible>
-        <span slot="page-title">${this.intervention.number}</span>
+        <span class="intervention-partner" slot="page-title">${this.intervention.partner}</span>
+        <span class="intervention-number" slot="page-title">${this.intervention.number}</span>
         <div slot="mode">
           <paper-toggle-button id="commentMode" ?checked="${this.commentMode}" @iron-change="${this.commentModeChange}"
             >${translate('GENERAL.COMMENT_MODE')}</paper-toggle-button
@@ -134,9 +180,9 @@ export class InterventionTabs extends connectStore(LitElement) {
 
         <div slot="title-row-actions" class="content-header-actions">
           <intervention-actions
-            .interventionId="${this.intervention.id}"
-            .activeStatus="${this.intervention.status}"
             .actions="${this.availableActions}"
+            .interventionPartial=${this.getInterventionDetailsForActionsDisplay(this.intervention)}
+            .userIsBudgetOwner="${this.userIsBudgetOwner}"
           ></intervention-actions>
         </div>
 
@@ -151,25 +197,33 @@ export class InterventionTabs extends connectStore(LitElement) {
             .activeTab="${this.activeTab}"
             .activeSubTab="${this.activeSubTab}"
             @iron-select="${this.handleTabChange}"
+            @iron-activate="${this.handleTabActivate}"
           ></etools-tabs-lit>
         </div>
       </intervention-page-content-header>
 
       <div class="page-content">
         ${this.intervention.cancel_justification
-          ? html`<cancel-justification .justification=${this.intervention.cancel_justification}></cancel-justification>`
+          ? html`<reason-display .justification=${this.intervention.cancel_justification}></reason-display>`
           : ''}
         <intervention-metadata ?hidden="${!this.isActiveTab(this.activeTab, 'metadata')}"> </intervention-metadata>
         <intervention-strategy ?hidden="${!this.isActiveTab(this.activeTab, 'strategy')}"></intervention-strategy>
-        <intervention-results ?hidden="${!this.isActiveTab(this.activeTab, 'results')}"> </intervention-results>
+        <intervention-workplan ?hidden="${!this.isActiveTab(this.activeTab, 'workplan')}"> </intervention-workplan>
         <intervention-timing ?hidden="${!this.isActiveTab(this.activeTab, 'timing')}"> </intervention-timing>
         <intervention-review ?hidden="${!this.isActiveTab(this.activeTab, 'review')}"></intervention-review>
         <intervention-attachments ?hidden="${!this.isActiveTab(this.activeTab, 'attachments')}">
         </intervention-attachments>
-        <intervention-info
+        <intervention-progress
           .activeSubTab="${this.activeSubTab}"
-          ?hidden="${!this.isActiveTab(this.activeTab, 'info')}"
-        ></intervention-info>
+          ?hidden="${!this.isActiveTab(this.activeTab, TABS.Progress)}"
+        ></intervention-progress>
+      </div>
+
+      <div class="amendment-info" ?hidden="${!this.isInAmendment}">
+        ${translate('AMENDMENT_MODE_TEXT')}
+        <a href="${ROOT_PATH}interventions/${this.intervention?.original_intervention}/metadata">
+          ${translate('ORIGINAL_VERSION')}
+        </a>
       </div>
     `;
   }
@@ -187,28 +241,30 @@ export class InterventionTabs extends connectStore(LitElement) {
       hidden: false
     },
     {
-      tab: TABS.Results,
-      tabLabel: getTranslation('RESULTS_TAB'),
+      tab: TABS.Workplan,
+      tabLabel: getTranslation('WORKPLAN_TAB'),
       hidden: false
     },
     {
       tab: TABS.Timing,
-      tabLabel: (getTranslation('TIMING_TAB') as unknown) as string,
+      tabLabel: getTranslation('TIMING_TAB') as unknown as string,
       hidden: false
-    },
-    {
-      tab: TABS.Attachments,
-      tabLabel: (getTranslation('ATTACHMENTS_TAB') as unknown) as string,
-      hidden: false
-    },
-    {
-      tab: 'info',
-      tabLabel: getTranslation('INFO_TAB'),
-      hidden: false,
-      disabled: true,
-      subtabs: [{label: getTranslation('SUMMARY_SUBTAB'), value: TABS.Summary}]
     }
   ];
+
+  progressTabTemplate = {
+    tab: TABS.Progress,
+    tabLabel: getTranslation('PROGRESS_TAB'),
+    hidden: false,
+    disabled: true,
+    subtabs: [
+      {label: getTranslation('IMPLEMENTATION_STATUS_SUBTAB'), value: TABS.ImplementationStatus},
+      {label: getTranslation('MONITORING_ACTIVITIES_SUBTAB'), value: TABS.MonitoringActivities}
+    ]
+  };
+
+  @property({type: String})
+  uploadEndpoint: string = getEndpoint(interventionEndpoints.attachmentsUpload).url;
 
   @property({type: String})
   activeTab = TABS.Metadata;
@@ -228,20 +284,39 @@ export class InterventionTabs extends connectStore(LitElement) {
   @property({type: Boolean})
   isUnicefUser = false;
 
+  @property({type: Boolean})
+  userIsBudgetOwner = false;
+
+  @property({type: Boolean, attribute: 'is-in-amendment', reflect: true})
+  isInAmendment = false;
+
+  @query('etools-tabs-lit')
+  etoolsTabs!: EtoolsTabs;
+
   /*
    * Used to avoid unnecessary get intervention request
    */
   _routeDetails: RouteDetails | null = null;
 
+  // id from route params
+  private interventionId: string | null = null;
+
   connectedCallback() {
     super.connectedCallback();
-    this._showInterventionPageLoadingMessage();
+    // this._showInterventionPageLoadingMessage();
+    const commentsEndpoints: CommentsEndpoints = {
+      saveComments: interventionEndpoints.comments,
+      deleteComment: interventionEndpoints.deleteComment,
+      resolveComment: interventionEndpoints.resolveComment
+    };
     getStoreAsync().then((store: Store<RootState>) => {
       (store as any).addReducers({
         commentsData,
         interventions,
-        reviews
+        prcIndividualReviews,
+        uploadStatus
       });
+      getStore().dispatch(setCommentsEndpoint(commentsEndpoints));
     });
   }
 
@@ -254,112 +329,163 @@ export class InterventionTabs extends connectStore(LitElement) {
   }
 
   public stateChanged(state: RootState) {
-    if (currentPage(state) === 'interventions' && currentSubpage(state) === 'list') {
-      if (this._routeDetails) {
-        this._routeDetails = null;
-        fireEvent(this, 'scroll-up');
-        this.intervention = null;
-        getStore().dispatch(updateCurrentIntervention(null));
-      }
-
-      return;
+    const notInterventionTabs: boolean =
+      currentPage(state) !== 'interventions' || currentSubpage(state) === 'list' || currentSubpage(state) === 'new';
+    const needToReset = Boolean(notInterventionTabs && (this._routeDetails || this.intervention));
+    if (needToReset) {
+      this.resetPageData();
     }
-
-    if (!currentUser(state)) {
-      // Avoid timing issues
-      return;
-    }
-
-    if (!this.hasPermissionsToAccessPage(currentSubpage(state), currentSubSubpage(state), isUnicefUser(state))) {
-      this.goToPageNotFound();
-
+    if (notInterventionTabs || state.interventions?.interventionLoading || !currentUser(state)) {
       return;
     }
 
     this.activeTab = currentSubpage(state) as string;
     this.activeSubTab = currentSubSubpage(state) as string;
     this.isUnicefUser = isUnicefUser(state);
+
+    // check permissions after intervention was loaded
+    if (state.interventions?.current && !this.hasPermissionsToAccessPage(state)) {
+      this.goToPageNotFound();
+      return;
+    }
     const currentInterventionId = get(state, 'app.routeDetails.params.interventionId');
     const currentIntervention = get(state, 'interventions.current');
 
-    if (currentIntervention) {
-      if (!isJsonStrMatch(this.intervention, currentIntervention)) {
-        this.intervention = cloneDeep(currentIntervention);
+    // check if intervention was changed
+    if (!isJsonStrMatch(this.intervention, currentIntervention)) {
+      this.intervention = cloneDeep(currentIntervention);
+
+      if (currentIntervention && currentIntervention.budget_owner) {
+        this.userIsBudgetOwner = currentIntervention.budget_owner.id === get(state, 'user.data.user');
       }
+
+      this.availableActions = this.checkExportOptionsAvailability(
+        this.intervention?.available_actions || [],
+        this.intervention!
+      );
+      // set amendment attribute on host to add border and other styles
+      this.isInAmendment = Boolean(this.intervention?.in_amendment);
+      this.checkTabs(state);
     }
-    if (
-      currentInterventionId !== String(get(this.intervention, 'id')) &&
-      !isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)
-    ) {
-      getStore()
-        .dispatch<AsyncAction>(getIntervention(currentInterventionId))
-        .catch((err: any) => {
-          if (err.message === '404') {
-            this.goToPageNotFound();
-          }
-        });
-      getStore().dispatch<AsyncAction>(getComments(currentInterventionId));
+
+    // check if we need to load intervention and comments
+    if (currentInterventionId !== this.interventionId) {
+      this.interventionId = currentInterventionId;
+      this.loadInterventionData(currentInterventionId);
     }
+
+    if (state.uploadStatus) {
+      this.uploadsStateChanged(state);
+    }
+
+    // on routing change
     if (!isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)) {
       this._routeDetails = cloneDeep(state.app!.routeDetails);
-      this.commentMode = !!(this._routeDetails?.queryParams || {})['comment_mode'];
+      this.commentMode = Boolean(this._routeDetails?.queryParams?.comment_mode);
       setTimeout(() => {
         getStore().dispatch(enableCommentMode(this.commentMode));
       }, 10);
       fireEvent(this, 'scroll-up');
     }
-    this.availableActions = selectAvailableActions(state);
+  }
+
+  checkExportOptionsAvailability(availableActions: string[], intervention: Intervention) {
+    if (
+      availableActions &&
+      availableActions.includes('export_results') &&
+      !this.showExportResults(intervention.status, intervention.result_links)
+    ) {
+      return availableActions.filter((x: string) => x !== 'export_results');
+    }
+    return availableActions;
+  }
+
+  showExportResults(status: string, resultLinks: ExpectedResult[]) {
+    return (
+      [
+        CONSTANTS.STATUSES.Draft.toLowerCase(),
+        CONSTANTS.STATUSES.Review.toLowerCase(),
+        CONSTANTS.STATUSES.Signature.toLowerCase(),
+        CONSTANTS.STATUSES.Signed.toLowerCase(),
+        CONSTANTS.STATUSES.Active.toLowerCase()
+      ].indexOf(status) > -1 &&
+      resultLinks &&
+      resultLinks.length
+    );
+  }
+
+  hasPermissionsToAccessPage(state: RootState) {
+    const unicefUser = isUnicefUser(state);
+    const tab = currentSubpage(state);
+    const subTab = currentSubSubpage(state);
+
+    const attachmentRestricted =
+      tab === TABS.Attachments && !state.interventions.current?.permissions?.view!.attachments;
+
+    const reviewRestricted = tab === TABS.Review && !state.interventions.current?.permissions?.view!.reviews;
+    const restrictedSubTabs =
+      !unicefUser &&
+      [TABS.ResultsReported, TABS.Reports, TABS.ImplementationStatus, TABS.MonitoringActivities].includes(subTab);
+    return !attachmentRestricted && !reviewRestricted && !restrictedSubTabs;
+  }
+
+  checkTabs(state: RootState): void {
+    this.checkAttachmentsTab(state);
     this.checkReviewTab(state);
 
-    if (get(state, 'user.data.is_unicef_user')) {
-      this.handleInfoSubtabsVisibility(get(state, 'commonData.envFlags'));
-    }
+    this.handleProgressTabVisibility(state.commonData?.envFlags, state?.user.data?.is_unicef_user);
+    this.pageTabs = [...this.pageTabs];
   }
 
-  hasPermissionsToAccessPage(_tab: string, subTab: string, isUnicefUser: boolean) {
+  handleProgressTabVisibility(envFlags: EnvFlags | null, isUnicefUser?: boolean) {
     if (!isUnicefUser) {
-      if ([TABS.ResultsReported, TABS.Reports, TABS.ImplementationStatus, TABS.MonitoringActivities].includes(subTab)) {
-        return false;
-      }
+      return; // ONLY visible for unicef users
     }
 
-    return true;
-  }
-
-  handleInfoSubtabsVisibility(envFlags: EnvFlags) {
-    if (!this.pageTabs.find((x) => x.tab === 'info')?.subtabs?.find((t) => t.value === TABS.ImplementationStatus)) {
-      this.pageTabs
-        .find((t) => t.tab === 'info')
-        ?.subtabs?.push(
-          {label: getTranslation('IMPLEMENTATION_STATUS_SUBTAB'), value: TABS.ImplementationStatus},
-          {label: getTranslation('MONITORING_ACTIVITIES_SUBTAB'), value: TABS.MonitoringActivities}
-        );
+    let progressTab = this.pageTabs.find((x) => x.tab === TABS.Progress);
+    if (progressTab) {
+      // tab already configured
+      return;
+    } else {
+      progressTab = cloneDeep(this.progressTabTemplate);
     }
-
-    // Results Reported, Reports tabs are visible only for unicef users if flag prp_mode_off it's not ON
-    if (
-      envFlags &&
-      !envFlags.prp_mode_off &&
-      !this.pageTabs.find((x) => x.tab === 'info')?.subtabs?.find((t) => t.value === 'progress')
-    ) {
-      this.pageTabs
-        .find((t) => t.tab === 'info')
-        ?.subtabs?.push(
-          {label: getTranslation('RESULTS_REPORTED_SUBTAB'), value: 'progress'},
-          {label: getTranslation('REPORTS_SUBTAB'), value: 'reports'}
-        );
+    // Results Reported, Reports tabs are visible only for unicef users if flag prp_mode_off is not ON
+    // @ts-ignore
+    if (envFlags && !envFlags.prp_mode_off && !progressTab?.subtabs?.find((t) => t.value === TABS.ResultsReported)) {
+      // @ts-ignore
+      progressTab?.subtabs?.push(
+        {label: getTranslation('RESULTS_REPORTED_SUBTAB'), value: TABS.ResultsReported},
+        {label: getTranslation('REPORTS_SUBTAB'), value: TABS.Reports}
+      );
     }
+    this.pageTabs.push(progressTab);
   }
 
   checkReviewTab(state: RootState): void {
     const tabIndex = this.pageTabs.findIndex((x) => x.tab === 'review');
     const unicefUser = get(state, 'user.data.is_unicef_user');
     if (tabIndex === -1 && unicefUser) {
-      this.pageTabs.splice(5, 0, {
-        tab: 'review',
+      const pasteTo = this.pageTabs.findIndex((x) => x.tab === TABS.Progress);
+      this.pageTabs.splice(pasteTo, 0, {
+        tab: TABS.Review,
         tabLabel: getTranslation('REVIEW_TAB'),
         hidden: false
       });
+    }
+  }
+
+  checkAttachmentsTab(state: RootState): void {
+    const tabIndex = this.pageTabs.findIndex((x) => x.tab === 'attachments');
+    const canView = get(state, 'interventions.current.permissions.view.attachments');
+    if (tabIndex === -1 && canView) {
+      const pasteTo = this.pageTabs.findIndex((x) => x.tab === TABS.Progress);
+      this.pageTabs.splice(pasteTo, 0, {
+        tab: TABS.Attachments,
+        tabLabel: getTranslation('ATTACHMENTS_TAB') as unknown as string,
+        hidden: false
+      });
+    } else if (tabIndex !== -1 && !canView) {
+      this.pageTabs.splice(tabIndex, 1);
     }
   }
 
@@ -402,6 +528,13 @@ export class InterventionTabs extends connectStore(LitElement) {
     return '';
   }
 
+  handleTabActivate(e: CustomEvent) {
+    if (this.existsUnsavedUploads(e)) {
+      e.preventDefault();
+      return;
+    }
+  }
+
   handleTabChange(e: CustomEvent) {
     const isSubtabParent = e.detail.item.getAttribute('is-subtabs-parent');
     if (isSubtabParent) {
@@ -413,7 +546,33 @@ export class InterventionTabs extends connectStore(LitElement) {
       return;
     }
     this.tabChanged(newTabName, this.activeTab, newSubTab, this.activeSubTab);
-    this.fixIntermittent2TabsUnderlined(e.target as EtoolsTabs);
+    this.fixIntermittent2TabsUnderlined(this.etoolsTabs);
+  }
+
+  existsUnsavedUploads(e: CustomEvent) {
+    if (Number(this.uploadsInProgress) > 0 || Number(this.unsavedUploads) > 0) {
+      this.confirmLeaveUploadsUnsavedDialog(e);
+      return true;
+    }
+    return false;
+  }
+
+  async confirmLeaveUploadsUnsavedDialog(e: CustomEvent) {
+    const confirmed = await openDialog({
+      dialog: 'are-you-sure',
+      dialogData: {
+        content: translate('LEAVE_UPLOADS_UNSAVED'),
+        confirmBtnText: translate('LEAVE'),
+        cancelBtnText: translate('STAY')
+      }
+    }).then(({confirmed}) => {
+      return confirmed;
+    });
+    if (confirmed) {
+      getStore().dispatch({type: RESET_UNSAVED_UPLOADS});
+      getStore().dispatch({type: RESET_UPLOADS_IN_PROGRESS});
+      this.handleTabChange(e);
+    }
   }
 
   fixIntermittent2TabsUnderlined(etoolsTabs: EtoolsTabs) {
@@ -455,7 +614,7 @@ export class InterventionTabs extends connectStore(LitElement) {
   }
 
   goToPageNotFound() {
-    history.pushState(window.history.state, '', 'page-not-found');
+    history.pushState(window.history.state, '', 'not-found');
     window.dispatchEvent(new CustomEvent('popstate'));
   }
 
@@ -489,5 +648,46 @@ export class InterventionTabs extends connectStore(LitElement) {
       active: true,
       loadingSource: 'interv-page'
     });
+  }
+
+  private resetPageData(): void {
+    fireEvent(this, 'scroll-up');
+    this._routeDetails = null;
+    this.intervention = null;
+    this.interventionId = null;
+    this.isInAmendment = false;
+  }
+
+  private loadInterventionData(currentInterventionId: string | number): void {
+    fireEvent(this, 'global-loading', {
+      active: true,
+      loadingSource: 'intervention-tabs'
+    });
+    getStore()
+      .dispatch<AsyncAction>(getIntervention(String(currentInterventionId)))
+      .catch((err: any) => {
+        if (err.message === '404') {
+          this.goToPageNotFound();
+        }
+      })
+      .finally(() =>
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: 'intervention-tabs'
+        })
+      );
+    getStore().dispatch<AsyncAction>(getComments(interventionEndpoints.comments, Number(currentInterventionId)));
+  }
+
+  private getInterventionDetailsForActionsDisplay(intervention: Intervention) {
+    if (!intervention) {
+      return {};
+    }
+    return {
+      id: intervention.id,
+      status: intervention.status,
+      submission_date: intervention.submission_date,
+      in_amendment: intervention.in_amendment
+    };
   }
 }

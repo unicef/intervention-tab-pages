@@ -1,34 +1,37 @@
 import {LitElement, html, customElement, property} from 'lit-element';
-import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
-import FrNumbersConsistencyMixin from '../../common/mixins/fr-numbers-consistency-mixin';
+import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {PartnerReportingRequirements, RootState} from '../../common/types/store.types';
 import {ProgrammeDocDates, InterventionDatesPermissions} from './interventionDates.models';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {selectInterventionDates, selectInterventionDatesPermissions} from './interventionDates.selectors';
-import {buttonsStyles} from '../../common/styles/button-styles';
-import {getStore} from '../../utils/redux-store-access';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {patchIntervention} from '../../common/actions/interventions';
-import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import get from 'lodash-es/get';
 import '@unicef-polymer/etools-upload/etools-upload';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
+import {AsyncAction, FrsDetails, Permission} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
-import {fireEvent} from '../../utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import ReportingRequirementsCommonMixin from '../reporting-requirements/mixins/reporting-requirements-common-mixin';
+import {translatesMap} from '../../utils/intervention-labels-map';
+import UploadsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uploads-mixin';
+import FrNumbersConsistencyMixin from '@unicef-polymer/etools-modules-common/dist/mixins/fr-numbers-consistency-mixin';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {interventionEndpoints} from '../../utils/intervention-endpoints';
 
 /**
  * @customElement
  */
 @customElement('intervention-dates')
 export class InterventionDates extends CommentsMixin(
-  ComponentBaseMixin(FrNumbersConsistencyMixin(ReportingRequirementsCommonMixin(LitElement)))
+  UploadsMixin(ComponentBaseMixin(FrNumbersConsistencyMixin(ReportingRequirementsCommonMixin(LitElement))))
 ) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
@@ -36,15 +39,14 @@ export class InterventionDates extends CommentsMixin(
 
   render() {
     if (!this.data || !this.permissions) {
-      return html`<style>
-          ${sharedStyles}
-        </style>
-        <etools-loading loading-text="Loading..." active></etools-loading>`;
+      return html` ${sharedStyles}
+        <etools-loading source="dates" loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`
+      ${sharedStyles}
       <style>
-        ${sharedStyles} :host {
+        :host {
           display: block;
           margin-bottom: 24px;
         }
@@ -77,7 +79,7 @@ export class InterventionDates extends CommentsMixin(
               <datepicker-lite
                 slot="field"
                 id="intStart"
-                label=${translate('START_DATE')}
+                label=${translate(translatesMap.start)}
                 .value="${this.data.start}"
                 ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.start)}"
                 ?required="${this.permissions.required.start}"
@@ -105,7 +107,7 @@ export class InterventionDates extends CommentsMixin(
               <datepicker-lite
                 slot="field"
                 id="intEnd"
-                label=${translate('END_DATE')}
+                label=${translate(translatesMap.end)}
                 .value="${this.data.end}"
                 ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.end)}"
                 ?required="${this.permissions.required.end}"
@@ -132,6 +134,8 @@ export class InterventionDates extends CommentsMixin(
             .uploadEndpoint="${this.uploadEndpoint}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.activation_letter_attachment)}"
             @upload-finished="${(e: CustomEvent) => this.activationLetterUploadFinished(e)}"
+            @upload-started="${this._onUploadStarted}"
+            @change-unsaved-file="${this._onChangeUnsavedFile}"
             .showDeleteBtn="${this.showActivationLetterDeleteBtn(
               this.data.status,
               this.permissions.edit.activation_letter_attachment,
@@ -145,8 +149,9 @@ export class InterventionDates extends CommentsMixin(
       </etools-content-panel>
     `;
   }
+
   @property({type: String})
-  uploadEndpoint = interventionEndpoints.attachmentsUpload.url!;
+  uploadEndpoint: string = getEndpoint(interventionEndpoints.attachmentsUpload).url;
 
   @property({type: Object})
   originalData!: ProgrammeDocDates;
@@ -181,7 +186,24 @@ export class InterventionDates extends CommentsMixin(
     this.originalData = cloneDeep(this.data);
     this.permissions = selectInterventionDatesPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
+
+    this.checkIntervDateConsistency(this.data, state.interventions.current.frs_details);
     super.stateChanged(state);
+  }
+
+  checkIntervDateConsistency(data: ProgrammeDocDates, frs_details: FrsDetails) {
+    this._frsStartConsistencyWarning = this.checkFrsAndIntervDateConsistency(
+      data.start,
+      frs_details.earliest_start_date,
+      getTranslation(translatesMap.start),
+      true
+    );
+    this._frsEndConsistencyWarning = this.checkFrsAndIntervDateConsistency(
+      data.end,
+      frs_details.latest_end_date,
+      getTranslation(translatesMap.end),
+      true
+    );
   }
 
   private hideActivationLetter(interventionStatus: string, isContingencyPd: boolean) {
@@ -192,6 +214,7 @@ export class InterventionDates extends CommentsMixin(
   }
 
   private activationLetterUploadFinished(e: CustomEvent) {
+    this._onUploadFinished(e.detail.success);
     if (e.detail.success) {
       const response = e.detail.success;
       this.data.activation_letter_attachment = response.id;
@@ -234,6 +257,7 @@ export class InterventionDates extends CommentsMixin(
             showCloseBtn: true
           });
         }
+        this._onUploadSaved();
         this.editMode = false;
       });
   }

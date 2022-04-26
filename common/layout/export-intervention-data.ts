@@ -3,10 +3,10 @@ import '@polymer/paper-button/paper-button';
 import '@polymer/paper-menu-button/paper-menu-button';
 import '@polymer/iron-icon/iron-icon';
 import '@polymer/paper-listbox/paper-listbox';
-import {fireEvent} from '../../utils/fire-custom-event';
-import {elevation2} from '../styles/elevation-styles';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {elevation2} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {getEndpoint} from '../../utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {AnyObject} from '@unicef-polymer/etools-types';
 
 /**
@@ -19,18 +19,17 @@ export class ExportInterventionData extends LitElement {
     return [
       css`
         paper-menu-button {
-          padding: 0px 24px;
+          padding: 0px;
         }
         paper-button {
           height: 40px;
-          padding: 0px 5px;
-          margin-left: 10px;
+          padding: 0px;
+          min-width: 20px;
           font-weight: bold;
           color: var(--secondary-text-color);
         }
 
         paper-button iron-icon {
-          margin-right: 10px;
           color: var(--secondary-text-color);
         }
 
@@ -65,8 +64,7 @@ export class ExportInterventionData extends LitElement {
       </style>
       <paper-menu-button id="pdExportMenuBtn" close-on-activate horizontal-align="right">
         <paper-button slot="dropdown-trigger" class="dropdown-trigger">
-          <iron-icon icon="file-download"></iron-icon>
-          Export
+          <iron-icon icon="more-vert"></iron-icon>
         </paper-button>
         <paper-listbox slot="dropdown-content">
           ${this.exportLinks.map(
@@ -78,16 +76,7 @@ export class ExportInterventionData extends LitElement {
   }
 
   @property({type: Array})
-  exportLinks: AnyObject[] = [
-    {
-      name: 'Export Excel',
-      type: 'xlsx'
-    },
-    {
-      name: 'Export CSV',
-      type: 'csv'
-    }
-  ];
+  exportLinks!: AnyObject[];
 
   @property({type: String})
   params = '';
@@ -102,15 +91,21 @@ export class ExportInterventionData extends LitElement {
       window.open(url, '_blank');
       return;
     }
-    if (_type == 'generate_pdf') {
-      url = getEndpoint(interventionEndpoints.downloadPDPdf, {interventionId: this.interventionId}).url;
+    if (_type == 'export_results') {
+      url = getEndpoint(interventionEndpoints.expectedResultsExport, {intervention_id: this.interventionId}).url;
       window.open(url, '_blank');
       return;
-    } else {
-      // TODO: Export not implemented yet
-      // url = getEndpoint(interventionEndpoints.intervention, {interventionId: this.interventionId}).url;
-      // url = url + `export/${_type}/` + (this.params ? `?${this.params}` : '');
-      fireEvent(this, 'toast', {text: 'Export this not implemented...'});
     }
+    if (_type == 'export_pdf') {
+      url = getEndpoint(interventionEndpoints.exportPdf, {interventionId: this.interventionId}).url;
+      window.open(url, '_blank');
+      return;
+    }
+    if (_type == 'export_xls') {
+      url = getEndpoint(interventionEndpoints.exportXls, {interventionId: this.interventionId}).url;
+      window.open(url, '_blank');
+      return;
+    }
+    fireEvent(this, 'toast', {text: 'Export this not implemented...'});
   }
 }
