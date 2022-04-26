@@ -13,7 +13,7 @@ import get from 'lodash-es/get';
 import {InfoElementStyles} from '@unicef-polymer/etools-modules-common/dist/styles/info-element-styles';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {translate} from 'lit-translate';
-import '@unicef-polymer/etools-modules-common/dist/components/info-icon-tooltip';
+import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 
 /**
  * @customElement
@@ -29,7 +29,7 @@ export class TimingOverview extends CommentsMixin(LitElement) {
       return html` <style>
           ${sharedStyles}
         </style>
-        <etools-loading loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="overv" loading-text="Loading..." active></etools-loading>`;
     }
     return html`
       ${sharedStyles}${InfoElementStyles}

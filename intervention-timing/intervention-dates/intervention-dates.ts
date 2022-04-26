@@ -16,7 +16,7 @@ import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/di
 import get from 'lodash-es/get';
 import '@unicef-polymer/etools-upload/etools-upload';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
+import {AsyncAction, FrsDetails, Permission} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import ReportingRequirementsCommonMixin from '../reporting-requirements/mixins/reporting-requirements-common-mixin';
@@ -40,7 +40,7 @@ export class InterventionDates extends CommentsMixin(
   render() {
     if (!this.data || !this.permissions) {
       return html` ${sharedStyles}
-        <etools-loading loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="dates" loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`
@@ -186,7 +186,24 @@ export class InterventionDates extends CommentsMixin(
     this.originalData = cloneDeep(this.data);
     this.permissions = selectInterventionDatesPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
+
+    this.checkIntervDateConsistency(this.data, state.interventions.current.frs_details);
     super.stateChanged(state);
+  }
+
+  checkIntervDateConsistency(data: ProgrammeDocDates, frs_details: FrsDetails) {
+    this._frsStartConsistencyWarning = this.checkFrsAndIntervDateConsistency(
+      data.start,
+      frs_details.earliest_start_date,
+      getTranslation(translatesMap.start),
+      true
+    );
+    this._frsEndConsistencyWarning = this.checkFrsAndIntervDateConsistency(
+      data.end,
+      frs_details.latest_end_date,
+      getTranslation(translatesMap.end),
+      true
+    );
   }
 
   private hideActivationLetter(interventionStatus: string, isContingencyPd: boolean) {

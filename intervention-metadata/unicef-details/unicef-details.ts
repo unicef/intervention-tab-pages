@@ -40,7 +40,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
     // language=HTML
     if (!this.data) {
       return html` ${sharedStyles}
-        <etools-loading loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="unicefDetails" loading-text="Loading..." active></etools-loading>`;
     }
     return html`
       ${sharedStyles}

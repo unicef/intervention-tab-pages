@@ -24,7 +24,7 @@ import {AnyObject, AsyncAction, LocationObject, Permission, Site} from '@unicef-
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
-import '@unicef-polymer/etools-modules-common/dist/components/info-icon-tooltip';
+import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 
 /**
  * @customElement
@@ -38,7 +38,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
   render() {
     if (!this.data || !this.permissions) {
       return html` ${sharedStyles}
-        <etools-loading loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="geo" loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`
@@ -154,7 +154,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
           <paper-button
             class="secondary-btn see-locations f-left"
             @click="${this.openSitesDialog}"
-            ?hidden="${!this.editMode}"
+            ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.sites)}"
             title=${translate('SELECT_LOCATION_BY_SITE_FROM_MAP')}
           >
             <iron-icon icon="add"></iron-icon>

@@ -27,7 +27,7 @@ import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
-import '@unicef-polymer/etools-modules-common/dist/components/info-icon-tooltip';
+import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 import '../../common/paper-textarea-with-icon';
 
 /**
@@ -42,7 +42,7 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
   render() {
     if (!this.data || !this.permissions) {
       return html` ${sharedStyles}
-        <etools-loading loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="non-f" loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`

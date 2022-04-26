@@ -31,6 +31,7 @@ import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/di
 import './pd-indicator';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
+import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 import {translate} from 'lit-translate';
 import {
   AsyncAction,
@@ -44,7 +45,6 @@ import {
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
-import '@unicef-polymer/etools-modules-common/dist/components/info-icon-tooltip';
 
 @customElement('pd-indicators')
 export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)) {

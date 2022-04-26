@@ -20,7 +20,7 @@ import {Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes
 import {TABS} from '../../common/constants';
 import CONSTANTS from '../../common/constants';
 import {StaticPartner} from '@unicef-polymer/etools-types';
-import '@unicef-polymer/etools-modules-common/dist/components/info-icon-tooltip';
+import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 
 /**
  * @customElement
@@ -34,7 +34,7 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
     // language=HTML
     if (!this.interventionOverview) {
       return html` ${sharedStyles}
-        <etools-loading loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="details-overview" loading-text="Loading..." active></etools-loading>`;
     }
     return html`
       ${InfoElementStyles} ${sharedStyles}

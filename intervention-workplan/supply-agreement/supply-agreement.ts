@@ -60,7 +60,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   render() {
     if (!this.supply_items) {
       return html` ${sharedStyles}
-        <etools-loading loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="supply-a" loading-text="Loading..." active></etools-loading>`;
     }
     return html`
       ${sharedStyles}

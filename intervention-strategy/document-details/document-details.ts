@@ -24,7 +24,7 @@ import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
-import '@unicef-polymer/etools-modules-common/dist/components/info-icon-tooltip';
+import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 import '../../common/paper-textarea-with-icon';
 
 /**
@@ -39,7 +39,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
   render() {
     if (!this.data || !this.permissions) {
       return html` ${sharedStyles}
-        <etools-loading loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="doc-det" loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`

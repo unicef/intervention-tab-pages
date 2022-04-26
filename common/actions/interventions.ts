@@ -4,7 +4,7 @@ import {INTERVENTION_LOADING, SHOULD_REGET_LIST, SHOW_TOAST, UPDATE_CURRENT_INTE
 import {AnyObject, PlannedBudget, Intervention} from '@unicef-polymer/etools-types';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {PartnerReportingRequirements} from '../types/store.types';
-import {pick} from 'lodash-es';
+import pick from 'lodash-es/pick';
 import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {_sendRequest} from '@unicef-polymer/etools-modules-common/dist/utils/request-helper';
 

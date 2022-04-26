@@ -55,8 +55,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
         }
 
         .indicator-content {
-          margin: 16px 24px;
-          margin-bottom: 40px;
+          margin: 0px 24px 40px 24px;
           border: solid 1px rgba(0, 0, 0, 0.4);
           overflow-x: hidden; /*To avoid horizontal scroll in IE11 */
         }
@@ -84,7 +83,6 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
       <etools-dialog
         id="indicatorDialog"
         size="lg"
-        dialog-title=${translate('INDICATOR')}
         no-padding
         opened
         @close="${this.onClose}"
@@ -133,14 +131,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
                 </etools-dropdown>
               </div>
             </div>
-            <div class="row-h">
-              <paper-toggle-button
-                ?disabled="${this.readonly || this._clusterToggleIsDisabled()}"
-                ?checked="${this.isCluster}"
-                @iron-change="${(e: CustomEvent) => this.isClusterChanged(e)}"
-              ></paper-toggle-button>
-              ${translate('CLUSTER_INDICATOR')}
-            </div>
+            <div class="row-h" ?hidden="${!this.isCluster}">${translate('CLUSTER_INDICATOR')}</div>
             <div class="indicator-content${this.isCluster ? ' cluster' : ''}">
               ${!this.isCluster
                 ? html` <non-cluster-indicator
@@ -241,14 +232,14 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   readonly: boolean | undefined = false;
 
   protected llResultId!: string; /** aka pdOutputId */
-  private prpServerOn!: boolean;
+  // private prpServerOn!: boolean;
 
   set dialogData(data: IndicatorDialogData) {
     this.sectionOptions = data.sectionOptions;
     this.locationOptions = data.locationOptions;
     this.data = data.indicator ? data.indicator : new Indicator();
     this.llResultId = data.llResultId;
-    this.prpServerOn = data.prpServerOn;
+    // this.prpServerOn = data.prpServerOn;
     this.currentUser = getStore().getState().user.data;
     this.interventionStatus = getStore().getState().interventions.current?.status || '';
     this.readonly = data.readonly;
@@ -317,13 +308,6 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   }
   onClose() {
     fireEvent(this, 'dialog-closed', {confirmed: false});
-  }
-
-  _clusterToggleIsDisabled() {
-    if (this.isEditRecord || !this.currentUser?.is_unicef_user) {
-      return true;
-    }
-    return !this.prpServerOn;
   }
 
   setTitle() {

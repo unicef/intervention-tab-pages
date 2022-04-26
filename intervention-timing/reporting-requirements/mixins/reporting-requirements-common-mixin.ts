@@ -26,6 +26,7 @@ function ReportingRequirementsCommonMixin<T extends Constructor<LitElement>>(bas
     }
     set reportingRequirements(reportingRequirements) {
       this._reportingRequirements = reportingRequirements;
+      fireEvent(this, 'reporting-requirements-loaded');
       this._countReportingReq(this._reportingRequirements.length);
     }
 
