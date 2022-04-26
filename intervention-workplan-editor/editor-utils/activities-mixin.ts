@@ -66,7 +66,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
               <tr class="header">
                 <td></td>
                 <td colspan="3">${translate('ACTIVITY')}</td>
-                <td class="a-right">${translate('TIME_PERIODS')}</td>
+                <td class="a-center">${translate('TIME_PERIODS')}</td>
                 <td>${translate('PARTNER_CASH')}</td>
                 <td>${translate('UNICEF_CASH')}</td>
                 <td colspan="2">${translate('GENERAL.TOTAL')}</td>
@@ -102,7 +102,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                   </div>
                 </td>
                 <td tabindex="0">
-                  <div class="flex-h justify-right">
+                  <div class="flex-h justify-center">
                     <time-intervals
                       .readonly="${!this.permissions.edit.result_links}"
                       tabindex="0"
