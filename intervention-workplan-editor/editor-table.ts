@@ -126,7 +126,10 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                       <paper-icon-button
                         id="add-pd-output-${result.id}"
                         slot="custom-icon"
-                        @click="${() => this.addNewPDOutput(result.ll_results)}"
+                        @click="${(e: any) => {
+                          this.addNewPDOutput(result.ll_results);
+                          this.moveFocusToNewllyAdded(e.target);
+                        }}"
                         ?hidden="${!this.permissions.edit.result_links}"
                         icon="add-box"
                         tabindex="0"
@@ -202,7 +205,10 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                           <paper-icon-button
                             icon="add-box"
                             slot="custom-icon"
-                            @click="${() => this.addNewActivity(pdOutput)}"
+                            @click="${(e: any) => {
+                              this.addNewActivity(pdOutput);
+                              this.moveFocusToNewllyAdded(e.target);
+                            }}"
                             ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
                           ></paper-icon-button>
                           <span class="no-wrap" slot="message">${translate('ADD_NEW_ACTIVITY')}</span>
@@ -437,5 +443,16 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
     }
     model[property] = newVal;
     this.requestUpdate();
+  }
+
+  moveFocusToNewllyAdded(element: any) {
+    const currTbody = this.determineCurrentTr(element).parentElement;
+    setTimeout(() => {
+      const trBelow = currTbody.nextElementSibling.querySelector('tr.text');
+      const input = trBelow.querySelector('[input]');
+      if (input) {
+        input.focus();
+      }
+    });
   }
 }
