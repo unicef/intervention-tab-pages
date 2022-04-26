@@ -3,10 +3,11 @@ import {Constructor} from '@unicef-polymer/etools-types/dist/global.types';
 import '@polymer/paper-input/paper-input';
 import {html, LitElement} from 'lit-element';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
-import {InterventionActivityExtended, InterventionActivityItemExtended} from './types';
+import {InterventionActivityExtended, InterventionActivityItemExtended, ResultLinkLowerResultExtended} from './types';
 import {repeat} from 'lit-html/directives/repeat';
 import '@polymer/paper-input/paper-textarea';
 import {translate} from 'lit-translate';
+import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 
 export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass: T) {
   return class ActivityItemsClass extends baseClass {
@@ -23,30 +24,28 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
 
     handleEsc!: (event: KeyboardEvent) => void;
 
-    renderActivityItems(activity: InterventionActivityExtended) {
+    renderActivityItems(
+      activity: InterventionActivityExtended,
+      pdOutput: ResultLinkLowerResultExtended,
+      resultIndex: number,
+      pdOutputIndex: number,
+      activityIndex: number
+    ) {
       if (!activity || !activity.items || !activity.items.length) {
         return '';
       }
-      return html`<tbody class="odd">
-        <tr ?hidden="${!this.permissions.edit.result_links}" type="add-item" style="background-color:white;">
-          <td></td>
-          <td tabindex="0">
-            <div class="icon" @click="${() => this.addNewItem(activity)}">
-              <paper-icon-button icon="add-box"></paper-icon-button> ${translate('ADD_NEW_ITEM')}
-            </div>
-          </td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td colspan="2"></td>
-        </tr>
+      return html`<tbody class="gray-1">
         ${repeat(
           activity.items || [],
           (item: InterventionActivityItemExtended) => item.id,
           (item: InterventionActivityItemExtended, itemIndex: number) => html`
-            <tr class="activity-items-row ${activity.itemsInEditMode ? '' : 'readonly-mode'}" type="a-item">
+            <tr
+              class="activity-items-row ${activity.itemsInEditMode ? '' : 'readonly-mode'}"
+              type="a-item"
+              ?in-edit-mode="${activity.itemsInEditMode}"
+              ?has-edit-permissions="${this.permissions.edit.result_links}"
+              ?new-item="${!item.id}"
+            >
               <td>
                 <paper-input
                   .noLabelFloat="${!activity.itemsInEditMode}"
@@ -62,7 +61,11 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   label=${this.getLabel(activity.itemsInEditMode, 'Item Description')}
                   ?readonly="${!activity.itemsInEditMode}"
                   .invalid="${item.invalid?.name}"
-                  @invalid-changed="${(e: CustomEvent) => (item.invalid = {...item.invalid, name: e.detail.value})}"
+                  @invalid-changed="${(e: CustomEvent) => {
+                    if (item.invalid && item.invalid.name != e.detail.value) {
+                      item.invalid = {...item.invalid, name: e.detail.value};
+                    }
+                  }}"
                   required
                   error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
                   .autoValidate="${item.autovalidate?.name}"
@@ -80,7 +83,11 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   label=${this.getLabel(activity.itemsInEditMode, 'Unit')}
                   ?readonly="${!activity.itemsInEditMode}"
                   .invalid="${item.invalid?.unit}"
-                  @invalid-changed="${(e: CustomEvent) => (item.invalid = {...item.invalid, unit: e.detail.value})}"
+                  @invalid-changed="${(e: CustomEvent) => {
+                    if (item.invalid && item.invalid.unit != e.detail.value) {
+                      item.invalid = {...item.invalid, unit: e.detail.value};
+                    }
+                  }}"
                   required
                   .autoValidate="${item.autovalidate?.unit}"
                   @focus="${() => this.setAutoValidate(item, 'unit')}"
@@ -97,7 +104,11 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   input
                   ?readonly="${!activity.itemsInEditMode}"
                   .invalid="${item.invalid?.no_units}"
-                  @invalid-changed="${(e: CustomEvent) => (item.invalid = {...item.invalid, no_units: e.detail.value})}"
+                  @invalid-changed="${(e: CustomEvent) => {
+                    if (item.invalid && item.invalid.no_units != e.detail.value) {
+                      item.invalid = {...item.invalid, no_units: e.detail.value};
+                    }
+                  }}"
                   required
                   auto-validate
                   error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
@@ -120,8 +131,11 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   input
                   ?readonly="${!activity.itemsInEditMode}"
                   .invalid="${item.invalid?.unit_price}"
-                  @invalid-changed="${(e: CustomEvent) =>
-                    (item.invalid = {...item.invalid, unit_price: e.detail.value})}"
+                  @invalid-changed="${(e: CustomEvent) => {
+                    if (item.invalid && item.invalid.unit_price != e.detail.value) {
+                      item.invalid = {...item.invalid, unit_price: e.detail.value};
+                    }
+                  }}"
                   required
                   auto-validate
                   error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
@@ -147,7 +161,11 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   auto-validate
                   error-message="${translate('INCORRECT_VALUE')}"
                   .invalid="${item.invalid?.cso_cash}"
-                  @invalid-changed="${(e: CustomEvent) => (item.invalid = {...item.invalid, cso_cash: e.detail.value})}"
+                  @invalid-changed="${(e: CustomEvent) => {
+                    if (item.invalid && item.invalid.cso_cash != e.detail.value) {
+                      item.invalid = {...item.invalid, cso_cash: e.detail.value};
+                    }
+                  }}"
                   .value="${item.cso_cash}"
                   @keydown="${(e: any) => this.handleEsc(e)}"
                   @value-changed="${({detail}: CustomEvent) => {
@@ -171,8 +189,11 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   auto-validate
                   error-message="${translate('INCORRECT_VALUE')}"
                   .invalid="${item.invalid?.unicef_cash}"
-                  @invalid-changed="${(e: CustomEvent) =>
-                    (item.invalid = {...item.invalid, unicef_cash: e.detail.value})}"
+                  @invalid-changed="${(e: CustomEvent) => {
+                    if (item.invalid && item.invalid.unicef_cash != e.detail.value) {
+                      item.invalid = {...item.invalid, unicef_cash: e.detail.value};
+                    }
+                  }}"
                   .value="${item.unicef_cash}"
                   @keydown="${(e: any) => this.handleEsc(e)}"
                   @value-changed="${({detail}: CustomEvent) => {
@@ -185,31 +206,97 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   }}"
                 ></etools-currency-amount-input>
               </td>
-              <td class="total">
+              <td class="total action-btns" style="position:relative;" colspan="2">
                 <paper-input
                   readonly
+                  class="bold"
                   .noLabelFloat="${!activity.itemsInEditMode}"
                   .value="${this.getTotalForItem(item.no_units || 0, item.unit_price || 0)}"
                 ></paper-input>
-              </td>
-              <td class="del-item" tabindex="${!activity.itemsInEditMode ? '-1' : '0'}">
-                <paper-icon-button
-                  id="delItem"
-                  icon="delete"
-                  tabindex="0"
-                  ?hidden="${!activity.itemsInEditMode}"
-                  @click="${() => this.removeItem(activity, itemIndex)}"
-                ></paper-icon-button>
+                <div class="hover-block flex-h">
+                  <paper-icon-button
+                    icon="create"
+                    ?hidden="${!this.permissions.edit.result_links || !item.id}"
+                    @click="${(e: CustomEvent) => {
+                      activity.inEditMode = true;
+                      activity.itemsInEditMode = true;
+                      this.requestUpdate();
+
+                      this.preserveFocuOnRow(e.target);
+                    }}"
+                  ></paper-icon-button>
+                  <paper-icon-button
+                    id="delItem"
+                    icon="delete"
+                    tabindex="0"
+                    ?hidden="${!this.permissions.edit.result_links}"
+                    @click="${() => this.removeItem(activity, pdOutput, itemIndex)}"
+                  ></paper-icon-button>
+                </div>
               </td>
             </tr>
           `
         )}
+        <tr ?hidden="${!this.permissions.edit.result_links}" type="add-item">
+          <td></td>
+          <td tabindex="0">
+            <div class="icon" @click="${(e: CustomEvent) => this.addNewItem(e, activity, 'focusAbove')}">
+              <paper-icon-button icon="add-box"></paper-icon-button> ${translate('ADD_NEW_ITEM')}
+            </div>
+          </td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td colspan="2">
+            <div
+              class="flex-h justify-right"
+              ?hidden="${!((activity.inEditMode || activity.itemsInEditMode) && activity.items?.length > 3)}"
+            >
+              <paper-button @click="${() => this.saveActivity(activity, pdOutput.id, this.intervention.id!)}"
+                >${translate('GENERAL.SAVE')}</paper-button
+              >
+              <paper-icon-button
+                icon="close"
+                @click="${() =>
+                  this.cancelActivity(pdOutput.activities, activity, resultIndex, pdOutputIndex, activityIndex)}"
+              ></paper-icon-button>
+            </div>
+          </td>
+        </tr>
       </tbody>`;
     }
 
-    removeItem(activity: InterventionActivityExtended, itemIndex: number) {
-      activity.items.splice(itemIndex, 1);
-      this.requestUpdate();
+    saveActivity!: (activity: InterventionActivityExtended, pdOutputId: number, interventionId: number) => void;
+    cancelActivity!: (
+      activities: Partial<InterventionActivityExtended>[],
+      activity: InterventionActivityExtended,
+      resultIndex: number,
+      pdOutputIndex: number,
+      activityIndex: number
+    ) => void;
+
+    async removeItem(
+      activity: InterventionActivityExtended,
+      pdOutput: ResultLinkLowerResultExtended,
+      itemIndex: number
+    ) {
+      const confirmed = await openDialog({
+        dialog: 'are-you-sure',
+        dialogData: {
+          content: 'Are you sure you want to delete this activity item?'
+        }
+      }).then(({confirmed}) => confirmed);
+      if (confirmed) {
+        const hasId = !!activity.items[itemIndex].id;
+        activity.items.splice(itemIndex, 1);
+        this.requestUpdate();
+        // @ts-ignore
+        if (hasId) {
+          this.saveActivity(activity, pdOutput.id, this.intervention.id!);
+        }
+      }
     }
 
     getLabel(itemsInEditMode: boolean, label: string) {
@@ -294,15 +381,46 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       }
     }
 
-    addNewItem(activity: Partial<InterventionActivityExtended>) {
+    addNewItem(e: CustomEvent, activity: Partial<InterventionActivityExtended>, focusClue: string) {
       if (!activity.items) {
         activity.items = [];
       }
       // @ts-ignore
-      activity.items?.unshift({name: '', inEditMode: true});
+      activity.items?.push({name: '', inEditMode: true});
       activity.itemsInEditMode = true;
-
       this.requestUpdate();
+      this.moveFocusToTheJustAddedItem(e.target, focusClue);
+    }
+
+    moveFocusToTheJustAddedItem(target: any, focusClue: string) {
+      const targetTrParent = this.getTrParent(target);
+      setTimeout(() => {
+        const itemDescTd = (
+          focusClue === 'focusAbove'
+            ? targetTrParent?.previousElementSibling
+            : targetTrParent?.parentElement.nextElementSibling.nextElementSibling.children[0]
+        )?.children[1];
+        // @ts-ignore
+        itemDescTd?.querySelector('paper-textarea')?.focus();
+      });
+    }
+
+    preserveFocuOnRow(target: any) {
+      const targetTrParent = this.getTrParent(target);
+      setTimeout(() => {
+        const itemDescTd = targetTrParent?.children[1];
+        // @ts-ignore
+        itemDescTd?.querySelector('paper-textarea')?.focus();
+      });
+    }
+
+    getTrParent(element: any) {
+      let trParent = element.parentElement;
+      while (trParent?.localName != 'tr') {
+        // @ts-ignore
+        trParent = trParent?.parentElement;
+      }
+      return trParent;
     }
 
     updateModelValue(model: any, property: string, newVal: any) {

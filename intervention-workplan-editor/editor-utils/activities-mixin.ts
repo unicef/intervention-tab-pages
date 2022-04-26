@@ -53,30 +53,13 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
           pdOutput.activities || [],
           (activity: InterventionActivityExtended) => activity.id,
           (activity: InterventionActivityExtended, activityIndex: number) => html`
-            <tbody thead>
-              <tr class="edit">
-                <td class="first-col"></td>
-                <td colspan="3"></td>
-                <td class="col-g"></td>
-                <td class="col-g"></td>
-                <td class="col-g"></td>
-                <td class="last-col" colspan="2">
-                  <paper-icon-button
-                    icon="create"
-                    ?hidden="${activity.inEditMode || !this.permissions.edit.result_links}"
-                    @click="${() => {
-                      activity.inEditMode = true;
-                      activity.itemsInEditMode = true;
-                      this.requestUpdate();
-                    }}"
-                  ></paper-icon-button>
-                  <paper-icon-button
-                    icon="delete"
-                    ?hidden="${activity.inEditMode || !this.permissions.edit.result_links}"
-                    @click="${() => this.openDeleteDialog(activity.id, pdOutput.id)}"
-                  ></paper-icon-button>
-                </td>
-              </tr>
+            <tbody
+              hoverable
+              comment-element="activity-${activity.id}"
+              comment-description=" Activity - ${activity.name}"
+              ?in-edit-mode="${activity.inEditMode || activity.itemsInEditMode}"
+              ?has-edit-permissions="${this.permissions.edit.result_links}"
+            >
               <tr class="header">
                 <td></td>
                 <td colspan="3">${translate('ACTIVITY')}</td>
@@ -85,15 +68,13 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td>${translate('UNICEF_CASH')}</td>
                 <td colspan="2">${translate('GENERAL.TOTAL')}</td>
               </tr>
-            </tbody>
-            <tbody comment-element="activity-${activity.id}" comment-description=" Activity - ${activity.name}">
-              <tr class="text" type="activity">
-                <td class="padd-top-15">${activity.code}</td>
-                <td colspan="3" tabindex="0">
+              <tr class="text action-btns" type="activity">
+                <td class="padd-top-10">${activity.code}</td>
+                <td colspan="3" tabindex="0" class="no-top-padding">
                   <paper-textarea
                     no-label-float
                     input
-                    class="name"
+                    class="name bold"
                     .value="${activity.name}"
                     ?readonly="${!activity.inEditMode}"
                     required
@@ -104,6 +85,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                   ></paper-textarea>
                   <div class="pad-top-8">
                     <paper-textarea
+                      class="other"
                       placeholder="-"
                       input
                       label="Other Notes"
@@ -160,37 +142,56 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                       this.updateModelValue(activity, 'unicef_cash', detail.value)}"
                   ></etools-currency-amount-input>
                 </td>
-                <td colspan="2" class="padd-top-15">
-                  ${this.intervention.planned_budget.currency}
-                  <span class="b"
-                    >${displayCurrencyAmount(
-                      String(this.getTotalForActivity(activity.cso_cash, activity.unicef_cash)),
-                      '0',
-                      2
-                    )}
-                  </span>
-                </td>
-              </tr>
-              <tr class="add" type="activity">
-                <td></td>
                 <td
-                  colspan="3"
-                  tabindex="${activity.items?.length || !this.permissions.edit.result_links ? '-1' : '0'}"
+                  colspan="2"
+                  class="padd-top-10 action-btns"
+                  style="position: relative;"
+                  tabindex="${this.permissions.edit.result_links ? '0' : '-1'}"
                 >
-                  <div
-                    class="icon"
-                    @click="${() => this.addNewItem(activity)}"
-                    ?hidden="${activity.items?.length || !this.permissions.edit.result_links}"
-                  >
-                    <paper-icon-button icon="add-box"></paper-icon-button>
-                    ${translate('ADD_NEW_ITEM')}
+                  <div>
+                    ${this.intervention.planned_budget.currency}
+                    <span class="b">
+                      ${displayCurrencyAmount(
+                        String(this.getTotalForActivity(activity.cso_cash, activity.unicef_cash)),
+                        '0',
+                        2
+                      )}
+                    </span>
                   </div>
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td class="h-center" colspan="2">
-                  <div class="flex-h justify-right" ?hidden="${!(activity.inEditMode || activity.itemsInEditMode)}">
+                  <div class="action-btns align-bottom flex-h">
+                    <paper-icon-button
+                      icon="create"
+                      ?hidden="${activity.inEditMode || !this.permissions.edit.result_links}"
+                      @click="${() => {
+                        activity.inEditMode = true;
+                        activity.itemsInEditMode = true;
+                        this.requestUpdate();
+                      }}"
+                    ></paper-icon-button>
+                    <etools-info-tooltip
+                      position="top"
+                      custom-icon
+                      ?hide-tooltip="${!this.permissions.edit.result_links}"
+                      style="justify-content:end;"
+                    >
+                      <paper-icon-button
+                        icon="add-box"
+                        slot="custom-icon"
+                        @click="${(e: CustomEvent) => this.addNewItem(e, activity, 'focusBelow')}"
+                        ?hidden="${activity.items?.length || !this.permissions.edit.result_links}"
+                      ></paper-icon-button>
+                      <span class="no-wrap" slot="message">${translate('ADD_NEW_ITEM')}</span>
+                    </etools-info-tooltip>
+                    <paper-icon-button
+                      icon="delete"
+                      ?hidden="${activity.inEditMode || !this.permissions.edit.result_links}"
+                      @click="${() => this.openDeleteDialog(activity.id, pdOutput.id)}"
+                    ></paper-icon-button>
+                  </div>
+                  <div
+                    class="flex-h justify-right align-bottom"
+                    ?hidden="${!(activity.inEditMode || activity.itemsInEditMode)}"
+                  >
                     <paper-button @click="${() => this.saveActivity(activity, pdOutput.id, this.intervention.id!)}"
                       >${translate('GENERAL.SAVE')}</paper-button
                     >
@@ -205,7 +206,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
             </tbody>
 
             <tbody thead ?hidden="${!activity.items || !activity.items.length}">
-              <tr class="header">
+              <tr class="header no-padd">
                 <td class="first-col"></td>
                 <td class="col-44p">${translate('ITEM_DESCRIPTION')}</td>
                 <td class="col-6p">${translate('UNIT')}</td>
@@ -216,7 +217,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td class="col-g" colspan="2">${translate('TOTAL')} (${this.intervention.planned_budget.currency})</td>
               </tr>
             </tbody>
-            ${this.renderActivityItems(activity)}
+            ${this.renderActivityItems(activity, pdOutput, resultIndex, pdOutputIndex, activityIndex)}
           `
         )}
       `;
@@ -226,6 +227,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       return (Number(partner) || 0) + (Number(unicef) || 0);
     }
 
+    // @ts-ignore
     cancelActivity(
       activities: Partial<InterventionActivityExtended>[],
       activity: InterventionActivityExtended,
@@ -234,11 +236,14 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       activityIndex: number
     ) {
       activity.invalid = {name: false, context_details: false, time_frames: false};
-      activity.items.forEach((i: any) => {
-        if (i.invalid) {
-          Object.keys(i.invalid).forEach((key) => (i.invalid[key] = false));
-        }
-      });
+      if (activity.items) {
+        activity.items.forEach((i: any) => {
+          if (i.invalid) {
+            Object.keys(i.invalid).forEach((key) => (i.invalid[key] = false));
+          }
+        });
+      }
+
       activity.inEditMode = false;
       activity.itemsInEditMode = false;
 
@@ -296,8 +301,8 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
         item.invalid = {};
         item.invalid.name = !item.name;
         item.invalid.unit = !item.unit;
-        item.invalid.no_units = !item.no_units;
-        item.invalid.unit_price = !item.unit_price;
+        item.invalid.no_units = !item.no_units || Number(item.no_units) == 0;
+        item.invalid.unit_price = !item.unit_price || Number(item.unit_price) == 0;
         if (item.no_units && item.unit_price) {
           this.validateCsoAndUnicefCash(item);
         }
@@ -308,6 +313,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       return !invalid;
     }
 
+    // @ts-ignore
     saveActivity(activity: InterventionActivityExtended, pdOutputId: number, interventionId: number) {
       if (!this.validateActivity(activity) || !this.validateActivityItems(activity)) {
         this.requestUpdate();
