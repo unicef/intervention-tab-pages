@@ -35,13 +35,35 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     setLastFocusedTdOnClick(focusableTds: HTMLTableCellElement[]) {
       focusableTds.forEach((td: HTMLTableCellElement) => {
         td.addEventListener('click', (e) => {
-          this.lastFocusedTd = e.target;
+          this.lastFocusedTd = this.determineCurrentTd(e.target);
           this.handleClickOnReadonlyInput(e);
         });
         td.addEventListener('focus', (e) => {
           this.lastFocusedTd = e.target;
         });
       });
+    }
+
+    determineCurrentTd(element: any) {
+      let currentTd = element;
+      while (currentTd.localName !== 'td') {
+        currentTd = currentTd.parentElement;
+      }
+      return currentTd;
+    }
+    determineCurrentTr(element: any) {
+      let currentTr = element;
+      while (currentTr.localName !== 'tr') {
+        currentTr = currentTr.parentElement;
+      }
+      return currentTr;
+    }
+    moveFocusToFirstInput(currentTarget: any) {
+      const tr = this.determineCurrentTr(currentTarget);
+      const input = tr.querySelector('[input]');
+      if (input) {
+        setTimeout(() => input.focus());
+      }
     }
 
     navigateWithArrows(event: KeyboardEvent) {

@@ -162,10 +162,12 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     <paper-icon-button
                       icon="create"
                       ?hidden="${activity.inEditMode || !this.permissions.edit.result_links}"
-                      @click="${() => {
+                      @click="${(e: any) => {
                         activity.inEditMode = true;
                         activity.itemsInEditMode = true;
                         this.requestUpdate();
+                        // @ts-ignore
+                        this.moveFocusToFirstInput(e.target);
                       }}"
                     ></paper-icon-button>
                     <etools-info-tooltip

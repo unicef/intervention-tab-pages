@@ -393,7 +393,8 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
     }
 
     moveFocusToTheJustAddedItem(target: any, focusClue: string) {
-      const targetTrParent = this.getTrParent(target);
+      // @ts-ignore
+      const targetTrParent = this.determineCurrentTr(target);
       setTimeout(() => {
         const itemDescTd = (
           focusClue === 'focusAbove'
@@ -406,21 +407,13 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
     }
 
     preserveFocuOnRow(target: any) {
-      const targetTrParent = this.getTrParent(target);
+      // @ts-ignore
+      const targetTrParent = this.determineCurrentTr(target);
       setTimeout(() => {
         const itemDescTd = targetTrParent?.children[1];
         // @ts-ignore
         itemDescTd?.querySelector('paper-textarea')?.focus();
       });
-    }
-
-    getTrParent(element: any) {
-      let trParent = element.parentElement;
-      while (trParent?.localName != 'tr') {
-        // @ts-ignore
-        trParent = trParent?.parentElement;
-      }
-      return trParent;
     }
 
     updateModelValue(model: any, property: string, newVal: any) {
