@@ -120,7 +120,6 @@ export const ResultStructureStyles: CSSResult = css`
     padding: 5px 5px 0;
     cursor: pointer;
     font-size: 15px;
-    font-weight: 500;
     line-height: 18px;
     color: #444444;
     white-space: nowrap;
