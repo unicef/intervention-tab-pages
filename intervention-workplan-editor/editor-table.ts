@@ -37,12 +37,14 @@ import {EditorTableArrowKeysStyles} from './editor-utils/editor-table-arrow-keys
 import {ArrowsNavigationMixin} from './editor-utils/arrows-navigation-mixin';
 import {updateSmallMenu} from '../../../../../redux/actions/app';
 import {RootState} from '../common/types/store.types';
+import {EditorHoverStyles} from './editor-utils/editor-hover-styles';
+import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 
 @customElement('editor-table')
 // @ts-ignore
 export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationMixin(LitElement))) {
   static get styles() {
-    return [EditorTableStyles, EditorTableArrowKeysStyles];
+    return [EditorTableStyles, EditorTableArrowKeysStyles, EditorHoverStyles];
   }
   render() {
     return html`
@@ -53,11 +55,14 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
           flex: auto;
           --paper-input-container-input: {
             display: block;
+            text-overflow: hidden;
           }
+
           --iron-autogrow-textarea: {
             overflow: auto;
             padding: 0;
             max-height: 96px;
+            font-weight: bold;
           }
           --paper-input-container-label-floating_-_font-weight: 600;
           --paper-font-subhead_-_font-weight: 600;
@@ -68,28 +73,36 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
         paper-textarea[readonly] {
           --iron-autogrow-textarea_-_overflow: hidden;
         }
+        paper-textarea.bold {
+          --iron-autogrow-textarea_-_font-weight: bold;
+        }
+        paper-textarea.other[readonly] {
+          --iron-autogrow-textarea_-_font-weight: 400;
+          --iron-autogrow-textarea_-_overflow: hidden;
+          --iron-autogrow-textarea_-_max-height: 21px;
+        }
+        .activity-items-row paper-textarea {
+          --iron-autogrow-textarea_-_font-weight: 400;
+        }
+        .activity-items-row paper-input.bold {
+          --paper-input-container-input: {
+            font-weight: bold;
+          }
+        }
       </style>
       <table>
         ${repeat(
           this.resultStructureDetails,
           (result: ExpectedResult) => result.id,
           (result, resultIndex) => html`
-            <tbody thead ?hidden="${!this.isUnicefUser}">
-              <tr class="no-b-border blue">
-                <td class="first-col"></td>
-                <td colspan="3"></td>
-                <td colspan="3"></td>
-                <td class="last-col" colspan="2"></td>
-              </tr>
-              <tr class="header blue">
+            <tbody hoverable class="heavy-blue" ?has-edit-permissions="${this.permissions.edit.result_links}">
+              <tr class="header" ?hidden="${!this.isUnicefUser}">
                 <td>${translate('ID')}</td>
                 <td colspan="3">${translate('COUNTRY_PROGRAME_OUTPUT')}</td>
                 <td colspan="3"></td>
                 <td colspan="2">${translate('TOTAL')}</td>
               </tr>
-            </tbody>
-            <tbody>
-              <tr class="text blue" ?hidden="${!this.isUnicefUser}">
+              <tr class="text no-b-border" ?hidden="${!this.isUnicefUser}">
                 <td>${result.code}</td>
                 <td colspan="3" class="b">${result.cp_output_name}</td>
                 <td colspan="3"></td>
@@ -98,64 +111,56 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                   <span class="b">${displayCurrencyAmount(result.total, '0.00')}</span>
                 </td>
               </tr>
-              <tr class="add blue" type="cp-output">
+              <tr class="add action-btns" type="cp-output">
                 <td></td>
-                <td colspan="3" tabindex="0">
-                  <div
-                    class="icon"
-                    @click="${() => this.addNewPDOutput(result.ll_results)}"
-                    ?hidden="${!this.permissions.edit.result_links}"
-                  >
-                    <paper-icon-button icon="add-box" tabindex="0"></paper-icon-button>
-                    ${translate('ADD_NEW_PD_OUTPUT')}
+                <td colspan="3"></td>
+                <td colspan="3"></td>
+                <td colspan="2" class="action-btns" tabindex="0">
+                  <div class="action-btns">
+                    <etools-info-tooltip
+                      position="left"
+                      custom-icon
+                      ?hide-tooltip="${!this.permissions.edit.result_links}"
+                      style="justify-content:end;"
+                    >
+                      <paper-icon-button
+                        id="add-pd-output-${result.id}"
+                        slot="custom-icon"
+                        @click="${() => this.addNewPDOutput(result.ll_results)}"
+                        ?hidden="${!this.permissions.edit.result_links}"
+                        icon="add-box"
+                        tabindex="0"
+                      ></paper-icon-button>
+                      <span class="no-wrap" slot="message">${translate('ADD_PD_OUTPUT')}</span>
+                    </etools-info-tooltip>
                   </div>
                 </td>
-                <td colspan="3"></td>
-                <td colspan="2"></td>
               </tr>
             </tbody>
             ${repeat(
               result.ll_results,
               (pdOutput: ResultLinkLowerResultExtended) => pdOutput.id,
               (pdOutput: ResultLinkLowerResultExtended, pdOutputIndex) => html`
-                <tbody thead class="gray-1">
-                  <tr class="edit">
-                    <td class="first-col"></td>
-                    <td colspan="3"></td>
-                    <td colspan="3"></td>
-                    <td class="last-col" colspan="2">
-                      <paper-icon-button
-                        icon="create"
-                        ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
-                        @click="${() => {
-                          pdOutput.inEditMode = true;
-                          this.requestUpdate();
-                        }}"
-                      ></paper-icon-button>
-                      <paper-icon-button
-                        icon="delete"
-                        ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
-                        @click="${() => this.openDeletePdOutputDialog(pdOutput.id)}"
-                      ></paper-icon-button>
-                    </td>
-                  </tr>
+                <tbody
+                  hoverable
+                  class="lighter-blue"
+                  comment-element="pd-output-${pdOutput.id}"
+                  comment-description=" PD Output - ${pdOutput.name}"
+                  ?in-edit-mode="${pdOutput.inEditMode}"
+                  ?has-edit-permissions="${this.permissions.edit.result_links}"
+                >
                   <tr class="header">
                     <td></td>
                     <td colspan="3">${translate('PD_OUTPUT')}</td>
                     <td colspan="3"></td>
                     <td colspan="2">${translate('TOTAL')}</td>
                   </tr>
-                </tbody>
-                <tbody
-                  class="gray-1"
-                  comment-element="pd-output-${pdOutput.id}"
-                  comment-description=" PD Output - ${pdOutput.name}"
-                >
-                  <tr class="text" type="pd-output">
-                    <td class="padd-top-15">${pdOutput.code}</td>
-                    <td colspan="3" class="b" tabindex="0">
+                  <tr class="text action-btns" type="pd-output">
+                    <td class="padd-top-10">${pdOutput.code}</td>
+                    <td colspan="3" class="b no-top-padding" tabindex="0">
                       <paper-textarea
                         no-label-float
+                        class="bold"
                         input
                         .value="${pdOutput.name}"
                         ?readonly="${!pdOutput.inEditMode}"
@@ -168,29 +173,46 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                       ></paper-textarea>
                     </td>
                     <td colspan="3"></td>
-                    <td colspan="2">
-                      ${this.intervention.planned_budget.currency}
-                      <span class="b">${displayCurrencyAmount(pdOutput.total, '0.00')}</span>
-                    </td>
-                  </tr>
-                  <tr class="add" type="pd-output">
-                    <td></td>
                     <td
-                      colspan="3"
-                      tabindex="${pdOutput.inEditMode || !this.permissions.edit.result_links ? '-1' : '0'}"
+                      colspan="2"
+                      class="action-btns"
+                      style="position:relative;"
+                      tabindex="${!this.permissions.edit.result_links ? '-1' : '0'}"
                     >
-                      <div
-                        class="icon"
-                        @click="${() => this.addNewActivity(pdOutput)}"
-                        ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
-                      >
-                        <paper-icon-button icon="add-box"></paper-icon-button>
-                        ${translate('ADD_NEW_ACTIVITY')}
+                      <div>
+                        ${this.intervention.planned_budget.currency}
+                        <span class="b">${displayCurrencyAmount(pdOutput.total, '0.00')}</span>
                       </div>
-                    </td>
-                    <td colspan="3"></td>
-                    <td class="h-center" colspan="2">
-                      <div class="flex-h justify-right" ?hidden="${!pdOutput.inEditMode}">
+                      <div class="action-btns align-bottom flex-h action-btns">
+                        <paper-icon-button
+                          icon="create"
+                          ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
+                          @click="${() => {
+                            pdOutput.inEditMode = true;
+                            this.requestUpdate();
+                          }}"
+                        ></paper-icon-button>
+                        <etools-info-tooltip
+                          position="top"
+                          custom-icon
+                          ?hide-tooltip="${!this.permissions.edit.result_links}"
+                          style="justify-content:end;"
+                        >
+                          <paper-icon-button
+                            icon="add-box"
+                            slot="custom-icon"
+                            @click="${() => this.addNewActivity(pdOutput)}"
+                            ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
+                          ></paper-icon-button>
+                          <span class="no-wrap" slot="message">${translate('ADD_NEW_ACTIVITY')}</span>
+                        </etools-info-tooltip>
+                        <paper-icon-button
+                          icon="delete"
+                          ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
+                          @click="${() => this.openDeletePdOutputDialog(pdOutput.id)}"
+                        ></paper-icon-button>
+                      </div>
+                      <div class="flex-h justify-right align-bottom" ?hidden="${!pdOutput.inEditMode}">
                         <paper-button @click="${() => this.savePdOutput(pdOutput, result.cp_output)}"
                           >${translate('GENERAL.SAVE')}</paper-button
                         >

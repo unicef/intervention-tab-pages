@@ -45,9 +45,12 @@ export const EditorTableStyles = css`
     font-size: smaller;
     font-weight: bold;
     padding-bottom: 2px !important;
+    padding-top: 26px;
+  }
+  tr.header.no-padd > td {
+    padding-top: 4px;
   }
   tr.text > td {
-    border-bottom: none;
     border-top: none;
   }
 
@@ -62,10 +65,6 @@ export const EditorTableStyles = css`
     border-right: none;
   }
 
-  tbody.odd tr:nth-child(even) {
-    background-color: #eeeeee;
-  }
-
   td:nth-child(n + 4) {
     text-align: right;
   }
@@ -74,18 +73,15 @@ export const EditorTableStyles = css`
     text-align: right;
   }
 
-  .blue {
-    background-color: #b6d5f1;
-  }
   .gray-1 {
-    background-color: #efefef;
+    background-color: #e4e4e4;
   }
   .b {
     font-weight: 600;
   }
 
   paper-icon-button {
-    color: var(--secondary-text-color);
+    color: #504e4e;
   }
   paper-icon-button[icon='close'] {
     color: red;
@@ -96,21 +92,18 @@ export const EditorTableStyles = css`
   paper-icon-button[icon='create']:hover {
     color: #212121;
   }
-  div.icon {
-    display: inline-block;
-  }
 
-  div.icon:hover {
-    color: #212121;
-    cursor: pointer;
-  }
-
-  div.icon paper-icon-button:hover {
+  paper-icon-button:hover {
     color: #212121;
   }
 
   etools-currency-amount-input {
     text-align: right;
+  }
+
+  div.icon:hover {
+    color: #212121;
+    cursor: pointer;
   }
 
   paper-button {
@@ -149,8 +142,6 @@ export const EditorTableStyles = css`
   }
   tr.activity-items-row > td {
     vertical-align: bottom;
-    border-bottom: none;
-    border-top: none;
   }
   tr.activity-items-row:last-of-type {
     border-bottom: 1px solid #b8b8b8 !important;
@@ -167,8 +158,8 @@ export const EditorTableStyles = css`
     padding: 0;
     width: 25px;
   }
-  .padd-top-15 {
-    padding-top: 16px;
+  .padd-top-10 {
+    padding-top: 10px;
   }
   tr.no-b-border > td {
     border-bottom: none;
@@ -182,5 +173,16 @@ export const EditorTableStyles = css`
   }
   td.no-l-border {
     border-left: none;
+  }
+  .no-top-padding {
+    padding-top: 0;
+  }
+
+  .heavy-blue {
+    background-color: #a6dbff;
+  }
+
+  .lighter-blue {
+    background-color: #ccebff;
   }
 `;
