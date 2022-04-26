@@ -97,12 +97,12 @@ export class TimeIntervals extends LitElement {
           flex-wrap: wrap;
           gap: 4px;
           cursor: pointer;
-          place-content: center;
-          max-width: 128px;
+          place-content: flex-start;
+          max-width: 92px;
         }
         .quarter {
-          height: 29px;
-          width: 29px;
+          height: 20px;
+          width: 20px;
           padding: 0 3px;
           display: flex;
           align-items: center;
@@ -110,10 +110,11 @@ export class TimeIntervals extends LitElement {
           border-radius: 4px;
           background-color: #a3a3a3;
           font-family: Roboto;
-          font-size: 16px;
+          font-size: 12px;
           font-weight: 500;
-          line-height: 26px;
+          line-height: 20px;
           color: #ffffff;
+          box-sizing: border-box;
         }
         .quarter.selected {
           background-color: #558a5b;
