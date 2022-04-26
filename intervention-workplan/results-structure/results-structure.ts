@@ -51,6 +51,9 @@ import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import ContentPanelMixin from '@unicef-polymer/etools-modules-common/dist/mixins/content-panel-mixin';
 import {_sendRequest} from '@unicef-polymer/etools-modules-common/dist/utils/request-helper';
+import {EtoolsDataTableRow} from '@unicef-polymer/etools-data-table/etools-data-table-row';
+import {PdActivities} from './pd-activities';
+import {PdIndicators} from './pd-indicators';
 
 /**
  * @customElement
@@ -149,6 +152,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
               .readonly="${!this.permissions.edit.result_links || this.commentMode}"
               @edit-cp-output="${() => this.openCpOutputDialog(result)}"
               @delete-cp-output="${() => this.openDeleteCpOutputDialog(result.id)}"
+              @opened-changed="${this.openChildRows}"
             >
               <div
                 class="no-results"
@@ -173,6 +177,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                     related-to-description=" PD Output - ${pdOutput.name}"
                     comments-container
                     secondary-bg-on-hover
+                    .detailsOpened="${true}"
                   >
                     <div slot="row-data" class="layout-horizontal editable-row pd-output-row">
                       <div class="flex-1 flex-fix">
@@ -234,6 +239,18 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
 
   connectedCallback(): void {
     super.connectedCallback();
+  }
+
+  openChildRows(event: CustomEvent) {
+    if (!event.detail.opened) {
+      return;
+    }
+    (event.target as Element)
+      .querySelectorAll('etools-data-table-row')
+      .forEach((row: Element) => ((row as EtoolsDataTableRow).detailsOpened = true));
+    (event.target as Element)
+      .querySelectorAll('pd-activities, pd-indicators')
+      .forEach((row: Element) => (row as PdActivities | PdIndicators).openAllRows());
   }
 
   stateChanged(state: RootState) {

@@ -20,6 +20,7 @@ import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
+import {EtoolsDataTableRow} from '@unicef-polymer/etools-data-table/etools-data-table-row';
 
 @customElement('pd-activities')
 export class PdActivities extends CommentsMixin(LitElement) {
@@ -73,7 +74,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
                   >
                     <!--    Activity Data: code / name / other info / items link    -->
                     <div class="flex-1 left-align layout-vertical">
-                      <div><b>${activity.code}</b>&nbsp;${activity.name || '-'}</div>
+                      <div><b>${activity.code}&nbsp;${activity.name || '-'}</b></div>
                       <div class="details">${activity.context_details || '-'}</div>
                       <div
                         class="item-link"
@@ -167,6 +168,11 @@ export class PdActivities extends CommentsMixin(LitElement) {
 
   getTotal(partner: string, unicef: string): number {
     return (Number(partner) || 0) + (Number(unicef) || 0);
+  }
+
+  openAllRows(): void {
+    const row: EtoolsDataTableRow = this.shadowRoot!.querySelector('etools-data-table-row') as EtoolsDataTableRow;
+    row.detailsOpened = true;
   }
 
   openDialog(activity?: InterventionActivity, readonly?: boolean): void {

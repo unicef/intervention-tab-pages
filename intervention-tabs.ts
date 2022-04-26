@@ -64,9 +64,11 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       css`
         :host {
           flex: 1;
-          display: flex !important;
           width: 100%;
           flex-direction: column;
+        }
+        :host(:not([hidden])) {
+          display: flex !important;
         }
         :host([is-in-amendment]) {
           border: 5px solid #ffd28b;
