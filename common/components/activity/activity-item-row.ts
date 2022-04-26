@@ -126,14 +126,6 @@ export class ActivityItemRow extends LitElement {
                 error-message=""
               ></etools-currency-amount-input>
             </div>
-            <div
-              class="grid-cell end ${!this.lastItem || !this.readonly ? 'border' : ''}"
-              data-col-header-label="${translate('TOTAL_COST')}"
-            >
-              <span class="total">
-                ${getMultiplyProduct(this.activityItem.no_units || 0, this.activityItem.unit_price || 0)}
-              </span>
-            </div>
 
             <div
               class="grid-cell end ${!this.lastItem || !this.readonly ? 'border' : ''}"
@@ -143,7 +135,7 @@ export class ActivityItemRow extends LitElement {
                 .value="${this.activityItem.cso_cash || 0}"
                 no-label-float
                 ?readonly="${this.readonly}"
-                @value-changed="${({detail}: CustomEvent) => this.updateField('cso_cash', detail.value)}"
+                @value-changed="${({detail}: CustomEvent) => this.updateCashField('cso_cash', detail.value)}"
                 @blur="${() => this.onBlur()}"
                 ?invalid="${this.invalidSum}"
                 @focus="${() => (this.invalidSum = false)}"
@@ -159,7 +151,7 @@ export class ActivityItemRow extends LitElement {
                 .value="${this.activityItem.unicef_cash || 0}"
                 no-label-float
                 ?readonly="${this.readonly}"
-                @value-changed="${({detail}: CustomEvent) => this.updateField('unicef_cash', detail.value)}"
+                @value-changed="${({detail}: CustomEvent) => this.updateCashField('unicef_cash', detail.value)}"
                 @blur="${() => this.onBlur()}"
                 ?invalid="${this.invalidSum}"
                 @focus="${() => (this.invalidSum = false)}"
@@ -204,6 +196,17 @@ export class ActivityItemRow extends LitElement {
     }
     this.activityItem[field] = value;
     this.requestUpdate();
+  }
+
+  updateCashField(field: 'unicef_cash' | 'cso_cash', value: any): void {
+    this.updateField(field, value);
+    if (!this.activityItem.unit_price || !this.activityItem.no_units) {
+      return;
+    }
+    const secondCashField = field === 'unicef_cash' ? 'cso_cash' : 'unicef_cash';
+    const total = Number(this.activityItem.unit_price) * Number(this.activityItem.no_units);
+    const secondValue: number = Math.max(0, total - value);
+    this.updateField(secondCashField, secondValue);
   }
 
   onBlur(): void {

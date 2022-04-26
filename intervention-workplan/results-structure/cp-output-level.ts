@@ -39,7 +39,7 @@ export class CpOutputLevel extends LitElement {
       ${this.showCPOLevel && this.resultLink
         ? html`
             <div class="divider"></div>
-            <etools-data-table-row secondary-bg-on-hover details-opened>
+            <etools-data-table-row secondary-bg-on-hover .detailsOpened="${true}">
               <div slot="row-data" class="editable-row">
                 <div class="layout-horizontal cp-output-row">
                   <!--      If PD is associated with CP Output      -->

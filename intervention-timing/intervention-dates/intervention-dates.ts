@@ -23,7 +23,6 @@ import ReportingRequirementsCommonMixin from '../reporting-requirements/mixins/r
 import {translatesMap} from '../../utils/intervention-labels-map';
 import UploadsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uploads-mixin';
 import FrNumbersConsistencyMixin from '@unicef-polymer/etools-modules-common/dist/mixins/fr-numbers-consistency-mixin';
-import {customIcons} from '@unicef-polymer/etools-modules-common/dist/styles/custom-icons';
 import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 
@@ -45,7 +44,7 @@ export class InterventionDates extends CommentsMixin(
     }
     // language=HTML
     return html`
-      ${customIcons} ${sharedStyles}
+      ${sharedStyles}
       <style>
         :host {
           display: block;
@@ -75,7 +74,7 @@ export class InterventionDates extends CommentsMixin(
               icon-first
               custom-icon
               form-field-align
-              ?hide-tooltip="${!this._frsStartConsistencyWarning}"
+              ?hide-tooltip="${!this.frsConsistencyWarningIsActive(this._frsStartConsistencyWarning)}"
             >
               <datepicker-lite
                 slot="field"
@@ -103,7 +102,7 @@ export class InterventionDates extends CommentsMixin(
               custom-icon
               icon-first
               form-field-align
-              ?hide-tooltip="${!this._frsEndConsistencyWarning}"
+              ?hide-tooltip="${!this.frsConsistencyWarningIsActive(this._frsEndConsistencyWarning)}"
             >
               <datepicker-lite
                 slot="field"
@@ -161,10 +160,10 @@ export class InterventionDates extends CommentsMixin(
   data!: ProgrammeDocDates;
 
   @property({type: String})
-  _frsStartConsistencyWarning: string | boolean = '';
+  _frsStartConsistencyWarning = '';
 
   @property({type: String})
-  _frsEndConsistencyWarning: string | boolean = '';
+  _frsEndConsistencyWarning = '';
 
   @property({type: Object})
   permissions!: Permission<InterventionDatesPermissions>;
@@ -187,6 +186,7 @@ export class InterventionDates extends CommentsMixin(
     this.originalData = cloneDeep(this.data);
     this.permissions = selectInterventionDatesPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
+
     this.checkIntervDateConsistency(this.data, state.interventions.current.frs_details);
     super.stateChanged(state);
   }
