@@ -112,7 +112,7 @@ export class TimeIntervals extends LitElement {
           font-family: Roboto;
           font-size: 12px;
           font-weight: 500;
-          line-height: 26px;
+          line-height: 20px;
           color: #ffffff;
           box-sizing: border-box;
         }
