@@ -81,6 +81,10 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
           --iron-autogrow-textarea_-_overflow: hidden;
           --iron-autogrow-textarea_-_max-height: 21px;
         }
+        paper-textarea.other {
+          --iron-autogrow-textarea_-_font-weight: 400;
+          --iron-autogrow-textarea_-_max-height: 96px;
+        }
         .activity-items-row paper-textarea {
           --iron-autogrow-textarea_-_font-weight: 400;
         }
