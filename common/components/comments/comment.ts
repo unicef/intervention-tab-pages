@@ -13,7 +13,7 @@ export class CommentElement extends LitElement {
   }
 
   @property({type: Boolean, reflect: true, attribute: 'my-comment'}) myComment!: boolean;
-  @property() comment!: InterventionComment & {loadingError?: boolean; date: string};
+  @property() comment!: InterventionComment & {loadingError?: boolean; created: string};
   @property() resolving = false;
   @property() deleting = false;
 
@@ -26,7 +26,7 @@ export class CommentElement extends LitElement {
   }
 
   get date(): string {
-    const date = dayjs(this.comment.date);
+    const date = dayjs(this.comment.created);
     return `${date.format('MMM DD YYYY')} at ${date.format('HH:mm')}`;
   }
 

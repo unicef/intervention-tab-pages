@@ -12,6 +12,7 @@ import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {FrsDetails, Intervention} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {TABS} from '../../common/constants';
+import {isUnicefUser} from '../../common/selectors';
 import FrNumbersConsistencyMixin from '@unicef-polymer/etools-modules-common/dist/mixins/fr-numbers-consistency-mixin';
 import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/fr-warnings-styles';
 import {customIcons} from '@unicef-polymer/etools-modules-common/dist/styles/custom-icons';
@@ -32,7 +33,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
       return html`<style>
           ${customIcons} ${sharedStyles} ${InfoElementStyles}
         </style>
-        <etools-loading loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="b-s" loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`
@@ -51,7 +52,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
                 class="fr-nr-warn currency-mismatch"
                 icon-first
                 custom-icon
-                ?hide-tooltip="${this.getTooltip}"
+                ?hide-tooltip="${this.currenciesMatch()}"
               >
                 <label class="input-label" ?empty="${!this.budgetSummary.currency}">
                   ${this.budgetSummary.currency}
@@ -181,6 +182,13 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
     this.budgetSummary = selectBudgetSummary(state);
     this.intervention = state.interventions.current;
     this.frsDetails = this.intervention.frs_details;
+    if (isUnicefUser(state)) {
+      this.setFrsConsistencyWarning();
+    }
+    super.stateChanged(state);
+  }
+
+  setFrsConsistencyWarning(): void {
     const warn = this.checkFrsAndUnicefCashAmountsConsistency(
       this.budgetSummary.unicef_cash_local!,
       this.frsDetails.total_frs_amt,
@@ -189,7 +197,6 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
       true
     );
     this._frsConsistencyWarning = String(warn);
-    super.stateChanged(state);
   }
 
   roundPercentage(percentage: string | number) {
@@ -200,9 +207,9 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
     return !value && value !== 0;
   }
 
-  getTooltip() {
-    if (this.budgetSummary.currency) {
-      // meaning we do not have currency set, so no need to show tooltip at this moment
+  currenciesMatch() {
+    if (!this.frsDetails.frs.length) {
+      // if no FR number added, hide currency-mismatch tooltip
       return true;
     }
     return this.allCurrenciesMatch(this.frsDetails.currencies_match, this.frsDetails.frs, this.budgetSummary.currency);

@@ -64,9 +64,11 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       css`
         :host {
           flex: 1;
-          display: flex !important;
           width: 100%;
           flex-direction: column;
+        }
+        :host(:not([hidden])) {
+          display: flex !important;
         }
         :host([is-in-amendment]) {
           border: 5px solid #ffd28b;
@@ -144,13 +146,25 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
         etools-content-panel::part(ecp-content) {
           padding: 8px 24px 16px 24px;
         }
+        .intervention-partner {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          font-size: 18px;
+          font-weight: 700;
+          display: block;
+        }
+        .intervention-number {
+          font-size: 16px;
+        }
       </style>
 
       <!-- Loading PRP country data -->
       <prp-country-data></prp-country-data>
 
       <intervention-page-content-header with-tabs-visible>
-        <span slot="page-title">${this.intervention.number}</span>
+        <span class="intervention-partner" slot="page-title">${this.intervention.partner}</span>
+        <span class="intervention-number" slot="page-title">${this.intervention.number}</span>
         <div slot="mode">
           <paper-toggle-button id="commentMode" ?checked="${this.commentMode}" @iron-change="${this.commentModeChange}"
             >${translate('GENERAL.COMMENT_MODE')}</paper-toggle-button
@@ -289,7 +303,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
 
   connectedCallback() {
     super.connectedCallback();
-    this._showInterventionPageLoadingMessage();
+    // this._showInterventionPageLoadingMessage();
     const commentsEndpoints: CommentsEndpoints = {
       saveComments: interventionEndpoints.comments,
       deleteComment: interventionEndpoints.deleteComment,
@@ -315,7 +329,8 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   }
 
   public stateChanged(state: RootState) {
-    const notInterventionTabs: boolean = currentPage(state) !== 'interventions' || currentSubpage(state) === 'list';
+    const notInterventionTabs: boolean =
+      currentPage(state) !== 'interventions' || currentSubpage(state) === 'list' || currentSubpage(state) === 'new';
     const needToReset = Boolean(notInterventionTabs && (this._routeDetails || this.intervention));
     if (needToReset) {
       this.resetPageData();

@@ -111,7 +111,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
           >
             <div slot="row-data" class="layout-horizontal align-items-center editable-row">
               <!--    PD Activity name    -->
-              <div class="text flex-auto">${activity.name || '-'}</div>
+              <div class="text flex-auto"><b>${activity.code}</b>&nbsp;${activity.name || '-'}</div>
 
               <!--    CSO Cash    -->
               <div class="text number-data flex-none">
