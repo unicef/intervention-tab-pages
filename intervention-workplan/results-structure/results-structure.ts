@@ -75,14 +75,14 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
 
   @property({type: Boolean}) isUnicefUser = true;
   @property({type: Boolean}) showIndicators = true;
-  @property({type: Boolean}) showActivities = false;
+  @property({type: Boolean}) showActivities = true;
   @property({type: Object})
   permissions!: {
     edit: {result_links?: boolean};
     required: {result_links?: boolean};
   };
 
-  @property() private _resultLinks: ExpectedResult[] | null = [];
+  @property() private _resultLinks: ExpectedResult[] | null = null;
   @property({type: String}) noOfPdOutputs: string | number = '0';
   @property({type: Boolean}) thereAreInactiveIndicators = false;
   @property({type: Boolean}) showInactiveIndicators = false;
@@ -91,6 +91,8 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
   intervention!: Intervention;
 
   private cpOutputs: CpOutput[] = [];
+  private newCPOutputs: Set<number> = new Set();
+  private newPDOutputs: Set<number> = new Set();
 
   render() {
     if (!this.intervention || !this.permissions || !this.resultLinks) {
@@ -100,20 +102,23 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     // language=HTML
     return html`
       ${sharedStyles}
-      <display-controls
-        .showIndicators="${this.showIndicators}"
-        .showActivities="${this.showActivities}"
-        @show-inactive-changed="${this.inactiveChange}"
-        @tab-view-changed="${this.updateTableView}"
-      ></display-controls>
-
       <etools-content-panel
         panel-title="${translate(translatesMap.result_links)} (${this.noOfPdOutputs})"
         elevation="0"
       >
-        <div slot="panel-btns" class="total-result layout-horizontal bottom-aligned" ?hidden="${!this.showActivities}">
-          <div class="heading">${translate('TOTAL')}:</div>
-          <div class="data">${this.intervention.planned_budget.currency} <b>${this.getTotal()}</b></div>
+        <div slot="panel-btns" class="layout-horizontal flex-1">
+          <display-controls
+            class="flex-1"
+            .showIndicators="${this.showIndicators}"
+            .showActivities="${this.showActivities}"
+            .interventionId="${this.interventionId}"
+            @show-inactive-changed="${this.inactiveChange}"
+            @tab-view-changed="${this.updateTableView}"
+          ></display-controls>
+          <div class="total-result layout-horizontal bottom-aligned" ?hidden="${!this.showActivities}">
+            <div class="heading">${translate('TOTAL')}:</div>
+            <div class="data">${this.intervention.planned_budget.currency} <b>${this.getTotal()}</b></div>
+          </div>
         </div>
 
         <!--    CP output ADD button     -->
@@ -150,6 +155,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
               .showActivities="${this.showActivities}"
               .currency="${this.intervention.planned_budget.currency}"
               .readonly="${!this.permissions.edit.result_links || this.commentMode}"
+              .opened="${this.newCPOutputs.has(result.id)}"
               @edit-cp-output="${() => this.openCpOutputDialog(result)}"
               @delete-cp-output="${() => this.openDeleteCpOutputDialog(result.id)}"
               @opened-changed="${this.openChildRows}"
@@ -177,7 +183,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                     related-to-description=" PD Output - ${pdOutput.name}"
                     comments-container
                     secondary-bg-on-hover
-                    .detailsOpened="${true}"
+                    .detailsOpened="${this.newPDOutputs.has(pdOutput.id)}"
                   >
                     <div slot="row-data" class="layout-horizontal editable-row pd-output-row">
                       <div class="flex-1 flex-fix">
@@ -257,7 +263,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan)) {
       return;
     }
-    this.resultLinks = selectInterventionResultLinks(state);
+    this.updateResultLinks(state);
     this.permissions = selectResultLinksPermissions(state);
     this.interventionId = selectInterventionId(state);
     this.interventionStatus = selectInterventionStatus(state);
@@ -436,6 +442,23 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     this.showInactiveIndicators = e.detail.value;
   }
 
+  private updateResultLinks(state: RootState): void {
+    const newResults = selectInterventionResultLinks(state) || [];
+    if (this._resultLinks) {
+      // check if CP outputs was rendered already, check if we have new CP output.
+      const existingCP = this.resultLinks.map(({id}) => id);
+      const created = newResults.filter(({id}) => !existingCP.includes(id));
+      // if we found new CP output - add it to track to open it on first render
+      created.forEach(({id}) => this.newCPOutputs.add(id));
+      // the same thing for PD
+      const existingPD = this.resultLinks.flatMap(({ll_results}) => ll_results.map(({id}) => id));
+      const createdPD = newResults.flatMap(({ll_results}) => ll_results).filter(({id}) => !existingPD.includes(id));
+      createdPD.forEach(({id}) => this.newPDOutputs.add(id));
+    }
+
+    this.resultLinks = newResults;
+  }
+
   static get styles(): CSSResultArray {
     // language=CSS
     return [
@@ -459,7 +482,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           padding: 8px 16px;
         }
         .pd-add-section {
-          background-color: var(--secondary-background-color);
+          background-color: #ccebff;
         }
         .pd-add {
           padding: 0 5px 0;
@@ -488,7 +511,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         }
 
         etools-data-table-row::part(edt-list-row-wrapper) {
-          background-color: var(--secondary-background-color);
+          background-color: #ccebff;
           min-height: 48px;
           border-bottom: none;
         }
@@ -499,12 +522,15 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           align-self: flex-start;
         }
         etools-data-table-row::part(edt-list-row-wrapper):hover {
-          background-color: #c4c4c4;
+          background-color: var(--pd-output-background);
         }
 
         etools-data-table-row::part(edt-list-row-collapse-wrapper) {
           padding: 0 !important;
           border-bottom: none !important;
+        }
+        div.editable-row .hover-block {
+          background: linear-gradient(270deg, var(--pd-output-background) 71.65%, rgba(196, 196, 196, 0) 100%);
         }
         div.pd-output-row > div {
           line-height: 26px;
@@ -519,6 +545,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         }
         .total-result {
           padding-bottom: 6px;
+          margin-left: 12px;
         }
         .total-result b {
           font-size: 22px;
@@ -532,6 +559,9 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         }
         etools-content-panel {
           box-shadow: 0 2px 7px 3px rgba(0, 0, 0, 0.15);
+        }
+        etools-content-panel::part(ecp-header-btns-wrapper) {
+          flex: 1;
         }
         etools-content-panel::part(ecp-header) {
           border-bottom: none;

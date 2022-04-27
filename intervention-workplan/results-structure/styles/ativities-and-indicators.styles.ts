@@ -104,7 +104,7 @@ export const ActivitiesAndIndicatorsStyles: CSSResult = css`
 
   etools-data-table-row::part(edt-list-row-collapse-wrapper) {
     padding: 0 !important;
-    background-color: var(--main-background);
+    background-color: var(--primary-background-color);
     border-top: 1px solid var(--main-border-color);
   }
   etools-data-table-row::part(edt-list-row-wrapper) {
