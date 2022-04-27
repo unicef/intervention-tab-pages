@@ -69,8 +69,8 @@ export const EditorTableStyles = css`
     text-align: right;
   }
 
-  td.a-right {
-    text-align: right;
+  td.a-center {
+    text-align: center;
   }
 
   .gray-1 {
@@ -122,6 +122,9 @@ export const EditorTableStyles = css`
   }
   .justify-right {
     justify-content: flex-end;
+  }
+  .justify-center {
+    justify-content: center;
   }
   tr.activity-items-row:not(.readonly-mode) > td {
     padding-bottom: 16px;
