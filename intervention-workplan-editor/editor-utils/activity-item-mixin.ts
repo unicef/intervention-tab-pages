@@ -224,7 +224,10 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                       activity.itemsInEditMode = true;
                       this.requestUpdate();
 
-                      this.preserveFocuOnRow(e.target);
+                      if (e.isTrusted) {
+                        // human interaction click
+                        this.preserveFocuOnRow(e.target);
+                      }
                     }}"
                   ></paper-icon-button>
                   <paper-icon-button
