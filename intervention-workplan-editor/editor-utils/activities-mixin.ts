@@ -169,7 +169,8 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                         activity.inEditMode = true;
                         activity.itemsInEditMode = true;
                         this.requestUpdate();
-                        if (e.isTrusted) {
+                        // @ts-ignore
+                        if (e.isTrusted || this.enterClickedOnActionBtnsTd()) {
                           // @ts-ignore
                           this.moveFocusToFirstInput(e.target);
                         }

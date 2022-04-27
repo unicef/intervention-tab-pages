@@ -38,8 +38,9 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
           this.lastFocusedTd = this.determineCurrentTd(e.target);
           this.handleClickOnReadonlyInput(e);
         });
-        td.addEventListener('focus', (e) => {
-          this.lastFocusedTd = e.target;
+        td.addEventListener('focusin', (e) => {
+          // Doesn't trigger when focus id done from js
+          this.lastFocusedTd = this.determineCurrentTd(e.target);
         });
       });
     }
@@ -62,7 +63,10 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
       const tr = this.determineCurrentTr(currentTarget);
       const input = tr.querySelector('[input]');
       if (input) {
-        setTimeout(() => input.focus());
+        setTimeout(() => {
+          input.focus();
+          this.lastFocusedTd = this.determineCurrentTd(input);
+        });
       }
     }
 
@@ -103,6 +107,7 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
             } else {
               input.focus();
             }
+            this.lastFocusedTd = this.determineCurrentTd(input);
           }
           break;
         }
@@ -178,7 +183,6 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
               tdToFocus.focus();
             }
           }
-          //   Array.from( currentTr.nextElementSibling.children )[index].getElementsByTagName('input')[0].focus();
           break;
       }
 
@@ -287,6 +291,9 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
         element.querySelector('paper-icon-button[icon="create"]') ||
         element.querySelector('paper-icon-button[icon="add-box"]')
       );
+    }
+    enterClickedOnActionBtnsTd() {
+      return this.lastFocusedTd.classList.value.includes('action-btns');
     }
   };
 }
