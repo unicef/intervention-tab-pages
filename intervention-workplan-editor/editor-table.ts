@@ -35,10 +35,10 @@ import {translate} from 'lit-translate/directives/translate';
 import {AsyncAction} from '@unicef-polymer/etools-types';
 import {EditorTableArrowKeysStyles} from './editor-utils/editor-table-arrow-keys-styles';
 import {ArrowsNavigationMixin} from './editor-utils/arrows-navigation-mixin';
-import {updateSmallMenu} from '../../../../../redux/actions/app';
 import {RootState} from '../common/types/store.types';
 import {EditorHoverStyles} from './editor-utils/editor-hover-styles';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
+import {updateSmallMenu} from '../common/actions/common-actions';
 
 @customElement('editor-table')
 // @ts-ignore
