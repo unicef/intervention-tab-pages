@@ -50,6 +50,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                 <paper-input
                   .noLabelFloat="${!activity.itemsInEditMode}"
                   readonly
+                  tabindex="-1"
                   .value="${item.code || 'N/A'}"
                 ></paper-input>
               </td>
@@ -210,6 +211,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                 <paper-input
                   readonly
                   class="bold"
+                  tabindex="-1"
                   .noLabelFloat="${!activity.itemsInEditMode}"
                   .value="${this.getTotalForItem(item.no_units || 0, item.unit_price || 0)}"
                 ></paper-input>
