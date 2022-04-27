@@ -74,6 +74,19 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
           border: 5px solid #ffd28b;
           box-sizing: border-box;
         }
+        :host([data-active-tab='workplan-editor']) div[slot='tabs'] {
+          display: none;
+        }
+        :host([data-active-tab='workplan-editor']) intervention-page-content-header {
+          position: relative;
+          min-height: 0;
+          border-bottom: none;
+          box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.15);
+        }
+        :host([data-active-tab='workplan-editor']) .page-content {
+          margin: 4px 0 0;
+          margin-top: 0;
+        }
         .page-content {
           margin: 24px;
           flex: 1;
@@ -206,12 +219,20 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
         ${this.intervention.cancel_justification
           ? html`<reason-display .justification=${this.intervention.cancel_justification}></reason-display>`
           : ''}
-        <intervention-metadata ?hidden="${!this.isActiveTab(this.activeTab, 'metadata')}"> </intervention-metadata>
-        <intervention-strategy ?hidden="${!this.isActiveTab(this.activeTab, 'strategy')}"></intervention-strategy>
-        <intervention-workplan ?hidden="${!this.isActiveTab(this.activeTab, 'workplan')}"> </intervention-workplan>
-        <intervention-timing ?hidden="${!this.isActiveTab(this.activeTab, 'timing')}"> </intervention-timing>
-        <intervention-review ?hidden="${!this.isActiveTab(this.activeTab, 'review')}"></intervention-review>
-        <intervention-attachments ?hidden="${!this.isActiveTab(this.activeTab, 'attachments')}">
+        <intervention-metadata ?hidden="${!this.isActiveTab(this.activeTab, TABS.Metadata)}"> </intervention-metadata>
+        <intervention-strategy ?hidden="${!this.isActiveTab(this.activeTab, TABS.Strategy)}"></intervention-strategy>
+        <intervention-workplan
+          ?hidden="${!this.isActiveTab(this.activeTab, TABS.Workplan)}"
+          .interventionId="${this.interventionId}"
+        ></intervention-workplan>
+        <intervention-workplan-editor
+          ?hidden="${!this.isActiveTab(this.activeTab, TABS.WorkplanEditor)}"
+          .interventionId="${this.interventionId}"
+        >
+        </intervention-workplan-editor>
+        <intervention-timing ?hidden="${!this.isActiveTab(this.activeTab, TABS.Timing)}"> </intervention-timing>
+        <intervention-review ?hidden="${!this.isActiveTab(this.activeTab, TABS.Review)}"></intervention-review>
+        <intervention-attachments ?hidden="${!this.isActiveTab(this.activeTab, TABS.Attachments)}">
         </intervention-attachments>
         <intervention-progress
           .activeSubTab="${this.activeSubTab}"
@@ -342,6 +363,9 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     this.activeTab = currentSubpage(state) as string;
     this.activeSubTab = currentSubSubpage(state) as string;
     this.isUnicefUser = isUnicefUser(state);
+
+    // add attribute to host to edit specific styles
+    this.dataset.activeTab = this.activeTab;
 
     // check permissions after intervention was loaded
     if (state.interventions?.current && !this.hasPermissionsToAccessPage(state)) {

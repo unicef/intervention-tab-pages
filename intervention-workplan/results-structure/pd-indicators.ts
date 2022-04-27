@@ -8,7 +8,7 @@ import {
   property,
   PropertyValues
 } from 'lit-element';
-import {ResultStructureStyles} from './results-structure.styles';
+import {ResultStructureStyles} from './styles/results-structure.styles';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/iron-icons';
@@ -45,24 +45,11 @@ import {
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
+import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
+import {EtoolsDataTableRow} from '@unicef-polymer/etools-data-table/etools-data-table-row';
 
 @customElement('pd-indicators')
 export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)) {
-  static get styles(): CSSResultArray {
-    // language=CSS
-    return [
-      gridLayoutStylesLit,
-      ResultStructureStyles,
-      css`
-        :host {
-          --blue-background: #b6d5f1;
-          display: block;
-          background: var(--blue-background);
-        }
-      `
-    ];
-  }
-
   @property({type: Array}) indicators: Indicator[] = [];
   @property() private locations: LocationObject[] = [];
   @property() private sections: Section[] = [];
@@ -88,76 +75,63 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
     // language=HTML
     return html`
       ${sharedStyles}
-      <style>
-        :host etools-data-table-row {
-          --list-bg-color: var(--blue-background);
-          --list-second-bg-color: var(--blue-background);
-          etools-data-table-row::part(edt-list-row-collapse-wrapper) {
-            padding: 0 !important;
-            background-color: var(--blue-background-dark);
-            border-top: 1px solid var(--main-border-color);
-          }
-          --list-row-wrapper: {
-            min-height: 48px;
-            border: 1px solid var(--main-border-color) !important;
-            border-bottom: none !important;
-            align-items: stretch;
-            padding-bottom: 0px;
-            padding-top: 0px;
-          }
-        }
-      </style>
-
-      <div class="row-h align-items-center header" ?hidden="${!this.indicators.length && this.readonly}">
-        <div class="heading flex-auto">
-          ${translate(translatesMap.applied_indicators)}
-          <info-icon-tooltip
-            id="iit-ind"
-            .tooltipText="${translate('INDICATOR_TOOLTIP')}"
-            ?hidden="${this.readonly}"
-          ></info-icon-tooltip>
-          <paper-icon-button
-            class="add-box"
-            icon="add-box"
-            @click="${() => this.openIndicatorDialog()}"
-            ?hidden="${this.readonly}"
-          ></paper-icon-button>
+      <etools-data-table-row .detailsOpened="${true}">
+        <div slot="row-data" class="layout-horizontal align-items-center editable-row">
+          <div class="title-text flex-auto">
+            ${translate(translatesMap.applied_indicators)} (${this.indicators.length})
+            <info-icon-tooltip
+              id="iit-ind"
+              .tooltipText="${translate('INDICATOR_TOOLTIP')}"
+              ?hidden="${this.readonly}"
+            ></info-icon-tooltip>
+          </div>
         </div>
-        <div class="heading number-data flex-none">${translate('BASELINE')}</div>
-        <div class="heading number-data flex-none">${translate('TARGET')}</div>
-      </div>
+        <div slot="row-data-details">
+          <div class="add-button" ?hidden="${this.readonly}" @click="${() => this.openIndicatorDialog()}">
+            <paper-icon-button slot="custom-icon" icon="add-box" tabindex="0"></paper-icon-button>
+            <span class="no-wrap">${translate('ADD_PD_INDICATOR')}</span>
+          </div>
 
-      ${this.indicators.map(
-        (indicator: Indicator) => html`
-          <pd-indicator
-            .indicator="${indicator}"
-            .disaggregations="${this.disaggregations}"
-            .locationNames="${this.getLocationNames(indicator.locations)}"
-            .sectionClusterNames="${this.getSectionAndCluster(indicator.section, indicator.cluster_name)}"
-            .interventionStatus="${this.interventionStatus}"
-            .readonly="${this.readonly}"
-            .inAmendment="${this.inAmendment}"
-            ?hidden="${this._hideIndicator(indicator, this.showInactiveIndicators)}"
-            ?cluster-indicator="${indicator.cluster_indicator_id}"
-            ?high-frequency-indicator="${indicator.is_high_frequency}"
-            @open-edit-indicator-dialog="${(e: CustomEvent) =>
-              this.openIndicatorDialog(e.detail.indicator, e.detail.readonly)}"
-            @open-deactivate-confirmation="${(e: CustomEvent) => this.openDeactivationDialog(e.detail.indicatorId)}"
-            @open-delete-confirmation="${(e: CustomEvent) => this.openDeletionDialog(e.detail.indicatorId)}"
-          ></pd-indicator>
-        `
-      )}
-      ${!this.indicators.length
-        ? this.readonly
-          ? html`<div class="empty-row heading">${translate('THERE_ARE_NO_PD_INDICATORS')}</div>`
-          : html`
-              <div class="layout-horizontal empty-row">
-                <div class="text flex-auto">—</div>
-                <div class="text number-data flex-none">—</div>
-                <div class="text number-data flex-none">—</div>
-              </div>
-            `
-        : ''}
+          <div class="table-row table-head align-items-center" ?hidden="${this.readonly}">
+            <div class="flex-1 left-align">${translate('INDICATOR')}</div>
+            <div class="flex-1 secondary-cell center">${translate('INDICATOR_HF')}</div>
+            <div class="flex-1 secondary-cell right">${translate('BASELINE')}</div>
+            <div class="flex-1 secondary-cell right">${translate('TARGET')}</div>
+          </div>
+          ${this.indicators.length
+            ? this.indicators.map(
+                (indicator: Indicator) => html`
+                  <pd-indicator
+                    .indicator="${indicator}"
+                    .disaggregations="${this.disaggregations}"
+                    .locationNames="${this.getLocationNames(indicator.locations)}"
+                    .sectionClusterNames="${this.getSectionAndCluster(indicator.section, indicator.cluster_name)}"
+                    .interventionStatus="${this.interventionStatus}"
+                    .readonly="${this.readonly}"
+                    .inAmendment="${this.inAmendment}"
+                    ?hidden="${this._hideIndicator(indicator, this.showInactiveIndicators)}"
+                    @open-edit-indicator-dialog="${(e: CustomEvent) =>
+                      this.openIndicatorDialog(e.detail.indicator, e.detail.readonly)}"
+                    @open-deactivate-confirmation="${(e: CustomEvent) =>
+                      this.openDeactivationDialog(e.detail.indicatorId)}"
+                    @open-delete-confirmation="${(e: CustomEvent) => this.openDeletionDialog(e.detail.indicatorId)}"
+                  ></pd-indicator>
+                `
+              )
+            : html`
+                <div class="table-row align-items-center">
+                  ${this.readonly
+                    ? translate('THERE_ARE_NO_PD_INDICATORS')
+                    : html`
+                        <div class="flex-1 left-align">-</div>
+                        <div class="flex-1 secondary-cell center">-</div>
+                        <div class="flex-1 secondary-cell right">-</div>
+                        <div class="flex-1 secondary-cell right">-</div>
+                      `}
+                </div>
+              `}
+        </div>
+      </etools-data-table-row>
     `;
   }
 
@@ -183,6 +157,11 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
     );
   }
 
+  openAllRows(): void {
+    const row: EtoolsDataTableRow = this.shadowRoot!.querySelector('etools-data-table-row') as EtoolsDataTableRow;
+    row.detailsOpened = true;
+  }
+
   computeAvailableOptionsForIndicators(intervention: Intervention) {
     if (!isJsonStrMatch(this.interventionLocations, intervention.flat_locations)) {
       this.interventionLocations = intervention.flat_locations;
@@ -196,6 +175,10 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
   }
 
   openIndicatorDialog(indicator?: Indicator, readonly?: boolean) {
+    if (!this.indicatorLocationOptions?.length) {
+      fireEvent(this, 'toast', {text: 'Please, select PD locations first'});
+      return;
+    }
     openDialog<IndicatorDialogData>({
       dialog: 'indicator-dialog',
       dialogData: {
@@ -302,5 +285,31 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
       return !showInactiveIndicators;
     }
     return false;
+  }
+
+  static get styles(): CSSResultArray {
+    // language=CSS
+    return [
+      gridLayoutStylesLit,
+      ResultStructureStyles,
+      ActivitiesAndIndicatorsStyles,
+      css`
+        :host {
+          --main-background: #b6d5f1;
+          --main-background-dark: #a4c4e1;
+          display: block;
+          background: var(--main-background);
+        }
+        .table-row {
+          padding-right: 35px !important;
+        }
+        etools-data-table-row::part(edt-list-row-collapse-wrapper) {
+          border-bottom: none;
+        }
+        info-icon-tooltip {
+          margin-left: 10px;
+        }
+      `
+    ];
   }
 }

@@ -12,6 +12,23 @@ export const ResultStructureStyles: CSSResult = css`
     line-height: 24px;
     color: var(--primary-text-color);
   }
+  .total-cache .heading {
+    font-size: 14px;
+    margin-bottom: 10px;
+    text-align: right;
+  }
+  .total-cache .data {
+    font-size: 20px;
+    font-weight: 900;
+    line-height: 23px;
+    text-align: right;
+  }
+  .total-cache .currency {
+    margin-right: 4px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19px;
+  }
   .bold-data {
     font-weight: bold;
     font-size: 16px;
@@ -66,10 +83,6 @@ export const ResultStructureStyles: CSSResult = css`
     border-top: 1px solid var(--main-border-color);
     background-color: var(--primary-background-color);
   }
-  .number-data {
-    width: 100px;
-    margin-left: 10px;
-  }
   iron-icon {
     margin: 0 15px;
     opacity: 0.9;
@@ -89,17 +102,7 @@ export const ResultStructureStyles: CSSResult = css`
     align-items: center;
   }
   div[slot='row-data'] {
-    margin: 0px;
-    min-height: 48px;
-  }
-  div[slot='row-data'] > div {
-    line-height: 26px;
-    padding-top: 8px;
-    padding-bottom: 8px;
-  }
-  .higher-slot {
-    margin: 0px;
-    min-height: 65px !important;
+    margin: 0;
   }
   .empty-row {
     padding-inline: 56px 16px;
@@ -109,5 +112,23 @@ export const ResultStructureStyles: CSSResult = css`
   }
   div[slot='panel-btns'] {
     opacity: 1;
+  }
+  .add-button {
+    display: flex;
+    width: min-content;
+    align-items: center;
+    padding: 5px 5px 0;
+    cursor: pointer;
+    font-size: 15px;
+    line-height: 18px;
+    color: #444444;
+    white-space: nowrap;
+  }
+  .add-button:hover {
+    color: #212121;
+  }
+  div.editable-row .hover-block {
+    background: linear-gradient(270deg, #c4c4c4 71.65%, rgba(196, 196, 196, 0) 100%);
+    padding-left: 20px;
   }
 `;
