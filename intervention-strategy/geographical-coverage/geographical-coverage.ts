@@ -24,6 +24,7 @@ import {AnyObject, AsyncAction, LocationObject, Permission, Site} from '@unicef-
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
+import '../../common/paper-textarea-with-icon';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 
 /**
@@ -59,11 +60,8 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         }
 
         .locations-btn {
-          margin: auto;
-          width: 100px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
+          white-space: nowrap;
+          padding: 29px 0 0 50px;
         }
 
         .see-locations iron-icon {
@@ -78,7 +76,8 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         }
 
         #locations {
-          max-width: 100%;
+          max-width: fit-content;
+          min-width: 300px;
         }
 
         .f-left {
@@ -89,8 +88,20 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
           padding: 8px 24px 16px 24px;
         }
 
-        info-icon-tooltip {
+        .mt-50 {
+          margin-top: 50px;
+        }
+
+        #iit-geo {
           --iit-margin: 8px 0 8px -15px;
+        }
+
+        etools-dropdown-multi::part(esmm-label-suffix) {
+          --iit-font-size: 18px !important;
+        }
+
+        #iit-sites {
+          --iit-icon-size: 18px;
         }
       </style>
 
@@ -125,6 +136,14 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
             @etools-selected-items-changed="${({detail}: CustomEvent) =>
               this.selectedItemsChanged(detail, 'flat_locations')}"
           >
+            <info-icon-tooltip
+              id="iit-locations"
+              class="iit"
+              slot="label-suffix"
+              position="top"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.flat_locations)}"
+              .tooltipText="${translate('GEOGRAPHICAL_LOCATIONS_INFO')}"
+            ></info-icon-tooltip>
           </etools-dropdown-multi>
           <div class="locations-btn">
             <paper-button
@@ -133,13 +152,12 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
               ?hidden="${this._isEmpty(this.data.flat_locations)}"
               title=${translate('SEE_ALL_LOCATIONS')}
             >
-              <iron-icon icon="add"></iron-icon>
-              ${translate('SEE_ALL')}
+              ${translate('SEE_HIERARCHY')}
             </paper-button>
           </div>
         </div>
-        <div class="flex-c layout-horizontal row-padding-v">
-          <paper-textarea
+        <div class="flex-c layout-horizontal row-padding-v mt-50">
+          <paper-textarea-with-icon
             label=${translate(translatesMap.sites)}
             always-float-label
             class="w100"
@@ -147,7 +165,16 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
             readonly
             max-rows="4"
             .value="${this.getSelectedSitesText(this.data.sites)}"
-          ></paper-textarea>
+          >
+            <info-icon-tooltip
+              id="iit-sites"
+              class="iit"
+              slot="after-label"
+              position="top"
+              ?hidden="${!this.editMode}"
+              .tooltipText="${translate('GEOGRAPHICAL_SITES_INFO')}"
+            ></info-icon-tooltip>
+          </paper-textarea-with-icon>
           <div class="locations-btn"></div>
         </div>
         <div class="flex-c layout-horizontal row-padding-v">
