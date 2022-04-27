@@ -275,16 +275,17 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     }
 
     searchForActionBtnInCurrentTd(currentTd: any) {
-      return (
-        currentTd.querySelector('paper-icon-button[icon="create"]') ||
-        currentTd.querySelector('paper-icon-button[icon="add-box"]')
-      );
+      return this.findEditOrAddBtn(currentTd);
     }
 
     searchForActionBtnInCurrentTr(currentTr: any) {
+      return this.findEditOrAddBtn(currentTr);
+    }
+
+    findEditOrAddBtn(element: any) {
       return (
-        currentTr.querySelector('paper-icon-button[icon="create"]') ||
-        currentTr.querySelector('paper-icon-button[icon="add-box"]')
+        element.querySelector('paper-icon-button[icon="create"]') ||
+        element.querySelector('paper-icon-button[icon="add-box"]')
       );
     }
   };
