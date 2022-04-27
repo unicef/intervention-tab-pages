@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import {customElement, LitElement, html, TemplateResult, property, CSSResultArray, css} from 'lit-element';
 import {translate} from 'lit-translate';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
