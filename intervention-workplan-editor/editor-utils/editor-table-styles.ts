@@ -45,7 +45,7 @@ export const EditorTableStyles = css`
     font-size: smaller;
     font-weight: bold;
     padding-bottom: 2px !important;
-    padding-top: 26px;
+    padding-top: 20px;
   }
   tr.header.no-padd > td {
     padding-top: 4px;

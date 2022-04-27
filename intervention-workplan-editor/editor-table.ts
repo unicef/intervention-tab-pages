@@ -187,9 +187,10 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                         <paper-icon-button
                           icon="create"
                           ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
-                          @click="${() => {
+                          @click="${(e: any) => {
                             pdOutput.inEditMode = true;
                             this.requestUpdate();
+                            this.moveFocusToFirstInput(e.target);
                           }}"
                         ></paper-icon-button>
                         <etools-info-tooltip
