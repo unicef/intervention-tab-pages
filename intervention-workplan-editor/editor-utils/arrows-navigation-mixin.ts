@@ -23,7 +23,7 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     }
 
     focusFirstTd() {
-      const focusableTds = Array.from(this.shadowRoot!.querySelectorAll<HTMLTableCellElement>('td[tabindex="0"]'));
+      const focusableTds = Array.from(this.shadowRoot!.querySelectorAll<HTMLTableCellElement>('td[tabindex]'));
       this.setLastFocusedTdOnClick(focusableTds);
       const firstFocusableTd = focusableTds[0];
       if (firstFocusableTd) {
@@ -123,6 +123,11 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
         case 'ArrowLeft':
           {
             tdToFocus = currentTd.previousElementSibling;
+
+            if (!tdToFocus) {
+              break;
+            }
+
             while (tdToFocus.getAttribute('tabindex') !== '0') {
               tdToFocus = tdToFocus.previousElementSibling;
               if (!tdToFocus) {
@@ -138,6 +143,11 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
         case 'ArrowRight':
           {
             tdToFocus = currentTd.nextElementSibling;
+
+            if (!tdToFocus) {
+              break;
+            }
+
             while (tdToFocus.getAttribute('tabindex') !== '0') {
               tdToFocus = tdToFocus.nextElementSibling;
               if (!tdToFocus) {
