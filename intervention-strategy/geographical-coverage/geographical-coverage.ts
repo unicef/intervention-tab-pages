@@ -92,16 +92,17 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
           margin-top: 50px;
         }
 
+        .dropdown-row {
+          margin-top: -38px;
+        }
+
         #iit-geo {
           --iit-margin: 8px 0 8px -15px;
         }
 
-        etools-dropdown-multi::part(esmm-label-suffix) {
-          --iit-font-size: 18px !important;
-        }
-
-        #iit-sites {
+        .iit {
           --iit-icon-size: 18px;
+          --iit-margin: 0 0 4px 4px;
         }
       </style>
 
@@ -121,9 +122,20 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="flex-c layout-horizontal row-padding-v">
+          <label class="paper-label">
+            ${translate(translatesMap.flat_locations)}
+            <info-icon-tooltip
+              id="iit-locations"
+              class="iit"
+              position="top"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.flat_locations)}"
+              .tooltipText="${translate('GEOGRAPHICAL_LOCATIONS_INFO')}"
+            ></info-icon-tooltip>
+          </label>
+        </div>
+        <div class="flex-c layout-horizontal dropdown-row">
           <etools-dropdown-multi
             id="locations"
-            label=${translate(translatesMap.flat_locations)}
             placeholder="&#8212;"
             .options="${this.allLocations}"
             .selectedValues="${this.data.flat_locations}"
@@ -136,14 +148,6 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
             @etools-selected-items-changed="${({detail}: CustomEvent) =>
               this.selectedItemsChanged(detail, 'flat_locations')}"
           >
-            <info-icon-tooltip
-              id="iit-locations"
-              class="iit"
-              slot="label-suffix"
-              position="top"
-              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.flat_locations)}"
-              .tooltipText="${translate('GEOGRAPHICAL_LOCATIONS_INFO')}"
-            ></info-icon-tooltip>
           </etools-dropdown-multi>
           <div class="locations-btn">
             <paper-button
