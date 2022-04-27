@@ -2,6 +2,10 @@ import {css, CSSResult} from 'lit-element';
 
 // language=CSS
 export const ResultStructureStyles: CSSResult = css`
+  :host {
+    --pd-output-background: #ccebff;
+    --cp-output-background: #a6dbff;
+  }
   .heading {
     font-size: 12px;
     line-height: 16px;
@@ -128,7 +132,7 @@ export const ResultStructureStyles: CSSResult = css`
     color: #212121;
   }
   div.editable-row .hover-block {
-    background: linear-gradient(270deg, #c4c4c4 71.65%, rgba(196, 196, 196, 0) 100%);
+    background: linear-gradient(270deg, var(--cp-output-background) 71.65%, rgba(196, 196, 196, 0) 100%);
     padding-left: 20px;
   }
 `;

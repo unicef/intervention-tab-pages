@@ -30,8 +30,8 @@ export class CpOutputLevel extends LitElement {
   @property({type: Boolean, reflect: true, attribute: 'show-cpo-level'}) showCPOLevel = false;
   @property({type: Boolean}) showIndicators = true;
   @property({type: Boolean}) showActivities = true;
-  @property({type: Boolean})
-  readonly = true;
+  @property({type: Boolean}) readonly = true;
+  @property({type: Boolean}) opened = false;
 
   protected render(): TemplateResult {
     return html`
@@ -39,7 +39,7 @@ export class CpOutputLevel extends LitElement {
       ${this.showCPOLevel && this.resultLink
         ? html`
             <div class="divider"></div>
-            <etools-data-table-row secondary-bg-on-hover .detailsOpened="${true}">
+            <etools-data-table-row secondary-bg-on-hover .detailsOpened="${this.opened}">
               <div slot="row-data" class="editable-row">
                 <div class="layout-horizontal cp-output-row">
                   <!--      If PD is associated with CP Output      -->
@@ -199,7 +199,7 @@ export class CpOutputLevel extends LitElement {
           color: #212121;
         }
         div[slot='row-data-details'] {
-          background-color: var(--secondary-background-color);
+          background-color: var(--pd-output-background);
         }
         etools-data-table-row {
           overflow: hidden;
@@ -219,6 +219,7 @@ export class CpOutputLevel extends LitElement {
           border-bottom: none !important;
           padding-left: 4px;
           padding-right: 16px;
+          background-color: var(--cp-output-background);
         }
         .editable-row:hover .hover-block {
           opacity: 1;

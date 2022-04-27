@@ -231,8 +231,8 @@ export class PdActivities extends CommentsMixin(LitElement) {
       ActivitiesAndIndicatorsStyles,
       css`
         :host {
-          --main-background: #c4d7c7;
-          --main-background-dark: #b0c8b3;
+          --main-background: #fdf0d2;
+          --main-background-dark: #fdf0d2;
           display: block;
           background: var(--main-background);
         }
@@ -252,7 +252,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
           width: 15%;
         }
         div.editable-row .hover-block {
-          background: linear-gradient(270deg, #b0c8b3 71.65%, rgba(196, 196, 196, 0) 100%);
+          background: linear-gradient(270deg, var(--main-background) 71.65%, rgba(196, 196, 196, 0) 100%);
           padding-left: 20px;
         }
       `

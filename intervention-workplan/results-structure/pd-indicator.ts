@@ -42,19 +42,19 @@ export class PdIndicator extends CommentsMixin(LitElement) {
         <div class="main-info">
           <!--    Indicator name    -->
           <div class="flex-1 left-align layout-vertical">
-            <div class="name">
+            <div class="name layout-horizontal">
               ${this.getIndicatorDisplayType(this.indicator)} ${this.addInactivePrefix(this.indicator)}
               ${(this.indicator.indicator ? this.indicator.indicator.title : this.indicator.cluster_indicator_title) ||
               '—'}
+              <div id="hf" class="hf-mark" ?hidden="${!this.indicator.is_high_frequency}"></div>
+              <paper-tooltip for="hf" position="top" theme="light" animation-delay="0" offset="4">
+                This indicator is high frequency
+              </paper-tooltip>
             </div>
             <div class="item-link" @click="${() => (this.detailsOpened = !this.detailsOpened)}">
               ${this.detailsOpened ? 'hide' : 'show'} ${this.locationNames.length} ${translate('LOCATIONS')} |
               ${this.indicator.disaggregation.length} ${translate('DISAGGREGATIONS')}
             </div>
-          </div>
-
-          <div class="flex-1 secondary-cell center">
-            <div class="hf-mark" ?hidden="${!this.indicator.is_high_frequency}"></div>
           </div>
           <!--    Baseline    -->
           <div class="flex-1 secondary-cell right">
@@ -171,7 +171,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
       default:
         break;
     }
-    return html`<span class="indicatorType">${typeChar} </span>`;
+    return typeChar;
   }
 
   getDisaggregation(disaggregationId: string | number): TemplateResult {
@@ -265,7 +265,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
         .table-row {
           gap: 0;
           flex-direction: column;
-          padding-right: 35px;
+          padding-right: 10%;
         }
         .main-info {
           display: flex;
@@ -305,12 +305,15 @@ export class PdIndicator extends CommentsMixin(LitElement) {
           transform: scaleY(1);
         }
         div.editable-row .hover-block {
-          background: linear-gradient(270deg, #a4c4e1 71.65%, rgba(196, 196, 196, 0) 100%);
+          background: linear-gradient(270deg, var(--main-background) 71.65%, rgba(196, 196, 196, 0) 100%);
           padding-left: 20px;
         }
         .hf-mark {
           width: 15px;
           height: 15px;
+          flex: none;
+          margin-top: 5px;
+          margin-left: 2px;
           border-radius: 50%;
           background-color: #2073b7;
         }

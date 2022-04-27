@@ -7,8 +7,6 @@ import './non-financial-contribution/non-financial-contribution';
 import './hq-contribution/hq-contribution';
 import '../intervention-workplan-editor/workplan-editor-link';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
-import {TABS} from '../common/constants';
-import {translate} from 'lit-translate';
 
 /**
  * @customElement
@@ -24,14 +22,7 @@ export class InterventionWorkplan extends LitElement {
           display: flex;
           flex-direction: column;
         }
-        workplan-editor-link {
-          align-self: flex-end;
-          margin-bottom: 24px;
-        }
       </style>
-      <workplan-editor-link link="interventions/${this.interventionId}/${TABS.WorkplanEditor}" direction="right">
-        ${translate('GO_TO_WORKPLAN_EDITOR')}
-      </workplan-editor-link>
 
       <budget-summary></budget-summary>
       <results-structure></results-structure>
