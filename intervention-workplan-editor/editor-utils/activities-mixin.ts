@@ -29,6 +29,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
     @property({type: Array})
     originalResultStructureDetails!: ExpectedResultExtended[];
 
+    // @ts-ignore
     @property({type: Array})
     resultStructureDetails!: ExpectedResultExtended[];
 

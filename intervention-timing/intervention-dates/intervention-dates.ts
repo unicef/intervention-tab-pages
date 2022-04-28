@@ -160,10 +160,10 @@ export class InterventionDates extends CommentsMixin(
   data!: ProgrammeDocDates;
 
   @property({type: String})
-  _frsStartConsistencyWarning = '';
+  _frsStartConsistencyWarning: string | boolean = '';
 
   @property({type: String})
-  _frsEndConsistencyWarning = '';
+  _frsEndConsistencyWarning: string | boolean = '';
 
   @property({type: Object})
   permissions!: Permission<InterventionDatesPermissions>;

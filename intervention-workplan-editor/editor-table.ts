@@ -244,14 +244,9 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
     `;
   }
 
-  private _resultStructureDetails: ExpectedResultExtended[] = [];
   @property({type: Array})
-  get resultStructureDetails(): ExpectedResultExtended[] {
-    return this._resultStructureDetails || [];
-  }
-  set resultStructureDetails(data: ExpectedResultExtended[]) {
-    this._resultStructureDetails = data.sort((a, b) => Number(Boolean(b.id)) - Number(Boolean(a.id)));
-  }
+  resultStructureDetails: ExpectedResultExtended[] = [];
+
   @property() interventionId!: number | null;
   @property() interventionStatus!: string;
 
