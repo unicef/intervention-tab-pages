@@ -88,21 +88,11 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
           if (event.path[0].localName === 'paper-icon-button') {
             return;
           }
-          let actionBtn: any =
-            currentTd.querySelector('paper-icon-button[icon="create"]') ||
-            currentTd.querySelector('paper-icon-button[icon="add-box"]');
+          let actionBtn: any = this.searchForActionBtnInCurrentTd(currentTd);
           if (!actionBtn) {
-            const tr = currentTd.parentElement;
-            if (tr) {
-              if (currentItemType === 'a-item') {
-                actionBtn = tr.parentElement!.previousElementSibling?.previousElementSibling?.querySelector(
-                  'paper-icon-button[icon="create"]'
-                );
-              } else {
-                actionBtn = tr.querySelector('paper-icon-button[icon="create"]');
-              }
-            }
+            actionBtn = this.searchForActionBtnInCurrentTr(currentTr);
           }
+
           if (actionBtn && !actionBtn.hasAttribute('hidden')) {
             actionBtn.click();
           }
@@ -292,6 +282,21 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
       if ((event.target as HTMLElement)!.hasAttribute('readonly')) {
         this.lastFocusedTd.focus();
       }
+    }
+
+    searchForActionBtnInCurrentTd(currentTd: any) {
+      return this.findEditOrAddBtn(currentTd);
+    }
+
+    searchForActionBtnInCurrentTr(currentTr: any) {
+      return this.findEditOrAddBtn(currentTr);
+    }
+
+    findEditOrAddBtn(element: any) {
+      return (
+        element.querySelector('paper-icon-button[icon="create"]') ||
+        element.querySelector('paper-icon-button[icon="add-box"]')
+      );
     }
   };
 }

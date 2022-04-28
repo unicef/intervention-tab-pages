@@ -169,8 +169,10 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                         activity.inEditMode = true;
                         activity.itemsInEditMode = true;
                         this.requestUpdate();
-                        // @ts-ignore
-                        this.moveFocusToFirstInput(e.target);
+                        if (e.isTrusted) {
+                          // @ts-ignore
+                          this.moveFocusToFirstInput(e.target);
+                        }
                       }}"
                     ></paper-icon-button>
                     <etools-info-tooltip

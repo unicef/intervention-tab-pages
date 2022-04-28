@@ -105,6 +105,9 @@ export const EditorTableStyles = css`
     color: #212121;
     cursor: pointer;
   }
+  div.icon {
+    max-width: fit-content;
+  }
 
   paper-button {
     color: white;
