@@ -24,6 +24,7 @@ import {AnyObject, AsyncAction, LocationObject, Permission, Site} from '@unicef-
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
+import '../../common/paper-textarea-with-icon';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 
 /**
@@ -59,11 +60,8 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         }
 
         .locations-btn {
-          margin: auto;
-          width: 100px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
+          white-space: nowrap;
+          padding: 29px 0 0 50px;
         }
 
         .see-locations iron-icon {
@@ -78,7 +76,8 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         }
 
         #locations {
-          max-width: 100%;
+          max-width: fit-content;
+          min-width: 300px;
         }
 
         .f-left {
@@ -89,8 +88,21 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
           padding: 8px 24px 16px 24px;
         }
 
-        info-icon-tooltip {
+        .mt-50 {
+          margin-top: 50px;
+        }
+
+        .dropdown-row {
+          margin-top: -38px;
+        }
+
+        #iit-geo {
           --iit-margin: 8px 0 8px -15px;
+        }
+
+        .iit {
+          --iit-icon-size: 18px;
+          --iit-margin: 0 0 4px 4px;
         }
       </style>
 
@@ -110,9 +122,20 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="flex-c layout-horizontal row-padding-v">
+          <label class="paper-label">
+            ${translate(translatesMap.flat_locations)}
+            <info-icon-tooltip
+              id="iit-locations"
+              class="iit"
+              position="top"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.flat_locations)}"
+              .tooltipText="${translate('GEOGRAPHICAL_LOCATIONS_INFO')}"
+            ></info-icon-tooltip>
+          </label>
+        </div>
+        <div class="flex-c layout-horizontal dropdown-row">
           <etools-dropdown-multi
             id="locations"
-            label=${translate(translatesMap.flat_locations)}
             placeholder="&#8212;"
             .options="${this.allLocations}"
             .selectedValues="${this.data.flat_locations}"
@@ -133,13 +156,12 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
               ?hidden="${this._isEmpty(this.data.flat_locations)}"
               title=${translate('SEE_ALL_LOCATIONS')}
             >
-              <iron-icon icon="add"></iron-icon>
-              ${translate('SEE_ALL')}
+              ${translate('SEE_HIERARCHY')}
             </paper-button>
           </div>
         </div>
-        <div class="flex-c layout-horizontal row-padding-v">
-          <paper-textarea
+        <div class="flex-c layout-horizontal row-padding-v mt-50">
+          <paper-textarea-with-icon
             label=${translate(translatesMap.sites)}
             always-float-label
             class="w100"
@@ -147,7 +169,16 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
             readonly
             max-rows="4"
             .value="${this.getSelectedSitesText(this.data.sites)}"
-          ></paper-textarea>
+          >
+            <info-icon-tooltip
+              id="iit-sites"
+              class="iit"
+              slot="after-label"
+              position="top"
+              ?hidden="${!this.editMode}"
+              .tooltipText="${translate('GEOGRAPHICAL_SITES_INFO')}"
+            ></info-icon-tooltip>
+          </paper-textarea-with-icon>
           <div class="locations-btn"></div>
         </div>
         <div class="flex-c layout-horizontal row-padding-v">
@@ -155,10 +186,10 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
             class="secondary-btn see-locations f-left"
             @click="${this.openSitesDialog}"
             ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.sites)}"
-            title=${translate('SELECT_LOCATION_BY_SITE_FROM_MAP')}
+            title=${translate('SELECT_SITE_FROM_MAP')}
           >
             <iron-icon icon="add"></iron-icon>
-            ${translate('SELECT_LOCATION_BY_SITE_FROM_MAP')}
+            ${translate('SELECT_SITE_FROM_MAP')}
           </paper-button>
         </div>
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
