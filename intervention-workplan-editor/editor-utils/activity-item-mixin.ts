@@ -23,6 +23,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
     };
 
     handleEsc!: (event: KeyboardEvent) => void;
+    // lastFocusedTd!: any;
 
     renderActivityItems(
       activity: InterventionActivityExtended,
@@ -226,7 +227,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
 
                       if (e.isTrusted) {
                         // human interaction click
-                        this.preserveFocuOnRow(e.target);
+                        this.preserveFocusOnRow(e.target);
                       }
                     }}"
                   ></paper-icon-button>
@@ -408,16 +409,20 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
         )?.children[1];
         // @ts-ignore
         itemDescTd?.querySelector('paper-textarea')?.focus();
+        // @ts-ignore
+        this.lastFocusedTd = itemDescTd;
       });
     }
 
-    preserveFocuOnRow(target: any) {
+    preserveFocusOnRow(target: any) {
       // @ts-ignore
       const targetTrParent = this.determineCurrentTr(target);
       setTimeout(() => {
         const itemDescTd = targetTrParent?.children[1];
         // @ts-ignore
         itemDescTd?.querySelector('paper-textarea')?.focus();
+        // @ts-ignore
+        this.lastFocusedTd = itemDescTd;
       });
     }
 

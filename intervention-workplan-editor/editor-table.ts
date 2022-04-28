@@ -465,7 +465,9 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
     setTimeout(() => {
       const trBelow = currTbody.nextElementSibling.querySelector('tr.text');
       const input = trBelow.querySelector('[input]');
+
       if (input) {
+        this.lastFocusedTd = this.determineCurrentTd(input);
         input.focus();
       }
     });
