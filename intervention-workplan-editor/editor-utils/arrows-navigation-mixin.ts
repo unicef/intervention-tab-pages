@@ -23,7 +23,7 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     }
 
     focusFirstTd() {
-      const focusableTds = Array.from(this.shadowRoot!.querySelectorAll<HTMLTableCellElement>('td[tabindex]'));
+      const focusableTds = Array.from(this.shadowRoot!.querySelectorAll<HTMLTableCellElement>('td[tabindex="0"]'));
       this.setLastFocusedTdOnClick(focusableTds);
       const firstFocusableTd = focusableTds[0];
       if (firstFocusableTd) {
