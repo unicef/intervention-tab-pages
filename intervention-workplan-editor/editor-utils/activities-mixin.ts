@@ -262,6 +262,8 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
         Object.assign(activity, cloneDeep(this.getOriginalActivity(resultIndex, pdOutputIndex, activityIndex)));
       }
       this.requestUpdate();
+      // @ts-ignore
+      this.lastFocusedTd.focus();
     }
 
     getOriginalActivity(resultIndex: number, pdOutputIndex: number, activityIndex: number) {
