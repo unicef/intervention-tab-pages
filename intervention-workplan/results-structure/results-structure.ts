@@ -55,6 +55,7 @@ import {_sendRequest} from '@unicef-polymer/etools-modules-common/dist/utils/req
 import {EtoolsDataTableRow} from '@unicef-polymer/etools-data-table/etools-data-table-row';
 import {PdActivities} from './pd-activities';
 import {PdIndicators} from './pd-indicators';
+import {CpOutputLevel} from './cp-output-level';
 
 /**
  * @customElement
@@ -95,6 +96,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
   private cpOutputs: CpOutput[] = [];
   private newCPOutputs: Set<number> = new Set();
   private newPDOutputs: Set<number> = new Set();
+  private commentsModeEnabledFlag?: boolean;
 
   render() {
     if (!this.intervention || !this.permissions || !this.resultLinks) {
@@ -161,7 +163,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
               .opened="${this.newCPOutputs.has(result.id)}"
               @edit-cp-output="${() => this.openCpOutputDialog(result)}"
               @delete-cp-output="${() => this.openDeleteCpOutputDialog(result.id)}"
-              @opened-changed="${this.openChildRows}"
+              @opened-changed="${this.onCpOpenedChanged}"
             >
               <div
                 class="no-results"
@@ -251,14 +253,33 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     super.connectedCallback();
   }
 
-  openChildRows(event: CustomEvent) {
+  protected firstUpdated() {
+    super.firstUpdated();
+    if (this.commentsModeEnabledFlag) {
+      setTimeout(() => this.openAllCpOutputs());
+    }
+  }
+
+  onCpOpenedChanged(event: CustomEvent) {
     if (!event.detail.opened) {
       return;
     }
-    (event.target as Element)
+    this.openCPChildren(event.target as CpOutputLevel);
+  }
+
+  openAllCpOutputs() {
+    this.shadowRoot!.querySelectorAll('cp-output-level').forEach((element) => {
+      const row = (element as CpOutputLevel).shadowRoot!.querySelector('etools-data-table-row');
+      (row as EtoolsDataTableRow).detailsOpened = true;
+      this.openCPChildren(element as CpOutputLevel);
+    });
+  }
+
+  openCPChildren(cpElement: CpOutputLevel): void {
+    cpElement
       .querySelectorAll('etools-data-table-row')
       .forEach((row: Element) => ((row as EtoolsDataTableRow).detailsOpened = true));
-    (event.target as Element)
+    cpElement
       .querySelectorAll('pd-activities, pd-indicators')
       .forEach((row: Element) => (row as PdActivities | PdIndicators).openAllRows());
   }
@@ -267,6 +288,10 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan)) {
       return;
     }
+    if (state.commentsData?.commentsModeEnabled && !this.commentsModeEnabledFlag) {
+      this.openAllCpOutputs();
+    }
+    this.commentsModeEnabledFlag = Boolean(state.commentsData?.commentsModeEnabled);
     this.updateResultLinks(state);
     this.showInactiveToggle = this.resultLinks.some(({ll_results}: ExpectedResult) =>
       ll_results.some(({applied_indicators}: ResultLinkLowerResult) =>
