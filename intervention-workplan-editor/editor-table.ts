@@ -404,6 +404,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
     pdOutput.inEditMode = false;
 
     this.requestUpdate();
+    this.lastFocusedTd.focus();
   }
 
   getOriginalPDOutput(resultIndex: number, pdOutputIndex: number) {

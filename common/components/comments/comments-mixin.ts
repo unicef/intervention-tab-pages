@@ -137,7 +137,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
     private createMataData(element: HTMLElement, relatedTo: string, relatedToDescription: string): MetaData {
       const oldStyles: string = element.style.cssText;
       const counter: HTMLElement = this.createCounter();
-      const overlay: HTMLElement = this.createOverlay();
+      const overlay: HTMLElement = this.createOverlay(relatedTo);
       element.append(overlay);
       return {
         element,
@@ -165,12 +165,14 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         font-weight: bold;
         font-size: 10px;
         color: #ffffff;
-        z-index: 90;
+        z-index: 91;
       `;
       return element;
     }
 
-    private createOverlay(): HTMLElement {
+    private createOverlay(relatedTo: string): HTMLElement {
+      const comments: InterventionComment[] = this.comments[relatedTo] || [];
+      const borderColor = comments.length ? '#FF4545' : '#81D763';
       const element: HTMLElement = document.createElement('div');
       element.style.cssText = `
         position: absolute;
@@ -181,8 +183,21 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         background-color: transparent;
         z-index: 91;
         cursor: pointer;
+        box-shadow:inset 0px 0px 0px 3px ${borderColor};
+        ${this.determineOverlayMargin(relatedTo)}
       `;
       return element;
+    }
+
+    determineOverlayMargin(relatedTo: string) {
+      const parts = relatedTo.split('-');
+      // @ts-ignore
+      if (isNaN(parts[parts.length - 1])) {
+        return '';
+      } else {
+        // If the commentable element is part of a list, leave some spacing
+        return 'margin: 2px;';
+      }
     }
 
     private getMetaFromContainer(container: HTMLElement): MetaData[] {
@@ -195,11 +210,8 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
     private updateCounterAndColor(meta: MetaData): void {
       const comments: InterventionComment[] = this.comments[meta.relatedTo] || [];
-      const borderColor = comments.length ? '#FF4545' : '#81D763';
       meta.element.style.cssText = `
-        position: relative;
-        box-shadow:inset 0px 0px 0px 3px ${borderColor};
-        margin: 2px;
+        position: relative;       
       `;
       meta.counter.innerText = `${comments.length}`;
       if (comments.length) {
