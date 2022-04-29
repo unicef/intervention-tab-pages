@@ -197,7 +197,8 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                       <div class="flex-none total-cache" ?hidden="${!this.showActivities}">
                         <div class="heading">${translate('TOTAL_CASH_BUDGET')}</div>
                         <div class="data">
-                          ${this.intervention.planned_budget.currency} ${displayCurrencyAmount(pdOutput.total, '0.00')}
+                          <span class="currency">${this.intervention.planned_budget.currency}</span>
+                          ${displayCurrencyAmount(pdOutput.total, '0.00')}
                         </div>
                       </div>
 
