@@ -74,12 +74,16 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
       if (needToUpdate) {
         // we need to update comments state if mode was enabled before the data was fetched
-        this.metaDataCollection.forEach((meta: MetaData) => this.updateCounterAndColor(meta));
+        this.metaDataCollection.forEach((meta: MetaData) => {
+          this.updateCounter(meta);
+          this.updateBorderColor(meta);
+        });
       }
 
       // update sate for currently edited comments
       if (this.currentEditedComments) {
-        this.updateCounterAndColor(this.currentEditedComments);
+        this.updateCounter(this.currentEditedComments);
+        this.updateBorderColor(this.currentEditedComments);
       }
 
       if (commentsModeEnabled === this.commentsModeEnabled) {
@@ -120,7 +124,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         .flat()
         .filter((meta: MetaData | null) => meta !== null) as MetaData[];
       this.metaDataCollection.forEach((meta: MetaData) => {
-        this.updateCounterAndColor(meta);
+        this.updateCounter(meta);
         this.registerListener(meta);
       });
     }
@@ -183,7 +187,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         background-color: transparent;
         z-index: 91;
         cursor: pointer;
-        box-shadow:inset 0px 0px 0px 3px ${borderColor};
+        box-shadow: inset 0px 0px 0px 3px ${borderColor};
         ${this.determineOverlayMargin(relatedTo)}
       `;
       return element;
@@ -208,7 +212,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         });
     }
 
-    private updateCounterAndColor(meta: MetaData): void {
+    private updateCounter(meta: MetaData): void {
       const comments: InterventionComment[] = this.comments[meta.relatedTo] || [];
       meta.element.style.cssText = `
         position: relative;       
@@ -219,6 +223,14 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
       } else {
         meta.counter.remove();
       }
+    }
+
+    private updateBorderColor(meta: MetaData) {
+      const comments: InterventionComment[] = this.comments[meta.relatedTo] || [];
+      const borderColor = comments.length ? '#FF4545' : '#81D763';
+      // @ts-ignore
+      meta.overlay.style['box-shadow'] = `inset 0px 0px 0px 3px ${borderColor}
+      `;
     }
 
     private registerListener(meta: MetaData): void {
