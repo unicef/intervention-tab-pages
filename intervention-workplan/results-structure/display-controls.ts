@@ -16,6 +16,7 @@ export const COMBINED_VIEW = 'combined_view';
 
 @customElement('display-controls')
 export class DisplayControls extends LitElement {
+  @property({type: Boolean, attribute: 'show-inactive-toggle'}) showInactiveToggle = false;
   @property({type: Boolean}) showIndicators = true;
   @property({type: Boolean}) showActivities = true;
   @property() interventionId!: number | null;
@@ -57,7 +58,7 @@ export class DisplayControls extends LitElement {
 
   protected render(): TemplateResult {
     return html`
-      <paper-toggle-button id="showInactive" @iron-change=${this.inactiveChange}>
+      <paper-toggle-button id="showInactive" ?hidden="${!this.showInactiveToggle}" @iron-change=${this.inactiveChange}>
         ${translate('SHOW_INACTIVE')}
       </paper-toggle-button>
 
@@ -123,6 +124,9 @@ export class DisplayControls extends LitElement {
           display: flex;
           align-items: center;
           justify-content: space-between;
+        }
+        :host(:not([show-inactive-toggle])) {
+          justify-content: flex-end;
         }
         #showInactive {
           margin-right: 8px;

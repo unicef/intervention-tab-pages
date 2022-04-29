@@ -45,7 +45,8 @@ import {
   IdAndName,
   ExpectedResult,
   Intervention,
-  ResultLinkLowerResult
+  ResultLinkLowerResult,
+  Indicator
 } from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
@@ -76,6 +77,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
   @property({type: Boolean}) isUnicefUser = true;
   @property({type: Boolean}) showIndicators = true;
   @property({type: Boolean}) showActivities = true;
+  @property({type: Boolean}) showInactiveToggle = false;
   @property({type: Object})
   permissions!: {
     edit: {result_links?: boolean};
@@ -109,6 +111,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         <div slot="panel-btns" class="layout-horizontal flex-1">
           <display-controls
             class="flex-1"
+            ?show-inactive-toggle="${this.showInactiveToggle}"
             .showIndicators="${this.showIndicators}"
             .showActivities="${this.showActivities}"
             .interventionId="${this.interventionId}"
@@ -264,6 +267,11 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
       return;
     }
     this.updateResultLinks(state);
+    this.showInactiveToggle = this.resultLinks.some(({ll_results}: ExpectedResult) =>
+      ll_results.some(({applied_indicators}: ResultLinkLowerResult) =>
+        applied_indicators.some(({is_active}: Indicator) => !is_active)
+      )
+    );
     this.permissions = selectResultLinksPermissions(state);
     this.interventionId = selectInterventionId(state);
     this.interventionStatus = selectInterventionStatus(state);
