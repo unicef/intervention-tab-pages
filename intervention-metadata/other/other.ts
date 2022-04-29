@@ -173,21 +173,14 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
         </div>
 
         <div class="layout-horizontal row-padding-v">
-          <paper-textarea
+          <paper-toggle-button
             id="confidential"
-            class="w100"
-            label=${translate('CONFIDENTIAL')}
-            always-float-label
-            placeholder="—"
-            .autoValidate="${this.autoValidate}"
-            .value="${this.data.confidential}"
-            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'confidential')}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit?.confidential)}"
-            ?required="${this.permissions.required.confidential}"
-            @focus="${() => (this.autoValidate = true)}"
-            error-message="This field is required"
+            ?disabled="${this.isReadonly(this.editMode, this.permissions.edit?.confidential)}"
+            ?checked="${this.data.confidential}"
+            @checked-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'confidential')}}"
           >
-          </paper-textarea>
+            ${translate('CONFIDENTIAL')}
+          </paper-toggle-button>
         </div>
 
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
