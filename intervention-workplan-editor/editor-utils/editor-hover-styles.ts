@@ -1,28 +1,22 @@
 import {css} from 'lit-element';
 
 export const EditorHoverStyles = css`
-  tbody[hoverable][has-edit-permissions]:not([in-edit-mode]):hover {
+  tbody[hoverable]:hover {
     background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
   }
-  tbody[hoverable] > tr.action-btns:not([type='cp-output']) {
-    height: 80px;
-  }
 
-  tbody[hoverable] > tr.action-btns > td.action-btns > .action-btns {
-    opacity: 0;
+  tbody > tr.action-btns > td.action-btns > .action-btns {
+    visibility: hidden;
   }
-  tbody[hoverable][has-edit-permissions]:not([in-edit-mode]):hover > tr.action-btns > td.action-btns > .action-btns {
-    opacity: 1;
+  tbody[hoverable]:hover > tr.action-btns > td.action-btns > .action-btns {
+    visibility: visible;
   }
-  tbody[hoverable][has-edit-permissions]:not([in-edit-mode]):focus-within
-    > tr.action-btns
-    > td.action-btns
-    > .action-btns {
-    opacity: 1;
+  tbody[hoverable]:focus-within > tr.action-btns > td.action-btns > .action-btns {
+    visibility: visible;
   }
 
   .hover-block {
-    opacity: 0;
+    visibility: hidden;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -34,30 +28,26 @@ export const EditorHoverStyles = css`
     min-width: 40px;
   }
 
-  .activity-items-row[has-edit-permissions]:not([in-edit-mode]):hover {
+  .activity-items-row[hoverable]:hover {
     background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
   }
 
-  .activity-items-row[has-edit-permissions][new-item]:hover {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
+  tr.activity-items-row[hoverable]:hover > td.action-btns > div.hover-block {
+    visibility: visible;
   }
 
-  tr.activity-items-row[has-edit-permissions]:not([in-edit-mode]):hover > td.action-btns > div.hover-block {
-    opacity: 1;
-  }
-
-  tr.activity-items-row[has-edit-permissions]:not([in-edit-mode]) > td.action-btns:focus-within > div.hover-block {
-    opacity: 1;
-  }
-
-  tr.activity-items-row[has-edit-permissions][new-item]:hover > td.action-btns > div.hover-block {
-    opacity: 1;
+  tr.activity-items-row[hoverable] > td.action-btns:focus-within > div.hover-block {
+    visibility: visible;
   }
 
   .align-bottom {
     position: absolute;
     bottom: 8px;
     right: 10px;
+  }
+
+  .height-for-action-btns {
+    height: 80px;
   }
 
   @media (max-width: 1490px) {
