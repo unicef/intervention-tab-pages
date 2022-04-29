@@ -89,7 +89,7 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
       switch (event.key) {
         case 'Enter': {
           // @ts-ignore
-          if (event.path[0].localName === 'paper-icon-button') {
+          if (['paper-icon-button', 'paper-button'].includes(event.path[0].localName)) {
             return;
           }
           let actionBtn: any = this.searchForActionBtnInCurrentTd(currentTd);
