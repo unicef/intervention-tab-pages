@@ -80,13 +80,16 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     input
                     class="name bold"
                     .value="${activity.name}"
-                    ?readonly="${!activity.inEditMode}"
+                    ?hidden="${!activity.inEditMode}"
                     required
                     .invalid="${activity.invalid?.name}"
                     error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
                     @keydown="${(e: any) => this.handleEsc(e)}"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue(activity, 'name', detail.value)}"
                   ></paper-textarea>
+                  <div class="truncate-multi-line" title="${activity.name}" ?hidden="${activity.inEditMode}">
+                    ${activity.name}
+                  </div>
                   <div class="pad-top-8">
                     <paper-textarea
                       class="other"
@@ -94,12 +97,19 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                       input
                       label="Other Notes"
                       always-float-label
-                      ?readonly="${!activity.inEditMode}"
+                      ?hidden="${!activity.inEditMode}"
                       .value="${activity.context_details}"
                       @keydown="${(e: any) => this.handleEsc(e)}"
                       @value-changed="${({detail}: CustomEvent) =>
                         this.updateModelValue(activity, 'context_details', detail.value)}"
                     ></paper-textarea>
+                    <div
+                      class="truncate-multi-line"
+                      title="${activity.context_details}"
+                      ?hidden="${activity.inEditMode}"
+                    >
+                      ${activity.context_details}
+                    </div>
                   </div>
                 </td>
                 <td tabindex="0">
