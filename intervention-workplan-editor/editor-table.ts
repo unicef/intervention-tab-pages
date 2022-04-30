@@ -99,7 +99,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
           this.resultStructureDetails,
           (result: ExpectedResult) => result.id,
           (result, resultIndex) => html`
-            <tbody hoverable class="heavy-blue" ?has-edit-permissions="${this.permissions.edit.result_links}">
+            <tbody ?hoverable="${this.permissions.edit.result_links && !this.commentMode}" class="heavy-blue">
               <tr class="header" ?hidden="${!this.isUnicefUser}">
                 <td>${translate('ID')}</td>
                 <td colspan="3">${translate('COUNTRY_PROGRAME_OUTPUT')}</td>
@@ -149,12 +149,10 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
               (pdOutput: ResultLinkLowerResultExtended) => pdOutput.id,
               (pdOutput: ResultLinkLowerResultExtended, pdOutputIndex) => html`
                 <tbody
-                  hoverable
+                  ?hoverable="${!pdOutput.inEditMode && this.permissions.edit.result_links && !this.commentMode}"
                   class="lighter-blue"
                   comment-element="pd-output-${pdOutput.id}"
                   comment-description=" PD Output - ${pdOutput.name}"
-                  ?in-edit-mode="${pdOutput.inEditMode}"
-                  ?has-edit-permissions="${this.permissions.edit.result_links}"
                 >
                   <tr class="header">
                     <td></td>
@@ -162,7 +160,10 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                     <td colspan="3"></td>
                     <td colspan="2">${translate('TOTAL')}</td>
                   </tr>
-                  <tr class="text action-btns" type="pd-output">
+                  <tr
+                    class="text action-btns  ${this.permissions.edit.result_links ? 'height-for-action-btns' : ''}"
+                    type="pd-output"
+                  >
                     <td class="padd-top-10">${pdOutput.code}</td>
                     <td colspan="3" class="b no-top-padding" tabindex="0">
                       <paper-textarea
@@ -303,6 +304,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
       this.refreshResultStructure = false;
     }
     super.stateChanged(state);
+
     if (this.lastFocusedTd) {
       this.lastFocusedTd.focus();
     }

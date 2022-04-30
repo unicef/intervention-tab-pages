@@ -47,6 +47,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
     handleEsc!: (event: KeyboardEvent) => void;
     refreshResultStructure = false;
     quarters: InterventionQuarter[] = [];
+    commentMode: any;
 
     renderActivities(pdOutput: ResultLinkLowerResultExtended, resultIndex: number, pdOutputIndex: number) {
       if (!pdOutput || !pdOutput.activities) {
@@ -58,11 +59,11 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
           (activity: InterventionActivityExtended) => activity.id,
           (activity: InterventionActivityExtended, activityIndex: number) => html`
             <tbody
-              hoverable
+              ?hoverable="${!(activity.inEditMode || activity.itemsInEditMode) &&
+              this.permissions.edit.result_links &&
+              !this.commentMode}"
               comment-element="activity-${activity.id}"
               comment-description=" Activity - ${activity.name}"
-              ?in-edit-mode="${activity.inEditMode || activity.itemsInEditMode}"
-              ?has-edit-permissions="${this.permissions.edit.result_links}"
             >
               <tr class="header">
                 <td></td>
