@@ -188,4 +188,8 @@ export const EditorTableStyles = css`
   .lighter-blue {
     background-color: #ccebff;
   }
+
+  .red {
+    color: red;
+  }
 `;

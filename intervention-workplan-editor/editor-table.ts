@@ -95,20 +95,60 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
         }
       </style>
       <table>
+        <tbody ?hoverable="${this.permissions.edit.result_links && !this.commentMode && !this.isUnicefUser}">
+          <tr
+            class="add action-btns heavy-blue"
+            type="cp-output"
+            ?hidden="${this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
+          >
+            <td></td>
+            <td colspan="3"></td>
+            <td colspan="3"></td>
+            <td colspan="2" tabindex="0">
+              <div class="action-btns">
+                <etools-info-tooltip
+                  position="left"
+                  custom-icon
+                  ?hide-tooltip="${!this.permissions.edit.result_links}"
+                  style="justify-content:end;"
+                >
+                  <paper-icon-button
+                    id="add-pd-output"
+                    slot="custom-icon"
+                    @click="${(e: any) => {
+                      this.addNewUnassignedPDOutput();
+                      this.moveFocusToNewllyAdded(e.target);
+                    }}"
+                    ?hidden="${!this.permissions.edit.result_links}"
+                    icon="add-box"
+                    tabindex="0"
+                  ></paper-icon-button>
+                  <span class="no-wrap" slot="message">${translate('ADD_PD_OUTPUT')}</span>
+                </etools-info-tooltip>
+              </div>
+            </td>
+          </tr>
+        </tbody>
         ${repeat(
           this.resultStructureDetails,
           (result: ExpectedResult) => result.id,
           (result, resultIndex) => html`
-            <tbody ?hoverable="${this.permissions.edit.result_links && !this.commentMode}" class="heavy-blue">
-              <tr class="header" ?hidden="${!this.isUnicefUser}">
+            <tbody
+              ?hoverable="${this.permissions.edit.result_links && !this.commentMode}"
+              ?hidden="${!this.isUnicefUser || !this.permissions.edit.result_links}"
+              class="heavy-blue"
+            >
+              <tr class="header">
                 <td>${translate('ID')}</td>
                 <td colspan="3">${translate('COUNTRY_PROGRAME_OUTPUT')}</td>
                 <td colspan="3"></td>
                 <td colspan="2">${translate('TOTAL')}</td>
               </tr>
-              <tr class="text no-b-border" ?hidden="${!this.isUnicefUser}">
+              <tr class="text no-b-border">
                 <td>${result.code}</td>
-                <td colspan="3" class="b">${result.cp_output_name}</td>
+                <td colspan="3" class="${result.cp_output_name ? 'b' : 'red'}">
+                  ${result.cp_output_name || translate('UNASSOCIATED_TO_CP_OUTPUT')}
+                </td>
                 <td colspan="3"></td>
                 <td colspan="2">
                   ${this.intervention.planned_budget.currency}
@@ -134,7 +174,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                           this.addNewPDOutput(result.ll_results);
                           this.moveFocusToNewllyAdded(e.target);
                         }}"
-                        ?hidden="${!this.permissions.edit.result_links}"
+                        ?hidden="${!this.permissions.edit.result_links || !result.cp_output}"
                         icon="add-box"
                         tabindex="0"
                       ></paper-icon-button>
@@ -331,6 +371,20 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
   addNewPDOutput(llResults: Partial<ResultLinkLowerResultExtended>[]) {
     if (!llResults.find((ll) => !ll.id)) {
       llResults.unshift({name: '', total: '0', inEditMode: true});
+      this.requestUpdate();
+    }
+  }
+
+  addNewUnassignedPDOutput() {
+    if (!this.resultStructureDetails.some((r) => !r.cp_output && r.ll_results.some((pdO) => !pdO.id))) {
+      this.resultStructureDetails.unshift({
+        // @ts-ignore
+        cp_output: null,
+        intervention: 261,
+        // @ts-ignore
+        ll_results: [{name: '', total: '0', inEditMode: true}],
+        total: '0'
+      });
       this.requestUpdate();
     }
   }

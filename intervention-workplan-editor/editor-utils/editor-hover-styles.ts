@@ -49,10 +49,4 @@ export const EditorHoverStyles = css`
   .height-for-action-btns {
     height: 80px;
   }
-
-  @media (max-width: 1490px) {
-    tbody[hoverable] > tr.action-btns:not([type='cp-output']) {
-      height: 110px;
-    }
-  }
 `;
