@@ -416,9 +416,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
     sendRequest({
       endpoint,
       method: pdOutput.id ? 'PATCH' : 'POST',
-      body: pdOutput.id
-        ? {id: pdOutput.id, name: pdOutput.name, cp_output: cpOutputId}
-        : {name: pdOutput.name, cp_output: cpOutputId}
+      body: this.getBody(pdOutput, cpOutputId)
     })
       .then((response) => {
         this.refreshResultStructure = true;
@@ -436,6 +434,17 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
           loadingSource: this.localName
         })
       );
+  }
+
+  getBody(pdOutput: ResultLinkLowerResultExtended, cpOutputId: number) {
+    let body: any = {name: pdOutput.name};
+    if (pdOutput.id) {
+      body = {...body, id: pdOutput.id};
+    }
+    if (cpOutputId) {
+      body = {...body, cp_output: cpOutputId};
+    }
+    return body;
   }
 
   validatePdOutput(pdOutput: ResultLinkLowerResultExtended) {
