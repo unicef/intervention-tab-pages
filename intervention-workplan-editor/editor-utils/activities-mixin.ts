@@ -105,7 +105,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                         this.updateModelValue(activity, 'context_details', detail.value)}"
                     ></paper-textarea>
                     <div
-                      class="truncate-multi-line"
+                      class="truncate-single-line"
                       title="${activity.context_details}"
                       ?hidden="${activity.inEditMode}"
                     >
