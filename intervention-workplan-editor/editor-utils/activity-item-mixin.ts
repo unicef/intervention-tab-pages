@@ -24,6 +24,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
 
     handleEsc!: (event: KeyboardEvent) => void;
     // lastFocusedTd!: any;
+    commentMode: any;
 
     renderActivityItems(
       activity: InterventionActivityExtended,
@@ -43,9 +44,8 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
             <tr
               class="activity-items-row ${activity.itemsInEditMode ? '' : 'readonly-mode'}"
               type="a-item"
-              ?in-edit-mode="${activity.itemsInEditMode}"
-              ?has-edit-permissions="${this.permissions.edit.result_links}"
-              ?new-item="${!item.id}"
+              ?hoverable="${(!activity.itemsInEditMode && this.permissions.edit.result_links && !this.commentMode) ||
+              !item.id}"
             >
               <td>
                 <paper-input
@@ -249,7 +249,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
             </tr>
           `
         )}
-        <tr ?hidden="${!this.permissions.edit.result_links}" type="add-item">
+        <tr ?hidden="${!this.permissions.edit.result_links || this.commentMode}" type="add-item">
           <td></td>
           <td tabindex="0">
             <div class="icon" @click="${(e: CustomEvent) => this.addNewItem(e, activity, 'focusAbove')}">
