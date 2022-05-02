@@ -32,13 +32,14 @@ import {CommentsMixin} from '../common/components/comments/comments-mixin';
 import {ExpectedResultExtended, ResultLinkLowerResultExtended} from './editor-utils/types';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import {translate} from 'lit-translate/directives/translate';
-import {AsyncAction} from '@unicef-polymer/etools-types';
+import {AsyncAction, IdAndName} from '@unicef-polymer/etools-types';
 import {EditorTableArrowKeysStyles} from './editor-utils/editor-table-arrow-keys-styles';
 import {ArrowsNavigationMixin} from './editor-utils/arrows-navigation-mixin';
 import {RootState} from '../common/types/store.types';
 import {EditorHoverStyles} from './editor-utils/editor-hover-styles';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import {updateSmallMenu} from '../common/actions/common-actions';
+import '@unicef-polymer/etools-dropdown/etools-dropdown';
 
 @customElement('editor-table')
 // @ts-ignore
@@ -241,6 +242,33 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                       <div class="bold truncate-multi-line" title="${pdOutput.name}" ?hidden="${pdOutput.inEditMode}">
                         ${pdOutput.name}
                       </div>
+                      <div
+                        class="pad-top-8"
+                        ?hidden="${this.hideCpOutput(
+                          this.isUnicefUser,
+                          this.originalResultStructureDetails[resultIndex]
+                        )}"
+                      >
+                        <etools-dropdown
+                          @etools-selected-item-changed="${({detail}: CustomEvent) =>
+                            this.updateModelValue(result, 'cp_output', detail.selectedItem && detail.selectedItem.id)}"
+                          label="CP Output"
+                          trigger-value-change-event
+                          placeholder="&#8212;"
+                          .options="${this.cpOutputs}"
+                          option-label="name"
+                          option-value="id"
+                          auto-validate
+                          ?hidden="${this.hideCpOutput(
+                            this.isUnicefUser,
+                            this.originalResultStructureDetails[resultIndex]
+                          )}"
+                          required
+                          ?readonly="${!pdOutput.inEditMode}"
+                          ?invalid="${pdOutput.invalidCpOutput}"
+                          .errorMessage="${translate('GENERAL.REQUIRED_FIELD')}"
+                        ></etools-dropdown>
+                      </div>
                     </td>
                     <td colspan="3"></td>
                     <td
@@ -329,6 +357,8 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
   @property({type: Boolean})
   readonly = false;
 
+  @property() cpOutputs: {id: number; name: string}[] = [];
+
   private lastFocusedTd: any = null;
   private refreshResultStructure = false;
   private prevInterventionId: number | null = null;
@@ -353,12 +383,18 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
       getStore().dispatch(updateSmallMenu(true));
     }
     this.interventionId = selectInterventionId(state);
-    this.permissions = selectResultLinksPermissions(state);
+    this.permissions = cloneDeep(selectResultLinksPermissions(state));
 
     this.interventionStatus = selectInterventionStatus(state);
     this.quarters = selectInterventionQuarters(state);
     this.isUnicefUser = isUnicefUser(state);
     this.intervention = cloneDeep(currentIntervention(state));
+    this.cpOutputs = this.intervention.result_links
+      .map(({cp_output: id, cp_output_name: name}: ExpectedResult) => ({
+        id,
+        name
+      }))
+      .filter(({id}: IdAndName<number>) => id);
 
     if (this.prevInterventionId != selectInterventionId(state) || this.refreshResultStructure) {
       this.getResultLinksDetails();
@@ -388,6 +424,16 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
         });
       }
     );
+  }
+
+  hideCpOutput(isUnicefUsr: boolean, result: ExpectedResultExtended) {
+    if (!isUnicefUsr) {
+      return false;
+    }
+    if (result.cp_output) {
+      return true;
+    }
+    return false;
   }
 
   addNewPDOutput(llResults: Partial<ResultLinkLowerResultExtended>[]) {
