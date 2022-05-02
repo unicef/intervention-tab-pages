@@ -190,6 +190,8 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                         input
                         .value="${pdOutput.name}"
                         ?hidden="${!pdOutput.inEditMode}"
+                        char-counter
+                        maxlength="500"
                         required
                         .invalid="${pdOutput.invalid}"
                         error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
