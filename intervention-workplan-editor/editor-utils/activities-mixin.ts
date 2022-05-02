@@ -88,7 +88,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     @keydown="${(e: any) => this.handleEsc(e)}"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue(activity, 'name', detail.value)}"
                   ></paper-textarea>
-                  <div class="truncate-multi-line" title="${activity.name}" ?hidden="${activity.inEditMode}">
+                  <div class="truncate-multi-line b" title="${activity.name}" ?hidden="${activity.inEditMode}">
                     ${activity.name}
                   </div>
                   <div class="pad-top-8">
