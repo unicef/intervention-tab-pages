@@ -74,10 +74,4 @@ export const InterventionActionsStyles: CSSResult = css`
     height: 36px;
     border-left: 2px solid rgba(255, 255, 255, 0.12);
   }
-  @media (max-width: 770px) {
-    :host {
-      flex-direction: column !important;
-      align-items: center;
-    }
-  }
 `;
