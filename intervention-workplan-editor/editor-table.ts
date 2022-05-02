@@ -66,7 +66,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
           }
           --paper-input-container-label-floating_-_font-weight: 600;
           --paper-font-subhead_-_font-weight: 600;
-          --paper-input-container-label-floating {
+          --paper-input-container-label-floating: {
             font-weight: 600;
           }
         }
@@ -84,6 +84,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
         paper-textarea.other {
           --iron-autogrow-textarea_-_font-weight: 400;
           --iron-autogrow-textarea_-_max-height: 96px;
+          --paper-input-container-label-floating_-_color: var(--secondary-text-color);
         }
         .activity-items-row paper-textarea {
           --iron-autogrow-textarea_-_font-weight: 400;
@@ -92,6 +93,24 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
           --paper-input-container-input: {
             font-weight: bold;
           }
+        }
+        .truncate-multi-line {
+          margin: 8px 0 10px 0;
+          max-height: 96px;
+          line-height: 24px;
+          overflow: hidden;
+          display: -webkit-box;
+          -webkit-line-clamp: 4;
+          -webkit-box-orient: vertical;
+        }
+        .truncate-single-line {
+          max-height: 42px;
+          line-height: 42px;
+          overflow: hidden;
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+          word-break: break-word;
         }
       </style>
       <table>
@@ -211,7 +230,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                         class="bold"
                         input
                         .value="${pdOutput.name}"
-                        ?readonly="${!pdOutput.inEditMode}"
+                        ?hidden="${!pdOutput.inEditMode}"
                         required
                         .invalid="${pdOutput.invalid}"
                         error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
@@ -219,6 +238,9 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                         @value-changed="${({detail}: CustomEvent) =>
                           this.updateModelValue(pdOutput, 'name', detail.value)}"
                       ></paper-textarea>
+                      <div class="bold truncate-multi-line" title="${pdOutput.name}" ?hidden="${pdOutput.inEditMode}">
+                        ${pdOutput.name}
+                      </div>
                     </td>
                     <td colspan="3"></td>
                     <td

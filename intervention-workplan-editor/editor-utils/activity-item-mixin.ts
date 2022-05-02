@@ -61,7 +61,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   .noLabelFloat="${!activity.itemsInEditMode}"
                   input
                   label=${this.getLabel(activity.itemsInEditMode, 'Item Description')}
-                  ?readonly="${!activity.itemsInEditMode}"
+                  ?hidden="${!activity.itemsInEditMode}"
                   .invalid="${item.invalid?.name}"
                   @invalid-changed="${(e: CustomEvent) => {
                     if (item.invalid && item.invalid.name != e.detail.value) {
@@ -76,6 +76,9 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   @keydown="${(e: any) => this.handleEsc(e)}"
                   @value-changed="${({detail}: CustomEvent) => this.updateModelValue(item, 'name', detail.value)}"
                 ></paper-textarea>
+                <div class="truncate-multi-line" title="${item.name}" ?hidden="${activity.itemsInEditMode}">
+                  ${item.name}
+                </div>
               </td>
               <td tabindex="0">
                 <paper-input
@@ -83,7 +86,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   .alwaysFloatLabel="${activity.itemsInEditMode}"
                   .noLabelFloat="${!activity.itemsInEditMode}"
                   label=${this.getLabel(activity.itemsInEditMode, 'Unit')}
-                  ?readonly="${!activity.itemsInEditMode}"
+                  ?hidden="${!activity.itemsInEditMode}"
                   .invalid="${item.invalid?.unit}"
                   @invalid-changed="${(e: CustomEvent) => {
                     if (item.invalid && item.invalid.unit != e.detail.value) {
@@ -98,6 +101,9 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   @keydown="${(e: any) => this.handleEsc(e)}"
                   @value-changed="${({detail}: CustomEvent) => this.updateModelValue(item, 'unit', detail.value)}"
                 ></paper-input>
+                <div class="truncate-single-line" title="${item.unit}" ?hidden="${activity.itemsInEditMode}">
+                  ${item.unit}
+                </div>
               </td>
               <td tabindex="0">
                 <etools-currency-amount-input
