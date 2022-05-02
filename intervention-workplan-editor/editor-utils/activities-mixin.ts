@@ -106,7 +106,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td tabindex="0">
                   <div class="flex-h justify-center">
                     <time-intervals
-                      .readonly="${!this.permissions.edit.result_links}"
+                      .readonly="${!this.permissions.edit.result_links || !activity.inEditMode}"
                       tabindex="0"
                       .invalid="${activity.invalid?.time_frames}"
                       .quarters="${this.quarters}"
