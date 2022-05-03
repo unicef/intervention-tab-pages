@@ -107,6 +107,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     return html`
       ${sharedStyles}
       <etools-content-panel
+        show-expand-btn
         panel-title="${translate(translatesMap.result_links)} (${this.noOfPdOutputs})"
         elevation="0"
       >
