@@ -249,11 +249,6 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       `;
     }
 
-    connectedCallback(): void {
-      super.connectedCallback();
-      this._onTimeIntervalsKeyDown = this._onTimeIntervalsKeyDown.bind(this);
-    }
-
     attachTimeIntervalsListener() {
       setTimeout(() => {
         this.shadowRoot
