@@ -62,6 +62,8 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   input
                   label=${this.getLabel(activity.itemsInEditMode, 'Item Description')}
                   ?hidden="${!activity.itemsInEditMode}"
+                  char-counter
+                  maxlength="150"
                   .invalid="${item.invalid?.name}"
                   @invalid-changed="${(e: CustomEvent) => {
                     if (item.invalid && item.invalid.name != e.detail.value) {
@@ -83,6 +85,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
               <td tabindex="0">
                 <paper-input
                   input
+                  maxlength="150"
                   .alwaysFloatLabel="${activity.itemsInEditMode}"
                   .noLabelFloat="${!activity.itemsInEditMode}"
                   label=${this.getLabel(activity.itemsInEditMode, 'Unit')}

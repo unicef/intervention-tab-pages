@@ -180,7 +180,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                 <td colspan="3"></td>
                 <td colspan="3"></td>
                 <td colspan="2" class="action-btns" tabindex="0">
-                  <div class="action-btns">
+                  <div class="action-btns" style="position:relative">
                     <etools-info-tooltip
                       position="left"
                       custom-icon
@@ -233,6 +233,8 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                         input
                         .value="${pdOutput.name}"
                         ?hidden="${!pdOutput.inEditMode}"
+                        char-counter
+                        maxlength="500"
                         required
                         .invalid="${pdOutput.invalid}"
                         error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
