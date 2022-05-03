@@ -49,6 +49,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
             >
               <td>
                 <paper-input
+                  title="${item.code || ''}"
                   .noLabelFloat="${!activity.itemsInEditMode}"
                   readonly
                   tabindex="-1"
