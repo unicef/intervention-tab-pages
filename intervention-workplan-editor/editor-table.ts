@@ -194,7 +194,8 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                           this.addNewPDOutput(result.ll_results);
                           this.moveFocusToNewllyAdded(e.target);
                         }}"
-                        ?hidden="${!this.permissions.edit.result_links || !result.cp_output}"
+                        ?hidden="${!this.permissions.edit.result_links ||
+                        !this.originalResultStructureDetails[resultIndex].cp_output}"
                         icon="add-box"
                         tabindex="0"
                       ></paper-icon-button>
@@ -243,17 +244,22 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                         ${pdOutput.name}
                       </div>
                       <div
-                        class="pad-top-8"
+                        class="pad-top-8 space-for-err-msg"
                         ?hidden="${this.hideCpOutput(
                           this.isUnicefUser,
                           this.originalResultStructureDetails[resultIndex]
                         )}"
                       >
                         <etools-dropdown
-                          @etools-selected-item-changed="${({detail}: CustomEvent) =>
-                            this.updateModelValue(result, 'cp_output', detail.selectedItem && detail.selectedItem.id)}"
+                          @etools-selected-item-changed="${({detail}: CustomEvent) => {
+                            this.updateModelValue(result, 'cp_output', detail.selectedItem && detail.selectedItem.id);
+                          }}"
                           label="CP Output"
-                          trigger-value-change-event
+                          ?trigger-value-change-event="${!this.hideCpOutput(
+                            this.isUnicefUser,
+                            this.originalResultStructureDetails[resultIndex]
+                          )}"
+                          .value="${result.cp_output}"
                           placeholder="&#8212;"
                           .options="${this.cpOutputs}"
                           option-label="name"
@@ -298,13 +304,16 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                           style="justify-content:end;"
                         >
                           <paper-icon-button
+                            result="${JSON.stringify(result)}"
                             icon="add-box"
                             slot="custom-icon"
                             @click="${(e: any) => {
                               this.addNewActivity(pdOutput);
                               this.moveFocusToNewllyAdded(e.target);
                             }}"
-                            ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
+                            ?hidden="${pdOutput.inEditMode ||
+                            !this.permissions.edit.result_links ||
+                            !this.originalResultStructureDetails[resultIndex].cp_output}"
                           ></paper-icon-button>
                           <span class="no-wrap" slot="message">${translate('ADD_NEW_ACTIVITY')}</span>
                         </etools-info-tooltip>
@@ -320,7 +329,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                         >
                         <paper-icon-button
                           icon="close"
-                          @click="${() => this.cancelPdOutput(result.ll_results, pdOutput, resultIndex, pdOutputIndex)}"
+                          @click="${() => this.cancelPdOutput(result, pdOutput, resultIndex, pdOutputIndex)}"
                         ></paper-icon-button>
                       </div>
                     </td>
@@ -466,8 +475,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
   }
 
   savePdOutput(pdOutput: ResultLinkLowerResultExtended, cpOutputId: number) {
-    if (!this.validatePdOutput(pdOutput)) {
-      pdOutput.invalid = true;
+    if (!this.validatePdOutput(pdOutput, cpOutputId)) {
       this.requestUpdate();
       return;
     }
@@ -515,25 +523,36 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
     return body;
   }
 
-  validatePdOutput(pdOutput: ResultLinkLowerResultExtended) {
+  validatePdOutput(pdOutput: ResultLinkLowerResultExtended, cpOutputId: number) {
+    let valid = true;
     if (!pdOutput.name) {
-      return false;
+      pdOutput.invalid = true;
+      valid = false;
     }
-    return true;
+    if (!cpOutputId && this.isUnicefUser) {
+      pdOutput.invalidCpOutput = true;
+      valid = false;
+    }
+    return valid;
   }
 
   cancelPdOutput(
-    llResults: Partial<ResultLinkLowerResultExtended>[],
+    result: ExpectedResultExtended,
     pdOutput: ResultLinkLowerResultExtended,
     resultIndex: number,
     pdOutputIndex: number
   ) {
     if (!pdOutput.id) {
-      llResults.shift();
+      result.ll_results.shift();
     } else {
       pdOutput.name = this.getOriginalPDOutput(resultIndex, pdOutputIndex).name;
+      if (this.isUnicefUser && !this.originalResultStructureDetails[resultIndex].cp_output) {
+        // @ts-ignore
+        result.cp_output = null;
+      }
     }
     pdOutput.invalid = false;
+    pdOutput.invalidCpOutput = false;
     pdOutput.inEditMode = false;
 
     this.requestUpdate();
