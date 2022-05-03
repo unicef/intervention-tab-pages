@@ -55,6 +55,41 @@ export class InterventionPageContentHeader extends LitElement {
           margin-top: 5px;
         }
 
+        @media (min-width: 450px) {
+          .title-row.sticky {
+            position: fixed;
+            background: #fff;
+            z-index: 100;
+            padding-bottom: 9px;
+            width: calc(100% - var(--app-drawer-width));
+            border-bottom: 1px solid var(--light-divider-color);
+            box-sizing: border-box;
+          }
+
+          .tabs.sticky {
+            margin-top: 60px;
+          }
+        }
+
+        @media (min-width: 771px) and (max-width: 1300px) {
+          .tabs.sticky {
+            margin-top: 114px;
+          }
+        }
+
+        @media (min-width: 450px) and (max-width: 850px) {
+          .title-row.sticky {
+            width: 100%;
+            left: 0;
+          }
+        }
+
+        @media (min-width: 450px) and (max-width: 770px) {
+          .tabs.sticky {
+            margin-top: 153px;
+          }
+        }
+
         @media print {
           :host {
             padding: 0;
@@ -84,9 +119,13 @@ export class InterventionPageContentHeader extends LitElement {
           }
         }
         @media (max-width: 770px) {
-          .flex-block, .row-actions {
-            flex-direction: column !important;
-            align-items: center;
+          .flex-block {
+            flex-wrap: wrap;
+            place-content: center;
+          }
+          .title {
+            flex: 100%;
+            text-align: center;
           }
           .vb {
             display: none;
@@ -132,7 +171,7 @@ export class InterventionPageContentHeader extends LitElement {
         }
       </style>
 
-      <div class="content-header-row title-row">
+      <div class="content-header-row title-row sticky">
         <div class="flex-block">
           <h1 class="title">
             <slot name="page-title"></slot>
@@ -150,7 +189,7 @@ export class InterventionPageContentHeader extends LitElement {
         </div>
       </div>
 
-      <div class="content-header-row tabs none-flex" ?hidden="${this.withTabsVisible}">
+      <div class="content-header-row tabs none-flex sticky" ?hidden="${this.withTabsVisible}">
         <slot name="tabs"></slot>
       </div>
     `;
