@@ -1,5 +1,6 @@
 // @ts-ignore
 import {Constructor, html, LitElement, property} from 'lit-element';
+import {ifDefined} from 'lit-html/directives/if-defined.js';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {AsyncAction, InterventionQuarter} from '@unicef-polymer/etools-types';
 import {Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
@@ -144,6 +145,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     no-label-float
                     input
                     .value="${activity.cso_cash}"
+                    tabindex="${ifDefined(activity.items && activity.items.length ? '-1' : undefined)}"
                     ?readonly="${this.isReadonlyForActivityCash(activity.inEditMode, activity.items)}"
                     @keydown="${(e: any) => this.handleEsc(e)}"
                     @value-changed="${({detail}: CustomEvent) =>
@@ -155,6 +157,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     no-label-float
                     input
                     .value="${activity.unicef_cash}"
+                    tabindex="${ifDefined(activity.items && activity.items.length ? '-1' : undefined)}"
                     ?readonly="${this.isReadonlyForActivityCash(activity.inEditMode, activity.items)}"
                     @keydown="${(e: any) => this.handleEsc(e)}"
                     @value-changed="${({detail}: CustomEvent) =>
