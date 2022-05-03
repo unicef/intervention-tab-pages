@@ -303,7 +303,7 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
       );
     }
     enterClickedOnActionBtnsTd() {
-      return this.lastFocusedTd.classList.value.includes('action-btns');
+      return this.lastFocusedTd && this.lastFocusedTd.classList.value.includes('action-btns');
     }
   };
 }
