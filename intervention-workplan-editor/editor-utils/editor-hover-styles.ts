@@ -24,7 +24,7 @@ export const EditorHoverStyles = css`
     flex-direction: row;
     align-items: center;
     justify-content: flex-end;
-    background-color: #d2cfcf;
+    background-color: #cdcdcd;
     min-width: 40px;
   }
 
@@ -48,11 +48,5 @@ export const EditorHoverStyles = css`
 
   .height-for-action-btns {
     height: 80px;
-  }
-
-  @media (max-width: 1490px) {
-    tbody[hoverable] > tr.action-btns:not([type='cp-output']) {
-      height: 110px;
-    }
   }
 `;

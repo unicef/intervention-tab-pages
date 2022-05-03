@@ -75,7 +75,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
               </tr>
               <tr class="text action-btns" type="activity">
                 <td class="padd-top-10">${activity.code}</td>
-                <td colspan="3" tabindex="0" class="no-top-padding">
+                <td colspan="3" tabindex="0" class="no-top-padding height-for-action-btns">
                   <paper-textarea
                     no-label-float
                     input
