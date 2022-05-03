@@ -82,6 +82,8 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     class="name bold"
                     .value="${activity.name}"
                     ?hidden="${!activity.inEditMode}"
+                    char-counter
+                    maxlength="150"
                     required
                     .invalid="${activity.invalid?.name}"
                     error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
@@ -99,6 +101,8 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                       label="Other Notes"
                       always-float-label
                       ?hidden="${!activity.inEditMode}"
+                      char-counter
+                      maxlength="10000"
                       .value="${activity.context_details}"
                       @keydown="${(e: any) => this.handleEsc(e)}"
                       @value-changed="${({detail}: CustomEvent) =>
