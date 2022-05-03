@@ -53,6 +53,8 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       if (!pdOutput || !pdOutput.activities) {
         return '';
       }
+      this.attachTimeIntervalsListener();
+
       return html`
         ${repeat(
           pdOutput.activities || [],
@@ -117,7 +119,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     </div>
                   </div>
                 </td>
-                <td tabindex="0">
+                <td tabindex="0" class="tdTimeIntervals">
                   <div class="flex-h justify-center">
                     <time-intervals
                       .readonly="${!this.permissions.edit.result_links || !activity.inEditMode}"
@@ -245,6 +247,30 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
           `
         )}
       `;
+    }
+
+    connectedCallback(): void {
+      super.connectedCallback();
+      this._onTimeIntervalsKeyDown = this._onTimeIntervalsKeyDown.bind(this);
+    }
+
+    attachTimeIntervalsListener() {
+      setTimeout(() => {
+        this.shadowRoot
+          .querySelectorAll('.tdTimeIntervals')
+          .forEach((el) => el.addEventListener('keydown', this._onTimeIntervalsKeyDown));
+      }, 400);
+    }
+
+    _onTimeIntervalsKeyDown(event: any) {
+      if (event.key === 'Enter') {
+        const editBtnEl = event.currentTarget.parentElement.querySelector('paper-icon-button[icon="create"]');
+        const timeIntervalEl = event.currentTarget.querySelector('time-intervals');
+        // if in edit mode and found time-interval component, open Time Periods dialog
+        if (timeIntervalEl && editBtnEl && editBtnEl.hasAttribute('hidden')) {
+          timeIntervalEl.openDialog();
+        }
+      }
     }
 
     getTotalForActivity(partner: string, unicef: string): number {
