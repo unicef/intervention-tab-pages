@@ -139,7 +139,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                 <td colspan="3"></td>
                 <td colspan="3"></td>
                 <td colspan="2" class="action-btns" tabindex="0">
-                  <div class="action-btns">
+                  <div class="action-btns" style="position:relative">
                     <etools-info-tooltip
                       position="left"
                       custom-icon
