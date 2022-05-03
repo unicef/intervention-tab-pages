@@ -270,7 +270,9 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
   openAllCpOutputs() {
     this.shadowRoot!.querySelectorAll('cp-output-level').forEach((element) => {
       const row = (element as CpOutputLevel).shadowRoot!.querySelector('etools-data-table-row');
-      (row as EtoolsDataTableRow).detailsOpened = true;
+      if (row) {
+        (row as EtoolsDataTableRow).detailsOpened = true;
+      }
       this.openCPChildren(element as CpOutputLevel);
     });
   }
