@@ -306,7 +306,6 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                           style="justify-content:end;"
                         >
                           <paper-icon-button
-                            result="${JSON.stringify(result)}"
                             icon="add-box"
                             slot="custom-icon"
                             @click="${(e: any) => {
