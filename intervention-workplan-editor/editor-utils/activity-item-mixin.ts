@@ -112,6 +112,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   input
                   ?readonly="${!activity.itemsInEditMode}"
                   .invalid="${item.invalid?.no_units}"
+                  no-of-decimals="1"
                   @invalid-changed="${(e: CustomEvent) => {
                     if (item.invalid && item.invalid.no_units != e.detail.value) {
                       item.invalid = {...item.invalid, no_units: e.detail.value};
