@@ -1,9 +1,13 @@
 import {css} from 'lit-element';
 
 export const EditorTableStyles = css`
+  * {
+    box-sizing: border-box;
+  }
   table {
     width: 100%;
     border-collapse: collapse;
+    box-sizing: border-box;
     background-color: white;
   }
   td {
@@ -13,19 +17,25 @@ export const EditorTableStyles = css`
   }
 
   td.first-col {
-    width: 50px;
+    width: 85px;
     text-align: left;
     vertical-align: middle;
     padding: 6px;
   }
-  td.col-6p {
-    width: 6%;
+  td.col-unit-no {
+    width: 7%;
+  }
+  td.col-unit {
+    width: 7%;
   }
   td.col-44p {
-    width: 44%;
+    width: calc(47% - 78px);
   }
   td.col-g {
     width: 10%;
+  }
+  td.col-p-per-unit {
+    width: 9%;
   }
   td.last-col {
     width: 10%;
