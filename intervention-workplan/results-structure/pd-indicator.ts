@@ -8,7 +8,7 @@ import {CommentElementMeta, CommentsMixin} from '../../common/components/comment
 import {Disaggregation, DisaggregationValue} from '@unicef-polymer/etools-types';
 import {Indicator} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
 
 @customElement('pd-indicator')
@@ -211,7 +211,8 @@ export class PdIndicator extends CommentsMixin(LitElement) {
       return item.v;
     }
 
-    return displayCurrencyAmount(String(item.v), '0.00');
+    const numberValue = Number(item.v) || 0;
+    return addCurrencyAmountDelimiter(String(numberValue));
   }
 
   _clusterIndIsRatio(item: any) {
