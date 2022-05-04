@@ -77,15 +77,13 @@ export class CpOutputLevel extends LitElement {
                             )}
                           </div>
                         </div>
-                        <div class="hover-block">
+                        <div class="hover-block" ?hidden="${this.readonly}">
                           <paper-icon-button
                             icon="icons:create"
-                            ?hidden="${this.readonly}"
                             @click="${this.openEditCpOutputPopup}"
                           ></paper-icon-button>
                           <paper-icon-button
                             icon="icons:delete"
-                            ?hidden="${this.readonly}"
                             @click="${this.openDeleteCPOutputPopup}"
                           ></paper-icon-button>
                         </div>
