@@ -29,7 +29,7 @@ export const EditorTableStyles = css`
     width: 7%;
   }
   td.col-44p {
-    width: calc(47% - 78px);
+    width: calc(47% - 85px);
   }
   td.col-g {
     width: 10%;
