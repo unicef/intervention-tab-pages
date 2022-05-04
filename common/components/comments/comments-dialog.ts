@@ -11,6 +11,7 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import {CommentsItemsNameMap} from './comments-items-name-map';
 import {EditComments} from './edit-comments-base';
 import {PaperTextareaElement} from '@polymer/paper-input/paper-textarea';
+import {removeTrailingIds} from './comments.helpers';
 
 @customElement('comments-dialog')
 export class CommentsDialog extends EditComments {
@@ -21,7 +22,7 @@ export class CommentsDialog extends EditComments {
     if (!this.relatedTo) {
       return '';
     }
-    const relatedToKey: string = this.relatedTo.replace(/(.+?)-\d+/, '$1');
+    const relatedToKey: string = removeTrailingIds(this.relatedTo);
     const itemType = CommentsItemsNameMap[relatedToKey];
     if (itemType) {
       const description = this.relatedToDescription ? ` - ${this.relatedToDescription}` : '';
