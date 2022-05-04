@@ -208,7 +208,10 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                         </div>
                       </div>
 
-                      <div class="hover-block" ?hidden="${!this.permissions.edit.result_links}">
+                      <div
+                        class="hover-block"
+                        ?hidden="${!this.permissions.edit.result_links || this.commentsModeEnabledFlag}"
+                      >
                         <paper-icon-button
                           icon="icons:create"
                           @click="${() => this.openPdOutputDialog(pdOutput, result.cp_output)}"
