@@ -85,6 +85,10 @@ export const ActivityItemsTableStyles: CSSResult = css`
     box-shadow: 0 0 5px 5px rgba(170, 165, 165, 0.4);
     background-color: rgba(170, 165, 165, 0.4);
   }
+  paper-textarea:focus {
+    box-shadow: none;
+    background-color: transparent;
+  }
   label[required] {
     --required-star-style_-_padding-right: 20px;
   }
