@@ -230,7 +230,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
             </tbody>
 
             <tbody thead ?hidden="${!activity.items || !activity.items.length}">
-              <tr class="header no-padd">
+              <tr class="header no-padd gray-1">
                 <td class="first-col"></td>
                 <td class="col-44p">${translate('ITEM_DESCRIPTION')}</td>
                 <td class="col-6p">${translate('UNIT')}</td>

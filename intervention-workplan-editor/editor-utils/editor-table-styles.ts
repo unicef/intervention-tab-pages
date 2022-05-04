@@ -192,4 +192,7 @@ export const EditorTableStyles = css`
   .red {
     color: red;
   }
+  .space-for-err-msg {
+    padding-bottom: 8px;
+  }
 `;

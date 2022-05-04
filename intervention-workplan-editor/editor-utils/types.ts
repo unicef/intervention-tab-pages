@@ -72,4 +72,5 @@ type ItemInvalid = {name: boolean; context_details: boolean; time_frames: boolea
 export type ResultLinkLowerResultExtended = ResultLinkLowerResult & {
   inEditMode: boolean;
   invalid: boolean;
+  invalidCpOutput: boolean;
 };
