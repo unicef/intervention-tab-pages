@@ -48,6 +48,10 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
     return [EditorTableStyles, EditorTableArrowKeysStyles, EditorHoverStyles];
   }
   render() {
+    if (!this.intervention) {
+      return html``;
+    }
+
     return html`
       ${sharedStyles}
       <style>
@@ -115,11 +119,11 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
         }
       </style>
       <table>
-        <tbody ?hoverable="${this.permissions.edit.result_links && !this.commentMode && !this.isUnicefUser}">
+        <tbody ?hoverable="${this.permissions?.edit.result_links && !this.commentMode && !this.isUnicefUser}">
           <tr
             class="add action-btns heavy-blue"
             type="cp-output"
-            ?hidden="${this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
+            ?hidden="${this.isUnicefUser || !this.permissions?.edit.result_links || this.commentMode}"
           >
             <td></td>
             <td colspan="3"></td>
@@ -129,7 +133,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                 <etools-info-tooltip
                   position="left"
                   custom-icon
-                  ?hide-tooltip="${!this.permissions.edit.result_links}"
+                  ?hide-tooltip="${!this.permissions?.edit.result_links}"
                   style="justify-content:end;"
                 >
                   <paper-icon-button
@@ -139,7 +143,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                       this.addNewUnassignedPDOutput();
                       this.moveFocusToNewllyAdded(e.target);
                     }}"
-                    ?hidden="${!this.permissions.edit.result_links}"
+                    ?hidden="${!this.permissions?.edit.result_links}"
                     icon="add-box"
                     tabindex="0"
                   ></paper-icon-button>
@@ -154,8 +158,8 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
           (result: ExpectedResult) => result.id,
           (result, resultIndex) => html`
             <tbody
-              ?hoverable="${this.permissions.edit.result_links && !this.commentMode}"
-              ?hidden="${!this.isUnicefUser || !this.permissions.edit.result_links}"
+              ?hoverable="${this.permissions?.edit.result_links && !this.commentMode}"
+              ?hidden="${!this.isUnicefUser || !this.permissions?.edit.result_links}"
               class="heavy-blue"
             >
               <tr class="header">
@@ -184,7 +188,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                     <etools-info-tooltip
                       position="left"
                       custom-icon
-                      ?hide-tooltip="${!this.permissions.edit.result_links}"
+                      ?hide-tooltip="${!this.permissions?.edit.result_links}"
                       style="justify-content:end;"
                     >
                       <paper-icon-button
@@ -194,7 +198,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                           this.addNewPDOutput(result.ll_results);
                           this.moveFocusToNewllyAdded(e.target);
                         }}"
-                        ?hidden="${!this.permissions.edit.result_links ||
+                        ?hidden="${!this.permissions?.edit.result_links ||
                         !this.originalResultStructureDetails[resultIndex].cp_output}"
                         icon="add-box"
                         tabindex="0"
@@ -210,7 +214,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
               (pdOutput: ResultLinkLowerResultExtended) => pdOutput.id,
               (pdOutput: ResultLinkLowerResultExtended, pdOutputIndex) => html`
                 <tbody
-                  ?hoverable="${!pdOutput.inEditMode && this.permissions.edit.result_links && !this.commentMode}"
+                  ?hoverable="${!pdOutput.inEditMode && this.permissions?.edit.result_links && !this.commentMode}"
                   class="lighter-blue"
                   comment-element="pd-output-${pdOutput.id}"
                   comment-description=" PD Output - ${pdOutput.name}"
@@ -222,7 +226,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                     <td colspan="2">${translate('TOTAL')}</td>
                   </tr>
                   <tr
-                    class="text action-btns  ${this.permissions.edit.result_links ? 'height-for-action-btns' : ''}"
+                    class="text action-btns  ${this.permissions?.edit.result_links ? 'height-for-action-btns' : ''}"
                     type="pd-output"
                   >
                     <td class="padd-top-10">${pdOutput.code}</td>
@@ -283,7 +287,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                       colspan="2"
                       class="action-btns"
                       style="position:relative;"
-                      tabindex="${!this.permissions.edit.result_links ? '-1' : '0'}"
+                      tabindex="${!this.permissions?.edit.result_links ? '-1' : '0'}"
                     >
                       <div>
                         ${this.intervention.planned_budget.currency}
@@ -292,7 +296,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                       <div class="action-btns align-bottom flex-h action-btns">
                         <paper-icon-button
                           icon="create"
-                          ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
+                          ?hidden="${pdOutput.inEditMode || !this.permissions?.edit.result_links}"
                           @click="${(e: any) => {
                             pdOutput.inEditMode = true;
                             this.requestUpdate();
@@ -302,7 +306,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                         <etools-info-tooltip
                           position="top"
                           custom-icon
-                          ?hide-tooltip="${!this.permissions.edit.result_links}"
+                          ?hide-tooltip="${!this.permissions?.edit.result_links}"
                           style="justify-content:end;"
                         >
                           <paper-icon-button
@@ -313,14 +317,14 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                               this.moveFocusToNewllyAdded(e.target);
                             }}"
                             ?hidden="${pdOutput.inEditMode ||
-                            !this.permissions.edit.result_links ||
+                            !this.permissions?.edit.result_links ||
                             !this.originalResultStructureDetails[resultIndex].cp_output}"
                           ></paper-icon-button>
                           <span class="no-wrap" slot="message">${translate('ADD_NEW_ACTIVITY')}</span>
                         </etools-info-tooltip>
                         <paper-icon-button
                           icon="delete"
-                          ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
+                          ?hidden="${pdOutput.inEditMode || !this.permissions?.edit.result_links}"
                           @click="${() => this.openDeletePdOutputDialog(pdOutput.id)}"
                         ></paper-icon-button>
                       </div>
