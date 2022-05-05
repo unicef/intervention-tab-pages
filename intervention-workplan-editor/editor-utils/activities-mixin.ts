@@ -254,9 +254,9 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
 
     attachTimeIntervalsListener() {
       setTimeout(() => {
-        this.shadowRoot
-          .querySelectorAll('.tdTimeIntervals')
-          .forEach((el) => el.addEventListener('keydown', this._onTimeIntervalsKeyDown));
+        this.shadowRoot!.querySelectorAll('.tdTimeIntervals').forEach((el) =>
+          el.addEventListener('keydown', this._onTimeIntervalsKeyDown)
+        );
       }, 400);
     }
 
