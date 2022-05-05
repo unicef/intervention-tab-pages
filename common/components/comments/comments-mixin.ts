@@ -166,7 +166,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         font-weight: bold;
         font-size: 10px;
         color: #ffffff;
-        z-index: 90;
+        z-index: 92;
       `;
       return element;
     }
@@ -197,9 +197,9 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
       const borderColor = comments.length ? '#FF4545' : '#81D763';
       meta.element.style.cssText = `
         position: relative;
-        box-shadow:inset 0px 0px 0px 3px ${borderColor};
         margin: 2px;
       `;
+      meta.overlay.style.boxShadow = `inset 0px 0px 0px 3px ${borderColor}`;
       meta.counter.innerText = `${comments.length}`;
       if (comments.length) {
         meta.element.append(meta.counter);

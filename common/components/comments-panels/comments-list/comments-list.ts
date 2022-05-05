@@ -5,6 +5,7 @@ import './comments-group';
 import './comments-panel-header';
 import {CommentsCollection} from '../../comments/comments.reducer';
 import {CommentsDescription, CommentsItemsNameMap} from '../../comments/comments-items-name-map';
+import {removeTrailingIds} from '../../comments/comments.helpers';
 
 export type CommentItemData = {
   relatedTo: string;
@@ -25,7 +26,7 @@ export class CommentsList extends LitElement {
   @property() selectedGroup: string | null = null;
   set commentsCollection(collection: CommentsCollection) {
     this.commentsGroups = Object.entries(collection || {}).map(([relatedTo, comments]) => {
-      const relatedToKey: string = relatedTo.replace(/(.+?)-\d+/, '$1');
+      const relatedToKey: string = removeTrailingIds(relatedTo);
       const relatedToTranslateKey = CommentsItemsNameMap[relatedToKey];
       const commentWithDescription = comments.find(({related_to_description}) => related_to_description);
       const relatedToDescription = commentWithDescription?.related_to_description || '';

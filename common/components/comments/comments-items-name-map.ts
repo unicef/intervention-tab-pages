@@ -1,5 +1,6 @@
 import {GenericObject} from '@unicef-polymer/etools-types';
 import {translatesMap} from '../../../utils/intervention-labels-map';
+import {TABS} from '../../constants';
 
 export const CommentsItemsNameMap: GenericObject<string> = {
   attachments: 'ATTACHMENTS',
@@ -56,3 +57,33 @@ export const CommentsDescription: GenericObject<string> = {
   'non-financial-contribution': 'PARTNER_NON_FINANCIAL_CONTRIBUTION_DESCRIPTION',
   'supply-agreement': `${translatesMap.supply_items}_DESCRIPTION`
 };
+
+export const ComponentsPosition: GenericObject<string> = {
+  attachments: TABS.Attachments,
+  'prc-document': TABS.Attachments,
+  amendments: TABS.Metadata,
+  details: TABS.Metadata,
+  financial: TABS.Metadata,
+  'fund-reservations': TABS.Metadata,
+  'other-metadata': TABS.Metadata,
+  'partner-details': TABS.Metadata,
+  'signatures-and-dates': TABS.Metadata,
+  'unicef-details': TABS.Metadata,
+  'document-details': TABS.Strategy,
+  'gender-equity-sustainability': TABS.Strategy,
+  'geographical-coverage': TABS.Strategy,
+  risks: TABS.Strategy,
+  'activity-timeframes': TABS.Timing,
+  'programme-document-dates': TABS.Timing,
+  'programmatic-visits': TABS.Timing,
+  'timing-overview': TABS.Timing,
+  'pd-output': 'PD_OUTPUT',
+  activity: TABS.Workplan,
+  'budget-summary': TABS.Workplan,
+  'programme-management': TABS.Workplan,
+  'hq-contribution': TABS.Workplan,
+  'non-financial-contribution': TABS.Workplan,
+  'supply-agreement': TABS.Workplan,
+  indicator: TABS.Workplan,
+  prp: TABS.Timing
+}
