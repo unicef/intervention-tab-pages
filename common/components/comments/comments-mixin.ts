@@ -49,6 +49,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
     private metaDataCollection: MetaData[] = [];
     private commentsModeEnabled = false;
     private rendered = false;
+    private modeIsSet = false;
     private currentEditedComments: MetaData | null = null;
 
     protected firstUpdated() {
@@ -86,16 +87,21 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         this.updateBorderColor(this.currentEditedComments);
       }
 
-      if (commentsModeEnabled === this.commentsModeEnabled) {
+      if (commentsModeEnabled === this.commentsModeEnabled && this.modeIsSet) {
         return;
       }
+
       this.commentsModeEnabled = commentsModeEnabled;
-      if (commentsModeEnabled && this.rendered) {
-        this.startCommentMode();
-        this.requestUpdate();
-      } else if (this.rendered) {
-        this.stopCommentMode();
-        this.requestUpdate();
+
+      if (this.rendered) {
+        this.modeIsSet = true;
+        if (commentsModeEnabled) {
+          this.startCommentMode();
+          (this as any).requestUpdate();
+        } else {
+          this.stopCommentMode();
+          (this as any).requestUpdate();
+        }
       }
     }
 
@@ -215,7 +221,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
     private updateCounter(meta: MetaData): void {
       const comments: InterventionComment[] = this.comments[meta.relatedTo] || [];
       meta.element.style.cssText = `
-        position: relative;       
+        position: relative;
       `;
       meta.counter.innerText = `${comments.length}`;
       if (comments.length) {
