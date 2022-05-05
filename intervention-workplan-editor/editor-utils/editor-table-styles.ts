@@ -28,7 +28,7 @@ export const EditorTableStyles = css`
   td.col-unit {
     width: 7%;
   }
-  td.col-44p {
+  td.col-text {
     width: calc(47% - 85px);
   }
   td.col-g {
