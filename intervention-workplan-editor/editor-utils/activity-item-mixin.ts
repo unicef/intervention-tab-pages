@@ -46,6 +46,8 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
               type="a-item"
               ?hoverable="${(!activity.itemsInEditMode && this.permissions.edit.result_links && !this.commentMode) ||
               !item.id}"
+              comment-element="activity-item-${item.id}"
+              comment-description=" Activity item - ${item.name}"
             >
               <td>
                 <paper-input
