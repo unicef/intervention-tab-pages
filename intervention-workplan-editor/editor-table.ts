@@ -117,6 +117,9 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
           -webkit-box-orient: vertical;
           word-break: break-word;
         }
+        td.totals {
+          min-width: 140px;
+        }
       </style>
       <table>
         <tbody ?hoverable="${this.permissions?.edit.result_links && !this.commentMode && !this.isUnicefUser}">
@@ -128,7 +131,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
             <td></td>
             <td colspan="3"></td>
             <td colspan="3"></td>
-            <td colspan="2" tabindex="0">
+            <td colspan="2" class="totals" tabindex="0">
               <div class="action-btns">
                 <etools-info-tooltip
                   position="left"
@@ -166,7 +169,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                 <td>${translate('ID')}</td>
                 <td colspan="3">${translate('COUNTRY_PROGRAME_OUTPUT')}</td>
                 <td colspan="3"></td>
-                <td colspan="2">${translate('TOTAL')}</td>
+                <td colspan="2" class="totals">${translate('TOTAL')}</td>
               </tr>
               <tr class="text no-b-border">
                 <td>${result.code}</td>
