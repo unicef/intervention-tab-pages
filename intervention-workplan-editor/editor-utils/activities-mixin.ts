@@ -237,10 +237,10 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
             <tbody thead ?hidden="${!activity.items || !activity.items.length}">
               <tr class="header no-padd gray-1">
                 <td class="first-col"></td>
-                <td class="col-44p">${translate('ITEM_DESCRIPTION')}</td>
-                <td class="col-6p">${translate('UNIT')}</td>
-                <td class="col-6p">${translate('NUMBER_UNITS')}</td>
-                <td class="col-g">${translate('PRICE_UNIT')}</td>
+                <td class="col-text">${translate('ITEM_DESCRIPTION')}</td>
+                <td class="col-unit">${translate('UNIT')}</td>
+                <td class="col-unit-no">${translate('NUMBER_UNITS')}</td>
+                <td class="col-p-per-unit">${translate('PRICE_UNIT')}</td>
                 <td class="col-g">${translate('PARTNER_CASH')}</td>
                 <td class="col-g">${translate('UNICEF_CASH')}</td>
                 <td class="col-g" colspan="2">${translate('TOTAL')} (${this.intervention.planned_budget.currency})</td>
