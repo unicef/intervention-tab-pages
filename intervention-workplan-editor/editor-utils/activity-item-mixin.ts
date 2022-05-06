@@ -341,7 +341,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       } else {
         item.invalid = {cso_cash: false};
       }
-      item.unicef_cash = String(total - Number(item.cso_cash));
+      item.unicef_cash = String((total - Number(item.cso_cash)).toFixed(2)); // 12019.15 - 11130 = 889.1499999999996
 
       this.validateCsoAndUnicefCash(item);
 
@@ -364,7 +364,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       } else {
         item.invalid = {unicef_cash: false};
       }
-      item.cso_cash = String(total - Number(item.unicef_cash));
+      item.cso_cash = String((total - Number(item.unicef_cash)).toFixed(2)); // 12019.15 - 11130 = 889.1499999999996
 
       this.validateCsoAndUnicefCash(item);
       this.calculateActivityTotals(activity);
