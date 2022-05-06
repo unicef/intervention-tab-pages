@@ -79,6 +79,13 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
         <div slot="row-data" class="layout-horizontal align-items-center editable-row">
           <div class="title-text flex-auto">
             ${translate(translatesMap.applied_indicators)} (${this.indicators.length})
+            <paper-icon-button
+              class="add"
+              icon="add-box"
+              tabindex="0"
+              ?hidden="${this.readonly}"
+              @click="${() => this.openIndicatorDialog()}"
+            ></paper-icon-button>
             <info-icon-tooltip
               id="iit-ind"
               .tooltipText="${translate('INDICATOR_TOOLTIP')}"
@@ -87,11 +94,6 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
           </div>
         </div>
         <div slot="row-data-details">
-          <div class="add-button" ?hidden="${this.readonly}" @click="${() => this.openIndicatorDialog()}">
-            <paper-icon-button slot="custom-icon" icon="add-box" tabindex="0"></paper-icon-button>
-            <span class="no-wrap">${translate('ADD_PD_INDICATOR')}</span>
-          </div>
-
           <div class="table-row table-head align-items-center" ?hidden="${this.readonly}">
             <div class="flex-1 left-align">${translate('INDICATOR')}</div>
             <div class="flex-1 secondary-cell right">${translate('BASELINE')}</div>

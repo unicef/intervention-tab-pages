@@ -20,10 +20,10 @@ import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-inpu
 import {ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
-import {PaperButtonElement} from '@polymer/paper-button';
+import {TruncateMixin} from '../../common/truncate.mixin';
 
 @customElement('cp-output-level')
-export class CpOutputLevel extends LitElement {
+export class CpOutputLevel extends TruncateMixin(LitElement) {
   @property() interventionId!: number;
   @property() currency!: string | undefined;
   @property() resultLink!: ExpectedResult;
@@ -58,10 +58,7 @@ export class CpOutputLevel extends LitElement {
                             <ul id="ram-list">
                               ${this.resultLink.ram_indicator_names.length
                                 ? this.resultLink.ram_indicator_names.map(
-                                    (name: string, index: number) =>
-                                      html`<li>
-                                        ${this.first60Chars(name, index)}${this.from61sthCharOnwards(name, index)}
-                                      </li>`
+                                    (name: string) => html`<li>${this.truncateString(name)}</li>`
                                   )
                                 : '—'}
                             </ul>
@@ -111,34 +108,6 @@ export class CpOutputLevel extends LitElement {
     this.shadowRoot!.querySelectorAll('iron-icon').forEach((el) => callClickOnSpacePushListener(el));
   }
 
-  first60Chars(name: string, index: number) {
-    if (name.length <= 60) {
-      return name;
-    }
-    return html`${name.substring(0, 60)}<paper-button
-        class="show-more-btn"
-        id="show-more"
-        @click="${(event: CustomEvent) => this.showMore(event, index)}"
-        >...</paper-button
-      >`;
-  }
-
-  from61sthCharOnwards(name: string, index: number) {
-    if (name.length <= 60) {
-      return '';
-    }
-    return html`<span id="more-${index}" hidden aria-hidden>${name.substring(60, name.length)}</span>`;
-  }
-
-  private showMore(event: CustomEvent, index: number) {
-    const paperBtn = event.target as PaperButtonElement;
-    paperBtn.setAttribute('hidden', '');
-    const firstparent = paperBtn.parentElement;
-    const span = firstparent?.querySelector('#more-' + index);
-    span?.removeAttribute('hidden');
-    span?.removeAttribute('aria-hidden');
-  }
-
   openEditCpOutputPopup(): void {
     fireEvent(this, 'edit-cp-output');
   }
@@ -152,6 +121,7 @@ export class CpOutputLevel extends LitElement {
     return [
       gridLayoutStylesLit,
       ResultStructureStyles,
+      ...super.styles,
       css`
         :host {
           display: block;
@@ -170,13 +140,6 @@ export class CpOutputLevel extends LitElement {
         }
         .alert {
           color: var(--error-color);
-        }
-        .show-more-btn {
-          margin: 0;
-          padding: 0;
-          min-width: 15px;
-          font-weight: bold;
-          color: var(--primary-color);
         }
         #ram-list {
           padding-inline-start: 19px;
