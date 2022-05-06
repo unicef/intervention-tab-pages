@@ -119,6 +119,18 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
         }
       </style>
       <table>
+        <tbody>
+          <tr class="row-for-fixed-table-layout">
+            <td class="first-col"></td>
+            <td class="col-text"></td>
+            <td class="col-unit"></td>
+            <td class="col-unit-no"></td>
+            <td class="col-p-per-unit"></td>
+            <td class="col-g"></td>
+            <td class="col-g"></td>
+            <td class="col-g" colspan="2"></td>
+          </tr>
+        </tbody>
         <tbody ?hoverable="${this.permissions?.edit.result_links && !this.commentMode && !this.isUnicefUser}">
           <tr
             class="add action-btns heavy-blue"
