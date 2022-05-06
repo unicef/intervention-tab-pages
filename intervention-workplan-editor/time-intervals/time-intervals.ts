@@ -18,6 +18,9 @@ export class TimeIntervals extends LitElement {
   protected render(): TemplateResult | TemplateResult[] {
     return this.quarters.length
       ? html` <style>
+            :host([without-popup]) {
+              cursor: text;
+            }
             paper-tooltip[theme='light'] {
               --paper-tooltip-background: var(--primary-background-color, #ffffff);
               --paper-tooltip-opacity: 1;
