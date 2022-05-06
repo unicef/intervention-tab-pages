@@ -65,6 +65,11 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
         paper-toggle-button {
           margin-top: 25px;
         }
+
+        #iit-confidential {
+          margin-top: 20px;
+          margin-left: 20px;
+        }
       </style>
 
       <etools-content-panel
@@ -181,6 +186,11 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
           >
             ${translate('CONFIDENTIAL')}
           </paper-toggle-button>
+          <info-icon-tooltip
+            id="iit-confidential"
+            ?hidden="${this.isReadonly(this.editMode, this.permissions.edit?.confidential)}"
+            .tooltipText="${translate('CONFIDENTIAL_INFO')}"
+          ></info-icon-tooltip>
         </div>
 
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
