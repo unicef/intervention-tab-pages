@@ -35,6 +35,7 @@ export function TruncateMixin<T extends Constructor<LitElement>>(baseClass: T) {
             min-width: 15px;
             font-weight: bold;
             color: var(--primary-color);
+            background-color: transparent;
           }
         `
       ];
