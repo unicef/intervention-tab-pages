@@ -61,7 +61,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
 
           ${this.activities.length
             ? this.activities.map(
-                (activity: InterventionActivity) => html`
+                (activity: InterventionActivity, index: number) => html`
                   <div
                     class="table-row editable-row"
                     related-to="activity-${activity.id}"
@@ -112,7 +112,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
                       </b>
                     </div>
 
-                    <div class="show-actions hover-block" ?hidden="${this.commentMode}">
+                    <div class="show-actions hover-block" style="z-index: ${99 - index}" ?hidden="${this.commentMode}">
                       <paper-menu-button id="view-menu-button" close-on-activate horizontal-align="right">
                         <paper-icon-button
                           slot="dropdown-trigger"
