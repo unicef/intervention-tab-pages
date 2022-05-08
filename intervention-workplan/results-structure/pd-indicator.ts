@@ -21,6 +21,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
   @property({type: String}) interventionStatus = '';
   @property({type: Boolean}) inAmendment!: boolean;
   @property({type: Boolean}) detailsOpened = false;
+  @property({type: Number}) index?: number;
 
   render() {
     return html`
@@ -68,7 +69,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
         </div>
         <div class="details ${this.detailsOpened ? 'opened' : ''}">${this.additionalTemplate()}</div>
 
-        <div class="show-actions hover-block" ?hidden="${this.commentMode}">
+        <div class="show-actions hover-block" style="z-index: ${99 - (this.index || 0)}" ?hidden="${this.commentMode}">
           <paper-menu-button id="view-menu-button" close-on-activate horizontal-align="right">
             <paper-icon-button slot="dropdown-trigger" icon="icons:more-vert" tabindex="0"></paper-icon-button>
             <paper-listbox slot="dropdown-content">

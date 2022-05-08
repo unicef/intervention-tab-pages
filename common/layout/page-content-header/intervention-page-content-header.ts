@@ -41,6 +41,7 @@ export class InterventionPageContentHeader extends LitElement {
           display: flex;
           flex-direction: row;
           justify-content: flex-start;
+          z-index: 110;
         }
         .title-row {
           align-items: center;
@@ -59,7 +60,7 @@ export class InterventionPageContentHeader extends LitElement {
           .title-row.sticky {
             position: fixed;
             background: #fff;
-            z-index: 100;
+            z-index: 110;
             padding-bottom: 9px;
             width: calc(100% - var(--app-drawer-width));
             border-bottom: 1px solid var(--light-divider-color);
