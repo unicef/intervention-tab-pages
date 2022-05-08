@@ -205,7 +205,7 @@ export class ActivityItemRow extends LitElement {
     }
     const secondCashField = field === 'unicef_cash' ? 'cso_cash' : 'unicef_cash';
     const total = Number(this.activityItem.unit_price) * Number(this.activityItem.no_units);
-    const secondValue: number = Math.max(0, total - value);
+    const secondValue = Number(Math.max(0, total - value).toFixed(2)); // in js 12019.15-11130 = 889.1499999999996
     this.updateField(secondCashField, secondValue);
   }
 
