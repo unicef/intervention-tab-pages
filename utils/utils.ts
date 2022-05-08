@@ -1,5 +1,5 @@
 export const removeCurrencyAmountDelimiter = (value: any) => {
-  if (!value) {
+  if (!value && value != 0) {
     return '';
   }
   value = value.toString();
