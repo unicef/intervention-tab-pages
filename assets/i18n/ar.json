@@ -491,6 +491,7 @@
   "SUSTAINABILITY_PRINCIPAL": "Principal",
   "SUSTAINABILITY_PRINCIPAL_TOOLTIP": "The programme intervention’s principal objective is to advance this dimension;, or nearly all resources are expected to contribute to this dimension.",
   "RISKS_INFO": "Programme interventions may encounter a variety of risks. This field outlines key risks identified and proposed mitigation measures. These risks should inform programme design and monitoring.",
+  "CONFIDENTIAL_INFO": "This toggle will prevent this PD to be used in dashboards external to unicef.",
   "EFFECTIVE_AND_EFFICIENT_PRGMT_MNGMT_INFO": "UNICEF supports partners with effective and efficient programme management costs, including for in-country management and support staff; operational costs (e.g. office space, equipment, office supplies, maintenance); and planning, monitoring, evaluation and communication costs.",
   "GEOGRAPHICAL_COVERAGE_INFO": "Geographical coverage refers to the location(s) where the programme intervention will be implemented. The eTools platform is pre-populated with various levels of administrative divisions in each country, e.g. country, province, district. Depending on the nature of the programme intervention, users may choose to select higher or lower-level administrative divisions.",
   "CONTEXT_TOOLTIP": "This section outlines the problem statement, the context and the rationale for the programme intervention. It includes relevant background data, analyzes the barriers and bottlenecks to results for children, and explains the linkage to national priorities.",
