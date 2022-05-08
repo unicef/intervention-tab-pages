@@ -143,7 +143,8 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
             <td colspan="2" tabindex="0">
               <div class="action-btns">
                 <etools-info-tooltip
-                  position="left"
+                  position="top"
+                  offset="0"
                   custom-icon
                   ?hide-tooltip="${!this.permissions?.edit.result_links}"
                   style="justify-content:end;"
