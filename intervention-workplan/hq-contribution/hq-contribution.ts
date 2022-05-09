@@ -89,7 +89,6 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
               ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.hq_support_cost)}"
               .editable="${!this.isReadonly(this.editMode, this.permissions.edit.hq_support_cost)}"
               @value-changed="${(e: CustomEvent) => this.updateSlider(e)}"
-              @change="${(e: any) => console.log(e)}"
             ></paper-slider>
             <span ?hidden="${this.editMode}">${this.data.hq_support_cost}</span>
           </div>
@@ -172,7 +171,6 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
   }
 
   updateSlider(e: CustomEvent) {
-    console.log('update slider');
     if (!e.detail) {
       return;
     }
