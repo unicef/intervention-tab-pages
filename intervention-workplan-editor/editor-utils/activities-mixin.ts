@@ -142,7 +142,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     ></time-intervals>
                   </div>
                 </td>
-                <td tabindex="${activity.items && activity.items.length ? '-1' : '0'}">
+                <td tabindex="${activity.items && activity.items.length ? '-1' : '0'}" class="no-top-padding">
                   <etools-currency-amount-input
                     no-label-float
                     input
@@ -154,7 +154,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                       this.updateModelValue(activity, 'cso_cash', detail.value)}"
                   ></etools-currency-amount-input>
                 </td>
-                <td tabindex="${activity.items && activity.items.length ? '-1' : '0'}">
+                <td tabindex="${activity.items && activity.items.length ? '-1' : '0'}" class="no-top-padding">
                   <etools-currency-amount-input
                     no-label-float
                     input

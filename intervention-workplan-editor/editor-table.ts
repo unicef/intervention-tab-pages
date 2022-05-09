@@ -99,6 +99,11 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
             font-weight: bold;
           }
         }
+        .char-counter {
+          margin-bottom: -12px;
+          display: flex;
+        }
+
         .truncate-multi-line {
           margin: 8px 0 10px 0;
           max-height: 96px;
