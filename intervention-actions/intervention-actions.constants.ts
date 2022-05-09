@@ -8,7 +8,7 @@ const EXPORT_XLS = 'export_xls';
 
 export const SEND_TO_PARTNER = 'send_to_partner';
 export const SEND_TO_UNICEF = 'send_to_unicef';
-const UNLOCK = 'unlock';
+export const UNLOCK = 'unlock';
 export const SIGN = 'sign';
 export const SIGN_BUDGET_OWNER = 'sign_budget_owner';
 
