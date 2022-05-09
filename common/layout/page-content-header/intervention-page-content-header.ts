@@ -60,7 +60,7 @@ export class InterventionPageContentHeader extends LitElement {
           .title-row.sticky {
             position: fixed;
             background: #fff;
-            z-index: 110;
+            z-index: 120;
             padding-bottom: 9px;
             width: calc(100% - var(--app-drawer-width));
             border-bottom: 1px solid var(--light-divider-color);
