@@ -410,8 +410,6 @@ export class InterventionResultsReported extends connectStore(
   }
 
   multipleCurrenciesWereUsed(disbursementOrPercent: string, progress: GenericObject<any> | null) {
-    debugger;
-    return true;
     if (!progress || disbursementOrPercent === undefined) {
       return false; // hide icon until request data is received
     }
