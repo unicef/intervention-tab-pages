@@ -106,7 +106,7 @@ export class ActivityItemRow extends LitElement {
                   this.invalidSum = false;
                   this.invalidNoUnits = false;
                 }}"
-                no-of-decimals="1"
+                no-of-decimals="2"
                 error-message=""
               ></etools-currency-amount-input>
             </div>
