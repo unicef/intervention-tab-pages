@@ -21,9 +21,10 @@ import {translatesMap} from '../../utils/intervention-labels-map';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
 import {EtoolsDataTableRow} from '@unicef-polymer/etools-data-table/etools-data-table-row';
+import {TruncateMixin} from '../../common/truncate.mixin';
 
 @customElement('pd-activities')
-export class PdActivities extends CommentsMixin(LitElement) {
+export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
   @property({type: String})
   currency = '';
 
@@ -42,15 +43,18 @@ export class PdActivities extends CommentsMixin(LitElement) {
     return html`
       ${sharedStyles}
       <etools-data-table-row .detailsOpened="${true}">
-        <div slot="row-data" class="layout-horizontal align-items-center editable-row">
-          <div class="title-text flex-auto">${translate(translatesMap.activities)} (${this.activities.length})</div>
+        <div slot="row-data" class="layout-horizontal align-items-center editable-row start-justified">
+          <div class="title-text">${translate(translatesMap.activities)} (${this.activities.length})</div>
+
+          <paper-icon-button
+            class="add"
+            icon="add-box"
+            tabindex="0"
+            ?hidden="${this.readonly}"
+            @click="${() => this.openDialog()}"
+          ></paper-icon-button>
         </div>
         <div slot="row-data-details">
-          <div class="add-button" ?hidden="${this.readonly}" @click="${() => this.openDialog()}">
-            <paper-icon-button slot="custom-icon" icon="add-box" tabindex="0"></paper-icon-button>
-            <span class="no-wrap">${translate('ADD_PD_ACTIVITY')}</span>
-          </div>
-
           <div class="table-row table-head align-items-center" ?hidden="${this.readonly}">
             <div class="flex-1 left-align layout-vertical">${translate('ACTIVITY_NAME')}</div>
             <div class="flex-1 secondary-cell center">${translate('TIME_PERIODS')}</div>
@@ -73,9 +77,14 @@ export class PdActivities extends CommentsMixin(LitElement) {
                       (event.currentTarget as HTMLElement)!.classList.remove('active')}"
                   >
                     <!--    Activity Data: code / name / other info / items link    -->
-                    <div class="flex-1 left-align layout-vertical">
-                      <div><b>${activity.code}&nbsp;${activity.name || '-'}</b></div>
-                      <div class="details">${activity.context_details || '-'}</div>
+                    <div class="flex-1 left-align layout-horizontal">
+                      <b>${activity.code}&nbsp;</b>
+                      <div>
+                        <div><b>${activity.name || '-'}</b></div>
+                        <div class="details" ?hidden="${!activity.context_details}">
+                          ${this.truncateString(activity.context_details)}
+                        </div>
+                      </div>
                       <div
                         class="item-link"
                         ?hidden="${!activity.items?.length}"
@@ -229,6 +238,7 @@ export class PdActivities extends CommentsMixin(LitElement) {
       gridLayoutStylesLit,
       ResultStructureStyles,
       ActivitiesAndIndicatorsStyles,
+      ...super.styles,
       css`
         :host {
           --main-background: #fdf0d2;
@@ -241,6 +251,9 @@ export class PdActivities extends CommentsMixin(LitElement) {
           font-size: 16px;
           font-weight: 400;
           line-height: 26px;
+        }
+        .table-row {
+          min-height: 42px;
         }
         .table-row div.number-data {
           display: flex;

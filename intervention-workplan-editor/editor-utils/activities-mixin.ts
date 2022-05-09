@@ -23,9 +23,10 @@ import {
 } from './types';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import {translate} from 'lit-translate/directives/translate';
+import {TruncateMixin} from '../../common/truncate.mixin';
 
 export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T) {
-  return class ActivitiesClass extends ActivityItemsMixin(baseClass) {
+  return class ActivitiesClass extends ActivityItemsMixin(TruncateMixin(baseClass)) {
     // @ts-ignore
     @property({type: Array})
     originalResultStructureDetails!: ExpectedResultExtended[];
@@ -111,12 +112,8 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                       @value-changed="${({detail}: CustomEvent) =>
                         this.updateModelValue(activity, 'context_details', detail.value)}"
                     ></paper-textarea>
-                    <div
-                      class="truncate-single-line"
-                      title="${activity.context_details}"
-                      ?hidden="${activity.inEditMode}"
-                    >
-                      ${activity.context_details}
+                    <div title="${activity.context_details}" ?hidden="${activity.inEditMode}">
+                      ${this.truncateString(activity.context_details)}
                     </div>
                   </div>
                 </td>

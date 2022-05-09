@@ -119,9 +119,20 @@ export const ActivitiesAndIndicatorsStyles: CSSResult = css`
 
   .editable-row .hover-block {
     background-color: var(--main-background);
+    bottom: 1px;
+  }
+
+  .editable-row .hover-block paper-menu-button {
+    padding: 0;
   }
 
   etools-data-table-row::part(edt-list-row-wrapper):hover {
     background-color: var(--main-background);
+  }
+  paper-icon-button.add {
+    color: #444444;
+  }
+  paper-icon-button.add:hover {
+    color: #212121;
   }
 `;

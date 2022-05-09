@@ -45,7 +45,7 @@ import '@unicef-polymer/etools-dropdown/etools-dropdown';
 // @ts-ignore
 export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationMixin(LitElement))) {
   static get styles() {
-    return [EditorTableStyles, EditorTableArrowKeysStyles, EditorHoverStyles];
+    return [EditorTableStyles, EditorTableArrowKeysStyles, EditorHoverStyles, ...super.styles];
   }
   render() {
     if (!this.intervention) {
