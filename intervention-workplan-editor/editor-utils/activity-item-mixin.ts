@@ -59,28 +59,30 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                 ></paper-input>
               </td>
               <td tabindex="0">
-                <paper-textarea
-                  .alwaysFloatLabel="${activity.itemsInEditMode}"
-                  .noLabelFloat="${!activity.itemsInEditMode}"
-                  input
-                  label=${this.getLabel(activity.itemsInEditMode, 'Item Description')}
-                  ?hidden="${!activity.itemsInEditMode}"
-                  char-counter
-                  maxlength="150"
-                  .invalid="${item.invalid?.name}"
-                  @invalid-changed="${(e: CustomEvent) => {
-                    if (item.invalid && item.invalid.name != e.detail.value) {
-                      item.invalid = {...item.invalid, name: e.detail.value};
-                    }
-                  }}"
-                  required
-                  error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
-                  .autoValidate="${item.autovalidate?.name}"
-                  @focus="${() => this.setAutoValidate(item, 'name')}"
-                  .value="${item.name}"
-                  @keydown="${(e: any) => this.handleEsc(e)}"
-                  @value-changed="${({detail}: CustomEvent) => this.updateModelValue(item, 'name', detail.value)}"
-                ></paper-textarea>
+                <div class="char-counter" ?hidden="${!activity.itemsInEditMode}">
+                  <paper-textarea
+                    .alwaysFloatLabel="${activity.itemsInEditMode}"
+                    .noLabelFloat="${!activity.itemsInEditMode}"
+                    input
+                    label=${this.getLabel(activity.itemsInEditMode, 'Item Description')}
+                    ?hidden="${!activity.itemsInEditMode}"
+                    char-counter
+                    maxlength="150"
+                    .invalid="${item.invalid?.name}"
+                    @invalid-changed="${(e: CustomEvent) => {
+                      if (item.invalid && item.invalid.name != e.detail.value) {
+                        item.invalid = {...item.invalid, name: e.detail.value};
+                      }
+                    }}"
+                    required
+                    error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
+                    .autoValidate="${item.autovalidate?.name}"
+                    @focus="${() => this.setAutoValidate(item, 'name')}"
+                    .value="${item.name}"
+                    @keydown="${(e: any) => this.handleEsc(e)}"
+                    @value-changed="${({detail}: CustomEvent) => this.updateModelValue(item, 'name', detail.value)}"
+                  ></paper-textarea>
+                </div>
                 <div class="truncate-multi-line" title="${item.name}" ?hidden="${activity.itemsInEditMode}">
                   ${item.name}
                 </div>
