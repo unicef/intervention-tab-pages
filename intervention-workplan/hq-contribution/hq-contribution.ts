@@ -89,6 +89,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
               ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.hq_support_cost)}"
               .editable="${!this.isReadonly(this.editMode, this.permissions.edit.hq_support_cost)}"
               @value-changed="${(e: CustomEvent) => this.updateSlider(e)}"
+              @change="${(e: any) => console.log(e)}"
             ></paper-slider>
             <span ?hidden="${this.editMode}">${this.data.hq_support_cost}</span>
           </div>
@@ -146,7 +147,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
     }
 
     this.isUnicefUser = get(state, 'user.data.is_unicef_user');
-    this.data = selectHqContributionData(state);
+    this.data = cloneDeep(selectHqContributionData(state));
     this.originalData = cloneDeep(this.data);
     this.autoCalculatedHqContrib = this.autoCalcHqContrib();
     this.setPermissions(state);
@@ -171,11 +172,28 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
   }
 
   updateSlider(e: CustomEvent) {
+    console.log('update slider');
     if (!e.detail) {
       return;
     }
+    this.handleCornerCase();
     this.data = {...this.data, hq_support_cost: e.detail.value} as HqContributionData;
     this.autoCalculatedHqContrib = this.autoCalcHqContrib();
+  }
+  /**
+   *  Change the slider value by entering a greater than 7 value in the input field
+   *  Hit Cancel btn, Hit Edit again
+   *  Issue: The input has the greater than 7 value entered before
+   */
+  handleCornerCase() {
+    const inputInsidePaperSlider = this.shadowRoot
+      ?.querySelector('paper-slider')
+      ?.shadowRoot?.querySelector('paper-input');
+    if (inputInsidePaperSlider) {
+      if (Number(inputInsidePaperSlider.value) > 7) {
+        inputInsidePaperSlider.value = '7';
+      }
+    }
   }
 
   autoCalcHqContrib() {
