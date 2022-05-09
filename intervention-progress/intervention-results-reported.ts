@@ -215,16 +215,16 @@ export class InterventionResultsReported extends connectStore(
             >
             </etools-progress-bar>
             ${this.multipleCurrenciesWereUsed(this.progress.disbursement_percent, this.progress)
-              ? `<etools-info-tooltip
-                class="currency-mismatch col-6"
-                custom-icon
-                icon-first
-                .hideTooltip="${!this.multipleCurrenciesWereUsed(this.progress.disbursement_percent, this.progress)}"
-              >
-                <span slot="field">${translate('NA_%')}</span>
-                <iron-icon slot="custom-icon" icon="pmp-custom-icons:not-equal"></iron-icon>
-                <span slot="message">${translate('FR_CURRENCY_NOT_MATCH')}</span>
-              </etools-info-tooltip>`
+              ? html`<etools-info-tooltip
+                  class="currency-mismatch col-6"
+                  custom-icon
+                  icon-first
+                  .hideTooltip="${!this.multipleCurrenciesWereUsed(this.progress.disbursement_percent, this.progress)}"
+                >
+                  <span slot="field">${translate('NA_%')}</span>
+                  <iron-icon slot="custom-icon" icon="pmp-custom-icons:not-equal"></iron-icon>
+                  <span slot="message">${translate('FR_CURRENCY_NOT_MATCH')}</span>
+                </etools-info-tooltip>`
               : ``}
           </div>
           <div class="col col-3">
@@ -410,6 +410,8 @@ export class InterventionResultsReported extends connectStore(
   }
 
   multipleCurrenciesWereUsed(disbursementOrPercent: string, progress: GenericObject<any> | null) {
+    debugger;
+    return true;
     if (!progress || disbursementOrPercent === undefined) {
       return false; // hide icon until request data is received
     }
