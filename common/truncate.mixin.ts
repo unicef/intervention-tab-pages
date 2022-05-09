@@ -7,6 +7,10 @@ export function TruncateMixin<T extends Constructor<LitElement>>(baseClass: T) {
     amountOfFirstLetters = 60;
 
     truncateString(string: string): TemplateResult {
+      // @ts-ignore
+      if ([null, undefined].includes(string)) {
+        return html``;
+      }
       if (string.length <= this.amountOfFirstLetters) {
         return html`${string}`;
       }
