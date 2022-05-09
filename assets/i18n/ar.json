@@ -522,5 +522,6 @@
   "ADD_NEW_ITEM": "Add New Item",
   "INCORRECT_VALUE": "Incorrect value",
   "CONFIDENTIAL": "Confidential",
-  "PLS_SELECT_TIME_PERIODS": "Please select Time Periods"
+  "PLS_SELECT_TIME_PERIODS": "Please select Time Periods",
+  "ERROR_LOADING_DATA": "Error on loading data"
 }

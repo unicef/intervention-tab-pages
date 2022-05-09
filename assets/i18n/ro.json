@@ -31,7 +31,7 @@
   "TERMINATE_PROMPT": "Sunteti sigur ca doriti sa terminati?",
   "ARE_YOU_SURE_DEL": "Sunteti sigur ca doriti sa executati actiunea: ",
   "ACCEPT_PROMPT": "Sunteti sigur ca doriti sa acceptati?",
-  "UNLOCK_PROMPT": "Sunteti sigur ca doriti sa deblocati?",
+  "UNLOCK_PROMPT": "Sunteți pe cale să eliminați toate aprobările acestui document, de către unicef sau partener, pentru a activa editarea. Sigur doriți să continuați?",
   "REVIEW_PROMPT": "Accept as budget owner if you are satisfied with all entered information, planned budget, planned results and other requirements",
   "UNICEF_ACCEPTED": "Acceptata de UNICEF",
   "PARTNER_AND_UNICEF_ACCEPTED": "Acceptata de Partener & UNICEF",
@@ -521,5 +521,6 @@
   "ADD_NEW_ITEM": "Add New Item",
   "INCORRECT_VALUE": "Incorrect value",
   "CONFIDENTIAL": "Confidential",
-  "PLS_SELECT_TIME_PERIODS": "Please select Time Periods"
+  "PLS_SELECT_TIME_PERIODS": "Please select Time Periods",
+  "ERROR_LOADING_DATA": "Eroare la incarcarea datelor"
 }

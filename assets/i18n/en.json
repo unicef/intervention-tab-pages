@@ -33,7 +33,7 @@
   "TERMINATE_PROMPT": "Are you sure you want to terminate?",
   "ARE_YOU_SURE_PROMPT": "Are you sure you want to ",
   "ACCEPT_PROMPT": "Are you sure you want to accept?",
-  "UNLOCK_PROMPT": "Are you sure you want to unlock?",
+  "UNLOCK_PROMPT": "You are about to remove all approvals of this document, by unicef or partner, in order to enable editing. Are you sure you want to continue?",
   "REVIEW_PROMPT": "Accept as budget owner if you are satisfied with all entered information, planned budget, planned results and other requirements",
   "UNICEF_ACCEPTED": "UNICEF Accepted",
   "PARTNER_AND_UNICEF_ACCEPTED": "Partner & UNICEF Accepted",
@@ -526,5 +526,6 @@
   "ADD_NEW_ITEM": "Add New Item",
   "INCORRECT_VALUE": "Incorrect value",
   "CONFIDENTIAL": "Confidential",
-  "PLS_SELECT_TIME_PERIODS": "Please select Time Periods"
+  "PLS_SELECT_TIME_PERIODS": "Please select Time Periods",
+  "ERROR_LOADING_DATA": "Error on loading data"
 }
