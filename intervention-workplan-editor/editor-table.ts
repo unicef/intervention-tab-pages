@@ -119,6 +119,18 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
         }
       </style>
       <table>
+        <tbody>
+          <tr class="row-for-fixed-table-layout">
+            <td class="first-col"></td>
+            <td class="col-text"></td>
+            <td class="col-unit"></td>
+            <td class="col-unit-no"></td>
+            <td class="col-p-per-unit"></td>
+            <td class="col-g"></td>
+            <td class="col-g"></td>
+            <td class="col-g" colspan="2"></td>
+          </tr>
+        </tbody>
         <tbody ?hoverable="${this.permissions?.edit.result_links && !this.commentMode && !this.isUnicefUser}">
           <tr
             class="add action-btns heavy-blue"
@@ -131,7 +143,8 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
             <td colspan="2" tabindex="0">
               <div class="action-btns">
                 <etools-info-tooltip
-                  position="left"
+                  position="top"
+                  offset="0"
                   custom-icon
                   ?hide-tooltip="${!this.permissions?.edit.result_links}"
                   style="justify-content:end;"
@@ -199,7 +212,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                           this.moveFocusToNewllyAdded(e.target);
                         }}"
                         ?hidden="${!this.permissions?.edit.result_links ||
-                        !this.originalResultStructureDetails[resultIndex].cp_output}"
+                        !this.getOriginalCPOutput(resultIndex).cp_output}"
                         icon="add-box"
                         tabindex="0"
                       ></paper-icon-button>
@@ -251,10 +264,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                       </div>
                       <div
                         class="pad-top-8 space-for-err-msg"
-                        ?hidden="${this.hideCpOutput(
-                          this.isUnicefUser,
-                          this.originalResultStructureDetails[resultIndex]
-                        )}"
+                        ?hidden="${this.hideCpOutput(this.isUnicefUser, this.getOriginalCPOutput(resultIndex))}"
                       >
                         <etools-dropdown
                           @etools-selected-item-changed="${({detail}: CustomEvent) => {
@@ -263,7 +273,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                           label="CP Output"
                           ?trigger-value-change-event="${!this.hideCpOutput(
                             this.isUnicefUser,
-                            this.originalResultStructureDetails[resultIndex]
+                            this.getOriginalCPOutput(resultIndex)
                           )}"
                           .value="${result.cp_output}"
                           placeholder="&#8212;"
@@ -271,10 +281,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                           option-label="name"
                           option-value="id"
                           auto-validate
-                          ?hidden="${this.hideCpOutput(
-                            this.isUnicefUser,
-                            this.originalResultStructureDetails[resultIndex]
-                          )}"
+                          ?hidden="${this.hideCpOutput(this.isUnicefUser, this.getOriginalCPOutput(resultIndex))}"
                           required
                           ?readonly="${!pdOutput.inEditMode}"
                           ?invalid="${pdOutput.invalidCpOutput}"
@@ -318,7 +325,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                             }}"
                             ?hidden="${pdOutput.inEditMode ||
                             !this.permissions?.edit.result_links ||
-                            !this.originalResultStructureDetails[resultIndex].cp_output}"
+                            !this.getOriginalCPOutput(resultIndex).cp_output}"
                           ></paper-icon-button>
                           <span class="no-wrap" slot="message">${translate('ADD_NEW_ACTIVITY')}</span>
                         </etools-info-tooltip>
@@ -441,13 +448,14 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
   }
 
   hideCpOutput(isUnicefUsr: boolean, result: ExpectedResultExtended) {
-    if (!isUnicefUsr) {
-      return false;
-    }
     if (result.cp_output) {
       return true;
     }
-    return false;
+    if (isUnicefUsr) {
+      return false;
+    }
+
+    return true;
   }
 
   addNewPDOutput(llResults: Partial<ResultLinkLowerResultExtended>[]) {
@@ -462,7 +470,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
       this.resultStructureDetails.unshift({
         // @ts-ignore
         cp_output: null,
-        intervention: 261,
+        intervention: this.interventionId!,
         // @ts-ignore
         ll_results: [{name: '', total: '0', inEditMode: true}],
         total: '0'
@@ -551,7 +559,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
       result.ll_results.shift();
     } else {
       pdOutput.name = this.getOriginalPDOutput(resultIndex, pdOutputIndex).name;
-      if (this.isUnicefUser && !this.originalResultStructureDetails[resultIndex].cp_output) {
+      if (this.isUnicefUser && !this.getOriginalCPOutput(resultIndex).cp_output) {
         // @ts-ignore
         result.cp_output = null;
       }
@@ -573,6 +581,16 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
       originalPdOutputIndex = originalPdOutputIndex - 1;
     }
     return this.originalResultStructureDetails[resultIndex].ll_results[originalPdOutputIndex];
+  }
+
+  getOriginalCPOutput(resultIndex: number) {
+    // Covers case when a new PD Output is added and index changes
+    let originalResIndex = resultIndex;
+
+    if (!this.originalResultStructureDetails[resultIndex]) {
+      originalResIndex = resultIndex - 1;
+    }
+    return this.originalResultStructureDetails[originalResIndex];
   }
 
   async openDeletePdOutputDialog(lower_result_id: number) {

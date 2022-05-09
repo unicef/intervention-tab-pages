@@ -101,8 +101,9 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
           </div>
           ${this.indicators.length
             ? this.indicators.map(
-                (indicator: Indicator) => html`
+                (indicator: Indicator, index: number) => html`
                   <pd-indicator
+                    .index="${index}"
                     .indicator="${indicator}"
                     .disaggregations="${this.disaggregations}"
                     .locationNames="${this.getLocationNames(indicator.locations)}"

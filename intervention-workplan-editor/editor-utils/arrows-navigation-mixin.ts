@@ -39,7 +39,7 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
           this.handleClickOnReadonlyInput(e);
         });
         td.addEventListener('focusin', (e) => {
-          // Doesn't trigger when focus id done from js
+          // Doesn't trigger when focus is done from js
           this.lastFocusedTd = this.determineCurrentTd(e.target);
         });
       });
