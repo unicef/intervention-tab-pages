@@ -164,7 +164,7 @@ export class ActivityItemRow extends LitElement {
               data-col-header-label="${translate('TOTAL_CASH')} (${this.currency})"
             >
               <span class="total">
-                ${getTotal(this.activityItem.cso_cash || 0, this.activityItem.unicef_cash || 0)}
+                ${getMultiplyProduct(this.activityItem.no_units || 0, this.activityItem.unit_price || 0)}
               </span>
             </div>
             ${!this.readonly
