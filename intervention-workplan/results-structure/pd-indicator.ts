@@ -42,7 +42,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
       >
         <div class="main-info">
           <!--    Indicator name    -->
-          <div class="flex-1 left-align layout-vertical">
+          <div class="flex-1 left-align layout-vertical start-aligned">
             <div class="name layout-horizontal">
               ${this.getIndicatorDisplayType(this.indicator)} ${this.addInactivePrefix(this.indicator)}
               ${(this.indicator.indicator ? this.indicator.indicator.title : this.indicator.cluster_indicator_title) ||
@@ -318,6 +318,9 @@ export class PdIndicator extends CommentsMixin(LitElement) {
           margin-left: 2px;
           border-radius: 50%;
           background-color: #2073b7;
+        }
+        .start-aligned {
+          align-items: flex-start;
         }
       `
     ];
