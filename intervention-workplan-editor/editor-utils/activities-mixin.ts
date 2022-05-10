@@ -302,18 +302,14 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       }
 
       activity.items.forEach((i: any) => {
-        if (!i.invalid) {
-          i.invalid = {
-            name: false,
-            unit: false,
-            no_units: false,
-            unit_price: false,
-            cso_cash: false,
-            unicef_cash: false
-          };
-        } else {
-          Object.keys(i.invalid).forEach((key) => (i.invalid[key] = false));
-        }
+        i.invalid = {
+          name: false,
+          unit: false,
+          no_units: false,
+          unit_price: false,
+          cso_cash: false,
+          unicef_cash: false
+        };
       });
     }
 
