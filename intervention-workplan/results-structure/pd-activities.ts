@@ -3,6 +3,7 @@ import {ResultStructureStyles} from './styles/results-structure.styles';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/iron-icons';
+import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import './modals/activity-dialog/activity-data-dialog';
 import '../../intervention-workplan-editor/time-intervals/time-intervals';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
@@ -45,14 +46,17 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
       <etools-data-table-row .detailsOpened="${true}">
         <div slot="row-data" class="layout-horizontal align-items-center editable-row start-justified">
           <div class="title-text">${translate(translatesMap.activities)} (${this.activities.length})</div>
-
-          <paper-icon-button
-            class="add"
-            icon="add-box"
-            tabindex="0"
-            ?hidden="${this.readonly}"
-            @click="${() => this.openDialog()}"
-          ></paper-icon-button>
+          <etools-info-tooltip position="top" custom-icon ?hide-tooltip="${this.readonly}" offset="0">
+            <paper-icon-button
+              icon="add-box"
+              slot="custom-icon"
+              class="add"
+              tabindex="0"
+              @click="${() => this.openDialog()}"
+              ?hidden="${this.readonly}"
+            ></paper-icon-button>
+            <span class="no-wrap" slot="message">${translate('ADD_PD_ACTIVITY')}</span>
+          </etools-info-tooltip>
         </div>
         <div slot="row-data-details">
           <div class="table-row table-head align-items-center" ?hidden="${this.readonly}">
@@ -148,7 +152,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                 `
               )
             : html`
-                <div class="table-row align-items-center">
+                <div class="table-row empty align-items-center">
                   ${this.readonly
                     ? translate('THERE_ARE_NO_PD_ACTIVITIES')
                     : html`
@@ -252,7 +256,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
           font-weight: 400;
           line-height: 26px;
         }
-        .table-row {
+        .table-row:not(.empty) {
           min-height: 42px;
         }
         .table-row div.number-data {

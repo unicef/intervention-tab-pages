@@ -135,4 +135,11 @@ export const ResultStructureStyles: CSSResult = css`
     background: linear-gradient(270deg, var(--cp-output-background) 71.65%, rgba(196, 196, 196, 0) 100%);
     padding-left: 20px;
   }
+  paper-icon-button.add {
+    color: #444444;
+    margin-left: -7px;
+  }
+  paper-icon-button.add:hover {
+    color: #212121;
+  }
 `;

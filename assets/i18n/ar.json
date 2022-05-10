@@ -524,6 +524,7 @@
   "CONFIDENTIAL": "Confidential",
   "PLS_SELECT_TIME_PERIODS": "Please select Time Periods",
   "ERROR_LOADING_DATA": "Error on loading data",
+  "PD_OUTPUTS_TITLE": "Program Document Outputs",
   "PLS_SELECT_SECTIONS_FIRST": "Please, select PD sections first",
   "PLS_SELECT_LOCATIONS_FIRST": "Please, select PD locations first",
   "PLS_SELECT_SECTIONS_AND_LOCATIONS_FIRST": "Please, select PD sections and locations first"
