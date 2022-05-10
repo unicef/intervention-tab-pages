@@ -522,5 +522,8 @@
   "INCORRECT_VALUE": "Incorrect value",
   "CONFIDENTIAL": "Confidential",
   "PLS_SELECT_TIME_PERIODS": "Please select Time Periods",
-  "ERROR_LOADING_DATA": "Eroare la incarcarea datelor"
+  "ERROR_LOADING_DATA": "Eroare la incarcarea datelor",
+  "PLS_SELECT_SECTIONS_FIRST": "Please, select PD sections first",
+  "PLS_SELECT_LOCATIONS_FIRST": "Please, select PD locations first",
+  "PLS_SELECT_SECTIONS_AND_LOCATIONS_FIRST": "Please, select PD sections and locations first"
 }

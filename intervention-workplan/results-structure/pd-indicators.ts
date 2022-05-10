@@ -32,7 +32,7 @@ import './pd-indicator';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 import {
   AsyncAction,
   Disaggregation,
@@ -177,8 +177,18 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
   }
 
   openIndicatorDialog(indicator?: Indicator, readonly?: boolean) {
+    if (!this.indicatorSectionOptions?.length && !this.indicatorLocationOptions?.length) {
+      fireEvent(this, 'toast', {text: getTranslation('PLS_SELECT_SECTIONS_AND_LOCATIONS_FIRST')});
+      return;
+    }
+
+    if (!this.indicatorSectionOptions?.length) {
+      fireEvent(this, 'toast', {text: getTranslation('PLS_SELECT_SECTIONS_FIRST')});
+      return;
+    }
+
     if (!this.indicatorLocationOptions?.length) {
-      fireEvent(this, 'toast', {text: 'Please, select PD locations first'});
+      fireEvent(this, 'toast', {text: getTranslation('PLS_SELECT_LOCATIONS_FIRST')});
       return;
     }
     openDialog<IndicatorDialogData>({
