@@ -142,10 +142,18 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           class="pd-add-section"
           ?hidden="${this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
         >
-          <div class="pd-title">Program Document Output(s)</div>
-          <div class="add-button" @click="${() => this.openPdOutputDialog()}">
-            <paper-icon-button slot="custom-icon" icon="add-box" tabindex="0"></paper-icon-button>
-            <span class="no-wrap">${translate('ADD_PD_OUTPUT')}</span>
+          <div class="pd-title layout-horizontal align-items-center">
+            ${translate('PD_OUTPUTS_TITLE')}
+            <etools-info-tooltip position="top" custom-icon offset="0">
+              <paper-icon-button
+                icon="add-box"
+                slot="custom-icon"
+                class="add"
+                tabindex="0"
+                @click="${() => this.openPdOutputDialog()}"
+              ></paper-icon-button>
+              <span class="no-wrap" slot="message">${translate('ADD_PD_OUTPUT')}</span>
+            </etools-info-tooltip>
           </div>
         </div>
         ${repeat(
@@ -175,10 +183,17 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
               ${!this.isUnicefUser || !result.cp_output || !this.permissions.edit.result_links || this.commentMode
                 ? ''
                 : html`
-                    <div class="pd-title">Program Document Output(s)</div>
-                    <div class="add-button pd-add" @click="${() => this.openPdOutputDialog({}, result.cp_output)}">
-                      <paper-icon-button slot="custom-icon" icon="add-box" tabindex="0"></paper-icon-button>
-                      <span class="no-wrap">${translate('ADD_PD_OUTPUT')}</span>
+                    <div class="pd-title layout-horizontal align-items-center">
+                      ${translate('PD_OUTPUTS_TITLE')}<etools-info-tooltip position="top" custom-icon offset="0">
+                        <paper-icon-button
+                          icon="add-box"
+                          slot="custom-icon"
+                          class="add"
+                          tabindex="0"
+                          @click="${() => this.openPdOutputDialog({}, result.cp_output)}"
+                        ></paper-icon-button>
+                        <span class="no-wrap" slot="message">${translate('ADD_PD_OUTPUT')}</span>
+                      </etools-info-tooltip>
                     </div>
                   `}
               ${result.ll_results.map(
@@ -513,7 +528,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           padding: 24px;
         }
         .pd-title {
-          padding: 32px 42px 0px 22px;
+          padding: 8px 42px 0px 22px;
           font-size: 16px;
           font-weight: 500;
           line-height: 19px;

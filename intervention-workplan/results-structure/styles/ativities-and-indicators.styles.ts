@@ -40,7 +40,7 @@ export const ActivitiesAndIndicatorsStyles: CSSResult = css`
     display: block;
   }
   .table-row.active,
-  .table-row:not(.table-head):hover {
+  .table-row:not(.table-head, .empty):hover {
     background-color: var(--main-background-dark);
   }
   pd-indicator:not(:last-child):after,
@@ -128,11 +128,5 @@ export const ActivitiesAndIndicatorsStyles: CSSResult = css`
 
   etools-data-table-row::part(edt-list-row-wrapper):hover {
     background-color: var(--main-background);
-  }
-  paper-icon-button.add {
-    color: #444444;
-  }
-  paper-icon-button.add:hover {
-    color: #212121;
   }
 `;
