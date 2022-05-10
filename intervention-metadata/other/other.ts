@@ -70,6 +70,19 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
           margin-top: 20px;
           margin-left: 20px;
         }
+        paper-textarea {
+          outline: none;
+          --paper-input-container-input: {
+            display: block;
+            text-overflow: hidden;
+          }
+
+          --iron-autogrow-textarea: {
+            overflow: auto;
+            padding: 0;
+            max-height: 96px;
+          }
+        }
       </style>
 
       <etools-content-panel
@@ -138,8 +151,8 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
           </div>
         </div>
         <div class="layout-horizontal row-padding-v" ?hidden="${!this.data.contingency_pd}">
-          <div class="col col-4">
-            <paper-input
+          <div class="col col-10">
+            <paper-textarea
               class="w100"
               label=${translate('ACTIVATION_PROTOCOL')}
               placeholder="&#8212;"
@@ -150,7 +163,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               .value="${this.data.activation_protocol}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'activation_protocol')}"
             >
-            </paper-input>
+            </paper-textarea>
           </div>
         </div>
         <div class="layout-horizontal row-padding-v">
