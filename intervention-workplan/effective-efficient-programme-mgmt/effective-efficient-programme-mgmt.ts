@@ -60,6 +60,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         :host {
           display: block;
           margin-bottom: 24px;
+          --etools-table-col-font-size: 16px;
         }
 
         etools-table {

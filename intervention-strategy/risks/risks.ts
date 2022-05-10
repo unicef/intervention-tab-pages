@@ -62,6 +62,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         :host {
           display: block;
           margin-bottom: 24px;
+          --etools-table-col-font-size: 16px;
         }
 
         #mitigationMeasures {
