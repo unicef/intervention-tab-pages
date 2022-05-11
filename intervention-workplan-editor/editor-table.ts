@@ -388,7 +388,6 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
   @property({type: Boolean})
   autovalidatePdOutput = false;
 
-  private lastFocusedTd: any = null;
   private refreshResultStructure = false;
   private prevInterventionId: number | null = null;
 

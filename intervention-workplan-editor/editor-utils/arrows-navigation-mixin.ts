@@ -15,7 +15,28 @@ import {Constructor, LitElement} from 'lit-element';
 export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseClass: T) {
   return class ArrowsNavigationClass extends baseClass {
     private _navigateWithArrows!: (event: KeyboardEvent) => void;
-    private lastFocusedTd: any = null;
+
+    // Set to true on Tab key press and to false on Esc.
+    // Can't be always true becuase it throws out navigation with arrows,
+    // which need the focus to be on the td not the input inside it.
+    private easeUpTabNavigation = false;
+
+    private _lastFocusedTd: any = null;
+    set lastFocusedTd(td: any) {
+      this._lastFocusedTd = td;
+
+      if (this.easeUpTabNavigation) {
+        // Avoid the need for 2 TAB clicks to reach the input
+        const input = td.querySelector('[input]');
+        if (input && !this.inputIsFocused(input) && !input.hasAttribute('readonly') && !input.hasAttribute('hidden')) {
+          this.focusInput(input);
+        }
+      }
+    }
+
+    get lastFocusedTd() {
+      return this._lastFocusedTd;
+    }
 
     addArrowNavListener() {
       this._navigateWithArrows = this.navigateWithArrows.bind(this);
@@ -40,7 +61,10 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
         });
         td.addEventListener('focusin', (e) => {
           // Doesn't trigger when focus is done from js
-          this.lastFocusedTd = this.determineCurrentTd(e.target);
+          const currentTd = this.determineCurrentTd(e.target);
+          if (this.lastFocusedTd != currentTd) {
+            this.lastFocusedTd = currentTd;
+          }
         });
       });
     }
@@ -48,7 +72,7 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     determineCurrentTd(element: any) {
       let currentTd = element;
       while (currentTd.localName !== 'td') {
-        currentTd = currentTd.parentElement;
+        currentTd = currentTd.parentElement || currentTd.parentNode || currentTd.host;
       }
       return currentTd;
     }
@@ -71,7 +95,7 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     }
 
     navigateWithArrows(event: KeyboardEvent) {
-      if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Enter', 'Escape'].includes(event.key)) {
+      if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Enter', 'Escape', 'Tab'].includes(event.key)) {
         return;
       }
 
@@ -87,6 +111,9 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
 
       let tdToFocus: any = null;
       switch (event.key) {
+        case 'Tab':
+          this.easeUpTabNavigation = true;
+          break;
         case 'Enter': {
           // @ts-ignore
           if (['paper-icon-button', 'paper-button'].includes(event.path[0].localName)) {
@@ -102,17 +129,14 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
           }
           const input: any = currentTd.querySelector('[input]');
           if (input) {
-            if (input.localName == 'etools-currency-amount-input') {
-              input.shadowRoot.querySelector('paper-input').focus();
-            } else {
-              input.focus();
-            }
+            this.focusInput(input);
             this.lastFocusedTd = this.determineCurrentTd(input);
           }
           break;
         }
         case 'Escape': {
           this.lastFocusedTd.focus();
+          this.easeUpTabNavigation = false;
           break;
         }
         case 'ArrowLeft':
@@ -266,8 +290,11 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
       if (activeEl.localName === 'td') {
         return activeEl;
       }
-      activeEl = activeEl.closest('td')!;
-      return activeEl;
+      let activeTd = activeEl.closest('td')!;
+      if (!activeTd) {
+        activeTd = this.determineCurrentTd(activeEl);
+      }
+      return activeTd;
     }
 
     /**
@@ -304,6 +331,22 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     }
     enterClickedOnActionBtnsTd() {
       return this.lastFocusedTd && this.lastFocusedTd.classList.value.includes('action-btns');
+    }
+
+    focusInput(input: any) {
+      if (input.localName == 'etools-currency-amount-input') {
+        input.shadowRoot.querySelector('paper-input').focus();
+      } else {
+        input.focus();
+      }
+    }
+
+    inputIsFocused(input: any) {
+      if (input.localName == 'etools-currency-amount-input') {
+        return input.shadowRoot.querySelector('paper-input').focused;
+      } else {
+        return input.focused;
+      }
     }
   };
 }
