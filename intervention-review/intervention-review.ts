@@ -100,6 +100,11 @@ export class InterventionReviewTab extends connectStore(LitElement) {
         --text-wrap: none;
         --text-padding: 26px 24px 26px 80px;
       }
+      a {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 500;
+      }
     `;
   }
 }
