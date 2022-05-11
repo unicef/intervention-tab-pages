@@ -328,9 +328,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                               this.addNewActivity(pdOutput);
                               this.moveFocusToNewllyAdded(e.target);
                             }}"
-                            ?hidden="${pdOutput.inEditMode ||
-                            !this.permissions?.edit.result_links ||
-                            !this.getOriginalCPOutput(resultIndex).cp_output}"
+                            ?hidden="${pdOutput.inEditMode || !this.permissions?.edit.result_links}"
                           ></paper-icon-button>
                           <span class="no-wrap" slot="message">${translate('ADD_NEW_ACTIVITY')}</span>
                         </etools-info-tooltip>
