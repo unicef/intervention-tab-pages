@@ -89,6 +89,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     char-counter
                     maxlength="150"
                     required
+                    auto-validate
                     .invalid="${activity.invalid?.name}"
                     error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
                     @keydown="${(e: any) => this.handleEsc(e)}"
