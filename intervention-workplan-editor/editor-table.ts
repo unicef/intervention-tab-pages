@@ -257,10 +257,12 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                         ?hidden="${!pdOutput.inEditMode}"
                         char-counter
                         maxlength="500"
+                        .autoValidate="${this.autovalidatePdOutput}"
                         required
                         .invalid="${pdOutput.invalid}"
                         error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
                         @keydown="${(e: any) => this.handleEsc(e)}"
+                        @focus="${() => (this.autovalidatePdOutput = true)}"
                         @value-changed="${({detail}: CustomEvent) =>
                           this.updateModelValue(pdOutput, 'name', detail.value)}"
                       ></paper-textarea>
@@ -328,9 +330,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                               this.addNewActivity(pdOutput);
                               this.moveFocusToNewllyAdded(e.target);
                             }}"
-                            ?hidden="${pdOutput.inEditMode ||
-                            !this.permissions?.edit.result_links ||
-                            !this.getOriginalCPOutput(resultIndex).cp_output}"
+                            ?hidden="${pdOutput.inEditMode || !this.permissions?.edit.result_links}"
                           ></paper-icon-button>
                           <span class="no-wrap" slot="message">${translate('ADD_NEW_ACTIVITY')}</span>
                         </etools-info-tooltip>
@@ -384,6 +384,9 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
   readonly = false;
 
   @property() cpOutputs: {id: number; name: string}[] = [];
+
+  @property({type: Boolean})
+  autovalidatePdOutput = false;
 
   private lastFocusedTd: any = null;
   private refreshResultStructure = false;

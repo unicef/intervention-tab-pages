@@ -46,6 +46,9 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       required: {result_links?: boolean};
     };
 
+    @property({type: Boolean})
+    autoValidateActivityName = false;
+
     handleEsc!: (event: KeyboardEvent) => void;
     refreshResultStructure = false;
     quarters: InterventionQuarter[] = [];
@@ -89,9 +92,11 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     char-counter
                     maxlength="150"
                     required
+                    .autoValidate="${this.autoValidateActivityName}"
                     .invalid="${activity.invalid?.name}"
                     error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
                     @keydown="${(e: any) => this.handleEsc(e)}"
+                    @focus="${() => (this.autoValidateActivityName = true)}"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue(activity, 'name', detail.value)}"
                   ></paper-textarea>
                   <div class="truncate-multi-line b" title="${activity.name}" ?hidden="${activity.inEditMode}">
