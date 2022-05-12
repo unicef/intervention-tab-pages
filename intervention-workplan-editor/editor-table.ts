@@ -269,32 +269,28 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                       <div class="bold truncate-multi-line" title="${pdOutput.name}" ?hidden="${pdOutput.inEditMode}">
                         ${pdOutput.name}
                       </div>
-                      <div
-                        class="pad-top-8 space-for-err-msg"
-                        ?hidden="${this.hideCpOutput(this.isUnicefUser, this.getOriginalCPOutput(resultIndex))}"
-                      >
-                        <etools-dropdown
-                          @etools-selected-item-changed="${({detail}: CustomEvent) => {
-                            this.updateModelValue(result, 'cp_output', detail.selectedItem && detail.selectedItem.id);
-                          }}"
-                          label="CP Output"
-                          ?trigger-value-change-event="${!this.hideCpOutput(
-                            this.isUnicefUser,
-                            this.getOriginalCPOutput(resultIndex)
-                          )}"
-                          .value="${result.cp_output}"
-                          placeholder="&#8212;"
-                          .options="${this.cpOutputs}"
-                          option-label="name"
-                          option-value="id"
-                          auto-validate
-                          ?hidden="${this.hideCpOutput(this.isUnicefUser, this.getOriginalCPOutput(resultIndex))}"
-                          required
-                          ?readonly="${!pdOutput.inEditMode}"
-                          ?invalid="${pdOutput.invalidCpOutput}"
-                          .errorMessage="${translate('GENERAL.REQUIRED_FIELD')}"
-                        ></etools-dropdown>
-                      </div>
+                      ${this.showCpOutput(this.isUnicefUser, this.getOriginalCPOutput(resultIndex))
+                        ? html`<div class="pad-top-8 space-for-err-msg">
+                            <etools-dropdown
+                              @etools-selected-item-changed="${({detail}: CustomEvent) => {
+                                this.unassignedPDMap.set(pdOutput.id, detail.selectedItem && detail.selectedItem.id);
+                                this.requestUpdate();
+                              }}"
+                              label="CP Output"
+                              .selected="${this.unassignedPDMap.get(pdOutput.id) || null}"
+                              placeholder="&#8212;"
+                              .options="${this.cpOutputs}"
+                              option-label="name"
+                              option-value="id"
+                              auto-validate
+                              required
+                              trigger-value-change-event
+                              ?readonly="${!pdOutput.inEditMode}"
+                              ?invalid="${pdOutput.invalidCpOutput}"
+                              .errorMessage="${translate('GENERAL.REQUIRED_FIELD')}"
+                            ></etools-dropdown>
+                          </div>`
+                        : ''}
                     </td>
                     <td colspan="3"></td>
                     <td
@@ -341,7 +337,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                         ></paper-icon-button>
                       </div>
                       <div class="flex-h justify-right align-bottom" ?hidden="${!pdOutput.inEditMode}">
-                        <paper-button @click="${() => this.savePdOutput(pdOutput, result.cp_output)}"
+                        <paper-button @click="${() => this.savePdOutput(pdOutput, result)}"
                           >${translate('GENERAL.SAVE')}</paper-button
                         >
                         <paper-icon-button
@@ -387,6 +383,10 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
 
   @property({type: Boolean})
   autovalidatePdOutput = false;
+
+  // we need to track changes to unassigned PD separately (pd_id -> cp_id),
+  // because all unassigned PDs have one common parent object and we can not change result.cp_output directly
+  unassignedPDMap: Map<number, number> = new Map();
 
   private lastFocusedTd: any = null;
   private refreshResultStructure = false;
@@ -455,15 +455,9 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
     );
   }
 
-  hideCpOutput(isUnicefUsr: boolean, result: ExpectedResultExtended) {
-    if (result.cp_output) {
-      return true;
-    }
-    if (isUnicefUsr) {
-      return false;
-    }
-
-    return true;
+  showCpOutput(isUnicefUsr: boolean, result: ExpectedResultExtended) {
+    // show only for Unicef users and if cp_output wasn't assigned
+    return isUnicefUsr && !result.cp_output;
   }
 
   addNewPDOutput(llResults: Partial<ResultLinkLowerResultExtended>[]) {
@@ -495,7 +489,8 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
     }
   }
 
-  savePdOutput(pdOutput: ResultLinkLowerResultExtended, cpOutputId: number) {
+  savePdOutput(pdOutput: ResultLinkLowerResultExtended, cpOutput: ExpectedResult) {
+    const cpOutputId: number | null = cpOutput.cp_output || this.unassignedPDMap.get(pdOutput.id) || null;
     if (!this.validatePdOutput(pdOutput, cpOutputId)) {
       this.requestUpdate();
       return;
@@ -518,6 +513,8 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
       .then((response) => {
         this.refreshResultStructure = true;
         getStore().dispatch(updateCurrentIntervention(response.intervention));
+        // erase collection because now we discard all changes for other items that was in edit mode
+        this.unassignedPDMap.clear();
       })
       .then(() => {
         fireEvent(this, 'dialog-closed', {confirmed: true});
@@ -533,7 +530,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
       );
   }
 
-  getBody(pdOutput: ResultLinkLowerResultExtended, cpOutputId: number) {
+  getBody(pdOutput: ResultLinkLowerResultExtended, cpOutputId: number | null) {
     let body: any = {name: pdOutput.name};
     if (pdOutput.id) {
       body = {...body, id: pdOutput.id};
@@ -544,7 +541,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
     return body;
   }
 
-  validatePdOutput(pdOutput: ResultLinkLowerResultExtended, cpOutputId: number) {
+  validatePdOutput(pdOutput: ResultLinkLowerResultExtended, cpOutputId: number | null) {
     let valid = true;
     if (!pdOutput.name) {
       pdOutput.invalid = true;
@@ -568,8 +565,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
     } else {
       pdOutput.name = this.getOriginalPDOutput(resultIndex, pdOutputIndex).name;
       if (this.isUnicefUser && !this.getOriginalCPOutput(resultIndex).cp_output) {
-        // @ts-ignore
-        result.cp_output = null;
+        this.unassignedPDMap.delete(pdOutput.id);
       }
     }
     pdOutput.invalid = false;
