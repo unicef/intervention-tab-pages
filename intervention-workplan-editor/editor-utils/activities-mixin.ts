@@ -281,13 +281,6 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       activityIndex: number
     ) {
       activity.invalid = {name: false, context_details: false, time_frames: false};
-      if (activity.items) {
-        activity.items.forEach((i: any) => {
-          if (i.invalid) {
-            Object.keys(i.invalid).forEach((key) => (i.invalid[key] = false));
-          }
-        });
-      }
 
       activity.inEditMode = false;
       activity.itemsInEditMode = false;
@@ -296,10 +289,28 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
         activities.shift();
       } else {
         Object.assign(activity, cloneDeep(this.getOriginalActivity(resultIndex, pdOutputIndex, activityIndex)));
+        this.resetItemsValidations(activity);
       }
       this.requestUpdate();
       // @ts-ignore
       this.lastFocusedTd.focus();
+    }
+
+    resetItemsValidations(activity: InterventionActivityExtended) {
+      if (!activity.items || !activity.items.length) {
+        return;
+      }
+
+      activity.items.forEach((i: any) => {
+        i.invalid = {
+          name: false,
+          unit: false,
+          no_units: false,
+          unit_price: false,
+          cso_cash: false,
+          unicef_cash: false
+        };
+      });
     }
 
     getOriginalActivity(resultIndex: number, pdOutputIndex: number, activityIndex: number) {
