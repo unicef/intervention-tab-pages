@@ -41,7 +41,6 @@ export class InterventionPageContentHeader extends LitElement {
           display: flex;
           flex-direction: row;
           justify-content: flex-start;
-          z-index: 110;
         }
         .title-row {
           align-items: center;
