@@ -384,6 +384,8 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
   @property({type: Boolean})
   autovalidatePdOutput = false;
 
+  // we need to track changes to unassigned PD separately (pd_id -> cp_id),
+  // because all unassigned PDs have one common parent object and we can not change result.cp_output directly
   unassignedPDMap: Map<number, number> = new Map();
 
   private lastFocusedTd: any = null;
@@ -511,6 +513,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
       .then((response) => {
         this.refreshResultStructure = true;
         getStore().dispatch(updateCurrentIntervention(response.intervention));
+        // erase collection because now we discard all changes for other items that was in edit mode
         this.unassignedPDMap.clear();
       })
       .then(() => {
