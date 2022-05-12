@@ -39,7 +39,7 @@ export class CpOutputDialog extends LitElement {
       this.cpOutputId = resultLink.cp_output;
       this.selectedCpOutput = resultLink.cp_output;
       this.cpOutputName = resultLink.cp_output_name;
-      this.selectedIndicators = resultLink.ram_indicators || [];
+      this.selectedIndicators = [...(resultLink.ram_indicators || [])];
       this.resultLinkId = resultLink.id;
     }
     this.interventionId = interventionId;
