@@ -241,7 +241,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                       this.requestUpdate();
 
                       if (e.isTrusted) {
-                        // human interaction click
+                        // Avoids focus moving to first input when entering enter on other
                         this.preserveFocusOnRow(e.target);
                       }
                     }}"

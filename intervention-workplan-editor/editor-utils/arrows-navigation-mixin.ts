@@ -57,7 +57,6 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
       focusableTds.forEach((td: HTMLTableCellElement) => {
         td.addEventListener('click', (e) => {
           this.lastFocusedTd = this.determineCurrentTd(e.target);
-          this.handleClickOnReadonlyInput(e);
         });
         td.addEventListener('focusin', (e) => {
           // Doesn't trigger when focus is done from js
@@ -95,6 +94,7 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     }
 
     navigateWithArrows(event: KeyboardEvent) {
+      console.log(event.shiftKey, event.key === 'Tab');
       if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Enter', 'Escape', 'Tab'].includes(event.key)) {
         return;
       }
@@ -302,15 +302,6 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
      */
     handleEsc(event: KeyboardEvent) {
       if (event.key == 'Escape') {
-        this.lastFocusedTd.focus();
-      }
-    }
-    /**
-     * Clicking on an readonly input moves the focus away from the table cell and arrow nav doesn't work
-     * This method moves the focus on the <td>
-     */
-    handleClickOnReadonlyInput(event: MouseEvent) {
-      if ((event.target as HTMLElement)!.hasAttribute('readonly')) {
         this.lastFocusedTd.focus();
       }
     }

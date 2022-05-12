@@ -209,4 +209,8 @@ export const EditorTableStyles = css`
   .row-for-fixed-table-layout {
     visibility: collapse;
   }
+
+  *[input][readonly] {
+    pointer-events: none;
+  }
 `;
