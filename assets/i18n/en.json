@@ -229,7 +229,7 @@
   "PROGRAM_DOCUMENT_OUTPUT": "Programme Document Output",
   "TOTAL_CASH_BUDGET": "Total Cash Budget",
   "NO_RESULTS_ADDED": "There are no results added.",
-  "NO_PDS_ADDED": "There are no Program Document Outputs added.",
+  "NO_PDS_ADDED": "There are no Programme Document Outputs added.",
   "ADD_PD_OUTPUT": "Add PD Output",
   "REMOVE_PD_MSG": "Are you sure you want to remove this PD Output?",
   "CONFIRM_BTN_TXT": "Yes",
@@ -528,7 +528,7 @@
   "CONFIDENTIAL": "Confidential",
   "PLS_SELECT_TIME_PERIODS": "Please select Time Periods",
   "ERROR_LOADING_DATA": "Error on loading data",
-  "PD_OUTPUTS_TITLE": "Program Document Outputs",
+  "PD_OUTPUTS_TITLE": "Programme Document Outputs",
   "PLS_SELECT_SECTIONS_FIRST": "Please, select PD sections first",
   "PLS_SELECT_LOCATIONS_FIRST": "Please, select PD locations first",
   "PLS_SELECT_SECTIONS_AND_LOCATIONS_FIRST": "Please, select PD sections and locations first"
