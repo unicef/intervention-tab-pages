@@ -46,6 +46,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       required: {result_links?: boolean};
     };
 
+    // @ts-ignore
     @property({type: Boolean})
     autoValidateActivityName = false;
 
