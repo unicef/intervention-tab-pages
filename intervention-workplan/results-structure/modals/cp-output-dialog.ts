@@ -146,13 +146,13 @@ export class CpOutputDialog extends LitElement {
 
   resetFieldError(field: string) {
     delete this.errors[field];
-    this.performUpdate();
+    this.requestUpdate();
   }
 
   processRequest() {
     if (!this.cpOutputId && !this.selectedCpOutput) {
       this.errors.cp_output = [getTranslation('GENERAL.REQUIRED_FIELD')];
-      this.performUpdate();
+      this.requestUpdate();
       return;
     }
     this.spinnerText = getTranslation('GENERAL.SAVING_DATA');
