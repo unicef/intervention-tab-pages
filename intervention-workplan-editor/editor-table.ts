@@ -177,7 +177,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
           (result, resultIndex) => html`
             <tbody
               ?hoverable="${this.permissions?.edit.result_links && !this.commentMode}"
-              ?hidden="${!this.isUnicefUser || !this.permissions?.edit.result_links}"
+              ?hidden="${!this.isUnicefUser}"
               class="heavy-blue"
             >
               <tr class="header">
@@ -639,13 +639,16 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
   moveFocusToNewllyAdded(element: any) {
     const currTbody = this.determineCurrentTr(element).parentElement;
     setTimeout(() => {
-      const trBelow = currTbody.nextElementSibling.querySelector('tr.text');
-      const input = trBelow.querySelector('[input]');
+      const targetTr = currTbody.nextElementSibling.querySelector('tr.text');
+      const input = targetTr.querySelector('[input]');
 
       if (input) {
         this.lastFocusedTd = this.determineCurrentTd(input);
         input.focus();
       }
+
+      // @ts-ignore Defined in arrows-nav-mixin
+      this.attachListenersToTr(targetTr);
     });
   }
 }

@@ -411,10 +411,10 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       activity.items?.push({name: '', inEditMode: true});
       activity.itemsInEditMode = true;
       this.requestUpdate();
-      this.moveFocusToTheJustAddedItem(e.target, focusClue);
+      this.moveFocusToAddedItemAndAttachListeners(e.target, focusClue);
     }
 
-    moveFocusToTheJustAddedItem(target: any, focusClue: string) {
+    moveFocusToAddedItemAndAttachListeners(target: any, focusClue: string) {
       // @ts-ignore
       const targetTrParent = this.determineCurrentTr(target);
       setTimeout(() => {
@@ -425,8 +425,10 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
         )?.children[1];
         // @ts-ignore
         itemDescTd?.querySelector('paper-textarea')?.focus();
-        // @ts-ignore
+        // @ts-ignore Defined in arrows-nav-mixin
         this.lastFocusedTd = itemDescTd;
+        // @ts-ignore Defined in arrows-nav-mixin
+        this.attachListenersToTr(targetTrParent);
       });
     }
 
