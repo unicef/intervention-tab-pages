@@ -46,6 +46,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       required: {result_links?: boolean};
     };
 
+    // @ts-ignore
     @property({type: Boolean})
     autoValidateActivityName = false;
 
@@ -194,6 +195,8 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                         this.requestUpdate();
                         // @ts-ignore
                         if (e.isTrusted || this.enterClickedOnActionBtnsTd()) {
+                          // If the btn is clicked from code (!e.isTrusted) ,
+                          // might be that the focus has to be preserved on the activty item
                           // @ts-ignore
                           this.moveFocusToFirstInput(e.target);
                         }

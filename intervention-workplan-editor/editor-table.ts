@@ -390,7 +390,6 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
   // because all unassigned PDs have one common parent object and we can not change result.cp_output directly
   unassignedPDMap: Map<number, number> = new Map();
 
-  private lastFocusedTd: any = null;
   private refreshResultStructure = false;
   private prevInterventionId: number | null = null;
 
