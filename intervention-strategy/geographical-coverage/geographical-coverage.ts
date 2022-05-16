@@ -78,6 +78,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         #locations {
           max-width: fit-content;
           min-width: 300px;
+          --paper-input-container-label-floating_-_color: transparent;
         }
 
         .f-left {
@@ -137,6 +138,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
           <etools-dropdown-multi
             id="locations"
             placeholder="&#8212;"
+            label=${translate(translatesMap.flat_locations)}
             .options="${this.allLocations}"
             .selectedValues="${this.data.flat_locations}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.flat_locations)}"
