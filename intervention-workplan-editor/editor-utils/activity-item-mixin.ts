@@ -279,6 +279,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                 >${translate('GENERAL.SAVE')}</paper-button
               >
               <paper-icon-button
+                class="flex-none"
                 icon="close"
                 @click="${() =>
                   this.cancelActivity(pdOutput.activities, activity, resultIndex, pdOutputIndex, activityIndex)}"

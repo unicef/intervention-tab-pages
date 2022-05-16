@@ -140,6 +140,9 @@ export const EditorTableStyles = css`
   .justify-center {
     justify-content: center;
   }
+  .flex-none {
+    flex: none;
+  }
   tr.activity-items-row:not(.readonly-mode) > td {
     padding-bottom: 16px;
   }
