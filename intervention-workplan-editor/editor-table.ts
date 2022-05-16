@@ -409,7 +409,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
     if (!selectInterventionId(state)) {
       return;
     }
-    if (!state.app?.smallMenu) {
+    if (!state.app?.smallMenu && !this.prevInterventionId) {
       getStore().dispatch(updateSmallMenu(true));
     }
     this.interventionId = selectInterventionId(state);
