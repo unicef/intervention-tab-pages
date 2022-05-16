@@ -68,7 +68,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
 
         #iit-confidential {
           margin-top: 20px;
-          margin-left: 20px;
+          margin-left: 8px;
         }
         paper-textarea {
           outline: none;
@@ -82,6 +82,10 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
             padding: 0;
             max-height: 96px;
           }
+        }
+        .confidential-row {
+          margin-top: -4px;
+          padding-bottom: 12px;
         }
       </style>
 
@@ -190,7 +194,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
           </div>
         </div>
 
-        <div class="layout-horizontal row-padding-v">
+        <div class="layout-horizontal confidential-row">
           <paper-toggle-button
             id="confidential"
             ?disabled="${this.isReadonly(this.editMode, this.permissions.edit?.confidential)}"
