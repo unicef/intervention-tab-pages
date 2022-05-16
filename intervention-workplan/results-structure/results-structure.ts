@@ -197,7 +197,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                     </div>
                   `}
               ${result.ll_results.map(
-                (pdOutput: ResultLinkLowerResult) => html`
+                (pdOutput: ResultLinkLowerResult, index: number) => html`
                   <etools-data-table-row
                     class="pdOutputMargin ${this.isUnicefUser ? 'unicef-user' : 'partner'}"
                     related-to="pd-output-${pdOutput.id}"
@@ -205,6 +205,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                     comments-container
                     secondary-bg-on-hover
                     .detailsOpened="${this.newPDOutputs.has(pdOutput.id)}"
+                    style="z-index: ${99 - index};"
                   >
                     <div slot="row-data" class="layout-horizontal editable-row pd-output-row">
                       <div class="flex-1 flex-fix">

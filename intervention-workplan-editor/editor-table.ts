@@ -148,7 +148,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
             <td colspan="2" tabindex="0">
               <div class="action-btns" style="position:relative">
                 <etools-info-tooltip
-                  position="left"
+                  position="top"
                   offset="0"
                   custom-icon
                   ?hide-tooltip="${!this.permissions?.edit.result_links}"
@@ -204,7 +204,8 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                 <td colspan="2" class="action-btns" tabindex="0">
                   <div class="action-btns" style="position:relative">
                     <etools-info-tooltip
-                      position="left"
+                      position="top"
+                      offset="0"
                       custom-icon
                       ?hide-tooltip="${!this.permissions?.edit.result_links}"
                       style="justify-content:end;"
@@ -315,6 +316,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                         ></paper-icon-button>
                         <etools-info-tooltip
                           position="top"
+                          offset="0"
                           custom-icon
                           ?hide-tooltip="${!this.permissions?.edit.result_links}"
                           style="justify-content:end;"
