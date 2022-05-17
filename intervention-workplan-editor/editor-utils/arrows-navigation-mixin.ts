@@ -55,16 +55,27 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
 
     setLastFocusedTdOnClick(focusableTds: HTMLTableCellElement[]) {
       focusableTds.forEach((td: HTMLTableCellElement) => {
-        td.addEventListener('click', (e) => {
-          this.lastFocusedTd = this.determineCurrentTd(e.target);
-        });
-        td.addEventListener('focusin', (e) => {
-          // Doesn't trigger when focus is done from js
-          const currentTd = this.determineCurrentTd(e.target);
-          if (this.lastFocusedTd != currentTd) {
-            this.lastFocusedTd = currentTd;
-          }
-        });
+        this.attachListenersToTd(td);
+      });
+    }
+
+    attachListenersToTd(td: HTMLTableCellElement) {
+      td.addEventListener('click', (e) => {
+        this.lastFocusedTd = this.determineCurrentTd(e.target);
+      });
+      td.addEventListener('focusin', (e) => {
+        // Doesn't trigger when focus is done from js
+        const currentTd = this.determineCurrentTd(e.target);
+        if (this.lastFocusedTd != currentTd) {
+          this.lastFocusedTd = currentTd;
+        }
+      });
+    }
+
+    attachListenersToTr(tr: HTMLTableRowElement) {
+      const focusableTds = Array.from(tr.querySelectorAll<HTMLTableCellElement>('td[tabindex="0"]'));
+      focusableTds.forEach((td: HTMLTableCellElement) => {
+        this.attachListenersToTd(td);
       });
     }
 
@@ -94,7 +105,6 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     }
 
     navigateWithArrows(event: KeyboardEvent) {
-      console.log(event.shiftKey, event.key === 'Tab');
       if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Enter', 'Escape', 'Tab'].includes(event.key)) {
         return;
       }
