@@ -49,14 +49,13 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
     private metaDataCollection: MetaData[] = [];
     private commentsModeEnabled = false;
     private rendered = false;
-    private modeIsSet = false;
     private currentEditedComments: MetaData | null = null;
 
     protected firstUpdated() {
       this.rendered = true;
       if (this.commentsModeEnabled) {
         setTimeout(() => {
-          this.startCommentMode();
+          this.setCommentMode();
         }, 300);
       }
     }
@@ -87,20 +86,10 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         this.updateBorderColor(this.currentEditedComments);
       }
 
-      if (commentsModeEnabled === this.commentsModeEnabled && this.modeIsSet) {
-        return;
-      }
-
-      this.commentsModeEnabled = commentsModeEnabled;
-
-      if (this.rendered) {
-        this.modeIsSet = true;
-        if (commentsModeEnabled) {
-          this.startCommentMode();
-          (this as any).requestUpdate();
-        } else {
-          this.stopCommentMode();
-          (this as any).requestUpdate();
+      if (commentsModeEnabled !== this.commentsModeEnabled) {
+        this.commentsModeEnabled = commentsModeEnabled;
+        if (this.rendered) {
+          this.setCommentMode();
         }
       }
     }
@@ -111,6 +100,15 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
      */
     getSpecialElements(_: HTMLElement): CommentElementMeta[] {
       return [];
+    }
+
+    setCommentMode() {
+      if (this.commentsModeEnabled) {
+        this.startCommentMode();
+      } else {
+        this.stopCommentMode();
+      }
+      (this as any).requestUpdate();
     }
 
     private startCommentMode(): void {
