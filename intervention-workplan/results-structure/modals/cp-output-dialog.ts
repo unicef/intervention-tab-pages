@@ -12,6 +12,7 @@ import {AsyncAction, ResultIndicator, GenericObject} from '@unicef-polymer/etool
 import {translate, get as getTranslation} from 'lit-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {areEqual} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 
 @customElement('cp-output-dialog')
 export class CpOutputDialog extends LitElement {
@@ -136,7 +137,10 @@ export class CpOutputDialog extends LitElement {
   }
 
   onIndicatorsSelected(data: ResultIndicator[]) {
-    this.selectedIndicators = data.map(({id}: ResultIndicator) => id);
+    const newIndicators = data.map(({id}: ResultIndicator) => id);
+    if (!areEqual(this.selectedIndicators, newIndicators)) {
+      this.selectedIndicators = newIndicators;
+    }
   }
 
   onCpOutputSelected(id: number) {
@@ -145,6 +149,9 @@ export class CpOutputDialog extends LitElement {
   }
 
   resetFieldError(field: string) {
+    if (!this.errors[field]) {
+      return;
+    }
     delete this.errors[field];
     this.requestUpdate();
   }
