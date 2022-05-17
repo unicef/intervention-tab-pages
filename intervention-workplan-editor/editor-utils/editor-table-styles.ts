@@ -9,7 +9,6 @@ export const EditorTableStyles = css`
     border-collapse: collapse;
     box-sizing: border-box;
     background-color: white;
-    table-layout: fixed;
   }
   td {
     border: 1px solid #b8b8b8;
