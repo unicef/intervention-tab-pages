@@ -56,6 +56,7 @@ import {EtoolsDataTableRow} from '@unicef-polymer/etools-data-table/etools-data-
 import {PdActivities} from './pd-activities';
 import {PdIndicators} from './pd-indicators';
 import {CpOutputLevel} from './cp-output-level';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 
 /**
  * @customElement
@@ -442,22 +443,24 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
   }
 
   deleteCPOutputFromPD(resultLinkId: number) {
+    fireEvent(this, 'global-loading', {
+      active: true,
+      loadingSource: 'interv-cp-remove'
+    });
     const endpoint = getEndpoint(interventionEndpoints.resultLinkGetDelete, {
       result_link: resultLinkId
     });
     _sendRequest({
       method: 'DELETE',
       endpoint: endpoint
-    }).then(() => {
-      getStore().dispatch(updateCurrentIntervention(this.removeDeletedCPOutput(this.intervention, resultLinkId)));
-    });
-  }
-
-  removeDeletedCPOutput(intervention: Intervention, resultLinkId: string | number) {
-    intervention.result_links = intervention.result_links.filter(
-      (rl: ExpectedResult) => rl.id !== Number(resultLinkId)
-    );
-    return intervention;
+    })
+      .then(() => getStore().dispatch<AsyncAction>(getIntervention()))
+      .finally(() =>
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: 'interv-cp-remove'
+        })
+      );
   }
 
   _updateNoOfPdOutputs() {
