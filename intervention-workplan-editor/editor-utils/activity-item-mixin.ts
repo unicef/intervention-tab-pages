@@ -22,6 +22,10 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       required: {result_links?: boolean};
     };
 
+    // @ts-ignore
+    @property({type: Boolean})
+    oneEntityInEditMode!: boolean;
+
     handleEsc!: (event: KeyboardEvent) => void;
     // lastFocusedTd!: any;
     commentMode: any;
@@ -44,7 +48,10 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
             <tr
               class="activity-items-row ${activity.itemsInEditMode ? '' : 'readonly-mode'}"
               type="a-item"
-              ?hoverable="${(!activity.itemsInEditMode && this.permissions.edit.result_links && !this.commentMode) ||
+              ?hoverable="${(!activity.itemsInEditMode &&
+                this.permissions.edit.result_links &&
+                !this.commentMode &&
+                !this.oneEntityInEditMode) ||
               !item.id}"
               comment-element="activity-item-${item.id}"
               comment-description=" Activity item - ${item.name}"
@@ -238,6 +245,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                     @click="${(e: CustomEvent) => {
                       activity.inEditMode = true;
                       activity.itemsInEditMode = true;
+                      this.oneEntityInEditMode = true;
                       this.requestUpdate();
 
                       if (e.isTrusted) {
@@ -258,7 +266,12 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
             </tr>
           `
         )}
-        <tr ?hidden="${!this.permissions.edit.result_links || this.commentMode}" type="add-item">
+        <tr
+          ?hidden="${!this.permissions.edit.result_links ||
+          this.commentMode ||
+          (!activity.itemsInEditMode && this.oneEntityInEditMode)}"
+          type="add-item"
+        >
           <td></td>
           <td tabindex="0">
             <div class="icon" @click="${(e: CustomEvent) => this.addNewItem(e, activity, 'focusAbove')}">
@@ -410,13 +423,14 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       // @ts-ignore
       activity.items?.push({name: '', inEditMode: true});
       activity.itemsInEditMode = true;
+      this.oneEntityInEditMode = true;
       this.requestUpdate();
       this.moveFocusToAddedItemAndAttachListeners(e.target, focusClue);
     }
 
     moveFocusToAddedItemAndAttachListeners(target: any, focusClue: string) {
       // @ts-ignore
-      const targetTrParent = this.determineCurrentTr(target);
+      const targetTrParent = this.determineParentTr(target);
       setTimeout(() => {
         const itemDescTd = (
           focusClue === 'focusAbove'
@@ -428,13 +442,13 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
         // @ts-ignore Defined in arrows-nav-mixin
         this.lastFocusedTd = itemDescTd;
         // @ts-ignore Defined in arrows-nav-mixin
-        this.attachListenersToTr(targetTrParent);
-      });
+        this.attachListenersToTr(this.determineParentTr(itemDescTd));
+      }, 10);
     }
 
     preserveFocusOnRow(target: any) {
       // @ts-ignore
-      const targetTrParent = this.determineCurrentTr(target);
+      const targetTrParent = this.determineParentTr(target);
       setTimeout(() => {
         const itemDescTd = targetTrParent?.children[1];
         // @ts-ignore

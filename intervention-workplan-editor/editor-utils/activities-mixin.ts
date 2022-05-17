@@ -49,6 +49,9 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
     // @ts-ignore
     @property({type: Boolean})
     autoValidateActivityName = false;
+    // @ts-ignore
+    @property({type: Boolean})
+    oneEntityInEditMode!: boolean;
 
     handleEsc!: (event: KeyboardEvent) => void;
     refreshResultStructure = false;
@@ -69,7 +72,8 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
             <tbody
               ?hoverable="${!(activity.inEditMode || activity.itemsInEditMode) &&
               this.permissions.edit.result_links &&
-              !this.commentMode}"
+              !this.commentMode &&
+              !this.oneEntityInEditMode}"
               comment-element="activity-${activity.id}"
               comment-description=" Activity - ${activity.name}"
             >
@@ -192,6 +196,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                       @click="${(e: any) => {
                         activity.inEditMode = true;
                         activity.itemsInEditMode = true;
+                        this.oneEntityInEditMode = true;
                         this.requestUpdate();
                         // @ts-ignore
                         if (e.isTrusted || this.enterClickedOnActionBtnsTd()) {
@@ -299,6 +304,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
         Object.assign(activity, cloneDeep(this.getOriginalActivity(resultIndex, pdOutputIndex, activityIndex)));
         this.resetItemsValidations(activity);
       }
+      this.oneEntityInEditMode = false;
       this.requestUpdate();
       // @ts-ignore
       this.lastFocusedTd.focus();
@@ -413,6 +419,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       })
         .then((response: any) => {
           this.refreshResultStructure = true;
+          this.oneEntityInEditMode = false;
           getStore().dispatch(updateCurrentIntervention(response.intervention));
         })
         .catch((error: any) => {

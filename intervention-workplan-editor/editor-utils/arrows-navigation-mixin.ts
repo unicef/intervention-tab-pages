@@ -61,11 +61,11 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
 
     attachListenersToTd(td: HTMLTableCellElement) {
       td.addEventListener('click', (e) => {
-        this.lastFocusedTd = this.determineCurrentTd(e.target);
+        this.lastFocusedTd = this.determineParentTd(e.target);
       });
       td.addEventListener('focusin', (e) => {
         // Doesn't trigger when focus is done from js
-        const currentTd = this.determineCurrentTd(e.target);
+        const currentTd = this.determineParentTd(e.target);
         if (this.lastFocusedTd != currentTd) {
           this.lastFocusedTd = currentTd;
         }
@@ -79,14 +79,14 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
       });
     }
 
-    determineCurrentTd(element: any) {
+    determineParentTd(element: any) {
       let currentTd = element;
       while (currentTd.localName !== 'td') {
         currentTd = currentTd.parentElement || currentTd.parentNode || currentTd.host;
       }
       return currentTd;
     }
-    determineCurrentTr(element: any) {
+    determineParentTr(element: any) {
       let currentTr = element;
       while (currentTr.localName !== 'tr') {
         currentTr = currentTr.parentElement;
@@ -94,12 +94,12 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
       return currentTr;
     }
     moveFocusToFirstInput(currentTarget: any) {
-      const tr = this.determineCurrentTr(currentTarget);
+      const tr = this.determineParentTr(currentTarget);
       const input = tr.querySelector('[input]');
       if (input) {
         setTimeout(() => {
           input.focus();
-          this.lastFocusedTd = this.determineCurrentTd(input);
+          this.lastFocusedTd = this.determineParentTd(input);
         });
       }
     }
@@ -140,7 +140,7 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
           const input: any = currentTd.querySelector('[input]');
           if (input) {
             this.focusInput(input);
-            this.lastFocusedTd = this.determineCurrentTd(input);
+            this.lastFocusedTd = this.determineParentTd(input);
           }
           break;
         }
@@ -302,7 +302,7 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
       }
       let activeTd = activeEl.closest('td')!;
       if (!activeTd) {
-        activeTd = this.determineCurrentTd(activeEl);
+        activeTd = this.determineParentTd(activeEl);
       }
       return activeTd;
     }
