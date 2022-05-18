@@ -427,7 +427,13 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
       .filter(({id}: IdAndName<number>) => id);
 
     if (this.prevInterventionId != selectInterventionId(state) || this.refreshResultStructure) {
-      this.getResultLinksDetails();
+      this.getResultLinksDetails().then(() => {
+        // need to be sure that editor elements where rendered before calling setCommentMode
+        // (ex: show comments border after page refresh)
+        setTimeout(() => {
+          this.setCommentMode();
+        }, 500);
+      });
       this.prevInterventionId = this.interventionId;
       this.refreshResultStructure = false;
     }
@@ -443,17 +449,17 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
       active: true,
       loadingSource: this.localName
     });
-    sendRequest({endpoint: getEndpoint(interventionEndpoints.resultLinksDetails, {id: this.intervention.id})}).then(
-      (response: any) => {
-        this.resultStructureDetails = response.result_links;
-        this.originalResultStructureDetails = cloneDeep(this.resultStructureDetails);
-        this.requestUpdate();
-        fireEvent(this, 'global-loading', {
-          active: false,
-          loadingSource: this.localName
-        });
-      }
-    );
+    return sendRequest({
+      endpoint: getEndpoint(interventionEndpoints.resultLinksDetails, {id: this.intervention.id})
+    }).then((response: any) => {
+      this.resultStructureDetails = response.result_links;
+      this.originalResultStructureDetails = cloneDeep(this.resultStructureDetails);
+      this.requestUpdate();
+      fireEvent(this, 'global-loading', {
+        active: false,
+        loadingSource: this.localName
+      });
+    });
   }
 
   showCpOutput(isUnicefUsr: boolean, result: ExpectedResultExtended) {
