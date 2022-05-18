@@ -1,4 +1,6 @@
 import {LitElement, html, property, customElement} from 'lit-element';
+import '@polymer/paper-button/paper-button';
+import '@polymer/paper-icon-button/paper-icon-button';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
@@ -137,6 +139,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
     this.populateVisits(state);
     this.permissions = selectPlannedVisitsPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
+    this.interventionStatus = state.interventions.current.status;
     super.stateChanged(state);
   }
 
