@@ -1,4 +1,6 @@
 import {LitElement, html, property, customElement} from 'lit-element';
+import '@polymer/paper-button/paper-button';
+import '@polymer/paper-icon-button';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
