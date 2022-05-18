@@ -439,7 +439,6 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
       .filter(({id}: IdAndName<number>) => id);
 
     if (this.prevInterventionId != selectInterventionId(state) || this.refreshResultStructure) {
-
       // Avoid console errors
       this.autovalidatePdOutput = false;
       this.autoValidateActivityName = false;
