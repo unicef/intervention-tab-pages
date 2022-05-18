@@ -32,7 +32,7 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import get from 'lodash-es/get';
-import {getIntervention, updateCurrentIntervention} from '../../common/actions/interventions';
+import {getIntervention} from '../../common/actions/interventions';
 import {isUnicefUser, currentIntervention} from '../../common/selectors';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
