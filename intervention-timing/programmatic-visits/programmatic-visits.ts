@@ -137,6 +137,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
     this.populateVisits(state);
     this.permissions = selectPlannedVisitsPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
+    this.interventionStatus = state.interventions.current.status;
     super.stateChanged(state);
   }
 
