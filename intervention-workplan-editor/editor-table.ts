@@ -427,6 +427,11 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
       .filter(({id}: IdAndName<number>) => id);
 
     if (this.prevInterventionId != selectInterventionId(state) || this.refreshResultStructure) {
+
+      // Avoid console errors
+      this.autovalidatePdOutput = false;
+      this.autoValidateActivityName = false;
+
       this.getResultLinksDetails().then(() => {
         // need to be sure that editor elements where rendered before calling setCommentMode
         // (ex: show comments border after page refresh)
@@ -434,6 +439,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
           this.setCommentMode();
         }, 500);
       });
+
       this.prevInterventionId = this.interventionId;
       this.refreshResultStructure = false;
     }
