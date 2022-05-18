@@ -136,7 +136,12 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
             <td class="col-g" colspan="2"></td>
           </tr>
         </tbody>
-        <tbody ?hoverable="${this.permissions?.edit.result_links && !this.commentMode && !this.isUnicefUser}">
+        <tbody
+          ?hoverable="${this.permissions?.edit.result_links &&
+          !this.commentMode &&
+          !this.isUnicefUser &&
+          !this.oneEntityInEditMode}"
+        >
           <tr
             class="add action-btns heavy-blue"
             type="cp-output"
@@ -176,7 +181,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
           (result: ExpectedResult) => result.id,
           (result, resultIndex) => html`
             <tbody
-              ?hoverable="${this.permissions?.edit.result_links && !this.commentMode}"
+              ?hoverable="${this.permissions?.edit.result_links && !this.commentMode && !this.oneEntityInEditMode}"
               ?hidden="${!this.isUnicefUser}"
               class="heavy-blue"
             >
@@ -233,7 +238,10 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
               (pdOutput: ResultLinkLowerResultExtended) => pdOutput.id,
               (pdOutput: ResultLinkLowerResultExtended, pdOutputIndex) => html`
                 <tbody
-                  ?hoverable="${!pdOutput.inEditMode && this.permissions?.edit.result_links && !this.commentMode}"
+                  ?hoverable="${!pdOutput.inEditMode &&
+                  this.permissions?.edit.result_links &&
+                  !this.commentMode &&
+                  !this.oneEntityInEditMode}"
                   class="lighter-blue"
                   comment-element="pd-output-${pdOutput.id}"
                   comment-description=" PD Output - ${pdOutput.name}"
@@ -310,6 +318,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                           ?hidden="${pdOutput.inEditMode || !this.permissions?.edit.result_links}"
                           @click="${(e: any) => {
                             pdOutput.inEditMode = true;
+                            this.oneEntityInEditMode = true;
                             this.requestUpdate();
                             this.moveFocusToFirstInput(e.target);
                           }}"
@@ -385,6 +394,9 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
 
   @property({type: Boolean})
   autovalidatePdOutput = false;
+
+  @property({type: Boolean})
+  oneEntityInEditMode = false;
 
   // we need to track changes to unassigned PD separately (pd_id -> cp_id),
   // because all unassigned PDs have one common parent object and we can not change result.cp_output directly
@@ -476,6 +488,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
   addNewPDOutput(llResults: Partial<ResultLinkLowerResultExtended>[]) {
     if (!llResults.find((ll) => !ll.id)) {
       llResults.unshift({name: '', total: '0', inEditMode: true});
+      this.oneEntityInEditMode = true;
       this.requestUpdate();
     }
   }
@@ -490,6 +503,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
         ll_results: [{name: '', total: '0', inEditMode: true}],
         total: '0'
       });
+      this.oneEntityInEditMode = true;
       this.requestUpdate();
     }
   }
@@ -498,6 +512,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
     if (!pdOutput.activities?.find((a) => !a.id)) {
       // @ts-ignore
       pdOutput.activities?.unshift({name: '', total: '0', time_frames: [], inEditMode: true});
+      this.oneEntityInEditMode = true;
       this.requestUpdate();
     }
   }
@@ -525,6 +540,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
     })
       .then((response) => {
         this.refreshResultStructure = true;
+        this.oneEntityInEditMode = false;
         getStore().dispatch(updateCurrentIntervention(response.intervention));
         // erase collection because now we discard all changes for other items that was in edit mode
         this.unassignedPDMap.clear();
@@ -584,6 +600,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
     pdOutput.invalid = false;
     pdOutput.invalidCpOutput = false;
     pdOutput.inEditMode = false;
+    this.oneEntityInEditMode = false;
 
     this.requestUpdate();
     this.lastFocusedTd.focus();
@@ -649,13 +666,13 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
   }
 
   moveFocusToNewllyAdded(element: any) {
-    const currTbody = this.determineCurrentTr(element).parentElement;
+    const currTbody = this.determineParentTr(element).parentElement;
     setTimeout(() => {
       const targetTr = currTbody.nextElementSibling.querySelector('tr.text');
       const input = targetTr.querySelector('[input]');
 
       if (input) {
-        this.lastFocusedTd = this.determineCurrentTd(input);
+        this.lastFocusedTd = this.determineParentTd(input);
         input.focus();
       }
 
