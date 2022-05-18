@@ -174,6 +174,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
               @edit-cp-output="${() => this.openCpOutputDialog(result)}"
               @delete-cp-output="${() => this.openDeleteCpOutputDialog(result.id)}"
               @opened-changed="${this.onCpOpenedChanged}"
+              style="z-index: ${99 - _index};"
             >
               <div
                 class="no-results"
