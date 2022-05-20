@@ -410,7 +410,6 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
 
   connectedCallback() {
     super.connectedCallback();
-    console.log('connected callback');
     setTimeout(() => {
       this.addArrowNavListener();
       this.focusFirstTd();
