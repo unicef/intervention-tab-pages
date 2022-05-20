@@ -410,19 +410,11 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
 
   connectedCallback() {
     super.connectedCallback();
+    console.log('connected callback');
     setTimeout(() => {
       this.addArrowNavListener();
       this.focusFirstTd();
     }, 2000);
-    setTimeout(() => {
-      if (
-        this.permissions?.edit?.result_links &&
-        this.resultStructureDetails &&
-        this.resultStructureDetails.length &&
-        !this.commentMode
-      )
-        this.addCtrlSListener();
-    }, 5000);
   }
 
   stateChanged(state: RootState) {
@@ -456,6 +448,18 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
       this.autoValidateActivityName = false;
 
       this.getResultLinksDetails().then(() => {
+        if (!this.refreshResultStructure) {
+          if (
+            this.permissions?.edit?.result_links &&
+            this.resultStructureDetails &&
+            this.resultStructureDetails.length &&
+            !this.commentMode
+          ) {
+            this.addCtrlSListener();
+          } else {
+            this.removeCtrlSListener();
+          }
+        }
         // need to be sure that editor elements where rendered before calling setCommentMode
         // (ex: show comments border after page refresh)
         setTimeout(() => {

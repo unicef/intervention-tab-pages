@@ -50,10 +50,14 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
       this.addEventListener('keydown', this._saveWitCtrlS);
     }
 
+    removeCtrlSListener() {
+      this.removeEventListener('keydown', this._saveWitCtrlS);
+    }
+
     saveWitCtrlS(event: KeyboardEvent) {
-      event.preventDefault();
-      event.stopImmediatePropagation();
       if (event.ctrlKey && event.key == 's') {
+        event.preventDefault();
+        event.stopImmediatePropagation();
         const saveBtn = this.shadowRoot?.querySelector<PaperButtonElement>('[id^="btnSave"]:not([hidden])');
         if (saveBtn) {
           saveBtn.click();
