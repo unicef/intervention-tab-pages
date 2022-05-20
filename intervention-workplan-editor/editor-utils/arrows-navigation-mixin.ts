@@ -1,3 +1,4 @@
+import {PaperButtonElement} from '@polymer/paper-button';
 import {Constructor, LitElement} from 'lit-element';
 /**
  * Notes about the functionality:
@@ -15,6 +16,7 @@ import {Constructor, LitElement} from 'lit-element';
 export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseClass: T) {
   return class ArrowsNavigationClass extends baseClass {
     private _navigateWithArrows!: (event: KeyboardEvent) => void;
+    private _saveWitCtrlS!: (event: KeyboardEvent) => void;
 
     // Set to true on Tab key press and to false on Esc.
     // Can't be always true becuase it throws out navigation with arrows,
@@ -41,6 +43,22 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     addArrowNavListener() {
       this._navigateWithArrows = this.navigateWithArrows.bind(this);
       this.addEventListener('keydown', this._navigateWithArrows);
+    }
+
+    addCtrlSListener() {
+      this._saveWitCtrlS = this.saveWitCtrlS.bind(this);
+      this.addEventListener('keydown', this._saveWitCtrlS);
+    }
+
+    saveWitCtrlS(event: KeyboardEvent) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      if (event.ctrlKey && event.key == 's') {
+        const saveBtn = this.shadowRoot?.querySelector<PaperButtonElement>('[id^="btnSave"]:not([hidden])');
+        if (saveBtn) {
+          saveBtn.click();
+        }
+      }
     }
 
     focusFirstTd() {

@@ -348,7 +348,10 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                         ></paper-icon-button>
                       </div>
                       <div class="flex-h justify-right align-bottom" ?hidden="${!pdOutput.inEditMode}">
-                        <paper-button @click="${() => this.savePdOutput(pdOutput, result)}"
+                        <paper-button
+                          id="btnSave"
+                          @click="${() => this.savePdOutput(pdOutput, result)}"
+                          ?hidden="${!pdOutput.inEditMode}"
                           >${translate('GENERAL.SAVE')}</paper-button
                         >
                         <paper-icon-button
@@ -411,6 +414,15 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
       this.addArrowNavListener();
       this.focusFirstTd();
     }, 2000);
+    setTimeout(() => {
+      if (
+        this.permissions?.edit?.result_links &&
+        this.resultStructureDetails &&
+        this.resultStructureDetails.length &&
+        !this.commentMode
+      )
+        this.addCtrlSListener();
+    }, 5000);
   }
 
   stateChanged(state: RootState) {
