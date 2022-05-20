@@ -135,10 +135,16 @@ export class DisplayControls extends LitElement {
           display: block;
           height: 32px;
           color: #5c5c5c;
-          border: 1px solid #5c5c5c;
-          border-radius: 8px;
           padding: 0;
           box-sizing: border-box;
+        }
+        paper-button {
+          border: 1px solid #5c5c5c;
+          border-radius: 8px;
+        }
+        a:focus,
+        paper-button:focus {
+          box-shadow: rgb(170 165 165 / 40%) 0 0 5px 4px;
         }
         #view-menu-button paper-button {
           height: 32px;
@@ -155,6 +161,9 @@ export class DisplayControls extends LitElement {
         }
         a {
           text-decoration: none;
+          margin-left: 16px;
+          border-radius: 8px;
+          outline: none;
         }
         .editor-link {
           display: flex;
@@ -162,7 +171,6 @@ export class DisplayControls extends LitElement {
           justify-content: center;
           height: 32px;
           padding: 0 10px;
-          margin-left: 16px;
           border: 1px solid #009688;
           border-radius: 8px;
           color: #009688;
