@@ -228,6 +228,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
         <intervention-workplan-editor
           ?hidden="${!this.isActiveTab(this.activeTab, TABS.WorkplanEditor)}"
           .interventionId="${this.interventionId}"
+          ?commentMode="${this.commentMode}"
         >
         </intervention-workplan-editor>
         <intervention-timing ?hidden="${!this.isActiveTab(this.activeTab, TABS.Timing)}"> </intervention-timing>
