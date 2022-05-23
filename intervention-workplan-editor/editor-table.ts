@@ -270,7 +270,15 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                         required
                         .invalid="${pdOutput.invalid}"
                         error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
-                        @keydown="${(e: any) => this.handleEsc(e)}"
+                        @keydown="${(e: any) => {
+                          if (
+                            pdOutput.inEditMode &&
+                            ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)
+                          ) {
+                            e.stopImmediatePropagation();
+                          }
+                          this.handleEsc(e);
+                        }}"
                         @focus="${() => (this.autovalidatePdOutput = true)}"
                         @value-changed="${({detail}: CustomEvent) =>
                           this.updateModelValue(pdOutput, 'name', detail.value)}"

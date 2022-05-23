@@ -100,7 +100,12 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     .autoValidate="${this.autoValidateActivityName}"
                     .invalid="${activity.invalid?.name}"
                     error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
-                    @keydown="${(e: any) => this.handleEsc(e)}"
+                    @keydown="${(e: any) => {
+                      if (activity.inEditMode && ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) {
+                        e.stopImmediatePropagation();
+                      }
+                      this.handleEsc(e);
+                    }}"
                     @focus="${() => (this.autoValidateActivityName = true)}"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue(activity, 'name', detail.value)}"
                   ></paper-textarea>
@@ -118,7 +123,15 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                       char-counter
                       maxlength="10000"
                       .value="${activity.context_details}"
-                      @keydown="${(e: any) => this.handleEsc(e)}"
+                      @keydown="${(e: any) => {
+                        if (
+                          activity.inEditMode &&
+                          ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)
+                        ) {
+                          e.stopImmediatePropagation();
+                        }
+                        this.handleEsc(e);
+                      }}"
                       @value-changed="${({detail}: CustomEvent) =>
                         this.updateModelValue(activity, 'context_details', detail.value)}"
                     ></paper-textarea>
