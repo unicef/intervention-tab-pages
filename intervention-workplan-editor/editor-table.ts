@@ -348,7 +348,10 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
                         ></paper-icon-button>
                       </div>
                       <div class="flex-h justify-right align-bottom" ?hidden="${!pdOutput.inEditMode}">
-                        <paper-button @click="${() => this.savePdOutput(pdOutput, result)}"
+                        <paper-button
+                          id="btnSave"
+                          @click="${() => this.savePdOutput(pdOutput, result)}"
+                          ?hidden="${!pdOutput.inEditMode}"
                           >${translate('GENERAL.SAVE')}</paper-button
                         >
                         <paper-icon-button
@@ -443,7 +446,20 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
       this.autovalidatePdOutput = false;
       this.autoValidateActivityName = false;
 
-      this.getResultLinksDetails();
+      this.getResultLinksDetails().then(() => {
+        if (!this.refreshResultStructure) {
+          if (
+            this.permissions?.edit?.result_links &&
+            this.resultStructureDetails &&
+            this.resultStructureDetails.length &&
+            !this.commentMode
+          ) {
+            this.addCtrlSListener();
+          } else {
+            this.removeCtrlSListener();
+          }
+        }       
+      });
 
       this.prevInterventionId = this.interventionId;
       this.refreshResultStructure = false;
