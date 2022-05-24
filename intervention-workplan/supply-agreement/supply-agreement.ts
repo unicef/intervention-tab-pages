@@ -97,7 +97,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
             <label class="paper-label font-bold pad-right">${translate('TOTAL_SUPPLY_BUDGET')} </label>
             <label class="font-bold-12"
               >${this.intervention.planned_budget.currency}
-              ${displayCurrencyAmount(this.intervention.planned_budget.in_kind_amount_local!)}</label
+              ${displayCurrencyAmount(this.intervention.planned_budget.total_supply!)}</label
             >
           </span>
 
