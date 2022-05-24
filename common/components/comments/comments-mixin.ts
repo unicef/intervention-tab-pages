@@ -225,7 +225,6 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
       meta.element.style.cssText = `
         position: relative;
       `;
-      meta.overlay.style.boxShadow = `inset 0px 0px 0px 3px ${borderColor}`;
       meta.counter.innerText = `${comments.length}`;
       if (comments.length) {
         meta.element.append(meta.counter);
