@@ -447,18 +447,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
       this.autoValidateActivityName = false;
 
       this.getResultLinksDetails().then(() => {
-        if (!this.refreshResultStructure) {
-          if (
-            this.permissions?.edit?.result_links &&
-            this.resultStructureDetails &&
-            this.resultStructureDetails.length &&
-            !this.commentMode
-          ) {
-            this.addCtrlSListener();
-          } else {
-            this.removeCtrlSListener();
-          }
-        }       
+        this.handleSaveWithCtrlSListener();
       });
 
       this.prevInterventionId = this.interventionId;
@@ -490,6 +479,21 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
       return false;
     }
     return true;
+  }
+
+  private handleSaveWithCtrlSListener() {
+    if (!this.refreshResultStructure) {
+      if (
+        this.permissions?.edit?.result_links &&
+        this.resultStructureDetails &&
+        this.resultStructureDetails.length &&
+        !this.commentMode
+      ) {
+        this.addCtrlSListener();
+      } else {
+        this.removeCtrlSListener();
+      }
+    }
   }
 
   getResultLinksDetails() {
