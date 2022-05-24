@@ -401,6 +401,9 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
   @property({type: Boolean})
   oneEntityInEditMode = false;
 
+  @property({type: Boolean})
+  resultStructureIsLoaded = false;
+
   // we need to track changes to unassigned PD separately (pd_id -> cp_id),
   // because all unassigned PDs have one common parent object and we can not change result.cp_output directly
   unassignedPDMap: Map<number, number> = new Map();
@@ -447,6 +450,8 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
       this.autoValidateActivityName = false;
 
       this.getResultLinksDetails().then(() => {
+        console.log('Got result links');
+        this.resultStructureIsLoaded = true;
         this.handleSaveWithCtrlSListener();
       });
 
@@ -454,9 +459,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
       this.refreshResultStructure = false;
     }
 
-    if (this.editorTableIsRendered()) {
-      super.stateChanged(state);
-    }
+    this.waitForEditorTableToRender().then(() => super.stateChanged(state));
 
     if (this.lastFocusedTd) {
       this.lastFocusedTd.focus();
@@ -464,21 +467,29 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
   }
 
   /**
-   * To avoid:
+   * This is To AVOID:
    * 1. Go to Workplan tab, enable Comment mode
    * Go to Editor page- notice comment mode enabled;
    * Go to Workplan Tab , disable Comment mode
    * Go  back to Editor
    * Issue: Comment mode borders not removed from editor page
    *
-   * 2. Prevent comment mode style changes while the component is hidden
+   * 2. Comment mode styles not applied on page refresh (slower connections)
+   * 3. Avoid comment mode styles being applied multiple times, can't be removed after
+   * 4. Prevent comment mode style changes while the component is hidden, they won't take effect
    */
-  private editorTableIsRendered() {
-    const boundaries = this.getBoundingClientRect();
-    if (boundaries.left == 0 && boundaries.right == 0) {
-      return false;
-    }
-    return true;
+  private waitForEditorTableToRender() {
+    return new Promise((resolve) => {
+      const uiReadyCheck = setInterval(() => {
+        if (this.resultStructureIsLoaded) {
+          const boundaries = this.getBoundingClientRect();
+          if (boundaries.width !== 0) {
+            clearInterval(uiReadyCheck);
+            resolve(true);
+          }
+        }
+      }, 100);
+    });
   }
 
   private handleSaveWithCtrlSListener() {
