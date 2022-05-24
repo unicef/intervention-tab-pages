@@ -450,7 +450,6 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
       this.autoValidateActivityName = false;
 
       this.getResultLinksDetails().then(() => {
-        console.log('Got result links');
         this.resultStructureIsLoaded = true;
         this.handleSaveWithCtrlSListener();
       });
