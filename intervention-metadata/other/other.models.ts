@@ -11,6 +11,7 @@ export class OtherData extends ModelsBase {
   humanitarian_flag = false;
   contingency_pd = false;
   activation_protocol = '';
+  confidential = false;
 }
 
 export class OtherPermissions extends ModelsBase {
@@ -20,4 +21,5 @@ export class OtherPermissions extends ModelsBase {
   }
   document_type = true;
   document_currency = true;
+  confidential = true;
 }

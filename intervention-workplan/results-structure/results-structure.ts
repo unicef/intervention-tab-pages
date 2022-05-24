@@ -32,7 +32,7 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import get from 'lodash-es/get';
-import {getIntervention, updateCurrentIntervention} from '../../common/actions/interventions';
+import {getIntervention} from '../../common/actions/interventions';
 import {isUnicefUser, currentIntervention} from '../../common/selectors';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
@@ -45,12 +45,18 @@ import {
   IdAndName,
   ExpectedResult,
   Intervention,
-  ResultLinkLowerResult
+  ResultLinkLowerResult,
+  Indicator
 } from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import ContentPanelMixin from '@unicef-polymer/etools-modules-common/dist/mixins/content-panel-mixin';
 import {_sendRequest} from '@unicef-polymer/etools-modules-common/dist/utils/request-helper';
+import {EtoolsDataTableRow} from '@unicef-polymer/etools-data-table/etools-data-table-row';
+import {PdActivities} from './pd-activities';
+import {PdIndicators} from './pd-indicators';
+import {CpOutputLevel} from './cp-output-level';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 
 /**
  * @customElement
@@ -72,14 +78,15 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
 
   @property({type: Boolean}) isUnicefUser = true;
   @property({type: Boolean}) showIndicators = true;
-  @property({type: Boolean}) showActivities = false;
+  @property({type: Boolean}) showActivities = true;
+  @property({type: Boolean}) showInactiveToggle = false;
   @property({type: Object})
   permissions!: {
     edit: {result_links?: boolean};
     required: {result_links?: boolean};
   };
 
-  @property() private _resultLinks: ExpectedResult[] | null = [];
+  @property() private _resultLinks: ExpectedResult[] | null = null;
   @property({type: String}) noOfPdOutputs: string | number = '0';
   @property({type: Boolean}) thereAreInactiveIndicators = false;
   @property({type: Boolean}) showInactiveIndicators = false;
@@ -88,6 +95,9 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
   intervention!: Intervention;
 
   private cpOutputs: CpOutput[] = [];
+  private newCPOutputs: Set<number> = new Set();
+  private newPDOutputs: Set<number> = new Set();
+  private commentsModeEnabledFlag?: boolean;
 
   render() {
     if (!this.intervention || !this.permissions || !this.resultLinks) {
@@ -97,20 +107,25 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     // language=HTML
     return html`
       ${sharedStyles}
-      <display-controls
-        .showIndicators="${this.showIndicators}"
-        .showActivities="${this.showActivities}"
-        @show-inactive-changed="${this.inactiveChange}"
-        @tab-view-changed="${this.updateTableView}"
-      ></display-controls>
-
       <etools-content-panel
+        show-expand-btn
         panel-title="${translate(translatesMap.result_links)} (${this.noOfPdOutputs})"
         elevation="0"
       >
-        <div slot="panel-btns" class="total-result layout-horizontal bottom-aligned" ?hidden="${!this.showActivities}">
-          <div class="heading">${translate('TOTAL')}</div>
-          <div class="data">${this.intervention.planned_budget.currency} <b>${this.getTotal()}</b></div>
+        <div slot="panel-btns" class="layout-horizontal flex-1">
+          <display-controls
+            class="flex-1"
+            ?show-inactive-toggle="${this.showInactiveToggle}"
+            .showIndicators="${this.showIndicators}"
+            .showActivities="${this.showActivities}"
+            .interventionId="${this.interventionId}"
+            @show-inactive-changed="${this.inactiveChange}"
+            @tab-view-changed="${this.updateTableView}"
+          ></display-controls>
+          <div class="total-result layout-horizontal bottom-aligned" ?hidden="${!this.showActivities}">
+            <div class="heading">${translate('TOTAL')}:</div>
+            <div class="data">${this.intervention.planned_budget.currency} <b>${this.getTotal()}</b></div>
+          </div>
         </div>
 
         <!--    CP output ADD button     -->
@@ -128,10 +143,18 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           class="pd-add-section"
           ?hidden="${this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
         >
-          <div class="pd-title">Program Document Output(s)</div>
-          <div class="add-button" @click="${() => this.openPdOutputDialog()}">
-            <paper-icon-button slot="custom-icon" icon="add-box" tabindex="0"></paper-icon-button>
-            <span class="no-wrap">${translate('ADD_PD_OUTPUT')}</span>
+          <div class="pd-title layout-horizontal align-items-center">
+            ${translate('PD_OUTPUTS_TITLE')}
+            <etools-info-tooltip position="top" custom-icon offset="0">
+              <paper-icon-button
+                icon="add-box"
+                slot="custom-icon"
+                class="add"
+                tabindex="0"
+                @click="${() => this.openPdOutputDialog()}"
+              ></paper-icon-button>
+              <span class="no-wrap" slot="message">${translate('ADD_PD_OUTPUT')}</span>
+            </etools-info-tooltip>
           </div>
         </div>
         ${repeat(
@@ -147,8 +170,11 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
               .showActivities="${this.showActivities}"
               .currency="${this.intervention.planned_budget.currency}"
               .readonly="${!this.permissions.edit.result_links || this.commentMode}"
+              .opened="${this.newCPOutputs.has(result.id)}"
               @edit-cp-output="${() => this.openCpOutputDialog(result)}"
               @delete-cp-output="${() => this.openDeleteCpOutputDialog(result.id)}"
+              @opened-changed="${this.onCpOpenedChanged}"
+              style="z-index: ${99 - _index};"
             >
               <div
                 class="no-results"
@@ -159,34 +185,51 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
               ${!this.isUnicefUser || !result.cp_output || !this.permissions.edit.result_links || this.commentMode
                 ? ''
                 : html`
-                    <div class="pd-title">Program Document Output(s)</div>
-                    <div class="add-button pd-add" @click="${() => this.openPdOutputDialog({}, result.cp_output)}">
-                      <paper-icon-button slot="custom-icon" icon="add-box" tabindex="0"></paper-icon-button>
-                      <span class="no-wrap">${translate('ADD_PD_OUTPUT')}</span>
+                    <div class="pd-title layout-horizontal align-items-center">
+                      ${translate('PD_OUTPUTS_TITLE')}<etools-info-tooltip position="top" custom-icon offset="0">
+                        <paper-icon-button
+                          icon="add-box"
+                          slot="custom-icon"
+                          class="add"
+                          tabindex="0"
+                          @click="${() => this.openPdOutputDialog({}, result.cp_output)}"
+                        ></paper-icon-button>
+                        <span class="no-wrap" slot="message">${translate('ADD_PD_OUTPUT')}</span>
+                      </etools-info-tooltip>
                     </div>
                   `}
               ${result.ll_results.map(
-                (pdOutput: ResultLinkLowerResult) => html`
+                (pdOutput: ResultLinkLowerResult, index: number) => html`
                   <etools-data-table-row
                     class="pdOutputMargin ${this.isUnicefUser ? 'unicef-user' : 'partner'}"
                     related-to="pd-output-${pdOutput.id}"
                     related-to-description="${pdOutput.name}"
                     comments-container
                     secondary-bg-on-hover
+                    .detailsOpened="${this.newPDOutputs.has(pdOutput.id)}"
+                    style="z-index: ${99 - index};"
                   >
-                    <div slot="row-data" class="layout-horizontal align-items-center editable-row higher-slot">
+                    <div slot="row-data" class="layout-horizontal editable-row pd-output-row">
                       <div class="flex-1 flex-fix">
                         <div class="data bold-data">${pdOutput.code}&nbsp;${pdOutput.name}</div>
+                        <div class="count">
+                          <div><b>${pdOutput.activities.length}</b> ${translate('ACTIVITIES')}</div>
+                          <div><b>${pdOutput.applied_indicators.length}</b> ${translate('INDICATORS')}</div>
+                        </div>
                       </div>
 
                       <div class="flex-none total-cache" ?hidden="${!this.showActivities}">
                         <div class="heading">${translate('TOTAL_CASH_BUDGET')}</div>
                         <div class="data">
-                          ${this.intervention.planned_budget.currency} ${displayCurrencyAmount(pdOutput.total, '0.00')}
+                          <span class="currency">${this.intervention.planned_budget.currency}</span>
+                          ${displayCurrencyAmount(pdOutput.total, '0.00')}
                         </div>
                       </div>
 
-                      <div class="hover-block" ?hidden="${!this.permissions.edit.result_links}">
+                      <div
+                        class="hover-block"
+                        ?hidden="${!this.permissions.edit.result_links || this.commentsModeEnabledFlag}"
+                      >
                         <paper-icon-button
                           icon="icons:create"
                           @click="${() => this.openPdOutputDialog(pdOutput, result.cp_output)}"
@@ -199,14 +242,6 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                     </div>
 
                     <div slot="row-data-details">
-                      <pd-indicators
-                        ?hidden="${!this.showIndicators}"
-                        .indicators="${pdOutput.applied_indicators}"
-                        .pdOutputId="${pdOutput.id}"
-                        .readonly="${!this.permissions.edit.result_links || this.commentMode}"
-                        .showInactiveIndicators="${this.showInactiveIndicators}"
-                        .inAmendment="${this.intervention.in_amendment}"
-                      ></pd-indicators>
                       <pd-activities
                         .activities="${pdOutput.activities}"
                         .interventionId="${this.interventionId}"
@@ -216,6 +251,14 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                         .readonly="${!this.permissions.edit.result_links || this.commentMode}"
                         .currency="${this.intervention.planned_budget.currency}"
                       ></pd-activities>
+                      <pd-indicators
+                        ?hidden="${!this.showIndicators}"
+                        .indicators="${pdOutput.applied_indicators}"
+                        .pdOutputId="${pdOutput.id}"
+                        .readonly="${!this.permissions.edit.result_links || this.commentMode}"
+                        .showInactiveIndicators="${this.showInactiveIndicators}"
+                        .inAmendment="${this.intervention.in_amendment}"
+                      ></pd-indicators>
                     </div>
                   </etools-data-table-row>
                 `
@@ -232,11 +275,53 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     super.connectedCallback();
   }
 
+  protected firstUpdated() {
+    super.firstUpdated();
+    if (this.commentsModeEnabledFlag) {
+      setTimeout(() => this.openAllCpOutputs());
+    }
+  }
+
+  onCpOpenedChanged(event: CustomEvent) {
+    if (!event.detail.opened) {
+      return;
+    }
+    this.openCPChildren(event.target as CpOutputLevel);
+  }
+
+  openAllCpOutputs() {
+    this.shadowRoot!.querySelectorAll('cp-output-level').forEach((element) => {
+      const row = (element as CpOutputLevel).shadowRoot!.querySelector('etools-data-table-row');
+      if (row) {
+        (row as EtoolsDataTableRow).detailsOpened = true;
+      }
+      this.openCPChildren(element as CpOutputLevel);
+    });
+  }
+
+  openCPChildren(cpElement: CpOutputLevel): void {
+    cpElement
+      .querySelectorAll('etools-data-table-row')
+      .forEach((row: Element) => ((row as EtoolsDataTableRow).detailsOpened = true));
+    cpElement
+      .querySelectorAll('pd-activities, pd-indicators')
+      .forEach((row: Element) => (row as PdActivities | PdIndicators).openAllRows());
+  }
+
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan)) {
       return;
     }
-    this.resultLinks = selectInterventionResultLinks(state);
+    if (state.commentsData?.commentsModeEnabled && !this.commentsModeEnabledFlag) {
+      this.openAllCpOutputs();
+    }
+    this.commentsModeEnabledFlag = Boolean(state.commentsData?.commentsModeEnabled);
+    this.updateResultLinks(state);
+    this.showInactiveToggle = this.resultLinks.some(({ll_results}: ExpectedResult) =>
+      ll_results.some(({applied_indicators}: ResultLinkLowerResult) =>
+        applied_indicators.some(({is_active}: Indicator) => !is_active)
+      )
+    );
     this.permissions = selectResultLinksPermissions(state);
     this.interventionId = selectInterventionId(state);
     this.interventionStatus = selectInterventionStatus(state);
@@ -359,22 +444,24 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
   }
 
   deleteCPOutputFromPD(resultLinkId: number) {
+    fireEvent(this, 'global-loading', {
+      active: true,
+      loadingSource: 'interv-cp-remove'
+    });
     const endpoint = getEndpoint(interventionEndpoints.resultLinkGetDelete, {
       result_link: resultLinkId
     });
     _sendRequest({
       method: 'DELETE',
       endpoint: endpoint
-    }).then(() => {
-      getStore().dispatch(updateCurrentIntervention(this.removeDeletedCPOutput(this.intervention, resultLinkId)));
-    });
-  }
-
-  removeDeletedCPOutput(intervention: Intervention, resultLinkId: string | number) {
-    intervention.result_links = intervention.result_links.filter(
-      (rl: ExpectedResult) => rl.id !== Number(resultLinkId)
-    );
-    return intervention;
+    })
+      .then(() => getStore().dispatch<AsyncAction>(getIntervention()))
+      .finally(() =>
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: 'interv-cp-remove'
+        })
+      );
   }
 
   _updateNoOfPdOutputs() {
@@ -415,6 +502,23 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     this.showInactiveIndicators = e.detail.value;
   }
 
+  private updateResultLinks(state: RootState): void {
+    const newResults = selectInterventionResultLinks(state) || [];
+    if (this._resultLinks) {
+      // check if CP outputs was rendered already, check if we have new CP output.
+      const existingCP = this.resultLinks.map(({id}) => id);
+      const created = newResults.filter(({id}) => !existingCP.includes(id));
+      // if we found new CP output - add it to track to open it on first render
+      created.forEach(({id}) => this.newCPOutputs.add(id));
+      // the same thing for PD
+      const existingPD = this.resultLinks.flatMap(({ll_results}) => ll_results.map(({id}) => id));
+      const createdPD = newResults.flatMap(({ll_results}) => ll_results).filter(({id}) => !existingPD.includes(id));
+      createdPD.forEach(({id}) => this.newPDOutputs.add(id));
+    }
+
+    this.resultLinks = newResults;
+  }
+
   static get styles(): CSSResultArray {
     // language=CSS
     return [
@@ -428,22 +532,20 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         .no-results {
           padding: 24px;
         }
-        .pdOutputMargin.unicef-user .editable-row .hover-block,
-        .pdOutputMargin.partner .editable-row .hover-block {
-          background: linear-gradient(270deg, #c4c4c4 71.65%, rgba(196, 196, 196, 0) 100%);
-          padding-left: 20px;
-        }
         .pd-title {
-          padding: 32px 42px 0 22px;
+          padding: 8px 42px 0px 22px;
           font-size: 16px;
           font-weight: 500;
           line-height: 19px;
         }
         cp-output-level .pd-title {
-          padding: 32px 42px 0;
+          padding: 8px 16px;
         }
         .pd-add-section {
-          background-color: var(--secondary-background-color);
+          background-color: #ccebff;
+        }
+        .pd-add {
+          padding: 0 5px 0;
         }
         etools-data-table-row {
           position: relative;
@@ -469,18 +571,31 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         }
 
         etools-data-table-row::part(edt-list-row-wrapper) {
-          padding: 0 12px 0 23px;
-          background-color: var(--secondary-background-color);
+          background-color: #ccebff;
           min-height: 48px;
           border-bottom: none;
         }
+        etools-data-table-row::part(edt-icon-wrapper) {
+          min-height: 0;
+          line-height: normal;
+          padding: 4px 8px 0 13px;
+          align-self: flex-start;
+        }
         etools-data-table-row::part(edt-list-row-wrapper):hover {
-          background-color: #c4c4c4;
+          background-color: var(--pd-output-background);
         }
 
         etools-data-table-row::part(edt-list-row-collapse-wrapper) {
           padding: 0 !important;
           border-bottom: none !important;
+        }
+        div.editable-row .hover-block {
+          background: linear-gradient(270deg, var(--pd-output-background) 71.65%, rgba(196, 196, 196, 0) 100%);
+        }
+        div.pd-output-row > div {
+          line-height: 26px;
+          padding-top: 6px;
+          padding-bottom: 4px;
         }
         .export-res-btn {
           height: 28px;
@@ -490,6 +605,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         }
         .total-result {
           padding-bottom: 6px;
+          margin-left: 12px;
         }
         .total-result b {
           font-size: 22px;
@@ -503,6 +619,9 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         }
         etools-content-panel {
           box-shadow: 0 2px 7px 3px rgba(0, 0, 0, 0.15);
+        }
+        etools-content-panel::part(ecp-header-btns-wrapper) {
+          flex: 1;
         }
         etools-content-panel::part(ecp-header) {
           border-bottom: none;
@@ -522,9 +641,15 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           height: 1px;
           background-color: #c4c4c4;
         }
-        .pd-add-section .add-button,
-        etools-content-panel > .add-button {
-          padding-bottom: 10px;
+        .count {
+          display: flex;
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 16px;
+          padding: 6px 0 4px;
+        }
+        .count div:first-child {
+          margin-right: 20px;
         }
       `
     ];

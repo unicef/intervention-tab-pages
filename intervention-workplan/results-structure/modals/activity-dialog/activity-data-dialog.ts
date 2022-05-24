@@ -114,6 +114,8 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
         }
         paper-toggle-button {
           margin: 25px 0;
+          width: min-content;
+          white-space: nowrap;
         }
         etools-dialog paper-textarea {
           --iron-autogrow-textarea: {

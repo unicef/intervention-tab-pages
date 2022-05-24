@@ -12,6 +12,7 @@ import {AsyncAction, ResultIndicator, GenericObject} from '@unicef-polymer/etool
 import {translate, get as getTranslation} from 'lit-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {areEqual} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 
 @customElement('cp-output-dialog')
 export class CpOutputDialog extends LitElement {
@@ -39,7 +40,7 @@ export class CpOutputDialog extends LitElement {
       this.cpOutputId = resultLink.cp_output;
       this.selectedCpOutput = resultLink.cp_output;
       this.cpOutputName = resultLink.cp_output_name;
-      this.selectedIndicators = resultLink.ram_indicators || [];
+      this.selectedIndicators = [...(resultLink.ram_indicators || [])];
       this.resultLinkId = resultLink.id;
     }
     this.interventionId = interventionId;
@@ -136,7 +137,10 @@ export class CpOutputDialog extends LitElement {
   }
 
   onIndicatorsSelected(data: ResultIndicator[]) {
-    this.selectedIndicators = data.map(({id}: ResultIndicator) => id);
+    const newIndicators = data.map(({id}: ResultIndicator) => id);
+    if (!areEqual(this.selectedIndicators, newIndicators)) {
+      this.selectedIndicators = newIndicators;
+    }
   }
 
   onCpOutputSelected(id: number) {
@@ -145,14 +149,17 @@ export class CpOutputDialog extends LitElement {
   }
 
   resetFieldError(field: string) {
+    if (!this.errors[field]) {
+      return;
+    }
     delete this.errors[field];
-    this.performUpdate();
+    this.requestUpdate();
   }
 
   processRequest() {
     if (!this.cpOutputId && !this.selectedCpOutput) {
       this.errors.cp_output = [getTranslation('GENERAL.REQUIRED_FIELD')];
-      this.performUpdate();
+      this.requestUpdate();
       return;
     }
     this.spinnerText = getTranslation('GENERAL.SAVING_DATA');

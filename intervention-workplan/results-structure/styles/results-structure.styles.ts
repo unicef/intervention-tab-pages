@@ -2,6 +2,10 @@ import {css, CSSResult} from 'lit-element';
 
 // language=CSS
 export const ResultStructureStyles: CSSResult = css`
+  :host {
+    --pd-output-background: #ccebff;
+    --cp-output-background: #a6dbff;
+  }
   .heading {
     font-size: 12px;
     line-height: 16px;
@@ -21,6 +25,7 @@ export const ResultStructureStyles: CSSResult = css`
     font-size: 20px;
     font-weight: 900;
     line-height: 23px;
+    text-align: right;
   }
   .total-cache .currency {
     margin-right: 4px;
@@ -101,17 +106,7 @@ export const ResultStructureStyles: CSSResult = css`
     align-items: center;
   }
   div[slot='row-data'] {
-    margin: 0px;
-    min-height: 48px;
-  }
-  div[slot='row-data'] > div {
-    line-height: 26px;
-    padding-top: 8px;
-    padding-bottom: 8px;
-  }
-  .higher-slot {
-    margin: 0px;
-    min-height: 65px !important;
+    margin: 0;
   }
   .empty-row {
     padding-inline: 56px 16px;
@@ -126,10 +121,9 @@ export const ResultStructureStyles: CSSResult = css`
     display: flex;
     width: min-content;
     align-items: center;
-    padding: 16px 13px 0;
+    padding: 5px 5px 0;
     cursor: pointer;
     font-size: 15px;
-    font-weight: 500;
     line-height: 18px;
     color: #444444;
     white-space: nowrap;
@@ -137,7 +131,15 @@ export const ResultStructureStyles: CSSResult = css`
   .add-button:hover {
     color: #212121;
   }
-  .add-button.pd-add {
-    padding-left: 31px;
+  div.editable-row .hover-block {
+    background: linear-gradient(270deg, var(--cp-output-background) 71.65%, rgba(196, 196, 196, 0) 100%);
+    padding-left: 20px;
+  }
+  paper-icon-button.add {
+    color: #444444;
+    margin-left: -7px;
+  }
+  paper-icon-button.add:hover {
+    color: #212121;
   }
 `;

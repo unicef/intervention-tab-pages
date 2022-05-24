@@ -49,6 +49,11 @@ export const CommentStyles: CSSResult = css`
     font-size: 16px;
     line-height: 24px;
     color: var(--primary-text-color);
+    padding-right: 6px;
+  }
+  :host([my-comment]) .name {
+    padding-right: 0px;
+    padding-left: 6px;
   }
   .date {
     font-size: 12px;

@@ -85,8 +85,8 @@ export class GroupedLocationsDialog extends LitElement {
           .selected="${this.adminLevel}"
           placeholder="&#8212;"
           .options="${this.adminLevels}"
-          option-label="name"
-          option-value="name"
+          option-label="admin_level_name"
+          option-value="admin_level_name"
           trigger-value-change-event
           @etools-selected-item-changed="${this.adminLevelChanged}"
         >
@@ -185,7 +185,7 @@ export class GroupedLocationsDialog extends LitElement {
       return [];
     }
     const index = locationTypes.findIndex(function (al: any) {
-      return al.name === 'Country';
+      return al.admin_level_name === 'Country';
     });
     if (index > -1) {
       locationTypes.splice(index, 1);
@@ -215,7 +215,7 @@ export class GroupedLocationsDialog extends LitElement {
   }
 
   adminLevelChanged(event: CustomEvent) {
-    const selectedAdminLevelName = get(event.detail, 'selectedItem.name');
+    const selectedAdminLevelName = get(event.detail, 'selectedItem.admin_level_name');
     if (!selectedAdminLevelName) {
       this.groupedLocations = [];
       return;

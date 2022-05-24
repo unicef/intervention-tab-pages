@@ -11,7 +11,7 @@ import './editor-table';
  */
 @customElement('intervention-workplan-editor')
 export class InterventionWorkplanEditor extends LitElement {
-  @property() interventionId: number;
+  @property() interventionId!: number;
   render() {
     // language=HTML
     return html`
@@ -40,7 +40,7 @@ export class InterventionWorkplanEditor extends LitElement {
     return css`
       .top-card {
         background-color: var(--primary-background-color);
-        padding: 24px 22px;
+        padding: 20px 22px 1px 22px;
       }
     `;
   }

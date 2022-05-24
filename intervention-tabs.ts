@@ -67,9 +67,11 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       css`
         :host {
           flex: 1;
-          display: flex !important;
           width: 100%;
           flex-direction: column;
+        }
+        :host(:not([hidden])) {
+          display: flex !important;
         }
         :host([is-in-amendment]) {
           border: 5px solid #ffd28b;
@@ -79,12 +81,14 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
           display: none;
         }
         :host([data-active-tab='workplan-editor']) intervention-page-content-header {
+          position: relative;
           min-height: 0;
-          filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.15));
           border-bottom: none;
+          box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.15);
         }
         :host([data-active-tab='workplan-editor']) .page-content {
-          margin: 0;
+          margin: 4px 0 0;
+          margin-top: 0;
         }
         .page-content {
           margin: 24px;

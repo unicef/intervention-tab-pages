@@ -149,6 +149,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             ?required="${this.permissions.required.capacity_development}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'capacity_development')}"
             maxlength="5000"
+            .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.capacity_development)}"
             rows="${detailsTextareaRowsCount(this.editMode)}"
           >
             <info-icon-tooltip

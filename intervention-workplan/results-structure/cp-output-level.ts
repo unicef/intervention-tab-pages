@@ -20,18 +20,18 @@ import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-inpu
 import {ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
-import {PaperButtonElement} from '@polymer/paper-button';
+import {TruncateMixin} from '../../common/truncate.mixin';
 
 @customElement('cp-output-level')
-export class CpOutputLevel extends LitElement {
+export class CpOutputLevel extends TruncateMixin(LitElement) {
   @property() interventionId!: number;
   @property() currency!: string | undefined;
   @property() resultLink!: ExpectedResult;
   @property({type: Boolean, reflect: true, attribute: 'show-cpo-level'}) showCPOLevel = false;
   @property({type: Boolean}) showIndicators = true;
   @property({type: Boolean}) showActivities = true;
-  @property({type: Boolean})
-  readonly = true;
+  @property({type: Boolean}) readonly = true;
+  @property({type: Boolean}) opened = false;
 
   protected render(): TemplateResult {
     return html`
@@ -39,9 +39,9 @@ export class CpOutputLevel extends LitElement {
       ${this.showCPOLevel && this.resultLink
         ? html`
             <div class="divider"></div>
-            <etools-data-table-row secondary-bg-on-hover details-opened>
+            <etools-data-table-row secondary-bg-on-hover .detailsOpened="${this.opened}">
               <div slot="row-data" class="editable-row">
-                <div class="layout-horizontal higher-slot">
+                <div class="layout-horizontal cp-output-row">
                   <!--      If PD is associated with CP Output      -->
                   ${this.resultLink.cp_output
                     ? html`
@@ -58,10 +58,7 @@ export class CpOutputLevel extends LitElement {
                             <ul id="ram-list">
                               ${this.resultLink.ram_indicator_names.length
                                 ? this.resultLink.ram_indicator_names.map(
-                                    (name: string, index: number) =>
-                                      html`<li>
-                                        ${this.first60Chars(name, index)}${this.from61sthCharOnwards(name, index)}
-                                      </li>`
+                                    (name: string) => html`<li>${this.truncateString(name)}</li>`
                                   )
                                 : '—'}
                             </ul>
@@ -77,15 +74,13 @@ export class CpOutputLevel extends LitElement {
                             )}
                           </div>
                         </div>
-                        <div class="hover-block">
+                        <div class="hover-block" ?hidden="${this.readonly}">
                           <paper-icon-button
                             icon="icons:create"
-                            ?hidden="${this.readonly}"
                             @click="${this.openEditCpOutputPopup}"
                           ></paper-icon-button>
                           <paper-icon-button
                             icon="icons:delete"
-                            ?hidden="${this.readonly}"
                             @click="${this.openDeleteCPOutputPopup}"
                           ></paper-icon-button>
                         </div>
@@ -113,34 +108,6 @@ export class CpOutputLevel extends LitElement {
     this.shadowRoot!.querySelectorAll('iron-icon').forEach((el) => callClickOnSpacePushListener(el));
   }
 
-  first60Chars(name: string, index: number) {
-    if (name.length <= 60) {
-      return name;
-    }
-    return html`${name.substring(0, 60)}<paper-button
-        class="show-more-btn"
-        id="show-more"
-        @click="${(event: CustomEvent) => this.showMore(event, index)}"
-        >...</paper-button
-      >`;
-  }
-
-  from61sthCharOnwards(name: string, index: number) {
-    if (name.length <= 60) {
-      return '';
-    }
-    return html`<span id="more-${index}" hidden aria-hidden>${name.substring(60, name.length)}</span>`;
-  }
-
-  private showMore(event: CustomEvent, index: number) {
-    const paperBtn = event.target as PaperButtonElement;
-    paperBtn.setAttribute('hidden', '');
-    const firstparent = paperBtn.parentElement;
-    const span = firstparent?.querySelector('#more-' + index);
-    span?.removeAttribute('hidden');
-    span?.removeAttribute('aria-hidden');
-  }
-
   openEditCpOutputPopup(): void {
     fireEvent(this, 'edit-cp-output');
   }
@@ -154,6 +121,7 @@ export class CpOutputLevel extends LitElement {
     return [
       gridLayoutStylesLit,
       ResultStructureStyles,
+      ...super.styles,
       css`
         :host {
           display: block;
@@ -173,24 +141,18 @@ export class CpOutputLevel extends LitElement {
         .alert {
           color: var(--error-color);
         }
-        .editable-row .hover-block {
-          background: linear-gradient(270deg, #c4c4c4 71.65%, rgba(196, 196, 196, 0) 100%);
-          padding-left: 20px;
-        }
-        .show-more-btn {
-          margin: 0;
-          padding: 0;
-          min-width: 15px;
-          font-weight: bold;
-          color: var(--primary-color);
-        }
         #ram-list {
           padding-inline-start: 19px;
           margin: 2px;
           list-style: circle;
         }
+        .cp-output-row {
+          line-height: 26px;
+          padding-top: 8px;
+          padding-bottom: 3px;
+        }
         :host div.outputs-count {
-          padding: 0 0 23px;
+          padding: 0 0 9px;
           font-family: Roboto;
           font-size: 14px;
           font-weight: 400;
@@ -198,7 +160,7 @@ export class CpOutputLevel extends LitElement {
           color: #212121;
         }
         div[slot='row-data-details'] {
-          background-color: var(--secondary-background-color);
+          background-color: var(--pd-output-background);
         }
         etools-data-table-row {
           overflow: hidden;
@@ -210,15 +172,15 @@ export class CpOutputLevel extends LitElement {
           padding: 0 !important;
           border: none;
         }
+        etools-data-table-row::part(edt-icon-wrapper) {
+          padding: 11px 7px 0 9px;
+          align-self: flex-start;
+        }
         etools-data-table-row::part(edt-list-row-wrapper) {
           border-bottom: none !important;
           padding-left: 4px;
-        }
-        .higher-slot .heading {
-          margin-top: 23px;
-        }
-        .higher-slot .data {
-          margin-bottom: 23px;
+          padding-right: 16px;
+          background-color: var(--cp-output-background);
         }
         .editable-row:hover .hover-block {
           opacity: 1;

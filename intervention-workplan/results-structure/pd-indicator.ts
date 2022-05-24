@@ -8,7 +8,7 @@ import {CommentElementMeta, CommentsMixin} from '../../common/components/comment
 import {Disaggregation, DisaggregationValue} from '@unicef-polymer/etools-types';
 import {Indicator} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
 
 @customElement('pd-indicator')
@@ -21,6 +21,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
   @property({type: String}) interventionStatus = '';
   @property({type: Boolean}) inAmendment!: boolean;
   @property({type: Boolean}) detailsOpened = false;
+  @property({type: Number}) index?: number;
 
   render() {
     return html`
@@ -31,7 +32,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
         }
       </style>
       <div
-        class="table-row"
+        class="table-row editable-row"
         comment-element="indicator-${this.indicator.id}"
         comment-description="${this.indicator.indicator?.title}"
         @paper-dropdown-open="${(event: CustomEvent) => (event.currentTarget as HTMLElement)!.classList.add('active')}"
@@ -40,28 +41,34 @@ export class PdIndicator extends CommentsMixin(LitElement) {
       >
         <div class="main-info">
           <!--    Indicator name    -->
-          <div class="indicator">
-            <div class="name">
+          <div class="flex-1 left-align layout-vertical start-aligned">
+            <div class="name layout-horizontal">
               ${this.getIndicatorDisplayType(this.indicator)} ${this.addInactivePrefix(this.indicator)}
               ${(this.indicator.indicator ? this.indicator.indicator.title : this.indicator.cluster_indicator_title) ||
               '—'}
+              <div id="hf" class="hf-mark" ?hidden="${!this.indicator.is_high_frequency}"></div>
+              <paper-tooltip for="hf" position="top" theme="light" animation-delay="0" offset="4">
+                This indicator is high frequency
+              </paper-tooltip>
             </div>
             <div class="item-link" @click="${() => (this.detailsOpened = !this.detailsOpened)}">
-              ${this.detailsOpened ? 'hide' : 'see'} ${translate('LOCATIONS')} (${this.locationNames.length})
-              ${translate('AND')} ${translate('DISAGGREGATIONS')} (${this.indicator.disaggregation.length})
+              ${this.detailsOpened ? 'hide' : 'show'} ${this.locationNames.length} ${translate('LOCATIONS')} |
+              ${this.indicator.disaggregation.length} ${translate('DISAGGREGATIONS')}
             </div>
           </div>
-
-          <div><div class="hf-mark" ?hidden="${!this.indicator.is_high_frequency}"></div></div>
           <!--    Baseline    -->
-          <div class="number-data">${this._displayBaselineOrTarget(this.indicator.baseline, this.indicator)}</div>
+          <div class="flex-1 secondary-cell right">
+            ${this._displayBaselineOrTarget(this.indicator.baseline, this.indicator)}
+          </div>
 
           <!--    Target    -->
-          <div class="number-data">${this._displayBaselineOrTarget(this.indicator.target, this.indicator)}</div>
+          <div class="flex-1 secondary-cell right">
+            ${this._displayBaselineOrTarget(this.indicator.target, this.indicator)}
+          </div>
         </div>
         <div class="details ${this.detailsOpened ? 'opened' : ''}">${this.additionalTemplate()}</div>
 
-        <div class="show-actions" ?hidden="${this.commentMode}">
+        <div class="show-actions hover-block" style="z-index: ${99 - (this.index || 0)}" ?hidden="${this.commentMode}">
           <paper-menu-button id="view-menu-button" close-on-activate horizontal-align="right">
             <paper-icon-button slot="dropdown-trigger" icon="icons:more-vert" tabindex="0"></paper-icon-button>
             <paper-listbox slot="dropdown-content">
@@ -127,10 +134,9 @@ export class PdIndicator extends CommentsMixin(LitElement) {
       </div>`;
   }
 
-  getSpecialElements(container: HTMLElement): CommentElementMeta[] {
-    const element: HTMLElement = container.shadowRoot!.querySelector('#wrapper') as HTMLElement;
-    const relatedTo: string = container.getAttribute('related-to') as string;
-    const relatedToDescription = container.getAttribute('related-to-description') as string;
+  getSpecialElements(element: HTMLElement): CommentElementMeta[] {
+    const relatedTo: string = element.getAttribute('related-to') as string;
+    const relatedToDescription = element.getAttribute('related-to-description') as string;
     return [{element, relatedTo, relatedToDescription}];
   }
   openDeactivationDialog(indicatorId: string) {
@@ -165,7 +171,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
       default:
         break;
     }
-    return html`<span class="indicatorType">${typeChar} </span>`;
+    return typeChar;
   }
 
   getDisaggregation(disaggregationId: string | number): TemplateResult {
@@ -201,9 +207,12 @@ export class PdIndicator extends CommentsMixin(LitElement) {
     const displayType = indicator.indicator ? indicator.indicator!.display_type : '';
     if (unit === 'percentage' && displayType === 'ratio') {
       return item.v + ' / ' + item.d;
+    } else if (unit === 'percentage') {
+      return item.v;
     }
 
-    return displayCurrencyAmount(String(item.v), '0.00');
+    const numberValue = Number(item.v) || 0;
+    return addCurrencyAmountDelimiter(String(numberValue));
   }
 
   _clusterIndIsRatio(item: any) {
@@ -257,29 +266,11 @@ export class PdIndicator extends CommentsMixin(LitElement) {
         .table-row {
           gap: 0;
           flex-direction: column;
+          padding-right: 10%;
         }
         .main-info {
           display: flex;
           gap: 10px;
-        }
-        .main-info .indicator {
-          width: 60%;
-          flex: none;
-          gap: 10px;
-          text-align: left;
-        }
-        .main-info > div:not(.indicator) {
-          flex: 1;
-        }
-        .number-data {
-          text-align: right;
-        }
-        .hf-mark {
-          margin: 6px auto;
-          width: 15px;
-          height: 15px;
-          border-radius: 50%;
-          background-color: #2073b7;
         }
         .details-heading {
           margin-bottom: 12px;
@@ -311,8 +302,24 @@ export class PdIndicator extends CommentsMixin(LitElement) {
         .details.opened {
           flex: 1 1 0%;
           height: auto;
-          padding-top: 32px;
+          padding-top: 16px;
           transform: scaleY(1);
+        }
+        div.editable-row .hover-block {
+          background: linear-gradient(270deg, var(--main-background) 71.65%, rgba(196, 196, 196, 0) 100%);
+          padding-left: 20px;
+        }
+        .hf-mark {
+          width: 15px;
+          height: 15px;
+          flex: none;
+          margin-top: 5px;
+          margin-left: 2px;
+          border-radius: 50%;
+          background-color: #2073b7;
+        }
+        .start-aligned {
+          align-items: flex-start;
         }
       `
     ];

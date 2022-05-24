@@ -1,34 +1,44 @@
 import {css} from 'lit-element';
 
 export const EditorTableStyles = css`
+  * {
+    box-sizing: border-box;
+  }
   table {
     width: 100%;
     border-collapse: collapse;
+    box-sizing: border-box;
     background-color: white;
   }
   td {
     border: 1px solid #b8b8b8;
     vertical-align: top;
-    padding: 8px 10px;
+    padding: 6px 10px;
   }
 
   td.first-col {
-    width: 60px;
-    text-align: center;
+    width: 85px;
+    text-align: left;
     vertical-align: middle;
     padding: 6px;
   }
-  td.col-10 {
-    width: 10%;
+  td.col-unit-no {
+    width: 7%;
   }
-  td.col-30 {
-    width: 30%;
+  td.col-unit {
+    width: 7%;
+  }
+  td.col-text {
+    width: calc(47% - 85px);
   }
   td.col-g {
-    width: 12.5%;
+    width: 10%;
   }
-  td.col-6 {
-    width: 12.5%;
+  td.col-p-per-unit {
+    width: 9%;
+  }
+  td.last-col {
+    width: 10%;
     vertical-align: top;
     text-align: right;
   }
@@ -44,9 +54,13 @@ export const EditorTableStyles = css`
     border-top: none;
     font-size: smaller;
     font-weight: bold;
+    padding-bottom: 2px !important;
+    padding-top: 18px;
+  }
+  tr.header.no-padd > td {
+    padding-top: 4px;
   }
   tr.text > td {
-    border-bottom: none;
     border-top: none;
   }
 
@@ -61,50 +75,48 @@ export const EditorTableStyles = css`
     border-right: none;
   }
 
-  tbody.odd tr:nth-child(odd) {
-    background-color: #eeeeee;
-  }
-
   td:nth-child(n + 4) {
     text-align: right;
   }
-  td:nth-child(n-1) {
-    border-right: none;
-  }
-  td.a-right {
-    text-align: right;
+
+  td.a-center {
+    text-align: center;
   }
 
-  .blue {
-    background-color: #b6d5f1;
-  }
   .gray-1 {
-    background-color: #f7f6f6;
+    background-color: #e4e4e4;
   }
   .b {
     font-weight: 600;
   }
-  .border-b {
-    border-bottom: 1px solid #b8b8b8;
-  }
 
   paper-icon-button {
-    color: var(--secondary-text-color);
+    color: #504e4e;
   }
   paper-icon-button[icon='close'] {
     color: red;
   }
+  paper-icon-button[icon='delete']:hover {
+    color: #212121;
+  }
+  paper-icon-button[icon='create']:hover {
+    color: #212121;
+  }
 
-  paper-textarea {
-    --paper-input-container-label-floating: {
-      font-weight: 600 !important;
-      color: var(--secondary-text-color);
-    }
-    --paper-input-container-label-floating_-_font-weight: 600;
+  paper-icon-button:hover {
+    color: #212121;
   }
 
   etools-currency-amount-input {
     text-align: right;
+  }
+
+  div.icon:hover {
+    color: #212121;
+    cursor: pointer;
+  }
+  div.icon {
+    max-width: fit-content;
   }
 
   paper-button {
@@ -124,8 +136,34 @@ export const EditorTableStyles = css`
   .justify-right {
     justify-content: flex-end;
   }
-  tr.activity-items-row > td {
+  .justify-center {
+    justify-content: center;
+  }
+  .flex-none {
+    flex: none;
+  }
+  tr.activity-items-row:not(.readonly-mode) > td {
     padding-bottom: 16px;
+  }
+  tr.activity-items-row.readonly-mode > td {
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+
+  tr.activity-items-row.readonly-mode > td:last-of-type {
+    border-left: none;
+    border-right: none;
+  }
+
+  tr.activity-items-row > td.total {
+    border-right: none;
+    --paper-input-container-input_-_font-weight: 600;
+  }
+  tr.activity-items-row > td {
+    vertical-align: bottom;
+  }
+  tr.activity-items-row:last-of-type {
+    border-bottom: 1px solid #b8b8b8 !important;
   }
 
   .v-middle {
@@ -135,8 +173,46 @@ export const EditorTableStyles = css`
     vertical-align: bottom;
     padding-left: 0;
   }
-  paper-icon-button#delItem {
-    padding: 0;
-    width: 25px;
+
+  .padd-top-10 {
+    padding-top: 10px;
+  }
+  tr.no-b-border > td {
+    border-bottom: none;
+  }
+  td.no-l-r-border {
+    border-left: none;
+    border-right: none;
+  }
+  td.no-r-border {
+    border-right: none;
+  }
+  td.no-l-border {
+    border-left: none;
+  }
+  .no-top-padding {
+    padding-top: 0;
+  }
+
+  .heavy-blue {
+    background-color: #a6dbff;
+  }
+
+  .lighter-blue {
+    background-color: #ccebff;
+  }
+
+  .red {
+    color: red;
+  }
+  .space-for-err-msg {
+    padding-bottom: 8px;
+  }
+  .row-for-fixed-table-layout {
+    visibility: collapse;
+  }
+
+  *[input][readonly] {
+    pointer-events: none;
   }
 `;

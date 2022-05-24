@@ -8,7 +8,10 @@ import '@polymer/paper-checkbox';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
-import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
+import {
+  validateRequiredFields,
+  resetRequiredFields
+} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {IdAndName, GenericObject, ReviewAttachment} from '@unicef-polymer/etools-types';
@@ -94,8 +97,8 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
             required
             ?invalid="${this.errors.type}"
             .errorMessage="${(this.errors.type && this.errors.type[0]) || translate('GENERAL.REQUIRED_FIELD')}"
-            @focus="${() => this.resetFieldError('type')}"
-            @click="${() => this.resetFieldError('type')}"
+            @focus="${() => this.resetFieldError('type', this)}"
+            @click="${() => this.resetFieldError('type', this)}"
           ></etools-dropdown>
 
           <!-- Attachment -->
@@ -110,8 +113,8 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
             @upload-finished="${(event: CustomEvent) => this.fileSelected(event.detail)}"
             ?invalid="${this.errors.attachment_document}"
             .errorMessage="${this.errors.attachment_document && this.errors.attachment_document[0]}"
-            @focus="${() => this.resetFieldError('attachment_document')}"
-            @click="${() => this.resetFieldError('attachment_document')}"
+            @focus="${() => this.resetFieldError('attachment_document', this)}"
+            @click="${() => this.resetFieldError('attachment_document', this)}"
           ></etools-upload>
 
           <paper-checkbox
@@ -138,8 +141,9 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
     this.data[field] = value;
   }
 
-  resetFieldError(field: string): void {
+  resetFieldError(field: string, el: any): void {
     delete this.errors[field];
+    resetRequiredFields(el);
     this.performUpdate();
   }
 

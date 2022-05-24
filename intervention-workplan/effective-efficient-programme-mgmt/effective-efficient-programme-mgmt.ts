@@ -60,6 +60,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         :host {
           display: block;
           margin-bottom: 24px;
+          --etools-table-col-font-size: 16px;
         }
 
         etools-table {
@@ -87,7 +88,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
           ></info-icon-tooltip>
         </div>
         <div slot="panel-btns">
-          <label class="paper-label font-bold pad-right">${translate('TOTAL')}</label
+          <label class="paper-label font-bold pad-right">${translate('TOTAL')}:</label
           ><label class="font-bold-12">${this.data.currency} ${this.total_amount}</label>
         </div>
 

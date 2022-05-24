@@ -2,9 +2,6 @@ import {css, CSSResult} from 'lit-element';
 
 // language=CSS
 export const ActivitiesAndIndicatorsStyles: CSSResult = css`
-  div[slot='row-data'] {
-    min-height: 53px;
-  }
   .title-text {
     font-size: 16px;
     font-weight: 500;
@@ -18,12 +15,11 @@ export const ActivitiesAndIndicatorsStyles: CSSResult = css`
     font-weight: 400;
     line-height: 26px;
     color: #212121;
-    padding: 19px 40px 19px 24px !important;
+    padding: 6px 16px;
   }
   .table-head {
-    padding: 22px 40px 22px 24px !important;
+    padding: 4px 16px !important;
     font-size: 16px;
-    font-weight: 700;
     line-height: 16px;
     color: #5c5c5c;
   }
@@ -37,13 +33,14 @@ export const ActivitiesAndIndicatorsStyles: CSSResult = css`
     display: none;
     top: 0;
     right: 0;
+    z-index: 999;
   }
   .table-row.active .show-actions,
   .table-row:hover .show-actions {
     display: block;
   }
   .table-row.active,
-  .table-row:not(.table-head):hover {
+  .table-row:not(.table-head, .empty):hover {
     background-color: var(--main-background-dark);
   }
   pd-indicator:not(:last-child):after,
@@ -56,6 +53,21 @@ export const ActivitiesAndIndicatorsStyles: CSSResult = css`
     bottom: 0;
     height: 1px;
     background-color: #c4c4c4;
+  }
+  .secondary-cell {
+    max-width: 15%;
+    min-width: 110px;
+    display: flex;
+    justify-content: center;
+  }
+  .secondary-cell.left {
+    justify-content: flex-start;
+  }
+  .secondary-cell.right {
+    justify-content: right;
+  }
+  div.left-align {
+    text-align: left;
   }
   .action {
     display: flex;
@@ -81,11 +93,10 @@ export const ActivitiesAndIndicatorsStyles: CSSResult = css`
   .item-link {
     margin-top: 7px;
     font-size: 16px;
-    font-weight: 700;
     line-height: 26px;
-    color: #2073b7;
-    text-decoration: underline;
+    color: #5c5c5c;
     cursor: pointer;
+    text-transform: lowercase;
   }
   etools-data-table-row {
     --list-bg-color: var(--main-background);
@@ -93,7 +104,7 @@ export const ActivitiesAndIndicatorsStyles: CSSResult = css`
 
   etools-data-table-row::part(edt-list-row-collapse-wrapper) {
     padding: 0 !important;
-    background-color: var(--main-background);
+    background-color: var(--primary-background-color);
     border-top: 1px solid var(--main-border-color);
   }
   etools-data-table-row::part(edt-list-row-wrapper) {
@@ -103,12 +114,16 @@ export const ActivitiesAndIndicatorsStyles: CSSResult = css`
     border-bottom: none !important;
   }
   etools-data-table-row::part(edt-icon-wrapper) {
-    padding: 0 0 0 38px !important;
-    margin-right: 16px !important;
+    padding: 0 8px 0 13px;
   }
 
   .editable-row .hover-block {
     background-color: var(--main-background);
+    bottom: 1px;
+  }
+
+  .editable-row .hover-block paper-menu-button {
+    padding: 0;
   }
 
   etools-data-table-row::part(edt-list-row-wrapper):hover {

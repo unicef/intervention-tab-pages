@@ -32,7 +32,7 @@ import './pd-indicator';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 import {
   AsyncAction,
   Disaggregation,
@@ -46,6 +46,7 @@ import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-commo
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
+import {EtoolsDataTableRow} from '@unicef-polymer/etools-data-table/etools-data-table-row';
 
 @customElement('pd-indicators')
 export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)) {
@@ -74,33 +75,37 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
     // language=HTML
     return html`
       ${sharedStyles}
-      <etools-data-table-row>
-        <div slot="row-data" class="layout-horizontal align-items-center editable-row">
-          <div class="title-text flex-auto">
-            ${translate(translatesMap.applied_indicators)} (${this.indicators.length})
-            <info-icon-tooltip
-              id="iit-ind"
-              .tooltipText="${translate('INDICATOR_TOOLTIP')}"
+      <etools-data-table-row .detailsOpened="${true}">
+        <div slot="row-data" class="layout-horizontal align-items-center editable-row start-justified">
+          <div class="title-text">${translate(translatesMap.applied_indicators)} (${this.indicators.length})</div>
+          <etools-info-tooltip position="top" custom-icon ?hide-tooltip="${this.readonly}" offset="0">
+            <paper-icon-button
+              icon="add-box"
+              slot="custom-icon"
+              class="add"
+              tabindex="0"
+              @click="${() => this.openIndicatorDialog()}"
               ?hidden="${this.readonly}"
-            ></info-icon-tooltip>
-          </div>
+            ></paper-icon-button>
+            <span class="no-wrap" slot="message">${translate('ADD_PD_INDICATOR')}</span>
+          </etools-info-tooltip>
+          <info-icon-tooltip
+            id="iit-ind"
+            .tooltipText="${translate('INDICATOR_TOOLTIP')}"
+            ?hidden="${this.readonly}"
+          ></info-icon-tooltip>
         </div>
         <div slot="row-data-details">
-          <div class="add-button" ?hidden="${this.readonly}" @click="${() => this.openIndicatorDialog()}">
-            <paper-icon-button slot="custom-icon" icon="add-box" tabindex="0"></paper-icon-button>
-            <span class="no-wrap">${translate('ADD_PD_INDICATOR')}</span>
-          </div>
-
           <div class="table-row table-head align-items-center" ?hidden="${this.readonly}">
-            <div class="indicator">${translate('INDICATOR')}</div>
-            <div>${translate('INDICATOR_HF')}</div>
-            <div>${translate('BASELINE')}</div>
-            <div>${translate('TARGET')}</div>
+            <div class="flex-1 left-align">${translate('INDICATOR')}</div>
+            <div class="flex-1 secondary-cell right">${translate('BASELINE')}</div>
+            <div class="flex-1 secondary-cell right">${translate('TARGET')}</div>
           </div>
           ${this.indicators.length
             ? this.indicators.map(
-                (indicator: Indicator) => html`
+                (indicator: Indicator, index: number) => html`
                   <pd-indicator
+                    .index="${index}"
                     .indicator="${indicator}"
                     .disaggregations="${this.disaggregations}"
                     .locationNames="${this.getLocationNames(indicator.locations)}"
@@ -118,14 +123,14 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
                 `
               )
             : html`
-                <div class="table-row align-items-center">
+                <div class="table-row empty align-items-center">
                   ${this.readonly
                     ? translate('THERE_ARE_NO_PD_INDICATORS')
                     : html`
-                        <div class="indicator">-</div>
-                        <div>-</div>
-                        <div>-</div>
-                        <div>-</div>
+                        <div class="flex-1 left-align">-</div>
+                        <div class="flex-1 secondary-cell center">-</div>
+                        <div class="flex-1 secondary-cell right">-</div>
+                        <div class="flex-1 secondary-cell right">-</div>
                       `}
                 </div>
               `}
@@ -156,6 +161,11 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
     );
   }
 
+  openAllRows(): void {
+    const row: EtoolsDataTableRow = this.shadowRoot!.querySelector('etools-data-table-row') as EtoolsDataTableRow;
+    row.detailsOpened = true;
+  }
+
   computeAvailableOptionsForIndicators(intervention: Intervention) {
     if (!isJsonStrMatch(this.interventionLocations, intervention.flat_locations)) {
       this.interventionLocations = intervention.flat_locations;
@@ -169,6 +179,20 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
   }
 
   openIndicatorDialog(indicator?: Indicator, readonly?: boolean) {
+    if (!this.indicatorSectionOptions?.length && !this.indicatorLocationOptions?.length) {
+      fireEvent(this, 'toast', {text: getTranslation('PLS_SELECT_SECTIONS_AND_LOCATIONS_FIRST')});
+      return;
+    }
+
+    if (!this.indicatorSectionOptions?.length) {
+      fireEvent(this, 'toast', {text: getTranslation('PLS_SELECT_SECTIONS_FIRST')});
+      return;
+    }
+
+    if (!this.indicatorLocationOptions?.length) {
+      fireEvent(this, 'toast', {text: getTranslation('PLS_SELECT_LOCATIONS_FIRST')});
+      return;
+    }
     openDialog<IndicatorDialogData>({
       dialog: 'indicator-dialog',
       dialogData: {
@@ -285,15 +309,13 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
       ActivitiesAndIndicatorsStyles,
       css`
         :host {
-          --main-background: #b6d5f1;
-          --main-background-dark: #a4c4e1;
+          --main-background: #e1edd3;
+          --main-background-dark: #e1edd3;
           display: block;
           background: var(--main-background);
         }
-        .table-row .indicator {
-          width: 60%;
-          flex: none;
-          text-align: left;
+        .table-row {
+          padding-right: 10% !important;
         }
         etools-data-table-row::part(edt-list-row-collapse-wrapper) {
           border-bottom: none;

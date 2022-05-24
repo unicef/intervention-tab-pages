@@ -6,7 +6,6 @@ import '@polymer/paper-input/paper-textarea';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {TABS} from '../common/constants';
 import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
-import {RootState} from '../../../../../redux/store';
 import {
   selectInterventionId,
   selectInterventionQuarters,
@@ -33,14 +32,26 @@ import {CommentsMixin} from '../common/components/comments/comments-mixin';
 import {ExpectedResultExtended, ResultLinkLowerResultExtended} from './editor-utils/types';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import {translate} from 'lit-translate/directives/translate';
-import {AsyncAction} from '@unicef-polymer/etools-types';
+import {AsyncAction, IdAndName} from '@unicef-polymer/etools-types';
+import {EditorTableArrowKeysStyles} from './editor-utils/editor-table-arrow-keys-styles';
+import {ArrowsNavigationMixin} from './editor-utils/arrows-navigation-mixin';
+import {RootState} from '../common/types/store.types';
+import {EditorHoverStyles} from './editor-utils/editor-hover-styles';
+import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
+import {updateSmallMenu} from '../common/actions/common-actions';
+import '@unicef-polymer/etools-dropdown/etools-dropdown';
 
 @customElement('editor-table')
-export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
+// @ts-ignore
+export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationMixin(LitElement))) {
   static get styles() {
-    return [EditorTableStyles];
+    return [EditorTableStyles, EditorTableArrowKeysStyles, EditorHoverStyles, ...super.styles];
   }
   render() {
+    if (!this.intervention) {
+      return html``;
+    }
+
     return html`
       ${sharedStyles}
       <style>
@@ -49,123 +60,302 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
           flex: auto;
           --paper-input-container-input: {
             display: block;
+            text-overflow: hidden;
           }
+
+          --iron-autogrow-textarea: {
+            overflow: auto;
+            padding: 0;
+            max-height: 96px;
+            font-weight: bold;
+          }
+          --paper-input-container-label-floating_-_font-weight: 600;
+          --paper-font-subhead_-_font-weight: 600;
+          --paper-input-container-label-floating: {
+            font-weight: 600;
+          }
+        }
+        paper-textarea[readonly] {
+          --iron-autogrow-textarea_-_overflow: hidden;
+        }
+        paper-textarea.bold {
+          --iron-autogrow-textarea_-_font-weight: bold;
+        }
+        paper-textarea.other[readonly] {
+          --iron-autogrow-textarea_-_font-weight: 400;
+          --iron-autogrow-textarea_-_overflow: hidden;
+          --iron-autogrow-textarea_-_max-height: 21px;
+        }
+        paper-textarea.other {
+          --iron-autogrow-textarea_-_font-weight: 400;
+          --iron-autogrow-textarea_-_max-height: 96px;
+          --paper-input-container-label-floating_-_color: var(--secondary-text-color);
+        }
+        .activity-items-row paper-textarea {
+          --iron-autogrow-textarea_-_font-weight: 400;
+        }
+        .activity-items-row paper-input.bold {
+          --paper-input-container-input: {
+            font-weight: bold;
+          }
+        }
+        .char-counter {
+          margin-bottom: -12px;
+          display: flex;
+        }
+
+        .truncate-multi-line {
+          margin: 8px 0 10px 0;
+          max-height: 96px;
+          line-height: 24px;
+          overflow: hidden;
+          display: -webkit-box;
+          -webkit-line-clamp: 4;
+          -webkit-box-orient: vertical;
+        }
+        .truncate-single-line {
+          max-height: 42px;
+          line-height: 42px;
+          overflow: hidden;
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+          word-break: break-word;
         }
       </style>
       <table>
+        <tbody>
+          <tr class="row-for-fixed-table-layout">
+            <td class="first-col"></td>
+            <td class="col-text"></td>
+            <td class="col-unit"></td>
+            <td class="col-unit-no"></td>
+            <td class="col-p-per-unit"></td>
+            <td class="col-g"></td>
+            <td class="col-g"></td>
+            <td class="col-g" colspan="2"></td>
+          </tr>
+        </tbody>
+        <tbody
+          ?hoverable="${this.permissions?.edit.result_links &&
+          !this.commentMode &&
+          !this.isUnicefUser &&
+          !this.oneEntityInEditMode}"
+        >
+          <tr
+            class="add action-btns heavy-blue"
+            type="cp-output"
+            ?hidden="${this.isUnicefUser || !this.permissions?.edit.result_links || this.commentMode}"
+          >
+            <td></td>
+            <td colspan="3"></td>
+            <td colspan="3"></td>
+            <td colspan="2" tabindex="0">
+              <div class="action-btns" style="position:relative">
+                <etools-info-tooltip
+                  position="top"
+                  offset="0"
+                  custom-icon
+                  ?hide-tooltip="${!this.permissions?.edit.result_links}"
+                  style="justify-content:end;"
+                >
+                  <paper-icon-button
+                    id="add-pd-output"
+                    slot="custom-icon"
+                    @click="${(e: any) => {
+                      this.addNewUnassignedPDOutput();
+                      this.moveFocusToNewllyAdded(e.target);
+                    }}"
+                    ?hidden="${!this.permissions?.edit.result_links}"
+                    icon="add-box"
+                    tabindex="0"
+                  ></paper-icon-button>
+                  <span class="no-wrap" slot="message">${translate('ADD_PD_OUTPUT')}</span>
+                </etools-info-tooltip>
+              </div>
+            </td>
+          </tr>
+        </tbody>
         ${repeat(
           this.resultStructureDetails,
           (result: ExpectedResult) => result.id,
           (result, resultIndex) => html`
-            <thead>
-              <tr class="edit blue">
-                <td class="first-col"></td>
+            <tbody
+              ?hoverable="${this.permissions?.edit.result_links && !this.commentMode && !this.oneEntityInEditMode}"
+              ?hidden="${!this.isUnicefUser}"
+              class="heavy-blue"
+            >
+              <tr class="header">
+                <td>${translate('ID')}</td>
+                <td colspan="3">${translate('COUNTRY_PROGRAME_OUTPUT')}</td>
                 <td colspan="3"></td>
-                <td colspan="3"></td>
-                <td class="col-6" colspan="2"></td>
+                <td colspan="2">${translate('TOTAL')}</td>
               </tr>
-              <tr class="header blue">
-                <td>ID</td>
-                <td colspan="3">Country Programme Output</td>
-                <td colspan="3"></td>
-                <td colspan="2">Total</td>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="text blue">
+              <tr class="text no-b-border">
                 <td>${result.code}</td>
-                <td colspan="3" class="b">${result.cp_output_name}</td>
+                <td colspan="3" class="${result.cp_output_name ? 'b' : 'red'}">
+                  ${result.cp_output_name || translate('UNASSOCIATED_TO_CP_OUTPUT')}
+                </td>
                 <td colspan="3"></td>
                 <td colspan="2">
                   ${this.intervention.planned_budget.currency}
                   <span class="b">${displayCurrencyAmount(result.total, '0.00')}</span>
                 </td>
               </tr>
-              <tr class="add blue">
+              <tr class="add action-btns" type="cp-output">
                 <td></td>
-                <td colspan="3">
-                  <paper-icon-button
-                    icon="add-box"
-                    ?hidden="${!this.permissions.edit.result_links}"
-                    @click="${() => this.addNewPDOutput(result.ll_results)}"
-                  ></paper-icon-button>
-                  Add New PD Output
-                </td>
                 <td colspan="3"></td>
-                <td colspan="2"></td>
+                <td colspan="3"></td>
+                <td colspan="2" class="action-btns" tabindex="0">
+                  <div class="action-btns" style="position:relative">
+                    <etools-info-tooltip
+                      position="top"
+                      offset="0"
+                      custom-icon
+                      ?hide-tooltip="${!this.permissions?.edit.result_links}"
+                      style="justify-content:end;"
+                    >
+                      <paper-icon-button
+                        id="add-pd-output-${result.id}"
+                        slot="custom-icon"
+                        @click="${(e: any) => {
+                          this.addNewPDOutput(result.ll_results);
+                          this.moveFocusToNewllyAdded(e.target);
+                        }}"
+                        ?hidden="${!this.permissions?.edit.result_links ||
+                        !this.getOriginalCPOutput(resultIndex).cp_output}"
+                        icon="add-box"
+                        tabindex="0"
+                      ></paper-icon-button>
+                      <span class="no-wrap" slot="message">${translate('ADD_PD_OUTPUT')}</span>
+                    </etools-info-tooltip>
+                  </div>
+                </td>
               </tr>
             </tbody>
-            ${result.ll_results.map(
+            ${repeat(
+              result.ll_results,
+              (pdOutput: ResultLinkLowerResultExtended) => pdOutput.id,
               (pdOutput: ResultLinkLowerResultExtended, pdOutputIndex) => html`
-                <thead class="gray-1">
-                  <tr class="edit">
-                    <td class="first-col"></td>
-                    <td colspan="3"></td>
-                    <td colspan="3"></td>
-                    <td class="col-6" colspan="2">
-                      <paper-icon-button
-                        icon="create"
-                        ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
-                        @click="${() => {
-                          pdOutput.inEditMode = true;
-                          this.requestUpdate();
-                        }}"
-                      ></paper-icon-button>
-                      <paper-icon-button
-                        icon="delete"
-                        ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
-                        @click="${() => this.openDeletePdOutputDialog(pdOutput.id)}"
-                      ></paper-icon-button>
-                    </td>
-                  </tr>
+                <tbody
+                  ?hoverable="${!pdOutput.inEditMode &&
+                  this.permissions?.edit.result_links &&
+                  !this.commentMode &&
+                  !this.oneEntityInEditMode}"
+                  class="lighter-blue"
+                  comment-element="pd-output-${pdOutput.id}"
+                  comment-description=" PD Output - ${pdOutput.name}"
+                >
                   <tr class="header">
                     <td></td>
-                    <td colspan="3">PD Output</td>
+                    <td colspan="3">${translate('PD_OUTPUT')}</td>
                     <td colspan="3"></td>
-                    <td colspan="2">Total</td>
+                    <td colspan="2">${translate('TOTAL')}</td>
                   </tr>
-                </thead>
-                <tbody class="gray-1" comment-element="pd-output-${pdOutput.id}" comment-description="${pdOutput.name}">
-                  <tr class="text">
-                    <td>${pdOutput.code}</td>
-                    <td colspan="3" class="b">
+                  <tr
+                    class="text action-btns  ${this.permissions?.edit.result_links ? 'height-for-action-btns' : ''}"
+                    type="pd-output"
+                    comment-element="pd-output-${pdOutput.id}"
+                    comment-description="${pdOutput.name}"
+                  >
+                    <td class="padd-top-10">${pdOutput.code}</td>
+                    <td colspan="3" class="b no-top-padding" tabindex="0">
                       <paper-textarea
                         no-label-float
+                        class="bold"
+                        input
                         .value="${pdOutput.name}"
-                        ?readonly="${!pdOutput.inEditMode}"
+                        ?hidden="${!pdOutput.inEditMode}"
+                        char-counter
+                        maxlength="500"
+                        .autoValidate="${this.autovalidatePdOutput}"
                         required
                         .invalid="${pdOutput.invalid}"
-                        error-message="This field is required"
+                        error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
+                        @keydown="${(e: any) => this.handleEsc(e)}"
+                        @focus="${() => (this.autovalidatePdOutput = true)}"
                         @value-changed="${({detail}: CustomEvent) =>
                           this.updateModelValue(pdOutput, 'name', detail.value)}"
                       ></paper-textarea>
+                      <div class="bold truncate-multi-line" title="${pdOutput.name}" ?hidden="${pdOutput.inEditMode}">
+                        ${pdOutput.name}
+                      </div>
+                      ${this.showCpOutput(this.isUnicefUser, this.getOriginalCPOutput(resultIndex))
+                        ? html`<div class="pad-top-8 space-for-err-msg">
+                            <etools-dropdown
+                              @etools-selected-item-changed="${({detail}: CustomEvent) => {
+                                this.unassignedPDMap.set(pdOutput.id, detail.selectedItem && detail.selectedItem.id);
+                                this.requestUpdate();
+                              }}"
+                              label="CP Output"
+                              .selected="${this.unassignedPDMap.get(pdOutput.id) || null}"
+                              placeholder="&#8212;"
+                              .options="${this.cpOutputs}"
+                              option-label="name"
+                              option-value="id"
+                              auto-validate
+                              required
+                              trigger-value-change-event
+                              ?readonly="${!pdOutput.inEditMode}"
+                              ?invalid="${pdOutput.invalidCpOutput}"
+                              .errorMessage="${translate('GENERAL.REQUIRED_FIELD')}"
+                            ></etools-dropdown>
+                          </div>`
+                        : ''}
                     </td>
                     <td colspan="3"></td>
-                    <td colspan="2">
-                      ${this.intervention.planned_budget.currency}
-                      <span class="b">${displayCurrencyAmount(pdOutput.total, '0.00')}</span>
-                    </td>
-                  </tr>
-                  <tr class="add">
-                    <td></td>
-                    <td colspan="3">
-                      <span ?hidden="${pdOutput.inEditMode || !this.permissions.edit.result_links}"
-                        ><paper-icon-button
-                          icon="add-box"
-                          @click="${() => this.addNewActivity(pdOutput)}"
+                    <td
+                      colspan="2"
+                      class="action-btns"
+                      style="position:relative;"
+                      tabindex="${!this.permissions?.edit.result_links ? '-1' : '0'}"
+                    >
+                      <div>
+                        ${this.intervention.planned_budget.currency}
+                        <span class="b">${displayCurrencyAmount(pdOutput.total, '0.00')}</span>
+                      </div>
+                      <div class="action-btns align-bottom flex-h action-btns">
+                        <paper-icon-button
+                          icon="create"
+                          ?hidden="${pdOutput.inEditMode || !this.permissions?.edit.result_links}"
+                          @click="${(e: any) => {
+                            pdOutput.inEditMode = true;
+                            this.oneEntityInEditMode = true;
+                            this.requestUpdate();
+                            this.moveFocusToFirstInput(e.target);
+                          }}"
                         ></paper-icon-button>
-                        Add New Activity</span
-                      >
-                    </td>
-                    <td colspan="3"></td>
-                    <td class="h-center" colspan="2">
-                      <div class="flex-h justify-right" ?hidden="${!pdOutput.inEditMode}">
-                        <paper-button @click="${() => this.savePdOutput(pdOutput, result.cp_output)}"
-                          >Save</paper-button
+                        <etools-info-tooltip
+                          position="top"
+                          offset="0"
+                          custom-icon
+                          ?hide-tooltip="${!this.permissions?.edit.result_links}"
+                          style="justify-content:end;"
+                        >
+                          <paper-icon-button
+                            icon="add-box"
+                            slot="custom-icon"
+                            @click="${(e: any) => {
+                              this.addNewActivity(pdOutput);
+                              this.moveFocusToNewllyAdded(e.target);
+                            }}"
+                            ?hidden="${pdOutput.inEditMode || !this.permissions?.edit.result_links}"
+                          ></paper-icon-button>
+                          <span class="no-wrap" slot="message">${translate('ADD_NEW_ACTIVITY')}</span>
+                        </etools-info-tooltip>
+                        <paper-icon-button
+                          icon="delete"
+                          ?hidden="${pdOutput.inEditMode || !this.permissions?.edit.result_links}"
+                          @click="${() => this.openDeletePdOutputDialog(pdOutput.id)}"
+                        ></paper-icon-button>
+                      </div>
+                      <div class="flex-h justify-right align-bottom" ?hidden="${!pdOutput.inEditMode}">
+                        <paper-button @click="${() => this.savePdOutput(pdOutput, result)}"
+                          >${translate('GENERAL.SAVE')}</paper-button
                         >
                         <paper-icon-button
                           icon="close"
-                          @click="${() => this.cancelPdOutput(result.ll_results, pdOutput, resultIndex, pdOutputIndex)}"
+                          @click="${() => this.cancelPdOutput(result, pdOutput, resultIndex, pdOutputIndex)}"
                         ></paper-icon-button>
                       </div>
                     </td>
@@ -180,18 +370,9 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
     `;
   }
 
-  private _resultStructureDetails: ExpectedResultExtended[] = [];
   @property({type: Array})
-  get resultStructureDetails(): ExpectedResultExtended[] {
-    return this._resultStructureDetails || [];
-  }
-  set resultStructureDetails(data: ExpectedResultExtended[]) {
-    // data.forEach((r) => {
-    //   r.ll_results = r.ll_results.sort((a, b) => Number(b.id) - Number(a.id));
-    //   r.ll_results.forEach((l) => (l.activities = l.activities.sort((a, b) => Number(b.id) - Number(a.id))));
-    // });
-    this._resultStructureDetails = data.sort((a, b) => Number(Boolean(b.id)) - Number(Boolean(a.id)));
-  }
+  resultStructureDetails: ExpectedResultExtended[] = [];
+
   @property() interventionId!: number | null;
   @property() interventionStatus!: string;
 
@@ -205,16 +386,34 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
     required: {result_links?: boolean};
   };
 
-  // @property() private _resultLinks: ExpectedResult[] | null = [];
-
   @property({type: Object})
   intervention!: Intervention;
 
   @property({type: Boolean})
   readonly = false;
 
+  @property() cpOutputs: {id: number; name: string}[] = [];
+
+  @property({type: Boolean})
+  autovalidatePdOutput = false;
+
+  @property({type: Boolean})
+  oneEntityInEditMode = false;
+
+  // we need to track changes to unassigned PD separately (pd_id -> cp_id),
+  // because all unassigned PDs have one common parent object and we can not change result.cp_output directly
+  unassignedPDMap: Map<number, number> = new Map();
+
   private refreshResultStructure = false;
   private prevInterventionId: number | null = null;
+
+  connectedCallback() {
+    super.connectedCallback();
+    setTimeout(() => {
+      this.addArrowNavListener();
+      this.focusFirstTd();
+    }, 2000);
+  }
 
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(state.app?.routeDetails, 'interventions', TABS.WorkplanEditor)) {
@@ -224,21 +423,44 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
     if (!selectInterventionId(state)) {
       return;
     }
+    if (!state.app?.smallMenu && !this.prevInterventionId) {
+      getStore().dispatch(updateSmallMenu(true));
+    }
     this.interventionId = selectInterventionId(state);
-    this.permissions = selectResultLinksPermissions(state);
+    this.permissions = cloneDeep(selectResultLinksPermissions(state));
 
     this.interventionStatus = selectInterventionStatus(state);
     this.quarters = selectInterventionQuarters(state);
     this.isUnicefUser = isUnicefUser(state);
     this.intervention = cloneDeep(currentIntervention(state));
-    // this.resultLinks = selectInterventionResultLinks(state);
+    this.cpOutputs = this.intervention.result_links
+      .map(({cp_output: id, cp_output_name: name}: ExpectedResult) => ({
+        id,
+        name
+      }))
+      .filter(({id}: IdAndName<number>) => id);
 
     if (this.prevInterventionId != selectInterventionId(state) || this.refreshResultStructure) {
-      this.getResultLinksDetails();
+      // Avoid console errors
+      this.autovalidatePdOutput = false;
+      this.autoValidateActivityName = false;
+
+      this.getResultLinksDetails().then(() => {
+        // need to be sure that editor elements where rendered before calling setCommentMode
+        // (ex: show comments border after page refresh)
+        setTimeout(() => {
+          this.setCommentMode();
+        }, 500);
+      });
+
       this.prevInterventionId = this.interventionId;
       this.refreshResultStructure = false;
     }
     super.stateChanged(state);
+
+    if (this.lastFocusedTd) {
+      this.lastFocusedTd.focus();
+    }
   }
 
   getResultLinksDetails() {
@@ -246,32 +468,59 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
       active: true,
       loadingSource: this.localName
     });
-    sendRequest({endpoint: getEndpoint(interventionEndpoints.resultLinksDetails, {id: this.intervention.id})}).then(
-      (response: any) => {
-        this.resultStructureDetails = response.result_links;
-        this.originalResultStructureDetails = cloneDeep(this.resultStructureDetails);
-        this.requestUpdate();
-        fireEvent(this, 'global-loading', {
-          active: false,
-          loadingSource: this.localName
-        });
-      }
-    );
+    return sendRequest({
+      endpoint: getEndpoint(interventionEndpoints.resultLinksDetails, {id: this.intervention.id})
+    }).then((response: any) => {
+      this.resultStructureDetails = response.result_links;
+      this.originalResultStructureDetails = cloneDeep(this.resultStructureDetails);
+      this.requestUpdate();
+      fireEvent(this, 'global-loading', {
+        active: false,
+        loadingSource: this.localName
+      });
+    });
+  }
+
+  showCpOutput(isUnicefUsr: boolean, result: ExpectedResultExtended) {
+    // show only for Unicef users and if cp_output wasn't assigned
+    return isUnicefUsr && !result.cp_output;
   }
 
   addNewPDOutput(llResults: Partial<ResultLinkLowerResultExtended>[]) {
-    llResults.unshift({name: '', total: '0', inEditMode: true});
-    this.requestUpdate();
+    if (!llResults.find((ll) => !ll.id)) {
+      llResults.unshift({name: '', total: '0', inEditMode: true});
+      this.oneEntityInEditMode = true;
+      this.requestUpdate();
+    }
+  }
+
+  addNewUnassignedPDOutput() {
+    if (!this.resultStructureDetails.some((r) => !r.cp_output && r.ll_results.some((pdO) => !pdO.id))) {
+      this.resultStructureDetails.unshift({
+        // @ts-ignore
+        cp_output: null,
+        intervention: this.interventionId!,
+        // @ts-ignore
+        ll_results: [{name: '', total: '0', inEditMode: true}],
+        total: '0'
+      });
+      this.oneEntityInEditMode = true;
+      this.requestUpdate();
+    }
   }
 
   addNewActivity(pdOutput: Partial<ResultLinkLowerResultExtended>) {
-    pdOutput.activities?.unshift({name: '', total: '0', time_frames: [], inEditMode: true});
-    this.requestUpdate();
+    if (!pdOutput.activities?.find((a) => !a.id)) {
+      // @ts-ignore
+      pdOutput.activities?.unshift({name: '', total: '0', time_frames: [], inEditMode: true});
+      this.oneEntityInEditMode = true;
+      this.requestUpdate();
+    }
   }
 
-  savePdOutput(pdOutput: ResultLinkLowerResultExtended, cpOutputId: number) {
-    if (!this.validatePdOutput(pdOutput)) {
-      pdOutput.invalid = true;
+  savePdOutput(pdOutput: ResultLinkLowerResultExtended, cpOutput: ExpectedResult) {
+    const cpOutputId: number | null = cpOutput.cp_output || this.unassignedPDMap.get(pdOutput.id) || null;
+    if (!this.validatePdOutput(pdOutput, cpOutputId)) {
       this.requestUpdate();
       return;
     }
@@ -288,13 +537,14 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
     sendRequest({
       endpoint,
       method: pdOutput.id ? 'PATCH' : 'POST',
-      body: pdOutput.id
-        ? {id: pdOutput.id, name: pdOutput.name, cp_output: cpOutputId}
-        : {name: pdOutput.name, cp_output: cpOutputId}
+      body: this.getBody(pdOutput, cpOutputId)
     })
       .then((response) => {
         this.refreshResultStructure = true;
+        this.oneEntityInEditMode = false;
         getStore().dispatch(updateCurrentIntervention(response.intervention));
+        // erase collection because now we discard all changes for other items that was in edit mode
+        this.unassignedPDMap.clear();
       })
       .then(() => {
         fireEvent(this, 'dialog-closed', {confirmed: true});
@@ -310,28 +560,72 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
       );
   }
 
-  validatePdOutput(pdOutput: ResultLinkLowerResultExtended) {
-    if (!pdOutput.name) {
-      return false;
+  getBody(pdOutput: ResultLinkLowerResultExtended, cpOutputId: number | null) {
+    let body: any = {name: pdOutput.name};
+    if (pdOutput.id) {
+      body = {...body, id: pdOutput.id};
     }
-    return true;
+    if (cpOutputId) {
+      body = {...body, cp_output: cpOutputId};
+    }
+    return body;
+  }
+
+  validatePdOutput(pdOutput: ResultLinkLowerResultExtended, cpOutputId: number | null) {
+    let valid = true;
+    if (!pdOutput.name) {
+      pdOutput.invalid = true;
+      valid = false;
+    }
+    if (!cpOutputId && this.isUnicefUser) {
+      pdOutput.invalidCpOutput = true;
+      valid = false;
+    }
+    return valid;
   }
 
   cancelPdOutput(
-    llResults: Partial<ResultLinkLowerResultExtended>[],
+    result: ExpectedResultExtended,
     pdOutput: ResultLinkLowerResultExtended,
     resultIndex: number,
     pdOutputIndex: number
   ) {
     if (!pdOutput.id) {
-      llResults.shift();
+      result.ll_results.shift();
     } else {
-      pdOutput.name = this.originalResultStructureDetails[resultIndex].ll_results[pdOutputIndex].name;
+      pdOutput.name = this.getOriginalPDOutput(resultIndex, pdOutputIndex).name;
+      if (this.isUnicefUser && !this.getOriginalCPOutput(resultIndex).cp_output) {
+        this.unassignedPDMap.delete(pdOutput.id);
+      }
     }
     pdOutput.invalid = false;
+    pdOutput.invalidCpOutput = false;
     pdOutput.inEditMode = false;
+    this.oneEntityInEditMode = false;
 
     this.requestUpdate();
+    this.lastFocusedTd.focus();
+  }
+
+  getOriginalPDOutput(resultIndex: number, pdOutputIndex: number) {
+    // Covers case when a new PD Output is added while the cancelled one is already in edit mode,
+    // thus changing the index
+    let originalPdOutputIndex = pdOutputIndex;
+
+    if (this.resultStructureDetails[resultIndex].ll_results.find((pdOutput) => !pdOutput.id)) {
+      originalPdOutputIndex = originalPdOutputIndex - 1;
+    }
+    return this.originalResultStructureDetails[resultIndex].ll_results[originalPdOutputIndex];
+  }
+
+  getOriginalCPOutput(resultIndex: number) {
+    // Covers case when a new PD Output is added and index changes
+    let originalResIndex = resultIndex;
+
+    if (!this.originalResultStructureDetails[resultIndex]) {
+      originalResIndex = resultIndex - 1;
+    }
+    return this.originalResultStructureDetails[originalResIndex];
   }
 
   async openDeletePdOutputDialog(lower_result_id: number) {
@@ -370,5 +664,21 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(LitElement)) {
     }
     model[property] = newVal;
     this.requestUpdate();
+  }
+
+  moveFocusToNewllyAdded(element: any) {
+    const currTbody = this.determineParentTr(element).parentElement;
+    setTimeout(() => {
+      const targetTr = currTbody.nextElementSibling.querySelector('tr.text');
+      const input = targetTr.querySelector('[input]');
+
+      if (input) {
+        this.lastFocusedTd = this.determineParentTd(input);
+        input.focus();
+      }
+
+      // @ts-ignore Defined in arrows-nav-mixin
+      this.attachListenersToTr(targetTr);
+    });
   }
 }

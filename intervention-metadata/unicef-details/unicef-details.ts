@@ -103,19 +103,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
             >
             </etools-dropdown-multi>
           </div>
-          <div class="col col-4">
-            <paper-textarea
-              id="title"
-              label=${translate('CLUSTERS')}
-              class="w100"
-              always-float-label
-              placeholder="—"
-              .value="${this.getClusterText(this.data.cluster_names)}"
-              tabindex="-1"
-              readonly
-            >
-            </paper-textarea>
-          </div>
+          <div class="col col-4"></div>
         </div>
         <div class="layout-horizontal row-padding-v">
           ${this.permissions.view!.unicef_focal_points
@@ -285,10 +273,6 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
       savedUsers.push(this.data.unicef_focal_points);
     }
     return uniqBy(savedUsers.flat(), 'id');
-  }
-
-  getClusterText(clusters: string[]) {
-    return (clusters || []).join(', ');
   }
 
   saveData() {

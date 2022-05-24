@@ -35,7 +35,8 @@ import {
   SIGN,
   ACCEPT_ON_BEHALF_OF_PARTNER,
   SIGN_BUDGET_OWNER,
-  SEND_BACK_REVIEW
+  SEND_BACK_REVIEW,
+  UNLOCK
 } from './intervention-actions.constants';
 import {PaperMenuButton} from '@polymer/paper-menu-button/paper-menu-button';
 import {updateCurrentIntervention} from '../common/actions/interventions';
@@ -181,6 +182,10 @@ export class InterventionActions extends LitElement {
       case REVIEW:
         btn = getTranslation('ACCEPT');
         message = getTranslation('REVIEW_PROMPT');
+        break;
+      case UNLOCK:
+        btn = getTranslation('UNLOCK');
+        message = getTranslation('UNLOCK_PROMPT');
         break;
       default:
         btn = this.actionsNamesMap[action];

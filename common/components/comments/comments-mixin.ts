@@ -54,7 +54,9 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
     protected firstUpdated() {
       this.rendered = true;
       if (this.commentsModeEnabled) {
-        this.startCommentMode();
+        setTimeout(() => {
+          this.setCommentMode();
+        }, 300);
       }
     }
 
@@ -76,24 +78,23 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
       if (needToUpdate) {
         // we need to update comments state if mode was enabled before the data was fetched
-        this.metaDataCollection.forEach((meta: MetaData) => this.updateCounterAndColor(meta));
+        this.metaDataCollection.forEach((meta: MetaData) => {
+          this.updateCounter(meta);
+          this.updateBorderColor(meta);
+        });
       }
 
       // update sate for currently edited comments
       if (this.currentEditedComments) {
-        this.updateCounterAndColor(this.currentEditedComments);
+        this.updateCounter(this.currentEditedComments);
+        this.updateBorderColor(this.currentEditedComments);
       }
 
-      if (commentsModeEnabled === this.commentsModeEnabled) {
-        return;
-      }
-      this.commentsModeEnabled = commentsModeEnabled;
-      if (commentsModeEnabled && this.rendered) {
-        this.startCommentMode();
-        this.requestUpdate();
-      } else if (this.rendered) {
-        this.stopCommentMode();
-        this.requestUpdate();
+      if (commentsModeEnabled !== this.commentsModeEnabled) {
+        this.commentsModeEnabled = commentsModeEnabled;
+        if (this.rendered) {
+          this.setCommentMode();
+        }
       }
     }
 
@@ -105,11 +106,21 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
       return [];
     }
 
+    setCommentMode() {
+      if (this.commentsModeEnabled) {
+        this.startCommentMode();
+      } else {
+        this.stopCommentMode();
+      }
+      (this as any).requestUpdate();
+    }
+
     private startCommentMode(): void {
       const elements: NodeListOf<HTMLElement> = this.shadowRoot!.querySelectorAll(
         '[comment-element], [comments-container]'
       );
       this.metaDataCollection = Array.from(elements)
+        .filter((element) => !!element)
         .map((element: HTMLElement) => {
           if (element.hasAttribute('comments-container')) {
             return this.getMetaFromContainer(element);
@@ -121,7 +132,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         .flat()
         .filter((meta: MetaData | null) => meta !== null) as MetaData[];
       this.metaDataCollection.forEach((meta: MetaData) => {
-        this.updateCounterAndColor(meta);
+        this.updateCounter(meta);
         this.registerListener(meta);
       });
     }
@@ -138,7 +149,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
     private createMataData(element: HTMLElement, relatedTo: string, relatedToDescription: string): MetaData {
       const oldStyles: string = element.style.cssText;
       const counter: HTMLElement = this.createCounter();
-      const overlay: HTMLElement = this.createOverlay();
+      const overlay: HTMLElement = this.createOverlay(relatedTo);
       element.append(overlay);
       return {
         element,
@@ -171,7 +182,9 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
       return element;
     }
 
-    private createOverlay(): HTMLElement {
+    private createOverlay(relatedTo: string): HTMLElement {
+      const comments: InterventionComment[] = this.comments[relatedTo] || [];
+      const borderColor = comments.length ? '#FF4545' : '#81D763';
       const element: HTMLElement = document.createElement('div');
       element.style.cssText = `
         position: absolute;
@@ -182,22 +195,35 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         background-color: transparent;
         z-index: 91;
         cursor: pointer;
+        box-shadow: inset 0px 0px 0px 3px ${borderColor};
+        ${this.determineOverlayMargin(relatedTo)}
       `;
       return element;
     }
 
-    private getMetaFromContainer(container: HTMLElement): MetaData[] {
-      return this.getSpecialElements(container).map(({element, relatedTo, relatedToDescription}: CommentElementMeta) =>
-        this.createMataData(element, relatedTo, relatedToDescription)
-      );
+    determineOverlayMargin(relatedTo: string) {
+      const parts = relatedTo.split('-');
+      // @ts-ignore
+      if (isNaN(parts[parts.length - 1])) {
+        return '';
+      } else {
+        // If the commentable element is part of a list, leave some spacing
+        return 'margin: 2px;';
+      }
     }
 
-    private updateCounterAndColor(meta: MetaData): void {
+    private getMetaFromContainer(container: HTMLElement): MetaData[] {
+      return this.getSpecialElements(container)
+        .filter(({element}) => !!element)
+        .map(({element, relatedTo, relatedToDescription}: CommentElementMeta) => {
+          return this.createMataData(element, relatedTo, relatedToDescription);
+        });
+    }
+
+    private updateCounter(meta: MetaData): void {
       const comments: InterventionComment[] = this.comments[meta.relatedTo] || [];
-      const borderColor = comments.length ? '#FF4545' : '#81D763';
       meta.element.style.cssText = `
         position: relative;
-        margin: 2px;
       `;
       meta.overlay.style.boxShadow = `inset 0px 0px 0px 3px ${borderColor}`;
       meta.counter.innerText = `${comments.length}`;
@@ -206,6 +232,14 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
       } else {
         meta.counter.remove();
       }
+    }
+
+    private updateBorderColor(meta: MetaData) {
+      const comments: InterventionComment[] = this.comments[meta.relatedTo] || [];
+      const borderColor = comments.length ? '#FF4545' : '#81D763';
+      // @ts-ignore
+      meta.overlay.style['box-shadow'] = `inset 0px 0px 0px 3px ${borderColor}
+      `;
     }
 
     private registerListener(meta: MetaData): void {
