@@ -440,7 +440,10 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
   }
 
   private isReadonlyTitle() {
-    return this.readonly || (!this.indicatorIsNew && this.interventionStatus.toLowerCase() !== 'draft');
+    return (
+      this.readonly ||
+      (!this.indicatorIsNew && !['draft', 'development'].includes(this.interventionStatus.toLowerCase()))
+    );
   }
 
   private baselineIsUnknownChanged(checked: boolean) {
