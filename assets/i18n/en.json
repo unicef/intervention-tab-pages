@@ -342,7 +342,7 @@
   "PROGRAMME_DOC_DATES": "Programme Document Dates",
   "SELECT_END_DATE": "Please select end date",
   "ACTIVATION_LETTER": "Activation Letter",
-  "SAVE_WARNING": "Make sure you verify and update Partner Reporting Requirements after any start/end date changes.",
+  "SAVE_WARNING": "Make sure you verify and update Partner Reporting Requirements and Programmatic Visits after any start/end date changes.",
   "ACTIVITY_TIMEFRAMES": "Activity Timeframes",
   "ACTIVITY_TIMES": "Activity Times (click to select/deselect)",
   "ACTIVITY_TIMES_READONLY": "Activity Times",

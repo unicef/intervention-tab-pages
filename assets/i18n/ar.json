@@ -343,7 +343,7 @@
   "END_DATE": "تاريخ الانتهاء",
   "SELECT_END_DATE": "الرجاء تحديد تاريخ الانتهاء",
   "ACTIVATION_LETTER": "خطاب التفعيل",
-  "SAVE_WARNING": "Make sure you verify and update Partner Reporting Requirements after any start/end date changes.",
+  "SAVE_WARNING": "Make sure you verify and update Partner Reporting Requirements and Programmatic Visits after any start/end date changes.",
   "ACTIVITY_TIMEFRAMES": "الأطر الزمنية للنشاط",
   "ACTIVITY_TIMES": "أوقات النشاط (انقر للتحديد / إلغاء التحديد)",
   "ACTIVITY_TIMES_READONLY": "أوقات النشاط",

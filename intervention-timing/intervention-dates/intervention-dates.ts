@@ -5,7 +5,7 @@ import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {PartnerReportingRequirements, RootState} from '../../common/types/store.types';
+import {InterventionsState, PartnerReportingRequirements, RootState} from '../../common/types/store.types';
 import {ProgrammeDocDates, InterventionDatesPermissions} from './interventionDates.models';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {selectInterventionDates, selectInterventionDatesPermissions} from './interventionDates.selectors';
@@ -16,7 +16,7 @@ import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/di
 import get from 'lodash-es/get';
 import '@unicef-polymer/etools-upload/etools-upload';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AsyncAction, FrsDetails, Permission} from '@unicef-polymer/etools-types';
+import {AsyncAction, FrsDetails, Intervention, Permission} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import ReportingRequirementsCommonMixin from '../reporting-requirements/mixins/reporting-requirements-common-mixin';
@@ -182,7 +182,7 @@ export class InterventionDates extends CommentsMixin(
       return;
     }
     this.data = selectInterventionDates(state);
-    this.checkIfWarningRequired(state.interventions.partnerReportingRequirements);
+    this.checkIfWarningRequired(state);
     this.originalData = cloneDeep(this.data);
     this.permissions = selectInterventionDatesPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
@@ -231,9 +231,11 @@ export class InterventionDates extends CommentsMixin(
     );
   }
 
-  private checkIfWarningRequired(partnerReportingRequirements: PartnerReportingRequirements) {
+  private checkIfWarningRequired(state: RootState) {
     // Existence of PD Output activities with timeframes are validated on BK
-    this.warningRequired = this.thereArePartnerReportingRequirements(partnerReportingRequirements);
+    this.warningRequired =
+      this.thereArePartnerReportingRequirements(state.interventions.partnerReportingRequirements) ||
+      this.thereAreProgrammaticVisits(state.interventions.current);
   }
 
   private thereArePartnerReportingRequirements(partnerReportingRequirements: PartnerReportingRequirements) {
@@ -241,6 +243,10 @@ export class InterventionDates extends CommentsMixin(
       return Object.entries(partnerReportingRequirements).some(([_key, value]) => !!value.length);
     }
     return false;
+  }
+
+  private thereAreProgrammaticVisits(intervention: Intervention | null) {
+    return !!intervention?.planned_visits && intervention.planned_visits.length > 0;
   }
 
   saveData() {
