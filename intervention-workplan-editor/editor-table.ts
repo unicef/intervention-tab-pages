@@ -443,22 +443,37 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
       this.autovalidatePdOutput = false;
       this.autoValidateActivityName = false;
 
-      this.getResultLinksDetails().then(() => {
-        // need to be sure that editor elements where rendered before calling setCommentMode
-        // (ex: show comments border after page refresh)
-        setTimeout(() => {
-          this.setCommentMode();
-        }, 500);
-      });
+      this.getResultLinksDetails();
 
       this.prevInterventionId = this.interventionId;
       this.refreshResultStructure = false;
     }
-    super.stateChanged(state);
+
+    if (this.editorTableIsRendered()) {
+      super.stateChanged(state);
+    }
 
     if (this.lastFocusedTd) {
       this.lastFocusedTd.focus();
     }
+  }
+
+  /**
+   * To avoid:
+   * 1. Go to Workplan tab, enable Comment mode
+   * Go to Editor page- notice comment mode enabled;
+   * Go to Workplan Tab , disable Comment mode
+   * Go  back to Editor
+   * Issue: Comment mode borders not removed from editor page
+   *
+   * 2. Prevent comment mode style changes while the component is hidden
+   */
+  private editorTableIsRendered() {
+    const boundaries = this.getBoundingClientRect();
+    if (boundaries.left == 0 && boundaries.right == 0) {
+      return false;
+    }
+    return true;
   }
 
   getResultLinksDetails() {
