@@ -46,6 +46,9 @@ function SaveIndicatorMixin<T extends Constructor<LitElement>>(baseClass: T) {
     private nonClusterIndicatorEditModel = {
       id: null,
       section: null,
+      indicator: {
+        title: null
+      },
       baseline: {
         v: 0,
         d: 1
