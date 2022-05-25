@@ -86,7 +86,12 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                     .autoValidate="${item.autovalidate?.name}"
                     @focus="${() => this.setAutoValidate(item, 'name')}"
                     .value="${item.name}"
-                    @keydown="${(e: any) => this.handleEsc(e)}"
+                    @keydown="${(e: any) => {
+                      if (activity.inEditMode && ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) {
+                        e.stopImmediatePropagation();
+                      }
+                      this.handleEsc(e);
+                    }}"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue(item, 'name', detail.value)}"
                   ></paper-textarea>
                 </div>
@@ -113,7 +118,12 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   @focus="${() => this.setAutoValidate(item, 'unit')}"
                   error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
                   .value="${item.unit}"
-                  @keydown="${(e: any) => this.handleEsc(e)}"
+                  @keydown="${(e: any) => {
+                    if (activity.itemsInEditMode && ['ArrowLeft', 'ArrowRight'].includes(e.key)) {
+                      e.stopImmediatePropagation();
+                    }
+                    this.handleEsc(e);
+                  }}"
                   @value-changed="${({detail}: CustomEvent) => this.updateModelValue(item, 'unit', detail.value)}"
                 ></paper-input>
                 <div class="truncate-single-line" title="${item.unit}" ?hidden="${activity.itemsInEditMode}">
