@@ -5,7 +5,7 @@ import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {InterventionsState, PartnerReportingRequirements, RootState} from '../../common/types/store.types';
+import {PartnerReportingRequirements, RootState} from '../../common/types/store.types';
 import {ProgrammeDocDates, InterventionDatesPermissions} from './interventionDates.models';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {selectInterventionDates, selectInterventionDatesPermissions} from './interventionDates.selectors';
@@ -25,6 +25,8 @@ import UploadsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uplo
 import FrNumbersConsistencyMixin from '@unicef-polymer/etools-modules-common/dist/mixins/fr-numbers-consistency-mixin';
 import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {customIcons} from '@unicef-polymer/etools-modules-common/dist/styles/custom-icons';
+import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/fr-warnings-styles';
 
 /**
  * @customElement
@@ -34,7 +36,7 @@ export class InterventionDates extends CommentsMixin(
   UploadsMixin(ComponentBaseMixin(FrNumbersConsistencyMixin(ReportingRequirementsCommonMixin(LitElement))))
 ) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [gridLayoutStylesLit, buttonsStyles, frWarningsStyles];
   }
 
   render() {
@@ -44,7 +46,7 @@ export class InterventionDates extends CommentsMixin(
     }
     // language=HTML
     return html`
-      ${sharedStyles}
+      ${customIcons}${sharedStyles}
       <style>
         :host {
           display: block;
