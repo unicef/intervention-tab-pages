@@ -18,7 +18,6 @@ import {LabelAndValue} from '@unicef-polymer/etools-types';
 import {Intervention} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
-import {detailsTextareaRowsCount} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 
 /**
  * @customElement
