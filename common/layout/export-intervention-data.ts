@@ -22,7 +22,7 @@ export class ExportInterventionData extends LitElement {
           padding: 0px;
         }
         paper-button {
-          height: 40px;
+          height: 34px;
           padding: 0px;
           min-width: 20px;
           font-weight: bold;
