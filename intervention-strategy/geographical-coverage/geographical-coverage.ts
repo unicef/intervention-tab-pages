@@ -105,6 +105,10 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
           --iit-icon-size: 18px;
           --iit-margin: 0 0 4px 4px;
         }
+
+        etools-dropdown-multi::part(esmm-dropdownmenu) {
+          left: 24px !important;
+        }
       </style>
 
       <etools-content-panel
