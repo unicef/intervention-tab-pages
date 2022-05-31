@@ -1,7 +1,7 @@
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-toggle-button';
-
 import './common/layout/page-content-header/intervention-page-content-header';
+import './common/layout/page-content-header/intervention-page-content-subheader';
 import '@unicef-polymer/etools-modules-common/dist/layout/etools-tabs';
 import '@unicef-polymer/etools-modules-common/dist/components/cancel/reason-display';
 // eslint-disable-next-line max-len
@@ -74,14 +74,8 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
           border: 5px solid #ffd28b;
           box-sizing: border-box;
         }
-        :host([data-active-tab='workplan-editor']) div[slot='tabs'] {
+        :host([data-active-tab='workplan-editor']) intervention-page-content-subheader {
           display: none;
-        }
-        :host([data-active-tab='workplan-editor']) intervention-page-content-header {
-          position: relative;
-          min-height: 0;
-          border-bottom: none;
-          box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.15);
         }
         :host([data-active-tab='workplan-editor']) .page-content {
           margin: 4px 0 0;
@@ -112,6 +106,11 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
           .page-content {
             margin: 5px;
           }
+        }
+
+        etools-status-lit {
+          margin-top: 0;
+          border-top: 0;
         }
       `
     ];
@@ -175,7 +174,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       <!-- Loading PRP country data -->
       <prp-country-data></prp-country-data>
 
-      <intervention-page-content-header with-tabs-visible>
+      <intervention-page-content-header ?is-in-amendment="${this.isInAmendment}">
         <span class="intervention-partner" slot="page-title">${this.intervention.partner}</span>
         <span class="intervention-number" slot="page-title">${this.intervention.number}</span>
         <div slot="mode">
@@ -198,22 +197,22 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
             .userIsBudgetOwner="${this.userIsBudgetOwner}"
           ></intervention-actions>
         </div>
-
-        <div slot="tabs">
-          <etools-status-lit
-            .statuses="${this.intervention.status_list || MOCKUP_STATUSES}"
-            .activeStatus="${this.intervention.status}"
-          ></etools-status-lit>
-
-          <etools-tabs-lit
-            .tabs="${this.pageTabs}"
-            .activeTab="${this.activeTab}"
-            .activeSubTab="${this.activeSubTab}"
-            @iron-select="${this.handleTabChange}"
-            @iron-activate="${this.handleTabActivate}"
-          ></etools-tabs-lit>
-        </div>
       </intervention-page-content-header>
+
+      <intervention-page-content-subheader>
+        <etools-status-lit
+          .statuses="${this.intervention.status_list || MOCKUP_STATUSES}"
+          .activeStatus="${this.intervention.status}"
+        ></etools-status-lit>
+
+        <etools-tabs-lit
+          .tabs="${this.pageTabs}"
+          .activeTab="${this.activeTab}"
+          .activeSubTab="${this.activeSubTab}"
+          @iron-select="${this.handleTabChange}"
+          @iron-activate="${this.handleTabActivate}"
+        ></etools-tabs-lit>
+      </intervention-page-content-subheader>
 
       <div class="page-content">
         ${this.intervention.cancel_justification
