@@ -157,5 +157,5 @@ export class InterventionPageContentHeader extends LitElement {
   }
 
   @property()
-  isInAmendment: boolean = false;
+  isInAmendment = false;
 }
