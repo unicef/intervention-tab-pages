@@ -14,6 +14,7 @@ import {InterventionActivityTimeframe} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {requiredFieldStarredStyles} from '../../../../../../../../styles/required-field-styles-lit';
 
 @customElement('activity-time-frames')
 export class ActivityTimeFrames extends LitElement {
@@ -67,12 +68,6 @@ export class ActivityTimeFrames extends LitElement {
           height: 50px;
           border-left: 1px solid #9e9e9e;
         }
-        label[required] {
-          font-size: 12px;
-          color: var(--secondary-text-color);
-          @apply --required-star-style;
-          background: url('./images/required.svg') no-repeat 66% 33%/5px;
-        }
         label {
           text-align: center;
           width: 100%;
@@ -116,6 +111,15 @@ export class ActivityTimeFrames extends LitElement {
 
   protected render(): TemplateResult {
     return html`
+      ${requiredFieldStarredStyles}
+      <style>
+        label[required] {
+          font-size: 12px;
+          color: var(--secondary-text-color);
+          @apply --required-star-style;
+          background-size: 5px;
+        }
+      </style>
       <label class="paper-label layout-horizontal center-align" required ?hidden="${this.hideLabel}">
         ${translate('ACTIVITY_TIMES')}
       </label>
