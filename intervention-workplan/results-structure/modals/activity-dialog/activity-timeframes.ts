@@ -14,7 +14,6 @@ import {InterventionActivityTimeframe} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
-import {requiredFieldStarredStyles} from '../../../../../../../../styles/required-field-styles-lit';
 
 @customElement('activity-time-frames')
 export class ActivityTimeFrames extends LitElement {
@@ -73,6 +72,16 @@ export class ActivityTimeFrames extends LitElement {
           width: 100%;
           max-width: inherit;
         }
+        label[required] {
+          font-size: 12px;
+          color: var(--secondary-text-color);
+          background: url('./images/required.svg') no-repeat 99% 20%/5px;
+          width: auto !important;
+          max-width: 100%;
+          right: auto;
+          padding-right: 15px;
+          background-size: 5px;
+        }
         .time-frame-container {
           flex-wrap: wrap;
         }
@@ -111,15 +120,6 @@ export class ActivityTimeFrames extends LitElement {
 
   protected render(): TemplateResult {
     return html`
-      ${requiredFieldStarredStyles}
-      <style>
-        label[required] {
-          font-size: 12px;
-          color: var(--secondary-text-color);
-          @apply --required-star-style;
-          background-size: 5px;
-        }
-      </style>
       <label class="paper-label layout-horizontal center-align" required ?hidden="${this.hideLabel}">
         ${translate('ACTIVITY_TIMES')}
       </label>
