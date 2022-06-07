@@ -56,6 +56,9 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
         etools-content-panel::part(ecp-content) {
           padding: 8px 24px 16px 24px;
         }
+        .row-padding-v {
+          position: relative;
+        }
       </style>
 
       <etools-content-panel
