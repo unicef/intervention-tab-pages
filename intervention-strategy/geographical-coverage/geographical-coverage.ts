@@ -113,7 +113,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
           position: relative;
         }
         .location-icon {
-          z-index: 9999;
+          z-index: 999;
         }
       </style>
 
