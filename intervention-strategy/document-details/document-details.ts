@@ -62,6 +62,9 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
           --iit-icon-size: 18px;
           --iit-margin: 0 0 4px 4px;
         }
+        .row-padding-v {
+          position: relative;
+        }
       </style>
 
       <etools-content-panel
