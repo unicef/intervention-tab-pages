@@ -176,8 +176,8 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
       return;
     }
     if (interventionStart !== '' && interventionEnd !== '') {
-      let start = parseInt(interventionStart.substr(0, 4), 10);
-      const end = parseInt(interventionEnd.substr(0, 4), 10) + 1;
+      let start = parseInt(interventionStart.substring(0, 4), 10);
+      const end = parseInt(interventionEnd.substring(0, 4), 10) + 1;
       const years = this.data.filter((pv) => pv.year).map((pv) => Number(pv.year));
       while (start <= end) {
         years.push(start);
