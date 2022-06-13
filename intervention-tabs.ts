@@ -14,7 +14,7 @@ import get from 'lodash-es/get';
 import {getStore, getStoreAsync} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {currentPage, currentSubpage, isUnicefUser, currentSubSubpage, currentUser} from './common/selectors';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
-import {getIntervention} from './common/actions/interventions';
+import {getIntervention, updateCurrentIntervention} from './common/actions/interventions';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {pageContentHeaderSlottedStyles} from './common/layout/page-content-header/page-content-header-slotted-styles';
@@ -677,6 +677,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     fireEvent(this, 'scroll-up');
     this._routeDetails = null;
     this.intervention = null;
+    getStore().dispatch(updateCurrentIntervention(null));
     this.interventionId = null;
     this.isInAmendment = false;
   }
