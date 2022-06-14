@@ -109,6 +109,12 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         etools-dropdown-multi::part(esmm-dropdownmenu) {
           left: 24px !important;
         }
+        .row-padding-v {
+          position: relative;
+        }
+        .location-icon {
+          z-index: 999;
+        }
       </style>
 
       <etools-content-panel
@@ -126,13 +132,13 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         </div>
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
-        <div class="flex-c layout-horizontal row-padding-v">
+        <div class="flex-c layout-horizontal row-padding-v location-icon">
           <label class="paper-label">
             ${translate(translatesMap.flat_locations)}
             <info-icon-tooltip
               id="iit-locations"
               class="iit"
-              position="top"
+              position="right"
               ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.flat_locations)}"
               .tooltipText="${translate('GEOGRAPHICAL_LOCATIONS_INFO')}"
             ></info-icon-tooltip>
@@ -181,7 +187,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
               id="iit-sites"
               class="iit"
               slot="after-label"
-              position="top"
+              position="right"
               ?hidden="${!this.editMode}"
               .tooltipText="${translate('GEOGRAPHICAL_SITES_INFO')}"
             ></info-icon-tooltip>
