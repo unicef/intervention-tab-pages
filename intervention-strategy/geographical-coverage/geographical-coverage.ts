@@ -152,6 +152,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
             .options="${this.allLocations}"
             .selectedValues="${this.data.flat_locations}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.flat_locations)}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions.edit.flat_locations) ? -1 : 0}"
             ?required="${this.permissions.required.flat_locations}"
             option-label="name"
             option-value="id"
@@ -180,6 +181,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
             class="w100"
             placeholder="&#8212;"
             readonly
+            tabindex="-1"
             max-rows="4"
             .value="${this.getSelectedSitesText(this.data.sites)}"
           >

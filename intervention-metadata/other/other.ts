@@ -106,6 +106,10 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               placeholder="&#8212;"
               ?readonly="${!this.documentTypes.length ||
               this.isReadonly(this.editMode, this.permissions.edit.document_type)}"
+              tabindex="${!this.documentTypes.length ||
+              this.isReadonly(this.editMode, this.permissions?.edit.document_type)
+                ? -1
+                : 0}"
               required
               .options="${this.documentTypes}"
               .selected="${this.data.document_type}"
@@ -181,6 +185,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               .options="${this.currencies}"
               .selected="${this.data.planned_budget.currency}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.document_currency)}"
+              tabindex="${this.isReadonly(this.editMode, this.permissions.edit.document_currency) ? -1 : 0}"
               @etools-selected-item-changed="${({detail}: CustomEvent) => {
                 if (detail === undefined || detail.selectedItem === null) {
                   return;

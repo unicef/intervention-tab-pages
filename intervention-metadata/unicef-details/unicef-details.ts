@@ -80,6 +80,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
               option-value="id"
               .selectedValues="${this.data.offices}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.offices)}"
+              tabindex="${this.isReadonly(this.editMode, this.permissions.edit.offices) ? -1 : 0}"
               ?required="${this.permissions.required.offices}"
               @etools-selected-items-changed="${({detail}: CustomEvent) =>
                 this.selectedItemsChanged(detail, 'offices')}"
@@ -97,6 +98,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
               option-value="id"
               .selectedValues="${this.data.sections}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.sections)}"
+              tabindex="${this.isReadonly(this.editMode, this.permissions.edit.sections) ? -1 : 0}"
               ?required="${this.permissions.required.sections}"
               @etools-selected-items-changed="${({detail}: CustomEvent) =>
                 this.selectedItemsChanged(detail, 'sections')}"
@@ -175,6 +177,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
               option-value="id"
               .selectedValues="${this.data.country_programmes}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.country_programmes)}"
+              tabindex="${this.isReadonly(this.editMode, this.permissions.edit.country_programmes) ? -1 : 0}"
               ?required="${this.permissions.required.country_programmes}"
               @etools-selected-items-changed="${({detail}: CustomEvent) =>
                 this.selectedItemsChanged(detail, 'country_programmes')}"
