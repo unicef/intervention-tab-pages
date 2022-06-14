@@ -64,7 +64,8 @@ export class MapHelper {
     const markers: Marker[] = [];
     let marker: IMarker;
     (markersData || []).forEach((mark: MarkerDataObj) => {
-      marker = L.marker(mark.coords).bindPopup(`<b>${mark.popup}</b>`);
+      const markerPopup = L.popup({closeButton: false}).setContent(`<b>${mark.popup}</b>`);
+      marker = L.marker(mark.coords).bindPopup(markerPopup);
       marker.staticData = mark.staticData;
       if (onclick) {
         marker.on('click', function (e) {
@@ -152,7 +153,8 @@ export class MapHelper {
     const marker: IMarker = L.marker(data.coords).addTo(this.map as Map);
     marker.staticData = data.staticData;
     if (data.popup) {
-      marker.bindPopup(`<b>${data.popup}</b>`);
+      const markerPopup = L.popup({closeButton: false}).setContent(`<b>${data.popup}</b>`);
+      marker.bindPopup(markerPopup);
     }
 
     return marker;
