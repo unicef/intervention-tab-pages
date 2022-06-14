@@ -321,6 +321,8 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   // id from route params
   private interventionId: string | null = null;
 
+  private isEPDApp = ROOT_PATH === '/epd/';
+
   connectedCallback() {
     super.connectedCallback();
     // this._showInterventionPageLoadingMessage();
@@ -447,7 +449,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
 
     const reviewRestricted = tab === TABS.Review && !state.interventions.current?.permissions?.view!.reviews;
     const restrictedSubTabs =
-      !unicefUser &&
+      (!unicefUser || this.isEPDApp) &&
       [TABS.ResultsReported, TABS.Reports, TABS.ImplementationStatus, TABS.MonitoringActivities].includes(subTab);
     return !attachmentRestricted && !reviewRestricted && !restrictedSubTabs;
   }
@@ -461,7 +463,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   }
 
   handleProgressTabVisibility(envFlags: EnvFlags | null, isUnicefUser?: boolean) {
-    if (!isUnicefUser) {
+    if (!isUnicefUser || this.isEPDApp) {
       return; // ONLY visible for unicef users
     }
 
