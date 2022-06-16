@@ -103,11 +103,6 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
                 <etools-data-table-column class="flex-c">${translate('REPORT_STATUS')}</etools-data-table-column>
                 <etools-data-table-column class="flex-c">${translate('DUE_DATE')}</etools-data-table-column>
                 <etools-data-table-column class="flex-c">${translate('REPORTING_PERIOD')}</etools-data-table-column>
-                ${!this.noPdSsfaRef
-                  ? html`<etools-data-table-column class="col-2"
-                      >${translate('PD_SPD_REF_NUM')}</etools-data-table-column
-                    >`
-                  : html``}
               </etools-data-table-header>
               ${this.reports.map(
                 (report: any) => html` <etools-data-table-row .lowResolutionLayout="${this.lowResolutionLayout}">
@@ -146,17 +141,6 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
                     <span class="col-data flex-c" data-col-header-label="${translate('REPORTING_PERIOD')}">
                       ${this.getDisplayValue(report.reporting_period)}
                     </span>
-                    ${!this.noPdSsfaRef
-                      ? html`<span class="col-data col-2" data-col-header-label="${translate('PD_SPD_REF_NUM')}">
-                          <a
-                            class="pd-ref truncate"
-                            href="interventions/${report.programme_document.external_id}/details"
-                            title="${this.getDisplayValue(report.programme_document.reference_number)}"
-                          >
-                            ${this.getDisplayValue(report.programme_document.reference_number)}
-                          </a>
-                        </span>`
-                      : html``}
                   </div>
 
                   <div slot="row-data-details">
@@ -225,9 +209,6 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
   reports: any = [];
 
   @property({type: Boolean})
-  noPdSsfaRef = false;
-
-  @property({type: Boolean})
   waitQueryParamsInit!: boolean;
 
   @property({type: String})
@@ -290,7 +271,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
 
     const params = this._prepareReqParamsObj(interventionId);
 
-    if (isJsonStrMatch(this._lastParamsUsed, params) || (this.noPdSsfaRef && !params.programme_document_ext)) {
+    if (isJsonStrMatch(this._lastParamsUsed, params) || !params.programme_document_ext) {
       return;
     }
 
