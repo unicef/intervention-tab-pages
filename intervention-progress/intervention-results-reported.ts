@@ -124,6 +124,10 @@ export class InterventionResultsReported extends connectStore(
           border-bottom: 1px solid var(--list-divider-color);
         }
 
+        .row-details-content {
+          font-size: 15px;
+        }
+
         @media print {
           .indicator-report {
             display: flex;
@@ -252,7 +256,7 @@ export class InterventionResultsReported extends connectStore(
         ${(this.progress.details ? this.progress.details.cp_outputs : []).map(
           (item: any) => html`
             <div class="row-v row-second-bg">
-              <strong>${translate('CP_OUTPUT')}${item.title}</strong>
+              <strong>${translate('CP_OUTPUT')}: ${item.title}</strong>
             </div>
 
             <!-- RAM indicators display -->
