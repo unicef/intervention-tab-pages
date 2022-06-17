@@ -6,7 +6,7 @@ import {
 } from '../actionsConstants';
 import {Intervention} from '@unicef-polymer/etools-types';
 import {PartnerReportingRequirements} from '../types/store.types';
-import {RESET_CURRENT_ITEM, UPDATE_ROUTE_AND_RESET_INTERVENTION} from '../actions/actionsContants';
+import {RESET_CURRENT_ITEM} from '../actions/actionsContants';
 
 export interface InterventionsState {
   current: Intervention | null;
@@ -30,7 +30,6 @@ export const interventions = (state = INITIAL_STATE, action: any) => {
         current: action.current
       };
     case RESET_CURRENT_ITEM:
-    case UPDATE_ROUTE_AND_RESET_INTERVENTION:
       return {
         ...state,
         current: null
