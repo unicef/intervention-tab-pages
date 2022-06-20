@@ -309,7 +309,10 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
   }
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan)) {
+    if (
+      pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan) ||
+      !state.interventions.current
+    ) {
       return;
     }
     if (state.commentsData?.commentsModeEnabled && !this.commentsModeEnabledFlag) {

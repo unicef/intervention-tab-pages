@@ -218,7 +218,10 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
   section_list!: AnyObject[];
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata')) {
+    if (
+      pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata') ||
+      !state.interventions.current
+    ) {
       return;
     }
 
