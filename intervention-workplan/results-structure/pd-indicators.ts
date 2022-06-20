@@ -140,7 +140,10 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
   }
 
   stateChanged(state: RootState): void {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan)) {
+    if (
+      pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan) ||
+      !state.interventions.current
+    ) {
       return;
     }
     this.sections = (state.commonData && state.commonData.sections) || [];
