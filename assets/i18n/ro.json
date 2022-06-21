@@ -251,7 +251,7 @@
   "UNICEF_CASH_BUDGET": "Buget Numerar UNICEF",
   "USE_INPUT_LEVEL": "Utilizati inregistrarea pe nivele",
   "FILL_ALL_ACTIVITY_ITEMS": "Va rugam completati toate campurile obligatorii ale Activitatilor",
-  "INVALID_TOTAL_ACTIVITY_ITEMS": "Date incorecte. Total Numerar trebuie sa fie egal cu Total Cost.",
+  "INVALID_TOTAL_ACTIVITY_ITEMS": "Date incorecte. Numerar UNICEF + Partner trebuie sa fie egal cu Total Numerar.",
   "FILL_ACTIVITY_TIME": "Vă rugăm să selectați un interval de timp pentru Activitate",
   "ITEM_DESCRIPTION": "Descriere",
   "TOTAL_CASH": "Total Numerar",

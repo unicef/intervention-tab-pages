@@ -251,7 +251,7 @@
   "UNICEF_CASH_BUDGET": "الميزانية النقدية لليونيسف",
   "USE_INPUT_LEVEL": "استخدم مستوى الإدخال",
   "FILL_ALL_ACTIVITY_ITEMS": "يرجى ملء جميع أسماء عناصر النشاط",
-  "INVALID_TOTAL_ACTIVITY_ITEMS": "Invalid budget data. Total Cash should be equal to Total Cost.",
+  "INVALID_TOTAL_ACTIVITY_ITEMS": "Invalid budget data. UNICEF + Partner Cash should be equal to Total Cash.",
   "FILL_ACTIVITY_TIME": "الرجاء تحديد الإطار الزمني للنشاط.",
   "ITEM_DESCRIPTION": "Item Description",
   "TOTAL_CASH": "Total Cash",
