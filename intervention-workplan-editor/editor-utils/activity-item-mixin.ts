@@ -8,6 +8,7 @@ import {repeat} from 'lit-html/directives/repeat';
 import '@polymer/paper-input/paper-textarea';
 import {translate} from 'lit-translate';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {ifDefined} from 'lit-html/directives/if-defined.js';
 
 export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass: T) {
   return class ActivityItemsClass extends baseClass {
@@ -27,7 +28,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
     oneEntityInEditMode!: boolean;
 
     handleEsc!: (event: KeyboardEvent) => void;
-    // lastFocusedTd!: any;
+
     commentMode: any;
 
     renderActivityItems(
@@ -135,6 +136,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   label=${this.getLabel(activity.itemsInEditMode, 'N. of Units')}
                   .noLabelFloat="${!activity.itemsInEditMode}"
                   input
+                  tabindex="${ifDefined(item.inEditMode ? undefined : '-1')}"
                   ?readonly="${!activity.itemsInEditMode}"
                   .invalid="${item.invalid?.no_units}"
                   no-of-decimals="2"
@@ -163,6 +165,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   label=${this.getLabel(activity.itemsInEditMode, 'Price/Unit')}
                   .noLabelFloat="${!activity.itemsInEditMode}"
                   input
+                  tabindex="${ifDefined(item.inEditMode ? undefined : '-1')}"
                   ?readonly="${!activity.itemsInEditMode}"
                   .invalid="${item.invalid?.unit_price}"
                   @invalid-changed="${(e: CustomEvent) => {
@@ -192,6 +195,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   input
                   ?readonly="${!activity.itemsInEditMode}"
                   required
+                  tabindex="${ifDefined(item.inEditMode ? undefined : '-1')}"
                   auto-validate
                   error-message="${translate('INCORRECT_VALUE')}"
                   .invalid="${item.invalid?.cso_cash}"
@@ -220,6 +224,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   input
                   ?readonly="${!activity.itemsInEditMode}"
                   required
+                  tabindex="${ifDefined(item.inEditMode ? undefined : '-1')}"
                   auto-validate
                   error-message="${translate('INCORRECT_VALUE')}"
                   .invalid="${item.invalid?.unicef_cash}"
