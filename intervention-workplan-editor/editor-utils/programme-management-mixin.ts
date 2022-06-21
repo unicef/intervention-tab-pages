@@ -97,7 +97,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                     no-label-float
                     input
                     .value="${item.cso_cash}"
-                    tabindex="${ifDefined(item.items && item.items.length ? '-1' : undefined)}"
+                    tabindex="${ifDefined((item.items && item.items.length) || !item.inEditMode ? '-1' : undefined)}"
                     ?readonly="${this.isReadonlyForProgrammeManagementCash(item.inEditMode, item.items)}"
                     ?required="${this.isRequiredProgrammeManagementCash(item.inEditMode, item.items)}"
                     @keydown="${(e: any) => this.handleEsc(e)}"
@@ -112,7 +112,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                     no-label-float
                     input
                     .value="${item.unicef_cash}"
-                    tabindex="${ifDefined(item.items && item.items.length ? '-1' : undefined)}"
+                    tabindex="${ifDefined((item.items && item.items.length) || !item.inEditMode ? '-1' : undefined)}"
                     ?readonly="${this.isReadonlyForProgrammeManagementCash(item.inEditMode, item.items)}"
                     ?required="${this.isRequiredProgrammeManagementCash(item.inEditMode, item.items)}"
                     auto-validate
