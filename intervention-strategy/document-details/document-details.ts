@@ -25,7 +25,6 @@ import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
-import '../../common/paper-textarea-with-icon';
 
 /**
  * @customElement
@@ -52,10 +51,6 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
 
         etools-content-panel::part(ecp-content) {
           padding: 8px 24px 16px 24px;
-        }
-        paper-textarea-with-icon {
-          outline: none;
-          flex: auto;
         }
 
         info-icon-tooltip {
@@ -96,10 +91,18 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
         </div>
 
         <div class="row-padding-v">
-          <paper-textarea-with-icon
+          <div>
+            <label class="paper-label">${translate(translatesMap.context)}</label>
+            <info-icon-tooltip
+              id="iit-context"
+              slot="after-label"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit?.context)}"
+              .tooltipText="${translate('CONTEXT_TOOLTIP')}"
+            ></info-icon-tooltip>
+          </div>
+          <paper-textarea
             id="context"
-            label=${translate(translatesMap.context)}
-            always-float-label
+            no-label-float
             type="text"
             placeholder="—"
             .value="${this.data.context}"
@@ -111,20 +114,22 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             rows="${detailsTextareaRowsCount(this.editMode)}"
             .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.context)}"
           >
-            <info-icon-tooltip
-              id="iit-context"
-              slot="after-label"
-              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit?.context)}"
-              .tooltipText="${translate('CONTEXT_TOOLTIP')}"
-            ></info-icon-tooltip>
-          </paper-textarea-with-icon>
+          </paper-textarea>
         </div>
 
         <div class="row-padding-v">
-          <paper-textarea-with-icon
+          <div>
+            <label class="paper-label">${translate(translatesMap.implementation_strategy)}</label>
+            <info-icon-tooltip
+              id="iit-implemen-strat"
+              slot="after-label"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit?.implementation_strategy)}"
+              .tooltipText="${translate('IMPLEMENTATION_STRATEGY_AND_TECHNICAL_GUIDANCE_TOOLTIP')}"
+            ></info-icon-tooltip>
+          </div>
+          <paper-textarea
             id="implementation-strategy"
-            label=${translate(translatesMap.implementation_strategy)}
-            always-float-label
+            no-label-float
             placeholder="—"
             .value="${this.data.implementation_strategy}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'implementation_strategy')}"
@@ -135,21 +140,24 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             rows="${detailsTextareaRowsCount(this.editMode)}"
             .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.implementation_strategy)}"
           >
-            <info-icon-tooltip
-              id="iit-implemen-strat"
-              slot="after-label"
-              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit?.implementation_strategy)}"
-              .tooltipText="${translate('IMPLEMENTATION_STRATEGY_AND_TECHNICAL_GUIDANCE_TOOLTIP')}"
-            ></info-icon-tooltip>
-          </paper-textarea-with-icon>
+          </paper-textarea>
         </div>
 
         <div class="row-padding-v">
-          <paper-textarea-with-icon
+          <div>
+            <label class="paper-label">${translate(translatesMap.capacity_development)}</label>
+            <info-icon-tooltip
+              id="iit-cap-develop"
+              slot="after-label"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.capacity_development)}"
+              .tooltipText="${translate('CAPACITY_DEVELOPMENT_TOOLTIP')}"
+            ></info-icon-tooltip>
+          </div>
+
+          <paper-textarea
             id="capacityDevelopment"
-            label=${translate(translatesMap.capacity_development)}
             type="text"
-            always-float-label
+            no-label-float
             placeholder="—"
             .value="${this.data.capacity_development}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.capacity_development)}"
@@ -160,19 +168,21 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.capacity_development)}"
             rows="${detailsTextareaRowsCount(this.editMode)}"
           >
-            <info-icon-tooltip
-              id="iit-cap-develop"
-              slot="after-label"
-              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.capacity_development)}"
-              .tooltipText="${translate('CAPACITY_DEVELOPMENT_TOOLTIP')}"
-            ></info-icon-tooltip>
-          </paper-textarea-with-icon>
+          </paper-textarea>
         </div>
 
-        <div class="layout-horizontal row-padding-v">
-          <paper-textarea-with-icon
+        <div class="row-padding-v">
+          <div>
+            <label class="paper-label">${translate(translatesMap.other_partners_involved)}</label>
+            <info-icon-tooltip
+              id="iit-other-p-i"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.other_partners_involved)}"
+              .tooltipText="${translate('OTHER_PARTNERS_INVOLVED_TOOLTIP')}"
+            ></info-icon-tooltip>
+          </div>
+          <paper-textarea
+            no-label-float
             id="otherPartnersInvolved"
-            label=${translate(translatesMap.other_partners_involved)}
             type="text"
             always-float-label
             placeholder="—"
@@ -185,13 +195,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             rows="${detailsTextareaRowsCount(this.editMode)}"
             .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.other_partners_involved)}"
           >
-            <info-icon-tooltip
-              id="iit-other-p-i"
-              slot="after-label"
-              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.other_partners_involved)}"
-              .tooltipText="${translate('OTHER_PARTNERS_INVOLVED_TOOLTIP')}"
-            ></info-icon-tooltip>
-          </paper-textarea-with-icon>
+          </paper-textarea>
         </div>
 
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
