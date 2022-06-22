@@ -381,8 +381,8 @@ export class InterventionResultsReported extends connectStore(
   @property({type: Object})
   prpCountries!: GenericObject[];
 
+  prevPdIdUsedForRequest!: string;
   requestInProgress = false;
-
   interventionStatus!: string;
 
   stateChanged(state: RootState) {
@@ -430,7 +430,11 @@ export class InterventionResultsReported extends connectStore(
     ) {
       return;
     }
-
+    // if we already made a request for this pdId return
+    if (this.prevPdIdUsedForRequest === id) {
+      return;
+    }
+    this.prevPdIdUsedForRequest = id;
     fireEvent(this, 'global-loading', {
       message: 'Loading...',
       active: true,
