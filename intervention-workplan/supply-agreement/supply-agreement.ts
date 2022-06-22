@@ -127,6 +127,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         <div class="row-h" ?hidden="${!this.permissions.edit.supply_items || this.supply_items?.length}">
           ${this.getUploadHelpElement()}
         </div>
+
         <etools-table
           ?hidden="${!this.supply_items?.length}"
           .columns="${this.columns}"
@@ -336,15 +337,32 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       supplyId: supplyId
     });
 
+    fireEvent(this, 'global-loading', {
+      message: 'Loading...',
+      active: true,
+      loadingSource: 'intervention-tabs'
+    });
+
     sendRequest({
       endpoint: endpoint,
       method: 'DELETE'
     })
       .then(() => {
-        getStore().dispatch<AsyncAction>(getIntervention());
+        getStore()
+          .dispatch<AsyncAction>(getIntervention())
+          .finally(() =>
+            fireEvent(this, 'global-loading', {
+              active: false,
+              loadingSource: 'intervention-tabs'
+            })
+          );
       })
       .catch((err: any) => {
         fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: 'intervention-tabs'
+        });
       });
   }
 
