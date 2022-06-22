@@ -359,6 +359,10 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       })
       .catch((err: any) => {
         fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: 'intervention-tabs'
+        });
       });
   }
 
