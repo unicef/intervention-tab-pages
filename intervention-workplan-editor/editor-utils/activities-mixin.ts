@@ -144,7 +144,6 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                   <div class="flex-h justify-center">
                     <time-intervals
                       .readonly="${!this.permissions.edit.result_links || !activity.inEditMode}"
-                      tabindex="0"
                       .invalid="${activity.invalid?.time_frames}"
                       .quarters="${this.quarters}"
                       .selectedTimeFrames="${activity.time_frames}"
@@ -167,7 +166,9 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     no-label-float
                     input
                     .value="${activity.cso_cash}"
-                    tabindex="${ifDefined(activity.items && activity.items.length ? '-1' : undefined)}"
+                    tabindex="${ifDefined(
+                      (activity.items && activity.items.length) || !activity.inEditMode ? '-1' : undefined
+                    )}"
                     ?readonly="${this.isReadonlyForActivityCash(activity.inEditMode, activity.items)}"
                     @keydown="${(e: any) => this.handleEsc(e)}"
                     @value-changed="${({detail}: CustomEvent) =>
@@ -179,7 +180,9 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     no-label-float
                     input
                     .value="${activity.unicef_cash}"
-                    tabindex="${ifDefined(activity.items && activity.items.length ? '-1' : undefined)}"
+                    tabindex="${ifDefined(
+                      (activity.items && activity.items.length) || !activity.inEditMode ? '-1' : undefined
+                    )}"
                     ?readonly="${this.isReadonlyForActivityCash(activity.inEditMode, activity.items)}"
                     @keydown="${(e: any) => this.handleEsc(e)}"
                     @value-changed="${({detail}: CustomEvent) =>
