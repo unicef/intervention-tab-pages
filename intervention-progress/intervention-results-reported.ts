@@ -430,7 +430,7 @@ export class InterventionResultsReported extends connectStore(
     ) {
       return;
     }
-    // if we already made a request for this pdId return
+    // if we already made a request for this pdId return, this prevent to make a request on leaving the page
     if (this.prevPdIdUsedForRequest === id) {
       return;
     }
