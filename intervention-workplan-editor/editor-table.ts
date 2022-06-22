@@ -226,7 +226,7 @@ export class EditorTable extends CommentsMixin(
                           this.moveFocusToNewllyAdded(e.target);
                         }}"
                         ?hidden="${!this.permissions?.edit.result_links ||
-                        !this.getOriginalCPOutput(resultIndex).cp_output}"
+                        !this.getOriginalCPOutput(resultIndex)?.cp_output}"
                         icon="add-box"
                         tabindex="0"
                       ></paper-icon-button>
@@ -513,9 +513,9 @@ export class EditorTable extends CommentsMixin(
     });
   }
 
-  showCpOutput(isUnicefUsr: boolean, result: ExpectedResultExtended) {
+  showCpOutput(isUnicefUsr: boolean, result?: ExpectedResultExtended) {
     // show only for Unicef users and if cp_output wasn't assigned
-    return isUnicefUsr && !result.cp_output;
+    return isUnicefUsr && !result?.cp_output;
   }
 
   addNewPDOutput(llResults: Partial<ResultLinkLowerResultExtended>[]) {
@@ -626,7 +626,7 @@ export class EditorTable extends CommentsMixin(
       result.ll_results.shift();
     } else {
       pdOutput.name = this.getOriginalPDOutput(resultIndex, pdOutputIndex).name;
-      if (this.isUnicefUser && !this.getOriginalCPOutput(resultIndex).cp_output) {
+      if (this.isUnicefUser && !this.getOriginalCPOutput(resultIndex)?.cp_output) {
         this.unassignedPDMap.delete(pdOutput.id);
       }
     }
@@ -655,6 +655,9 @@ export class EditorTable extends CommentsMixin(
     let originalResIndex = resultIndex;
 
     if (!this.originalResultStructureDetails[resultIndex]) {
+      if (resultIndex == 0) {
+        return undefined;
+      }
       originalResIndex = resultIndex - 1;
     }
     return this.originalResultStructureDetails[originalResIndex];
