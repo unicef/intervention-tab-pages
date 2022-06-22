@@ -9,10 +9,9 @@ import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/di
 import {
   selectInterventionId,
   selectInterventionQuarters,
-  selectInterventionStatus,
-  selectResultLinksPermissions
+  selectInterventionStatus
 } from '../intervention-workplan/results-structure/results-structure.selectors';
-import {currentIntervention, isUnicefUser} from '../common/selectors';
+import {currentIntervention, currentInterventionPermissions, isUnicefUser} from '../common/selectors';
 import {ExpectedResult, Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
 import {InterventionQuarter} from '@unicef-polymer/etools-types/dist/intervention.types';
 import {cloneDeep} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
@@ -28,10 +27,11 @@ import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-s
 import {getIntervention, updateCurrentIntervention} from '../common/actions/interventions';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {ActivitiesMixin} from './editor-utils/activities-mixin';
+import {ProgrammeManagementMixin} from './editor-utils/programme-management-mixin';
 import {CommentsMixin} from '../common/components/comments/comments-mixin';
 import {ExpectedResultExtended, ResultLinkLowerResultExtended} from './editor-utils/types';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
-import {translate} from 'lit-translate/directives/translate';
+import {translate} from 'lit-translate';
 import {AsyncAction, IdAndName} from '@unicef-polymer/etools-types';
 import {EditorTableArrowKeysStyles} from './editor-utils/editor-table-arrow-keys-styles';
 import {ArrowsNavigationMixin} from './editor-utils/arrows-navigation-mixin';
@@ -40,10 +40,12 @@ import {EditorHoverStyles} from './editor-utils/editor-hover-styles';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import {updateSmallMenu} from '../common/actions/common-actions';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
-
+import {selectProgrammeManagement} from '../intervention-workplan/effective-efficient-programme-mgmt/effectiveEfficientProgrammeMgmt.selectors';
 @customElement('editor-table')
 // @ts-ignore
-export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationMixin(LitElement))) {
+export class EditorTable extends CommentsMixin(
+  ProgrammeManagementMixin(ActivitiesMixin(ArrowsNavigationMixin(LitElement)))
+) {
   static get styles() {
     return [EditorTableStyles, EditorTableArrowKeysStyles, EditorHoverStyles, ...super.styles];
   }
@@ -136,6 +138,7 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
             <td class="col-g" colspan="2"></td>
           </tr>
         </tbody>
+        ${this.renderProgrammeManagement()}
         <tbody
           ?hoverable="${this.permissions?.edit.result_links &&
           !this.commentMode &&
@@ -391,8 +394,14 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
   @property({type: Boolean}) isUnicefUser = true;
   @property({type: Object})
   permissions!: {
-    edit: {result_links?: boolean};
-    required: {result_links?: boolean};
+    edit: {
+      result_links?: boolean;
+      management_budgets?: boolean;
+    };
+    required: {
+      result_links?: boolean;
+      management_budgets?: boolean;
+    };
   };
 
   @property({type: Object})
@@ -436,12 +445,14 @@ export class EditorTable extends CommentsMixin(ActivitiesMixin(ArrowsNavigationM
       getStore().dispatch(updateSmallMenu(true));
     }
     this.interventionId = selectInterventionId(state);
-    this.permissions = cloneDeep(selectResultLinksPermissions(state));
-
+    this.permissions = cloneDeep(currentInterventionPermissions(state));
     this.interventionStatus = selectInterventionStatus(state);
     this.quarters = selectInterventionQuarters(state);
     this.isUnicefUser = isUnicefUser(state);
     this.intervention = cloneDeep(currentIntervention(state));
+    this.formattedProgrammeManagement = this.formatProgrammeManagement(selectProgrammeManagement(state));
+    this.originalFormattedProgrammeManagement = cloneDeep(this.formattedProgrammeManagement);
+
     this.cpOutputs = this.intervention.result_links
       .map(({cp_output: id, cp_output_name: name}: ExpectedResult) => ({
         id,

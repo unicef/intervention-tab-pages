@@ -17,7 +17,7 @@ export const EditorTableStyles = css`
   }
 
   td.first-col {
-    width: 85px;
+    width: 90px;
     text-align: left;
     vertical-align: middle;
     padding: 6px;
