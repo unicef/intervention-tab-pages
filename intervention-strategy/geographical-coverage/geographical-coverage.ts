@@ -24,7 +24,6 @@ import {AnyObject, AsyncAction, LocationObject, Permission, Site} from '@unicef-
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
-import '../../common/paper-textarea-with-icon';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 
 /**
@@ -133,16 +132,14 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="flex-c layout-horizontal row-padding-v location-icon">
-          <label class="paper-label">
-            ${translate(translatesMap.flat_locations)}
-            <info-icon-tooltip
-              id="iit-locations"
-              class="iit"
-              position="right"
-              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.flat_locations)}"
-              .tooltipText="${translate('GEOGRAPHICAL_LOCATIONS_INFO')}"
-            ></info-icon-tooltip>
-          </label>
+          <label class="paper-label"> ${translate(translatesMap.flat_locations)}</label>
+          <info-icon-tooltip
+            id="iit-locations"
+            class="iit"
+            position="right"
+            ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.flat_locations)}"
+            .tooltipText="${translate('GEOGRAPHICAL_LOCATIONS_INFO')}"
+          ></info-icon-tooltip>
         </div>
         <div class="flex-c layout-horizontal dropdown-row">
           <etools-dropdown-multi
@@ -174,17 +171,9 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
             </paper-button>
           </div>
         </div>
-        <div class="flex-c layout-horizontal row-padding-v mt-50">
-          <paper-textarea-with-icon
-            label=${translate(translatesMap.sites)}
-            always-float-label
-            class="w100"
-            placeholder="&#8212;"
-            readonly
-            tabindex="-1"
-            max-rows="4"
-            .value="${this.getSelectedSitesText(this.data.sites)}"
-          >
+        <div class="flex-c row-padding-v mt-50">
+          <div>
+            <label class="paper-label">${translate(translatesMap.sites)}</label>
             <info-icon-tooltip
               id="iit-sites"
               class="iit"
@@ -193,8 +182,17 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
               ?hidden="${!this.editMode}"
               .tooltipText="${translate('GEOGRAPHICAL_SITES_INFO')}"
             ></info-icon-tooltip>
-          </paper-textarea-with-icon>
-          <div class="locations-btn"></div>
+          </div>
+          <paper-textarea
+            no-label-float
+            class="w100"
+            placeholder="&#8212;"
+            readonly
+            tabindex="-1"
+            max-rows="4"
+            .value="${this.getSelectedSitesText(this.data.sites)}"
+          >
+          </paper-textarea>
         </div>
         <div class="flex-c layout-horizontal row-padding-v">
           <paper-button
