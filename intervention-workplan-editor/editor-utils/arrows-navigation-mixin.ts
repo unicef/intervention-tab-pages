@@ -279,7 +279,10 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     }
     _getNextTbody(activeTd: HTMLTableCellElement) {
       let nextTbody = activeTd.parentElement?.parentElement?.nextElementSibling;
-      while (nextTbody?.hasAttribute('thead')) {
+      while (
+        nextTbody?.hasAttribute('thead') ||
+        nextTbody?.querySelector<HTMLTableCellElement>('td[tabindex="0"]') === null
+      ) {
         nextTbody = nextTbody.nextElementSibling;
       }
       if (nextTbody && nextTbody.children.length === 0) {
@@ -289,7 +292,10 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     }
     _getPrevTbody(activeTd: HTMLTableCellElement) {
       let prevTbody = activeTd.parentElement?.parentElement?.previousElementSibling;
-      while (prevTbody?.hasAttribute('thead')) {
+      while (
+        prevTbody?.hasAttribute('thead') ||
+        prevTbody?.querySelector<HTMLTableCellElement>('td[tabindex="0"]') === null
+      ) {
         prevTbody = prevTbody.previousElementSibling;
       }
       if (prevTbody && prevTbody.children.length === 0) {
