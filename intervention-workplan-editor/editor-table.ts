@@ -467,7 +467,6 @@ export class EditorTable extends CommentsMixin(
       this.autoValidateActivityName = false;
 
       this.getResultLinksDetails().then(() => {
-        console.log('gotten results');
         if (!this.refreshResultStructure) {
           if (
             this.permissions?.edit?.result_links &&
