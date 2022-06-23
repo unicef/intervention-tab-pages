@@ -274,7 +274,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                     icon="delete"
                     tabindex="0"
                     ?hidden="${!this.permissions.edit.result_links}"
-                    @click="${() => this.removeItem(activity, pdOutput, itemIndex)}"
+                    @click="${() => this.removeActivityItem(activity, pdOutput, itemIndex)}"
                   ></paper-icon-button>
                 </div>
               </td>
@@ -330,7 +330,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       activityIndex: number
     ) => void;
 
-    async removeItem(
+    async removeActivityItem(
       activity: InterventionActivityExtended,
       pdOutput: ResultLinkLowerResultExtended,
       itemIndex: number

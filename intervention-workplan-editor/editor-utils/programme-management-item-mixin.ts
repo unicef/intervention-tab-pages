@@ -269,7 +269,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                     icon="delete"
                     tabindex="0"
                     ?hidden="${!this.permissions.edit.management_budgets}"
-                    @click="${() => this.removeItem(programmeManagement, itemIndex)}"
+                    @click="${() => this.removeProgrammeManagementItem(programmeManagement, itemIndex)}"
                   ></paper-icon-button>
                 </div>
               </td>
@@ -333,7 +333,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
       programmeManagementIndex: number
     ) => void;
 
-    async removeItem(programmeManagement: ProgrammeManagementRowExtended, itemIndex: number) {
+    async removeProgrammeManagementItem(programmeManagement: ProgrammeManagementRowExtended, itemIndex: number) {
       const confirmed = await openDialog({
         dialog: 'are-you-sure',
         dialogData: {
