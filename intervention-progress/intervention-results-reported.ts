@@ -387,7 +387,8 @@ export class InterventionResultsReported extends connectStore(
 
   stateChanged(state: RootState) {
     if (
-      pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Progress, TABS.ResultsReported)
+      pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Progress, TABS.ResultsReported) ||
+      !state.interventions.current
     ) {
       return;
     }
