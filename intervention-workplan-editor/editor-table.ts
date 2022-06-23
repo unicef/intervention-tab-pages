@@ -436,6 +436,7 @@ export class EditorTable extends CommentsMixin(
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(state.app?.routeDetails, 'interventions', TABS.WorkplanEditor)) {
       this.prevInterventionId = null;
+      this.oneEntityInEditMode = false;
       return;
     }
     if (!selectInterventionId(state)) {
@@ -466,6 +467,7 @@ export class EditorTable extends CommentsMixin(
       this.autoValidateActivityName = false;
 
       this.getResultLinksDetails().then(() => {
+        console.log('gotten results');
         if (!this.refreshResultStructure) {
           if (
             this.permissions?.edit?.result_links &&
