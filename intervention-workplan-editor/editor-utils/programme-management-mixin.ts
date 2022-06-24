@@ -81,7 +81,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
               <tr class="header">
                 <td></td>
                 <td colspan="4">${translate('EFFECTIVE_EFFICIENT_PROG_MGM')}</td>
-                <td>${translate('PARTNER_CASH')}</td>
+                <td class="a-right">${translate('PARTNER_CASH')}</td>
                 <td>${translate('UNICEF_CASH')}</td>
                 <td colspan="2">${translate('GENERAL.TOTAL')}</td>
               </tr>
@@ -93,7 +93,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                     <div title="${item.context_details}">${this.truncateString(item.context_details)}</div>
                   </div>
                 </td>
-                <td tabindex="${item.items && item.items.length ? '-1' : '0'}" class="no-top-padding">
+                <td class="a-right" tabindex="${item.items && item.items.length ? '-1' : '0'}" class="no-top-padding">
                   <etools-currency-amount-input
                     no-label-float
                     input
