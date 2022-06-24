@@ -263,9 +263,15 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
       ];
     }
 
-    getTotalForProgrammeManagementCash(partner: string, unicef: string): number {
+    getTotalForProgrammeManagementCash(partner: string | number, unicef: string | number): number {
       // need to remove thousands separator because string will be converted as isNAN
-      return (Number((partner || '').replaceAll(',', '')) || 0) + (Number((unicef || '').replaceAll(',', '')) || 0);
+      if (typeof partner === 'string') {
+        partner = partner.replaceAll(',', '');
+      }
+      if (typeof unicef === 'string') {
+        unicef = unicef.replaceAll(',', '');
+      }
+      return (Number(partner) || 0) + (Number(unicef) || 0);
     }
 
     // @ts-ignore
