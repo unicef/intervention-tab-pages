@@ -436,6 +436,7 @@ export class EditorTable extends CommentsMixin(
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(state.app?.routeDetails, 'interventions', TABS.WorkplanEditor)) {
       this.prevInterventionId = null;
+      this.oneEntityInEditMode = false;
       return;
     }
     if (!selectInterventionId(state)) {
