@@ -264,7 +264,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
     }
 
     getTotalForProgrammeManagementCash(partner: string, unicef: string): number {
-      // need to remove thousands separator because will be parsed as isNAN
+      // need to remove thousands separator because string will be converted as isNAN
       return (Number((partner || '').replaceAll(',', '')) || 0) + (Number((unicef || '').replaceAll(',', '')) || 0);
     }
 
