@@ -40,6 +40,7 @@ import {EditorHoverStyles} from './editor-utils/editor-hover-styles';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import {updateSmallMenu} from '../common/actions/common-actions';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
+/* eslint-disable max-len */
 import {selectProgrammeManagement} from '../intervention-workplan/effective-efficient-programme-mgmt/effectiveEfficientProgrammeMgmt.selectors';
 @customElement('editor-table')
 // @ts-ignore

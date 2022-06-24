@@ -17,6 +17,7 @@ import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-s
 import {repeat} from 'lit-html/directives/repeat';
 import {translate, get as getTranslation} from 'lit-translate';
 import {TruncateMixin} from '../../common/truncate.mixin';
+/* eslint-disable max-len */
 import {ProgrammeManagement} from '../../intervention-workplan/effective-efficient-programme-mgmt/effectiveEfficientProgrammeMgmt.models';
 import {ProgrammeManagementItemMixin} from './programme-management-item-mixin';
 import {
