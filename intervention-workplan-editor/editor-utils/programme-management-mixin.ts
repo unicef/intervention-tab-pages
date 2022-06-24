@@ -133,7 +133,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                     ${this.intervention.planned_budget.currency}
                     <span class="b">
                       ${displayCurrencyAmount(
-                        String(this.getTotalForProgrammeManagementCash('1,001.00', '4,161,830.00')),
+                        String(this.getTotalForProgrammeManagementCash(item.cso_cash, item.unicef_cash)),
                         '0',
                         2
                       )}
