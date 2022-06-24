@@ -106,7 +106,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                       }
                       this.handleEsc(e);
                     }}"
-                    @focus="${() => (this.autoValidateActivityName = true)}"
+                    @focus="${() => setTimeout(() => (this.autoValidateActivityName = true))}"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue(activity, 'name', detail.value)}"
                   ></paper-textarea>
                   <div class="truncate-multi-line b" title="${activity.name}" ?hidden="${activity.inEditMode}">

@@ -29,7 +29,12 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
 
       if (this.easeUpTabNavigation) {
         // Avoid the need for 2 TAB clicks to reach the input
-        const input = td.querySelector('[input]');
+        const inputs = td.querySelectorAll('[input]');
+        if (inputs.length > 1 && Array.from(inputs).some((i: any) => i.hasAttribute('focused'))) {
+          return;
+        }
+
+        const input = inputs[0];
         if (input && !this.inputIsFocused(input) && !input.hasAttribute('readonly') && !input.hasAttribute('hidden')) {
           this.focusInput(input);
         }

@@ -720,7 +720,10 @@ export class EditorTable extends CommentsMixin(
 
       if (input) {
         this.lastFocusedTd = this.determineParentTd(input);
-        input.focus();
+        if (!input.focused) {
+          // Calling focus() when it's already focused it defocuses
+          input.focus();
+        }
       }
 
       // @ts-ignore Defined in arrows-nav-mixin
