@@ -139,46 +139,50 @@ export class EditorTable extends CommentsMixin(
           </tr>
         </tbody>
         ${this.renderProgrammeManagement()}
-        <tbody
-          ?hoverable="${this.permissions?.edit.result_links &&
-          !this.commentMode &&
-          !this.isUnicefUser &&
-          !this.oneEntityInEditMode}"
-        >
-          <tr
-            class="add action-btns heavy-blue"
-            type="cp-output"
-            ?hidden="${this.isUnicefUser || !this.permissions?.edit.result_links || this.commentMode}"
-          >
-            <td></td>
-            <td colspan="3"></td>
-            <td colspan="3"></td>
-            <td colspan="2" tabindex="0">
-              <div class="action-btns" style="position:relative">
-                <etools-info-tooltip
-                  position="top"
-                  offset="0"
-                  custom-icon
-                  ?hide-tooltip="${!this.permissions?.edit.result_links}"
-                  style="justify-content:end;"
+        ${this.isUnicefUser || !this.permissions?.edit.result_links || this.commentMode
+          ? html``
+          : html`
+              <tbody
+                ?hoverable="${this.permissions?.edit.result_links &&
+                !this.commentMode &&
+                !this.isUnicefUser &&
+                !this.oneEntityInEditMode}"
+              >
+                <tr
+                  class="add action-btns heavy-blue"
+                  type="cp-output"
+                  ?hidden="${this.isUnicefUser || !this.permissions?.edit.result_links || this.commentMode}"
                 >
-                  <paper-icon-button
-                    id="add-pd-output"
-                    slot="custom-icon"
-                    @click="${(e: any) => {
-                      this.addNewUnassignedPDOutput();
-                      this.moveFocusToNewllyAdded(e.target);
-                    }}"
-                    ?hidden="${!this.permissions?.edit.result_links}"
-                    icon="add-box"
-                    tabindex="0"
-                  ></paper-icon-button>
-                  <span class="no-wrap" slot="message">${translate('ADD_PD_OUTPUT')}</span>
-                </etools-info-tooltip>
-              </div>
-            </td>
-          </tr>
-        </tbody>
+                  <td></td>
+                  <td colspan="3"></td>
+                  <td colspan="3"></td>
+                  <td colspan="2" tabindex="0">
+                    <div class="action-btns" style="position:relative">
+                      <etools-info-tooltip
+                        position="top"
+                        offset="0"
+                        custom-icon
+                        ?hide-tooltip="${!this.permissions?.edit.result_links}"
+                        style="justify-content:end;"
+                      >
+                        <paper-icon-button
+                          id="add-pd-output"
+                          slot="custom-icon"
+                          @click="${(e: any) => {
+                            this.addNewUnassignedPDOutput();
+                            this.moveFocusToNewllyAdded(e.target);
+                          }}"
+                          ?hidden="${!this.permissions?.edit.result_links}"
+                          icon="add-box"
+                          tabindex="0"
+                        ></paper-icon-button>
+                        <span class="no-wrap" slot="message">${translate('ADD_PD_OUTPUT')}</span>
+                      </etools-info-tooltip>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            `}
         ${repeat(
           this.resultStructureDetails,
           (result: ExpectedResult) => result.id,
@@ -209,7 +213,13 @@ export class EditorTable extends CommentsMixin(
                 <td></td>
                 <td colspan="3"></td>
                 <td colspan="3"></td>
-                <td colspan="2" class="action-btns" tabindex="0">
+                <td
+                  colspan="2"
+                  class="action-btns"
+                  tabindex="${!this.permissions?.edit.result_links || !this.getOriginalCPOutput(resultIndex)?.cp_output
+                    ? '-1'
+                    : '0'}"
+                >
                   <div class="action-btns" style="position:relative">
                     <etools-info-tooltip
                       position="top"
