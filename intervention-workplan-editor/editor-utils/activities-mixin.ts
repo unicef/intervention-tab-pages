@@ -226,7 +226,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     <etools-info-tooltip
                       position="top"
                       custom-icon
-                      ?hide-tooltip="${!this.permissions.edit.result_links}"
+                      ?hide-tooltip="${activity.items?.length || !this.permissions.edit.result_links}"
                       style="justify-content:end;"
                     >
                       <paper-icon-button
