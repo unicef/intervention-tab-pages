@@ -1,10 +1,7 @@
 // @ts-ignore
 import {Constructor, html, LitElement, property} from 'lit-element';
 import {ifDefined} from 'lit-html/directives/if-defined.js';
-import {
-  addCurrencyAmountDelimiter,
-  displayCurrencyAmount
-} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
 import '../time-intervals/time-intervals';
 import {cloneDeep} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
