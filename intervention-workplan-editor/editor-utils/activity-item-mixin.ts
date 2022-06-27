@@ -289,7 +289,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
         >
           <td></td>
           <td tabindex="0">
-            <div class="icon" @click="${(e: CustomEvent) => this.addNewItem(e, activity, 'focusAbove')}">
+            <div class="icon" @click="${(e: CustomEvent) => this.addNewActivityItem(e, activity, 'focusAbove')}">
               <paper-icon-button icon="add-box"></paper-icon-button> ${translate('ADD_NEW_ITEM')}
             </div>
           </td>
@@ -434,12 +434,12 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       }
     }
 
-    addNewItem(e: CustomEvent, activity: Partial<InterventionActivityExtended>, focusClue: string) {
+    addNewActivityItem(e: CustomEvent, activity: Partial<InterventionActivityExtended>, focusClue: string) {
       if (!activity.items) {
         activity.items = [];
       }
-      // @ts-ignore
-      activity.items?.push({name: '', inEditMode: true});
+      activity.items?.push({name: '', inEditMode: true} as any);
+      activity.inEditMode = true;
       activity.itemsInEditMode = true;
       this.oneEntityInEditMode = true;
       this.requestUpdate();
