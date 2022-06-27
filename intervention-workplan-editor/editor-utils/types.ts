@@ -95,6 +95,7 @@ export type ProgrammeManagementRow = {
   context_details: string;
   cso_cash: string;
   unicef_cash: string;
+  totalProgrammeManagementCash: number;
   total: string;
   items: ProgrammeManagementRowItemExtended[];
   id: number;

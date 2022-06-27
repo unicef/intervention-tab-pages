@@ -17,6 +17,7 @@ import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-s
 import {repeat} from 'lit-html/directives/repeat';
 import {translate, get as getTranslation} from 'lit-translate';
 import {TruncateMixin} from '../../common/truncate.mixin';
+/* eslint-disable max-len */
 import {ProgrammeManagement} from '../../intervention-workplan/effective-efficient-programme-mgmt/effectiveEfficientProgrammeMgmt.models';
 import {ProgrammeManagementItemMixin} from './programme-management-item-mixin';
 import {
@@ -131,13 +132,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                 >
                   <div>
                     ${this.intervention.planned_budget.currency}
-                    <span class="b">
-                      ${displayCurrencyAmount(
-                        String(this.getTotalForProgrammeManagementCash(item.cso_cash, item.unicef_cash)),
-                        '0',
-                        2
-                      )}
-                    </span>
+                    <span class="b">${displayCurrencyAmount(String(item.totalProgrammeManagementCash), '0', 2)}</span>
                   </div>
                   <div class="action-btns align-bottom flex-h">
                     <paper-icon-button
@@ -219,9 +214,10 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
           code: 'EEPM.1',
           name: getTranslation('TITLE_1'),
           context_details: getTranslation('DESCRIPTION_1'),
-          cso_cash: addCurrencyAmountDelimiter(data.act1_partner),
-          unicef_cash: addCurrencyAmountDelimiter(data.act1_unicef),
-          total: addCurrencyAmountDelimiter(data.act1_total),
+          cso_cash: data.act1_partner,
+          unicef_cash: data.act1_unicef,
+          totalProgrammeManagementCash: this.getTotalForProgrammeManagementCash(data.act1_partner, data.act1_unicef),
+          total: data.act1_total,
           items: data.items.filter(
             (item: ProgrammeManagementRowItemExtended) => item.kind === ProgrammeManagementKindChoices.inCountry
           ),
@@ -234,9 +230,10 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
           code: 'EEPM.2',
           name: getTranslation('TITLE_2'),
           context_details: getTranslation('DESCRIPTION_2'),
-          cso_cash: addCurrencyAmountDelimiter(data.act2_partner),
-          unicef_cash: addCurrencyAmountDelimiter(data.act2_unicef),
-          total: addCurrencyAmountDelimiter(data.act2_total),
+          cso_cash: data.act2_partner,
+          unicef_cash: data.act2_unicef,
+          totalProgrammeManagementCash: this.getTotalForProgrammeManagementCash(data.act2_partner, data.act2_unicef),
+          total: data.act2_total,
           items: data.items.filter(
             (item: ProgrammeManagementRowItemExtended) => item.kind === ProgrammeManagementKindChoices.operational
           ),
@@ -249,9 +246,10 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
           code: 'EEPM.3',
           name: getTranslation('TITLE_3'),
           context_details: getTranslation('DESCRIPTION_3'),
-          cso_cash: addCurrencyAmountDelimiter(data.act3_partner),
-          unicef_cash: addCurrencyAmountDelimiter(data.act3_unicef),
-          total: addCurrencyAmountDelimiter(data.act3_total),
+          cso_cash: data.act3_partner,
+          unicef_cash: data.act3_unicef,
+          totalProgrammeManagementCash: this.getTotalForProgrammeManagementCash(data.act3_partner, data.act3_unicef),
+          total: data.act3_total,
           items: data.items.filter(
             (item: ProgrammeManagementRowItemExtended) => item.kind === ProgrammeManagementKindChoices.planning
           ),
@@ -263,14 +261,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
       ];
     }
 
-    getTotalForProgrammeManagementCash(partner: string | number, unicef: string | number): number {
-      // need to remove thousands separator because string will be converted as isNAN
-      if (typeof partner === 'string') {
-        partner = partner.replaceAll(',', '');
-      }
-      if (typeof unicef === 'string') {
-        unicef = unicef.replaceAll(',', '');
-      }
+    getTotalForProgrammeManagementCash(partner: string, unicef: string): number {
       return (Number(partner) || 0) + (Number(unicef) || 0);
     }
 
