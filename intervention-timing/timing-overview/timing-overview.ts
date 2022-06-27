@@ -86,7 +86,9 @@ export class TimingOverview extends CommentsMixin(LitElement) {
 
           <div class="data-column">
             <label class="paper-label">${translate('DATE_LAST_AMENDED')}</label>
-            <div class="input-label" empty></div>
+            <div class="input-label" ?empty="${!this.timingOverview.date_last_amended}">
+              ${formatDate(this.timingOverview.date_last_amended)}
+            </div>
           </div>
 
           <div class="data-column">
