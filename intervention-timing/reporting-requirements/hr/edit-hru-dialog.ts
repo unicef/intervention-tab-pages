@@ -9,7 +9,6 @@ import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import './hru-list.js';
 import CONSTANTS from '../../../common/constants';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
-import {convertDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
 import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
@@ -80,10 +79,14 @@ export class EditHruDialog extends connectStore(LitElement) {
             label=${translate('SELECT_START_DATE')}
             .value="${this.repStartDate}"
             required
-            min-date="${this.minDate}"
+            min-date="${this.interventionStart}"
             auto-validate
             open="${this.datePickerOpen}"
             selected-date-display-format="D MMM YYYY"
+            fire-date-has-changed
+            @date-has-changed="${(e: CustomEvent) => {
+              this.repStartDate = e.detail.date;
+            }}"
           >
           </datepicker-lite>
         </div>
@@ -93,6 +96,7 @@ export class EditHruDialog extends connectStore(LitElement) {
           <div class="col layout-vertical col-6">
             <calendar-lite
               id="datepicker"
+              min-date="${this.repStartDate}"
               pretty-date="${this.selectedDate ? this.selectedDate : ''}"
               @date-changed="${({detail}: CustomEvent) => this.changed(detail.value)}"
               format="YYYY-MM-DD"
@@ -130,9 +134,6 @@ export class EditHruDialog extends connectStore(LitElement) {
   @property({type: Date})
   repStartDate!: Date | string;
 
-  @property({type: Date})
-  minDate!: Date;
-
   @property({type: String})
   selectedDate!: string;
 
@@ -149,7 +150,6 @@ export class EditHruDialog extends connectStore(LitElement) {
 
   set interventionId(interventionId) {
     this._interventionId = interventionId;
-    this.intervDataChanged();
   }
 
   @property({type: String})
@@ -164,22 +164,8 @@ export class EditHruDialog extends connectStore(LitElement) {
     this.interventionId = interventionId;
     this.interventionStart = interventionStart;
 
+
     this._setDefaultStartDate();
-  }
-
-  intervDataChanged() {
-    this.minDate = this._getMinDate();
-  }
-
-  _getMinDate() {
-    if (!this.interventionStart) {
-      return null;
-    }
-    const stDt = this.interventionStart instanceof Date ? this.interventionStart : convertDate(this.interventionStart);
-    if (stDt) {
-      return dayjs(stDt).toDate();
-    }
-    return null;
   }
 
   _setDefaultStartDate() {
