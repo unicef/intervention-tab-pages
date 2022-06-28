@@ -79,6 +79,10 @@ export const EditorTableStyles = css`
     text-align: right;
   }
 
+  td.a-right {
+    text-align: right;
+  }
+
   td.a-center {
     text-align: center;
   }
