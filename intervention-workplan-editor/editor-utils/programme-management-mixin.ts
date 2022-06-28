@@ -156,7 +156,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                     <etools-info-tooltip
                       position="top"
                       custom-icon
-                      ?hide-tooltip="${!this.permissions.edit.management_budgets}"
+                      ?hide-tooltip="${item.items?.length || !this.permissions.edit.management_budgets}"
                       style="justify-content:end;"
                     >
                       <paper-icon-button
