@@ -232,6 +232,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                       <paper-icon-button
                         icon="add-box"
                         slot="custom-icon"
+                        tabindex="-1"
                         @click="${(e: CustomEvent) => this.addNewActivityItem(e, activity, 'focusBelow')}"
                         ?hidden="${activity.items?.length || !this.permissions.edit.result_links}"
                       ></paper-icon-button>

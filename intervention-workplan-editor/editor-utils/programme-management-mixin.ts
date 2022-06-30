@@ -161,6 +161,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                     >
                       <paper-icon-button
                         icon="add-box"
+                        tabindex="-1"
                         slot="custom-icon"
                         @click="${(e: CustomEvent) => this.addNewItem(e, item, 'focusBelow')}"
                         ?hidden="${item.items?.length || !this.permissions.edit.management_budgets}"

@@ -169,6 +169,7 @@ export class EditorTable extends CommentsMixin(
                         <paper-icon-button
                           id="add-pd-output"
                           slot="custom-icon"
+                          tabindex="-1"
                           @click="${(e: any) => {
                             this.addNewUnassignedPDOutput();
                             this.moveFocusToNewllyAdded(e.target);
@@ -232,6 +233,7 @@ export class EditorTable extends CommentsMixin(
                       <paper-icon-button
                         id="add-pd-output-${result.id}"
                         slot="custom-icon"
+                        tabindex="-1"
                         @click="${(e: any) => {
                           this.addNewPDOutput(result.ll_results);
                           this.moveFocusToNewllyAdded(e.target);
@@ -355,6 +357,7 @@ export class EditorTable extends CommentsMixin(
                           <paper-icon-button
                             icon="add-box"
                             slot="custom-icon"
+                            tabindex="-1"
                             @click="${(e: any) => {
                               this.addNewActivity(pdOutput);
                               this.moveFocusToNewllyAdded(e.target);
