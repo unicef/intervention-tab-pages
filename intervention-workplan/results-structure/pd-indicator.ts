@@ -10,6 +10,7 @@ import {Indicator} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
+import {getIndicatorDisplayType} from '../../utils/utils';
 
 @customElement('pd-indicator')
 export class PdIndicator extends CommentsMixin(LitElement) {
@@ -44,7 +45,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
           <!--    Indicator name    -->
           <div class="flex-1 left-align layout-vertical start-aligned">
             <div class="name layout-horizontal">
-              ${this.getIndicatorDisplayType(this.indicator)} ${this.addInactivePrefix(this.indicator)}
+              ${getIndicatorDisplayType(this.indicator)} ${this.addInactivePrefix(this.indicator)}
               ${(this.indicator.indicator ? this.indicator.indicator.title : this.indicator.cluster_indicator_title) ||
               '—'}
               <div id="hf" class="hf-mark" ?hidden="${!this.indicator.is_high_frequency}"></div>
@@ -148,31 +149,6 @@ export class PdIndicator extends CommentsMixin(LitElement) {
   }
   openDeletionDialog(indicatorId: string) {
     fireEvent(this, 'open-delete-confirmation', {indicatorId: indicatorId});
-  }
-
-  // Both unit and displayType are used because of inconsitencies in the db.
-  getIndicatorDisplayType(indicator: Indicator) {
-    const unit = indicator.indicator ? indicator.indicator!.unit : '';
-    const displayType = indicator.indicator ? indicator.indicator!.display_type : '';
-    if (!unit) {
-      return '';
-    }
-    let typeChar = '';
-    switch (unit) {
-      case 'number':
-        typeChar = '#';
-        break;
-      case 'percentage':
-        if (displayType === 'percentage') {
-          typeChar = '%';
-        } else if (displayType === 'ratio') {
-          typeChar = '÷';
-        }
-        break;
-      default:
-        break;
-    }
-    return typeChar;
   }
 
   getDisaggregation(disaggregationId: string | number): TemplateResult {

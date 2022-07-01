@@ -47,6 +47,7 @@ import {
   isValidDate
 } from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
+import {getIndicatorDisplayType} from '../utils/utils';
 declare const dayjs: any;
 
 /**
@@ -295,8 +296,7 @@ export class InterventionResultsReported extends connectStore(
                       ${this._getIndicatorsReports(lowerResult.id).map(
                         (indicatorReport: any) => html`<div class="row-h indicator-report">
                             <div class="col-data col-9">
-                              ${this._ternary(indicatorReport.reportable.blueprint.unit, 'number', '#', '%')}
-                              ${indicatorReport.reportable.blueprint.title}
+                              ${getIndicatorDisplayType(indicatorReport)} ${indicatorReport.reportable.blueprint.title}
                             </div>
                             <div class="col-data col-3 progress-bar">
                               <etools-progress-bar
