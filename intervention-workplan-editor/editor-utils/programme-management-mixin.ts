@@ -90,7 +90,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                     <div title="${item.context_details}">${this.truncateString(item.context_details)}</div>
                   </div>
                 </td>
-                <td class="a-right" tabindex="${item.items && item.items.length ? '-1' : '0'}" class="no-top-padding">
+                <td class="a-right no-top-padding" tabindex="${item.items && item.items.length ? '-1' : '0'}">
                   <etools-currency-amount-input
                     no-label-float
                     input
