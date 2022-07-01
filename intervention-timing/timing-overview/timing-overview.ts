@@ -41,34 +41,6 @@ export class TimingOverview extends CommentsMixin(LitElement) {
               ${formatDate(this.timingOverview.created)}
             </div>
           </div>
-
-          <div class="data-column">
-            <label class="paper-label">${translate('DATE_FIRST_SENT_PARTNER')}</label>
-            <div class="input-label" ?empty="${!this.timingOverview.date_sent_to_partner}">
-              ${formatDate(this.timingOverview.date_sent_to_partner)}
-            </div>
-          </div>
-
-          <div class="data-column">
-            <label class="paper-label">${translate('DATE_FIRST_DRAFT_PARTNER')}</label>
-            <div class="input-label" ?empty="${!this.timingOverview.submission_date}">
-              ${formatDate(this.timingOverview.submission_date)}
-            </div>
-          </div>
-
-          <div class="data-column">
-            <label class="paper-label">${translate('DATE_PARTNER_SIGNED')}</label>
-            <div class="input-label" ?empty="${!this.timingOverview.signed_by_partner_date}">
-              ${formatDate(this.timingOverview.signed_by_partner_date)}
-            </div>
-          </div>
-
-          <div class="data-column">
-            <label class="paper-label">${translate('DATE_UNICEF_SIGNED')}</label>
-            <div class="input-label" ?empty="${!this.timingOverview.signed_by_unicef_date}">
-              ${formatDate(this.timingOverview.signed_by_unicef_date)}
-            </div>
-          </div>
         </div>
 
         <div class="icon-tooltip-div">
