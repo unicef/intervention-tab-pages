@@ -1,7 +1,6 @@
 import {LitElement, html, property} from 'lit-element';
 import './partner-details/partner-info';
 import './details-overview/details-overview';
-import './unicef-details/unicef-details';
 import './amendments/pd-amendments';
 import './fund-reservations/fund-reservations';
 import './review-and-sign/review-and-sign';
