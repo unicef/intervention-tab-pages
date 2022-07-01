@@ -1,5 +1,4 @@
 import {LitElement, customElement, html, property} from 'lit-element';
-import './reporting-requirements/partner-reporting-requirements';
 import './intervention-dates/intervention-dates';
 import './timing-overview/timing-overview';
 import './activity-timeframes/activity-timeframes';
@@ -14,7 +13,6 @@ import {RootState} from '../common/types/store.types';
 @customElement('intervention-timing')
 export class InterventionTiming extends CommentsMixin(LitElement) {
   @property() viewPlannedVisits = false;
-  @property() viewPartnerReportingRequirements = false;
   render() {
     // language=HTML
     return html`
@@ -22,13 +20,6 @@ export class InterventionTiming extends CommentsMixin(LitElement) {
       <timing-overview></timing-overview>
       <intervention-dates></intervention-dates>
       <activity-timeframes></activity-timeframes>
-      ${this.viewPartnerReportingRequirements
-        ? html`<partner-reporting-requirements
-            class="content-section"
-            .commentsMode="${this.commentMode}"
-            comments-container
-          ></partner-reporting-requirements>`
-        : ''}
       ${this.viewPlannedVisits ? html`<programmatic-visits></programmatic-visits>` : ''}
     `;
   }
@@ -46,9 +37,6 @@ export class InterventionTiming extends CommentsMixin(LitElement) {
     super.stateChanged(state);
 
     this.viewPlannedVisits = Boolean(state.interventions?.current?.permissions?.view!.planned_visits);
-    this.viewPartnerReportingRequirements = Boolean(
-      state.interventions?.current?.permissions?.view!.reporting_requirements
-    );
   }
 
   getSpecialElements(container: HTMLElement): CommentElementMeta[] {

@@ -3,7 +3,6 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {INTERVENTION_LOADING, SHOULD_REGET_LIST, SHOW_TOAST, UPDATE_CURRENT_INTERVENTION} from '../actionsConstants';
 import {AnyObject, PlannedBudget, Intervention} from '@unicef-polymer/etools-types';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
-import {PartnerReportingRequirements} from '../types/store.types';
 import pick from 'lodash-es/pick';
 import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {_sendRequest} from '@unicef-polymer/etools-modules-common/dist/utils/request-helper';
@@ -111,9 +110,9 @@ function shouldReGetList(prevInterventionState: Intervention, currentInterventio
   return !isJsonStrMatch(prevI, currentI);
 }
 
-export const updatePartnerReportingRequirements = (newReportingRequirements: PartnerReportingRequirements) => {
-  return {
-    type: 'UPDATE_PARTNER_REPORTING_REQUIREMENTS',
-    partnerReportingRequirements: newReportingRequirements
-  };
+// export const updatePartnerReportingRequirements = (newReportingRequirements: PartnerReportingRequirements) => {
+//   return {
+//     type: 'UPDATE_PARTNER_REPORTING_REQUIREMENTS',
+//     partnerReportingRequirements: newReportingRequirements
+//   };
 };

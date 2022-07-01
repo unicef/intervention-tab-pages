@@ -5,7 +5,7 @@ import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {PartnerReportingRequirements, RootState} from '../../common/types/store.types';
+import {RootState} from '../../common/types/store.types';
 import {ProgrammeDocDates, InterventionDatesPermissions} from './interventionDates.models';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {selectInterventionDates, selectInterventionDatesPermissions} from './interventionDates.selectors';
@@ -19,7 +19,6 @@ import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, FrsDetails, Intervention, Permission} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
-import ReportingRequirementsCommonMixin from '../reporting-requirements/mixins/reporting-requirements-common-mixin';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import UploadsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uploads-mixin';
 import FrNumbersConsistencyMixin from '@unicef-polymer/etools-modules-common/dist/mixins/fr-numbers-consistency-mixin';
@@ -33,7 +32,7 @@ import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/style
  */
 @customElement('intervention-dates')
 export class InterventionDates extends CommentsMixin(
-  UploadsMixin(ComponentBaseMixin(FrNumbersConsistencyMixin(ReportingRequirementsCommonMixin(LitElement))))
+  UploadsMixin(ComponentBaseMixin(FrNumbersConsistencyMixin(LitElement)))
 ) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles, frWarningsStyles];
@@ -184,7 +183,6 @@ export class InterventionDates extends CommentsMixin(
       return;
     }
     this.data = selectInterventionDates(state);
-    this.checkIfWarningRequired(state);
     this.originalData = cloneDeep(this.data);
     this.permissions = selectInterventionDatesPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
@@ -233,23 +231,21 @@ export class InterventionDates extends CommentsMixin(
     );
   }
 
-  private checkIfWarningRequired(state: RootState) {
-    // Existence of PD Output activities with timeframes are validated on BK
-    this.warningRequired =
-      this.thereArePartnerReportingRequirements(state.interventions.partnerReportingRequirements) ||
-      this.thereAreProgrammaticVisits(state.interventions.current);
-  }
+  // private checkIfWarningRequired(state: RootState) {
+  //   // Existence of PD Output activities with timeframes are validated on BK
+  //   this.warningRequired = this.thereAreProgrammaticVisits(state.interventions.current);
+  // }
 
-  private thereArePartnerReportingRequirements(partnerReportingRequirements: PartnerReportingRequirements) {
-    if (partnerReportingRequirements) {
-      return Object.entries(partnerReportingRequirements).some(([_key, value]) => !!value.length);
-    }
-    return false;
-  }
+  // private thereArePartnerReportingRequirements(partnerReportingRequirements: PartnerReportingRequirements) {
+  //   if (partnerReportingRequirements) {
+  //     return Object.entries(partnerReportingRequirements).some(([_key, value]) => !!value.length);
+  //   }
+  //   return false;
+  // }
 
-  private thereAreProgrammaticVisits(intervention: Intervention | null) {
-    return !!intervention?.planned_visits && intervention.planned_visits.length > 0;
-  }
+  // private thereAreProgrammaticVisits(intervention: Intervention | null) {
+  //   return !!intervention?.planned_visits && intervention.planned_visits.length > 0;
+  // }
 
   saveData() {
     if (!this.validate()) {
