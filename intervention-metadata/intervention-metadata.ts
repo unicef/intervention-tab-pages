@@ -30,7 +30,6 @@ export class InterventionMetadata extends connectStore(LitElement) {
 
       <details-overview></details-overview>
       <partner-info></partner-info>
-      <unicef-details></unicef-details>
       <financial-component></financial-component>
       ${this.permissions?.view!.frs ? html`<fund-reservations></fund-reservations>` : ''}
       ${this.permissions?.view!.amendments ? html`<pd-amendments></pd-amendments>` : ''}
