@@ -28,7 +28,6 @@ import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
-import '../../common/paper-textarea-with-icon';
 
 /**
  * @customElement
@@ -56,6 +55,13 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
         etools-content-panel::part(ecp-content) {
           padding: 8px 24px 16px 24px;
         }
+        .row-padding-v {
+          position: relative;
+        }
+        #iit-non-fin {
+          --iit-icon-size: 18px;
+          --iit-margin: 0 0 4px 4px;
+        }
       </style>
 
       <etools-content-panel
@@ -66,12 +72,20 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
-        <div class="layout-horizontal row-padding-v">
-          <paper-textarea-with-icon
+        <div class="row-padding-v">
+          <div>
+            <label class="paper-label">${translate(translatesMap.ip_program_contribution)}</label>
+            <info-icon-tooltip
+              id="iit-non-fin"
+              slot="after-label"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit?.ip_program_contribution)}"
+              .tooltipText="${translate('PARTNER_NON_FINANCIAL_CONTRIBUTION_TOOLTIP')}"
+            ></info-icon-tooltip>
+          </div>
+          <paper-textarea
             class="w100"
             id="ip_program_contribution"
-            label=${translate(translatesMap.ip_program_contribution)}
-            always-float-label
+            no-label-float
             placeholder="—"
             .value="${this.data.ip_program_contribution}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'ip_program_contribution')}"
@@ -81,13 +95,7 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
             rows="${detailsTextareaRowsCount(this.editMode)}"
             .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.ip_program_contribution)}"
           >
-            <info-icon-tooltip
-              id="iit-non-fin"
-              slot="after-label"
-              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit?.ip_program_contribution)}"
-              .tooltipText="${translate('PARTNER_NON_FINANCIAL_CONTRIBUTION_TOOLTIP')}"
-            ></info-icon-tooltip>
-          </paper-textarea-with-icon>
+          </paper-textarea>
         </div>
 
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}

@@ -68,6 +68,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         :host {
           display: block;
           margin-bottom: 24px;
+          --etools-table-col-font-size: 16px;
         }
 
         .mr-20 {
@@ -96,7 +97,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
             <label class="paper-label font-bold pad-right">${translate('TOTAL_SUPPLY_BUDGET')} </label>
             <label class="font-bold-12"
               >${this.intervention.planned_budget.currency}
-              ${displayCurrencyAmount(this.intervention.planned_budget.in_kind_amount_local!)}</label
+              ${displayCurrencyAmount(this.intervention.planned_budget.total_supply!, '0.00')}</label
             >
           </span>
 
@@ -126,6 +127,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         <div class="row-h" ?hidden="${!this.permissions.edit.supply_items || this.supply_items?.length}">
           ${this.getUploadHelpElement()}
         </div>
+
         <etools-table
           ?hidden="${!this.supply_items?.length}"
           .columns="${this.columns}"
@@ -335,15 +337,32 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       supplyId: supplyId
     });
 
+    fireEvent(this, 'global-loading', {
+      message: 'Loading...',
+      active: true,
+      loadingSource: 'intervention-tabs'
+    });
+
     sendRequest({
       endpoint: endpoint,
       method: 'DELETE'
     })
       .then(() => {
-        getStore().dispatch<AsyncAction>(getIntervention());
+        getStore()
+          .dispatch<AsyncAction>(getIntervention())
+          .finally(() =>
+            fireEvent(this, 'global-loading', {
+              active: false,
+              loadingSource: 'intervention-tabs'
+            })
+          );
       })
       .catch((err: any) => {
         fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: 'intervention-tabs'
+        });
       });
   }
 

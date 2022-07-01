@@ -10,7 +10,7 @@ import {
   selectInterventionResultLinks,
   selectResultLinksPermissions
 } from './results-structure.selectors';
-import {ResultStructureStyles} from './results-structure.styles';
+import {ResultStructureStyles} from './styles/results-structure.styles';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import '@unicef-polymer/etools-content-panel';
 import '@polymer/paper-toggle-button/paper-toggle-button';
@@ -23,19 +23,16 @@ import './modals/pd-output-dialog';
 import './modals/cp-output-dialog';
 import '@polymer/paper-item';
 import '@polymer/paper-listbox';
+import './display-controls';
 import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {RootState} from '../../common/types/store.types';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import {TABS} from '../../common/constants';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {
-  callClickOnSpacePushListener,
-  callClickOnEnterPushListener,
-  pageIsNotCurrentlyActive
-} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import get from 'lodash-es/get';
-import {getIntervention, updateCurrentIntervention} from '../../common/actions/interventions';
+import {getIntervention} from '../../common/actions/interventions';
 import {isUnicefUser, currentIntervention} from '../../common/selectors';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
@@ -48,101 +45,24 @@ import {
   IdAndName,
   ExpectedResult,
   Intervention,
-  ResultLinkLowerResult
+  ResultLinkLowerResult,
+  Indicator
 } from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import ContentPanelMixin from '@unicef-polymer/etools-modules-common/dist/mixins/content-panel-mixin';
 import {_sendRequest} from '@unicef-polymer/etools-modules-common/dist/utils/request-helper';
-import {elevation1, elevation3} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
-
-const RESULT_VIEW = 'result_view';
-const BUDGET_VIEW = 'budget_view';
-const COMBINED_VIEW = 'combined_view';
+import {EtoolsDataTableRow} from '@unicef-polymer/etools-data-table/etools-data-table-row';
+import {PdActivities} from './pd-activities';
+import {PdIndicators} from './pd-indicators';
+import {CpOutputLevel} from './cp-output-level';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 
 /**
  * @customElement
  */
 @customElement('results-structure')
 export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement)) {
-  static get styles(): CSSResultArray {
-    // language=CSS
-    return [
-      gridLayoutStylesLit,
-      ResultStructureStyles,
-      buttonsStyles,
-      css`
-        iron-icon[icon='create'] {
-          margin-left: 50px;
-        }
-        #view-menu-button {
-          display: none;
-          height: 28px;
-        }
-        #view-menu-button paper-button {
-          height: 28px;
-          background: var(--secondary-background-color);
-          padding-right: 0;
-        }
-        #view-menu-button paper-button iron-icon {
-          margin: 0 7px;
-        }
-        .view-toggle-button {
-          display: flex;
-          height: 28px;
-          margin-left: 4px;
-          padding: 0 19px;
-          font-weight: 500;
-          font-size: 14px;
-          border-radius: 50px;
-          background-color: #d0d0d0;
-          color: rgb(3 114 102);
-          cursor: pointer;
-          ${elevation1};
-        }
-        .view-toggle-button[active] {
-          background-color: #009688;
-          color: #fff;
-        }
-        .view-toggle-button:focus {
-          outline: 0;
-          ${elevation3}
-        }
-        .no-results {
-          padding: 24px;
-        }
-        .pdOtputMargin {
-          margin: 0 4px;
-        }
-        .pdOtputMargin.unicef-user .editable-row .hover-block {
-          background-color: rgb(240, 240, 240);
-        }
-        .pdOtputMargin.partner .editable-row .hover-block {
-          background-color: rgb(240, 240, 240);
-        }
-        #showInactive {
-          margin-right: 8px;
-        }
-        @media (max-width: 1100px) {
-          #view-menu-button {
-            display: block;
-          }
-          .view-toggle-button {
-            display: none;
-          }
-        }
-      `
-    ];
-  }
-  get viewType(): string {
-    if (this.showActivities && this.showIndicators) {
-      return COMBINED_VIEW;
-    } else if (this.showActivities) {
-      return BUDGET_VIEW;
-    } else {
-      return RESULT_VIEW;
-    }
-  }
   get resultLinks(): ExpectedResult[] {
     return this._resultLinks || [];
   }
@@ -158,14 +78,15 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
 
   @property({type: Boolean}) isUnicefUser = true;
   @property({type: Boolean}) showIndicators = true;
-  @property({type: Boolean}) showActivities = false;
+  @property({type: Boolean}) showActivities = true;
+  @property({type: Boolean}) showInactiveToggle = false;
   @property({type: Object})
   permissions!: {
     edit: {result_links?: boolean};
     required: {result_links?: boolean};
   };
 
-  @property() private _resultLinks: ExpectedResult[] | null = [];
+  @property() private _resultLinks: ExpectedResult[] | null = null;
   @property({type: String}) noOfPdOutputs: string | number = '0';
   @property({type: Boolean}) thereAreInactiveIndicators = false;
   @property({type: Boolean}) showInactiveIndicators = false;
@@ -173,28 +94,10 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
   @property({type: Object})
   intervention!: Intervention;
 
-  viewTabs = [
-    {
-      name: translate('RESULT_VIEW'),
-      type: RESULT_VIEW,
-      showIndicators: true,
-      showActivities: false
-    },
-    {
-      name: translate('COMBINED_VIEW'),
-      type: COMBINED_VIEW,
-      showIndicators: true,
-      showActivities: true
-    },
-    {
-      name: translate('BUDGET_VIEW'),
-      type: BUDGET_VIEW,
-      showIndicators: false,
-      showActivities: true
-    }
-  ];
-
   private cpOutputs: CpOutput[] = [];
+  private newCPOutputs: Set<number> = new Set();
+  private newPDOutputs: Set<number> = new Set();
+  private commentsModeEnabledFlag?: boolean;
 
   render() {
     if (!this.intervention || !this.permissions || !this.resultLinks) {
@@ -204,103 +107,55 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     // language=HTML
     return html`
       ${sharedStyles}
-      <style>
-        :host {
-          display: block;
-          margin-bottom: 24px;
-          --paper-tooltip-background: #818181;
-        }
-
-        etools-data-table-row::part(edt-list-row-wrapper) {
-          padding: 0 12px 0 0;
-          background-color: var(--secondary-background-color);
-          min-height: 48px;
-          border-bottom: 1px solid var(--main-border-color) !important;
-        }
-
-        etools-data-table-row::part(edt-list-row-collapse-wrapper) {
-          padding: 0 !important;
-          border-bottom: none !important;
-        }
-
-        .export-res-btn {
-          height: 28px;
-        }
-
-        etools-content-panel::part(ecp-header) {
-          position: relative;
-          border-bottom: 1px groove var(--dark-divider-color);
-        }
-
-        .add-cp {
-          opacity: 0.84;
-          margin-left: 6px;
-        }
-
-        .no-wrap {
-          white-space: nowrap;
-        }
-      </style>
-
       <etools-content-panel
         show-expand-btn
         panel-title="${translate(translatesMap.result_links)} (${this.noOfPdOutputs})"
+        elevation="0"
       >
-        <div slot="panel-btns" class="layout-horizontal align-items-center">
-          <paper-toggle-button
-            id="showInactive"
-            ?hidden="${!this.thereAreInactiveIndicators}"
-            ?checked="${this.showInactiveIndicators}"
-            @iron-change=${this.inactiveChange}
-          >
-            ${translate('SHOW_INACTIVE')}
-          </paper-toggle-button>
+        <div slot="panel-btns" class="layout-horizontal flex-1">
+          <display-controls
+            class="flex-1"
+            ?show-inactive-toggle="${this.showInactiveToggle}"
+            .showIndicators="${this.showIndicators}"
+            .showActivities="${this.showActivities}"
+            .interventionId="${this.interventionId}"
+            @show-inactive-changed="${this.inactiveChange}"
+            @tab-view-changed="${this.updateTableView}"
+          ></display-controls>
+          <div class="total-result layout-horizontal bottom-aligned" ?hidden="${!this.showActivities}">
+            <div class="heading">${translate('TOTAL')}:</div>
+            <div class="data">${this.intervention.planned_budget.currency} <b>${this.getTotal()}</b></div>
+          </div>
+        </div>
 
-          <paper-menu-button id="view-menu-button" close-on-activate horizontal-align="right">
-            <paper-button slot="dropdown-trigger" class="dropdown-trigger">
-              ${translate('VIEW')}
-              <iron-icon icon="expand-more"></iron-icon>
-            </paper-button>
-            <paper-listbox slot="dropdown-content" attr-for-selected="name" .selected="${this.viewType}">
-              ${this.viewTabs.map(
-                (tab) =>
-                  html` <paper-item
-                    @click="${() => this.updateTableView(tab.showIndicators, tab.showActivities)}"
-                    name="${tab.type}"
-                  >
-                    ${tab.name}
-                  </paper-item>`
-              )}
-            </paper-listbox>
-          </paper-menu-button>
-          ${this.viewTabs.map(
-            (tab) => html`
-              <div
-                class="view-toggle-button layout-horizontal align-items-center"
-                ?active="${tab.type === this.viewType}"
+        <!--    CP output ADD button     -->
+        <div
+          class="add-button"
+          @click="${() => this.openCpOutputDialog()}"
+          ?hidden="${!this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
+        >
+          <paper-icon-button slot="custom-icon" icon="add-box" tabindex="0"></paper-icon-button>
+          <span class="no-wrap">${translate('ADD_CP_OUTPUT')}</span>
+        </div>
+
+        <!--    PD output ADD button for non Unicef users     -->
+        <div
+          class="pd-add-section"
+          ?hidden="${this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
+        >
+          <div class="pd-title layout-horizontal align-items-center">
+            ${translate('PD_OUTPUTS_TITLE')}
+            <etools-info-tooltip position="top" custom-icon offset="0">
+              <paper-icon-button
+                icon="add-box"
+                slot="custom-icon"
+                class="add"
                 tabindex="0"
-                id="clickable"
-                @click="${() => this.updateTableView(tab.showIndicators, tab.showActivities)}"
-              >
-                ${tab.name}
-              </div>
-            `
-          )}
-          <etools-info-tooltip
-            custom-icon
-            position="top"
-            ?hide-tooltip="${!this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
-          >
-            <paper-icon-button
-              slot="custom-icon"
-              class="add-cp"
-              icon="add-box"
-              tabindex="0"
-              ?hidden="${!this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
-              @click="${() => this.openCpOutputDialog()}"
-            ></paper-icon-button>
-            <span class="no-wrap" slot="message">${translate('ADD_CP_OUTPUT')}</span>
-          </etools-info-tooltip>
+                @click="${() => this.openPdOutputDialog()}"
+              ></paper-icon-button>
+              <span class="no-wrap" slot="message">${translate('ADD_PD_OUTPUT')}</span>
+            </etools-info-tooltip>
+          </div>
         </div>
         ${repeat(
           this.resultLinks,
@@ -315,54 +170,78 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
               .showActivities="${this.showActivities}"
               .currency="${this.intervention.planned_budget.currency}"
               .readonly="${!this.permissions.edit.result_links || this.commentMode}"
-              @add-pd="${() => this.openPdOutputDialog({}, result.cp_output)}"
+              .opened="${this.newCPOutputs.has(result.id)}"
               @edit-cp-output="${() => this.openCpOutputDialog(result)}"
               @delete-cp-output="${() => this.openDeleteCpOutputDialog(result.id)}"
+              @opened-changed="${this.onCpOpenedChanged}"
+              style="z-index: ${99 - _index};"
             >
+              <div
+                class="no-results"
+                ?hidden="${!this.isUnicefUser || this.permissions.edit.result_links || result.ll_results.length}"
+              >
+                ${translate('NO_PDS_ADDED')}
+              </div>
+              ${!this.isUnicefUser || !result.cp_output || !this.permissions.edit.result_links || this.commentMode
+                ? ''
+                : html`
+                    <div class="pd-title layout-horizontal align-items-center">
+                      ${translate('PD_OUTPUTS_TITLE')}<etools-info-tooltip position="top" custom-icon offset="0">
+                        <paper-icon-button
+                          icon="add-box"
+                          slot="custom-icon"
+                          class="add"
+                          tabindex="0"
+                          @click="${() => this.openPdOutputDialog({}, result.cp_output)}"
+                        ></paper-icon-button>
+                        <span class="no-wrap" slot="message">${translate('ADD_PD_OUTPUT')}</span>
+                      </etools-info-tooltip>
+                    </div>
+                  `}
               ${result.ll_results.map(
-                (pdOutput: ResultLinkLowerResult) => html`
+                (pdOutput: ResultLinkLowerResult, index: number) => html`
                   <etools-data-table-row
-                    class="pdOtputMargin ${this.isUnicefUser ? 'unicef-user' : 'partner'}"
+                    class="pdOutputMargin ${this.isUnicefUser ? 'unicef-user' : 'partner'}"
                     related-to="pd-output-${pdOutput.id}"
                     related-to-description=" PD Output - ${pdOutput.name}"
                     comments-container
+                    secondary-bg-on-hover
+                    .detailsOpened="${this.newPDOutputs.has(pdOutput.id)}"
+                    style="z-index: ${99 - index};"
                   >
-                    <div slot="row-data" class="layout-horizontal align-items-center editable-row higher-slot">
+                    <div slot="row-data" class="layout-horizontal editable-row pd-output-row">
                       <div class="flex-1 flex-fix">
-                        <div class="heading">${translate(translatesMap.ll_results)}</div>
                         <div class="data bold-data">${pdOutput.code}&nbsp;${pdOutput.name}</div>
-                      </div>
-
-                      <div class="flex-none" ?hidden="${!this.showActivities}">
-                        <div class="heading">${translate('TOTAL_CASH_BUDGET')}</div>
-                        <div class="data">
-                          ${this.intervention.planned_budget.currency} ${displayCurrencyAmount(pdOutput.total, '0.00')}
+                        <div class="count">
+                          <div><b>${pdOutput.activities.length}</b> ${translate('ACTIVITIES')}</div>
+                          <div><b>${pdOutput.applied_indicators.length}</b> ${translate('INDICATORS')}</div>
                         </div>
                       </div>
 
-                      <div class="hover-block">
+                      <div class="flex-none total-cache" ?hidden="${!this.showActivities}">
+                        <div class="heading">${translate('TOTAL_CASH_BUDGET')}</div>
+                        <div class="data">
+                          <span class="currency">${this.intervention.planned_budget.currency}</span>
+                          ${displayCurrencyAmount(pdOutput.total, '0.00')}
+                        </div>
+                      </div>
+
+                      <div
+                        class="hover-block"
+                        ?hidden="${!this.permissions.edit.result_links || this.commentsModeEnabledFlag}"
+                      >
                         <paper-icon-button
                           icon="icons:create"
-                          ?hidden="${!this.permissions.edit.result_links}"
                           @click="${() => this.openPdOutputDialog(pdOutput, result.cp_output)}"
                         ></paper-icon-button>
                         <paper-icon-button
                           icon="icons:delete"
-                          ?hidden="${!this.permissions.edit.result_links}"
                           @click="${() => this.openDeletePdOutputDialog(pdOutput.id)}"
                         ></paper-icon-button>
                       </div>
                     </div>
 
                     <div slot="row-data-details">
-                      <pd-indicators
-                        ?hidden="${!this.showIndicators}"
-                        .indicators="${pdOutput.applied_indicators}"
-                        .pdOutputId="${pdOutput.id}"
-                        .readonly="${!this.permissions.edit.result_links || this.commentMode}"
-                        .showInactiveIndicators="${this.showInactiveIndicators}"
-                        .inAmendment="${this.intervention.in_amendment}"
-                      ></pd-indicators>
                       <pd-activities
                         .activities="${pdOutput.activities}"
                         .interventionId="${this.interventionId}"
@@ -372,6 +251,14 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                         .readonly="${!this.permissions.edit.result_links || this.commentMode}"
                         .currency="${this.intervention.planned_budget.currency}"
                       ></pd-activities>
+                      <pd-indicators
+                        ?hidden="${!this.showIndicators}"
+                        .indicators="${pdOutput.applied_indicators}"
+                        .pdOutputId="${pdOutput.id}"
+                        .readonly="${!this.permissions.edit.result_links || this.commentMode}"
+                        .showInactiveIndicators="${this.showInactiveIndicators}"
+                        .inAmendment="${this.intervention.in_amendment}"
+                      ></pd-indicators>
                     </div>
                   </etools-data-table-row>
                 `
@@ -380,14 +267,6 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           `
         )}
         ${!this.resultLinks.length ? html` <div class="no-results">${translate('NO_RESULTS_ADDED')}</div> ` : ''}
-
-        <div
-          ?hidden="${this.isUnicefUser || this.commentMode || !this.permissions.edit.result_links}"
-          class="add-pd white row-h align-items-center"
-          @click="${() => this.openPdOutputDialog()}"
-        >
-          <paper-icon-button icon="add-box"></paper-icon-button>${translate('ADD_PD_OUTPUT')}
-        </div>
       </etools-content-panel>
     `;
   }
@@ -396,20 +275,56 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     super.connectedCallback();
   }
 
-  firstUpdated(): void {
+  protected firstUpdated() {
     super.firstUpdated();
+    if (this.commentsModeEnabledFlag) {
+      setTimeout(() => this.openAllCpOutputs());
+    }
+  }
 
-    this.shadowRoot!.querySelectorAll('#view-toggle-button, .add-cp, iron-icon').forEach((el) =>
-      callClickOnSpacePushListener(el)
-    );
-    this.shadowRoot!.querySelectorAll('#clickable').forEach((el) => callClickOnEnterPushListener(el));
+  onCpOpenedChanged(event: CustomEvent) {
+    if (!event.detail.opened) {
+      return;
+    }
+    this.openCPChildren(event.target as CpOutputLevel);
+  }
+
+  openAllCpOutputs() {
+    this.shadowRoot!.querySelectorAll('cp-output-level').forEach((element) => {
+      const row = (element as CpOutputLevel).shadowRoot!.querySelector('etools-data-table-row');
+      if (row) {
+        (row as EtoolsDataTableRow).detailsOpened = true;
+      }
+      this.openCPChildren(element as CpOutputLevel);
+    });
+  }
+
+  openCPChildren(cpElement: CpOutputLevel): void {
+    cpElement
+      .querySelectorAll('etools-data-table-row')
+      .forEach((row: Element) => ((row as EtoolsDataTableRow).detailsOpened = true));
+    cpElement
+      .querySelectorAll('pd-activities, pd-indicators')
+      .forEach((row: Element) => (row as PdActivities | PdIndicators).openAllRows());
   }
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan)) {
+    if (
+      pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan) ||
+      !state.interventions.current
+    ) {
       return;
     }
-    this.resultLinks = selectInterventionResultLinks(state);
+    if (state.commentsData?.commentsModeEnabled && !this.commentsModeEnabledFlag) {
+      this.openAllCpOutputs();
+    }
+    this.commentsModeEnabledFlag = Boolean(state.commentsData?.commentsModeEnabled);
+    this.updateResultLinks(state);
+    this.showInactiveToggle = this.resultLinks.some(({ll_results}: ExpectedResult) =>
+      ll_results.some(({applied_indicators}: ResultLinkLowerResult) =>
+        applied_indicators.some(({is_active}: Indicator) => !is_active)
+      )
+    );
     this.permissions = selectResultLinksPermissions(state);
     this.interventionId = selectInterventionId(state);
     this.interventionStatus = selectInterventionStatus(state);
@@ -421,6 +336,14 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     super.stateChanged(state);
   }
 
+  getTotal(): string {
+    const total: number = this.resultLinks.reduce(
+      (sum: number, result: ExpectedResult) => sum + Number(result.total),
+      0
+    );
+    return displayCurrencyAmount(String(total), '0.00');
+  }
+
   getSpecialElements(container: HTMLElement): CommentElementMeta[] {
     const element: HTMLElement = container.shadowRoot!.querySelector('#wrapper') as HTMLElement;
     const relatedTo: string = container.getAttribute('related-to') as string;
@@ -428,9 +351,9 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     return [{element, relatedTo, relatedToDescription}];
   }
 
-  updateTableView(indicators: boolean, activities: boolean): void {
-    this.showIndicators = indicators;
-    this.showActivities = activities;
+  updateTableView({detail}: CustomEvent): void {
+    this.showIndicators = detail.showIndicators;
+    this.showActivities = detail.showActivities;
   }
 
   openPdOutputDialog(): void;
@@ -524,22 +447,24 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
   }
 
   deleteCPOutputFromPD(resultLinkId: number) {
+    fireEvent(this, 'global-loading', {
+      active: true,
+      loadingSource: 'interv-cp-remove'
+    });
     const endpoint = getEndpoint(interventionEndpoints.resultLinkGetDelete, {
       result_link: resultLinkId
     });
     _sendRequest({
       method: 'DELETE',
       endpoint: endpoint
-    }).then(() => {
-      getStore().dispatch(updateCurrentIntervention(this.removeDeletedCPOutput(this.intervention, resultLinkId)));
-    });
-  }
-
-  removeDeletedCPOutput(intervention: Intervention, resultLinkId: string | number) {
-    intervention.result_links = intervention.result_links.filter(
-      (rl: ExpectedResult) => rl.id !== Number(resultLinkId)
-    );
-    return intervention;
+    })
+      .then(() => getStore().dispatch<AsyncAction>(getIntervention()))
+      .finally(() =>
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: 'interv-cp-remove'
+        })
+      );
   }
 
   _updateNoOfPdOutputs() {
@@ -577,10 +502,159 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     if (!e.detail) {
       return;
     }
-    const element = e.currentTarget as HTMLInputElement;
-    if (this.showInactiveIndicators !== element.checked) {
-      this.showInactiveIndicators = element.checked;
-      this.requestUpdate();
+    this.showInactiveIndicators = e.detail.value;
+  }
+
+  private updateResultLinks(state: RootState): void {
+    const newResults = selectInterventionResultLinks(state) || [];
+    if (this._resultLinks) {
+      // check if CP outputs was rendered already, check if we have new CP output.
+      const existingCP = this.resultLinks.map(({id}) => id);
+      const created = newResults.filter(({id}) => !existingCP.includes(id));
+      // if we found new CP output - add it to track to open it on first render
+      created.forEach(({id}) => this.newCPOutputs.add(id));
+      // the same thing for PD
+      const existingPD = this.resultLinks.flatMap(({ll_results}) => ll_results.map(({id}) => id));
+      const createdPD = newResults.flatMap(({ll_results}) => ll_results).filter(({id}) => !existingPD.includes(id));
+      createdPD.forEach(({id}) => this.newPDOutputs.add(id));
     }
+
+    this.resultLinks = newResults;
+  }
+
+  static get styles(): CSSResultArray {
+    // language=CSS
+    return [
+      gridLayoutStylesLit,
+      ResultStructureStyles,
+      buttonsStyles,
+      css`
+        iron-icon[icon='create'] {
+          margin-left: 50px;
+        }
+        .no-results {
+          padding: 24px;
+        }
+        .pd-title {
+          padding: 8px 42px 0px 22px;
+          font-size: 16px;
+          font-weight: 500;
+          line-height: 19px;
+        }
+        cp-output-level .pd-title {
+          padding: 8px 16px;
+        }
+        .pd-add-section {
+          background-color: #ccebff;
+        }
+        .pd-add {
+          padding: 0 5px 0;
+        }
+        etools-data-table-row {
+          position: relative;
+        }
+        etools-data-table-row.partner:after,
+        etools-data-table-row:not(:last-child):after {
+          content: '';
+          display: block;
+          position: absolute;
+          width: calc(100% - 14px);
+          left: 7px;
+          bottom: 0;
+          height: 1px;
+          background-color: #c4c4c4;
+        }
+        cp-output-level:last-child etools-data-table-row:last-child:after {
+          content: none;
+        }
+        :host {
+          display: block;
+          margin-bottom: 24px;
+          --paper-tooltip-background: #818181;
+        }
+
+        etools-data-table-row::part(edt-list-row-wrapper) {
+          background-color: #ccebff;
+          min-height: 48px;
+          border-bottom: none;
+        }
+        etools-data-table-row::part(edt-icon-wrapper) {
+          min-height: 0;
+          line-height: normal;
+          padding: 4px 8px 0 13px;
+          align-self: flex-start;
+        }
+        etools-data-table-row::part(edt-list-row-wrapper):hover {
+          background-color: var(--pd-output-background);
+        }
+
+        etools-data-table-row::part(edt-list-row-collapse-wrapper) {
+          padding: 0 !important;
+          border-bottom: none !important;
+        }
+        div.editable-row .hover-block {
+          background: linear-gradient(270deg, var(--pd-output-background) 71.65%, rgba(196, 196, 196, 0) 100%);
+        }
+        div.pd-output-row > div {
+          line-height: 26px;
+          padding-top: 6px;
+          padding-bottom: 4px;
+        }
+        .export-res-btn {
+          height: 28px;
+        }
+        .no-wrap {
+          white-space: nowrap;
+        }
+        .total-result {
+          padding-bottom: 6px;
+          margin-left: 12px;
+        }
+        .total-result b {
+          font-size: 22px;
+          font-weight: 900;
+          line-height: 23px;
+        }
+        .total-result .heading {
+          font-size: 14px;
+          margin-right: 10px;
+          line-height: 23px;
+        }
+        etools-content-panel {
+          box-shadow: 0 2px 7px 3px rgba(0, 0, 0, 0.15);
+        }
+        etools-content-panel::part(ecp-header-btns-wrapper) {
+          flex: 1;
+        }
+        etools-content-panel::part(ecp-header) {
+          border-bottom: none;
+        }
+        etools-content-panel::part(ecp-header) {
+          position: relative;
+          height: 66px;
+          padding: 13px 16px;
+        }
+        etools-content-panel::part(ecp-header):after {
+          content: '';
+          position: absolute;
+          display: block;
+          width: calc(100% - 14px);
+          left: 7px;
+          bottom: 0;
+          height: 1px;
+          background-color: #c4c4c4;
+        }
+        .count {
+          display: flex;
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 16px;
+          padding: 6px 0 4px;
+        }
+        .count div:first-child {
+          margin-right: 20px;
+        }
+      `
+    ];
   }
 }

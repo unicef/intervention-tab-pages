@@ -1,7 +1,7 @@
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-toggle-button';
-
 import './common/layout/page-content-header/intervention-page-content-header';
+import './common/layout/page-content-header/intervention-page-content-subheader';
 import '@unicef-polymer/etools-modules-common/dist/layout/etools-tabs';
 import '@unicef-polymer/etools-modules-common/dist/components/cancel/reason-display';
 // eslint-disable-next-line max-len
@@ -74,6 +74,13 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
           border: 5px solid #ffd28b;
           box-sizing: border-box;
         }
+        :host([data-active-tab='workplan-editor']) intervention-page-content-subheader {
+          display: none;
+        }
+        :host([data-active-tab='workplan-editor']) .page-content {
+          margin: 4px 0 0;
+          margin-top: 0;
+        }
         .page-content {
           margin: 24px;
           flex: 1;
@@ -99,6 +106,11 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
           .page-content {
             margin: 5px;
           }
+        }
+
+        etools-status-lit {
+          margin-top: 0;
+          border-top: 0;
         }
       `
     ];
@@ -162,7 +174,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       <!-- Loading PRP country data -->
       <prp-country-data></prp-country-data>
 
-      <intervention-page-content-header with-tabs-visible>
+      <intervention-page-content-header ?is-in-amendment="${this.isInAmendment}">
         <span class="intervention-partner" slot="page-title">${this.intervention.partner}</span>
         <span class="intervention-number" slot="page-title">${this.intervention.number}</span>
         <div slot="mode">
@@ -185,33 +197,41 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
             .userIsBudgetOwner="${this.userIsBudgetOwner}"
           ></intervention-actions>
         </div>
-
-        <div slot="tabs">
-          <etools-status-lit
-            .statuses="${this.intervention.status_list || MOCKUP_STATUSES}"
-            .activeStatus="${this.intervention.status}"
-          ></etools-status-lit>
-
-          <etools-tabs-lit
-            .tabs="${this.pageTabs}"
-            .activeTab="${this.activeTab}"
-            .activeSubTab="${this.activeSubTab}"
-            @iron-select="${this.handleTabChange}"
-            @iron-activate="${this.handleTabActivate}"
-          ></etools-tabs-lit>
-        </div>
       </intervention-page-content-header>
+
+      <intervention-page-content-subheader>
+        <etools-status-lit
+          .statuses="${this.intervention.status_list || MOCKUP_STATUSES}"
+          .activeStatus="${this.intervention.status}"
+        ></etools-status-lit>
+
+        <etools-tabs-lit
+          .tabs="${this.pageTabs}"
+          .activeTab="${this.activeTab}"
+          .activeSubTab="${this.activeSubTab}"
+          @iron-select="${this.handleTabChange}"
+          @iron-activate="${this.handleTabActivate}"
+        ></etools-tabs-lit>
+      </intervention-page-content-subheader>
 
       <div class="page-content">
         ${this.intervention.cancel_justification
           ? html`<reason-display .justification=${this.intervention.cancel_justification}></reason-display>`
           : ''}
-        <intervention-metadata ?hidden="${!this.isActiveTab(this.activeTab, 'metadata')}"> </intervention-metadata>
-        <intervention-strategy ?hidden="${!this.isActiveTab(this.activeTab, 'strategy')}"></intervention-strategy>
-        <intervention-workplan ?hidden="${!this.isActiveTab(this.activeTab, 'workplan')}"> </intervention-workplan>
-        <intervention-timing ?hidden="${!this.isActiveTab(this.activeTab, 'timing')}"> </intervention-timing>
-        <intervention-review ?hidden="${!this.isActiveTab(this.activeTab, 'review')}"></intervention-review>
-        <intervention-attachments ?hidden="${!this.isActiveTab(this.activeTab, 'attachments')}">
+        <intervention-metadata ?hidden="${!this.isActiveTab(this.activeTab, TABS.Metadata)}"> </intervention-metadata>
+        <intervention-strategy ?hidden="${!this.isActiveTab(this.activeTab, TABS.Strategy)}"></intervention-strategy>
+        <intervention-workplan
+          ?hidden="${!this.isActiveTab(this.activeTab, TABS.Workplan)}"
+          .interventionId="${this.interventionId}"
+        ></intervention-workplan>
+        <intervention-workplan-editor
+          ?hidden="${!this.isActiveTab(this.activeTab, TABS.WorkplanEditor)}"
+          .interventionId="${this.interventionId}"
+        >
+        </intervention-workplan-editor>
+        <intervention-timing ?hidden="${!this.isActiveTab(this.activeTab, TABS.Timing)}"> </intervention-timing>
+        <intervention-review ?hidden="${!this.isActiveTab(this.activeTab, TABS.Review)}"></intervention-review>
+        <intervention-attachments ?hidden="${!this.isActiveTab(this.activeTab, TABS.Attachments)}">
         </intervention-attachments>
         <intervention-progress
           .activeSubTab="${this.activeSubTab}"
@@ -301,6 +321,8 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   // id from route params
   private interventionId: string | null = null;
 
+  private isEPDApp = ROOT_PATH === '/epd/';
+
   connectedCallback() {
     super.connectedCallback();
     // this._showInterventionPageLoadingMessage();
@@ -342,6 +364,9 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     this.activeTab = currentSubpage(state) as string;
     this.activeSubTab = currentSubSubpage(state) as string;
     this.isUnicefUser = isUnicefUser(state);
+
+    // add attribute to host to edit specific styles
+    this.dataset.activeTab = this.activeTab;
 
     // check permissions after intervention was loaded
     if (state.interventions?.current && !this.hasPermissionsToAccessPage(state)) {
@@ -424,7 +449,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
 
     const reviewRestricted = tab === TABS.Review && !state.interventions.current?.permissions?.view!.reviews;
     const restrictedSubTabs =
-      !unicefUser &&
+      (!unicefUser || this.isEPDApp) &&
       [TABS.ResultsReported, TABS.Reports, TABS.ImplementationStatus, TABS.MonitoringActivities].includes(subTab);
     return !attachmentRestricted && !reviewRestricted && !restrictedSubTabs;
   }
@@ -438,7 +463,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   }
 
   handleProgressTabVisibility(envFlags: EnvFlags | null, isUnicefUser?: boolean) {
-    if (!isUnicefUser) {
+    if (!isUnicefUser || this.isEPDApp) {
       return; // ONLY visible for unicef users
     }
 

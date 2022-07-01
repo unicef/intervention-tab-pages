@@ -1,4 +1,6 @@
 import {LitElement, html, property, customElement} from 'lit-element';
+import '@polymer/paper-button/paper-button';
+import '@polymer/paper-icon-button/paper-icon-button';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
@@ -23,6 +25,8 @@ import {translate, get as getTranslation} from 'lit-translate';
 import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import RepeatableDataSetsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/repeatable-data-sets-mixin';
 import {repeatableDataSetsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/repeatable-data-sets-styles';
+import {getEndpoint as getEndpointHelper} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {interventionEndpoints} from '../../utils/intervention-endpoints';
 
 /**
  * @customElement
@@ -127,6 +131,15 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
   @property({type: Array})
   data!: PlannedVisit[];
 
+  @property({type: String})
+  _deleteEpName = interventionEndpoints.interventionPVDelete;
+
+  @property({type: Object})
+  extraEndpointParams!: AnyObject;
+
+  @property({type: Object})
+  getEndpoint = getEndpointHelper;
+
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'timing')) {
       return;
@@ -137,6 +150,8 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
     this.populateVisits(state);
     this.permissions = selectPlannedVisitsPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
+    this.interventionStatus = state.interventions.current.status;
+    this.extraEndpointParams = {intervention_id: state.interventions.current.id};
     super.stateChanged(state);
   }
 
@@ -161,17 +176,19 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
       return;
     }
     if (interventionStart !== '' && interventionEnd !== '') {
-      let start = parseInt(interventionStart.substr(0, 4), 10);
-      const end = parseInt(interventionEnd.substr(0, 4), 10) + 1;
-      const years = [];
+      let start = parseInt(interventionStart.substring(0, 4), 10);
+      const end = parseInt(interventionEnd.substring(0, 4), 10) + 1;
+      const years = this.data.filter((pv) => pv.year).map((pv) => Number(pv.year));
       while (start <= end) {
-        years.push({
-          value: start,
-          label: start
-        });
+        years.push(start);
         start++;
       }
-      this.years = years;
+      this.years = [...new Set(years)]
+        .sort((a, b) => a - b)
+        .map((year) => ({
+          value: year,
+          label: year
+        }));
     } else {
       this.years = [];
     }

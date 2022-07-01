@@ -140,7 +140,10 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
   private _frsConfirmationsDialogMessage!: HTMLSpanElement;
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata')) {
+    if (
+      pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata') ||
+      !state.interventions.current
+    ) {
       return;
     }
     this.isUnicefUser = isUnicefUser(state);

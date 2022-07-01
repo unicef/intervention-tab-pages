@@ -89,7 +89,6 @@ export class CommentsDialog extends connectStore(LitElement) {
   private deletingCollection: Set<number> = new Set();
   private newMessageText = '';
   private currentUser: any;
-  private dialogHeight?: number;
   @query('etools-dialog') private dialogElement!: EtoolsDialog;
 
   protected render(): TemplateResult {
@@ -152,7 +151,7 @@ export class CommentsDialog extends connectStore(LitElement) {
 
   protected firstUpdated(_changedProperties: PropertyValues): void {
     super.firstUpdated(_changedProperties);
-    setTextareasMaxHeight(this.textareas);
+    setTimeout(() => setTextareasMaxHeight(this.textareas));
   }
 
   stateChanged(state: RootState): void {
@@ -314,11 +313,6 @@ export class CommentsDialog extends connectStore(LitElement) {
   }
 
   private updateHeight(): void {
-    const children = this.dialogElement?.shadowRoot?.children as any;
-    const height: number = children?.dialog?.offsetHeight || 0;
-    if (height !== this.dialogHeight) {
-      this.dialogElement.notifyResize();
-      this.dialogHeight = height;
-    }
+    this.dialogElement.notifyResize();
   }
 }

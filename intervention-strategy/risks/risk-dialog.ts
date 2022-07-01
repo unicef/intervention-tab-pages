@@ -69,15 +69,20 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
             >
             </etools-dropdown>
           </div>
-          <div class="col col-8">
+        </div>
+        <div class="row-padding layout-horizontal">
+          <div class="col col-12">
             <paper-textarea
               id="mitigationMeasures"
+              class="w100"
               label=${translate(translatesMap.mitigation_measures)}
               always-float-label
               type="text"
               .autoValidate="${this.autoValidate}"
               placeholder="—"
               required
+              maxlength="2500"
+              char-counter
               error-message=${translate('GENERAL.REQUIRED_FIELD')}
               .value="${this.originalData.mitigation_measures}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'mitigation_measures')}"

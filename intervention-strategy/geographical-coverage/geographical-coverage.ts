@@ -59,11 +59,8 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         }
 
         .locations-btn {
-          margin: auto;
-          width: 100px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
+          white-space: nowrap;
+          padding: 29px 0 0 50px;
         }
 
         .see-locations iron-icon {
@@ -78,7 +75,9 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         }
 
         #locations {
-          max-width: 100%;
+          max-width: fit-content;
+          min-width: 300px;
+          --paper-input-container-label-floating_-_color: transparent;
         }
 
         .f-left {
@@ -89,8 +88,31 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
           padding: 8px 24px 16px 24px;
         }
 
-        info-icon-tooltip {
+        .mt-50 {
+          margin-top: 50px;
+        }
+
+        .dropdown-row {
+          margin-top: -38px;
+        }
+
+        #iit-geo {
           --iit-margin: 8px 0 8px -15px;
+        }
+
+        .iit {
+          --iit-icon-size: 18px;
+          --iit-margin: 0 0 4px 4px;
+        }
+
+        etools-dropdown-multi::part(esmm-dropdownmenu) {
+          left: 24px !important;
+        }
+        .row-padding-v {
+          position: relative;
+        }
+        .location-icon {
+          z-index: 999;
         }
       </style>
 
@@ -109,19 +131,31 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         </div>
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
-        <div class="flex-c layout-horizontal row-padding-v">
+        <div class="flex-c layout-horizontal row-padding-v location-icon">
+          <label class="paper-label"> ${translate(translatesMap.flat_locations)}</label>
+          <info-icon-tooltip
+            id="iit-locations"
+            class="iit"
+            position="right"
+            ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.flat_locations)}"
+            .tooltipText="${translate('GEOGRAPHICAL_LOCATIONS_INFO')}"
+          ></info-icon-tooltip>
+        </div>
+        <div class="flex-c layout-horizontal dropdown-row">
           <etools-dropdown-multi
             id="locations"
-            label=${translate(translatesMap.flat_locations)}
             placeholder="&#8212;"
+            label=${translate(translatesMap.flat_locations)}
             .options="${this.allLocations}"
             .selectedValues="${this.data.flat_locations}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.flat_locations)}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions.edit.flat_locations) ? -1 : 0}"
             ?required="${this.permissions.required.flat_locations}"
             option-label="name"
             option-value="id"
             error-message=${translate('LOCATIONS_ERR')}
             trigger-value-change-event
+            horizontal-align="left"
             @etools-selected-items-changed="${({detail}: CustomEvent) =>
               this.selectedItemsChanged(detail, 'flat_locations')}"
           >
@@ -133,32 +167,42 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
               ?hidden="${this._isEmpty(this.data.flat_locations)}"
               title=${translate('SEE_ALL_LOCATIONS')}
             >
-              <iron-icon icon="add"></iron-icon>
-              ${translate('SEE_ALL')}
+              ${translate('SEE_HIERARCHY')}
             </paper-button>
           </div>
         </div>
-        <div class="flex-c layout-horizontal row-padding-v">
+        <div class="flex-c row-padding-v mt-50">
+          <div>
+            <label class="paper-label">${translate(translatesMap.sites)}</label>
+            <info-icon-tooltip
+              id="iit-sites"
+              class="iit"
+              slot="after-label"
+              position="right"
+              ?hidden="${!this.editMode}"
+              .tooltipText="${translate('GEOGRAPHICAL_SITES_INFO')}"
+            ></info-icon-tooltip>
+          </div>
           <paper-textarea
-            label=${translate(translatesMap.sites)}
-            always-float-label
+            no-label-float
             class="w100"
             placeholder="&#8212;"
             readonly
+            tabindex="-1"
             max-rows="4"
             .value="${this.getSelectedSitesText(this.data.sites)}"
-          ></paper-textarea>
-          <div class="locations-btn"></div>
+          >
+          </paper-textarea>
         </div>
         <div class="flex-c layout-horizontal row-padding-v">
           <paper-button
             class="secondary-btn see-locations f-left"
             @click="${this.openSitesDialog}"
             ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.sites)}"
-            title=${translate('SELECT_LOCATION_BY_SITE_FROM_MAP')}
+            title=${translate('SELECT_SITE_FROM_MAP')}
           >
             <iron-icon icon="add"></iron-icon>
-            ${translate('SELECT_LOCATION_BY_SITE_FROM_MAP')}
+            ${translate('SELECT_SITE_FROM_MAP')}
           </paper-button>
         </div>
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}

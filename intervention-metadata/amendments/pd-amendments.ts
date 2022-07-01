@@ -225,7 +225,10 @@ export class PdAmendments extends CommentsMixin(LitElement) {
   isNewAmendment = false;
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata')) {
+    if (
+      pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata') ||
+      !state.interventions.current
+    ) {
       return;
     }
 

@@ -74,9 +74,9 @@ export class GroupedLocationsDialog extends LitElement {
         size="lg"
         keep-dialog-open
         opened
-        dialog-title=${translate('SELECT_LOCATION_BY_SITE')}
+        dialog-title=${translate('SELECT_SITE')}
         cancel-btn-text=${translate('GENERAL.CANCEL')}
-        ok-btn-text=${translate('GENERAL.ADD_UPDATE')}
+        ok-btn-text=${translate('SELECT')}
         @confirm-btn-clicked="${() => this.onConfirm()}"
         @close="${() => this.onClose()}"
       >

@@ -80,6 +80,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
               option-value="id"
               .selectedValues="${this.data.offices}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.offices)}"
+              tabindex="${this.isReadonly(this.editMode, this.permissions.edit.offices) ? -1 : 0}"
               ?required="${this.permissions.required.offices}"
               @etools-selected-items-changed="${({detail}: CustomEvent) =>
                 this.selectedItemsChanged(detail, 'offices')}"
@@ -97,6 +98,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
               option-value="id"
               .selectedValues="${this.data.sections}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.sections)}"
+              tabindex="${this.isReadonly(this.editMode, this.permissions.edit.sections) ? -1 : 0}"
               ?required="${this.permissions.required.sections}"
               @etools-selected-items-changed="${({detail}: CustomEvent) =>
                 this.selectedItemsChanged(detail, 'sections')}"
@@ -104,19 +106,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
             >
             </etools-dropdown-multi>
           </div>
-          <div class="col col-4">
-            <paper-textarea
-              id="title"
-              label=${translate('CLUSTERS')}
-              class="w100"
-              always-float-label
-              placeholder="—"
-              .value="${this.getClusterText(this.data.cluster_names)}"
-              tabindex="-1"
-              readonly
-            >
-            </paper-textarea>
-          </div>
+          <div class="col col-4"></div>
         </div>
         <div class="layout-horizontal row-padding-v">
           ${this.permissions.view!.unicef_focal_points
@@ -187,6 +177,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
               option-value="id"
               .selectedValues="${this.data.country_programmes}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.country_programmes)}"
+              tabindex="${this.isReadonly(this.editMode, this.permissions.edit.country_programmes) ? -1 : 0}"
               ?required="${this.permissions.required.country_programmes}"
               @etools-selected-items-changed="${({detail}: CustomEvent) =>
                 this.selectedItemsChanged(detail, 'country_programmes')}"
@@ -227,7 +218,10 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
   section_list!: AnyObject[];
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata')) {
+    if (
+      pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata') ||
+      !state.interventions.current
+    ) {
       return;
     }
 
@@ -286,10 +280,6 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
       savedUsers.push(this.data.unicef_focal_points);
     }
     return uniqBy(savedUsers.flat(), 'id');
-  }
-
-  getClusterText(clusters: string[]) {
-    return (clusters || []).join(', ');
   }
 
   saveData() {

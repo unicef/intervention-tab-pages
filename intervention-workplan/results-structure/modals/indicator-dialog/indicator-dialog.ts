@@ -311,7 +311,11 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   }
 
   setTitle() {
-    const title = this.isEditRecord ? getTranslation('EDIT_INDICATOR') : getTranslation('ADD_INDICATOR');
+    const title = this.readonly
+      ? getTranslation('VIEW_INDICATOR')
+      : this.isEditRecord
+      ? getTranslation('EDIT_INDICATOR')
+      : getTranslation('ADD_INDICATOR');
     setTimeout(() => {
       this.indicatorDialog.dialogTitle = title;
     });

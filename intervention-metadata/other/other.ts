@@ -65,6 +65,28 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
         paper-toggle-button {
           margin-top: 25px;
         }
+
+        #iit-confidential {
+          margin-top: 20px;
+          margin-left: 8px;
+        }
+        paper-textarea {
+          outline: none;
+          --paper-input-container-input: {
+            display: block;
+            text-overflow: hidden;
+          }
+
+          --iron-autogrow-textarea: {
+            overflow: auto;
+            padding: 0;
+            max-height: 96px;
+          }
+        }
+        .confidential-row {
+          margin-top: -4px;
+          padding-bottom: 12px;
+        }
       </style>
 
       <etools-content-panel
@@ -84,6 +106,10 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               placeholder="&#8212;"
               ?readonly="${!this.documentTypes.length ||
               this.isReadonly(this.editMode, this.permissions.edit.document_type)}"
+              tabindex="${!this.documentTypes.length ||
+              this.isReadonly(this.editMode, this.permissions?.edit.document_type)
+                ? -1
+                : 0}"
               required
               .options="${this.documentTypes}"
               .selected="${this.data.document_type}"
@@ -133,8 +159,8 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
           </div>
         </div>
         <div class="layout-horizontal row-padding-v" ?hidden="${!this.data.contingency_pd}">
-          <div class="col col-4">
-            <paper-input
+          <div class="col col-10">
+            <paper-textarea
               class="w100"
               label=${translate('ACTIVATION_PROTOCOL')}
               placeholder="&#8212;"
@@ -145,7 +171,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               .value="${this.data.activation_protocol}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'activation_protocol')}"
             >
-            </paper-input>
+            </paper-textarea>
           </div>
         </div>
         <div class="layout-horizontal row-padding-v">
@@ -159,6 +185,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               .options="${this.currencies}"
               .selected="${this.data.planned_budget.currency}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.document_currency)}"
+              tabindex="${this.isReadonly(this.editMode, this.permissions.edit.document_currency) ? -1 : 0}"
               @etools-selected-item-changed="${({detail}: CustomEvent) => {
                 if (detail === undefined || detail.selectedItem === null) {
                   return;
@@ -172,22 +199,20 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
           </div>
         </div>
 
-        <div class="layout-horizontal row-padding-v">
-          <paper-textarea
+        <div class="layout-horizontal confidential-row">
+          <paper-toggle-button
             id="confidential"
-            class="w100"
-            label=${translate('CONFIDENTIAL')}
-            always-float-label
-            placeholder="—"
-            .autoValidate="${this.autoValidate}"
-            .value="${this.data.confidential}"
-            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'confidential')}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit?.confidential)}"
-            ?required="${this.permissions.required.confidential}"
-            @focus="${() => (this.autoValidate = true)}"
-            error-message="This field is required"
+            ?disabled="${this.isReadonly(this.editMode, this.permissions.edit?.confidential)}"
+            ?checked="${this.data.confidential}"
+            @checked-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'confidential')}}"
           >
-          </paper-textarea>
+            ${translate('CONFIDENTIAL')}
+          </paper-toggle-button>
+          <info-icon-tooltip
+            id="iit-confidential"
+            ?hidden="${this.isReadonly(this.editMode, this.permissions.edit?.confidential)}"
+            .tooltipText="${translate('CONFIDENTIAL_INFO')}"
+          ></info-icon-tooltip>
         </div>
 
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
