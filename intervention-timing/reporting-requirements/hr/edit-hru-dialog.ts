@@ -164,7 +164,6 @@ export class EditHruDialog extends connectStore(LitElement) {
     this.interventionId = interventionId;
     this.interventionStart = interventionStart;
 
-
     this._setDefaultStartDate();
   }
 
