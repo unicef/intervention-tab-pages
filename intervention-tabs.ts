@@ -231,8 +231,6 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
         </intervention-workplan-editor>
         <intervention-timing ?hidden="${!this.isActiveTab(this.activeTab, TABS.Timing)}"> </intervention-timing>
         <intervention-review ?hidden="${!this.isActiveTab(this.activeTab, TABS.Review)}"></intervention-review>
-        <intervention-attachments ?hidden="${!this.isActiveTab(this.activeTab, TABS.Attachments)}">
-        </intervention-attachments>
         <intervention-progress
           .activeSubTab="${this.activeSubTab}"
           ?hidden="${!this.isActiveTab(this.activeTab, TABS.Progress)}"
@@ -455,7 +453,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   }
 
   checkTabs(state: RootState): void {
-    this.checkAttachmentsTab(state);
+    // this.checkAttachmentsTab(state);
     this.checkReviewTab(state);
 
     this.handleProgressTabVisibility(state.commonData?.envFlags, state?.user.data?.is_unicef_user);
@@ -499,20 +497,20 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     }
   }
 
-  checkAttachmentsTab(state: RootState): void {
-    const tabIndex = this.pageTabs.findIndex((x) => x.tab === 'attachments');
-    const canView = get(state, 'interventions.current.permissions.view.attachments');
-    if (tabIndex === -1 && canView) {
-      const pasteTo = this.pageTabs.findIndex((x) => x.tab === TABS.Progress);
-      this.pageTabs.splice(pasteTo, 0, {
-        tab: TABS.Attachments,
-        tabLabel: getTranslation('ATTACHMENTS_TAB') as unknown as string,
-        hidden: false
-      });
-    } else if (tabIndex !== -1 && !canView) {
-      this.pageTabs.splice(tabIndex, 1);
-    }
-  }
+  // checkAttachmentsTab(state: RootState): void {
+  //   const tabIndex = this.pageTabs.findIndex((x) => x.tab === 'attachments');
+  //   const canView = get(state, 'interventions.current.permissions.view.attachments');
+  //   if (tabIndex === -1 && canView) {
+  //     const pasteTo = this.pageTabs.findIndex((x) => x.tab === TABS.Progress);
+  //     this.pageTabs.splice(pasteTo, 0, {
+  //       tab: TABS.Attachments,
+  //       tabLabel: getTranslation('ATTACHMENTS_TAB') as unknown as string,
+  //       hidden: false
+  //     });
+  //   } else if (tabIndex !== -1 && !canView) {
+  //     this.pageTabs.splice(tabIndex, 1);
+  //   }
+  // }
 
   showPerformedActionsStatus() {
     return (
