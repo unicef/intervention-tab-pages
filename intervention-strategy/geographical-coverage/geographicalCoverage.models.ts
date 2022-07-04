@@ -7,5 +7,4 @@ export class LocationsPermissions extends ModelsBase {
     this.setObjProperties(permissions);
   }
   flat_locations = true;
-  sites = false;
 }
