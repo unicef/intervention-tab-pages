@@ -29,9 +29,6 @@ export class InterventionMetadata extends connectStore(LitElement) {
 
       <details-overview></details-overview>
       <partner-info></partner-info>
-      <financial-component></financial-component>
-      ${this.permissions?.view!.frs ? html`<fund-reservations></fund-reservations>` : ''}
-      ${this.permissions?.view!.amendments ? html`<pd-amendments></pd-amendments>` : ''}
       ${this.showSignatureAndDates ? html`<review-and-sign></review-and-sign>` : ''}
       <other-metadata></other-metadata>
     `;

@@ -32,7 +32,4 @@ export class ReviewDataPermission extends ModelsBase {
   }
   partner_authorized_officer_signatory = true;
   signed_by_partner_date = true;
-  signed_by_unicef_date = true;
-  unicef_signatory = true;
-  signed_pd_attachment = true;
 }

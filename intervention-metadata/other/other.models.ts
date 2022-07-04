@@ -7,11 +7,6 @@ export class OtherData extends ModelsBase {
     this.setObjProperties(intervention);
   }
   planned_budget = new PlannedBudget();
-  document_type = '';
-  humanitarian_flag = false;
-  contingency_pd = false;
-  activation_protocol = '';
-  confidential = false;
 }
 
 export class OtherPermissions extends ModelsBase {
@@ -19,7 +14,5 @@ export class OtherPermissions extends ModelsBase {
     super();
     this.setObjProperties(permissions);
   }
-  document_type = true;
   document_currency = true;
-  confidential = true;
 }

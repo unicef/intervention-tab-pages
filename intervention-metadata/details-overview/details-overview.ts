@@ -9,8 +9,6 @@ import {InterventionOverview} from './interventionOverview.models';
 import {selectInterventionOverview} from './interventionOverview.selectors';
 import {RootState} from '../../common/types/store.types';
 import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
-import {formatDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
-import get from 'lodash-es/get';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {translate} from 'lit-translate';
@@ -18,7 +16,6 @@ import {allPartners, currentIntervention, isUnicefUser} from '../../common/selec
 import {AnyObject} from '@unicef-polymer/etools-types/dist/global.types';
 import {Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
 import {TABS} from '../../common/constants';
-import CONSTANTS from '../../common/constants';
 import {StaticPartner} from '@unicef-polymer/etools-types';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 
@@ -50,12 +47,6 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
       <section class="elevation" elevation="1" comment-element="details" comment-description="Details">
         <div class="table not-allowed">
           <div class="data-column">
-            <label class="paper-label">${translate('DOCUMENT_TYPE')}</label>
-            <div class="input-label" ?empty="${!this.interventionOverview.document_type}">
-              ${this.getDocumentLongName(this.interventionOverview.document_type)}
-            </div>
-          </div>
-          <div class="data-column">
             <label class="paper-label">${translate('UNPP_CFEI_DSR')}</label>
             <div class="input-label" ?empty="${!this.interventionOverview.cfei_number}">
               ${this.interventionOverview.cfei_number}
@@ -73,26 +64,6 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
             <label class="paper-label">${translate('PARTNER_HACT_RR')}</label>
             <div class="input-label">${this.getPartnerHactRiskRatingHtml()}</div>
           </div>
-          <div class="data-column" ?hidden="${!this.isUnicefUser}">
-            <label class="paper-label">${translate('PARTNER_PSEA_RR')}</label>
-            <div class="input-label">${this.getPartnerPseaRiskRatingHtml()}</div>
-          </div>
-          <div class="data-column">
-            <label class="paper-label">${translate('CORE_VALUES_ASSESSMENT_DATE')}</label>
-            <div class="input-label" ?empty="${!this.interventionPartner?.last_assessment_date}">
-              ${formatDate(this.interventionPartner?.last_assessment_date)}
-            </div>
-          </div>
-          <div class="data-column">
-            <label class="paper-label">${translate('PSEA_ASSESSMENT_DATE')}</label>
-            <div class="input-label" ?empty="${!this.interventionPartner?.psea_assessment_date}">
-              ${formatDate(this.interventionPartner?.psea_assessment_date)}
-            </div>
-          </div>
-        </div>
-        <div class="icon-tooltip-div">
-          <info-icon-tooltip .tooltipText="${translate('METADATA_TOOLTIP')}" position="left"> </info-icon-tooltip>
-        </div>
       </section>
     `;
   }
@@ -114,7 +85,7 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
   }
 
   public stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Metadata)) {
+    if (pageIsNotCurrentlyActive(state?.app?.routeDetails, 'interventions', TABS.Metadata)) {
       return;
     }
 
@@ -140,16 +111,6 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
     }
   }
 
-  getPartnerPseaRiskRatingHtml() {
-    if (!this.interventionPartner?.sea_risk_rating_name) {
-      return html`N\\A`;
-    }
-    // eslint-disable-next-line lit/no-invalid-html
-    return html`<a target="_blank" href="/psea/assessments/list?partner=${this.intervention.partner_id}">
-      <strong class="blue">${this.interventionPartner.sea_risk_rating_name}</strong></a
-    >`;
-  }
-
   getPartnerHactRiskRatingHtml() {
     if (!this.interventionPartner?.rating) {
       return html`N\\A`;
@@ -158,12 +119,5 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
     return html`<a target="_blank" href="/ap/engagements/list?partner__in=${this.intervention.partner_id}">
       <strong class="blue">${this.interventionPartner.rating}</strong></a
     >`;
-  }
-  getDocumentLongName(value: any): string | undefined {
-    if (!value) {
-      return;
-    }
-    // @ts-ignore
-    return CONSTANTS.DOCUMENT_TYPES_LONG[value.toUpperCase()];
   }
 }
