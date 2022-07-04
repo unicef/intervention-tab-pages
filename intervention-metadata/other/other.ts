@@ -6,7 +6,6 @@ import '@unicef-polymer/etools-loading/etools-loading';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {resetRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {patchIntervention} from '../../common/actions/interventions';
@@ -20,7 +19,6 @@ import {AsyncAction, LabelAndValue, Permission} from '@unicef-polymer/etools-typ
 import {translate} from 'lit-translate';
 import {OtherData, OtherPermissions} from './other.models';
 import {selectOtherData, selectOtherPermissions} from './other.selectors';
-import CONSTANTS from '../../common/constants';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import '@polymer/paper-input/paper-textarea';
 
