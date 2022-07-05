@@ -24,13 +24,12 @@ import {enableCommentMode, getComments, setCommentsEndpoint} from './common/comp
 import {commentsData} from './common/components/comments/comments.reducer';
 import {Store} from 'redux';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
-import {EnvFlags, ExpectedResult, Intervention} from '@unicef-polymer/etools-types';
+import {ExpectedResult, Intervention} from '@unicef-polymer/etools-types';
 import {AsyncAction, RouteDetails} from '@unicef-polymer/etools-types';
 import {interventions} from './common/reducers/interventions';
 import {translate, get as getTranslation} from 'lit-translate';
 import {EtoolsTabs} from '@unicef-polymer/etools-modules-common/dist/layout/etools-tabs';
 import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
-import {prcIndividualReviews} from './common/reducers/officers-reviews';
 import {uploadStatus} from './common/reducers/upload-status';
 import CONSTANTS, {TABS} from './common/constants';
 import UploadMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uploads-mixin';
@@ -230,9 +229,6 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
         >
         </intervention-workplan-editor>
         <intervention-timing ?hidden="${!this.isActiveTab(this.activeTab, TABS.Timing)}"> </intervention-timing>
-        <intervention-review ?hidden="${!this.isActiveTab(this.activeTab, TABS.Review)}"></intervention-review>
-        <intervention-attachments ?hidden="${!this.isActiveTab(this.activeTab, TABS.Attachments)}">
-        </intervention-attachments>
         <intervention-progress
           .activeSubTab="${this.activeSubTab}"
           ?hidden="${!this.isActiveTab(this.activeTab, TABS.Progress)}"
@@ -335,7 +331,6 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       (store as any).addReducers({
         commentsData,
         interventions,
-        prcIndividualReviews,
         uploadStatus
       });
       getStore().dispatch(setCommentsEndpoint(commentsEndpoints));
@@ -368,11 +363,6 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     // add attribute to host to edit specific styles
     this.dataset.activeTab = this.activeTab;
 
-    // check permissions after intervention was loaded
-    if (state.interventions?.current && !this.hasPermissionsToAccessPage(state)) {
-      this.goToPageNotFound();
-      return;
-    }
     const currentInterventionId = get(state, 'app.routeDetails.params.interventionId');
     const currentIntervention = get(state, 'interventions.current');
 
@@ -429,7 +419,6 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     return (
       [
         CONSTANTS.STATUSES.Draft.toLowerCase(),
-        CONSTANTS.STATUSES.Review.toLowerCase(),
         CONSTANTS.STATUSES.Signature.toLowerCase(),
         CONSTANTS.STATUSES.Signed.toLowerCase(),
         CONSTANTS.STATUSES.Active.toLowerCase()
@@ -437,81 +426,6 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       resultLinks &&
       resultLinks.length
     );
-  }
-
-  hasPermissionsToAccessPage(state: RootState) {
-    const unicefUser = isUnicefUser(state);
-    const tab = currentSubpage(state);
-    const subTab = currentSubSubpage(state);
-
-    const attachmentRestricted =
-      tab === TABS.Attachments && !state.interventions.current?.permissions?.view!.attachments;
-
-    const reviewRestricted = tab === TABS.Review && !state.interventions.current?.permissions?.view!.reviews;
-    const restrictedSubTabs =
-      (!unicefUser || this.isEPDApp) &&
-      [TABS.ResultsReported, TABS.Reports, TABS.ImplementationStatus, TABS.MonitoringActivities].includes(subTab);
-    return !attachmentRestricted && !reviewRestricted && !restrictedSubTabs;
-  }
-
-  checkTabs(state: RootState): void {
-    this.checkAttachmentsTab(state);
-    this.checkReviewTab(state);
-
-    this.handleProgressTabVisibility(state.commonData?.envFlags, state?.user.data?.is_unicef_user);
-    this.pageTabs = [...this.pageTabs];
-  }
-
-  handleProgressTabVisibility(envFlags: EnvFlags | null, isUnicefUser?: boolean) {
-    if (!isUnicefUser || this.isEPDApp) {
-      return; // ONLY visible for unicef users
-    }
-
-    let progressTab = this.pageTabs.find((x) => x.tab === TABS.Progress);
-    if (progressTab) {
-      // tab already configured
-      return;
-    } else {
-      progressTab = cloneDeep(this.progressTabTemplate);
-    }
-    // Results Reported, Reports tabs are visible only for unicef users if flag prp_mode_off is not ON
-    // @ts-ignore
-    if (envFlags && !envFlags.prp_mode_off && !progressTab?.subtabs?.find((t) => t.value === TABS.ResultsReported)) {
-      // @ts-ignore
-      progressTab?.subtabs?.push(
-        {label: getTranslation('RESULTS_REPORTED_SUBTAB'), value: TABS.ResultsReported},
-        {label: getTranslation('REPORTS_SUBTAB'), value: TABS.Reports}
-      );
-    }
-    this.pageTabs.push(progressTab);
-  }
-
-  checkReviewTab(state: RootState): void {
-    const tabIndex = this.pageTabs.findIndex((x) => x.tab === 'review');
-    const unicefUser = get(state, 'user.data.is_unicef_user');
-    if (tabIndex === -1 && unicefUser) {
-      const pasteTo = this.pageTabs.findIndex((x) => x.tab === TABS.Progress);
-      this.pageTabs.splice(pasteTo, 0, {
-        tab: TABS.Review,
-        tabLabel: getTranslation('REVIEW_TAB'),
-        hidden: false
-      });
-    }
-  }
-
-  checkAttachmentsTab(state: RootState): void {
-    const tabIndex = this.pageTabs.findIndex((x) => x.tab === 'attachments');
-    const canView = get(state, 'interventions.current.permissions.view.attachments');
-    if (tabIndex === -1 && canView) {
-      const pasteTo = this.pageTabs.findIndex((x) => x.tab === TABS.Progress);
-      this.pageTabs.splice(pasteTo, 0, {
-        tab: TABS.Attachments,
-        tabLabel: getTranslation('ATTACHMENTS_TAB') as unknown as string,
-        hidden: false
-      });
-    } else if (tabIndex !== -1 && !canView) {
-      this.pageTabs.splice(tabIndex, 1);
-    }
   }
 
   showPerformedActionsStatus() {
