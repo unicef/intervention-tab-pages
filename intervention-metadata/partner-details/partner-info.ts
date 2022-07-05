@@ -21,11 +21,9 @@ import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endp
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
-import isEmpty from 'lodash-es/isEmpty';
 import {RootState} from '../../common/types/store.types';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission, PartnerStaffMember, AnyObject} from '@unicef-polymer/etools-types';
-import {MinimalAgreement} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 
 /**
@@ -76,25 +74,6 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
             </paper-input>
           </div>
           <div class="col col-5">
-            <etools-dropdown
-              id="agreements"
-              label=${translate('AGREEMENTS')}
-              .options="${this.partnerAgreements}"
-              .selected="${this.data?.agreement}"
-              option-value="id"
-              option-label="agreement_number_status"
-              trigger-value-change-event
-              @etools-selected-item-changed="${({detail}: CustomEvent) => this.selectedAgreementChanged(detail)}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.agreement)}"
-              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.agreement) ? -1 : 0}"
-              required
-              auto-validate
-            >
-            </etools-dropdown>
-          </div>
-        </div>
-        <div class="row-padding-v layout-horizontal">
-          <div class="col col-7">
             <paper-input
               class="w100"
               label=${translate('PARTNER_VENDOR_NUMBER')}
@@ -104,10 +83,6 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
               always-float-label
             >
             </paper-input>
-          </div>
-          <div class="col col-5 layout-vertical">
-            <label for="agreementAuthOff" class="paper-label">${translate('AGREEMENT_AUTHORIZED_OFFICERS')}</label>
-            <div id="agreementAuthOff">${this.renderAgreementAuthorizedOfficers(this.agreementAuthorizedOfficers)}</div>
           </div>
         </div>
         <div class="row-padding-v">
@@ -151,12 +126,6 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
   permissions!: Permission<PartnerInfoPermissions>;
 
   @property({type: Array})
-  partnerAgreements!: MinimalAgreement[];
-
-  @property({type: Array})
-  agreementAuthorizedOfficers!: PartnerStaffMember[];
-
-  @property({type: Array})
   partnerStaffMembers!: PartnerStaffMember[];
 
   connectedCallback() {
@@ -181,11 +150,6 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
   async setPartnerDetailsAndPopulateDropdowns(state: any) {
     const newPartnerDetails = selectPartnerDetails(state);
 
-    const agreements = get(state, 'agreements.list');
-    if (!isEmpty(agreements)) {
-      this.partnerAgreements = this.filterAgreementsByPartner(agreements, newPartnerDetails.partner_id!);
-    }
-
     if (!isJsonStrMatch(this.originalData, newPartnerDetails)) {
       if (this.partnerIdHasChanged(newPartnerDetails)) {
         this.partnerStaffMembers = await this.getAllPartnerStaffMembers(newPartnerDetails.partner_id!);
@@ -193,10 +157,6 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
       this.data = cloneDeep(newPartnerDetails);
       this.originalData = cloneDeep(this.data);
     }
-  }
-
-  filterAgreementsByPartner(agreements: MinimalAgreement[], partnerId: number) {
-    return agreements.filter((a: any) => String(a.partner) === String(partnerId));
   }
 
   partnerIdHasChanged(newPartnerDetails: PartnerInfo) {
@@ -212,24 +172,6 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
       });
       return resp;
     });
-  }
-
-  selectedAgreementChanged(detail: any) {
-    if (!detail || !detail.selectedItem) {
-      return;
-    }
-    this.selectedItemChanged(detail, 'agreement');
-    this.agreementAuthorizedOfficers = detail.selectedItem?.authorized_officers;
-  }
-
-  renderAgreementAuthorizedOfficers(authOfficers: PartnerStaffMember[]) {
-    if (isEmpty(authOfficers)) {
-      return html`—`;
-    } else {
-      return authOfficers.map((authOfficer) => {
-        return html`<div class="w100 padd-between">${this.renderNameEmailPhone(authOfficer)}</div>`;
-      });
-    }
   }
 
   saveData() {

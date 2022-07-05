@@ -10,7 +10,6 @@ export class PartnerInfo extends ModelsBase {
   partner = '';
   partner_vendor = '';
   partner_focal_points: MinimalUser[] = [];
-  agreement: number | null = null;
 }
 
 export class PartnerInfoPermissions extends ModelsBase {
@@ -19,5 +18,4 @@ export class PartnerInfoPermissions extends ModelsBase {
     this.setObjProperties(permissions);
   }
   partner_focal_points = false;
-  agreement = false;
 }

@@ -9,7 +9,6 @@ import '@unicef-polymer/etools-upload/etools-upload';
 
 import '@unicef-polymer/etools-date-time/datepicker-lite';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
-import UploadMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uploads-mixin';
 import CONSTANTS from '../../common/constants';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
@@ -32,9 +31,6 @@ import {AsyncAction, MinimalUser, Permission, User} from '@unicef-polymer/etools
 import {MinimalAgreement} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {sectionContentStyles} from '@unicef-polymer/etools-modules-common/dist/styles/content-section-styles-polymer';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {EtoolsUpload} from '@unicef-polymer/etools-upload/etools-upload';
 
 /**
  * @customElement
@@ -42,7 +38,7 @@ import {EtoolsUpload} from '@unicef-polymer/etools-upload/etools-upload';
  * @appliesMixin UploadsMixin
  */
 @customElement('review-and-sign')
-export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(UploadMixin(LitElement))) {
+export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -52,7 +48,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
         <etools-loading source="revAndSign" loading-text="Loading..." active></etools-loading>`;
     }
     return html`
-    ${sharedStyles}
+      ${sharedStyles}
       <style>
         ${sectionContentStyles}:host {
           display: flex;
@@ -62,9 +58,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
           margin-bottom: 24px;
         }
 
-
-
-        paper-input-container{
+        paper-input-container {
           margin-left: 0px;
         }
         paper-input {
@@ -97,14 +91,13 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
         }
       </style>
       <etools-content-panel
-        show-expand-btn class="content-section"
+        show-expand-btn
+        class="content-section"
         panel-title=${translate('SIGNATURES_DATES')}
         comment-element="signatures-and-dates"
         comment-description=${translate('SIGNATURES_DATES')}
       >
-        <div slot="panel-btns">
-          ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
-        </div>
+        <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
         <div class="layout-horizontal row-padding-v">
           <div class="col col-6 layout-vertical">
             <!-- Signed By Partner Authorized Officer -->
@@ -130,20 +123,16 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
               ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.partner_authorized_officer_signatory)}"
             >
             </etools-dropdown>
-            ${
-              this.isReadonly(this.editMode, this.permissions?.edit.partner_authorized_officer_signatory)
-                ? html`<label for="partnerAuth" class="paper-label">
-                      ${translate('SIGNED_PARTNER_AUTH_OFFICER')}
-                    </label>
-                    <div id="partnerAuth">
-                      ${this.renderReadonlyUserDetails(
-                        this.originalData?.partner_authorized_officer_signatory
-                          ? [this.originalData?.partner_authorized_officer_signatory]
-                          : []
-                      )}
-                    </div>`
-                : html``
-            }
+            ${this.isReadonly(this.editMode, this.permissions?.edit.partner_authorized_officer_signatory)
+              ? html`<label for="partnerAuth" class="paper-label"> ${translate('SIGNED_PARTNER_AUTH_OFFICER')} </label>
+                  <div id="partnerAuth">
+                    ${this.renderReadonlyUserDetails(
+                      this.originalData?.partner_authorized_officer_signatory
+                        ? [this.originalData?.partner_authorized_officer_signatory]
+                        : []
+                    )}
+                  </div>`
+              : html``}
           </div>
           <div class="col col-3">
             <!-- Signed by Partner Date -->
@@ -165,113 +154,10 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
             </datepicker-lite>
           </div>
         </div>
-        <div class="layout-horizontal row-padding-v">
-          <div class="col col-6">
-            <!-- Signed by UNICEF Authorized Officer -->
-            <paper-input-container>
-              <div slot="input" class="paper-input-input">
-                <span class="input-value"> ${translate('SIGNED_UNICEF_AUTH_OFFICER')}</span>
-              </div>
-            </paper-input-container>
-          </div>
-          <div class="col col-3">
-            <!-- Signed by UNICEF Date -->
-            <datepicker-lite
-              id="signedByUnicefDateField"
-              label=${translate('SIGNED_UNICEF_DATE')}
-              .value="${this.data.signed_by_unicef_date}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.signed_by_unicef_date)}"
-              ?required="${this.permissions.required.signed_by_unicef_date}"
-              fire-date-has-changed
-              @date-has-changed="${(e: CustomEvent) =>
-                this.valueChanged({value: formatDate(e.detail.date, 'YYYY-MM-DD')}, 'signed_by_unicef_date')}"
-              ?auto-validate="${this.editMode}"
-              error-message=${translate('DATE_REQUIRED')}
-              max-date-error-msg=${translate('MAX_DATE_ERR')}
-              max-date="${this.getCurrentDate()}"
-              selected-date-display-format="D MMM YYYY"
-            >
-            </datepicker-lite>
-          </div>
-        </div>
-        </div>
-        <div class="layout-horizontal row-padding-v">
-          <div class="col col-6 layout-vertical">
-            <!-- Signed by UNICEF -->
-            <etools-dropdown
-              id="signedByUnicef"
-              label=${translate('SIGNED_UNICEF')}
-              placeholder="&#8212;"
-              .options="${this.signedByUnicefUsers}"
-              option-value="id"
-              option-label="name"
-              .selected="${this.data.unicef_signatory?.id}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.unicef_signatory)}"
-              auto-validate
-              error-message=${translate('UNICEF_USER_ERR')}
-              @etools-selected-item-changed="${({detail}: CustomEvent) => {
-                if (!detail.selectedItem) {
-                  return;
-                }
-                this.selectedUserChanged(detail, 'unicef_signatory');
-              }}"
-              trigger-value-change-event
-              ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.unicef_signatory)}"
-            >
-            </etools-dropdown>
-            ${
-              this.isReadonly(this.editMode, this.permissions?.edit.unicef_signatory)
-                ? html`<label for="unicefSignatory" class="paper-label">${translate('SIGNED_UNICEF')}</label>
-                    <div id="unicefSignatory">
-                      ${this.renderReadonlyUserDetails(
-                        this.originalData?.unicef_signatory ? [this.originalData?.unicef_signatory] : []
-                      )}
-                    </div>`
-                : html``
-            }
-          </div>
-        </div>
-        <div class="layout-horizontal row-padding-v">
-          <div class="col col-8">
-            <!-- Signed PD/SPD -->
-            <etools-upload
-              id="signedIntervFile"
-              label=${translate('SIGNED_PD_SPD')}
-              accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt"
-              .fileUrl="${this.data.signed_pd_attachment}"
-              .uploadEndpoint="${this.uploadEndpoint}"
-              .showDeleteBtn="${this.showSignedPDDeleteBtn(this.data.status)}"
-              @delete-file="${this._signedPDDocDelete}"
-              ?auto-validate="${this.editMode}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.signed_pd_attachment)}"
-              ?required="${this.permissions.required.signed_pd_attachment}"
-              error-message=${translate('SELECT_SIGNED_PD_SPD_DOC')}
-              @upload-started="${this.__onUploadStarted}"
-              @upload-finished="${this._signedPDUploadFinished}"
-              @change-unsaved-file="${this._onChangeUnsavedFile}"
-            >
-            </etools-upload>
-          </div>
-        </div>
-        <div class="layout-horizontal row-padding-v">
-          <div class="col col-8">
-            <!-- TERMINATION DOC -->
-            <etools-upload
-              id="terminationDoc"
-              label=${translate('TERMINATION_NOTICE')}
-              .hidden="${!this.data.termination_doc_attachment}"
-              .fileUrl="${this.data.termination_doc_attachment}"
-              readonly
-            >
-          </div>
-        </div>
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
       </etools-content-panel>
     `;
   }
-
-  @property({type: String})
-  uploadEndpoint: string = getEndpoint(interventionEndpoints.attachmentsUpload).url;
 
   @property({type: Object})
   originalData!: ReviewData;
@@ -283,37 +169,11 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
   permissions!: Permission<ReviewDataPermission>;
 
   @property({type: Array})
-  signedByUnicefUsers!: User[] | MinimalUser[];
-
-  @property({type: Array})
   agreementAuthorizedOfficers!: any;
-
-  @property({type: String})
-  partnerDateValidatorErrorMessage!: string;
-
-  @property({type: String})
-  unicefDateValidatorErrorMessage!: string;
-
-  @property({type: Boolean})
-  isUnicefUser = false;
-
-  private justUploaded = false;
 
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata')) {
       return;
-    }
-
-    if (state.uploadStatus.uploadsInProgress || state.uploadStatus.unsavedUploads || this.justUploaded) {
-      setTimeout(() => (this.justUploaded = false), 200);
-      return; // Prevent upload related redux store changes (UploadMixin) from reseting data selected in other fields
-    }
-
-    if (!isJsonStrMatch(this.signedByUnicefUsers, state.commonData!.unicefUsersData)) {
-      this.signedByUnicefUsers = cloneDeep(state.commonData!.unicefUsersData);
-    }
-    if (state.user && state.user.data) {
-      this.isUnicefUser = state.user.data.is_unicef_user;
     }
 
     if (state.interventions.current) {
@@ -340,17 +200,6 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
             this.agreementAuthorizedOfficers = [...this.agreementAuthorizedOfficers];
           }
         }
-
-        const pdUsers = this.data.unicef_signatory ? [this.data.unicef_signatory] : [];
-        if (this.isUnicefUser) {
-          // Partner user can not edit this field
-          const changed = this.handleUsersNoLongerAssignedToCurrentCountry(this.signedByUnicefUsers as User[], pdUsers);
-          if (changed) {
-            this.signedByUnicefUsers = [...this.signedByUnicefUsers];
-          }
-        } else {
-          this.signedByUnicefUsers = pdUsers;
-        }
       }
     }
     super.stateChanged(state);
@@ -371,42 +220,13 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
     return agreements.filter((a: any) => String(a.id) === String(agreementId))[0];
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-  }
-
   _isDraft(status: string) {
     return status === CONSTANTS.STATUSES.Draft.toLowerCase() || status === '';
   }
 
-  _hideDeleteBtn(status: string, fileUrl: string) {
-    return this._isDraft(status) && fileUrl;
-  }
-  __onUploadStarted(e: CustomEvent) {
-    this.justUploaded = true;
-    this._onUploadStarted(e);
-  }
-
-  cancel() {
-    super.cancel();
-    // @ts-ignore
-    const uploadElem = this.shadowRoot?.querySelector('#signedIntervFile') as EtoolsUpload;
-    // @ts-ignore
-    uploadElem._cancelUpload();
-
-    this.decreaseUnsavedUploads();
-    this.justUploaded = false;
-  }
-
   validate() {
     let valid = true;
-    const fieldSelectors = [
-      '#signedByAuthorizedOfficer',
-      '#signedByPartnerDateField',
-      '#signedByUnicefDateField',
-      '#signedIntervFile',
-      '#submissionDateField'
-    ];
+    const fieldSelectors = ['#signedByAuthorizedOfficer', '#signedByPartnerDateField'];
     fieldSelectors.forEach((selector: string) => {
       const field = this.shadowRoot!.querySelector(selector) as LitElement & {validate(): boolean};
       if (field && !field.validate()) {
@@ -414,26 +234,6 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
       }
     });
     return valid;
-  }
-
-  _signedPDUploadFinished(e: CustomEvent) {
-    if (e.detail.success) {
-      const response = e.detail.success;
-      this.data.signed_pd_attachment = response.id;
-      this.requestUpdate();
-    }
-    this.justUploaded = true;
-    // Called also after upload was cancelled
-    this._onUploadFinished(e.detail.success);
-  }
-
-  _signedPDDocDelete(_e: CustomEvent) {
-    this.data.signed_pd_attachment = null;
-    this._onUploadDelete();
-  }
-
-  showSignedPDDeleteBtn(status: string) {
-    return this._isDraft(status) && !!this.originalData && !this.originalData.signed_pd_attachment;
   }
 
   getCurrentDate() {
@@ -451,14 +251,12 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
         patchIntervention(this.formatUserData(getDifference<ReviewData>(this.originalData, this.data)))
       )
       .then(() => {
-        this._onUploadSaved();
         this.editMode = false;
       });
   }
 
   private formatUserData(data: ReviewData) {
     const dataToSave: any = cloneDeep(data);
-    dataToSave.unicef_signatory = data.unicef_signatory?.id;
     // eslint-disable-next-line max-len
     dataToSave.partner_authorized_officer_signatory = data.partner_authorized_officer_signatory?.id;
     return dataToSave;

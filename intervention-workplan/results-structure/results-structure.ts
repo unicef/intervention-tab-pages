@@ -33,7 +33,7 @@ import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/di
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import get from 'lodash-es/get';
 import {getIntervention} from '../../common/actions/interventions';
-import {isUnicefUser, currentIntervention} from '../../common/selectors';
+import {currentIntervention} from '../../common/selectors';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
@@ -76,7 +76,6 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
 
   quarters: InterventionQuarter[] = [];
 
-  @property({type: Boolean}) isUnicefUser = true;
   @property({type: Boolean}) showIndicators = true;
   @property({type: Boolean}) showActivities = true;
   @property({type: Boolean}) showInactiveToggle = false;
@@ -128,21 +127,8 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           </div>
         </div>
 
-        <!--    CP output ADD button     -->
-        <div
-          class="add-button"
-          @click="${() => this.openCpOutputDialog()}"
-          ?hidden="${!this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
-        >
-          <paper-icon-button slot="custom-icon" icon="add-box" tabindex="0"></paper-icon-button>
-          <span class="no-wrap">${translate('ADD_CP_OUTPUT')}</span>
-        </div>
-
-        <!--    PD output ADD button for non Unicef users     -->
-        <div
-          class="pd-add-section"
-          ?hidden="${this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
-        >
+        <!--    PD output ADD button    -->
+        <div class="pd-add-section" ?hidden="${!this.permissions.edit.result_links || this.commentMode}">
           <div class="pd-title layout-horizontal align-items-center">
             ${translate('PD_OUTPUTS_TITLE')}
             <etools-info-tooltip position="top" custom-icon offset="0">
@@ -160,111 +146,72 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         ${repeat(
           this.resultLinks,
           (result: ExpectedResult) => result.id,
-          (result, _index) => html`
-            <cp-output-level
-              index="${_index}"
-              ?show-cpo-level="${this.isUnicefUser}"
-              .resultLink="${result}"
-              .interventionId="${this.interventionId}"
-              .showIndicators="${this.showIndicators}"
-              .showActivities="${this.showActivities}"
-              .currency="${this.intervention.planned_budget.currency}"
-              .readonly="${!this.permissions.edit.result_links || this.commentMode}"
-              .opened="${this.newCPOutputs.has(result.id)}"
-              @edit-cp-output="${() => this.openCpOutputDialog(result)}"
-              @delete-cp-output="${() => this.openDeleteCpOutputDialog(result.id)}"
-              @opened-changed="${this.onCpOpenedChanged}"
-              style="z-index: ${99 - _index};"
-            >
-              <div
-                class="no-results"
-                ?hidden="${!this.isUnicefUser || this.permissions.edit.result_links || result.ll_results.length}"
-              >
-                ${translate('NO_PDS_ADDED')}
-              </div>
-              ${!this.isUnicefUser || !result.cp_output || !this.permissions.edit.result_links || this.commentMode
-                ? ''
-                : html`
-                    <div class="pd-title layout-horizontal align-items-center">
-                      ${translate('PD_OUTPUTS_TITLE')}<etools-info-tooltip position="top" custom-icon offset="0">
-                        <paper-icon-button
-                          icon="add-box"
-                          slot="custom-icon"
-                          class="add"
-                          tabindex="0"
-                          @click="${() => this.openPdOutputDialog({}, result.cp_output)}"
-                        ></paper-icon-button>
-                        <span class="no-wrap" slot="message">${translate('ADD_PD_OUTPUT')}</span>
-                      </etools-info-tooltip>
-                    </div>
-                  `}
-              ${result.ll_results.map(
-                (pdOutput: ResultLinkLowerResult, index: number) => html`
-                  <etools-data-table-row
-                    class="pdOutputMargin ${this.isUnicefUser ? 'unicef-user' : 'partner'}"
-                    related-to="pd-output-${pdOutput.id}"
-                    related-to-description=" PD Output - ${pdOutput.name}"
-                    comments-container
-                    secondary-bg-on-hover
-                    .detailsOpened="${this.newPDOutputs.has(pdOutput.id)}"
-                    style="z-index: ${99 - index};"
-                  >
-                    <div slot="row-data" class="layout-horizontal editable-row pd-output-row">
-                      <div class="flex-1 flex-fix">
-                        <div class="data bold-data">${pdOutput.code}&nbsp;${pdOutput.name}</div>
-                        <div class="count">
-                          <div><b>${pdOutput.activities.length}</b> ${translate('ACTIVITIES')}</div>
-                          <div><b>${pdOutput.applied_indicators.length}</b> ${translate('INDICATORS')}</div>
-                        </div>
-                      </div>
-
-                      <div class="flex-none total-cache" ?hidden="${!this.showActivities}">
-                        <div class="heading">${translate('TOTAL_CASH_BUDGET')}</div>
-                        <div class="data">
-                          <span class="currency">${this.intervention.planned_budget.currency}</span>
-                          ${displayCurrencyAmount(pdOutput.total, '0.00')}
-                        </div>
-                      </div>
-
-                      <div
-                        class="hover-block"
-                        ?hidden="${!this.permissions.edit.result_links || this.commentsModeEnabledFlag}"
-                      >
-                        <paper-icon-button
-                          icon="icons:create"
-                          @click="${() => this.openPdOutputDialog(pdOutput, result.cp_output)}"
-                        ></paper-icon-button>
-                        <paper-icon-button
-                          icon="icons:delete"
-                          @click="${() => this.openDeletePdOutputDialog(pdOutput.id)}"
-                        ></paper-icon-button>
+          (result, _index) =>
+            result.ll_results.map(
+              (pdOutput: ResultLinkLowerResult, index: number) => html`
+                <etools-data-table-row
+                  class="pdOutputMargin partner"
+                  related-to="pd-output-${pdOutput.id}"
+                  related-to-description=" PD Output - ${pdOutput.name}"
+                  comments-container
+                  secondary-bg-on-hover
+                  .detailsOpened="${this.newPDOutputs.has(pdOutput.id)}"
+                  style="z-index: ${99 - index};"
+                >
+                  <div slot="row-data" class="layout-horizontal editable-row pd-output-row">
+                    <div class="flex-1 flex-fix">
+                      <div class="data bold-data">${pdOutput.code}&nbsp;${pdOutput.name}</div>
+                      <div class="count">
+                        <div><b>${pdOutput.activities.length}</b> ${translate('ACTIVITIES')}</div>
+                        <div><b>${pdOutput.applied_indicators.length}</b> ${translate('INDICATORS')}</div>
                       </div>
                     </div>
 
-                    <div slot="row-data-details">
-                      <pd-activities
-                        .activities="${pdOutput.activities}"
-                        .interventionId="${this.interventionId}"
-                        .pdOutputId="${pdOutput.id}"
-                        .quarters="${this.quarters}"
-                        ?hidden="${!this.showActivities}"
-                        .readonly="${!this.permissions.edit.result_links || this.commentMode}"
-                        .currency="${this.intervention.planned_budget.currency}"
-                      ></pd-activities>
-                      <pd-indicators
-                        ?hidden="${!this.showIndicators}"
-                        .indicators="${pdOutput.applied_indicators}"
-                        .pdOutputId="${pdOutput.id}"
-                        .readonly="${!this.permissions.edit.result_links || this.commentMode}"
-                        .showInactiveIndicators="${this.showInactiveIndicators}"
-                        .inAmendment="${this.intervention.in_amendment}"
-                      ></pd-indicators>
+                    <div class="flex-none total-cache" ?hidden="${!this.showActivities}">
+                      <div class="heading">${translate('TOTAL_CASH_BUDGET')}</div>
+                      <div class="data">
+                        <span class="currency">${this.intervention.planned_budget.currency}</span>
+                        ${displayCurrencyAmount(pdOutput.total, '0.00')}
+                      </div>
                     </div>
-                  </etools-data-table-row>
-                `
-              )}
-            </cp-output-level>
-          `
+
+                    <div
+                      class="hover-block"
+                      ?hidden="${!this.permissions.edit.result_links || this.commentsModeEnabledFlag}"
+                    >
+                      <paper-icon-button
+                        icon="icons:create"
+                        @click="${() => this.openPdOutputDialog(pdOutput, result.cp_output)}"
+                      ></paper-icon-button>
+                      <paper-icon-button
+                        icon="icons:delete"
+                        @click="${() => this.openDeletePdOutputDialog(pdOutput.id)}"
+                      ></paper-icon-button>
+                    </div>
+                  </div>
+
+                  <div slot="row-data-details">
+                    <pd-activities
+                      .activities="${pdOutput.activities}"
+                      .interventionId="${this.interventionId}"
+                      .pdOutputId="${pdOutput.id}"
+                      .quarters="${this.quarters}"
+                      ?hidden="${!this.showActivities}"
+                      .readonly="${!this.permissions.edit.result_links || this.commentMode}"
+                      .currency="${this.intervention.planned_budget.currency}"
+                    ></pd-activities>
+                    <pd-indicators
+                      ?hidden="${!this.showIndicators}"
+                      .indicators="${pdOutput.applied_indicators}"
+                      .pdOutputId="${pdOutput.id}"
+                      .readonly="${!this.permissions.edit.result_links || this.commentMode}"
+                      .showInactiveIndicators="${this.showInactiveIndicators}"
+                      .inAmendment="${this.intervention.in_amendment}"
+                    ></pd-indicators>
+                  </div>
+                </etools-data-table-row>
+              `
+            )
         )}
         ${!this.resultLinks.length ? html` <div class="no-results">${translate('NO_RESULTS_ADDED')}</div> ` : ''}
       </etools-content-panel>
@@ -330,7 +277,6 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     this.interventionStatus = selectInterventionStatus(state);
     this.quarters = selectInterventionQuarters(state);
     this.cpOutputs = (state.commonData && state.commonData.cpOutputs) || [];
-    this.isUnicefUser = isUnicefUser(state);
     this.intervention = cloneDeep(currentIntervention(state));
     this._updateNoOfPdOutputs();
     super.stateChanged(state);
@@ -370,7 +316,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
       dialogData: {
         pdOutput: pdOutput ? {...pdOutput, cp_output: cpOutput} : undefined,
         cpOutputs,
-        hideCpOutputs: !this.isUnicefUser,
+        hideCpOutputs: true,
         interventionId: this.interventionId
       }
     });

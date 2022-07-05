@@ -6,7 +6,6 @@ export class InterventionOverview extends ModelsBase {
     super();
     this.setObjProperties(intervention);
   }
-  document_type = '';
   cfei_number = '';
   contingency_pd = false;
   humanitarian_flag = false;
