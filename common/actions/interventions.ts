@@ -115,4 +115,4 @@ function shouldReGetList(prevInterventionState: Intervention, currentInterventio
 //     type: 'UPDATE_PARTNER_REPORTING_REQUIREMENTS',
 //     partnerReportingRequirements: newReportingRequirements
 //   };
-};
+// };
