@@ -1,6 +1,5 @@
 import {LitElement, html, property} from 'lit-element';
 import './partner-details/partner-info';
-import './details-overview/details-overview';
 import './review-and-sign/review-and-sign';
 import './other/other';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
@@ -24,7 +23,6 @@ export class InterventionMetadata extends connectStore(LitElement) {
     return html`
       <style></style>
 
-      <details-overview></details-overview>
       <partner-info></partner-info>
       ${this.showSignatureAndDates ? html`<review-and-sign></review-and-sign>` : ''}
       <other-metadata></other-metadata>

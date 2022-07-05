@@ -67,19 +67,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
               label=${translate('PARTNER_ORGANIZATION')}
               .value="${this.data?.partner}"
               required
-              readonly
-              always-float-label
-              tabindex="-1"
-            >
-            </paper-input>
-          </div>
-          <div class="col col-5">
-            <paper-input
-              class="w100"
-              label=${translate('PARTNER_VENDOR_NUMBER')}
-              .value="${this.data?.partner_vendor}"
-              tabindex="-1"
-              readonly
+              ?readonly="${!this.editMode}"
               always-float-label
             >
             </paper-input>

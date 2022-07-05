@@ -176,11 +176,6 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       <intervention-page-content-header ?is-in-amendment="${this.isInAmendment}">
         <span class="intervention-partner" slot="page-title">${this.intervention.partner}</span>
         <span class="intervention-number" slot="page-title">${this.intervention.number}</span>
-        <div slot="mode">
-          <paper-toggle-button id="commentMode" ?checked="${this.commentMode}" @iron-change="${this.commentModeChange}"
-            >${translate('GENERAL.COMMENT_MODE')}</paper-toggle-button
-          >
-        </div>
 
         <div slot="statusFlag" ?hidden="${!this.showPerformedActionsStatus()}">
           <span class="icon flag">
