@@ -380,7 +380,6 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       );
       // set amendment attribute on host to add border and other styles
       this.isInAmendment = Boolean(this.intervention?.in_amendment);
-      this.checkTabs(state);
     }
 
     // check if we need to load intervention and comments
