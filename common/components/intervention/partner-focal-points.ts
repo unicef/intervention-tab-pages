@@ -36,7 +36,7 @@ export class PartnerFocalPoints extends LitElement {
               .value="${item}"
               type="email"
               auto-validate
-              ?readonly="${!this.editMode}"
+              ?readonly="${this.readonly}"
               @value-changed="${(e: CustomEvent) => {
                 if (e.detail.value !== item) {
                   this.items[index] = e.detail.value;
@@ -51,7 +51,7 @@ export class PartnerFocalPoints extends LitElement {
             >
             </paper-input>
 
-            ${this.items.length === index + 1 && this.editMode
+            ${this.items.length === index + 1 && !this.readonly
               ? html`<paper-icon-button @click="${() => this.addNewInput()}" icon="add-box"> </paper-icon-button>`
               : html``}
           </div>
@@ -81,11 +81,11 @@ export class PartnerFocalPoints extends LitElement {
 
   set onAddPage(val: boolean) {
     this._onAddPage = val;
-    this.editMode = true;
+    this.readonly = false;
   }
 
   @property({type: Boolean})
-  editMode = false;
+  readonly = true;
 
   _items!: string[];
   @property({type: Array})
@@ -94,7 +94,7 @@ export class PartnerFocalPoints extends LitElement {
   }
 
   set items(val: string[]) {
-    if (val.length === 0 && this.onAddPage && this.user) {
+    if ((!val || val.length === 0) && this.onAddPage && this.user) {
       this._items = [this.user.email]; // Current user email has to be part of focal points
     }
     if (!areEqual(this._items, val)) {
