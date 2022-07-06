@@ -14,7 +14,6 @@ import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialo
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import '../common/components/intervention/pd-termination';
 import '../common/components/intervention/start-review';
-import '../common/components/intervention/review-checklist-popup';
 import {InterventionActionsStyles} from './intervention-actions.styles';
 import {
   ACCEPT_REVIEW,
@@ -331,22 +330,6 @@ export class InterventionActions extends LitElement {
     });
   }
 
-  private openReviewDialog(additional?: GenericObject) {
-    return openDialog({
-      dialog: 'review-checklist-popup',
-      dialogData: {
-        isOverall: Boolean(additional),
-        ...additional
-      }
-    }).then(({confirmed}) => {
-      if (!additional) {
-        return null;
-      } else {
-        return confirmed ? {} : null;
-      }
-    });
-  }
-
   private openAcceptForPartner() {
     return openDialog({
       dialog: 'accept-for-partner',
@@ -380,12 +363,6 @@ export class InterventionActions extends LitElement {
         return this.openTermiantionDialog();
       case REVIEW:
         return this.openStartReviewDialog();
-      case PRC_REVIEW:
-        return this.openReviewDialog();
-      case REJECT_REVIEW:
-        return this.openReviewDialog({rejectPopup: true});
-      case SIGN:
-        return this.openReviewDialog({approvePopup: true});
       case ACCEPT_ON_BEHALF_OF_PARTNER:
         return this.openAcceptForPartner();
       default:
