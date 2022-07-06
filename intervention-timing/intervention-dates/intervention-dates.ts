@@ -62,7 +62,7 @@ export class InterventionDates extends CommentsMixin(
 
       <etools-content-panel
         show-expand-btn
-        panel-title=${translate('PROGRAMME_DOC_DATES')}
+        panel-title="Concept Note Dates"
         comment-element="programme-document-dates"
         comment-description=${translate('PROGRAMME_DOC_DATES')}
       >

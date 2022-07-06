@@ -119,7 +119,6 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
                   .options="${this.sectionOptions}"
                   option-label="name"
                   option-value="id"
-                  required
                   auto-validate
                   error-message=${translate('PLEASE_SELECT_SECTIONS')}
                   fit-into="etools-dialog"
@@ -244,9 +243,9 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
     this.interventionStatus = getStore().getState().interventions.current?.status || '';
     this.readonly = data.readonly;
 
-    if (!this.data.id) {
-      this.preselectSectionAndLocation();
-    }
+    // if (!this.data.id) {
+    //   this.preselectSectionAndLocation();
+    // }
     this.isCluster = !!this.data.cluster_indicator_id;
     if (!this.isCluster) {
       this.disaggregations = this._convertToArrayOfObj(this.data.disaggregation);
