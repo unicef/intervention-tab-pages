@@ -16,7 +16,7 @@ import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/di
 import get from 'lodash-es/get';
 import '@unicef-polymer/etools-upload/etools-upload';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AsyncAction, FrsDetails, Intervention, Permission} from '@unicef-polymer/etools-types';
+import {AsyncAction, FrsDetails, Permission} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {translatesMap} from '../../utils/intervention-labels-map';

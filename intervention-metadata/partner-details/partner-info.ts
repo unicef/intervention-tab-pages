@@ -16,15 +16,12 @@ import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {patchIntervention} from '../../common/actions/interventions';
-import {sendRequest} from '@unicef-polymer/etools-ajax';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
-import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {RootState} from '../../common/types/store.types';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AsyncAction, Permission, PartnerStaffMember, AnyObject} from '@unicef-polymer/etools-types';
+import {AsyncAction, Permission, PartnerStaffMember, AnyObject, EtoolsUser} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import '../../common/components/intervention/partner-focal-points';
 
 /**
  * @customElement
@@ -74,28 +71,13 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
           </div>
         </div>
         <div class="row-padding-v">
-          <div class="col col-7 layout-vertical" ?hidden="${!this.permissions?.view!.partner_focal_points}">
-            <etools-dropdown-multi
-              label=${translate('PARTNER_FOCAL_POINTS')}
-              .selectedValues="${this.data?.partner_focal_points?.map((f: any) => f.id)}"
-              .options="${this.partnerStaffMembers}"
-              option-label="name"
-              option-value="id"
-              ?required=${this.permissions?.required.partner_focal_points}
-              trigger-value-change-event
-              @etools-selected-items-changed="${({detail}: CustomEvent) =>
-                this.selectedUsersChanged(detail, 'partner_focal_points')}"
-              ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.partner_focal_points)}"
-            >
-            </etools-dropdown-multi>
-            ${this.isReadonly(this.editMode, this.permissions?.edit.partner_focal_points)
-              ? html`<label for="focalPointsDetails" class="paper-label">${translate('PARTNER_FOCAL_POINTS')}</label>
-                  <div id="focalPointsDetails">
-                    ${this.renderReadonlyUserDetails(
-                      this.originalData?.partner_focal_points ? this.originalData?.partner_focal_points : []
-                    )}
-                  </div>`
-              : html``}
+          <div class="col col-7 layout-vertical">
+            <label class="paper-label">Partner Focal Points</label>
+            <partner-focal-points
+              .user="${this.user}"
+              .items="${this.data.partner_focal_points?.map((f: any) => f.email)}"
+              ?readonly="${!this.editMode}"
+            ></partner-focal-points>
           </div>
         </div>
 
@@ -116,6 +98,9 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
   @property({type: Array})
   partnerStaffMembers!: PartnerStaffMember[];
 
+  @property({type: Object})
+  user!: EtoolsUser;
+
   connectedCallback() {
     super.connectedCallback();
   }
@@ -129,37 +114,11 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
     }
 
     super.stateChanged(state);
-    await this.setPartnerDetailsAndPopulateDropdowns(state);
 
+    this.data = cloneDeep(selectPartnerDetails(state));
     this.permissions = selectPartnerDetailsPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
-  }
-
-  async setPartnerDetailsAndPopulateDropdowns(state: any) {
-    const newPartnerDetails = selectPartnerDetails(state);
-
-    if (!isJsonStrMatch(this.originalData, newPartnerDetails)) {
-      if (this.partnerIdHasChanged(newPartnerDetails)) {
-        this.partnerStaffMembers = await this.getAllPartnerStaffMembers(newPartnerDetails.partner_id!);
-      }
-      this.data = cloneDeep(newPartnerDetails);
-      this.originalData = cloneDeep(this.data);
-    }
-  }
-
-  partnerIdHasChanged(newPartnerDetails: PartnerInfo) {
-    return get(this.data, 'partner_id') !== newPartnerDetails.partner_id;
-  }
-
-  getAllPartnerStaffMembers(partnerId: number) {
-    return sendRequest({
-      endpoint: getEndpoint(interventionEndpoints.partnerStaffMembers, {id: partnerId})
-    }).then((resp) => {
-      resp.forEach((staff: PartnerStaffMember) => {
-        staff.name = staff.first_name + ' ' + staff.last_name;
-      });
-      return resp;
-    });
+    this.user = state.user?.data!;
   }
 
   saveData() {
