@@ -2,15 +2,17 @@ import {Intervention} from '@unicef-polymer/etools-types';
 import {Constructor} from '@unicef-polymer/etools-types/dist/global.types';
 import '@polymer/paper-input/paper-input';
 import {html, LitElement} from 'lit-element';
-import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {repeat} from 'lit-html/directives/repeat';
 import '@polymer/paper-input/paper-textarea';
 import {translate} from 'lit-translate';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import {ProgrammeManagementRowExtended, ProgrammeManagementRowItemExtended} from './types';
+import {ActivitiesCommonMixin} from '../../common/mixins/activities-common.mixin';
+import {getItemTotalFormatted} from '../../common/components/activity/get-total.helper';
+import {ActivitiesFocusMixin} from './activities-focus-mixin';
 
 export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(baseClass: T) {
-  return class ProgrammeManagementItemClass extends baseClass {
+  return class ProgrammeManagementItemClass extends ActivitiesCommonMixin(ActivitiesFocusMixin(baseClass)) {
     // @ts-ignore
     @property({type: Object})
     intervention!: Intervention;
@@ -73,10 +75,8 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                     char-counter
                     maxlength="150"
                     .invalid="${item.invalid?.name}"
-                    @invalid-changed="${(e: CustomEvent) => {
-                      if (item.invalid && item.invalid.name != e.detail.value) {
-                        item.invalid = {...item.invalid, name: e.detail.value};
-                      }
+                    @invalid-changed="${({detail}: CustomEvent) => {
+                      this.activityItemInvalidChanged(detail, 'name', item);
                     }}"
                     required
                     error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
@@ -92,7 +92,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                       }
                       this.handleEsc(e);
                     }}"
-                    @value-changed="${({detail}: CustomEvent) => this.updateModelValue(item, 'name', detail.value)}"
+                    @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'name', item)}"
                   ></paper-textarea>
                 </div>
                 <div class="truncate-multi-line" title="${item.name}" ?hidden="${programmeManagement.itemsInEditMode}">
@@ -108,10 +108,8 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                   label=${this.getLabel(programmeManagement.itemsInEditMode, 'Unit')}
                   ?hidden="${!programmeManagement.itemsInEditMode}"
                   .invalid="${item.invalid?.unit}"
-                  @invalid-changed="${(e: CustomEvent) => {
-                    if (item.invalid && item.invalid.unit != e.detail.value) {
-                      item.invalid = {...item.invalid, unit: e.detail.value};
-                    }
+                  @invalid-changed="${({detail}: CustomEvent) => {
+                    this.activityItemInvalidChanged(detail, 'unit', item);
                   }}"
                   required
                   .autoValidate="${item.autovalidate?.unit}"
@@ -124,7 +122,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                     }
                     this.handleEsc(e);
                   }}"
-                  @value-changed="${({detail}: CustomEvent) => this.updateModelValue(item, 'unit', detail.value)}"
+                  @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unit', item)}"
                 ></paper-input>
                 <div class="truncate-single-line" title="${item.unit}" ?hidden="${programmeManagement.itemsInEditMode}">
                   ${item.unit}
@@ -138,10 +136,8 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                   ?readonly="${!programmeManagement.itemsInEditMode}"
                   .invalid="${item.invalid?.no_units}"
                   no-of-decimals="2"
-                  @invalid-changed="${(e: CustomEvent) => {
-                    if (item.invalid && item.invalid.no_units != e.detail.value) {
-                      item.invalid = {...item.invalid, no_units: e.detail.value};
-                    }
+                  @invalid-changed="${({detail}: CustomEvent) => {
+                    this.activityItemInvalidChanged(detail, 'no_units', item);
                   }}"
                   required
                   auto-validate
@@ -153,8 +149,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                       return;
                     }
                     item.no_units = detail.value;
-                    this.validateCsoAndUnicefCash(item);
-                    this.requestUpdate();
+                    this.updateActivityCashFromItem(programmeManagement, item);
                   }}"
                 ></etools-currency-amount-input>
               </td>
@@ -165,10 +160,8 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                   input
                   ?readonly="${!programmeManagement.itemsInEditMode}"
                   .invalid="${item.invalid?.unit_price}"
-                  @invalid-changed="${(e: CustomEvent) => {
-                    if (item.invalid && item.invalid.unit_price != e.detail.value) {
-                      item.invalid = {...item.invalid, unit_price: e.detail.value};
-                    }
+                  @invalid-changed="${({detail}: CustomEvent) => {
+                    this.activityItemInvalidChanged(detail, 'unit_price', item);
                   }}"
                   required
                   auto-validate
@@ -180,8 +173,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                       return;
                     }
                     item.unit_price = detail.value;
-                    this.validateCsoAndUnicefCash(item);
-                    this.requestUpdate();
+                    this.updateActivityCashFromItem(programmeManagement, item);
                   }}"
                 ></etools-currency-amount-input>
               </td>
@@ -195,21 +187,14 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                   auto-validate
                   error-message="${translate('INCORRECT_VALUE')}"
                   .invalid="${item.invalid?.cso_cash}"
-                  @invalid-changed="${(e: CustomEvent) => {
-                    if (item.invalid && item.invalid.cso_cash != e.detail.value) {
-                      item.invalid = {...item.invalid, cso_cash: e.detail.value};
-                    }
+                  @invalid-changed="${({detail}: CustomEvent) => {
+                    this.activityItemInvalidChanged(detail, 'cso_cash', item);
                   }}"
                   .value="${item.cso_cash}"
                   @keydown="${(e: any) => this.handleEsc(e)}"
                   @value-changed="${({detail}: CustomEvent) => {
-                    if (item.cso_cash == detail.value) {
-                      return;
-                    }
-                    item.cso_cash = detail.value;
-
-                    this.updateUnicefCash(item, programmeManagement);
-                    this.requestUpdate();
+                    this.cashFieldChanged(detail, 'cso_cash', item);
+                    this.updateActivityCashFromItem(programmeManagement, item);
                   }}"
                 ></etools-currency-amount-input>
               </td>
@@ -223,20 +208,14 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                   auto-validate
                   error-message="${translate('INCORRECT_VALUE')}"
                   .invalid="${item.invalid?.unicef_cash}"
-                  @invalid-changed="${(e: CustomEvent) => {
-                    if (item.invalid && item.invalid.unicef_cash != e.detail.value) {
-                      item.invalid = {...item.invalid, unicef_cash: e.detail.value};
-                    }
+                  @invalid-changed="${({detail}: CustomEvent) => {
+                    this.activityItemInvalidChanged(detail, 'unicef_cash', item);
                   }}"
                   .value="${item.unicef_cash}"
                   @keydown="${(e: any) => this.handleEsc(e)}"
                   @value-changed="${({detail}: CustomEvent) => {
-                    if (item.unicef_cash == detail.value) {
-                      return;
-                    }
-                    item.unicef_cash = detail.value;
-                    this.updateCsoCash(item, programmeManagement);
-                    this.requestUpdate();
+                    this.cashFieldChanged(detail, 'unicef_cash', item);
+                    this.updateActivityCashFromItem(programmeManagement, item);
                   }}"
                 ></etools-currency-amount-input>
               </td>
@@ -246,7 +225,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                   class="bold"
                   tabindex="-1"
                   .noLabelFloat="${!programmeManagement.itemsInEditMode}"
-                  .value="${this.getTotalForItem(item.no_units || 0, item.unit_price || 0)}"
+                  .value="${getItemTotalFormatted(item)}"
                 ></paper-input>
                 <div class="hover-block flex-h">
                   <paper-icon-button
@@ -363,87 +342,6 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
       this.requestUpdate();
     }
 
-    updateUnicefCash(item: ProgrammeManagementRowItemExtended, programmeManagement: ProgrammeManagementRowExtended) {
-      if (isNaN(Number(item.cso_cash))) {
-        return;
-      }
-      const total = this._getItemTotal(item);
-      if (Number(item.cso_cash) > total) {
-        item.invalid = {cso_cash: true};
-        return;
-      } else {
-        item.invalid = {cso_cash: false};
-      }
-      item.unicef_cash = String((total - Number(item.cso_cash)).toFixed(2)); // 12019.15 - 11130 = 889.1499999999996
-
-      this.validateCsoAndUnicefCash(item);
-
-      this.calculateProgrammeManagementTotals(programmeManagement);
-    }
-
-    _getItemTotal(item: ProgrammeManagementRowItemExtended) {
-      let total = Number(item.no_units) * Number(item.unit_price);
-      total = Number(total.toFixed(2)); // 1.1*6 =6.0000000000000005
-      return total;
-    }
-
-    updateCsoCash(item: ProgrammeManagementRowItemExtended, programmeManagement: ProgrammeManagementRowExtended) {
-      if (isNaN(Number(item.unicef_cash))) {
-        return;
-      }
-      const total = this._getItemTotal(item);
-      if (Number(item.unicef_cash) > total) {
-        item.invalid = {unicef_cash: true};
-        return;
-      } else {
-        item.invalid = {unicef_cash: false};
-      }
-      item.cso_cash = String((total - Number(item.unicef_cash)).toFixed(2)); // 12019.15 - 11130 = 889.1499999999996
-
-      this.validateCsoAndUnicefCash(item);
-      this.calculateProgrammeManagementTotals(programmeManagement);
-    }
-
-    calculateProgrammeManagementTotals(programmeManagement: ProgrammeManagementRowExtended) {
-      if (!(programmeManagement.items && programmeManagement.items.length)) {
-        return;
-      }
-      programmeManagement.cso_cash = String(
-        programmeManagement.items.reduce((sum: number, item: {cso_cash: any}) => sum + Number(item.cso_cash), 0)
-      );
-      programmeManagement.unicef_cash = String(
-        programmeManagement.items.reduce((sum: number, item: {unicef_cash: any}) => sum + Number(item.unicef_cash), 0)
-      );
-    }
-
-    getTotalForItem(noOfUnits: number, pricePerUnit: number | string) {
-      let total = (Number(noOfUnits) || 0) * (Number(pricePerUnit) || 0);
-      total = Number(total.toFixed(2));
-      return displayCurrencyAmount(String(total), '0', 2);
-    }
-
-    validateCsoAndUnicefCash(item: ProgrammeManagementRowItemExtended) {
-      if (Number(item.no_units) == 0 || Number(item.unit_price) == 0) {
-        return;
-      }
-
-      let total = (Number(item.no_units) || 0) * (Number(item.unit_price) || 0);
-      total = Number(total.toFixed(2));
-      let sum = (Number(item.cso_cash) || 0) + (Number(item.unicef_cash) || 0);
-      sum = Number(sum.toFixed(2));
-      if (total != sum) {
-        item.invalid = {...item.invalid, ...{cso_cash: true, unicef_cash: true}};
-      } else {
-        item.invalid = {
-          ...item.invalid,
-          ...{
-            cso_cash: item.cso_cash === null || item.cso_cash === undefined,
-            unicef_cash: item.unicef_cash === null || item.unicef_cash === undefined
-          }
-        };
-      }
-    }
-
     addNewItem(e: CustomEvent, programmeManagement: ProgrammeManagementRowExtended, focusClue: string) {
       if (!programmeManagement.items) {
         programmeManagement.items = [];
@@ -454,44 +352,6 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
       this.oneEntityInEditMode = true;
       this.requestUpdate();
       this.moveFocusToAddedItemAndAttachListeners(e.target, focusClue);
-    }
-
-    moveFocusToAddedItemAndAttachListeners(target: any, focusClue: string) {
-      // @ts-ignore
-      const targetTrParent = this.determineParentTr(target);
-      setTimeout(() => {
-        const itemDescTd = (
-          focusClue === 'focusAbove'
-            ? targetTrParent?.previousElementSibling
-            : targetTrParent?.parentElement.nextElementSibling.nextElementSibling.children[0]
-        )?.children[1];
-        // @ts-ignore
-        itemDescTd?.querySelector('paper-textarea')?.focus();
-        // @ts-ignore Defined in arrows-nav-mixin
-        this.lastFocusedTd = itemDescTd;
-        // @ts-ignore Defined in arrows-nav-mixin
-        this.attachListenersToTr(this.determineParentTr(itemDescTd));
-      }, 10);
-    }
-
-    preserveFocusOnRow(target: any) {
-      // @ts-ignore
-      const targetTrParent = this.determineParentTr(target);
-      setTimeout(() => {
-        const itemDescTd = targetTrParent?.children[1];
-        // @ts-ignore
-        itemDescTd?.querySelector('paper-textarea')?.focus();
-        // @ts-ignore
-        this.lastFocusedTd = itemDescTd;
-      });
-    }
-
-    updateModelValue(model: any, property: string, newVal: any) {
-      if (newVal == model[property]) {
-        return;
-      }
-      model[property] = newVal;
-      this.requestUpdate();
     }
   };
 }

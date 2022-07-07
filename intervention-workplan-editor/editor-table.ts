@@ -42,10 +42,13 @@ import {updateSmallMenu} from '../common/actions/common-actions';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
 /* eslint-disable max-len */
 import {selectProgrammeManagement} from '../intervention-workplan/effective-efficient-programme-mgmt/effectiveEfficientProgrammeMgmt.selectors';
+import {ActivitiesFocusMixin} from './editor-utils/activities-focus-mixin';
 @customElement('editor-table')
 // @ts-ignore
 export class EditorTable extends CommentsMixin(
-  ProgrammeManagementMixin(ActivitiesMixin(ArrowsNavigationMixin(LitElement)))
+  ProgrammeManagementMixin(
+    ActivitiesMixin(ActivitiesFocusMixin(ActivitiesFocusMixin(ArrowsNavigationMixin(LitElement))))
+  )
 ) {
   static get styles() {
     return [EditorTableStyles, EditorTableArrowKeysStyles, EditorHoverStyles, ...super.styles];
@@ -294,8 +297,7 @@ export class EditorTable extends CommentsMixin(
                           this.handleEsc(e);
                         }}"
                         @focus="${() => (this.autovalidatePdOutput = true)}"
-                        @value-changed="${({detail}: CustomEvent) =>
-                          this.updateModelValue(pdOutput, 'name', detail.value)}"
+                        @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'name', pdOutput)}"
                       ></paper-textarea>
                       <div class="bold truncate-multi-line" title="${pdOutput.name}" ?hidden="${pdOutput.inEditMode}">
                         ${pdOutput.name}
@@ -702,33 +704,6 @@ export class EditorTable extends CommentsMixin(
     }).then(() => {
       this.getResultLinksDetails();
       getStore().dispatch<AsyncAction>(getIntervention());
-    });
-  }
-
-  updateModelValue(model: any, property: string, newVal: any) {
-    if (newVal == model[property]) {
-      return;
-    }
-    model[property] = newVal;
-    this.requestUpdate();
-  }
-
-  moveFocusToNewllyAdded(element: any) {
-    const currTbody = this.determineParentTr(element).parentElement;
-    setTimeout(() => {
-      const targetTr = currTbody.nextElementSibling.querySelector('tr.text');
-      const input = targetTr.querySelector('[input]');
-
-      if (input) {
-        this.lastFocusedTd = this.determineParentTd(input);
-        if (!input.focused) {
-          // Calling focus() when it's already focused it defocuses
-          input.focus();
-        }
-      }
-
-      // @ts-ignore Defined in arrows-nav-mixin
-      this.attachListenersToTr(targetTr);
     });
   }
 }

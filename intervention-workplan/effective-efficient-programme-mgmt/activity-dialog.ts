@@ -14,7 +14,7 @@ import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-s
 import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {translate, get as getTranslation} from 'lit-translate';
 import '../../common/components/activity/activity-items-table';
-import {getTotal} from '../../common/components/activity/get-total.helper';
+import {getTotalCashFormatted} from '../../common/components/activity/get-total.helper';
 import {cloneDeep} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {AnyObject, ManagementBudgetItem} from '@unicef-polymer/etools-types';
 import {ActivityItemsTable} from '../../common/components/activity/activity-items-table';
@@ -316,11 +316,14 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
 
   getTotalValue(): string {
     if (!this.useInputLevel) {
-      return getTotal(this.data[this.getPropertyName('partner')] || 0, this.data[this.getPropertyName('unicef')] || 0);
+      return getTotalCashFormatted(
+        this.data[this.getPropertyName('partner')] || 0,
+        this.data[this.getPropertyName('unicef')] || 0
+      );
     } else {
       const cso: string = this.getSumValue('cso_cash').replace(/,/g, '');
       const unicef: string = this.getSumValue('unicef_cash').replace(/,/g, '');
-      return getTotal(cso, unicef);
+      return getTotalCashFormatted(cso, unicef);
     }
   }
 

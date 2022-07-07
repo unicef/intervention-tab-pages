@@ -1,7 +1,6 @@
 // @ts-ignore
 import {Constructor, html, LitElement, property} from 'lit-element';
 import {ifDefined} from 'lit-html/directives/if-defined.js';
-import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {AsyncAction, InterventionQuarter} from '@unicef-polymer/etools-types';
 import {Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
 import '../time-intervals/time-intervals';
@@ -15,15 +14,11 @@ import {getIntervention, updateCurrentIntervention} from '../../common/actions/i
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {repeat} from 'lit-html/directives/repeat';
-import {
-  ExpectedResultExtended,
-  InterventionActivityExtended,
-  InterventionActivityItemExtended,
-  ResultLinkLowerResultExtended
-} from './types';
+import {ExpectedResultExtended, InterventionActivityExtended, ResultLinkLowerResultExtended} from './types';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import {translate} from 'lit-translate/directives/translate';
-import {TruncateMixin} from '../../common/truncate.mixin';
+import {TruncateMixin} from '../../common/mixins/truncate.mixin';
+import {getTotalCashFormatted} from '../../common/components/activity/get-total.helper';
 
 export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T) {
   return class ActivitiesClass extends ActivityItemsMixin(TruncateMixin(baseClass)) {
@@ -107,7 +102,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                       this.handleEsc(e);
                     }}"
                     @focus="${() => setTimeout(() => (this.autoValidateActivityName = true))}"
-                    @value-changed="${({detail}: CustomEvent) => this.updateModelValue(activity, 'name', detail.value)}"
+                    @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'name', activity)}"
                   ></paper-textarea>
                   <div class="truncate-multi-line b" title="${activity.name}" ?hidden="${activity.inEditMode}">
                     ${activity.name}
@@ -133,7 +128,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                         this.handleEsc(e);
                       }}"
                       @value-changed="${({detail}: CustomEvent) =>
-                        this.updateModelValue(activity, 'context_details', detail.value)}"
+                        this.valueChanged(detail, 'context_details', activity)}"
                     ></paper-textarea>
                     <div title="${activity.context_details}" ?hidden="${activity.inEditMode}">
                       ${this.truncateString(activity.context_details)}
@@ -169,10 +164,9 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     tabindex="${ifDefined(
                       (activity.items && activity.items.length) || !activity.inEditMode ? '-1' : undefined
                     )}"
-                    ?readonly="${this.isReadonlyForActivityCash(activity.inEditMode, activity.items)}"
+                    ?readonly="${this.isReadonlyCash(activity.inEditMode, activity.items)}"
                     @keydown="${(e: any) => this.handleEsc(e)}"
-                    @value-changed="${({detail}: CustomEvent) =>
-                      this.updateModelValue(activity, 'cso_cash', detail.value)}"
+                    @value-changed="${({detail}: CustomEvent) => this.numberChanged(detail, 'cso_cash', activity)}"
                   ></etools-currency-amount-input>
                 </td>
                 <td tabindex="${activity.items && activity.items.length ? '-1' : '0'}" class="no-top-padding">
@@ -183,10 +177,9 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     tabindex="${ifDefined(
                       (activity.items && activity.items.length) || !activity.inEditMode ? '-1' : undefined
                     )}"
-                    ?readonly="${this.isReadonlyForActivityCash(activity.inEditMode, activity.items)}"
+                    ?readonly="${this.isReadonlyCash(activity.inEditMode, activity.items)}"
                     @keydown="${(e: any) => this.handleEsc(e)}"
-                    @value-changed="${({detail}: CustomEvent) =>
-                      this.updateModelValue(activity, 'unicef_cash', detail.value)}"
+                    @value-changed="${({detail}: CustomEvent) => this.numberChanged(detail, 'unicef_cash', activity)}"
                   ></etools-currency-amount-input>
                 </td>
                 <td
@@ -197,13 +190,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 >
                   <div>
                     ${this.intervention.planned_budget.currency}
-                    <span class="b">
-                      ${displayCurrencyAmount(
-                        String(this.getTotalForActivity(activity.cso_cash, activity.unicef_cash)),
-                        '0',
-                        2
-                      )}
-                    </span>
+                    <span class="b"> ${getTotalCashFormatted(activity.cso_cash, activity.unicef_cash)} </span>
                   </div>
                   <div class="action-btns align-bottom flex-h">
                     <paper-icon-button
@@ -329,23 +316,6 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       this.lastFocusedTd.focus();
     }
 
-    resetItemsValidations(activity: InterventionActivityExtended) {
-      if (!activity.items || !activity.items.length) {
-        return;
-      }
-
-      activity.items.forEach((i: any) => {
-        i.invalid = {
-          name: false,
-          unit: false,
-          no_units: false,
-          unit_price: false,
-          cso_cash: false,
-          unicef_cash: false
-        };
-      });
-    }
-
     getOriginalActivity(resultIndex: number, pdOutputIndex: number, activityIndex: number) {
       // Covers case when a new Activity is added while the cancelled one is already in edit mode,
       // thus changing the index
@@ -356,25 +326,6 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       return this.originalResultStructureDetails[resultIndex].ll_results[pdOutputIndex].activities[
         originalActivityIndex
       ];
-    }
-    updateModelValue(model: any, property: string, newVal: any) {
-      if (newVal == model[property]) {
-        return;
-      }
-      model[property] = newVal;
-      this.requestUpdate();
-    }
-
-    isReadonlyForActivityCash(inEditMode: boolean, items?: InterventionActivityItemExtended[]) {
-      if (!inEditMode) {
-        return true;
-      } else {
-        if (items && items.length) {
-          return true;
-        } else {
-          return false;
-        }
-      }
     }
 
     validateActivity(activity: InterventionActivityExtended) {
@@ -388,27 +339,6 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
         }
       }
       return !Object.keys(activity.invalid).length;
-    }
-    validateActivityItems(activity: InterventionActivityExtended) {
-      if (!activity.items || !activity.items.length) {
-        return true;
-      }
-
-      let invalid = false;
-      activity.items.forEach((item: InterventionActivityItemExtended) => {
-        item.invalid = {};
-        item.invalid.name = !item.name;
-        item.invalid.unit = !item.unit;
-        item.invalid.no_units = !item.no_units || Number(item.no_units) == 0;
-        item.invalid.unit_price = !item.unit_price || Number(item.unit_price) == 0;
-        if (item.no_units && item.unit_price) {
-          this.validateCsoAndUnicefCash(item);
-        }
-        if (Object.values(item.invalid).some((val: boolean) => val === true)) {
-          invalid = true;
-        }
-      });
-      return !invalid;
     }
 
     // @ts-ignore
