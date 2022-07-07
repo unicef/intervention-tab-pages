@@ -69,18 +69,6 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           margin-bottom: 10px;
         }
 
-        .add-locations {
-          padding-right: 0;
-          align-items: flex-end;
-        }
-
-        .all-locations {
-          margin: auto;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-        }
-
         .row-h {
           padding-top: 16px !important;
           padding-bottom: 0 !important;
@@ -353,6 +341,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         <paper-textarea
           label=${translate(translatesMap.means_of_verification)}
           type="text"
+          style="padding-bottom: 16px;"
           .value="${this.indicator.means_of_verification}"
           ?readonly="${this.readonly}"
           placeholder="&#8212;"
@@ -361,38 +350,6 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           }}"
         >
         </paper-textarea>
-      </div>
-      <div class="last-item row-h flex-c">
-        <etools-dropdown-multi
-          id="locationsDropdw"
-          label=${translate(translatesMap.locations)}
-          placeholder="&#8212;"
-          .selectedValues="${this.indicator.locations}"
-          .options="${this.locationOptions}"
-          option-label="name"
-          option-value="id"
-          required
-          auto-validate
-          error-message=${translate('LOCATIONS_ERR')}
-          fit-into="etools-dialog"
-          ?readonly="${this.readonly}"
-          trigger-value-change-event
-          @etools-selected-items-changed="${({detail}: CustomEvent) => {
-            const newIds = detail.selectedItems.map((i: any) => i.id);
-            this.indicator.locations = newIds;
-          }}"
-        >
-        </etools-dropdown-multi>
-        <div class="all-locations">
-          <paper-button
-            class="secondary-btn add-locations"
-            ?hidden="${this.readonly}"
-            @click="${this._addAllLocations}"
-            title=${translate('ADD_ALL_LOCATIONS')}
-          >
-            ${translate('ADD_ALL')}
-          </paper-button>
-        </div>
       </div>
     `;
   }
@@ -414,9 +371,6 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
 
   @property({type: Boolean})
   readonly = false;
-
-  @property({type: Array})
-  locationOptions!: [];
 
   @property({type: Boolean})
   baselineIsUnknown!: boolean;
@@ -483,14 +437,14 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
   }
 
   validate() {
-    const elemIds = ['titleEl', 'locationsDropdw'];
+    const elemIds = ['titleEl'];
     ([] as string[]).push.apply(elemIds, this._getIndicatorTargetElId());
     return this.validateComponents(elemIds);
   }
 
   resetValidations() {
     setTimeout(() => {
-      const elemIds = ['titleEl', 'locationsDropdw'];
+      const elemIds = ['titleEl'];
       ([] as string[]).push.apply(elemIds, this._getIndicatorTargetElId());
 
       let i;
@@ -528,12 +482,6 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
 
   _getIndUnit() {
     return this.indicator.indicator!.unit;
-  }
-
-  _addAllLocations() {
-    const locationIDs = this.locationOptions.map((x: any) => x.id);
-    this.indicator.locations = locationIDs;
-    this.requestUpdate();
   }
 }
 

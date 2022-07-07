@@ -11,15 +11,13 @@ import {LocationsPermissions} from './geographicalCoverage.models';
 import {selectLocationsPermissions} from './geographicalCoverage.selectors';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {patchIntervention} from '../../common/actions/interventions';
-import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import {RootState} from '../../common/types/store.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import isEmpty from 'lodash-es/isEmpty';
 import get from 'lodash-es/get';
-import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AnyObject, AsyncAction, LocationObject, Permission} from '@unicef-polymer/etools-types';
+import {AnyObject, AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
@@ -140,52 +138,28 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
             .tooltipText="${translate('GEOGRAPHICAL_LOCATIONS_INFO')}"
           ></info-icon-tooltip>
         </div>
-        <div class="flex-c layout-horizontal dropdown-row">
-          <etools-dropdown-multi
-            id="locations"
-            placeholder="&#8212;"
-            label=${translate(translatesMap.flat_locations)}
-            .options="${this.allLocations}"
-            .selectedValues="${this.data.flat_locations}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.flat_locations)}"
-            tabindex="${this.isReadonly(this.editMode, this.permissions.edit.flat_locations) ? -1 : 0}"
-            ?required="${this.permissions.required.flat_locations}"
-            option-label="name"
-            option-value="id"
-            error-message=${translate('LOCATIONS_ERR')}
-            trigger-value-change-event
-            horizontal-align="left"
-            @etools-selected-items-changed="${({detail}: CustomEvent) =>
-              this.selectedItemsChanged(detail, 'flat_locations')}"
+        <div>
+          <paper-textarea
+            id="title"
+            no-label-float
+            placeholder="—"
+            .value="${this.data.location_names?.join(',')}"
+            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'flat_locations')}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit?.flat_locations)}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions.edit?.flat_locations) ? -1 : 0}"
           >
-          </etools-dropdown-multi>
-          <div class="locations-btn">
-            <paper-button
-              class="secondary-btn see-locations right-align"
-              @click="${this.openLocationsDialog}"
-              ?hidden="${this._isEmpty(this.data.flat_locations)}"
-              title=${translate('SEE_ALL_LOCATIONS')}
-            >
-              ${translate('SEE_HIERARCHY')}
-            </paper-button>
-          </div>
+          </paper-textarea>
         </div>
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
       </etools-content-panel>
     `;
   }
 
-  @property({type: Array})
-  allLocations!: LocationObject[];
-
   @property({type: Object})
   currentCountry!: AnyObject;
 
-  @property({type: Array})
-  adminLevels!: AnyObject[];
-
   @property({type: Object})
-  data!: {flat_locations: string[]};
+  data!: {flat_locations: string[]; location_names: string[]};
 
   @property({type: Object})
   permissions!: Permission<LocationsPermissions>;
@@ -201,14 +175,9 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
     if (!state.interventions.current) {
       return;
     }
-    if (!isJsonStrMatch(this.allLocations, state.commonData!.locations)) {
-      this.allLocations = [...state.commonData!.locations];
-    }
-    if (!isJsonStrMatch(this.adminLevels, state.commonData!.locationTypes)) {
-      this.adminLevels = [...state.commonData!.locationTypes];
-    }
     this.data = {
-      flat_locations: get(state, 'interventions.current.flat_locations')
+      flat_locations: get(state, 'interventions.current.flat_locations'),
+      location_names: get(state, 'interventions.current.location_names')
     };
     this.currentCountry = get(state, 'user.data.country');
     this.originalData = cloneDeep(this.data);
@@ -219,18 +188,6 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
   private setPermissions(state: any) {
     this.permissions = selectLocationsPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
-  }
-
-  private openLocationsDialog() {
-    openDialog({
-      dialog: 'grouped-locations-dialog',
-      dialogData: {
-        adminLevel: null,
-        allLocations: this.allLocations,
-        adminLevels: this.adminLevels,
-        interventionLocationIds: this.data.flat_locations
-      }
-    });
   }
 
   _isEmpty(array: any[]) {
