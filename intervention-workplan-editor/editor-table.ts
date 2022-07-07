@@ -102,6 +102,15 @@ export class EditorTable extends CommentsMixin(
             font-weight: bold;
           }
         }
+
+        .index-column {
+          padding-top: 0;
+
+          --paper-input-container-input: {
+            font-size: 14px !important;
+          }
+        }
+
         .char-counter {
           margin-bottom: -12px;
           display: flex;
@@ -200,7 +209,15 @@ export class EditorTable extends CommentsMixin(
                 <td colspan="2">${translate('TOTAL')}</td>
               </tr>
               <tr class="text no-b-border">
-                <td>${result.code}</td>
+                <td class="index-column">
+                  <paper-input
+                    title="${result.code}"
+                    no-label-float
+                    readonly
+                    tabindex="-1"
+                    .value="${result.code}"
+                  ></paper-input>
+                </td>
                 <td colspan="3" class="${result.cp_output_name ? 'b' : 'red'}">
                   ${result.cp_output_name || translate('UNASSOCIATED_TO_CP_OUTPUT')}
                 </td>
@@ -270,7 +287,15 @@ export class EditorTable extends CommentsMixin(
                     class="text action-btns  ${this.permissions?.edit.result_links ? 'height-for-action-btns' : ''}"
                     type="pd-output"
                   >
-                    <td class="padd-top-10">${pdOutput.code}</td>
+                    <td class="index-column">
+                      <paper-input
+                        title="${pdOutput.code}"
+                        no-label-float
+                        readonly
+                        tabindex="-1"
+                        .value="${pdOutput.code}"
+                      ></paper-input>
+                    </td>
                     <td colspan="3" class="b no-top-padding" tabindex="0">
                       <paper-textarea
                         no-label-float

@@ -86,7 +86,15 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td colspan="2">${translate('GENERAL.TOTAL')}</td>
               </tr>
               <tr class="text action-btns" type="activity">
-                <td class="padd-top-10">${activity.code}</td>
+                <td class="index-column">
+                  <paper-input
+                    title="${activity.code}"
+                    no-label-float
+                    readonly
+                    tabindex="-1"
+                    .value="${activity.code}"
+                  ></paper-input>
+                </td>
                 <td colspan="3" tabindex="0" class="no-top-padding height-for-action-btns">
                   <paper-textarea
                     no-label-float

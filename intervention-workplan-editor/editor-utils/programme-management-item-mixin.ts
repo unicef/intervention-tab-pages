@@ -53,7 +53,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
               comment-element="programme-management-item-${item.id}"
               comment-description="Programme Management Item - ${item.name}"
             >
-              <td>
+              <td class="index-column">
                 <paper-input
                   title="${programmeManagement.code}.${itemIndex + 1}"
                   .noLabelFloat="${!programmeManagement.itemsInEditMode}"
