@@ -312,8 +312,6 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   // id from route params
   private interventionId: string | null = null;
 
-  private isEPDApp = ROOT_PATH === '/epd/';
-
   connectedCallback() {
     super.connectedCallback();
     // this._showInterventionPageLoadingMessage();
