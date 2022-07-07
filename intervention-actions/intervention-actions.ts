@@ -13,7 +13,6 @@ import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-c
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import '../common/components/intervention/pd-termination';
-import '../common/components/intervention/start-review';
 import {InterventionActionsStyles} from './intervention-actions.styles';
 import {
   ACCEPT_REVIEW,
@@ -316,17 +315,6 @@ export class InterventionActions extends LitElement {
     });
   }
 
-  private openStartReviewDialog() {
-    return openDialog({
-      dialog: 'start-review'
-    }).then(({confirmed, response}) => {
-      if (!confirmed) {
-        return null;
-      }
-      return {review_type: response};
-    });
-  }
-
   private openAcceptForPartner() {
     return openDialog({
       dialog: 'accept-for-partner',
@@ -358,8 +346,6 @@ export class InterventionActions extends LitElement {
         return this.openSentBackBySecretaryCommentDialog(action);
       case TERMINATE:
         return this.openTermiantionDialog();
-      case REVIEW:
-        return this.openStartReviewDialog();
       case ACCEPT_ON_BEHALF_OF_PARTNER:
         return this.openAcceptForPartner();
       default:
