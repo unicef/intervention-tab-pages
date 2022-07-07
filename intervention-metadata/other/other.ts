@@ -288,7 +288,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
     }
 
     return getStore()
-      .dispatch<AsyncAction>(patchIntervention(this.cleanUp(this.data)))
+      .dispatch<AsyncAction>(patchIntervention(this.cleanUp(cloneDeep(this.data))))
       .then(() => {
         this.editMode = false;
       });
@@ -301,10 +301,28 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
     if (!data || !data.planned_budget) {
       return data;
     }
-    data.planned_budget = {
-      id: data.planned_budget.id,
-      currency: data.planned_budget.currency
-    };
+    return this.removeUnchangedData(data);
+  }
+
+  removeUnchangedData(data: OtherData) {
+    Object.keys(data).forEach((key) => {
+      if (key == 'planned_budget') {
+        if (!this.permissions.edit.document_currency) {
+          // @ts-ignore
+          delete data.planned_budget;
+        } else {
+          data.planned_budget = {
+            id: data.planned_budget.id,
+            currency: data.planned_budget.currency
+          };
+        }
+      }
+      // @ts-ignore
+      if (this.originalData[key] == data[key]) {
+        // @ts-ignore
+        delete data[key];
+      }
+    });
     return data;
   }
 }
