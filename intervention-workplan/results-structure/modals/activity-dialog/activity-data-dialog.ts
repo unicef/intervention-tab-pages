@@ -237,6 +237,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
             }}"
           ></activity-items-table>
           <activity-time-frames
+            tabindex="0"
             .quarters="${this.quarters}"
             .selectedTimeFrames="${this.editedData.time_frames || []}"
             .readonly="${this.readonly}"
