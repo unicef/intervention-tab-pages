@@ -59,7 +59,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
               comment-element="activity-item-${item.id}"
               comment-description=" Activity item - ${item.name}"
             >
-              <td>
+              <td class="index-column">
                 <paper-input
                   title="${item.code || ''}"
                   .noLabelFloat="${!activity.itemsInEditMode}"

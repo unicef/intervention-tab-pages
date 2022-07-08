@@ -83,7 +83,15 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                 <td colspan="2">${translate('GENERAL.TOTAL')}</td>
               </tr>
               <tr class="text action-btns" type="activity">
-                <td class="padd-top-10">${item.code}</td>
+                <td class="index-column">
+                  <paper-input
+                    title="${item.code}"
+                    no-label-float
+                    readonly
+                    tabindex="-1"
+                    .value="${item.code}"
+                  ></paper-input>
+                </td>
                 <td colspan="4" class="no-top-padding height-for-action-btns">
                   <div class="truncate-multi-line b" title="${item.name}">${item.name}</div>
                   <div class="pad-top-8">
