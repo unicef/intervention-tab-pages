@@ -45,7 +45,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
           <!--    Indicator name    -->
           <div class="flex-1 left-align layout-vertical start-aligned">
             <div class="name layout-horizontal">
-              ${getIndicatorDisplayType(this.indicator)} ${this.addInactivePrefix(this.indicator)}
+              ${getIndicatorDisplayType(this.indicator.indicator)} ${this.addInactivePrefix(this.indicator)}
               ${(this.indicator.indicator ? this.indicator.indicator.title : this.indicator.cluster_indicator_title) ||
               '—'}
               <div id="hf" class="hf-mark" ?hidden="${!this.indicator.is_high_frequency}"></div>

@@ -296,7 +296,8 @@ export class InterventionResultsReported extends connectStore(
                       ${this._getIndicatorsReports(lowerResult.id).map(
                         (indicatorReport: any) => html`<div class="row-h indicator-report">
                             <div class="col-data col-9">
-                              ${getIndicatorDisplayType(indicatorReport)} ${indicatorReport.reportable.blueprint.title}
+                              ${getIndicatorDisplayType(indicatorReport.reportable.blueprint)}
+                              ${indicatorReport.reportable.blueprint.title}
                             </div>
                             <div class="col-data col-3 progress-bar">
                               <etools-progress-bar
