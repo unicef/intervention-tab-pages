@@ -37,9 +37,9 @@ import {EditorTableArrowKeysStyles} from './editor-utils/editor-table-arrow-keys
 import {ArrowsNavigationMixin} from './editor-utils/arrows-navigation-mixin';
 import {RootState} from '../common/types/store.types';
 import {EditorHoverStyles} from './editor-utils/editor-hover-styles';
-import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import {updateSmallMenu} from '../common/actions/common-actions';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
+import '@polymer/paper-tooltip/paper-tooltip';
 /* eslint-disable max-len */
 import {selectProgrammeManagement} from '../intervention-workplan/effective-efficient-programme-mgmt/effectiveEfficientProgrammeMgmt.selectors';
 import {ActivitiesFocusMixin} from './editor-utils/activities-focus-mixin';
@@ -61,6 +61,11 @@ export class EditorTable extends CommentsMixin(
     return html`
       ${sharedStyles}
       <style>
+        :host {
+          --paper-tooltip: {
+            font-size: 12px;
+          }
+        }
         paper-textarea {
           outline: none;
           flex: auto;
@@ -171,26 +176,28 @@ export class EditorTable extends CommentsMixin(
                   <td colspan="3"></td>
                   <td colspan="2" tabindex="0">
                     <div class="action-btns" style="position:relative">
-                      <etools-info-tooltip
-                        position="top"
-                        offset="0"
-                        custom-icon
+                      <paper-icon-button
+                        id="add-pd-output"
+                        @click="${(e: any) => {
+                          this.addNewUnassignedPDOutput();
+                          this.moveFocusToNewllyAdded(e.target);
+                        }}"
+                        ?hidden="${!this.permissions?.edit.result_links}"
+                        icon="add-box"
+                        tabindex="0"
+                      ></paper-icon-button>
+
+                      <paper-tooltip
+                        for="add-pd-output"
+                        .animationDelay="${0}"
+                        .animationConfig="${{}}"
+                        animation-entry=""
+                        animation-exit=""
                         ?hide-tooltip="${!this.permissions?.edit.result_links}"
-                        style="justify-content:end;"
+                        position="top"
                       >
-                        <paper-icon-button
-                          id="add-pd-output"
-                          slot="custom-icon"
-                          @click="${(e: any) => {
-                            this.addNewUnassignedPDOutput();
-                            this.moveFocusToNewllyAdded(e.target);
-                          }}"
-                          ?hidden="${!this.permissions?.edit.result_links}"
-                          icon="add-box"
-                          tabindex="0"
-                        ></paper-icon-button>
-                        <span class="no-wrap" slot="message">${translate('ADD_PD_OUTPUT')}</span>
-                      </etools-info-tooltip>
+                        ${translate('ADD_PD_OUTPUT')}
+                      </paper-tooltip>
                     </div>
                   </td>
                 </tr>
@@ -242,27 +249,30 @@ export class EditorTable extends CommentsMixin(
                     : '0'}"
                 >
                   <div class="action-btns" style="position:relative">
-                    <etools-info-tooltip
+                    <paper-icon-button
+                      id="add-pd-output-${result.id}"
+                      slot="custom-icon"
+                      @click="${(e: any) => {
+                        this.addNewPDOutput(result.ll_results);
+                        this.moveFocusToNewllyAdded(e.target);
+                      }}"
+                      ?hidden="${!this.permissions?.edit.result_links ||
+                      !this.getOriginalCPOutput(resultIndex)?.cp_output}"
+                      icon="add-box"
+                      tabindex="0"
+                    ></paper-icon-button>
+                    <paper-tooltip
+                      for="add-pd-output-${result.id}"
+                      .animationDelay="${0}"
+                      .animationConfig="${{}}"
+                      animation-entry=""
+                      animation-exit=""
+                      ?hidden="${!this.permissions?.edit.result_links}"
                       position="top"
-                      offset="0"
-                      custom-icon
-                      ?hide-tooltip="${!this.permissions?.edit.result_links}"
-                      style="justify-content:end;"
+                      offset="1"
                     >
-                      <paper-icon-button
-                        id="add-pd-output-${result.id}"
-                        slot="custom-icon"
-                        @click="${(e: any) => {
-                          this.addNewPDOutput(result.ll_results);
-                          this.moveFocusToNewllyAdded(e.target);
-                        }}"
-                        ?hidden="${!this.permissions?.edit.result_links ||
-                        !this.getOriginalCPOutput(resultIndex)?.cp_output}"
-                        icon="add-box"
-                        tabindex="0"
-                      ></paper-icon-button>
-                      <span class="no-wrap" slot="message">${translate('ADD_PD_OUTPUT')}</span>
-                    </etools-info-tooltip>
+                      ${translate('ADD_PD_OUTPUT')}
+                    </paper-tooltip>
                   </div>
                 </td>
               </tr>
@@ -372,24 +382,29 @@ export class EditorTable extends CommentsMixin(
                             this.moveFocusToFirstInput(e.target);
                           }}"
                         ></paper-icon-button>
-                        <etools-info-tooltip
+
+                        <paper-icon-button
+                          id="add-a-${pdOutput.id}"
+                          icon="add-box"
+                          slot="custom-icon"
+                          @click="${(e: any) => {
+                            this.addNewActivity(pdOutput);
+                            this.moveFocusToNewllyAdded(e.target);
+                          }}"
+                          ?hidden="${pdOutput.inEditMode || !this.permissions?.edit.result_links}"
+                        ></paper-icon-button>
+                        <paper-tooltip
+                          for="add-a-${pdOutput.id}"
+                          .animationDelay="${0}"
+                          .animationConfig="${{}}"
+                          animation-entry=""
+                          animation-exit=""
+                          ?hidden="${!this.permissions?.edit.result_links}"
                           position="top"
-                          offset="0"
-                          custom-icon
-                          ?hide-tooltip="${!this.permissions?.edit.result_links}"
-                          style="justify-content:end;"
+                          offset="1"
                         >
-                          <paper-icon-button
-                            icon="add-box"
-                            slot="custom-icon"
-                            @click="${(e: any) => {
-                              this.addNewActivity(pdOutput);
-                              this.moveFocusToNewllyAdded(e.target);
-                            }}"
-                            ?hidden="${pdOutput.inEditMode || !this.permissions?.edit.result_links}"
-                          ></paper-icon-button>
-                          <span class="no-wrap" slot="message">${translate('ADD_NEW_ACTIVITY')}</span>
-                        </etools-info-tooltip>
+                          ${translate('ADD_NEW_ACTIVITY')}
+                        </paper-tooltip>
                         <paper-icon-button
                           icon="delete"
                           ?hidden="${pdOutput.inEditMode || !this.permissions?.edit.result_links}"

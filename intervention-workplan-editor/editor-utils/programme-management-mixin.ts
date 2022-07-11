@@ -160,20 +160,26 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                         }
                       }}"
                     ></paper-icon-button>
-                    <etools-info-tooltip
+
+                    <paper-icon-button
+                      id="add-item-${item.id}"
+                      icon="add-box"
+                      slot="custom-icon"
+                      @click="${(e: CustomEvent) => this.addNewItem(e, item, 'focusBelow')}"
+                      ?hidden="${item.items?.length || !this.permissions.edit.management_budgets}"
+                    ></paper-icon-button>
+                    <paper-tooltip
+                      for="add-item-${item.id}"
+                      .animationDelay="${0}"
+                      .animationConfig="${{}}"
+                      animation-entry=""
+                      animation-exit=""
+                      ?hidden="${item.items?.length || !this.permissions.edit.management_budgets}"
                       position="top"
-                      custom-icon
-                      ?hide-tooltip="${item.items?.length || !this.permissions.edit.management_budgets}"
-                      style="justify-content:end;"
+                      offset="1"
                     >
-                      <paper-icon-button
-                        icon="add-box"
-                        slot="custom-icon"
-                        @click="${(e: CustomEvent) => this.addNewItem(e, item, 'focusBelow')}"
-                        ?hidden="${item.items?.length || !this.permissions.edit.management_budgets}"
-                      ></paper-icon-button>
-                      <span class="no-wrap" slot="message">${translate('ADD_NEW_ITEM')}</span>
-                    </etools-info-tooltip>
+                      ${translate('ADD_NEW_ITEM')}
+                    </paper-tooltip>
                   </div>
                   <div
                     class="flex-h justify-right align-bottom"

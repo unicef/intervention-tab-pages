@@ -218,20 +218,25 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                         }
                       }}"
                     ></paper-icon-button>
-                    <etools-info-tooltip
+                    <paper-icon-button
+                      id="add-item-${activity.id}"
+                      icon="add-box"
+                      slot="custom-icon"
+                      @click="${(e: CustomEvent) => this.addNewActivityItem(e, activity, 'focusBelow')}"
+                      ?hidden="${activity.items?.length || !this.permissions.edit.result_links}"
+                    ></paper-icon-button>
+                    <paper-tooltip
+                      for="add-item-${activity.id}"
+                      .animationDelay="${0}"
+                      .animationConfig="${{}}"
+                      animation-entry=""
+                      animation-exit=""
+                      ?hidden="${activity.items?.length || !this.permissions.edit.result_links}"
                       position="top"
-                      custom-icon
-                      ?hide-tooltip="${activity.items?.length || !this.permissions.edit.result_links}"
-                      style="justify-content:end;"
+                      offset="1"
                     >
-                      <paper-icon-button
-                        icon="add-box"
-                        slot="custom-icon"
-                        @click="${(e: CustomEvent) => this.addNewActivityItem(e, activity, 'focusBelow')}"
-                        ?hidden="${activity.items?.length || !this.permissions.edit.result_links}"
-                      ></paper-icon-button>
-                      <span class="no-wrap" slot="message">${translate('ADD_NEW_ITEM')}</span>
-                    </etools-info-tooltip>
+                      ${translate('ADD_NEW_ITEM')}
+                    </paper-tooltip>
                     <paper-icon-button
                       icon="delete"
                       ?hidden="${activity.inEditMode || !this.permissions.edit.result_links}"
