@@ -42,10 +42,13 @@ import {updateSmallMenu} from '../common/actions/common-actions';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
 /* eslint-disable max-len */
 import {selectProgrammeManagement} from '../intervention-workplan/effective-efficient-programme-mgmt/effectiveEfficientProgrammeMgmt.selectors';
+import {ActivitiesFocusMixin} from './editor-utils/activities-focus-mixin';
 @customElement('editor-table')
 // @ts-ignore
 export class EditorTable extends CommentsMixin(
-  ProgrammeManagementMixin(ActivitiesMixin(ArrowsNavigationMixin(LitElement)))
+  ProgrammeManagementMixin(
+    ActivitiesMixin(ActivitiesFocusMixin(ActivitiesFocusMixin(ArrowsNavigationMixin(LitElement))))
+  )
 ) {
   static get styles() {
     return [EditorTableStyles, EditorTableArrowKeysStyles, EditorHoverStyles, ...super.styles];
@@ -102,6 +105,15 @@ export class EditorTable extends CommentsMixin(
             font-weight: bold;
           }
         }
+
+        .index-column {
+          padding-top: 0;
+
+          --paper-input-container-input: {
+            font-size: 14px !important;
+          }
+        }
+
         .char-counter {
           margin-bottom: -12px;
           display: flex;
@@ -200,7 +212,15 @@ export class EditorTable extends CommentsMixin(
                 <td colspan="2">${translate('TOTAL')}</td>
               </tr>
               <tr class="text no-b-border">
-                <td>${result.code}</td>
+                <td class="index-column">
+                  <paper-input
+                    title="${result.code}"
+                    no-label-float
+                    readonly
+                    tabindex="-1"
+                    .value="${result.code}"
+                  ></paper-input>
+                </td>
                 <td colspan="3" class="${result.cp_output_name ? 'b' : 'red'}">
                   ${result.cp_output_name || translate('UNASSOCIATED_TO_CP_OUTPUT')}
                 </td>
@@ -270,7 +290,15 @@ export class EditorTable extends CommentsMixin(
                     class="text action-btns  ${this.permissions?.edit.result_links ? 'height-for-action-btns' : ''}"
                     type="pd-output"
                   >
-                    <td class="padd-top-10">${pdOutput.code}</td>
+                    <td class="index-column">
+                      <paper-input
+                        title="${pdOutput.code}"
+                        no-label-float
+                        readonly
+                        tabindex="-1"
+                        .value="${pdOutput.code}"
+                      ></paper-input>
+                    </td>
                     <td colspan="3" class="b no-top-padding" tabindex="0">
                       <paper-textarea
                         no-label-float
@@ -294,8 +322,7 @@ export class EditorTable extends CommentsMixin(
                           this.handleEsc(e);
                         }}"
                         @focus="${() => (this.autovalidatePdOutput = true)}"
-                        @value-changed="${({detail}: CustomEvent) =>
-                          this.updateModelValue(pdOutput, 'name', detail.value)}"
+                        @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'name', pdOutput)}"
                       ></paper-textarea>
                       <div class="bold truncate-multi-line" title="${pdOutput.name}" ?hidden="${pdOutput.inEditMode}">
                         ${pdOutput.name}
@@ -702,33 +729,6 @@ export class EditorTable extends CommentsMixin(
     }).then(() => {
       this.getResultLinksDetails();
       getStore().dispatch<AsyncAction>(getIntervention());
-    });
-  }
-
-  updateModelValue(model: any, property: string, newVal: any) {
-    if (newVal == model[property]) {
-      return;
-    }
-    model[property] = newVal;
-    this.requestUpdate();
-  }
-
-  moveFocusToNewllyAdded(element: any) {
-    const currTbody = this.determineParentTr(element).parentElement;
-    setTimeout(() => {
-      const targetTr = currTbody.nextElementSibling.querySelector('tr.text');
-      const input = targetTr.querySelector('[input]');
-
-      if (input) {
-        this.lastFocusedTd = this.determineParentTd(input);
-        if (!input.focused) {
-          // Calling focus() when it's already focused it defocuses
-          input.focus();
-        }
-      }
-
-      // @ts-ignore Defined in arrows-nav-mixin
-      this.attachListenersToTr(targetTr);
     });
   }
 }

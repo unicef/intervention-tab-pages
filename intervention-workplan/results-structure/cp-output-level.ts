@@ -20,7 +20,7 @@ import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-inpu
 import {ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
-import {TruncateMixin} from '../../common/truncate.mixin';
+import {TruncateMixin} from '../../common/mixins/truncate.mixin';
 
 @customElement('cp-output-level')
 export class CpOutputLevel extends TruncateMixin(LitElement) {

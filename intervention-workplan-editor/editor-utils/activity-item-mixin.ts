@@ -2,16 +2,18 @@ import {Intervention} from '@unicef-polymer/etools-types';
 import {Constructor} from '@unicef-polymer/etools-types/dist/global.types';
 import '@polymer/paper-input/paper-input';
 import {html, LitElement} from 'lit-element';
-import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {InterventionActivityExtended, InterventionActivityItemExtended, ResultLinkLowerResultExtended} from './types';
 import {repeat} from 'lit-html/directives/repeat';
 import '@polymer/paper-input/paper-textarea';
 import {translate} from 'lit-translate';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import {ifDefined} from 'lit-html/directives/if-defined.js';
+import {ActivitiesCommonMixin} from '../../common/mixins/activities-common.mixin';
+import {getItemTotalFormatted} from '../../common/components/activity/get-total.helper';
+import {ActivitiesFocusMixin} from './activities-focus-mixin';
 
 export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass: T) {
-  return class ActivityItemsClass extends baseClass {
+  return class ActivityItemsClass extends ActivitiesCommonMixin(ActivitiesFocusMixin(baseClass)) {
     // @ts-ignore
     @property({type: Object})
     intervention!: Intervention;
@@ -57,7 +59,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
               comment-element="activity-item-${item.id}"
               comment-description=" Activity item - ${item.name}"
             >
-              <td>
+              <td class="index-column">
                 <paper-input
                   title="${item.code || ''}"
                   .noLabelFloat="${!activity.itemsInEditMode}"
@@ -77,10 +79,8 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                     char-counter
                     maxlength="150"
                     .invalid="${item.invalid?.name}"
-                    @invalid-changed="${(e: CustomEvent) => {
-                      if (item.invalid && item.invalid.name != e.detail.value) {
-                        item.invalid = {...item.invalid, name: e.detail.value};
-                      }
+                    @invalid-changed="${({detail}: CustomEvent) => {
+                      this.activityItemInvalidChanged(detail, 'name', item);
                     }}"
                     required
                     error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
@@ -93,7 +93,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                       }
                       this.handleEsc(e);
                     }}"
-                    @value-changed="${({detail}: CustomEvent) => this.updateModelValue(item, 'name', detail.value)}"
+                    @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'name', item)}"
                   ></paper-textarea>
                 </div>
                 <div class="truncate-multi-line" title="${item.name}" ?hidden="${activity.itemsInEditMode}">
@@ -109,10 +109,8 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   label=${this.getLabel(activity.itemsInEditMode, 'Unit')}
                   ?hidden="${!activity.itemsInEditMode}"
                   .invalid="${item.invalid?.unit}"
-                  @invalid-changed="${(e: CustomEvent) => {
-                    if (item.invalid && item.invalid.unit != e.detail.value) {
-                      item.invalid = {...item.invalid, unit: e.detail.value};
-                    }
+                  @invalid-changed="${({detail}: CustomEvent) => {
+                    this.activityItemInvalidChanged(detail, 'unit', item);
                   }}"
                   required
                   .autoValidate="${item.autovalidate?.unit}"
@@ -125,7 +123,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                     }
                     this.handleEsc(e);
                   }}"
-                  @value-changed="${({detail}: CustomEvent) => this.updateModelValue(item, 'unit', detail.value)}"
+                  @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unit', item)}"
                 ></paper-input>
                 <div class="truncate-single-line" title="${item.unit}" ?hidden="${activity.itemsInEditMode}">
                   ${item.unit}
@@ -140,10 +138,8 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   ?readonly="${!activity.itemsInEditMode}"
                   .invalid="${item.invalid?.no_units}"
                   no-of-decimals="2"
-                  @invalid-changed="${(e: CustomEvent) => {
-                    if (item.invalid && item.invalid.no_units != e.detail.value) {
-                      item.invalid = {...item.invalid, no_units: e.detail.value};
-                    }
+                  @invalid-changed="${({detail}: CustomEvent) => {
+                    this.activityItemInvalidChanged(detail, 'no_units', item);
                   }}"
                   required
                   auto-validate
@@ -155,8 +151,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                       return;
                     }
                     item.no_units = detail.value;
-                    this.validateCsoAndUnicefCash(item);
-                    this.requestUpdate();
+                    this.updateActivityCashFromItem(activity, item);
                   }}"
                 ></etools-currency-amount-input>
               </td>
@@ -168,10 +163,8 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   tabindex="${ifDefined(item.inEditMode ? undefined : '-1')}"
                   ?readonly="${!activity.itemsInEditMode}"
                   .invalid="${item.invalid?.unit_price}"
-                  @invalid-changed="${(e: CustomEvent) => {
-                    if (item.invalid && item.invalid.unit_price != e.detail.value) {
-                      item.invalid = {...item.invalid, unit_price: e.detail.value};
-                    }
+                  @invalid-changed="${({detail}: CustomEvent) => {
+                    this.activityItemInvalidChanged(detail, 'unit_price', item);
                   }}"
                   required
                   auto-validate
@@ -183,8 +176,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                       return;
                     }
                     item.unit_price = detail.value;
-                    this.validateCsoAndUnicefCash(item);
-                    this.requestUpdate();
+                    this.updateActivityCashFromItem(activity, item);
                   }}"
                 ></etools-currency-amount-input>
               </td>
@@ -199,21 +191,14 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   auto-validate
                   error-message="${translate('INCORRECT_VALUE')}"
                   .invalid="${item.invalid?.cso_cash}"
-                  @invalid-changed="${(e: CustomEvent) => {
-                    if (item.invalid && item.invalid.cso_cash != e.detail.value) {
-                      item.invalid = {...item.invalid, cso_cash: e.detail.value};
-                    }
+                  @invalid-changed="${({detail}: CustomEvent) => {
+                    this.activityItemInvalidChanged(detail, 'cso_cash', item);
                   }}"
                   .value="${item.cso_cash}"
                   @keydown="${(e: any) => this.handleEsc(e)}"
                   @value-changed="${({detail}: CustomEvent) => {
-                    if (item.cso_cash == detail.value) {
-                      return;
-                    }
-                    item.cso_cash = detail.value;
-
-                    this.updateUnicefCash(item, activity);
-                    this.requestUpdate();
+                    this.cashFieldChanged(detail, 'cso_cash', item);
+                    this.updateActivityCashFromItem(activity, item);
                   }}"
                 ></etools-currency-amount-input>
               </td>
@@ -228,20 +213,14 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   auto-validate
                   error-message="${translate('INCORRECT_VALUE')}"
                   .invalid="${item.invalid?.unicef_cash}"
-                  @invalid-changed="${(e: CustomEvent) => {
-                    if (item.invalid && item.invalid.unicef_cash != e.detail.value) {
-                      item.invalid = {...item.invalid, unicef_cash: e.detail.value};
-                    }
+                  @invalid-changed="${({detail}: CustomEvent) => {
+                    this.activityItemInvalidChanged(detail, 'unicef_cash', item);
                   }}"
                   .value="${item.unicef_cash}"
                   @keydown="${(e: any) => this.handleEsc(e)}"
                   @value-changed="${({detail}: CustomEvent) => {
-                    if (item.unicef_cash == detail.value) {
-                      return;
-                    }
-                    item.unicef_cash = detail.value;
-                    this.updateCsoCash(item, activity);
-                    this.requestUpdate();
+                    this.cashFieldChanged(detail, 'unicef_cash', item);
+                    this.updateActivityCashFromItem(activity, item);
                   }}"
                 ></etools-currency-amount-input>
               </td>
@@ -251,7 +230,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   class="bold"
                   tabindex="-1"
                   .noLabelFloat="${!activity.itemsInEditMode}"
-                  .value="${this.getTotalForItem(item.no_units || 0, item.unit_price || 0)}"
+                  .value="${getItemTotalFormatted(item)}"
                 ></paper-input>
                 <div class="hover-block flex-h">
                   <paper-icon-button
@@ -364,76 +343,6 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       this.requestUpdate();
     }
 
-    updateUnicefCash(item: InterventionActivityItemExtended, activity: InterventionActivityExtended) {
-      if (isNaN(Number(item.cso_cash))) {
-        return;
-      }
-      const total = this._getItemTotal(item);
-      if (Number(item.cso_cash) > total) {
-        item.invalid = {cso_cash: true};
-        return;
-      } else {
-        item.invalid = {cso_cash: false};
-      }
-      item.unicef_cash = String((total - Number(item.cso_cash)).toFixed(2)); // 12019.15 - 11130 = 889.1499999999996
-
-      this.validateCsoAndUnicefCash(item);
-
-      this.calculateActivityTotals(activity);
-    }
-
-    _getItemTotal(item: InterventionActivityItemExtended) {
-      let total = Number(item.no_units) * Number(item.unit_price);
-      total = Number(total.toFixed(2)); // 1.1*6 =6.0000000000000005
-      return total;
-    }
-    updateCsoCash(item: InterventionActivityItemExtended, activity: InterventionActivityExtended) {
-      if (isNaN(Number(item.unicef_cash))) {
-        return;
-      }
-      const total = this._getItemTotal(item);
-      if (Number(item.unicef_cash) > total) {
-        item.invalid = {unicef_cash: true};
-        return;
-      } else {
-        item.invalid = {unicef_cash: false};
-      }
-      item.cso_cash = String((total - Number(item.unicef_cash)).toFixed(2)); // 12019.15 - 11130 = 889.1499999999996
-
-      this.validateCsoAndUnicefCash(item);
-      this.calculateActivityTotals(activity);
-    }
-
-    calculateActivityTotals(activity: InterventionActivityExtended) {
-      if (!(activity.items && activity.items.length)) {
-        return;
-      }
-      activity.cso_cash = String(activity.items.reduce((sum: number, item) => sum + Number(item.cso_cash), 0));
-      activity.unicef_cash = String(activity.items.reduce((sum: number, item) => sum + Number(item.unicef_cash), 0));
-    }
-
-    getTotalForItem(noOfUnits: number, pricePerUnit: number | string) {
-      let total = (Number(noOfUnits) || 0) * (Number(pricePerUnit) || 0);
-      total = Number(total.toFixed(2));
-      return displayCurrencyAmount(String(total), '0', 2);
-    }
-
-    validateCsoAndUnicefCash(item: InterventionActivityItemExtended) {
-      if (Number(item.no_units) == 0 || Number(item.unit_price) == 0) {
-        return;
-      }
-
-      let total = (Number(item.no_units) || 0) * (Number(item.unit_price) || 0);
-      total = Number(total.toFixed(2));
-      let sum = (Number(item.cso_cash) || 0) + (Number(item.unicef_cash) || 0);
-      sum = Number(sum.toFixed(2));
-      if (total != sum) {
-        item.invalid = {...item.invalid, ...{cso_cash: true, unicef_cash: true}};
-      } else {
-        item.invalid = {...item.invalid, ...{cso_cash: false, unicef_cash: false}};
-      }
-    }
-
     addNewActivityItem(e: CustomEvent, activity: Partial<InterventionActivityExtended>, focusClue: string) {
       if (!activity.items) {
         activity.items = [];
@@ -444,44 +353,6 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       this.oneEntityInEditMode = true;
       this.requestUpdate();
       this.moveFocusToAddedItemAndAttachListeners(e.target, focusClue);
-    }
-
-    moveFocusToAddedItemAndAttachListeners(target: any, focusClue: string) {
-      // @ts-ignore
-      const targetTrParent = this.determineParentTr(target);
-      setTimeout(() => {
-        const itemDescTd = (
-          focusClue === 'focusAbove'
-            ? targetTrParent?.previousElementSibling
-            : targetTrParent?.parentElement.nextElementSibling.nextElementSibling.children[0]
-        )?.children[1];
-        // @ts-ignore
-        itemDescTd?.querySelector('paper-textarea')?.focus();
-        // @ts-ignore Defined in arrows-nav-mixin
-        this.lastFocusedTd = itemDescTd;
-        // @ts-ignore Defined in arrows-nav-mixin
-        this.attachListenersToTr(this.determineParentTr(itemDescTd));
-      }, 10);
-    }
-
-    preserveFocusOnRow(target: any) {
-      // @ts-ignore
-      const targetTrParent = this.determineParentTr(target);
-      setTimeout(() => {
-        const itemDescTd = targetTrParent?.children[1];
-        // @ts-ignore
-        itemDescTd?.querySelector('paper-textarea')?.focus();
-        // @ts-ignore
-        this.lastFocusedTd = itemDescTd;
-      });
-    }
-
-    updateModelValue(model: any, property: string, newVal: any) {
-      if (newVal == model[property]) {
-        return;
-      }
-      model[property] = newVal;
-      this.requestUpdate();
     }
   };
 }
