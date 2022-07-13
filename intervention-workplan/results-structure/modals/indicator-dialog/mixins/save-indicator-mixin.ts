@@ -131,8 +131,7 @@ function SaveIndicatorMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
     validate() {
       let valid = true;
-      const sectionSelected = this.shadowRoot!.querySelector<EtoolsDropdownEl>('#sectionDropdw')!.validate();
-      valid = this.getIndicatorElement(this.isCluster)!.validate() && sectionSelected;
+      valid = this.getIndicatorElement(this.isCluster)!.validate();
       return valid;
     }
 
