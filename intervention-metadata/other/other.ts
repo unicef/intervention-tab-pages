@@ -23,6 +23,7 @@ import {selectOtherData, selectOtherPermissions} from './other.selectors';
 import CONSTANTS from '../../common/constants';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import '@polymer/paper-input/paper-textarea';
+import {isUnicefUser} from '../../common/selectors';
 
 /**
  * @customElement
@@ -199,7 +200,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
           </div>
         </div>
 
-        <div class="layout-horizontal confidential-row">
+        <div class="layout-horizontal confidential-row" ?hidden="${!this.isUnicefUser}">
           <paper-toggle-button
             id="confidential"
             ?disabled="${this.isReadonly(this.editMode, this.permissions.edit?.confidential)}"
@@ -244,6 +245,9 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   @property({type: Boolean})
   autoValidateProtocol = false;
 
+  @property({type: Boolean})
+  isUnicefUser = false;
+
   get isSPD(): boolean {
     return this.data.document_type === CONSTANTS.DOCUMENT_TYPES.SPD;
   }
@@ -264,6 +268,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
     this.data = selectOtherData(state);
     this.originalData = cloneDeep(this.data);
     this.setPermissions(state);
+    this.isUnicefUser = isUnicefUser(state);
     super.stateChanged(state);
   }
 
