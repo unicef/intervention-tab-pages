@@ -13,7 +13,8 @@ export const selectOtherPermissions = createSelector(
   (permissions: Permission<InterventionPermissionsFields>) => {
     return {
       edit: new OtherPermissions(permissions!.edit),
-      required: new OtherPermissions(permissions!.required)
+      required: new OtherPermissions(permissions!.required),
+      view: new OtherPermissions(permissions!.view!)
     };
   }
 );
