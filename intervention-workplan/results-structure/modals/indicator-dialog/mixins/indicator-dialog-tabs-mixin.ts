@@ -21,12 +21,6 @@ function IndicatorDialogTabsMixin<T extends Constructor<LitElement>>(baseClass: 
       {
         tab: 'details',
         tabLabel: translate('DETAILS_TAB') as unknown as string
-      },
-      {
-        tab: 'disaggregations',
-        tabLabel: translate('DISAGGREGATIONS_TAB') as unknown as string,
-        showTabCounter: true,
-        counter: 0
       }
     ];
 
@@ -35,17 +29,10 @@ function IndicatorDialogTabsMixin<T extends Constructor<LitElement>>(baseClass: 
 
     connectedCallback() {
       super.connectedCallback();
-      this.addEventListener('update-tab-counter', this.updateTabCount as any);
     }
 
     disconnectedCallback() {
       super.disconnectedCallback();
-      this.removeEventListener('update-tab-counter', this.updateTabCount as any);
-    }
-
-    updateTabCount(event: CustomEvent) {
-      this.indicatorDataTabs[1].counter = event.detail.count;
-      this.indicatorDataTabs = [...this.indicatorDataTabs];
     }
   }
   return IndicatorDialogTabsClass;
