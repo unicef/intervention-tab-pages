@@ -152,6 +152,10 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
           this.easeUpTabNavigation = true;
           break;
         case 'Enter': {
+          // @ts-ignore defined in other mixin
+          if (this.oneEntityInEditMode) {
+            return;
+          }
           // @ts-ignore
           if (['paper-icon-button', 'paper-button'].includes(event.path[0].localName)) {
             return;
@@ -368,11 +372,13 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     }
 
     focusInput(input: any) {
-      if (input.localName == 'etools-currency-amount-input') {
-        input.shadowRoot.querySelector('paper-input').focus();
-      } else {
-        input.focus();
-      }
+      setTimeout(() => {
+        if (input.localName == 'etools-currency-amount-input') {
+          input.shadowRoot.querySelector('paper-input').focus();
+        } else {
+          input.focus();
+        }
+      });
     }
 
     inputIsFocused(input: any) {
