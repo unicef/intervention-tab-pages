@@ -20,6 +20,7 @@ import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialo
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import cloneDeep from 'lodash-es/cloneDeep';
 
 /**
  * @customElement
@@ -111,7 +112,7 @@ export class SpecialReportingRequirements extends ReportingRequirementsCommonMix
     openDialog({
       dialog: 'add-edit-special-rep-req',
       dialogData: {
-        item: typeof index === 'undefined' ? {} : this.reportingRequirements[index!],
+        item: typeof index === 'undefined' ? {} : cloneDeep(this.reportingRequirements[index!]),
         interventionId: this.interventionId
       }
     }).then(({confirmed, response}) => {

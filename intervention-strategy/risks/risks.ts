@@ -28,6 +28,7 @@ import {AnyObject, AsyncAction, LabelAndValue, RiskData} from '@unicef-polymer/e
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
+import cloneDeep from 'lodash-es/cloneDeep';
 
 const customStyles = html`
   <style>
@@ -168,7 +169,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
     openDialog({
       dialog: 'risk-dialog',
       dialogData: {
-        item: e ? e.detail : {},
+        item: e ? cloneDeep(e.detail) : {},
         interventionId: this.interventionId,
         riskTypes: this.riskTypes
       }
