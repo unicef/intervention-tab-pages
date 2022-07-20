@@ -23,6 +23,7 @@ import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
+import {getPageDirection} from '../../utils/utils';
 
 /**
  * @customElement
@@ -151,15 +152,8 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
     this.originalData = cloneDeep(this.data);
     this.autoCalculatedHqContrib = this.autoCalcHqContrib();
     this.setPermissions(state);
-    this.dir = this.getPageDirection(state);
+    this.dir = getPageDirection(state);
     super.stateChanged(state);
-  }
-
-  getPageDirection(state: RootState) {
-    if (get(state, 'activeLanguage.activeLanguage') === 'ar') {
-      return 'rtl';
-    }
-    return 'ltr';
   }
 
   hqContribChanged(detail: any) {
