@@ -11,6 +11,7 @@ import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-s
 import {translate} from 'lit-translate';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import PaginationMixin from '@unicef-polymer/etools-modules-common/dist/mixins/pagination-mixin';
 
 /**
  * @polymer
@@ -19,7 +20,9 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
  * @appliesMixin ReportingReqPastDatesCheckMixin
  */
 @customElement('qpr-list')
-export class QprList extends ReportingRequirementsCommonMixin(ReportingReqPastDatesCheckMixin(LitElement)) {
+export class QprList extends PaginationMixin(
+  ReportingRequirementsCommonMixin(ReportingReqPastDatesCheckMixin(LitElement))
+) {
   static get styles() {
     return [gridLayoutStylesLit, reportingRequirementsListStyles];
   }
@@ -41,7 +44,7 @@ export class QprList extends ReportingRequirementsCommonMixin(ReportingReqPastDa
         <etools-data-table-column class="flex-c"></etools-data-table-column>
       </etools-data-table-header>
 
-      ${this.qprData.map(
+      ${(this.paginatedData || []).map(
         (item: any, index: number) =>
           html`
             <etools-data-table-row no-collapse ?secondary-bg-on-hover="${!this._canEdit(this.editMode)}">
@@ -66,11 +69,34 @@ export class QprList extends ReportingRequirementsCommonMixin(ReportingReqPastDa
             </etools-data-table-row>
           `
       )}
+
+      <etools-data-table-footer
+        .pageSize="${this.paginator.page_size}"
+        .pageNumber="${this.paginator.page}"
+        .totalResults="${this.paginator.count}"
+        .visibleRange="${this.paginator.visible_range}"
+        @visible-range-changed="${this.visibleRangeChanged}"
+        @page-size-changed="${this.pageSizeChanged}"
+        @page-number-changed="${this.pageNumberChanged}"
+      >
+      </etools-data-table-footer>
     `;
   }
 
   @property({type: Array})
-  qprData: any = [];
+  paginatedData!: any[];
+
+  _qprData!: any[];
+
+  set qprData(qprData) {
+    this._qprData = qprData;
+    this.dataWasLoaded();
+  }
+
+  @property({type: Array})
+  get qprData() {
+    return this._qprData;
+  }
 
   @property({type: Boolean})
   preventPastDateEdit = false;
@@ -85,6 +111,21 @@ export class QprList extends ReportingRequirementsCommonMixin(ReportingReqPastDa
   @property({type: String})
   get interventionId() {
     return this._interventionId;
+  }
+
+  dataWasLoaded() {
+    this.paginator = {...this.paginator, page: 1, page_size: 10, count: this.qprData.length};
+  }
+
+  _paginate(pageNumber: number, pageSize: number) {
+    if (!this.qprData) {
+      return;
+    }
+    this.paginatedData = (this.qprData || []).slice((pageNumber - 1) * pageSize, pageNumber * pageSize);
+  }
+
+  paginatorChanged() {
+    this._paginate(this.paginator.page, this.paginator.page_size);
   }
 
   getIndex(index: number, dataItemsLength: number) {
