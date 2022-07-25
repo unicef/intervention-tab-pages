@@ -21,6 +21,7 @@ import {TABS} from '../../common/constants';
 import CONSTANTS from '../../common/constants';
 import {StaticPartner} from '@unicef-polymer/etools-types';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
+import {getPageDirection} from '../../utils/utils';
 
 /**
  * @customElement
@@ -91,7 +92,11 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
           </div>
         </div>
         <div class="icon-tooltip-div">
-          <info-icon-tooltip .tooltipText="${translate('METADATA_TOOLTIP')}" position="left"> </info-icon-tooltip>
+          <info-icon-tooltip
+            .tooltipText="${translate('METADATA_TOOLTIP')}"
+            position="${this.dir == 'rtl' ? 'right' : 'left'}"
+          >
+          </info-icon-tooltip>
         </div>
       </section>
     `;
@@ -124,6 +129,7 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
       this.intervention = currentIntervention(state);
       this.interventionPartner =
         allPartners(state).find((partner: StaticPartner) => partner.name === this.intervention.partner) || {};
+      this.dir = getPageDirection(state);
     }
 
     super.stateChanged(state);

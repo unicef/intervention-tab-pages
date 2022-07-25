@@ -33,3 +33,10 @@ export const getIndicatorDisplayType = (indicator: any) => {
   }
   return typeChar;
 };
+
+export function getPageDirection(state: any) {
+  if (state.activeLanguage?.activeLanguage === 'ar') {
+    return 'rtl';
+  }
+  return 'ltr';
+}

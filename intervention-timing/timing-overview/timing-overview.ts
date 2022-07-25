@@ -14,6 +14,7 @@ import {InfoElementStyles} from '@unicef-polymer/etools-modules-common/dist/styl
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {translate} from 'lit-translate';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
+import {getPageDirection} from '../../utils/utils';
 
 /**
  * @customElement
@@ -107,7 +108,11 @@ export class TimingOverview extends CommentsMixin(LitElement) {
         </div>
 
         <div class="icon-tooltip-div">
-          <info-icon-tooltip .tooltipText="${translate('TIMING_TOOLTIP')}" position="left"> </info-icon-tooltip>
+          <info-icon-tooltip
+            .tooltipText="${translate('TIMING_TOOLTIP')}"
+            position="${this.dir == 'rtl' ? 'right' : 'left'}"
+          >
+          </info-icon-tooltip>
         </div>
       </section>
     `;
@@ -126,6 +131,7 @@ export class TimingOverview extends CommentsMixin(LitElement) {
     }
     if (state.interventions.current) {
       this.timingOverview = selectTimingOverview(state);
+      this.dir = getPageDirection(state);
       super.stateChanged(state);
     }
   }
