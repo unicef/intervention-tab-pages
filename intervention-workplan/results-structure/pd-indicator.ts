@@ -11,6 +11,7 @@ import {translate} from 'lit-translate';
 import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
 import {getIndicatorDisplayType} from '../../utils/utils';
+import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 
 @customElement('pd-indicator')
 export class PdIndicator extends CommentsMixin(LitElement) {
@@ -49,10 +50,11 @@ export class PdIndicator extends CommentsMixin(LitElement) {
               ${getIndicatorDisplayType(this.indicator.indicator)} ${this.addInactivePrefix(this.indicator)}
               ${(this.indicator.indicator ? this.indicator.indicator.title : this.indicator.cluster_indicator_title) ||
               '—'}
-              <div id="hf" class="hf-mark" ?hidden="${!this.indicator.is_high_frequency}"></div>
-              <paper-tooltip for="hf" position="top" theme="light" animation-delay="0" offset="4">
-                This indicator is high frequency
-              </paper-tooltip>
+
+              <etools-info-tooltip position="top" custom-icon offset="0">
+                <div id="hf" slot="custom-icon" class="hf-mark" ?hidden="${!this.indicator.is_high_frequency}"></div>
+                <span class="no-wrap" slot="message">This indicator is high frequency</span>
+              </etools-info-tooltip>
             </div>
             <div class="item-link" @click="${() => (this.detailsOpened = !this.detailsOpened)}">
               ${this.detailsOpened ? 'hide' : 'show'} ${this.locationNames.length} ${translate('LOCATIONS')} |
@@ -297,7 +299,6 @@ export class PdIndicator extends CommentsMixin(LitElement) {
           width: 15px;
           height: 15px;
           flex: none;
-          margin-top: 5px;
           margin-left: 2px;
           border-radius: 50%;
           background-color: #2073b7;
