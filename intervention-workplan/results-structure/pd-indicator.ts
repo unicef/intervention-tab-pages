@@ -34,6 +34,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
       </style>
       <div
         class="table-row editable-row"
+        style="padding-right: 0 !important"
         related-to="indicator-${this.indicator.id}"
         related-to-description="Indicator - ${this.indicator.indicator?.title}"
         comments-container
@@ -41,7 +42,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
         @paper-dropdown-close="${(event: CustomEvent) =>
           (event.currentTarget as HTMLElement)!.classList.remove('active')}"
       >
-        <div class="main-info">
+        <div class="main-info" style="padding-right:10%">
           <!--    Indicator name    -->
           <div class="flex-1 left-align layout-vertical start-aligned">
             <div class="name layout-horizontal">
@@ -67,39 +68,45 @@ export class PdIndicator extends CommentsMixin(LitElement) {
           <div class="flex-1 secondary-cell right">
             ${this._displayBaselineOrTarget(this.indicator.target, this.indicator)}
           </div>
-        </div>
-        <div class="details ${this.detailsOpened ? 'opened' : ''}">${this.additionalTemplate()}</div>
 
-        <div class="show-actions hover-block" style="z-index: ${99 - (this.index || 0)}" ?hidden="${this.commentMode}">
-          <paper-menu-button id="view-menu-button" close-on-activate horizontal-align="right">
-            <paper-icon-button slot="dropdown-trigger" icon="icons:more-vert" tabindex="0"></paper-icon-button>
-            <paper-listbox slot="dropdown-content">
-              <div
-                class="action"
-                ?hidden="${!this._canEdit() && !this._canView()}"
-                @click="${() => this.openIndicatorDialog(this.indicator, this.readonly)}"
-              >
-                <iron-icon icon="${this._canEdit() ? 'create' : 'visibility'}"></iron-icon>
-                ${this._canEdit() ? translate('EDIT') : translate('VIEW')}
-              </div>
-              <div
-                class="action"
-                ?hidden="${!this._canDeactivate()}"
-                @click="${() => this.openDeactivationDialog(String(this.indicator.id))}"
-              >
-                <iron-icon icon="icons:block"></iron-icon>
-                ${translate('DEACTIVATE')}
-              </div>
-              <div
-                class="action delete-action"
-                ?hidden="${!this._canDelete()}"
-                @click="${() => this.openDeletionDialog(String(this.indicator.id))}"
-              >
-                <iron-icon icon="delete"></iron-icon>
-                ${translate('DELETE')}
-              </div>
-            </paper-listbox>
-          </paper-menu-button>
+          <div
+            class="show-actions hover-block"
+            style="z-index: ${99 - (this.index || 0)}; max-height: 59px;"
+            ?hidden="${this.commentMode}"
+          >
+            <paper-menu-button id="view-menu-button" close-on-activate horizontal-align="right">
+              <paper-icon-button slot="dropdown-trigger" icon="icons:more-vert" tabindex="0"></paper-icon-button>
+              <paper-listbox slot="dropdown-content">
+                <div
+                  class="action"
+                  ?hidden="${!this._canEdit() && !this._canView()}"
+                  @click="${() => this.openIndicatorDialog(this.indicator, this.readonly)}"
+                >
+                  <iron-icon icon="${this._canEdit() ? 'create' : 'visibility'}"></iron-icon>
+                  ${this._canEdit() ? translate('EDIT') : translate('VIEW')}
+                </div>
+                <div
+                  class="action"
+                  ?hidden="${!this._canDeactivate()}"
+                  @click="${() => this.openDeactivationDialog(String(this.indicator.id))}"
+                >
+                  <iron-icon icon="icons:block"></iron-icon>
+                  ${translate('DEACTIVATE')}
+                </div>
+                <div
+                  class="action delete-action"
+                  ?hidden="${!this._canDelete()}"
+                  @click="${() => this.openDeletionDialog(String(this.indicator.id))}"
+                >
+                  <iron-icon icon="delete"></iron-icon>
+                  ${translate('DELETE')}
+                </div>
+              </paper-listbox>
+            </paper-menu-button>
+          </div>
+        </div>
+        <div class="details ${this.detailsOpened ? 'opened' : ''}" style="max-height:350px; overflow-y:auto">
+          ${this.additionalTemplate()}
         </div>
       </div>
     `;
