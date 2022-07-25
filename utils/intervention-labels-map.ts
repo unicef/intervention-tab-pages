@@ -70,5 +70,6 @@ export const translatesMap: GenericObject = {
   unicef_product_number: 'UNICEF_PRODUCT_NUMBER',
   ll_results: 'PROGRAM_DOCUMENT_OUTPUT',
   activation_protocol: 'ACTIVATION_PROTOCOL',
-  required_in_status: 'REQUIRED_ERROR'
+  required_in_status: 'REQUIRED_ERROR',
+  budget_owner: 'UNICEF_BUDGET_OWNER'
 };
