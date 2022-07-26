@@ -53,7 +53,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
 
               <etools-info-tooltip position="top" custom-icon offset="0">
                 <div id="hf" slot="custom-icon" class="hf-mark" ?hidden="${!this.indicator.is_high_frequency}"></div>
-                <span class="no-wrap" slot="message">This indicator is high frequency</span>
+                <span class="no-wrap" slot="message">${translate('THIS_INDICATOR_IS_HIGH_FREQUENCY')}</span>
               </etools-info-tooltip>
             </div>
             <div class="item-link" @click="${() => (this.detailsOpened = !this.detailsOpened)}">
