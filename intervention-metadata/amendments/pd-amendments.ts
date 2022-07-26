@@ -239,7 +239,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
     const currentIntervention = get(state, 'interventions.current');
     if (currentIntervention && !isJsonStrMatch(this.intervention, currentIntervention)) {
       this.intervention = cloneDeep(currentIntervention);
-      this.amendments = this.intervention.amendments;
+      this.amendments = this.intervention.amendments?.sort((a: any, b: any) => b.id - a.id);
       if (this.isNewAmendment) {
         this.isNewAmendment = false;
         fireEvent(this, 'amendment-added', currentIntervention);
