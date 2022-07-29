@@ -96,6 +96,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
           align-items: center;
           background-color: #ffd28b;
           height: 50px;
+          z-index: 99;
         }
         .amendment-info a {
           margin-left: 7px;
