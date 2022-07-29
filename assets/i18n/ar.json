@@ -528,5 +528,6 @@
   "PD_OUTPUTS_TITLE": "Programme Document Outputs",
   "PLS_SELECT_SECTIONS_FIRST": "Please, select PD sections first",
   "PLS_SELECT_LOCATIONS_FIRST": "Please, select PD locations first",
-  "PLS_SELECT_SECTIONS_AND_LOCATIONS_FIRST": "Please, select PD sections and locations first"
+  "PLS_SELECT_SECTIONS_AND_LOCATIONS_FIRST": "Please, select PD sections and locations first",
+  "THIS_INDICATOR_IS_HIGH_FREQUENCY": "This indicator is high frequency"
 }
