@@ -199,7 +199,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
           </div>
         </div>
 
-        <div class="layout-horizontal confidential-row">
+        <div class="layout-horizontal confidential-row" ?hidden="${!this.permissions.view?.confidential}">
           <paper-toggle-button
             id="confidential"
             ?disabled="${this.isReadonly(this.editMode, this.permissions.edit?.confidential)}"
