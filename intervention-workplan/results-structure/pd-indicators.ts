@@ -290,8 +290,8 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
     const locations = filterByIds<LocationObject>(this.locations, ids);
     const locNames = locations.map((l: any) => {
       return {
-        name: l.name.substring(0, l.name.indexOf('[')),
-        adminLevel: l.name.substring(l.name.indexOf('['))
+        name: l.name.substring(0, l.name.indexOf('[') == -1 ? l.name.indexOf('(') : l.name.indexOf('[')),
+        adminLevel: l.name.substring(l.name.indexOf('[') == -1 ? l.name.indexOf('(') : l.name.indexOf('['))
       };
     });
     return locNames;
