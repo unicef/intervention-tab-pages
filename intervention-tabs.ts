@@ -42,14 +42,6 @@ import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endp
 import {interventionEndpoints} from './utils/intervention-endpoints';
 import {CommentsEndpoints} from '../intervention-tab-pages/common/components/comments/comments-types';
 
-const MOCKUP_STATUSES = [
-  ['draft', 'Draft'],
-  ['signed', 'Signed'],
-  ['active', 'Active'],
-  ['terminated', 'Terminated'],
-  ['closed', 'Closed']
-];
-
 /**
  * @LitElement
  * @customElement
@@ -202,7 +194,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
 
       <intervention-page-content-subheader>
         <etools-status-lit
-          .statuses="${this.intervention.status_list || MOCKUP_STATUSES}"
+          .statuses="${this.intervention.status_list}"
           .activeStatus="${this.intervention.status}"
         ></etools-status-lit>
 
