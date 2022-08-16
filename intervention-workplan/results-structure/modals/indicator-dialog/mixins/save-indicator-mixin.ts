@@ -197,6 +197,8 @@ function SaveIndicatorMixin<T extends Constructor<LitElement>>(baseClass: T) {
       if (!indicator.baseline || indicator.baseline.v === '' || indicator.baseline.v === undefined) {
         indicator.baseline = {v: null, d: 1};
       }
+      this._ensureNumbersInsteadOfStrings(indicator.target);
+      this._ensureNumbersInsteadOfStrings(indicator.baseline);
       if (indicator.indicator) {
         // is new non-cluster indic
         if (indicator.indicator.unit === 'number') {
@@ -207,6 +209,13 @@ function SaveIndicatorMixin<T extends Constructor<LitElement>>(baseClass: T) {
           this._resetLabel(indicator);
         }
       }
+    }
+
+    _ensureNumbersInsteadOfStrings(item: {v: number; d: number}) {
+      if (item.v !== null) {
+        item.v = Number(item.v);
+      }
+      item.d = Number(item.d);
     }
 
     _updateBaselineTargetD(indicator: any, d: number) {
