@@ -533,5 +533,6 @@
   "PLS_SELECT_SECTIONS_FIRST": "Please, select PD sections first",
   "PLS_SELECT_LOCATIONS_FIRST": "Please, select PD locations first",
   "PLS_SELECT_SECTIONS_AND_LOCATIONS_FIRST": "Please, select PD sections and locations first",
-  "THIS_INDICATOR_IS_HIGH_FREQUENCY": "This indicator is high frequency"
+  "THIS_INDICATOR_IS_HIGH_FREQUENCY": "This indicator is high frequency",
+  "ACCEPT_AS_FINAL": "Accept as Final"
 }

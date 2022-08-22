@@ -46,7 +46,7 @@ export const ActionNamesMap: GenericObject<string> = {
   [SEND_TO_PARTNER]: getTranslation('SEND_TO_PARTNER'),
   [SEND_TO_UNICEF]: getTranslation('SEND_TO_UNICEF'),
   [UNLOCK]: getTranslation('UNLOCK'),
-  [ACCEPT]: getTranslation('ACCEPT'),
+  [ACCEPT]: getTranslation('ACCEPT_AS_FINAL'),
   [REVIEW]: getTranslation('SEND_FOR_REVIEW'),
   [CANCEL]: getTranslation('GENERAL.CANCEL'),
   [SIGN]: getTranslation('SIGN'),
