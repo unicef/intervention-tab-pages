@@ -197,7 +197,7 @@ function SaveIndicatorMixin<T extends Constructor<LitElement>>(baseClass: T) {
       if (!indicator.baseline || indicator.baseline.v === '' || indicator.baseline.v === undefined) {
         indicator.baseline = {v: null, d: 1};
       }
-    
+
       if (indicator.indicator) {
         // is new non-cluster indic
         if (indicator.indicator.unit === 'number') {
