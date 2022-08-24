@@ -70,6 +70,9 @@ export interface CommonDataState {
   providedBy: LabelAndValue[];
 }
 
+export interface ActiveLanguageState {
+  activeLanguage: string;
+}
 export interface RootState {
   app: AppState;
   interventions: InterventionsState;
@@ -83,6 +86,7 @@ export interface RootState {
     endpoints: CommentsEndpoints;
   };
   uploadStatus: UploadStatusState;
+  activeLanguage: ActiveLanguageState;
 }
 
 export interface PartnerReportingRequirements {

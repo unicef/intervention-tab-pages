@@ -83,6 +83,7 @@ export class InterventionDates extends CommentsMixin(
                 id="intStart"
                 label=${translate(translatesMap.start)}
                 .value="${this.data.start}"
+                .language="${this.language}"
                 ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.start)}"
                 ?required="${this.permissions.required.start}"
                 error-message=${translate('SELECT_START_DATE')}
@@ -111,6 +112,7 @@ export class InterventionDates extends CommentsMixin(
                 id="intEnd"
                 label=${translate(translatesMap.end)}
                 .value="${this.data.end}"
+                .language="${this.language}"
                 ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.end)}"
                 ?required="${this.permissions.required.end}"
                 error-message=${translate('SELECT_END_DATE')}
@@ -170,6 +172,9 @@ export class InterventionDates extends CommentsMixin(
   @property({type: Object})
   permissions!: Permission<InterventionDatesPermissions>;
 
+  @property({type: String})
+  language = 'en';
+
   warningRequired = false;
 
   connectedCallback() {
@@ -191,6 +196,7 @@ export class InterventionDates extends CommentsMixin(
 
     this.checkIntervDateConsistency(this.data, state.interventions.current.frs_details);
     super.stateChanged(state);
+    this.language = state.activeLanguage.activeLanguage;
   }
 
   checkIntervDateConsistency(data: ProgrammeDocDates, frs_details: FrsDetails) {
