@@ -21,7 +21,7 @@ import {isUnicefUser} from '../../common/selectors';
 import {AnyObject, AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {Intervention, FrsDetails, Fr} from '@unicef-polymer/etools-types';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
@@ -352,7 +352,7 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
     let toastMsg =
       responseErr && responseErr.error
         ? responseErr.error
-        : (translate('ADD_UPDATE_FR_NUMBER_ERR') as unknown as string);
+        : (getTranslation('ADD_UPDATE_FR_NUMBER_ERR') as unknown as string);
     if (toastMsg.includes('HTTPConnection')) {
       const index = toastMsg.indexOf('HTTPConnection');
       toastMsg = toastMsg.slice(0, index);
