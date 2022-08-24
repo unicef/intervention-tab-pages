@@ -78,6 +78,7 @@ export class EditHruDialog extends connectStore(LitElement) {
             id="dtPickerStDate"
             label=${translate('SELECT_START_DATE')}
             .value="${this.repStartDate}"
+            .language="${this.language}"
             required
             min-date="${this.interventionStart}"
             auto-validate
@@ -146,6 +147,9 @@ export class EditHruDialog extends connectStore(LitElement) {
   @property({type: Boolean})
   datePickerOpen = false;
 
+  @property({type: String})
+  language = 'en';
+
   _interventionId!: number;
 
   set interventionId(interventionId) {
@@ -158,11 +162,12 @@ export class EditHruDialog extends connectStore(LitElement) {
   }
 
   set dialogData(data: any) {
-    const {hruData, selectedDate, interventionId, interventionStart}: any = data;
+    const {hruData, selectedDate, interventionId, interventionStart, language}: any = data;
     this.hruData = hruData;
     this.selectedDate = selectedDate;
     this.interventionId = interventionId;
     this.interventionStart = interventionStart;
+    this.language = language;
 
     this._setDefaultStartDate();
   }

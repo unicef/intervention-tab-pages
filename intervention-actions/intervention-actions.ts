@@ -306,7 +306,8 @@ export class InterventionActions extends LitElement {
     return openDialog({
       dialog: 'pd-termination',
       dialogData: {
-        interventionId: this.interventionPartial.id
+        interventionId: this.interventionPartial.id,
+        language: getStore().getState().activeLanguage.activeLanguage
       }
     }).then(({confirmed, response}) => {
       if (!confirmed || !response) {

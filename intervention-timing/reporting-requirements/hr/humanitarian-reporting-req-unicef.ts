@@ -12,6 +12,7 @@ import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/b
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import PaginationMixin from '@unicef-polymer/etools-modules-common/dist/mixins/pagination-mixin';
 import cloneDeep from 'lodash-es/cloneDeep';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 
 /**
  * @customElement
@@ -140,7 +141,8 @@ export class HumanitarianReportingReqUnicef extends PaginationMixin(ReportingReq
         hruData: cloneDeep(hruData),
         selectedDate: '',
         interventionId: this.interventionId,
-        interventionStart: this.interventionStart
+        interventionStart: this.interventionStart,
+        language: getStore().getState().activeLanguage.activeLanguage
       }
     }).then(({confirmed, response}) => {
       if (!confirmed || !response) {

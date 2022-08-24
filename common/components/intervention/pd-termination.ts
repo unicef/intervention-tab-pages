@@ -60,6 +60,7 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
             id="terminationDate"
             label="Termination Date"
             .value="${this.termination.date}"
+            .language="${this.language}"
             max-date="${this._getMaxDate()}"
             error-message="Please select termination date"
             auto-validate
@@ -124,12 +125,15 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
   @property()
   savingInProcess = false;
 
+  @property({type: String})
+  language = 'en';
+
   set dialogData(data: AnyObject) {
     if (!data) {
       return;
     }
-    const {interventionId} = data;
-    this.interventionId = interventionId;
+    this.interventionId = data.interventionId;
+    this.language = data.language;
   }
 
   warnMessages: string[] = ['Once you hit save, the PD/SPD will be Terminated and this action can not be reversed'];

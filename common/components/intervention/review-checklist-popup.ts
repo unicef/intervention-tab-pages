@@ -62,7 +62,8 @@ export class ReviewChecklistPopup extends LitElement {
       `
     ];
   }
-
+  @property({type: String})
+  language = 'en';
   @property() review: Partial<InterventionReview> = {};
   @property() isOverallReview = false;
   @property() approvePopup = false;
@@ -84,6 +85,7 @@ export class ReviewChecklistPopup extends LitElement {
     this.review = review ? cloneDeep(this.originalReview) : {overall_approval: true};
     this.approvePopup = data.approvePopup;
     this.rejectPopup = data.rejectPopup;
+    this.language = getStore().getState().activeLanguage.activeLanguage;
   }
 
   protected render(): TemplateResult {
