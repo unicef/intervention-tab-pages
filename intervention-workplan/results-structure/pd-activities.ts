@@ -35,6 +35,12 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
   @property({type: Boolean})
   readonly!: boolean;
 
+  @property({type: Boolean})
+  inAmendment!: boolean;
+
+  @property({type: String})
+  interventionStatus!: string;
+
   interventionId!: number;
   pdOutputId!: number;
   quarters!: InterventionQuarter[];
@@ -138,8 +144,16 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                             ${this.readonly ? translate('VIEW') : translate('EDIT')}
                           </div>
                           <div
+                            class="action"
+                            ?hidden="${!this._canDeactivate(activity)}"
+                            @click="${() => this.openDeactivationDialog(String(activity.id))}"
+                          >
+                            <iron-icon icon="icons:block"></iron-icon>
+                            ${translate('DEACTIVATE')}
+                          </div>
+                          <div
                             class="action delete-action"
-                            ?hidden="${this.readonly}"
+                            ?hidden="${!this._canDelete()}"
                             @click="${() => this.openDeleteDialog(String(activity.id))}"
                           >
                             <iron-icon icon="delete"></iron-icon>
@@ -188,6 +202,30 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
     row.detailsOpened = true;
   }
 
+  _canDelete() {
+    if (this.inAmendment) {
+      return false;
+    }
+    if ((this.interventionStatus === 'draft' || this.interventionStatus === 'development') && !this.readonly) {
+      return true;
+    }
+    return false;
+  }
+
+  _canDeactivate(activity: InterventionActivity): boolean {
+    if (this.inAmendment && activity.is_active && !this.readonly) {
+      return true;
+    }
+
+    if (this.interventionStatus === 'draft' || this.interventionStatus === 'development') {
+      return false;
+    }
+    if (activity.is_active && !this.readonly) {
+      return true;
+    }
+    return false;
+  }
+
   openDialog(activity?: InterventionActivity, readonly?: boolean): void {
     openDialog<any>({
       dialog: 'activity-data-dialog',
@@ -227,6 +265,43 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
     sendRequest({
       method: 'DELETE',
       endpoint: endpoint
+    })
+      .then(() => {
+        getStore().dispatch<AsyncAction>(getIntervention());
+      })
+      .catch((err: any) => {
+        fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
+      });
+  }
+
+  async openDeactivationDialog(activityId: string) {
+    const confirmed = await openDialog({
+      dialog: 'are-you-sure',
+      dialogData: {
+        content: translate('DEACTIVATE_PROMPT') as unknown as string,
+        confirmBtnText: translate('DEACTIVATE') as unknown as string
+      }
+    }).then(({confirmed}) => {
+      return confirmed;
+    });
+
+    if (confirmed) {
+      this.deactivateActivity(activityId);
+    }
+  }
+
+  deactivateActivity(activityId: string) {
+    const endpoint = getEndpoint(interventionEndpoints.pdActivityDetails, {
+      activityId: activityId,
+      interventionId: this.interventionId,
+      pdOutputId: this.pdOutputId
+    });
+    sendRequest({
+      method: 'PATCH',
+      endpoint: endpoint,
+      body: {
+        is_active: false
+      }
     })
       .then(() => {
         getStore().dispatch<AsyncAction>(getIntervention());

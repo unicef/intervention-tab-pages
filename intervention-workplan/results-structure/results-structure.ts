@@ -245,11 +245,13 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                       <pd-activities
                         .activities="${pdOutput.activities}"
                         .interventionId="${this.interventionId}"
+                        .interventionStatus="${this.interventionStatus}"
                         .pdOutputId="${pdOutput.id}"
                         .quarters="${this.quarters}"
                         ?hidden="${!this.showActivities}"
                         .readonly="${!this.permissions.edit.result_links || this.commentMode}"
                         .currency="${this.intervention.planned_budget.currency}"
+                        .inAmendment="${this.intervention.in_amendment}"
                       ></pd-activities>
                       <pd-indicators
                         ?hidden="${!this.showIndicators}"
