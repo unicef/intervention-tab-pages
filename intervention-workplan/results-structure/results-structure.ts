@@ -246,6 +246,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                         .activities="${pdOutput.activities}"
                         .interventionId="${this.interventionId}"
                         .interventionStatus="${this.interventionStatus}"
+                        .inAmendmentDate="${this.intervention.in_amendment_date}"
                         .pdOutputId="${pdOutput.id}"
                         .quarters="${this.quarters}"
                         ?hidden="${!this.showActivities}"
@@ -260,6 +261,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                         .readonly="${!this.permissions.edit.result_links || this.commentMode}"
                         .showInactiveIndicators="${this.showInactiveIndicators}"
                         .inAmendment="${this.intervention.in_amendment}"
+                        .inAmendmentDate="${this.intervention.in_amendment_date}"
                       ></pd-indicators>
                     </div>
                   </etools-data-table-row>

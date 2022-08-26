@@ -23,9 +23,11 @@ import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-inpu
 import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
 import {EtoolsDataTableRow} from '@unicef-polymer/etools-data-table/etools-data-table-row';
 import {TruncateMixin} from '../../common/mixins/truncate.mixin';
+import {convertDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
+import {ActivitiesActionsMixin} from '../../common/mixins/activities-actions-mixin';
 
 @customElement('pd-activities')
-export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
+export class PdActivities extends ActivitiesActionsMixin(CommentsMixin(TruncateMixin(LitElement))) {
   @property({type: String})
   currency = '';
 
@@ -37,6 +39,9 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
 
   @property({type: Boolean})
   inAmendment!: boolean;
+
+  @property({type: String})
+  inAmendmentDate!: string;
 
   @property({type: String})
   interventionStatus!: string;
@@ -153,7 +158,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                           </div>
                           <div
                             class="action delete-action"
-                            ?hidden="${!this._canDelete()}"
+                            ?hidden="${!this._canDelete(activity)}"
                             @click="${() => this.openDeleteDialog(String(activity.id))}"
                           >
                             <iron-icon icon="delete"></iron-icon>
@@ -202,8 +207,12 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
     row.detailsOpened = true;
   }
 
-  _canDelete() {
+  _canDelete(activity: InterventionActivity) {
     if (this.inAmendment) {
+      // if created during Amedment , it can be deleted, otherwise just deactivated
+      if (convertDate(activity.created, true)! >= convertDate(this.inAmendmentDate, true)!) {
+        return true;
+      }
       return false;
     }
     if ((this.interventionStatus === 'draft' || this.interventionStatus === 'development') && !this.readonly) {
@@ -213,7 +222,12 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
   }
 
   _canDeactivate(activity: InterventionActivity): boolean {
-    if (this.inAmendment && activity.is_active && !this.readonly) {
+    if (
+      this.inAmendment &&
+      activity.is_active &&
+      !this.readonly &&
+      convertDate(activity.created, true)! <= convertDate(this.inAmendmentDate, true)!
+    ) {
       return true;
     }
 
@@ -252,33 +266,15 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
     });
 
     if (confirmed) {
-      this.deleteActivity(activityId);
+      this.deleteActivity(activityId, this.pdOutputId, this.interventionId);
     }
-  }
-
-  deleteActivity(activityId: string) {
-    const endpoint = getEndpoint(interventionEndpoints.pdActivityDetails, {
-      activityId: activityId,
-      interventionId: this.interventionId,
-      pdOutputId: this.pdOutputId
-    });
-    sendRequest({
-      method: 'DELETE',
-      endpoint: endpoint
-    })
-      .then(() => {
-        getStore().dispatch<AsyncAction>(getIntervention());
-      })
-      .catch((err: any) => {
-        fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
-      });
   }
 
   async openDeactivationDialog(activityId: string) {
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
-        content: translate('DEACTIVATE_PROMPT') as unknown as string,
+        content: translate('DEACTIVATE_ACTIVITY_PROMPT') as unknown as string,
         confirmBtnText: translate('DEACTIVATE') as unknown as string
       }
     }).then(({confirmed}) => {
@@ -286,29 +282,8 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
     });
 
     if (confirmed) {
-      this.deactivateActivity(activityId);
+      this.deactivateActivity(Number(activityId), this.pdOutputId, this.interventionId);
     }
-  }
-
-  deactivateActivity(activityId: string) {
-    const endpoint = getEndpoint(interventionEndpoints.pdActivityDetails, {
-      activityId: activityId,
-      interventionId: this.interventionId,
-      pdOutputId: this.pdOutputId
-    });
-    sendRequest({
-      method: 'PATCH',
-      endpoint: endpoint,
-      body: {
-        is_active: false
-      }
-    })
-      .then(() => {
-        getStore().dispatch<AsyncAction>(getIntervention());
-      })
-      .catch((err: any) => {
-        fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
-      });
   }
 
   static get styles(): CSSResultArray {

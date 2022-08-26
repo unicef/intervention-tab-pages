@@ -12,6 +12,7 @@ import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount
 import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
 import {getIndicatorDisplayType} from '../../utils/utils';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
+import {convertDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
 
 @customElement('pd-indicator')
 export class PdIndicator extends CommentsMixin(LitElement) {
@@ -24,6 +25,8 @@ export class PdIndicator extends CommentsMixin(LitElement) {
   @property({type: Boolean}) inAmendment!: boolean;
   @property({type: Boolean}) detailsOpened = false;
   @property({type: Number}) index?: number;
+  @property({type: String})
+  inAmendmentDate!: string;
 
   render() {
     return html`
@@ -89,7 +92,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
                 </div>
                 <div
                   class="action"
-                  ?hidden="${!this._canDeactivate()}"
+                  ?hidden="${!this._canDeactivate(this.indicator)}"
                   @click="${() => this.openDeactivationDialog(String(this.indicator.id))}"
                 >
                   <iron-icon icon="icons:block"></iron-icon>
@@ -97,7 +100,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
                 </div>
                 <div
                   class="action delete-action"
-                  ?hidden="${!this._canDelete()}"
+                  ?hidden="${!this._canDelete(this.indicator)}"
                   @click="${() => this.openDeletionDialog(String(this.indicator.id))}"
                 >
                   <iron-icon icon="delete"></iron-icon>
@@ -205,8 +208,21 @@ export class PdIndicator extends CommentsMixin(LitElement) {
     return item.d && parseInt(item.d) !== 1 && parseInt(item.d) !== 100;
   }
 
-  _canDeactivate(): boolean {
-    if (this.inAmendment && this.indicator.is_active && !this.readonly) {
+  _canEdit() {
+    return this.indicator.is_active && !this.readonly;
+  }
+
+  _canView() {
+    return this.readonly || !this.indicator.is_active;
+  }
+
+  _canDeactivate(indicator: Indicator): boolean {
+    if (
+      this.inAmendment &&
+      this.indicator.is_active &&
+      !this.readonly &&
+      convertDate(indicator.created, true)! <= convertDate(this.inAmendmentDate, true)!
+    ) {
       return true;
     }
 
@@ -219,20 +235,14 @@ export class PdIndicator extends CommentsMixin(LitElement) {
     return false;
   }
 
-  _canEdit() {
-    return this.indicator.is_active && !this.readonly;
-  }
-
-  _canView() {
-    return this.readonly || !this.indicator.is_active;
-  }
-
-  _canDelete(): boolean {
+  _canDelete(indicator: Indicator): boolean {
     if (this.inAmendment) {
-      // only Deactivate should be av. in amendment
+      // if created during Amedment , it can be deleted, otherwise just deactivated
+      if (convertDate(indicator.created, true)! >= convertDate(this.inAmendmentDate, true)!) {
+        return true;
+      }
       return false;
     }
-    // TODO: refactor this after status draft comes as development
     if ((this.interventionStatus === 'draft' || this.interventionStatus === 'development') && !this.readonly) {
       return true;
     }
