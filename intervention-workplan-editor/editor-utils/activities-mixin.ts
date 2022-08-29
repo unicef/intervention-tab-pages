@@ -14,15 +14,19 @@ import {getIntervention, updateCurrentIntervention} from '../../common/actions/i
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {repeat} from 'lit-html/directives/repeat';
-import {ExpectedResultExtended, InterventionActivityExtended, ResultLinkLowerResultExtended} from './types';
+import {
+  ExpectedResultExtended,
+  InterventionActivityExtended,
+  ResultLinkLowerResultExtended
+} from '../../common/types/editor-page-types';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import {translate} from 'lit-translate/directives/translate';
 import {TruncateMixin} from '../../common/mixins/truncate.mixin';
 import {getTotalCashFormatted} from '../../common/components/activity/get-total.helper';
-import {ActivitiesActionsMixin} from '../../common/mixins/activities-actions-mixin';
+import {ActivitiesIndicatorsMixin} from '../../common/mixins/activities-indicators-mixin';
 
 export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T) {
-  return class ActivitiesClass extends ActivitiesActionsMixin(ActivityItemsMixin(TruncateMixin(baseClass))) {
+  return class ActivitiesClass extends ActivitiesIndicatorsMixin(ActivityItemsMixin(TruncateMixin(baseClass))) {
     // @ts-ignore
     @property({type: Array})
     originalResultStructureDetails!: ExpectedResultExtended[];
@@ -240,13 +244,28 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     </paper-tooltip>
                     <paper-icon-button
                       icon="delete"
-                      ?hidden="${activity.inEditMode || !this.permissions.edit.result_links}"
-                      @click="${() => this.openDeleteDialog(activity.id, pdOutput.id)}"
+                      ?hidden="${activity.inEditMode ||
+                      this._canDelete(
+                        activity,
+                        this.permissions.edit.result_links,
+                        this.intervention.status,
+                        this.intervention.in_amendment,
+                        this.intervention.in_amendment_date
+                      )}"
+                      @click="${() => this.openDeleteActivityDialog(activity.id, pdOutput.id, this.intervention.id!)}"
                     ></paper-icon-button>
                     <paper-icon-button
                       icon="block"
-                      ?hidden="${activity.inEditMode || !this.permissions.edit.result_links}"
-                      @click="${() => this.openDeactivateDialog(activity.id, pdOutput.id)}"
+                      ?hidden="${activity.inEditMode ||
+                      !this._canDeactivate(
+                        activity,
+                        this.permissions.edit.result_links!,
+                        this.intervention.status,
+                        this.intervention.in_amendment,
+                        this.intervention.in_amendment_date
+                      )}"
+                      @click="${() =>
+                        this.openActivityDeactivationDialog(activity.id, pdOutput.id, this.intervention.id!)}"
                     ></paper-icon-button>
                   </div>
                   <div
@@ -405,38 +424,6 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       return activityId
         ? getEndpoint(interventionEndpoints.pdActivityDetails, {activityId, pdOutputId, interventionId})
         : getEndpoint(interventionEndpoints.pdActivities, {pdOutputId, interventionId});
-    }
-
-    async openDeleteDialog(activityId: number, pdOutputId: number) {
-      const confirmed = await openDialog({
-        dialog: 'are-you-sure',
-        dialogData: {
-          content: translate('DELETE_ACTIVITY_PROMPT') as unknown as string,
-          confirmBtnText: translate('GENERAL.DELETE') as unknown as string
-        }
-      }).then(({confirmed}) => {
-        return confirmed;
-      });
-
-      if (confirmed) {
-        this.deleteActivity(activityId, pdOutputId, this.intervention.id);
-      }
-    }
-
-    async openDeactivateDialog(activityId: number, pdOutputId: number) {
-      const confirmed = await openDialog({
-        dialog: 'are-you-sure',
-        dialogData: {
-          content: translate('DEACTIVATE_ACTIVITY_PROMPT') as unknown as string,
-          confirmBtnText: translate('DEACTIVATE') as unknown as string
-        }
-      }).then(({confirmed}) => {
-        return confirmed;
-      });
-
-      if (confirmed) {
-        this.deactivateActivity(activityId, pdOutputId, this.intervention.id!);
-      }
     }
   };
 }

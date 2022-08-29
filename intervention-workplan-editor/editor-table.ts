@@ -29,7 +29,7 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
 import {ActivitiesMixin} from './editor-utils/activities-mixin';
 import {ProgrammeManagementMixin} from './editor-utils/programme-management-mixin';
 import {CommentsMixin} from '../common/components/comments/comments-mixin';
-import {ExpectedResultExtended, ResultLinkLowerResultExtended} from './editor-utils/types';
+import {ExpectedResultExtended, ResultLinkLowerResultExtended} from '../common/types/editor-page-types';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import {translate} from 'lit-translate';
 import {AsyncAction, IdAndName} from '@unicef-polymer/etools-types';

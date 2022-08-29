@@ -8,26 +8,18 @@ import './modals/activity-dialog/activity-data-dialog';
 import '../../intervention-workplan-editor/time-intervals/time-intervals';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {sendRequest} from '@unicef-polymer/etools-ajax';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
-import {getIntervention} from '../../common/actions/interventions';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
-import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AsyncAction, InterventionActivity, InterventionQuarter} from '@unicef-polymer/etools-types';
+import {InterventionActivity, InterventionQuarter} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
 import {EtoolsDataTableRow} from '@unicef-polymer/etools-data-table/etools-data-table-row';
 import {TruncateMixin} from '../../common/mixins/truncate.mixin';
-import {convertDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
-import {ActivitiesActionsMixin} from '../../common/mixins/activities-actions-mixin';
+import {ActivitiesIndicatorsMixin} from '../../common/mixins/activities-indicators-mixin';
 
 @customElement('pd-activities')
-export class PdActivities extends ActivitiesActionsMixin(CommentsMixin(TruncateMixin(LitElement))) {
+export class PdActivities extends ActivitiesIndicatorsMixin(CommentsMixin(TruncateMixin(LitElement))) {
   @property({type: String})
   currency = '';
 
@@ -150,16 +142,30 @@ export class PdActivities extends ActivitiesActionsMixin(CommentsMixin(TruncateM
                           </div>
                           <div
                             class="action"
-                            ?hidden="${!this._canDeactivate(activity)}"
-                            @click="${() => this.openDeactivationDialog(String(activity.id))}"
+                            ?hidden="${!this._canDeactivate(
+                              activity,
+                              this.readonly,
+                              this.interventionStatus,
+                              this.inAmendment,
+                              this.inAmendmentDate
+                            )}"
+                            @click="${() =>
+                              this.openActivityDeactivationDialog(activity.id, this.pdOutputId, this.interventionId)}"
                           >
                             <iron-icon icon="icons:block"></iron-icon>
                             ${translate('DEACTIVATE')}
                           </div>
                           <div
                             class="action delete-action"
-                            ?hidden="${!this._canDelete(activity)}"
-                            @click="${() => this.openDeleteDialog(String(activity.id))}"
+                            ?hidden="${!this._canDelete(
+                              activity,
+                              this.readonly,
+                              this.interventionStatus,
+                              this.inAmendment,
+                              this.inAmendmentDate
+                            )}"
+                            @click="${() =>
+                              this.openDeleteActivityDialog(activity.id, this.pdOutputId, this.interventionId)}"
                           >
                             <iron-icon icon="delete"></iron-icon>
                             ${translate('DELETE')}
@@ -207,39 +213,6 @@ export class PdActivities extends ActivitiesActionsMixin(CommentsMixin(TruncateM
     row.detailsOpened = true;
   }
 
-  _canDelete(activity: InterventionActivity) {
-    if (this.inAmendment) {
-      // if created during Amedment , it can be deleted, otherwise just deactivated
-      if (convertDate(activity.created, true)! >= convertDate(this.inAmendmentDate, true)!) {
-        return true;
-      }
-      return false;
-    }
-    if ((this.interventionStatus === 'draft' || this.interventionStatus === 'development') && !this.readonly) {
-      return true;
-    }
-    return false;
-  }
-
-  _canDeactivate(activity: InterventionActivity): boolean {
-    if (
-      this.inAmendment &&
-      activity.is_active &&
-      !this.readonly &&
-      convertDate(activity.created, true)! <= convertDate(this.inAmendmentDate, true)!
-    ) {
-      return true;
-    }
-
-    if (this.interventionStatus === 'draft' || this.interventionStatus === 'development') {
-      return false;
-    }
-    if (activity.is_active && !this.readonly) {
-      return true;
-    }
-    return false;
-  }
-
   openDialog(activity?: InterventionActivity, readonly?: boolean): void {
     openDialog<any>({
       dialog: 'activity-data-dialog',
@@ -252,38 +225,6 @@ export class PdActivities extends ActivitiesActionsMixin(CommentsMixin(TruncateM
         currency: this.currency
       }
     });
-  }
-
-  async openDeleteDialog(activityId: string) {
-    const confirmed = await openDialog({
-      dialog: 'are-you-sure',
-      dialogData: {
-        content: translate('DELETE_ACTIVITY_PROMPT') as unknown as string,
-        confirmBtnText: translate('GENERAL.DELETE') as unknown as string
-      }
-    }).then(({confirmed}) => {
-      return confirmed;
-    });
-
-    if (confirmed) {
-      this.deleteActivity(activityId, this.pdOutputId, this.interventionId);
-    }
-  }
-
-  async openDeactivationDialog(activityId: string) {
-    const confirmed = await openDialog({
-      dialog: 'are-you-sure',
-      dialogData: {
-        content: translate('DEACTIVATE_ACTIVITY_PROMPT') as unknown as string,
-        confirmBtnText: translate('DEACTIVATE') as unknown as string
-      }
-    }).then(({confirmed}) => {
-      return confirmed;
-    });
-
-    if (confirmed) {
-      this.deactivateActivity(Number(activityId), this.pdOutputId, this.interventionId);
-    }
   }
 
   static get styles(): CSSResultArray {

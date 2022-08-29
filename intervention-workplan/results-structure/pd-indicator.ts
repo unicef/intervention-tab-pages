@@ -13,9 +13,10 @@ import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.s
 import {getIndicatorDisplayType} from '../../utils/utils';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import {convertDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
+import {ActivitiesIndicatorsMixin} from '../../common/mixins/activities-indicators-mixin';
 
 @customElement('pd-indicator')
-export class PdIndicator extends CommentsMixin(LitElement) {
+export class PdIndicator extends ActivitiesIndicatorsMixin(CommentsMixin(LitElement)) {
   @property() private disaggregations: Disaggregation[] = [];
   @property({type: Array}) indicator!: Indicator;
   @property({type: Boolean}) readonly!: boolean;
@@ -92,7 +93,13 @@ export class PdIndicator extends CommentsMixin(LitElement) {
                 </div>
                 <div
                   class="action"
-                  ?hidden="${!this._canDeactivate(this.indicator)}"
+                  ?hidden="${!this._canDeactivate(
+                    this.indicator,
+                    this.readonly,
+                    this.interventionStatus,
+                    this.inAmendment,
+                    this.inAmendmentDate
+                  )}"
                   @click="${() => this.openDeactivationDialog(String(this.indicator.id))}"
                 >
                   <iron-icon icon="icons:block"></iron-icon>
@@ -100,7 +107,13 @@ export class PdIndicator extends CommentsMixin(LitElement) {
                 </div>
                 <div
                   class="action delete-action"
-                  ?hidden="${!this._canDelete(this.indicator)}"
+                  ?hidden="${!this._canDelete(
+                    this.indicator,
+                    this.readonly,
+                    this.interventionStatus,
+                    this.inAmendment,
+                    this.inAmendmentDate
+                  )}"
                   @click="${() => this.openDeletionDialog(String(this.indicator.id))}"
                 >
                   <iron-icon icon="delete"></iron-icon>
@@ -216,38 +229,6 @@ export class PdIndicator extends CommentsMixin(LitElement) {
     return this.readonly || !this.indicator.is_active;
   }
 
-  _canDeactivate(indicator: Indicator): boolean {
-    if (
-      this.inAmendment &&
-      this.indicator.is_active &&
-      !this.readonly &&
-      convertDate(indicator.created, true)! <= convertDate(this.inAmendmentDate, true)!
-    ) {
-      return true;
-    }
-
-    if (this.interventionStatus === 'draft' || this.interventionStatus === 'development') {
-      return false;
-    }
-    if (this.indicator.is_active && !this.readonly) {
-      return true;
-    }
-    return false;
-  }
-
-  _canDelete(indicator: Indicator): boolean {
-    if (this.inAmendment) {
-      // if created during Amedment , it can be deleted, otherwise just deactivated
-      if (convertDate(indicator.created, true)! >= convertDate(this.inAmendmentDate, true)!) {
-        return true;
-      }
-      return false;
-    }
-    if ((this.interventionStatus === 'draft' || this.interventionStatus === 'development') && !this.readonly) {
-      return true;
-    }
-    return false;
-  }
   // language=css
   static get styles() {
     return [
