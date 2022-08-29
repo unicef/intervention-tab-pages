@@ -69,7 +69,7 @@ export function ActivitiesIndicatorsMixin<T extends Constructor<LitElement>>(bas
         if (!item.is_active) {
           return false;
         }
-        if (convertDate(item.created, true)! <= convertDate(inAmendmentDate, true)!) {
+        if (convertDate(item.created!, true)! <= convertDate(inAmendmentDate, true)!) {
           // Activities/Indicators created before amendment can only  be deactivated,
           // the ones created during amendment can be deleted
           return true;
@@ -100,7 +100,7 @@ export function ActivitiesIndicatorsMixin<T extends Constructor<LitElement>>(bas
       }
       if (inAmendment) {
         // if created during Amedment , it can be deleted, otherwise just deactivated
-        if (convertDate(item.created, true)! >= convertDate(inAmendmentDate, true)!) {
+        if (convertDate(item.created!, true)! >= convertDate(inAmendmentDate, true)!) {
           return true;
         }
         return false;
