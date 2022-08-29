@@ -12,11 +12,10 @@ import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount
 import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
 import {getIndicatorDisplayType} from '../../utils/utils';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
-import {convertDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
-import {ActivitiesIndicatorsMixin} from '../../common/mixins/activities-indicators-mixin';
+import {_canDeactivate, _canDelete} from '../../common/mixins/results-structure-common';
 
 @customElement('pd-indicator')
-export class PdIndicator extends ActivitiesIndicatorsMixin(CommentsMixin(LitElement)) {
+export class PdIndicator extends CommentsMixin(LitElement) {
   @property() private disaggregations: Disaggregation[] = [];
   @property({type: Array}) indicator!: Indicator;
   @property({type: Boolean}) readonly!: boolean;
@@ -93,7 +92,7 @@ export class PdIndicator extends ActivitiesIndicatorsMixin(CommentsMixin(LitElem
                 </div>
                 <div
                   class="action"
-                  ?hidden="${!this._canDeactivate(
+                  ?hidden="${!_canDeactivate(
                     this.indicator,
                     this.readonly,
                     this.interventionStatus,
@@ -107,7 +106,7 @@ export class PdIndicator extends ActivitiesIndicatorsMixin(CommentsMixin(LitElem
                 </div>
                 <div
                   class="action delete-action"
-                  ?hidden="${!this._canDelete(
+                  ?hidden="${!_canDelete(
                     this.indicator,
                     this.readonly,
                     this.interventionStatus,

@@ -1,7 +1,7 @@
 // @ts-ignore
 import {Constructor, html, LitElement, property} from 'lit-element';
 import {ifDefined} from 'lit-html/directives/if-defined.js';
-import {AsyncAction, InterventionQuarter} from '@unicef-polymer/etools-types';
+import {InterventionQuarter} from '@unicef-polymer/etools-types';
 import {Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
 import '../time-intervals/time-intervals';
 import {cloneDeep, isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
@@ -10,7 +10,7 @@ import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-c
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {getIntervention, updateCurrentIntervention} from '../../common/actions/interventions';
+import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {repeat} from 'lit-html/directives/repeat';
@@ -19,14 +19,18 @@ import {
   InterventionActivityExtended,
   ResultLinkLowerResultExtended
 } from '../../common/types/editor-page-types';
-import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import {translate} from 'lit-translate/directives/translate';
 import {TruncateMixin} from '../../common/mixins/truncate.mixin';
 import {getTotalCashFormatted} from '../../common/components/activity/get-total.helper';
-import {ActivitiesIndicatorsMixin} from '../../common/mixins/activities-indicators-mixin';
+import {
+  openActivityDeactivationDialog,
+  openDeleteActivityDialog,
+  _canDeactivate,
+  _canDelete
+} from '../../common/mixins/results-structure-common';
 
 export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T) {
-  return class ActivitiesClass extends ActivitiesIndicatorsMixin(ActivityItemsMixin(TruncateMixin(baseClass))) {
+  return class ActivitiesClass extends ActivityItemsMixin(TruncateMixin(baseClass)) {
     // @ts-ignore
     @property({type: Array})
     originalResultStructureDetails!: ExpectedResultExtended[];
@@ -245,27 +249,26 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     <paper-icon-button
                       icon="delete"
                       ?hidden="${activity.inEditMode ||
-                      this._canDelete(
-                        activity,
-                        this.permissions.edit.result_links,
-                        this.intervention.status,
-                        this.intervention.in_amendment,
-                        this.intervention.in_amendment_date
-                      )}"
-                      @click="${() => this.openDeleteActivityDialog(activity.id, pdOutput.id, this.intervention.id!)}"
-                    ></paper-icon-button>
-                    <paper-icon-button
-                      icon="block"
-                      ?hidden="${activity.inEditMode ||
-                      !this._canDeactivate(
+                      !_canDelete(
                         activity,
                         this.permissions.edit.result_links!,
                         this.intervention.status,
                         this.intervention.in_amendment,
                         this.intervention.in_amendment_date
                       )}"
-                      @click="${() =>
-                        this.openActivityDeactivationDialog(activity.id, pdOutput.id, this.intervention.id!)}"
+                      @click="${() => openDeleteActivityDialog(activity.id, pdOutput.id, this.intervention.id!)}"
+                    ></paper-icon-button>
+                    <paper-icon-button
+                      icon="block"
+                      ?hidden="${activity.inEditMode ||
+                      !_canDeactivate(
+                        activity,
+                        this.permissions.edit.result_links!,
+                        this.intervention.status,
+                        this.intervention.in_amendment,
+                        this.intervention.in_amendment_date
+                      )}"
+                      @click="${() => openActivityDeactivationDialog(activity.id, pdOutput.id, this.intervention.id!)}"
                     ></paper-icon-button>
                   </div>
                   <div

@@ -43,6 +43,7 @@ import '@polymer/paper-tooltip/paper-tooltip';
 /* eslint-disable max-len */
 import {selectProgrammeManagement} from '../intervention-workplan/effective-efficient-programme-mgmt/effectiveEfficientProgrammeMgmt.selectors';
 import {ActivitiesFocusMixin} from './editor-utils/activities-focus-mixin';
+import {_canDelete} from '../common/mixins/results-structure-common';
 @customElement('editor-table')
 // @ts-ignore
 export class EditorTable extends CommentsMixin(
@@ -407,7 +408,14 @@ export class EditorTable extends CommentsMixin(
                         </paper-tooltip>
                         <paper-icon-button
                           icon="delete"
-                          ?hidden="${pdOutput.inEditMode || !this.permissions?.edit.result_links}"
+                          ?hidden="${pdOutput.inEditMode ||
+                          !_canDelete(
+                            pdOutput,
+                            this.permissions?.edit.result_links!,
+                            this.intervention.status,
+                            this.intervention.in_amendment,
+                            this.intervention.in_amendment_date
+                          )}"
                           @click="${() => this.openDeletePdOutputDialog(pdOutput.id)}"
                         ></paper-icon-button>
                       </div>

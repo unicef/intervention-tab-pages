@@ -16,10 +16,15 @@ import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-inpu
 import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
 import {EtoolsDataTableRow} from '@unicef-polymer/etools-data-table/etools-data-table-row';
 import {TruncateMixin} from '../../common/mixins/truncate.mixin';
-import {ActivitiesIndicatorsMixin} from '../../common/mixins/activities-indicators-mixin';
+import {
+  openActivityDeactivationDialog,
+  openDeleteActivityDialog,
+  _canDeactivate,
+  _canDelete
+} from '../../common/mixins/results-structure-common';
 
 @customElement('pd-activities')
-export class PdActivities extends ActivitiesIndicatorsMixin(CommentsMixin(TruncateMixin(LitElement))) {
+export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
   @property({type: String})
   currency = '';
 
@@ -142,7 +147,7 @@ export class PdActivities extends ActivitiesIndicatorsMixin(CommentsMixin(Trunca
                           </div>
                           <div
                             class="action"
-                            ?hidden="${!this._canDeactivate(
+                            ?hidden="${!_canDeactivate(
                               activity,
                               this.readonly,
                               this.interventionStatus,
@@ -150,14 +155,14 @@ export class PdActivities extends ActivitiesIndicatorsMixin(CommentsMixin(Trunca
                               this.inAmendmentDate
                             )}"
                             @click="${() =>
-                              this.openActivityDeactivationDialog(activity.id, this.pdOutputId, this.interventionId)}"
+                              openActivityDeactivationDialog(activity.id, this.pdOutputId, this.interventionId)}"
                           >
                             <iron-icon icon="icons:block"></iron-icon>
                             ${translate('DEACTIVATE')}
                           </div>
                           <div
                             class="action delete-action"
-                            ?hidden="${!this._canDelete(
+                            ?hidden="${!_canDelete(
                               activity,
                               this.readonly,
                               this.interventionStatus,
@@ -165,7 +170,7 @@ export class PdActivities extends ActivitiesIndicatorsMixin(CommentsMixin(Trunca
                               this.inAmendmentDate
                             )}"
                             @click="${() =>
-                              this.openDeleteActivityDialog(activity.id, this.pdOutputId, this.interventionId)}"
+                              openDeleteActivityDialog(activity.id, this.pdOutputId, this.interventionId)}"
                           >
                             <iron-icon icon="delete"></iron-icon>
                             ${translate('DELETE')}

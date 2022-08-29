@@ -57,6 +57,7 @@ import {PdActivities} from './pd-activities';
 import {PdIndicators} from './pd-indicators';
 import {CpOutputLevel} from './cp-output-level';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {_canDelete} from '../../common/mixins/results-structure-common';
 
 /**
  * @customElement
@@ -236,6 +237,13 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                         ></paper-icon-button>
                         <paper-icon-button
                           icon="icons:delete"
+                          ?hidden="${!_canDelete(
+                            pdOutput,
+                            this.permissions.edit.result_links!,
+                            this.intervention.status,
+                            this.intervention.in_amendment,
+                            this.intervention.in_amendment_date
+                          )}"
                           @click="${() => this.openDeletePdOutputDialog(pdOutput.id)}"
                         ></paper-icon-button>
                       </div>
