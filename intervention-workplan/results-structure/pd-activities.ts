@@ -224,6 +224,10 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
       interventionId: this.interventionId,
       pdOutputId: this.pdOutputId
     });
+    fireEvent(this, 'global-loading', {
+      active: true,
+      loadingSource: 'interv-activity-remove'
+    });
     sendRequest({
       method: 'DELETE',
       endpoint: endpoint
@@ -233,7 +237,13 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
       })
       .catch((err: any) => {
         fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
-      });
+      })
+      .finally(() =>
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: 'interv-activity-remove'
+        })
+      );
   }
 
   static get styles(): CSSResultArray {

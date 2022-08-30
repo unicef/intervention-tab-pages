@@ -393,6 +393,10 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
   }
 
   deletePDOutputFromPD(lower_result_id: number) {
+    fireEvent(this, 'global-loading', {
+      active: true,
+      loadingSource: 'interv-pd-remove'
+    });
     const endpoint = getEndpoint(interventionEndpoints.lowerResultsDelete, {
       lower_result_id,
       intervention_id: this.interventionId
@@ -400,9 +404,14 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     _sendRequest({
       method: 'DELETE',
       endpoint: endpoint
-    }).then(() => {
-      getStore().dispatch<AsyncAction>(getIntervention());
-    });
+    })
+      .then(() => getStore().dispatch<AsyncAction>(getIntervention()))
+      .finally(() =>
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: 'interv-pd-remove'
+        })
+      );
   }
 
   openCpOutputDialog(resultLink?: ExpectedResult): void {

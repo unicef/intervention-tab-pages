@@ -261,6 +261,10 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
   }
 
   deleteIndicator(indicatorId: string) {
+    fireEvent(this, 'global-loading', {
+      active: true,
+      loadingSource: 'interv-indicator-remove'
+    });
     const endpoint = getEndpoint(interventionEndpoints.getEditDeleteIndicator, {
       id: indicatorId
     });
@@ -273,7 +277,13 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
       })
       .catch((err: any) => {
         fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
-      });
+      })
+      .finally(() =>
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: 'interv-indicator-remove'
+        })
+      );
   }
 
   getSectionAndCluster(sectionId: string | null, clusterName: string | null): string {
