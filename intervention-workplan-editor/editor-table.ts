@@ -411,7 +411,7 @@ export class EditorTable extends CommentsMixin(
                           ?hidden="${pdOutput.inEditMode ||
                           !_canDelete(
                             pdOutput,
-                            this.permissions?.edit.result_links!,
+                            !this.permissions?.edit.result_links!,
                             this.intervention.status,
                             this.intervention.in_amendment,
                             this.intervention.in_amendment_date
