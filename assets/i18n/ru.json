@@ -533,5 +533,6 @@
   "PLS_SELECT_SECTIONS_FIRST": "Сначала выберите секции ПД",
   "PLS_SELECT_LOCATIONS_FIRST": "Сначала выберите локации ПД",
   "PLS_SELECT_SECTIONS_AND_LOCATIONS_FIRST": "Сначала выберите секции и локации ПД",
-  "THIS_INDICATOR_IS_HIGH_FREQUENCY": "Это индикатор оперативного контроля"
+  "THIS_INDICATOR_IS_HIGH_FREQUENCY": "Это индикатор оперативного контроля",
+  "ACCEPT_AS_FINAL": "принять как окончательный"
 }
