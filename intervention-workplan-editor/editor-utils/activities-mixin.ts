@@ -251,7 +251,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                       ?hidden="${activity.inEditMode ||
                       !_canDelete(
                         activity,
-                        this.permissions.edit.result_links!,
+                        !this.permissions.edit.result_links!,
                         this.intervention.status,
                         this.intervention.in_amendment,
                         this.intervention.in_amendment_date
