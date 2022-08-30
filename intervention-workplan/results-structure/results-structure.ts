@@ -239,7 +239,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                           icon="icons:delete"
                           ?hidden="${!_canDelete(
                             pdOutput,
-                            this.permissions.edit.result_links!,
+                            !this.permissions.edit.result_links!,
                             this.intervention.status,
                             this.intervention.in_amendment,
                             this.intervention.in_amendment_date
