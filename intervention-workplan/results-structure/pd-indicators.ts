@@ -320,6 +320,9 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
         .table-row {
           padding-right: 10% !important;
         }
+        .table-row:not(.empty) {
+          min-height: 42px;
+        }
         etools-data-table-row::part(edt-list-row-collapse-wrapper) {
           border-bottom: none;
         }
