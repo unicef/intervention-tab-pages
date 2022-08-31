@@ -83,6 +83,7 @@ export interface RootState {
     endpoints: CommentsEndpoints;
   };
   uploadStatus: UploadStatusState;
+  activeLanguage: any;
 }
 
 export interface PartnerReportingRequirements {
