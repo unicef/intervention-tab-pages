@@ -52,7 +52,7 @@ function deleteActivity(activityId: number, pdOutputId: number, interventionId: 
 }
 
 export function _canDeactivate(
-  item: InterventionActivity | InterventionActivityExtended | Indicator,
+  item: InterventionActivity | InterventionActivityExtended | Indicator | ResultLinkLowerResult,
   readonly: boolean,
   interventionStatus: string,
   inAmendment: boolean,
