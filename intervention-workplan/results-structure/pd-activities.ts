@@ -8,21 +8,21 @@ import './modals/activity-dialog/activity-data-dialog';
 import '../../intervention-workplan-editor/time-intervals/time-intervals';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {sendRequest} from '@unicef-polymer/etools-ajax';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
-import {getIntervention} from '../../common/actions/interventions';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
-import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AsyncAction, InterventionActivity, InterventionQuarter} from '@unicef-polymer/etools-types';
+import {InterventionActivity, InterventionQuarter} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
 import {EtoolsDataTableRow} from '@unicef-polymer/etools-data-table/etools-data-table-row';
 import {TruncateMixin} from '../../common/mixins/truncate.mixin';
+import {
+  openActivityDeactivationDialog,
+  openDeleteActivityDialog,
+  _canDeactivate,
+  _canDelete
+} from '../../common/mixins/results-structure-common';
+import {isEmptyObject} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 
 @customElement('pd-activities')
 export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
@@ -34,6 +34,15 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
 
   @property({type: Boolean})
   readonly!: boolean;
+
+  @property({type: Boolean})
+  inAmendment!: boolean;
+
+  @property({type: String})
+  inAmendmentDate!: string;
+
+  @property({type: String})
+  interventionStatus!: string;
 
   interventionId!: number;
   pdOutputId!: number;
@@ -59,7 +68,10 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
           </etools-info-tooltip>
         </div>
         <div slot="row-data-details">
-          <div class="table-row table-head align-items-center" ?hidden="${this.readonly}">
+          <div
+            class="table-row table-head align-items-center"
+            ?hidden="${this.readonly || isEmptyObject(this.activities)}"
+          >
             <div class="flex-1 left-align layout-vertical">${translate('ACTIVITY_NAME')}</div>
             <div class="flex-1 secondary-cell center">${translate('TIME_PERIODS')}</div>
             <div class="flex-1 secondary-cell right">${translate('PARTNER_CASH')}</div>
@@ -138,9 +150,31 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                             ${this.readonly ? translate('VIEW') : translate('EDIT')}
                           </div>
                           <div
+                            class="action"
+                            ?hidden="${!_canDeactivate(
+                              activity,
+                              this.readonly,
+                              this.interventionStatus,
+                              this.inAmendment,
+                              this.inAmendmentDate
+                            )}"
+                            @click="${() =>
+                              openActivityDeactivationDialog(activity.id, this.pdOutputId, this.interventionId)}"
+                          >
+                            <iron-icon icon="icons:block"></iron-icon>
+                            ${translate('DEACTIVATE')}
+                          </div>
+                          <div
                             class="action delete-action"
-                            ?hidden="${this.readonly}"
-                            @click="${() => this.openDeleteDialog(String(activity.id))}"
+                            ?hidden="${!_canDelete(
+                              activity,
+                              this.readonly,
+                              this.interventionStatus,
+                              this.inAmendment,
+                              this.inAmendmentDate
+                            )}"
+                            @click="${() =>
+                              openDeleteActivityDialog(activity.id, this.pdOutputId, this.interventionId)}"
                           >
                             <iron-icon icon="delete"></iron-icon>
                             ${translate('DELETE')}
@@ -151,19 +185,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                   </div>
                 `
               )
-            : html`
-                <div class="table-row empty align-items-center">
-                  ${this.readonly
-                    ? translate('THERE_ARE_NO_PD_ACTIVITIES')
-                    : html`
-                        <div class="flex-1 left-align layout-vertical">-</div>
-                        <div class="flex-1 secondary-cell center">-</div>
-                        <div class="flex-1 secondary-cell right">-</div>
-                        <div class="flex-1 secondary-cell right">-</div>
-                        <div class="flex-1 secondary-cell right">-</div>
-                      `}
-                </div>
-              `}
+            : html` <div class="table-row empty center-align">${translate('THERE_ARE_NO_PD_ACTIVITIES')}</div> `}
         </div>
       </etools-data-table-row>
     `;
@@ -200,50 +222,6 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
         currency: this.currency
       }
     });
-  }
-
-  async openDeleteDialog(activityId: string) {
-    const confirmed = await openDialog({
-      dialog: 'are-you-sure',
-      dialogData: {
-        content: translate('DELETE_ACTIVITY_PROMPT') as unknown as string,
-        confirmBtnText: translate('GENERAL.DELETE') as unknown as string
-      }
-    }).then(({confirmed}) => {
-      return confirmed;
-    });
-
-    if (confirmed) {
-      this.deleteActivity(activityId);
-    }
-  }
-
-  deleteActivity(activityId: string) {
-    const endpoint = getEndpoint(interventionEndpoints.pdActivityDetails, {
-      activityId: activityId,
-      interventionId: this.interventionId,
-      pdOutputId: this.pdOutputId
-    });
-    fireEvent(this, 'global-loading', {
-      active: true,
-      loadingSource: 'interv-activity-remove'
-    });
-    sendRequest({
-      method: 'DELETE',
-      endpoint: endpoint
-    })
-      .then(() => {
-        getStore().dispatch<AsyncAction>(getIntervention());
-      })
-      .catch((err: any) => {
-        fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
-      })
-      .finally(() =>
-        fireEvent(this, 'global-loading', {
-          active: false,
-          loadingSource: 'interv-activity-remove'
-        })
-      );
   }
 
   static get styles(): CSSResultArray {

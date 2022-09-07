@@ -57,6 +57,7 @@ import {PdActivities} from './pd-activities';
 import {PdIndicators} from './pd-indicators';
 import {CpOutputLevel} from './cp-output-level';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {_canDelete} from '../../common/mixins/results-structure-common';
 
 /**
  * @customElement
@@ -236,6 +237,13 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                         ></paper-icon-button>
                         <paper-icon-button
                           icon="icons:delete"
+                          ?hidden="${!_canDelete(
+                            pdOutput,
+                            !this.permissions.edit.result_links!,
+                            this.intervention.status,
+                            this.intervention.in_amendment,
+                            this.intervention.in_amendment_date
+                          )}"
                           @click="${() => this.openDeletePdOutputDialog(pdOutput.id)}"
                         ></paper-icon-button>
                       </div>
@@ -245,11 +253,14 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                       <pd-activities
                         .activities="${pdOutput.activities}"
                         .interventionId="${this.interventionId}"
+                        .interventionStatus="${this.interventionStatus}"
+                        .inAmendmentDate="${this.intervention.in_amendment_date}"
                         .pdOutputId="${pdOutput.id}"
                         .quarters="${this.quarters}"
                         ?hidden="${!this.showActivities}"
                         .readonly="${!this.permissions.edit.result_links || this.commentMode}"
                         .currency="${this.intervention.planned_budget.currency}"
+                        .inAmendment="${this.intervention.in_amendment}"
                       ></pd-activities>
                       <pd-indicators
                         ?hidden="${!this.showIndicators}"
@@ -258,6 +269,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                         .readonly="${!this.permissions.edit.result_links || this.commentMode}"
                         .showInactiveIndicators="${this.showInactiveIndicators}"
                         .inAmendment="${this.intervention.in_amendment}"
+                        .inAmendmentDate="${this.intervention.in_amendment_date}"
                       ></pd-indicators>
                     </div>
                   </etools-data-table-row>

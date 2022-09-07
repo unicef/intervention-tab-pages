@@ -1,7 +1,7 @@
 // @ts-ignore
 import {Constructor, html, LitElement, property} from 'lit-element';
 import {ifDefined} from 'lit-html/directives/if-defined.js';
-import {AsyncAction, InterventionQuarter} from '@unicef-polymer/etools-types';
+import {InterventionQuarter} from '@unicef-polymer/etools-types';
 import {Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
 import '../time-intervals/time-intervals';
 import {cloneDeep, isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
@@ -10,15 +10,24 @@ import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-c
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {getIntervention, updateCurrentIntervention} from '../../common/actions/interventions';
+import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {repeat} from 'lit-html/directives/repeat';
-import {ExpectedResultExtended, InterventionActivityExtended, ResultLinkLowerResultExtended} from './types';
-import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {
+  ExpectedResultExtended,
+  InterventionActivityExtended,
+  ResultLinkLowerResultExtended
+} from '../../common/types/editor-page-types';
 import {translate} from 'lit-translate/directives/translate';
 import {TruncateMixin} from '../../common/mixins/truncate.mixin';
 import {getTotalCashFormatted} from '../../common/components/activity/get-total.helper';
+import {
+  openActivityDeactivationDialog,
+  openDeleteActivityDialog,
+  _canDeactivate,
+  _canDelete
+} from '../../common/mixins/results-structure-common';
 
 export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T) {
   return class ActivitiesClass extends ActivityItemsMixin(TruncateMixin(baseClass)) {
@@ -239,8 +248,27 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     </paper-tooltip>
                     <paper-icon-button
                       icon="delete"
-                      ?hidden="${activity.inEditMode || !this.permissions.edit.result_links}"
-                      @click="${() => this.openDeleteDialog(activity.id, pdOutput.id)}"
+                      ?hidden="${activity.inEditMode ||
+                      !_canDelete(
+                        activity,
+                        !this.permissions.edit.result_links!,
+                        this.intervention.status,
+                        this.intervention.in_amendment,
+                        this.intervention.in_amendment_date
+                      )}"
+                      @click="${() => openDeleteActivityDialog(activity.id, pdOutput.id, this.intervention.id!)}"
+                    ></paper-icon-button>
+                    <paper-icon-button
+                      icon="block"
+                      ?hidden="${activity.inEditMode ||
+                      !_canDeactivate(
+                        activity,
+                        this.permissions.edit.result_links!,
+                        this.intervention.status,
+                        this.intervention.in_amendment,
+                        this.intervention.in_amendment_date
+                      )}"
+                      @click="${() => openActivityDeactivationDialog(activity.id, pdOutput.id, this.intervention.id!)}"
                     ></paper-icon-button>
                   </div>
                   <div
@@ -399,42 +427,6 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       return activityId
         ? getEndpoint(interventionEndpoints.pdActivityDetails, {activityId, pdOutputId, interventionId})
         : getEndpoint(interventionEndpoints.pdActivities, {pdOutputId, interventionId});
-    }
-
-    async openDeleteDialog(activityId: number, pdOutputId: number) {
-      const confirmed = await openDialog({
-        dialog: 'are-you-sure',
-        dialogData: {
-          content: translate('DELETE_ACTIVITY_PROMPT') as unknown as string,
-          confirmBtnText: translate('GENERAL.DELETE') as unknown as string
-        }
-      }).then(({confirmed}) => {
-        return confirmed;
-      });
-
-      if (confirmed) {
-        this.deleteActivity(activityId, pdOutputId);
-      }
-    }
-
-    deleteActivity(activityId: number, pdOutputId: number) {
-      const endpoint = getEndpoint(interventionEndpoints.pdActivityDetails, {
-        activityId: activityId,
-        interventionId: this.intervention.id,
-        pdOutputId: pdOutputId
-      });
-      sendRequest({
-        method: 'DELETE',
-        endpoint: endpoint
-      })
-        .then(() => {
-          // @ts-ignore
-          this.getResultLinksDetails();
-          getStore().dispatch<AsyncAction>(getIntervention());
-        })
-        .catch((err: any) => {
-          fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
-        });
     }
   };
 }

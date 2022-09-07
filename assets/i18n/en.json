@@ -536,4 +536,5 @@
   "THIS_INDICATOR_IS_HIGH_FREQUENCY": "This indicator is high frequency",
   "ACCEPT_AS_FINAL": "Accept as Final",
   "UNRESOLVED": "Unresolved"
+  "DEACTIVATE_ACTIVITY_PROMPT": "Are you sure you want to deactivate this activity?"
 }
