@@ -16,7 +16,7 @@ import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-s
 import {RootState} from '../../common/types/store.types';
 import './modals/indicator-dialog/indicator-dialog';
 import get from 'lodash-es/get';
-import {filterByIds, isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {filterByIds, isEmptyObject, isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import EnvironmentFlagsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/environment-flags-mixin';
 import cloneDeep from 'lodash-es/cloneDeep';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
@@ -98,7 +98,10 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
           ></info-icon-tooltip>
         </div>
         <div slot="row-data-details">
-          <div class="table-row table-head align-items-center" ?hidden="${this.readonly}">
+          <div
+            class="table-row table-head align-items-center"
+            ?hidden="${this.readonly || isEmptyObject(this.indicators)}"
+          >
             <div class="flex-1 left-align">${translate('INDICATOR')}</div>
             <div class="flex-1 secondary-cell right">${translate('BASELINE')}</div>
             <div class="flex-1 secondary-cell right">${translate('TARGET')}</div>
@@ -125,18 +128,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
                   ></pd-indicator>
                 `
               )
-            : html`
-                <div class="table-row empty align-items-center">
-                  ${this.readonly
-                    ? translate('THERE_ARE_NO_PD_INDICATORS')
-                    : html`
-                        <div class="flex-1 left-align">-</div>
-                        <div class="flex-1 secondary-cell center">-</div>
-                        <div class="flex-1 secondary-cell right">-</div>
-                        <div class="flex-1 secondary-cell right">-</div>
-                      `}
-                </div>
-              `}
+            : html` <div class="table-row empty center-align">${translate('THERE_ARE_NO_PD_INDICATORS')}</div> `}
         </div>
       </etools-data-table-row>
     `;
@@ -330,11 +322,9 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
           display: block;
           background: var(--main-background);
         }
-        .table-row {
-          padding-right: 10% !important;
-        }
         .table-row:not(.empty) {
           min-height: 42px;
+          padding-right: 10% !important;
         }
         etools-data-table-row::part(edt-list-row-collapse-wrapper) {
           border-bottom: none;

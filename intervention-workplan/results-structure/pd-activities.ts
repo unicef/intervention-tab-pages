@@ -22,6 +22,7 @@ import {
   _canDeactivate,
   _canDelete
 } from '../../common/mixins/results-structure-common';
+import {isEmptyObject} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 
 @customElement('pd-activities')
 export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
@@ -67,7 +68,10 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
           </etools-info-tooltip>
         </div>
         <div slot="row-data-details">
-          <div class="table-row table-head align-items-center" ?hidden="${this.readonly}">
+          <div
+            class="table-row table-head align-items-center"
+            ?hidden="${this.readonly || isEmptyObject(this.activities)}"
+          >
             <div class="flex-1 left-align layout-vertical">${translate('ACTIVITY_NAME')}</div>
             <div class="flex-1 secondary-cell center">${translate('TIME_PERIODS')}</div>
             <div class="flex-1 secondary-cell right">${translate('PARTNER_CASH')}</div>
@@ -181,19 +185,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                   </div>
                 `
               )
-            : html`
-                <div class="table-row empty align-items-center">
-                  ${this.readonly
-                    ? translate('THERE_ARE_NO_PD_ACTIVITIES')
-                    : html`
-                        <div class="flex-1 left-align layout-vertical">-</div>
-                        <div class="flex-1 secondary-cell center">-</div>
-                        <div class="flex-1 secondary-cell right">-</div>
-                        <div class="flex-1 secondary-cell right">-</div>
-                        <div class="flex-1 secondary-cell right">-</div>
-                      `}
-                </div>
-              `}
+            : html` <div class="table-row empty center-align">${translate('THERE_ARE_NO_PD_ACTIVITIES')}</div> `}
         </div>
       </etools-data-table-row>
     `;
