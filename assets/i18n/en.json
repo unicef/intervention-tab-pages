@@ -535,6 +535,6 @@
   "PLS_SELECT_SECTIONS_AND_LOCATIONS_FIRST": "Please, select PD sections and locations first",
   "THIS_INDICATOR_IS_HIGH_FREQUENCY": "This indicator is high frequency",
   "ACCEPT_AS_FINAL": "Accept as Final",
-  "UNRESOLVED": "Unresolved"
+  "UNRESOLVED": "Unresolved",
   "DEACTIVATE_ACTIVITY_PROMPT": "Are you sure you want to deactivate this activity?"
 }
