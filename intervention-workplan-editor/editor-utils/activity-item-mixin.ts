@@ -2,7 +2,11 @@ import {Intervention} from '@unicef-polymer/etools-types';
 import {Constructor} from '@unicef-polymer/etools-types/dist/global.types';
 import '@polymer/paper-input/paper-input';
 import {html, LitElement} from 'lit-element';
-import {InterventionActivityExtended, InterventionActivityItemExtended, ResultLinkLowerResultExtended} from './types';
+import {
+  InterventionActivityExtended,
+  InterventionActivityItemExtended,
+  ResultLinkLowerResultExtended
+} from '../../common/types/editor-page-types';
 import {repeat} from 'lit-html/directives/repeat';
 import '@polymer/paper-input/paper-textarea';
 import {translate} from 'lit-translate';

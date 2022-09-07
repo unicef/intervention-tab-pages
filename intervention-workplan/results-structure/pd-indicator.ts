@@ -12,6 +12,7 @@ import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount
 import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
 import {getIndicatorDisplayType} from '../../utils/utils';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
+import {_canDeactivate, _canDelete} from '../../common/mixins/results-structure-common';
 
 @customElement('pd-indicator')
 export class PdIndicator extends CommentsMixin(LitElement) {
@@ -24,6 +25,8 @@ export class PdIndicator extends CommentsMixin(LitElement) {
   @property({type: Boolean}) inAmendment!: boolean;
   @property({type: Boolean}) detailsOpened = false;
   @property({type: Number}) index?: number;
+  @property({type: String})
+  inAmendmentDate!: string;
 
   render() {
     return html`
@@ -89,7 +92,13 @@ export class PdIndicator extends CommentsMixin(LitElement) {
                 </div>
                 <div
                   class="action"
-                  ?hidden="${!this._canDeactivate()}"
+                  ?hidden="${!_canDeactivate(
+                    this.indicator,
+                    this.readonly,
+                    this.interventionStatus,
+                    this.inAmendment,
+                    this.inAmendmentDate
+                  )}"
                   @click="${() => this.openDeactivationDialog(String(this.indicator.id))}"
                 >
                   <iron-icon icon="icons:block"></iron-icon>
@@ -97,7 +106,13 @@ export class PdIndicator extends CommentsMixin(LitElement) {
                 </div>
                 <div
                   class="action delete-action"
-                  ?hidden="${!this._canDelete()}"
+                  ?hidden="${!_canDelete(
+                    this.indicator,
+                    this.readonly,
+                    this.interventionStatus,
+                    this.inAmendment,
+                    this.inAmendmentDate
+                  )}"
                   @click="${() => this.openDeletionDialog(String(this.indicator.id))}"
                 >
                   <iron-icon icon="delete"></iron-icon>
@@ -205,20 +220,6 @@ export class PdIndicator extends CommentsMixin(LitElement) {
     return item.d && parseInt(item.d) !== 1 && parseInt(item.d) !== 100;
   }
 
-  _canDeactivate(): boolean {
-    if (this.inAmendment && this.indicator.is_active && !this.readonly) {
-      return true;
-    }
-
-    if (this.interventionStatus === 'draft' || this.interventionStatus === 'development') {
-      return false;
-    }
-    if (this.indicator.is_active && !this.readonly) {
-      return true;
-    }
-    return false;
-  }
-
   _canEdit() {
     return this.indicator.is_active && !this.readonly;
   }
@@ -227,17 +228,6 @@ export class PdIndicator extends CommentsMixin(LitElement) {
     return this.readonly || !this.indicator.is_active;
   }
 
-  _canDelete(): boolean {
-    if (this.inAmendment) {
-      // only Deactivate should be av. in amendment
-      return false;
-    }
-    // TODO: refactor this after status draft comes as development
-    if ((this.interventionStatus === 'draft' || this.interventionStatus === 'development') && !this.readonly) {
-      return true;
-    }
-    return false;
-  }
   // language=css
   static get styles() {
     return [

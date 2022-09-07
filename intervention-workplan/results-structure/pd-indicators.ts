@@ -58,6 +58,8 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
   @property({type: Boolean}) readonly!: boolean;
   @property({type: Boolean}) showInactiveIndicators!: boolean;
   @property({type: Boolean}) inAmendment!: boolean;
+  @property({type: String})
+  inAmendmentDate!: string;
 
   /** On create/edit indicator only sections already saved on the intervention can be selected */
   set interventionSections(ids: string[]) {
@@ -116,6 +118,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
                     .interventionStatus="${this.interventionStatus}"
                     .readonly="${this.readonly}"
                     .inAmendment="${this.inAmendment}"
+                    .inAmendmentDate="${this.inAmendmentDate}"
                     ?hidden="${this._hideIndicator(indicator, this.showInactiveIndicators)}"
                     @open-edit-indicator-dialog="${(e: CustomEvent) =>
                       this.openIndicatorDialog(e.detail.indicator, e.detail.readonly)}"

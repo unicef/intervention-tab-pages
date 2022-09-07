@@ -20,7 +20,7 @@ import {
   ProgrammeManagementRowExtended,
   ProgrammeManagementKindChoices,
   ProgrammeManagementRowItemExtended
-} from './types';
+} from '../../common/types/editor-page-types';
 import {getTotalCash, getTotalCashFormatted} from '../../common/components/activity/get-total.helper';
 
 // import {ManagementBudgetItem} from '@unicef-polymer/etools-types';
