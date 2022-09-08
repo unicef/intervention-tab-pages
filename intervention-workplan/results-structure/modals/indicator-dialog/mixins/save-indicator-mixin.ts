@@ -4,7 +4,7 @@ import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
 import {LitElement} from 'lit-element';
 import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
-import {EtoolsDropdown} from '@unicef-polymer/etools-dropdown/src/EtoolsDropdown';
+import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import {interventionEndpoints} from '../../../../../utils/intervention-endpoints';
 import {NonClusterIndicatorEl} from '../non-cluster-indicator';
 import {ClusterIndicatorEl} from '../cluster-indicator';
@@ -131,7 +131,7 @@ function SaveIndicatorMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
     validate() {
       let valid = true;
-      const sectionSelected = this.shadowRoot!.querySelector<EtoolsDropdown>('#sectionDropdw')!.validate();
+      const sectionSelected = this.shadowRoot!.querySelector<EtoolsDropdownEl>('#sectionDropdw')!.validate();
       valid = this.getIndicatorElement(this.isCluster)!.validate() && sectionSelected;
       return valid;
     }
