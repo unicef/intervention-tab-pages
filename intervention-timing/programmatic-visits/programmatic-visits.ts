@@ -9,7 +9,7 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import isEmpty from 'lodash-es/isEmpty';
 import {RootState} from '../../common/types/store.types';
 import {PlannedVisitsPermissions} from './programmaticVisits.models';
-import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown';
+import {EtoolsDropdown} from '@unicef-polymer/etools-dropdown/src/EtoolsDropdown';
 import {PaperInputElement} from '@polymer/paper-input/paper-input';
 import {selectPlannedVisits, selectPlannedVisitsPermissions} from './programmaticVisits.selectors';
 import {selectInterventionDates} from '../intervention-dates/interventionDates.selectors';
@@ -388,7 +388,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
     this.data[index].year = null;
     this.data = [...this.data];
     // backup reset because the above doesn't seem to work
-    this.shadowRoot!.querySelector<EtoolsDropdownEl>('#year_' + index)!.selected = null;
+    this.shadowRoot!.querySelector<EtoolsDropdown>('#year_' + index)!.selected = null;
   }
 
   _getTotal(q1: string, q2: string, q3: string, q4: string) {
@@ -412,7 +412,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
 
   _validateYear(index: number) {
     let valid = true;
-    const yearEl = this.shadowRoot!.querySelector('#year_' + index) as EtoolsDropdownEl;
+    const yearEl = this.shadowRoot!.querySelector('#year_' + index) as EtoolsDropdown;
 
     if (yearEl && !yearEl.validate()) {
       valid = false;

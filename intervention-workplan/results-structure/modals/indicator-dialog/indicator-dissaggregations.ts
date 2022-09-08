@@ -5,7 +5,7 @@ import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 
 import {PaperInputElement} from '@polymer/paper-input/paper-input.js';
-import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown.js';
+import {EtoolsDropdown} from '@unicef-polymer/etools-dropdown/src/EtoolsDropdown';
 import {LitElement, html, property, customElement} from 'lit-element';
 import {flaggedSortedDisaggregs} from '../../redux/selectors';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
@@ -158,7 +158,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
 
     this.data[index].disaggregId = selectedDisagreg.id;
     if (this.isAlreadySelected(selectedDisagreg.id, index, 'disaggregId')) {
-      this.shadowRoot!.querySelector<EtoolsDropdownEl>('#disaggregate_by_' + index)!.selected = null;
+      this.shadowRoot!.querySelector<EtoolsDropdown>('#disaggregate_by_' + index)!.selected = null;
       this._clearDisagregGroups(index);
       fireEvent(this, 'show-toast', {
         error: {response: getTranslation('DISAGREG_ALREADY_SELECTED')}
