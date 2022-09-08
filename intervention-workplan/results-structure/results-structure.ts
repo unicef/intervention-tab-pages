@@ -172,6 +172,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
               .currency="${this.intervention.planned_budget.currency}"
               .readonly="${!this.permissions.edit.result_links || this.commentMode}"
               .opened="${this.newCPOutputs.has(result.id)}"
+              .interventionInfo="${this._getCPNeededInterventionInfo(this.intervention)}"
               @edit-cp-output="${() => this.openCpOutputDialog(result)}"
               @delete-cp-output="${() => this.openDeleteCpOutputDialog(result.id)}"
               @opened-changed="${this.onCpOpenedChanged}"
@@ -542,6 +543,14 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     }
 
     this.resultLinks = newResults;
+  }
+
+  _getCPNeededInterventionInfo(intervention: Intervention) {
+    return {
+      status: intervention.status,
+      inAmendment: intervention.in_amendment,
+      inAmendmentDate: intervention.in_amendment_date
+    };
   }
 
   static get styles(): CSSResultArray {
