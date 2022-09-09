@@ -44,6 +44,8 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
   @property({type: String})
   interventionStatus!: string;
 
+  @property({type: Boolean}) showInactive!: boolean;
+
   interventionId!: number;
   pdOutputId!: number;
   quarters!: InterventionQuarter[];
@@ -87,6 +89,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                     related-to="activity-${activity.id}"
                     related-to-description=" Activity - ${activity.name}"
                     comments-container
+                    ?hidden="${this._hideActivity(activity, this.showInactive)}"
                     @paper-dropdown-open="${(event: CustomEvent) =>
                       (event.currentTarget as HTMLElement)!.classList.add('active')}"
                     @paper-dropdown-close="${(event: CustomEvent) =>
@@ -96,7 +99,9 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                     <div class="flex-1 left-align layout-horizontal">
                       <b>${activity.code}&nbsp;</b>
                       <div>
-                        <div><b>${activity.name || '-'}</b></div>
+                        <div>
+                          <b><u>${activity.is_active ? '' : '(inactive)'}</u>${activity.name || '-'}</b>
+                        </div>
                         <div class="details" ?hidden="${!activity.context_details}">
                           ${this.truncateString(activity.context_details)}
                         </div>
@@ -145,9 +150,14 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                           tabindex="0"
                         ></paper-icon-button>
                         <paper-listbox slot="dropdown-content">
-                          <div class="action" @click="${() => this.openDialog(activity, this.readonly)}">
-                            <iron-icon icon="${this.readonly ? 'visibility' : 'create'}"></iron-icon>
-                            ${this.readonly ? translate('VIEW') : translate('EDIT')}
+                          <div
+                            class="action"
+                            @click="${() => this.openDialog(activity, this.readonly || !activity.is_active)}"
+                          >
+                            <iron-icon
+                              icon="${this.readonly || !activity.is_active ? 'visibility' : 'create'}"
+                            ></iron-icon>
+                            ${this.readonly || !activity.is_active ? translate('VIEW') : translate('EDIT')}
                           </div>
                           <div
                             class="action"
@@ -191,8 +201,11 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
     `;
   }
 
-  firstUpdated(): void {
-    super.firstUpdated();
+  _hideActivity(activity: any, showInactive: boolean) {
+    if (!activity.is_active) {
+      return !showInactive;
+    }
+    return false;
   }
 
   getSpecialElements(element: HTMLElement): CommentElementMeta[] {

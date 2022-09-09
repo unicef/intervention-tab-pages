@@ -58,7 +58,7 @@ export function _canDeactivate(
   inAmendment: boolean,
   inAmendmentDate: string
 ) {
-  if (!readonly) {
+  if (readonly) {
     return false;
   }
 

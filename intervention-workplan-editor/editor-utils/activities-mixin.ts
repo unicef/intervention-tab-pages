@@ -74,7 +74,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
           (activity: InterventionActivityExtended) => activity.id,
           (activity: InterventionActivityExtended, activityIndex: number) => html`
             <tbody
-              ?hoverable="${!(activity.inEditMode || activity.itemsInEditMode) &&
+              ?hoverable="${!(activity.inEditMode || activity.itemsInEditMode || !activity.is_active) &&
               this.permissions.edit.result_links &&
               !this.commentMode &&
               !this.oneEntityInEditMode}"
@@ -122,7 +122,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'name', activity)}"
                   ></paper-textarea>
                   <div class="truncate-multi-line b" title="${activity.name}" ?hidden="${activity.inEditMode}">
-                    ${activity.name}
+                    ${activity.is_active ? '' : html`<b>(inactive)</b>`}${activity.name}
                   </div>
                   <div class="pad-top-8">
                     <paper-textarea
@@ -212,7 +212,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                   <div class="action-btns align-bottom flex-h">
                     <paper-icon-button
                       icon="create"
-                      ?hidden="${activity.inEditMode || !this.permissions.edit.result_links}"
+                      ?hidden="${activity.inEditMode || !this.permissions.edit.result_links || !activity.is_active}"
                       @click="${(e: any) => {
                         activity.inEditMode = true;
                         activity.itemsInEditMode = true;
@@ -263,7 +263,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                       ?hidden="${activity.inEditMode ||
                       !_canDeactivate(
                         activity,
-                        this.permissions.edit.result_links!,
+                        !this.permissions.edit.result_links!,
                         this.intervention.status,
                         this.intervention.in_amendment,
                         this.intervention.in_amendment_date

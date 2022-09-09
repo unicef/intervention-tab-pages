@@ -90,7 +90,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
   @property() private _resultLinks: ExpectedResult[] | null = null;
   @property({type: String}) noOfPdOutputs: string | number = '0';
   @property({type: Boolean}) thereAreInactiveIndicators = false;
-  @property({type: Boolean}) showInactiveIndicators = false;
+  @property({type: Boolean}) showInactiveIndicatorsActivities = false;
 
   @property({type: Object})
   intervention!: Intervention;
@@ -255,6 +255,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                         .interventionId="${this.interventionId}"
                         .interventionStatus="${this.interventionStatus}"
                         .inAmendmentDate="${this.intervention.in_amendment_date}"
+                        .showInactive="${this.showInactiveIndicatorsActivities}"
                         .pdOutputId="${pdOutput.id}"
                         .quarters="${this.quarters}"
                         ?hidden="${!this.showActivities}"
@@ -267,7 +268,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                         .indicators="${pdOutput.applied_indicators}"
                         .pdOutputId="${pdOutput.id}"
                         .readonly="${!this.permissions.edit.result_links || this.commentMode}"
-                        .showInactiveIndicators="${this.showInactiveIndicators}"
+                        .showInactiveIndicators="${this.showInactiveIndicatorsActivities}"
                         .inAmendment="${this.intervention.in_amendment}"
                         .inAmendmentDate="${this.intervention.in_amendment_date}"
                       ></pd-indicators>
@@ -523,7 +524,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     if (!e.detail) {
       return;
     }
-    this.showInactiveIndicators = e.detail.value;
+    this.showInactiveIndicatorsActivities = e.detail.value;
   }
 
   private updateResultLinks(state: RootState): void {
