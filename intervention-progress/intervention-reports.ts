@@ -365,7 +365,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
     this.prevQueryStringObj = cloneDeep({...currentParams, ...paramsToUpdate});
 
     const stringParams: string = buildUrlQueryString(this.prevQueryStringObj);
-    EtoolsRouter.replaceAppLocation(`interventions/list?${stringParams}`);
+    EtoolsRouter.replaceAppLocation(`interventions/${this.interventionId}/progress/reports/?${stringParams}`);
   }
 
   _prepareReqParamsObj(interventionId: number) {
