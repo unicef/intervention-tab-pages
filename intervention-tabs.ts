@@ -41,6 +41,7 @@ import {RootState} from './common/types/store.types';
 import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from './utils/intervention-endpoints';
 import {CommentsEndpoints} from '../intervention-tab-pages/common/components/comments/comments-types';
+import './unresolved-other-info';
 
 /**
  * @LitElement
@@ -211,6 +212,9 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
         ${this.intervention.cancel_justification
           ? html`<reason-display .justification=${this.intervention.cancel_justification}></reason-display>`
           : ''}
+        ${this.intervention.other_info
+          ? html` <unresolved-other-info-review .data="${this.otherInfo}"></unresolved-other-info-review>`
+          : html``}
         <intervention-metadata ?hidden="${!this.isActiveTab(this.activeTab, TABS.Metadata)}"> </intervention-metadata>
         <intervention-strategy ?hidden="${!this.isActiveTab(this.activeTab, TABS.Strategy)}"></intervention-strategy>
         <intervention-workplan
@@ -319,6 +323,9 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   @property({type: Boolean, attribute: 'is-in-amendment', reflect: true})
   isInAmendment = false;
 
+  @property({type: String})
+  otherInfo!: string;
+
   @query('etools-tabs-lit')
   etoolsTabs!: EtoolsTabs;
 
@@ -384,6 +391,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     }
     const currentInterventionId = get(state, 'app.routeDetails.params.interventionId');
     const currentIntervention = get(state, 'interventions.current');
+    this.otherInfo = currentIntervention?.other_info;
 
     // check if intervention was changed
     if (!isJsonStrMatch(this.intervention, currentIntervention)) {
