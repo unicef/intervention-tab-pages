@@ -4,7 +4,7 @@ import '@polymer/paper-input/paper-input';
 import {html, LitElement} from 'lit-element';
 import {repeat} from 'lit-html/directives/repeat';
 import '@polymer/paper-input/paper-textarea';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import {ProgrammeManagementRowExtended, ProgrammeManagementRowItemExtended} from '../../common/types/editor-page-types';
 import {ActivitiesCommonMixin} from '../../common/mixins/activities-common.mixin';
@@ -70,7 +70,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                     .alwaysFloatLabel="${programmeManagement.itemsInEditMode}"
                     .noLabelFloat="${!programmeManagement.itemsInEditMode}"
                     input
-                    label=${this.getLabel(programmeManagement.itemsInEditMode, 'Item Description')}
+                    label=${this.getLabel(programmeManagement.itemsInEditMode, getTranslation('ITEM_DESCRIPTION'))}
                     ?hidden="${!programmeManagement.itemsInEditMode}"
                     char-counter
                     maxlength="150"
