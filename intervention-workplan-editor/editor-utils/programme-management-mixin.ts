@@ -1,7 +1,6 @@
 // @ts-ignore
 import {Constructor, html, LitElement, property} from 'lit-element';
 import {ifDefined} from 'lit-html/directives/if-defined.js';
-import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
 import '../time-intervals/time-intervals';
 import {cloneDeep} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
@@ -13,7 +12,7 @@ import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {repeat} from 'lit-html/directives/repeat';
 import {translate, get as getTranslation} from 'lit-translate';
-import {TruncateMixin} from '../../common/truncate.mixin';
+import {TruncateMixin} from '../../common/mixins/truncate.mixin';
 /* eslint-disable max-len */
 import {ProgrammeManagement} from '../../intervention-workplan/effective-efficient-programme-mgmt/effectiveEfficientProgrammeMgmt.models';
 import {ProgrammeManagementItemMixin} from './programme-management-item-mixin';
@@ -21,7 +20,8 @@ import {
   ProgrammeManagementRowExtended,
   ProgrammeManagementKindChoices,
   ProgrammeManagementRowItemExtended
-} from './types';
+} from '../../common/types/editor-page-types';
+import {getTotalCash, getTotalCashFormatted} from '../../common/components/activity/get-total.helper';
 
 // import {ManagementBudgetItem} from '@unicef-polymer/etools-types';
 
@@ -83,7 +83,15 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                 <td colspan="2">${translate('GENERAL.TOTAL')}</td>
               </tr>
               <tr class="text action-btns" type="activity">
-                <td class="padd-top-10">${item.code}</td>
+                <td class="index-column">
+                  <paper-input
+                    title="${item.code}"
+                    no-label-float
+                    readonly
+                    tabindex="-1"
+                    .value="${item.code}"
+                  ></paper-input>
+                </td>
                 <td colspan="4" class="no-top-padding height-for-action-btns">
                   <div class="truncate-multi-line b" title="${item.name}">${item.name}</div>
                   <div class="pad-top-8">
@@ -96,13 +104,13 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                     input
                     .value="${item.cso_cash}"
                     tabindex="${ifDefined((item.items && item.items.length) || !item.inEditMode ? '-1' : undefined)}"
-                    ?readonly="${this.isReadonlyForProgrammeManagementCash(item.inEditMode, item.items)}"
-                    ?required="${this.isRequiredProgrammeManagementCash(item.inEditMode, item.items)}"
+                    ?readonly="${this.isReadonlyCash(item.inEditMode, item.items)}"
+                    ?required="${this.isRequiredCash(item.inEditMode, item.items)}"
                     @keydown="${(e: any) => this.handleEsc(e)}"
                     auto-validate
                     .invalid="${item.invalid?.cso_cash}"
                     error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
-                    @value-changed="${({detail}: CustomEvent) => this.updateModelValue(item, 'cso_cash', detail.value)}"
+                    @value-changed="${({detail}: CustomEvent) => this.numberChanged(detail, 'cso_cash', item)}"
                   ></etools-currency-amount-input>
                 </td>
                 <td tabindex="${item.items && item.items.length ? '-1' : '0'}" class="no-top-padding">
@@ -111,14 +119,13 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                     input
                     .value="${item.unicef_cash}"
                     tabindex="${ifDefined((item.items && item.items.length) || !item.inEditMode ? '-1' : undefined)}"
-                    ?readonly="${this.isReadonlyForProgrammeManagementCash(item.inEditMode, item.items)}"
-                    ?required="${this.isRequiredProgrammeManagementCash(item.inEditMode, item.items)}"
+                    ?readonly="${this.isReadonlyCash(item.inEditMode, item.items)}"
+                    ?required="${this.isRequiredCash(item.inEditMode, item.items)}"
                     auto-validate
                     .invalid="${item.invalid?.unicef_cash}"
                     error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
                     @keydown="${(e: any) => this.handleEsc(e)}"
-                    @value-changed="${({detail}: CustomEvent) =>
-                      this.updateModelValue(item, 'unicef_cash', detail.value)}"
+                    @value-changed="${({detail}: CustomEvent) => this.numberChanged(detail, 'unicef_cash', item)}"
                   ></etools-currency-amount-input>
                 </td>
                 <td
@@ -129,7 +136,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                 >
                   <div>
                     ${this.intervention.planned_budget.currency}
-                    <span class="b">${displayCurrencyAmount(String(item.totalProgrammeManagementCash), '0', 2)}</span>
+                    <span class="b">${getTotalCashFormatted(item.cso_cash, item.unicef_cash)}</span>
                   </div>
                   <div class="action-btns align-bottom flex-h">
                     <paper-icon-button
@@ -153,20 +160,26 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                         }
                       }}"
                     ></paper-icon-button>
-                    <etools-info-tooltip
+
+                    <paper-icon-button
+                      id="add-item-${item.id}"
+                      icon="add-box"
+                      slot="custom-icon"
+                      @click="${(e: CustomEvent) => this.addNewItem(e, item, 'focusBelow')}"
+                      ?hidden="${item.items?.length || !this.permissions.edit.management_budgets}"
+                    ></paper-icon-button>
+                    <paper-tooltip
+                      for="add-item-${item.id}"
+                      .animationDelay="${0}"
+                      .animationConfig="${{}}"
+                      animation-entry=""
+                      animation-exit=""
+                      ?hidden="${item.items?.length || !this.permissions.edit.management_budgets}"
                       position="top"
-                      custom-icon
-                      ?hide-tooltip="${item.items?.length || !this.permissions.edit.management_budgets}"
-                      style="justify-content:end;"
+                      offset="1"
                     >
-                      <paper-icon-button
-                        icon="add-box"
-                        slot="custom-icon"
-                        @click="${(e: CustomEvent) => this.addNewItem(e, item, 'focusBelow')}"
-                        ?hidden="${item.items?.length || !this.permissions.edit.management_budgets}"
-                      ></paper-icon-button>
-                      <span class="no-wrap" slot="message">${translate('ADD_NEW_ITEM')}</span>
-                    </etools-info-tooltip>
+                      ${translate('ADD_NEW_ITEM')}
+                    </paper-tooltip>
                   </div>
                   <div
                     class="flex-h justify-right align-bottom"
@@ -213,7 +226,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
           context_details: getTranslation('DESCRIPTION_1'),
           cso_cash: data.act1_partner,
           unicef_cash: data.act1_unicef,
-          totalProgrammeManagementCash: this.getTotalForProgrammeManagementCash(data.act1_partner, data.act1_unicef),
+          totalProgrammeManagementCash: getTotalCash(data.act1_partner, data.act1_unicef),
           total: data.act1_total,
           items: data.items.filter(
             (item: ProgrammeManagementRowItemExtended) => item.kind === ProgrammeManagementKindChoices.inCountry
@@ -229,7 +242,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
           context_details: getTranslation('DESCRIPTION_2'),
           cso_cash: data.act2_partner,
           unicef_cash: data.act2_unicef,
-          totalProgrammeManagementCash: this.getTotalForProgrammeManagementCash(data.act2_partner, data.act2_unicef),
+          totalProgrammeManagementCash: getTotalCash(data.act2_partner, data.act2_unicef),
           total: data.act2_total,
           items: data.items.filter(
             (item: ProgrammeManagementRowItemExtended) => item.kind === ProgrammeManagementKindChoices.operational
@@ -245,7 +258,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
           context_details: getTranslation('DESCRIPTION_3'),
           cso_cash: data.act3_partner,
           unicef_cash: data.act3_unicef,
-          totalProgrammeManagementCash: this.getTotalForProgrammeManagementCash(data.act3_partner, data.act3_unicef),
+          totalProgrammeManagementCash: getTotalCash(data.act3_partner, data.act3_unicef),
           total: data.act3_total,
           items: data.items.filter(
             (item: ProgrammeManagementRowItemExtended) => item.kind === ProgrammeManagementKindChoices.planning
@@ -256,10 +269,6 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
           itemsInEditMode: false
         }
       ];
-    }
-
-    getTotalForProgrammeManagementCash(partner: string, unicef: string): number {
-      return (Number(partner) || 0) + (Number(unicef) || 0);
     }
 
     // @ts-ignore
@@ -288,47 +297,6 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
       this.lastFocusedTd.focus();
     }
 
-    resetItemsValidations(programmeManagement: ProgrammeManagementRowExtended) {
-      if (!programmeManagement.items || !programmeManagement.items.length) {
-        return;
-      }
-
-      programmeManagement.items.forEach((i: ProgrammeManagementRowItemExtended) => {
-        i.invalid = {
-          name: false,
-          unit: false,
-          no_units: false,
-          unit_price: false,
-          cso_cash: false,
-          unicef_cash: false
-        };
-      });
-    }
-
-    updateModelValue(model: any, property: string, newVal: any) {
-      if (newVal == model[property]) {
-        return;
-      }
-      model[property] = newVal;
-      this.requestUpdate();
-    }
-
-    isReadonlyForProgrammeManagementCash(inEditMode: boolean, items?: ProgrammeManagementRowItemExtended[]) {
-      if (!inEditMode) {
-        return true;
-      } else {
-        if (items && items.length) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-    }
-
-    isRequiredProgrammeManagementCash(inEditMode: boolean, items?: ProgrammeManagementRowItemExtended[]) {
-      return inEditMode && !(items && items.length);
-    }
-
     validateProgrammeManagement(programmeManagement: ProgrammeManagementRowExtended) {
       programmeManagement.invalid = {};
       if (!programmeManagement.items || !programmeManagement.items.length) {
@@ -342,34 +310,9 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
       return !Object.keys(programmeManagement.invalid).length;
     }
 
-    validateProgrammeManagementItems(programmeManagement: ProgrammeManagementRowExtended) {
-      if (!programmeManagement.items || !programmeManagement.items.length) {
-        return true;
-      }
-
-      let invalid = false;
-      programmeManagement.items.forEach((item: ProgrammeManagementRowItemExtended) => {
-        item.invalid = {};
-        item.invalid.name = !item.name;
-        item.invalid.unit = !item.unit;
-        item.invalid.no_units = !item.no_units || Number(item.no_units) == 0;
-        item.invalid.unit_price = !item.unit_price || Number(item.unit_price) == 0;
-        if (item.no_units && item.unit_price) {
-          this.validateCsoAndUnicefCash(item);
-        }
-        if (Object.values(item.invalid).some((val: any) => val === true)) {
-          invalid = true;
-        }
-      });
-      return !invalid;
-    }
-
     // @ts-ignore
     saveProgrammeManagement(programmeManagement: ProgrammeManagementRowExtended, interventionId: number) {
-      if (
-        !this.validateProgrammeManagement(programmeManagement) ||
-        !this.validateProgrammeManagementItems(programmeManagement)
-      ) {
+      if (!this.validateProgrammeManagement(programmeManagement) || !this.validateActivityItems(programmeManagement)) {
         this.requestUpdate();
         fireEvent(this, 'toast', {
           text: 'Please fix validation errors'

@@ -51,6 +51,7 @@ export class TimeIntervalsDialog extends LitElement {
       >
         <div class="container layout vertical">
           <activity-time-frames
+            tabindex="0"
             hide-label
             .quarters="${this.quarters}"
             .selectedTimeFrames="${this.selectedTimeFrames || []}"

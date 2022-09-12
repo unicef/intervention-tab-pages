@@ -57,6 +57,7 @@ import {PdActivities} from './pd-activities';
 import {PdIndicators} from './pd-indicators';
 import {CpOutputLevel} from './cp-output-level';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {_canDelete} from '../../common/mixins/results-structure-common';
 
 /**
  * @customElement
@@ -89,7 +90,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
   @property() private _resultLinks: ExpectedResult[] | null = null;
   @property({type: String}) noOfPdOutputs: string | number = '0';
   @property({type: Boolean}) thereAreInactiveIndicators = false;
-  @property({type: Boolean}) showInactiveIndicators = false;
+  @property({type: Boolean}) showInactiveIndicatorsActivities = false;
 
   @property({type: Object})
   intervention!: Intervention;
@@ -236,6 +237,13 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                         ></paper-icon-button>
                         <paper-icon-button
                           icon="icons:delete"
+                          ?hidden="${!_canDelete(
+                            pdOutput,
+                            !this.permissions.edit.result_links!,
+                            this.intervention.status,
+                            this.intervention.in_amendment,
+                            this.intervention.in_amendment_date
+                          )}"
                           @click="${() => this.openDeletePdOutputDialog(pdOutput.id)}"
                         ></paper-icon-button>
                       </div>
@@ -245,19 +253,24 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                       <pd-activities
                         .activities="${pdOutput.activities}"
                         .interventionId="${this.interventionId}"
+                        .interventionStatus="${this.interventionStatus}"
+                        .inAmendmentDate="${this.intervention.in_amendment_date}"
+                        .showInactive="${this.showInactiveIndicatorsActivities}"
                         .pdOutputId="${pdOutput.id}"
                         .quarters="${this.quarters}"
                         ?hidden="${!this.showActivities}"
                         .readonly="${!this.permissions.edit.result_links || this.commentMode}"
                         .currency="${this.intervention.planned_budget.currency}"
+                        .inAmendment="${this.intervention.in_amendment}"
                       ></pd-activities>
                       <pd-indicators
                         ?hidden="${!this.showIndicators}"
                         .indicators="${pdOutput.applied_indicators}"
                         .pdOutputId="${pdOutput.id}"
                         .readonly="${!this.permissions.edit.result_links || this.commentMode}"
-                        .showInactiveIndicators="${this.showInactiveIndicators}"
+                        .showInactiveIndicators="${this.showInactiveIndicatorsActivities}"
                         .inAmendment="${this.intervention.in_amendment}"
+                        .inAmendmentDate="${this.intervention.in_amendment_date}"
                       ></pd-indicators>
                     </div>
                   </etools-data-table-row>
@@ -393,6 +406,10 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
   }
 
   deletePDOutputFromPD(lower_result_id: number) {
+    fireEvent(this, 'global-loading', {
+      active: true,
+      loadingSource: 'interv-pd-remove'
+    });
     const endpoint = getEndpoint(interventionEndpoints.lowerResultsDelete, {
       lower_result_id,
       intervention_id: this.interventionId
@@ -400,9 +417,14 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     _sendRequest({
       method: 'DELETE',
       endpoint: endpoint
-    }).then(() => {
-      getStore().dispatch<AsyncAction>(getIntervention());
-    });
+    })
+      .then(() => getStore().dispatch<AsyncAction>(getIntervention()))
+      .finally(() =>
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: 'interv-pd-remove'
+        })
+      );
   }
 
   openCpOutputDialog(resultLink?: ExpectedResult): void {
@@ -502,7 +524,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     if (!e.detail) {
       return;
     }
-    this.showInactiveIndicators = e.detail.value;
+    this.showInactiveIndicatorsActivities = e.detail.value;
   }
 
   private updateResultLinks(state: RootState): void {

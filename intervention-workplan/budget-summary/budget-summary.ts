@@ -19,6 +19,7 @@ import {customIcons} from '@unicef-polymer/etools-modules-common/dist/styles/cus
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {getPageDirection} from '../../utils/utils';
 
 /**
  * @customElement
@@ -222,7 +223,11 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
 
   getIconTooltip(): TemplateResult {
     return html`<div class="icon-tooltip-div">
-      <info-icon-tooltip .tooltipText="${translate('BUDGET_TOOLTIP')}" position="left"> </info-icon-tooltip>
+      <info-icon-tooltip
+        .tooltipText="${translate('BUDGET_TOOLTIP')}"
+        position="${this.dir == 'rtl' ? 'right' : 'left'}"
+      >
+      </info-icon-tooltip>
     </div>`;
   }
 
@@ -255,6 +260,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
     if (isUnicefUser(state)) {
       this.setFrsConsistencyWarning();
     }
+    this.dir = getPageDirection(state);
     super.stateChanged(state);
   }
 

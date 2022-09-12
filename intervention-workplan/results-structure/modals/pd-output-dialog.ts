@@ -11,8 +11,9 @@ import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-c
 import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 import {CpOutput} from '@unicef-polymer/etools-types';
 import {ResultLinkLowerResult} from '@unicef-polymer/etools-types';
-import {translate, get as getTranslation} from 'lit-translate';
+import {translate} from 'lit-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 
 @customElement('pd-output-dialog')
 export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElement) {
@@ -173,7 +174,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
       .catch((error: any) => {
         this.loadingInProcess = false;
         this.errors = (error && error.response) || {};
-        fireEvent(this, 'toast', {text: getTranslation('ERR_SAVE_PD_OUTPUT')});
+        parseRequestErrorsAndShowAsToastMsgs(error, this);
       });
   }
 }

@@ -394,7 +394,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
     openDialog({
       dialog: 'supply-agreement-dialog',
       dialogData: {
-        data: item,
+        data: cloneDeep(item),
         interventionId: this.intervention.id,
         result_links: this.intervention.result_links,
         isUnicefUser: this.isUnicefUser,

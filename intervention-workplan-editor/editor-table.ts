@@ -29,7 +29,7 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
 import {ActivitiesMixin} from './editor-utils/activities-mixin';
 import {ProgrammeManagementMixin} from './editor-utils/programme-management-mixin';
 import {CommentsMixin} from '../common/components/comments/comments-mixin';
-import {ExpectedResultExtended, ResultLinkLowerResultExtended} from './editor-utils/types';
+import {ExpectedResultExtended, ResultLinkLowerResultExtended} from '../common/types/editor-page-types';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import {translate} from 'lit-translate';
 import {AsyncAction, IdAndName} from '@unicef-polymer/etools-types';
@@ -37,15 +37,19 @@ import {EditorTableArrowKeysStyles} from './editor-utils/editor-table-arrow-keys
 import {ArrowsNavigationMixin} from './editor-utils/arrows-navigation-mixin';
 import {RootState} from '../common/types/store.types';
 import {EditorHoverStyles} from './editor-utils/editor-hover-styles';
-import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import {updateSmallMenu} from '../common/actions/common-actions';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
+import '@polymer/paper-tooltip/paper-tooltip';
 /* eslint-disable max-len */
 import {selectProgrammeManagement} from '../intervention-workplan/effective-efficient-programme-mgmt/effectiveEfficientProgrammeMgmt.selectors';
+import {ActivitiesFocusMixin} from './editor-utils/activities-focus-mixin';
+import {_canDelete} from '../common/mixins/results-structure-common';
 @customElement('editor-table')
 // @ts-ignore
 export class EditorTable extends CommentsMixin(
-  ProgrammeManagementMixin(ActivitiesMixin(ArrowsNavigationMixin(LitElement)))
+  ProgrammeManagementMixin(
+    ActivitiesMixin(ActivitiesFocusMixin(ActivitiesFocusMixin(ArrowsNavigationMixin(LitElement))))
+  )
 ) {
   static get styles() {
     return [EditorTableStyles, EditorTableArrowKeysStyles, EditorHoverStyles, ...super.styles];
@@ -58,6 +62,11 @@ export class EditorTable extends CommentsMixin(
     return html`
       ${sharedStyles}
       <style>
+        :host {
+          --paper-tooltip: {
+            font-size: 12px;
+          }
+        }
         paper-textarea {
           outline: none;
           flex: auto;
@@ -102,6 +111,15 @@ export class EditorTable extends CommentsMixin(
             font-weight: bold;
           }
         }
+
+        .index-column {
+          padding-top: 0;
+
+          --paper-input-container-input: {
+            font-size: 14px !important;
+          }
+        }
+
         .char-counter {
           margin-bottom: -12px;
           display: flex;
@@ -159,26 +177,28 @@ export class EditorTable extends CommentsMixin(
                   <td colspan="3"></td>
                   <td colspan="2" tabindex="0">
                     <div class="action-btns" style="position:relative">
-                      <etools-info-tooltip
-                        position="top"
-                        offset="0"
-                        custom-icon
+                      <paper-icon-button
+                        id="add-pd-output"
+                        @click="${(e: any) => {
+                          this.addNewUnassignedPDOutput();
+                          this.moveFocusToNewllyAdded(e.target);
+                        }}"
+                        ?hidden="${!this.permissions?.edit.result_links}"
+                        icon="add-box"
+                        tabindex="0"
+                      ></paper-icon-button>
+
+                      <paper-tooltip
+                        for="add-pd-output"
+                        .animationDelay="${0}"
+                        .animationConfig="${{}}"
+                        animation-entry=""
+                        animation-exit=""
                         ?hide-tooltip="${!this.permissions?.edit.result_links}"
-                        style="justify-content:end;"
+                        position="top"
                       >
-                        <paper-icon-button
-                          id="add-pd-output"
-                          slot="custom-icon"
-                          @click="${(e: any) => {
-                            this.addNewUnassignedPDOutput();
-                            this.moveFocusToNewllyAdded(e.target);
-                          }}"
-                          ?hidden="${!this.permissions?.edit.result_links}"
-                          icon="add-box"
-                          tabindex="0"
-                        ></paper-icon-button>
-                        <span class="no-wrap" slot="message">${translate('ADD_PD_OUTPUT')}</span>
-                      </etools-info-tooltip>
+                        ${translate('ADD_PD_OUTPUT')}
+                      </paper-tooltip>
                     </div>
                   </td>
                 </tr>
@@ -200,7 +220,15 @@ export class EditorTable extends CommentsMixin(
                 <td colspan="2">${translate('TOTAL')}</td>
               </tr>
               <tr class="text no-b-border">
-                <td>${result.code}</td>
+                <td class="index-column">
+                  <paper-input
+                    title="${result.code}"
+                    no-label-float
+                    readonly
+                    tabindex="-1"
+                    .value="${result.code}"
+                  ></paper-input>
+                </td>
                 <td colspan="3" class="${result.cp_output_name ? 'b' : 'red'}">
                   ${result.cp_output_name || translate('UNASSOCIATED_TO_CP_OUTPUT')}
                 </td>
@@ -222,27 +250,30 @@ export class EditorTable extends CommentsMixin(
                     : '0'}"
                 >
                   <div class="action-btns" style="position:relative">
-                    <etools-info-tooltip
+                    <paper-icon-button
+                      id="add-pd-output-${result.id}"
+                      slot="custom-icon"
+                      @click="${(e: any) => {
+                        this.addNewPDOutput(result.ll_results);
+                        this.moveFocusToNewllyAdded(e.target);
+                      }}"
+                      ?hidden="${!this.permissions?.edit.result_links ||
+                      !this.getOriginalCPOutput(resultIndex)?.cp_output}"
+                      icon="add-box"
+                      tabindex="0"
+                    ></paper-icon-button>
+                    <paper-tooltip
+                      for="add-pd-output-${result.id}"
+                      .animationDelay="${0}"
+                      .animationConfig="${{}}"
+                      animation-entry=""
+                      animation-exit=""
+                      ?hidden="${!this.permissions?.edit.result_links}"
                       position="top"
-                      offset="0"
-                      custom-icon
-                      ?hide-tooltip="${!this.permissions?.edit.result_links}"
-                      style="justify-content:end;"
+                      offset="1"
                     >
-                      <paper-icon-button
-                        id="add-pd-output-${result.id}"
-                        slot="custom-icon"
-                        @click="${(e: any) => {
-                          this.addNewPDOutput(result.ll_results);
-                          this.moveFocusToNewllyAdded(e.target);
-                        }}"
-                        ?hidden="${!this.permissions?.edit.result_links ||
-                        !this.getOriginalCPOutput(resultIndex)?.cp_output}"
-                        icon="add-box"
-                        tabindex="0"
-                      ></paper-icon-button>
-                      <span class="no-wrap" slot="message">${translate('ADD_PD_OUTPUT')}</span>
-                    </etools-info-tooltip>
+                      ${translate('ADD_PD_OUTPUT')}
+                    </paper-tooltip>
                   </div>
                 </td>
               </tr>
@@ -270,7 +301,15 @@ export class EditorTable extends CommentsMixin(
                     class="text action-btns  ${this.permissions?.edit.result_links ? 'height-for-action-btns' : ''}"
                     type="pd-output"
                   >
-                    <td class="padd-top-10">${pdOutput.code}</td>
+                    <td class="index-column">
+                      <paper-input
+                        title="${pdOutput.code}"
+                        no-label-float
+                        readonly
+                        tabindex="-1"
+                        .value="${pdOutput.code}"
+                      ></paper-input>
+                    </td>
                     <td colspan="3" class="b no-top-padding" tabindex="0">
                       <paper-textarea
                         no-label-float
@@ -294,8 +333,7 @@ export class EditorTable extends CommentsMixin(
                           this.handleEsc(e);
                         }}"
                         @focus="${() => (this.autovalidatePdOutput = true)}"
-                        @value-changed="${({detail}: CustomEvent) =>
-                          this.updateModelValue(pdOutput, 'name', detail.value)}"
+                        @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'name', pdOutput)}"
                       ></paper-textarea>
                       <div class="bold truncate-multi-line" title="${pdOutput.name}" ?hidden="${pdOutput.inEditMode}">
                         ${pdOutput.name}
@@ -345,27 +383,39 @@ export class EditorTable extends CommentsMixin(
                             this.moveFocusToFirstInput(e.target);
                           }}"
                         ></paper-icon-button>
-                        <etools-info-tooltip
+
+                        <paper-icon-button
+                          id="add-a-${pdOutput.id}"
+                          icon="add-box"
+                          slot="custom-icon"
+                          @click="${(e: any) => {
+                            this.addNewActivity(pdOutput);
+                            this.moveFocusToNewllyAdded(e.target);
+                          }}"
+                          ?hidden="${pdOutput.inEditMode || !this.permissions?.edit.result_links}"
+                        ></paper-icon-button>
+                        <paper-tooltip
+                          for="add-a-${pdOutput.id}"
+                          .animationDelay="${0}"
+                          .animationConfig="${{}}"
+                          animation-entry=""
+                          animation-exit=""
+                          ?hidden="${!this.permissions?.edit.result_links}"
                           position="top"
-                          offset="0"
-                          custom-icon
-                          ?hide-tooltip="${!this.permissions?.edit.result_links}"
-                          style="justify-content:end;"
+                          offset="1"
                         >
-                          <paper-icon-button
-                            icon="add-box"
-                            slot="custom-icon"
-                            @click="${(e: any) => {
-                              this.addNewActivity(pdOutput);
-                              this.moveFocusToNewllyAdded(e.target);
-                            }}"
-                            ?hidden="${pdOutput.inEditMode || !this.permissions?.edit.result_links}"
-                          ></paper-icon-button>
-                          <span class="no-wrap" slot="message">${translate('ADD_NEW_ACTIVITY')}</span>
-                        </etools-info-tooltip>
+                          ${translate('ADD_NEW_ACTIVITY')}
+                        </paper-tooltip>
                         <paper-icon-button
                           icon="delete"
-                          ?hidden="${pdOutput.inEditMode || !this.permissions?.edit.result_links}"
+                          ?hidden="${pdOutput.inEditMode ||
+                          !_canDelete(
+                            pdOutput,
+                            !this.permissions?.edit.result_links!,
+                            this.intervention.status,
+                            this.intervention.in_amendment,
+                            this.intervention.in_amendment_date
+                          )}"
                           @click="${() => this.openDeletePdOutputDialog(pdOutput.id)}"
                         ></paper-icon-button>
                       </div>
@@ -702,33 +752,6 @@ export class EditorTable extends CommentsMixin(
     }).then(() => {
       this.getResultLinksDetails();
       getStore().dispatch<AsyncAction>(getIntervention());
-    });
-  }
-
-  updateModelValue(model: any, property: string, newVal: any) {
-    if (newVal == model[property]) {
-      return;
-    }
-    model[property] = newVal;
-    this.requestUpdate();
-  }
-
-  moveFocusToNewllyAdded(element: any) {
-    const currTbody = this.determineParentTr(element).parentElement;
-    setTimeout(() => {
-      const targetTr = currTbody.nextElementSibling.querySelector('tr.text');
-      const input = targetTr.querySelector('[input]');
-
-      if (input) {
-        this.lastFocusedTd = this.determineParentTd(input);
-        if (!input.focused) {
-          // Calling focus() when it's already focused it defocuses
-          input.focus();
-        }
-      }
-
-      // @ts-ignore Defined in arrows-nav-mixin
-      this.attachListenersToTr(targetTr);
     });
   }
 }

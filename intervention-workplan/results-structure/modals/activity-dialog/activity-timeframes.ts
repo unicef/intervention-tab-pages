@@ -156,6 +156,11 @@ export class ActivityTimeFrames extends LitElement {
 
   firstUpdated(changedProperties: PropertyValues): void {
     super.firstUpdated(changedProperties);
+    this.addEventListener('focus', () => {
+      if (!this.readonly) {
+        (this.shadowRoot!.querySelector('.time-frame') as HTMLElement)?.focus();
+      }
+    });
 
     this.shadowRoot!.querySelectorAll('.time-frame').forEach((el) => {
       callClickOnSpacePushListener(el);

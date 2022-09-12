@@ -38,6 +38,7 @@ export const ActivitiesAndIndicatorsStyles: CSSResult = css`
   .table-row.active .show-actions,
   .table-row:hover .show-actions {
     display: block;
+    opacity: 1;
   }
   .table-row.active,
   .table-row:not(.table-head, .empty):hover {
