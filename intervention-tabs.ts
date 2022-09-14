@@ -323,8 +323,8 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   @property({type: Boolean, attribute: 'is-in-amendment', reflect: true})
   isInAmendment = false;
 
-  @property({type: String})
-  otherInfo!: string;
+  @property({type: Object})
+  otherInfo!: {other_info: string};
 
   @query('etools-tabs-lit')
   etoolsTabs!: EtoolsTabs;
@@ -391,7 +391,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     }
     const currentInterventionId = get(state, 'app.routeDetails.params.interventionId');
     const currentIntervention = get(state, 'interventions.current');
-    this.otherInfo = currentIntervention?.other_info;
+    this.otherInfo = {other_info: currentIntervention?.other_info};
 
     // check if intervention was changed
     if (!isJsonStrMatch(this.intervention, currentIntervention)) {
