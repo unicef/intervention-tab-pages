@@ -7,6 +7,7 @@ import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixin
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {AsyncAction} from '@unicef-polymer/etools-types';
+import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 
 @customElement('unresolved-other-info-review')
 export class UnresolvedOtherInfo extends ComponentBaseMixin(LitElement) {
@@ -28,7 +29,7 @@ export class UnresolvedOtherInfo extends ComponentBaseMixin(LitElement) {
       </style>
       <etools-content-panel
         show-expand-btn
-        panel-title=${translate('UNRESOLVED')}
+        panel-title=${translate('IMPORT_INFO')}
         comment-element="other-info"
         comment-description="Other Info"
       >
@@ -62,6 +63,23 @@ export class UnresolvedOtherInfo extends ComponentBaseMixin(LitElement) {
 
   cancel() {
     this.editMode = false;
+  }
+
+  async areYouSure() {
+    const confirmed = await openDialog({
+      dialog: 'are-you-sure',
+      dialogData: {
+        content: 'This information will be deleted as a result of this action. Are you sure?',
+        confirmBtnText: translate('DELETE'),
+        cancelBtnText: translate('CANCEL')
+      }
+    }).then(({confirmed}) => {
+      return confirmed;
+    });
+
+    if (confirmed) {
+      this.saveUnresolved();
+    }
   }
 
   saveUnresolved() {
