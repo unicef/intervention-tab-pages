@@ -34,7 +34,6 @@ import {
 } from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
 import {RouteDetails} from '@unicef-polymer/etools-types/dist/router.types';
-import {EtoolsRouter} from '../../../../../utils/routes';
 import pick from 'lodash-es/pick';
 
 /**
@@ -365,7 +364,13 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
     this.prevQueryStringObj = cloneDeep({...currentParams, ...paramsToUpdate});
 
     const stringParams: string = buildUrlQueryString(this.prevQueryStringObj);
-    EtoolsRouter.replaceAppLocation(`interventions/${this.interventionId}/progress/reports/?${stringParams}`);
+
+    history.pushState(
+      window.history.state,
+      '',
+      `interventions/${this.interventionId}/progress/reports/?${stringParams}`
+    );
+    window.dispatchEvent(new CustomEvent('popstate'));
   }
 
   _prepareReqParamsObj(interventionId: number) {
