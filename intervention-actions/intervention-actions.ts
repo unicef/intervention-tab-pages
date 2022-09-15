@@ -10,6 +10,8 @@ import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endp
 import {interventionEndpoints} from '../utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {Store} from 'redux';
+import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import '../common/components/intervention/pd-termination';
@@ -42,14 +44,14 @@ import {PaperMenuButton} from '@polymer/paper-menu-button/paper-menu-button';
 import {updateCurrentIntervention} from '../common/actions/interventions';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {defaultKeyTranslate, formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {GenericObject} from '@unicef-polymer/etools-types';
+import {AnyObject, GenericObject} from '@unicef-polymer/etools-types';
 import {Intervention} from '@unicef-polymer/etools-types';
 import {get as getTranslation} from 'lit-translate';
 import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
 import {translatesMap} from '../utils/intervention-labels-map';
 
 @customElement('intervention-actions')
-export class InterventionActions extends LitElement {
+export class InterventionActions extends connectStore(LitElement) {
   static get styles(): CSSResultArray {
     return [InterventionActionsStyles];
   }
@@ -62,14 +64,17 @@ export class InterventionActions extends LitElement {
   @property({type: Boolean})
   userIsBudgetOwner = false;
 
+  @property({type: String})
+  currentLanguage!: string;
+
   connectedCallback() {
     super.connectedCallback();
     this.dir = getComputedStyle(document.body).direction;
   }
 
   private actionsNamesMap = new Proxy(ActionNamesMap, {
-    get(target: GenericObject<string>, property: string): string {
-      return target[property] || property.replace('_', ' ');
+    get(target: AnyObject, property: string): string {
+      return target[property].text || property.replace('_', ' ');
     }
   });
 
@@ -122,6 +127,18 @@ export class InterventionActions extends LitElement {
           </paper-button>
         `
       : html``;
+  }
+
+  public stateChanged(state: RootState) {
+    if (this.currentLanguage !== state.activeLanguage.activeLanguage) {
+      if (this.currentLanguage) {
+        // language was already set, this is language change, translate actions
+        Object.keys(ActionNamesMap).forEach(
+          (key) => (ActionNamesMap[key].text = getTranslation(ActionNamesMap[key].textKey))
+        );
+      }
+      this.currentLanguage = state.activeLanguage.activeLanguage;
+    }
   }
 
   private getAdditionalTransitions(actions?: string[]): TemplateResult {
