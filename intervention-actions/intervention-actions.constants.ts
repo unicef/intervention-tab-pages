@@ -1,4 +1,3 @@
-import {GenericObject} from '@unicef-polymer/etools-types';
 import {get as getTranslation} from 'lit-translate';
 
 const EXPORT_COMMENTS = 'download_comments';
@@ -38,21 +37,24 @@ export const ACTIONS_WITH_INPUT = [
 ];
 export const ACTIONS_WITHOUT_CONFIRM = [PRC_REVIEW, REJECT_REVIEW, SIGN];
 
-export const ActionNamesMap: GenericObject<string> = {
-  [EXPORT_COMMENTS]: getTranslation('EXPORT_COMMENTS'),
-  [EXPORT_PDF]: getTranslation('EXPORT_PDF'),
-  [EXPORT_XLS]: getTranslation('EXPORT_XLS'),
-  [EXPORT_RESULTS]: getTranslation('EXPORT_RESULTS'),
-  [SEND_TO_PARTNER]: getTranslation('SEND_TO_PARTNER'),
-  [SEND_TO_UNICEF]: getTranslation('SEND_TO_UNICEF'),
-  [UNLOCK]: getTranslation('UNLOCK'),
-  [ACCEPT]: getTranslation('ACCEPT_AS_FINAL'),
-  [REVIEW]: getTranslation('SEND_FOR_REVIEW'),
-  [CANCEL]: getTranslation('GENERAL.CANCEL'),
-  [SIGN]: getTranslation('SIGN'),
-  [SIGN_BUDGET_OWNER]: getTranslation('SIGN_BUDGET_OWNER'),
-  [TERMINATE]: getTranslation('TERMINATE'),
-  [REJECT_REVIEW]: getTranslation('REJECT_REVIEW'),
-  [ACCEPT_ON_BEHALF_OF_PARTNER]: getTranslation('ACCEPT_ON_BEHALF_OF_PARTNER'),
-  [SEND_BACK_REVIEW]: getTranslation('SEND_BACK_REVIEW')
+export const ActionNamesMap: {[key: string]: {text: string; textKey: string}} = {
+  [EXPORT_COMMENTS]: {text: getTranslation('EXPORT_COMMENTS'), textKey: 'EXPORT_COMMENTS'},
+  [EXPORT_PDF]: {text: getTranslation('EXPORT_PDF'), textKey: 'EXPORT_PDF'},
+  [EXPORT_XLS]: {text: getTranslation('EXPORT_XLS'), textKey: 'EXPORT_XLS'},
+  [EXPORT_RESULTS]: {text: getTranslation('EXPORT_RESULTS'), textKey: 'EXPORT_RESULTS'},
+  [SEND_TO_PARTNER]: {text: getTranslation('SEND_TO_PARTNER'), textKey: 'SEND_TO_PARTNER'},
+  [SEND_TO_UNICEF]: {text: getTranslation('SEND_TO_UNICEF'), textKey: 'SEND_TO_UNICEF'},
+  [UNLOCK]: {text: getTranslation('UNLOCK'), textKey: 'UNLOCK'},
+  [ACCEPT]: {text: getTranslation('ACCEPT_AS_FINAL'), textKey: 'ACCEPT_AS_FINAL'},
+  [REVIEW]: {text: getTranslation('SEND_FOR_REVIEW'), textKey: 'SEND_FOR_REVIEW'},
+  [CANCEL]: {text: getTranslation('GENERAL.CANCEL'), textKey: 'GENERAL.CANCEL'},
+  [SIGN]: {text: getTranslation('SIGN'), textKey: 'SIGN'},
+  [SIGN_BUDGET_OWNER]: {text: getTranslation('SIGN_BUDGET_OWNER'), textKey: 'SIGN_BUDGET_OWNER'},
+  [TERMINATE]: {text: getTranslation('TERMINATE'), textKey: 'TERMINATE'},
+  [REJECT_REVIEW]: {text: getTranslation('REJECT_REVIEW'), textKey: 'REJECT_REVIEW'},
+  [ACCEPT_ON_BEHALF_OF_PARTNER]: {
+    text: getTranslation('ACCEPT_ON_BEHALF_OF_PARTNER'),
+    textKey: 'ACCEPT_ON_BEHALF_OF_PARTNER'
+  },
+  [SEND_BACK_REVIEW]: {text: getTranslation('SEND_BACK_REVIEW'), textKey: 'SEND_BACK_REVIEW'}
 };

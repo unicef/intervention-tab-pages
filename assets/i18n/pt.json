@@ -532,5 +532,7 @@
   "THIS_INDICATOR_IS_HIGH_FREQUENCY": "Este indicador é de alta frequência",
   "ACCEPT_AS_FINAL": "Aceitar como definitivo",
   "DEACTIVATE_ACTIVITY_PROMPT": "Tem certeza de que deseja desativar esta atividade?",
-  "ACTIVITES_EDITOR":"Editor de atividades"
+  "ACTIVITES_EDITOR":"Editor de atividades",
+  "IMPORT_INFO": "Informações de importação",
+  "IS_ACTIVE": "Está ativo"
 }
