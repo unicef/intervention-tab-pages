@@ -70,10 +70,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
           </etools-info-tooltip>
         </div>
         <div slot="row-data-details">
-          <div
-            class="table-row table-head align-items-center"
-            ?hidden="${this.readonly || isEmptyObject(this.activities)}"
-          >
+          <div class="table-row table-head align-items-center" ?hidden="${isEmptyObject(this.activities)}">
             <div class="flex-1 left-align layout-vertical">${translate('ACTIVITY_NAME')}</div>
             <div class="flex-1 secondary-cell center">${translate('TIME_PERIODS')}</div>
             <div class="flex-1 secondary-cell right">${translate('PARTNER_CASH')}</div>
