@@ -10,7 +10,6 @@ import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endp
 import {interventionEndpoints} from '../utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
-import {Store} from 'redux';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
@@ -49,6 +48,7 @@ import {Intervention} from '@unicef-polymer/etools-types';
 import {get as getTranslation} from 'lit-translate';
 import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
 import {translatesMap} from '../utils/intervention-labels-map';
+import {RootState} from '../common/types/store.types';
 
 @customElement('intervention-actions')
 export class InterventionActions extends connectStore(LitElement) {
