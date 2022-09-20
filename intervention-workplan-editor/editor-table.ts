@@ -14,7 +14,7 @@ import {
 import {currentIntervention, currentInterventionPermissions, isUnicefUser} from '../common/selectors';
 import {ExpectedResult, Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
 import {InterventionQuarter} from '@unicef-polymer/etools-types/dist/intervention.types';
-import {cloneDeep} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {cloneDeep, isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {repeat} from 'lit-html/directives/repeat';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
@@ -468,6 +468,9 @@ export class EditorTable extends CommentsMixin(
   @property({type: Object})
   intervention!: Intervention;
 
+  @property({type: Object})
+  originalIntervention!: Intervention;
+
   @property({type: Boolean})
   readonly = false;
 
@@ -521,6 +524,14 @@ export class EditorTable extends CommentsMixin(
         name
       }))
       .filter(({id}: IdAndName<number>) => id);
+
+    if (!this.originalIntervention) {
+      this.originalIntervention = cloneDeep(this.intervention);
+    } else if (!isJsonStrMatch(this.originalIntervention, this.intervention)) {
+      this.originalIntervention = cloneDeep(this.intervention);
+      // intervention changed, need to reload ResultLinks
+      this.refreshResultStructure = true;
+    }
 
     if (this.prevInterventionId != selectInterventionId(state) || this.refreshResultStructure) {
       // Avoid console errors
