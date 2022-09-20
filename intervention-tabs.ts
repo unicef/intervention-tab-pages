@@ -510,15 +510,23 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     }
 
     let progressTab = this.pageTabs.find((x) => x.tab === TABS.Progress);
-    if (progressTab) {
-      // tab already configured
-      return;
-    } else {
+
+    if (!progressTab) {
       progressTab = cloneDeep(this.progressTabTemplate);
+      this.pageTabs.push(progressTab);
     }
+
+    this.toggleSubtabs(progressTab, envFlags);
+  }
+
+  toggleSubtabs(progressTab: any, envFlags: EnvFlags | null) {
     // Results Reported, Reports tabs are visible only for unicef users if flag prp_mode_off is not ON
     // @ts-ignore
-    if (envFlags && !envFlags.prp_mode_off && !progressTab?.subtabs?.find((t) => t.value === TABS.ResultsReported)) {
+    if (
+      envFlags &&
+      !envFlags.prp_mode_off &&
+      !progressTab?.subtabs?.find((t: any) => t.value === TABS.ResultsReported)
+    ) {
       // @ts-ignore
       progressTab?.subtabs?.push(
         {
@@ -529,7 +537,6 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
         {label: getTranslation('REPORTS_SUBTAB'), labelKey: 'REPORTS_SUBTAB', value: TABS.Reports}
       );
     }
-    this.pageTabs.push(progressTab);
   }
 
   checkReviewTab(state: RootState): void {
