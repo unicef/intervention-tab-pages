@@ -535,7 +535,8 @@
   "PLS_SELECT_SECTIONS_AND_LOCATIONS_FIRST": "Please, select PD sections and locations first",
   "THIS_INDICATOR_IS_HIGH_FREQUENCY": "This indicator is high frequency",
   "ACCEPT_AS_FINAL": "Accept as Final",
-  "IMPORT_INFO": "Import Info",
   "DEACTIVATE_ACTIVITY_PROMPT": "Are you sure you want to deactivate this activity?",
+  "ACTIVITES_EDITOR":"Activities Editor",
+  "IMPORT_INFO": "Import Info",
   "IS_ACTIVE": "Is active"
 }

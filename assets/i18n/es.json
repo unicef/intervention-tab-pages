@@ -531,7 +531,8 @@
   "PLS_SELECT_SECTIONS_AND_LOCATIONS_FIRST": "Por favor, seleccione primero las secciones y ubicaciones del PDً",
   "THIS_INDICATOR_IS_HIGH_FREQUENCY": "Este indicador es de alta frecuencia",
   "ACCEPT_AS_FINAL": "Aceptar como final",
+  "DEACTIVATE_ACTIVITY_PROMPT": "Seguro que quieres desactivar esta actividad?",
+  "ACTIVITES_EDITOR":"Editor de actividades",
   "IMPORT_INFO": "Información de importación",
-  "DEACTIVATE_ACTIVITY_PROMPT": "¿Seguro que quieres desactivar esta actividad?",
   "IS_ACTIVE": "Esta activa"
 }

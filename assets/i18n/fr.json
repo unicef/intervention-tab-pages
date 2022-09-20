@@ -535,7 +535,8 @@
   "PLS_SELECT_SECTIONS_AND_LOCATIONS_FIRST": "Veuillez sélectionner d’abord les sections et localisations du DP ",
   "THIS_INDICATOR_IS_HIGH_FREQUENCY": "Cet indicateur est à haute fréquence",
   "ACCEPT_AS_FINAL": "Accepter comme définitif",
-  "IMPORT_INFO": "Informations d'importation",
   "DEACTIVATE_ACTIVITY_PROMPT": "Voulez-vous vraiment désactiver cette activité ?",
+  "ACTIVITES_EDITOR":"Éditeur d'activités",
+  "IMPORT_INFO": "Informations d'importation",
   "IS_ACTIVE": "C'est actif"
 }

@@ -9,7 +9,7 @@ import {
 } from '../../common/types/editor-page-types';
 import {repeat} from 'lit-html/directives/repeat';
 import '@polymer/paper-input/paper-textarea';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import {ifDefined} from 'lit-html/directives/if-defined.js';
 import {ActivitiesCommonMixin} from '../../common/mixins/activities-common.mixin';
@@ -78,7 +78,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                     .alwaysFloatLabel="${activity.itemsInEditMode}"
                     .noLabelFloat="${!activity.itemsInEditMode}"
                     input
-                    label=${this.getLabel(activity.itemsInEditMode, 'Item Description')}
+                    label=${this.getLabel(activity.itemsInEditMode, getTranslation('ITEM_DESCRIPTION'))}
                     ?hidden="${!activity.itemsInEditMode}"
                     char-counter
                     maxlength="150"

@@ -129,7 +129,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                       class="other"
                       placeholder="-"
                       input
-                      label="Other Notes"
+                      label="${translate('OTHER_NOTES')}"
                       always-float-label
                       ?hidden="${!activity.inEditMode}"
                       char-counter

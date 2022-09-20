@@ -535,7 +535,8 @@
   "PLS_SELECT_SECTIONS_AND_LOCATIONS_FIRST": "Сначала выберите секции и локации ПД",
   "THIS_INDICATOR_IS_HIGH_FREQUENCY": "Это индикатор оперативного контроля",
   "ACCEPT_AS_FINAL": "принять как окончательный",
+  "DEACTIVATE_ACTIVITY_PROMPT": "Вы уверены, что хотите деактивировать это действие?",
+  "ACTIVITES_EDITOR":"Редактор действий",
   "IMPORT_INFO": "Информация об импорте",
-  "DEACTIVATE_ACTIVITY_PROMPT": "Are you sure you want to deactivate this activity?",
   "IS_ACTIVE": "Активен"
 }
