@@ -536,5 +536,6 @@
   "THIS_INDICATOR_IS_HIGH_FREQUENCY": "Это индикатор оперативного контроля",
   "ACCEPT_AS_FINAL": "принять как окончательный",
   "IMPORT_INFO": "Информация об импорте",
-  "DEACTIVATE_ACTIVITY_PROMPT": "Are you sure you want to deactivate this activity?"
+  "DEACTIVATE_ACTIVITY_PROMPT": "Are you sure you want to deactivate this activity?",
+  "IS_ACTIVE": "Активен"
 }

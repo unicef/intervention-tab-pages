@@ -531,5 +531,6 @@
   "THIS_INDICATOR_IS_HIGH_FREQUENCY": "This indicator is high frequency",
   "ACCEPT_AS_FINAL": "Acceptare Finala",
   "IMPORT_INFO": "Import Info",
-  "DEACTIVATE_ACTIVITY_PROMPT": "Sunteti sigur ca doriti sa dezactivati aceasta activitate?"
+  "DEACTIVATE_ACTIVITY_PROMPT": "Sunteti sigur ca doriti sa dezactivati aceasta activitate?",
+  "IS_ACTIVE": "Activ"
 }

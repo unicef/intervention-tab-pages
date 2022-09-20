@@ -532,5 +532,6 @@
   "THIS_INDICATOR_IS_HIGH_FREQUENCY": "Este indicador es de alta frecuencia",
   "ACCEPT_AS_FINAL": "Aceptar como final",
   "IMPORT_INFO": "Información de importación",
-  "DEACTIVATE_ACTIVITY_PROMPT": "¿Seguro que quieres desactivar esta actividad?"
+  "DEACTIVATE_ACTIVITY_PROMPT": "¿Seguro que quieres desactivar esta actividad?",
+  "IS_ACTIVE": "Esta activa"
 }
