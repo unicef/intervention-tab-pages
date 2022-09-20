@@ -98,10 +98,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
           ></info-icon-tooltip>
         </div>
         <div slot="row-data-details">
-          <div
-            class="table-row table-head align-items-center"
-            ?hidden="${this.readonly || isEmptyObject(this.indicators)}"
-          >
+          <div class="table-row table-head align-items-center" ?hidden="${isEmptyObject(this.indicators)}">
             <div class="flex-1 left-align">${translate('INDICATOR')}</div>
             <div class="flex-1 secondary-cell right">${translate('BASELINE')}</div>
             <div class="flex-1 secondary-cell right">${translate('TARGET')}</div>
