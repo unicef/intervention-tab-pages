@@ -1,4 +1,5 @@
-import {get as getTranslation} from 'lit-translate';
+import {AnyObject} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 
 const EXPORT_COMMENTS = 'download_comments';
 const EXPORT_RESULTS = 'export_results';
@@ -42,28 +43,28 @@ export const ACTIONS_WITH_INPUT = [
 ];
 export const ACTIONS_WITHOUT_CONFIRM = [PRC_REVIEW, REJECT_REVIEW, SIGN];
 
-export const ActionNamesMap: {[key: string]: {text: string; textKey: string}} = {
-  [EXPORT_COMMENTS]: {text: getTranslation('EXPORT_COMMENTS'), textKey: 'EXPORT_COMMENTS'},
-  [EXPORT_PDF]: {text: getTranslation('EXPORT_PDF'), textKey: 'EXPORT_PDF'},
-  [EXPORT_XLS]: {text: getTranslation('EXPORT_XLS'), textKey: 'EXPORT_XLS'},
-  [EXPORT_RESULTS]: {text: getTranslation('EXPORT_RESULTS'), textKey: 'EXPORT_RESULTS'},
-  [EXPORT_EPD_COMMENTS]: {text: getTranslation('EXPORT_EPD_COMMENTS'), textKey: 'EXPORT_EPD_COMMENTS'},
-  [EXPORT_EPD_PDF]: {text: getTranslation('EXPORT_EPD_PDF'), textKey: 'EXPORT_EPD_PDF'},
-  [EXPORT_EPD_XLS]: {text: getTranslation('EXPORT_EPD_XLS'), textKey: 'EXPORT_EPD_XLS'},
-  [EXPORT_EPD_RESULTS]: {text: getTranslation('EXPORT_EPD_RESULTS'), textKey: 'EXPORT_EPD_RESULTS'},
-  [SEND_TO_PARTNER]: {text: getTranslation('SEND_TO_PARTNER'), textKey: 'SEND_TO_PARTNER'},
-  [SEND_TO_UNICEF]: {text: getTranslation('SEND_TO_UNICEF'), textKey: 'SEND_TO_UNICEF'},
-  [UNLOCK]: {text: getTranslation('UNLOCK'), textKey: 'UNLOCK'},
-  [ACCEPT]: {text: getTranslation('ACCEPT_AS_FINAL'), textKey: 'ACCEPT_AS_FINAL'},
-  [REVIEW]: {text: getTranslation('SEND_FOR_REVIEW'), textKey: 'SEND_FOR_REVIEW'},
-  [CANCEL]: {text: getTranslation('GENERAL.CANCEL'), textKey: 'GENERAL.CANCEL'},
-  [SIGN]: {text: getTranslation('SIGN'), textKey: 'SIGN'},
-  [SIGN_BUDGET_OWNER]: {text: getTranslation('SIGN_BUDGET_OWNER'), textKey: 'SIGN_BUDGET_OWNER'},
-  [TERMINATE]: {text: getTranslation('TERMINATE'), textKey: 'TERMINATE'},
-  [REJECT_REVIEW]: {text: getTranslation('REJECT_REVIEW'), textKey: 'REJECT_REVIEW'},
+export const ActionNamesMap: AnyObject = {
+  [EXPORT_COMMENTS]: {text: translate('EXPORT_COMMENTS'), textKey: 'EXPORT_COMMENTS'},
+  [EXPORT_PDF]: {text: translate('EXPORT_PDF'), textKey: 'EXPORT_PDF'},
+  [EXPORT_XLS]: {text: translate('EXPORT_XLS'), textKey: 'EXPORT_XLS'},
+  [EXPORT_RESULTS]: {text: translate('EXPORT_RESULTS'), textKey: 'EXPORT_RESULTS'},
+  [EXPORT_EPD_COMMENTS]: {text: translate('EXPORT_EPD_COMMENTS'), textKey: 'EXPORT_EPD_COMMENTS'},
+  [EXPORT_EPD_PDF]: {text: translate('EXPORT_EPD_PDF'), textKey: 'EXPORT_EPD_PDF'},
+  [EXPORT_EPD_XLS]: {text: translate('EXPORT_EPD_XLS'), textKey: 'EXPORT_EPD_XLS'},
+  [EXPORT_EPD_RESULTS]: {text: translate('EXPORT_EPD_RESULTS'), textKey: 'EXPORT_EPD_RESULTS'},
+  [SEND_TO_PARTNER]: {text: translate('SEND_TO_PARTNER'), textKey: 'SEND_TO_PARTNER'},
+  [SEND_TO_UNICEF]: {text: translate('SEND_TO_UNICEF'), textKey: 'SEND_TO_UNICEF'},
+  [UNLOCK]: {text: translate('UNLOCK'), textKey: 'UNLOCK'},
+  [ACCEPT]: {text: translate('ACCEPT_AS_FINAL'), textKey: 'ACCEPT_AS_FINAL'},
+  [REVIEW]: {text: translate('SEND_FOR_REVIEW'), textKey: 'SEND_FOR_REVIEW'},
+  [CANCEL]: {text: translate('GENERAL.CANCEL'), textKey: 'GENERAL.CANCEL'},
+  [SIGN]: {text: translate('SIGN'), textKey: 'SIGN'},
+  [SIGN_BUDGET_OWNER]: {text: translate('SIGN_BUDGET_OWNER'), textKey: 'SIGN_BUDGET_OWNER'},
+  [TERMINATE]: {text: translate('TERMINATE'), textKey: 'TERMINATE'},
+  [REJECT_REVIEW]: {text: translate('REJECT_REVIEW'), textKey: 'REJECT_REVIEW'},
   [ACCEPT_ON_BEHALF_OF_PARTNER]: {
-    text: getTranslation('ACCEPT_ON_BEHALF_OF_PARTNER'),
+    text: translate('ACCEPT_ON_BEHALF_OF_PARTNER'),
     textKey: 'ACCEPT_ON_BEHALF_OF_PARTNER'
   },
-  [SEND_BACK_REVIEW]: {text: getTranslation('SEND_BACK_REVIEW'), textKey: 'SEND_BACK_REVIEW'}
+  [SEND_BACK_REVIEW]: {text: translate('SEND_BACK_REVIEW'), textKey: 'SEND_BACK_REVIEW'}
 };

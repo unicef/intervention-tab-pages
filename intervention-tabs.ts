@@ -546,7 +546,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       const pasteTo = this.pageTabs.findIndex((x) => x.tab === TABS.Progress);
       this.pageTabs.splice(pasteTo, 0, {
         tab: TABS.Review,
-        tabLabel: getTranslation('REVIEW_TAB'),
+        tabLabel: translate('REVIEW_TAB'),
         tabLabelKey: 'REVIEW_TAB',
         hidden: false
       });
@@ -560,7 +560,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       const pasteTo = this.pageTabs.findIndex((x) => x.tab === TABS.Progress);
       this.pageTabs.splice(pasteTo, 0, {
         tab: TABS.Attachments,
-        tabLabel: getTranslation('ATTACHMENTS_TAB') as unknown as string,
+        tabLabel: translate('ATTACHMENTS_TAB') as unknown as string,
         tabLabelKey: 'ATTACHMENTS_TAB',
         hidden: false
       });
