@@ -24,6 +24,7 @@ import {
   BACK_ACTIONS,
   CANCEL,
   EXPORT_ACTIONS,
+  EXPORT_EPD_ACTIONS,
   ActionNamesMap,
   SEND_TO_PARTNER,
   SEND_TO_UNICEF,
@@ -67,6 +68,8 @@ export class InterventionActions extends connectStore(LitElement) {
   @property({type: String})
   currentLanguage!: string;
 
+  private isEPDApp = ROOT_PATH === '/epd/';
+
   connectedCallback() {
     super.connectedCallback();
     this.dir = getComputedStyle(document.body).direction;
@@ -74,13 +77,15 @@ export class InterventionActions extends connectStore(LitElement) {
 
   private actionsNamesMap = new Proxy(ActionNamesMap, {
     get(target: AnyObject, property: string): string {
-      return target[property].text || property.replace('_', ' ');
+      return target[property] && target[property].text ? target[property].text : property.replace('_', ' ');
     }
   });
 
   protected render(): TemplateResult {
     const actions: Set<string> = new Set(this.actions);
-    const exportActions: string[] = EXPORT_ACTIONS.filter((action: string) => actions.has(action));
+    const exportActions: string[] = (this.isEPDApp ? EXPORT_EPD_ACTIONS : EXPORT_ACTIONS).filter((action: string) =>
+      actions.has(action)
+    );
     const backAction: string | undefined = BACK_ACTIONS.find((action: string) => actions.has(action));
     const [mainAction, ...groupedActions] = this.actions.filter(
       (action: string) => !exportActions.includes(action) && action !== backAction
