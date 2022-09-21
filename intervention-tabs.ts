@@ -249,25 +249,25 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   pageTabs = [
     {
       tab: TABS.Metadata,
-      tabLabel: getTranslation('METADATA_TAB'),
+      tabLabel: translate('METADATA_TAB'),
       tabLabelKey: 'METADATA_TAB',
       hidden: false
     },
     {
       tab: TABS.Strategy,
-      tabLabel: getTranslation('STRATEGY_TAB'),
+      tabLabel: translate('STRATEGY_TAB'),
       tabLabelKey: 'STRATEGY_TAB',
       hidden: false
     },
     {
       tab: TABS.Workplan,
-      tabLabel: getTranslation('WORKPLAN_TAB'),
+      tabLabel: translate('WORKPLAN_TAB'),
       tabLabelKey: 'WORKPLAN_TAB',
       hidden: false
     },
     {
       tab: TABS.Timing,
-      tabLabel: getTranslation('TIMING_TAB') as unknown as string,
+      tabLabel: translate('TIMING_TAB') as unknown as string,
       tabLabelKey: 'TIMING_TAB',
       hidden: false
     }
@@ -275,18 +275,18 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
 
   progressTabTemplate = {
     tab: TABS.Progress,
-    tabLabel: getTranslation('PROGRESS_TAB'),
+    tabLabel: translate('PROGRESS_TAB'),
     tabLabelKey: 'PROGRESS_TAB',
     hidden: false,
     disabled: true,
     subtabs: [
       {
-        label: getTranslation('IMPLEMENTATION_STATUS_SUBTAB'),
+        label: translate('IMPLEMENTATION_STATUS_SUBTAB'),
         labelKey: 'IMPLEMENTATION_STATUS_SUBTAB',
         value: TABS.ImplementationStatus
       },
       {
-        label: getTranslation('MONITORING_ACTIVITIES_SUBTAB'),
+        label: translate('MONITORING_ACTIVITIES_SUBTAB'),
         labelKey: 'MONITORING_ACTIVITIES_SUBTAB',
         value: TABS.MonitoringActivities
       }
@@ -530,11 +530,11 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       // @ts-ignore
       progressTab?.subtabs?.push(
         {
-          label: getTranslation('RESULTS_REPORTED_SUBTAB'),
+          label: translate('RESULTS_REPORTED_SUBTAB'),
           labelKey: 'RESULTS_REPORTED_SUBTAB',
           value: TABS.ResultsReported
         },
-        {label: getTranslation('REPORTS_SUBTAB'), labelKey: 'REPORTS_SUBTAB', value: TABS.Reports}
+        {label: translate('REPORTS_SUBTAB'), labelKey: 'REPORTS_SUBTAB', value: TABS.Reports}
       );
     }
   }
