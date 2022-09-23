@@ -24,7 +24,6 @@ import {
   BACK_ACTIONS,
   CANCEL,
   EXPORT_ACTIONS,
-  EXPORT_EPD_ACTIONS,
   ActionNamesMap,
   SEND_TO_PARTNER,
   SEND_TO_UNICEF,
@@ -83,9 +82,7 @@ export class InterventionActions extends connectStore(LitElement) {
 
   protected render(): TemplateResult {
     const actions: Set<string> = new Set(this.actions);
-    const exportActions: string[] = (this.isEPDApp ? EXPORT_EPD_ACTIONS : EXPORT_ACTIONS).filter((action: string) =>
-      actions.has(action)
-    );
+    const exportActions: string[] = EXPORT_ACTIONS.filter((action: string) => actions.has(action));
     const backAction: string | undefined = BACK_ACTIONS.find((action: string) => actions.has(action));
     const [mainAction, ...groupedActions] = this.actions.filter(
       (action: string) => !exportActions.includes(action) && action !== backAction
@@ -97,8 +94,9 @@ export class InterventionActions extends connectStore(LitElement) {
   }
 
   private renderExport(actions: string[]): TemplateResult {
+    // for ePD app must add ePD text on Export links
     const preparedExportActions = actions.map((action: string) => ({
-      name: this.actionsNamesMap[action],
+      name: this.actionsNamesMap[this.isEPDApp ? `${action}_epd` : action],
       type: action
     }));
     return actions.length
