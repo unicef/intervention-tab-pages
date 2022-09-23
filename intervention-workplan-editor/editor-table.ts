@@ -157,7 +157,6 @@ export class EditorTable extends CommentsMixin(
             <td class="col-g" colspan="2"></td>
           </tr>
         </tbody>
-        ${this.renderProgrammeManagement()}
         ${this.isUnicefUser || !this.permissions?.edit.result_links || this.commentMode
           ? html``
           : html`
@@ -439,6 +438,7 @@ export class EditorTable extends CommentsMixin(
             )}
           `
         )}
+        ${this.renderProgrammeManagement()}
       </table>
     `;
   }
