@@ -8,6 +8,7 @@ import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/st
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {AsyncAction} from '@unicef-polymer/etools-types';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {patchIntervention} from './common/actions/interventions';
 
 @customElement('unresolved-other-info-review')
 export class UnresolvedOtherInfo extends ComponentBaseMixin(LitElement) {
@@ -52,7 +53,7 @@ export class UnresolvedOtherInfo extends ComponentBaseMixin(LitElement) {
           ? html``
           : html` <div class="layout-horizontal right-align row-padding">
               <paper-button class="default" @click="${this.cancel}">${translate('GENERAL.CANCEL')}</paper-button>
-              <paper-button class="primary" @click="${this.saveUnresolved}"> Mark as resolved</paper-button>
+              <paper-button class="primary" @click="${this.areYouSure}"> Mark as resolved</paper-button>
             </div>`}
       </etools-content-panel>
     `;
@@ -69,7 +70,7 @@ export class UnresolvedOtherInfo extends ComponentBaseMixin(LitElement) {
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
-        content: 'This information will be deleted as a result of this action. Are you sure?',
+        content: 'Import Info will be deleted as a result of this action.',
         confirmBtnText: translate('DELETE'),
         cancelBtnText: translate('CANCEL')
       }
@@ -84,10 +85,7 @@ export class UnresolvedOtherInfo extends ComponentBaseMixin(LitElement) {
 
   saveUnresolved() {
     getStore()
-      .dispatch<AsyncAction>(
-        // @ts-ignore
-        patchIntervention({other_info: ''})
-      )
+      .dispatch<AsyncAction>(patchIntervention({other_info: ''}))
       .then(() => {
         this.editMode = false;
       });
