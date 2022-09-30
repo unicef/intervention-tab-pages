@@ -72,7 +72,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   .value="${item.code || 'N/A'}"
                 ></paper-input>
               </td>
-              <td tabindex="0">
+              <td tabindex="0" class="a-item-padd">
                 <div class="char-counter" ?hidden="${!activity.itemsInEditMode}">
                   <paper-textarea
                     .alwaysFloatLabel="${activity.itemsInEditMode}"
@@ -271,7 +271,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
           type="add-item"
         >
           <td></td>
-          <td tabindex="0">
+          <td tabindex="0" class="a-item-add-padd">
             <div class="icon" @click="${(e: CustomEvent) => this.addNewActivityItem(e, activity, 'focusAbove')}">
               <paper-icon-button icon="add-box"></paper-icon-button> ${translate('ADD_NEW_ITEM')}
             </div>

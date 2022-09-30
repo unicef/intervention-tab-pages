@@ -30,6 +30,13 @@ export const EditorTableStyles = css`
   }
   td.col-text {
     width: calc(47% - 85px);
+    padding-left: 24px;
+  }
+  td.a-item-padd {
+    padding-left: 24px;
+  }
+  td.a-item-add-padd {
+    padding-left: 14px;
   }
   td.col-g {
     width: 10%;
