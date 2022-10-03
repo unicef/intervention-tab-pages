@@ -332,6 +332,9 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
         etools-data-table-row#indicatorsRow::part(edt-list-row-wrapper) {
           padding-inline-start: 25px !important;
         }
+        etools-data-table-row#indicatorsRow::part(edt-list-row-collapse-wrapper) {
+          border-top: none;
+        }
       `
     ];
   }

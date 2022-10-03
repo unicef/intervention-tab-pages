@@ -22,6 +22,7 @@ export const ActivitiesAndIndicatorsStyles: CSSResult = css`
     font-size: 16px;
     line-height: 16px;
     color: #5c5c5c;
+    background-color: var(--main-background);
   }
   .table-row > div {
     text-align: center;

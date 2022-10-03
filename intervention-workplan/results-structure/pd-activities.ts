@@ -273,6 +273,9 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
         etools-data-table-row#activitiesRow::part(edt-list-row-wrapper) {
           padding-inline-start: 25px !important;
         }
+        etools-data-table-row#activitiesRow::part(edt-list-row-collapse-wrapper) {
+          border-top: none;
+        }
       `
     ];
   }
