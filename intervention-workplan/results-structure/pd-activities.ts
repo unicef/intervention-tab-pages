@@ -54,7 +54,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
     // language=HTML
     return html`
       ${sharedStyles}
-      <etools-data-table-row .detailsOpened="${true}">
+      <etools-data-table-row .detailsOpened="${true}" id="activitiesRow">
         <div slot="row-data" class="layout-horizontal align-items-center editable-row start-justified">
           <div class="title-text">${translate(translatesMap.activities)} (${this.activities.length})</div>
           <etools-info-tooltip position="top" custom-icon ?hide-tooltip="${this.readonly}" offset="0">
@@ -269,6 +269,9 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
         div.editable-row .hover-block {
           background: linear-gradient(270deg, var(--main-background) 71.65%, rgba(196, 196, 196, 0) 100%);
           padding-left: 20px;
+        }
+        etools-data-table-row#activitiesRow::part(edt-list-row-wrapper) {
+          padding-inline-start: 25px !important;
         }
       `
     ];
