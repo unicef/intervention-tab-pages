@@ -63,6 +63,12 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
       }
 
       return html`
+        <tbody>
+          <tr class="eepm-header lighter-blue">
+            <td></td>
+            <td colspan="8">${translate('EFFECTIVE_EFFICIENT_PROG_MGM')}</td>
+          </tr>
+        </tbody>
         ${repeat(
           this.formattedProgrammeManagement || [],
           (item: ProgrammeManagementRowExtended) => item.id,
@@ -75,9 +81,9 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
               comment-element="eepm-${item.id}"
               comment-description="${translate('EFFECTIVE_EFFICIENT_PROG_MGM')} - ${item.name}"
             >
-              <tr class="header">
+              <tr class="header" type="eepm-activity">
                 <td></td>
-                <td colspan="4">${translate('EFFECTIVE_EFFICIENT_PROG_MGM')}</td>
+                <td colspan="4">${translate('ACTIVITY')}</td>
                 <td class="a-right">${translate('PARTNER_CASH')}</td>
                 <td>${translate('UNICEF_CASH')}</td>
                 <td colspan="2">${translate('GENERAL.TOTAL')}</td>

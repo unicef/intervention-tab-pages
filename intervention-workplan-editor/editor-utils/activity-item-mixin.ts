@@ -100,7 +100,12 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                     @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'name', item)}"
                   ></paper-textarea>
                 </div>
-                <div class="truncate-multi-line" title="${item.name}" ?hidden="${activity.itemsInEditMode}">
+                <div
+                  class="truncate-multi-line"
+                  style="margin-bottom: 10px; margin-top: 8px;"
+                  title="${item.name}"
+                  ?hidden="${activity.itemsInEditMode}"
+                >
                   ${item.name}
                 </div>
               </td>

@@ -226,4 +226,13 @@ export const EditorTableStyles = css`
   *[input][readonly] {
     pointer-events: none;
   }
+
+  .eepm-header {
+    color: var(--secondary-text-color);
+    font-weight: bold;
+  }
+  tr.eepm-header td {
+    border-left: none;
+    border-right: none;
+  }
 `;

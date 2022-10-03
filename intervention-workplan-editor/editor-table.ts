@@ -126,7 +126,7 @@ export class EditorTable extends CommentsMixin(
         }
 
         .truncate-multi-line {
-          margin: 8px 0 10px 0;
+          margin: 4px 0 5px 0;
           max-height: 96px;
           line-height: 24px;
           overflow: hidden;
