@@ -34,7 +34,7 @@ export class UnresolvedOtherInfo extends ComponentBaseMixin(LitElement) {
         comment-element="other-info"
         comment-description="Other Info"
       >
-        <div slot="panel-btns">${this.renderEditBtn(this.editMode, true)}</div>
+        <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.editPermissions)}</div>
         <div class="row-padding">Make sure the PD/SPD takes into account the information presented below.</div>
         <div class="row-padding">
           <paper-textarea
@@ -49,7 +49,7 @@ export class UnresolvedOtherInfo extends ComponentBaseMixin(LitElement) {
           </paper-textarea>
         </div>
 
-        ${this.hideActionButtons(this.editMode, true)
+        ${this.hideActionButtons(this.editMode, this.editPermissions)
           ? html``
           : html` <div class="layout-horizontal right-align row-padding">
               <paper-button class="default" @click="${this.cancel}">${translate('GENERAL.CANCEL')}</paper-button>
@@ -61,6 +61,9 @@ export class UnresolvedOtherInfo extends ComponentBaseMixin(LitElement) {
 
   @property({type: Object})
   data!: {other_info: string};
+
+  @property({type: Boolean})
+  editPermissions!: boolean;
 
   cancel() {
     this.editMode = false;
