@@ -203,6 +203,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
               ${result.ll_results.map(
                 (pdOutput: ResultLinkLowerResult, index: number) => html`
                   <etools-data-table-row
+                    id="pdOutputRow"
                     class="pdOutputMargin ${this.isUnicefUser ? 'unicef-user' : 'partner'}"
                     related-to="pd-output-${pdOutput.id}"
                     related-to-description=" PD Output - ${pdOutput.name}"
@@ -574,6 +575,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         }
         cp-output-level .pd-title {
           padding: 8px 16px;
+          padding-inline-start: 45px;
         }
         .pd-add-section {
           background-color: #ccebff;
@@ -684,6 +686,10 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         }
         .count div:first-child {
           margin-right: 20px;
+        }
+
+        etools-data-table-row#pdOutputRow::part(edt-list-row-wrapper) {
+          padding-inline-start: 25px !important;
         }
       `
     ];

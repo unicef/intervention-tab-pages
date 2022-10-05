@@ -77,7 +77,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
     // language=HTML
     return html`
       ${sharedStyles}
-      <etools-data-table-row .detailsOpened="${true}">
+      <etools-data-table-row .detailsOpened="${true}" id="indicatorsRow">
         <div slot="row-data" class="layout-horizontal align-items-center editable-row start-justified">
           <div class="title-text">${translate(translatesMap.applied_indicators)} (${this.indicators.length})</div>
           <etools-info-tooltip position="top" custom-icon ?hide-tooltip="${this.readonly}" offset="0">
@@ -328,6 +328,12 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
         }
         info-icon-tooltip {
           margin-left: 10px;
+        }
+        etools-data-table-row#indicatorsRow::part(edt-list-row-wrapper) {
+          padding-inline-start: 25px !important;
+        }
+        etools-data-table-row#indicatorsRow::part(edt-list-row-collapse-wrapper) {
+          border-top: none;
         }
       `
     ];
