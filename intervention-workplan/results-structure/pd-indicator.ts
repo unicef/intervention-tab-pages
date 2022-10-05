@@ -59,7 +59,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
                 <span class="no-wrap" slot="message">${translate('THIS_INDICATOR_IS_HIGH_FREQUENCY')}</span>
               </etools-info-tooltip>
             </div>
-            <div class="item-link" @click="${() => (this.detailsOpened = !this.detailsOpened)}">
+            <div class="item-link indent" @click="${() => (this.detailsOpened = !this.detailsOpened)}">
               ${this.detailsOpened ? 'hide' : 'show'} ${this.locationNames.length} ${translate('LOCATIONS')} |
               ${this.indicator.disaggregation.length} ${translate('DISAGGREGATIONS')}
             </div>
@@ -122,7 +122,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
             </paper-menu-button>
           </div>
         </div>
-        <div class="details ${this.detailsOpened ? 'opened' : ''}" style="max-height:350px; overflow-y:auto">
+        <div class="details indent ${this.detailsOpened ? 'opened' : ''}" style="max-height:350px; overflow-y:auto">
           ${this.additionalTemplate()}
         </div>
       </div>

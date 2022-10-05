@@ -100,6 +100,9 @@ export const ActivitiesAndIndicatorsStyles: CSSResult = css`
     cursor: pointer;
     text-transform: lowercase;
   }
+  .indent {
+    padding-inline-start: 14px;
+  }
   etools-data-table-row {
     --list-bg-color: var(--main-background);
   }
