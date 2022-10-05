@@ -39,7 +39,10 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
       if (!programmeManagement || !programmeManagement.items || !programmeManagement.items.length) {
         return '';
       }
-      return html`<tbody class="gray-1">
+      return html`<tbody
+        class="gray-1"
+        ?inEditMode="${programmeManagement.inEditMode || programmeManagement.itemsInEditMode}"
+      >
         ${repeat(
           programmeManagement.items || [],
           (item: ProgrammeManagementRowItemExtended) => item.id,

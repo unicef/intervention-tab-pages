@@ -80,6 +80,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
               !this.oneEntityInEditMode}"
               comment-element="eepm-${item.id}"
               comment-description="${translate('EFFECTIVE_EFFICIENT_PROG_MGM')} - ${item.name}"
+              ?inEditMode="${item.inEditMode || item.itemsInEditMode}"
             >
               <tr class="header" type="eepm-activity">
                 <td></td>
@@ -207,7 +208,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
             </tbody>
 
             <tbody thead ?hidden="${!item.items || !item.items.length}">
-              <tr class="header no-padd gray-1">
+              <tr class="header no-padd gray-1" ?inEditMode="${item.inEditMode || item.itemsInEditMode}">
                 <td class="first-col"></td>
                 <td class="col-text">${translate('ITEM_DESCRIPTION')}</td>
                 <td class="col-unit">${translate('UNIT')}</td>
