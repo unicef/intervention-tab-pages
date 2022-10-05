@@ -64,7 +64,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                   .value="${programmeManagement.code}.${itemIndex + 1}"
                 ></paper-input>
               </td>
-              <td tabindex="0">
+              <td tabindex="0" class="a-item-padd">
                 <div class="char-counter" ?hidden="${!programmeManagement.itemsInEditMode}">
                   <paper-textarea
                     .alwaysFloatLabel="${programmeManagement.itemsInEditMode}"
@@ -262,7 +262,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
           type="add-item"
         >
           <td></td>
-          <td tabindex="0">
+          <td tabindex="0" class="a-item-add-padd">
             <div class="icon" @click="${(e: CustomEvent) => this.addNewItem(e, programmeManagement, 'focusAbove')}">
               <paper-icon-button icon="add-box"></paper-icon-button> ${translate('ADD_NEW_ITEM')}
             </div>
