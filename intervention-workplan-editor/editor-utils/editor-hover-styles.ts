@@ -24,7 +24,7 @@ export const EditorHoverStyles = css`
     flex-direction: row;
     align-items: center;
     justify-content: flex-end;
-    background-color: #cdcdcd;
+    background-color: #dedddd;
     min-width: 40px;
   }
 
