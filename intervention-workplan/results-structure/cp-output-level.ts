@@ -86,9 +86,9 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
                             ?hidden="${_canDelete(
                               this.resultLink,
                               this.readonly,
-                              this.interventionInfo.status,
-                              this.interventionInfo.in_amendment,
-                              this.interventionInfo.in_amendment_date
+                              this.interventionInfo.status!,
+                              this.interventionInfo.in_amendment!,
+                              this.interventionInfo.in_amendment_date!
                             )}"
                             @click="${this.openDeleteCPOutputPopup}"
                           ></paper-icon-button>
