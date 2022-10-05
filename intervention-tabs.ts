@@ -213,7 +213,10 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
           ? html`<reason-display .justification=${this.intervention.cancel_justification}></reason-display>`
           : ''}
         ${this.intervention.other_info
-          ? html` <unresolved-other-info-review .data="${this.otherInfo}"></unresolved-other-info-review>`
+          ? html` <unresolved-other-info-review
+              .data="${this.otherInfo}"
+              .editPermissions="${this.intervention.permissions?.edit.other_info}"
+            ></unresolved-other-info-review>`
           : html``}
         <intervention-metadata ?hidden="${!this.isActiveTab(this.activeTab, TABS.Metadata)}"> </intervention-metadata>
         <intervention-strategy ?hidden="${!this.isActiveTab(this.activeTab, TABS.Strategy)}"></intervention-strategy>
