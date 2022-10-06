@@ -336,8 +336,9 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     this.commentsModeEnabledFlag = Boolean(state.commentsData?.commentsModeEnabled);
     this.updateResultLinks(state);
     this.showInactiveToggle = this.resultLinks.some(({ll_results}: ExpectedResult) =>
-      ll_results.some(({applied_indicators}: ResultLinkLowerResult) =>
-        applied_indicators.some(({is_active}: Indicator) => !is_active)
+      ll_results.some(
+        ({applied_indicators, activities}: ResultLinkLowerResult) =>
+          applied_indicators.some(({is_active}: Indicator) => !is_active) || activities.some((a) => !a.is_active)
       )
     );
     this.permissions = selectResultLinksPermissions(state);
