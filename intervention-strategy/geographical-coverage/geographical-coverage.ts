@@ -77,7 +77,10 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         #locations {
           max-width: fit-content;
           min-width: 300px;
-          --paper-input-container-label-floating_-_color: transparent;
+        }
+
+        #locations::part(esmm-label) {
+          opacity: 0;
         }
 
         .f-left {
@@ -106,13 +109,13 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         }
 
         etools-dropdown-multi::part(esmm-dropdownmenu) {
-          left: 24px !important;
+          left: 0px !important;
         }
         .row-padding-v {
           position: relative;
         }
         .location-icon {
-          z-index: 999;
+          z-index: 119;
         }
       </style>
 
