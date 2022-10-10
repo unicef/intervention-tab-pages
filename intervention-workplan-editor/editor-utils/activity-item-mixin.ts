@@ -197,7 +197,6 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   ?readonly="${!activity.itemsInEditMode}"
                   required
                   tabindex="${ifDefined(item.inEditMode ? undefined : '-1')}"
-                  auto-validate
                   error-message="${translate('INCORRECT_VALUE')}"
                   .invalid="${item.invalid?.cso_cash}"
                   @invalid-changed="${({detail}: CustomEvent) => {
@@ -219,7 +218,6 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   ?readonly="${!activity.itemsInEditMode}"
                   required
                   tabindex="${ifDefined(item.inEditMode ? undefined : '-1')}"
-                  auto-validate
                   error-message="${translate('INCORRECT_VALUE')}"
                   .invalid="${item.invalid?.unicef_cash}"
                   @invalid-changed="${({detail}: CustomEvent) => {
