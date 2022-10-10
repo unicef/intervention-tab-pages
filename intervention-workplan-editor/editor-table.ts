@@ -40,6 +40,7 @@ import {EditorHoverStyles} from './editor-utils/editor-hover-styles';
 import {updateSmallMenu} from '../common/actions/common-actions';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@polymer/paper-tooltip/paper-tooltip';
+import {ifDefined} from 'lit-html/directives/if-defined.js';
 /* eslint-disable max-len */
 import {selectProgrammeManagement} from '../intervention-workplan/effective-efficient-programme-mgmt/effectiveEfficientProgrammeMgmt.selectors';
 import {ActivitiesFocusMixin} from './editor-utils/activities-focus-mixin';
@@ -244,9 +245,11 @@ export class EditorTable extends CommentsMixin(
                 <td
                   colspan="2"
                   class="action-btns"
-                  tabindex="${!this.permissions?.edit.result_links || !this.getOriginalCPOutput(resultIndex)?.cp_output
-                    ? '-1'
-                    : '0'}"
+                  tabindex="${ifDefined(
+                    !this.permissions?.edit.result_links || !this.getOriginalCPOutput(resultIndex)?.cp_output
+                      ? undefined
+                      : '0'
+                  )}"
                 >
                   <div class="action-btns" style="position:relative">
                     <paper-icon-button
