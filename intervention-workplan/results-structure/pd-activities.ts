@@ -1,14 +1,4 @@
-import {
-  LitElement,
-  html,
-  TemplateResult,
-  CSSResultArray,
-  css,
-  customElement,
-  property,
-  query,
-  queryAll
-} from 'lit-element';
+import {LitElement, html, TemplateResult, CSSResultArray, css, customElement, property, queryAll} from 'lit-element';
 import {ResultStructureStyles} from './styles/results-structure.styles';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import '@polymer/paper-icon-button/paper-icon-button';
