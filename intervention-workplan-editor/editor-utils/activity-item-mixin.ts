@@ -47,7 +47,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       if (!activity || !activity.items || !activity.items.length) {
         return '';
       }
-      return html`<tbody class="gray-1">
+      return html`<tbody class="gray-1" ?inEditMode="${activity.inEditMode || activity.itemsInEditMode}">
         ${repeat(
           activity.items || [],
           (item: InterventionActivityItemExtended) => item.id,

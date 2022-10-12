@@ -235,4 +235,9 @@ export const EditorTableStyles = css`
     border-left: none;
     border-right: none;
   }
+
+  tbody[inEditMode],
+  tr[inEditMode] {
+    background-color: #b5d5f050 !important;
+  }
 `;
