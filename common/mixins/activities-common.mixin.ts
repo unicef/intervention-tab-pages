@@ -79,8 +79,8 @@ export function ActivitiesCommonMixin<T extends Constructor<LitElement>>(baseCla
         item.invalid = {
           ...item.invalid,
           ...{
-            cso_cash: item.cso_cash === null || item.cso_cash === undefined,
-            unicef_cash: item.unicef_cash === null || item.unicef_cash === undefined
+            cso_cash: item.cso_cash === null || item.cso_cash === undefined || isNaN(item.cso_cash),
+            unicef_cash: item.unicef_cash === null || item.unicef_cash === undefined || isNaN(item.unicef_cash)
           }
         };
       }
