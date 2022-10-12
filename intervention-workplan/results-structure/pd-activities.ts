@@ -1,4 +1,14 @@
-import {LitElement, html, TemplateResult, CSSResultArray, css, customElement, property} from 'lit-element';
+import {
+  LitElement,
+  html,
+  TemplateResult,
+  CSSResultArray,
+  css,
+  customElement,
+  property,
+  query,
+  queryAll
+} from 'lit-element';
 import {ResultStructureStyles} from './styles/results-structure.styles';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import '@polymer/paper-icon-button/paper-icon-button';
@@ -23,6 +33,7 @@ import {
   _canDelete
 } from '../../common/mixins/results-structure-common';
 import {isEmptyObject} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {PaperMenuButton} from '@polymer/paper-menu-button';
 
 @customElement('pd-activities')
 export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
@@ -196,6 +207,32 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
         </div>
       </etools-data-table-row>
     `;
+  }
+
+  @queryAll('paper-menu-button#view-menu-button')
+  actionsMenuBtns!: PaperMenuButton[];
+
+  connectedCallback(): void {
+    super.connectedCallback();
+    this.closeMenusOnScroll = this.closeMenusOnScroll.bind(this);
+    this.getScrollableArea().addEventListener('scroll', this.closeMenusOnScroll, false);
+  }
+
+  // Scroll happens on this area, not on window
+  getScrollableArea() {
+    return document!
+      .querySelector('app-shell')!
+      .shadowRoot!.querySelector('#appHeadLayout')!
+      .shadowRoot!.querySelector('#contentContainer')!;
+  }
+
+  closeMenusOnScroll() {
+    this.actionsMenuBtns.forEach((p) => (p.opened = false));
+  }
+
+  disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.getScrollableArea().removeEventListener('scroll', this.closeMenusOnScroll, false);
   }
 
   _hideActivity(activity: any, showInactive: boolean) {
