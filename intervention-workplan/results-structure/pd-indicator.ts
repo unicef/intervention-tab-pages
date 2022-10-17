@@ -1,4 +1,4 @@
-import {LitElement, html, customElement, property, TemplateResult, css} from 'lit-element';
+import {LitElement, html, customElement, property, TemplateResult, css, query} from 'lit-element';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
@@ -13,6 +13,7 @@ import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.s
 import {getIndicatorDisplayType} from '../../utils/utils';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import {_canDeactivate, _canDelete} from '../../common/mixins/results-structure-common';
+import {PaperMenuButton} from '@polymer/paper-menu-button';
 
 @customElement('pd-indicator')
 export class PdIndicator extends CommentsMixin(LitElement) {
@@ -26,6 +27,9 @@ export class PdIndicator extends CommentsMixin(LitElement) {
   @property({type: Boolean}) detailsOpened = false;
   @property({type: Number}) index?: number;
   @property({type: String})
+  @query('paper-menu-button#view-menu-button')
+  actionsMenuBtn!: PaperMenuButton;
+
   inAmendmentDate!: string;
 
   render() {
@@ -127,6 +131,31 @@ export class PdIndicator extends CommentsMixin(LitElement) {
         </div>
       </div>
     `;
+  }
+
+  connectedCallback(): void {
+    super.connectedCallback();
+
+    this.closeMenuOnScroll = this.closeMenuOnScroll.bind(this);
+    this.getScrollableArea().addEventListener('scroll', this.closeMenuOnScroll, false);
+  }
+
+  // Scroll happens on this area, not on window
+  getScrollableArea() {
+    return document!
+      .querySelector('app-shell')!
+      .shadowRoot!.querySelector('#appHeadLayout')!
+      .shadowRoot!.querySelector('#contentContainer')!;
+  }
+
+  closeMenuOnScroll() {
+    this.actionsMenuBtn.removeAttribute('focused');
+    setTimeout(() => (this.actionsMenuBtn.opened = false));
+  }
+
+  disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.getScrollableArea().removeEventListener('scroll', this.closeMenuOnScroll, false);
   }
 
   additionalTemplate() {
