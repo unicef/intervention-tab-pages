@@ -192,7 +192,6 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                   input
                   ?readonly="${!programmeManagement.itemsInEditMode}"
                   required
-                  auto-validate
                   error-message="${translate('INCORRECT_VALUE')}"
                   .invalid="${item.invalid?.cso_cash}"
                   @invalid-changed="${({detail}: CustomEvent) => {
@@ -213,7 +212,6 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                   input
                   ?readonly="${!programmeManagement.itemsInEditMode}"
                   required
-                  auto-validate
                   error-message="${translate('INCORRECT_VALUE')}"
                   .invalid="${item.invalid?.unicef_cash}"
                   @invalid-changed="${({detail}: CustomEvent) => {
