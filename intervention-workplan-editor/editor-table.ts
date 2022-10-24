@@ -144,6 +144,9 @@ export class EditorTable extends CommentsMixin(
           -webkit-box-orient: vertical;
           word-break: break-word;
         }
+        .v-middle {
+          vertical-align: middle;
+        }
       </style>
       <table>
         <tbody>
@@ -173,7 +176,7 @@ export class EditorTable extends CommentsMixin(
                   ?hidden="${this.isUnicefUser || !this.permissions?.edit.result_links || this.commentMode}"
                 >
                   <td></td>
-                  <td colspan="3"></td>
+                  <td colspan="3" class="v-middle">${translate('ADD_PD_OUTPUT')}</td>
                   <td colspan="3"></td>
                   <td colspan="2" tabindex="0">
                     <div class="action-btns" style="position:relative">
