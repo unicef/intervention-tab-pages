@@ -51,7 +51,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
   render() {
     if (!this.data || this.data.constructor == Object) {
       return html` ${sharedStyles}
-        <etools-loading source="eepm" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="eepm" active></etools-loading>`;
     }
     // language=HTML
     return html`

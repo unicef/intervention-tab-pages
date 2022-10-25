@@ -42,7 +42,7 @@ export class InterventionDates extends CommentsMixin(
   render() {
     if (!this.data || !this.permissions) {
       return html` ${sharedStyles}
-        <etools-loading source="dates" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="dates" active></etools-loading>`;
     }
     // language=HTML
     return html`

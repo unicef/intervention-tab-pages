@@ -40,7 +40,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
   render() {
     if (!this.data) {
       return html` ${sharedStyles}
-        <etools-loading source="pv" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="pv" active></etools-loading>`;
     }
     // language=HTML
     return html`

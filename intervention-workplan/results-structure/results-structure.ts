@@ -103,7 +103,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
   render() {
     if (!this.intervention || !this.permissions || !this.resultLinks) {
       return html` ${sharedStyles}
-        <etools-loading source="results-s" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="results-s" active></etools-loading>`;
     }
     // language=HTML
     return html`

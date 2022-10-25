@@ -26,6 +26,7 @@ export const TERMINATE = 'terminate';
 export const REJECT_REVIEW = 'reject_review';
 export const ACCEPT_ON_BEHALF_OF_PARTNER = 'accept_on_behalf_of_partner';
 export const SEND_BACK_REVIEW = 'send_back_review';
+export const SUSPEND = 'suspend';
 
 export const EXPORT_ACTIONS = [EXPORT_PDF, EXPORT_XLS, EXPORT_COMMENTS, EXPORT_RESULTS];
 export const EXPORT_EPD_ACTIONS = [EXPORT_EPD_PDF, EXPORT_EPD_XLS, EXPORT_EPD_COMMENTS, EXPORT_EPD_RESULTS];
@@ -58,6 +59,7 @@ export const ActionNamesMap: {[key: string]: {text: string; textKey: string}} = 
   [REVIEW]: {text: getTranslation('SEND_FOR_REVIEW'), textKey: 'SEND_FOR_REVIEW'},
   [CANCEL]: {text: getTranslation('GENERAL.CANCEL'), textKey: 'GENERAL.CANCEL'},
   [SIGN]: {text: getTranslation('SIGN'), textKey: 'SIGN'},
+  [SUSPEND]: {text: getTranslation('SUSPEND'), textKey: 'SUSPEND'},
   [SIGN_BUDGET_OWNER]: {text: getTranslation('SIGN_BUDGET_OWNER'), textKey: 'SIGN_BUDGET_OWNER'},
   [TERMINATE]: {text: getTranslation('TERMINATE'), textKey: 'TERMINATE'},
   [REJECT_REVIEW]: {text: getTranslation('REJECT_REVIEW'), textKey: 'REJECT_REVIEW'},

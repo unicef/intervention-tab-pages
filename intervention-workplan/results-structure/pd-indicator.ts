@@ -60,8 +60,8 @@ export class PdIndicator extends CommentsMixin(LitElement) {
               </etools-info-tooltip>
             </div>
             <div class="item-link" @click="${() => (this.detailsOpened = !this.detailsOpened)}">
-              ${this.detailsOpened ? 'hide' : 'show'} ${this.locationNames.length} ${translate('LOCATIONS')} |
-              ${this.indicator.disaggregation.length} ${translate('DISAGGREGATIONS')}
+              ${translate(this.detailsOpened ? 'HIDE' : 'SHOW')} ${this.locationNames.length} ${translate('LOCATIONS')}
+              | ${this.indicator.disaggregation.length} ${translate('DISAGGREGATIONS')}
             </div>
           </div>
           <!--    Baseline    -->

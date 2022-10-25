@@ -15,7 +15,7 @@ import {GenderEquityRatingPermissions, GenderEquityRating} from './genderEquityR
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {RootState} from '../../common/types/store.types';
 import {patchIntervention} from '../../common/actions/interventions';
-import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {isJsonStrMatch, translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {
   pageIsNotCurrentlyActive,
   detailsTextareaRowsCount
@@ -38,7 +38,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
   render() {
     if (!this.data || !this.ratings || !this.permissions) {
       return html` ${sharedStyles}
-        <etools-loading source="ger" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="ger" active></etools-loading>`;
     }
     // language=HTML
     return html`
@@ -244,7 +244,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         >
           ${this._getRatingRadioButtonsTemplate(ratings, permission)}
         </paper-radio-group>`
-      : html`<label>${ratingText}</label>`;
+      : html`<label>${translateValue(ratingText, 'RATINGS')}</label>`;
   }
 
   _getRatingRadioButtonsTemplate(ratings: LabelAndValue[], permission: boolean) {
@@ -254,7 +254,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
           class="${this.isReadonly(this.editMode, permission) ? 'readonly' : ''}"
           name="${r.value}"
         >
-          ${r.label}</paper-radio-button
+          ${translateValue(r.label, 'RATINGS')}</paper-radio-button
         >`
     );
   }

@@ -84,7 +84,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
       return html`<style>
           ${customIcons} ${sharedStyles} ${InfoElementStyles}
         </style>
-        <etools-loading source="b-s" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="b-s" active></etools-loading>`;
     }
     // language=HTML
     return html`

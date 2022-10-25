@@ -1,4 +1,4 @@
-﻿{
+{
   "SEND": "Envoyer",
   "CONTINUE": "Continuer",
   "EXPORT_COMMENTS": "Exporter les commentaires",
@@ -12,6 +12,7 @@
   "SEND_TO_PARTNER": "Envoyer au partenaire",
   "SEND_TO_UNICEF": "Envoyer à l’UNICEF",
   "SIGN": "Signer",
+  "SUSPEND": "Suspendre",
   "SIGN_BUDGET_OWNER": "Recommander pour approbation",
   "ACCEPT_REVIEW": "Accepter l’examen",
   "TERMINATE": "Interrompre",
@@ -278,7 +279,6 @@
   "UNICEF_PRODUCT_NUMBER": "Numéro de produit UNICEF",
   "ADD_SUPPLY_CONTRIBUTION": "Ajouter la contribution en fournitures ",
   "EDIT_SUPPLY_CONTRIBUTION": "Modifier la contribution en fournitures ",
-  "CP_OUTPUT": "مProduit du PP",
   "SECTION_CLUSTER": "Section/Cluster ",
   "DISAGGREGATION": "Désagrégation",
   "DISAGGREGATIONS": "Désagrégations",
@@ -287,6 +287,7 @@
   "ADD_CP_OUTPUT": "Ajouter Produits du PP ",
   "ADD_PD_ACTIVITY": "Ajouter une activité du PP ",
   "ADD_PD_INDICATOR": "Ajouter un indicateur DP ",
+  "CP_OUTPUT": "مProduit du PP",
   "CAN_NOT_SAVE_IND": "Impossible d’enregistrer les indicateurs!",
   "PD_OUTPUT": "Produit du DP ",
   "PD_OUTPUT_NAME": "Nom du Produit du DP sortie ",
@@ -541,7 +542,81 @@
   "THIS_INDICATOR_IS_HIGH_FREQUENCY": "Cet indicateur est à haute fréquence",
   "ACCEPT_AS_FINAL": "Accepter comme définitif",
   "DEACTIVATE_ACTIVITY_PROMPT": "Voulez-vous vraiment désactiver cette activité ?",
-  "ACTIVITES_EDITOR":"Éditeur d'activités",
+  "ACTIVITES_EDITOR": "Éditeur d'activités",
   "IMPORT_INFO": "Informations d'importation",
-  "IS_ACTIVE": "C'est actif"
+  "IS_ACTIVE": "C'est actif",
+  "NA": "N\\A",
+  "YES": "Oui",
+  "NO": "Non",
+  "RISK_RATINGS": {
+    "HIGH": "Haute",
+    "SIGNIFICANT": "Important",
+    "MEDIUM": "Moyen",
+    "LOW": "Bas",
+    "NOT_REQUIRED": "Non requis",
+    "HIGH_RISK_ASSUMED": "Risque élevé présumé",
+    "LOW_RISK_ASSUMED": "Faible risque présumé",
+    "NOT_ASSESSED": "Pas évalué"
+  },
+  "CASH_TRANSFER_MODALITIES": {
+    "DIRECT_PAYMENT": "Paiement direct",
+    "REIMBURSEMENT": "Remboursement",
+    "DIRECT_CASH_TRANSFER": "Transfert direct d'espèces"
+  },
+  "RATINGS": {
+    "NONE": "Aucun",
+    "MARGINAL": "Marginal",
+    "SIGNIFICANT": "Important",
+    "PRINCIPAL": "Directeur"
+  },
+  "RISK_TYPE": {
+    "SOCIAL_&_ENVIRONMENTAL": "Social & Environnemental",
+    "FINANCIAL": "Financier",
+    "OPERATIONAL": "Opérationnel",
+    "ORGANIZATIONAL": "Organisationnel",
+    "POLITICAL": "Politique",
+    "STRATEGIC": "Stratégique",
+    "SAFETY_&_SECURITY": "Sécurité sûreté"
+  },
+  "AMENDMENT_TYPES_ITEMS": {
+    "TYPE_1:_ADMINISTRATIVE_ERROR_(CORRECTION)": "Type 1 : erreur administrative (correction)",
+    "TYPE_2:_BUDGET_<=_20%": "Type 2 : Budget <= 20 %",
+    "TYPE_3:_BUDGET_>_20%": "Type 3 : budget > 20 %",
+    "TYPE_4:_CHANGES_TO_PLANNED_RESULTS": "Type 4 : Modifications des résultats prévus",
+    "TYPE_5:_NO_COST_EXTENSION": "Type 5 : Prolongation sans frais",
+    "TYPE_6:_OTHER": "Type 6 : Autre"
+  },
+  "FILE_TYPES": {
+    "FACE": "VISAGE",
+    "PROGRESS_REPORT": "Rapport d'étape",
+    "FINAL_PARTNERSHIP_REVIEW": "Examen final du partenariat",
+    "CORRESPONDENCE": "Correspondance",
+    "SUPPLY/DISTRIBUTION_PLAN": "Plan d'approvisionnement/distribution",
+    "OTHER": "Autre"
+  },
+  "SECRETARY_COMMENT": "Commentaire du secrétaire",
+  "CFEI_NOTIFICATION": "Notification CFEI",
+  "PD_COMPLETED_AFTER_UNPP": "Ce PD a été complété après une sélection à l'UNPP où un comité a approuvé, veuillez consulter le travail effectué à l'UNPP en cliquant sur ce lien :",
+  "GO_TO_UNPP": "Accéder à l'UNPP",
+  "DIFFERENCE": "Différence",
+  "CHECKING_FR_NUMBERS_UPDATES": " Vérification des mises à jour des numéros FR...",
+  "NO_COMMENTS": "Il n'y a pas encore de commentaires",
+  "POST": "Poste",
+  "CLOSE": "proche",
+  "CAN_NOT_RESOLVE_COMMENT": "Impossible de résoudre le commentaire. Réessayer",
+  "CAN_NOT_DELETE_COMMENT": "Impossible de supprimer le commentaire. Réessayer",
+  "MESSAGE_WAS_DELETED": "Le message a été supprimé",
+  "RESOLVE": "Résoudre",
+  "RESOLVED": "Résolu",
+  "AT": "à",
+  "COMMENTS_ON": "Commentaires sur:",
+  "OVERVIEW": "Aperçu",
+  "TOTAL_FOR_PERCENT_HQ": "{{ PERCENT }} de la contribution totale en espèces de l'UNICEF est : {{ VALUE }}. Veuillez vérifier et entrer le nombre final réel ci-dessous.",
+  "ACTIVE": "Actif",
+  "COMPLETED": "Complété",
+  "PD_OUTPUT_S": "Sortie(s) DP",
+  "HIDE": "Cacher",
+  "SHOW": "Spectacle",
+  "NOT_SUBMITTED": "Pas transmis",
+  "NOT_REVIEWED": "Pas révisé"
 }

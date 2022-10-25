@@ -25,7 +25,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
   }
   render() {
     if (!this.frsDetails || !this.intervention) {
-      return html`<etools-loading source="fund-res-display" loading-text="Loading..." active></etools-loading>`;
+      return html`<etools-loading source="fund-res-display" active></etools-loading>`;
     }
     return html`
       ${customIcons} ${sharedStyles}

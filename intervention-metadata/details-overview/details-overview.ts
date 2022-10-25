@@ -9,11 +9,11 @@ import {InterventionOverview} from './interventionOverview.models';
 import {selectInterventionOverview} from './interventionOverview.selectors';
 import {RootState} from '../../common/types/store.types';
 import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
-import {formatDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
+import {formatDateLocalized} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
 import get from 'lodash-es/get';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation, langChanged} from 'lit-translate';
 import {allPartners, currentIntervention, isUnicefUser} from '../../common/selectors';
 import {AnyObject} from '@unicef-polymer/etools-types/dist/global.types';
 import {Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
@@ -22,6 +22,7 @@ import CONSTANTS from '../../common/constants';
 import {StaticPartner} from '@unicef-polymer/etools-types';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 import {getPageDirection} from '../../utils/utils';
+import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 
 /**
  * @customElement
@@ -35,7 +36,7 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
     // language=HTML
     if (!this.interventionOverview) {
       return html` ${sharedStyles}
-        <etools-loading source="details-overview" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="details-overview" active></etools-loading>`;
     }
     return html`
       ${InfoElementStyles} ${sharedStyles}
@@ -81,13 +82,13 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
           <div class="data-column">
             <label class="paper-label">${translate('CORE_VALUES_ASSESSMENT_DATE')}</label>
             <div class="input-label" ?empty="${!this.interventionPartner?.last_assessment_date}">
-              ${formatDate(this.interventionPartner?.last_assessment_date)}
+              ${formatDateLocalized(this.interventionPartner?.last_assessment_date)}
             </div>
           </div>
           <div class="data-column">
             <label class="paper-label">${translate('PSEA_ASSESSMENT_DATE')}</label>
             <div class="input-label" ?empty="${!this.interventionPartner?.psea_assessment_date}">
-              ${formatDate(this.interventionPartner?.psea_assessment_date)}
+              ${formatDateLocalized(this.interventionPartner?.psea_assessment_date)}
             </div>
           </div>
         </div>
@@ -135,41 +136,45 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
     super.stateChanged(state);
   }
 
-  private _getText(value: boolean): string {
+  private _getText(value: boolean) {
     if (value === undefined) {
       return '-';
     }
-    if (value) {
-      return 'Yes';
-    } else {
-      return 'No';
-    }
+
+    return langChanged(() => {
+      if (value) {
+        return getTranslation('YES');
+      } else {
+        return getTranslation('NO');
+      }
+    });
   }
 
   getPartnerPseaRiskRatingHtml() {
     if (!this.interventionPartner?.sea_risk_rating_name) {
-      return html`N\\A`;
+      return html`${translate('NA')}`;
     }
     // eslint-disable-next-line lit/no-invalid-html
     return html`<a target="_blank" href="/psea/assessments/list?partner=${this.intervention.partner_id}">
-      <strong class="blue">${this.interventionPartner.sea_risk_rating_name}</strong></a
+      <strong class="blue">${translateValue(this.interventionPartner.sea_risk_rating_name, 'RISK_RATINGS')}</strong></a
     >`;
   }
 
   getPartnerHactRiskRatingHtml() {
     if (!this.interventionPartner?.rating) {
-      return html`N\\A`;
+      return html`${translate('NA')}`;
     }
     // eslint-disable-next-line lit/no-invalid-html
     return html`<a target="_blank" href="/ap/engagements/list?partner__in=${this.intervention.partner_id}">
-      <strong class="blue">${this.interventionPartner.rating}</strong></a
+      <strong class="blue">${translateValue(this.interventionPartner.rating, 'RISK_RATINGS')}</strong></a
     >`;
   }
-  getDocumentLongName(value: any): string | undefined {
+  getDocumentLongName(value: any) {
     if (!value) {
       return;
     }
-    // @ts-ignore
-    return CONSTANTS.DOCUMENT_TYPES_LONG[value.toUpperCase()];
+
+    const name = (CONSTANTS.DOCUMENT_TYPES_LONG as any)[value.toUpperCase()];
+    return translateValue(name, 'ITEM_TYPE');
   }
 }
