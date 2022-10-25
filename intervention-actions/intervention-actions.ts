@@ -24,7 +24,6 @@ import {
   BACK_ACTIONS,
   CANCEL,
   EXPORT_ACTIONS,
-  EXPORT_EPD_ACTIONS,
   ActionNamesMap,
   SEND_TO_PARTNER,
   SEND_TO_UNICEF,
@@ -83,9 +82,7 @@ export class InterventionActions extends connectStore(LitElement) {
 
   protected render(): TemplateResult {
     const actions: Set<string> = new Set(this.actions);
-    const exportActions: string[] = (this.isEPDApp ? EXPORT_EPD_ACTIONS : EXPORT_ACTIONS).filter((action: string) =>
-      actions.has(action)
-    );
+    const exportActions: string[] = EXPORT_ACTIONS.filter((action: string) => actions.has(action));
     const backAction: string | undefined = BACK_ACTIONS.find((action: string) => actions.has(action));
     const [mainAction, ...groupedActions] = this.actions.filter(
       (action: string) => !exportActions.includes(action) && action !== backAction
@@ -97,8 +94,9 @@ export class InterventionActions extends connectStore(LitElement) {
   }
 
   private renderExport(actions: string[]): TemplateResult {
+    // for ePD app must add ePD text on Export links
     const preparedExportActions = actions.map((action: string) => ({
-      name: this.actionsNamesMap[action],
+      name: this.actionsNamesMap[this.isEPDApp ? `${action}_epd` : action],
       type: action
     }));
     return actions.length
@@ -211,7 +209,7 @@ export class InterventionActions extends connectStore(LitElement) {
         break;
       default:
         btn = this.actionsNamesMap[action];
-        message = getTranslation('ARE_YOU_SURE_PROMPT') + this.actionsNamesMap[action]?.toLowerCase() + ' ?';
+        message = `${getTranslation('ARE_YOU_SURE_PROMPT')} ${this.getActionTextForPopup(action).toLowerCase()} ?`;
     }
     return await openDialog({
       dialog: 'are-you-sure',
@@ -220,6 +218,11 @@ export class InterventionActions extends connectStore(LitElement) {
         confirmBtnText: btn
       }
     }).then(({confirmed}) => confirmed);
+  }
+
+  // for popup cannot use translate from actionsNamesMap, need to pass a string and so will use getTranslation
+  getActionTextForPopup(action: string): string {
+    return ActionNamesMap[action] ? getTranslation(ActionNamesMap[action].textKey) : action;
   }
 
   async processAction(action: string): Promise<void> {
@@ -294,8 +297,8 @@ export class InterventionActions extends connectStore(LitElement) {
     return openDialog({
       dialog: 'reason-popup',
       dialogData: {
-        popupTitle: `${this.actionsNamesMap[action]} Reason`,
-        label: `${this.actionsNamesMap[action]} Comment`
+        popupTitle: `${this.getActionTextForPopup(action)} Reason`,
+        label: `${this.getActionTextForPopup(action)} Comment`
       }
     }).then(({confirmed, response}) => {
       if (!confirmed || !response) {
@@ -312,8 +315,8 @@ export class InterventionActions extends connectStore(LitElement) {
     return openDialog({
       dialog: 'reason-popup',
       dialogData: {
-        popupTitle: `${this.actionsNamesMap[action]} Reason`,
-        label: `${this.actionsNamesMap[action]} Comment`
+        popupTitle: `${this.getActionTextForPopup(action)} Reason`,
+        label: `${this.getActionTextForPopup(action)} Comment`
       }
     }).then(({confirmed, response}) => {
       if (!confirmed || !response) {

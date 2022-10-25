@@ -40,6 +40,7 @@ import {EditorHoverStyles} from './editor-utils/editor-hover-styles';
 import {updateSmallMenu} from '../common/actions/common-actions';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@polymer/paper-tooltip/paper-tooltip';
+import {ifDefined} from 'lit-html/directives/if-defined.js';
 /* eslint-disable max-len */
 import {selectProgrammeManagement} from '../intervention-workplan/effective-efficient-programme-mgmt/effectiveEfficientProgrammeMgmt.selectors';
 import {ActivitiesFocusMixin} from './editor-utils/activities-focus-mixin';
@@ -126,7 +127,7 @@ export class EditorTable extends CommentsMixin(
         }
 
         .truncate-multi-line {
-          margin: 8px 0 10px 0;
+          margin: 4px 0 5px 0;
           max-height: 96px;
           line-height: 24px;
           overflow: hidden;
@@ -143,6 +144,9 @@ export class EditorTable extends CommentsMixin(
           -webkit-box-orient: vertical;
           word-break: break-word;
         }
+        .v-middle {
+          vertical-align: middle;
+        }
       </style>
       <table>
         <tbody>
@@ -157,7 +161,6 @@ export class EditorTable extends CommentsMixin(
             <td class="col-g" colspan="2"></td>
           </tr>
         </tbody>
-        ${this.renderProgrammeManagement()}
         ${this.isUnicefUser || !this.permissions?.edit.result_links || this.commentMode
           ? html``
           : html`
@@ -173,7 +176,7 @@ export class EditorTable extends CommentsMixin(
                   ?hidden="${this.isUnicefUser || !this.permissions?.edit.result_links || this.commentMode}"
                 >
                   <td></td>
-                  <td colspan="3"></td>
+                  <td colspan="3" class="v-middle">${translate('ADD_PD_OUTPUT')}</td>
                   <td colspan="3"></td>
                   <td colspan="2" tabindex="0">
                     <div class="action-btns" style="position:relative">
@@ -245,9 +248,11 @@ export class EditorTable extends CommentsMixin(
                 <td
                   colspan="2"
                   class="action-btns"
-                  tabindex="${!this.permissions?.edit.result_links || !this.getOriginalCPOutput(resultIndex)?.cp_output
-                    ? '-1'
-                    : '0'}"
+                  tabindex="${ifDefined(
+                    !this.permissions?.edit.result_links || !this.getOriginalCPOutput(resultIndex)?.cp_output
+                      ? undefined
+                      : '0'
+                  )}"
                 >
                   <div class="action-btns" style="position:relative">
                     <paper-icon-button
@@ -439,6 +444,7 @@ export class EditorTable extends CommentsMixin(
             )}
           `
         )}
+        ${this.renderProgrammeManagement()}
       </table>
     `;
   }

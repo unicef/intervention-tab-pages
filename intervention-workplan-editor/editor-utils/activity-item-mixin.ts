@@ -47,7 +47,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       if (!activity || !activity.items || !activity.items.length) {
         return '';
       }
-      return html`<tbody class="gray-1">
+      return html`<tbody class="gray-1" ?inEditMode="${activity.inEditMode || activity.itemsInEditMode}">
         ${repeat(
           activity.items || [],
           (item: InterventionActivityItemExtended) => item.id,
@@ -72,7 +72,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   .value="${item.code || 'N/A'}"
                 ></paper-input>
               </td>
-              <td tabindex="0">
+              <td tabindex="0" class="a-item-padd">
                 <div class="char-counter" ?hidden="${!activity.itemsInEditMode}">
                   <paper-textarea
                     .alwaysFloatLabel="${activity.itemsInEditMode}"
@@ -100,7 +100,12 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                     @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'name', item)}"
                   ></paper-textarea>
                 </div>
-                <div class="truncate-multi-line" title="${item.name}" ?hidden="${activity.itemsInEditMode}">
+                <div
+                  class="truncate-multi-line"
+                  style="margin-bottom: 10px; margin-top: 8px;"
+                  title="${item.name}"
+                  ?hidden="${activity.itemsInEditMode}"
+                >
                   ${item.name}
                 </div>
               </td>
@@ -192,7 +197,6 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   ?readonly="${!activity.itemsInEditMode}"
                   required
                   tabindex="${ifDefined(item.inEditMode ? undefined : '-1')}"
-                  auto-validate
                   error-message="${translate('INCORRECT_VALUE')}"
                   .invalid="${item.invalid?.cso_cash}"
                   @invalid-changed="${({detail}: CustomEvent) => {
@@ -214,7 +218,6 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   ?readonly="${!activity.itemsInEditMode}"
                   required
                   tabindex="${ifDefined(item.inEditMode ? undefined : '-1')}"
-                  auto-validate
                   error-message="${translate('INCORRECT_VALUE')}"
                   .invalid="${item.invalid?.unicef_cash}"
                   @invalid-changed="${({detail}: CustomEvent) => {
@@ -271,7 +274,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
           type="add-item"
         >
           <td></td>
-          <td tabindex="0">
+          <td tabindex="0" class="a-item-add-padd">
             <div class="icon" @click="${(e: CustomEvent) => this.addNewActivityItem(e, activity, 'focusAbove')}">
               <paper-icon-button icon="add-box"></paper-icon-button> ${translate('ADD_NEW_ITEM')}
             </div>

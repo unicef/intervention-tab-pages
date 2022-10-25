@@ -78,6 +78,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
               this.permissions.edit.result_links &&
               !this.commentMode &&
               !this.oneEntityInEditMode}"
+              ?inEditMode="${activity.inEditMode || activity.itemsInEditMode}"
               comment-element="activity-${activity.id}"
               comment-description=" Activity - ${activity.name}"
             >
@@ -292,7 +293,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
             </tbody>
 
             <tbody thead ?hidden="${!activity.items || !activity.items.length}">
-              <tr class="header no-padd gray-1">
+              <tr class="header no-padd gray-1" ?inEditMode="${activity.inEditMode || activity.itemsInEditMode}">
                 <td class="first-col"></td>
                 <td class="col-text">${translate('ITEM_DESCRIPTION')}</td>
                 <td class="col-unit">${translate('UNIT')}</td>

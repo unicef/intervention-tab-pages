@@ -213,7 +213,10 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
           ? html`<reason-display .justification=${this.intervention.cancel_justification}></reason-display>`
           : ''}
         ${this.intervention.other_info
-          ? html` <unresolved-other-info-review .data="${this.otherInfo}"></unresolved-other-info-review>`
+          ? html` <unresolved-other-info-review
+              .data="${this.otherInfo}"
+              .editPermissions="${this.intervention.permissions?.edit.other_info}"
+            ></unresolved-other-info-review>`
           : html``}
         <intervention-metadata ?hidden="${!this.isActiveTab(this.activeTab, TABS.Metadata)}"> </intervention-metadata>
         <intervention-strategy ?hidden="${!this.isActiveTab(this.activeTab, TABS.Strategy)}"></intervention-strategy>
@@ -249,25 +252,25 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   pageTabs = [
     {
       tab: TABS.Metadata,
-      tabLabel: getTranslation('METADATA_TAB'),
+      tabLabel: translate('METADATA_TAB'),
       tabLabelKey: 'METADATA_TAB',
       hidden: false
     },
     {
       tab: TABS.Strategy,
-      tabLabel: getTranslation('STRATEGY_TAB'),
+      tabLabel: translate('STRATEGY_TAB'),
       tabLabelKey: 'STRATEGY_TAB',
       hidden: false
     },
     {
       tab: TABS.Workplan,
-      tabLabel: getTranslation('WORKPLAN_TAB'),
+      tabLabel: translate('WORKPLAN_TAB'),
       tabLabelKey: 'WORKPLAN_TAB',
       hidden: false
     },
     {
       tab: TABS.Timing,
-      tabLabel: getTranslation('TIMING_TAB') as unknown as string,
+      tabLabel: translate('TIMING_TAB') as unknown as string,
       tabLabelKey: 'TIMING_TAB',
       hidden: false
     }
@@ -275,18 +278,18 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
 
   progressTabTemplate = {
     tab: TABS.Progress,
-    tabLabel: getTranslation('PROGRESS_TAB'),
+    tabLabel: translate('PROGRESS_TAB'),
     tabLabelKey: 'PROGRESS_TAB',
     hidden: false,
     disabled: true,
     subtabs: [
       {
-        label: getTranslation('IMPLEMENTATION_STATUS_SUBTAB'),
+        label: translate('IMPLEMENTATION_STATUS_SUBTAB'),
         labelKey: 'IMPLEMENTATION_STATUS_SUBTAB',
         value: TABS.ImplementationStatus
       },
       {
-        label: getTranslation('MONITORING_ACTIVITIES_SUBTAB'),
+        label: translate('MONITORING_ACTIVITIES_SUBTAB'),
         labelKey: 'MONITORING_ACTIVITIES_SUBTAB',
         value: TABS.MonitoringActivities
       }
@@ -530,11 +533,11 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       // @ts-ignore
       progressTab?.subtabs?.push(
         {
-          label: getTranslation('RESULTS_REPORTED_SUBTAB'),
+          label: translate('RESULTS_REPORTED_SUBTAB'),
           labelKey: 'RESULTS_REPORTED_SUBTAB',
           value: TABS.ResultsReported
         },
-        {label: getTranslation('REPORTS_SUBTAB'), labelKey: 'REPORTS_SUBTAB', value: TABS.Reports}
+        {label: translate('REPORTS_SUBTAB'), labelKey: 'REPORTS_SUBTAB', value: TABS.Reports}
       );
     }
   }
@@ -546,7 +549,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       const pasteTo = this.pageTabs.findIndex((x) => x.tab === TABS.Progress);
       this.pageTabs.splice(pasteTo, 0, {
         tab: TABS.Review,
-        tabLabel: getTranslation('REVIEW_TAB'),
+        tabLabel: translate('REVIEW_TAB'),
         tabLabelKey: 'REVIEW_TAB',
         hidden: false
       });
@@ -560,7 +563,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       const pasteTo = this.pageTabs.findIndex((x) => x.tab === TABS.Progress);
       this.pageTabs.splice(pasteTo, 0, {
         tab: TABS.Attachments,
-        tabLabel: getTranslation('ATTACHMENTS_TAB') as unknown as string,
+        tabLabel: translate('ATTACHMENTS_TAB') as unknown as string,
         tabLabelKey: 'ATTACHMENTS_TAB',
         hidden: false
       });

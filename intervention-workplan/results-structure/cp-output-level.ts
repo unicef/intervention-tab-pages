@@ -17,16 +17,18 @@ import './modals/cp-output-dialog';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
-import {ExpectedResult} from '@unicef-polymer/etools-types';
+import {ExpectedResult, Intervention} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import {TruncateMixin} from '../../common/mixins/truncate.mixin';
+import {_canDelete} from '../../common/mixins/results-structure-common';
 
 @customElement('cp-output-level')
 export class CpOutputLevel extends TruncateMixin(LitElement) {
   @property() interventionId!: number;
   @property() currency!: string | undefined;
   @property() resultLink!: ExpectedResult;
+  @property() interventionInfo!: Partial<Intervention>;
   @property({type: Boolean, reflect: true, attribute: 'show-cpo-level'}) showCPOLevel = false;
   @property({type: Boolean}) showIndicators = true;
   @property({type: Boolean}) showActivities = true;
@@ -81,6 +83,13 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
                           ></paper-icon-button>
                           <paper-icon-button
                             icon="icons:delete"
+                            ?hidden="${_canDelete(
+                              this.resultLink,
+                              this.readonly,
+                              this.interventionInfo.status!,
+                              this.interventionInfo.in_amendment!,
+                              this.interventionInfo.in_amendment_date!
+                            )}"
                             @click="${this.openDeleteCPOutputPopup}"
                           ></paper-icon-button>
                         </div>

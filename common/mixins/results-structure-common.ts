@@ -6,7 +6,7 @@ import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-pa
 import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
-import {Indicator, InterventionActivity, ResultLinkLowerResult} from '@unicef-polymer/etools-types';
+import {ExpectedResult, Indicator, InterventionActivity, ResultLinkLowerResult} from '@unicef-polymer/etools-types';
 import {convertDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import {translate} from 'lit-translate';
@@ -86,7 +86,7 @@ export function _canDeactivate(
 }
 
 export function _canDelete(
-  item: Indicator | InterventionActivity | InterventionActivityExtended | ResultLinkLowerResult,
+  item: Indicator | InterventionActivity | InterventionActivityExtended | ResultLinkLowerResult | ExpectedResult,
   readonly: boolean,
   interventionStatus: string,
   inAmendment: boolean,

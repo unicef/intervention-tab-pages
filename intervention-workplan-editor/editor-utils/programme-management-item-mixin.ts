@@ -39,7 +39,10 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
       if (!programmeManagement || !programmeManagement.items || !programmeManagement.items.length) {
         return '';
       }
-      return html`<tbody class="gray-1">
+      return html`<tbody
+        class="gray-1"
+        ?inEditMode="${programmeManagement.inEditMode || programmeManagement.itemsInEditMode}"
+      >
         ${repeat(
           programmeManagement.items || [],
           (item: ProgrammeManagementRowItemExtended) => item.id,
@@ -64,7 +67,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                   .value="${programmeManagement.code}.${itemIndex + 1}"
                 ></paper-input>
               </td>
-              <td tabindex="0">
+              <td tabindex="0" class="a-item-padd">
                 <div class="char-counter" ?hidden="${!programmeManagement.itemsInEditMode}">
                   <paper-textarea
                     .alwaysFloatLabel="${programmeManagement.itemsInEditMode}"
@@ -95,7 +98,12 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                     @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'name', item)}"
                   ></paper-textarea>
                 </div>
-                <div class="truncate-multi-line" title="${item.name}" ?hidden="${programmeManagement.itemsInEditMode}">
+                <div
+                  class="truncate-multi-line"
+                  style="margin-bottom: 10px; margin-top: 8px;"
+                  title="${item.name}"
+                  ?hidden="${programmeManagement.itemsInEditMode}"
+                >
                   ${item.name}
                 </div>
               </td>
@@ -184,7 +192,6 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                   input
                   ?readonly="${!programmeManagement.itemsInEditMode}"
                   required
-                  auto-validate
                   error-message="${translate('INCORRECT_VALUE')}"
                   .invalid="${item.invalid?.cso_cash}"
                   @invalid-changed="${({detail}: CustomEvent) => {
@@ -205,7 +212,6 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                   input
                   ?readonly="${!programmeManagement.itemsInEditMode}"
                   required
-                  auto-validate
                   error-message="${translate('INCORRECT_VALUE')}"
                   .invalid="${item.invalid?.unicef_cash}"
                   @invalid-changed="${({detail}: CustomEvent) => {
@@ -262,7 +268,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
           type="add-item"
         >
           <td></td>
-          <td tabindex="0">
+          <td tabindex="0" class="a-item-add-padd">
             <div class="icon" @click="${(e: CustomEvent) => this.addNewItem(e, programmeManagement, 'focusAbove')}">
               <paper-icon-button icon="add-box"></paper-icon-button> ${translate('ADD_NEW_ITEM')}
             </div>
