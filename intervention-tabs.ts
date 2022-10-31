@@ -684,6 +684,10 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   }
 
   _geNewUrlPath(newTabName: string, newSubTab: string) {
+    if (this._routeDetails?.subRouteName == 'progress' && this._routeDetails?.queryParams) {
+      // clean up lingering query str
+      delete this._routeDetails?.queryParams?.size;
+    }
     const stringParams: string = buildUrlQueryString(this._routeDetails!.queryParams || {});
     let newPath = `interventions/${this.intervention!.id}/${newTabName}`;
     if (newSubTab) {
