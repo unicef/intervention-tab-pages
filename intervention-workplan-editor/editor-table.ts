@@ -48,9 +48,7 @@ import {_canDelete} from '../common/mixins/results-structure-common';
 @customElement('editor-table')
 // @ts-ignore
 export class EditorTable extends CommentsMixin(
-  ProgrammeManagementMixin(
-    ActivitiesMixin(ActivitiesFocusMixin(ActivitiesFocusMixin(ArrowsNavigationMixin(LitElement))))
-  )
+  ProgrammeManagementMixin(ActivitiesMixin(ActivitiesFocusMixin(ArrowsNavigationMixin(LitElement))))
 ) {
   static get styles() {
     return [EditorTableStyles, EditorTableArrowKeysStyles, EditorHoverStyles, ...super.styles];
