@@ -83,7 +83,7 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
                           ></paper-icon-button>
                           <paper-icon-button
                             icon="icons:delete"
-                            ?hidden="${_canDelete(
+                            ?hidden="${!_canDelete(
                               this.resultLink,
                               this.readonly,
                               this.interventionInfo.status!,

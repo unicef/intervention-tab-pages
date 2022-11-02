@@ -550,8 +550,8 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
   _getCPNeededInterventionInfo(intervention: Intervention) {
     return {
       status: intervention.status,
-      inAmendment: intervention.in_amendment,
-      inAmendmentDate: intervention.in_amendment_date
+      in_amendment: intervention.in_amendment,
+      in_amendment_date: intervention.in_amendment_date
     };
   }
 
