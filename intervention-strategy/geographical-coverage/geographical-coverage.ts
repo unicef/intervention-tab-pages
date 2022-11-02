@@ -38,7 +38,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
   render() {
     if (!this.data || !this.permissions) {
       return html` ${sharedStyles}
-        <etools-loading source="geo" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="geo" active></etools-loading>`;
     }
     // language=HTML
     return html`

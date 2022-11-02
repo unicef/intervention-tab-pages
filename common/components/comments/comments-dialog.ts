@@ -23,7 +23,7 @@ import {RootState} from '../../types/store.types';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {PaperTextareaElement} from '@polymer/paper-input/paper-textarea';
 import {InterventionComment, GenericObject} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {get as getTranslation, translate} from 'lit-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {setTextareasMaxHeight} from '@unicef-polymer/etools-modules-common/dist/utils/textarea-max-rows-helper';
 import {CommentsEndpoints} from './comments-types';
@@ -75,7 +75,7 @@ export class CommentsDialog extends connectStore(LitElement) {
     this.interventionId = interventionId;
     this.relatedTo = relatedTo;
     this.endpoints = endpoints;
-    this.commentsDialogTitle = `Comments on: ${relatedToDescription}`;
+    this.commentsDialogTitle = `${getTranslation('COMMENTS_ON')} ${relatedToDescription}`;
     const comments: GenericObject<InterventionComment[]> =
       getStore().getState().commentsData.collection[interventionId];
     const relatedToComments: InterventionComment[] = (comments && comments[relatedTo]) || [];
@@ -127,7 +127,7 @@ export class CommentsDialog extends connectStore(LitElement) {
                 @retry="${() => this.retry(index)}"
               ></comment-element>`
           )}
-          <div class="no-comments" ?hidden="${this.comments.length}">There are no comments yet</div>
+          <div class="no-comments" ?hidden="${this.comments.length}">${translate('NO_COMMENTS')}</div>
         </div>
         <div class="message-input" slot="buttons">
           <paper-textarea
@@ -142,8 +142,8 @@ export class CommentsDialog extends connectStore(LitElement) {
             @keyup="${(event: KeyboardEvent) => this.onKeyup(event)}"
             @keydown="${(event: KeyboardEvent) => this.onKeydown(event)}"
           ></paper-textarea>
-          <paper-button class="send-btn" @click="${() => this.addComment()}">Post</paper-button>
-          <paper-button class="cancel-btn" @click="${() => this.onClose()}">Close</paper-button>
+          <paper-button class="send-btn" @click="${() => this.addComment()}">${translate('POST')}</paper-button>
+          <paper-button class="cancel-btn" @click="${() => this.onClose()}">${translate('CLOSE')}</paper-button>
         </div>
       </etools-dialog>
     `;
@@ -196,7 +196,7 @@ export class CommentsDialog extends connectStore(LitElement) {
       })
       .catch(() => {
         this.resolvingCollection.delete(id);
-        fireEvent(this, 'toast', {text: 'Can not resolve comment. Try again'});
+        fireEvent(this, 'toast', {text: getTranslation('CAN_NOT_RESOLVE_COMMENT')});
         this.requestUpdate();
       });
   }
@@ -220,7 +220,7 @@ export class CommentsDialog extends connectStore(LitElement) {
       })
       .catch(() => {
         this.deletingCollection.delete(id);
-        fireEvent(this, 'toast', {text: 'Can not delete comment. Try again'});
+        fireEvent(this, 'toast', {text: getTranslation('CAN_NOT_DELETE_COMMENT')});
         this.requestUpdate();
       });
   }

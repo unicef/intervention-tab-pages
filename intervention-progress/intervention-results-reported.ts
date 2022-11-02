@@ -434,7 +434,6 @@ export class InterventionResultsReported extends connectStore(
     }
 
     fireEvent(this, 'global-loading', {
-      message: 'Loading...',
       active: true,
       loadingSource: 'pd-progress'
     });

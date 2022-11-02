@@ -318,7 +318,6 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
     this._lastParamsUsed = Object.assign({}, params);
 
     fireEvent(this, 'global-loading', {
-      message: 'Loading...',
       active: true,
       loadingSource: 'reports-list'
     });

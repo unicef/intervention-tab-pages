@@ -348,7 +348,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
       e.stopImmediatePropagation();
     }
     this.indicatorDialog.stopSpinner();
-    this.spinnerText = 'Saving...';
+    this.spinnerText = getTranslation('GENERAL.SAVING_DATA');
   }
 
   _startSpinner(e?: CustomEvent) {

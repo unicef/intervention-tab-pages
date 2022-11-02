@@ -731,7 +731,6 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
 
   _showInterventionPageLoadingMessage() {
     fireEvent(this, 'global-loading', {
-      message: 'Loading...',
       active: true,
       loadingSource: 'interv-page'
     });

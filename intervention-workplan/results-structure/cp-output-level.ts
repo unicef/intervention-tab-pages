@@ -99,7 +99,7 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
                         <div class="flex-1 flex-fix data alert">${translate('UNASSOCIATED_TO_CP_OUTPUT')}</div>
                       `}
                 </div>
-                <div class="outputs-count"><b>${this.resultLink.ll_results.length}</b> PD Output(s)</div>
+                <div class="outputs-count"><b>${this.resultLink.ll_results.length}</b> ${translate('PD_OUTPUT_S')}</div>
               </div>
 
               <div slot="row-data-details">
