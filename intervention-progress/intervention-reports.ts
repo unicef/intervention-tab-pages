@@ -368,7 +368,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
     history.pushState(
       window.history.state,
       '',
-      `interventions/${this.interventionId}/progress/reports/?${stringParams}`
+      `interventions/${this.interventionId}/progress/reports?${stringParams}`
     );
     window.dispatchEvent(new CustomEvent('popstate'));
   }
