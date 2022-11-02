@@ -19,6 +19,7 @@ import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {leafletStyles} from './leaflet-styles';
 import {Site} from '@unicef-polymer/etools-types';
+import {debounce} from '@unicef-polymer/etools-modules-common/dist/utils/debouncer';
 
 const DEFAULT_COORDINATES: LatLngTuple = [-0.09, 51.505];
 
@@ -158,6 +159,7 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
 
     this.defaultMapCenter = this.workspaceCoordinates || DEFAULT_COORDINATES;
     this.displayedSites = (this.sites || []).filter((s: Site) => s.is_active);
+    this.onSiteHoverStart = debounce(this.onSiteHoverStart.bind(this), 300) as any;
     this.checkSelectedSitesExistence();
     this.mapInitialisation();
   }
@@ -276,7 +278,9 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
     if (this.mapInitializationProcess) {
       this.mapInitializationProcess = false;
       this.MapHelper.initMap(this.mapElement);
-      this.addSitesToMap();
+      this.MapHelper.waitForMapToLoad().then(() => {
+        this.addSitesToMap();
+      });
     }
     this.setInitialMapView();
   }
