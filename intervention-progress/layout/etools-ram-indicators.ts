@@ -46,7 +46,7 @@ export class EtoolsRamIndicators extends CommonMixin(LitElement) {
         }
       </style>
 
-      <etools-loading ?active="${this.loading}">Loading...</etools-loading>
+      <etools-loading ?active="${this.loading}"></etools-loading>
 
       <iron-label>
         <span id="label">${translate('RAM_INDICATORS')}</span>

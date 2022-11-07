@@ -29,6 +29,7 @@ import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 import cloneDeep from 'lodash-es/cloneDeep';
+import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 
 const customStyles = html`
   <style>
@@ -54,7 +55,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
     if (!this.data || this.data.constructor == Object) {
       return html` ${sharedStyles}
 
-        <etools-loading source="risk" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="risk" active></etools-loading>`;
     }
     // language=HTML
     return html`
@@ -134,7 +135,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       type: EtoolsTableColumnType.Custom,
       customMethod: (item: any, _key: string, customData: AnyObject) => {
         const riskType = customData.riskTypes.find((x: LabelAndValue) => x.value === item.risk_type);
-        return riskType ? riskType.label : '-';
+        return riskType ? translateValue(riskType.label, 'RISK_TYPE') : '-';
       },
       cssClass: 'col_type'
     },

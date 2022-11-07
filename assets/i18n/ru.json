@@ -12,6 +12,7 @@
   "SEND_TO_PARTNER": "Отправить партнеру",
   "SEND_TO_UNICEF": "Отправить ЮНИСЕФ",
   "SIGN": "Подписать",
+  "SUSPEND": "Приостановить",
   "SIGN_BUDGET_OWNER": "Рекомендовано к одобрению",
   "ACCEPT_REVIEW": "Принять результаты рассмотрения",
   "TERMINATE": "Терминировать",
@@ -543,5 +544,79 @@
   "DEACTIVATE_ACTIVITY_PROMPT": "Вы уверены, что хотите деактивировать это действие?",
   "ACTIVITES_EDITOR": "Редактор действий",
   "IMPORT_INFO": "Информация об импорте",
-  "IS_ACTIVE": "Активен"
+  "IS_ACTIVE": "Активен",
+  "NA": "Н\\Д",
+  "YES": "Да",
+  "NO": "Нет",
+  "RISK_RATINGS": {
+    "HIGH": "Высокая",
+    "SIGNIFICANT": "Значительный",
+    "MEDIUM": "Середина",
+    "LOW": "Низкий",
+    "NOT_REQUIRED": "Не требуется",
+    "HIGH_RISK_ASSUMED": "Предполагаемый высокий риск",
+    "LOW_RISK_ASSUMED": "Предполагается низкий риск",
+    "NOT_ASSESSED": "Не оценено"
+  },
+  "CASH_TRANSFER_MODALITIES": {
+    "DIRECT_PAYMENT": "Прямая оплата",
+    "REIMBURSEMENT": "Возмещение",
+    "DIRECT_CASH_TRANSFER": "Прямой денежный перевод"
+  },
+  "RATINGS": {
+    "NONE": "Никто",
+    "MARGINAL": "Маргинальный",
+    "SIGNIFICANT": "Значительный",
+    "PRINCIPAL": "Главный"
+  },
+  "RISK_TYPE": {
+    "SOCIAL_&_ENVIRONMENTAL": "Социальные и экологические",
+    "FINANCIAL": "финансовый",
+    "OPERATIONAL": "Оперативный",
+    "ORGANIZATIONAL": "Организационный",
+    "POLITICAL": "политический",
+    "STRATEGIC": "Стратегический",
+    "SAFETY_&_SECURITY": "Безопасность и защита"
+  },
+  "AMENDMENT_TYPES_ITEMS": {
+    "TYPE_1:_ADMINISTRATIVE_ERROR_(CORRECTION)": "Тип 1: Административная ошибка (исправление)",
+    "TYPE_2:_BUDGET_<=_20%": "Тип 2: Бюджет <= 20%",
+    "TYPE_3:_BUDGET_>_20%": "Тип 3: Бюджет > 20%",
+    "TYPE_4:_CHANGES_TO_PLANNED_RESULTS": "Тип 4: Изменения запланированных результатов",
+    "TYPE_5:_NO_COST_EXTENSION": "Тип 5: бесплатное расширение",
+    "TYPE_6:_OTHER": "Тип 6: Другое"
+  },
+  "FILE_TYPES": {
+    "FACE": "ЛИЦО",
+    "PROGRESS_REPORT": "Отчет о проделанной работе",
+    "FINAL_PARTNERSHIP_REVIEW": "Окончательный обзор партнерства",
+    "CORRESPONDENCE": "Переписка",
+    "SUPPLY/DISTRIBUTION_PLAN": "План снабжения/распределения",
+    "OTHER": "Другой"
+  },
+  "SECRETARY_COMMENT": "Комментарий секретаря",
+  "CFEI_NOTIFICATION": "Уведомление CFEI",
+  "PD_COMPLETED_AFTER_UNPP": "Этот PD был завершен после отбора в UNPP, который был одобрен комитетом. Пожалуйста, ознакомьтесь с работой, проделанной в UNPP, нажав на эту ссылку:",
+  "GO_TO_UNPP": "Перейти на УНПП",
+  "DIFFERENCE": "Разница",
+  "CHECKING_FR_NUMBERS_UPDATES": "Проверка обновлений номеров FR...",
+  "NO_COMMENTS": "Пока нет комментариев",
+  "POST": "Почта",
+  "CLOSE": "Закрывать",
+  "CAN_NOT_RESOLVE_COMMENT": "Не удается разрешить комментарий. Попробуйте еще раз",
+  "CAN_NOT_DELETE_COMMENT": "Не могу удалить комментарий. Попробуйте еще раз",
+  "MESSAGE_WAS_DELETED": "Сообщение было удалено",
+  "RESOLVE": "Решать",
+  "RESOLVED": "Решено",
+  "AT": "в",
+  "COMMENTS_ON": "Комментарии на:",
+  "OVERVIEW": "Обзор",
+  "TOTAL_FOR_PERCENT_HQ": "{{ PERCENT }} от общего денежного взноса ЮНИСЕФ составляет: {{ VALUE }}. Пожалуйста, просмотрите и введите фактический окончательный номер ниже.",
+  "ACTIVE": "Активный",
+  "COMPLETED": "Завершенный",
+  "PD_OUTPUT_S": "Выход(ы) PD",
+  "HIDE": "Скрывать",
+  "SHOW": "Показывать",
+  "NOT_SUBMITTED": "Не представлен",
+  "NOT_REVIEWED": "Не проверено"
 }

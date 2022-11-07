@@ -12,6 +12,7 @@
   "SEND_TO_PARTNER": "Enviar para Parceiro",
   "SEND_TO_UNICEF": "Enviar para UNICEF",
   "SIGN": "Assinar",
+  "SUSPEND": "Suspender",
   "SIGN_BUDGET_OWNER": "Recomendar para Aprovação",
   "ACCEPT_REVIEW": "Aceitar revisão",
   "TERMINATE": "Encerrar",
@@ -543,5 +544,79 @@
   "DEACTIVATE_ACTIVITY_PROMPT": "Tem certeza de que deseja desativar esta atividade?",
   "ACTIVITES_EDITOR": "Editor de atividades",
   "IMPORT_INFO": "Informações de importação",
-  "IS_ACTIVE": "Está ativo"
+  "IS_ACTIVE": "Está ativo",
+  "NA": "N\\D",
+  "YES": "Sim",
+  "NO": "Não",
+  "RISK_RATINGS": {
+    "HIGH": "Alto",
+    "SIGNIFICANT": "Significativo",
+    "MEDIUM": "Médio",
+    "LOW": "Baixo",
+    "NOT_REQUIRED": "Não requerido",
+    "HIGH_RISK_ASSUMED": "Alto Risco Assumido",
+    "LOW_RISK_ASSUMED": "Baixo Risco Assumido",
+    "NOT_ASSESSED": "Não avaliado"
+  },
+  "CASH_TRANSFER_MODALITIES": {
+    "DIRECT_PAYMENT": "Pagamento direto",
+    "REIMBURSEMENT": "Reembolso",
+    "DIRECT_CASH_TRANSFER": "Transferência Direta de Dinheiro"
+  },
+  "RATINGS": {
+    "NONE": "Nenhum",
+    "MARGINAL": "Marginal",
+    "SIGNIFICANT": "Significativo",
+    "PRINCIPAL": "Diretor"
+  },
+  "RISK_TYPE": {
+    "SOCIAL_&_ENVIRONMENTAL": "Socioambiental",
+    "FINANCIAL": "Financeiro",
+    "OPERATIONAL": "Operacional",
+    "ORGANIZATIONAL": "Organizacional",
+    "POLITICAL": "Político",
+    "STRATEGIC": "Estratégico",
+    "SAFETY_&_SECURITY": "Segurança"
+  },
+  "AMENDMENT_TYPES_ITEMS": {
+    "TYPE_1:_ADMINISTRATIVE_ERROR_(CORRECTION)": "Tipo 1: erro administrativo (correção)",
+    "TYPE_2:_BUDGET_<=_20%": "Tipo 2: Orçamento <= 20%",
+    "TYPE_3:_BUDGET_>_20%": "Tipo 3: Orçamento > 20%",
+    "TYPE_4:_CHANGES_TO_PLANNED_RESULTS": "Tipo 4: Alterações nos resultados planejados",
+    "TYPE_5:_NO_COST_EXTENSION": "Tipo 5: sem extensão de custo",
+    "TYPE_6:_OTHER": "Tipo 6: Outro"
+  },
+  "FILE_TYPES": {
+    "FACE": "ENFRENTAR",
+    "PROGRESS_REPORT": "Relatório de progresso",
+    "FINAL_PARTNERSHIP_REVIEW": "Revisão Final da Parceria",
+    "CORRESPONDENCE": "Correspondência",
+    "SUPPLY/DISTRIBUTION_PLAN": "Plano de Fornecimento/Distribuição",
+    "OTHER": "Outro"
+  },
+  "SECRETARY_COMMENT": "Comentário do Secretário",
+  "CFEI_NOTIFICATION": "Notificação CFEI",
+  "PD_COMPLETED_AFTER_UNPP": "Este PD foi concluído após uma seleção no UNPP onde um comitê aprovou, por favor revise o trabalho realizado no UNPP clicando neste link:",
+  "GO_TO_UNPP": "Acesse a UNPP",
+  "DIFFERENCE": "Diferença",
+  "CHECKING_FR_NUMBERS_UPDATES": " Verificando as atualizações dos números FR...",
+  "NO_COMMENTS": "Ainda não há comentários",
+  "POST": "Publicar",
+  "CLOSE": "Perto",
+  "CAN_NOT_RESOLVE_COMMENT": "Não é possível resolver o comentário. Tente novamente",
+  "CAN_NOT_DELETE_COMMENT": "Não é possível excluir o comentário. Tente novamente",
+  "MESSAGE_WAS_DELETED": "A mensagem foi excluída",
+  "RESOLVE": "Resolver",
+  "RESOLVED": "Resolvido",
+  "AT": "no",
+  "COMMENTS_ON": "Comentários no:",
+  "OVERVIEW": "Visão geral",
+  "TOTAL_FOR_PERCENT_HQ": "{{ PERCENT }} da contribuição total em dinheiro do UNICEF é: {{ VALUE }}. Revise e insira o número final real abaixo.",
+  "ACTIVE": "Ativo",
+  "COMPLETED": "Concluído",
+  "PD_OUTPUT_S": "Saída(s) PD",
+  "HIDE": "Esconder",
+  "SHOW": "mostrar",
+  "NOT_SUBMITTED": "Não submetido",
+  "NOT_REVIEWED": "Não revisado"
 }

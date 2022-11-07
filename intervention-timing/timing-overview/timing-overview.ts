@@ -15,6 +15,7 @@ import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {translate} from 'lit-translate';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 import {getPageDirection} from '../../utils/utils';
+import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 
 /**
  * @customElement
@@ -30,11 +31,16 @@ export class TimingOverview extends CommentsMixin(LitElement) {
       return html` <style>
           ${sharedStyles}
         </style>
-        <etools-loading source="overv" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="overv" active></etools-loading>`;
     }
     return html`
       ${sharedStyles}${InfoElementStyles}
-      <section class="elevation" elevation="1" comment-element="timing-overview" comment-description="Overview">
+      <section
+        class="elevation"
+        elevation="1"
+        comment-element="timing-overview"
+        comment-description="${translate('OVERVIEW')}"
+      >
         <div class="table not-allowed">
           <div class="data-column">
             <label class="paper-label">${translate('DATE_CREATED')}</label>
@@ -95,14 +101,14 @@ export class TimingOverview extends CommentsMixin(LitElement) {
           <div class="data-column">
             <label class="paper-label">${translate('DAYS_SUBMISSION_SIGNED')}</label>
             <div class="input-label" ?empty="${!this.timingOverview.days_from_submission_to_signed}">
-              ${this.timingOverview.days_from_submission_to_signed}
+              ${translateValue(this.timingOverview.days_from_submission_to_signed)}
             </div>
           </div>
 
           <div class="data-column">
             <label class="paper-label">${translate('DAYS_REVIEW_SIGNED')}</label>
             <div class="input-label" ?empty="${!this.timingOverview.days_from_review_to_signed}">
-              ${this.timingOverview.days_from_review_to_signed}
+              ${translateValue(this.timingOverview.days_from_review_to_signed)}
             </div>
           </div>
         </div>

@@ -38,7 +38,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
   render() {
     if (!this.data || !this.permissions) {
       return html` ${sharedStyles}
-        <etools-loading source="doc-det" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="doc-det" active></etools-loading>`;
     }
     // language=HTML
     return html`

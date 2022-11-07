@@ -10,14 +10,14 @@ import {resetRequiredFields} from '@unicef-polymer/etools-modules-common/dist/ut
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {patchIntervention} from '../../common/actions/interventions';
-import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {getTranslatedValue, isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import {RootState} from '../../common/types/store.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, LabelAndValue, Permission} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {listenForLangChanged, translate} from 'lit-translate';
 import {OtherData, OtherPermissions} from './other.models';
 import {selectOtherData, selectOtherPermissions} from './other.selectors';
 import CONSTANTS from '../../common/constants';
@@ -36,7 +36,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   render() {
     if (!this.data || !this.permissions) {
       return html` ${sharedStyles}
-        <etools-loading source="other" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="other" active></etools-loading>`;
     }
     // language=HTML
     return html`
@@ -248,6 +248,11 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
     return this.data.document_type === CONSTANTS.DOCUMENT_TYPES.SPD;
   }
 
+  constructor() {
+    super();
+    listenForLangChanged(this.handleLanguageChanged.bind(this));
+  }
+
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata')) {
       return;
@@ -259,12 +264,28 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
       this.currencies = [...state.commonData!.currencies];
     }
     if (!isJsonStrMatch(this.documentTypes, state.commonData!.documentTypes)) {
-      this.documentTypes = [...state.commonData!.documentTypes];
+      this.documentTypes = [
+        ...state.commonData!.documentTypes.map((x: any) => ({
+          ...x,
+          label: getTranslatedValue(x.label, 'ITEM_TYPE')
+        }))
+      ];
     }
     this.data = selectOtherData(state);
     this.originalData = cloneDeep(this.data);
     this.setPermissions(state);
     super.stateChanged(state);
+  }
+
+  handleLanguageChanged() {
+    this.documentTypes = [
+      ...getStore()
+        .getState()
+        .commonData!.documentTypes.map((x: any) => ({
+          ...x,
+          label: getTranslatedValue(x.label, 'ITEM_TYPE')
+        }))
+    ];
   }
 
   private setPermissions(state: any) {

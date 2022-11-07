@@ -318,7 +318,6 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
     this._lastParamsUsed = Object.assign({}, params);
 
     fireEvent(this, 'global-loading', {
-      message: 'Loading...',
       active: true,
       loadingSource: 'reports-list'
     });
@@ -368,7 +367,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
     history.pushState(
       window.history.state,
       '',
-      `interventions/${this.interventionId}/progress/reports/?${stringParams}`
+      `interventions/${this.interventionId}/progress/reports?${stringParams}`
     );
     window.dispatchEvent(new CustomEvent('popstate'));
   }

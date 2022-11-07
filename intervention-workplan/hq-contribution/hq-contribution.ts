@@ -20,7 +20,7 @@ import {areEqual, decimalFractionEquals0} from '@unicef-polymer/etools-modules-c
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate, translateUnsafeHTML} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 import {getPageDirection} from '../../utils/utils';
@@ -37,7 +37,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
   render() {
     if (!this.data || !this.permissions) {
       return html` ${sharedStyles}
-        <etools-loading source="hq" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="hq" active></etools-loading>`;
     }
     // language=HTML
     return html`
@@ -95,11 +95,12 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
           </div>
         </div>
         <div class="layout-horizontal row-padding-v" ?hidden="${!this.isUnicefUser || !this.editMode}">
-          <label class="paper-label hq-info-label"
-            ><b>${this.data.hq_support_cost}%</b> of the total UNICEF cash contribution is:
-            <b>${this.autoCalculatedHqContrib} ${this.data.planned_budget.currency}</b>. Please review and enter the
-            actual final number below.</label
-          >
+          <label class="paper-label hq-info-label">
+            ${translateUnsafeHTML('TOTAL_FOR_PERCENT_HQ', {
+              PERCENT: `<b>${this.data.hq_support_cost}%</b>`,
+              VALUE: `<b>${this.autoCalculatedHqContrib} ${this.data.planned_budget.currency}</b>`
+            })}
+          </label>
         </div>
         <div class="layout-horizontal">
           <etools-currency-amount-input

@@ -12,7 +12,7 @@ import isEmpty from 'lodash-es/isEmpty';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {Indicator} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 import {interventionEndpoints} from '../../../../utils/intervention-endpoints';
 
 /**
@@ -424,7 +424,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
   }
 
   _getPrpClusterIndicator(clusterIndicId: string) {
-    fireEvent(this, 'start-spinner', {spinnerText: 'Loading...'});
+    fireEvent(this, 'start-spinner', {spinnerText: getTranslation('GENERAL.LOADING')});
 
     this.fireRequest(interventionEndpoints, 'getPrpClusterIndicator', {id: clusterIndicId})
       .then((response: any) => {
@@ -474,7 +474,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
     if (!clusterId) {
       return;
     }
-    fireEvent(this, 'start-spinner', {spinnerText: 'Loading...'});
+    fireEvent(this, 'start-spinner', {spinnerText: getTranslation('GENERAL.LOADING')});
 
     this.fireRequest(interventionEndpoints, 'getPrpClusterIndicators', {id: clusterId})
       .then((response: any) => {
