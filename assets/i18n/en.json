@@ -548,6 +548,8 @@
   "NA":"N\\A",
   "YES":"Yes",
   "NO":"No",
+  "REASON":"Reason",
+  "COMMENT":"Comment",
   "RISK_RATINGS": {
     "HIGH":"High",
     "SIGNIFICANT":"Significant",

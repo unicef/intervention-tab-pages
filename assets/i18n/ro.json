@@ -548,6 +548,8 @@
   "NA": "N\\A",
   "YES": "Da",
   "NO": "Nu",
+  "REASON": "Motiv",
+  "COMMENT": "cometariu",
   "RISK_RATINGS": {
     "HIGH": "Înalt",
     "SIGNIFICANT": "Semnificativ",

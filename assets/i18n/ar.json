@@ -548,6 +548,8 @@
   "NA": "غير",
   "YES": "نعم",
   "NO": "رقم",
+  "REASON": "سبب",
+  "COMMENT": "تعليق",
   "RISK_RATINGS": {
     "HIGH": "عالٍ",
     "SIGNIFICANT": "هام",
