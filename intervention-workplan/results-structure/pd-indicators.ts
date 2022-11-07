@@ -144,7 +144,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
     /**
      * Computing here to avoid recomputation on every open indicator dialog
      */
-    this.computeAvailableOptionsForIndicators(get(state, 'interventions.current'));
+    this.computeAvailableOptionsForIndicators(get(state, 'interventions.current') as Intervention);
     this.envFlagsStateChanged(state);
   }
 

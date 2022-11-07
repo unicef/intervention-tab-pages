@@ -22,7 +22,7 @@ import {selectReportingRequirementsPermissions} from './reportingRequirementsPer
 import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import {isUnicefUser} from '../../common/selectors';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
-import {AnyObject, Permission} from '@unicef-polymer/etools-types';
+import {AnyObject, Intervention, Permission} from '@unicef-polymer/etools-types';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
@@ -293,7 +293,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
     this.isUnicefUser = isUnicefUser(state);
     this.reportingRequirementsPermissions = selectReportingRequirementsPermissions(state);
     const currentIntervention = get(state, 'interventions.current');
-    this.intervention = cloneDeep(currentIntervention);
+    this.intervention = cloneDeep(currentIntervention) as Intervention;
     this.interventionId = this.intervention.id;
     this.interventionStart = this.intervention.start;
     this.interventionEnd = this.intervention.end;

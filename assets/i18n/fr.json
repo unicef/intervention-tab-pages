@@ -1,4 +1,4 @@
-﻿{
+{
   "SEND": "Envoyer",
   "CONTINUE": "Continuer",
   "EXPORT_COMMENTS": "Exporter les commentaires",
@@ -37,7 +37,7 @@
   "TERMINATE_PROMPT": "Êtes-vous sûr de vouloir interrompre؟",
   "ARE_YOU_SURE_PROMPT": "Êtes-vous sûr de vouloir",
   "ACCEPT_PROMPT": "Êtes-vous sûr de vouloir accepter؟",
-  "UNLOCK_PROMPT": "هل أنت متأكد أنك تريد فتحه؟",
+  "UNLOCK_PROMPT": "هل أنت تأكد أنك تريد فتحه؟",
   "REVIEW_PROMPT": "Accepter en tant que responsable du budget si vous êtes satisfait de toutes les informations saisies, du budget et des résultats planifiés ainsi que des autres obligations",
   "UNICEF_ACCEPTED": "Accepté par l’UNICEF",
   "PARTNER_AND_UNICEF_ACCEPTED": "Accepté par le Partenaire et UNICEF",
@@ -278,7 +278,6 @@
   "UNICEF_PRODUCT_NUMBER": "Numéro de produit UNICEF",
   "ADD_SUPPLY_CONTRIBUTION": "Ajouter la contribution en fournitures ",
   "EDIT_SUPPLY_CONTRIBUTION": "Modifier la contribution en fournitures ",
-  "CP_OUTPUT": "مProduit du PP",
   "SECTION_CLUSTER": "Section/Cluster ",
   "DISAGGREGATION": "Désagrégation",
   "DISAGGREGATIONS": "Désagrégations",
@@ -287,6 +286,7 @@
   "ADD_CP_OUTPUT": "Ajouter Produits du PP ",
   "ADD_PD_ACTIVITY": "Ajouter une activité du PP ",
   "ADD_PD_INDICATOR": "Ajouter un indicateur DP ",
+  "CP_OUTPUT": "Produit du PP",
   "CAN_NOT_SAVE_IND": "Impossible d’enregistrer les indicateurs!",
   "PD_OUTPUT": "Produit du DP ",
   "PD_OUTPUT_NAME": "Nom du Produit du DP sortie ",
@@ -541,7 +541,7 @@
   "THIS_INDICATOR_IS_HIGH_FREQUENCY": "Cet indicateur est à haute fréquence",
   "ACCEPT_AS_FINAL": "Accepter comme définitif",
   "DEACTIVATE_ACTIVITY_PROMPT": "Voulez-vous vraiment désactiver cette activité ?",
-  "ACTIVITES_EDITOR":"Éditeur d'activités",
+  "ACTIVITES_EDITOR": "Éditeur d'activités",
   "IMPORT_INFO": "Informations d'importation",
   "IS_ACTIVE": "C'est actif"
 }

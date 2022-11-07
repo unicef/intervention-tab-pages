@@ -273,12 +273,12 @@ export class InterventionSummary extends connectStore(LitElement) {
 
     if (get(state, 'interventions.current')) {
       const currentIntervention = get(state, 'interventions.current');
-      this.intervention = cloneDeep(currentIntervention);
+      this.intervention = cloneDeep(currentIntervention) as Intervention;
       this.resultLinks = this.intervention.result_links;
     }
 
     if (this.intervention && get(state, 'agreements.list')) {
-      const agreements: MinimalAgreement[] = get(state, 'agreements.list');
+      const agreements: MinimalAgreement[] = get(state, 'agreements.list') as MinimalAgreement[];
       this.interventionAgreement =
         agreements.find((item: MinimalAgreement) => item.id === this.intervention.agreement) ||
         ({} as MinimalAgreement);

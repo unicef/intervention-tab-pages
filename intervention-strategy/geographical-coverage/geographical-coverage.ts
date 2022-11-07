@@ -252,10 +252,10 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
       this.adminLevels = [...state.commonData!.locationTypes];
     }
     this.data = {
-      flat_locations: get(state, 'interventions.current.flat_locations'),
+      flat_locations: get(state, 'interventions.current.flat_locations') as string[],
       sites: get(state, 'interventions.current.sites') || []
     };
-    this.currentCountry = get(state, 'user.data.country');
+    this.currentCountry = get(state, 'user.data.country') as any;
     this.originalData = cloneDeep(this.data);
     this.setPermissions(state);
     super.stateChanged(state);

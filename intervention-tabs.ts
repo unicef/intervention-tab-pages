@@ -16,7 +16,7 @@ import {currentPage, currentSubpage, isUnicefUser, currentSubSubpage, currentUse
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {getIntervention} from './common/actions/interventions';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {getTranslatedValue, isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {pageContentHeaderSlottedStyles} from './common/layout/page-content-header/page-content-header-slotted-styles';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {buildUrlQueryString} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
@@ -195,7 +195,10 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
 
       <intervention-page-content-subheader>
         <etools-status-lit
-          .statuses="${this.intervention.status_list}"
+          .statuses="${this.intervention.status_list.map((x) => [
+            x[0],
+            getTranslatedValue(x[1], 'COMMON_DATA.INTERVENTIONSTATUSES')
+          ])}"
           .activeStatus="${this.intervention.status}"
         ></etools-status-lit>
 
@@ -394,7 +397,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     }
     const currentInterventionId = get(state, 'app.routeDetails.params.interventionId');
     const currentIntervention = get(state, 'interventions.current');
-    this.otherInfo = {other_info: currentIntervention?.other_info};
+    this.otherInfo = {other_info: currentIntervention?.other_info as string};
 
     // check if intervention was changed
     if (!isJsonStrMatch(this.intervention, currentIntervention)) {
@@ -415,8 +418,8 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
 
     // check if we need to load intervention and comments
     if (currentInterventionId !== this.interventionId) {
-      this.interventionId = currentInterventionId;
-      this.loadInterventionData(currentInterventionId);
+      this.interventionId = currentInterventionId!;
+      this.loadInterventionData(currentInterventionId!);
     }
 
     if (state.uploadStatus) {
