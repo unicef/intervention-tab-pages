@@ -12,7 +12,7 @@ import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/di
 import get from 'lodash-es/get';
 import {InfoElementStyles} from '@unicef-polymer/etools-modules-common/dist/styles/info-element-styles';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {translate} from 'lit-translate';
+import {translate, translateConfig} from 'lit-translate';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 import {getPageDirection} from '../../utils/utils';
 import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
@@ -115,6 +115,7 @@ export class TimingOverview extends CommentsMixin(LitElement) {
 
         <div class="icon-tooltip-div">
           <info-icon-tooltip
+            .language="${translateConfig.lang}"
             .tooltipText="${translate('TIMING_TOOLTIP')}"
             position="${this.dir == 'rtl' ? 'right' : 'left'}"
           >

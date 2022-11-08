@@ -77,7 +77,7 @@ export class ActivityTimeframes extends CommentsMixin(LitElement) {
                         </div>
                         ${mappedActivities[id].map(
                           ({name: activityName}: InterventionActivity) => html`
-                            <div class="activity-name">Activity ${activityName}</div>
+                            <div class="activity-name">${translate('ACTIVITY')} ${activityName}</div>
                           `
                         )}
                       </div>

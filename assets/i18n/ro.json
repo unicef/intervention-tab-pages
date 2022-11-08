@@ -550,6 +550,42 @@
   "NO": "Nu",
   "REASON": "Motiv",
   "COMMENT": "cometariu",
+  "REVIEW_ANSWERS": {
+    "YES,_STRONGLY_AGREE": "Da, tare de acord",
+    "YES,_AGREE": "Da de acord",
+    "NO,_DISAGREE": "Nu, nu sunt de acord",
+    "NO,_STRONGLY_DISAGREE": "Nu, total dezacord"
+  },
+  "PROGRESS_REPORT_STATUS": {
+    "NOTHING_DUE": "Nimic datorat",
+    "OVERDUE": "Depasit",
+    "SUBMITTED": "Trimis",
+    "DUE": "Datorită",
+    "REJECTED": "Respins",
+    "MET_RESULTS_AS_PLANNED": "Rezultatele atinse conform planului",
+    "MET": "De",
+    "ON_TRACK": "In grafic",
+    "NO_PROGRESS": "Nici un progres",
+    "CONSTRAINED_(PARTIALLY_MET_RESULT)": "Constrâns (rezultat parțial îndeplinit)",
+    "CONSTRAINED": "Constrâns",
+    "ONGOING": "În curs de desfășurare",
+    "PLANNED": "Planificat",
+    "COMPLETED": "Efectuat",
+    "NO_STATUS": "Fara status",
+    "SENT_BACK": "Trimis înapoi",
+    "ACCEPTED": "Admis",
+    "RECEIVED": "Primit"
+  },
+  "REVIEW_QUESTIONS": {
+    "RELATIONSHIP_IS_REPRESENTED": "Relația propusă este cel mai bine reprezentată și reglementată prin parteneriat (spre deosebire de achiziții), atât UNICEF, cât și OSC-ul aducând contribuții clare la PD/SPD",
+    "PARTNER_COMPARATIVE_ADVANTAGE": "Selectarea partenerilor evidențiază avantajul comparativ și raportul calitate-preț al OSC-ului în raport cu rezultatele planificate",
+    "RELATIONSHIPS_ARE_POSITIVE": "Relațiile anterioare UNICEF/ONU cu OSC propusă au fost pozitive",
+    "PD_IS_RELEVANT": "PD/SPD propus este relevant pentru obținerea de rezultate în documentul programului de țară, planul de lucru sectorial relevant și sau planul de răspuns umanitar",
+    "PD_IS_GUIDED": "Cadrul de rezultate al PD/SPD propus a fost ghidat de feedback-ul M&E în timpul procesului de redactare",
+    "GES_CONSIDERED": "Genul, echitatea și sustenabilitatea au fost luate în considerare în procesul de concepere a programului",
+    "BUDGET_IS_ALIGNED": "Bugetul PD/SPD propus este aliniat cu principiile raportului calitate/preț cu costurile de gestionare a programului eficient și eficient respectând limitele definite de birou.",
+    "SUPPLY_ISSUES_CONSIDERED": "Problemele relevante de aprovizionare au fost luate în considerare în mod corespunzător"
+  },
   "RISK_RATINGS": {
     "HIGH": "Înalt",
     "SIGNIFICANT": "Semnificativ",
@@ -620,5 +656,8 @@
   "HIDE": "Ascunde",
   "SHOW": "Spectacol",
   "NOT_SUBMITTED": "Neinregistrat",
-  "NOT_REVIEWED": "Nerevizuit"
+  "NOT_REVIEWED": "Nerevizuit",
+  "NOT_FULLY_SIGNED": "Nu este semnat complet",
+  "QPR_FINAL": "FINAL",
+  "SELECTED_SITES": "Site-uri selectate"
 }

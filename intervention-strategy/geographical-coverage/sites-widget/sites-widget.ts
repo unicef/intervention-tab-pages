@@ -20,6 +20,7 @@ import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-c
 import {leafletStyles} from './leaflet-styles';
 import {Site} from '@unicef-polymer/etools-types';
 import {debounce} from '@unicef-polymer/etools-modules-common/dist/utils/debouncer';
+import {translate} from 'lit-translate';
 
 const DEFAULT_COORDINATES: LatLngTuple = [-0.09, 51.505];
 
@@ -121,7 +122,7 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
               type="search"
               .value="${this.locationSearch}"
               @value-changed="${({detail}: CustomEvent<{value: string}>) => this.search(detail)}"
-              placeholder="Search"
+              placeholder="${translate('GENERAL.SEARCH')}"
               inline
             >
               <iron-icon icon="search" slot="prefix"></iron-icon>

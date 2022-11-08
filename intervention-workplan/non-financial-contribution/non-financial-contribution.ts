@@ -24,7 +24,7 @@ import {
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate, translateConfig} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
@@ -76,6 +76,7 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
           <div>
             <label class="paper-label">${translate(translatesMap.ip_program_contribution)}</label>
             <info-icon-tooltip
+              .language="${translateConfig.lang}"
               id="iit-non-fin"
               slot="after-label"
               ?hidden="${this.isReadonly(this.editMode, this.permissions.edit?.ip_program_contribution)}"

@@ -21,7 +21,7 @@ import get from 'lodash-es/get';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, LocationObject, Permission, Site} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate, translateConfig} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
@@ -127,6 +127,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
       >
         <div slot="after-title">
           <info-icon-tooltip
+            .language="${translateConfig.lang}"
             id="iit-geo"
             ?hidden="${!this.canEditAtLeastOneField}"
             .tooltipText="${translate('GEOGRAPHICAL_COVERAGE_INFO')}"
@@ -137,6 +138,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         <div class="flex-c layout-horizontal row-padding-v location-icon">
           <label class="paper-label"> ${translate(translatesMap.flat_locations)}</label>
           <info-icon-tooltip
+            .language="${translateConfig.lang}"
             id="iit-locations"
             class="iit"
             position="right"
@@ -178,6 +180,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
           <div>
             <label class="paper-label">${translate(translatesMap.sites)}</label>
             <info-icon-tooltip
+              .language="${translateConfig.lang}"
               id="iit-sites"
               class="iit"
               slot="after-label"

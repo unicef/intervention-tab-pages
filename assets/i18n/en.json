@@ -550,6 +550,42 @@
   "NO":"No",
   "REASON":"Reason",
   "COMMENT":"Comment",
+  "REVIEW_ANSWERS":{
+    "YES,_STRONGLY_AGREE":"Yes, strongly agree",
+    "YES,_AGREE":"Yes, agree",
+    "NO,_DISAGREE":"No, disagree",
+    "NO,_STRONGLY_DISAGREE":"No, strongly disagree"
+  },
+  "PROGRESS_REPORT_STATUS":{
+    "NOTHING_DUE":"Nothing due",
+    "OVERDUE":"Overdue",
+    "SUBMITTED":"Submitted",
+    "DUE":"Due",
+    "REJECTED":"Rejected",
+    "MET_RESULTS_AS_PLANNED":"Met results as planned",
+    "MET":"Met",
+    "ON_TRACK":"On Track",
+    "NO_PROGRESS":"No Progress",
+    "CONSTRAINED_(PARTIALLY_MET_RESULT)":"Constrained (partially met result)",
+    "CONSTRAINED":"Constrained",
+    "ONGOING":"Ongoing",
+    "PLANNED":"Planned",
+    "COMPLETED":"Completed",
+    "NO_STATUS":"No Status",
+    "SENT_BACK":"Sent Back",
+    "ACCEPTED":"Accepted",
+    "RECEIVED":"Received"
+  },
+  "REVIEW_QUESTIONS":{
+    "RELATIONSHIP_IS_REPRESENTED":"The proposed relationship is best represented and regulated by partnership (as opposed to procurement), with both UNICEF and the CSO making clear contributions to the PD/SPD",
+    "PARTNER_COMPARATIVE_ADVANTAGE":"The partner selection evidences the CSO’s comparative advantage and value for money in relation to the planned results",
+    "RELATIONSHIPS_ARE_POSITIVE":"Previous UNICEF/UN relationships with the proposed CSO have been positive",
+    "PD_IS_RELEVANT":"The proposed PD/SPD is relevant to achieving results in the country programme document, the relevant sector workplan and or humanitarian response plan",
+    "PD_IS_GUIDED":"The results framework of the proposed PD/SPD has been guided by M&E feedback during the drafting process",
+    "GES_CONSIDERED":"Gender, equity and sustainability have been considered in the programme design process",
+    "BUDGET_IS_ALIGNED":"The budget of the proposed PD/SPD is aligned with the principles of value for money with the effective and efficient programme management costs adhering to office defined limits",
+    "SUPPLY_ISSUES_CONSIDERED":"The relevant supply issues have been duly considered"
+  },
   "RISK_RATINGS": {
     "HIGH":"High",
     "SIGNIFICANT":"Significant",
@@ -620,5 +656,8 @@
   "HIDE":"Hide",
   "SHOW":"Show",
   "NOT_SUBMITTED":"Not Submitted",
-  "NOT_REVIEWED":"Not Reviewed"
+  "NOT_REVIEWED":"Not Reviewed",
+  "NOT_FULLY_SIGNED":"Not fully signed",
+  "QPR_FINAL":"FINAL",
+  "SELECTED_SITES":"Selected sites"
 }

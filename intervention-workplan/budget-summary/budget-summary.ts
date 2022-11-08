@@ -10,7 +10,7 @@ import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import {InfoElementStyles} from '@unicef-polymer/etools-modules-common/dist/styles/info-element-styles';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {FrsDetails, Intervention} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate, translateConfig} from 'lit-translate';
 import {TABS} from '../../common/constants';
 import {isUnicefUser} from '../../common/selectors';
 import FrNumbersConsistencyMixin from '@unicef-polymer/etools-modules-common/dist/mixins/fr-numbers-consistency-mixin';
@@ -224,6 +224,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
   getIconTooltip(): TemplateResult {
     return html`<div class="icon-tooltip-div">
       <info-icon-tooltip
+        .language="${translateConfig.lang}"
         .tooltipText="${translate('BUDGET_TOOLTIP')}"
         position="${this.dir == 'rtl' ? 'right' : 'left'}"
       >
