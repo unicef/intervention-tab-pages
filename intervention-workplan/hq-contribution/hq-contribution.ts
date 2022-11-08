@@ -148,7 +148,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
       return;
     }
 
-    this.isUnicefUser = get(state, 'user.data.is_unicef_user');
+    this.isUnicefUser = get(state, 'user.data.is_unicef_user') as boolean;
     this.data = cloneDeep(selectHqContributionData(state));
     this.originalData = cloneDeep(this.data);
     this.autoCalculatedHqContrib = this.autoCalcHqContrib();

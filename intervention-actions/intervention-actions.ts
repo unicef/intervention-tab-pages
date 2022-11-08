@@ -297,8 +297,8 @@ export class InterventionActions extends connectStore(LitElement) {
     return openDialog({
       dialog: 'reason-popup',
       dialogData: {
-        popupTitle: `${this.getActionTextForPopup(action)} Reason`,
-        label: `${this.getActionTextForPopup(action)} Comment`
+        popupTitle: `${this.getActionTextForPopup(action)} ${getTranslation('REASON')}`,
+        label: `${this.getActionTextForPopup(action)} ${getTranslation('COMMENT')}`
       }
     }).then(({confirmed, response}) => {
       if (!confirmed || !response) {
@@ -315,8 +315,8 @@ export class InterventionActions extends connectStore(LitElement) {
     return openDialog({
       dialog: 'reason-popup',
       dialogData: {
-        popupTitle: `${this.getActionTextForPopup(action)} Reason`,
-        label: `${this.getActionTextForPopup(action)} Comment`
+        popupTitle: `${this.getActionTextForPopup(action)} ${getTranslation('REASON')}`,
+        label: `${this.getActionTextForPopup(action)} ${getTranslation('COMMENT')}`
       }
     }).then(({confirmed, response}) => {
       if (!confirmed || !response) {

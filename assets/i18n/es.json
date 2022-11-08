@@ -548,6 +548,44 @@
   "NA": "N\\A",
   "YES": "Sí",
   "NO": "No",
+  "REASON": "Razón",
+  "COMMENT": "Comentario",
+  "REVIEW_ANSWERS": {
+    "YES,_STRONGLY_AGREE": "si, muy de acuerdo",
+    "YES,_AGREE": "Si de acuerdo",
+    "NO,_DISAGREE": "no, no estoy de acuerdo",
+    "NO,_STRONGLY_DISAGREE": "No, totalmente en desacuerdo"
+  },
+  "PROGRESS_REPORT_STATUS": {
+    "NOTHING_DUE": "nada debido",
+    "OVERDUE": "Atrasado",
+    "SUBMITTED": "Presentada",
+    "DUE": "Adeudado",
+    "REJECTED": "Rechazado",
+    "MET_RESULTS_AS_PLANNED": "Cumplió con los resultados según lo planeado",
+    "MET": "De",
+    "ON_TRACK": "A tiempo",
+    "NO_PROGRESS": "Sin progreso",
+    "CONSTRAINED_(PARTIALLY_MET_RESULT)": "Restringido (resultado parcialmente cumplido)",
+    "CONSTRAINED": "Constreñido",
+    "ONGOING": "En curso",
+    "PLANNED": "Planificado",
+    "COMPLETED": "Terminado",
+    "NO_STATUS": "Sin Estado",
+    "SENT_BACK": "Devuelto",
+    "ACCEPTED": "Aceptado",
+    "RECEIVED": "Recibió"
+  },
+  "REVIEW_QUESTIONS": {
+    "RELATIONSHIP_IS_REPRESENTED": "La relación propuesta está mejor representada y regulada por la asociación (a diferencia de la adquisición), con UNICEF y la OSC haciendo contribuciones claras al PD/SPD",
+    "PARTNER_COMPARATIVE_ADVANTAGE": "La selección de socios evidencia la ventaja comparativa de la OSC y la relación calidad-precio en relación con los resultados previstos",
+    "RELATIONSHIPS_ARE_POSITIVE": "Las relaciones anteriores de UNICEF/ONU con la OSC propuesta han sido positivas",
+    "PD_IS_RELEVANT": "El PD/SPD propuesto es relevante para lograr resultados en el documento del programa de país, el plan de trabajo del sector relevante o el plan de respuesta humanitaria",
+    "PD_IS_GUIDED": "El marco de resultados del PD/SPD propuesto ha sido guiado por la retroalimentación de M&E durante el proceso de redacción",
+    "GES_CONSIDERED": "El género, la equidad y la sostenibilidad han sido considerados en el proceso de diseño del programa.",
+    "BUDGET_IS_ALIGNED": "El presupuesto del PD/SPD propuesto está alineado con los principios de valor por dinero con los costos de gestión de programas efectivos y eficientes que se adhieren a los límites definidos por la oficina.",
+    "SUPPLY_ISSUES_CONSIDERED": "Los problemas de suministro relevantes han sido debidamente considerados."
+  },
   "RISK_RATINGS": {
     "HIGH": "Alto",
     "SIGNIFICANT": "Importante",
@@ -619,5 +657,7 @@
   "SHOW": "Espectáculo",
   "NOT_SUBMITTED": "No presentado",
   "NOT_REVIEWED": "No revisado",
-  "RESULTS_REPORTED": "Resultados notificados"
+  "NOT_FULLY_SIGNED": "No completamente firmado",
+  "QPR_FINAL": "FINAL",
+  "SELECTED_SITES": "Sitios seleccionados"
 }

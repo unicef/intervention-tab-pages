@@ -90,7 +90,7 @@ export class GroupedLocationsDialog extends LitElement {
         ></sites-widget>
 
         <paper-textarea
-          label="Selected sites"
+          label="${translate('SELECTED_SITES')}"
           always-float-label
           class="w100"
           placeholder="&#8212;"

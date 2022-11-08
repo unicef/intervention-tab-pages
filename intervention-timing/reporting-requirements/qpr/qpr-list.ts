@@ -8,7 +8,7 @@ import {reportingRequirementsListStyles} from '../styles/reporting-requirements-
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {isEmptyObject} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import PaginationMixin from '@unicef-polymer/etools-modules-common/dist/mixins/pagination-mixin';
@@ -130,7 +130,7 @@ export class QprList extends PaginationMixin(
 
   getIndex(index: number, dataItemsLength: number) {
     if (+index + 1 === dataItemsLength) {
-      return 'FINAL';
+      return getTranslation('QPR_FINAL');
     }
     return +index + 1;
   }

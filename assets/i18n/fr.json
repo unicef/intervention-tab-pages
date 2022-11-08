@@ -38,7 +38,7 @@
   "TERMINATE_PROMPT": "Êtes-vous sûr de vouloir interrompre؟",
   "ARE_YOU_SURE_PROMPT": "Êtes-vous sûr de vouloir",
   "ACCEPT_PROMPT": "Êtes-vous sûr de vouloir accepter؟",
-  "UNLOCK_PROMPT": "هل أنت متأكد أنك تريد فتحه؟",
+  "UNLOCK_PROMPT": "هل أنت تأكد أنك تريد فتحه؟",
   "REVIEW_PROMPT": "Accepter en tant que responsable du budget si vous êtes satisfait de toutes les informations saisies, du budget et des résultats planifiés ainsi que des autres obligations",
   "UNICEF_ACCEPTED": "Accepté par l’UNICEF",
   "PARTNER_AND_UNICEF_ACCEPTED": "Accepté par le Partenaire et UNICEF",
@@ -287,7 +287,7 @@
   "ADD_CP_OUTPUT": "Ajouter Produits du PP ",
   "ADD_PD_ACTIVITY": "Ajouter une activité du PP ",
   "ADD_PD_INDICATOR": "Ajouter un indicateur DP ",
-  "CP_OUTPUT": "مProduit du PP",
+  "CP_OUTPUT": "Produit du PP",
   "CAN_NOT_SAVE_IND": "Impossible d’enregistrer les indicateurs!",
   "PD_OUTPUT": "Produit du DP ",
   "PD_OUTPUT_NAME": "Nom du Produit du DP sortie ",
@@ -548,6 +548,44 @@
   "NA": "N\\A",
   "YES": "Oui",
   "NO": "Non",
+  "REASON": "Raison",
+  "COMMENT": "Commentaire",
+  "REVIEW_ANSWERS": {
+    "YES,_STRONGLY_AGREE": "Oui, tout à fait d'accord",
+    "YES,_AGREE": "Oui d'accord",
+    "NO,_DISAGREE": "Non, pas d'accord",
+    "NO,_STRONGLY_DISAGREE": "Non, fortement en désaccord"
+  },
+  "PROGRESS_REPORT_STATUS": {
+    "NOTHING_DUE": "Rien dû",
+    "OVERDUE": "En retard",
+    "SUBMITTED": "Soumis",
+    "DUE": "Exigible",
+    "REJECTED": "Rejeté",
+    "MET_RESULTS_AS_PLANNED": "Résultats atteints comme prévu",
+    "MET": "De",
+    "ON_TRACK": "Sur la bonne voie",
+    "NO_PROGRESS": "Pas de progrès",
+    "CONSTRAINED_(PARTIALLY_MET_RESULT)": "Contraint (résultat partiellement atteint)",
+    "CONSTRAINED": "Contraint",
+    "ONGOING": "En cours",
+    "PLANNED": "Prévu",
+    "COMPLETED": "Complété",
+    "NO_STATUS": "Pas de statut",
+    "SENT_BACK": "Renvoyé",
+    "ACCEPTED": "Accepté",
+    "RECEIVED": "Reçu"
+  },
+  "REVIEW_QUESTIONS": {
+    "RELATIONSHIP_IS_REPRESENTED": "La relation proposée est mieux représentée et réglementée par le partenariat (par opposition à l'approvisionnement), l'UNICEF et l'OSC apportant des contributions claires au PD/SPD",
+    "PARTNER_COMPARATIVE_ADVANTAGE": "La sélection des partenaires met en évidence l'avantage comparatif et le rapport qualité-prix de l'OSC par rapport aux résultats prévus",
+    "RELATIONSHIPS_ARE_POSITIVE": "Les relations antérieures de l'UNICEF/ONU avec l'OSC proposée ont été positives",
+    "PD_IS_RELEVANT": "Le DP/SPD proposé est pertinent pour obtenir des résultats dans le document de programme de pays, le plan de travail sectoriel pertinent et/ou le plan de réponse humanitaire",
+    "PD_IS_GUIDED": "Le cadre de résultats du DP/DOCUP proposé a été guidé par les commentaires du S&E au cours du processus de rédaction",
+    "GES_CONSIDERED": "Le genre, l'équité et la durabilité ont été pris en compte dans le processus de conception du programme",
+    "BUDGET_IS_ALIGNED": "Le budget du PD / SPD proposé est aligné sur les principes d'optimisation des ressources, les coûts de gestion de programme efficaces et efficients respectant les limites définies par le bureau",
+    "SUPPLY_ISSUES_CONSIDERED": "Les questions d'approvisionnement pertinentes ont été dûment prises en compte"
+  },
   "RISK_RATINGS": {
     "HIGH": "Haute",
     "SIGNIFICANT": "Important",
@@ -618,5 +656,8 @@
   "HIDE": "Cacher",
   "SHOW": "Spectacle",
   "NOT_SUBMITTED": "Pas transmis",
-  "NOT_REVIEWED": "Pas révisé"
+  "NOT_REVIEWED": "Pas révisé",
+  "NOT_FULLY_SIGNED": "Pas entièrement signé",
+  "QPR_FINAL": "FINAL",
+  "SELECTED_SITES": "Sites sélectionnés"
 }

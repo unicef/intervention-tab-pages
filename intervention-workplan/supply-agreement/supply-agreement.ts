@@ -281,7 +281,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
     }
     if (get(state, 'interventions.current')) {
       const currentIntervention = get(state, 'interventions.current');
-      this.intervention = cloneDeep(currentIntervention);
+      this.intervention = cloneDeep(currentIntervention) as Intervention;
       this.currencyDisplayForTotal();
     }
     this.supply_items = selectSupplyAgreement(state);

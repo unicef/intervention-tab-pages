@@ -47,7 +47,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
         id="add-amendment"
         size="md"
         ?opened="${this.dialogOpened}"
-        ok-btn-text="Save"
+        ok-btn-text="${translate('GENERAL.SAVE')}"
         dialog-title=${translate('ADD_AMENDMENT')}
         @close="${() => this.onClose()}"
         @confirm-btn-clicked="${() => this._validateAndSaveAmendment()}"

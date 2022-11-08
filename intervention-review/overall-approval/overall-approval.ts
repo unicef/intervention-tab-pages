@@ -8,6 +8,7 @@ import {REVIEW_ANSVERS, REVIEW_QUESTIONS} from '../review.const';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import {formatDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
 import '../../common/components/intervention/review-checklist-popup';
+import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 
 @customElement('overall-approval')
 export class OverallApproval extends LitElement {
@@ -92,10 +93,13 @@ export class OverallApproval extends LitElement {
             </div>
             <div class="row-padding">
               ${Object.entries(REVIEW_QUESTIONS).map(
-                ([field, question]: [string, string], index: number) => html`
-                  <label class="paper-label">Q${index + 1}: ${question}</label>
+                ([field]: [string, string], index: number) => html`
+                  <label class="paper-label">Q${index + 1}: ${translateValue(field, 'REVIEW_QUESTIONS')}</label>
                   <div class="answer">
-                    ${REVIEW_ANSVERS.get(String(this.review[field as keyof InterventionReview])) || '-'}
+                    ${translateValue(
+                      REVIEW_ANSVERS.get(String(this.review[field as keyof InterventionReview])) || '-',
+                      'REVIEW_ANSWERS'
+                    )}
                   </div>
                 `
               )}

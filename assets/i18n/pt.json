@@ -548,6 +548,44 @@
   "NA": "N\\D",
   "YES": "Sim",
   "NO": "Não",
+  "REASON": "Razão",
+  "COMMENT": "Comente",
+  "REVIEW_ANSWERS": {
+    "YES,_STRONGLY_AGREE": "Sim, concordo plenamente",
+    "YES,_AGREE": "Sim, concordo",
+    "NO,_DISAGREE": "Não, discordo",
+    "NO,_STRONGLY_DISAGREE": "Não, discordo totalmente"
+  },
+  "PROGRESS_REPORT_STATUS": {
+    "NOTHING_DUE": "Nada devido",
+    "OVERDUE": "Atrasado",
+    "SUBMITTED": "Submetido",
+    "DUE": "Vencimento",
+    "REJECTED": "Rejeitado",
+    "MET_RESULTS_AS_PLANNED": "Atingiu os resultados conforme planejado",
+    "MET": "Do",
+    "ON_TRACK": "No caminho certo",
+    "NO_PROGRESS": "Sem progresso",
+    "CONSTRAINED_(PARTIALLY_MET_RESULT)": "Restringido (resultado parcialmente atendido)",
+    "CONSTRAINED": "Restrito",
+    "ONGOING": "Em andamento",
+    "PLANNED": "Planejado",
+    "COMPLETED": "Concluído",
+    "NO_STATUS": "Sem status",
+    "SENT_BACK": "Enviado de volta",
+    "ACCEPTED": "Aceitaram",
+    "RECEIVED": "Recebido"
+  },
+  "REVIEW_QUESTIONS": {
+    "RELATIONSHIP_IS_REPRESENTED": "A relação proposta é melhor representada e regulada pela parceria (em oposição à aquisição), com o UNICEF e a OSC fazendo contribuições claras para o PD/SPD",
+    "PARTNER_COMPARATIVE_ADVANTAGE": "A seleção de parceiros evidencia a vantagem comparativa e o custo-benefício da OSC em relação aos resultados planejados",
+    "RELATIONSHIPS_ARE_POSITIVE": "As relações anteriores do UNICEF/ONU com a OSC proposta foram positivas",
+    "PD_IS_RELEVANT": "O PD/SPD proposto é relevante para alcançar resultados no documento do programa do país, no plano de trabalho do setor relevante e ou no plano de resposta humanitária",
+    "PD_IS_GUIDED": "A estrutura de resultados do PD/SPD proposto foi guiada pelo feedback de M&A durante o processo de redação",
+    "GES_CONSIDERED": "Gênero, equidade e sustentabilidade foram considerados no processo de concepção do programa",
+    "BUDGET_IS_ALIGNED": "O orçamento do PD/SPD proposto está alinhado com os princípios da relação custo-benefício com os custos de gestão do programa eficaz e eficiente aderindo aos limites definidos pelo escritório",
+    "SUPPLY_ISSUES_CONSIDERED": "As questões de abastecimento relevantes foram devidamente consideradas"
+  },
   "RISK_RATINGS": {
     "HIGH": "Alto",
     "SIGNIFICANT": "Significativo",
@@ -618,5 +656,8 @@
   "HIDE": "Esconder",
   "SHOW": "mostrar",
   "NOT_SUBMITTED": "Não submetido",
-  "NOT_REVIEWED": "Não revisado"
+  "NOT_REVIEWED": "Não revisado",
+  "NOT_FULLY_SIGNED": "Não totalmente assinado",
+  "QPR_FINAL": "FINAL",
+  "SELECTED_SITES": "Sites selecionados"
 }
