@@ -24,7 +24,7 @@ import {KindChoices, ProgrammeManagement} from './effectiveEfficientProgrammeMgm
 import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject} from '@unicef-polymer/etools-types';
-import {get as getTranslation, translate} from 'lit-translate';
+import {get as getTranslation, translate, translateConfig} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
@@ -83,6 +83,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
       >
         <div slot="after-title">
           <info-icon-tooltip
+            .language="${translateConfig.lang}"
             id="iit-eepm"
             ?hidden="${!this.canEdit}"
             .tooltipText="${translate('EFFECTIVE_AND_EFFICIENT_PRGMT_MNGMT_INFO')}"
