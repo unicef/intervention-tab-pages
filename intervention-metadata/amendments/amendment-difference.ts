@@ -4,6 +4,7 @@ import {translate} from 'lit-translate';
 import {GenericObject, LabelAndValue} from '@unicef-polymer/etools-types';
 import {get as getTranslation} from 'lit-translate/util';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 
 const ACTIONS: GenericObject<string> = {
   add: 'ADDED',
@@ -139,7 +140,7 @@ export class AmendmentDifference extends LitElement {
 
   getSimpleValue(value: any): string {
     if (value === null || typeof value !== 'object') {
-      return String(value);
+      return getTranslatedValue(String(value));
     } else if (value.name) {
       return value.name;
     } else if (Object.hasOwnProperty.call(value, 'd') && Object.hasOwnProperty.call(value, 'v')) {

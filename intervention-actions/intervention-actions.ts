@@ -185,7 +185,7 @@ export class InterventionActions extends connectStore(LitElement) {
         break;
       case AMENDMENT_MERGE:
         btn = getTranslation('GENERAL.YES');
-        message = getTranslation('AMENDMENT_MERGE');
+        message = getTranslation('AMENDMENT_MERGE_PROMPT');
         break;
       case SEND_TO_PARTNER:
         btn = getTranslation('GENERAL.YES');

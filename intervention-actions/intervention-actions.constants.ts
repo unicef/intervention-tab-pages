@@ -57,6 +57,7 @@ export const ActionNamesMap: AnyObject = {
   [UNLOCK]: {text: translate('UNLOCK'), textKey: 'UNLOCK'},
   [ACCEPT]: {text: translate('ACCEPT_AS_FINAL'), textKey: 'ACCEPT_AS_FINAL'},
   [REVIEW]: {text: translate('SEND_FOR_REVIEW'), textKey: 'SEND_FOR_REVIEW'},
+  [AMENDMENT_MERGE]: {text: translate('AMENDMENT_MERGE'), textKey: 'AMENDMENT_MERGE'},
   [CANCEL]: {text: translate('GENERAL.CANCEL'), textKey: 'GENERAL.CANCEL'},
   [SIGN]: {text: translate('SIGN'), textKey: 'SIGN'},
   [SIGN_BUDGET_OWNER]: {text: translate('SIGN_BUDGET_OWNER'), textKey: 'SIGN_BUDGET_OWNER'},

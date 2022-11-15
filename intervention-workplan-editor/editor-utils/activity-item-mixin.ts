@@ -61,7 +61,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                 !this.oneEntityInEditMode) ||
               !item.id}"
               comment-element="activity-item-${item.id}"
-              comment-description=" Activity item - ${item.name}"
+              comment-description="${getTranslation('ACTIVITY_ITEM')} - ${item.name}"
             >
               <td class="index-column">
                 <paper-input
@@ -115,7 +115,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   maxlength="150"
                   .alwaysFloatLabel="${activity.itemsInEditMode}"
                   .noLabelFloat="${!activity.itemsInEditMode}"
-                  label=${this.getLabel(activity.itemsInEditMode, 'Unit')}
+                  label=${this.getLabel(activity.itemsInEditMode, getTranslation('UNIT'))}
                   ?hidden="${!activity.itemsInEditMode}"
                   .invalid="${item.invalid?.unit}"
                   @invalid-changed="${({detail}: CustomEvent) => {
@@ -140,7 +140,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
               </td>
               <td tabindex="0">
                 <etools-currency-amount-input
-                  label=${this.getLabel(activity.itemsInEditMode, 'N. of Units')}
+                  label=${this.getLabel(activity.itemsInEditMode, getTranslation('N_OF_UNITS'))}
                   .noLabelFloat="${!activity.itemsInEditMode}"
                   input
                   tabindex="${ifDefined(item.inEditMode ? undefined : '-1')}"
@@ -166,7 +166,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
               </td>
               <td tabindex="0">
                 <etools-currency-amount-input
-                  label=${this.getLabel(activity.itemsInEditMode, 'Price/Unit')}
+                  label=${this.getLabel(activity.itemsInEditMode, getTranslation('PRICE_UNIT'))}
                   .noLabelFloat="${!activity.itemsInEditMode}"
                   input
                   tabindex="${ifDefined(item.inEditMode ? undefined : '-1')}"
@@ -191,7 +191,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
               </td>
               <td tabindex="0">
                 <etools-currency-amount-input
-                  label=${this.getLabel(activity.itemsInEditMode, 'Partner Cash')}
+                  label=${this.getLabel(activity.itemsInEditMode, getTranslation('PARTNER_CASH'))}
                   .noLabelFloat="${!activity.itemsInEditMode}"
                   input
                   ?readonly="${!activity.itemsInEditMode}"
@@ -212,7 +212,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
               </td>
               <td tabindex="0">
                 <etools-currency-amount-input
-                  label=${this.getLabel(activity.itemsInEditMode, 'UNICEF Cash')}
+                  label=${this.getLabel(activity.itemsInEditMode, getTranslation('UNICEF_CASH'))}
                   .noLabelFloat="${!activity.itemsInEditMode}"
                   input
                   ?readonly="${!activity.itemsInEditMode}"
