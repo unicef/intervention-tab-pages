@@ -4,7 +4,6 @@ import './common/layout/page-content-header/intervention-page-content-header';
 import './common/layout/page-content-header/intervention-page-content-subheader';
 import '@unicef-polymer/etools-modules-common/dist/layout/etools-tabs';
 import '@unicef-polymer/etools-modules-common/dist/components/cancel/reason-display';
-import '@unicef-polymer/etools-modules-common/dist/layout/status/etools-status';
 // eslint-disable-next-line max-len
 import '@unicef-polymer/etools-modules-common/dist/layout/status/etools-status';
 import './intervention-actions/intervention-actions';
