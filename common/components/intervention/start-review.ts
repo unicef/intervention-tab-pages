@@ -27,7 +27,6 @@ export class StartReview extends connectStore(LitElement) {
 
   render() {
     return html`
-      ${sharedStyles}
       <style>
         .row {
           padding: 12px 24px;
