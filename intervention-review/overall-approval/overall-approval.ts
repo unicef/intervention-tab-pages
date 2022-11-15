@@ -4,7 +4,7 @@ import '@unicef-polymer/etools-data-table/etools-data-table';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {translate} from 'lit-translate';
 import {InterventionReview} from '@unicef-polymer/etools-types';
-import {REVIEW_ANSVERS, REVIEW_QUESTIONS} from '../review.const';
+import {REVIEW_ANSVERS, REVIEW_QUESTIONS} from '../../common/components/intervention/review.const';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import {formatDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
 import '../../common/components/intervention/review-checklist-popup';

@@ -10,7 +10,7 @@ import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/co
 import {RootState} from '../../common/types/store.types';
 import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
-import {REVIEW_ANSVERS, REVIEW_QUESTIONS} from '../review.const';
+import {REVIEW_ANSVERS, REVIEW_QUESTIONS} from '../../common/components/intervention/review.const';
 import {formatDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import '../../common/components/intervention/review-checklist-popup';
