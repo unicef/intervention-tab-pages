@@ -11,9 +11,6 @@ import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/co
 import {RootState} from '../../types/store.types';
 import {get as getTranslation} from 'lit-translate';
 
-const PRC = {label: getTranslation('PRC_REVIEW'), value: PRC_REVIEW};
-const NON_PRC = {label: getTranslation('NON_PRC_REVIEW'), value: NON_PRC_REVIEW};
-const WITHOUT = {label: getTranslation('NO_REVIEW'), value: NO_REVIEW};
 /**
  * @LitElement
  * @customElement
@@ -23,6 +20,9 @@ export class StartReview extends connectStore(LitElement) {
   @property() type = '';
 
   @property() reviewTypes: LabelAndValue[] = [];
+  private PRC!: {label: string; value: string};
+  private NON_PRC!: {label: string; value: string};
+  private WITHOUT!: {label: string; value: string};
 
   render() {
     return html`
@@ -59,8 +59,17 @@ export class StartReview extends connectStore(LitElement) {
     `;
   }
 
+  connectedCallback(): void {
+    // Initialization has to happen after the translation files were loaded
+    this.PRC = {label: getTranslation('PRC_REVIEW'), value: PRC_REVIEW};
+    this.NON_PRC = {label: getTranslation('NON_PRC_REVIEW'), value: NON_PRC_REVIEW};
+    this.WITHOUT = {label: getTranslation('NO_REVIEW'), value: NO_REVIEW};
+  }
+
   stateChanged(state: RootState) {
-    this.reviewTypes = state.interventions?.current?.in_amendment ? [PRC, NON_PRC, WITHOUT] : [PRC, NON_PRC];
+    this.reviewTypes = state.interventions?.current?.in_amendment
+      ? [this.PRC, this.NON_PRC, this.WITHOUT]
+      : [this.PRC, this.NON_PRC];
   }
 
   startReview(): void {
