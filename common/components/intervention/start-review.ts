@@ -20,9 +20,10 @@ export class StartReview extends connectStore(LitElement) {
   @property() type = '';
 
   @property() reviewTypes: LabelAndValue[] = [];
-  private PRC!: {label: string; value: string};
-  private NON_PRC!: {label: string; value: string};
-  private WITHOUT!: {label: string; value: string};
+
+  PRC = {label: getTranslation('PRC_REVIEW'), value: PRC_REVIEW};
+  NON_PRC = {label: getTranslation('NON_PRC_REVIEW'), value: NON_PRC_REVIEW};
+  WITHOUT = {label: getTranslation('NO_REVIEW'), value: NO_REVIEW};
 
   render() {
     return html`
@@ -57,13 +58,6 @@ export class StartReview extends connectStore(LitElement) {
         </div>
       </etools-dialog>
     `;
-  }
-
-  connectedCallback(): void {
-    // Initialization has to happen after the translation files were loaded
-    this.PRC = {label: getTranslation('PRC_REVIEW'), value: PRC_REVIEW};
-    this.NON_PRC = {label: getTranslation('NON_PRC_REVIEW'), value: NON_PRC_REVIEW};
-    this.WITHOUT = {label: getTranslation('NO_REVIEW'), value: NO_REVIEW};
   }
 
   stateChanged(state: RootState) {
