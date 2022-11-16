@@ -671,5 +671,8 @@
   "NOT_REVIEWED": "No revisado",
   "NOT_FULLY_SIGNED": "No completamente firmado",
   "QPR_FINAL": "FINAL",
-  "SELECTED_SITES": "Sitios seleccionados"
+  "SELECTED_SITES": "Sitios seleccionados",
+  "DATA_PROCESSING_AGREEMENT": "Acuerdo de procesamiento de datos",
+  "ACTIVITIES_INVOLVING_CHILDREN": "Actividades con niños y jóvenes",
+  "SPECIAL_CONDITIONS_FOR_CONSTRUCTION": "Condiciones especiales para obras de construcción por parte de los socios implementadores"
 }
