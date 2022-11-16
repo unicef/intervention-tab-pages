@@ -56,7 +56,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                 !this.oneEntityInEditMode) ||
               !item.id}"
               comment-element="programme-management-item-${item.id}"
-              comment-description="Programme Management Item - ${item.name}"
+              comment-description="${getTranslation('PROGRAMME_MANAGEMENT_ITEM')} - ${item.name}"
             >
               <td class="index-column">
                 <paper-input
@@ -113,7 +113,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                   maxlength="150"
                   .alwaysFloatLabel="${programmeManagement.itemsInEditMode}"
                   .noLabelFloat="${!programmeManagement.itemsInEditMode}"
-                  label=${this.getLabel(programmeManagement.itemsInEditMode, 'Unit')}
+                  label=${this.getLabel(programmeManagement.itemsInEditMode, getTranslation('UNIT'))}
                   ?hidden="${!programmeManagement.itemsInEditMode}"
                   .invalid="${item.invalid?.unit}"
                   @invalid-changed="${({detail}: CustomEvent) => {
@@ -138,7 +138,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
               </td>
               <td tabindex="0">
                 <etools-currency-amount-input
-                  label=${this.getLabel(programmeManagement.itemsInEditMode, 'N. of Units')}
+                  label=${this.getLabel(programmeManagement.itemsInEditMode, getTranslation('N_OF_UNITS'))}
                   .noLabelFloat="${!programmeManagement.itemsInEditMode}"
                   input
                   ?readonly="${!programmeManagement.itemsInEditMode}"
@@ -163,7 +163,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
               </td>
               <td tabindex="0">
                 <etools-currency-amount-input
-                  label=${this.getLabel(programmeManagement.itemsInEditMode, 'Price/Unit')}
+                  label=${this.getLabel(programmeManagement.itemsInEditMode, getTranslation('PRICE_UNIT'))}
                   .noLabelFloat="${!programmeManagement.itemsInEditMode}"
                   input
                   ?readonly="${!programmeManagement.itemsInEditMode}"
@@ -187,7 +187,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
               </td>
               <td tabindex="0">
                 <etools-currency-amount-input
-                  label=${this.getLabel(programmeManagement.itemsInEditMode, 'Partner Cash')}
+                  label=${this.getLabel(programmeManagement.itemsInEditMode, getTranslation('PARTNER_CASH'))}
                   .noLabelFloat="${!programmeManagement.itemsInEditMode}"
                   input
                   ?readonly="${!programmeManagement.itemsInEditMode}"
@@ -207,7 +207,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
               </td>
               <td tabindex="0">
                 <etools-currency-amount-input
-                  label=${this.getLabel(programmeManagement.itemsInEditMode, 'UNICEF Cash')}
+                  label=${this.getLabel(programmeManagement.itemsInEditMode, getTranslation('UNICEF_CASH'))}
                   .noLabelFloat="${!programmeManagement.itemsInEditMode}"
                   input
                   ?readonly="${!programmeManagement.itemsInEditMode}"
@@ -322,7 +322,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
       const confirmed = await openDialog({
         dialog: 'are-you-sure',
         dialogData: {
-          content: 'Are you sure you want to delete this item?'
+          content: getTranslation('ARE_YOU_SURE_DEL')
         }
       }).then(({confirmed}) => confirmed);
       if (confirmed) {

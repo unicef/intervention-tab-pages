@@ -2,6 +2,7 @@ import {customElement, LitElement, property, html} from 'lit-element';
 import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/iron-icons/image-icons.js';
 import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {listenForLangChanged} from 'lit-translate';
 
 /**
  * @customElement
@@ -111,6 +112,13 @@ export class InterventionReportStatus extends LitElement {
   @property({type: String})
   get reportType() {
     return this._reportType;
+  }
+
+  constructor() {
+    super();
+    listenForLangChanged(() => {
+      this._computeLabel(this.status, this.final, this.reportType);
+    });
   }
 
   _computeStatusType(status: null | undefined | string) {
