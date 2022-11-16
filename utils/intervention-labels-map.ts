@@ -5,6 +5,7 @@ export const translatesMap: GenericObject = {
   end: 'END_DATE',
   start: 'START_DATE',
   context: 'CONTEXT',
+  confidential: 'CONFIDENTIAL',
   sections: 'UNICEF_SECTIONS',
   other_info: 'OTHER_INFORMATION',
   result_links: 'RESULTS_STRUCTURE',
