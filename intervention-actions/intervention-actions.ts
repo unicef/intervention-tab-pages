@@ -40,7 +40,7 @@ import {
   UNLOCK
 } from './intervention-actions.constants';
 import {PaperMenuButton} from '@polymer/paper-menu-button/paper-menu-button';
-import {updateCurrentIntervention} from '../common/actions/interventions';
+import {setShouldReGetList, updateCurrentIntervention} from '../common/actions/interventions';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {defaultKeyTranslate, formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {AnyObject, GenericObject} from '@unicef-polymer/etools-types';
@@ -255,6 +255,7 @@ export class InterventionActions extends connectStore(LitElement) {
           this.redirectToTabPage(intervention.id, 'metadata');
         } else {
           getStore().dispatch(updateCurrentIntervention(intervention));
+          getStore().dispatch(setShouldReGetList(true));
           if (action === REVIEW) {
             this.redirectToTabPage(intervention.id, REVIEW);
           }
