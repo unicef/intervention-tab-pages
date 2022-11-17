@@ -1,5 +1,5 @@
 import {PaperButtonElement} from '@polymer/paper-button';
-import {Constructor, LitElement} from 'lit-element';
+import {Constructor, LitElement, property} from 'lit-element';
 /**
  * Notes about the functionality:
  * - Only cells that contain editable inputs can be reached through arrows navigation
@@ -15,6 +15,9 @@ import {Constructor, LitElement} from 'lit-element';
  */
 export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseClass: T) {
   return class ArrowsNavigationClass extends baseClass {
+    @property({type: Boolean})
+    commentMode!: boolean;
+
     private _navigateWithArrows!: (event: KeyboardEvent) => void;
     private _saveWitCtrlS!: (event: KeyboardEvent) => void;
 
@@ -71,6 +74,9 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     }
 
     focusFirstTd() {
+      if (this.commentMode) {
+        return;
+      }
       const focusableTds = Array.from(this.shadowRoot!.querySelectorAll<HTMLTableCellElement>('td[tabindex]'));
       this.setLastFocusedTdOnClick(focusableTds);
       const firstFocusableTd = focusableTds[0];
@@ -153,7 +159,7 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
           break;
         case 'Enter': {
           // @ts-ignore defined in other mixin
-          if (this.oneEntityInEditMode) {
+          if (this.oneEntityInEditMode || this.commentMode) {
             return;
           }
           // @ts-ignore

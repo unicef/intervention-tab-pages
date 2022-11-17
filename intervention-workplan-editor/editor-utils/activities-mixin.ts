@@ -100,7 +100,11 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     .value="${activity.code}"
                   ></paper-input>
                 </td>
-                <td colspan="3" tabindex="0" class="no-top-padding height-for-action-btns">
+                <td
+                  colspan="3"
+                  tabindex="${ifDefined(this.commentMode ? undefined : 0)}"
+                  class="no-top-padding height-for-action-btns"
+                >
                   <paper-textarea
                     no-label-float
                     input
@@ -153,7 +157,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     </div>
                   </div>
                 </td>
-                <td tabindex="0" class="tdTimeIntervals">
+                <td tabindex="${ifDefined(this.commentMode ? undefined : 0)}" class="tdTimeIntervals">
                   <div class="flex-h justify-center">
                     <time-intervals
                       .readonly="${!this.permissions.edit.result_links || !activity.inEditMode}"
@@ -174,7 +178,10 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     ></time-intervals>
                   </div>
                 </td>
-                <td tabindex="${activity.items && activity.items.length ? '-1' : '0'}" class="no-top-padding">
+                <td
+                  tabindex="${(activity.items && activity.items.length) || this.commentMode ? '-1' : '0'}"
+                  class="no-top-padding"
+                >
                   <etools-currency-amount-input
                     no-label-float
                     input
@@ -187,7 +194,10 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     @value-changed="${({detail}: CustomEvent) => this.numberChanged(detail, 'cso_cash', activity)}"
                   ></etools-currency-amount-input>
                 </td>
-                <td tabindex="${activity.items && activity.items.length ? '-1' : '0'}" class="no-top-padding">
+                <td
+                  tabindex="${(activity.items && activity.items.length) || this.commentMode ? '-1' : '0'}"
+                  class="no-top-padding"
+                >
                   <etools-currency-amount-input
                     no-label-float
                     input
