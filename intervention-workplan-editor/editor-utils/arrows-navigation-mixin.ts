@@ -1,5 +1,5 @@
 import {PaperButtonElement} from '@polymer/paper-button';
-import {Constructor, LitElement, property} from 'lit-element';
+import {Constructor, LitElement} from 'lit-element';
 /**
  * Notes about the functionality:
  * - Only cells that contain editable inputs can be reached through arrows navigation
@@ -15,7 +15,6 @@ import {Constructor, LitElement, property} from 'lit-element';
  */
 export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseClass: T) {
   return class ArrowsNavigationClass extends baseClass {
-    @property({type: Boolean})
     commentMode!: boolean;
 
     private _navigateWithArrows!: (event: KeyboardEvent) => void;
