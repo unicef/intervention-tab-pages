@@ -17,7 +17,7 @@ import '@polymer/paper-button/paper-button';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
-import {PRC_REVIEW} from '../review.const';
+import {PRC_REVIEW} from '../../common/components/intervention/review.const';
 
 @customElement('review-members')
 export class ReviewMembers extends ComponentBaseMixin(LitElement) {

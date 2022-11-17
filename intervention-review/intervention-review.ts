@@ -7,7 +7,7 @@ import './review-members/review-members';
 import './reviews-list/reviews-list';
 import './overall-approval/overall-approval';
 import '@unicef-polymer/etools-modules-common/dist/components/cancel/reason-display';
-import {NO_REVIEW, PRC_REVIEW} from './review.const';
+import {NO_REVIEW, PRC_REVIEW} from '../common/components/intervention/review.const';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import {translate} from 'lit-translate';
