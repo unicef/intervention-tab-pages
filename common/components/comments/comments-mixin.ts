@@ -48,17 +48,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
     private comments: CommentsCollection = {};
     private metaDataCollection: MetaData[] = [];
     private commentsModeEnabled = false;
-    private rendered = false;
     private currentEditedComments: MetaData | null = null;
-
-    protected firstUpdated() {
-      this.rendered = true;
-      if (this.commentsModeEnabled) {
-        setTimeout(() => {
-          this.setCommentMode();
-        }, 300);
-      }
-    }
 
     stateChanged(state: RootState) {
       const commentsState = state.commentsData;
@@ -88,9 +78,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
       if (commentsModeEnabled !== this.commentsModeEnabled) {
         this.commentsModeEnabled = commentsModeEnabled;
-        if (this.rendered) {
-          this.setCommentMode();
-        }
+        this.setCommentMode();
       }
     }
 
@@ -102,7 +90,9 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
       return [];
     }
 
-    setCommentMode() {
+    async setCommentMode() {
+      await this.updateComplete;
+
       if (this.commentsModeEnabled) {
         this.startCommentMode();
       } else {
