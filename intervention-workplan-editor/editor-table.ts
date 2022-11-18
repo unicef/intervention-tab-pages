@@ -488,6 +488,9 @@ export class EditorTable extends CommentsMixin(
   @property({type: Boolean})
   oneEntityInEditMode = false;
 
+  @property({type: Boolean})
+  resultStructureIsLoaded = false;
+
   // we need to track changes to unassigned PD separately (pd_id -> cp_id),
   // because all unassigned PDs have one common parent object and we can not change result.cp_output directly
   unassignedPDMap: Map<number, number> = new Map();
@@ -545,32 +548,59 @@ export class EditorTable extends CommentsMixin(
       this.autoValidateActivityName = false;
 
       this.getResultLinksDetails().then(() => {
-        if (!this.refreshResultStructure) {
-          if (
-            this.permissions?.edit?.result_links &&
-            this.resultStructureDetails &&
-            this.resultStructureDetails.length &&
-            !this.commentMode
-          ) {
-            this.addCtrlSListener();
-          } else {
-            this.removeCtrlSListener();
-          }
-        }
-        // need to be sure that editor elements where rendered before calling setCommentMode
-        // (ex: show comments border after page refresh)
-        setTimeout(() => {
-          this.setCommentMode();
-        }, 500);
+        this.resultStructureIsLoaded = true;
+        this.handleSaveWithCtrlSListener();
       });
 
       this.prevInterventionId = this.interventionId;
       this.refreshResultStructure = false;
     }
-    super.stateChanged(state);
+
+    this.waitForEditorTableToRender().then(() => super.stateChanged(state));
 
     if (this.lastFocusedTd) {
       this.lastFocusedTd.focus();
+    }
+  }
+
+  /**
+   * This is To AVOID:
+   * 1. Go to Workplan tab, enable Comment mode
+   * Go to Editor page- notice comment mode enabled;
+   * Go to Workplan Tab , disable Comment mode
+   * Go  back to Editor
+   * Issue: Comment mode borders not removed from editor page
+   *
+   * 2. Comment mode styles not applied on page refresh (slower connections)
+   * 3. Avoid comment mode styles being applied multiple times, can't be removed after
+   * 4. Prevent comment mode style changes while the component is hidden, they won't take effect
+   */
+  private waitForEditorTableToRender() {
+    return new Promise((resolve) => {
+      const uiReadyCheck = setInterval(() => {
+        if (this.resultStructureIsLoaded) {
+          const boundaries = this.getBoundingClientRect();
+          if (boundaries.width !== 0) {
+            clearInterval(uiReadyCheck);
+            resolve(true);
+          }
+        }
+      }, 100);
+    });
+  }
+
+  private handleSaveWithCtrlSListener() {
+    if (!this.refreshResultStructure) {
+      if (
+        this.permissions?.edit?.result_links &&
+        this.resultStructureDetails &&
+        this.resultStructureDetails.length &&
+        !this.commentMode
+      ) {
+        this.addCtrlSListener();
+      } else {
+        this.removeCtrlSListener();
+      }
     }
   }
 

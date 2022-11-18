@@ -12,11 +12,16 @@ import './editor-table';
 @customElement('intervention-workplan-editor')
 export class InterventionWorkplanEditor extends LitElement {
   @property() interventionId!: number;
+  @property({type: Boolean}) commentMode = false;
   render() {
     // language=HTML
     return html`
       <div class="top-card">
-        <workplan-editor-link link="interventions/${this.interventionId}/${TABS.Workplan}">
+        <workplan-editor-link
+          link="interventions/${this.interventionId}/${this.commentMode
+            ? TABS.Workplan + '?comment_mode=true'
+            : TABS.Workplan}"
+        >
           ${translate('BACK_TO_WORKPLAN')}
         </workplan-editor-link>
 

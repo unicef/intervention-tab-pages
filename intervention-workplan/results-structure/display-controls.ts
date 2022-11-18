@@ -19,6 +19,7 @@ export class DisplayControls extends LitElement {
   @property({type: Boolean, attribute: 'show-inactive-toggle'}) showInactiveToggle = false;
   @property({type: Boolean}) showIndicators = true;
   @property({type: Boolean}) showActivities = true;
+  @property({type: Boolean}) commentMode = false;
   @property() interventionId!: number | null;
 
   get viewType(): string {
@@ -80,7 +81,11 @@ export class DisplayControls extends LitElement {
             )}
           </paper-listbox>
         </paper-menu-button>
-        <a href="interventions/${this.interventionId}/${TABS.WorkplanEditor}">
+        <a
+          href="interventions/${this.interventionId}/${this.commentMode
+            ? TABS.WorkplanEditor + '?comment_mode=true'
+            : TABS.WorkplanEditor}"
+        >
           <div class="editor-link">
             ${translate('ACTIVITES_EDITOR')}
             <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">

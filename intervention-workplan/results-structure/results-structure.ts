@@ -120,6 +120,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
             .showIndicators="${this.showIndicators}"
             .showActivities="${this.showActivities}"
             .interventionId="${this.interventionId}"
+            ?commentMode="${this.commentMode}"
             @show-inactive-changed="${this.inactiveChange}"
             @tab-view-changed="${this.updateTableView}"
           ></display-controls>
