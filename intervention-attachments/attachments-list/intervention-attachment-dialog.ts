@@ -28,7 +28,7 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
           padding: 24px;
         }
         etools-dropdown {
-          width: 50%;
+          width: 100%;
         }
         etools-upload {
           margin-top: 14px;

@@ -672,7 +672,7 @@
   "NOT_FULLY_SIGNED": "Não totalmente assinado",
   "QPR_FINAL": "FINAL",
   "SELECTED_SITES": "Sites selecionados",
-  "DATA_PROCESSING_AGREEMENT": "Acordo de Processamento de Dados",
-  "ACTIVITIES_INVOLVING_CHILDREN": "Atividades envolvendo crianças e jovens",
-  "SPECIAL_CONDITIONS_FOR_CONSTRUCTION": "Condições Especiais para Obras de Construção por Parceiros de Implementação"
+  "HAS_DATA_PROCESSING_AGREEMENT": "Acordo de Processamento de Dados",
+  "HAS_ACTIVITIES_INVOLVING_CHILDREN": "Atividades envolvendo crianças e jovens",
+  "HAS_SPECIAL_CONDITIONS_FOR_CONSTRUCTION": "Condições Especiais para Obras de Construção por Parceiros de Implementação"
 }

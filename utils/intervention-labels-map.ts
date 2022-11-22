@@ -75,7 +75,7 @@ export const translatesMap: GenericObject = {
   budget_owner: 'UNICEF_BUDGET_OWNER',
   is_active: 'IS_ACTIVE',
   context_details: 'CONTEXT',
-  data_processing_agreement: 'DATA_PROCESSING_AGREEMENT',
-  activities_involving_children: 'ACTIVITIES_INVOLVING_CHILDREN',
-  special_conditions_for_construction: 'SPECIAL_CONDITIONS_FOR_CONSTRUCTION'
+  has_data_processing_agreement: 'HAS_DATA_PROCESSING_AGREEMENT',
+  has_activities_involving_children: 'HAS_ACTIVITIES_INVOLVING_CHILDREN',
+  has_special_conditions_for_construction: 'HAS_SPECIAL_CONDITIONS_FOR_CONSTRUCTION'
 };

@@ -672,7 +672,7 @@
   "NOT_FULLY_SIGNED": "Не полностью подписан",
   "QPR_FINAL": "ФИНАЛ",
   "SELECTED_SITES": "Выбранные сайты",
-  "DATA_PROCESSING_AGREEMENT": "Соглашение об обработке данных",
-  "ACTIVITIES_INVOLVING_CHILDREN": "Мероприятия с участием детей и молодежи",
-  "SPECIAL_CONDITIONS_FOR_CONSTRUCTION": "Специальные условия для строительных работ со стороны партнеров-исполнителей"
+  "HAS_DATA_PROCESSING_AGREEMENT": "Соглашение об обработке данных",
+  "HAS_ACTIVITIES_INVOLVING_CHILDREN": "Мероприятия с участием детей и молодежи",
+  "HAS_SPECIAL_CONDITIONS_FOR_CONSTRUCTION": "Специальные условия для строительных работ со стороны партнеров-исполнителей"
 }

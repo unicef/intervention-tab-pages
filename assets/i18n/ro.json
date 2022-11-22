@@ -672,7 +672,7 @@
   "NOT_FULLY_SIGNED": "Nu este semnat complet",
   "QPR_FINAL": "FINAL",
   "SELECTED_SITES": "Site-uri selectate",
-  "DATA_PROCESSING_AGREEMENT": "Acord de prelucrare a datelor",
-  "ACTIVITIES_INVOLVING_CHILDREN": "Activități care implică copii și tineri",
-  "SPECIAL_CONDITIONS_FOR_CONSTRUCTION": "Condiții speciale pentru lucrările de construcție de către partenerii de implementare"
+  "HAS_DATA_PROCESSING_AGREEMENT": "Acord de prelucrare a datelor",
+  "HAS_ACTIVITIES_INVOLVING_CHILDREN": "Activități care implică copii și tineri",
+  "HAS_SPECIAL_CONDITIONS_FOR_CONSTRUCTION": "Condiții speciale pentru lucrările de construcție de către partenerii de implementare"
 }

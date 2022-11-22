@@ -204,42 +204,45 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
 
         <div class="row-padding-v">
           <div>
-            <label class="paper-label">${translate(translatesMap.data_processing_agreement)}</label>
+            <label class="paper-label">${translate(translatesMap.has_data_processing_agreement)}</label>
           </div>
           <paper-checkbox
-            ?checked="${this.data.data_processing_agreement}"
-            ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.data_processing_agreement)}"
-            tabindex="${this.isReadonly(this.editMode, this.permissions.edit.data_processing_agreement) ? -1 : 0}"
-            @checked-changed=${({detail}: CustomEvent) => this.valueChanged(detail, 'data_processing_agreement')}
+            ?checked="${this.data.has_data_processing_agreement}"
+            ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.has_data_processing_agreement)}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions.edit.has_data_processing_agreement) ? -1 : 0}"
+            @checked-changed=${({detail}: CustomEvent) => this.valueChanged(detail, 'has_data_processing_agreement')}
           >
           </paper-checkbox>
         </div>
 
         <div class="row-padding-v">
           <div>
-            <label class="paper-label">${translate(translatesMap.activities_involving_children)}</label>
+            <label class="paper-label">${translate(translatesMap.has_activities_involving_children)}</label>
           </div>
           <paper-checkbox
-            ?checked="${this.data.activities_involving_children}"
-            ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.activities_involving_children)}"
-            tabindex="${this.isReadonly(this.editMode, this.permissions.edit.activities_involving_children) ? -1 : 0}"
-            @checked-changed=${({detail}: CustomEvent) => this.valueChanged(detail, 'activities_involving_children')}
-          >
-          </paper-checkbox>
-        </div>
-
-        <div class="row-padding-v">
-          <div>
-            <label class="paper-label">${translate(translatesMap.special_conditions_for_construction)}</label>
-          </div>
-          <paper-checkbox
-            ?checked="${this.data.special_conditions_for_construction}"
-            ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.special_conditions_for_construction)}"
-            tabindex="${this.isReadonly(this.editMode, this.permissions.edit.special_conditions_for_construction)
+            ?checked="${this.data.has_activities_involving_children}"
+            ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.has_activities_involving_children)}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions.edit.has_activities_involving_children)
               ? -1
               : 0}"
             @checked-changed=${({detail}: CustomEvent) =>
-              this.valueChanged(detail, 'special_conditions_for_construction')}
+              this.valueChanged(detail, 'has_activities_involving_children')}
+          >
+          </paper-checkbox>
+        </div>
+
+        <div class="row-padding-v">
+          <div>
+            <label class="paper-label">${translate(translatesMap.has_special_conditions_for_construction)}</label>
+          </div>
+          <paper-checkbox
+            ?checked="${this.data.has_special_conditions_for_construction}"
+            ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.has_special_conditions_for_construction)}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions.edit.has_special_conditions_for_construction)
+              ? -1
+              : 0}"
+            @checked-changed=${({detail}: CustomEvent) =>
+              this.valueChanged(detail, 'has_special_conditions_for_construction')}
           >
           </paper-checkbox>
         </div>

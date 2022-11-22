@@ -672,7 +672,7 @@
   "NOT_FULLY_SIGNED": "غير موقعة بالكامل",
   "QPR_FINAL": "نهائي",
   "SELECTED_SITES": "مواقع مختارة",
-  "DATA_PROCESSING_AGREEMENT": "اتفاقية معالجة البيانات",
-  "ACTIVITIES_INVOLVING_CHILDREN": "الأنشطة التي يشارك فيها الأطفال والشباب",
-  "SPECIAL_CONDITIONS_FOR_CONSTRUCTION": "الشروط الخاصة بأعمال البناء من قبل الشركاء المنفذين"
+  "HAS_DATA_PROCESSING_AGREEMENT": "اتفاقية معالجة البيانات",
+  "HAS_ACTIVITIES_INVOLVING_CHILDREN": "الأنشطة التي يشارك فيها الأطفال والشباب",
+  "HAS_SPECIAL_CONDITIONS_FOR_CONSTRUCTION": "الشروط الخاصة بأعمال البناء من قبل الشركاء المنفذين"
 }
