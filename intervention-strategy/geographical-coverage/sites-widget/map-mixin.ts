@@ -2,7 +2,7 @@ import {GenericObject} from '@unicef-polymer/etools-types';
 import {Map, Marker} from 'leaflet';
 const TILE_LAYER: Readonly<string> = 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png';
 const TILE_LAYER_LABELS: Readonly<string> = 'https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png';
-const arcgisWebmapId = '71608a6be8984b4694f7c613d7048114__TEST'; // Default WebMap ID
+const arcgisWebmapId = '71608a6be8984b4694f7c613d7048114'; // Default WebMap ID
 declare const L: any;
 
 export interface IMarker extends Marker {
@@ -42,7 +42,6 @@ export class MapHelper {
   markerClusters: any | null = null;
 
   async arcgisMapIsAvailable(): Promise<boolean> {
-    console.log('in arcgisMapIsAvailable....');
     return fetch(`https://www.arcgis.com/sharing/rest/content/items/${arcgisWebmapId}?f=json`)
       .then((res) => res.json())
       .then((data) => {
