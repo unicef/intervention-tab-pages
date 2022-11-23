@@ -41,7 +41,7 @@ export class MapHelper {
   dynamicMarker: IMarker | null = null;
   markerClusters: any | null = null;
 
-  async arcgisMapIsAvailable(): Promise<boolean> {
+  arcgisMapIsAvailable(): Promise<boolean> {
     return fetch(`https://www.arcgis.com/sharing/rest/content/items/${arcgisWebmapId}?f=json`)
       .then((res) => res.json())
       .then((data) => {
