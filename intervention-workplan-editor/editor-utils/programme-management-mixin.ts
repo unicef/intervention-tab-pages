@@ -99,13 +99,20 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                     .value="${item.code}"
                   ></paper-input>
                 </td>
-                <td colspan="4" class="no-top-padding height-for-action-btns">
+                <td
+                  colspan="4"
+                  tabindex="${ifDefined(this.commentMode ? undefined : '0')}"
+                  class="no-top-padding height-for-action-btns"
+                >
                   <div class="truncate-multi-line b" title="${item.name}">${item.name}</div>
                   <div class="pad-top-8">
                     <div title="${item.context_details}">${this.truncateString(item.context_details)}</div>
                   </div>
                 </td>
-                <td class="a-right no-top-padding" tabindex="${item.items && item.items.length ? '-1' : '0'}">
+                <td
+                  class="a-right no-top-padding"
+                  tabindex="${ifDefined((item.items && item.items.length) || this.commentMode ? undefined : '0')}"
+                >
                   <etools-currency-amount-input
                     no-label-float
                     input
@@ -120,12 +127,15 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                     @value-changed="${({detail}: CustomEvent) => this.numberChanged(detail, 'cso_cash', item)}"
                   ></etools-currency-amount-input>
                 </td>
-                <td tabindex="${item.items && item.items.length ? '-1' : '0'}" class="no-top-padding">
+                <td
+                  tabindex="${ifDefined((item.items && item.items.length) || this.commentMode ? undefined : '0')}"
+                  class="no-top-padding"
+                >
                   <etools-currency-amount-input
                     no-label-float
                     input
                     .value="${item.unicef_cash}"
-                    tabindex="${ifDefined((item.items && item.items.length) || !item.inEditMode ? '-1' : undefined)}"
+                    tabindex="${ifDefined((item.items && item.items.length) || !item.inEditMode ? '0' : undefined)}"
                     ?readonly="${this.isReadonlyCash(item.inEditMode, item.items)}"
                     ?required="${this.isRequiredCash(item.inEditMode, item.items)}"
                     auto-validate
@@ -139,7 +149,9 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                   colspan="2"
                   class="padd-top-10 action-btns"
                   style="position: relative;"
-                  tabindex="${this.permissions.edit.management_budgets ? '0' : '-1'}"
+                  tabindex="${ifDefined(
+                    !this.permissions.edit.management_budgets || this.commentMode ? undefined : '0'
+                  )}"
                 >
                   <div>
                     ${this.intervention.planned_budget.currency}

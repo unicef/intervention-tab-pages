@@ -214,7 +214,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                   colspan="2"
                   class="padd-top-10 action-btns"
                   style="position: relative;"
-                  tabindex="${this.permissions.edit.result_links ? '0' : '-1'}"
+                  tabindex="${ifDefined(this.permissions.edit.result_links && !this.commentMode ? '0' : undefined)}"
                 >
                   <div>
                     ${this.intervention.planned_budget.currency}
