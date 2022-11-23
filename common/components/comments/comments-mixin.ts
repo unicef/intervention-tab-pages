@@ -169,7 +169,6 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
     }
 
     private createOverlay(relatedTo: string): HTMLElement {
-
       const comments: InterventionComment[] = this.comments[relatedTo] || [];
       const borderColor = comments.length ? '#FF4545' : '#81D763';
       const element: HTMLElement = Object.assign(document.createElement('div'), {className: 'commentsOverlay'});
