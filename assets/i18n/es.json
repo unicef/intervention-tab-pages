@@ -671,5 +671,9 @@
   "NOT_REVIEWED": "No revisado",
   "NOT_FULLY_SIGNED": "No completamente firmado",
   "QPR_FINAL": "FINAL",
-  "SELECTED_SITES": "Sitios seleccionados"
+  "SELECTED_SITES": "Sitios seleccionados",
+  "MAKE_SURE_OTHER_INFO": "Asegúrese de que el PD/SPD tenga en cuenta la información que se presenta a continuación.",
+  "INFO": "Información",
+  "MARK_AS_RESOLVED": "Marcar como resuelta",
+  "IMPORT_INFO_WILL_BE_DELETED_AS_A_RESULT": "La información de importación se eliminará como resultado de esta acción."
 }

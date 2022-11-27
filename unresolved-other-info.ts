@@ -2,7 +2,7 @@ import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/b
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {customElement, html, LitElement, property} from 'lit-element';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
@@ -35,11 +35,11 @@ export class UnresolvedOtherInfo extends ComponentBaseMixin(LitElement) {
         comment-description="Other Info"
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.editPermissions)}</div>
-        <div class="row-padding">Make sure the PD/SPD takes into account the information presented below.</div>
+        <div class="row-padding">${translate('MAKE_SURE_OTHER_INFO')}</div>
         <div class="row-padding">
           <paper-textarea
             id="otherInfo"
-            label="Info"
+            label="${translate('INFO')}"
             always-float-label
             placeholder="—"
             readonly
@@ -53,7 +53,7 @@ export class UnresolvedOtherInfo extends ComponentBaseMixin(LitElement) {
           ? html``
           : html` <div class="layout-horizontal right-align row-padding">
               <paper-button class="default" @click="${this.cancel}">${translate('GENERAL.CANCEL')}</paper-button>
-              <paper-button class="primary" @click="${this.areYouSure}"> Mark as resolved</paper-button>
+              <paper-button class="primary" @click="${this.areYouSure}"> ${translate('MARK_AS_RESOLVED')}</paper-button>
             </div>`}
       </etools-content-panel>
     `;
@@ -73,7 +73,7 @@ export class UnresolvedOtherInfo extends ComponentBaseMixin(LitElement) {
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
       dialogData: {
-        content: 'Import Info will be deleted as a result of this action.',
+        content: getTranslation('IMPORT_INFO_WILL_BE_DELETED_AS_A_RESULT'),
         confirmBtnText: translate('DELETE'),
         cancelBtnText: translate('CANCEL')
       }
