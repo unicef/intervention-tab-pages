@@ -676,5 +676,6 @@
   "INFO": "Info",
   "MARK_AS_RESOLVED": "Marcați ca Rezolvat",
   "IMPORT_INFO_WILL_BE_DELETED_AS_A_RESULT": "Informațiile de import vor fi șterse ca urmare a acestei acțiuni.",
-  "A_NEW_VERSION_OF_THE_APP_IS_AV": "Este disponibilă o nouă versiune a aplicației. Reîmprospătare pagină?"
+  "A_NEW_VERSION_OF_THE_APP_IS_AV": "Este disponibilă o nouă versiune a aplicației. Reîmprospătare pagină?",
+  "PMP_IS_NOT_SYNCED_WITH_PRP": "PMP nu este sincronizat cu PRP"
 }

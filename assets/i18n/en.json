@@ -676,5 +676,6 @@
   "INFO": "Info",
   "MARK_AS_RESOLVED": "Mark as Resolved",
   "IMPORT_INFO_WILL_BE_DELETED_AS_A_RESULT": "Import Info will be deleted as a result of this action.",
-  "A_NEW_VERSION_OF_THE_APP_IS_AV": "A new version of the app is available. Refresh page?"
+  "A_NEW_VERSION_OF_THE_APP_IS_AV": "A new version of the app is available. Refresh page?",
+  "PMP_IS_NOT_SYNCED_WITH_PRP": "PMP is not synced with PRP"
 }
