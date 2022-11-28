@@ -671,5 +671,10 @@
   "NOT_REVIEWED": "Nerevizuit",
   "NOT_FULLY_SIGNED": "Nu este semnat complet",
   "QPR_FINAL": "FINAL",
-  "SELECTED_SITES": "Site-uri selectate"
+  "SELECTED_SITES": "Site-uri selectate",
+  "MAKE_SURE_OTHER_INFO": "Asigurați-vă că PD/SPD ține cont de informațiile prezentate mai jos.",
+  "INFO": "Info",
+  "MARK_AS_RESOLVED": "Marcați ca Rezolvat",
+  "IMPORT_INFO_WILL_BE_DELETED_AS_A_RESULT": "Informațiile de import vor fi șterse ca urmare a acestei acțiuni.",
+  "A_NEW_VERSION_OF_THE_APP_IS_AV": "Este disponibilă o nouă versiune a aplicației. Reîmprospătare pagină?"
 }
