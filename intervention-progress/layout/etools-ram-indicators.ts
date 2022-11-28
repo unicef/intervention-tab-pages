@@ -7,7 +7,7 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 import CommonMixin from '@unicef-polymer/etools-modules-common/dist/mixins/common-mixin';
 
 /**
@@ -128,7 +128,7 @@ export class EtoolsRamIndicators extends CommonMixin(LitElement) {
       .catch((error: any) => {
         if (error.status === 404) {
           fireEvent(this, 'toast', {
-            text: this._translate('DUE_DATE'),
+            text: getTranslation('PMP_IS_NOT_SYNCED_WITH_PRP'),
             showCloseBtn: true
           });
         } else {
