@@ -79,7 +79,7 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
               .language="${translateConfig.lang}"
               id="iit-non-fin"
               slot="after-label"
-              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit?.ip_program_contribution)}"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit?.ip_program_contribution)}"
               .tooltipText="${translate('PARTNER_NON_FINANCIAL_CONTRIBUTION_TOOLTIP')}"
             ></info-icon-tooltip>
           </div>
@@ -90,11 +90,11 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
             placeholder="—"
             .value="${this.data.ip_program_contribution}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'ip_program_contribution')}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit?.ip_program_contribution)}"
-            ?required="${this.permissions.required.ip_program_contribution}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit?.ip_program_contribution)}"
+            ?required="${this.permissions?.required.ip_program_contribution}"
             maxlength="5000"
             rows="${detailsTextareaRowsCount(this.editMode)}"
-            .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.ip_program_contribution)}"
+            .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.ip_program_contribution)}"
           >
           </paper-textarea>
         </div>

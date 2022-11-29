@@ -105,7 +105,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               label=${translate('DOC_TYPE')}
               placeholder="&#8212;"
               ?readonly="${!this.documentTypes.length ||
-              this.isReadonly(this.editMode, this.permissions.edit.document_type)}"
+              this.isReadonly(this.editMode, this.permissions?.edit.document_type)}"
               tabindex="${!this.documentTypes.length ||
               this.isReadonly(this.editMode, this.permissions?.edit.document_type)
                 ? -1
@@ -131,7 +131,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               <!--   SPD is Humanitarian   -->
               <div ?hidden="${!this.isSPD}">
                 <paper-toggle-button
-                  ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.document_type)}"
+                  ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit.document_type)}"
                   ?checked="${this.data.humanitarian_flag}"
                   @checked-changed="${({detail}: CustomEvent) => {
                     this.data.contingency_pd = false;
@@ -145,7 +145,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               <!--   Contingency Document   -->
               <div ?hidden="${!this.data.humanitarian_flag}">
                 <paper-toggle-button
-                  ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.document_type)}"
+                  ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit.document_type)}"
                   ?checked="${this.data.contingency_pd}"
                   @checked-changed="${({detail}: CustomEvent) => {
                     this.valueChanged(detail, 'contingency_pd');
@@ -164,7 +164,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               class="w100"
               label=${translate('ACTIVATION_PROTOCOL')}
               placeholder="&#8212;"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.document_type)}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.document_type)}"
               ?required="${this.data.contingency_pd}"
               .autoValidate="${this.autoValidateProtocol}"
               @focus="${() => (this.autoValidateProtocol = true)}"
@@ -184,8 +184,8 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               placeholder="&#8212;"
               .options="${this.currencies}"
               .selected="${this.data.planned_budget.currency}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.document_currency)}"
-              tabindex="${this.isReadonly(this.editMode, this.permissions.edit.document_currency) ? -1 : 0}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.document_currency)}"
+              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.document_currency) ? -1 : 0}"
               @etools-selected-item-changed="${({detail}: CustomEvent) => {
                 if (detail === undefined || detail.selectedItem === null) {
                   return;
@@ -199,10 +199,10 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
           </div>
         </div>
 
-        <div class="layout-horizontal confidential-row" ?hidden="${!this.permissions.view?.confidential}">
+        <div class="layout-horizontal confidential-row" ?hidden="${!this.permissions?.view?.confidential}">
           <paper-toggle-button
             id="confidential"
-            ?disabled="${this.isReadonly(this.editMode, this.permissions.edit?.confidential)}"
+            ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit?.confidential)}"
             ?checked="${this.data.confidential}"
             @checked-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'confidential')}}"
           >
@@ -211,7 +211,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
           <info-icon-tooltip
             .language="${translateConfig.lang}"
             id="iit-confidential"
-            ?hidden="${this.isReadonly(this.editMode, this.permissions.edit?.confidential)}"
+            ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit?.confidential)}"
             .tooltipText="${translate('CONFIDENTIAL_INFO')}"
           ></info-icon-tooltip>
         </div>
