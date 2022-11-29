@@ -671,5 +671,11 @@
   "NOT_REVIEWED": "Pas révisé",
   "NOT_FULLY_SIGNED": "Pas entièrement signé",
   "QPR_FINAL": "FINAL",
-  "SELECTED_SITES": "Sites sélectionnés"
+  "SELECTED_SITES": "Sites sélectionnés",
+  "MAKE_SURE_OTHER_INFO": "Assurez-vous que le PD/SPD prend en compte les informations présentées ci-dessous.",
+  "INFO": "Info",
+  "MARK_AS_RESOLVED": "Marquer comme résolu",
+  "IMPORT_INFO_WILL_BE_DELETED_AS_A_RESULT": "Les informations d'importation seront supprimées à la suite de cette action.",
+  "A_NEW_VERSION_OF_THE_APP_IS_AV": "Une nouvelle version de l'application est disponible. Rafraîchir la page?",
+  "PMP_IS_NOT_SYNCED_WITH_PRP": "PMP n'est pas synchronisé avec PRP"
 }

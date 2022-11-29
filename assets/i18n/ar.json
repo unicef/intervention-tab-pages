@@ -671,5 +671,11 @@
   "NOT_REVIEWED": "لم تستعرض",
   "NOT_FULLY_SIGNED": "غير موقعة بالكامل",
   "QPR_FINAL": "نهائي",
-  "SELECTED_SITES": "مواقع مختارة"
+  "SELECTED_SITES": "مواقع مختارة",
+  "MAKE_SURE_OTHER_INFO": "تأكد من أن PD / SPD يأخذ في الاعتبار المعلومات الواردة أدناه.",
+  "INFO": "معلومات",
+  "MARK_AS_RESOLVED": "وضع علامة \"تم الحل\"",
+  "IMPORT_INFO_WILL_BE_DELETED_AS_A_RESULT": "سيتم حذف معلومات الاستيراد كنتيجة لهذا الإجراء.",
+  "A_NEW_VERSION_OF_THE_APP_IS_AV": "يتوفر إصدار جديد من التطبيق. إعادة تحميل الصفحة؟",
+  "PMP_IS_NOT_SYNCED_WITH_PRP": "لم تتم مزامنة PMP مع PRP"
 }
