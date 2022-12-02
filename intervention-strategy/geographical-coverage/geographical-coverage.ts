@@ -152,7 +152,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
             placeholder="&#8212;"
             label=${translate(translatesMap.flat_locations)}
             .options="${this.allLocations}"
-            .selectedValues="${this.data.flat_locations}"
+            .selectedValues="${cloneDeep(this.data.flat_locations)}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.flat_locations)}"
             tabindex="${this.isReadonly(this.editMode, this.permissions.edit.flat_locations) ? -1 : 0}"
             ?required="${this.permissions.required.flat_locations}"
@@ -254,14 +254,23 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
     if (!isJsonStrMatch(this.adminLevels, state.commonData!.locationTypes)) {
       this.adminLevels = [...state.commonData!.locationTypes];
     }
-    this.data = {
+
+    if (!isJsonStrMatch(this.originalData, this.selectCurrentLocationSites(state))) {
+      this.data = this.selectCurrentLocationSites(state);
+      this.originalData = cloneDeep(this.data);
+    }
+
+    this.currentCountry = get(state, 'user.data.country') as any;
+
+    this.setPermissions(state);
+    super.stateChanged(state);
+  }
+
+  selectCurrentLocationSites(state: RootState) {
+    return {
       flat_locations: get(state, 'interventions.current.flat_locations') as unknown as string[],
       sites: get(state, 'interventions.current.sites') || []
     };
-    this.currentCountry = get(state, 'user.data.country') as any;
-    this.originalData = cloneDeep(this.data);
-    this.setPermissions(state);
-    super.stateChanged(state);
   }
 
   private setPermissions(state: any) {
