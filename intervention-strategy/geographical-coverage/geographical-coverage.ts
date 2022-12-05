@@ -142,7 +142,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
             id="iit-locations"
             class="iit"
             position="right"
-            ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.flat_locations)}"
+            ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.flat_locations)}"
             .tooltipText="${translate('GEOGRAPHICAL_LOCATIONS_INFO')}"
           ></info-icon-tooltip>
         </div>
@@ -153,9 +153,9 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
             label=${translate(translatesMap.flat_locations)}
             .options="${this.allLocations}"
             .selectedValues="${this.data.flat_locations}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.flat_locations)}"
-            tabindex="${this.isReadonly(this.editMode, this.permissions.edit.flat_locations) ? -1 : 0}"
-            ?required="${this.permissions.required.flat_locations}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.flat_locations)}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.flat_locations) ? -1 : 0}"
+            ?required="${this.permissions?.required.flat_locations}"
             option-label="name"
             option-value="id"
             error-message=${translate('LOCATIONS_ERR')}
@@ -204,7 +204,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
           <paper-button
             class="secondary-btn see-locations f-left"
             @click="${this.openSitesDialog}"
-            ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.sites)}"
+            ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.sites)}"
             title=${translate('SELECT_SITE_FROM_MAP')}
           >
             <iron-icon icon="add"></iron-icon>

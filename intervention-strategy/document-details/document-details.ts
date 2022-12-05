@@ -79,13 +79,13 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             .autoValidate="${this.autoValidate}"
             .value="${this.data.title}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'title')}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit?.title)}"
-            tabindex="${this.isReadonly(this.editMode, this.permissions.edit?.title) ? -1 : 0}"
-            ?required="${this.permissions.required.title}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit?.title)}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit?.title) ? -1 : 0}"
+            ?required="${this.permissions?.required.title}"
             @focus="${() => (this.autoValidate = true)}"
             error-message="This field is required"
             maxlength="256"
-            .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.title)}"
+            .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.title)}"
           >
           </paper-textarea>
         </div>
@@ -97,7 +97,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
               .language="${translateConfig.lang}"
               id="iit-context"
               slot="after-label"
-              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit?.context)}"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit?.context)}"
               .tooltipText="${translate('CONTEXT_TOOLTIP')}"
             ></info-icon-tooltip>
           </div>
@@ -108,12 +108,12 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             placeholder="—"
             .value="${this.data.context}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'context')}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit?.context)}"
-            tabindex="${this.isReadonly(this.editMode, this.permissions.edit?.context) ? -1 : 0}"
-            ?required="${this.permissions.required.context}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit?.context)}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit?.context) ? -1 : 0}"
+            ?required="${this.permissions?.required.context}"
             maxlength="7000"
             rows="${detailsTextareaRowsCount(this.editMode)}"
-            .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.context)}"
+            .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.context)}"
           >
           </paper-textarea>
         </div>
@@ -125,7 +125,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
               .language="${translateConfig.lang}"
               id="iit-implemen-strat"
               slot="after-label"
-              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit?.implementation_strategy)}"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit?.implementation_strategy)}"
               .tooltipText="${translate('IMPLEMENTATION_STRATEGY_AND_TECHNICAL_GUIDANCE_TOOLTIP')}"
             ></info-icon-tooltip>
           </div>
@@ -135,12 +135,12 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             placeholder="—"
             .value="${this.data.implementation_strategy}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'implementation_strategy')}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit?.implementation_strategy)}"
-            tabindex="${this.isReadonly(this.editMode, this.permissions.edit?.implementation_strategy) ? -1 : 0}"
-            ?required="${this.permissions.required.implementation_strategy}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit?.implementation_strategy)}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit?.implementation_strategy) ? -1 : 0}"
+            ?required="${this.permissions?.required.implementation_strategy}"
             maxlength="5000"
             rows="${detailsTextareaRowsCount(this.editMode)}"
-            .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.implementation_strategy)}"
+            .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.implementation_strategy)}"
           >
           </paper-textarea>
         </div>
@@ -152,7 +152,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
               .language="${translateConfig.lang}"
               id="iit-cap-develop"
               slot="after-label"
-              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.capacity_development)}"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.capacity_development)}"
               .tooltipText="${translate('CAPACITY_DEVELOPMENT_TOOLTIP')}"
             ></info-icon-tooltip>
           </div>
@@ -163,12 +163,12 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             no-label-float
             placeholder="—"
             .value="${this.data.capacity_development}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.capacity_development)}"
-            tabindex="${this.isReadonly(this.editMode, this.permissions.edit?.capacity_development) ? -1 : 0}"
-            ?required="${this.permissions.required.capacity_development}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.capacity_development)}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit?.capacity_development) ? -1 : 0}"
+            ?required="${this.permissions?.required.capacity_development}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'capacity_development')}"
             maxlength="5000"
-            .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.capacity_development)}"
+            .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.capacity_development)}"
             rows="${detailsTextareaRowsCount(this.editMode)}"
           >
           </paper-textarea>
@@ -180,7 +180,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             <info-icon-tooltip
               .language="${translateConfig.lang}"
               id="iit-other-p-i"
-              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.other_partners_involved)}"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.other_partners_involved)}"
               .tooltipText="${translate('OTHER_PARTNERS_INVOLVED_TOOLTIP')}"
             ></info-icon-tooltip>
           </div>
@@ -191,13 +191,13 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             always-float-label
             placeholder="—"
             .value="${this.data.other_partners_involved}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.other_partners_involved)}"
-            tabindex="${this.isReadonly(this.editMode, this.permissions.edit.other_partners_involved) ? -1 : 0}"
-            ?required="${this.permissions.required.other_partners_involved}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.other_partners_involved)}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.other_partners_involved) ? -1 : 0}"
+            ?required="${this.permissions?.required.other_partners_involved}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'other_partners_involved')}"
             maxlength="5000"
             rows="${detailsTextareaRowsCount(this.editMode)}"
-            .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.other_partners_involved)}"
+            .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.other_partners_involved)}"
           >
           </paper-textarea>
         </div>
