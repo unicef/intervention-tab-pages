@@ -63,7 +63,7 @@
   "IMPLEMENTATION_STATUS_SUBTAB": "حالة التنفيذ",
   "MONITORING_ACTIVITIES_SUBTAB": "أنشطة المراقبة",
   "RESULTS_REPORTED_SUBTAB": "تم الإبلاغ عن النتائج",
-  "REPORTS_SUBTAB": "التقارير",
+  "REPORTS": "التقارير",
   "DISAGGREGATIONS_TAB": "التجمعات",
   "ARE_YOU_SURE_DEL": "هل أنت متأكد أنك تريد حذف هذا البند؟",
   "DELETE_CONFIRMATION": "تأكيد الحذف",

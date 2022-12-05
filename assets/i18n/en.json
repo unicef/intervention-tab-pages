@@ -63,7 +63,7 @@
   "IMPLEMENTATION_STATUS_SUBTAB": "Implementation Status",
   "MONITORING_ACTIVITIES_SUBTAB": "Monitoring Activities",
   "RESULTS_REPORTED_SUBTAB": "Results Reported",
-  "REPORTS_SUBTAB": "Reports",
+  "REPORTS": "Reports",
   "DISAGGREGATIONS_TAB": "Disaggregations",
   "ARE_YOU_SURE_DEL": "Are you sure you want to delete this item?",
   "DELETE_CONFIRMATION": "Delete confirmation",
@@ -677,5 +677,7 @@
   "MARK_AS_RESOLVED": "Mark as Resolved",
   "IMPORT_INFO_WILL_BE_DELETED_AS_A_RESULT": "Import Info will be deleted as a result of this action.",
   "A_NEW_VERSION_OF_THE_APP_IS_AV": "A new version of the app is available. Refresh page?",
-  "PMP_IS_NOT_SYNCED_WITH_PRP": "PMP is not synced with PRP"
+  "PMP_IS_NOT_SYNCED_WITH_PRP": "PMP is not synced with PRP",
+  "FINAL_PROGRESS_REPORT": "Final Progress Report",
+  "FINAL_PROGRESS_REPORT_AND_REVIEW_WAS_APPROVED": "Final Progress Report and Review was approved"
 }
