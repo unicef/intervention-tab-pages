@@ -68,5 +68,6 @@ export const ActionNamesMap: AnyObject = {
     text: translate('ACCEPT_ON_BEHALF_OF_PARTNER'),
     textKey: 'ACCEPT_ON_BEHALF_OF_PARTNER'
   },
-  [SEND_BACK_REVIEW]: {text: translate('SEND_BACK_REVIEW'), textKey: 'SEND_BACK_REVIEW'}
+  [SEND_BACK_REVIEW]: {text: translate('SEND_BACK_REVIEW'), textKey: 'SEND_BACK_REVIEW'},
+  [PRC_REVIEW]: {text: translate('INDIVIDUAL_REVIEW'), textKey: 'INDIVIDUAL_REVIEW'}
 };

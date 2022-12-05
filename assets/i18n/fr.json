@@ -677,5 +677,7 @@
   "MARK_AS_RESOLVED": "Marquer comme résolu",
   "IMPORT_INFO_WILL_BE_DELETED_AS_A_RESULT": "Les informations d'importation seront supprimées à la suite de cette action.",
   "A_NEW_VERSION_OF_THE_APP_IS_AV": "Une nouvelle version de l'application est disponible. Rafraîchir la page?",
-  "PMP_IS_NOT_SYNCED_WITH_PRP": "PMP n'est pas synchronisé avec PRP"
+  "PMP_IS_NOT_SYNCED_WITH_PRP": "PMP n'est pas synchronisé avec PRP",
+  "INDIVIDUAL_REVIEW": "Examen individuel",
+  "OVERALL_REVIEW": "Examen global"
 }
