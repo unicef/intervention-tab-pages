@@ -228,7 +228,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
     if (state.user && state.user.data) {
       this.isUnicefUser = state.user.data.is_unicef_user;
     }
-    if (state.interventions.current) {
+    if (state.interventions.current && !isJsonStrMatch(this.originalData, selectPdUnicefDetails(state))) {
       this.data = cloneDeep(selectPdUnicefDetails(state));
       this.originalData = cloneDeep(this.data);
     }
