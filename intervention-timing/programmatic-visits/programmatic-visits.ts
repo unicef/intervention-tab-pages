@@ -266,7 +266,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
                     error-message=${translate('GENERAL.REQUIRED_FIELD')}
                     auto-validate
                     @value-changed="${(e: CustomEvent) => this.inputChanged(e, index, 'q1')}"
-                    ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_visits)}"
+                    ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
                   >
                   </paper-input>
                 </div>
@@ -283,7 +283,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
                     error-message=${translate('GENERAL.REQUIRED_FIELD')}
                     auto-validate
                     @value-changed="${(e: CustomEvent) => this.inputChanged(e, index, 'q2')}"
-                    ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_visits)}"
+                    ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
                   >
                   </paper-input>
                 </div>
@@ -300,7 +300,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
                     error-message=${translate('GENERAL.REQUIRED_FIELD')}
                     auto-validate
                     @value-changed="${(e: CustomEvent) => this.inputChanged(e, index, 'q3')}"
-                    ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_visits)}"
+                    ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
                   >
                   </paper-input>
                 </div>
@@ -317,7 +317,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
                     error-message=${translate('GENERAL.REQUIRED_FIELD')}
                     auto-validate
                     @value-changed="${(e: CustomEvent) => this.inputChanged(e, index, 'q4')}"
-                    ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_visits)}"
+                    ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
                   >
                   </paper-input>
                 </div>
