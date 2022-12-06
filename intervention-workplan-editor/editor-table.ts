@@ -176,7 +176,7 @@ export class EditorTable extends CommentsMixin(
                   <td></td>
                   <td colspan="3" class="v-middle">${translate('ADD_PD_OUTPUT')}</td>
                   <td colspan="3"></td>
-                  <td colspan="2" tabindex="0">
+                  <td colspan="2" tabindex="${ifDefined(this.commentMode ? undefined : 0)}">
                     <div class="action-btns" style="position:relative">
                       <paper-icon-button
                         id="add-pd-output"
@@ -247,7 +247,9 @@ export class EditorTable extends CommentsMixin(
                   colspan="2"
                   class="action-btns"
                   tabindex="${ifDefined(
-                    !this.permissions?.edit.result_links || !this.getOriginalCPOutput(resultIndex)?.cp_output
+                    !this.permissions?.edit.result_links ||
+                      !this.getOriginalCPOutput(resultIndex)?.cp_output ||
+                      this.commentMode
                       ? undefined
                       : '0'
                   )}"
@@ -313,7 +315,7 @@ export class EditorTable extends CommentsMixin(
                         .value="${pdOutput.code}"
                       ></paper-input>
                     </td>
-                    <td colspan="3" class="b no-top-padding" tabindex="0">
+                    <td colspan="3" class="b no-top-padding" tabindex="${ifDefined(this.commentMode ? undefined : 0)}">
                       <paper-textarea
                         no-label-float
                         class="bold"
@@ -369,7 +371,7 @@ export class EditorTable extends CommentsMixin(
                       colspan="2"
                       class="action-btns"
                       style="position:relative;"
-                      tabindex="${!this.permissions?.edit.result_links ? '-1' : '0'}"
+                      tabindex="${ifDefined(this.commentMode || !this.permissions?.edit.result_links ? undefined : 0)}"
                     >
                       <div>
                         ${this.intervention.planned_budget.currency}

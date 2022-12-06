@@ -114,8 +114,8 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
               placeholder="&#8212;"
               .options="${this.agreementAuthorizedOfficers}"
               .selected="${this.data.partner_authorized_officer_signatory?.id}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.partner_authorized_officer_signatory)}"
-              ?required="${this.permissions.required.partner_authorized_officer_signatory}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.partner_authorized_officer_signatory)}"
+              ?required="${this.permissions?.required.partner_authorized_officer_signatory}"
               auto-validate
               option-value="id"
               option-label="name"
@@ -151,8 +151,8 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
               id="signedByPartnerDateField"
               label=${translate('SIGNED_PARTNER_DATE')}
               .value="${this.data.signed_by_partner_date}"
-              ?required="${this.permissions.required.signed_by_partner_date}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.signed_by_partner_date)}"
+              ?required="${this.permissions?.required.signed_by_partner_date}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.signed_by_partner_date)}"
               fire-date-has-changed
               @date-has-changed="${(e: CustomEvent) =>
                 this.valueChanged({value: formatDate(e.detail.date, 'YYYY-MM-DD')}, 'signed_by_partner_date')}"
@@ -180,8 +180,8 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
               id="signedByUnicefDateField"
               label=${translate('SIGNED_UNICEF_DATE')}
               .value="${this.data.signed_by_unicef_date}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.signed_by_unicef_date)}"
-              ?required="${this.permissions.required.signed_by_unicef_date}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.signed_by_unicef_date)}"
+              ?required="${this.permissions?.required.signed_by_unicef_date}"
               fire-date-has-changed
               @date-has-changed="${(e: CustomEvent) =>
                 this.valueChanged({value: formatDate(e.detail.date, 'YYYY-MM-DD')}, 'signed_by_unicef_date')}"
@@ -206,7 +206,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
               option-value="id"
               option-label="name"
               .selected="${this.data.unicef_signatory?.id}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.unicef_signatory)}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.unicef_signatory)}"
               auto-validate
               error-message=${translate('UNICEF_USER_ERR')}
               @etools-selected-item-changed="${({detail}: CustomEvent) => {
@@ -243,8 +243,8 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
               .showDeleteBtn="${this.showSignedPDDeleteBtn(this.data.status)}"
               @delete-file="${this._signedPDDocDelete}"
               ?auto-validate="${this.editMode}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.signed_pd_attachment)}"
-              ?required="${this.permissions.required.signed_pd_attachment}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.signed_pd_attachment)}"
+              ?required="${this.permissions?.required.signed_pd_attachment}"
               error-message=${translate('SELECT_SIGNED_PD_SPD_DOC')}
               @upload-started="${this.__onUploadStarted}"
               @upload-finished="${this._signedPDUploadFinished}"

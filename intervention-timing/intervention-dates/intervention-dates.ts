@@ -83,8 +83,8 @@ export class InterventionDates extends CommentsMixin(
                 id="intStart"
                 label=${translate(translatesMap.start)}
                 .value="${this.data.start}"
-                ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.start)}"
-                ?required="${this.permissions.required.start}"
+                ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.start)}"
+                ?required="${this.permissions?.required.start}"
                 error-message=${translate('SELECT_START_DATE')}
                 auto-validate
                 selected-date-display-format="D MMM YYYY"
@@ -111,8 +111,8 @@ export class InterventionDates extends CommentsMixin(
                 id="intEnd"
                 label=${translate(translatesMap.end)}
                 .value="${this.data.end}"
-                ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.end)}"
-                ?required="${this.permissions.required.end}"
+                ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.end)}"
+                ?required="${this.permissions?.required.end}"
                 error-message=${translate('SELECT_END_DATE')}
                 auto-validate
                 selected-date-display-format="D MMM YYYY"
@@ -134,13 +134,13 @@ export class InterventionDates extends CommentsMixin(
             id="activationLetterUpload"
             .fileUrl="${this.data.activation_letter_attachment}"
             .uploadEndpoint="${this.uploadEndpoint}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.activation_letter_attachment)}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.activation_letter_attachment)}"
             @upload-finished="${(e: CustomEvent) => this.activationLetterUploadFinished(e)}"
             @upload-started="${this._onUploadStarted}"
             @change-unsaved-file="${this._onChangeUnsavedFile}"
             .showDeleteBtn="${this.showActivationLetterDeleteBtn(
               this.data.status,
-              this.permissions.edit.activation_letter_attachment,
+              this.permissions?.edit.activation_letter_attachment,
               this.editMode
             )}"
           >

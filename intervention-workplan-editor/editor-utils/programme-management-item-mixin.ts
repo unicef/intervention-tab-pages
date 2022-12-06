@@ -3,6 +3,7 @@ import {Constructor} from '@unicef-polymer/etools-types/dist/global.types';
 import '@polymer/paper-input/paper-input';
 import {html, LitElement} from 'lit-element';
 import {repeat} from 'lit-html/directives/repeat';
+import {ifDefined} from 'lit-html/directives/if-defined.js';
 import '@polymer/paper-input/paper-textarea';
 import {translate, get as getTranslation} from 'lit-translate';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
@@ -67,7 +68,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                   .value="${programmeManagement.code}.${itemIndex + 1}"
                 ></paper-input>
               </td>
-              <td tabindex="0" class="a-item-padd">
+              <td tabindex="${ifDefined(this.commentMode ? undefined : '0')}" class="a-item-padd">
                 <div class="char-counter" ?hidden="${!programmeManagement.itemsInEditMode}">
                   <paper-textarea
                     .alwaysFloatLabel="${programmeManagement.itemsInEditMode}"
@@ -107,7 +108,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                   ${item.name}
                 </div>
               </td>
-              <td tabindex="0">
+              <td tabindex="${ifDefined(this.commentMode ? undefined : '0')}">
                 <paper-input
                   input
                   maxlength="150"
@@ -136,7 +137,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                   ${item.unit}
                 </div>
               </td>
-              <td tabindex="0">
+              <td tabindex="${ifDefined(this.commentMode ? undefined : '0')}">
                 <etools-currency-amount-input
                   label=${this.getLabel(programmeManagement.itemsInEditMode, getTranslation('N_OF_UNITS'))}
                   .noLabelFloat="${!programmeManagement.itemsInEditMode}"
@@ -161,7 +162,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                   }}"
                 ></etools-currency-amount-input>
               </td>
-              <td tabindex="0">
+              <td tabindex="${ifDefined(this.commentMode ? undefined : '0')}">
                 <etools-currency-amount-input
                   label=${this.getLabel(programmeManagement.itemsInEditMode, getTranslation('PRICE_UNIT'))}
                   .noLabelFloat="${!programmeManagement.itemsInEditMode}"
@@ -185,7 +186,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                   }}"
                 ></etools-currency-amount-input>
               </td>
-              <td tabindex="0">
+              <td tabindex="${ifDefined(this.commentMode ? undefined : '0')}">
                 <etools-currency-amount-input
                   label=${this.getLabel(programmeManagement.itemsInEditMode, getTranslation('PARTNER_CASH'))}
                   .noLabelFloat="${!programmeManagement.itemsInEditMode}"
@@ -205,7 +206,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                   }}"
                 ></etools-currency-amount-input>
               </td>
-              <td tabindex="0">
+              <td tabindex="${ifDefined(this.commentMode ? undefined : '0')}">
                 <etools-currency-amount-input
                   label=${this.getLabel(programmeManagement.itemsInEditMode, getTranslation('UNICEF_CASH'))}
                   .noLabelFloat="${!programmeManagement.itemsInEditMode}"
@@ -268,7 +269,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
           type="add-item"
         >
           <td></td>
-          <td tabindex="0" class="a-item-add-padd">
+          <td tabindex="${ifDefined(this.commentMode ? undefined : '0')}" class="a-item-add-padd">
             <div class="icon" @click="${(e: CustomEvent) => this.addNewItem(e, programmeManagement, 'focusAbove')}">
               <paper-icon-button icon="add-box"></paper-icon-button> ${translate('ADD_NEW_ITEM')}
             </div>

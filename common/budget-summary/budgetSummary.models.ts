@@ -1,5 +1,5 @@
 import {Intervention} from '@unicef-polymer/etools-types';
-import {ModelsBase} from '../../common/models/models.base';
+import {ModelsBase} from '../models/models.base';
 
 export class BudgetSummary extends ModelsBase {
   constructor(intervention: Intervention) {

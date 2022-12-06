@@ -674,5 +674,14 @@
   "SELECTED_SITES": "Sitios seleccionados",
   "HAS_DATA_PROCESSING_AGREEMENT": "Acuerdo de procesamiento de datos",
   "HAS_ACTIVITIES_INVOLVING_CHILDREN": "Actividades con niños y jóvenes",
-  "HAS_SPECIAL_CONDITIONS_FOR_CONSTRUCTION": "Condiciones especiales para obras de construcción por parte de los socios implementadores"
+  "HAS_SPECIAL_CONDITIONS_FOR_CONSTRUCTION": "Condiciones especiales para obras de construcción por parte de los socios implementadores",
+  "MAKE_SURE_OTHER_INFO": "Asegúrese de que el PD/SPD tenga en cuenta la información que se presenta a continuación.",
+  "INFO": "Información",
+  "MARK_AS_RESOLVED": "Marcar como resuelta",
+  "IMPORT_INFO_WILL_BE_DELETED_AS_A_RESULT": "La información de importación se eliminará como resultado de esta acción.",
+  "A_NEW_VERSION_OF_THE_APP_IS_AV": "Una nueva versión de la aplicación está disponible. ¿Actualizar página?",
+  "PMP_IS_NOT_SYNCED_WITH_PRP": "PMP no está sincronizada con PRP",
+  "INDIVIDUAL_REVIEW": "Revisión individual",
+  "OVERALL_REVIEW": "Revisión general",
+  "PRC_MEMBER_REVIEWS": "Reseñas de miembros de la RPC"
 }

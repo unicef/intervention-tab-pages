@@ -290,8 +290,8 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     super.connectedCallback();
   }
 
-  protected firstUpdated() {
-    super.firstUpdated();
+  protected firstUpdated(changedProperties: any) {
+    super.firstUpdated(changedProperties);
     if (this.commentsModeEnabledFlag) {
       setTimeout(() => this.openAllCpOutputs());
     }

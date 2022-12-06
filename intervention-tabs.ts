@@ -451,9 +451,10 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
         return {
           ...item,
           tabLabel: getTranslation(item.tabLabelKey),
-          subtabs: item.subtabs
-            ? item.subtabs.forEach((subTab: any) => (subTab.label = getTranslation(subTab.labelKey)))
-            : undefined
+          subtabs: item.subtabs?.map((subTab: any) => ({
+            ...subTab,
+            label: getTranslation(subTab.labelKey)
+          }))
         };
       });
     } catch (ex) {

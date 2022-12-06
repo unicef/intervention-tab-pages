@@ -674,5 +674,14 @@
   "SELECTED_SITES": "Выбранные сайты",
   "HAS_DATA_PROCESSING_AGREEMENT": "Соглашение об обработке данных",
   "HAS_ACTIVITIES_INVOLVING_CHILDREN": "Мероприятия с участием детей и молодежи",
-  "HAS_SPECIAL_CONDITIONS_FOR_CONSTRUCTION": "Специальные условия для строительных работ со стороны партнеров-исполнителей"
+  "HAS_SPECIAL_CONDITIONS_FOR_CONSTRUCTION": "Специальные условия для строительных работ со стороны партнеров-исполнителей",
+  "MAKE_SURE_OTHER_INFO": "Убедитесь, что PD/SPD учитывает информацию, представленную ниже.",
+  "INFO": "InИнформацияfo",
+  "MARK_AS_RESOLVED": "Отметить как решенное",
+  "IMPORT_INFO_WILL_BE_DELETED_AS_A_RESULT": "Информация об импорте будет удалена в результате этого действия.",
+  "A_NEW_VERSION_OF_THE_APP_IS_AV": "Доступна новая версия приложения. Обновить страницу?",
+  "PMP_IS_NOT_SYNCED_WITH_PRP": "PMP не синхронизирован с PRP",
+  "INDIVIDUAL_REVIEW": "Индивидуальный обзор",
+  "OVERALL_REVIEW": "Общий обзор",
+  "PRC_MEMBER_REVIEWS": "Отзывы членов КНР"
 }

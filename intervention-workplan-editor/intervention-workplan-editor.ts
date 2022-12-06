@@ -1,7 +1,7 @@
 import {LitElement, customElement, html, css, property} from 'lit-element';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import './workplan-editor-link';
-import '../intervention-workplan/budget-summary/budget-summary';
+import '../common/budget-summary/budget-summary';
 import {TABS} from '../common/constants';
 import {translate} from 'lit-translate';
 import './editor-table';

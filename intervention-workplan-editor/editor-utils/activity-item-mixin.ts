@@ -72,7 +72,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   .value="${item.code || 'N/A'}"
                 ></paper-input>
               </td>
-              <td tabindex="0" class="a-item-padd">
+              <td tabindex="${ifDefined(this.commentMode ? undefined : 0)}" class="a-item-padd">
                 <div class="char-counter" ?hidden="${!activity.itemsInEditMode}">
                   <paper-textarea
                     .alwaysFloatLabel="${activity.itemsInEditMode}"
@@ -109,7 +109,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   ${item.name}
                 </div>
               </td>
-              <td tabindex="0">
+              <td tabindex="${ifDefined(this.commentMode ? undefined : 0)}">
                 <paper-input
                   input
                   maxlength="150"
@@ -138,7 +138,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   ${item.unit}
                 </div>
               </td>
-              <td tabindex="0">
+              <td tabindex="${ifDefined(this.commentMode ? undefined : 0)}">
                 <etools-currency-amount-input
                   label=${this.getLabel(activity.itemsInEditMode, getTranslation('N_OF_UNITS'))}
                   .noLabelFloat="${!activity.itemsInEditMode}"
@@ -164,7 +164,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   }}"
                 ></etools-currency-amount-input>
               </td>
-              <td tabindex="0">
+              <td tabindex="${ifDefined(this.commentMode ? undefined : 0)}">
                 <etools-currency-amount-input
                   label=${this.getLabel(activity.itemsInEditMode, getTranslation('PRICE_UNIT'))}
                   .noLabelFloat="${!activity.itemsInEditMode}"
@@ -189,7 +189,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   }}"
                 ></etools-currency-amount-input>
               </td>
-              <td tabindex="0">
+              <td tabindex="${ifDefined(this.commentMode ? undefined : 0)}">
                 <etools-currency-amount-input
                   label=${this.getLabel(activity.itemsInEditMode, getTranslation('PARTNER_CASH'))}
                   .noLabelFloat="${!activity.itemsInEditMode}"
@@ -210,7 +210,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   }}"
                 ></etools-currency-amount-input>
               </td>
-              <td tabindex="0">
+              <td tabindex="${ifDefined(this.commentMode ? undefined : 0)}">
                 <etools-currency-amount-input
                   label=${this.getLabel(activity.itemsInEditMode, getTranslation('UNICEF_CASH'))}
                   .noLabelFloat="${!activity.itemsInEditMode}"
@@ -274,7 +274,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
           type="add-item"
         >
           <td></td>
-          <td tabindex="0" class="a-item-add-padd">
+          <td tabindex="${ifDefined(this.commentMode ? undefined : 0)}" class="a-item-add-padd">
             <div class="icon" @click="${(e: CustomEvent) => this.addNewActivityItem(e, activity, 'focusAbove')}">
               <paper-icon-button icon="add-box"></paper-icon-button> ${translate('ADD_NEW_ITEM')}
             </div>

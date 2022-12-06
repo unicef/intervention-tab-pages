@@ -1,19 +1,16 @@
 import {customElement, html, LitElement, property} from 'lit-element';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
-import '@unicef-polymer/etools-dropdown';
+import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {LabelAndValue} from '@unicef-polymer/etools-types';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {translate} from 'lit-translate';
-import {NO_REVIEW, NON_PRC_REVIEW, PRC_REVIEW} from '../../../intervention-review/review.const';
+import {NO_REVIEW, NON_PRC_REVIEW, PRC_REVIEW} from './review.const';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {RootState} from '../../types/store.types';
 import {get as getTranslation} from 'lit-translate';
 
-const PRC = {label: getTranslation('PRC_REVIEW'), value: PRC_REVIEW};
-const NON_PRC = {label: getTranslation('NON_PRC_REVIEW'), value: NON_PRC_REVIEW};
-const WITHOUT = {label: getTranslation('NO_REVIEW'), value: NO_REVIEW};
 /**
  * @LitElement
  * @customElement
@@ -23,6 +20,10 @@ export class StartReview extends connectStore(LitElement) {
   @property() type = '';
 
   @property() reviewTypes: LabelAndValue[] = [];
+
+  PRC = {label: getTranslation('PRC_REVIEW'), value: PRC_REVIEW};
+  NON_PRC = {label: getTranslation('NON_PRC_REVIEW'), value: NON_PRC_REVIEW};
+  WITHOUT = {label: getTranslation('NO_REVIEW'), value: NO_REVIEW};
 
   render() {
     return html`
@@ -60,7 +61,9 @@ export class StartReview extends connectStore(LitElement) {
   }
 
   stateChanged(state: RootState) {
-    this.reviewTypes = state.interventions?.current?.in_amendment ? [PRC, NON_PRC, WITHOUT] : [PRC, NON_PRC];
+    this.reviewTypes = state.interventions?.current?.in_amendment
+      ? [this.PRC, this.NON_PRC, this.WITHOUT]
+      : [this.PRC, this.NON_PRC];
   }
 
   startReview(): void {

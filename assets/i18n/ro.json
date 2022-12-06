@@ -674,5 +674,14 @@
   "SELECTED_SITES": "Site-uri selectate",
   "HAS_DATA_PROCESSING_AGREEMENT": "Acord de prelucrare a datelor",
   "HAS_ACTIVITIES_INVOLVING_CHILDREN": "Activități care implică copii și tineri",
-  "HAS_SPECIAL_CONDITIONS_FOR_CONSTRUCTION": "Condiții speciale pentru lucrările de construcție de către partenerii de implementare"
+  "HAS_SPECIAL_CONDITIONS_FOR_CONSTRUCTION": "Condiții speciale pentru lucrările de construcție de către partenerii de implementare",
+  "MAKE_SURE_OTHER_INFO": "Asigurați-vă că PD/SPD ține cont de informațiile prezentate mai jos.",
+  "INFO": "Info",
+  "MARK_AS_RESOLVED": "Marcați ca Rezolvat",
+  "IMPORT_INFO_WILL_BE_DELETED_AS_A_RESULT": "Informațiile de import vor fi șterse ca urmare a acestei acțiuni.",
+  "A_NEW_VERSION_OF_THE_APP_IS_AV": "Este disponibilă o nouă versiune a aplicației. Reîmprospătare pagină?",
+  "PMP_IS_NOT_SYNCED_WITH_PRP": "PMP nu este sincronizat cu PRP",
+  "INDIVIDUAL_REVIEW": "Revizuire individuală",
+  "OVERALL_REVIEW": "Revizuire generală",
+  "PRC_MEMBER_REVIEWS": "Recenziile membrilor PRC"
 }
