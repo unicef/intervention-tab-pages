@@ -683,5 +683,7 @@
   "PMP_IS_NOT_SYNCED_WITH_PRP": "PMP n'est pas synchronisé avec PRP",
   "INDIVIDUAL_REVIEW": "Examen individuel",
   "OVERALL_REVIEW": "Examen global",
-  "PRC_MEMBER_REVIEWS": "Avis des membres du CRP"
+  "PRC_MEMBER_REVIEWS": "Avis des membres du CRP",
+  "ONCE_YOU_HIT_SAVE_THE_PD_WILL_BE_TERMINATED_AND_UNREVERSABLE": "Une fois que vous avez cliqué sur Enregistrer, le PD/SPD sera terminé et cette action ne pourra pas être annulée",
+  "PLEASE_MAKE_SURE_THE_REPORTIN_REQ_ARE_UPDATED_WITH_THE_CORRECT_DATES": "Veuillez vous assurer que les exigences de déclaration pour le PD/SPD sont mises à jour avec les dates correctes"
 }

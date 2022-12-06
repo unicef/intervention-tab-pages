@@ -683,5 +683,7 @@
   "PMP_IS_NOT_SYNCED_WITH_PRP": "PMP nu este sincronizat cu PRP",
   "INDIVIDUAL_REVIEW": "Revizuire individuală",
   "OVERALL_REVIEW": "Revizuire generală",
-  "PRC_MEMBER_REVIEWS": "Recenziile membrilor PRC"
+  "PRC_MEMBER_REVIEWS": "Recenziile membrilor PRC",
+  "ONCE_YOU_HIT_SAVE_THE_PD_WILL_BE_TERMINATED_AND_UNREVERSABLE": "Odată ce apăsați Salvare, PD/SPD va fi Terminat și această acțiune nu poate fi inversată",
+  "PLEASE_MAKE_SURE_THE_REPORTIN_REQ_ARE_UPDATED_WITH_THE_CORRECT_DATES": "Vă rugăm să vă asigurați că cerințele de raportare pentru PD/SPD sunt actualizate cu datele corecte"
 }

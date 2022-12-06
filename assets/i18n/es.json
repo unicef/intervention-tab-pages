@@ -683,5 +683,7 @@
   "PMP_IS_NOT_SYNCED_WITH_PRP": "PMP no está sincronizada con PRP",
   "INDIVIDUAL_REVIEW": "Revisión individual",
   "OVERALL_REVIEW": "Revisión general",
-  "PRC_MEMBER_REVIEWS": "Reseñas de miembros de la RPC"
+  "PRC_MEMBER_REVIEWS": "Reseñas de miembros de la RPC",
+  "ONCE_YOU_HIT_SAVE_THE_PD_WILL_BE_TERMINATED_AND_UNREVERSABLE": "Una vez que presione guardar, el PD/SPD se cancelará y esta acción no se puede revertir",
+  "PLEASE_MAKE_SURE_THE_REPORTIN_REQ_ARE_UPDATED_WITH_THE_CORRECT_DATES": "Asegúrese de que los requisitos de informes para el PD/SPD estén actualizados con las fechas correctas"
 }

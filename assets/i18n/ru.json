@@ -683,5 +683,7 @@
   "PMP_IS_NOT_SYNCED_WITH_PRP": "PMP не синхронизирован с PRP",
   "INDIVIDUAL_REVIEW": "Индивидуальный обзор",
   "OVERALL_REVIEW": "Общий обзор",
-  "PRC_MEMBER_REVIEWS": "Отзывы членов КНР"
+  "PRC_MEMBER_REVIEWS": "Отзывы членов КНР",
+  "ONCE_YOU_HIT_SAVE_THE_PD_WILL_BE_TERMINATED_AND_UNREVERSABLE": "Как только вы нажмете «Сохранить», PD / SPD будет прекращено, и это действие нельзя будет отменить.",
+  "PLEASE_MAKE_SURE_THE_REPORTIN_REQ_ARE_UPDATED_WITH_THE_CORRECT_DATES": "Убедитесь, что требования к отчетности для PD/SPD обновлены с правильными датами."
 }
