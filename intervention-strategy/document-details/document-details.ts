@@ -202,6 +202,50 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
           </paper-textarea>
         </div>
 
+        <div class="row-padding-v">
+          <div>
+            <label class="paper-label">${translate(translatesMap.has_data_processing_agreement)}</label>
+          </div>
+          <paper-checkbox
+            ?checked="${this.data.has_data_processing_agreement}"
+            ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.has_data_processing_agreement)}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions.edit.has_data_processing_agreement) ? -1 : 0}"
+            @checked-changed=${({detail}: CustomEvent) => this.valueChanged(detail, 'has_data_processing_agreement')}
+          >
+          </paper-checkbox>
+        </div>
+
+        <div class="row-padding-v">
+          <div>
+            <label class="paper-label">${translate(translatesMap.has_activities_involving_children)}</label>
+          </div>
+          <paper-checkbox
+            ?checked="${this.data.has_activities_involving_children}"
+            ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.has_activities_involving_children)}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions.edit.has_activities_involving_children)
+              ? -1
+              : 0}"
+            @checked-changed=${({detail}: CustomEvent) =>
+              this.valueChanged(detail, 'has_activities_involving_children')}
+          >
+          </paper-checkbox>
+        </div>
+
+        <div class="row-padding-v">
+          <div>
+            <label class="paper-label">${translate(translatesMap.has_special_conditions_for_construction)}</label>
+          </div>
+          <paper-checkbox
+            ?checked="${this.data.has_special_conditions_for_construction}"
+            ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.has_special_conditions_for_construction)}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions.edit.has_special_conditions_for_construction)
+              ? -1
+              : 0}"
+            @checked-changed=${({detail}: CustomEvent) =>
+              this.valueChanged(detail, 'has_special_conditions_for_construction')}
+          >
+          </paper-checkbox>
+        </div>
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
       </etools-content-panel>
     `;
