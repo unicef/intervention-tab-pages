@@ -61,7 +61,7 @@ export class OverallApproval extends LitElement {
   render(): TemplateResult {
     return html`
       ${sharedStyles}
-      <etools-content-panel class="content-section" panel-title="Overall Review">
+      <etools-content-panel class="content-section" panel-title=${translate('OVERALL_REVIEW')}>
         <div slot="panel-btns" ?hidden="${this.readonly}">
           <paper-icon-button icon="icons:create" @click="${() => this.openReviewPopup()}"></paper-icon-button>
         </div>

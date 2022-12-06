@@ -66,7 +66,7 @@ export class ReviewsList extends connectStore(LitElement) {
   render(): TemplateResult {
     return html`
       ${sharedStyles}
-      <etools-content-panel class="content-section" panel-title="PRC Member Reviews">
+      <etools-content-panel class="content-section" panel-title=${translate('PRC_MEMBER_REVIEWS')}>
         <etools-data-table-header no-title ?no-collapse="${!this.approvals.length}">
           <etools-data-table-column class="flex-2">${translate('PRC_NAME')}</etools-data-table-column>
           <etools-data-table-column class="flex-1">${translate('APPROVED_BY_PRC')}</etools-data-table-column>
