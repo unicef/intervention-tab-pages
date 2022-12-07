@@ -267,43 +267,44 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
             </tr>
           `
         )}
-        <tr
-          ?hidden="${!this.permissions.edit.result_links ||
-          this.commentMode ||
-          (!activity.itemsInEditMode && this.oneEntityInEditMode)}"
-          type="add-item"
-        >
-          <td></td>
-          <td tabindex="${ifDefined(this.commentMode ? undefined : 0)}" class="a-item-add-padd">
-            <div class="icon" @click="${(e: CustomEvent) => this.addNewActivityItem(e, activity, 'focusAbove')}">
-              <paper-icon-button icon="add-box"></paper-icon-button> ${translate('ADD_NEW_ITEM')}
-            </div>
-          </td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td colspan="2">
-            <div
-              class="flex-h justify-right"
-              ?hidden="${!((activity.inEditMode || activity.itemsInEditMode) && activity.items?.length > 3)}"
-            >
-              <paper-button
-                id="btnSave-activity-2"
-                ?hidden="${!((activity.inEditMode || activity.itemsInEditMode) && activity.items?.length > 3)}"
-                @click="${() => this.saveActivity(activity, pdOutput.id, this.intervention.id!)}"
-                >${translate('GENERAL.SAVE')}</paper-button
-              >
-              <paper-icon-button
-                class="flex-none"
-                icon="close"
-                @click="${() =>
-                  this.cancelActivity(pdOutput.activities, activity, resultIndex, pdOutputIndex, activityIndex)}"
-              ></paper-icon-button>
-            </div>
-          </td>
-        </tr>
+        ${!this.permissions.edit.result_links ||
+        this.commentMode ||
+        (!activity.itemsInEditMode && this.oneEntityInEditMode)
+          ? html``
+          : html`
+              <tr type="add-item">
+                <td></td>
+                <td tabindex="${ifDefined(this.commentMode ? undefined : 0)}" class="a-item-add-padd">
+                  <div class="icon" @click="${(e: CustomEvent) => this.addNewActivityItem(e, activity, 'focusAbove')}">
+                    <paper-icon-button icon="add-box"></paper-icon-button> ${translate('ADD_NEW_ITEM')}
+                  </div>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td colspan="2">
+                  <div
+                    class="flex-h justify-right"
+                    ?hidden="${!((activity.inEditMode || activity.itemsInEditMode) && activity.items?.length > 3)}"
+                  >
+                    <paper-button
+                      id="btnSave-activity-2"
+                      ?hidden="${!((activity.inEditMode || activity.itemsInEditMode) && activity.items?.length > 3)}"
+                      @click="${() => this.saveActivity(activity, pdOutput.id, this.intervention.id!)}"
+                      >${translate('GENERAL.SAVE')}</paper-button
+                    >
+                    <paper-icon-button
+                      class="flex-none"
+                      icon="close"
+                      @click="${() =>
+                        this.cancelActivity(pdOutput.activities, activity, resultIndex, pdOutputIndex, activityIndex)}"
+                    ></paper-icon-button>
+                  </div>
+                </td>
+              </tr>
+            `}
       </tbody>`;
     }
 

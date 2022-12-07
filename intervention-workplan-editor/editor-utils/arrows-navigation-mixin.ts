@@ -321,6 +321,9 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
 
     _getNextTr(activeTd: HTMLTableCellElement): HTMLTableRowElement | null | undefined {
       let nextTr = activeTd.parentElement?.nextElementSibling as HTMLTableRowElement | null;
+      while (nextTr && (nextTr.hasAttribute('hidden') || nextTr.classList.contains('header'))) {
+        nextTr = nextTr.nextElementSibling as HTMLTableRowElement | null;
+      }
       if (nextTr) {
         if (!nextTr.querySelector<HTMLTableCellElement>('td[tabindex="0"]')) {
           nextTr = null;
@@ -330,6 +333,9 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     }
     _getPrevTr(activeTd: HTMLTableCellElement) {
       let prevTr = activeTd.parentElement?.previousElementSibling as HTMLTableRowElement | null;
+      while (prevTr && (prevTr.hasAttribute('hidden') || prevTr.classList.contains('header'))) {
+        prevTr = prevTr.previousElementSibling as HTMLTableRowElement | null;
+      }
       if (prevTr) {
         if (!prevTr.querySelector<HTMLTableCellElement>('td[tabindex="0"]')) {
           prevTr = null;
