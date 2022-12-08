@@ -322,7 +322,9 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
       const confirmed = await openDialog({
         dialog: 'are-you-sure',
         dialogData: {
-          content: getTranslation('ARE_YOU_SURE_DEL')
+          content: getTranslation('ARE_YOU_SURE_DEL'),
+          confirmBtnText: translate('GENERAL.DELETE') as unknown as string,
+          cancelBtnText: translate('GENERAL.CANCEL') as unknown as string
         }
       }).then(({confirmed}) => confirmed);
       if (confirmed) {

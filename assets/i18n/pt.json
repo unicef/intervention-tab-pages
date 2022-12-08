@@ -221,6 +221,7 @@
   "TIME_PERIODS": "Períodos de tempo",
   "OTHER_NOTES": "Outros comentários",
   "DELETE_ACTIVITY_PROMPT": "Você tem certeza de que deseja eliminar esta atividade?",
+  "DELETE_ACTIVITY_ITEM_PROMPT": "Tem certeza de que deseja excluir este item de atividade?",
   "COUNTRY_PROGRAME_OUTPUT": "Resultado do Programa País",
   "RAM_INDICATORS": "Indicadores RAM",
   "UNASSOCIATED_TO_CP_OUTPUT": "OUTPUT do CP não associado. Por favor, associe o output antes de continuar.",
