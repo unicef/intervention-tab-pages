@@ -221,6 +221,7 @@
   "TIME_PERIODS": "فترات زمنية",
   "OTHER_NOTES": "الملاحظات الأخرى",
   "DELETE_ACTIVITY_PROMPT": "هل أنت متأكد أنك تريد حذف هذا النشاط؟",
+  "DELETE_ACTIVITY_ITEM_PROMPT": "هل أنت متأكد أنك تريد حذف عنصر النشاط هذا؟",
   "COUNTRY_PROGRAME_OUTPUT": "مخرجات البرنامج القطري",
   "RAM_INDICATORS": "مؤشرات RAM",
   "UNASSOCIATED_TO_CP_OUTPUT": "غير مقترن بإخراج CP! يرجى الربط قبل المضي قدما",

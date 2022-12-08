@@ -221,6 +221,7 @@
   "TIME_PERIODS": "Períodos de tiempo",
   "OTHER_NOTES": "Otras notas",
   "DELETE_ACTIVITY_PROMPT": "Está seguro de que desea eliminar esta actividad?",
+  "DELETE_ACTIVITY_ITEM_PROMPT": "¿Está seguro de que desea eliminar este elemento de actividad?",
   "COUNTRY_PROGRAME_OUTPUT": "Producto del programa país",
   "RAM_INDICATORS": "Indicadores del RAM",
   "UNASSOCIATED_TO_CP_OUTPUT": "Desvinculado al producto del CP! Por favor, asocie antes de avanzar",

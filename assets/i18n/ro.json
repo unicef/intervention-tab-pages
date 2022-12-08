@@ -221,6 +221,7 @@
   "TIME_PERIODS": "Perioade de Timp",
   "OTHER_NOTES": "Alte Note",
   "DELETE_ACTIVITY_PROMPT": "Sunteti sigur ca doriti sa stergeti aceasta activitate?",
+  "DELETE_ACTIVITY_ITEM_PROMPT": "Sigur doriți să ștergeți acest element de activitate?",
   "COUNTRY_PROGRAME_OUTPUT": "Rezultat CP",
   "RAM_INDICATORS": "Indicatori RAM",
   "UNASSOCIATED_TO_CP_OUTPUT": "Neasociat cu un resultat CP! Va rugam sa asociati inainte de a continua",

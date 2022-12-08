@@ -325,7 +325,9 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       const confirmed = await openDialog({
         dialog: 'are-you-sure',
         dialogData: {
-          content: getTranslation('ARE_YOU_SURE_DEL')
+          content: getTranslation('DELETE_ACTIVITY_ITEM_PROMPT'),
+          confirmBtnText: translate('GENERAL.DELETE') as unknown as string,
+          cancelBtnText: translate('GENERAL.CANCEL') as unknown as string
         }
       }).then(({confirmed}) => confirmed);
       if (confirmed) {
