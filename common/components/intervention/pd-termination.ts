@@ -16,7 +16,7 @@ import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialo
 import EnvironmentFlagsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/environment-flags-mixin';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {AnyObject} from '@unicef-polymer/etools-types';
-import {translate, get as getTranslation} from 'lit-translate';
+import {get as getTranslation} from 'lit-translate';
 declare const dayjs: any;
 
 /**
