@@ -593,6 +593,7 @@ export class EditorTable extends CommentsMixin(
       active: true,
       loadingSource: this.localName
     });
+    this.resultStructureIsLoaded = false;
     return sendRequest({
       endpoint: getEndpoint(interventionEndpoints.resultLinksDetails, {id: this.intervention.id})
     }).then((response: any) => {
