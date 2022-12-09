@@ -27,6 +27,10 @@ export const EditorHoverStyles = css`
     background-color: #dedddd;
     min-width: 40px;
   }
+  .in-edit-and-deletable {
+    background-color: #e8f2fa;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
+  }
 
   .activity-items-row[hoverable]:hover {
     background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));

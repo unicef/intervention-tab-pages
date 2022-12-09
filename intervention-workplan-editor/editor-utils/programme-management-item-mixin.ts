@@ -234,7 +234,11 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                   .noLabelFloat="${!programmeManagement.itemsInEditMode}"
                   .value="${getItemTotalFormatted(item)}"
                 ></paper-input>
-                <div class="hover-block flex-h">
+                <div
+                  class="hover-block flex-h ${programmeManagement.itemsInEditMode && !item.id
+                    ? 'in-edit-and-deletable'
+                    : ''}"
+                >
                   <paper-icon-button
                     icon="create"
                     ?hidden="${!this.permissions.edit.management_budgets || !item.id}"

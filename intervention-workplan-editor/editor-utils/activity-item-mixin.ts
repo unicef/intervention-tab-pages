@@ -239,7 +239,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   .noLabelFloat="${!activity.itemsInEditMode}"
                   .value="${getItemTotalFormatted(item)}"
                 ></paper-input>
-                <div class="hover-block flex-h">
+                <div class="hover-block flex-h ${activity.itemsInEditMode && !item.id ? 'in-edit-and-deletable' : ''}">
                   <paper-icon-button
                     icon="create"
                     ?hidden="${!this.permissions.edit.result_links || !item.id}"
