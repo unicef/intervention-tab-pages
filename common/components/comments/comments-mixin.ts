@@ -6,6 +6,7 @@ import './comments-dialog';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {Constructor, InterventionComment} from '@unicef-polymer/etools-types';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 
 type MetaData = CommentElementMeta & {
   oldStyles: string;
@@ -79,6 +80,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
       if (commentsModeEnabled !== this.commentsModeEnabled) {
         this.commentsModeEnabled = commentsModeEnabled;
         this.setCommentMode();
+        fireEvent(this, 'scroll-up');
       }
     }
 
