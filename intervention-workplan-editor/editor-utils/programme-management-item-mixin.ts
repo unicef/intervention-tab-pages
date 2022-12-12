@@ -234,7 +234,11 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                   .noLabelFloat="${!programmeManagement.itemsInEditMode}"
                   .value="${getItemTotalFormatted(item)}"
                 ></paper-input>
-                <div class="hover-block flex-h">
+                <div
+                  class="hover-block flex-h ${programmeManagement.itemsInEditMode && !item.id
+                    ? 'in-edit-and-deletable'
+                    : ''}"
+                >
                   <paper-icon-button
                     icon="create"
                     ?hidden="${!this.permissions.edit.management_budgets || !item.id}"
@@ -262,53 +266,52 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
             </tr>
           `
         )}
-        <tr
-          ?hidden="${!this.permissions.edit.management_budgets ||
-          this.commentMode ||
-          (!programmeManagement.itemsInEditMode && this.oneEntityInEditMode)}"
-          type="add-item"
-        >
-          <td></td>
-          <td tabindex="${ifDefined(this.commentMode ? undefined : '0')}" class="a-item-add-padd">
-            <div class="icon" @click="${(e: CustomEvent) => this.addNewItem(e, programmeManagement, 'focusAbove')}">
-              <paper-icon-button icon="add-box"></paper-icon-button> ${translate('ADD_NEW_ITEM')}
-            </div>
-          </td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td colspan="2">
-            <div
-              class="flex-h justify-right"
-              ?hidden="${!(
-                (programmeManagement.inEditMode || programmeManagement.itemsInEditMode) &&
-                programmeManagement.items?.length > 3
-              )}"
-            >
-              <paper-button
-                id="btnSave-programme-management-2"
-                ?hidden="${!(
-                  (programmeManagement.inEditMode || programmeManagement.itemsInEditMode) &&
-                  programmeManagement.items?.length > 3
-                )}"
-                @click="${() => this.saveProgrammeManagement(programmeManagement, this.intervention.id!)}"
-                >${translate('GENERAL.SAVE')}</paper-button
-              >
-              <paper-icon-button
-                class="flex-none"
-                icon="close"
-                @click="${() =>
-                  this.cancelProgrammeManagement(
-                    programmeManagement.items,
-                    programmeManagement,
-                    programmeManagementIndex
+        ${!this.permissions.edit.management_budgets ||
+        this.commentMode ||
+        (!programmeManagement.itemsInEditMode && this.oneEntityInEditMode)
+          ? html``
+          : html`<tr type="add-item">
+              <td></td>
+              <td tabindex="${ifDefined(this.commentMode ? undefined : '0')}" class="a-item-add-padd">
+                <div class="icon" @click="${(e: CustomEvent) => this.addNewItem(e, programmeManagement, 'focusAbove')}">
+                  <paper-icon-button icon="add-box"></paper-icon-button> ${translate('ADD_NEW_ITEM')}
+                </div>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td colspan="2">
+                <div
+                  class="flex-h justify-right"
+                  ?hidden="${!(
+                    (programmeManagement.inEditMode || programmeManagement.itemsInEditMode) &&
+                    programmeManagement.items?.length > 3
                   )}"
-              ></paper-icon-button>
-            </div>
-          </td>
-        </tr>
+                >
+                  <paper-button
+                    id="btnSave-programme-management-2"
+                    ?hidden="${!(
+                      (programmeManagement.inEditMode || programmeManagement.itemsInEditMode) &&
+                      programmeManagement.items?.length > 3
+                    )}"
+                    @click="${() => this.saveProgrammeManagement(programmeManagement, this.intervention.id!)}"
+                    >${translate('GENERAL.SAVE')}</paper-button
+                  >
+                  <paper-icon-button
+                    class="flex-none"
+                    icon="close"
+                    @click="${() =>
+                      this.cancelProgrammeManagement(
+                        programmeManagement.items,
+                        programmeManagement,
+                        programmeManagementIndex
+                      )}"
+                  ></paper-icon-button>
+                </div>
+              </td>
+            </tr>`}
       </tbody>`;
     }
 
@@ -323,7 +326,9 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
       const confirmed = await openDialog({
         dialog: 'are-you-sure',
         dialogData: {
-          content: getTranslation('ARE_YOU_SURE_DEL')
+          content: getTranslation('ARE_YOU_SURE_DEL'),
+          confirmBtnText: translate('GENERAL.DELETE') as unknown as string,
+          cancelBtnText: translate('GENERAL.CANCEL') as unknown as string
         }
       }).then(({confirmed}) => confirmed);
       if (confirmed) {

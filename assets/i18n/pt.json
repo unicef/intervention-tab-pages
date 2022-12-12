@@ -221,6 +221,7 @@
   "TIME_PERIODS": "Períodos de tempo",
   "OTHER_NOTES": "Outros comentários",
   "DELETE_ACTIVITY_PROMPT": "Você tem certeza de que deseja eliminar esta atividade?",
+  "DELETE_ACTIVITY_ITEM_PROMPT": "Tem certeza de que deseja excluir este item de atividade?",
   "COUNTRY_PROGRAME_OUTPUT": "Resultado do Programa País",
   "RAM_INDICATORS": "Indicadores RAM",
   "UNASSOCIATED_TO_CP_OUTPUT": "OUTPUT do CP não associado. Por favor, associe o output antes de continuar.",
@@ -642,7 +643,10 @@
     "FINAL_PARTNERSHIP_REVIEW": "Revisão Final da Parceria",
     "CORRESPONDENCE": "Correspondência",
     "SUPPLY/DISTRIBUTION_PLAN": "Plano de Fornecimento/Distribuição",
-    "OTHER": "Outro"
+    "OTHER": "Outro",
+    "SPECIAL_CONDITIONS_FOR_CONSTRUCTION_WORKS": "Condições Especiais para Obras de Construção",
+    "ACTIVITIES_INVOLVING_CHILDREN_AND_YOUNG_PEOPLE": "Atividades envolvendo crianças e jovens",
+    "DATA_PROCESSING_AGREEMENT": "Acordo de Processamento de Dados"
   },
   "SECRETARY_COMMENT": "Comentário do Secretário",
   "CFEI_NOTIFICATION": "Notificação CFEI",
@@ -672,10 +676,18 @@
   "NOT_FULLY_SIGNED": "Não totalmente assinado",
   "QPR_FINAL": "FINAL",
   "SELECTED_SITES": "Sites selecionados",
+  "HAS_DATA_PROCESSING_AGREEMENT": "Acordo de Processamento de Dados",
+  "HAS_ACTIVITIES_INVOLVING_CHILDREN": "Atividades envolvendo crianças e jovens",
+  "HAS_SPECIAL_CONDITIONS_FOR_CONSTRUCTION": "Condições Especiais para Obras de Construção por Parceiros de Implementação",
   "MAKE_SURE_OTHER_INFO": "Certifique-se de que o PD/SPD leva em consideração as informações apresentadas abaixo.",
   "INFO": "Info",
   "MARK_AS_RESOLVED": "Marcar como resolvido",
   "IMPORT_INFO_WILL_BE_DELETED_AS_A_RESULT": "As informações de importação serão excluídas como resultado desta ação.",
   "A_NEW_VERSION_OF_THE_APP_IS_AV": "Uma nova versão do aplicativo está disponível. Atualizar a página?",
-  "PMP_IS_NOT_SYNCED_WITH_PRP": "PMP não está sincronizado com PRP"
+  "PMP_IS_NOT_SYNCED_WITH_PRP": "PMP não está sincronizado com PRP",
+  "INDIVIDUAL_REVIEW": "Revisão Individual",
+  "OVERALL_REVIEW": "Revisão geral",
+  "PRC_MEMBER_REVIEWS": "Críticas de Membros do PRC",
+  "ONCE_YOU_HIT_SAVE_THE_PD_WILL_BE_TERMINATED_AND_UNREVERSABLE": "Depois de clicar em salvar, o PD/SPD será encerrado e esta ação não poderá ser revertida",
+  "PLEASE_MAKE_SURE_THE_REPORTIN_REQ_ARE_UPDATED_WITH_THE_CORRECT_DATES": "Certifique-se de que os requisitos de relatórios para o PD/SPD sejam atualizados com as datas corretas"
 }

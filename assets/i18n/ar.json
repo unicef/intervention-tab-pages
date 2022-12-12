@@ -221,6 +221,7 @@
   "TIME_PERIODS": "فترات زمنية",
   "OTHER_NOTES": "الملاحظات الأخرى",
   "DELETE_ACTIVITY_PROMPT": "هل أنت متأكد أنك تريد حذف هذا النشاط؟",
+  "DELETE_ACTIVITY_ITEM_PROMPT": "هل أنت متأكد أنك تريد حذف عنصر النشاط هذا؟",
   "COUNTRY_PROGRAME_OUTPUT": "مخرجات البرنامج القطري",
   "RAM_INDICATORS": "مؤشرات RAM",
   "UNASSOCIATED_TO_CP_OUTPUT": "غير مقترن بإخراج CP! يرجى الربط قبل المضي قدما",
@@ -642,7 +643,10 @@
     "FINAL_PARTNERSHIP_REVIEW": "مراجعة الشراكة النهائية",
     "CORRESPONDENCE": "مراسلة",
     "SUPPLY/DISTRIBUTION_PLAN": "خطة التوريد / التوزيع",
-    "OTHER": "آخر"
+    "OTHER": "آخر",
+    "SPECIAL_CONDITIONS_FOR_CONSTRUCTION_WORKS": "الشروط الخاصة بأعمال البناء",
+    "ACTIVITIES_INVOLVING_CHILDREN_AND_YOUNG_PEOPLE": "الأنشطة التي يشارك فيها الأطفال والشباب",
+    "DATA_PROCESSING_AGREEMENT": "اتفاقية معالجة البيانات"
   },
   "SECRETARY_COMMENT": "تعليق السكرتير",
   "CFEI_NOTIFICATION": "إعلام CFEI",
@@ -672,10 +676,18 @@
   "NOT_FULLY_SIGNED": "غير موقعة بالكامل",
   "QPR_FINAL": "نهائي",
   "SELECTED_SITES": "مواقع مختارة",
+  "HAS_DATA_PROCESSING_AGREEMENT": "اتفاقية معالجة البيانات",
+  "HAS_ACTIVITIES_INVOLVING_CHILDREN": "الأنشطة التي يشارك فيها الأطفال والشباب",
+  "HAS_SPECIAL_CONDITIONS_FOR_CONSTRUCTION": "الشروط الخاصة بأعمال البناء من قبل الشركاء المنفذين",
   "MAKE_SURE_OTHER_INFO": "تأكد من أن PD / SPD يأخذ في الاعتبار المعلومات الواردة أدناه.",
   "INFO": "معلومات",
   "MARK_AS_RESOLVED": "وضع علامة \"تم الحل\"",
   "IMPORT_INFO_WILL_BE_DELETED_AS_A_RESULT": "سيتم حذف معلومات الاستيراد كنتيجة لهذا الإجراء.",
   "A_NEW_VERSION_OF_THE_APP_IS_AV": "يتوفر إصدار جديد من التطبيق. إعادة تحميل الصفحة؟",
-  "PMP_IS_NOT_SYNCED_WITH_PRP": "لم تتم مزامنة PMP مع PRP"
+  "PMP_IS_NOT_SYNCED_WITH_PRP": "لم تتم مزامنة PMP مع PRP",
+  "INDIVIDUAL_REVIEW": "مراجعة فردية",
+  "OVERALL_REVIEW": "نظرة شاملة",
+  "PRC_MEMBER_REVIEWS": "مراجعات أعضاء جمهورية الصين الشعبية",
+  "ONCE_YOU_HIT_SAVE_THE_PD_WILL_BE_TERMINATED_AND_UNREVERSABLE": "بمجرد الضغط على \"حفظ\" ، سيتم إنهاء PD / SPD ولا يمكن عكس هذا الإجراء",
+  "PLEASE_MAKE_SURE_THE_REPORTIN_REQ_ARE_UPDATED_WITH_THE_CORRECT_DATES": "يرجى التأكد من تحديث متطلبات إعداد التقارير الخاصة بـ PD / SPD بالتواريخ الصحيحة"
 }

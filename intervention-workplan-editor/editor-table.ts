@@ -493,6 +493,7 @@ export class EditorTable extends CommentsMixin(
   unassignedPDMap: Map<number, number> = new Map();
 
   private refreshResultStructure = false;
+  private resultStructureIsLoaded = false;
   private prevInterventionId: number | null = null;
 
   connectedCallback() {
@@ -507,6 +508,10 @@ export class EditorTable extends CommentsMixin(
     if (pageIsNotCurrentlyActive(state.app?.routeDetails, 'interventions', TABS.WorkplanEditor)) {
       this.prevInterventionId = null;
       this.oneEntityInEditMode = false;
+      if (!state.commentsData.commentsModeEnabled) {
+        // reset comments border on leave page to not have a flash on come back
+        super.stateChanged(state);
+      }
       return;
     }
     if (!selectInterventionId(state)) {
@@ -557,21 +562,30 @@ export class EditorTable extends CommentsMixin(
             this.removeCtrlSListener();
           }
         }
-        // need to be sure that editor elements where rendered before calling setCommentMode
-        // (ex: show comments border after page refresh)
-        setTimeout(() => {
-          this.setCommentMode();
-        }, 500);
+        this.resultStructureIsLoaded = true;
       });
 
       this.prevInterventionId = this.interventionId;
       this.refreshResultStructure = false;
     }
-    super.stateChanged(state);
+
+    // On page refresh apply comment mode after components are rendered
+    this.waitForResultsStructureToLoad().then(() => this.updateComplete.then(() => super.stateChanged(state)));
 
     if (this.lastFocusedTd) {
       this.lastFocusedTd.focus();
     }
+  }
+
+  waitForResultsStructureToLoad() {
+    return new Promise((resolve) => {
+      const interval = setInterval(() => {
+        if (this.resultStructureIsLoaded) {
+          clearInterval(interval);
+          resolve(true);
+        }
+      }, 200);
+    });
   }
 
   getResultLinksDetails() {
@@ -579,6 +593,7 @@ export class EditorTable extends CommentsMixin(
       active: true,
       loadingSource: this.localName
     });
+    this.resultStructureIsLoaded = false;
     return sendRequest({
       endpoint: getEndpoint(interventionEndpoints.resultLinksDetails, {id: this.intervention.id})
     }).then((response: any) => {

@@ -101,7 +101,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
             this.data.gender_rating,
             'gender_rating',
             this.ratings,
-            this.permissions.edit.gender_rating
+            this.permissions?.edit.gender_rating
           )}
           <div class="col col-12 pl-none">
             <paper-textarea
@@ -111,12 +111,12 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
               placeholder="&#8212;"
               .value="${this.data.gender_narrative}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'gender_narrative')}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.gender_narrative)}"
-              tabindex="${this.isReadonly(this.editMode, this.permissions.edit.gender_narrative) ? -1 : 0}"
-              ?required="${this.permissions.required.gender_narrative}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.gender_narrative)}"
+              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.gender_narrative) ? -1 : 0}"
+              ?required="${this.permissions?.required.gender_narrative}"
               maxlength="3000"
               rows="${detailsTextareaRowsCount(this.editMode)}"
-              .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.gender_narrative)}"
+              .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.gender_narrative)}"
             >
             </paper-textarea>
           </div>
@@ -134,7 +134,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
             this.data.equity_rating,
             'equity_rating',
             this.ratings,
-            this.permissions.edit.equity_rating
+            this.permissions?.edit.equity_rating
           )}
           <div class="col col-12 pl-none">
             <paper-textarea
@@ -144,12 +144,12 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
               placeholder="&#8212;"
               .value="${this.data.equity_narrative}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'equity_narrative')}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.equity_narrative)}"
-              tabindex="${this.isReadonly(this.editMode, this.permissions.edit.equity_narrative) ? -1 : 0}"
-              ?required="${this.permissions.required.equity_narrative}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.equity_narrative)}"
+              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.equity_narrative) ? -1 : 0}"
+              ?required="${this.permissions?.required.equity_narrative}"
               maxlength="3000"
               rows="${detailsTextareaRowsCount(this.editMode)}"
-              .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.equity_narrative)}"
+              .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.equity_narrative)}"
             >
             </paper-textarea>
           </div>
@@ -167,7 +167,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
             this.data.sustainability_rating,
             'sustainability_rating',
             this.ratings,
-            this.permissions.edit.sustainability_rating
+            this.permissions?.edit.sustainability_rating
           )}
           <div class="col col-12 pl-none">
             <paper-textarea
@@ -177,12 +177,12 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
               placeholder="&#8212;"
               .value="${this.data.sustainability_narrative}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'sustainability_narrative')}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.sustainability_narrative)}"
-              tabindex="${this.isReadonly(this.editMode, this.permissions.edit.sustainability_narrative) ? -1 : 0}"
-              ?required="${this.permissions.required.sustainability_narrative}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.sustainability_narrative)}"
+              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.sustainability_narrative) ? -1 : 0}"
+              ?required="${this.permissions?.required.sustainability_narrative}"
               maxlength="3000"
               rows="${detailsTextareaRowsCount(this.editMode)}"
-              .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.sustainability_narrative)}"
+              .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.sustainability_narrative)}"
             >
             </paper-textarea>
           </div>

@@ -221,6 +221,7 @@
   "TIME_PERIODS": "Time Periods",
   "OTHER_NOTES": "Other Notes",
   "DELETE_ACTIVITY_PROMPT": "Are you sure you want to delete this activity?",
+  "DELETE_ACTIVITY_ITEM_PROMPT": "Are you sure you want to delete this activity item?",
   "COUNTRY_PROGRAME_OUTPUT": "Country Programme Output",
   "RAM_INDICATORS": "RAM Indicators",
   "UNASSOCIATED_TO_CP_OUTPUT": "Unassociated to CP Output! Please associate before moving forward",
@@ -637,12 +638,15 @@
     "TYPE_6:_OTHER": "Type 6: Other"
   },
   "FILE_TYPES": {
-    "FACE": "FACE",
-    "PROGRESS_REPORT": "Progress Report",
-    "FINAL_PARTNERSHIP_REVIEW": "Final Partnership Review",
-    "CORRESPONDENCE": "Correspondence",
-    "SUPPLY/DISTRIBUTION_PLAN": "Supply/Distribution Plan",
-    "OTHER": "Other"
+    "FACE":"FACE",
+    "PROGRESS_REPORT":"Progress Report",
+    "FINAL_PARTNERSHIP_REVIEW":"Final Partnership Review",
+    "CORRESPONDENCE":"Correspondence",
+    "SUPPLY/DISTRIBUTION_PLAN":"Supply/Distribution Plan",
+    "OTHER":"Other",
+    "SPECIAL_CONDITIONS_FOR_CONSTRUCTION_WORKS":"Special Conditions for Construction Works",
+    "ACTIVITIES_INVOLVING_CHILDREN_AND_YOUNG_PEOPLE":"Activities involving children and young people",
+    "DATA_PROCESSING_AGREEMENT":"Data Processing Agreement"
   },
   "SECRETARY_COMMENT": "Secretary Comment",
   "CFEI_NOTIFICATION": "CFEI Notification",
@@ -672,6 +676,9 @@
   "NOT_FULLY_SIGNED": "Not fully signed",
   "QPR_FINAL": "FINAL",
   "SELECTED_SITES": "Selected sites",
+  "HAS_DATA_PROCESSING_AGREEMENT": "Data Processing Agreement",
+  "HAS_ACTIVITIES_INVOLVING_CHILDREN": "Activities involving children and young people",
+  "HAS_SPECIAL_CONDITIONS_FOR_CONSTRUCTION": "Special Conditions for Construction Works by Implementing Partners",
   "MAKE_SURE_OTHER_INFO": "Make sure the PD/SPD takes into account the information presented below.",
   "INFO": "Info",
   "MARK_AS_RESOLVED": "Mark as Resolved",
@@ -679,5 +686,10 @@
   "A_NEW_VERSION_OF_THE_APP_IS_AV": "A new version of the app is available. Refresh page?",
   "PMP_IS_NOT_SYNCED_WITH_PRP": "PMP is not synced with PRP",
   "FINAL_PROGRESS_REPORT": "Final Progress Report",
-  "FINAL_PROGRESS_REPORT_AND_REVIEW_WAS_APPROVED": "Final Progress Report and Review was approved"
+  "FINAL_PROGRESS_REPORT_AND_REVIEW_WAS_APPROVED": "Final Progress Report and Review was approved",
+  "INDIVIDUAL_REVIEW": "Individual Review",
+  "OVERALL_REVIEW": "Overall Review",
+  "PRC_MEMBER_REVIEWS": "PRC Member Reviews",
+  "ONCE_YOU_HIT_SAVE_THE_PD_WILL_BE_TERMINATED_AND_UNREVERSABLE": "Once you hit save, the PD/SPD will be Terminated and this action can not be reversed",
+  "PLEASE_MAKE_SURE_THE_REPORTIN_REQ_ARE_UPDATED_WITH_THE_CORRECT_DATES": "Please make sure that the reporting requirements for the PD/SPD are updated with the correct dates"
 }

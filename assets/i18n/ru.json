@@ -221,6 +221,7 @@
   "TIME_PERIODS": "Сроки",
   "OTHER_NOTES": "Прочие заметки",
   "DELETE_ACTIVITY_PROMPT": "Вы уверены, что хотите удалить это мероприятие?",
+  "DELETE_ACTIVITY_ITEM_PROMPT": "Вы уверены, что хотите удалить этот элемент активности?",
   "COUNTRY_PROGRAME_OUTPUT": "Промежуточный результат Страновой Программы",
   "RAM_INDICATORS": "RИндикаторы МОР",
   "UNASSOCIATED_TO_CP_OUTPUT": "Не привязано к промежуточному результату СП! Пожалуйста, , привяжите, что бы продолжить. ",
@@ -642,7 +643,10 @@
     "FINAL_PARTNERSHIP_REVIEW": "Окончательный обзор партнерства",
     "CORRESPONDENCE": "Переписка",
     "SUPPLY/DISTRIBUTION_PLAN": "План снабжения/распределения",
-    "OTHER": "Другой"
+    "OTHER": "Другой",
+    "SPECIAL_CONDITIONS_FOR_CONSTRUCTION_WORKS": "Специальные условия для строительных работ",
+    "ACTIVITIES_INVOLVING_CHILDREN_AND_YOUNG_PEOPLE": "Мероприятия с участием детей и молодежи",
+    "DATA_PROCESSING_AGREEMENT": "Соглашение об обработке данных"
   },
   "SECRETARY_COMMENT": "Комментарий секретаря",
   "CFEI_NOTIFICATION": "Уведомление CFEI",
@@ -672,10 +676,18 @@
   "NOT_FULLY_SIGNED": "Не полностью подписан",
   "QPR_FINAL": "ФИНАЛ",
   "SELECTED_SITES": "Выбранные сайты",
+  "HAS_DATA_PROCESSING_AGREEMENT": "Соглашение об обработке данных",
+  "HAS_ACTIVITIES_INVOLVING_CHILDREN": "Мероприятия с участием детей и молодежи",
+  "HAS_SPECIAL_CONDITIONS_FOR_CONSTRUCTION": "Специальные условия для строительных работ со стороны партнеров-исполнителей",
   "MAKE_SURE_OTHER_INFO": "Убедитесь, что PD/SPD учитывает информацию, представленную ниже.",
   "INFO": "InИнформацияfo",
   "MARK_AS_RESOLVED": "Отметить как решенное",
   "IMPORT_INFO_WILL_BE_DELETED_AS_A_RESULT": "Информация об импорте будет удалена в результате этого действия.",
   "A_NEW_VERSION_OF_THE_APP_IS_AV": "Доступна новая версия приложения. Обновить страницу?",
-  "PMP_IS_NOT_SYNCED_WITH_PRP": "PMP не синхронизирован с PRP"
+  "PMP_IS_NOT_SYNCED_WITH_PRP": "PMP не синхронизирован с PRP",
+  "INDIVIDUAL_REVIEW": "Индивидуальный обзор",
+  "OVERALL_REVIEW": "Общий обзор",
+  "PRC_MEMBER_REVIEWS": "Отзывы членов КНР",
+  "ONCE_YOU_HIT_SAVE_THE_PD_WILL_BE_TERMINATED_AND_UNREVERSABLE": "Как только вы нажмете «Сохранить», PD / SPD будет прекращено, и это действие нельзя будет отменить.",
+  "PLEASE_MAKE_SURE_THE_REPORTIN_REQ_ARE_UPDATED_WITH_THE_CORRECT_DATES": "Убедитесь, что требования к отчетности для PD/SPD обновлены с правильными датами."
 }

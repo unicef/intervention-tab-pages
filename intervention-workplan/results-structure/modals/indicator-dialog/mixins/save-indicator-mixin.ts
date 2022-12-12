@@ -12,6 +12,8 @@ import {IndicatorDisaggregations} from '../indicator-dissaggregations';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {updateCurrentIntervention} from '../../../../../common/actions/interventions';
 import {Constructor} from '@unicef-polymer/etools-types';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {get as getTranslation} from 'lit-translate';
 
 /**
  * @mixinFunction
@@ -102,7 +104,7 @@ function SaveIndicatorMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
     _validateAndSaveIndicator() {
       if (!this.validate()) {
-        // @ts-ignore *Defined in component
+        fireEvent(this, 'toast', {text: getTranslation('REQUIRED_ERROR')});
         this.activeTab = 'details';
         this._centerDialog();
         return;
