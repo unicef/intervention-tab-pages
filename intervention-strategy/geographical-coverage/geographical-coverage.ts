@@ -56,6 +56,8 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
           display: flex;
           flex-direction: row;
           padding-bottom: 12px;
+          position: relative;
+          z-index: 120;
         }
 
         .locations-btn {
