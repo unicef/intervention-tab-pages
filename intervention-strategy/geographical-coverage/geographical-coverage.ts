@@ -115,7 +115,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
           position: relative;
         }
         .location-icon {
-          z-index: 119;
+          z-index: 90;
           padding-bottom: 0 !important;
         }
         .prevent-see-hierarchy-link-overlap {
