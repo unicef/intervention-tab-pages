@@ -187,11 +187,12 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
     }
 
     if (!isJsonStrMatch(this.originalData, newPartnerDetails)) {
-      if (this.partnerIdHasChanged(newPartnerDetails)) {
-        this.partnerStaffMembers = await this.getAllPartnerStaffMembers(newPartnerDetails.partner_id!);
-      }
+      const partnerIdHasChanged = this.partnerIdHasChanged(newPartnerDetails);
       this.data = cloneDeep(newPartnerDetails);
       this.originalData = cloneDeep(this.data);
+      if (partnerIdHasChanged) {
+        this.partnerStaffMembers = await this.getAllPartnerStaffMembers(newPartnerDetails.partner_id!);
+      }
     }
   }
 
