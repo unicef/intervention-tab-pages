@@ -35,6 +35,7 @@ import {
 import {interventionEndpoints} from '../utils/intervention-endpoints';
 import {RouteDetails} from '@unicef-polymer/etools-types/dist/router.types';
 import pick from 'lodash-es/pick';
+import './reports/final-progress-report';
 
 /**
  * @polymer
@@ -89,12 +90,15 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
         .tooltip-trigger {
           position: relative;
         }
+        .pad-bottom {
+          padding-bottom: 25px;
+        }
       </style>
       <iron-media-query
         query="(max-width: 767px)"
         @query-matches-changed="${this.resolutionChanged}"
       ></iron-media-query>
-      <etools-content-panel panel-title="Reports">
+      <etools-content-panel panel-title="${translate('REPORTS')}" class="pad-bottom">
         ${!this.reports.length
           ? html` <div class="row-h">
               <p>${translate('NO_REPORTS_YET')}</p>
@@ -171,6 +175,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
               >
               </etools-data-table-footer>`}
       </etools-content-panel>
+      <final-progress-report></final-progress-report>
     `;
   }
 

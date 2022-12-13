@@ -538,7 +538,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
           labelKey: 'RESULTS_REPORTED_SUBTAB',
           value: TABS.ResultsReported
         },
-        {label: translate('REPORTS_SUBTAB'), labelKey: 'REPORTS_SUBTAB', value: TABS.Reports}
+        {label: translate('REPORTS'), labelKey: 'REPORTS', value: TABS.Reports}
       );
     }
   }
