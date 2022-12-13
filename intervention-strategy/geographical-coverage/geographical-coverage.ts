@@ -115,7 +115,11 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
           position: relative;
         }
         .location-icon {
-          z-index: 119;
+          z-index: 90;
+          padding-bottom: 0 !important;
+        }
+        .prevent-see-hierarchy-link-overlap {
+          height: 10px;
         }
       </style>
 
@@ -146,6 +150,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
             .tooltipText="${translate('GEOGRAPHICAL_LOCATIONS_INFO')}"
           ></info-icon-tooltip>
         </div>
+        <div class="prevent-see-hierarchy-link-overlap"></div>
         <div class="flex-c layout-horizontal dropdown-row">
           <etools-dropdown-multi
             id="locations"
