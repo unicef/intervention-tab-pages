@@ -125,8 +125,7 @@ export class HumanitarianReportingReqUnicef extends PaginationMixin(ReportingReq
   openUnicefHumanitarianRepReqDialog() {
     if (!this.interventionStart) {
       fireEvent(this, 'toast', {
-        text: getTranslation('FILL_START_DATE'),
-        showCloseBtn: true
+        text: getTranslation('FILL_START_DATE')
       });
       return;
     }

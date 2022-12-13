@@ -194,16 +194,14 @@ export class EditHruDialog extends connectStore(LitElement) {
   _addToList() {
     if (!this.selectedDate) {
       fireEvent(this, 'toast', {
-        text: getTranslation('PLEASE_SELECT_DATE'),
-        showCloseBtn: true
+        text: getTranslation('PLEASE_SELECT_DATE')
       });
       return;
     }
     const alreadySelected = this.hruData.find((d: any) => d.end_date === this.selectedDate);
     if (alreadySelected) {
       fireEvent(this, 'toast', {
-        text: getTranslation('DATE_ALREADY_ADDED'),
-        showCloseBtn: true
+        text: getTranslation('DATE_ALREADY_ADDED')
       });
       return;
     }

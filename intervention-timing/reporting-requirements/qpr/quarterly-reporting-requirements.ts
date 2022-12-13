@@ -71,8 +71,7 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
   openQuarterlyRepRequirementsDialog() {
     if (!this.interventionStart || !this.interventionEnd) {
       fireEvent(this, 'toast', {
-        text: getTranslation('QUARTERLY_REPORT_PROMPT'),
-        showCloseBtn: true
+        text: getTranslation('QUARTERLY_REPORT_PROMPT')
       });
       return;
     }
