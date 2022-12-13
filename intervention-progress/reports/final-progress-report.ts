@@ -57,6 +57,7 @@ export class IndicatorReportTarget extends ComponentBaseMixin(LitElement) {
       return;
     }
     if (state.interventions.current) {
+      // @ts-ignore
       const currData = {final_review_approved: state.interventions.current.final_review_approved};
       if (!isJsonStrMatch(this.originalData, currData)) {
         this.data = currData;
