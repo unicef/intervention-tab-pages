@@ -30,7 +30,7 @@ export class IndicatorReportTarget extends ComponentBaseMixin(LitElement) {
       <etools-content-panel
         show-expand-btn
         panel-title="${translate('FINAL_PROGRESS_REPORT')}"
-        ?hidden="${this.permissions.view.final_review_approved}"
+        ?hidden="${!this.permissions.view.final_review_approved}"
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.permissions.edit.final_review_approved)}</div>
 
