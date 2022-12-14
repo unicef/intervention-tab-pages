@@ -14,6 +14,7 @@ import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-s
 import {AsyncAction} from '@unicef-polymer/etools-types';
 import {patchIntervention} from '../../common/actions/interventions';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 
 /** Visible only when PD is in status Ended */
 @customElement('final-progress-report')
@@ -24,7 +25,7 @@ export class IndicatorReportTarget extends connectStore(ComponentBaseMixin(LitEl
   render() {
     return html`
       <style>
-        ${sharedStyles} .padding {
+        ${sharedStyles} ${buttonsStyles} .padding {
           padding: 35px 24px;
         }
         paper-checkbox[disabled] {
@@ -44,9 +45,7 @@ export class IndicatorReportTarget extends connectStore(ComponentBaseMixin(LitEl
           <paper-checkbox
             ?checked="${this.data.final_review_approved}"
             ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit.final_review_approved)}"
-            @checked-changed="${(e: CustomEvent) => {
-              this.data.final_review_approved = e.detail.value;
-            }}"
+            @checked-changed="${(e: CustomEvent) => this.valueChanged(e.detail, 'final_review_approved')}"
             >${translate('FINAL_PROGRESS_REPORT_AND_REVIEW_WAS_APPROVED')}</paper-checkbox
           >
         </div>
