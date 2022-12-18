@@ -225,6 +225,10 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
       return;
     }
 
+    if (!this.dataRequiredByDropdownsHasBeenLoaded(state)) {
+      return;
+    }
+
     if (state.user && state.user.data) {
       this.isUnicefUser = state.user.data.is_unicef_user;
     }
@@ -235,6 +239,10 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
     this.setPermissions(state);
     this.populateDropdownOptions(state);
     super.stateChanged(state);
+  }
+
+  dataRequiredByDropdownsHasBeenLoaded(state: RootState) {
+    return state.commonData?.commonDataIsLoaded;
   }
 
   private setPermissions(state: any) {
