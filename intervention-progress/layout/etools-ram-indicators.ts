@@ -128,8 +128,7 @@ export class EtoolsRamIndicators extends CommonMixin(LitElement) {
       .catch((error: any) => {
         if (error.status === 404) {
           fireEvent(this, 'toast', {
-            text: getTranslation('PMP_IS_NOT_SYNCED_WITH_PRP'),
-            showCloseBtn: true
+            text: getTranslation('PMP_IS_NOT_SYNCED_WITH_PRP')
           });
         } else {
           parseRequestErrorsAndShowAsToastMsgs(error, this);

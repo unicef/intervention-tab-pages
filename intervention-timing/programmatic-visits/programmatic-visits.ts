@@ -392,8 +392,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
 
     if (this.isAlreadySelected(yearSelected, index, 'year')) {
       fireEvent(this, 'toast', {
-        text: getTranslation('YEAR_SELECTED_ERR'),
-        showCloseBtn: true
+        text: getTranslation('YEAR_SELECTED_ERR')
       });
       this._clearSelectedYear(index);
     }
@@ -467,8 +466,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
   _addNewPlannedVisit() {
     if (!this.validate()) {
       fireEvent(this, 'toast', {
-        text: getTranslation('ALREADY_ADDED_PLANNED_VISIT'),
-        showCloseBtn: true
+        text: getTranslation('ALREADY_ADDED_PLANNED_VISIT')
       });
       return;
     }

@@ -261,8 +261,7 @@ export class InterventionDates extends CommentsMixin(
       .then(() => {
         if (this.warningRequired) {
           fireEvent(this, 'toast', {
-            text: getTranslation('SAVE_WARNING'),
-            showCloseBtn: true
+            text: getTranslation('SAVE_WARNING')
           });
         }
         this._onUploadSaved();

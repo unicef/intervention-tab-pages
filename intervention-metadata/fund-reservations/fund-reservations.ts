@@ -359,8 +359,7 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
     }
     // show the invalid frs warning
     fireEvent(this, 'toast', {
-      text: toastMsg,
-      showCloseBtn: true
+      text: toastMsg
     });
   }
 
