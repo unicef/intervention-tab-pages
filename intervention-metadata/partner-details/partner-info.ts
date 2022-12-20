@@ -188,11 +188,12 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
 
     if (!isJsonStrMatch(this.originalData, newPartnerDetails)) {
       const partnerIdHasChanged = this.partnerIdHasChanged(newPartnerDetails);
-      this.data = cloneDeep(newPartnerDetails);
-      this.originalData = cloneDeep(this.data);
       if (partnerIdHasChanged) {
         this.partnerStaffMembers = await this.getAllPartnerStaffMembers(newPartnerDetails.partner_id!);
       }
+      // Wait for partnerStaffMembers to be set, to avoid timing issues on dropdown selectedItems
+      this.data = cloneDeep(newPartnerDetails);
+      this.originalData = cloneDeep(this.data);
     }
   }
 
