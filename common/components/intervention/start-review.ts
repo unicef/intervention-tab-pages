@@ -2,6 +2,10 @@ import {customElement, html, LitElement, property} from 'lit-element';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {
+  validateRequiredFields,
+  resetRequiredFields
+} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {LabelAndValue} from '@unicef-polymer/etools-types';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
@@ -54,6 +58,9 @@ export class StartReview extends connectStore(LitElement) {
             .options="${this.reviewTypes}"
             trigger-value-change-event
             @etools-selected-item-changed="${({detail}: CustomEvent) => (this.type = detail.selectedItem?.value)}"
+            required
+            @focus="${() => resetRequiredFields(this)}"
+            @click="${() => resetRequiredFields(this)}"
           ></etools-dropdown>
         </div>
       </etools-dialog>
@@ -67,6 +74,9 @@ export class StartReview extends connectStore(LitElement) {
   }
 
   startReview(): void {
+    if (!validateRequiredFields(this)) {
+      return;
+    }
     fireEvent(this, 'dialog-closed', {
       confirmed: true,
       response: this.type
