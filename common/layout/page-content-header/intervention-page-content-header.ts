@@ -17,7 +17,7 @@ export class InterventionPageContentHeader extends LitElement {
         :host {
           position: sticky;
           top: 0;
-          z-index: 121;
+          z-index: 200;
           width: 100%;
           box-sizing: border-box;
 
