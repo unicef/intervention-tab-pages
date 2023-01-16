@@ -20,7 +20,7 @@ import {getTranslatedValue, isJsonStrMatch} from '@unicef-polymer/etools-modules
 import {pageContentHeaderSlottedStyles} from './common/layout/page-content-header/page-content-header-slotted-styles';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {buildUrlQueryString} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
-import {getComments, setCommentsEndpoint} from './common/components/comments/comments.actions';
+import {enableCommentMode, getComments, setCommentsEndpoint} from './common/components/comments/comments.actions';
 import {commentsData} from './common/components/comments/comments.reducer';
 import {Store} from 'redux';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
@@ -361,6 +361,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
         uploadStatus
       });
       getStore().dispatch(setCommentsEndpoint(commentsEndpoints));
+      getStore().dispatch(enableCommentMode(Boolean(this._routeDetails?.queryParams?.comment_mode)));
     });
   }
 
