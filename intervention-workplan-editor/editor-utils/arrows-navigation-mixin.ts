@@ -142,7 +142,8 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
       }
 
       // @ts-ignore
-      const currentTd = this._getActiveTd(event.path[0]);
+      const path = event.composedPath() || [];
+      const currentTd = this._getActiveTd(path[0] as HTMLTableCellElement);
       if (!currentTd) {
         return;
       }
@@ -162,7 +163,7 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
             return;
           }
           // @ts-ignore
-          if (['paper-icon-button', 'paper-button'].includes(event.path[0].localName)) {
+          if (['paper-icon-button', 'paper-button'].includes(path[0].localName)) {
             return;
           }
           let actionBtn: any = this.searchForActionBtnInCurrentTd(currentTd);
