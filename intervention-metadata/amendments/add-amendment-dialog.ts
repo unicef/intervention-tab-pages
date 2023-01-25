@@ -19,7 +19,7 @@ import {AmendmentsKind} from './pd-amendments.models';
 import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin.js';
 import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
-import {resetError} from '../../utils/utils';
+import {resetInvalidElement} from '../../utils/utils';
 
 /**
  * @customElement
@@ -73,7 +73,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
               this.selectedItemsChanged(detail, 'types', 'value');
               this.onTypesChanged();
             }}"
-            @focus="${(event: any) => resetError(event)}"
+            @focus="${(event: any) => resetInvalidElement(event)}"
           >
           </etools-dropdown-multi>
         </div>
@@ -92,7 +92,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
             error-message="${translate('GENERAL.REQUIRED_FIELD')}"
             .value="${this.data.other_description}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'other_description')}"
-            @focus="${(event: any) => resetError(event)}"
+            @focus="${(event: any) => resetInvalidElement(event)}"
           >
           </paper-input>
         </div>

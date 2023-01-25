@@ -41,6 +41,8 @@ export function getPageDirection(state: any) {
   return 'ltr';
 }
 
-export function resetError(event: any): void {
-  event.target.invalid = false;
+export function resetInvalidElement(event: any): void {
+  if (event && event.target) {
+    event.target.invalid = false;
+  }
 }
