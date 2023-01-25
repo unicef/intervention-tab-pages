@@ -40,3 +40,9 @@ export function getPageDirection(state: any) {
   }
   return 'ltr';
 }
+
+export function resetInvalidElement(event: any): void {
+  if (event && event.target) {
+    event.target.invalid = false;
+  }
+}
