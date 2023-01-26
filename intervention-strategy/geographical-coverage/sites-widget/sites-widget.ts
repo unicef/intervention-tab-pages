@@ -144,6 +144,7 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
                     </div>
                     <div
                       class="deselect-btn"
+                      id="deselect_btn_${site.id}"
                       tabindex="${this.isSiteSelected(site.id) ? 0 : -1}"
                       @tap="${() => this.onRemoveSiteClick(site)}"
                     >
@@ -235,6 +236,13 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
     this.selectedSites = this.selectedSites.filter((x) => x.id !== site.id);
     this.setMarkerIcon(site.id, false);
     this.onSitesSelectionChange();
+    setTimeout(() => {
+      // move focus on site name(needed for tab navigation)
+      const el = this.shadowRoot?.querySelector(`#deselect_btn_${site.id}`);
+      if (el && el.previousElementSibling) {
+        (el.previousElementSibling as HTMLDivElement).focus();
+      }
+    }, 50);
   }
 
   onSitesSelectionChange(): void {
