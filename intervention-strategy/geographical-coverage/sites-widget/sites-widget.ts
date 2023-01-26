@@ -21,6 +21,7 @@ import {leafletStyles} from './leaflet-styles';
 import {Site} from '@unicef-polymer/etools-types';
 import {debounce} from '@unicef-polymer/etools-modules-common/dist/utils/debouncer';
 import {translate} from 'lit-translate';
+import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 
 const DEFAULT_COORDINATES: LatLngTuple = [-0.09, 51.505];
 
@@ -128,18 +129,24 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
               <iron-icon icon="search" slot="prefix"></iron-icon>
             </paper-input>
 
-            <div class="locations-list">
+            <div class="locations-list" tabindex="0">
               ${repeat(
                 this.displayedSites || [],
                 (site: Site) => html`
                   <div
                     class="site-line ${this.getSiteLineClass(site.id)}"
                     @mouseenter="${() => this.onSiteHoverStart(site)}"
+                    @keypress="${this.onSiteKeyPress}"
+                    tabindex="-1"
                   >
-                    <div class="location-name" @tap="${() => this.onSiteLineClick(site)}">
+                    <div class="location-name" tabindex="0" @tap="${() => this.onSiteLineClick(site)}">
                       <b>${site.name}</b>
                     </div>
-                    <div class="deselect-btn" @tap="${() => this.onRemoveSiteClick(site)}">
+                    <div
+                      class="deselect-btn"
+                      tabindex="${this.isSiteSelected(site.id) ? 0 : -1}"
+                      @tap="${() => this.onRemoveSiteClick(site)}"
+                    >
                       <span>&#10008;</span>
                     </div>
                   </div>
@@ -201,6 +208,13 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
     }
   }
 
+  onSiteKeyPress(event: KeyboardEvent) {
+    if (event.key === ' ' && !event.ctrlKey) {
+      // prevent scrolling if user add/remove sites with keyboard
+      event.preventDefault();
+    }
+  }
+
   addSiteToSelected(site: Site) {
     if (!this.selectedSites.some((x: Site) => x.id === site.id)) {
       this.selectedSites.push(site);
@@ -236,8 +250,11 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
   }
 
   getSiteLineClass(siteId: number | string): string {
-    const isSelected: boolean = this.selectedSites.some((x: Site) => x.id === siteId);
-    return isSelected ? 'selected' : '';
+    return this.isSiteSelected(siteId) ? 'selected' : '';
+  }
+
+  isSiteSelected(siteId: number | string): boolean {
+    return this.selectedSites.some((x: Site) => x.id === siteId);
   }
 
   search({value}: {value: string} = {value: ''}): void {
@@ -293,9 +310,16 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
         const reversedCoords: LatLngTuple = [...this.defaultMapCenter].reverse() as LatLngTuple;
         const zoom = 6;
         this.MapHelper.map!.setView(reversedCoords, zoom);
+        this.addClickOnSpaceForSites();
       },
       500,
       this
+    );
+  }
+
+  private addClickOnSpaceForSites() {
+    this.shadowRoot!.querySelectorAll('.location-name, .deselect-btn').forEach((el) =>
+      callClickOnSpacePushListener(el)
     );
   }
 }
