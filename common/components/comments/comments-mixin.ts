@@ -122,7 +122,6 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         this.updateCounter(meta);
         this.registerListener(meta);
       });
-      (elements?.[0]?.querySelector('.commentsOverlay') as any)?.focus();
     }
 
     private stopCommentMode(): void {
