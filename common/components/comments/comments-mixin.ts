@@ -154,13 +154,21 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
       };
     }
 
-    private revertDisableTabNavigationOnRelativeElements(element: HTMLElement){
-      const originalTabIndex = element.getAttribute('tabindex');
+    // Triggered when we disable comment mode
+    private revertDisableTabNavigationOnRelativeElements(element: HTMLElement) {
+      // If parent element of comments overlay has original-tabindex then we need to revert the value
+      // otherwise we just need to remove the tabindex attribute
+      const originalTabIndex = element.getAttribute('original-tabindex');
       if (originalTabIndex !== undefined && originalTabIndex !== null) {
-        element.setAttribute('original-tabindex', originalTabIndex);
+        element.setAttribute('tabindex', originalTabIndex);
+        element.removeAttribute('original-tabindex');
+      } else {
         element.removeAttribute('tabindex');
       }
 
+      // If we find any elements inside parent element of comments overlay that had disabled focus
+      // then we revert the value by setting tabindex to original-tabindex if original-tabindex is defined or
+      // we remove the tabindex attribute
       element.querySelectorAll('.comment-on-disabled-focus').forEach((el) => {
         el.classList.remove('comment-on-disabled-focus');
         const originalTabIndex = el.getAttribute('original-tabindex');
@@ -172,6 +180,9 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         }
       });
 
+      // If we find any elements inside the shadowroot of parent element of comments overlay that had disabled focus
+      // then we revert the value by setting tabindex to original-tabindex if original-tabindex is defined or
+      // we remove the tabindex attribute
       element.shadowRoot?.querySelectorAll('.comment-on-disabled-focus').forEach((el) => {
         el.classList.remove('comment-on-disabled-focus');
         const originalTabIndex = el.getAttribute('original-tabindex');
@@ -184,13 +195,19 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
       });
     }
 
-    private disableTabNavigationOnRelativeElements(element: HTMLElement){
-      const tabIndex =  element.getAttribute('tabindex')
+    // Triggered when we enable comment mode
+    private disableTabNavigationOnRelativeElements(element: HTMLElement) {
+      // If parent element of comments overlay has tabindex then we remove it
+      // and we save it in original-index so we can revert the value when we disable comment mode
+      const tabIndex = element.getAttribute('tabindex');
       if (tabIndex !== undefined && tabIndex !== null) {
         element.setAttribute('original-tabindex', tabIndex);
         element.removeAttribute('tabindex');
       }
 
+      // We set tabindex=-1 to all sibling elements of comments overlay and their respective children
+      // and if any of them has tabindex we save it in original-index so we can revert the value
+      // when we disable commend mode
       element.querySelectorAll('*').forEach((el) => {
         const tabIndex = el.getAttribute('tabindex');
         if (tabIndex !== undefined && tabIndex !== null) {
@@ -200,6 +217,8 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         el.classList.add('comment-on-disabled-focus');
       });
 
+      // If we have a shadowroot we are probably inside etools-panel component so we
+      // select all child elements of the panel-header and we do same thing as above
       element.shadowRoot?.querySelectorAll('.panel-header *').forEach((el) => {
         const tabIndex = el.getAttribute('tabindex');
         if (tabIndex !== undefined && tabIndex !== null) {
@@ -235,7 +254,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
       const comments: InterventionComment[] = this.comments[relatedTo] || [];
       const borderColor = comments.length ? '#FF4545' : '#81D763';
       const element: HTMLElement = Object.assign(document.createElement('div'), {className: 'commentsOverlay'});
-      element.setAttribute('tabindex', '1');
+      element.setAttribute('tabindex', '0');
       element.style.cssText = `
         position: absolute;
         top: 0;
