@@ -122,6 +122,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         this.updateCounter(meta);
         this.registerListener(meta);
       });
+      (elements?.[0]?.querySelector('.commentsOverlay') as any)?.focus();
     }
 
     private stopCommentMode(): void {
@@ -130,6 +131,8 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         meta.element.style.cssText = meta.oldStyles;
         meta.counter.remove();
         meta.overlay.remove();
+
+        this.revertDisableTabNavigationOnRelativeElements(meta.element);
       }
     }
 
@@ -138,7 +141,10 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
       const counter: HTMLElement = this.createCounter();
       // prevent creating multiple overlays for the element
       const overlay: HTMLElement = element.querySelector('.commentsOverlay') || this.createOverlay(relatedTo);
+
+      this.disableTabNavigationOnRelativeElements(element);
       element.append(overlay);
+
       return {
         element,
         counter,
@@ -147,6 +153,62 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         relatedTo,
         relatedToDescription
       };
+    }
+
+    private revertDisableTabNavigationOnRelativeElements(element: HTMLElement){
+      const originalTabIndex = element.getAttribute('tabindex');
+      if (originalTabIndex !== undefined && originalTabIndex !== null) {
+        element.setAttribute('original-tabindex', originalTabIndex);
+        element.removeAttribute('tabindex');
+      }
+
+      element.querySelectorAll('.comment-on-disabled-focus').forEach((el) => {
+        el.classList.remove('comment-on-disabled-focus');
+        const originalTabIndex = el.getAttribute('original-tabindex');
+        if (originalTabIndex !== undefined && originalTabIndex !== null) {
+          el.setAttribute('tabindex', originalTabIndex);
+          el.removeAttribute('original-tabindex');
+        } else {
+          el.removeAttribute('tabindex');
+        }
+      });
+
+      element.shadowRoot?.querySelectorAll('.comment-on-disabled-focus').forEach((el) => {
+        el.classList.remove('comment-on-disabled-focus');
+        const originalTabIndex = el.getAttribute('original-tabindex');
+        if (originalTabIndex !== undefined && originalTabIndex !== null) {
+          el.setAttribute('tabindex', originalTabIndex);
+          el.removeAttribute('original-tabindex');
+        } else {
+          el.removeAttribute('tabindex');
+        }
+      });
+    }
+
+    private disableTabNavigationOnRelativeElements(element: HTMLElement){
+      const tabIndex =  element.getAttribute('tabindex')
+      if (tabIndex !== undefined && tabIndex !== null) {
+        element.setAttribute('original-tabindex', tabIndex);
+        element.removeAttribute('tabindex');
+      }
+
+      element.querySelectorAll('*').forEach((el) => {
+        const tabIndex = el.getAttribute('tabindex');
+        if (tabIndex !== undefined && tabIndex !== null) {
+          el.setAttribute('original-tabindex', tabIndex);
+        }
+        el.setAttribute('tabindex', '-1');
+        el.classList.add('comment-on-disabled-focus');
+      });
+
+      element.shadowRoot?.querySelectorAll('.panel-header *').forEach((el) => {
+        const tabIndex = el.getAttribute('tabindex');
+        if (tabIndex !== undefined && tabIndex !== null) {
+          el.setAttribute('original-tabindex', tabIndex);
+        }
+        el.setAttribute('tabindex', '-1');
+        el.classList.add('comment-on-disabled-focus');
+      });
     }
 
     private createCounter(): HTMLElement {
@@ -174,6 +236,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
       const comments: InterventionComment[] = this.comments[relatedTo] || [];
       const borderColor = comments.length ? '#FF4545' : '#81D763';
       const element: HTMLElement = Object.assign(document.createElement('div'), {className: 'commentsOverlay'});
+      element.setAttribute('tabindex', '1');
       element.style.cssText = `
         position: absolute;
         top: 0;
@@ -230,24 +293,23 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
     }
 
     private registerListener(meta: MetaData): void {
-      meta.overlay.addEventListener(
-        'click',
-        () => {
-          this.currentEditedComments = meta;
-          openDialog({
-            dialog: 'comments-dialog',
-            dialogData: {
-              interventionId: this.currentInterventionId,
-              relatedTo: meta.relatedTo,
-              relatedToDescription: meta.relatedToDescription,
-              endpoints: getStore().getState().commentsData.endpoints
-            }
-          }).then(() => {
-            this.currentEditedComments = null;
-          });
-        },
-        false
-      );
+      meta.overlay.addEventListener('click', () => this.onTriggerListener(meta));
+      meta.overlay.addEventListener('keypress', (event) => event.key === 'Enter' && this.onTriggerListener(meta));
+    }
+
+    private onTriggerListener(meta: MetaData) {
+      this.currentEditedComments = meta;
+      openDialog({
+        dialog: 'comments-dialog',
+        dialogData: {
+          interventionId: this.currentInterventionId,
+          relatedTo: meta.relatedTo,
+          relatedToDescription: meta.relatedToDescription,
+          endpoints: getStore().getState().commentsData.endpoints
+        }
+      }).then(() => {
+        this.currentEditedComments = null;
+      });
     }
   };
 }
