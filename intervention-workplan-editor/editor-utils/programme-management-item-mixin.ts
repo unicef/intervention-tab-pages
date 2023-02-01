@@ -57,7 +57,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                 !this.oneEntityInEditMode) ||
               !item.id}"
               comment-element="programme-management-item-${item.id}"
-              comment-description="${getTranslation('PROGRAMME_MANAGEMENT_ITEM')} - ${item.name}"
+              comment-description="${item.name}"
             >
               <td class="index-column">
                 <paper-input

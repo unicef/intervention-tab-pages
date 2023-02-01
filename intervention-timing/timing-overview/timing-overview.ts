@@ -39,7 +39,6 @@ export class TimingOverview extends CommentsMixin(LitElement) {
         class="elevation"
         elevation="1"
         comment-element="timing-overview"
-        comment-description="${translate('OVERVIEW')}"
       >
         <div class="table not-allowed">
           <div class="data-column">

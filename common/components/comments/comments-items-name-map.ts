@@ -25,11 +25,14 @@ export const CommentsItemsNameMap: GenericObject<string> = {
   activity: 'ACTIVITY',
   'budget-summary': 'BUDGET_SUMMARY',
   'programme-management': translatesMap.management_budgets,
-  'hq-contribution': 'HEADQUARTERS_CONTRIBUTION_TITLE',
+  'hq-contribution': 'CAPACITY_STRENGTHENING_COST',
   'non-financial-contribution': 'PARTNER_NON_FINANCIAL_CONTRIBUTION',
   'supply-agreement': translatesMap.supply_items,
   indicator: 'INDICATOR',
-  prp: 'PARTNER_REPORTING_REQUIREMENTS'
+  prp: 'PARTNER_REPORTING_REQUIREMENTS',
+  eepm: 'EFFECTIVE_EFFICIENT_PROG_MGM',
+  'programme-management-item':'PROGRAMME_MANAGEMENT_ITEM',
+  'activity-item':'ACTIVITY_ITEM'
 };
 
 export const CommentsDescription: GenericObject<string> = {

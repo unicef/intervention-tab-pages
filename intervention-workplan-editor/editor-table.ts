@@ -294,7 +294,7 @@ export class EditorTable extends CommentsMixin(
                   !this.oneEntityInEditMode}"
                   class="lighter-blue"
                   comment-element="pd-output-${pdOutput.id}"
-                  comment-description=" PD Output - ${pdOutput.name}"
+                  comment-description="${pdOutput.name}"
                 >
                   <tr class="header">
                     <td></td>
@@ -305,8 +305,6 @@ export class EditorTable extends CommentsMixin(
                   <tr
                     class="text action-btns  ${this.permissions?.edit.result_links ? 'height-for-action-btns' : ''}"
                     type="pd-output"
-                    comment-element="pd-output-${pdOutput.id}"
-                    comment-description="${pdOutput.name}"
                   >
                     <td class="index-column">
                       <paper-input

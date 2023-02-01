@@ -92,7 +92,6 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
         show-expand-btn
         panel-title=${translate('PROGRAMATIC_VISITS')}
         comment-element="programmatic-visits"
-        comment-description=${translate('PROGRAMATIC_VISITS')}
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 

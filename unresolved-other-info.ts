@@ -32,7 +32,6 @@ export class UnresolvedOtherInfo extends ComponentBaseMixin(LitElement) {
         show-expand-btn
         panel-title=${translate('IMPORT_INFO')}
         comment-element="other-info"
-        comment-description="Other Info"
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.editPermissions)}</div>
         <div class="row-padding">${translate('MAKE_SURE_OTHER_INFO')}</div>

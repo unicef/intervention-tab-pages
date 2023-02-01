@@ -79,7 +79,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
               !this.commentMode &&
               !this.oneEntityInEditMode}"
               comment-element="eepm-${item.id}"
-              comment-description="${translate('EFFECTIVE_EFFICIENT_PROG_MGM')} - ${item.name}"
+              comment-description="${item.name}"
               ?inEditMode="${item.inEditMode || item.itemsInEditMode}"
             >
               <tr class="header" type="eepm-activity">

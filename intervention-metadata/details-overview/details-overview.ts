@@ -49,7 +49,7 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
           padding-left: 0px;
         }
       </style>
-      <section class="elevation" elevation="1" comment-element="details" comment-description="${translate('DETAILS')}">
+      <section class="elevation" elevation="1" comment-element="details">
         <div class="table not-allowed">
           <div class="data-column">
             <label class="paper-label">${translate('DOCUMENT_TYPE')}</label>

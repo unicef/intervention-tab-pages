@@ -46,7 +46,6 @@ export class ActivityTimeframes extends CommentsMixin(LitElement) {
         show-expand-btn
         panel-title=${translate('ACTIVITY_TIMEFRAMES')}
         comment-element="activity-timeframes"
-        comment-description=${translate('ACTIVITY_TIMEFRAMES')}
       >
         ${!timeFrames.length
           ? html`

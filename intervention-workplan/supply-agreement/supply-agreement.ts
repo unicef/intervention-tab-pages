@@ -90,7 +90,6 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         show-expand-btn
         panel-title=${translate(translatesMap.supply_items)}
         comment-element="supply-agreement"
-        comment-description=${translate('SUPPLY_CONTRIBUTION')}
       >
         <div slot="panel-btns">
           <span class="mr-20">

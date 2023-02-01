@@ -24,8 +24,10 @@ export class CommentsDialog extends EditComments {
     }
     const relatedToKey: string = removeTrailingIds(this.relatedTo);
     const itemType = CommentsItemsNameMap[relatedToKey];
+    console.log(itemType, relatedToKey);
     if (itemType) {
       const description = this.relatedToDescription ? ` - ${this.relatedToDescription}` : '';
+      
       return `${getTranslation('COMMENTS_ON')}: ${getTranslation(CommentsItemsNameMap[relatedToKey])}${description}`;
     } else if (this.relatedToDescription) {
       return `${getTranslation('COMMENTS_ON')}: ${this.relatedToDescription}`;

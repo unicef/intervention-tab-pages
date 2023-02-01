@@ -82,7 +82,6 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         show-expand-btn
         panel-title=${translate(translatesMap.risks)}
         comment-element="risks"
-        comment-description=${translate(translatesMap.risks)}
       >
         <div slot="after-title">
           <info-icon-tooltip

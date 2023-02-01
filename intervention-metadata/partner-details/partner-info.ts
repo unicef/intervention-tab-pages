@@ -58,7 +58,6 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
         show-expand-btn
         panel-title="${translate('PARTNER_DETAILS')}"
         comment-element="partner-details"
-        comment-description=${translate('PARTNER_DETAILS')}
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 

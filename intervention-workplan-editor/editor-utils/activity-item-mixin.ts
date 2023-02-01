@@ -61,7 +61,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                 !this.oneEntityInEditMode) ||
               !item.id}"
               comment-element="activity-item-${item.id}"
-              comment-description="${getTranslation('ACTIVITY_ITEM')} - ${item.name}"
+              comment-description="${item.name}"
             >
               <td class="index-column">
                 <paper-input

@@ -65,7 +65,6 @@ export class InterventionDates extends CommentsMixin(
         show-expand-btn
         panel-title=${translate('PROGRAMME_DOC_DATES')}
         comment-element="programme-document-dates"
-        comment-description=${translate('PROGRAMME_DOC_DATES')}
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
         <div class="layout-horizontal row-padding-v">
