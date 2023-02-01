@@ -1,8 +1,9 @@
+import {GenericObject} from '@unicef-polymer/etools-types';
 import {Map, Marker} from 'leaflet';
-declare const L: any;
-
 const TILE_LAYER: Readonly<string> = 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png';
 const TILE_LAYER_LABELS: Readonly<string> = 'https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png';
+const arcgisWebmapId = '71608a6be8984b4694f7c613d7048114'; // Default WebMap ID
+declare const L: any;
 
 export interface IMarker extends Marker {
   staticData?: any;
@@ -35,18 +36,51 @@ export const markedIcon = L.icon({
 
 export class MapHelper {
   map: Map | null = null;
+  webmap!: GenericObject;
   staticMarkers: IMarker[] | null = null;
   dynamicMarker: IMarker | null = null;
   markerClusters: any | null = null;
 
-  initMap(element?: HTMLElement | null): Map | null {
+  arcgisMapIsAvailable(): Promise<boolean> {
+    return fetch(`https://www.arcgis.com/sharing/rest/content/items/${arcgisWebmapId}?f=json`)
+      .then((res) => res.json())
+      .then((data) => {
+        return !data.error;
+      })
+      .catch((e: any) => {
+        console.log('arcgisMapIsAvailable error: ', e);
+        return false;
+      });
+  }
+
+  async initMap(element: HTMLElement) {
     if (!element) {
       throw new Error('Please provide HTMLElement for map initialization!');
     }
+    if (sessionStorage.getItem('arcgisMapIsAvailable') === null) {
+      await this.arcgisMapIsAvailable().then((res: boolean) => {
+        sessionStorage.setItem('arcgisMapIsAvailable', JSON.stringify(res));
+      });
+    }
+
+    const arcgisMapIsAvailable = JSON.parse(sessionStorage.getItem('arcgisMapIsAvailable') || '');
+    arcgisMapIsAvailable ? this.initArcgisMap(element) : this.initOpenStreetMap(element);
+  }
+
+  initOpenStreetMap(element: HTMLElement): void {
+    L.Icon.Default.imagePath = '/fm/assets/images/';
     this.map = L.map(element);
     L.tileLayer(TILE_LAYER, {pane: 'tilePane'}).addTo(this.map);
     L.tileLayer(TILE_LAYER_LABELS, {pane: 'overlayPane'}).addTo(this.map);
-    return this.map;
+    // compliance for waitForMapToLoad
+    setTimeout(() => {
+      this.webmap = {_loaded: true};
+    }, 10);
+  }
+
+  initArcgisMap(mapElement: HTMLElement): void {
+    this.webmap = (L as any).esri.webMap(arcgisWebmapId, {map: L.map(mapElement), maxZoom: 20, minZoom: 2});
+    this.map = this.webmap._map;
   }
 
   setStaticMarkers(markersData: MarkerDataObj[]): void {
@@ -59,12 +93,25 @@ export class MapHelper {
     this.staticMarkers = markers;
   }
 
+  waitForMapToLoad(): Promise<boolean> {
+    return new Promise((resolve) => {
+      const interval = setInterval(() => {
+        if (!(this.webmap && this.webmap._loaded)) {
+          return;
+        }
+        clearInterval(interval);
+        resolve(true);
+      }, 100);
+    });
+  }
+
   addCluster(markersData: MarkerDataObj[], onclick?: (e: any) => void): void {
     this.markerClusters = (L as any).markerClusterGroup();
     const markers: Marker[] = [];
     let marker: IMarker;
     (markersData || []).forEach((mark: MarkerDataObj) => {
-      marker = L.marker(mark.coords).bindPopup(`<b>${mark.popup}</b>`);
+      const markerPopup = L.popup({closeButton: false}).setContent(`<b>${mark.popup}</b>`);
+      marker = L.marker(mark.coords).bindPopup(markerPopup);
       marker.staticData = mark.staticData;
       if (onclick) {
         marker.on('click', function (e) {
@@ -74,6 +121,7 @@ export class MapHelper {
       markers.push(marker);
       this.markerClusters.addLayer(marker);
     });
+    (this.map as Map).setMaxZoom(19);
     (this.map as Map).addLayer(this.markerClusters);
     this.staticMarkers = markers;
   }
@@ -152,7 +200,8 @@ export class MapHelper {
     const marker: IMarker = L.marker(data.coords).addTo(this.map as Map);
     marker.staticData = data.staticData;
     if (data.popup) {
-      marker.bindPopup(`<b>${data.popup}</b>`);
+      const markerPopup = L.popup({closeButton: false}).setContent(`<b>${data.popup}</b>`);
+      marker.bindPopup(markerPopup);
     }
 
     return marker;

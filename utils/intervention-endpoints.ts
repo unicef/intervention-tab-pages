@@ -9,7 +9,6 @@ export interface EtoolsEndpoints {
   reportingRequirements: EtoolsEndpoint;
   specialReportingRequirementsUpdate: EtoolsEndpoint;
   monitoringVisits: EtoolsEndpoint;
-  partnerT2fProgrammaticVisits: EtoolsEndpoint;
   partnerTPMActivities: EtoolsEndpoint;
   interventionTPMActivities: EtoolsEndpoint;
   resultLinksDetails: EtoolsEndpoint;
@@ -81,9 +80,6 @@ export const interventionEndpoints: EtoolsEndpoints = {
   },
   monitoringVisits: {
     template: '/api/t2f/travels/activities/partnership/<%=id%>/?year=<%=year%>'
-  },
-  partnerT2fProgrammaticVisits: {
-    template: '/api/t2f/travels/activities/<%=id%>/?year=<%=year%>&status=completed'
   },
   partnerTPMActivities: {
     template:

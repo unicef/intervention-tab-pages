@@ -6,10 +6,16 @@ export const InterventionActionsStyles: CSSResult = css`
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    padding: 0px 30px;
     --green-color: #009688;
     --light-green-color: #00b3a1;
     --back-color: #233944;
     --cancel-color: #828282;
+  }
+
+  :host > *:not(export-intervention-data) {
+    margin-top: 7px;
+    margin-bottom: 7px;
   }
 
   .main-button {
@@ -73,5 +79,13 @@ export const InterventionActionsStyles: CSSResult = css`
   .option-button {
     height: 36px;
     border-left: 2px solid rgba(255, 255, 255, 0.12);
+  }
+
+  export-intervention-data {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 10px;
+    z-index: 100;
   }
 `;

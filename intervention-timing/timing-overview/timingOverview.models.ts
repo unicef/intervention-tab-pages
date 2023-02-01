@@ -8,6 +8,7 @@ export class TimingOverviewData extends ModelsBase {
   constructor(intervention: Intervention) {
     super();
     this.setObjProperties(intervention);
+    this.date_last_amended = intervention.amendments[0]?.signed_by_unicef_date || '';
   }
   created = '';
   date_sent_to_partner = '';
@@ -18,6 +19,5 @@ export class TimingOverviewData extends ModelsBase {
   signed_by_unicef_date = '';
   days_from_submission_to_signed = '';
   days_from_review_to_signed = '';
-  // date last amended
-  // @lajos: missing backend data for date last amended
+  date_last_amended = '';
 }

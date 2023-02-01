@@ -91,14 +91,20 @@ function shouldReGetList(prevInterventionState: Intervention, currentInterventio
     'partner_name',
     'document_type',
     'status',
-    'titl',
+    'offices',
+    'title',
     'start',
     'end',
+    'sections',
     'planned_budget',
     'partner_accepted',
     'unicef_accepted',
     'unicef_court',
-    'date_sent_to_partner'
+    'date_sent_to_partner',
+    'result_links',
+    'planned_budget',
+    'frs',
+    'frs_details'
   ];
   const prevI = pick(prevInterventionState, fieldsDisplayedOnList);
   const currentI = pick(currentInterventionState, fieldsDisplayedOnList);

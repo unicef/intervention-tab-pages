@@ -57,6 +57,7 @@ import {PdActivities} from './pd-activities';
 import {PdIndicators} from './pd-indicators';
 import {CpOutputLevel} from './cp-output-level';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {_canDelete} from '../../common/mixins/results-structure-common';
 
 /**
  * @customElement
@@ -89,7 +90,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
   @property() private _resultLinks: ExpectedResult[] | null = null;
   @property({type: String}) noOfPdOutputs: string | number = '0';
   @property({type: Boolean}) thereAreInactiveIndicators = false;
-  @property({type: Boolean}) showInactiveIndicators = false;
+  @property({type: Boolean}) showInactiveIndicatorsActivities = false;
 
   @property({type: Object})
   intervention!: Intervention;
@@ -102,7 +103,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
   render() {
     if (!this.intervention || !this.permissions || !this.resultLinks) {
       return html` ${sharedStyles}
-        <etools-loading source="results-s" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="results-s" active></etools-loading>`;
     }
     // language=HTML
     return html`
@@ -171,6 +172,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
               .currency="${this.intervention.planned_budget.currency}"
               .readonly="${!this.permissions.edit.result_links || this.commentMode}"
               .opened="${this.newCPOutputs.has(result.id)}"
+              .interventionInfo="${this._getCPNeededInterventionInfo(this.intervention)}"
               @edit-cp-output="${() => this.openCpOutputDialog(result)}"
               @delete-cp-output="${() => this.openDeleteCpOutputDialog(result.id)}"
               @opened-changed="${this.onCpOpenedChanged}"
@@ -201,6 +203,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
               ${result.ll_results.map(
                 (pdOutput: ResultLinkLowerResult, index: number) => html`
                   <etools-data-table-row
+                    id="pdOutputRow"
                     class="pdOutputMargin ${this.isUnicefUser ? 'unicef-user' : 'partner'}"
                     related-to="pd-output-${pdOutput.id}"
                     related-to-description="${pdOutput.name}"
@@ -236,6 +239,13 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                         ></paper-icon-button>
                         <paper-icon-button
                           icon="icons:delete"
+                          ?hidden="${!_canDelete(
+                            pdOutput,
+                            !this.permissions.edit.result_links!,
+                            this.intervention.status,
+                            this.intervention.in_amendment,
+                            this.intervention.in_amendment_date
+                          )}"
                           @click="${() => this.openDeletePdOutputDialog(pdOutput.id)}"
                         ></paper-icon-button>
                       </div>
@@ -245,19 +255,24 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                       <pd-activities
                         .activities="${pdOutput.activities}"
                         .interventionId="${this.interventionId}"
+                        .interventionStatus="${this.interventionStatus}"
+                        .inAmendmentDate="${this.intervention.in_amendment_date}"
+                        .showInactive="${this.showInactiveIndicatorsActivities}"
                         .pdOutputId="${pdOutput.id}"
                         .quarters="${this.quarters}"
                         ?hidden="${!this.showActivities}"
                         .readonly="${!this.permissions.edit.result_links || this.commentMode}"
                         .currency="${this.intervention.planned_budget.currency}"
+                        .inAmendment="${this.intervention.in_amendment}"
                       ></pd-activities>
                       <pd-indicators
                         ?hidden="${!this.showIndicators}"
                         .indicators="${pdOutput.applied_indicators}"
                         .pdOutputId="${pdOutput.id}"
                         .readonly="${!this.permissions.edit.result_links || this.commentMode}"
-                        .showInactiveIndicators="${this.showInactiveIndicators}"
+                        .showInactiveIndicators="${this.showInactiveIndicatorsActivities}"
                         .inAmendment="${this.intervention.in_amendment}"
+                        .inAmendmentDate="${this.intervention.in_amendment_date}"
                       ></pd-indicators>
                     </div>
                   </etools-data-table-row>
@@ -275,8 +290,8 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     super.connectedCallback();
   }
 
-  protected firstUpdated() {
-    super.firstUpdated();
+  protected firstUpdated(changedProperties: any) {
+    super.firstUpdated(changedProperties);
     if (this.commentsModeEnabledFlag) {
       setTimeout(() => this.openAllCpOutputs());
     }
@@ -309,7 +324,10 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
   }
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan)) {
+    if (
+      pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan) ||
+      !state.interventions.current
+    ) {
       return;
     }
     if (state.commentsData?.commentsModeEnabled && !this.commentsModeEnabledFlag) {
@@ -318,8 +336,9 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     this.commentsModeEnabledFlag = Boolean(state.commentsData?.commentsModeEnabled);
     this.updateResultLinks(state);
     this.showInactiveToggle = this.resultLinks.some(({ll_results}: ExpectedResult) =>
-      ll_results.some(({applied_indicators}: ResultLinkLowerResult) =>
-        applied_indicators.some(({is_active}: Indicator) => !is_active)
+      ll_results.some(
+        ({applied_indicators, activities}: ResultLinkLowerResult) =>
+          applied_indicators.some(({is_active}: Indicator) => !is_active) || activities.some((a) => !a.is_active)
       )
     );
     this.permissions = selectResultLinksPermissions(state);
@@ -390,6 +409,10 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
   }
 
   deletePDOutputFromPD(lower_result_id: number) {
+    fireEvent(this, 'global-loading', {
+      active: true,
+      loadingSource: 'interv-pd-remove'
+    });
     const endpoint = getEndpoint(interventionEndpoints.lowerResultsDelete, {
       lower_result_id,
       intervention_id: this.interventionId
@@ -397,9 +420,14 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     _sendRequest({
       method: 'DELETE',
       endpoint: endpoint
-    }).then(() => {
-      getStore().dispatch<AsyncAction>(getIntervention());
-    });
+    })
+      .then(() => getStore().dispatch<AsyncAction>(getIntervention()))
+      .finally(() =>
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: 'interv-pd-remove'
+        })
+      );
   }
 
   openCpOutputDialog(resultLink?: ExpectedResult): void {
@@ -499,7 +527,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     if (!e.detail) {
       return;
     }
-    this.showInactiveIndicators = e.detail.value;
+    this.showInactiveIndicatorsActivities = e.detail.value;
   }
 
   private updateResultLinks(state: RootState): void {
@@ -517,6 +545,14 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     }
 
     this.resultLinks = newResults;
+  }
+
+  _getCPNeededInterventionInfo(intervention: Intervention) {
+    return {
+      status: intervention.status,
+      in_amendment: intervention.in_amendment,
+      in_amendment_date: intervention.in_amendment_date
+    };
   }
 
   static get styles(): CSSResultArray {
@@ -540,6 +576,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         }
         cp-output-level .pd-title {
           padding: 8px 16px;
+          padding-inline-start: 45px;
         }
         .pd-add-section {
           background-color: #ccebff;
@@ -650,6 +687,10 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         }
         .count div:first-child {
           margin-right: 20px;
+        }
+
+        etools-data-table-row#pdOutputRow::part(edt-list-row-wrapper) {
+          padding-inline-start: 25px !important;
         }
       `
     ];

@@ -49,7 +49,11 @@ export class InterventionMetadata extends connectStore(LitElement) {
   }
 
   stateChanged(state: RootState): void {
-    if (currentPage(state) !== 'interventions' || currentSubpage(state) !== 'metadata') {
+    if (
+      currentPage(state) !== 'interventions' ||
+      currentSubpage(state) !== 'metadata' ||
+      !state.interventions.current
+    ) {
       return;
     }
     this.permissions = currentInterventionPermissions(state);

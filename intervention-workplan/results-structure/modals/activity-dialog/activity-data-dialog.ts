@@ -4,7 +4,7 @@ import '@polymer/paper-input/paper-textarea';
 import '@polymer/paper-toggle-button';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import '../../../../common/components/activity/activity-items-table';
-import {getTotal} from '../../../../common/components/activity/get-total.helper';
+import {getTotalCashFormatted} from '../../../../common/components/activity/get-total.helper';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {interventionEndpoints} from '../../../../utils/intervention-endpoints';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
@@ -38,7 +38,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
   @property() loadingInProcess = false;
   @property() isEditDialog = true;
   @property() useInputLevel = false;
-  @property({type: String}) spinnerText = 'Loading...';
+  @property({type: String}) spinnerText = getTranslation('GENERAL.LOADING');
   @property() readonly: boolean | undefined = false;
   @query('etools-dialog') private dialogElement!: EtoolsDialog;
   quarters: ActivityTimeFrames[] = [];
@@ -64,7 +64,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
         // Avoid reset caused by inputLevelChange method
         this.data = data;
         this.loadingInProcess = false;
-        this.spinnerText = 'Saving data...';
+        this.spinnerText = getTranslation('GENERAL.SAVING_DATA');
       }, 100);
     });
   }
@@ -237,6 +237,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
             }}"
           ></activity-items-table>
           <activity-time-frames
+            tabindex="0"
             .quarters="${this.quarters}"
             .selectedTimeFrames="${this.editedData.time_frames || []}"
             .readonly="${this.readonly}"
@@ -265,11 +266,11 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
 
   getTotalValue(): string {
     if (!this.useInputLevel) {
-      return getTotal(this.editedData.cso_cash || 0, this.editedData.unicef_cash || 0);
+      return getTotalCashFormatted(this.editedData.cso_cash || 0, this.editedData.unicef_cash || 0);
     } else {
       const cso: string = this.getSumValue('cso_cash').replace(/,/g, '');
       const unicef: string = this.getSumValue('unicef_cash').replace(/,/g, '');
-      return getTotal(cso, unicef);
+      return getTotalCashFormatted(cso, unicef);
     }
   }
 

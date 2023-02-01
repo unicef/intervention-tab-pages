@@ -10,7 +10,7 @@ import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/co
 import {RootState} from '../../common/types/store.types';
 import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
-import {REVIEW_ANSVERS, REVIEW_QUESTIONS} from '../review.const';
+import {REVIEW_ANSVERS, REVIEW_QUESTIONS} from '../../common/components/intervention/review.const';
 import {formatDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import '../../common/components/intervention/review-checklist-popup';
@@ -66,7 +66,7 @@ export class ReviewsList extends connectStore(LitElement) {
   render(): TemplateResult {
     return html`
       ${sharedStyles}
-      <etools-content-panel class="content-section" panel-title="PRC Member Reviews">
+      <etools-content-panel class="content-section" panel-title=${translate('PRC_MEMBER_REVIEWS')}>
         <etools-data-table-header no-title ?no-collapse="${!this.approvals.length}">
           <etools-data-table-column class="flex-2">${translate('PRC_NAME')}</etools-data-table-column>
           <etools-data-table-column class="flex-1">${translate('APPROVED_BY_PRC')}</etools-data-table-column>

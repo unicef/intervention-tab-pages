@@ -14,12 +14,12 @@ import {PaperInputElement} from '@polymer/paper-input/paper-input';
 import {selectPlannedVisits, selectPlannedVisitsPermissions} from './programmaticVisits.selectors';
 import {selectInterventionDates} from '../intervention-dates/interventionDates.selectors';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {patchIntervention} from '../../common/actions/interventions';
+import {patchIntervention, updateCurrentIntervention} from '../../common/actions/interventions';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AnyObject, AsyncAction, Permission} from '@unicef-polymer/etools-types';
+import {AnyObject, AsyncAction, Intervention, Permission} from '@unicef-polymer/etools-types';
 import {PlannedVisit} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
@@ -40,7 +40,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
   render() {
     if (!this.data) {
       return html` ${sharedStyles}
-        <etools-loading source="pv" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="pv" active></etools-loading>`;
     }
     // language=HTML
     return html`
@@ -137,7 +137,26 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
   extraEndpointParams!: AnyObject;
 
   @property({type: Object})
+  intervention!: Intervention;
+
+  @property({type: Object})
   getEndpoint = getEndpointHelper;
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.addEventListener('delete-confirm', this.afterItemDeleted as any);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.removeEventListener('delete-confirm', this.afterItemDeleted as any);
+  }
+
+  afterItemDeleted() {
+    // update intervention planned_visits after visit delete
+    this.intervention.planned_visits = this.data;
+    getStore().dispatch(updateCurrentIntervention(this.intervention));
+  }
 
   stateChanged(state: RootState) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'timing')) {
@@ -146,6 +165,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
     if (!state.interventions.current) {
       return;
     }
+    this.intervention = cloneDeep(state.interventions.current);
     this.populateVisits(state);
     this.permissions = selectPlannedVisitsPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
@@ -175,17 +195,19 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
       return;
     }
     if (interventionStart !== '' && interventionEnd !== '') {
-      let start = parseInt(interventionStart.substr(0, 4), 10);
-      const end = parseInt(interventionEnd.substr(0, 4), 10) + 1;
-      const years = [];
+      let start = parseInt(interventionStart.substring(0, 4), 10);
+      const end = parseInt(interventionEnd.substring(0, 4), 10) + 1;
+      const years = this.data.filter((pv) => pv.year).map((pv) => Number(pv.year));
       while (start <= end) {
-        years.push({
-          value: start,
-          label: start
-        });
+        years.push(start);
         start++;
       }
-      this.years = years;
+      this.years = [...new Set(years)]
+        .sort((a, b) => a - b)
+        .map((year) => ({
+          value: year,
+          label: year
+        }));
     } else {
       this.years = [];
     }
@@ -243,7 +265,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
                     error-message=${translate('GENERAL.REQUIRED_FIELD')}
                     auto-validate
                     @value-changed="${(e: CustomEvent) => this.inputChanged(e, index, 'q1')}"
-                    ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_visits)}"
+                    ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
                   >
                   </paper-input>
                 </div>
@@ -260,7 +282,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
                     error-message=${translate('GENERAL.REQUIRED_FIELD')}
                     auto-validate
                     @value-changed="${(e: CustomEvent) => this.inputChanged(e, index, 'q2')}"
-                    ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_visits)}"
+                    ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
                   >
                   </paper-input>
                 </div>
@@ -277,7 +299,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
                     error-message=${translate('GENERAL.REQUIRED_FIELD')}
                     auto-validate
                     @value-changed="${(e: CustomEvent) => this.inputChanged(e, index, 'q3')}"
-                    ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_visits)}"
+                    ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
                   >
                   </paper-input>
                 </div>
@@ -294,7 +316,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
                     error-message=${translate('GENERAL.REQUIRED_FIELD')}
                     auto-validate
                     @value-changed="${(e: CustomEvent) => this.inputChanged(e, index, 'q4')}"
-                    ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_visits)}"
+                    ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
                   >
                   </paper-input>
                 </div>
@@ -369,8 +391,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
 
     if (this.isAlreadySelected(yearSelected, index, 'year')) {
       fireEvent(this, 'toast', {
-        text: getTranslation('YEAR_SELECTED_ERR'),
-        showCloseBtn: true
+        text: getTranslation('YEAR_SELECTED_ERR')
       });
       this._clearSelectedYear(index);
     }
@@ -444,8 +465,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
   _addNewPlannedVisit() {
     if (!this.validate()) {
       fireEvent(this, 'toast', {
-        text: getTranslation('ALREADY_ADDED_PLANNED_VISIT'),
-        showCloseBtn: true
+        text: getTranslation('ALREADY_ADDED_PLANNED_VISIT')
       });
       return;
     }
@@ -465,6 +485,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
     if (!this.validate()) {
       return Promise.resolve(false);
     }
+
     return getStore()
       .dispatch<AsyncAction>(patchIntervention({planned_visits: this.data}))
       .then(() => {

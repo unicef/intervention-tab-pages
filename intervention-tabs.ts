@@ -1,7 +1,7 @@
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-toggle-button';
-
 import './common/layout/page-content-header/intervention-page-content-header';
+import './common/layout/page-content-header/intervention-page-content-subheader';
 import '@unicef-polymer/etools-modules-common/dist/layout/etools-tabs';
 import '@unicef-polymer/etools-modules-common/dist/components/cancel/reason-display';
 // eslint-disable-next-line max-len
@@ -16,7 +16,7 @@ import {currentPage, currentSubpage, isUnicefUser, currentSubSubpage, currentUse
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {getIntervention} from './common/actions/interventions';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {getTranslatedValue, isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {pageContentHeaderSlottedStyles} from './common/layout/page-content-header/page-content-header-slotted-styles';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {buildUrlQueryString} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
@@ -42,6 +42,7 @@ import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endp
 import {interventionEndpoints} from './utils/intervention-endpoints';
 import {CommentsEndpoints} from '../intervention-tab-pages/common/components/comments/comments-types';
 import {CommentsPanels} from './common/components/comments-panels/comments-panels';
+import './unresolved-other-info';
 
 const commentPanel: CommentsPanels = document.createElement('comments-panels') as CommentsPanels;
 
@@ -52,6 +53,7 @@ const MOCKUP_STATUSES = [
   ['terminated', 'Terminated'],
   ['closed', 'Closed']
 ];
+
 
 /**
  * @LitElement
@@ -77,14 +79,8 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
           border: 5px solid #ffd28b;
           box-sizing: border-box;
         }
-        :host([data-active-tab='workplan-editor']) div[slot='tabs'] {
+        :host([data-active-tab='workplan-editor']) intervention-page-content-subheader {
           display: none;
-        }
-        :host([data-active-tab='workplan-editor']) intervention-page-content-header {
-          position: relative;
-          min-height: 0;
-          border-bottom: none;
-          box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.15);
         }
         :host([data-active-tab='workplan-editor']) .page-content {
           margin: 4px 0 0;
@@ -105,6 +101,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
           align-items: center;
           background-color: #ffd28b;
           height: 50px;
+          z-index: 99;
         }
         .amendment-info a {
           margin-left: 7px;
@@ -115,6 +112,11 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
           .page-content {
             margin: 5px;
           }
+        }
+
+        etools-status-lit {
+          margin-top: 0;
+          border-top: 0;
         }
       `
     ];
@@ -178,7 +180,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       <!-- Loading PRP country data -->
       <prp-country-data></prp-country-data>
 
-      <intervention-page-content-header with-tabs-visible>
+      <intervention-page-content-header ?is-in-amendment="${this.isInAmendment}">
         <span class="intervention-partner" slot="page-title">${this.intervention.partner}</span>
         <span class="intervention-number" slot="page-title">${this.intervention.number}</span>
         <div slot="mode">
@@ -201,27 +203,36 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
             .userIsBudgetOwner="${this.userIsBudgetOwner}"
           ></intervention-actions>
         </div>
-
-        <div slot="tabs">
-          <etools-status-lit
-            .statuses="${this.intervention.status_list || MOCKUP_STATUSES}"
-            .activeStatus="${this.intervention.status}"
-          ></etools-status-lit>
-
-          <etools-tabs-lit
-            .tabs="${this.pageTabs}"
-            .activeTab="${this.activeTab}"
-            .activeSubTab="${this.activeSubTab}"
-            @iron-select="${this.handleTabChange}"
-            @iron-activate="${this.handleTabActivate}"
-          ></etools-tabs-lit>
-        </div>
       </intervention-page-content-header>
+
+      <intervention-page-content-subheader>
+        <etools-status-lit
+          .statuses="${this.intervention.status_list.map((x) => [
+            x[0],
+            getTranslatedValue(x[1], 'COMMON_DATA.INTERVENTIONSTATUSES')
+          ])}"
+          .activeStatus="${this.intervention.status}"
+        ></etools-status-lit>
+
+        <etools-tabs-lit
+          .tabs="${this.pageTabs}"
+          .activeTab="${this.activeTab}"
+          .activeSubTab="${this.activeSubTab}"
+          @iron-select="${this.handleTabChange}"
+          @iron-activate="${this.handleTabActivate}"
+        ></etools-tabs-lit>
+      </intervention-page-content-subheader>
 
       <div class="page-content">
         ${this.intervention.cancel_justification
           ? html`<reason-display .justification=${this.intervention.cancel_justification}></reason-display>`
           : ''}
+        ${this.intervention.other_info
+          ? html` <unresolved-other-info-review
+              .data="${this.otherInfo}"
+              .editPermissions="${this.intervention.permissions?.edit.other_info}"
+            ></unresolved-other-info-review>`
+          : html``}
         <intervention-metadata ?hidden="${!this.isActiveTab(this.activeTab, TABS.Metadata)}"> </intervention-metadata>
         <intervention-strategy ?hidden="${!this.isActiveTab(this.activeTab, TABS.Strategy)}"></intervention-strategy>
         <intervention-workplan
@@ -256,34 +267,47 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   pageTabs = [
     {
       tab: TABS.Metadata,
-      tabLabel: getTranslation('METADATA_TAB'),
+      tabLabel: translate('METADATA_TAB'),
+      tabLabelKey: 'METADATA_TAB',
       hidden: false
     },
     {
       tab: TABS.Strategy,
-      tabLabel: getTranslation('STRATEGY_TAB'),
+      tabLabel: translate('STRATEGY_TAB'),
+      tabLabelKey: 'STRATEGY_TAB',
       hidden: false
     },
     {
       tab: TABS.Workplan,
-      tabLabel: getTranslation('WORKPLAN_TAB'),
+      tabLabel: translate('WORKPLAN_TAB'),
+      tabLabelKey: 'WORKPLAN_TAB',
       hidden: false
     },
     {
       tab: TABS.Timing,
-      tabLabel: getTranslation('TIMING_TAB') as unknown as string,
+      tabLabel: translate('TIMING_TAB') as unknown as string,
+      tabLabelKey: 'TIMING_TAB',
       hidden: false
     }
   ];
 
   progressTabTemplate = {
     tab: TABS.Progress,
-    tabLabel: getTranslation('PROGRESS_TAB'),
+    tabLabel: translate('PROGRESS_TAB'),
+    tabLabelKey: 'PROGRESS_TAB',
     hidden: false,
     disabled: true,
     subtabs: [
-      {label: getTranslation('IMPLEMENTATION_STATUS_SUBTAB'), value: TABS.ImplementationStatus},
-      {label: getTranslation('MONITORING_ACTIVITIES_SUBTAB'), value: TABS.MonitoringActivities}
+      {
+        label: translate('IMPLEMENTATION_STATUS_SUBTAB'),
+        labelKey: 'IMPLEMENTATION_STATUS_SUBTAB',
+        value: TABS.ImplementationStatus
+      },
+      {
+        label: translate('MONITORING_ACTIVITIES_SUBTAB'),
+        labelKey: 'MONITORING_ACTIVITIES_SUBTAB',
+        value: TABS.MonitoringActivities
+      }
     ]
   };
 
@@ -295,6 +319,9 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
 
   @property({type: String})
   activeSubTab = '';
+
+  @property({type: String})
+  currentLanguage!: string;
 
   @property({type: Object})
   intervention!: Intervention | null;
@@ -314,6 +341,9 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   @property({type: Boolean, attribute: 'is-in-amendment', reflect: true})
   isInAmendment = false;
 
+  @property({type: Object})
+  otherInfo!: {other_info: string};
+
   @query('etools-tabs-lit')
   etoolsTabs!: EtoolsTabs;
 
@@ -324,6 +354,8 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
 
   // id from route params
   private interventionId: string | null = null;
+
+  private isEPDApp = ROOT_PATH === '/epd/';
 
   connectedCallback() {
     super.connectedCallback();
@@ -341,6 +373,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
         uploadStatus
       });
       getStore().dispatch(setCommentsEndpoint(commentsEndpoints));
+      getStore().dispatch(enableCommentMode(Boolean(this._routeDetails?.queryParams?.comment_mode)));
     });
   }
 
@@ -379,6 +412,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     }
     const currentInterventionId = get(state, 'app.routeDetails.params.interventionId');
     const currentIntervention = get(state, 'interventions.current');
+    this.otherInfo = {other_info: currentIntervention?.other_info as string};
 
     // check if intervention was changed
     if (!isJsonStrMatch(this.intervention, currentIntervention)) {
@@ -399,17 +433,26 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
 
     // check if we need to load intervention and comments
     if (currentInterventionId !== this.interventionId) {
-      this.interventionId = currentInterventionId;
-      this.loadInterventionData(currentInterventionId);
+      this.interventionId = currentInterventionId!;
+      this.loadInterventionData(currentInterventionId!);
     }
 
     if (state.uploadStatus) {
       this.uploadsStateChanged(state);
     }
 
+    if (this.currentLanguage !== state.activeLanguage.activeLanguage) {
+      if (this.currentLanguage) {
+        // language was already set, this is language change
+        this.pageTabs = this.applyTabsTitleTranslation(this.pageTabs);
+      }
+      this.currentLanguage = state.activeLanguage.activeLanguage;
+    }
+
     // on routing change
     if (!isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)) {
       this._routeDetails = cloneDeep(state.app!.routeDetails);
+      this.commentMode = Boolean(this._routeDetails?.queryParams?.comment_mode);
       fireEvent(this, 'scroll-up');
     }
   }
@@ -428,6 +471,24 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     setTimeout(() => {
       getStore().dispatch(enableCommentMode(this.commentMode));
     }, 10);
+  }
+  
+  applyTabsTitleTranslation(pageTabs: any[]): any[] {
+    try {
+      return pageTabs.map((item) => {
+        return {
+          ...item,
+          tabLabel: getTranslation(item.tabLabelKey),
+          subtabs: item.subtabs?.map((subTab: any) => ({
+            ...subTab,
+            label: getTranslation(subTab.labelKey)
+          }))
+        };
+      });
+    } catch (ex) {
+      console.log(ex);
+      return this.pageTabs;
+    }
   }
 
   checkExportOptionsAvailability(availableActions: string[], intervention: Intervention) {
@@ -465,7 +526,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
 
     const reviewRestricted = tab === TABS.Review && !state.interventions.current?.permissions?.view!.reviews;
     const restrictedSubTabs =
-      !unicefUser &&
+      (!unicefUser || this.isEPDApp) &&
       [TABS.ResultsReported, TABS.Reports, TABS.ImplementationStatus, TABS.MonitoringActivities].includes(subTab);
     return !attachmentRestricted && !reviewRestricted && !restrictedSubTabs;
   }
@@ -479,27 +540,38 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   }
 
   handleProgressTabVisibility(envFlags: EnvFlags | null, isUnicefUser?: boolean) {
-    if (!isUnicefUser) {
+    if (!isUnicefUser || this.isEPDApp) {
       return; // ONLY visible for unicef users
     }
 
     let progressTab = this.pageTabs.find((x) => x.tab === TABS.Progress);
-    if (progressTab) {
-      // tab already configured
-      return;
-    } else {
+
+    if (!progressTab) {
       progressTab = cloneDeep(this.progressTabTemplate);
+      this.pageTabs.push(progressTab);
     }
+
+    this.toggleSubtabs(progressTab, envFlags);
+  }
+
+  toggleSubtabs(progressTab: any, envFlags: EnvFlags | null) {
     // Results Reported, Reports tabs are visible only for unicef users if flag prp_mode_off is not ON
     // @ts-ignore
-    if (envFlags && !envFlags.prp_mode_off && !progressTab?.subtabs?.find((t) => t.value === TABS.ResultsReported)) {
+    if (
+      envFlags &&
+      !envFlags.prp_mode_off &&
+      !progressTab?.subtabs?.find((t: any) => t.value === TABS.ResultsReported)
+    ) {
       // @ts-ignore
       progressTab?.subtabs?.push(
-        {label: getTranslation('RESULTS_REPORTED_SUBTAB'), value: TABS.ResultsReported},
-        {label: getTranslation('REPORTS_SUBTAB'), value: TABS.Reports}
+        {
+          label: translate('RESULTS_REPORTED_SUBTAB'),
+          labelKey: 'RESULTS_REPORTED_SUBTAB',
+          value: TABS.ResultsReported
+        },
+        {label: translate('REPORTS'), labelKey: 'REPORTS', value: TABS.Reports}
       );
     }
-    this.pageTabs.push(progressTab);
   }
 
   checkReviewTab(state: RootState): void {
@@ -509,7 +581,8 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       const pasteTo = this.pageTabs.findIndex((x) => x.tab === TABS.Progress);
       this.pageTabs.splice(pasteTo, 0, {
         tab: TABS.Review,
-        tabLabel: getTranslation('REVIEW_TAB'),
+        tabLabel: translate('REVIEW_TAB'),
+        tabLabelKey: 'REVIEW_TAB',
         hidden: false
       });
     }
@@ -522,7 +595,8 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       const pasteTo = this.pageTabs.findIndex((x) => x.tab === TABS.Progress);
       this.pageTabs.splice(pasteTo, 0, {
         tab: TABS.Attachments,
-        tabLabel: getTranslation('ATTACHMENTS_TAB') as unknown as string,
+        tabLabel: translate('ATTACHMENTS_TAB') as unknown as string,
+        tabLabelKey: 'ATTACHMENTS_TAB',
         hidden: false
       });
     } else if (tabIndex !== -1 && !canView) {
@@ -642,6 +716,10 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   }
 
   _geNewUrlPath(newTabName: string, newSubTab: string) {
+    if (this._routeDetails?.subRouteName == 'progress' && this._routeDetails?.queryParams) {
+      // clean up lingering query str
+      delete this._routeDetails?.queryParams?.size;
+    }
     const stringParams: string = buildUrlQueryString(this._routeDetails!.queryParams || {});
     let newPath = `interventions/${this.intervention!.id}/${newTabName}`;
     if (newSubTab) {
@@ -685,7 +763,6 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
 
   _showInterventionPageLoadingMessage() {
     fireEvent(this, 'global-loading', {
-      message: 'Loading...',
       active: true,
       loadingSource: 'interv-page'
     });

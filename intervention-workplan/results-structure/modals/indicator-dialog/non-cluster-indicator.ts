@@ -145,7 +145,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           placeholder="&#8212;"
           error-message=${translate('ADD_TITLE_ERR')}
           auto-validate
-          ?readonly="${this.isReadonly()}"
+          ?readonly="${this.isReadonlyTitle()}"
           @value-changed="${({detail}: CustomEvent) => {
             if (detail.value === undefined) {
               return;
@@ -437,6 +437,13 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
 
   private isReadonly() {
     return this.readonly || !this.indicatorIsNew;
+  }
+
+  private isReadonlyTitle() {
+    return (
+      this.readonly ||
+      (!this.indicatorIsNew && !['draft', 'development'].includes(this.interventionStatus.toLowerCase()))
+    );
   }
 
   private baselineIsUnknownChanged(checked: boolean) {

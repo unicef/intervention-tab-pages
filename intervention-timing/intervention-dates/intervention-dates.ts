@@ -16,7 +16,7 @@ import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/di
 import get from 'lodash-es/get';
 import '@unicef-polymer/etools-upload/etools-upload';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AsyncAction, FrsDetails, Permission} from '@unicef-polymer/etools-types';
+import {AsyncAction, FrsDetails, Intervention, Permission} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import ReportingRequirementsCommonMixin from '../reporting-requirements/mixins/reporting-requirements-common-mixin';
@@ -25,6 +25,8 @@ import UploadsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uplo
 import FrNumbersConsistencyMixin from '@unicef-polymer/etools-modules-common/dist/mixins/fr-numbers-consistency-mixin';
 import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {customIcons} from '@unicef-polymer/etools-modules-common/dist/styles/custom-icons';
+import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/fr-warnings-styles';
 
 /**
  * @customElement
@@ -34,17 +36,17 @@ export class InterventionDates extends CommentsMixin(
   UploadsMixin(ComponentBaseMixin(FrNumbersConsistencyMixin(ReportingRequirementsCommonMixin(LitElement))))
 ) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [gridLayoutStylesLit, buttonsStyles, frWarningsStyles];
   }
 
   render() {
     if (!this.data || !this.permissions) {
       return html` ${sharedStyles}
-        <etools-loading source="dates" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="dates" active></etools-loading>`;
     }
     // language=HTML
     return html`
-      ${sharedStyles}
+      ${customIcons}${sharedStyles}
       <style>
         :host {
           display: block;
@@ -80,8 +82,8 @@ export class InterventionDates extends CommentsMixin(
                 id="intStart"
                 label=${translate(translatesMap.start)}
                 .value="${this.data.start}"
-                ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.start)}"
-                ?required="${this.permissions.required.start}"
+                ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.start)}"
+                ?required="${this.permissions?.required.start}"
                 error-message=${translate('SELECT_START_DATE')}
                 auto-validate
                 selected-date-display-format="D MMM YYYY"
@@ -108,8 +110,8 @@ export class InterventionDates extends CommentsMixin(
                 id="intEnd"
                 label=${translate(translatesMap.end)}
                 .value="${this.data.end}"
-                ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.end)}"
-                ?required="${this.permissions.required.end}"
+                ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.end)}"
+                ?required="${this.permissions?.required.end}"
                 error-message=${translate('SELECT_END_DATE')}
                 auto-validate
                 selected-date-display-format="D MMM YYYY"
@@ -131,13 +133,13 @@ export class InterventionDates extends CommentsMixin(
             id="activationLetterUpload"
             .fileUrl="${this.data.activation_letter_attachment}"
             .uploadEndpoint="${this.uploadEndpoint}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.activation_letter_attachment)}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.activation_letter_attachment)}"
             @upload-finished="${(e: CustomEvent) => this.activationLetterUploadFinished(e)}"
             @upload-started="${this._onUploadStarted}"
             @change-unsaved-file="${this._onChangeUnsavedFile}"
             .showDeleteBtn="${this.showActivationLetterDeleteBtn(
               this.data.status,
-              this.permissions.edit.activation_letter_attachment,
+              this.permissions?.edit.activation_letter_attachment,
               this.editMode
             )}"
           >
@@ -181,7 +183,7 @@ export class InterventionDates extends CommentsMixin(
       return;
     }
     this.data = selectInterventionDates(state);
-    this.checkIfWarningRequired(state.interventions.partnerReportingRequirements);
+    this.checkIfWarningRequired(state);
     this.originalData = cloneDeep(this.data);
     this.permissions = selectInterventionDatesPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
@@ -230,9 +232,11 @@ export class InterventionDates extends CommentsMixin(
     );
   }
 
-  private checkIfWarningRequired(partnerReportingRequirements: PartnerReportingRequirements) {
+  private checkIfWarningRequired(state: RootState) {
     // Existence of PD Output activities with timeframes are validated on BK
-    this.warningRequired = this.thereArePartnerReportingRequirements(partnerReportingRequirements);
+    this.warningRequired =
+      this.thereArePartnerReportingRequirements(state.interventions.partnerReportingRequirements) ||
+      this.thereAreProgrammaticVisits(state.interventions.current);
   }
 
   private thereArePartnerReportingRequirements(partnerReportingRequirements: PartnerReportingRequirements) {
@@ -240,6 +244,10 @@ export class InterventionDates extends CommentsMixin(
       return Object.entries(partnerReportingRequirements).some(([_key, value]) => !!value.length);
     }
     return false;
+  }
+
+  private thereAreProgrammaticVisits(intervention: Intervention | null) {
+    return !!intervention?.planned_visits && intervention.planned_visits.length > 0;
   }
 
   saveData() {
@@ -252,8 +260,7 @@ export class InterventionDates extends CommentsMixin(
       .then(() => {
         if (this.warningRequired) {
           fireEvent(this, 'toast', {
-            text: getTranslation('SAVE_WARNING'),
-            showCloseBtn: true
+            text: getTranslation('SAVE_WARNING')
           });
         }
         this._onUploadSaved();
