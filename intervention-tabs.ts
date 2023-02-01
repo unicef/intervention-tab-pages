@@ -46,15 +46,6 @@ import './unresolved-other-info';
 
 const commentPanel: CommentsPanels = document.createElement('comments-panels') as CommentsPanels;
 
-const MOCKUP_STATUSES = [
-  ['draft', 'Draft'],
-  ['signed', 'Signed'],
-  ['active', 'Active'],
-  ['terminated', 'Terminated'],
-  ['closed', 'Closed']
-];
-
-
 /**
  * @LitElement
  * @customElement
@@ -472,7 +463,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       getStore().dispatch(enableCommentMode(this.commentMode));
     }, 10);
   }
-  
+
   applyTabsTitleTranslation(pageTabs: any[]): any[] {
     try {
       return pageTabs.map((item) => {

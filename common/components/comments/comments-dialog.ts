@@ -45,7 +45,7 @@ export class CommentsDialog extends EditComments {
     this.comments = [...relatedToComments];
     this.requestUpdate().then(() => this.scrollDown());
   }
-  private dialogHeight?: number;
+
   @query('etools-dialog') private dialogElement!: EtoolsDialog;
 
   protected render(): TemplateResult {
