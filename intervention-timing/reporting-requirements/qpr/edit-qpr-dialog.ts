@@ -261,15 +261,13 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
   _validateDataBeforeAdd() {
     if (!this._editedQprDatesSet.due_date || !this._editedQprDatesSet.start_date || !this._editedQprDatesSet.end_date) {
       fireEvent(this, 'toast', {
-        text: getTranslation('DATES_REQUIRED'),
-        showCloseBtn: true
+        text: getTranslation('DATES_REQUIRED')
       });
       return false;
     }
     if (this._duplicateDueDate(this._editedQprDatesSet.due_date)) {
       fireEvent(this, 'toast', {
-        text: getTranslation('REQUIREMENT_DATES_NOT_ADDED'),
-        showCloseBtn: true
+        text: getTranslation('REQUIREMENT_DATES_NOT_ADDED')
       });
       return false;
     }

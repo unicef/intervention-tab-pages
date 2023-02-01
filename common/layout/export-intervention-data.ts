@@ -22,7 +22,7 @@ export class ExportInterventionData extends LitElement {
           padding: 0px;
         }
         paper-button {
-          height: 40px;
+          height: 34px;
           padding: 0px;
           min-width: 20px;
           font-weight: bold;
@@ -49,19 +49,6 @@ export class ExportInterventionData extends LitElement {
   }
   public render() {
     return html`
-      <style>
-        #pdExportMenuBtn {
-          /* Prevent first item highlighted by default */
-          --paper-item-focused-before: {
-            background: none;
-            opacity: 0;
-          }
-          --paper-item-focused-after: {
-            background: none;
-            opacity: 0;
-          }
-        }
-      </style>
       <paper-menu-button id="pdExportMenuBtn" close-on-activate horizontal-align="right">
         <paper-button slot="dropdown-trigger" class="dropdown-trigger">
           <iron-icon icon="more-vert"></iron-icon>

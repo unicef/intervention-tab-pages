@@ -13,6 +13,7 @@ import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialo
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import cloneDeep from 'lodash-es/cloneDeep';
 
 /**
  * @polymer
@@ -70,8 +71,7 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
   openQuarterlyRepRequirementsDialog() {
     if (!this.interventionStart || !this.interventionEnd) {
       fireEvent(this, 'toast', {
-        text: getTranslation('QUARTERLY_REPORT_PROMPT'),
-        showCloseBtn: true
+        text: getTranslation('QUARTERLY_REPORT_PROMPT')
       });
       return;
     }
@@ -85,7 +85,7 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
     openDialog({
       dialog: 'edit-qpr-dialog',
       dialogData: {
-        qprData: qprData,
+        qprData: cloneDeep(qprData),
         interventionId: this.interventionId,
         interventionStart: this.interventionStart,
         interventionEnd: this.interventionEnd,

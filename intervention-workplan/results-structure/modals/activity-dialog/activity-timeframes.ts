@@ -67,16 +67,20 @@ export class ActivityTimeFrames extends LitElement {
           height: 50px;
           border-left: 1px solid #9e9e9e;
         }
-        label[required] {
-          font-size: 12px;
-          color: var(--secondary-text-color);
-          @apply --required-star-style;
-          background: url('./images/required.svg') no-repeat 66% 33%/5px;
-        }
         label {
           text-align: center;
           width: 100%;
           max-width: inherit;
+        }
+        label[required] {
+          font-size: 12px;
+          color: var(--secondary-text-color);
+          background: url('./images/required.svg') no-repeat 99% 20%/5px;
+          width: auto !important;
+          max-width: 100%;
+          right: auto;
+          padding-right: 15px;
+          background-size: 5px;
         }
         .time-frame-container {
           flex-wrap: wrap;
@@ -152,6 +156,11 @@ export class ActivityTimeFrames extends LitElement {
 
   firstUpdated(changedProperties: PropertyValues): void {
     super.firstUpdated(changedProperties);
+    this.addEventListener('focus', () => {
+      if (!this.readonly) {
+        (this.shadowRoot!.querySelector('.time-frame') as HTMLElement)?.focus();
+      }
+    });
 
     this.shadowRoot!.querySelectorAll('.time-frame').forEach((el) => {
       callClickOnSpacePushListener(el);

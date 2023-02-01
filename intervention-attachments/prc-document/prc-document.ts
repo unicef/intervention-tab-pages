@@ -38,7 +38,7 @@ export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadsMixin(L
     // language=HTML
     if (!this.data || !this.permissions) {
       return html` ${sharedStyles}
-        <etools-loading source="prc-doc" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="prc-doc" active></etools-loading>`;
     }
     return html`
       ${sharedStyles}
@@ -66,7 +66,7 @@ export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadsMixin(L
               accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt"
               .fileUrl="${this.data.prc_review_attachment}"
               .uploadEndpoint="${this.uploadEndpoint}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.prc_review_attachment)}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.prc_review_attachment)}"
               .showDeleteBtn="${this.showPrcReviewDeleteBtn(this.data.status)}"
               @delete-file="${this._prcRevDocDelete}"
               @upload-started="${this._onUploadStarted}"

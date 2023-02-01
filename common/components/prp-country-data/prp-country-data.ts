@@ -18,6 +18,8 @@ export class PrpCountryData extends EndpointsLitMixin(LitElement) {
 
   connectedCallback() {
     super.connectedCallback();
-    this.getPRPCountries();
+    if (!window.location.href.includes('/epd/')) {
+      this.getPRPCountries();
+    }
   }
 }

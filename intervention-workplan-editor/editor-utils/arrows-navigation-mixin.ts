@@ -15,6 +15,8 @@ import {Constructor, LitElement} from 'lit-element';
  */
 export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseClass: T) {
   return class ArrowsNavigationClass extends baseClass {
+    commentMode!: boolean;
+
     private _navigateWithArrows!: (event: KeyboardEvent) => void;
     private _saveWitCtrlS!: (event: KeyboardEvent) => void;
 
@@ -29,7 +31,12 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
 
       if (this.easeUpTabNavigation) {
         // Avoid the need for 2 TAB clicks to reach the input
-        const input = td.querySelector('[input]');
+        const inputs = td.querySelectorAll('[input]');
+        if (inputs.length > 1 && Array.from(inputs).some((i: any) => i.hasAttribute('focused'))) {
+          return;
+        }
+
+        const input = inputs[0];
         if (input && !this.inputIsFocused(input) && !input.hasAttribute('readonly') && !input.hasAttribute('hidden')) {
           this.focusInput(input);
         }
@@ -66,6 +73,9 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     }
 
     focusFirstTd() {
+      if (this.commentMode) {
+        return;
+      }
       const focusableTds = Array.from(this.shadowRoot!.querySelectorAll<HTMLTableCellElement>('td[tabindex]'));
       this.setLastFocusedTdOnClick(focusableTds);
       const firstFocusableTd = focusableTds[0];
@@ -132,7 +142,8 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
       }
 
       // @ts-ignore
-      const currentTd = this._getActiveTd(event.path[0]);
+      const path = event.composedPath() || [];
+      const currentTd = this._getActiveTd(path[0] as HTMLTableCellElement);
       if (!currentTd) {
         return;
       }
@@ -147,8 +158,12 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
           this.easeUpTabNavigation = true;
           break;
         case 'Enter': {
+          // @ts-ignore defined in other mixin
+          if (this.oneEntityInEditMode || this.commentMode) {
+            return;
+          }
           // @ts-ignore
-          if (['paper-icon-button', 'paper-button'].includes(event.path[0].localName)) {
+          if (['paper-icon-button', 'paper-button'].includes(path[0].localName)) {
             return;
           }
           let actionBtn: any = this.searchForActionBtnInCurrentTd(currentTd);
@@ -279,7 +294,10 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     }
     _getNextTbody(activeTd: HTMLTableCellElement) {
       let nextTbody = activeTd.parentElement?.parentElement?.nextElementSibling;
-      while (nextTbody?.hasAttribute('thead')) {
+      while (
+        nextTbody?.hasAttribute('thead') ||
+        nextTbody?.querySelector<HTMLTableCellElement>('td[tabindex="0"]') === null
+      ) {
         nextTbody = nextTbody.nextElementSibling;
       }
       if (nextTbody && nextTbody.children.length === 0) {
@@ -289,7 +307,10 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     }
     _getPrevTbody(activeTd: HTMLTableCellElement) {
       let prevTbody = activeTd.parentElement?.parentElement?.previousElementSibling;
-      while (prevTbody?.hasAttribute('thead')) {
+      while (
+        prevTbody?.hasAttribute('thead') ||
+        prevTbody?.querySelector<HTMLTableCellElement>('td[tabindex="0"]') === null
+      ) {
         prevTbody = prevTbody.previousElementSibling;
       }
       if (prevTbody && prevTbody.children.length === 0) {
@@ -301,6 +322,9 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
 
     _getNextTr(activeTd: HTMLTableCellElement): HTMLTableRowElement | null | undefined {
       let nextTr = activeTd.parentElement?.nextElementSibling as HTMLTableRowElement | null;
+      while (nextTr && (nextTr.hasAttribute('hidden') || nextTr.classList.contains('header'))) {
+        nextTr = nextTr.nextElementSibling as HTMLTableRowElement | null;
+      }
       if (nextTr) {
         if (!nextTr.querySelector<HTMLTableCellElement>('td[tabindex="0"]')) {
           nextTr = null;
@@ -310,6 +334,9 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     }
     _getPrevTr(activeTd: HTMLTableCellElement) {
       let prevTr = activeTd.parentElement?.previousElementSibling as HTMLTableRowElement | null;
+      while (prevTr && (prevTr.hasAttribute('hidden') || prevTr.classList.contains('header'))) {
+        prevTr = prevTr.previousElementSibling as HTMLTableRowElement | null;
+      }
       if (prevTr) {
         if (!prevTr.querySelector<HTMLTableCellElement>('td[tabindex="0"]')) {
           prevTr = null;
@@ -357,11 +384,13 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     }
 
     focusInput(input: any) {
-      if (input.localName == 'etools-currency-amount-input') {
-        input.shadowRoot.querySelector('paper-input').focus();
-      } else {
-        input.focus();
-      }
+      setTimeout(() => {
+        if (input.localName == 'etools-currency-amount-input') {
+          input.shadowRoot.querySelector('paper-input').focus();
+        } else {
+          input.focus();
+        }
+      });
     }
 
     inputIsFocused(input: any) {

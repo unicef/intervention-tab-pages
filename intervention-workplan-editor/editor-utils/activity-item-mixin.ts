@@ -2,15 +2,22 @@ import {Intervention} from '@unicef-polymer/etools-types';
 import {Constructor} from '@unicef-polymer/etools-types/dist/global.types';
 import '@polymer/paper-input/paper-input';
 import {html, LitElement} from 'lit-element';
-import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
-import {InterventionActivityExtended, InterventionActivityItemExtended, ResultLinkLowerResultExtended} from './types';
+import {
+  InterventionActivityExtended,
+  InterventionActivityItemExtended,
+  ResultLinkLowerResultExtended
+} from '../../common/types/editor-page-types';
 import {repeat} from 'lit-html/directives/repeat';
 import '@polymer/paper-input/paper-textarea';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {ifDefined} from 'lit-html/directives/if-defined.js';
+import {ActivitiesCommonMixin} from '../../common/mixins/activities-common.mixin';
+import {getItemTotalFormatted} from '../../common/components/activity/get-total.helper';
+import {ActivitiesFocusMixin} from './activities-focus-mixin';
 
 export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass: T) {
-  return class ActivityItemsClass extends baseClass {
+  return class ActivityItemsClass extends ActivitiesCommonMixin(ActivitiesFocusMixin(baseClass)) {
     // @ts-ignore
     @property({type: Object})
     intervention!: Intervention;
@@ -27,7 +34,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
     oneEntityInEditMode!: boolean;
 
     handleEsc!: (event: KeyboardEvent) => void;
-    // lastFocusedTd!: any;
+
     commentMode: any;
 
     renderActivityItems(
@@ -40,7 +47,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       if (!activity || !activity.items || !activity.items.length) {
         return '';
       }
-      return html`<tbody class="gray-1">
+      return html`<tbody class="gray-1" ?inEditMode="${activity.inEditMode || activity.itemsInEditMode}">
         ${repeat(
           activity.items || [],
           (item: InterventionActivityItemExtended) => item.id,
@@ -54,9 +61,9 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                 !this.oneEntityInEditMode) ||
               !item.id}"
               comment-element="activity-item-${item.id}"
-              comment-description=" Activity item - ${item.name}"
+              comment-description="${getTranslation('ACTIVITY_ITEM')} - ${item.name}"
             >
-              <td>
+              <td class="index-column">
                 <paper-input
                   title="${item.code || ''}"
                   .noLabelFloat="${!activity.itemsInEditMode}"
@@ -65,73 +72,83 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   .value="${item.code || 'N/A'}"
                 ></paper-input>
               </td>
-              <td tabindex="0">
+              <td tabindex="${ifDefined(this.commentMode ? undefined : 0)}" class="a-item-padd">
                 <div class="char-counter" ?hidden="${!activity.itemsInEditMode}">
                   <paper-textarea
                     .alwaysFloatLabel="${activity.itemsInEditMode}"
                     .noLabelFloat="${!activity.itemsInEditMode}"
                     input
-                    label=${this.getLabel(activity.itemsInEditMode, 'Item Description')}
+                    label=${this.getLabel(activity.itemsInEditMode, getTranslation('ITEM_DESCRIPTION'))}
                     ?hidden="${!activity.itemsInEditMode}"
                     char-counter
                     maxlength="150"
                     .invalid="${item.invalid?.name}"
-                    @invalid-changed="${(e: CustomEvent) => {
-                      if (item.invalid && item.invalid.name != e.detail.value) {
-                        item.invalid = {...item.invalid, name: e.detail.value};
-                      }
+                    @invalid-changed="${({detail}: CustomEvent) => {
+                      this.activityItemInvalidChanged(detail, 'name', item);
                     }}"
                     required
                     error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
                     .autoValidate="${item.autovalidate?.name}"
                     @focus="${() => this.setAutoValidate(item, 'name')}"
                     .value="${item.name}"
-                    @keydown="${(e: any) => this.handleEsc(e)}"
-                    @value-changed="${({detail}: CustomEvent) => this.updateModelValue(item, 'name', detail.value)}"
+                    @keydown="${(e: any) => {
+                      if (activity.inEditMode && ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) {
+                        e.stopImmediatePropagation();
+                      }
+                      this.handleEsc(e);
+                    }}"
+                    @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'name', item)}"
                   ></paper-textarea>
                 </div>
-                <div class="truncate-multi-line" title="${item.name}" ?hidden="${activity.itemsInEditMode}">
+                <div
+                  class="truncate-multi-line"
+                  style="margin-bottom: 10px; margin-top: 8px;"
+                  title="${item.name}"
+                  ?hidden="${activity.itemsInEditMode}"
+                >
                   ${item.name}
                 </div>
               </td>
-              <td tabindex="0">
+              <td tabindex="${ifDefined(this.commentMode ? undefined : 0)}">
                 <paper-input
                   input
                   maxlength="150"
                   .alwaysFloatLabel="${activity.itemsInEditMode}"
                   .noLabelFloat="${!activity.itemsInEditMode}"
-                  label=${this.getLabel(activity.itemsInEditMode, 'Unit')}
+                  label=${this.getLabel(activity.itemsInEditMode, getTranslation('UNIT'))}
                   ?hidden="${!activity.itemsInEditMode}"
                   .invalid="${item.invalid?.unit}"
-                  @invalid-changed="${(e: CustomEvent) => {
-                    if (item.invalid && item.invalid.unit != e.detail.value) {
-                      item.invalid = {...item.invalid, unit: e.detail.value};
-                    }
+                  @invalid-changed="${({detail}: CustomEvent) => {
+                    this.activityItemInvalidChanged(detail, 'unit', item);
                   }}"
                   required
                   .autoValidate="${item.autovalidate?.unit}"
                   @focus="${() => this.setAutoValidate(item, 'unit')}"
                   error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
                   .value="${item.unit}"
-                  @keydown="${(e: any) => this.handleEsc(e)}"
-                  @value-changed="${({detail}: CustomEvent) => this.updateModelValue(item, 'unit', detail.value)}"
+                  @keydown="${(e: any) => {
+                    if (activity.itemsInEditMode && ['ArrowLeft', 'ArrowRight'].includes(e.key)) {
+                      e.stopImmediatePropagation();
+                    }
+                    this.handleEsc(e);
+                  }}"
+                  @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unit', item)}"
                 ></paper-input>
                 <div class="truncate-single-line" title="${item.unit}" ?hidden="${activity.itemsInEditMode}">
                   ${item.unit}
                 </div>
               </td>
-              <td tabindex="0">
+              <td tabindex="${ifDefined(this.commentMode ? undefined : 0)}">
                 <etools-currency-amount-input
-                  label=${this.getLabel(activity.itemsInEditMode, 'N. of Units')}
+                  label=${this.getLabel(activity.itemsInEditMode, getTranslation('N_OF_UNITS'))}
                   .noLabelFloat="${!activity.itemsInEditMode}"
                   input
+                  tabindex="${ifDefined(item.inEditMode ? undefined : '-1')}"
                   ?readonly="${!activity.itemsInEditMode}"
                   .invalid="${item.invalid?.no_units}"
                   no-of-decimals="2"
-                  @invalid-changed="${(e: CustomEvent) => {
-                    if (item.invalid && item.invalid.no_units != e.detail.value) {
-                      item.invalid = {...item.invalid, no_units: e.detail.value};
-                    }
+                  @invalid-changed="${({detail}: CustomEvent) => {
+                    this.activityItemInvalidChanged(detail, 'no_units', item);
                   }}"
                   required
                   auto-validate
@@ -143,22 +160,20 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                       return;
                     }
                     item.no_units = detail.value;
-                    this.validateCsoAndUnicefCash(item);
-                    this.requestUpdate();
+                    this.updateActivityCashFromItem(activity, item);
                   }}"
                 ></etools-currency-amount-input>
               </td>
-              <td tabindex="0">
+              <td tabindex="${ifDefined(this.commentMode ? undefined : 0)}">
                 <etools-currency-amount-input
-                  label=${this.getLabel(activity.itemsInEditMode, 'Price/Unit')}
+                  label=${this.getLabel(activity.itemsInEditMode, getTranslation('PRICE_UNIT'))}
                   .noLabelFloat="${!activity.itemsInEditMode}"
                   input
+                  tabindex="${ifDefined(item.inEditMode ? undefined : '-1')}"
                   ?readonly="${!activity.itemsInEditMode}"
                   .invalid="${item.invalid?.unit_price}"
-                  @invalid-changed="${(e: CustomEvent) => {
-                    if (item.invalid && item.invalid.unit_price != e.detail.value) {
-                      item.invalid = {...item.invalid, unit_price: e.detail.value};
-                    }
+                  @invalid-changed="${({detail}: CustomEvent) => {
+                    this.activityItemInvalidChanged(detail, 'unit_price', item);
                   }}"
                   required
                   auto-validate
@@ -170,63 +185,49 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                       return;
                     }
                     item.unit_price = detail.value;
-                    this.validateCsoAndUnicefCash(item);
-                    this.requestUpdate();
+                    this.updateActivityCashFromItem(activity, item);
                   }}"
                 ></etools-currency-amount-input>
               </td>
-              <td tabindex="0">
+              <td tabindex="${ifDefined(this.commentMode ? undefined : 0)}">
                 <etools-currency-amount-input
-                  label=${this.getLabel(activity.itemsInEditMode, 'Partner Cash')}
+                  label=${this.getLabel(activity.itemsInEditMode, getTranslation('PARTNER_CASH'))}
                   .noLabelFloat="${!activity.itemsInEditMode}"
                   input
                   ?readonly="${!activity.itemsInEditMode}"
                   required
-                  auto-validate
+                  tabindex="${ifDefined(item.inEditMode ? undefined : '-1')}"
                   error-message="${translate('INCORRECT_VALUE')}"
                   .invalid="${item.invalid?.cso_cash}"
-                  @invalid-changed="${(e: CustomEvent) => {
-                    if (item.invalid && item.invalid.cso_cash != e.detail.value) {
-                      item.invalid = {...item.invalid, cso_cash: e.detail.value};
-                    }
+                  @invalid-changed="${({detail}: CustomEvent) => {
+                    this.activityItemInvalidChanged(detail, 'cso_cash', item);
                   }}"
                   .value="${item.cso_cash}"
                   @keydown="${(e: any) => this.handleEsc(e)}"
                   @value-changed="${({detail}: CustomEvent) => {
-                    if (item.cso_cash == detail.value) {
-                      return;
-                    }
-                    item.cso_cash = detail.value;
-
-                    this.updateUnicefCash(item, activity);
-                    this.requestUpdate();
+                    this.cashFieldChanged(detail, 'cso_cash', item);
+                    this.updateActivityCashFromItem(activity, item);
                   }}"
                 ></etools-currency-amount-input>
               </td>
-              <td tabindex="0">
+              <td tabindex="${ifDefined(this.commentMode ? undefined : 0)}">
                 <etools-currency-amount-input
-                  label=${this.getLabel(activity.itemsInEditMode, 'UNICEF Cash')}
+                  label=${this.getLabel(activity.itemsInEditMode, getTranslation('UNICEF_CASH'))}
                   .noLabelFloat="${!activity.itemsInEditMode}"
                   input
                   ?readonly="${!activity.itemsInEditMode}"
                   required
-                  auto-validate
+                  tabindex="${ifDefined(item.inEditMode ? undefined : '-1')}"
                   error-message="${translate('INCORRECT_VALUE')}"
                   .invalid="${item.invalid?.unicef_cash}"
-                  @invalid-changed="${(e: CustomEvent) => {
-                    if (item.invalid && item.invalid.unicef_cash != e.detail.value) {
-                      item.invalid = {...item.invalid, unicef_cash: e.detail.value};
-                    }
+                  @invalid-changed="${({detail}: CustomEvent) => {
+                    this.activityItemInvalidChanged(detail, 'unicef_cash', item);
                   }}"
                   .value="${item.unicef_cash}"
                   @keydown="${(e: any) => this.handleEsc(e)}"
                   @value-changed="${({detail}: CustomEvent) => {
-                    if (item.unicef_cash == detail.value) {
-                      return;
-                    }
-                    item.unicef_cash = detail.value;
-                    this.updateCsoCash(item, activity);
-                    this.requestUpdate();
+                    this.cashFieldChanged(detail, 'unicef_cash', item);
+                    this.updateActivityCashFromItem(activity, item);
                   }}"
                 ></etools-currency-amount-input>
               </td>
@@ -236,9 +237,9 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   class="bold"
                   tabindex="-1"
                   .noLabelFloat="${!activity.itemsInEditMode}"
-                  .value="${this.getTotalForItem(item.no_units || 0, item.unit_price || 0)}"
+                  .value="${getItemTotalFormatted(item)}"
                 ></paper-input>
-                <div class="hover-block flex-h">
+                <div class="hover-block flex-h ${activity.itemsInEditMode && !item.id ? 'in-edit-and-deletable' : ''}">
                   <paper-icon-button
                     icon="create"
                     ?hidden="${!this.permissions.edit.result_links || !item.id}"
@@ -259,50 +260,51 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                     icon="delete"
                     tabindex="0"
                     ?hidden="${!this.permissions.edit.result_links}"
-                    @click="${() => this.removeItem(activity, pdOutput, itemIndex)}"
+                    @click="${() => this.removeActivityItem(activity, pdOutput, itemIndex)}"
                   ></paper-icon-button>
                 </div>
               </td>
             </tr>
           `
         )}
-        <tr
-          ?hidden="${!this.permissions.edit.result_links ||
-          this.commentMode ||
-          (!activity.itemsInEditMode && this.oneEntityInEditMode)}"
-          type="add-item"
-        >
-          <td></td>
-          <td tabindex="0">
-            <div class="icon" @click="${(e: CustomEvent) => this.addNewItem(e, activity, 'focusAbove')}">
-              <paper-icon-button icon="add-box"></paper-icon-button> ${translate('ADD_NEW_ITEM')}
-            </div>
-          </td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td colspan="2">
-            <div
-              class="flex-h justify-right"
-              ?hidden="${!((activity.inEditMode || activity.itemsInEditMode) && activity.items?.length > 3)}"
-            >
-              <paper-button
-                id="btnSave-activity-2"
-                ?hidden="${!((activity.inEditMode || activity.itemsInEditMode) && activity.items?.length > 3)}"
-                @click="${() => this.saveActivity(activity, pdOutput.id, this.intervention.id!)}"
-                >${translate('GENERAL.SAVE')}</paper-button
-              >
-              <paper-icon-button
-                class="flex-none"
-                icon="close"
-                @click="${() =>
-                  this.cancelActivity(pdOutput.activities, activity, resultIndex, pdOutputIndex, activityIndex)}"
-              ></paper-icon-button>
-            </div>
-          </td>
-        </tr>
+        ${!this.permissions.edit.result_links ||
+        this.commentMode ||
+        (!activity.itemsInEditMode && this.oneEntityInEditMode)
+          ? html``
+          : html`
+              <tr type="add-item">
+                <td></td>
+                <td tabindex="${ifDefined(this.commentMode ? undefined : 0)}" class="a-item-add-padd">
+                  <div class="icon" @click="${(e: CustomEvent) => this.addNewActivityItem(e, activity, 'focusAbove')}">
+                    <paper-icon-button icon="add-box"></paper-icon-button> ${translate('ADD_NEW_ITEM')}
+                  </div>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td colspan="2">
+                  <div
+                    class="flex-h justify-right"
+                    ?hidden="${!((activity.inEditMode || activity.itemsInEditMode) && activity.items?.length > 3)}"
+                  >
+                    <paper-button
+                      id="btnSave-activity-2"
+                      ?hidden="${!((activity.inEditMode || activity.itemsInEditMode) && activity.items?.length > 3)}"
+                      @click="${() => this.saveActivity(activity, pdOutput.id, this.intervention.id!)}"
+                      >${translate('GENERAL.SAVE')}</paper-button
+                    >
+                    <paper-icon-button
+                      class="flex-none"
+                      icon="close"
+                      @click="${() =>
+                        this.cancelActivity(pdOutput.activities, activity, resultIndex, pdOutputIndex, activityIndex)}"
+                    ></paper-icon-button>
+                  </div>
+                </td>
+              </tr>
+            `}
       </tbody>`;
     }
 
@@ -315,7 +317,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       activityIndex: number
     ) => void;
 
-    async removeItem(
+    async removeActivityItem(
       activity: InterventionActivityExtended,
       pdOutput: ResultLinkLowerResultExtended,
       itemIndex: number
@@ -323,7 +325,9 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       const confirmed = await openDialog({
         dialog: 'are-you-sure',
         dialogData: {
-          content: 'Are you sure you want to delete this activity item?'
+          content: getTranslation('DELETE_ACTIVITY_ITEM_PROMPT'),
+          confirmBtnText: translate('GENERAL.DELETE') as unknown as string,
+          cancelBtnText: translate('GENERAL.CANCEL') as unknown as string
         }
       }).then(({confirmed}) => confirmed);
       if (confirmed) {
@@ -349,124 +353,16 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       this.requestUpdate();
     }
 
-    updateUnicefCash(item: InterventionActivityItemExtended, activity: InterventionActivityExtended) {
-      if (isNaN(Number(item.cso_cash))) {
-        return;
-      }
-      const total = this._getItemTotal(item);
-      if (Number(item.cso_cash) > total) {
-        item.invalid = {cso_cash: true};
-        return;
-      } else {
-        item.invalid = {cso_cash: false};
-      }
-      item.unicef_cash = String((total - Number(item.cso_cash)).toFixed(2)); // 12019.15 - 11130 = 889.1499999999996
-
-      this.validateCsoAndUnicefCash(item);
-
-      this.calculateActivityTotals(activity);
-    }
-
-    _getItemTotal(item: InterventionActivityItemExtended) {
-      let total = Number(item.no_units) * Number(item.unit_price);
-      total = Number(total.toFixed(2)); // 1.1*6 =6.0000000000000005
-      return total;
-    }
-    updateCsoCash(item: InterventionActivityItemExtended, activity: InterventionActivityExtended) {
-      if (isNaN(Number(item.unicef_cash))) {
-        return;
-      }
-      const total = this._getItemTotal(item);
-      if (Number(item.unicef_cash) > total) {
-        item.invalid = {unicef_cash: true};
-        return;
-      } else {
-        item.invalid = {unicef_cash: false};
-      }
-      item.cso_cash = String((total - Number(item.unicef_cash)).toFixed(2)); // 12019.15 - 11130 = 889.1499999999996
-
-      this.validateCsoAndUnicefCash(item);
-      this.calculateActivityTotals(activity);
-    }
-
-    calculateActivityTotals(activity: InterventionActivityExtended) {
-      if (!(activity.items && activity.items.length)) {
-        return;
-      }
-      activity.cso_cash = String(activity.items.reduce((sum: number, item) => sum + Number(item.cso_cash), 0));
-      activity.unicef_cash = String(activity.items.reduce((sum: number, item) => sum + Number(item.unicef_cash), 0));
-    }
-
-    getTotalForItem(noOfUnits: number, pricePerUnit: number | string) {
-      let total = (Number(noOfUnits) || 0) * (Number(pricePerUnit) || 0);
-      total = Number(total.toFixed(2));
-      return displayCurrencyAmount(String(total), '0', 2);
-    }
-
-    validateCsoAndUnicefCash(item: InterventionActivityItemExtended) {
-      if (Number(item.no_units) == 0 || Number(item.unit_price) == 0) {
-        return;
-      }
-
-      let total = (Number(item.no_units) || 0) * (Number(item.unit_price) || 0);
-      total = Number(total.toFixed(2));
-      let sum = (Number(item.cso_cash) || 0) + (Number(item.unicef_cash) || 0);
-      sum = Number(sum.toFixed(2));
-      if (total != sum) {
-        item.invalid = {...item.invalid, ...{cso_cash: true, unicef_cash: true}};
-      } else {
-        item.invalid = {...item.invalid, ...{cso_cash: false, unicef_cash: false}};
-      }
-    }
-
-    addNewItem(e: CustomEvent, activity: Partial<InterventionActivityExtended>, focusClue: string) {
+    addNewActivityItem(e: CustomEvent, activity: Partial<InterventionActivityExtended>, focusClue: string) {
       if (!activity.items) {
         activity.items = [];
       }
-      // @ts-ignore
-      activity.items?.push({name: '', inEditMode: true});
+      activity.items?.push({name: '', inEditMode: true} as any);
+      activity.inEditMode = true;
       activity.itemsInEditMode = true;
       this.oneEntityInEditMode = true;
       this.requestUpdate();
       this.moveFocusToAddedItemAndAttachListeners(e.target, focusClue);
-    }
-
-    moveFocusToAddedItemAndAttachListeners(target: any, focusClue: string) {
-      // @ts-ignore
-      const targetTrParent = this.determineParentTr(target);
-      setTimeout(() => {
-        const itemDescTd = (
-          focusClue === 'focusAbove'
-            ? targetTrParent?.previousElementSibling
-            : targetTrParent?.parentElement.nextElementSibling.nextElementSibling.children[0]
-        )?.children[1];
-        // @ts-ignore
-        itemDescTd?.querySelector('paper-textarea')?.focus();
-        // @ts-ignore Defined in arrows-nav-mixin
-        this.lastFocusedTd = itemDescTd;
-        // @ts-ignore Defined in arrows-nav-mixin
-        this.attachListenersToTr(this.determineParentTr(itemDescTd));
-      }, 10);
-    }
-
-    preserveFocusOnRow(target: any) {
-      // @ts-ignore
-      const targetTrParent = this.determineParentTr(target);
-      setTimeout(() => {
-        const itemDescTd = targetTrParent?.children[1];
-        // @ts-ignore
-        itemDescTd?.querySelector('paper-textarea')?.focus();
-        // @ts-ignore
-        this.lastFocusedTd = itemDescTd;
-      });
-    }
-
-    updateModelValue(model: any, property: string, newVal: any) {
-      if (newVal == model[property]) {
-        return;
-      }
-      model[property] = newVal;
-      this.requestUpdate();
     }
   };
 }

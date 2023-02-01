@@ -22,10 +22,9 @@ import {
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate, translateConfig} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
-import '../../common/paper-textarea-with-icon';
 
 /**
  * @customElement
@@ -39,7 +38,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
   render() {
     if (!this.data || !this.permissions) {
       return html` ${sharedStyles}
-        <etools-loading source="doc-det" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="doc-det" active></etools-loading>`;
     }
     // language=HTML
     return html`
@@ -53,14 +52,18 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
         etools-content-panel::part(ecp-content) {
           padding: 8px 24px 16px 24px;
         }
-        paper-textarea-with-icon {
-          outline: none;
-          flex: auto;
-        }
 
         info-icon-tooltip {
           --iit-icon-size: 18px;
           --iit-margin: 0 0 4px 4px;
+        }
+        .row-padding-v {
+          position: relative;
+        }
+        paper-checkbox[disabled] {
+          --paper-checkbox-checked-color: black;
+          --paper-checkbox-unchecked-color: black;
+          --paper-checkbox-label-color: black;
         }
       </style>
 
@@ -80,111 +83,167 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             .autoValidate="${this.autoValidate}"
             .value="${this.data.title}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'title')}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit?.title)}"
-            ?required="${this.permissions.required.title}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit?.title)}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit?.title) ? -1 : 0}"
+            ?required="${this.permissions?.required.title}"
             @focus="${() => (this.autoValidate = true)}"
             error-message="This field is required"
             maxlength="256"
-            .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.title)}"
+            .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.title)}"
           >
           </paper-textarea>
         </div>
 
         <div class="row-padding-v">
-          <paper-textarea-with-icon
+          <div>
+            <label class="paper-label">${translate(translatesMap.context)}</label>
+            <info-icon-tooltip
+              .language="${translateConfig.lang}"
+              id="iit-context"
+              slot="after-label"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit?.context)}"
+              .tooltipText="${translate('CONTEXT_TOOLTIP')}"
+            ></info-icon-tooltip>
+          </div>
+          <paper-textarea
             id="context"
-            label=${translate(translatesMap.context)}
-            always-float-label
+            no-label-float
             type="text"
             placeholder="—"
             .value="${this.data.context}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'context')}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit?.context)}"
-            ?required="${this.permissions.required.context}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit?.context)}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit?.context) ? -1 : 0}"
+            ?required="${this.permissions?.required.context}"
             maxlength="7000"
             rows="${detailsTextareaRowsCount(this.editMode)}"
-            .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.context)}"
+            .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.context)}"
           >
-            <info-icon-tooltip
-              id="iit-context"
-              slot="after-label"
-              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit?.context)}"
-              .tooltipText="${translate('CONTEXT_TOOLTIP')}"
-            ></info-icon-tooltip>
-          </paper-textarea-with-icon>
+          </paper-textarea>
         </div>
 
         <div class="row-padding-v">
-          <paper-textarea-with-icon
+          <div>
+            <label class="paper-label">${translate(translatesMap.implementation_strategy)}</label>
+            <info-icon-tooltip
+              .language="${translateConfig.lang}"
+              id="iit-implemen-strat"
+              slot="after-label"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit?.implementation_strategy)}"
+              .tooltipText="${translate('IMPLEMENTATION_STRATEGY_AND_TECHNICAL_GUIDANCE_TOOLTIP')}"
+            ></info-icon-tooltip>
+          </div>
+          <paper-textarea
             id="implementation-strategy"
-            label=${translate(translatesMap.implementation_strategy)}
-            always-float-label
+            no-label-float
             placeholder="—"
             .value="${this.data.implementation_strategy}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'implementation_strategy')}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit?.implementation_strategy)}"
-            ?required="${this.permissions.required.implementation_strategy}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit?.implementation_strategy)}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit?.implementation_strategy) ? -1 : 0}"
+            ?required="${this.permissions?.required.implementation_strategy}"
             maxlength="5000"
             rows="${detailsTextareaRowsCount(this.editMode)}"
-            .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.implementation_strategy)}"
+            .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.implementation_strategy)}"
           >
-            <info-icon-tooltip
-              id="iit-implemen-strat"
-              slot="after-label"
-              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit?.implementation_strategy)}"
-              .tooltipText="${translate('IMPLEMENTATION_STRATEGY_AND_TECHNICAL_GUIDANCE_TOOLTIP')}"
-            ></info-icon-tooltip>
-          </paper-textarea-with-icon>
+          </paper-textarea>
         </div>
 
         <div class="row-padding-v">
-          <paper-textarea-with-icon
-            id="capacityDevelopment"
-            label=${translate(translatesMap.capacity_development)}
-            type="text"
-            always-float-label
-            placeholder="—"
-            .value="${this.data.capacity_development}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.capacity_development)}"
-            ?required="${this.permissions.required.capacity_development}"
-            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'capacity_development')}"
-            maxlength="5000"
-            .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.capacity_development)}"
-            rows="${detailsTextareaRowsCount(this.editMode)}"
-          >
+          <div>
+            <label class="paper-label">${translate(translatesMap.capacity_development)}</label>
             <info-icon-tooltip
+              .language="${translateConfig.lang}"
               id="iit-cap-develop"
               slot="after-label"
-              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.capacity_development)}"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.capacity_development)}"
               .tooltipText="${translate('CAPACITY_DEVELOPMENT_TOOLTIP')}"
             ></info-icon-tooltip>
-          </paper-textarea-with-icon>
+          </div>
+
+          <paper-textarea
+            id="capacityDevelopment"
+            type="text"
+            no-label-float
+            placeholder="—"
+            .value="${this.data.capacity_development}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.capacity_development)}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit?.capacity_development) ? -1 : 0}"
+            ?required="${this.permissions?.required.capacity_development}"
+            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'capacity_development')}"
+            maxlength="5000"
+            .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.capacity_development)}"
+            rows="${detailsTextareaRowsCount(this.editMode)}"
+          >
+          </paper-textarea>
         </div>
 
-        <div class="layout-horizontal row-padding-v">
-          <paper-textarea-with-icon
+        <div class="row-padding-v">
+          <div>
+            <label class="paper-label">${translate(translatesMap.other_partners_involved)}</label>
+            <info-icon-tooltip
+              .language="${translateConfig.lang}"
+              id="iit-other-p-i"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.other_partners_involved)}"
+              .tooltipText="${translate('OTHER_PARTNERS_INVOLVED_TOOLTIP')}"
+            ></info-icon-tooltip>
+          </div>
+          <paper-textarea
+            no-label-float
             id="otherPartnersInvolved"
-            label=${translate(translatesMap.other_partners_involved)}
             type="text"
             always-float-label
             placeholder="—"
             .value="${this.data.other_partners_involved}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.other_partners_involved)}"
-            ?required="${this.permissions.required.other_partners_involved}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.other_partners_involved)}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.other_partners_involved) ? -1 : 0}"
+            ?required="${this.permissions?.required.other_partners_involved}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'other_partners_involved')}"
             maxlength="5000"
             rows="${detailsTextareaRowsCount(this.editMode)}"
-            .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.other_partners_involved)}"
+            .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.other_partners_involved)}"
           >
-            <info-icon-tooltip
-              id="iit-other-p-i"
-              slot="after-label"
-              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.other_partners_involved)}"
-              .tooltipText="${translate('OTHER_PARTNERS_INVOLVED_TOOLTIP')}"
-            ></info-icon-tooltip>
-          </paper-textarea-with-icon>
+          </paper-textarea>
         </div>
 
+        <div class="row-padding-v">
+          <paper-checkbox
+            ?checked="${this.data.has_data_processing_agreement}"
+            ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.has_data_processing_agreement)}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions.edit.has_data_processing_agreement) ? -1 : 0}"
+            @checked-changed=${({detail}: CustomEvent) => this.valueChanged(detail, 'has_data_processing_agreement')}
+          >
+            ${translate(translatesMap.has_data_processing_agreement)}
+          </paper-checkbox>
+        </div>
+
+        <div class="row-padding-v">
+          <paper-checkbox
+            ?checked="${this.data.has_activities_involving_children}"
+            ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.has_activities_involving_children)}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions.edit.has_activities_involving_children)
+              ? -1
+              : 0}"
+            @checked-changed=${({detail}: CustomEvent) =>
+              this.valueChanged(detail, 'has_activities_involving_children')}
+          >
+            ${translate(translatesMap.has_activities_involving_children)}
+          </paper-checkbox>
+        </div>
+
+        <div class="row-padding-v">
+          <paper-checkbox
+            ?checked="${this.data.has_special_conditions_for_construction}"
+            ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.has_special_conditions_for_construction)}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions.edit.has_special_conditions_for_construction)
+              ? -1
+              : 0}"
+            @checked-changed=${({detail}: CustomEvent) =>
+              this.valueChanged(detail, 'has_special_conditions_for_construction')}
+          >
+            ${translate(translatesMap.has_special_conditions_for_construction)}
+          </paper-checkbox>
+        </div>
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
       </etools-content-panel>
     `;

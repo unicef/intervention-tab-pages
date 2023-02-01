@@ -6,7 +6,7 @@ import './comment';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {InterventionComment, GenericObject} from '@unicef-polymer/etools-types';
-import {translate, get} from 'lit-translate';
+import {get as getTranslation, translate} from 'lit-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {CommentsItemsNameMap} from './comments-items-name-map';
 import {EditComments} from './edit-comments-base';
@@ -26,9 +26,9 @@ export class CommentsDialog extends EditComments {
     const itemType = CommentsItemsNameMap[relatedToKey];
     if (itemType) {
       const description = this.relatedToDescription ? ` - ${this.relatedToDescription}` : '';
-      return `Comments on: ${get(CommentsItemsNameMap[relatedToKey])}${description}`;
+      return `${getTranslation('COMMENTS_ON')}: ${getTranslation(CommentsItemsNameMap[relatedToKey])}${description}`;
     } else if (this.relatedToDescription) {
-      return `Comments on: ${this.relatedToDescription}`;
+      return `${getTranslation('COMMENTS_ON')}${this.relatedToDescription}`;
     } else {
       return '';
     }
@@ -45,7 +45,7 @@ export class CommentsDialog extends EditComments {
     this.comments = [...relatedToComments];
     this.requestUpdate().then(() => this.scrollDown());
   }
-  private dialogHeight?: number;
+
   @query('etools-dialog') private dialogElement!: EtoolsDialog;
 
   protected render(): TemplateResult {
@@ -84,7 +84,7 @@ export class CommentsDialog extends EditComments {
                 @retry="${() => this.retry(index)}"
               ></comment-element>`
           )}
-          <div class="no-comments" ?hidden="${this.comments.length}">There are no comments yet</div>
+          <div class="no-comments" ?hidden="${this.comments.length}">${translate('NO_COMMENTS')}</div>
         </div>
         <div class="message-input" slot="buttons">
           <paper-textarea
@@ -99,8 +99,8 @@ export class CommentsDialog extends EditComments {
             @keyup="${(event: KeyboardEvent) => this.onKeyup(event)}"
             @keydown="${(event: KeyboardEvent) => this.onKeydown(event)}"
           ></paper-textarea>
-          <paper-button class="send-btn" @click="${() => this.addComment()}">Post</paper-button>
-          <paper-button class="cancel-btn" @click="${() => this.onClose()}">Close</paper-button>
+          <paper-button class="send-btn" @click="${() => this.addComment()}">${translate('POST')}</paper-button>
+          <paper-button class="cancel-btn" @click="${() => this.onClose()}">${translate('CLOSE')}</paper-button>
         </div>
       </etools-dialog>
     `;
@@ -132,12 +132,7 @@ export class CommentsDialog extends EditComments {
   }
 
   private updateHeight(): void {
-    const children = this.dialogElement?.shadowRoot?.children as any;
-    const height: number = children?.dialog?.offsetHeight || 0;
-    if (height !== this.dialogHeight) {
-      this.dialogElement.notifyResize();
-      this.dialogHeight = height;
-    }
+    this.dialogElement.notifyResize();
   }
   static get styles(): CSSResultArray {
     // language=css

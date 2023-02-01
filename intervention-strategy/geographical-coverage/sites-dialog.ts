@@ -67,6 +67,22 @@ export class GroupedLocationsDialog extends LitElement {
         div.child-bottom-padding:last-of-type {
           padding-bottom: 0;
         }
+
+        etools-dialog paper-textarea {
+          outline: none;
+          --paper-input-container-underline: {
+            display: none;
+          }
+          --paper-input-container-underline-focus: {
+            display: none;
+          }
+          --iron-autogrow-textarea: {
+            overflow: auto;
+            padding: 0;
+            min-height: 48px;
+            max-height: 96px;
+          }
+        }
       </style>
 
       <etools-dialog
@@ -90,12 +106,12 @@ export class GroupedLocationsDialog extends LitElement {
         ></sites-widget>
 
         <paper-textarea
-          label="Selected sites"
+          label="${translate('SELECTED_SITES')}"
           always-float-label
           class="w100"
           placeholder="&#8212;"
-          readonly
           max-rows="4"
+          onkeypress="return false;"
           .value="${this.getSelectedSitesText(this.selectedSites)}"
         >
         </paper-textarea>

@@ -20,6 +20,8 @@ import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialo
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import PaginationMixin from '@unicef-polymer/etools-modules-common/dist/mixins/pagination-mixin';
+import cloneDeep from 'lodash-es/cloneDeep';
 
 /**
  * @customElement
@@ -28,7 +30,7 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
  * @appliesMixin ReportingRequirementsCommonMixin
  */
 @customElement('special-reporting-requirements')
-export class SpecialReportingRequirements extends ReportingRequirementsCommonMixin(LitElement) {
+export class SpecialReportingRequirements extends PaginationMixin(ReportingRequirementsCommonMixin(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles, reportingRequirementsListStyles];
   }
@@ -56,7 +58,7 @@ export class SpecialReportingRequirements extends ReportingRequirementsCommonMix
           <etools-data-table-column class="flex-6">${translate('REPORTING_REQUIREMENT')}</etools-data-table-column>
           <etools-data-table-column class="flex-c"></etools-data-table-column>
         </etools-data-table-header>
-        ${this.reportingRequirements.map(
+        ${(this.paginatedReports || []).map(
           (item: any, index: number) => html` <etools-data-table-row no-collapse secondary-bg-on-hover>
             <div slot="row-data" class="layout-horizontal editable-row">
               <div class="col-data col-1 right-align index-col">${this._getIndex(index)}</div>
@@ -69,9 +71,22 @@ export class SpecialReportingRequirements extends ReportingRequirementsCommonMix
             </div>
           </etools-data-table-row>`
         )}
+        <etools-data-table-footer
+          .pageSize="${this.paginator.page_size}"
+          .pageNumber="${this.paginator.page}"
+          .totalResults="${this.paginator.count}"
+          .visibleRange="${this.paginator.visible_range}"
+          @visible-range-changed="${this.visibleRangeChanged}"
+          @page-size-changed="${this.pageSizeChanged}"
+          @page-number-changed="${this.pageNumberChanged}"
+        >
+        </etools-data-table-footer>
       </div>
     `;
   }
+
+  @property({type: Array})
+  paginatedReports!: any[];
 
   @property({type: Boolean})
   editMode!: boolean;
@@ -91,6 +106,7 @@ export class SpecialReportingRequirements extends ReportingRequirementsCommonMix
   _addEventListeners() {
     this._onEdit = this._onEdit.bind(this);
     this._onDelete = this._onDelete.bind(this);
+    this.addEventListener('reporting-requirements-loaded', this.dataWasLoaded as any);
 
     this.addEventListener('edit', this._onEdit as any);
     this.addEventListener('delete', this._onDelete as any);
@@ -99,6 +115,7 @@ export class SpecialReportingRequirements extends ReportingRequirementsCommonMix
   _removeEventListeners() {
     this.removeEventListener('edit', this._onEdit as any);
     this.removeEventListener('delete', this._onDelete as any);
+    this.removeEventListener('reporting-requirements-loaded', this.dataWasLoaded as any);
   }
 
   disconnectedCallback() {
@@ -107,11 +124,29 @@ export class SpecialReportingRequirements extends ReportingRequirementsCommonMix
     this._removeDeleteConfirmationsDialog();
   }
 
+  dataWasLoaded() {
+    this.paginator = {...this.paginator, page: 1, page_size: 10, count: this.reportingRequirements.length};
+  }
+
+  _paginate(pageNumber: number, pageSize: number) {
+    if (!this.reportingRequirements) {
+      return;
+    }
+    this.paginatedReports = (this.reportingRequirements || []).slice(
+      (pageNumber - 1) * pageSize,
+      pageNumber * pageSize
+    );
+  }
+
+  paginatorChanged() {
+    this._paginate(this.paginator.page, this.paginator.page_size);
+  }
+
   _onEdit(index?: number) {
     openDialog({
       dialog: 'add-edit-special-rep-req',
       dialogData: {
-        item: typeof index === 'undefined' ? {} : this.reportingRequirements[index!],
+        item: typeof index === 'undefined' ? {} : cloneDeep(this.reportingRequirements[index!]),
         interventionId: this.interventionId
       }
     }).then(({confirmed, response}) => {
@@ -153,6 +188,7 @@ export class SpecialReportingRequirements extends ReportingRequirementsCommonMix
         .then(() => {
           reportingRequirementsOriginal.splice(this._itemToDeleteIndex, 1);
           this.reportingRequirements = [...reportingRequirementsOriginal];
+          this.paginator = {...this.paginator, page: 1};
           this.requestUpdate();
         })
         .catch((error: any) => {
@@ -214,6 +250,7 @@ export class SpecialReportingRequirements extends ReportingRequirementsCommonMix
       reportingRequirementsOriginal.push(savedReqItem);
     }
     this.reportingRequirements = [...reportingRequirementsOriginal];
+    this.paginator = {...this.paginator, page: 1};
     this.updateReportingRequirements(this.reportingRequirements, CONSTANTS.REQUIREMENTS_REPORT_TYPE.SR);
     this.requestUpdate();
   }

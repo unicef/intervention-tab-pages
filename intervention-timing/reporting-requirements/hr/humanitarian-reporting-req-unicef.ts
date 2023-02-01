@@ -11,6 +11,7 @@ import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialo
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import PaginationMixin from '@unicef-polymer/etools-modules-common/dist/mixins/pagination-mixin';
+import cloneDeep from 'lodash-es/cloneDeep';
 
 /**
  * @customElement
@@ -124,8 +125,7 @@ export class HumanitarianReportingReqUnicef extends PaginationMixin(ReportingReq
   openUnicefHumanitarianRepReqDialog() {
     if (!this.interventionStart) {
       fireEvent(this, 'toast', {
-        text: getTranslation('FILL_START_DATE'),
-        showCloseBtn: true
+        text: getTranslation('FILL_START_DATE')
       });
       return;
     }
@@ -136,7 +136,7 @@ export class HumanitarianReportingReqUnicef extends PaginationMixin(ReportingReq
     openDialog({
       dialog: 'edit-hru-dialog',
       dialogData: {
-        hruData: hruData,
+        hruData: cloneDeep(hruData),
         selectedDate: '',
         interventionId: this.interventionId,
         interventionStart: this.interventionStart

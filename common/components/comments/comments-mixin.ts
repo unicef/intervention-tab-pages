@@ -7,6 +7,7 @@ import '../comments-panels/comments-panels';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {Constructor, InterventionComment} from '@unicef-polymer/etools-types';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 
 type MetaData = CommentElementMeta & {
   oldStyles: string;
@@ -48,17 +49,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
     private comments: CommentsCollection = {};
     private metaDataCollection: MetaData[] = [];
     private commentsModeEnabled = false;
-    private rendered = false;
     private currentEditedComments: MetaData | null = null;
-
-    protected firstUpdated() {
-      this.rendered = true;
-      if (this.commentsModeEnabled) {
-        setTimeout(() => {
-          this.setCommentMode();
-        }, 300);
-      }
-    }
 
     stateChanged(state: RootState) {
       const commentsState = state.commentsData;
@@ -92,9 +83,8 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
       if (commentsModeEnabled !== this.commentsModeEnabled) {
         this.commentsModeEnabled = commentsModeEnabled;
-        if (this.rendered) {
-          this.setCommentMode();
-        }
+        this.setCommentMode();
+        fireEvent(this, 'scroll-up');
       }
     }
 
@@ -106,7 +96,8 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
       return [];
     }
 
-    setCommentMode() {
+    async setCommentMode() {
+      await this.updateComplete;
       if (this.commentsModeEnabled) {
         this.startCommentMode();
       } else {
@@ -149,7 +140,8 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
     private createMataData(element: HTMLElement, relatedTo: string, relatedToDescription: string): MetaData {
       const oldStyles: string = element.style.cssText;
       const counter: HTMLElement = this.createCounter();
-      const overlay: HTMLElement = this.createOverlay(relatedTo);
+      // prevent creating multiple overlays for the element
+      const overlay: HTMLElement = element.querySelector('.commentsOverlay') || this.createOverlay(relatedTo);
       element.append(overlay);
       return {
         element,
@@ -185,7 +177,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
     private createOverlay(relatedTo: string): HTMLElement {
       const comments: InterventionComment[] = this.comments[relatedTo] || [];
       const borderColor = comments.length ? '#FF4545' : '#81D763';
-      const element: HTMLElement = document.createElement('div');
+      const element: HTMLElement = Object.assign(document.createElement('div'), {className: 'commentsOverlay'});
       element.style.cssText = `
         position: absolute;
         top: 0;

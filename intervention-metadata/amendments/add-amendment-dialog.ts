@@ -18,6 +18,8 @@ import {translate, get as getTranslation} from 'lit-translate';
 import {AmendmentsKind} from './pd-amendments.models';
 import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin.js';
+import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {resetInvalidElement} from '../../utils/utils';
 
 /**
  * @customElement
@@ -46,7 +48,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
         id="add-amendment"
         size="md"
         ?opened="${this.dialogOpened}"
-        ok-btn-text="Save"
+        ok-btn-text="${translate('GENERAL.SAVE')}"
         dialog-title=${translate('ADD_AMENDMENT')}
         @close="${() => this.onClose()}"
         @confirm-btn-clicked="${() => this._validateAndSaveAmendment()}"
@@ -71,6 +73,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
               this.selectedItemsChanged(detail, 'types', 'value');
               this.onTypesChanged();
             }}"
+            @focus="${(event: any) => resetInvalidElement(event)}"
           >
           </etools-dropdown-multi>
         </div>
@@ -89,6 +92,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
             error-message="${translate('GENERAL.REQUIRED_FIELD')}"
             .value="${this.data.other_description}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'other_description')}"
+            @focus="${(event: any) => resetInvalidElement(event)}"
           >
           </paper-input>
         </div>
@@ -142,7 +146,14 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
       return;
     }
 
-    this.filteredAmendmentTypes = JSON.parse(JSON.stringify(this.amendmentTypes));
+    this.filteredAmendmentTypes = JSON.parse(
+      JSON.stringify(
+        this.amendmentTypes.map((x) => ({
+          ...x,
+          label: getTranslatedValue(x.label, 'AMENDMENT_TYPES_ITEMS')
+        }))
+      )
+    );
   }
 
   onTypesChanged() {

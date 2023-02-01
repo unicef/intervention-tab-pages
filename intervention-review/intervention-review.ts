@@ -7,9 +7,10 @@ import './review-members/review-members';
 import './reviews-list/reviews-list';
 import './overall-approval/overall-approval';
 import '@unicef-polymer/etools-modules-common/dist/components/cancel/reason-display';
-import {NO_REVIEW, PRC_REVIEW} from './review.const';
+import {NO_REVIEW, PRC_REVIEW} from '../common/components/intervention/review.const';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {translate} from 'lit-translate';
 
 @customElement('intervention-review')
 export class InterventionReviewTab extends connectStore(LitElement) {
@@ -32,16 +33,15 @@ export class InterventionReviewTab extends connectStore(LitElement) {
     // language=HTML
     return html`
       ${this.review?.sent_back_comment && ['draft', 'development'].includes(this.interventionStatus)
-        ? html`<reason-display title="Secretary Comment">
+        ? html`<reason-display .title="${translate('SECRETARY_COMMENT')}">
             <div class="text">${this.review?.sent_back_comment}</div>
           </reason-display>`
         : ''}
       ${this.cfeiNumber
-        ? html`<reason-display title="CFEI Notification" .cfeiNumber="${this.cfeiNumber}">
+        ? html`<reason-display .title="${translate('CFEI_NOTIFICATION')}" .cfeiNumber="${this.cfeiNumber}">
             <div class="text">
-              This PD was completed after a selection in UNPP where a committee has approved, please review the work
-              done in UNPP by clicking this link:
-              <a href="${this.linkUrl}" target="_blank">Go to UNPP</a>
+              ${translate('PD_COMPLETED_AFTER_UNPP')}
+              <a href="${this.linkUrl}" target="_blank">${translate('GO_TO_UNPP')}</a>
             </div>
           </reason-display>`
         : ''}

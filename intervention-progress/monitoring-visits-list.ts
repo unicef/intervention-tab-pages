@@ -31,7 +31,7 @@ export class MonitoringVisitsList extends LitElement {
       </style>
 
       <div class="monitoring-visits-container">
-        <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
+        <etools-loading .active="${this.showLoading}"></etools-loading>
 
         <div ?hidden="${this._hideMonitoringVisits(this.monitoringVisits.length, this.tpmActivities.length)}">
           <etools-data-table-header

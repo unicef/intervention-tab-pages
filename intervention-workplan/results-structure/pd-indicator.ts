@@ -1,4 +1,4 @@
-import {LitElement, html, customElement, property, TemplateResult, css} from 'lit-element';
+import {LitElement, html, customElement, property, TemplateResult, css, query} from 'lit-element';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
@@ -10,6 +10,10 @@ import {Indicator} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
+import {getIndicatorDisplayType} from '../../utils/utils';
+import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
+import {_canDeactivate, _canDelete} from '../../common/mixins/results-structure-common';
+import {PaperMenuButton} from '@polymer/paper-menu-button';
 
 @customElement('pd-indicator')
 export class PdIndicator extends CommentsMixin(LitElement) {
@@ -22,6 +26,11 @@ export class PdIndicator extends CommentsMixin(LitElement) {
   @property({type: Boolean}) inAmendment!: boolean;
   @property({type: Boolean}) detailsOpened = false;
   @property({type: Number}) index?: number;
+  @property({type: String})
+  @query('paper-menu-button#view-menu-button')
+  actionsMenuBtn!: PaperMenuButton;
+
+  inAmendmentDate!: string;
 
   render() {
     return html`
@@ -33,27 +42,29 @@ export class PdIndicator extends CommentsMixin(LitElement) {
       </style>
       <div
         class="table-row editable-row"
+        style="padding-right: 0 !important"
         comment-element="indicator-${this.indicator.id}"
         comment-description="${this.indicator.indicator?.title}"
         @paper-dropdown-open="${(event: CustomEvent) => (event.currentTarget as HTMLElement)!.classList.add('active')}"
         @paper-dropdown-close="${(event: CustomEvent) =>
           (event.currentTarget as HTMLElement)!.classList.remove('active')}"
       >
-        <div class="main-info">
+        <div class="main-info" style="padding-right:10%">
           <!--    Indicator name    -->
           <div class="flex-1 left-align layout-vertical start-aligned">
             <div class="name layout-horizontal">
-              ${this.getIndicatorDisplayType(this.indicator)} ${this.addInactivePrefix(this.indicator)}
+              ${getIndicatorDisplayType(this.indicator.indicator)} ${this.addInactivePrefix(this.indicator)}
               ${(this.indicator.indicator ? this.indicator.indicator.title : this.indicator.cluster_indicator_title) ||
               '—'}
-              <div id="hf" class="hf-mark" ?hidden="${!this.indicator.is_high_frequency}"></div>
-              <paper-tooltip for="hf" position="top" theme="light" animation-delay="0" offset="4">
-                This indicator is high frequency
-              </paper-tooltip>
+
+              <etools-info-tooltip position="top" custom-icon offset="0">
+                <div id="hf" slot="custom-icon" class="hf-mark" ?hidden="${!this.indicator.is_high_frequency}"></div>
+                <span class="no-wrap" slot="message">${translate('THIS_INDICATOR_IS_HIGH_FREQUENCY')}</span>
+              </etools-info-tooltip>
             </div>
-            <div class="item-link" @click="${() => (this.detailsOpened = !this.detailsOpened)}">
-              ${this.detailsOpened ? 'hide' : 'show'} ${this.locationNames.length} ${translate('LOCATIONS')} |
-              ${this.indicator.disaggregation.length} ${translate('DISAGGREGATIONS')}
+            <div class="item-link indent" @click="${() => (this.detailsOpened = !this.detailsOpened)}">
+              ${translate(this.detailsOpened ? 'HIDE' : 'SHOW')} ${this.locationNames.length} ${translate('LOCATIONS')}
+              | ${this.indicator.disaggregation.length} ${translate('DISAGGREGATIONS')}
             </div>
           </div>
           <!--    Baseline    -->
@@ -65,42 +76,85 @@ export class PdIndicator extends CommentsMixin(LitElement) {
           <div class="flex-1 secondary-cell right">
             ${this._displayBaselineOrTarget(this.indicator.target, this.indicator)}
           </div>
-        </div>
-        <div class="details ${this.detailsOpened ? 'opened' : ''}">${this.additionalTemplate()}</div>
 
-        <div class="show-actions hover-block" style="z-index: ${99 - (this.index || 0)}" ?hidden="${this.commentMode}">
-          <paper-menu-button id="view-menu-button" close-on-activate horizontal-align="right">
-            <paper-icon-button slot="dropdown-trigger" icon="icons:more-vert" tabindex="0"></paper-icon-button>
-            <paper-listbox slot="dropdown-content">
-              <div
-                class="action"
-                ?hidden="${!this._canEdit() && !this._canView()}"
-                @click="${() => this.openIndicatorDialog(this.indicator, this.readonly)}"
-              >
-                <iron-icon icon="${this._canEdit() ? 'create' : 'visibility'}"></iron-icon>
-                ${this._canEdit() ? translate('EDIT') : translate('VIEW')}
-              </div>
-              <div
-                class="action"
-                ?hidden="${!this._canDeactivate()}"
-                @click="${() => this.openDeactivationDialog(String(this.indicator.id))}"
-              >
-                <iron-icon icon="icons:block"></iron-icon>
-                ${translate('DEACTIVATE')}
-              </div>
-              <div
-                class="action delete-action"
-                ?hidden="${!this._canDelete()}"
-                @click="${() => this.openDeletionDialog(String(this.indicator.id))}"
-              >
-                <iron-icon icon="delete"></iron-icon>
-                ${translate('DELETE')}
-              </div>
-            </paper-listbox>
-          </paper-menu-button>
+          <div
+            class="show-actions hover-block"
+            style="z-index: ${99 - (this.index || 0)}; max-height: 59px;"
+            ?hidden="${this.commentMode}"
+          >
+            <paper-menu-button id="view-menu-button" close-on-activate horizontal-align="right">
+              <paper-icon-button slot="dropdown-trigger" icon="icons:more-vert" tabindex="0"></paper-icon-button>
+              <paper-listbox slot="dropdown-content">
+                <div
+                  class="action"
+                  ?hidden="${!this._canEdit() && !this._canView()}"
+                  @click="${() => this.openIndicatorDialog(this.indicator, this.readonly)}"
+                >
+                  <iron-icon icon="${this._canEdit() ? 'create' : 'visibility'}"></iron-icon>
+                  ${this._canEdit() ? translate('EDIT') : translate('VIEW')}
+                </div>
+                <div
+                  class="action"
+                  ?hidden="${!_canDeactivate(
+                    this.indicator,
+                    this.readonly,
+                    this.interventionStatus,
+                    this.inAmendment,
+                    this.inAmendmentDate
+                  )}"
+                  @click="${() => this.openDeactivationDialog(String(this.indicator.id))}"
+                >
+                  <iron-icon icon="icons:block"></iron-icon>
+                  ${translate('DEACTIVATE')}
+                </div>
+                <div
+                  class="action delete-action"
+                  ?hidden="${!_canDelete(
+                    this.indicator,
+                    this.readonly,
+                    this.interventionStatus,
+                    this.inAmendment,
+                    this.inAmendmentDate
+                  )}"
+                  @click="${() => this.openDeletionDialog(String(this.indicator.id))}"
+                >
+                  <iron-icon icon="delete"></iron-icon>
+                  ${translate('DELETE')}
+                </div>
+              </paper-listbox>
+            </paper-menu-button>
+          </div>
+        </div>
+        <div class="details indent ${this.detailsOpened ? 'opened' : ''}" style="max-height:350px; overflow-y:auto">
+          ${this.additionalTemplate()}
         </div>
       </div>
     `;
+  }
+
+  connectedCallback(): void {
+    super.connectedCallback();
+
+    this.closeMenuOnScroll = this.closeMenuOnScroll.bind(this);
+    this.getScrollableArea().addEventListener('scroll', this.closeMenuOnScroll, false);
+  }
+
+  // Scroll happens on this area, not on window
+  getScrollableArea() {
+    return document!
+      .querySelector('app-shell')!
+      .shadowRoot!.querySelector('#appHeadLayout')!
+      .shadowRoot!.querySelector('#contentContainer')!;
+  }
+
+  closeMenuOnScroll() {
+    this.actionsMenuBtn.removeAttribute('focused');
+    setTimeout(() => (this.actionsMenuBtn.opened = false));
+  }
+
+  disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.getScrollableArea().removeEventListener('scroll', this.closeMenuOnScroll, false);
   }
 
   additionalTemplate() {
@@ -149,31 +203,6 @@ export class PdIndicator extends CommentsMixin(LitElement) {
     fireEvent(this, 'open-delete-confirmation', {indicatorId: indicatorId});
   }
 
-  // Both unit and displayType are used because of inconsitencies in the db.
-  getIndicatorDisplayType(indicator: Indicator) {
-    const unit = indicator.indicator ? indicator.indicator!.unit : '';
-    const displayType = indicator.indicator ? indicator.indicator!.display_type : '';
-    if (!unit) {
-      return '';
-    }
-    let typeChar = '';
-    switch (unit) {
-      case 'number':
-        typeChar = '#';
-        break;
-      case 'percentage':
-        if (displayType === 'percentage') {
-          typeChar = '%';
-        } else if (displayType === 'ratio') {
-          typeChar = '÷';
-        }
-        break;
-      default:
-        break;
-    }
-    return typeChar;
-  }
-
   getDisaggregation(disaggregationId: string | number): TemplateResult {
     const disaggreg: Disaggregation | null =
       this.disaggregations.find(({id}: Disaggregation) => String(id) === String(disaggregationId)) || null;
@@ -219,20 +248,6 @@ export class PdIndicator extends CommentsMixin(LitElement) {
     return item.d && parseInt(item.d) !== 1 && parseInt(item.d) !== 100;
   }
 
-  _canDeactivate(): boolean {
-    if (this.inAmendment && this.indicator.is_active && !this.readonly) {
-      return true;
-    }
-
-    if (this.interventionStatus === 'draft' || this.interventionStatus === 'development') {
-      return false;
-    }
-    if (this.indicator.is_active && !this.readonly) {
-      return true;
-    }
-    return false;
-  }
-
   _canEdit() {
     return this.indicator.is_active && !this.readonly;
   }
@@ -241,17 +256,6 @@ export class PdIndicator extends CommentsMixin(LitElement) {
     return this.readonly || !this.indicator.is_active;
   }
 
-  _canDelete(): boolean {
-    if (this.inAmendment) {
-      // only Deactivate should be av. in amendment
-      return false;
-    }
-    // TODO: refactor this after status draft comes as development
-    if ((this.interventionStatus === 'draft' || this.interventionStatus === 'development') && !this.readonly) {
-      return true;
-    }
-    return false;
-  }
   // language=css
   static get styles() {
     return [
@@ -313,7 +317,6 @@ export class PdIndicator extends CommentsMixin(LitElement) {
           width: 15px;
           height: 15px;
           flex: none;
-          margin-top: 5px;
           margin-left: 2px;
           border-radius: 50%;
           background-color: #2073b7;

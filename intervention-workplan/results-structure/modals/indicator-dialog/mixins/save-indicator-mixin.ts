@@ -12,6 +12,8 @@ import {IndicatorDisaggregations} from '../indicator-dissaggregations';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {updateCurrentIntervention} from '../../../../../common/actions/interventions';
 import {Constructor} from '@unicef-polymer/etools-types';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {get as getTranslation} from 'lit-translate';
 
 /**
  * @mixinFunction
@@ -46,6 +48,9 @@ function SaveIndicatorMixin<T extends Constructor<LitElement>>(baseClass: T) {
     private nonClusterIndicatorEditModel = {
       id: null,
       section: null,
+      indicator: {
+        title: null
+      },
       baseline: {
         v: 0,
         d: 1
@@ -99,7 +104,7 @@ function SaveIndicatorMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
     _validateAndSaveIndicator() {
       if (!this.validate()) {
-        // @ts-ignore *Defined in component
+        fireEvent(this, 'toast', {text: getTranslation('REQUIRED_ERROR')});
         this.activeTab = 'details';
         this._centerDialog();
         return;
@@ -194,6 +199,7 @@ function SaveIndicatorMixin<T extends Constructor<LitElement>>(baseClass: T) {
       if (!indicator.baseline || indicator.baseline.v === '' || indicator.baseline.v === undefined) {
         indicator.baseline = {v: null, d: 1};
       }
+
       if (indicator.indicator) {
         // is new non-cluster indic
         if (indicator.indicator.unit === 'number') {
@@ -204,6 +210,15 @@ function SaveIndicatorMixin<T extends Constructor<LitElement>>(baseClass: T) {
           this._resetLabel(indicator);
         }
       }
+      this._ensureNumbersInsteadOfStrings(indicator.target);
+      this._ensureNumbersInsteadOfStrings(indicator.baseline);
+    }
+
+    _ensureNumbersInsteadOfStrings(item: {v: number; d: number}) {
+      if (item.v !== null) {
+        item.v = Number(item.v);
+      }
+      item.d = Number(item.d);
     }
 
     _updateBaselineTargetD(indicator: any, d: number) {

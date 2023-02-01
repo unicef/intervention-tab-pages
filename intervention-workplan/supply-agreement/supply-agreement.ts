@@ -60,7 +60,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   render() {
     if (!this.supply_items) {
       return html` ${sharedStyles}
-        <etools-loading source="supply-a" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="supply-a" active></etools-loading>`;
     }
     return html`
       ${sharedStyles}
@@ -96,7 +96,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
             <label class="paper-label font-bold pad-right">${translate('TOTAL_SUPPLY_BUDGET')} </label>
             <label class="font-bold-12"
               >${this.intervention.planned_budget.currency}
-              ${displayCurrencyAmount(this.intervention.planned_budget.in_kind_amount_local!)}</label
+              ${displayCurrencyAmount(this.intervention.planned_budget.total_supply!, '0.00')}</label
             >
           </span>
 
@@ -126,6 +126,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         <div class="row-h" ?hidden="${!this.permissions.edit.supply_items || this.supply_items?.length}">
           ${this.getUploadHelpElement()}
         </div>
+
         <etools-table
           ?hidden="${!this.supply_items?.length}"
           .columns="${this.columns}"
@@ -279,7 +280,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
     }
     if (get(state, 'interventions.current')) {
       const currentIntervention = get(state, 'interventions.current');
-      this.intervention = cloneDeep(currentIntervention);
+      this.intervention = cloneDeep(currentIntervention) as Intervention;
       this.currencyDisplayForTotal();
     }
     this.supply_items = selectSupplyAgreement(state);
@@ -335,15 +336,31 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       supplyId: supplyId
     });
 
+    fireEvent(this, 'global-loading', {
+      active: true,
+      loadingSource: 'intervention-tabs'
+    });
+
     sendRequest({
       endpoint: endpoint,
       method: 'DELETE'
     })
       .then(() => {
-        getStore().dispatch<AsyncAction>(getIntervention());
+        getStore()
+          .dispatch<AsyncAction>(getIntervention())
+          .finally(() =>
+            fireEvent(this, 'global-loading', {
+              active: false,
+              loadingSource: 'intervention-tabs'
+            })
+          );
       })
       .catch((err: any) => {
         fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: 'intervention-tabs'
+        });
       });
   }
 
@@ -375,7 +392,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
     openDialog({
       dialog: 'supply-agreement-dialog',
       dialogData: {
-        data: item,
+        data: cloneDeep(item),
         interventionId: this.intervention.id,
         result_links: this.intervention.result_links,
         isUnicefUser: this.isUnicefUser,

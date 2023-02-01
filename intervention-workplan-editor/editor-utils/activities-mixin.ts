@@ -1,8 +1,7 @@
 // @ts-ignore
 import {Constructor, html, LitElement, property} from 'lit-element';
 import {ifDefined} from 'lit-html/directives/if-defined.js';
-import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
-import {AsyncAction, InterventionQuarter} from '@unicef-polymer/etools-types';
+import {InterventionQuarter} from '@unicef-polymer/etools-types';
 import {Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
 import '../time-intervals/time-intervals';
 import {cloneDeep, isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
@@ -11,19 +10,24 @@ import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-c
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {getIntervention, updateCurrentIntervention} from '../../common/actions/interventions';
+import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {repeat} from 'lit-html/directives/repeat';
 import {
   ExpectedResultExtended,
   InterventionActivityExtended,
-  InterventionActivityItemExtended,
   ResultLinkLowerResultExtended
-} from './types';
-import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+} from '../../common/types/editor-page-types';
 import {translate} from 'lit-translate/directives/translate';
-import {TruncateMixin} from '../../common/truncate.mixin';
+import {TruncateMixin} from '../../common/mixins/truncate.mixin';
+import {getTotalCashFormatted} from '../../common/components/activity/get-total.helper';
+import {
+  openActivityDeactivationDialog,
+  openDeleteActivityDialog,
+  _canDeactivate,
+  _canDelete
+} from '../../common/mixins/results-structure-common';
 
 export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T) {
   return class ActivitiesClass extends ActivityItemsMixin(TruncateMixin(baseClass)) {
@@ -70,12 +74,13 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
           (activity: InterventionActivityExtended) => activity.id,
           (activity: InterventionActivityExtended, activityIndex: number) => html`
             <tbody
-              ?hoverable="${!(activity.inEditMode || activity.itemsInEditMode) &&
+              ?hoverable="${!(activity.inEditMode || activity.itemsInEditMode || !activity.is_active) &&
               this.permissions.edit.result_links &&
               !this.commentMode &&
               !this.oneEntityInEditMode}"
+              ?inEditMode="${activity.inEditMode || activity.itemsInEditMode}"
               comment-element="activity-${activity.id}"
-              comment-description=" Activity - ${activity.name}"
+              comment-description="${activity.name}"
             >
               <tr class="header">
                 <td></td>
@@ -85,14 +90,21 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td>${translate('UNICEF_CASH')}</td>
                 <td colspan="2">${translate('GENERAL.TOTAL')}</td>
               </tr>
-              <tr
-                class="text action-btns"
-                type="activity"
-                comment-element="activity-${activity.id}"
-                comment-description="${activity.name}"
-              >
-                <td class="padd-top-10">${activity.code}</td>
-                <td colspan="3" tabindex="0" class="no-top-padding height-for-action-btns">
+              <tr class="text action-btns" type="activity">
+                <td class="index-column">
+                  <paper-input
+                    title="${activity.code}"
+                    no-label-float
+                    readonly
+                    tabindex="-1"
+                    .value="${activity.code}"
+                  ></paper-input>
+                </td>
+                <td
+                  colspan="3"
+                  tabindex="${ifDefined(this.commentMode ? undefined : 0)}"
+                  class="no-top-padding height-for-action-btns"
+                >
                   <paper-textarea
                     no-label-float
                     input
@@ -105,38 +117,50 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     .autoValidate="${this.autoValidateActivityName}"
                     .invalid="${activity.invalid?.name}"
                     error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
-                    @keydown="${(e: any) => this.handleEsc(e)}"
-                    @focus="${() => (this.autoValidateActivityName = true)}"
-                    @value-changed="${({detail}: CustomEvent) => this.updateModelValue(activity, 'name', detail.value)}"
+                    @keydown="${(e: any) => {
+                      if (activity.inEditMode && ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) {
+                        e.stopImmediatePropagation();
+                      }
+                      this.handleEsc(e);
+                    }}"
+                    @focus="${() => setTimeout(() => (this.autoValidateActivityName = true))}"
+                    @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'name', activity)}"
                   ></paper-textarea>
                   <div class="truncate-multi-line b" title="${activity.name}" ?hidden="${activity.inEditMode}">
-                    ${activity.name}
+                    ${activity.is_active ? '' : html`<b>(inactive)</b>`}${activity.name}
                   </div>
                   <div class="pad-top-8">
                     <paper-textarea
                       class="other"
                       placeholder="-"
                       input
-                      label="Other Notes"
+                      label="${translate('OTHER_NOTES')}"
                       always-float-label
                       ?hidden="${!activity.inEditMode}"
                       char-counter
                       maxlength="10000"
                       .value="${activity.context_details}"
-                      @keydown="${(e: any) => this.handleEsc(e)}"
+                      @keydown="${(e: any) => {
+                        if (
+                          activity.inEditMode &&
+                          ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)
+                        ) {
+                          e.stopImmediatePropagation();
+                        }
+                        this.handleEsc(e);
+                      }}"
                       @value-changed="${({detail}: CustomEvent) =>
-                        this.updateModelValue(activity, 'context_details', detail.value)}"
+                        this.valueChanged(detail, 'context_details', activity)}"
                     ></paper-textarea>
                     <div title="${activity.context_details}" ?hidden="${activity.inEditMode}">
                       ${this.truncateString(activity.context_details)}
                     </div>
                   </div>
                 </td>
-                <td tabindex="0" class="tdTimeIntervals">
+                <td tabindex="${ifDefined(this.commentMode ? undefined : 0)}" class="tdTimeIntervals">
                   <div class="flex-h justify-center">
                     <time-intervals
                       .readonly="${!this.permissions.edit.result_links || !activity.inEditMode}"
-                      tabindex="0"
                       .invalid="${activity.invalid?.time_frames}"
                       .quarters="${this.quarters}"
                       .selectedTimeFrames="${activity.time_frames}"
@@ -154,50 +178,52 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     ></time-intervals>
                   </div>
                 </td>
-                <td tabindex="${activity.items && activity.items.length ? '-1' : '0'}" class="no-top-padding">
+                <td
+                  tabindex="${(activity.items && activity.items.length) || this.commentMode ? '-1' : '0'}"
+                  class="no-top-padding"
+                >
                   <etools-currency-amount-input
                     no-label-float
                     input
                     .value="${activity.cso_cash}"
-                    tabindex="${ifDefined(activity.items && activity.items.length ? '-1' : undefined)}"
-                    ?readonly="${this.isReadonlyForActivityCash(activity.inEditMode, activity.items)}"
+                    tabindex="${ifDefined(
+                      (activity.items && activity.items.length) || !activity.inEditMode ? '-1' : undefined
+                    )}"
+                    ?readonly="${this.isReadonlyCash(activity.inEditMode, activity.items)}"
                     @keydown="${(e: any) => this.handleEsc(e)}"
-                    @value-changed="${({detail}: CustomEvent) =>
-                      this.updateModelValue(activity, 'cso_cash', detail.value)}"
+                    @value-changed="${({detail}: CustomEvent) => this.numberChanged(detail, 'cso_cash', activity)}"
                   ></etools-currency-amount-input>
                 </td>
-                <td tabindex="${activity.items && activity.items.length ? '-1' : '0'}" class="no-top-padding">
+                <td
+                  tabindex="${(activity.items && activity.items.length) || this.commentMode ? '-1' : '0'}"
+                  class="no-top-padding"
+                >
                   <etools-currency-amount-input
                     no-label-float
                     input
                     .value="${activity.unicef_cash}"
-                    tabindex="${ifDefined(activity.items && activity.items.length ? '-1' : undefined)}"
-                    ?readonly="${this.isReadonlyForActivityCash(activity.inEditMode, activity.items)}"
+                    tabindex="${ifDefined(
+                      (activity.items && activity.items.length) || !activity.inEditMode ? '-1' : undefined
+                    )}"
+                    ?readonly="${this.isReadonlyCash(activity.inEditMode, activity.items)}"
                     @keydown="${(e: any) => this.handleEsc(e)}"
-                    @value-changed="${({detail}: CustomEvent) =>
-                      this.updateModelValue(activity, 'unicef_cash', detail.value)}"
+                    @value-changed="${({detail}: CustomEvent) => this.numberChanged(detail, 'unicef_cash', activity)}"
                   ></etools-currency-amount-input>
                 </td>
                 <td
                   colspan="2"
                   class="padd-top-10 action-btns"
                   style="position: relative;"
-                  tabindex="${this.permissions.edit.result_links ? '0' : '-1'}"
+                  tabindex="${ifDefined(this.permissions.edit.result_links && !this.commentMode ? '0' : undefined)}"
                 >
                   <div>
                     ${this.intervention.planned_budget.currency}
-                    <span class="b">
-                      ${displayCurrencyAmount(
-                        String(this.getTotalForActivity(activity.cso_cash, activity.unicef_cash)),
-                        '0',
-                        2
-                      )}
-                    </span>
+                    <span class="b"> ${getTotalCashFormatted(activity.cso_cash, activity.unicef_cash)} </span>
                   </div>
                   <div class="action-btns align-bottom flex-h">
                     <paper-icon-button
                       icon="create"
-                      ?hidden="${activity.inEditMode || !this.permissions.edit.result_links}"
+                      ?hidden="${activity.inEditMode || !this.permissions.edit.result_links || !activity.is_active}"
                       @click="${(e: any) => {
                         activity.inEditMode = true;
                         activity.itemsInEditMode = true;
@@ -212,24 +238,48 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                         }
                       }}"
                     ></paper-icon-button>
-                    <etools-info-tooltip
+                    <paper-icon-button
+                      id="add-item-${activity.id}"
+                      icon="add-box"
+                      slot="custom-icon"
+                      @click="${(e: CustomEvent) => this.addNewActivityItem(e, activity, 'focusBelow')}"
+                      ?hidden="${activity.items?.length || !this.permissions.edit.result_links}"
+                    ></paper-icon-button>
+                    <paper-tooltip
+                      for="add-item-${activity.id}"
+                      .animationDelay="${0}"
+                      .animationConfig="${{}}"
+                      animation-entry=""
+                      animation-exit=""
+                      ?hidden="${activity.items?.length || !this.permissions.edit.result_links}"
                       position="top"
-                      custom-icon
-                      ?hide-tooltip="${!this.permissions.edit.result_links}"
-                      style="justify-content:end;"
+                      offset="1"
                     >
-                      <paper-icon-button
-                        icon="add-box"
-                        slot="custom-icon"
-                        @click="${(e: CustomEvent) => this.addNewItem(e, activity, 'focusBelow')}"
-                        ?hidden="${activity.items?.length || !this.permissions.edit.result_links}"
-                      ></paper-icon-button>
-                      <span class="no-wrap" slot="message">${translate('ADD_NEW_ITEM')}</span>
-                    </etools-info-tooltip>
+                      ${translate('ADD_NEW_ITEM')}
+                    </paper-tooltip>
                     <paper-icon-button
                       icon="delete"
-                      ?hidden="${activity.inEditMode || !this.permissions.edit.result_links}"
-                      @click="${() => this.openDeleteDialog(activity.id, pdOutput.id)}"
+                      ?hidden="${activity.inEditMode ||
+                      !_canDelete(
+                        activity,
+                        !this.permissions.edit.result_links!,
+                        this.intervention.status,
+                        this.intervention.in_amendment,
+                        this.intervention.in_amendment_date
+                      )}"
+                      @click="${() => openDeleteActivityDialog(activity.id, pdOutput.id, this.intervention.id!)}"
+                    ></paper-icon-button>
+                    <paper-icon-button
+                      icon="block"
+                      ?hidden="${activity.inEditMode ||
+                      !_canDeactivate(
+                        activity,
+                        !this.permissions.edit.result_links!,
+                        this.intervention.status,
+                        this.intervention.in_amendment,
+                        this.intervention.in_amendment_date
+                      )}"
+                      @click="${() => openActivityDeactivationDialog(activity.id, pdOutput.id, this.intervention.id!)}"
                     ></paper-icon-button>
                   </div>
                   <div
@@ -253,7 +303,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
             </tbody>
 
             <tbody thead ?hidden="${!activity.items || !activity.items.length}">
-              <tr class="header no-padd gray-1">
+              <tr class="header no-padd gray-1" ?inEditMode="${activity.inEditMode || activity.itemsInEditMode}">
                 <td class="first-col"></td>
                 <td class="col-text">${translate('ITEM_DESCRIPTION')}</td>
                 <td class="col-unit">${translate('UNIT')}</td>
@@ -318,23 +368,6 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       this.lastFocusedTd.focus();
     }
 
-    resetItemsValidations(activity: InterventionActivityExtended) {
-      if (!activity.items || !activity.items.length) {
-        return;
-      }
-
-      activity.items.forEach((i: any) => {
-        i.invalid = {
-          name: false,
-          unit: false,
-          no_units: false,
-          unit_price: false,
-          cso_cash: false,
-          unicef_cash: false
-        };
-      });
-    }
-
     getOriginalActivity(resultIndex: number, pdOutputIndex: number, activityIndex: number) {
       // Covers case when a new Activity is added while the cancelled one is already in edit mode,
       // thus changing the index
@@ -345,25 +378,6 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       return this.originalResultStructureDetails[resultIndex].ll_results[pdOutputIndex].activities[
         originalActivityIndex
       ];
-    }
-    updateModelValue(model: any, property: string, newVal: any) {
-      if (newVal == model[property]) {
-        return;
-      }
-      model[property] = newVal;
-      this.requestUpdate();
-    }
-
-    isReadonlyForActivityCash(inEditMode: boolean, items?: InterventionActivityItemExtended[]) {
-      if (!inEditMode) {
-        return true;
-      } else {
-        if (items && items.length) {
-          return true;
-        } else {
-          return false;
-        }
-      }
     }
 
     validateActivity(activity: InterventionActivityExtended) {
@@ -377,27 +391,6 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
         }
       }
       return !Object.keys(activity.invalid).length;
-    }
-    validateActivityItems(activity: InterventionActivityExtended) {
-      if (!activity.items || !activity.items.length) {
-        return true;
-      }
-
-      let invalid = false;
-      activity.items.forEach((item: InterventionActivityItemExtended) => {
-        item.invalid = {};
-        item.invalid.name = !item.name;
-        item.invalid.unit = !item.unit;
-        item.invalid.no_units = !item.no_units || Number(item.no_units) == 0;
-        item.invalid.unit_price = !item.unit_price || Number(item.unit_price) == 0;
-        if (item.no_units && item.unit_price) {
-          this.validateCsoAndUnicefCash(item);
-        }
-        if (Object.values(item.invalid).some((val: boolean) => val === true)) {
-          invalid = true;
-        }
-      });
-      return !invalid;
     }
 
     // @ts-ignore
@@ -445,42 +438,6 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       return activityId
         ? getEndpoint(interventionEndpoints.pdActivityDetails, {activityId, pdOutputId, interventionId})
         : getEndpoint(interventionEndpoints.pdActivities, {pdOutputId, interventionId});
-    }
-
-    async openDeleteDialog(activityId: number, pdOutputId: number) {
-      const confirmed = await openDialog({
-        dialog: 'are-you-sure',
-        dialogData: {
-          content: translate('DELETE_ACTIVITY_PROMPT') as unknown as string,
-          confirmBtnText: translate('GENERAL.DELETE') as unknown as string
-        }
-      }).then(({confirmed}) => {
-        return confirmed;
-      });
-
-      if (confirmed) {
-        this.deleteActivity(activityId, pdOutputId);
-      }
-    }
-
-    deleteActivity(activityId: number, pdOutputId: number) {
-      const endpoint = getEndpoint(interventionEndpoints.pdActivityDetails, {
-        activityId: activityId,
-        interventionId: this.intervention.id,
-        pdOutputId: pdOutputId
-      });
-      sendRequest({
-        method: 'DELETE',
-        endpoint: endpoint
-      })
-        .then(() => {
-          // @ts-ignore
-          this.getResultLinksDetails();
-          getStore().dispatch<AsyncAction>(getIntervention());
-        })
-        .catch((err: any) => {
-          fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
-        });
     }
   };
 }

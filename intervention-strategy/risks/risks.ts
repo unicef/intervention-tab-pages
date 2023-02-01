@@ -25,9 +25,11 @@ import {getIntervention} from '../../common/actions/interventions';
 import {currentInterventionPermissions} from '../../common/selectors';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, LabelAndValue, RiskData} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate, translateConfig} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
+import cloneDeep from 'lodash-es/cloneDeep';
+import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 
 const customStyles = html`
   <style>
@@ -53,7 +55,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
     if (!this.data || this.data.constructor == Object) {
       return html` ${sharedStyles}
 
-        <etools-loading source="risk" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="risk" active></etools-loading>`;
     }
     // language=HTML
     return html`
@@ -79,6 +81,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       <etools-content-panel show-expand-btn panel-title=${translate(translatesMap.risks)} comment-element="risks">
         <div slot="after-title">
           <info-icon-tooltip
+            .language="${translateConfig.lang}"
             id="iit-risk"
             ?hidden="${!this.canEditAtLeastOneField}"
             .tooltipText="${translate('RISKS_INFO')}"
@@ -128,7 +131,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       type: EtoolsTableColumnType.Custom,
       customMethod: (item: any, _key: string, customData: AnyObject) => {
         const riskType = customData.riskTypes.find((x: LabelAndValue) => x.value === item.risk_type);
-        return riskType ? riskType.label : '-';
+        return riskType ? translateValue(riskType.label, 'RISK_TYPE') : '-';
       },
       cssClass: 'col_type'
     },
@@ -163,7 +166,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
     openDialog({
       dialog: 'risk-dialog',
       dialogData: {
-        item: e ? e.detail : {},
+        item: e ? cloneDeep(e.detail) : {},
         interventionId: this.interventionId,
         riskTypes: this.riskTypes
       }

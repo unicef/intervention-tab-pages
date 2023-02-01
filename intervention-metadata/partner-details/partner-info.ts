@@ -70,6 +70,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
               required
               readonly
               always-float-label
+              tabindex="-1"
             >
             </paper-input>
           </div>
@@ -84,6 +85,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
               trigger-value-change-event
               @etools-selected-item-changed="${({detail}: CustomEvent) => this.selectedAgreementChanged(detail)}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.agreement)}"
+              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.agreement) ? -1 : 0}"
               required
               auto-validate
             >
@@ -96,6 +98,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
               class="w100"
               label=${translate('PARTNER_VENDOR_NUMBER')}
               .value="${this.data?.partner_vendor}"
+              tabindex="-1"
               readonly
               always-float-label
             >
@@ -183,9 +186,11 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
     }
 
     if (!isJsonStrMatch(this.originalData, newPartnerDetails)) {
-      if (this.partnerIdHasChanged(newPartnerDetails)) {
+      const partnerIdHasChanged = this.partnerIdHasChanged(newPartnerDetails);
+      if (partnerIdHasChanged) {
         this.partnerStaffMembers = await this.getAllPartnerStaffMembers(newPartnerDetails.partner_id!);
       }
+      // Wait for partnerStaffMembers to be set, to avoid timing issues on dropdown selectedItems
       this.data = cloneDeep(newPartnerDetails);
       this.originalData = cloneDeep(this.data);
     }

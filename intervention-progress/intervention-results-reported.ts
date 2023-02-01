@@ -47,6 +47,7 @@ import {
   isValidDate
 } from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
+import {getIndicatorDisplayType} from '../utils/utils';
 declare const dayjs: any;
 
 /**
@@ -122,6 +123,10 @@ export class InterventionResultsReported extends connectStore(
         etools-ram-indicators {
           border-top: 1px solid var(--list-divider-color);
           border-bottom: 1px solid var(--list-divider-color);
+        }
+
+        .row-details-content {
+          font-size: 15px;
         }
 
         @media print {
@@ -252,7 +257,7 @@ export class InterventionResultsReported extends connectStore(
         ${(this.progress.details ? this.progress.details.cp_outputs : []).map(
           (item: any) => html`
             <div class="row-v row-second-bg">
-              <strong>${translate('CP_OUTPUT')}${item.title}</strong>
+              <strong>${translate('CP_OUTPUT')}: ${item.title}</strong>
             </div>
 
             <!-- RAM indicators display -->
@@ -291,7 +296,7 @@ export class InterventionResultsReported extends connectStore(
                       ${this._getIndicatorsReports(lowerResult.id).map(
                         (indicatorReport: any) => html`<div class="row-h indicator-report">
                             <div class="col-data col-9">
-                              ${this._ternary(indicatorReport.reportable.blueprint.unit, 'number', '#', '%')}
+                              ${getIndicatorDisplayType(indicatorReport.reportable.blueprint)}
                               ${indicatorReport.reportable.blueprint.title}
                             </div>
                             <div class="col-data col-3 progress-bar">
@@ -383,7 +388,8 @@ export class InterventionResultsReported extends connectStore(
 
   stateChanged(state: RootState) {
     if (
-      pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Progress, TABS.ResultsReported)
+      pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Progress, TABS.ResultsReported) ||
+      !state.interventions.current
     ) {
       return;
     }
@@ -428,7 +434,6 @@ export class InterventionResultsReported extends connectStore(
     }
 
     fireEvent(this, 'global-loading', {
-      message: 'Loading...',
       active: true,
       loadingSource: 'pd-progress'
     });

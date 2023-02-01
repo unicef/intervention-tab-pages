@@ -22,6 +22,7 @@ export const ActivitiesAndIndicatorsStyles: CSSResult = css`
     font-size: 16px;
     line-height: 16px;
     color: #5c5c5c;
+    background-color: var(--main-background);
   }
   .table-row > div {
     text-align: center;
@@ -38,6 +39,7 @@ export const ActivitiesAndIndicatorsStyles: CSSResult = css`
   .table-row.active .show-actions,
   .table-row:hover .show-actions {
     display: block;
+    opacity: 1;
   }
   .table-row.active,
   .table-row:not(.table-head, .empty):hover {
@@ -97,6 +99,9 @@ export const ActivitiesAndIndicatorsStyles: CSSResult = css`
     color: #5c5c5c;
     cursor: pointer;
     text-transform: lowercase;
+  }
+  .indent {
+    padding-inline-start: 14px;
   }
   etools-data-table-row {
     --list-bg-color: var(--main-background);

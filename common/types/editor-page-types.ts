@@ -1,9 +1,10 @@
-import {InterventionActivityItem} from '@unicef-polymer/etools-types/dist/intervention.types';
+import {InterventionActivityItem, ManagementBudgetItem} from '@unicef-polymer/etools-types/dist/intervention.types';
 import {Indicator} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
 
 export interface ExpectedResultExtended {
   id: number;
   code: string;
+  created: string;
   cp_output: number;
   cp_output_name: string;
   intervention: number;
@@ -24,6 +25,8 @@ export declare type InterventionActivity = {
   time_frames: number[];
   unicef_cash: string;
   unicef_suppies: number;
+  is_active: boolean;
+  created: string;
 };
 
 export interface ResultLinkLowerResult {
@@ -73,4 +76,40 @@ export type ResultLinkLowerResultExtended = ResultLinkLowerResult & {
   inEditMode: boolean;
   invalid: boolean;
   invalidCpOutput: boolean;
+};
+
+export enum ProgrammeManagementKindChoices {
+  inCountry = 'in_country',
+  operational = 'operational',
+  planning = 'planning'
+}
+
+export type ProgrammeManagementRowItemExtended = ManagementBudgetItem & {
+  id?: number;
+  code: string;
+  inEditMode: boolean;
+  invalid: Partial<InvalidItem>;
+  autovalidate: Partial<AutovalidateItem>;
+};
+
+export type ProgrammeManagementRow = {
+  code: string;
+  name: string;
+  context_details: string;
+  cso_cash: string;
+  unicef_cash: string;
+  totalProgrammeManagementCash: number;
+  total: string;
+  items: ProgrammeManagementRowItemExtended[];
+  id: number;
+  kind: ProgrammeManagementKindChoices;
+  inEditMode: boolean;
+  itemsInEditMode: boolean;
+};
+
+export type ProgrammeManagementRowExtended = ProgrammeManagementRow & {
+  inEditMode: boolean;
+  itemsInEditMode: boolean;
+  invalid?: Partial<{unicef_cash: boolean; cso_cash: boolean}>;
+  total: string;
 };
