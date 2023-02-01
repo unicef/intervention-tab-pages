@@ -15,7 +15,7 @@ export class CommentsGroup extends LitElement {
       <div class="comment flex-auto">
         <div class="layout-horizontal space-between">
           <div class="title">
-            Comments on
+            ${translate('COMMENTS_ON')}
             <b>${this.relatedTo ? translate(this.relatedTo) : ''}</b>
           </div>
           <div class="date">17/02/2022</div>

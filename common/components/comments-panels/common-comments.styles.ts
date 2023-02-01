@@ -13,8 +13,8 @@ export const CommentPanelsStyles: CSSResult = css`
     box-shadow: 0 4px 10px 3px rgba(0, 0, 0, 0.17);
     border-radius: 11px;
     background-color: #ffffff;
-    height: 550px;
     overflow: hidden;
+    height: 100%;
     z-index: 15;
     transition: 0.5s;
   }
@@ -32,6 +32,7 @@ export const CommentPanelsStyles: CSSResult = css`
     align-items: center;
     justify-content: space-between;
     height: 64px;
+    min-height: 64px;
     background-color: #009688;
     color: #ffffff;
   }

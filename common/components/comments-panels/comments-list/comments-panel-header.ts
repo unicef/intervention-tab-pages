@@ -1,13 +1,14 @@
 import {customElement, LitElement, html, TemplateResult, CSSResultArray, property} from 'lit-element';
 import {CommentPanelsStyles} from '../common-comments.styles';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import { translate } from 'lit-translate';
 
 @customElement('comments-panel-header')
 export class CommentsPanelHeader extends LitElement {
   @property() count = 0;
   protected render(): TemplateResult {
     return html`
-      <div>Comments Panel <b>(${this.count})</b></div>
+      <div>${translate('COMMENTS_PANEL')} <b>(${this.count})</b></div>
       <div class="buttons">
         <svg
           width="20"

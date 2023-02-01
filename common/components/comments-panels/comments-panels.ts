@@ -117,8 +117,11 @@ export class CommentsPanels extends connectStore(LitElement) {
           z-index: 99;
           margin: 0 18px;
           width: calc(100% - 36px);
+          height: 550px;
+          max-height: calc(100vh - 150px);
           max-width: 450px;
         }
+
         :host([data-minimized]) messages-panel,
         :host([data-minimized]) comments-list {
           height: 64px;
