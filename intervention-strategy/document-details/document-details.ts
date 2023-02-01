@@ -71,6 +71,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
         show-expand-btn
         panel-title=${translate('DOCUMENT_DETAILS')}
         comment-element="document-details"
+        comment-description=${translate('DOCUMENT_DETAILS')}
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 

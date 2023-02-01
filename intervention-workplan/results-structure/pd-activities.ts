@@ -85,7 +85,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                   <div
                     class="table-row editable-row"
                     related-to="activity-${activity.id}"
-                    related-to-description="${activity.name}"
+                    related-to-description=" Activity - ${activity.name}"
                     comments-container
                     ?hidden="${this._hideActivity(activity, this.showInactive)}"
                     @paper-dropdown-open="${(event: CustomEvent) =>

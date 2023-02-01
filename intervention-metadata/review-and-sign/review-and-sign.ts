@@ -100,6 +100,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
         show-expand-btn class="content-section"
         panel-title=${translate('SIGNATURES_DATES')}
         comment-element="signatures-and-dates"
+        comment-description=${translate('SIGNATURES_DATES')}
       >
         <div slot="panel-btns">
           ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}

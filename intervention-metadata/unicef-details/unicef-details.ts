@@ -65,6 +65,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
         show-expand-btn
         panel-title="${translate('UNICEF_DETAILS')}"
         comment-element="unicef-details"
+        comment-description=${translate('UNICEF_DETAILS')}
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 

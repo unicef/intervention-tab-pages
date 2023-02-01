@@ -27,14 +27,19 @@ export const CommentPanelsStyles: CSSResult = css`
   }
   comments-panel-header,
   messages-panel-header {
-    flex: none;
+    flex-wrap: nowrap;
     display: flex;
     align-items: center;
     justify-content: space-between;
     height: 64px;
     background-color: #009688;
-    padding: 0 54px 0 24px;
     color: #ffffff;
+  }
+  comments-panel-header{
+    padding: 0 24px 0 24px;
+  }
+  messages-panel-header{
+    padding: 0 64px 0 24px;
   }
   .panel-header b {
     margin-left: 10px;

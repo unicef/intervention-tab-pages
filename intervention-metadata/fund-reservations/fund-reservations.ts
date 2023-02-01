@@ -85,6 +85,7 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
         show-expand-btn
         panel-title=${translate('FUND_RESERVATIONS')}
         comment-element="fund-reservations"
+        comment-description=${translate('FUND_RESERVATIONS')}
       >
         <paper-icon-button
           slot="panel-btns"
