@@ -28,7 +28,7 @@ export class CommentsDialog extends EditComments {
       const description = this.relatedToDescription ? ` - ${this.relatedToDescription}` : '';
       return `${getTranslation('COMMENTS_ON')}: ${getTranslation(CommentsItemsNameMap[relatedToKey])}${description}`;
     } else if (this.relatedToDescription) {
-      return `${getTranslation('COMMENTS_ON')}${this.relatedToDescription}`;
+      return `${getTranslation('COMMENTS_ON')}: ${this.relatedToDescription}`;
     } else {
       return '';
     }
