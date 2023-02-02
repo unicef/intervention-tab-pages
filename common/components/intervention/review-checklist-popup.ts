@@ -82,6 +82,9 @@ export class ReviewChecklistPopup extends LitElement {
     const review = this.isOverallReview ? this.overallReview : data.review;
     this.originalReview = review || {};
     this.review = review ? cloneDeep(this.originalReview) : {overall_approval: true};
+    if(!this.review?.review_date){
+      this.review.review_date = getTodayDateStr();
+    }
     this.approvePopup = data.approvePopup;
     this.rejectPopup = data.rejectPopup;
   }
@@ -104,7 +107,7 @@ export class ReviewChecklistPopup extends LitElement {
                 <div class="col col-12 pl-none">
                   <datepicker-lite
                     label="${translate('REVIEW_DATE_PRC')}"
-                    .value="${this.review?.review_date || getTodayDateStr()}"
+                    .value="${this.review?.review_date}"
                     selected-date-display-format="D MMM YYYY"
                     fire-date-has-changed
                     @date-has-changed="${(e: CustomEvent) => this.dateHasChanged(e.detail)}"
