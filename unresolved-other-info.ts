@@ -28,11 +28,7 @@ export class UnresolvedOtherInfo extends ComponentBaseMixin(LitElement) {
           background-color: var(--light-error-color);
         }
       </style>
-      <etools-content-panel
-        show-expand-btn
-        panel-title=${translate('IMPORT_INFO')}
-        comment-element="other-info"
-      >
+      <etools-content-panel show-expand-btn panel-title=${translate('IMPORT_INFO')} comment-element="other-info">
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.editPermissions)}</div>
         <div class="row-padding">${translate('MAKE_SURE_OTHER_INFO')}</div>
         <div class="row-padding">

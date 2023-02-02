@@ -71,11 +71,7 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
           padding: 8px 24px 16px 24px;
         }
       </style>
-      <etools-content-panel
-        show-expand-btn
-        panel-title=${translate('FINANCIAL')}
-        comment-element="financial"
-      >
+      <etools-content-panel show-expand-btn panel-title=${translate('FINANCIAL')} comment-element="financial">
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
         <div class="layout-horizontal padd-top">
           <div class="w100">

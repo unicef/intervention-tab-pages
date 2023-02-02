@@ -36,11 +36,11 @@ export const CommentPanelsStyles: CSSResult = css`
     background-color: #009688;
     color: #ffffff;
   }
-  comments-panel-header{
+  comments-panel-header {
     padding: 0 24px 0 24px;
     cursor: move;
   }
-  messages-panel-header{
+  messages-panel-header {
     padding: 0 64px 0 24px;
   }
   .panel-header b {

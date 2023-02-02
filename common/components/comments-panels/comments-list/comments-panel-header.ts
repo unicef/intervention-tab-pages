@@ -1,9 +1,10 @@
 import {customElement, LitElement, html, TemplateResult, CSSResultArray, property} from 'lit-element';
 import {CommentPanelsStyles} from '../common-comments.styles';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
-import { translate } from 'lit-translate';
+import {translate} from 'lit-translate';
 
 @customElement('comments-panel-header')
+/* eslint-disable max-len */
 export class CommentsPanelHeader extends LitElement {
   @property() count = 0;
   protected render(): TemplateResult {
@@ -84,10 +85,10 @@ export class CommentsPanelHeader extends LitElement {
       let y = initY + e.clientY - firstY;
       let x = initX + e.clientX - firstX;
 
-      if(x < (panelOpened ? elem.clientWidth-10 : 0)) x = panelOpened ? elem.clientWidth-10 : 0;
-      if(y < 0) y = 0;
-      if(x > window.innerWidth - elem.clientWidth ) x = window.innerWidth - elem.clientWidth-18;
-      if(y > window.innerHeight - elem.clientHeight ) y = window.innerHeight - elem.clientHeight;
+      if (x < (panelOpened ? elem.clientWidth - 10 : 0)) x = panelOpened ? elem.clientWidth - 10 : 0;
+      if (y < 0) y = 0;
+      if (x > window.innerWidth - elem.clientWidth) x = window.innerWidth - elem.clientWidth - 18;
+      if (y > window.innerHeight - elem.clientHeight) y = window.innerHeight - elem.clientHeight;
 
       elem.style.top = y + 'px';
       elem.style.left = x + 'px';

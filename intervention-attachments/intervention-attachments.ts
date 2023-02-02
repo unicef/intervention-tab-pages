@@ -2,14 +2,14 @@ import {LitElement, customElement, html} from 'lit-element';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import './attachments-list/attachments-list';
 import './prc-document/prc-document';
-import { ROOT_PATH } from '@unicef-polymer/etools-modules-common/dist/config/config';
+import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
 /**
  * @customElement
  */
 @customElement('intervention-attachments')
 export class InterventionAttachments extends LitElement {
   private isEPDApp = ROOT_PATH === '/epd/';
-  
+
   render() {
     // language=HTML
     return html` <style></style>

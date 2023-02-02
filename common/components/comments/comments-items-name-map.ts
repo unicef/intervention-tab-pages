@@ -31,8 +31,8 @@ export const CommentsItemsNameMap: GenericObject<string> = {
   indicator: 'INDICATOR',
   prp: 'PARTNER_REPORTING_REQUIREMENTS',
   eepm: 'EFFECTIVE_EFFICIENT_PROG_MGM',
-  'programme-management-item':'PROGRAMME_MANAGEMENT_ITEM',
-  'activity-item':'ACTIVITY_ITEM'
+  'programme-management-item': 'PROGRAMME_MANAGEMENT_ITEM',
+  'activity-item': 'ACTIVITY_ITEM'
 };
 
 export const CommentsDescription: GenericObject<string> = {
@@ -89,7 +89,7 @@ export const ComponentsPosition: GenericObject<string> = {
   'supply-agreement': TABS.Workplan,
   indicator: TABS.Workplan,
   prp: TABS.Timing,
-  eepm:  TABS.Workplan,
+  eepm: TABS.Workplan,
   'programme-management-item': TABS.WorkplanEditor,
-  'activity-item': TABS.WorkplanEditor,
-}
+  'activity-item': TABS.WorkplanEditor
+};

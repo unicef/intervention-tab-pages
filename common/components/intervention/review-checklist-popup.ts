@@ -82,7 +82,7 @@ export class ReviewChecklistPopup extends LitElement {
     const review = this.isOverallReview ? this.overallReview : data.review;
     this.originalReview = review || {};
     this.review = review ? cloneDeep(this.originalReview) : {overall_approval: true};
-    if(!this.review?.review_date){
+    if (!this.review?.review_date) {
       this.review.review_date = getTodayDateStr();
     }
     this.approvePopup = data.approvePopup;
