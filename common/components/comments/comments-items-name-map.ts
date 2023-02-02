@@ -90,6 +90,6 @@ export const ComponentsPosition: GenericObject<string> = {
   indicator: TABS.Workplan,
   prp: TABS.Timing,
   eepm:  TABS.Workplan,
-  'programme-management-item': TABS.Workplan,
-  'activity-item': TABS.Workplan,
+  'programme-management-item': TABS.WorkplanEditor,
+  'activity-item': TABS.WorkplanEditor,
 }
