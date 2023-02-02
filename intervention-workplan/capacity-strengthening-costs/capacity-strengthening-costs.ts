@@ -8,8 +8,8 @@ import '@polymer/paper-slider/paper-slider.js';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import {selectHqContributionData, selectHqContributionPermissions} from './hqContribution.selectors';
-import {HqContributionData, HqContributionPermissions} from './hqContribution.models';
+import {selectCapacityStrengtheningCostsData, selectCapacityStrengtheningCostsPermissions} from './capacityStrengtheningCosts.selectors';
+import {CapacityStrengtheningCostsData, CapacityStrengtheningCostsPermissions} from './capacityStrengtheningCosts.models';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {patchIntervention} from '../../common/actions/interventions';
@@ -28,8 +28,8 @@ import {getPageDirection} from '../../utils/utils';
 /**
  * @customElement
  */
-@customElement('hq-contribution')
-export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
+@customElement('capacity-strengthening-costs')
+export class CapacityStrengtheningCostsElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -69,7 +69,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
       <etools-content-panel
         show-expand-btn
         panel-title=${translate('CAPACITY_STRENGTHENING_COST')}
-        comment-element="hq-contribution"
+        comment-element="capacity-strengthening-costs"
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
@@ -97,20 +97,20 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
           <label class="paper-label hq-info-label">
             ${translateUnsafeHTML('TOTAL_FOR_PERCENT_HQ', {
               PERCENT: `<b>${this.data.hq_support_cost}%</b>`,
-              VALUE: `<b>${this.autoCalculatedHqContrib} ${this.data.planned_budget.currency}</b>`
+              VALUE: `<b>${this.autoCalculatedCapacityStrCosts} ${this.data.planned_budget.currency}</b>`
             })}
           </label>
         </div>
         <div class="layout-horizontal">
           <etools-currency-amount-input
-            id="hqContrib"
+            id="capacityStrCosts"
             class="col-3"
             placeholder="&#8212;"
             label=${translate(translatesMap.total_hq_cash_local)}
             .value="${this.data.planned_budget.total_hq_cash_local}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_budget)}"
             tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.planned_budget) ? -1 : 0}"
-            @value-changed="${({detail}: CustomEvent) => this.hqContribChanged(detail)}"
+            @value-changed="${({detail}: CustomEvent) => this.capacityStrCostsChanged(detail)}"
             .currency="${this.data.planned_budget?.currency}"
           >
           </etools-currency-amount-input>
@@ -121,16 +121,16 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
     `;
   }
   @property({type: Object})
-  data!: HqContributionData;
+  data!: CapacityStrengtheningCostsData;
 
   @property({type: Object})
-  permissions!: Permission<HqContributionPermissions>;
+  permissions!: Permission<CapacityStrengtheningCostsPermissions>;
 
   @property({type: Object})
   originalData = {};
 
   @property({type: String})
-  autoCalculatedHqContrib = '0';
+  autoCalculatedCapacityStrCosts = '0';
 
   @property({type: String})
   dir = 'ltr';
@@ -148,15 +148,15 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
     }
 
     this.isUnicefUser = get(state, 'user.data.is_unicef_user') as unknown as boolean;
-    this.data = cloneDeep(selectHqContributionData(state));
+    this.data = cloneDeep(selectCapacityStrengtheningCostsData(state));
     this.originalData = cloneDeep(this.data);
-    this.autoCalculatedHqContrib = this.autoCalcHqContrib();
+    this.autoCalculatedCapacityStrCosts = this.autoCalcCapacityStrCosts();
     this.setPermissions(state);
     this.dir = getPageDirection(state);
     super.stateChanged(state);
   }
 
-  hqContribChanged(detail: any) {
+  capacityStrCostsChanged(detail: any) {
     if (areEqual(this.data.planned_budget.total_hq_cash_local, detail.value)) {
       return;
     }
@@ -170,8 +170,8 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
       return;
     }
     this.handleCornerCase();
-    this.data = {...this.data, hq_support_cost: e.detail.value} as HqContributionData;
-    this.autoCalculatedHqContrib = this.autoCalcHqContrib();
+    this.data = {...this.data, hq_support_cost: e.detail.value} as CapacityStrengtheningCostsData;
+    this.autoCalculatedCapacityStrCosts = this.autoCalcCapacityStrCosts();
   }
   /**
    *  Change the slider value by entering a greater than 7 value in the input field
@@ -189,10 +189,10 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
     }
   }
 
-  autoCalcHqContrib() {
-    const hqContrib =
+  autoCalcCapacityStrCosts() {
+    const capacityStrCosts =
       Number(this.data.planned_budget.total_unicef_cash_local_wo_hq) * (0.01 * Number(this.data.hq_support_cost));
-    return this.limitDecimals(hqContrib);
+    return this.limitDecimals(capacityStrCosts);
   }
 
   limitDecimals(initVal: number) {
@@ -211,7 +211,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
   }
 
   private setPermissions(state: any) {
-    this.permissions = selectHqContributionPermissions(state);
+    this.permissions = selectCapacityStrengtheningCostsPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
   }
 
@@ -228,7 +228,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
   /**
    * Backend errors out otherwise
    */
-  cleanUp(data: HqContributionData) {
+  cleanUp(data: CapacityStrengtheningCostsData) {
     if (!data || !data.planned_budget) {
       return data;
     }

@@ -1,7 +1,7 @@
 import {Intervention, InterventionPermissionsFields, PlannedBudget} from '@unicef-polymer/etools-types';
 import {ModelsBase} from '../../common/models/models.base';
 
-export class HqContributionData extends ModelsBase {
+export class CapacityStrengtheningCostsData extends ModelsBase {
   constructor(intervention: Intervention) {
     super();
     this.setObjProperties(intervention);
@@ -10,7 +10,7 @@ export class HqContributionData extends ModelsBase {
   planned_budget = new PlannedBudget();
 }
 
-export class HqContributionPermissions extends ModelsBase {
+export class CapacityStrengtheningCostsPermissions extends ModelsBase {
   constructor(permissions: InterventionPermissionsFields) {
     super();
     this.setObjProperties(permissions);

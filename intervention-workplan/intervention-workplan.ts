@@ -4,7 +4,7 @@ import './supply-agreement/supply-agreement';
 import './results-structure/results-structure';
 import './effective-efficient-programme-mgmt/effective-efficient-programme-mgmt';
 import './non-financial-contribution/non-financial-contribution';
-import './hq-contribution/hq-contribution';
+import './capacity-strengthening-costs/capacity-strengthening-costs';
 import '../intervention-workplan-editor/workplan-editor-link';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 
@@ -27,7 +27,7 @@ export class InterventionWorkplan extends LitElement {
       <budget-summary></budget-summary>
       <results-structure></results-structure>
       <effective-and-efficient-programme-management></effective-and-efficient-programme-management>
-      <hq-contribution></hq-contribution>
+      <capacity-strengthening-costs></capacity-strengthening-costs>
       <supply-agreements></supply-agreements>
       <non-financial-contribution></non-financial-contribution>
     `;
