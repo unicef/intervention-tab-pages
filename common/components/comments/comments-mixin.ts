@@ -256,7 +256,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
     private createOverlay(relatedTo: string): HTMLElement {
       const comments: InterventionComment[] = this.comments[relatedTo] || [];
-      const borderColor = comments.filter(c => c.state==='active' ).length ? '#FF4545' : '#81D763';
+      const borderColor = comments.filter((c) => c.state === 'active').length ? '#FF4545' : '#81D763';
       const element: HTMLElement = Object.assign(document.createElement('div'), {className: 'commentsOverlay'});
       element.setAttribute('tabindex', '0');
       element.style.cssText = `
@@ -308,7 +308,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
     private updateBorderColor(meta: MetaData) {
       const comments: InterventionComment[] = this.comments[meta.relatedTo] || [];
-      const borderColor = comments.filter(c => c.state==='active' ).length ? '#FF4545' : '#81D763';
+      const borderColor = comments.filter((c) => c.state === 'active').length ? '#FF4545' : '#81D763';
       // @ts-ignore
       meta.overlay.style['box-shadow'] = `inset 0px 0px 0px 3px ${borderColor}
       `;

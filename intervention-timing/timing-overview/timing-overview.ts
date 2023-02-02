@@ -35,11 +35,7 @@ export class TimingOverview extends CommentsMixin(LitElement) {
     }
     return html`
       ${sharedStyles}${InfoElementStyles}
-      <section
-        class="elevation"
-        elevation="1"
-        comment-element="timing-overview"
-      >
+      <section class="elevation" elevation="1" comment-element="timing-overview">
         <div class="table not-allowed">
           <div class="data-column">
             <label class="paper-label">${translate('DATE_CREATED')}</label>

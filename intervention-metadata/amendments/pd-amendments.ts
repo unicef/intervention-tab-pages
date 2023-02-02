@@ -103,11 +103,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
         }
       </style>
 
-      <etools-content-panel
-        show-expand-btn
-        panel-title=${translate('AMENDMENTS')}
-        comment-element="amendments"
-      >
+      <etools-content-panel show-expand-btn panel-title=${translate('AMENDMENTS')} comment-element="amendments">
         <div slot="panel-btns">
           <paper-icon-button
             icon="add-box"

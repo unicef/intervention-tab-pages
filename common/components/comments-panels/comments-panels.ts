@@ -80,10 +80,10 @@ export class CommentsPanels extends connectStore(LitElement) {
     this.slideToRight();
   }
 
-  // Will slide comments list panel to right if not enough 
+  // Will slide comments list panel to right if not enough
   // space on the left side to open the message panel.
   slideToRight() {
-    const messagePanelWidth= 440;
+    const messagePanelWidth = 440;
     const pixelsToMove = 15;
 
     if (this.offsetLeft >= messagePanelWidth) {

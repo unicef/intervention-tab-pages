@@ -78,11 +78,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           --iit-margin: 8px 0 8px -15px;
         }
       </style>
-      <etools-content-panel
-        show-expand-btn
-        panel-title=${translate(translatesMap.risks)}
-        comment-element="risks"
-      >
+      <etools-content-panel show-expand-btn panel-title=${translate(translatesMap.risks)} comment-element="risks">
         <div slot="after-title">
           <info-icon-tooltip
             .language="${translateConfig.lang}"
