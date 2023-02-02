@@ -127,7 +127,6 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         show-expand-btn
         panel-title=${translate('GEOGRAPHICAL_COVERAGE')}
         comment-element="geographical-coverage"
-        comment-description="Geographical Coverage"
       >
         <div slot="after-title">
           <info-icon-tooltip

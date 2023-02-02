@@ -52,7 +52,6 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
         class="content-section"
         .panelTitle="${translate('ATTACHMENTS') as unknown as string} (${this.attachments.length})"
         comment-element="attachments"
-        comment-description=${translate('ATTACHMENTS')}
       >
         <div slot="panel-btns" class="layout-horizontal">
           <paper-toggle-button

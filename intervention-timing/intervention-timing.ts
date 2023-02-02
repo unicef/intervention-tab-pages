@@ -52,8 +52,8 @@ export class InterventionTiming extends CommentsMixin(LitElement) {
   }
 
   getSpecialElements(container: HTMLElement): CommentElementMeta[] {
-    return Array.from(container.shadowRoot!.querySelectorAll('.nav-menu-item')).map((element: any) => {
-      const relatedTo: string = element.getAttribute('name') as string;
+    return Array.from(container.shadowRoot!.querySelectorAll('.nav-menu-item')).map((element: any, index: number) => {
+      const relatedTo = `prp-${index}`;
       const relatedToDescription = element.getAttribute('title') as string;
       return {element, relatedTo, relatedToDescription};
     });

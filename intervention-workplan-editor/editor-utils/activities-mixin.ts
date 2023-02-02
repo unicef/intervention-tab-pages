@@ -80,7 +80,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
               !this.oneEntityInEditMode}"
               ?inEditMode="${activity.inEditMode || activity.itemsInEditMode}"
               comment-element="activity-${activity.id}"
-              comment-description=" Activity - ${activity.name}"
+              comment-description="${activity.name}"
             >
               <tr class="header">
                 <td></td>

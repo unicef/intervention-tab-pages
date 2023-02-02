@@ -93,7 +93,6 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
         class="elevation layout-horizontal"
         elevation="1"
         comment-element="budget-summary"
-        comment-description="Budget Summary"
       >
         <div class="tooltip">${this.getIconTooltip()}</div>
         <div class="information-cells">

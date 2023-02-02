@@ -75,7 +75,6 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
         show-expand-btn
         panel-title=${translate('FINANCIAL')}
         comment-element="financial"
-        comment-description=${translate('FINANCIAL')}
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
         <div class="layout-horizontal padd-top">
