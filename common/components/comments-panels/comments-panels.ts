@@ -77,6 +77,31 @@ export class CommentsPanels extends connectStore(LitElement) {
     const path = `interventions/${this.interventionId}/${expectedTab}${location.search}`;
     history.pushState(window.history.state, '', path);
     window.dispatchEvent(new CustomEvent('popstate'));
+    this.slideToRight();
+  }
+
+  // Will slide comments list panel to right if not enough 
+  // space on the left side to open the message panel.
+  slideToRight() {
+    const messagePanelWidth= 440;
+    const pixelsToMove = 15;
+
+    if (this.offsetLeft >= messagePanelWidth) {
+      return;
+    }
+
+    let left = this.offsetLeft;
+    const animationInterval = setInterval(() => {
+      left += pixelsToMove;
+      if (left >= messagePanelWidth) {
+        left = messagePanelWidth;
+      }
+      this.style.left = left + 'px';
+
+      if (left == messagePanelWidth) {
+        clearInterval(animationInterval);
+      }
+    }, 0);
   }
 
   closeCollection(): void {
@@ -113,9 +138,8 @@ export class CommentsPanels extends connectStore(LitElement) {
           display: block;
           position: fixed;
           top: 150px;
-          right: 0;
+          right: 18px;
           z-index: 99;
-          margin: 0 18px;
           width: calc(100% - 36px);
           height: 550px;
           max-height: calc(100vh - 150px);

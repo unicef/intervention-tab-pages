@@ -38,6 +38,7 @@ export const CommentPanelsStyles: CSSResult = css`
   }
   comments-panel-header{
     padding: 0 24px 0 24px;
+    cursor: move;
   }
   messages-panel-header{
     padding: 0 64px 0 24px;

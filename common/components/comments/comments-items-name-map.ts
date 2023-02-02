@@ -80,7 +80,7 @@ export const ComponentsPosition: GenericObject<string> = {
   'programme-document-dates': TABS.Timing,
   'programmatic-visits': TABS.Timing,
   'timing-overview': TABS.Timing,
-  'pd-output': 'PD_OUTPUT',
+  'pd-output': TABS.Workplan,
   activity: TABS.Workplan,
   'budget-summary': TABS.Workplan,
   'programme-management': TABS.Workplan,
@@ -88,5 +88,8 @@ export const ComponentsPosition: GenericObject<string> = {
   'non-financial-contribution': TABS.Workplan,
   'supply-agreement': TABS.Workplan,
   indicator: TABS.Workplan,
-  prp: TABS.Timing
+  prp: TABS.Timing,
+  eepm:  TABS.Workplan,
+  'programme-management-item': TABS.Workplan,
+  'activity-item': TABS.Workplan,
 }

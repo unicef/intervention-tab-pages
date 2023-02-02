@@ -45,12 +45,53 @@ export class CommentsPanelHeader extends LitElement {
     `;
   }
 
+  connectedCallback(): void {
+    super.connectedCallback();
+    this.addEventListener('mousedown', this.makeDraggable);
+  }
+
   closePanel(): void {
     fireEvent(this, 'close-comments-panels');
   }
 
   toggleMinimize(): void {
     fireEvent(this, 'toggle-minimize');
+  }
+
+  makeDraggable(e: any) {
+    e = e || window.event;
+    e.preventDefault();
+    // get the mouse cursor position at startup:
+    const elem = document.querySelector('comments-panels') as any;
+    const panelOpened = elem.shadowRoot!.querySelector('messages-panel')?.classList.contains('opened');
+    const initX = elem.offsetLeft;
+    const initY = elem.offsetTop;
+    const firstX = e.clientX;
+    const firstY = e.clientY;
+
+    document.addEventListener('mouseup', closeDragElement, true);
+    document.addEventListener('mousemove', elementDrag, true);
+
+    function closeDragElement() {
+      document.removeEventListener('mouseup', closeDragElement, true);
+      document.removeEventListener('mousemove', elementDrag, true);
+    }
+
+    function elementDrag(e: any) {
+      e = e || window.event;
+      e.preventDefault();
+
+      let y = initY + e.clientY - firstY;
+      let x = initX + e.clientX - firstX;
+
+      if(x < (panelOpened ? elem.clientWidth-10 : 0)) x = panelOpened ? elem.clientWidth-10 : 0;
+      if(y < 0) y = 0;
+      if(x > window.innerWidth - elem.clientWidth ) x = window.innerWidth - elem.clientWidth-18;
+      if(y > window.innerHeight - elem.clientHeight ) y = window.innerHeight - elem.clientHeight;
+
+      elem.style.top = y + 'px';
+      elem.style.left = x + 'px';
+    }
   }
 
   static get styles(): CSSResultArray {
