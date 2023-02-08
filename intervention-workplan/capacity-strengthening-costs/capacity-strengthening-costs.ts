@@ -8,8 +8,14 @@ import '@polymer/paper-slider/paper-slider.js';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import {selectCapacityStrengtheningCostsData, selectCapacityStrengtheningCostsPermissions} from './capacityStrengtheningCosts.selectors';
-import {CapacityStrengtheningCostsData, CapacityStrengtheningCostsPermissions} from './capacityStrengtheningCosts.models';
+import {
+  selectCapacityStrengtheningCostsData,
+  selectCapacityStrengtheningCostsPermissions
+} from './capacityStrengtheningCosts.selectors';
+import {
+  CapacityStrengtheningCostsData,
+  CapacityStrengtheningCostsPermissions
+} from './capacityStrengtheningCosts.models';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {patchIntervention} from '../../common/actions/interventions';
