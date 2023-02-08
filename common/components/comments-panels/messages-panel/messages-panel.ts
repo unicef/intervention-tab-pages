@@ -84,13 +84,22 @@ export class MessagesPanel extends EditComments {
           z-index: 10 !important;
           box-shadow: 0 4px 10px 3px rgba(0, 0, 0, 0) !important;
         }
-        :host(.opened) {
-          box-shadow: 0 4px 10px 3px rgba(0, 0, 0, 0.17) !important;
-          transform: translateX(calc(-100% + 28px));
-          padding-right: 18px;
+        @media screen and (min-width: 890px) {
+          :host(.opened) {
+            box-shadow: 0 4px 10px 3px rgba(0, 0, 0, 0.17) !important;
+            transform: translateX(calc(-100% + 28px));
+            margin-right: 18px;
+          }
+          .data-container {
+            padding-right: 10px;
+          }
         }
-        .data-container {
-          padding-right: 10px;
+        @media screen and (max-width: 889px) {
+          :host(.opened) {
+            z-index: 20 !important;
+            right: 0 !important;
+            left: none !important;
+          }
         }
         .messages {
           flex: 1;

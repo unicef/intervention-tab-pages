@@ -6,6 +6,7 @@ import './comments-panel-header';
 import {CommentsCollection} from '../../comments/comments.reducer';
 import {CommentsDescription, CommentsItemsNameMap} from '../../comments/comments-items-name-map';
 import {removeTrailingIds} from '../../comments/comments.helpers';
+import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
 
 export type CommentItemData = {
   relatedTo: string;
@@ -19,26 +20,35 @@ export type CommentItemData = {
   // translate key for regular tabs that hasn't provided description (relatedToDescription)
   // would be taken from CommentsDescription mapping
   fieldDescription: string | null;
+  lastCreatedMessageDate: string | null;
 };
 
 @customElement('comments-list')
 export class CommentsList extends LitElement {
+  private isEPDApp = ROOT_PATH !== '/epd/';
+  private excludedCommentGroupsInEpd = ['prc-document'];
+
   @property() selectedGroup: string | null = null;
   set commentsCollection(collection: CommentsCollection) {
-    this.commentsGroups = Object.entries(collection || {}).map(([relatedTo, comments]) => {
-      const relatedToKey: string = removeTrailingIds(relatedTo);
-      const relatedToTranslateKey = CommentsItemsNameMap[relatedToKey];
-      const commentWithDescription = comments.find(({related_to_description}) => related_to_description);
-      const relatedToDescription = commentWithDescription?.related_to_description || '';
-      const fieldDescription = CommentsDescription[relatedToKey] || null;
-      return {
-        relatedToTranslateKey,
-        relatedToDescription,
-        fieldDescription,
-        relatedTo,
-        count: comments.length
-      };
-    });
+    this.commentsGroups = Object.entries(collection || {})
+      .map(([relatedTo, comments]) => {
+        const relatedToKey: string = removeTrailingIds(relatedTo);
+        const relatedToTranslateKey = CommentsItemsNameMap[relatedToKey];
+        const commentWithDescription = comments.find(({related_to_description}) => related_to_description);
+        const relatedToDescription = commentWithDescription?.related_to_description || '';
+        const fieldDescription = CommentsDescription[relatedToKey] || null;
+        return {
+          relatedToTranslateKey,
+          relatedToDescription,
+          fieldDescription,
+          relatedTo,
+          count: comments.length,
+          lastCreatedMessageDate: (comments[comments.length - 1] as any).created
+        };
+      })
+      .filter((commentGroup) => {
+        return !this.isEPDApp || (this.isEPDApp && !this.excludedCommentGroupsInEpd.includes(commentGroup.relatedTo));
+      });
     this.requestUpdate();
   }
 
@@ -56,7 +66,14 @@ export class CommentsList extends LitElement {
               .relatedToDescription="${group.relatedToDescription}"
               .fieldDescription="${group.fieldDescription}"
               .commentsCount="${group.count}"
+              .lastCreatedMessageDate="${group.lastCreatedMessageDate}"
+              tabindex="0"
               @click="${() => this.showMessages(group)}"
+              @keyup="${(event: KeyboardEvent) => {
+                if (event.key === 'Enter') {
+                  this.showMessages(group);
+                }
+              }}"
             ></comments-group>
           `;
         })}

@@ -88,6 +88,7 @@ export const CommentStyles: CSSResult = css`
     letter-spacing: 0.038em;
     color: var(--secondary-text-color);
     cursor: pointer;
+    line-height: 1;
   }
   .actions div.resolved:hover {
     text-decoration: none;

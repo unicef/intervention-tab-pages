@@ -39,7 +39,7 @@ export class MessageItem extends LitElement {
             <div class="date" ?hidden="${!this.comment.id && !this.comment.loadingError}">
               ${this.comment.id
                 ? this.date
-                : html`<div class="retry" @click="${() => this.retry()}">
+                : html`<div class="retry" tabindex="0" @click="${() => this.retry()}">
                     <iron-icon icon="refresh"></iron-icon>Retry
                   </div> `}
             </div>
@@ -62,6 +62,7 @@ export class MessageItem extends LitElement {
               <!--      Resolve action        -->
               <div
                 @click="${() => this.resolve()}"
+                tabindex="0"
                 class="${this.comment.state === 'resolved' ? 'resolved' : ''}"
                 ?hidden="${!this.comment.id}"
               >
@@ -74,7 +75,7 @@ export class MessageItem extends LitElement {
                 Resolve${this.comment.state === 'resolved' ? 'd' : ''}
               </div>
               <!--      Delete action        -->
-              <div ?hidden="${!this.myComment}" @click="${() => this.delete()}">
+              <div ?hidden="${!this.myComment}" tabindex="0" @click="${() => this.delete()}">
                 <etools-loading no-overlay ?active="${this.deleting}" loading-text=""></etools-loading>
                 <iron-icon ?hidden="${this.deleting}" class="delete" icon="delete"></iron-icon> Delete
               </div>
@@ -192,10 +193,11 @@ export class MessageItem extends LitElement {
           align-items: center;
           margin-right: 30px;
           font-weight: 400;
-          font-size: 16px;
+          font-size: 13px;
           line-height: 18px;
           color: #5c5c5c;
           cursor: pointer;
+          line-height: 1;
         }
         .actions div.resolved:hover {
           text-decoration: none;
@@ -210,7 +212,6 @@ export class MessageItem extends LitElement {
         .delete {
           width: 18px;
           height: 18px;
-          color: var(--primary-shade-of-red);
         }
         iron-icon[icon='refresh'],
         .resolve {

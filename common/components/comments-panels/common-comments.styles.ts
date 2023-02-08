@@ -40,8 +40,15 @@ export const CommentPanelsStyles: CSSResult = css`
     padding: 0 24px 0 24px;
     cursor: move;
   }
-  messages-panel-header {
-    padding: 0 64px 0 24px;
+  @media screen and (min-width: 890px) {
+    messages-panel-header {
+      padding: 0 64px 0 24px;
+    }
+  }
+  @media screen and (max-width: 889px) {
+    messages-panel-header {
+      padding: 0 24px 0 24px;
+    }
   }
   .panel-header b {
     margin-left: 10px;

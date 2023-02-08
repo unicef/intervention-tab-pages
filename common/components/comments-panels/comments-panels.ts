@@ -83,6 +83,11 @@ export class CommentsPanels extends connectStore(LitElement) {
   // Will slide comments list panel to right if not enough
   // space on the left side to open the message panel.
   slideToRight() {
+    // Disable slide for screens with width less then 880px
+    if (window.innerWidth < 880) {
+      return;
+    }
+
     const messagePanelWidth = 440;
     const pixelsToMove = 15;
 
@@ -146,6 +151,7 @@ export class CommentsPanels extends connectStore(LitElement) {
           max-width: 450px;
         }
 
+        :host([data-minimized]),
         :host([data-minimized]) messages-panel,
         :host([data-minimized]) comments-list {
           height: 64px;
