@@ -106,6 +106,23 @@ export class CommentsDialog extends EditComments {
     `;
   }
 
+  connectedCallback(): void {
+    super.connectedCallback();
+    document.addEventListener('keyup', this._handleEscape.bind(this));
+  }
+
+  disconnectedCallback(): void {
+    super.disconnectedCallback();
+    document.removeEventListener('keyup', this._handleEscape.bind(this));
+  }
+
+  _handleEscape(event: KeyboardEvent) {
+    if (event.key === 'Escape') {
+      this.dialogOpened = false;
+      this.onClose();
+    }
+  }
+
   onClose(): void {
     fireEvent(this, 'dialog-closed', {confirmed: false});
   }

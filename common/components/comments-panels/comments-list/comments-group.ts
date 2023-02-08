@@ -1,6 +1,7 @@
 import {css, CSSResultArray, customElement, LitElement, html, TemplateResult, property} from 'lit-element';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {translate} from 'lit-translate';
+declare const dayjs: any;
 
 @customElement('comments-group')
 export class CommentsGroup extends LitElement {
@@ -8,6 +9,7 @@ export class CommentsGroup extends LitElement {
   @property({type: String}) relatedTo = '';
   @property({type: String}) relatedToDescription = '';
   @property({type: String}) fieldDescription = '';
+  @property({type: String}) lastCreatedMessageDate = '';
 
   protected render(): TemplateResult {
     return html`
@@ -18,13 +20,18 @@ export class CommentsGroup extends LitElement {
             ${translate('COMMENTS_ON')}
             <b>${this.relatedTo ? translate(this.relatedTo) : ''}</b>
           </div>
-          <div class="date">17/02/2022</div>
+          <div class="date">${this.date}</div>
         </div>
         <div class="description">
           ${this.relatedToDescription}${this.fieldDescription ? translate(this.fieldDescription) : ''}
         </div>
       </div>
     `;
+  }
+
+  get date() {
+    const date = dayjs(this.lastCreatedMessageDate);
+    return `${date.format('DD/MM/YYYY')}`;
   }
 
   static get styles(): CSSResultArray {

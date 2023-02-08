@@ -223,7 +223,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
       // If we have a shadowroot we are probably inside etools-panel component so we
       // select all child elements of the panel-header and we do same thing as above
-      element.shadowRoot?.querySelectorAll('.panel-header *').forEach((el) => {
+      element.shadowRoot?.querySelectorAll('.panel-header *:not([part="ecp-toggle-btn"])').forEach((el) => {
         const tabIndex = el.getAttribute('tabindex');
         if (tabIndex !== undefined && tabIndex !== null) {
           el.setAttribute('original-tabindex', tabIndex);
@@ -269,6 +269,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         z-index: 91;
         cursor: pointer;
         box-shadow: inset 0px 0px 0px 3px ${borderColor};
+        outline: none;
         ${this.determineOverlayMargin(relatedTo)}
       `;
       return element;
@@ -316,10 +317,25 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
     private registerListener(meta: MetaData): void {
       meta.overlay.addEventListener('click', () => this.onTriggerListener(meta));
-      meta.overlay.addEventListener('keypress', (event) => event.key === 'Enter' && this.onTriggerListener(meta));
+      meta.overlay.addEventListener('keypress', (event) => event.key === 'Enter' && this.onTriggerListener(meta, true));
+      meta.overlay.addEventListener('focus', () => this._handleFocus(meta));
+      meta.overlay.addEventListener('blur', () => this._handleBlur(meta));
     }
 
-    private onTriggerListener(meta: MetaData) {
+    _handleFocus(meta: MetaData) {
+      const comments: InterventionComment[] = this.comments[meta.relatedTo] || [];
+      const borderColor = comments.filter((c) => c.state === 'active').length ? '#FF4545' : '#81D763';
+      // eslint-disable-next-line max-len
+      meta.overlay.style.boxShadow = `inset 0px 0px 0px 3px ${borderColor}, 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.4)`;
+    }
+
+    _handleBlur(meta: MetaData) {
+      const comments: InterventionComment[] = this.comments[meta.relatedTo] || [];
+      const borderColor = comments.filter((c) => c.state === 'active').length ? '#FF4545' : '#81D763';
+      meta.overlay.style.boxShadow = `inset 0px 0px 0px 3px ${borderColor}`;
+    }
+
+    private onTriggerListener(meta: MetaData, shouldRefocus?: boolean) {
       this.currentEditedComments = meta;
       openDialog({
         dialog: 'comments-dialog',
@@ -331,6 +347,10 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         }
       }).then(() => {
         this.currentEditedComments = null;
+
+        if (shouldRefocus) {
+          meta.overlay.focus();
+        }
       });
     }
   };

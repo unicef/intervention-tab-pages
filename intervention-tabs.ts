@@ -43,8 +43,6 @@ import {CommentsEndpoints} from '../intervention-tab-pages/common/components/com
 import {CommentsPanels} from './common/components/comments-panels/comments-panels';
 import './unresolved-other-info';
 
-const commentPanel: CommentsPanels = document.createElement('comments-panels') as CommentsPanels;
-
 /**
  * @LitElement
  * @customElement
@@ -301,6 +299,8 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     ]
   };
 
+  private commentsPanel: CommentsPanels | null = null;
+
   @property({type: String})
   uploadEndpoint: string = getEndpoint(interventionEndpoints.attachmentsUpload).url;
 
@@ -452,11 +452,14 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     }
     this.commentMode = newState;
 
-    if (!this.commentMode && commentPanel.isConnected) {
-      commentPanel.remove();
-    } else if (this.commentMode && !commentPanel.isConnected) {
-      document.body.append(commentPanel);
+    if (!this.commentMode && this.commentsPanel) {
+      this.commentsPanel.remove();
+      this.commentsPanel = null;
+    } else if (this.commentMode && !this.commentsPanel) {
+      this.commentsPanel = document.createElement('comments-panels') as CommentsPanels;
+      document.body.append(this.commentsPanel);
     }
+
     setTimeout(() => {
       getStore().dispatch(enableCommentMode(this.commentMode));
     }, 10);

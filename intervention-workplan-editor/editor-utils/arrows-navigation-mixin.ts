@@ -113,6 +113,9 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
 
     determineParentTd(element: any) {
       let currentTd = element;
+      if (!currentTd) {
+        return;
+      }
       while (currentTd.localName !== 'td') {
         currentTd = currentTd.parentElement || currentTd.parentNode || currentTd.host;
       }
@@ -120,6 +123,9 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     }
     determineParentTr(element: any) {
       let currentTr = element;
+      if (!currentTr) {
+        return;
+      }
       while (currentTr.localName !== 'tr') {
         currentTr = currentTr.parentElement;
       }
@@ -137,6 +143,10 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     }
 
     navigateWithArrows(event: KeyboardEvent) {
+      if (this.commentMode) {
+        return;
+      }
+
       if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Enter', 'Escape', 'Tab'].includes(event.key)) {
         return;
       }
@@ -163,7 +173,7 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
             return;
           }
           // @ts-ignore
-          if (['paper-icon-button', 'paper-button'].includes(path[0].localName)) {
+          if (['paper-icon-button', 'paper-button'].includes(path[0]?.localName)) {
             return;
           }
           let actionBtn: any = this.searchForActionBtnInCurrentTd(currentTd);
@@ -346,7 +356,7 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     }
 
     _getActiveTd(activeEl: HTMLTableCellElement) {
-      if (activeEl.localName === 'td') {
+      if (activeEl?.localName === 'td') {
         return activeEl;
       }
       let activeTd = activeEl.closest('td')!;
@@ -385,7 +395,7 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
 
     focusInput(input: any) {
       setTimeout(() => {
-        if (input.localName == 'etools-currency-amount-input') {
+        if (input?.localName == 'etools-currency-amount-input') {
           input.shadowRoot.querySelector('paper-input').focus();
         } else {
           input.focus();
@@ -394,7 +404,7 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     }
 
     inputIsFocused(input: any) {
-      if (input.localName == 'etools-currency-amount-input') {
+      if (input?.localName == 'etools-currency-amount-input') {
         return input.shadowRoot.querySelector('paper-input').focused;
       } else {
         return input.focused;

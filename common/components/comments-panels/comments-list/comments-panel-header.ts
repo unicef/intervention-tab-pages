@@ -2,6 +2,7 @@ import {customElement, LitElement, html, TemplateResult, CSSResultArray, propert
 import {CommentPanelsStyles} from '../common-comments.styles';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {translate} from 'lit-translate';
+import {fitCommentsToWindow, makeCommentsDraggable} from '../../comments/comments.helpers';
 
 @customElement('comments-panel-header')
 /* eslint-disable max-len */
@@ -17,7 +18,14 @@ export class CommentsPanelHeader extends LitElement {
           viewBox="0 0 20 16"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
+          tabindex="0"
           @click="${() => this.toggleMinimize()}"
+          @tap="${() => this.toggleMinimize()}"
+          @keyup="${(event: KeyboardEvent) => {
+            if (event.key === 'Enter') {
+              this.toggleMinimize();
+            }
+          }}"
         >
           <line x1="18.5" y1="1.5" x2="1.5" y2="1.5" stroke="white" stroke-width="3" stroke-linecap="round" />
           <path
@@ -31,7 +39,14 @@ export class CommentsPanelHeader extends LitElement {
           viewBox="0 0 17 17"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
+          tabindex="0"
           @click="${() => this.closePanel()}"
+          @tap="${() => this.closePanel()}"
+          @keyup="${(event: KeyboardEvent) => {
+            if (event.key === 'Enter') {
+              this.closePanel();
+            }
+          }}"
         >
           <path
             d="M1.61153 16.9927C1.19474 17.0173 0.784834 16.8771 0.46826 16.6018C-0.156087 15.9664 -0.156087 14.9403 0.46826 14.3049L14.1394 0.474726C14.7888 -0.139983 15.8078 -0.105812 16.4154 0.551115C16.9649 1.14517 16.9969 2.05825 16.4904 2.69018L2.73869 16.6018C2.4262 16.8731 2.02287 17.013 1.61153 16.9927Z"
@@ -48,7 +63,14 @@ export class CommentsPanelHeader extends LitElement {
 
   connectedCallback(): void {
     super.connectedCallback();
-    this.addEventListener('mousedown', this.makeDraggable);
+    this.addEventListener('mousedown', makeCommentsDraggable);
+    this.addEventListener('touchstart', makeCommentsDraggable);
+    window.addEventListener('resize', fitCommentsToWindow);
+  }
+
+  disconnectedCallback(): void {
+    super.disconnectedCallback();
+    window.removeEventListener('resize', fitCommentsToWindow.bind(this));
   }
 
   closePanel(): void {
@@ -57,42 +79,6 @@ export class CommentsPanelHeader extends LitElement {
 
   toggleMinimize(): void {
     fireEvent(this, 'toggle-minimize');
-  }
-
-  makeDraggable(e: any) {
-    e = e || window.event;
-    e.preventDefault();
-    // get the mouse cursor position at startup:
-    const elem = document.querySelector('comments-panels') as any;
-    const panelOpened = elem.shadowRoot!.querySelector('messages-panel')?.classList.contains('opened');
-    const initX = elem.offsetLeft;
-    const initY = elem.offsetTop;
-    const firstX = e.clientX;
-    const firstY = e.clientY;
-
-    document.addEventListener('mouseup', closeDragElement, true);
-    document.addEventListener('mousemove', elementDrag, true);
-
-    function closeDragElement() {
-      document.removeEventListener('mouseup', closeDragElement, true);
-      document.removeEventListener('mousemove', elementDrag, true);
-    }
-
-    function elementDrag(e: any) {
-      e = e || window.event;
-      e.preventDefault();
-
-      let y = initY + e.clientY - firstY;
-      let x = initX + e.clientX - firstX;
-
-      if (x < (panelOpened ? elem.clientWidth - 10 : 0)) x = panelOpened ? elem.clientWidth - 10 : 0;
-      if (y < 0) y = 0;
-      if (x > window.innerWidth - elem.clientWidth) x = window.innerWidth - elem.clientWidth - 18;
-      if (y > window.innerHeight - elem.clientHeight) y = window.innerHeight - elem.clientHeight;
-
-      elem.style.top = y + 'px';
-      elem.style.left = x + 'px';
-    }
   }
 
   static get styles(): CSSResultArray {
