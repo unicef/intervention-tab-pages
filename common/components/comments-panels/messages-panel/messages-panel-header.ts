@@ -13,7 +13,6 @@ export class MessagesPanelHeader extends LitElement {
       <div class="buttons">
         <svg
           @click="${this.hideMessages}"
-          @tap="${this.hideMessages}"
           @keyup="${(event: KeyboardEvent) => {
             if (event.key === 'Enter') {
               this.hideMessages();

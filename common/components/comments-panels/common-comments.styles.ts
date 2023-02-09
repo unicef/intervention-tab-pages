@@ -35,10 +35,10 @@ export const CommentPanelsStyles: CSSResult = css`
     min-height: 64px;
     background-color: #009688;
     color: #ffffff;
+    cursor: move;
   }
   comments-panel-header {
     padding: 0 24px 0 24px;
-    cursor: move;
   }
   @media screen and (min-width: 890px) {
     messages-panel-header {
