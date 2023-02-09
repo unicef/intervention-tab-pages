@@ -23,7 +23,7 @@ export class CommentsGroup extends LitElement {
           <div class="date">${this.date}</div>
         </div>
         <div class="description">
-          ${this.relatedToDescription}${this.fieldDescription ? translate(this.fieldDescription) : ''}
+          ${this.relatedToDescription} ${this.fieldDescription ? translate(this.fieldDescription) : ''}
         </div>
       </div>
     `;
