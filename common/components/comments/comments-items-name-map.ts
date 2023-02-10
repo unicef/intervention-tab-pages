@@ -25,7 +25,7 @@ export const CommentsItemsNameMap: GenericObject<string> = {
   activity: 'ACTIVITY',
   'budget-summary': 'BUDGET_SUMMARY',
   'programme-management': translatesMap.management_budgets,
-  'hq-contribution': 'CAPACITY_STRENGTHENING_COST',
+  'capacity-strengthening-costs': 'CAPACITY_STRENGTHENING_COST',
   'non-financial-contribution': 'PARTNER_NON_FINANCIAL_CONTRIBUTION',
   'supply-agreement': translatesMap.supply_items,
   indicator: 'INDICATOR',
@@ -56,7 +56,7 @@ export const CommentsDescription: GenericObject<string> = {
   'timing-overview': 'OVERVIEW_DESCRIPTION',
   'budget-summary': 'BUDGET_SUMMARY_DESCRIPTION',
   'programme-management': `${translatesMap.management_budgets}_DESCRIPTION`,
-  'hq-contribution': 'HEADQUARTERS_CONTRIBUTION_DESCRIPTION',
+  'capacity-strengthening-costs': 'CAPACITY_STRENGTHENING_COST_DESCRIPTION',
   'non-financial-contribution': 'PARTNER_NON_FINANCIAL_CONTRIBUTION_DESCRIPTION',
   'supply-agreement': `${translatesMap.supply_items}_DESCRIPTION`
 };
@@ -84,7 +84,7 @@ export const ComponentsPosition: GenericObject<string> = {
   activity: TABS.Workplan,
   'budget-summary': TABS.Workplan,
   'programme-management': TABS.Workplan,
-  'hq-contribution': TABS.Workplan,
+  'capacity-strengthening-costs': TABS.Workplan,
   'non-financial-contribution': TABS.Workplan,
   'supply-agreement': TABS.Workplan,
   indicator: TABS.Workplan,
