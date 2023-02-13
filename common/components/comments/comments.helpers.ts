@@ -4,7 +4,7 @@ export function removeTrailingIds(key: string): string {
 
 export function fitCommentsToWindow() {
   const elem = document.querySelector('comments-panels') as any;
-  if(!elem){
+  if (!elem) {
     return;
   }
 
@@ -31,10 +31,10 @@ export function makeCommentsDraggable(e: any) {
   e = (e.touches && e.touches[0]) || e || window.event;
   // get the mouse cursor position at startup:
   const elem = document.querySelector('comments-panels') as any;
-  if(!elem){
+  if (!elem) {
     return;
   }
-  
+
   const panelOpened = elem.shadowRoot?.querySelector('messages-panel')?.classList.contains('opened');
   const initX = elem.offsetLeft;
   const initY = elem.offsetTop;
