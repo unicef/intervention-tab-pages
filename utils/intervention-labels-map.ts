@@ -65,6 +65,7 @@ export const translatesMap: GenericObject = {
   implementation_strategy: 'IMPLEMENTATION_STRATEGY_AND_TECHNICAL_GUIDANCE',
   ip_program_contribution: 'OTHER_NON_FINANCIAL_CONTRIBUTION',
   other_partners_involved: 'OTHER_PARTNERS_INVOLVED',
+  other_details: 'OTHERS',
   cash_transfer_modalities: 'CASH_TRANSFER_MOD',
   sustainability_narrative: 'SUSTAINABILITY_NARRATIVE',
   unit_price: 'PRICE_UNIT',
