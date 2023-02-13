@@ -26,22 +26,21 @@ export type CommentItemData = {
 export class CommentsList extends LitElement {
   @property() selectedGroup: string | null = null;
   set commentsCollection(collection: CommentsCollection) {
-    this.commentsGroups = Object.entries(collection || {})
-      .map(([relatedTo, comments]) => {
-        const relatedToKey: string = removeTrailingIds(relatedTo);
-        const relatedToTranslateKey = CommentsItemsNameMap[relatedToKey];
-        const commentWithDescription = comments.find(({related_to_description}) => related_to_description);
-        const relatedToDescription = commentWithDescription?.related_to_description || '';
-        const fieldDescription = CommentsDescription[relatedToKey] || null;
-        return {
-          relatedToTranslateKey,
-          relatedToDescription,
-          fieldDescription,
-          relatedTo,
-          count: comments.length,
-          lastCreatedMessageDate: (comments[comments.length - 1] as any).created
-        };
-      });
+    this.commentsGroups = Object.entries(collection || {}).map(([relatedTo, comments]) => {
+      const relatedToKey: string = removeTrailingIds(relatedTo);
+      const relatedToTranslateKey = CommentsItemsNameMap[relatedToKey];
+      const commentWithDescription = comments.find(({related_to_description}) => related_to_description);
+      const relatedToDescription = commentWithDescription?.related_to_description || '';
+      const fieldDescription = CommentsDescription[relatedToKey] || null;
+      return {
+        relatedToTranslateKey,
+        relatedToDescription,
+        fieldDescription,
+        relatedTo,
+        count: comments.length,
+        lastCreatedMessageDate: (comments[comments.length - 1] as any).created
+      };
+    });
     this.requestUpdate();
   }
 
