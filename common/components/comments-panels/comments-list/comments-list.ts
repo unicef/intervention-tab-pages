@@ -6,7 +6,6 @@ import './comments-panel-header';
 import {CommentsCollection} from '../../comments/comments.reducer';
 import {CommentsDescription, CommentsItemsNameMap} from '../../comments/comments-items-name-map';
 import {removeTrailingIds} from '../../comments/comments.helpers';
-import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
 
 export type CommentItemData = {
   relatedTo: string;
@@ -25,9 +24,6 @@ export type CommentItemData = {
 
 @customElement('comments-list')
 export class CommentsList extends LitElement {
-  private isEPDApp = ROOT_PATH !== '/epd/';
-  private excludedCommentGroupsInEpd = ['prc-document'];
-
   @property() selectedGroup: string | null = null;
   set commentsCollection(collection: CommentsCollection) {
     this.commentsGroups = Object.entries(collection || {})
@@ -45,9 +41,6 @@ export class CommentsList extends LitElement {
           count: comments.length,
           lastCreatedMessageDate: (comments[comments.length - 1] as any).created
         };
-      })
-      .filter((commentGroup) => {
-        return !this.isEPDApp || (this.isEPDApp && !this.excludedCommentGroupsInEpd.includes(commentGroup.relatedTo));
       });
     this.requestUpdate();
   }

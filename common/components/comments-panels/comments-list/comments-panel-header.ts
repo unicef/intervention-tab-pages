@@ -20,7 +20,6 @@ export class CommentsPanelHeader extends LitElement {
           xmlns="http://www.w3.org/2000/svg"
           tabindex="0"
           @click="${() => this.toggleMinimize()}"
-          @tap="${() => this.toggleMinimize()}"
           @keyup="${(event: KeyboardEvent) => {
             if (event.key === 'Enter') {
               this.toggleMinimize();
@@ -41,7 +40,6 @@ export class CommentsPanelHeader extends LitElement {
           xmlns="http://www.w3.org/2000/svg"
           tabindex="0"
           @click="${() => this.closePanel()}"
-          @tap="${() => this.closePanel()}"
           @keyup="${(event: KeyboardEvent) => {
             if (event.key === 'Enter') {
               this.closePanel();
@@ -70,7 +68,7 @@ export class CommentsPanelHeader extends LitElement {
 
   disconnectedCallback(): void {
     super.disconnectedCallback();
-    window.removeEventListener('resize', fitCommentsToWindow.bind(this));
+    window.removeEventListener('resize', fitCommentsToWindow);
   }
 
   closePanel(): void {
