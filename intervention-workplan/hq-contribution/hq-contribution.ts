@@ -69,7 +69,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
       <etools-content-panel
         show-expand-btn
         panel-title=${translate('CAPACITY_STRENGTHENING_COST')}
-        comment-element="hq-contribution"
+        comment-element="capacity-strengthening-costs"
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
