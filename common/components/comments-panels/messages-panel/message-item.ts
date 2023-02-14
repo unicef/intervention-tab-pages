@@ -2,6 +2,7 @@ import {customElement, LitElement, html, CSSResultArray, TemplateResult, css, pr
 import {InterventionComment} from '@unicef-polymer/etools-types';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {translate} from 'lit-translate';
 declare const dayjs: any;
 
 @customElement('message-item')
@@ -39,14 +40,23 @@ export class MessageItem extends LitElement {
             <div class="date" ?hidden="${!this.comment.id && !this.comment.loadingError}">
               ${this.comment.id
                 ? this.date
-                : html`<div class="retry" tabindex="0" @click="${() => this.retry()}">
-                    <iron-icon icon="refresh"></iron-icon>Retry
+                : html`<div
+                    class="retry"
+                    tabindex="0"
+                    @click="${() => this.retry()}"
+                    @keyup="${(event: KeyboardEvent) => {
+                      if (event.key === 'Enter') {
+                        this.retry();
+                      }
+                    }}"
+                  >
+                    <iron-icon icon="refresh"></iron-icon>${translate('RETRY')}
                   </div> `}
             </div>
           </div>
 
           ${this.comment.state === 'deleted'
-            ? html`<div class="deleted-message">Message was deleted</div> `
+            ? html`<div class="deleted-message">${translate('MESSAGE_WAS_DELETED')}</div> `
             : html` <div class="message">${this.comment.text}</div>`}
         </div>
       </div>
@@ -62,6 +72,11 @@ export class MessageItem extends LitElement {
               <!--      Resolve action        -->
               <div
                 @click="${() => this.resolve()}"
+                @keyup="${(event: KeyboardEvent) => {
+                  if (event.key === 'Enter') {
+                    this.resolve();
+                  }
+                }}"
                 tabindex="0"
                 class="${this.comment.state === 'resolved' ? 'resolved' : ''}"
                 ?hidden="${!this.comment.id}"
@@ -72,12 +87,23 @@ export class MessageItem extends LitElement {
                   class="resolve"
                   icon="${this.comment.state === 'resolved' ? 'check' : 'archive'}"
                 ></iron-icon>
-                Resolve${this.comment.state === 'resolved' ? 'd' : ''}
+                ${translate(this.comment.state === 'resolved' ? 'RESOLVED' : 'RESOLVE')}
               </div>
               <!--      Delete action        -->
-              <div ?hidden="${!this.myComment}" tabindex="0" @click="${() => this.delete()}">
+              <div
+                ?hidden="${!this.myComment}"
+                tabindex="0"
+                @click="${() => this.delete()}"
+                @keyup="${(event: KeyboardEvent) => {
+                  if (event.key === 'Enter') {
+                    this.delete();
+                    // Focus this element so we can continue with tabs on next elements;
+                    this.focus();
+                  }
+                }}"
+              >
                 <etools-loading no-overlay ?active="${this.deleting}" loading-text=""></etools-loading>
-                <iron-icon ?hidden="${this.deleting}" class="delete" icon="delete"></iron-icon> Delete
+                <iron-icon ?hidden="${this.deleting}" class="delete" icon="delete"></iron-icon> ${translate('DELETE')}
               </div>
             </div>
           `}

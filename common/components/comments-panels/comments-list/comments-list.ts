@@ -64,6 +64,9 @@ export class CommentsList extends LitElement {
               @keyup="${(event: KeyboardEvent) => {
                 if (event.key === 'Enter') {
                   this.showMessages(group);
+                  const commentsPanelElement = document.querySelector('comments-panels');
+                  const messagesPanelElement = commentsPanelElement?.shadowRoot?.querySelector('messages-panel');
+                  messagesPanelElement?.shadowRoot?.querySelector('paper-textarea')?.focus();
                 }
               }}"
             ></comments-group>

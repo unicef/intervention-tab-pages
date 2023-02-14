@@ -45,8 +45,17 @@ export class CommentElement extends LitElement {
           <div class="date" ?hidden="${!this.comment.id && !this.comment.loadingError}">
             ${this.comment.id
               ? this.date
-              : html`<div class="retry" @click="${() => this.retry()}">
-                  <iron-icon icon="refresh"></iron-icon>Retry
+              : html`<div
+                  class="retry"
+                  tabindex="0"
+                  @click="${() => this.retry()}"
+                  @keyup="${(event: KeyboardEvent) => {
+                    if (event.key === 'Enter') {
+                      this.retry();
+                    }
+                  }}"
+                >
+                  <iron-icon icon="refresh"></iron-icon>${translate('RETRY')}
                 </div> `}
           </div>
         </div>
@@ -62,6 +71,12 @@ export class CommentElement extends LitElement {
                 <!--      Resolve action        -->
                 <div
                   @click="${() => this.resolve()}"
+                  @keyup="${(event: KeyboardEvent) => {
+                    if (event.key === 'Enter') {
+                      this.resolve();
+                    }
+                  }}"
+                  tabindex="0"
                   class="${this.comment.state === 'resolved' ? 'resolved' : ''}"
                   ?hidden="${!this.comment.id}"
                 >
@@ -74,7 +89,18 @@ export class CommentElement extends LitElement {
                   ${translate(this.comment.state === 'resolved' ? 'RESOLVED' : 'RESOLVE')}
                 </div>
                 <!--      Delete action        -->
-                <div ?hidden="${!this.myComment}" @click="${() => this.delete()}">
+                <div
+                  ?hidden="${!this.myComment}"
+                  tabindex="0"
+                  @click="${() => this.delete()}"
+                  @keyup="${(event: KeyboardEvent) => {
+                    if (event.key === 'Enter') {
+                      this.delete();
+                      // Focus this element so we can continue with tabs on next elements;
+                      this.focus();
+                    }
+                  }}"
+                >
                   <etools-loading no-overlay ?active="${this.deleting}" loading-text=""></etools-loading>
                   <iron-icon ?hidden="${this.deleting}" class="delete" icon="cancel"></iron-icon> ${translate('DELETE')}
                 </div>
