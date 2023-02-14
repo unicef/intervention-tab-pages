@@ -15,7 +15,7 @@ export class MessagesPanelHeader extends LitElement {
           @click="${this.hideMessages}"
           @keyup="${(event: KeyboardEvent) => {
             if (event.key === 'Enter') {
-              this.hideMessages();
+              this.hideMessages(true);
             }
           }}"
           width="14"
@@ -35,9 +35,26 @@ export class MessagesPanelHeader extends LitElement {
     super.connectedCallback();
     this.addEventListener('mousedown', makeCommentsDraggable);
     this.addEventListener('touchstart', makeCommentsDraggable);
+    document.addEventListener('keydown', this.hideOnEscape.bind(this));
   }
 
-  hideMessages(): void {
+  disconnectedCallback(): void {
+    super.disconnectedCallback();
+    document.removeEventListener('keydown', this.hideOnEscape.bind(this));
+  }
+
+  hideOnEscape(e: KeyboardEvent) {
+    if (e.key === 'Escape') {
+      this.hideMessages(true);
+    }
+  }
+
+  hideMessages(refocusInList?: boolean): void {
+    if (refocusInList) {
+      const commentsPanelElement = document.querySelector('comments-panels');
+      const commentsListElement = commentsPanelElement?.shadowRoot?.querySelector('comments-list');
+      (commentsListElement?.shadowRoot?.querySelector('comments-group[opened]') as any)?.focus();
+    }
     fireEvent(this, 'hide-messages');
   }
 

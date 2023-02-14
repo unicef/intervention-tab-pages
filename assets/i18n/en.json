@@ -688,6 +688,7 @@
   "MESSAGE_WAS_DELETED": "Message was deleted",
   "RESOLVE": "Resolve",
   "RESOLVED": "Resolved",
+  "RETRY":"Retry",
   "AT": "at",
   "COMMENTS_ON": "Comments on",
   "COMMENTS_PANEL": "Comments Panel",
