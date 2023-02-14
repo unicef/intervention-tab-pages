@@ -207,6 +207,28 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
         </div>
 
         <div class="row-padding-v">
+          <div>
+            <label class="paper-label">${translate(translatesMap.other_details)}</label>
+          </div>
+          <paper-textarea
+            no-label-float
+            id="otherDetails"
+            type="text"
+            always-float-label
+            placeholder="—"
+            .value="${this.data.other_details}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.other_details)}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.other_details) ? -1 : 0}"
+            ?required="${this.permissions?.required.other_details}"
+            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'other_details')}"
+            maxlength="5000"
+            rows="${detailsTextareaRowsCount(this.editMode)}"
+            .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.other_details)}"
+          >
+          </paper-textarea>
+        </div>
+
+        <div class="row-padding-v">
           <paper-checkbox
             ?checked="${this.data.has_data_processing_agreement}"
             ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.has_data_processing_agreement)}"
