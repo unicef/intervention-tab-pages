@@ -198,7 +198,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
         <etools-status-lit
           .statuses="${this.intervention.status_list.map((x) => [
             x[0],
-            getTranslatedValue(x[1], 'COMMON_DATA.INTERVENTIONSTATUSES')
+            getTranslatedValue(x[0], 'COMMON_DATA.INTERVENTIONSTATUSES')
           ])}"
           .activeStatus="${this.intervention.status}"
         ></etools-status-lit>
