@@ -42,6 +42,7 @@ import {interventionEndpoints} from './utils/intervention-endpoints';
 import {CommentsEndpoints} from '../intervention-tab-pages/common/components/comments/comments-types';
 import {CommentsPanels} from './common/components/comments-panels/comments-panels';
 import './unresolved-other-info';
+import {translatesMap} from './utils/intervention-labels-map';
 
 /**
  * @LitElement
@@ -350,6 +351,14 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   connectedCallback() {
     super.connectedCallback();
     // this._showInterventionPageLoadingMessage();
+
+    // Override ajax error parser inside @unicef-polymer/etools-ajax
+    // for string translation using lit-translate and translatesMap from within
+    // interventions-tab-pages
+    window.ajaxErrorParserTranslateFunction = (key = '') => {
+      return getTranslatedValue(translatesMap[key] || key);
+    };
+
     const commentsEndpoints: CommentsEndpoints = {
       saveComments: interventionEndpoints.comments,
       deleteComment: interventionEndpoints.deleteComment,
