@@ -5,11 +5,14 @@ import './message-item';
 import {translate} from 'lit-translate';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {EditComments} from '../../comments/edit-comments-base';
+import {CommentRelatedItem} from '../../comments/comments-types';
 
 @customElement('messages-panel')
 export class MessagesPanel extends EditComments {
   @query('#messages-container') container?: HTMLElement;
   @property() relatedToKey = '';
+  @property() relatedItem: CommentRelatedItem | null = null;
+
   set collectionId(collectionId: string) {
     if (!collectionId) {
       return;
@@ -30,7 +33,10 @@ export class MessagesPanel extends EditComments {
           }
         }
       </style>
-      <messages-panel-header .relatedToKey="${this.relatedToKey}"></messages-panel-header>
+      <messages-panel-header
+        .relatedToKey="${this.relatedToKey}"
+        .relatedItem="${this.relatedItem}"
+      ></messages-panel-header>
       <div class="data-container layout-vertical">
         <div class="messages" id="messages-container">
           ${this.comments?.map(

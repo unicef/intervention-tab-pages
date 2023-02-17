@@ -2,6 +2,10 @@ export function removeTrailingIds(key: string): string {
   return key.replace(/(.+?)-\d+/, '$1');
 }
 
+export function extractId(key: string): string {
+  return key.substring(key.lastIndexOf('-') + 1);
+}
+
 export function fitCommentsToWindow() {
   const elem = document.querySelector('comments-panels') as any;
   if (!elem) {

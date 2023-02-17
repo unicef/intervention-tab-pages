@@ -5,34 +5,26 @@ import './comments-group';
 import './comments-panel-header';
 import {CommentsCollection} from '../../comments/comments.reducer';
 import {CommentsDescription, CommentsItemsNameMap} from '../../comments/comments-items-name-map';
-import {removeTrailingIds} from '../../comments/comments.helpers';
-
-export type CommentItemData = {
-  relatedTo: string;
-  // translate key that describes type of element - Budget Summary/Attachments/PD Output after translate
-  relatedToTranslateKey: string;
-  // comments count
-  count: number;
-  // description provided by [comment-element] or [comment-container]
-  // (Now like name for activity/indicator/pd or prp tab type)
-  relatedToDescription: string;
-  // translate key for regular tabs that hasn't provided description (relatedToDescription)
-  // would be taken from CommentsDescription mapping
-  fieldDescription: string | null;
-  lastCreatedMessageDate: string | null;
-};
+import {extractId, removeTrailingIds} from '../../comments/comments.helpers';
+import {CommentItemData, CommentRelatedItem} from '../../comments/comments-types';
 
 @customElement('comments-list')
 export class CommentsList extends LitElement {
   @property() selectedGroup: string | null = null;
+  @property() relatedItems: CommentRelatedItem[] = [];
+
   set commentsCollection(collection: CommentsCollection) {
     this.commentsGroups = Object.entries(collection || {}).map(([relatedTo, comments]) => {
       const relatedToKey: string = removeTrailingIds(relatedTo);
+      const relatedToId = extractId(relatedTo);
+      const relatedItem = this.relatedItems?.find((x) => x.type === relatedToKey && x.id.toString() === relatedToId);
       const relatedToTranslateKey = CommentsItemsNameMap[relatedToKey];
       const commentWithDescription = comments.find(({related_to_description}) => related_to_description);
       const relatedToDescription = commentWithDescription?.related_to_description || '';
-      const fieldDescription = CommentsDescription[relatedToKey] || null;
+      const fieldDescription = CommentsDescription[relatedToKey] || CommentsDescription[relatedTo] || null;
+
       return {
+        relatedItem,
         relatedToTranslateKey,
         relatedToDescription,
         fieldDescription,
@@ -54,6 +46,7 @@ export class CommentsList extends LitElement {
           return html`
             <comments-group
               ?opened="${group.relatedTo === this.selectedGroup}"
+              .relatedItem="${group.relatedItem}"
               .relatedTo="${group.relatedToTranslateKey}"
               .relatedToDescription="${group.relatedToDescription}"
               .fieldDescription="${group.fieldDescription}"

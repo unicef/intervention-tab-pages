@@ -3,13 +3,19 @@ import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-c
 import {CommentPanelsStyles} from '../common-comments.styles';
 import {translate, get as getTranslation} from 'lit-translate';
 import {makeCommentsDraggable} from '../../comments/comments.helpers';
+import {CommentRelatedItem} from '../../comments/comments-types';
 
 @customElement('messages-panel-header')
 export class MessagesPanelHeader extends LitElement {
   @property() relatedToKey = '';
+  @property() relatedItem: CommentRelatedItem | null = null;
+
   protected render(): TemplateResult {
     return html`
-      <div>${getTranslation('COMMENTS_ON')} <b>${this.relatedToKey ? translate(this.relatedToKey) : ''}</b></div>
+      <div>
+        ${getTranslation('COMMENTS_ON')}
+        <b>${this.relatedToKey ? translate(this.relatedToKey) : ''} ${this.relatedItem?.code || ''}</b>
+      </div>
       <div class="buttons">
         <svg
           @click="${this.hideMessages}"
