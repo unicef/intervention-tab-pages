@@ -64,8 +64,8 @@ export class InterventionActions extends connectStore(LitElement) {
   @property({type: Boolean})
   userIsBudgetOwner = false;
 
-  @property({type: String})
-  currentLanguage!: string;
+  @property({type: Number})
+  commonDataLoadedTimestamp = 0;
 
   private isEPDApp = ROOT_PATH === '/epd/';
 
@@ -133,14 +133,12 @@ export class InterventionActions extends connectStore(LitElement) {
   }
 
   public stateChanged(state: RootState) {
-    if (this.currentLanguage !== state.activeLanguage.activeLanguage) {
-      if (this.currentLanguage) {
-        // language was already set, this is language change, translate actions
-        Object.keys(ActionNamesMap).forEach(
-          (key) => (ActionNamesMap[key].text = getTranslation(ActionNamesMap[key].textKey))
-        );
-      }
-      this.currentLanguage = state.activeLanguage.activeLanguage;
+    if (this.commonDataLoadedTimestamp !== state.commonData!.loadedTimestamp) {
+      // static data reloaded (because of language change), need to update texts
+      this.commonDataLoadedTimestamp = state.commonData!.loadedTimestamp;
+      Object.keys(ActionNamesMap).forEach(
+        (key) => (ActionNamesMap[key].text = getTranslation(ActionNamesMap[key].textKey))
+      );
     }
   }
 
