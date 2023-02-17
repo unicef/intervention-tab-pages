@@ -60,7 +60,10 @@ export const CommentsDescription: GenericObject<string> = {
   'capacity-strengthening-costs': 'CAPACITY_STRENGTHENING_COST_DESCRIPTION',
   'non-financial-contribution': 'PARTNER_NON_FINANCIAL_CONTRIBUTION_DESCRIPTION',
   'supply-agreement': `${translatesMap.supply_items}_DESCRIPTION`,
-  'other-info': 'IMPORT_INFO_DESCRIPTION'
+  'other-info': 'IMPORT_INFO_DESCRIPTION',
+  'eepm-1': 'TITLE_1',
+  'eepm-2': 'TITLE_2',
+  'eepm-3': 'TITLE_3'
 };
 
 export const ComponentsPosition: GenericObject<string> = {
