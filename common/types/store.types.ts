@@ -66,7 +66,7 @@ export interface CommonDataState {
   cashTransferModalities: any[];
   PRPCountryData: any[];
   countryProgrammes: CountryProgram[];
-  commonDataIsLoaded: boolean;
+  loadedTimestamp: number;
   providedBy: LabelAndValue[];
 }
 
