@@ -633,7 +633,12 @@
     "NOT_REQUIRED": "غير مطلوب",
     "HIGH_RISK_ASSUMED": "يفترض وجود مخاطر عالية",
     "LOW_RISK_ASSUMED": "يفترض مخاطر منخفضة",
-    "NOT_ASSESSED": "لم يتم تقييمه"
+    "NOT_ASSESSED": "لم يتم تقييمه",
+    "MEDIUM_CAPACITY_(MODERATE_RISK)":"سعة متوسطة (مخاطرة معتدلة)",
+    "LOW_CAPACITY_(HIGH_RISK)": "سعة منخفضة (مخاطر عالية)",
+    "FULL_CAPACITY_(LOW_RISK)": "السعة الكاملة (مخاطر منخفضة)",
+    "LOW_CAPACITY_ASSUMED_-_EMERGENCY": "السعة المنخفضة المفترضة - الطوارئ",
+    "NO_CONTACT_WITH_BENEFICIARIES": "لا اتصال مع المستفيدين"
   },
   "CASH_TRANSFER_MODALITIES": {
     "DIRECT_PAYMENT": "دفع مباشر",

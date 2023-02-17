@@ -633,7 +633,12 @@
     "NOT_REQUIRED": "Não requerido",
     "HIGH_RISK_ASSUMED": "Alto Risco Assumido",
     "LOW_RISK_ASSUMED": "Baixo Risco Assumido",
-    "NOT_ASSESSED": "Não avaliado"
+    "NOT_ASSESSED": "Não avaliado",
+    "MEDIUM_CAPACITY_(MODERATE_RISK)":"Capacidade média (risco moderado)",
+    "LOW_CAPACITY_(HIGH_RISK)": "Baixa capacidade (alto risco)",
+    "FULL_CAPACITY_(LOW_RISK)": "Capacidade total (risco baixo)",
+    "LOW_CAPACITY_ASSUMED_-_EMERGENCY": "Baixa Capacidade Assumida - Emergência",
+    "NO_CONTACT_WITH_BENEFICIARIES": "Nenhum contato com os beneficiários"
   },
   "CASH_TRANSFER_MODALITIES": {
     "DIRECT_PAYMENT": "Pagamento direto",
