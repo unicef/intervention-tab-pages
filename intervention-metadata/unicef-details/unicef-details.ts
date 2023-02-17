@@ -241,7 +241,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
   }
 
   dataRequiredByDropdownsHasBeenLoaded(state: RootState) {
-    return state.commonData?.commonDataIsLoaded;
+    return Boolean(state.commonData?.loadedTimestamp);
   }
 
   private setPermissions(state: any) {
