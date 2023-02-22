@@ -17,22 +17,9 @@ export class MessagesPanelHeader extends LitElement {
         <b>${this.relatedToKey ? translate(this.relatedToKey) : ''} ${this.relatedItem?.code || ''}</b>
       </div>
       <div class="buttons">
-        <svg
-          @click="${this.hideMessages}"
-          @keyup="${(event: KeyboardEvent) => {
-            if (event.key === 'Enter') {
-              this.hideMessages(true);
-            }
-          }}"
-          width="14"
-          height="23"
-          viewBox="0 0 14 23"
-          fill="none"
-          tabindex="0"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M3 3L11 11.5645L3 20" stroke="white" stroke-width="3" stroke-linecap="square" />
-        </svg>
+        <paper-button tabindex="0" @click="${this.hideMessages}">
+          <iron-icon icon="chevron-right"></iron-icon>
+        </paper-button>
       </div>
     `;
   }
