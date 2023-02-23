@@ -62,7 +62,7 @@ export const CommentPanelsStyles: CSSResult = css`
     margin: 0;
   }
   .buttons paper-button:last-child {
-    margin-left: 20px;
+    margin-left: 10px;
   }
   paper-button iron-icon {
     width: 30px;
