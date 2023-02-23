@@ -17,7 +17,7 @@ export class MessagesPanelHeader extends LitElement {
         <b>${this.relatedToKey ? translate(this.relatedToKey) : ''} ${this.relatedItem?.code || ''}</b>
       </div>
       <div class="buttons">
-        <paper-button tabindex="0" @click="${this.hideMessages}">
+        <paper-button tabindex="0" @click="${() => this.hideMessages(false)}">
           <iron-icon icon="chevron-right"></iron-icon>
         </paper-button>
       </div>

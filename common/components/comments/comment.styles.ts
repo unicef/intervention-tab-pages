@@ -126,7 +126,6 @@ export const CommentStyles: CSSResult = css`
     margin-right: 2px;
   }
   *:focus-visible {
-    outline: 0;
-    box-shadow: 0 0 10px 10px rgb(170 165 165 / 20%) !important;
+    outline: 2px solid rgb(170 165 165 / 50%);
   }
 `;
