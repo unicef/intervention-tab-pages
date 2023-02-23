@@ -123,7 +123,7 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
               type="search"
               .value="${this.locationSearch}"
               @value-changed="${({detail}: CustomEvent<{value: string}>) => this.search(detail)}"
-              placeholder="${translate('GENERAL.SEARCH')}"
+              placeholder="${translate('INTERVENTIONS_LIST.SEARCH_RECORDS')}"
               inline
             >
               <iron-icon icon="search" slot="prefix"></iron-icon>
