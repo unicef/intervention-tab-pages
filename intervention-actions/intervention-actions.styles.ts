@@ -20,7 +20,8 @@ export const InterventionActionsStyles: CSSResult = css`
 
   .main-button {
     height: 36px;
-    padding: 0 18px;
+    padding-inline-start: 18px;
+    padding-inline-end: 18px;
     color: white;
     background: var(--green-color);
     font-weight: 500;
@@ -33,7 +34,7 @@ export const InterventionActionsStyles: CSSResult = css`
   }
 
   .back-button span {
-    margin-left: 10px;
+    margin-inline-start: 10px;
   }
 
   .cancel-background {
@@ -45,15 +46,16 @@ export const InterventionActionsStyles: CSSResult = css`
   }
 
   .main-button.with-additional {
-    padding: 0 0 0 18px;
+    padding-inline-end: 0 !important;
+    padding-inline-start: 18px;
   }
 
   .main-button.with-additional span {
-    margin-right: 15px;
+    margin-inline-end: 15px;
   }
 
   .main-button span {
-    margin-right: 7px;
+    margin-inline-end: 7px;
     vertical-align: middle;
     line-height: 36px;
   }
@@ -78,7 +80,7 @@ export const InterventionActionsStyles: CSSResult = css`
   }
   .option-button {
     height: 36px;
-    border-left: 2px solid rgba(255, 255, 255, 0.12);
+    border-inline-start: 2px solid rgba(255, 255, 255, 0.12);
   }
 
   export-intervention-data {
