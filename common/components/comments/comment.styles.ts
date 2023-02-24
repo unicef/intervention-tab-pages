@@ -125,4 +125,7 @@ export const CommentStyles: CSSResult = css`
   iron-icon[icon='refresh'] {
     margin-right: 2px;
   }
+  *:focus-visible {
+    outline: 2px solid rgb(170 165 165 / 50%);
+  }
 `;

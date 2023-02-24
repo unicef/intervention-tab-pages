@@ -53,10 +53,19 @@ export const CommentPanelsStyles: CSSResult = css`
   .panel-header b {
     margin-left: 10px;
   }
-  svg {
-    cursor: pointer;
+  *:focus-visible {
+    outline: 2px solid rgb(170 165 165 / 50%);
   }
-  svg:last-child {
-    margin-left: 28px;
+  paper-button:not(.send-btn) {
+    min-width: 30px;
+    padding: 0;
+    margin: 0;
+  }
+  .buttons paper-button:last-child {
+    margin-left: 10px;
+  }
+  paper-button iron-icon {
+    width: 30px;
+    height: 30px;
   }
 `;
