@@ -16,6 +16,7 @@ import {
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {Intervention, ResultLinkLowerResult, ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {repeat} from 'lit-html/directives/repeat';
 
 @customElement('activity-timeframes')
 export class ActivityTimeframes extends CommentsMixin(LitElement) {
@@ -25,8 +26,7 @@ export class ActivityTimeframes extends CommentsMixin(LitElement) {
   }
 
   @property() intervention: Intervention | null = null;
-  @property({type: String})
-  dir = 'ltr';
+  @property() language = 'en';
 
   protected render(): TemplateResult {
     if (!this.intervention) {
@@ -55,14 +55,18 @@ export class ActivityTimeframes extends CommentsMixin(LitElement) {
             `
           : ''}
         <div class="layout-vertical align-items-center">
-          ${timeFrames.map(
+          ${repeat(
+            timeFrames,
+            (timeFrames) => timeFrames[1],
             ([year, frames]: GroupedActivityTime, index: number) => html`
               <div class="layout-horizontal align-items-center time-frames">
                 <!--      Year title        -->
                 <div class="year">${year}</div>
 
-                <div class="frames-grid" ?rtl="${this.dir === 'rtl'}">
-                  ${frames.map(
+                <div class="frames-grid">
+                  ${repeat(
+                    frames,
+                    (frame) => frame.frameDisplay,
                     ({name, frameDisplay, id}: ActivityTime, index: number) => html`
                       <!--   Frame data   -->
                       <div class="frame ${index === frames.length - 1 ? 'hide-border' : ''}">
@@ -96,14 +100,11 @@ export class ActivityTimeframes extends CommentsMixin(LitElement) {
     if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'timing')) {
       return;
     }
+    this.language = state.activeLanguage.activeLanguage; // Set language property in order to trigger re-render
     this.intervention = state.interventions.current;
     super.stateChanged(state);
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-    this.dir = getComputedStyle(this).direction;
-  }
   private getTimeFrames(): GroupedActivityTime[] {
     if (!this.intervention) {
       return [];
