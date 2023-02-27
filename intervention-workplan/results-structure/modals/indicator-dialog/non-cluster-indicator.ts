@@ -86,10 +86,10 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           padding-bottom: 24px !important;
         }
         .mr-12 {
-          margin-right: 12px;
+          margin-inline-end: 12px;
         }
         .mr-20 {
-          margin-right: 20px;
+          margin-inline-end: 20px;
         }
       </style>
 
