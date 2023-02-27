@@ -27,6 +27,7 @@ import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endp
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {customIcons} from '@unicef-polymer/etools-modules-common/dist/styles/custom-icons';
 import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/fr-warnings-styles';
+import pick from 'lodash-es/pick';
 
 /**
  * @customElement
@@ -256,7 +257,7 @@ export class InterventionDates extends CommentsMixin(
     }
 
     return getStore()
-      .dispatch<AsyncAction>(patchIntervention(this.data))
+      .dispatch<AsyncAction>(patchIntervention(this.cleanUpData(this.data)))
       .then(() => {
         if (this.warningRequired) {
           fireEvent(this, 'toast', {
@@ -266,5 +267,13 @@ export class InterventionDates extends CommentsMixin(
         this._onUploadSaved();
         this.editMode = false;
       });
+  }
+
+  private cleanUpData(data: any) {
+    const cleanedData = pick(data, ['activation_letter_attachment', 'end', 'start']);
+    if (isNaN(cleanedData.activation_letter_attachment)) {
+      delete cleanedData.activation_letter_attachment;
+    }
+    return cleanedData;
   }
 }
