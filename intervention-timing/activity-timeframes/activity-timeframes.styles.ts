@@ -24,7 +24,7 @@ export const ActivityTimeframesStyles: CSSResult = css`
     grid-row-gap: 11px;
     align-items: center;
   }
-  .frames-grid:not([rtl]):after {
+  .frames-grid:after {
     content: '';
     position: absolute;
     top: 5%;
@@ -33,7 +33,7 @@ export const ActivityTimeframesStyles: CSSResult = css`
     border-inline-start: 1px solid var(--light-hex-divider-color);
   }
 
-  .frames-grid[rtl]:after {
+  :host-context([dir='rtl']) .frames-grid:after {
     content: '';
     position: absolute;
     top: 5%;
