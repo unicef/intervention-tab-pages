@@ -561,7 +561,7 @@
     "NOT_ASSESSED": "Pas évalué",
     "NOT_REQUIRED": "Non requis",
     "SIGNIFICANT": "Important",
-	"MEDIUM_CAPACITY_(MODERATE_RISK)":"Capacité moyenne (risque modéré)",
+    "MEDIUM_CAPACITY_(MODERATE_RISK)": "Capacité moyenne (risque modéré)",
     "LOW_CAPACITY_(HIGH_RISK)": "Faible capacité (risque élevé)",
     "FULL_CAPACITY_(LOW_RISK)": "Pleine capacité (faible risque)",
     "LOW_CAPACITY_ASSUMED_-_EMERGENCY": "Faible capacité supposée - Urgence",
@@ -725,5 +725,6 @@
   "WORKPLAN_TAB": "Plan de travail",
   "YEAR": "Année",
   "YEAR_SELECTED_ERR": "Année déjà sélectionnée sur un autre élément de visite prévu.",
-  "YES": "Oui"
+  "YES": "Oui",
+  "ATTACHMENT_EXPECTS_AN_INTEGER": "La pièce jointe attend un entier"
 }

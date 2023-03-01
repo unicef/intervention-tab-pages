@@ -561,11 +561,11 @@
     "NOT_ASSESSED": "Not Assessed",
     "NOT_REQUIRED": "Not Required",
     "SIGNIFICANT": "Significant",
-	"MEDIUM_CAPACITY_(MODERATE_RISK)": "Medium Capacity (Moderate Risk)",
-	"LOW_CAPACITY_(HIGH_RISK)": "Low Capacity (High Risk)",
-	"FULL_CAPACITY_(LOW_RISK)": "Full Capacity (Low Risk)",
-	"LOW_CAPACITY_ASSUMED_-_EMERGENCY": "Low Capacity Assumed - Emergency",
-	"NO_CONTACT_WITH_BENEFICIARIES": "No Contact with Beneficiaries"
+    "MEDIUM_CAPACITY_(MODERATE_RISK)": "Medium Capacity (Moderate Risk)",
+    "LOW_CAPACITY_(HIGH_RISK)": "Low Capacity (High Risk)",
+    "FULL_CAPACITY_(LOW_RISK)": "Full Capacity (Low Risk)",
+    "LOW_CAPACITY_ASSUMED_-_EMERGENCY": "Low Capacity Assumed - Emergency",
+    "NO_CONTACT_WITH_BENEFICIARIES": "No Contact with Beneficiaries"
   },
   "RISK_TYPE": {
     "FINANCIAL": "Financial",
@@ -725,5 +725,6 @@
   "WORKPLAN_TAB": "Workplan",
   "YEAR": "Year",
   "YEAR_SELECTED_ERR": "Year already selected on other planned visit item.",
-  "YES": "Yes"
+  "YES": "Yes",
+  "ATTACHMENT_EXPECTS_AN_INTEGER": "Attachment expects an integer"
 }

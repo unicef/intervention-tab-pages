@@ -561,7 +561,7 @@
     "NOT_ASSESSED": "Не оценено",
     "NOT_REQUIRED": "Не требуется",
     "SIGNIFICANT": "Значительный",
-	"MEDIUM_CAPACITY_(MODERATE_RISK)":"Средняя мощность (умеренный риск)",
+    "MEDIUM_CAPACITY_(MODERATE_RISK)": "Средняя мощность (умеренный риск)",
     "LOW_CAPACITY_(HIGH_RISK)": "Низкая емкость (высокий риск)",
     "FULL_CAPACITY_(LOW_RISK)": "Полная мощность (низкий риск)",
     "LOW_CAPACITY_ASSUMED_-_EMERGENCY": "Предполагаемая низкая пропускная способность — аварийная ситуация",
@@ -725,5 +725,6 @@
   "WORKPLAN_TAB": "Рабочий план",
   "YEAR": "Год",
   "YEAR_SELECTED_ERR": "Этот год уже был указан для другого запланированного визита.",
-  "YES": "Да"
+  "YES": "Да",
+  "ATTACHMENT_EXPECTS_AN_INTEGER": "Вложение ожидает целое число"
 }

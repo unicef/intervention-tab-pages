@@ -561,7 +561,7 @@
     "NOT_ASSESSED": "لم يتم تقييمه",
     "NOT_REQUIRED": "غير مطلوب",
     "SIGNIFICANT": "هام",
-	"MEDIUM_CAPACITY_(MODERATE_RISK)":"سعة متوسطة (مخاطرة معتدلة)",
+    "MEDIUM_CAPACITY_(MODERATE_RISK)": "سعة متوسطة (مخاطرة معتدلة)",
     "LOW_CAPACITY_(HIGH_RISK)": "سعة منخفضة (مخاطر عالية)",
     "FULL_CAPACITY_(LOW_RISK)": "السعة الكاملة (مخاطر منخفضة)",
     "LOW_CAPACITY_ASSUMED_-_EMERGENCY": "السعة المنخفضة المفترضة - الطوارئ",
@@ -725,5 +725,6 @@
   "WORKPLAN_TAB": "خطة عمل",
   "YEAR": "سنة",
   "YEAR_SELECTED_ERR": "تم تحديد السنة بالفعل في عنصر الزيارة المخططة الأخرى.",
-  "YES": "نعم"
+  "YES": "نعم",
+  "ATTACHMENT_EXPECTS_AN_INTEGER": "يتوقع المرفق عددًا صحيحًا"
 }
