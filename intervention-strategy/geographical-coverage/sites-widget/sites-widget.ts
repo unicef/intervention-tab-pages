@@ -174,7 +174,7 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
   }
 
   addSitesToMap(): void {
-    if (!this.MapHelper.map || !this.displayedSites || this.MapHelper.markerClusters) {
+    if (!this.MapHelper.map || this.MapHelper.markerClusters) {
       return;
     }
 
@@ -191,6 +191,7 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
     this.requestUpdate();
     setTimeout(() => {
       this.markSelectedSitesOnMap();
+      this.setInitialMapView();
     }, 100);
   }
 
@@ -308,7 +309,6 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
         this.addSitesToMap();
       });
     }
-    this.setInitialMapView();
   }
 
   private setInitialMapView(): void {
