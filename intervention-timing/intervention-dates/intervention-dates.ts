@@ -42,7 +42,7 @@ export class InterventionDates extends CommentsMixin(
   render() {
     if (!this.data || !this.permissions) {
       return html` ${sharedStyles}
-        <etools-loading source="dates" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="dates" active></etools-loading>`;
     }
     // language=HTML
     return html`
@@ -65,7 +65,6 @@ export class InterventionDates extends CommentsMixin(
         show-expand-btn
         panel-title=${translate('PROGRAMME_DOC_DATES')}
         comment-element="programme-document-dates"
-        comment-description=${translate('PROGRAMME_DOC_DATES')}
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
         <div class="layout-horizontal row-padding-v">
@@ -83,8 +82,8 @@ export class InterventionDates extends CommentsMixin(
                 id="intStart"
                 label=${translate(translatesMap.start)}
                 .value="${this.data.start}"
-                ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.start)}"
-                ?required="${this.permissions.required.start}"
+                ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.start)}"
+                ?required="${this.permissions?.required.start}"
                 error-message=${translate('SELECT_START_DATE')}
                 auto-validate
                 selected-date-display-format="D MMM YYYY"
@@ -111,8 +110,8 @@ export class InterventionDates extends CommentsMixin(
                 id="intEnd"
                 label=${translate(translatesMap.end)}
                 .value="${this.data.end}"
-                ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.end)}"
-                ?required="${this.permissions.required.end}"
+                ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.end)}"
+                ?required="${this.permissions?.required.end}"
                 error-message=${translate('SELECT_END_DATE')}
                 auto-validate
                 selected-date-display-format="D MMM YYYY"
@@ -134,13 +133,13 @@ export class InterventionDates extends CommentsMixin(
             id="activationLetterUpload"
             .fileUrl="${this.data.activation_letter_attachment}"
             .uploadEndpoint="${this.uploadEndpoint}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.activation_letter_attachment)}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.activation_letter_attachment)}"
             @upload-finished="${(e: CustomEvent) => this.activationLetterUploadFinished(e)}"
             @upload-started="${this._onUploadStarted}"
             @change-unsaved-file="${this._onChangeUnsavedFile}"
             .showDeleteBtn="${this.showActivationLetterDeleteBtn(
               this.data.status,
-              this.permissions.edit.activation_letter_attachment,
+              this.permissions?.edit.activation_letter_attachment,
               this.editMode
             )}"
           >
@@ -261,8 +260,7 @@ export class InterventionDates extends CommentsMixin(
       .then(() => {
         if (this.warningRequired) {
           fireEvent(this, 'toast', {
-            text: getTranslation('SAVE_WARNING'),
-            showCloseBtn: true
+            text: getTranslation('SAVE_WARNING')
           });
         }
         this._onUploadSaved();

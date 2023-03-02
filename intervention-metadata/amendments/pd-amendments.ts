@@ -11,7 +11,11 @@ import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {RootState} from '../../common/types/store.types';
 import {prettyDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
-import {getFileNameFromURL, isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {
+  getFileNameFromURL,
+  getTranslatedValue,
+  isJsonStrMatch
+} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {selectAmendmentsPermissions} from './pd-amendments.selectors';
 import {AmendmentsKind, AmendmentsKindTranslateKeys, PdAmendmentPermissions} from './pd-amendments.models';
 import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
@@ -99,12 +103,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
         }
       </style>
 
-      <etools-content-panel
-        show-expand-btn
-        panel-title=${translate('AMENDMENTS')}
-        comment-element="amendments"
-        comment-description=${translate('AMENDMENTS')}
-      >
+      <etools-content-panel show-expand-btn panel-title=${translate('AMENDMENTS')} comment-element="amendments">
         <div slot="panel-btns">
           <paper-icon-button
             icon="add-box"
@@ -148,10 +147,10 @@ export class PdAmendments extends CommentsMixin(LitElement) {
                             class="layout-horizontal align-items-center"
                             href="${ROOT_PATH}interventions/${item.amended_intervention}/metadata"
                           >
-                            Active <iron-icon icon="launch"></iron-icon>
+                            ${translate('ACTIVE')} <iron-icon icon="launch"></iron-icon>
                           </a>
                         `
-                      : 'Completed'}
+                      : translate('COMPLETED')}
                   </span>
 
                   <div class="hover-block" ?hidden="${!item.is_active}">
@@ -191,7 +190,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
                   </div>
 
                   <div class="info-block">
-                    <div class="label">Difference</div>
+                    <div class="label">${translate('DIFFERENCE')}</div>
                     <amendment-difference .difference="${item.difference}"></amendment-difference>
                   </div>
                 </div>
@@ -266,7 +265,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
     });
     if (amdTypes.length) {
       const amdTypesLabels = amdTypes.map((t: AnyObject) => {
-        return t.label;
+        return getTranslatedValue(t.label, 'AMENDMENT_TYPES_ITEMS');
       });
       return amdTypesLabels.join(', ');
     }

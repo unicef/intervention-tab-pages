@@ -21,7 +21,7 @@ import get from 'lodash-es/get';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, LocationObject, Permission, Site} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate, translateConfig} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
@@ -38,7 +38,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
   render() {
     if (!this.data || !this.permissions) {
       return html` ${sharedStyles}
-        <etools-loading source="geo" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="geo" active></etools-loading>`;
     }
     // language=HTML
     return html`
@@ -77,7 +77,10 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         #locations {
           max-width: fit-content;
           min-width: 300px;
-          --paper-input-container-label-floating_-_color: transparent;
+        }
+
+        #locations::part(esmm-label) {
+          opacity: 0;
         }
 
         .f-left {
@@ -106,13 +109,17 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         }
 
         etools-dropdown-multi::part(esmm-dropdownmenu) {
-          left: 24px !important;
+          left: 0px !important;
         }
         .row-padding-v {
           position: relative;
         }
         .location-icon {
-          z-index: 999;
+          z-index: 90;
+          padding-bottom: 0 !important;
+        }
+        .prevent-see-hierarchy-link-overlap {
+          height: 10px;
         }
       </style>
 
@@ -120,10 +127,10 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         show-expand-btn
         panel-title=${translate('GEOGRAPHICAL_COVERAGE')}
         comment-element="geographical-coverage"
-        comment-description="Geographical Coverage"
       >
         <div slot="after-title">
           <info-icon-tooltip
+            .language="${translateConfig.lang}"
             id="iit-geo"
             ?hidden="${!this.canEditAtLeastOneField}"
             .tooltipText="${translate('GEOGRAPHICAL_COVERAGE_INFO')}"
@@ -134,23 +141,25 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         <div class="flex-c layout-horizontal row-padding-v location-icon">
           <label class="paper-label"> ${translate(translatesMap.flat_locations)}</label>
           <info-icon-tooltip
+            .language="${translateConfig.lang}"
             id="iit-locations"
             class="iit"
             position="right"
-            ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.flat_locations)}"
+            ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.flat_locations)}"
             .tooltipText="${translate('GEOGRAPHICAL_LOCATIONS_INFO')}"
           ></info-icon-tooltip>
         </div>
+        <div class="prevent-see-hierarchy-link-overlap"></div>
         <div class="flex-c layout-horizontal dropdown-row">
           <etools-dropdown-multi
             id="locations"
             placeholder="&#8212;"
             label=${translate(translatesMap.flat_locations)}
             .options="${this.allLocations}"
-            .selectedValues="${this.data.flat_locations}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.flat_locations)}"
-            tabindex="${this.isReadonly(this.editMode, this.permissions.edit.flat_locations) ? -1 : 0}"
-            ?required="${this.permissions.required.flat_locations}"
+            .selectedValues="${cloneDeep(this.data.flat_locations)}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.flat_locations)}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.flat_locations) ? -1 : 0}"
+            ?required="${this.permissions?.required.flat_locations}"
             option-label="name"
             option-value="id"
             error-message=${translate('LOCATIONS_ERR')}
@@ -175,6 +184,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
           <div>
             <label class="paper-label">${translate(translatesMap.sites)}</label>
             <info-icon-tooltip
+              .language="${translateConfig.lang}"
               id="iit-sites"
               class="iit"
               slot="after-label"
@@ -198,7 +208,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
           <paper-button
             class="secondary-btn see-locations f-left"
             @click="${this.openSitesDialog}"
-            ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.sites)}"
+            ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.sites)}"
             title=${translate('SELECT_SITE_FROM_MAP')}
           >
             <iron-icon icon="add"></iron-icon>
@@ -248,14 +258,23 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
     if (!isJsonStrMatch(this.adminLevels, state.commonData!.locationTypes)) {
       this.adminLevels = [...state.commonData!.locationTypes];
     }
-    this.data = {
-      flat_locations: get(state, 'interventions.current.flat_locations'),
-      sites: get(state, 'interventions.current.sites') || []
-    };
-    this.currentCountry = get(state, 'user.data.country');
-    this.originalData = cloneDeep(this.data);
+
+    if (!isJsonStrMatch(this.originalData, this.selectCurrentLocationSites(state))) {
+      this.data = this.selectCurrentLocationSites(state);
+      this.originalData = cloneDeep(this.data);
+    }
+
+    this.currentCountry = get(state, 'user.data.country') as any;
+
     this.setPermissions(state);
     super.stateChanged(state);
+  }
+
+  selectCurrentLocationSites(state: RootState) {
+    return {
+      flat_locations: get(state, 'interventions.current.flat_locations') as unknown as string[],
+      sites: get(state, 'interventions.current.sites') || []
+    };
   }
 
   private setPermissions(state: any) {

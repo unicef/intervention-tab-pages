@@ -10,10 +10,10 @@ import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {loadPrcMembersIndividualReviews} from '../../actions/officers-reviews';
-import {REVIEW_ANSVERS, REVIEW_QUESTIONS} from '../../../intervention-review/review.const';
+import {REVIEW_ANSVERS, REVIEW_QUESTIONS} from './review.const';
 import {updateCurrentIntervention} from '../../actions/interventions';
 import {getDifference} from '@unicef-polymer/etools-modules-common/dist/mixins/objects-diff';
-import {cloneDeep} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {cloneDeep, translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import '@polymer/paper-radio-group';
 import '@polymer/paper-checkbox/paper-checkbox';
 import '@polymer/paper-input/paper-textarea';
@@ -82,6 +82,9 @@ export class ReviewChecklistPopup extends LitElement {
     const review = this.isOverallReview ? this.overallReview : data.review;
     this.originalReview = review || {};
     this.review = review ? cloneDeep(this.originalReview) : {overall_approval: true};
+    if (!this.review?.review_date) {
+      this.review.review_date = getTodayDateStr();
+    }
     this.approvePopup = data.approvePopup;
     this.rejectPopup = data.rejectPopup;
   }
@@ -104,7 +107,7 @@ export class ReviewChecklistPopup extends LitElement {
                 <div class="col col-12 pl-none">
                   <datepicker-lite
                     label="${translate('REVIEW_DATE_PRC')}"
-                    .value="${this.review?.review_date || getTodayDateStr()}"
+                    .value="${this.review?.review_date}"
                     selected-date-display-format="D MMM YYYY"
                     fire-date-has-changed
                     @date-has-changed="${(e: CustomEvent) => this.dateHasChanged(e.detail)}"
@@ -113,8 +116,8 @@ export class ReviewChecklistPopup extends LitElement {
                 </div>
               `
             : ''}
-          ${Object.entries(this.questions).map(([field, question]: [string, string], index: number) =>
-            this.generateLikertScale(field as keyof InterventionReview, question, index)
+          ${Object.entries(this.questions).map(([field]: [string, string], index: number) =>
+            this.generateLikertScale(field as keyof InterventionReview, index)
           )}
           <div class="col col-12 pl-none">
             <paper-textarea
@@ -164,18 +167,19 @@ export class ReviewChecklistPopup extends LitElement {
     `;
   }
 
-  generateLikertScale(field: keyof InterventionReview, questionText: string, index: number): TemplateResult {
+  generateLikertScale(field: keyof InterventionReview, index: number): TemplateResult {
     return html`
       <div class="likert-scale pb-20">
         <div class="w100">
-          <label class="paper-label">Q${index + 1}: ${questionText}</label>
+          <label class="paper-label">Q${index + 1}: ${translateValue(field, `REVIEW_QUESTIONS`)}</label>
         </div>
         <paper-radio-group
           selected="${this.review[field] || ''}"
           @selected-changed="${({detail}: CustomEvent) => this.valueChanged(detail.value, field)}"
         >
           ${Array.from(REVIEW_ANSVERS.entries()).map(
-            ([key, text]: [string, string]) => html` <paper-radio-button name="${key}">${text}</paper-radio-button> `
+            ([key, text]: [string, string]) =>
+              html` <paper-radio-button name="${key}">${translateValue(text, 'REVIEW_ANSWERS')}</paper-radio-button> `
           )}
         </paper-radio-group>
       </div>

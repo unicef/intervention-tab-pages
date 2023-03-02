@@ -24,7 +24,7 @@ import {
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate, translateConfig} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
@@ -41,7 +41,7 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
   render() {
     if (!this.data || !this.permissions) {
       return html` ${sharedStyles}
-        <etools-loading source="non-f" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="non-f" active></etools-loading>`;
     }
     // language=HTML
     return html`
@@ -68,7 +68,6 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
         show-expand-btn
         panel-title=${translate('PARTNER_NON_FINANCIAL_CONTRIBUTION')}
         comment-element="non-financial-contribution"
-        comment-description=${translate('PARTNER_NON_FINANCIAL_CONTRIBUTION')}
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
@@ -76,9 +75,10 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
           <div>
             <label class="paper-label">${translate(translatesMap.ip_program_contribution)}</label>
             <info-icon-tooltip
+              .language="${translateConfig.lang}"
               id="iit-non-fin"
               slot="after-label"
-              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit?.ip_program_contribution)}"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit?.ip_program_contribution)}"
               .tooltipText="${translate('PARTNER_NON_FINANCIAL_CONTRIBUTION_TOOLTIP')}"
             ></info-icon-tooltip>
           </div>
@@ -89,11 +89,11 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
             placeholder="—"
             .value="${this.data.ip_program_contribution}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'ip_program_contribution')}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit?.ip_program_contribution)}"
-            ?required="${this.permissions.required.ip_program_contribution}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit?.ip_program_contribution)}"
+            ?required="${this.permissions?.required.ip_program_contribution}"
             maxlength="5000"
             rows="${detailsTextareaRowsCount(this.editMode)}"
-            .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.ip_program_contribution)}"
+            .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.ip_program_contribution)}"
           >
           </paper-textarea>
         </div>

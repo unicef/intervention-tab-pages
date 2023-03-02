@@ -14,7 +14,7 @@ import {
 import {currentIntervention, currentInterventionPermissions, isUnicefUser} from '../common/selectors';
 import {ExpectedResult, Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
 import {InterventionQuarter} from '@unicef-polymer/etools-types/dist/intervention.types';
-import {cloneDeep} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {cloneDeep, isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {repeat} from 'lit-html/directives/repeat';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
@@ -40,6 +40,7 @@ import {EditorHoverStyles} from './editor-utils/editor-hover-styles';
 import {updateSmallMenu} from '../common/actions/common-actions';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@polymer/paper-tooltip/paper-tooltip';
+import {ifDefined} from 'lit-html/directives/if-defined.js';
 /* eslint-disable max-len */
 import {selectProgrammeManagement} from '../intervention-workplan/effective-efficient-programme-mgmt/effectiveEfficientProgrammeMgmt.selectors';
 import {ActivitiesFocusMixin} from './editor-utils/activities-focus-mixin';
@@ -47,9 +48,7 @@ import {_canDelete} from '../common/mixins/results-structure-common';
 @customElement('editor-table')
 // @ts-ignore
 export class EditorTable extends CommentsMixin(
-  ProgrammeManagementMixin(
-    ActivitiesMixin(ActivitiesFocusMixin(ActivitiesFocusMixin(ArrowsNavigationMixin(LitElement))))
-  )
+  ProgrammeManagementMixin(ActivitiesMixin(ActivitiesFocusMixin(ArrowsNavigationMixin(LitElement))))
 ) {
   static get styles() {
     return [EditorTableStyles, EditorTableArrowKeysStyles, EditorHoverStyles, ...super.styles];
@@ -126,7 +125,7 @@ export class EditorTable extends CommentsMixin(
         }
 
         .truncate-multi-line {
-          margin: 8px 0 10px 0;
+          margin: 4px 0 5px 0;
           max-height: 96px;
           line-height: 24px;
           overflow: hidden;
@@ -143,6 +142,9 @@ export class EditorTable extends CommentsMixin(
           -webkit-box-orient: vertical;
           word-break: break-word;
         }
+        .v-middle {
+          vertical-align: middle;
+        }
       </style>
       <table>
         <tbody>
@@ -157,7 +159,6 @@ export class EditorTable extends CommentsMixin(
             <td class="col-g" colspan="2"></td>
           </tr>
         </tbody>
-        ${this.renderProgrammeManagement()}
         ${this.isUnicefUser || !this.permissions?.edit.result_links || this.commentMode
           ? html``
           : html`
@@ -173,9 +174,9 @@ export class EditorTable extends CommentsMixin(
                   ?hidden="${this.isUnicefUser || !this.permissions?.edit.result_links || this.commentMode}"
                 >
                   <td></td>
+                  <td colspan="3" class="v-middle">${translate('ADD_PD_OUTPUT')}</td>
                   <td colspan="3"></td>
-                  <td colspan="3"></td>
-                  <td colspan="2" tabindex="0">
+                  <td colspan="2" tabindex="${ifDefined(this.commentMode ? undefined : 0)}">
                     <div class="action-btns" style="position:relative">
                       <paper-icon-button
                         id="add-pd-output"
@@ -245,9 +246,13 @@ export class EditorTable extends CommentsMixin(
                 <td
                   colspan="2"
                   class="action-btns"
-                  tabindex="${!this.permissions?.edit.result_links || !this.getOriginalCPOutput(resultIndex)?.cp_output
-                    ? '-1'
-                    : '0'}"
+                  tabindex="${ifDefined(
+                    !this.permissions?.edit.result_links ||
+                      !this.getOriginalCPOutput(resultIndex)?.cp_output ||
+                      this.commentMode
+                      ? undefined
+                      : '0'
+                  )}"
                 >
                   <div class="action-btns" style="position:relative">
                     <paper-icon-button
@@ -289,7 +294,7 @@ export class EditorTable extends CommentsMixin(
                   !this.oneEntityInEditMode}"
                   class="lighter-blue"
                   comment-element="pd-output-${pdOutput.id}"
-                  comment-description=" PD Output - ${pdOutput.name}"
+                  comment-description="${pdOutput.name}"
                 >
                   <tr class="header">
                     <td></td>
@@ -310,7 +315,7 @@ export class EditorTable extends CommentsMixin(
                         .value="${pdOutput.code}"
                       ></paper-input>
                     </td>
-                    <td colspan="3" class="b no-top-padding" tabindex="0">
+                    <td colspan="3" class="b no-top-padding" tabindex="${ifDefined(this.commentMode ? undefined : 0)}">
                       <paper-textarea
                         no-label-float
                         class="bold"
@@ -366,7 +371,7 @@ export class EditorTable extends CommentsMixin(
                       colspan="2"
                       class="action-btns"
                       style="position:relative;"
-                      tabindex="${!this.permissions?.edit.result_links ? '-1' : '0'}"
+                      tabindex="${ifDefined(this.commentMode || !this.permissions?.edit.result_links ? undefined : 0)}"
                     >
                       <div>
                         ${this.intervention.planned_budget.currency}
@@ -439,6 +444,7 @@ export class EditorTable extends CommentsMixin(
             )}
           `
         )}
+        ${this.renderProgrammeManagement()}
       </table>
     `;
   }
@@ -468,6 +474,9 @@ export class EditorTable extends CommentsMixin(
   @property({type: Object})
   intervention!: Intervention;
 
+  @property({type: Object})
+  originalIntervention!: Intervention;
+
   @property({type: Boolean})
   readonly = false;
 
@@ -484,6 +493,7 @@ export class EditorTable extends CommentsMixin(
   unassignedPDMap: Map<number, number> = new Map();
 
   private refreshResultStructure = false;
+  private resultStructureIsLoaded = false;
   private prevInterventionId: number | null = null;
 
   connectedCallback() {
@@ -498,6 +508,10 @@ export class EditorTable extends CommentsMixin(
     if (pageIsNotCurrentlyActive(state.app?.routeDetails, 'interventions', TABS.WorkplanEditor)) {
       this.prevInterventionId = null;
       this.oneEntityInEditMode = false;
+      if (!state.commentsData.commentsModeEnabled) {
+        // reset comments border on leave page to not have a flash on come back
+        super.stateChanged(state);
+      }
       return;
     }
     if (!selectInterventionId(state)) {
@@ -522,6 +536,14 @@ export class EditorTable extends CommentsMixin(
       }))
       .filter(({id}: IdAndName<number>) => id);
 
+    if (!this.originalIntervention) {
+      this.originalIntervention = cloneDeep(this.intervention);
+    } else if (!isJsonStrMatch(this.originalIntervention, this.intervention)) {
+      this.originalIntervention = cloneDeep(this.intervention);
+      // intervention changed, need to reload ResultLinks
+      this.refreshResultStructure = true;
+    }
+
     if (this.prevInterventionId != selectInterventionId(state) || this.refreshResultStructure) {
       // Avoid console errors
       this.autovalidatePdOutput = false;
@@ -540,21 +562,30 @@ export class EditorTable extends CommentsMixin(
             this.removeCtrlSListener();
           }
         }
-        // need to be sure that editor elements where rendered before calling setCommentMode
-        // (ex: show comments border after page refresh)
-        setTimeout(() => {
-          this.setCommentMode();
-        }, 500);
+        this.resultStructureIsLoaded = true;
       });
 
       this.prevInterventionId = this.interventionId;
       this.refreshResultStructure = false;
     }
-    super.stateChanged(state);
+
+    // On page refresh apply comment mode after components are rendered
+    this.waitForResultsStructureToLoad().then(() => this.updateComplete.then(() => super.stateChanged(state)));
 
     if (this.lastFocusedTd) {
       this.lastFocusedTd.focus();
     }
+  }
+
+  waitForResultsStructureToLoad() {
+    return new Promise((resolve) => {
+      const interval = setInterval(() => {
+        if (this.resultStructureIsLoaded) {
+          clearInterval(interval);
+          resolve(true);
+        }
+      }, 200);
+    });
   }
 
   getResultLinksDetails() {
@@ -562,6 +593,7 @@ export class EditorTable extends CommentsMixin(
       active: true,
       loadingSource: this.localName
     });
+    this.resultStructureIsLoaded = false;
     return sendRequest({
       endpoint: getEndpoint(interventionEndpoints.resultLinksDetails, {id: this.intervention.id})
     }).then((response: any) => {

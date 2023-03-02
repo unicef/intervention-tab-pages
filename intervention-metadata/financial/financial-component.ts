@@ -18,7 +18,7 @@ import {FinancialComponentData, FinancialComponentPermissions} from './financial
 import {selectFinancialComponentPermissions, selectFinancialComponent} from './financialComponent.selectors';
 import {patchIntervention} from '../../common/actions/interventions';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
-import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {isJsonStrMatch, translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
@@ -39,7 +39,7 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
     // language=HTML
     if (!this.data || !this.cashTransferModalities) {
       return html` ${sharedStyles}
-        <etools-loading source="financial" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="financial" active></etools-loading>`;
     }
     return html`
       ${sharedStyles}
@@ -71,12 +71,7 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
           padding: 8px 24px 16px 24px;
         }
       </style>
-      <etools-content-panel
-        show-expand-btn
-        panel-title=${translate('FINANCIAL')}
-        comment-element="financial"
-        comment-description=${translate('FINANCIAL')}
-      >
+      <etools-content-panel show-expand-btn panel-title=${translate('FINANCIAL')} comment-element="financial">
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
         <div class="layout-horizontal padd-top">
           <div class="w100">
@@ -92,7 +87,7 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
                   ?disabled="${this.isReadonly(this.editMode, true)}"
                   @checked-changed=${(e: CustomEvent) => this.updateData(e.detail.value, option.value)}
                 >
-                  ${option.label}
+                  ${translateValue(option.label, 'CASH_TRANSFER_MODALITIES')}
                 </paper-checkbox>
               </div>`
           )}

@@ -7,7 +7,7 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 import CommonMixin from '@unicef-polymer/etools-modules-common/dist/mixins/common-mixin';
 
 /**
@@ -46,7 +46,7 @@ export class EtoolsRamIndicators extends CommonMixin(LitElement) {
         }
       </style>
 
-      <etools-loading ?active="${this.loading}">Loading...</etools-loading>
+      <etools-loading ?active="${this.loading}"></etools-loading>
 
       <iron-label>
         <span id="label">${translate('RAM_INDICATORS')}</span>
@@ -128,8 +128,7 @@ export class EtoolsRamIndicators extends CommonMixin(LitElement) {
       .catch((error: any) => {
         if (error.status === 404) {
           fireEvent(this, 'toast', {
-            text: this._translate('DUE_DATE'),
-            showCloseBtn: true
+            text: getTranslation('PMP_IS_NOT_SYNCED_WITH_PRP')
           });
         } else {
           parseRequestErrorsAndShowAsToastMsgs(error, this);

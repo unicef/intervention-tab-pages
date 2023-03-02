@@ -46,7 +46,6 @@ export class ActivityTimeframes extends CommentsMixin(LitElement) {
         show-expand-btn
         panel-title=${translate('ACTIVITY_TIMEFRAMES')}
         comment-element="activity-timeframes"
-        comment-description=${translate('ACTIVITY_TIMEFRAMES')}
       >
         ${!timeFrames.length
           ? html`
@@ -77,7 +76,7 @@ export class ActivityTimeframes extends CommentsMixin(LitElement) {
                         </div>
                         ${mappedActivities[id].map(
                           ({name: activityName}: InterventionActivity) => html`
-                            <div class="activity-name">Activity ${activityName}</div>
+                            <div class="activity-name">${translate('ACTIVITY')} ${activityName}</div>
                           `
                         )}
                       </div>

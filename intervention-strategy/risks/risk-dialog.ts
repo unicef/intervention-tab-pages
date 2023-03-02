@@ -18,6 +18,7 @@ import {LabelAndValue} from '@unicef-polymer/etools-types';
 import {Intervention} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
+import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 
 /**
  * @customElement
@@ -127,7 +128,11 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
     this.originalData = item;
     this.endpoint = getEndpoint(interventionEndpoints.intervention, {interventionId});
     this.permissions = permissions;
-    this.riskTypes = riskTypes;
+    this.riskTypes = riskTypes.map((o: any) => ({
+      ...o,
+      label: getTranslatedValue(o.label, 'RISK_TYPE')
+    }));
+
     this.riskDialogTitle = item.id
       ? (translate('EDIT_RISK') as unknown as string)
       : (translate('ADD_RISK') as unknown as string);

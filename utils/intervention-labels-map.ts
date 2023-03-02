@@ -5,6 +5,7 @@ export const translatesMap: GenericObject = {
   end: 'END_DATE',
   start: 'START_DATE',
   context: 'CONTEXT',
+  confidential: 'CONFIDENTIAL',
   sections: 'UNICEF_SECTIONS',
   other_info: 'OTHER_INFORMATION',
   result_links: 'RESULTS_STRUCTURE',
@@ -15,8 +16,8 @@ export const translatesMap: GenericObject = {
   sites: 'SITES',
   planned_budget: 'PLANNED_BUDGET',
   currency: 'DOCUMENT_CURRENCY',
-  total_hq_cash_local: 'HQ_CONTRIBUTION',
-  hq_support_cost: 'HEADQUARTERS_CONTRIBUTION',
+  total_hq_cash_local: 'CAPACITY_STRENGTHENING_COST',
+  hq_support_cost: 'CAPACITY_STRENGTHENING_COST_AUTOMATIC',
   equity_narrative: 'EQUITY_NARATIVE',
   gender_narrative: 'GENDER_NARATIVE',
   management_budgets: 'EFFECTIVE_EFFICIENT_PROG_MGM',
@@ -64,6 +65,7 @@ export const translatesMap: GenericObject = {
   implementation_strategy: 'IMPLEMENTATION_STRATEGY_AND_TECHNICAL_GUIDANCE',
   ip_program_contribution: 'OTHER_NON_FINANCIAL_CONTRIBUTION',
   other_partners_involved: 'OTHER_PARTNERS_INVOLVED',
+  other_details: 'OTHER',
   cash_transfer_modalities: 'CASH_TRANSFER_MOD',
   sustainability_narrative: 'SUSTAINABILITY_NARRATIVE',
   unit_price: 'PRICE_UNIT',
@@ -71,5 +73,10 @@ export const translatesMap: GenericObject = {
   ll_results: 'PROGRAM_DOCUMENT_OUTPUT',
   activation_protocol: 'ACTIVATION_PROTOCOL',
   required_in_status: 'REQUIRED_ERROR',
-  budget_owner: 'UNICEF_BUDGET_OWNER'
+  budget_owner: 'UNICEF_BUDGET_OWNER',
+  is_active: 'IS_ACTIVE',
+  context_details: 'CONTEXT',
+  has_data_processing_agreement: 'HAS_DATA_PROCESSING_AGREEMENT',
+  has_activities_involving_children: 'HAS_ACTIVITIES_INVOLVING_CHILDREN',
+  has_special_conditions_for_construction: 'HAS_SPECIAL_CONDITIONS_FOR_CONSTRUCTION'
 };

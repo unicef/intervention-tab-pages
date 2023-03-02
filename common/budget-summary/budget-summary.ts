@@ -4,15 +4,15 @@ import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles
 import {BudgetSummary} from './budgetSummary.models';
 import {selectBudgetSummary} from './budgetSummary.selectors';
 import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
-import {RootState} from '../../common/types/store.types';
+import {RootState} from '../types/store.types';
 import get from 'lodash-es/get';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import {InfoElementStyles} from '@unicef-polymer/etools-modules-common/dist/styles/info-element-styles';
-import {CommentsMixin} from '../../common/components/comments/comments-mixin';
+import {CommentsMixin} from '../components/comments/comments-mixin';
 import {FrsDetails, Intervention} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
-import {TABS} from '../../common/constants';
-import {isUnicefUser} from '../../common/selectors';
+import {translate, translateConfig} from 'lit-translate';
+import {TABS} from '../constants';
+import {isUnicefUser} from '../selectors';
 import FrNumbersConsistencyMixin from '@unicef-polymer/etools-modules-common/dist/mixins/fr-numbers-consistency-mixin';
 import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/fr-warnings-styles';
 import {customIcons} from '@unicef-polymer/etools-modules-common/dist/styles/custom-icons';
@@ -84,17 +84,12 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
       return html`<style>
           ${customIcons} ${sharedStyles} ${InfoElementStyles}
         </style>
-        <etools-loading source="b-s" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="b-s" active></etools-loading>`;
     }
     // language=HTML
     return html`
       ${customIcons}${sharedStyles} ${InfoElementStyles}
-      <section
-        class="elevation layout-horizontal"
-        elevation="1"
-        comment-element="budget-summary"
-        comment-description="Budget Summary"
-      >
+      <section class="elevation layout-horizontal" elevation="1" comment-element="budget-summary">
         <div class="tooltip">${this.getIconTooltip()}</div>
         <div class="information-cells">
           ${this.getTable()}
@@ -224,6 +219,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
   getIconTooltip(): TemplateResult {
     return html`<div class="icon-tooltip-div">
       <info-icon-tooltip
+        .language="${translateConfig.lang}"
         .tooltipText="${translate('BUDGET_TOOLTIP')}"
         position="${this.dir == 'rtl' ? 'right' : 'left'}"
       >

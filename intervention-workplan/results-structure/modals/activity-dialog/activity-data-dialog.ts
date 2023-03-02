@@ -38,7 +38,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
   @property() loadingInProcess = false;
   @property() isEditDialog = true;
   @property() useInputLevel = false;
-  @property({type: String}) spinnerText = 'Loading...';
+  @property({type: String}) spinnerText = getTranslation('GENERAL.LOADING');
   @property() readonly: boolean | undefined = false;
   @query('etools-dialog') private dialogElement!: EtoolsDialog;
   quarters: ActivityTimeFrames[] = [];
@@ -64,7 +64,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
         // Avoid reset caused by inputLevelChange method
         this.data = data;
         this.loadingInProcess = false;
-        this.spinnerText = 'Saving data...';
+        this.spinnerText = getTranslation('GENERAL.SAVING_DATA');
       }, 100);
     });
   }

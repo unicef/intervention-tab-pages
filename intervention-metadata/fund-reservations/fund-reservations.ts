@@ -47,7 +47,7 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
       return html``;
     }
     if (!this.intervention) {
-      return html`<etools-loading source="fund-res" loading-text="Loading..." active></etools-loading>`;
+      return html`<etools-loading source="fund-res" active></etools-loading>`;
     }
     return html`
       ${customIcons} ${sharedStyles}
@@ -85,7 +85,6 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
         show-expand-btn
         panel-title=${translate('FUND_RESERVATIONS')}
         comment-element="fund-reservations"
-        comment-description=${translate('FUND_RESERVATIONS')}
       >
         <paper-icon-button
           slot="panel-btns"
@@ -359,8 +358,7 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
     }
     // show the invalid frs warning
     fireEvent(this, 'toast', {
-      text: toastMsg,
-      showCloseBtn: true
+      text: toastMsg
     });
   }
 

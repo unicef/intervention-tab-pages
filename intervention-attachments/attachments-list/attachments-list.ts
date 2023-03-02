@@ -10,7 +10,11 @@ import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/st
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import {InterventionAttachment, Intervention, IdAndName, AsyncAction} from '@unicef-polymer/etools-types';
 import {AttachmentsListStyles} from './attachments-list.styles';
-import {getFileNameFromURL, cloneDeep} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {
+  getFileNameFromURL,
+  cloneDeep,
+  getTranslatedValue
+} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
@@ -48,7 +52,6 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
         class="content-section"
         .panelTitle="${translate('ATTACHMENTS') as unknown as string} (${this.attachments.length})"
         comment-element="attachments"
-        comment-description=${translate('ATTACHMENTS')}
       >
         <div slot="panel-btns" class="layout-horizontal">
           <paper-toggle-button
@@ -153,7 +156,7 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
   getAttachmentType(type: number) {
     const fileTypes = !(this.fileTypes instanceof Array) ? [] : this.fileTypes;
     const attachmentType = fileTypes.find((t: IdAndName) => Number(t.id) === type);
-    return attachmentType ? attachmentType.name : '—';
+    return attachmentType ? getTranslatedValue(attachmentType.name, 'FILE_TYPES') : '—';
   }
 
   async openDeleteConfirmation(attachment: InterventionAttachment) {

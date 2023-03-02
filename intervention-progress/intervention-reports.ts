@@ -26,8 +26,16 @@ import EndpointsLitMixin from '@unicef-polymer/etools-modules-common/dist/mixins
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
-import {isEmptyObject, isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {
+  buildUrlQueryString,
+  cloneDeep,
+  isEmptyObject,
+  isJsonStrMatch
+} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
+import {RouteDetails} from '@unicef-polymer/etools-types/dist/router.types';
+import pick from 'lodash-es/pick';
+import './reports/final-progress-report';
 
 /**
  * @polymer
@@ -82,12 +90,15 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
         .tooltip-trigger {
           position: relative;
         }
+        .pad-bottom {
+          padding-bottom: 25px;
+        }
       </style>
       <iron-media-query
         query="(max-width: 767px)"
         @query-matches-changed="${this.resolutionChanged}"
       ></iron-media-query>
-      <etools-content-panel panel-title="Reports">
+      <etools-content-panel panel-title="${translate('REPORTS')}" class="pad-bottom">
         ${!this.reports.length
           ? html` <div class="row-h">
               <p>${translate('NO_REPORTS_YET')}</p>
@@ -164,6 +175,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
               >
               </etools-data-table-footer>`}
       </etools-content-panel>
+      <final-progress-report></final-progress-report>
     `;
   }
 
@@ -220,6 +232,12 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
   @property({type: Boolean})
   lowResolutionLayout = false;
 
+  @property({type: Object})
+  prevQueryStringObj: GenericObject = {size: 10, page: 1};
+
+  @property({type: Object})
+  routeDetails!: RouteDetails | null;
+
   interventionStatus!: string;
 
   connectedCallback() {
@@ -236,19 +254,46 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
       return;
     }
 
-    this.interventionId = get(state, 'app.routeDetails.params.interventionId');
+    this.interventionId = get(state, 'app.routeDetails.params.interventionId') as unknown as number;
     this.endStateChanged(state);
+
     this.interventionStatus = currentIntervention(state)?.status;
-    setTimeout(() => {
-      this._loadReportsData(
-        this.prpCountries,
-        this.interventionId,
-        this.currentUser,
-        this.paginator.page_size,
-        this.paginator.page,
-        this.queryParams
-      );
-    }, 10);
+
+    const stateRouteDetails = get(state, 'app.routeDetails');
+    if (this.filteringParamsHaveChanged(stateRouteDetails)) {
+      this.routeDetails = cloneDeep(stateRouteDetails);
+      this.initializePaginatorFromUrl(this.routeDetails?.queryParams);
+
+      setTimeout(() => {
+        this._loadReportsData(
+          this.prpCountries,
+          this.interventionId,
+          this.currentUser,
+          this.paginator.page_size,
+          this.paginator.page,
+          this.queryParams
+        );
+      }, 10);
+    }
+  }
+
+  filteringParamsHaveChanged(stateRouteDetails: any) {
+    return JSON.stringify(stateRouteDetails) !== JSON.stringify(this.routeDetails);
+  }
+
+  /**
+   *  On first page access/page refresh
+   */
+  initializePaginatorFromUrl(queryParams: any) {
+    if (queryParams.page) {
+      this.paginator.page = Number(queryParams.page);
+    } else {
+      this.paginator.page = 1;
+    }
+
+    if (queryParams.size) {
+      this.paginator.page_size = Number(queryParams.size);
+    }
   }
 
   _loadReportsData(
@@ -278,7 +323,6 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
     this._lastParamsUsed = Object.assign({}, params);
 
     fireEvent(this, 'global-loading', {
-      message: 'Loading...',
       active: true,
       loadingSource: 'reports-list'
     });
@@ -310,6 +354,27 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
           loadingSource: 'reports-list'
         });
       });
+  }
+
+  paginatorChanged() {
+    this.updateCurrentParams({page: this.paginator.page, size: this.paginator.page_size});
+  }
+
+  private updateCurrentParams(paramsToUpdate: GenericObject<any>, reset = false): void {
+    let currentParams = this.routeDetails ? this.routeDetails.queryParams : this.prevQueryStringObj;
+    if (reset) {
+      currentParams = pick(currentParams, ['sort', 'size', 'page']);
+    }
+    this.prevQueryStringObj = cloneDeep({...currentParams, ...paramsToUpdate});
+
+    const stringParams: string = buildUrlQueryString(this.prevQueryStringObj);
+
+    history.pushState(
+      window.history.state,
+      '',
+      `interventions/${this.interventionId}/progress/reports?${stringParams}`
+    );
+    window.dispatchEvent(new CustomEvent('popstate'));
   }
 
   _prepareReqParamsObj(interventionId: number) {

@@ -4,6 +4,7 @@ import {Indicator} from '@unicef-polymer/etools-types/dist/models-and-classes/in
 export interface ExpectedResultExtended {
   id: number;
   code: string;
+  created: string;
   cp_output: number;
   cp_output_name: string;
   intervention: number;

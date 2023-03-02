@@ -1,4 +1,4 @@
-import {LitElement, html, TemplateResult, CSSResultArray, css, customElement, property} from 'lit-element';
+import {LitElement, html, TemplateResult, CSSResultArray, css, customElement, property, queryAll} from 'lit-element';
 import {ResultStructureStyles} from './styles/results-structure.styles';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import '@polymer/paper-icon-button/paper-icon-button';
@@ -23,6 +23,7 @@ import {
   _canDelete
 } from '../../common/mixins/results-structure-common';
 import {isEmptyObject} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {PaperMenuButton} from '@polymer/paper-menu-button';
 
 @customElement('pd-activities')
 export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
@@ -54,7 +55,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
     // language=HTML
     return html`
       ${sharedStyles}
-      <etools-data-table-row .detailsOpened="${true}">
+      <etools-data-table-row .detailsOpened="${true}" id="activitiesRow">
         <div slot="row-data" class="layout-horizontal align-items-center editable-row start-justified">
           <div class="title-text">${translate(translatesMap.activities)} (${this.activities.length})</div>
           <etools-info-tooltip position="top" custom-icon ?hide-tooltip="${this.readonly}" offset="0">
@@ -70,10 +71,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
           </etools-info-tooltip>
         </div>
         <div slot="row-data-details">
-          <div
-            class="table-row table-head align-items-center"
-            ?hidden="${this.readonly || isEmptyObject(this.activities)}"
-          >
+          <div class="table-row table-head align-items-center" ?hidden="${isEmptyObject(this.activities)}">
             <div class="flex-1 left-align layout-vertical">${translate('ACTIVITY_NAME')}</div>
             <div class="flex-1 secondary-cell center">${translate('TIME_PERIODS')}</div>
             <div class="flex-1 secondary-cell right">${translate('PARTNER_CASH')}</div>
@@ -87,7 +85,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                   <div
                     class="table-row editable-row"
                     related-to="activity-${activity.id}"
-                    related-to-description=" Activity - ${activity.name}"
+                    related-to-description="${activity.name}"
                     comments-container
                     ?hidden="${this._hideActivity(activity, this.showInactive)}"
                     @paper-dropdown-open="${(event: CustomEvent) =>
@@ -201,6 +199,32 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
     `;
   }
 
+  @queryAll('paper-menu-button#view-menu-button')
+  actionsMenuBtns!: PaperMenuButton[];
+
+  connectedCallback(): void {
+    super.connectedCallback();
+    this.closeMenusOnScroll = this.closeMenusOnScroll.bind(this);
+    this.getScrollableArea().addEventListener('scroll', this.closeMenusOnScroll, false);
+  }
+
+  // Scroll happens on this area, not on window
+  getScrollableArea() {
+    return document!
+      .querySelector('app-shell')!
+      .shadowRoot!.querySelector('#appHeadLayout')!
+      .shadowRoot!.querySelector('#contentContainer')!;
+  }
+
+  closeMenusOnScroll() {
+    this.actionsMenuBtns.forEach((p) => (p.opened = false));
+  }
+
+  disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.getScrollableArea().removeEventListener('scroll', this.closeMenusOnScroll, false);
+  }
+
   _hideActivity(activity: any, showInactive: boolean) {
     if (!activity.is_active) {
       return !showInactive;
@@ -272,6 +296,12 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
         div.editable-row .hover-block {
           background: linear-gradient(270deg, var(--main-background) 71.65%, rgba(196, 196, 196, 0) 100%);
           padding-left: 20px;
+        }
+        etools-data-table-row#activitiesRow::part(edt-list-row-wrapper) {
+          padding-inline-start: 25px !important;
+        }
+        etools-data-table-row#activitiesRow::part(edt-list-row-collapse-wrapper) {
+          border-top: none;
         }
       `
     ];

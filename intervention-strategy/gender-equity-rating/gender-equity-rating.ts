@@ -15,7 +15,7 @@ import {GenderEquityRatingPermissions, GenderEquityRating} from './genderEquityR
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {RootState} from '../../common/types/store.types';
 import {patchIntervention} from '../../common/actions/interventions';
-import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {isJsonStrMatch, translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {
   pageIsNotCurrentlyActive,
   detailsTextareaRowsCount
@@ -24,7 +24,7 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, LabelAndValue, Permission} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate, translateConfig} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 
 /**
@@ -38,7 +38,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
   render() {
     if (!this.data || !this.ratings || !this.permissions) {
       return html` ${sharedStyles}
-        <etools-loading source="ger" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="ger" active></etools-loading>`;
     }
     // language=HTML
     return html`
@@ -71,10 +71,10 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         show-expand-btn
         panel-title=${translate('GENDER_EQUITY_SUSTAINABILITY')}
         comment-element="gender-equity-sustainability"
-        comment-description=${translate('GENDER_EQUITY_SUSTAINABILITY')}
       >
         <div slot="after-title">
           <info-icon-tooltip
+            .language="${translateConfig.lang}"
             id="iit-ger"
             .tooltipHtml="${this.getRatingInfoHtml()}"
           ></info-icon-tooltip>
@@ -91,7 +91,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         <div class="row-padding-v pb-20">
           <div class="w100">
             <label class="paper-label">${translate(translatesMap.gender_rating)}</label>
-            <info-icon-tooltip id="iit-gender" ?hidden=${!this.editMode}
+            <info-icon-tooltip .language="${translateConfig.lang}" id="iit-gender" ?hidden=${!this.editMode}
               .tooltipText=${translate('GENDER_RATING_INFO')}>
             </info-icon-tooltip>
           </div>
@@ -100,7 +100,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
             this.data.gender_rating,
             'gender_rating',
             this.ratings,
-            this.permissions.edit.gender_rating
+            this.permissions?.edit.gender_rating
           )}
           <div class="col col-12 pl-none">
             <paper-textarea
@@ -110,12 +110,12 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
               placeholder="&#8212;"
               .value="${this.data.gender_narrative}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'gender_narrative')}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.gender_narrative)}"
-              tabindex="${this.isReadonly(this.editMode, this.permissions.edit.gender_narrative) ? -1 : 0}"
-              ?required="${this.permissions.required.gender_narrative}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.gender_narrative)}"
+              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.gender_narrative) ? -1 : 0}"
+              ?required="${this.permissions?.required.gender_narrative}"
               maxlength="3000"
               rows="${detailsTextareaRowsCount(this.editMode)}"
-              .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.gender_narrative)}"
+              .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.gender_narrative)}"
             >
             </paper-textarea>
           </div>
@@ -124,7 +124,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         <div class="row-padding-v pb-20">
           <div class="w100">
             <label class="paper-label">${translate(translatesMap.equity_rating)}</label>
-            <info-icon-tooltip id="iit-equity" ?hidden=${!this.editMode}
+            <info-icon-tooltip .language="${translateConfig.lang}" id="iit-equity" ?hidden=${!this.editMode}
               .tooltipText=${translate('EQUITY_RATING_INFO')}>
             </info-icon-tooltip>
           </div>
@@ -133,7 +133,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
             this.data.equity_rating,
             'equity_rating',
             this.ratings,
-            this.permissions.edit.equity_rating
+            this.permissions?.edit.equity_rating
           )}
           <div class="col col-12 pl-none">
             <paper-textarea
@@ -143,12 +143,12 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
               placeholder="&#8212;"
               .value="${this.data.equity_narrative}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'equity_narrative')}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.equity_narrative)}"
-              tabindex="${this.isReadonly(this.editMode, this.permissions.edit.equity_narrative) ? -1 : 0}"
-              ?required="${this.permissions.required.equity_narrative}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.equity_narrative)}"
+              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.equity_narrative) ? -1 : 0}"
+              ?required="${this.permissions?.required.equity_narrative}"
               maxlength="3000"
               rows="${detailsTextareaRowsCount(this.editMode)}"
-              .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.equity_narrative)}"
+              .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.equity_narrative)}"
             >
             </paper-textarea>
           </div>
@@ -157,7 +157,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         <div class="row-padding-v pb-20">
           <div class="w100">
             <label class="paper-label">${translate(translatesMap.sustainability_rating)}</label>
-            <info-icon-tooltip id="iit-sust" ?hidden=${!this.editMode}
+            <info-icon-tooltip .language="${translateConfig.lang}" id="iit-sust" ?hidden=${!this.editMode}
               .tooltipText=${translate('SUSTAINABILITY_RATING_INFO')}>
             </info-icon-tooltip>
           </div>
@@ -166,7 +166,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
             this.data.sustainability_rating,
             'sustainability_rating',
             this.ratings,
-            this.permissions.edit.sustainability_rating
+            this.permissions?.edit.sustainability_rating
           )}
           <div class="col col-12 pl-none">
             <paper-textarea
@@ -176,12 +176,12 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
               placeholder="&#8212;"
               .value="${this.data.sustainability_narrative}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'sustainability_narrative')}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.sustainability_narrative)}"
-              tabindex="${this.isReadonly(this.editMode, this.permissions.edit.sustainability_narrative) ? -1 : 0}"
-              ?required="${this.permissions.required.sustainability_narrative}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.sustainability_narrative)}"
+              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.sustainability_narrative) ? -1 : 0}"
+              ?required="${this.permissions?.required.sustainability_narrative}"
               maxlength="3000"
               rows="${detailsTextareaRowsCount(this.editMode)}"
-              .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.sustainability_narrative)}"
+              .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.sustainability_narrative)}"
             >
             </paper-textarea>
           </div>
@@ -244,7 +244,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         >
           ${this._getRatingRadioButtonsTemplate(ratings, permission)}
         </paper-radio-group>`
-      : html`<label>${ratingText}</label>`;
+      : html`<label>${translateValue(ratingText, 'RATINGS')}</label>`;
   }
 
   _getRatingRadioButtonsTemplate(ratings: LabelAndValue[], permission: boolean) {
@@ -254,7 +254,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
           class="${this.isReadonly(this.editMode, permission) ? 'readonly' : ''}"
           name="${r.value}"
         >
-          ${r.label}</paper-radio-button
+          ${translateValue(r.label, 'RATINGS')}</paper-radio-button
         >`
     );
   }

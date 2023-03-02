@@ -3,8 +3,9 @@ import {Constructor} from '@unicef-polymer/etools-types/dist/global.types';
 import '@polymer/paper-input/paper-input';
 import {html, LitElement} from 'lit-element';
 import {repeat} from 'lit-html/directives/repeat';
+import {ifDefined} from 'lit-html/directives/if-defined.js';
 import '@polymer/paper-input/paper-textarea';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import {ProgrammeManagementRowExtended, ProgrammeManagementRowItemExtended} from '../../common/types/editor-page-types';
 import {ActivitiesCommonMixin} from '../../common/mixins/activities-common.mixin';
@@ -39,7 +40,10 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
       if (!programmeManagement || !programmeManagement.items || !programmeManagement.items.length) {
         return '';
       }
-      return html`<tbody class="gray-1">
+      return html`<tbody
+        class="gray-1"
+        ?inEditMode="${programmeManagement.inEditMode || programmeManagement.itemsInEditMode}"
+      >
         ${repeat(
           programmeManagement.items || [],
           (item: ProgrammeManagementRowItemExtended) => item.id,
@@ -53,7 +57,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                 !this.oneEntityInEditMode) ||
               !item.id}"
               comment-element="programme-management-item-${item.id}"
-              comment-description="Programme Management Item - ${item.name}"
+              comment-description="${item.name}"
             >
               <td class="index-column">
                 <paper-input
@@ -64,13 +68,13 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                   .value="${programmeManagement.code}.${itemIndex + 1}"
                 ></paper-input>
               </td>
-              <td tabindex="0">
+              <td tabindex="${ifDefined(this.commentMode ? undefined : '0')}" class="a-item-padd">
                 <div class="char-counter" ?hidden="${!programmeManagement.itemsInEditMode}">
                   <paper-textarea
                     .alwaysFloatLabel="${programmeManagement.itemsInEditMode}"
                     .noLabelFloat="${!programmeManagement.itemsInEditMode}"
                     input
-                    label=${this.getLabel(programmeManagement.itemsInEditMode, 'Item Description')}
+                    label=${this.getLabel(programmeManagement.itemsInEditMode, getTranslation('ITEM_DESCRIPTION'))}
                     ?hidden="${!programmeManagement.itemsInEditMode}"
                     char-counter
                     maxlength="150"
@@ -95,17 +99,22 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                     @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'name', item)}"
                   ></paper-textarea>
                 </div>
-                <div class="truncate-multi-line" title="${item.name}" ?hidden="${programmeManagement.itemsInEditMode}">
+                <div
+                  class="truncate-multi-line"
+                  style="margin-bottom: 10px; margin-top: 8px;"
+                  title="${item.name}"
+                  ?hidden="${programmeManagement.itemsInEditMode}"
+                >
                   ${item.name}
                 </div>
               </td>
-              <td tabindex="0">
+              <td tabindex="${ifDefined(this.commentMode ? undefined : '0')}">
                 <paper-input
                   input
                   maxlength="150"
                   .alwaysFloatLabel="${programmeManagement.itemsInEditMode}"
                   .noLabelFloat="${!programmeManagement.itemsInEditMode}"
-                  label=${this.getLabel(programmeManagement.itemsInEditMode, 'Unit')}
+                  label=${this.getLabel(programmeManagement.itemsInEditMode, getTranslation('UNIT'))}
                   ?hidden="${!programmeManagement.itemsInEditMode}"
                   .invalid="${item.invalid?.unit}"
                   @invalid-changed="${({detail}: CustomEvent) => {
@@ -128,9 +137,9 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                   ${item.unit}
                 </div>
               </td>
-              <td tabindex="0">
+              <td tabindex="${ifDefined(this.commentMode ? undefined : '0')}">
                 <etools-currency-amount-input
-                  label=${this.getLabel(programmeManagement.itemsInEditMode, 'N. of Units')}
+                  label=${this.getLabel(programmeManagement.itemsInEditMode, getTranslation('N_OF_UNITS'))}
                   .noLabelFloat="${!programmeManagement.itemsInEditMode}"
                   input
                   ?readonly="${!programmeManagement.itemsInEditMode}"
@@ -153,9 +162,9 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                   }}"
                 ></etools-currency-amount-input>
               </td>
-              <td tabindex="0">
+              <td tabindex="${ifDefined(this.commentMode ? undefined : '0')}">
                 <etools-currency-amount-input
-                  label=${this.getLabel(programmeManagement.itemsInEditMode, 'Price/Unit')}
+                  label=${this.getLabel(programmeManagement.itemsInEditMode, getTranslation('PRICE_UNIT'))}
                   .noLabelFloat="${!programmeManagement.itemsInEditMode}"
                   input
                   ?readonly="${!programmeManagement.itemsInEditMode}"
@@ -177,14 +186,13 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                   }}"
                 ></etools-currency-amount-input>
               </td>
-              <td tabindex="0">
+              <td tabindex="${ifDefined(this.commentMode ? undefined : '0')}">
                 <etools-currency-amount-input
-                  label=${this.getLabel(programmeManagement.itemsInEditMode, 'Partner Cash')}
+                  label=${this.getLabel(programmeManagement.itemsInEditMode, getTranslation('PARTNER_CASH'))}
                   .noLabelFloat="${!programmeManagement.itemsInEditMode}"
                   input
                   ?readonly="${!programmeManagement.itemsInEditMode}"
                   required
-                  auto-validate
                   error-message="${translate('INCORRECT_VALUE')}"
                   .invalid="${item.invalid?.cso_cash}"
                   @invalid-changed="${({detail}: CustomEvent) => {
@@ -198,14 +206,13 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                   }}"
                 ></etools-currency-amount-input>
               </td>
-              <td tabindex="0">
+              <td tabindex="${ifDefined(this.commentMode ? undefined : '0')}">
                 <etools-currency-amount-input
-                  label=${this.getLabel(programmeManagement.itemsInEditMode, 'UNICEF Cash')}
+                  label=${this.getLabel(programmeManagement.itemsInEditMode, getTranslation('UNICEF_CASH'))}
                   .noLabelFloat="${!programmeManagement.itemsInEditMode}"
                   input
                   ?readonly="${!programmeManagement.itemsInEditMode}"
                   required
-                  auto-validate
                   error-message="${translate('INCORRECT_VALUE')}"
                   .invalid="${item.invalid?.unicef_cash}"
                   @invalid-changed="${({detail}: CustomEvent) => {
@@ -227,7 +234,11 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                   .noLabelFloat="${!programmeManagement.itemsInEditMode}"
                   .value="${getItemTotalFormatted(item)}"
                 ></paper-input>
-                <div class="hover-block flex-h">
+                <div
+                  class="hover-block flex-h ${programmeManagement.itemsInEditMode && !item.id
+                    ? 'in-edit-and-deletable'
+                    : ''}"
+                >
                   <paper-icon-button
                     icon="create"
                     ?hidden="${!this.permissions.edit.management_budgets || !item.id}"
@@ -255,53 +266,52 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
             </tr>
           `
         )}
-        <tr
-          ?hidden="${!this.permissions.edit.management_budgets ||
-          this.commentMode ||
-          (!programmeManagement.itemsInEditMode && this.oneEntityInEditMode)}"
-          type="add-item"
-        >
-          <td></td>
-          <td tabindex="0">
-            <div class="icon" @click="${(e: CustomEvent) => this.addNewItem(e, programmeManagement, 'focusAbove')}">
-              <paper-icon-button icon="add-box"></paper-icon-button> ${translate('ADD_NEW_ITEM')}
-            </div>
-          </td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td colspan="2">
-            <div
-              class="flex-h justify-right"
-              ?hidden="${!(
-                (programmeManagement.inEditMode || programmeManagement.itemsInEditMode) &&
-                programmeManagement.items?.length > 3
-              )}"
-            >
-              <paper-button
-                id="btnSave-programme-management-2"
-                ?hidden="${!(
-                  (programmeManagement.inEditMode || programmeManagement.itemsInEditMode) &&
-                  programmeManagement.items?.length > 3
-                )}"
-                @click="${() => this.saveProgrammeManagement(programmeManagement, this.intervention.id!)}"
-                >${translate('GENERAL.SAVE')}</paper-button
-              >
-              <paper-icon-button
-                class="flex-none"
-                icon="close"
-                @click="${() =>
-                  this.cancelProgrammeManagement(
-                    programmeManagement.items,
-                    programmeManagement,
-                    programmeManagementIndex
+        ${!this.permissions.edit.management_budgets ||
+        this.commentMode ||
+        (!programmeManagement.itemsInEditMode && this.oneEntityInEditMode)
+          ? html``
+          : html`<tr type="add-item">
+              <td></td>
+              <td tabindex="${ifDefined(this.commentMode ? undefined : '0')}" class="a-item-add-padd">
+                <div class="icon" @click="${(e: CustomEvent) => this.addNewItem(e, programmeManagement, 'focusAbove')}">
+                  <paper-icon-button icon="add-box"></paper-icon-button> ${translate('ADD_NEW_ITEM')}
+                </div>
+              </td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td colspan="2">
+                <div
+                  class="flex-h justify-right"
+                  ?hidden="${!(
+                    (programmeManagement.inEditMode || programmeManagement.itemsInEditMode) &&
+                    programmeManagement.items?.length > 3
                   )}"
-              ></paper-icon-button>
-            </div>
-          </td>
-        </tr>
+                >
+                  <paper-button
+                    id="btnSave-programme-management-2"
+                    ?hidden="${!(
+                      (programmeManagement.inEditMode || programmeManagement.itemsInEditMode) &&
+                      programmeManagement.items?.length > 3
+                    )}"
+                    @click="${() => this.saveProgrammeManagement(programmeManagement, this.intervention.id!)}"
+                    >${translate('GENERAL.SAVE')}</paper-button
+                  >
+                  <paper-icon-button
+                    class="flex-none"
+                    icon="close"
+                    @click="${() =>
+                      this.cancelProgrammeManagement(
+                        programmeManagement.items,
+                        programmeManagement,
+                        programmeManagementIndex
+                      )}"
+                  ></paper-icon-button>
+                </div>
+              </td>
+            </tr>`}
       </tbody>`;
     }
 
@@ -316,7 +326,9 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
       const confirmed = await openDialog({
         dialog: 'are-you-sure',
         dialogData: {
-          content: 'Are you sure you want to delete this item?'
+          content: getTranslation('ARE_YOU_SURE_DEL'),
+          confirmBtnText: translate('GENERAL.DELETE') as unknown as string,
+          cancelBtnText: translate('GENERAL.CANCEL') as unknown as string
         }
       }).then(({confirmed}) => confirmed);
       if (confirmed) {

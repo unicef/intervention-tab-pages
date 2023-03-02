@@ -80,7 +80,7 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
         @confirm-btn-clicked="${() => this._checkFrNumbers()}"
         no-padding
         keep-dialog-open
-        spinner-text="Checking FR Numbers updates..."
+        spinner-text="${translate('CHECKING_FR_NUMBERS_UPDATES')}"
       >
         ${(this.data || []).map(
           (item: AnyObject, index: number) => html`

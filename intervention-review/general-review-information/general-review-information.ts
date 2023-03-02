@@ -4,7 +4,7 @@ import {translate} from 'lit-translate';
 import {formatDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {PRC_REVIEW, NON_PRC_REVIEW, NO_REVIEW} from '../review.const';
+import {PRC_REVIEW, NON_PRC_REVIEW, NO_REVIEW} from '../../common/components/intervention/review.const';
 import {get as getTranslation} from 'lit-translate';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 

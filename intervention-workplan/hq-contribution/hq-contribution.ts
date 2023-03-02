@@ -20,7 +20,7 @@ import {areEqual, decimalFractionEquals0} from '@unicef-polymer/etools-modules-c
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate, translateUnsafeHTML} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 import {getPageDirection} from '../../utils/utils';
@@ -37,7 +37,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
   render() {
     if (!this.data || !this.permissions) {
       return html` ${sharedStyles}
-        <etools-loading source="hq" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="hq" active></etools-loading>`;
     }
     // language=HTML
     return html`
@@ -68,9 +68,8 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
 
       <etools-content-panel
         show-expand-btn
-        panel-title=${translate('HEADQUARTERS_CONTRIBUTION_TITLE')}
-        comment-element="hq-contribution"
-        comment-description=${translate('HEADQUARTERS_CONTRIBUTION_TITLE')}
+        panel-title=${translate('CAPACITY_STRENGTHENING_COST')}
+        comment-element="capacity-strengthening-costs"
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
@@ -87,19 +86,20 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
               width="100%"
               max="7"
               step="0.1"
-              ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.hq_support_cost)}"
-              .editable="${!this.isReadonly(this.editMode, this.permissions.edit.hq_support_cost)}"
+              ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit.hq_support_cost)}"
+              .editable="${!this.isReadonly(this.editMode, this.permissions?.edit.hq_support_cost)}"
               @value-changed="${(e: CustomEvent) => this.updateSlider(e)}"
             ></paper-slider>
             <span ?hidden="${this.editMode}">${this.data.hq_support_cost}</span>
           </div>
         </div>
         <div class="layout-horizontal row-padding-v" ?hidden="${!this.isUnicefUser || !this.editMode}">
-          <label class="paper-label hq-info-label"
-            ><b>${this.data.hq_support_cost}%</b> of the total UNICEF cash contribution is:
-            <b>${this.autoCalculatedHqContrib} ${this.data.planned_budget.currency}</b>. Please review and enter the
-            actual final number below.</label
-          >
+          <label class="paper-label hq-info-label">
+            ${translateUnsafeHTML('TOTAL_FOR_PERCENT_HQ', {
+              PERCENT: `<b>${this.data.hq_support_cost}%</b>`,
+              VALUE: `<b>${this.autoCalculatedHqContrib} ${this.data.planned_budget.currency}</b>`
+            })}
+          </label>
         </div>
         <div class="layout-horizontal">
           <etools-currency-amount-input
@@ -108,8 +108,8 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
             placeholder="&#8212;"
             label=${translate(translatesMap.total_hq_cash_local)}
             .value="${this.data.planned_budget.total_hq_cash_local}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_budget)}"
-            tabindex="${this.isReadonly(this.editMode, this.permissions.edit.planned_budget) ? -1 : 0}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_budget)}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.planned_budget) ? -1 : 0}"
             @value-changed="${({detail}: CustomEvent) => this.hqContribChanged(detail)}"
             .currency="${this.data.planned_budget?.currency}"
           >
@@ -147,7 +147,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
       return;
     }
 
-    this.isUnicefUser = get(state, 'user.data.is_unicef_user');
+    this.isUnicefUser = get(state, 'user.data.is_unicef_user') as unknown as boolean;
     this.data = cloneDeep(selectHqContributionData(state));
     this.originalData = cloneDeep(this.data);
     this.autoCalculatedHqContrib = this.autoCalcHqContrib();

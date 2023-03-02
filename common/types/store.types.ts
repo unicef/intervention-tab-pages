@@ -66,7 +66,7 @@ export interface CommonDataState {
   cashTransferModalities: any[];
   PRPCountryData: any[];
   countryProgrammes: CountryProgram[];
-  commonDataIsLoaded: boolean;
+  loadedTimestamp: number;
   providedBy: LabelAndValue[];
 }
 
@@ -83,6 +83,7 @@ export interface RootState {
     endpoints: CommentsEndpoints;
   };
   uploadStatus: UploadStatusState;
+  activeLanguage: any;
 }
 
 export interface PartnerReportingRequirements {

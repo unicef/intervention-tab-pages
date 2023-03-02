@@ -78,8 +78,9 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
               this.permissions.edit.result_links &&
               !this.commentMode &&
               !this.oneEntityInEditMode}"
+              ?inEditMode="${activity.inEditMode || activity.itemsInEditMode}"
               comment-element="activity-${activity.id}"
-              comment-description=" Activity - ${activity.name}"
+              comment-description="${activity.name}"
             >
               <tr class="header">
                 <td></td>
@@ -99,7 +100,11 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     .value="${activity.code}"
                   ></paper-input>
                 </td>
-                <td colspan="3" tabindex="0" class="no-top-padding height-for-action-btns">
+                <td
+                  colspan="3"
+                  tabindex="${ifDefined(this.commentMode ? undefined : 0)}"
+                  class="no-top-padding height-for-action-btns"
+                >
                   <paper-textarea
                     no-label-float
                     input
@@ -129,7 +134,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                       class="other"
                       placeholder="-"
                       input
-                      label="Other Notes"
+                      label="${translate('OTHER_NOTES')}"
                       always-float-label
                       ?hidden="${!activity.inEditMode}"
                       char-counter
@@ -152,7 +157,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     </div>
                   </div>
                 </td>
-                <td tabindex="0" class="tdTimeIntervals">
+                <td tabindex="${ifDefined(this.commentMode ? undefined : 0)}" class="tdTimeIntervals">
                   <div class="flex-h justify-center">
                     <time-intervals
                       .readonly="${!this.permissions.edit.result_links || !activity.inEditMode}"
@@ -173,7 +178,10 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     ></time-intervals>
                   </div>
                 </td>
-                <td tabindex="${activity.items && activity.items.length ? '-1' : '0'}" class="no-top-padding">
+                <td
+                  tabindex="${(activity.items && activity.items.length) || this.commentMode ? '-1' : '0'}"
+                  class="no-top-padding"
+                >
                   <etools-currency-amount-input
                     no-label-float
                     input
@@ -186,7 +194,10 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     @value-changed="${({detail}: CustomEvent) => this.numberChanged(detail, 'cso_cash', activity)}"
                   ></etools-currency-amount-input>
                 </td>
-                <td tabindex="${activity.items && activity.items.length ? '-1' : '0'}" class="no-top-padding">
+                <td
+                  tabindex="${(activity.items && activity.items.length) || this.commentMode ? '-1' : '0'}"
+                  class="no-top-padding"
+                >
                   <etools-currency-amount-input
                     no-label-float
                     input
@@ -203,7 +214,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                   colspan="2"
                   class="padd-top-10 action-btns"
                   style="position: relative;"
-                  tabindex="${this.permissions.edit.result_links ? '0' : '-1'}"
+                  tabindex="${ifDefined(this.permissions.edit.result_links && !this.commentMode ? '0' : undefined)}"
                 >
                   <div>
                     ${this.intervention.planned_budget.currency}
@@ -292,7 +303,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
             </tbody>
 
             <tbody thead ?hidden="${!activity.items || !activity.items.length}">
-              <tr class="header no-padd gray-1">
+              <tr class="header no-padd gray-1" ?inEditMode="${activity.inEditMode || activity.itemsInEditMode}">
                 <td class="first-col"></td>
                 <td class="col-text">${translate('ITEM_DESCRIPTION')}</td>
                 <td class="col-unit">${translate('UNIT')}</td>

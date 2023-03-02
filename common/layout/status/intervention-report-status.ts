@@ -1,6 +1,8 @@
 import {customElement, LitElement, property, html} from 'lit-element';
 import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/iron-icons/image-icons.js';
+import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {listenForLangChanged} from 'lit-translate';
 
 /**
  * @customElement
@@ -112,6 +114,13 @@ export class InterventionReportStatus extends LitElement {
     return this._reportType;
   }
 
+  constructor() {
+    super();
+    listenForLangChanged(() => {
+      this._computeLabel(this.status, this.final, this.reportType);
+    });
+  }
+
   _computeStatusType(status: null | undefined | string) {
     if (status === null || typeof status === 'undefined') {
       this.statusType = 'no-status';
@@ -207,7 +216,7 @@ export class InterventionReportStatus extends LitElement {
       default:
         label = 'No Status';
     }
-    this.label = label;
+    this.label = getTranslatedValue(label, 'PROGRESS_REPORT_STATUS');
   }
 
   _computeIcon(type: string) {

@@ -1,5 +1,5 @@
 import {LitElement, customElement, html, property} from 'lit-element';
-import './budget-summary/budget-summary';
+import '../common/budget-summary/budget-summary';
 import './supply-agreement/supply-agreement';
 import './results-structure/results-structure';
 import './effective-efficient-programme-mgmt/effective-efficient-programme-mgmt';

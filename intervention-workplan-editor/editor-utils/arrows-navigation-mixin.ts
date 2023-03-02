@@ -15,6 +15,8 @@ import {Constructor, LitElement} from 'lit-element';
  */
 export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseClass: T) {
   return class ArrowsNavigationClass extends baseClass {
+    commentMode!: boolean;
+
     private _navigateWithArrows!: (event: KeyboardEvent) => void;
     private _saveWitCtrlS!: (event: KeyboardEvent) => void;
 
@@ -71,6 +73,9 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     }
 
     focusFirstTd() {
+      if (this.commentMode) {
+        return;
+      }
       const focusableTds = Array.from(this.shadowRoot!.querySelectorAll<HTMLTableCellElement>('td[tabindex]'));
       this.setLastFocusedTdOnClick(focusableTds);
       const firstFocusableTd = focusableTds[0];
@@ -108,6 +113,9 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
 
     determineParentTd(element: any) {
       let currentTd = element;
+      if (!currentTd) {
+        return;
+      }
       while (currentTd.localName !== 'td') {
         currentTd = currentTd.parentElement || currentTd.parentNode || currentTd.host;
       }
@@ -115,6 +123,9 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     }
     determineParentTr(element: any) {
       let currentTr = element;
+      if (!currentTr) {
+        return;
+      }
       while (currentTr.localName !== 'tr') {
         currentTr = currentTr.parentElement;
       }
@@ -132,12 +143,17 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     }
 
     navigateWithArrows(event: KeyboardEvent) {
+      if (this.commentMode) {
+        return;
+      }
+
       if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Enter', 'Escape', 'Tab'].includes(event.key)) {
         return;
       }
 
       // @ts-ignore
-      const currentTd = this._getActiveTd(event.path[0]);
+      const path = event.composedPath() || [];
+      const currentTd = this._getActiveTd(path[0] as HTMLTableCellElement);
       if (!currentTd) {
         return;
       }
@@ -153,11 +169,11 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
           break;
         case 'Enter': {
           // @ts-ignore defined in other mixin
-          if (this.oneEntityInEditMode) {
+          if (this.oneEntityInEditMode || this.commentMode) {
             return;
           }
           // @ts-ignore
-          if (['paper-icon-button', 'paper-button'].includes(event.path[0].localName)) {
+          if (['paper-icon-button', 'paper-button'].includes(path[0]?.localName)) {
             return;
           }
           let actionBtn: any = this.searchForActionBtnInCurrentTd(currentTd);
@@ -316,6 +332,9 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
 
     _getNextTr(activeTd: HTMLTableCellElement): HTMLTableRowElement | null | undefined {
       let nextTr = activeTd.parentElement?.nextElementSibling as HTMLTableRowElement | null;
+      while (nextTr && (nextTr.hasAttribute('hidden') || nextTr.classList.contains('header'))) {
+        nextTr = nextTr.nextElementSibling as HTMLTableRowElement | null;
+      }
       if (nextTr) {
         if (!nextTr.querySelector<HTMLTableCellElement>('td[tabindex="0"]')) {
           nextTr = null;
@@ -325,6 +344,9 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     }
     _getPrevTr(activeTd: HTMLTableCellElement) {
       let prevTr = activeTd.parentElement?.previousElementSibling as HTMLTableRowElement | null;
+      while (prevTr && (prevTr.hasAttribute('hidden') || prevTr.classList.contains('header'))) {
+        prevTr = prevTr.previousElementSibling as HTMLTableRowElement | null;
+      }
       if (prevTr) {
         if (!prevTr.querySelector<HTMLTableCellElement>('td[tabindex="0"]')) {
           prevTr = null;
@@ -334,7 +356,7 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     }
 
     _getActiveTd(activeEl: HTMLTableCellElement) {
-      if (activeEl.localName === 'td') {
+      if (activeEl?.localName === 'td') {
         return activeEl;
       }
       let activeTd = activeEl.closest('td')!;
@@ -373,7 +395,7 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
 
     focusInput(input: any) {
       setTimeout(() => {
-        if (input.localName == 'etools-currency-amount-input') {
+        if (input?.localName == 'etools-currency-amount-input') {
           input.shadowRoot.querySelector('paper-input').focus();
         } else {
           input.focus();
@@ -382,7 +404,7 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     }
 
     inputIsFocused(input: any) {
-      if (input.localName == 'etools-currency-amount-input') {
+      if (input?.localName == 'etools-currency-amount-input') {
         return input.shadowRoot.querySelector('paper-input').focused;
       } else {
         return input.focused;

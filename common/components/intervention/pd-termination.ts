@@ -16,6 +16,7 @@ import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialo
 import EnvironmentFlagsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/environment-flags-mixin';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {AnyObject} from '@unicef-polymer/etools-types';
+import {get as getTranslation} from 'lit-translate';
 declare const dayjs: any;
 
 /**
@@ -132,7 +133,7 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
     this.interventionId = interventionId;
   }
 
-  warnMessages: string[] = ['Once you hit save, the PD/SPD will be Terminated and this action can not be reversed'];
+  warnMessages: string[] = [getTranslation('ONCE_YOU_HIT_SAVE_THE_PD_WILL_BE_TERMINATED_AND_UNREVERSABLE')];
 
   _getMaxDate() {
     return dayjs(Date.now()).add(30, 'd').toDate();
@@ -169,8 +170,8 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
       openDialog({
         dialog: 'are-you-sure',
         dialogData: {
-          content: 'Please make sure that the reporting requirements for the PD/SPD are updated with the correct dates',
-          confirmBtnText: 'Terminate'
+          content: getTranslation('PLEASE_MAKE_SURE_THE_REPORTIN_REQ_ARE_UPDATED_WITH_THE_CORRECT_DATES'),
+          confirmBtnText: getTranslation('TERMINATE')
         }
       }).then(({confirmed}) => {
         if (confirmed) {

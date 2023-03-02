@@ -60,7 +60,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   render() {
     if (!this.supply_items) {
       return html` ${sharedStyles}
-        <etools-loading source="supply-a" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="supply-a" active></etools-loading>`;
     }
     return html`
       ${sharedStyles}
@@ -90,7 +90,6 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         show-expand-btn
         panel-title=${translate(translatesMap.supply_items)}
         comment-element="supply-agreement"
-        comment-description=${translate('SUPPLY_CONTRIBUTION')}
       >
         <div slot="panel-btns">
           <span class="mr-20">
@@ -281,7 +280,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
     }
     if (get(state, 'interventions.current')) {
       const currentIntervention = get(state, 'interventions.current');
-      this.intervention = cloneDeep(currentIntervention);
+      this.intervention = cloneDeep(currentIntervention) as Intervention;
       this.currencyDisplayForTotal();
     }
     this.supply_items = selectSupplyAgreement(state);
@@ -338,7 +337,6 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
     });
 
     fireEvent(this, 'global-loading', {
-      message: 'Loading...',
       active: true,
       loadingSource: 'intervention-tabs'
     });

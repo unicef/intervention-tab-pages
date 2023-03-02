@@ -40,7 +40,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
     // language=HTML
     if (!this.data) {
       return html` ${sharedStyles}
-        <etools-loading source="unicefDetails" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="unicefDetails" active></etools-loading>`;
     }
     return html`
       ${sharedStyles}
@@ -65,7 +65,6 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
         show-expand-btn
         panel-title="${translate('UNICEF_DETAILS')}"
         comment-element="unicef-details"
-        comment-description=${translate('UNICEF_DETAILS')}
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
@@ -79,9 +78,9 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
               option-label="name"
               option-value="id"
               .selectedValues="${this.data.offices}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.offices)}"
-              tabindex="${this.isReadonly(this.editMode, this.permissions.edit.offices) ? -1 : 0}"
-              ?required="${this.permissions.required.offices}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.offices)}"
+              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.offices) ? -1 : 0}"
+              ?required="${this.permissions?.required.offices}"
               @etools-selected-items-changed="${({detail}: CustomEvent) =>
                 this.selectedItemsChanged(detail, 'offices')}"
               trigger-value-change-event
@@ -97,9 +96,9 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
               option-label="name"
               option-value="id"
               .selectedValues="${this.data.sections}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.sections)}"
-              tabindex="${this.isReadonly(this.editMode, this.permissions.edit.sections) ? -1 : 0}"
-              ?required="${this.permissions.required.sections}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.sections)}"
+              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.sections) ? -1 : 0}"
+              ?required="${this.permissions?.required.sections}"
               @etools-selected-items-changed="${({detail}: CustomEvent) =>
                 this.selectedItemsChanged(detail, 'sections')}"
               trigger-value-change-event
@@ -109,7 +108,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
           <div class="col col-4"></div>
         </div>
         <div class="layout-horizontal row-padding-v">
-          ${this.permissions.view!.unicef_focal_points
+          ${this.permissions?.view!.unicef_focal_points
             ? html`<div class="col col-4">
                 <etools-dropdown-multi
                   id="focalPointInput"
@@ -119,8 +118,8 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
                   option-label="name"
                   option-value="id"
                   .selectedValues="${this.data.unicef_focal_points.map((u: any) => u.id)}"
-                  ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.unicef_focal_points)}"
-                  ?required="${this.permissions.required.unicef_focal_points}"
+                  ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.unicef_focal_points)}"
+                  ?required="${this.permissions?.required.unicef_focal_points}"
                   @etools-selected-items-changed="${({detail}: CustomEvent) =>
                     this.selectedUsersChanged(detail, 'unicef_focal_points')}"
                   trigger-value-change-event
@@ -128,7 +127,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
                 </etools-dropdown-multi>
                 <div
                   class="padd-top"
-                  ?hidden="${!this.isReadonly(this.editMode, this.permissions.edit.unicef_focal_points)}"
+                  ?hidden="${!this.isReadonly(this.editMode, this.permissions?.edit.unicef_focal_points)}"
                 >
                   <label for="focalPointInput" class="paper-label">${translate('UNICEF_FOCAL_POINTS')}</label>
                   <div id="focalPointDetails">
@@ -150,15 +149,15 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
               option-label="name"
               option-value="id"
               .selected="${this.data.budget_owner?.id}"
-              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.budget_owner)}"
-              ?required="${this.permissions.required.budget_owner}"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.budget_owner)}"
+              ?required="${this.permissions?.required.budget_owner}"
               @etools-selected-item-changed="${({detail}: CustomEvent) =>
                 this.selectedUserChanged(detail, 'budget_owner')}"
               trigger-value-change-event
             >
             </etools-dropdown>
 
-            <div class="padd-top" ?hidden="${!this.isReadonly(this.editMode, this.permissions.edit.budget_owner)}">
+            <div class="padd-top" ?hidden="${!this.isReadonly(this.editMode, this.permissions?.edit.budget_owner)}">
               <label for="budgetOwnerInput" class="paper-label">${translate('UNICEF_BUDGET_OWNER')}</label>
               <div id="budgetOwnerDetails">
                 ${this.renderReadonlyUserDetails(
@@ -176,9 +175,9 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
               option-label="name"
               option-value="id"
               .selectedValues="${this.data.country_programmes}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.country_programmes)}"
-              tabindex="${this.isReadonly(this.editMode, this.permissions.edit.country_programmes) ? -1 : 0}"
-              ?required="${this.permissions.required.country_programmes}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.country_programmes)}"
+              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.country_programmes) ? -1 : 0}"
+              ?required="${this.permissions?.required.country_programmes}"
               @etools-selected-items-changed="${({detail}: CustomEvent) =>
                 this.selectedItemsChanged(detail, 'country_programmes')}"
               trigger-value-change-event
@@ -225,16 +224,24 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
       return;
     }
 
+    if (!this.dataRequiredByDropdownsHasBeenLoaded(state)) {
+      return;
+    }
+
     if (state.user && state.user.data) {
       this.isUnicefUser = state.user.data.is_unicef_user;
     }
-    if (state.interventions.current) {
+    if (state.interventions.current && !isJsonStrMatch(this.originalData, selectPdUnicefDetails(state))) {
       this.data = cloneDeep(selectPdUnicefDetails(state));
       this.originalData = cloneDeep(this.data);
     }
     this.setPermissions(state);
     this.populateDropdownOptions(state);
     super.stateChanged(state);
+  }
+
+  dataRequiredByDropdownsHasBeenLoaded(state: RootState) {
+    return Boolean(state.commonData?.loadedTimestamp);
   }
 
   private setPermissions(state: any) {

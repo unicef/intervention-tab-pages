@@ -3,9 +3,11 @@ import {LitElement} from 'lit-element';
 import {CommentsCollection} from './comments.reducer';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import './comments-dialog';
+import '../comments-panels/comments-panels';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {Constructor, InterventionComment} from '@unicef-polymer/etools-types';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 
 type MetaData = CommentElementMeta & {
   oldStyles: string;
@@ -18,7 +20,6 @@ export type CommentElementMeta = {
   relatedToDescription: string;
   element: HTMLElement;
 };
-
 /**
  * - !CommentsMixin uses connect mixin, so don't use it in your component!
  * - !If you use stateChanged inside your component remember to call super.stateChanged() at the end of your method!
@@ -48,17 +49,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
     private comments: CommentsCollection = {};
     private metaDataCollection: MetaData[] = [];
     private commentsModeEnabled = false;
-    private rendered = false;
     private currentEditedComments: MetaData | null = null;
-
-    protected firstUpdated() {
-      this.rendered = true;
-      if (this.commentsModeEnabled) {
-        setTimeout(() => {
-          this.setCommentMode();
-        }, 300);
-      }
-    }
 
     stateChanged(state: RootState) {
       const commentsState = state.commentsData;
@@ -69,8 +60,12 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
       }
 
       const {commentsModeEnabled, collection} = commentsState;
-      const needToUpdate = collection[this.currentInterventionId] !== this.comments && this.commentsModeEnabled;
-      this.comments = collection[this.currentInterventionId] || {};
+      const needToUpdate =
+        this.commentsModeEnabled &&
+        Object.entries(collection[this.currentInterventionId]).some(
+          ([relatedTo, comments]) => comments !== this.comments[relatedTo]
+        );
+      this.comments = {...(collection[this.currentInterventionId] || {})};
 
       if (needToUpdate) {
         // we need to update comments state if mode was enabled before the data was fetched
@@ -88,9 +83,8 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
       if (commentsModeEnabled !== this.commentsModeEnabled) {
         this.commentsModeEnabled = commentsModeEnabled;
-        if (this.rendered) {
-          this.setCommentMode();
-        }
+        this.setCommentMode();
+        fireEvent(this, 'scroll-up');
       }
     }
 
@@ -102,7 +96,8 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
       return [];
     }
 
-    setCommentMode() {
+    async setCommentMode() {
+      await this.updateComplete;
       if (this.commentsModeEnabled) {
         this.startCommentMode();
       } else {
@@ -122,7 +117,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
             return this.getMetaFromContainer(element);
           }
           const relatedTo: string | null = element.getAttribute('comment-element');
-          const relatedToDescription = element.getAttribute('comment-description') || relatedTo;
+          const relatedToDescription = element.getAttribute('comment-description') || '';
           return !relatedTo ? null : this.createMataData(element, relatedTo, relatedToDescription as string);
         })
         .flat()
@@ -139,14 +134,20 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         meta.element.style.cssText = meta.oldStyles;
         meta.counter.remove();
         meta.overlay.remove();
+
+        this.revertDisableTabNavigationOnRelativeElements(meta.element);
       }
     }
 
     private createMataData(element: HTMLElement, relatedTo: string, relatedToDescription: string): MetaData {
       const oldStyles: string = element.style.cssText;
       const counter: HTMLElement = this.createCounter();
-      const overlay: HTMLElement = this.createOverlay(relatedTo);
+      // prevent creating multiple overlays for the element
+      const overlay: HTMLElement = element.querySelector('.commentsOverlay') || this.createOverlay(relatedTo);
+
+      this.disableTabNavigationOnRelativeElements(element);
       element.append(overlay);
+
       return {
         element,
         counter,
@@ -155,6 +156,81 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         relatedTo,
         relatedToDescription
       };
+    }
+
+    // Triggered when we disable comment mode
+    private revertDisableTabNavigationOnRelativeElements(element: HTMLElement) {
+      // If parent element of comments overlay has original-tabindex then we need to revert the value
+      // otherwise we just need to remove the tabindex attribute
+      const originalTabIndex = element.getAttribute('original-tabindex');
+      if (originalTabIndex !== undefined && originalTabIndex !== null) {
+        element.setAttribute('tabindex', originalTabIndex);
+        element.removeAttribute('original-tabindex');
+      } else {
+        element.removeAttribute('tabindex');
+      }
+
+      // If we find any elements inside parent element of comments overlay that had disabled focus
+      // then we revert the value by setting tabindex to original-tabindex if original-tabindex is defined or
+      // we remove the tabindex attribute
+      element.querySelectorAll('.comment-on-disabled-focus').forEach((el) => {
+        el.classList.remove('comment-on-disabled-focus');
+        const originalTabIndex = el.getAttribute('original-tabindex');
+        if (originalTabIndex !== undefined && originalTabIndex !== null) {
+          el.setAttribute('tabindex', originalTabIndex);
+          el.removeAttribute('original-tabindex');
+        } else {
+          el.removeAttribute('tabindex');
+        }
+      });
+
+      // If we find any elements inside the shadowroot of parent element of comments overlay that had disabled focus
+      // then we revert the value by setting tabindex to original-tabindex if original-tabindex is defined or
+      // we remove the tabindex attribute
+      element.shadowRoot?.querySelectorAll('.comment-on-disabled-focus').forEach((el) => {
+        el.classList.remove('comment-on-disabled-focus');
+        const originalTabIndex = el.getAttribute('original-tabindex');
+        if (originalTabIndex !== undefined && originalTabIndex !== null) {
+          el.setAttribute('tabindex', originalTabIndex);
+          el.removeAttribute('original-tabindex');
+        } else {
+          el.removeAttribute('tabindex');
+        }
+      });
+    }
+
+    // Triggered when we enable comment mode
+    private disableTabNavigationOnRelativeElements(element: HTMLElement) {
+      // If parent element of comments overlay has tabindex then we remove it
+      // and we save it in original-index so we can revert the value when we disable comment mode
+      const tabIndex = element.getAttribute('tabindex');
+      if (tabIndex !== undefined && tabIndex !== null) {
+        element.setAttribute('original-tabindex', tabIndex);
+        element.removeAttribute('tabindex');
+      }
+
+      // We set tabindex=-1 to all sibling elements of comments overlay and their respective children
+      // and if any of them has tabindex we save it in original-index so we can revert the value
+      // when we disable commend mode
+      element.querySelectorAll('*').forEach((el) => {
+        const tabIndex = el.getAttribute('tabindex');
+        if (tabIndex !== undefined && tabIndex !== null) {
+          el.setAttribute('original-tabindex', tabIndex);
+        }
+        el.setAttribute('tabindex', '-1');
+        el.classList.add('comment-on-disabled-focus');
+      });
+
+      // If we have a shadowroot we are probably inside etools-panel component so we
+      // select all child elements of the panel-header and we do same thing as above
+      element.shadowRoot?.querySelectorAll('.panel-header *:not([part="ecp-toggle-btn"])').forEach((el) => {
+        const tabIndex = el.getAttribute('tabindex');
+        if (tabIndex !== undefined && tabIndex !== null) {
+          el.setAttribute('original-tabindex', tabIndex);
+        }
+        el.setAttribute('tabindex', '-1');
+        el.classList.add('comment-on-disabled-focus');
+      });
     }
 
     private createCounter(): HTMLElement {
@@ -173,15 +249,16 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         font-weight: bold;
         font-size: 10px;
         color: #ffffff;
-        z-index: 91;
+        z-index: 92;
       `;
       return element;
     }
 
     private createOverlay(relatedTo: string): HTMLElement {
       const comments: InterventionComment[] = this.comments[relatedTo] || [];
-      const borderColor = comments.length ? '#FF4545' : '#81D763';
-      const element: HTMLElement = document.createElement('div');
+      const borderColor = comments.filter((c) => c.state === 'active').length ? '#FF4545' : '#81D763';
+      const element: HTMLElement = Object.assign(document.createElement('div'), {className: 'commentsOverlay'});
+      element.setAttribute('tabindex', '0');
       element.style.cssText = `
         position: absolute;
         top: 0;
@@ -192,6 +269,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         z-index: 91;
         cursor: pointer;
         box-shadow: inset 0px 0px 0px 3px ${borderColor};
+        outline: none;
         ${this.determineOverlayMargin(relatedTo)}
       `;
       return element;
@@ -231,31 +309,49 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
     private updateBorderColor(meta: MetaData) {
       const comments: InterventionComment[] = this.comments[meta.relatedTo] || [];
-      const borderColor = comments.length ? '#FF4545' : '#81D763';
+      const borderColor = comments.filter((c) => c.state === 'active').length ? '#FF4545' : '#81D763';
       // @ts-ignore
       meta.overlay.style['box-shadow'] = `inset 0px 0px 0px 3px ${borderColor}
       `;
     }
 
     private registerListener(meta: MetaData): void {
-      meta.overlay.addEventListener(
-        'click',
-        () => {
-          this.currentEditedComments = meta;
-          openDialog({
-            dialog: 'comments-dialog',
-            dialogData: {
-              interventionId: this.currentInterventionId,
-              relatedTo: meta.relatedTo,
-              relatedToDescription: meta.relatedToDescription,
-              endpoints: getStore().getState().commentsData.endpoints
-            }
-          }).then(() => {
-            this.currentEditedComments = null;
-          });
-        },
-        false
-      );
+      meta.overlay.addEventListener('click', () => this.onTriggerListener(meta));
+      meta.overlay.addEventListener('keypress', (event) => event.key === 'Enter' && this.onTriggerListener(meta, true));
+      meta.overlay.addEventListener('focus', () => this._handleFocus(meta));
+      meta.overlay.addEventListener('blur', () => this._handleBlur(meta));
+    }
+
+    _handleFocus(meta: MetaData) {
+      const comments: InterventionComment[] = this.comments[meta.relatedTo] || [];
+      const borderColor = comments.filter((c) => c.state === 'active').length ? '#FF4545' : '#81D763';
+      // eslint-disable-next-line max-len
+      meta.overlay.style.boxShadow = `inset 0px 0px 0px 3px ${borderColor}, 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.4)`;
+    }
+
+    _handleBlur(meta: MetaData) {
+      const comments: InterventionComment[] = this.comments[meta.relatedTo] || [];
+      const borderColor = comments.filter((c) => c.state === 'active').length ? '#FF4545' : '#81D763';
+      meta.overlay.style.boxShadow = `inset 0px 0px 0px 3px ${borderColor}`;
+    }
+
+    private onTriggerListener(meta: MetaData, shouldRefocus?: boolean) {
+      this.currentEditedComments = meta;
+      openDialog({
+        dialog: 'comments-dialog',
+        dialogData: {
+          interventionId: this.currentInterventionId,
+          relatedTo: meta.relatedTo,
+          relatedToDescription: meta.relatedToDescription,
+          endpoints: getStore().getState().commentsData.endpoints
+        }
+      }).then(() => {
+        this.currentEditedComments = null;
+
+        if (shouldRefocus) {
+          meta.overlay.focus();
+        }
+      });
     }
   };
 }

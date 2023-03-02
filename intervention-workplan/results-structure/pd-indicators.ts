@@ -32,7 +32,7 @@ import './pd-indicator';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
-import {translate, get as getTranslation} from 'lit-translate';
+import {translate, get as getTranslation, translateConfig} from 'lit-translate';
 import {
   AsyncAction,
   Disaggregation,
@@ -77,7 +77,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
     // language=HTML
     return html`
       ${sharedStyles}
-      <etools-data-table-row .detailsOpened="${true}">
+      <etools-data-table-row .detailsOpened="${true}" id="indicatorsRow">
         <div slot="row-data" class="layout-horizontal align-items-center editable-row start-justified">
           <div class="title-text">${translate(translatesMap.applied_indicators)} (${this.indicators.length})</div>
           <etools-info-tooltip position="top" custom-icon ?hide-tooltip="${this.readonly}" offset="0">
@@ -93,15 +93,13 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
           </etools-info-tooltip>
           <info-icon-tooltip
             id="iit-ind"
+            .language="${translateConfig.lang}"
             .tooltipText="${translate('INDICATOR_TOOLTIP')}"
             ?hidden="${this.readonly}"
           ></info-icon-tooltip>
         </div>
         <div slot="row-data-details">
-          <div
-            class="table-row table-head align-items-center"
-            ?hidden="${this.readonly || isEmptyObject(this.indicators)}"
-          >
+          <div class="table-row table-head align-items-center" ?hidden="${isEmptyObject(this.indicators)}">
             <div class="flex-1 left-align">${translate('INDICATOR')}</div>
             <div class="flex-1 secondary-cell right">${translate('BASELINE')}</div>
             <div class="flex-1 secondary-cell right">${translate('TARGET')}</div>
@@ -147,7 +145,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
     /**
      * Computing here to avoid recomputation on every open indicator dialog
      */
-    this.computeAvailableOptionsForIndicators(get(state, 'interventions.current'));
+    this.computeAvailableOptionsForIndicators(get(state, 'interventions.current') as Intervention);
     this.envFlagsStateChanged(state);
   }
 
@@ -331,6 +329,12 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
         }
         info-icon-tooltip {
           margin-left: 10px;
+        }
+        etools-data-table-row#indicatorsRow::part(edt-list-row-wrapper) {
+          padding-inline-start: 25px !important;
+        }
+        etools-data-table-row#indicatorsRow::part(edt-list-row-collapse-wrapper) {
+          border-top: none;
         }
       `
     ];
