@@ -295,7 +295,7 @@
   "IMPLEMENTATION_STRATEGY_AND_TECHNICAL_GUIDANCE": "إستراتيجية التنفيذ والإرشاد الفني",
   "IMPLEMENTATION_STRATEGY_AND_TECHNICAL_GUIDANCE_TOOLTIP": "يشرح هذا القسم كيف سيتم تنفيذ تدخل البرنامج لمعالجة بيان المشكلة. قد يشير إلى معايير ومبادئ عالمية ، وسياسات وطنية ، و / أو إرشادات فنية محددة من اليونيسف و / أو الشريك.",
   "IMPORT_INFO": "معلومات الاستيراد",
-  "IMPORT_INFO_DESCRIPTION": "معلومات الاستيراد",
+  "IMPORT_INFO_DESCRIPTION": "استيراد المعلومات",
   "IMPORT_INFO_WILL_BE_DELETED_AS_A_RESULT": "سيتم حذف معلومات الاستيراد كنتيجة لهذا الإجراء.",
   "INCORRECT_VALUE": "قيمة غير صحيحة",
   "INDICATOR": "مؤشر",
@@ -523,7 +523,7 @@
   "RESULTS_REPORTED_SUBTAB": "تم الإبلاغ عن النتائج",
   "RESULTS_STRUCTURE": "هيكل النتائج",
   "RESULT_VIEW": "عرض النتيجة",
-  "RETRY": "أعد المحاولة",
+  "RETRY": "إعادة المحاولة",
   "REVIEW": "إعادة النظر",
   "REVIEWERS": "المستخدمين لإخطار / المراجعين",
   "REVIEW_ANSWERS": {
@@ -561,10 +561,10 @@
     "NOT_ASSESSED": "لم يتم تقييمه",
     "NOT_REQUIRED": "غير مطلوب",
     "SIGNIFICANT": "هام",
-	"MEDIUM_CAPACITY_(MODERATE_RISK)":"سعة متوسطة (مخاطرة معتدلة)",
-    "LOW_CAPACITY_(HIGH_RISK)": "سعة منخفضة (مخاطر عالية)",
     "FULL_CAPACITY_(LOW_RISK)": "السعة الكاملة (مخاطر منخفضة)",
+    "LOW_CAPACITY_(HIGH_RISK)": "سعة منخفضة (مخاطر عالية)",
     "LOW_CAPACITY_ASSUMED_-_EMERGENCY": "السعة المنخفضة المفترضة - الطوارئ",
+    "MEDIUM_CAPACITY_(MODERATE_RISK)": "سعة متوسطة (مخاطر متوسطة)",
     "NO_CONTACT_WITH_BENEFICIARIES": "لا اتصال مع المستفيدين"
   },
   "RISK_TYPE": {
