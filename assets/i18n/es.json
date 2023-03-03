@@ -309,8 +309,8 @@
   "INPUT_LEVEL_ITEMS": "Elementos de nivel de entrada",
   "INTERNAL_PRC_REVIEWS": "Revisiones internas / PRC",
   "INTERVENTION_REVIEW": "Revisión de la intervención",
-  "INVALID": "INVALID",
-  "INVALID_ERR": "INVALID",
+  "INVALID": "Inválido",
+  "INVALID_ERR": "Invalido",
   "INVALID_NUMBER": "Número inválido",
   "INVALID_TOTAL_ACTIVITY_ITEMS": "Datos presupuestarios no válidos. UNICEF + Efectivo de los socios debe ser igual a Efectivo total.",
   "IS_ACTIVE": "Está activo",
@@ -481,7 +481,7 @@
   "PROPOSED_MITIGATION_MEASURES": "Medidas paliativas propuestas",
   "PROVIDED_BY": "Proporcionado por",
   "PSEA_ASSESSMENT_DATE": "Fecha de evaluación PSEA",
-  "QPR_FINAL": "final",
+  "QPR_FINAL": "Final",
   "QUANTITY_SCALE": "Cantidad / Escala",
   "QUARTERLY_PROGRESS_REPORTS": "Informes trimestrales de situación",
   "QUARTERLY_PROGRESS_REPORT_TOOLTIP": "UNICEF exige a sus asociados que presenten Informes Trimestrales de Progreso cada tres meses durante la ejecución del programa. Los informes trimestrales de progreso permiten a los socios informar sobre los indicadores y objetivos acordados, así como proporcionar actualizaciones narrativas.",
@@ -523,7 +523,7 @@
   "RESULTS_REPORTED_SUBTAB": "Resultados comunicados",
   "RESULTS_STRUCTURE": "Resultados Estructura",
   "RESULT_VIEW": "Vista de resultados",
-  "RETRY": "Rever",
+  "RETRY": "Reintentar",
   "REVIEW": "Revise",
   "REVIEWERS": "Usuarios a notificar / revisores",
   "REVIEW_ANSWERS": {
@@ -561,11 +561,11 @@
     "NOT_ASSESSED": "No evaluado",
     "NOT_REQUIRED": "No es necesario",
     "SIGNIFICANT": "Significativo",
-	"MEDIUM_CAPACITY_(MODERATE_RISK)":"Capacidad Media (Riesgo Moderado)",
+    "FULL_CAPACITY_(LOW_RISK)": "Plena capacidad (bajo riesgo)",
     "LOW_CAPACITY_(HIGH_RISK)": "Baja capacidad (alto riesgo)",
-    "FULL_CAPACITY_(LOW_RISK)": "Plena Capacidad (Bajo Riesgo)",
-    "LOW_CAPACITY_ASSUMED_-_EMERGENCY": "Baja capacidad supuesta: emergencia",
-    "NO_CONTACT_WITH_BENEFICIARIES": "Sin contacto con los beneficiarios"
+    "LOW_CAPACITY_ASSUMED_-_EMERGENCY": "Baja Capacidad Supuesta - Emergencia",
+    "MEDIUM_CAPACITY_(MODERATE_RISK)": "Capacidad media (riesgo moderado)",
+    "NO_CONTACT_WITH_BENEFICIARIES": "Ningún contacto con los beneficiarios"
   },
   "RISK_TYPE": {
     "FINANCIAL": "Financiero",
@@ -725,5 +725,6 @@
   "WORKPLAN_TAB": "Plan de trabajo",
   "YEAR": "año",
   "YEAR_SELECTED_ERR": "Año ya seleccionado en otro punto de visita prevista.",
-  "YES": "Sí"
+  "YES": "Sí",
+  "ATTACHMENT_EXPECTS_AN_INTEGER": "El archivo adjunto espera un número entero"
 }

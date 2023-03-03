@@ -103,7 +103,7 @@
   "CAPACITY_DEVELOPMENT_TOOLTIP": "O UNICEF apoia os parceiros no fortalecimento de suas capacidades de gestão programática e financeira e na prevenção de fraudes, exploração e abuso sexual e na salvaguarda de violações. Esta seção descreve as principais prioridades e planos de desenvolvimento de capacidades do parceiro durante o período de intervenção do programa.",
   "CAPACITY_STRENGTHENING_COST": "Custo de fortalecimento da capacidade",
   "CAPACITY_STRENGTHENING_COST_AUTOMATIC": "Porcentagem de custo de fortalecimento da capacidade",
-  "CAPACITY_STRENGTHENING_COST_DESCRIPTION": "Custo de fortalecimento da capacidade",
+  "CAPACITY_STRENGTHENING_COST_DESCRIPTION": "Custo de reforço da capacidade",
   "CASH_TRANSFERED": "Valor financeiro Transferido",
   "CASH_TRANSFER_MOD": "Modalidade (s) de transferência financeira ",
   "CASH_TRANSFER_MODALITIES": {
@@ -295,7 +295,7 @@
   "IMPLEMENTATION_STRATEGY_AND_TECHNICAL_GUIDANCE": "Guia de Implementação Estratégica & Técnica",
   "IMPLEMENTATION_STRATEGY_AND_TECHNICAL_GUIDANCE_TOOLTIP": "Esta seção explica como a intervenção do programa será implementada para abordar a declaração do problema. Pode referir-se a padrões e princípios globais, políticas nacionais e/ou orientação técnica específica do UNICEF e/ou do parceiro",
   "IMPORT_INFO": "Informações de importação",
-  "IMPORT_INFO_DESCRIPTION": "Importar informações",
+  "IMPORT_INFO_DESCRIPTION": "Informações sobre importação",
   "IMPORT_INFO_WILL_BE_DELETED_AS_A_RESULT": "As informações de importação serão excluídas como resultado desta ação.",
   "INCORRECT_VALUE": "Valor incorreto",
   "INDICATOR": "Indicador",
@@ -522,8 +522,8 @@
   "RESPONSE_PLAN_ERR": "Por favor, selecione Plano de Resposta",
   "RESULTS_REPORTED_SUBTAB": "Resultados reportados",
   "RESULTS_STRUCTURE": "Estrutura dos resultados",
-  "RETRY": "Tentar novamente",
   "RESULT_VIEW": "Visualizar Resultado",
+  "RETRY": "Tentativa",
   "REVIEW": "Revisão",
   "REVIEWERS": "Notificar/Revisar Usuários",
   "REVIEW_ANSWERS": {
@@ -561,11 +561,11 @@
     "NOT_ASSESSED": "Não avaliado",
     "NOT_REQUIRED": "Não requerido",
     "SIGNIFICANT": "Significativo",
-	"MEDIUM_CAPACITY_(MODERATE_RISK)": "Capacidade média (risco moderado)",
-    "LOW_CAPACITY_(HIGH_RISK)": "Baixa capacidade (alto risco)",
-    "FULL_CAPACITY_(LOW_RISK)": "Capacidade total (risco baixo)",
+    "FULL_CAPACITY_(LOW_RISK)": "Capacidade total (baixo risco)",
+    "LOW_CAPACITY_(HIGH_RISK)": "Baixa capacidade (Risco elevado)",
     "LOW_CAPACITY_ASSUMED_-_EMERGENCY": "Baixa Capacidade Assumida - Emergência",
-    "NO_CONTACT_WITH_BENEFICIARIES": "Nenhum contato com os beneficiários"
+    "MEDIUM_CAPACITY_(MODERATE_RISK)": "Capacidade média (Risco moderado)",
+    "NO_CONTACT_WITH_BENEFICIARIES": "Sem contacto com os Beneficiários"
   },
   "RISK_TYPE": {
     "FINANCIAL": "Financeiro",
@@ -725,5 +725,6 @@
   "WORKPLAN_TAB": "Plano de trabalho",
   "YEAR": "Ano",
   "YEAR_SELECTED_ERR": "Ano já selecionado em outro item da visita planejada",
-  "YES": "Sim"
+  "YES": "Sim",
+  "ATTACHMENT_EXPECTS_AN_INTEGER": "O anexo espera um número inteiro"
 }

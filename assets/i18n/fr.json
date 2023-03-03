@@ -114,7 +114,7 @@
   "CFEI_NOTIFICATION": "Notification CFEI",
   "CHANGE_MSG": "Changements des résultats prévus, de la population ou de la couverture géographique du programme sans impact sur la contribution de l’UNICEF",
   "CHECKING_FR_NUMBERS_UPDATES": " Vérification des mises à jour des numéros FR...",
-  "CLOSE": "proche",
+  "CLOSE": "Fermer",
   "CLUSTER": "Cluster",
   "CLUSTERS": "Clusters",
   "CLUSTER_ERR": "Veuillez sélectionner le Cluster",
@@ -295,7 +295,7 @@
   "IMPLEMENTATION_STRATEGY_AND_TECHNICAL_GUIDANCE": "Stratégie de Mise en œuvre et Orientations techniques",
   "IMPLEMENTATION_STRATEGY_AND_TECHNICAL_GUIDANCE_TOOLTIP": "Cette section explique comment l’intervention du programme sera mise en œuvre pour répondre à l’énoncé du problème. Elle peut faire référence à des normes et principes mondiaux, à des politiques nationales et/ou à des directives techniques spécifiques de l’UNICEF et/ou du partenaire.",
   "IMPORT_INFO": "Informations d'importation",
-  "IMPORT_INFO_DESCRIPTION": "Informations d'importation",
+  "IMPORT_INFO_DESCRIPTION": "Informations sur l'importation",
   "IMPORT_INFO_WILL_BE_DELETED_AS_A_RESULT": "Les informations d'importation seront supprimées à la suite de cette action.",
   "INCORRECT_VALUE": "Valeur incorrecte ",
   "INDICATOR": "Indicateur",
@@ -523,7 +523,7 @@
   "RESULTS_REPORTED_SUBTAB": "Résultats rapportés",
   "RESULTS_STRUCTURE": "Structure des résultats",
   "RESULT_VIEW": "Vue des résultats",
-  "RETRY": "Recommencez",
+  "RETRY": "Retrouvez",
   "REVIEW": "Examiner",
   "REVIEWERS": "Utilisateurs à notifier / examinateurs ",
   "REVIEW_ANSWERS": {
@@ -561,10 +561,10 @@
     "NOT_ASSESSED": "Pas évalué",
     "NOT_REQUIRED": "Non requis",
     "SIGNIFICANT": "Important",
-	"MEDIUM_CAPACITY_(MODERATE_RISK)":"Capacité moyenne (risque modéré)",
-    "LOW_CAPACITY_(HIGH_RISK)": "Faible capacité (risque élevé)",
     "FULL_CAPACITY_(LOW_RISK)": "Pleine capacité (faible risque)",
-    "LOW_CAPACITY_ASSUMED_-_EMERGENCY": "Faible capacité supposée - Urgence",
+    "LOW_CAPACITY_(HIGH_RISK)": "Faible capacité (risque élevé)",
+    "LOW_CAPACITY_ASSUMED_-_EMERGENCY": "Faible capacité présumée - Urgence",
+    "MEDIUM_CAPACITY_(MODERATE_RISK)": "Capacité moyenne (risque modéré)",
     "NO_CONTACT_WITH_BENEFICIARIES": "Aucun contact avec les bénéficiaires"
   },
   "RISK_TYPE": {
@@ -725,5 +725,6 @@
   "WORKPLAN_TAB": "Plan de travail",
   "YEAR": "Année",
   "YEAR_SELECTED_ERR": "Année déjà sélectionnée sur un autre élément de visite prévu.",
-  "YES": "Oui"
+  "YES": "Oui",
+  "ATTACHMENT_EXPECTS_AN_INTEGER": "La pièce jointe attend un entier"
 }
