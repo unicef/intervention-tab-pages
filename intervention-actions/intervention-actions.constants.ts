@@ -28,6 +28,7 @@ export const REJECT_REVIEW = 'reject_review';
 export const ACCEPT_ON_BEHALF_OF_PARTNER = 'accept_on_behalf_of_partner';
 export const SEND_BACK_REVIEW = 'send_back_review';
 export const SUSPEND = 'suspend';
+export const UNSUSPEND = 'unsuspend';
 
 export const EXPORT_ACTIONS = [EXPORT_PDF, EXPORT_XLS, EXPORT_COMMENTS, EXPORT_RESULTS];
 export const BACK_ACTIONS = [SEND_TO_PARTNER, SEND_TO_UNICEF, UNLOCK, REJECT_REVIEW, SEND_BACK_REVIEW];
@@ -64,6 +65,7 @@ export const ActionNamesMap: AnyObject = {
   [TERMINATE]: {text: translate('TERMINATE'), textKey: 'TERMINATE'},
   [REJECT_REVIEW]: {text: translate('REJECT_REVIEW'), textKey: 'REJECT_REVIEW'},
   [SUSPEND]: {text: translate('SUSPEND'), textKey: 'SUSPEND'},
+  [UNSUSPEND]: {text: translate('UNSUSPEND'), textKey: 'UNSUSPEND'},
   [ACCEPT_ON_BEHALF_OF_PARTNER]: {
     text: translate('ACCEPT_ON_BEHALF_OF_PARTNER'),
     textKey: 'ACCEPT_ON_BEHALF_OF_PARTNER'
