@@ -726,5 +726,6 @@
   "YEAR": "Год",
   "YEAR_SELECTED_ERR": "Этот год уже был указан для другого запланированного визита.",
   "YES": "Да",
-  "ATTACHMENT_EXPECTS_AN_INTEGER": "Вложение ожидает целое число"
+  "ATTACHMENT_EXPECTS_AN_INTEGER": "Вложение ожидает целое число",
+  "INACTIVE": "Неактивный"
 }

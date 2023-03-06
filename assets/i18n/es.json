@@ -726,5 +726,6 @@
   "YEAR": "año",
   "YEAR_SELECTED_ERR": "Año ya seleccionado en otro punto de visita prevista.",
   "YES": "Sí",
-  "ATTACHMENT_EXPECTS_AN_INTEGER": "El archivo adjunto espera un número entero"
+  "ATTACHMENT_EXPECTS_AN_INTEGER": "El archivo adjunto espera un número entero",
+  "INACTIVE": "Inactivo"
 }

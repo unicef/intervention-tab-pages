@@ -726,5 +726,6 @@
   "YEAR": "Year",
   "YEAR_SELECTED_ERR": "Year already selected on other planned visit item.",
   "YES": "Yes",
-  "ATTACHMENT_EXPECTS_AN_INTEGER": "Attachment expects an integer"
+  "ATTACHMENT_EXPECTS_AN_INTEGER": "Attachment expects an integer",
+  "INACTIVE":"Inactive"
 }
