@@ -726,5 +726,8 @@
   "YEAR": "سنة",
   "YEAR_SELECTED_ERR": "تم تحديد السنة بالفعل في عنصر الزيارة المخططة الأخرى.",
   "YES": "نعم",
-  "ATTACHMENT_EXPECTS_AN_INTEGER": "يتوقع المرفق عددًا صحيحًا"
+  "ATTACHMENT_EXPECTS_AN_INTEGER": "يتوقع المرفق عددًا صحيحًا",
+  "TERMINATE_PD_SPD": "PD/SPD إنهاء",
+  "TERMINATION_DATE": "",
+  "PLEASE_SELECT_TERMINATION_DATE": ""
 }

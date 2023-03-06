@@ -726,5 +726,8 @@
   "YEAR": "Ano",
   "YEAR_SELECTED_ERR": "Ano já selecionado em outro item da visita planejada",
   "YES": "Sim",
-  "ATTACHMENT_EXPECTS_AN_INTEGER": "O anexo espera um número inteiro"
+  "ATTACHMENT_EXPECTS_AN_INTEGER": "O anexo espera um número inteiro",
+  "TERMINATE_PD_SPD": "Encerrar PD/SPD",
+  "TERMINATION_DATE": "Data de Encerração",
+  "PLEASE_SELECT_TERMINATION_DATE": "Selecione a data de encerração"
 }

@@ -726,5 +726,8 @@
   "YEAR": "Année",
   "YEAR_SELECTED_ERR": "Année déjà sélectionnée sur un autre élément de visite prévu.",
   "YES": "Oui",
-  "ATTACHMENT_EXPECTS_AN_INTEGER": "La pièce jointe attend un entier"
+  "ATTACHMENT_EXPECTS_AN_INTEGER": "La pièce jointe attend un entier",
+  "TERMINATE_PD_SPD": "Interrompre PD/SPD",
+  "TERMINATION_DATE": "Date de Interrompration",
+  "PLEASE_SELECT_TERMINATION_DATE": ""
 }
