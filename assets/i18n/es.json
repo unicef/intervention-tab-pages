@@ -730,5 +730,6 @@
   "TERMINATE_PD_SPD": "Terminar PD/SPD",
   "TERMINATION_DATE": "Fecha de Terminación",
   "PLEASE_SELECT_TERMINATION_DATE": "Seleccione la fecha de terminación",
-  "TERMINATION_NOTICE_FILE_IS_REQUIRED": "Se requiere el archivo de notificación de terminación"
+  "TERMINATION_NOTICE_FILE_IS_REQUIRED": "Se requiere el archivo de notificación de terminación",
+  "UNSUSPEND": "Reactivar"
 }

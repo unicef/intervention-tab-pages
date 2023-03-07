@@ -730,5 +730,6 @@
   "TERMINATE_PD_SPD": "Interrompre PD/SPD",
   "TERMINATION_DATE": "Date de Interrompration",
   "PLEASE_SELECT_TERMINATION_DATE": "Veuillez sélectionner la date de résiliation",
-  "TERMINATION_NOTICE_FILE_IS_REQUIRED": "Le fichier d'avis de résiliation est requis"
+  "TERMINATION_NOTICE_FILE_IS_REQUIRED": "Le fichier d'avis de résiliation est requis",
+  "UNSUSPEND": "Annuler la suspension"
 }

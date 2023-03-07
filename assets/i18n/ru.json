@@ -730,5 +730,6 @@
   "TERMINATE_PD_SPD": "Прекратить PD/SPD",
   "TERMINATION_DATE": "Дата окончания",
   "PLEASE_SELECT_TERMINATION_DATE": "Пожалуйста, выберите дату окончания",
-  "TERMINATION_NOTICE_FILE_IS_REQUIRED": "Требуется документ уведомления о прекращении"
+  "TERMINATION_NOTICE_FILE_IS_REQUIRED": "Требуется документ уведомления о прекращении",
+  "UNSUSPEND": "Разблокировать"
 }
