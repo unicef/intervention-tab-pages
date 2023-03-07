@@ -37,7 +37,6 @@ import {EditorTableArrowKeysStyles} from './editor-utils/editor-table-arrow-keys
 import {ArrowsNavigationMixin} from './editor-utils/arrows-navigation-mixin';
 import {RootState} from '../common/types/store.types';
 import {EditorHoverStyles} from './editor-utils/editor-hover-styles';
-import {updateSmallMenu} from '../common/actions/common-actions';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@polymer/paper-tooltip/paper-tooltip';
 import {ifDefined} from 'lit-html/directives/if-defined.js';
@@ -517,8 +516,8 @@ export class EditorTable extends CommentsMixin(
     if (!selectInterventionId(state)) {
       return;
     }
-    if (!state.app?.smallMenu && !this.prevInterventionId) {
-      getStore().dispatch(updateSmallMenu(true));
+    if (!this.prevInterventionId) {
+      fireEvent(this, 'toggle-small-menu', {smallMenu: true});
     }
     this.interventionId = selectInterventionId(state);
     this.permissions = cloneDeep(currentInterventionPermissions(state));
