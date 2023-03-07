@@ -22,7 +22,7 @@
   "ACTIVITY_TIMES_READONLY": "Horaires d’activité",
   "ACTUAL_DISBURS": "Décaissements réels.",
   "ADDED": "Ajouté",
-  "ADD_ALL": "إAjouter tout",
+  "ADD_ALL": "Ajouter tout",
   "ADD_ALL_LOCATIONS": "Ajouter tous les emplacements",
   "ADD_AMENDMENT": "Ajouter un amendement",
   "ADD_CP_OUTPUT": "Ajouter Produits du PP ",
@@ -350,7 +350,7 @@
   "NO_COST_EXTENSION_MSG": "Extension sans coûts",
   "NO_DATES_ADDED": "Aucune date ajoutée.",
   "NO_DETAILS_TO_DISPLAY": "Il n'y a aucun détail à afficher.",
-  "NO_DISAGGREGATIONS_ADDED": "لIl n’y a pas de désagrégations ajoutées.",
+  "NO_DISAGGREGATIONS_ADDED": "Il n’y a pas de désagrégations ajoutées.",
   "NO_DISAGREG_ADDED": "Il n’y a pas de désagrégations ajoutées.",
   "NO_FR_NUM_ADDED": "Il n’y a pas de numéros de Réservation de Fonds ajoutés.",
   "NO_FUND_RESERVATIONS": "Il n’y a pas de Réservation de Fonds ajoutées pour cette intervention.",
@@ -726,5 +726,10 @@
   "YEAR": "Année",
   "YEAR_SELECTED_ERR": "Année déjà sélectionnée sur un autre élément de visite prévu.",
   "YES": "Oui",
-  "ATTACHMENT_EXPECTS_AN_INTEGER": "La pièce jointe attend un entier"
+  "ATTACHMENT_EXPECTS_AN_INTEGER": "La pièce jointe attend un entier",
+  "TERMINATE_PD_SPD": "Interrompre PD/SPD",
+  "TERMINATION_DATE": "Date de Interrompration",
+  "PLEASE_SELECT_TERMINATION_DATE": "Veuillez sélectionner la date de résiliation",
+  "TERMINATION_NOTICE_FILE_IS_REQUIRED": "Le fichier d'avis de résiliation est requis",
+  "UNSUSPEND": "Annuler la suspension"
 }
