@@ -729,5 +729,6 @@
   "ATTACHMENT_EXPECTS_AN_INTEGER": "La pièce jointe attend un entier",
   "TERMINATE_PD_SPD": "Interrompre PD/SPD",
   "TERMINATION_DATE": "Date de Interrompration",
-  "PLEASE_SELECT_TERMINATION_DATE": ""
+  "PLEASE_SELECT_TERMINATION_DATE": "Veuillez sélectionner la date de résiliation",
+  "TERMINATION_NOTICE_FILE_IS_REQUIRED": "Le fichier d'avis de résiliation est requis"
 }

@@ -729,5 +729,6 @@
   "ATTACHMENT_EXPECTS_AN_INTEGER": "O anexo espera um número inteiro",
   "TERMINATE_PD_SPD": "Encerrar PD/SPD",
   "TERMINATION_DATE": "Data de Encerração",
-  "PLEASE_SELECT_TERMINATION_DATE": "Selecione a data de encerração"
+  "PLEASE_SELECT_TERMINATION_DATE": "Selecione a data de encerração",
+  "TERMINATION_NOTICE_FILE_IS_REQUIRED": "Nota de rescisão é obrigatória"
 }
