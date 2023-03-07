@@ -726,5 +726,10 @@
   "YEAR": "Год",
   "YEAR_SELECTED_ERR": "Этот год уже был указан для другого запланированного визита.",
   "YES": "Да",
-  "ATTACHMENT_EXPECTS_AN_INTEGER": "Вложение ожидает целое число"
+  "ATTACHMENT_EXPECTS_AN_INTEGER": "Вложение ожидает целое число",
+  "TERMINATE_PD_SPD": "Прекратить PD/SPD",
+  "TERMINATION_DATE": "Дата окончания",
+  "PLEASE_SELECT_TERMINATION_DATE": "Пожалуйста, выберите дату окончания",
+  "TERMINATION_NOTICE_FILE_IS_REQUIRED": "Требуется документ уведомления о прекращении",
+  "UNSUSPEND": "Разблокировать"
 }
