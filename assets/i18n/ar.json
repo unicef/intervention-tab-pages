@@ -740,5 +740,6 @@
   "NOTIFICATION_SENT_SUCCESS": "تم إرسال الإخطار بنجاح",
   "CAN_NOT_SEND_NOTIFICATION": "لا يمكن إرسال الإخطار",
   "CAN_NOT_UPLOAD_SUPPLIES": "لا يمكن تحميل المستلزمات",
-  "ACTIVATION_LETTER_ATTACHMENT": "مرفق خطاب التفعيل"
+  "ACTIVATION_LETTER_ATTACHMENT": "مرفق خطاب التفعيل",
+  "RESULT__CP_OUTPUT": "نتيجة الناتج CP"
 }

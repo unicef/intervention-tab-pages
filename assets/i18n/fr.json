@@ -740,5 +740,6 @@
   "NOTIFICATION_SENT_SUCCESS": "Notification envoyée avec succès",
   "CAN_NOT_SEND_NOTIFICATION": "Impossible d'envoyer une notification",
   "CAN_NOT_UPLOAD_SUPPLIES": "Impossible de télécharger des fournitures",
-  "ACTIVATION_LETTER_ATTACHMENT": "Pièce jointe à la lettre d'activation"
+  "ACTIVATION_LETTER_ATTACHMENT": "Pièce jointe à la lettre d'activation",
+  "RESULT__CP_OUTPUT": "Résultat CP Sortie"
 }

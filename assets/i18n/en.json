@@ -740,5 +740,6 @@
   "NOTIFICATION_SENT_SUCCESS": "Notification sent successfully",
   "CAN_NOT_SEND_NOTIFICATION": "Can not send notification",
   "CAN_NOT_UPLOAD_SUPPLIES": "Can not upload supplies",
-  "ACTIVATION_LETTER_ATTACHMENT": "Activation letter attachment"
+  "ACTIVATION_LETTER_ATTACHMENT": "Activation letter attachment",
+  "RESULT__CP_OUTPUT": "Result CP Output"
 }

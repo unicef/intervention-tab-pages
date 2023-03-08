@@ -740,5 +740,6 @@
   "NOTIFICATION_SENT_SUCCESS": "Notificación enviada con éxito",
   "CAN_NOT_SEND_NOTIFICATION": "No se puede enviar la notificación",
   "CAN_NOT_UPLOAD_SUPPLIES": "No se pueden cargar los suministros",
-  "ACTIVATION_LETTER_ATTACHMENT": "Carta de activación adjunta"
+  "ACTIVATION_LETTER_ATTACHMENT": "Carta de activación adjunta",
+  "RESULT__CP_OUTPUT": "Resultado CP Salida"
 }
