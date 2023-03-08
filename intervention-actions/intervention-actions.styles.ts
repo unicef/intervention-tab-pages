@@ -37,7 +37,7 @@ export const InterventionActionsStyles: CSSResult = css`
     margin-inline-start: 10px;
   }
 
-  :host-context([dir="rtl"]) .main-button.back-button svg {
+  :host-context([dir='rtl']) .main-button.back-button svg {
     transform: scaleX(-1);
   }
 

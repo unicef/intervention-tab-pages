@@ -6,7 +6,7 @@ import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/st
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {TimingOverviewData} from './timingOverview.models';
 import {selectTimingOverview} from './timingOverview.selectors';
-import {formatDate, formatDateLocalized} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
+import {formatDateLocalized} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
 import {RootState} from '../../common/types/store.types';
 import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import get from 'lodash-es/get';
