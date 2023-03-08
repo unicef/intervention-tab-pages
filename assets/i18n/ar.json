@@ -727,9 +727,18 @@
   "YEAR_SELECTED_ERR": "تم تحديد السنة بالفعل في عنصر الزيارة المخططة الأخرى.",
   "YES": "نعم",
   "ATTACHMENT_EXPECTS_AN_INTEGER": "يتوقع المرفق عددًا صحيحًا",
+  "INACTIVE": "غير نشط",
   "TERMINATE_PD_SPD": "PD/SPD إنهاء",
   "TERMINATION_DATE": "تاريخ الإنهاء",
   "PLEASE_SELECT_TERMINATION_DATE": "الرجاء تحديد تاريخ الإنهاء",
   "TERMINATION_NOTICE_FILE_IS_REQUIRED": "ملف إشعار الإنهاء مطلوب",
-  "UNSUSPEND": "غير معلق"
+  "UNSUSPEND": "غير معلق",
+  "FIX_VALIDATION_ERRORS": "الرجاء تصحيح أخطاء التحقق من الصحة",
+  "CAN_NOT_SAVE_REVIEW": ".لا يمكن حفظ المراجعة",
+  "TRY_AGAIN_LATER": "حاول مرة أخرى لاحقا",
+  "CAN_NOT_REMOVE_AMENDMENT": "لا يمكن إزالة التعديل. حاول مرة أخرى في وقت لاحق",
+  "NOTIFICATION_SENT_SUCCESS": "تم إرسال الإخطار بنجاح",
+  "CAN_NOT_SEND_NOTIFICATION": "لا يمكن إرسال الإخطار",
+  "CAN_NOT_UPLOAD_SUPPLIES": "لا يمكن تحميل المستلزمات",
+  "ACTIVATION_LETTER_ATTACHMENT": "مرفق خطاب التفعيل"
 }

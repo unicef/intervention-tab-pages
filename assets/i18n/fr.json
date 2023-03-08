@@ -727,9 +727,18 @@
   "YEAR_SELECTED_ERR": "Année déjà sélectionnée sur un autre élément de visite prévu.",
   "YES": "Oui",
   "ATTACHMENT_EXPECTS_AN_INTEGER": "La pièce jointe attend un entier",
+  "INACTIVE": "Inactif",
   "TERMINATE_PD_SPD": "Interrompre PD/SPD",
   "TERMINATION_DATE": "Date de Interrompration",
   "PLEASE_SELECT_TERMINATION_DATE": "Veuillez sélectionner la date de résiliation",
   "TERMINATION_NOTICE_FILE_IS_REQUIRED": "Le fichier d'avis de résiliation est requis",
-  "UNSUSPEND": "Annuler la suspension"
+  "UNSUSPEND": "Annuler la suspension",
+  "FIX_VALIDATION_ERRORS": "Veuillez corriger les erreurs de validation",
+  "CAN_NOT_SAVE_REVIEW": "Impossible d'enregistrer l'avis.",
+  "TRY_AGAIN_LATER": "Réessayer plus tard",
+  "CAN_NOT_REMOVE_AMENDMENT": "Impossible de supprimer l'amendement. Réessayer plus tard",
+  "NOTIFICATION_SENT_SUCCESS": "Notification envoyée avec succès",
+  "CAN_NOT_SEND_NOTIFICATION": "Impossible d'envoyer une notification",
+  "CAN_NOT_UPLOAD_SUPPLIES": "Impossible de télécharger des fournitures",
+  "ACTIVATION_LETTER_ATTACHMENT": "Pièce jointe à la lettre d'activation"
 }

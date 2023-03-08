@@ -10,6 +10,7 @@ import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-s
 import {addComment, updateComment} from './comments.actions';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {setTextareasMaxHeight} from '@unicef-polymer/etools-modules-common/dist/utils/textarea-max-rows-helper';
+import {get as getTranslation} from 'lit-translate';
 
 export abstract class EditComments extends connectStore(LitElement) {
   @property() comments: (InterventionComment & {loadingError?: boolean})[] = [];
@@ -68,7 +69,7 @@ export abstract class EditComments extends connectStore(LitElement) {
       })
       .catch(() => {
         this.resolvingCollection.delete(id);
-        fireEvent(this, 'toast', {text: 'Can not resolve comment. Try again'});
+        fireEvent(this, 'toast', {text: getTranslation('CAN_NOT_RESOLVE_COMMENT')});
         this.requestUpdate();
       });
   }
@@ -92,7 +93,7 @@ export abstract class EditComments extends connectStore(LitElement) {
       })
       .catch(() => {
         this.deletingCollection.delete(id);
-        fireEvent(this, 'toast', {text: 'Can not delete comment. Try again'});
+        fireEvent(this, 'toast', {text: getTranslation('CAN_NOT_DELETE_COMMENT')});
         this.requestUpdate();
       });
   }

@@ -333,7 +333,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
       if (!this.validateProgrammeManagement(programmeManagement) || !this.validateActivityItems(programmeManagement)) {
         this.requestUpdate();
         fireEvent(this, 'toast', {
-          text: 'Please fix validation errors'
+          text: getTranslation('FIX_VALIDATION_ERRORS')
         });
         return;
       }
