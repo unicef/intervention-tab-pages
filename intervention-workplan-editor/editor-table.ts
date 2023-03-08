@@ -517,7 +517,7 @@ export class EditorTable extends CommentsMixin(
       return;
     }
     if (!this.prevInterventionId) {
-      fireEvent(this, 'toggle-small-menu', {smallMenu: true});
+      fireEvent(this, 'toggle-small-menu', {value: true});
     }
     this.interventionId = selectInterventionId(state);
     this.permissions = cloneDeep(currentInterventionPermissions(state));
