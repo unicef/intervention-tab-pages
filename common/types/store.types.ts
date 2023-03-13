@@ -20,8 +20,6 @@ import {UploadStatusState} from '../reducers/upload-status';
 
 export interface AppState {
   routeDetails: RouteDetails;
-  drawerOpened: boolean;
-  smallMenu: boolean;
   toastNotification: {
     active: boolean;
     message: string;
