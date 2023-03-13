@@ -7,7 +7,7 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {Disaggregation, DisaggregationValue} from '@unicef-polymer/etools-types';
 import {Indicator} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
 import {getIndicatorDisplayType} from '../../utils/utils';
@@ -218,7 +218,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
   }
 
   private addInactivePrefix(indicator: any) {
-    return !indicator || indicator.is_active ? '' : html`<strong>(inactive)</strong>`;
+    return !indicator || indicator.is_active ? '' : html`<strong>(${getTranslation('INACTIVE')})</strong>`;
   }
 
   _displayBaselineOrTarget(item: any, indicator: Indicator) {
