@@ -727,9 +727,19 @@
   "YEAR_SELECTED_ERR": "Year already selected on other planned visit item.",
   "YES": "Yes",
   "ATTACHMENT_EXPECTS_AN_INTEGER": "Attachment expects an integer",
+  "INACTIVE":"Inactive",
   "TERMINATE_PD_SPD": "Terminate PD/SPD",
   "TERMINATION_DATE": "Termination Date",
   "PLEASE_SELECT_TERMINATION_DATE": "Please select termination date",
   "TERMINATION_NOTICE_FILE_IS_REQUIRED": "Termination Notice file is required",
-  "UNSUSPEND": "Unsuspend"
+  "UNSUSPEND": "Unsuspend",
+  "FIX_VALIDATION_ERRORS": "Please fix validation errors",
+  "CAN_NOT_SAVE_REVIEW": "Can not save review.",
+  "TRY_AGAIN_LATER": "Try again later",
+  "CAN_NOT_REMOVE_AMENDMENT": "Can not remove amendment. Try again later",
+  "NOTIFICATION_SENT_SUCCESS": "Notification sent successfully",
+  "CAN_NOT_SEND_NOTIFICATION": "Can not send notification",
+  "CAN_NOT_UPLOAD_SUPPLIES": "Can not upload supplies",
+  "ACTIVATION_LETTER_ATTACHMENT": "Activation letter attachment",
+  "RESULT__CP_OUTPUT": "Result CP Output"
 }

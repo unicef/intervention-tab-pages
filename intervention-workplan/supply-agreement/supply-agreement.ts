@@ -373,7 +373,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       });
     } else {
       const message = this.getUploadError(error);
-      fireEvent(this, 'toast', {text: `Can not upload supplies: ${message}`});
+      fireEvent(this, 'toast', {text: `${getTranslation('CAN_NOT_UPLOAD_SUPPLIES')}: ${message}`});
     }
   }
 

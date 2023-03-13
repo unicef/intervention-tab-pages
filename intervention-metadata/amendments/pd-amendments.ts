@@ -313,7 +313,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
           return getStore().dispatch<AsyncAction>(getIntervention(this.intervention.id));
         })
         .catch(() => {
-          fireEvent(this, 'toast', {text: 'Can not remove amendment. Try again later'});
+          fireEvent(this, 'toast', {text: getTranslation('CAN_NOT_REMOVE_AMENDMENT')});
         })
         .finally(() => {
           fireEvent(this, 'global-loading', {
