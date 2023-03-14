@@ -30,13 +30,13 @@ export const EditorTableStyles = css`
   }
   td.col-text {
     width: calc(47% - 85px);
-    padding-left: 25px;
+    padding-inline-start: 25px;
   }
   td.a-item-padd {
-    padding-left: 25px;
+    padding-inline-start: 25px;
   }
   td.a-item-add-padd {
-    padding-left: 15px;
+    padding-inline-start: 15px;
   }
   td.col-g {
     width: 10%;
@@ -182,7 +182,7 @@ export const EditorTableStyles = css`
   }
   .del-item {
     vertical-align: bottom;
-    padding-left: 0;
+    padding-inline-start: 0;
   }
 
   .padd-top-10 {

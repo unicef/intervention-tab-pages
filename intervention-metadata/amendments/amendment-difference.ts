@@ -22,7 +22,9 @@ export class AmendmentDifference extends LitElement {
       css`
         .offset {
           position: relative;
-          padding: 5px 0 5px 40px;
+          padding-top: 5px;
+          padding-bottom: 5px;
+          padding-inline: 40px 0;
         }
         .field-name {
           margin: 0 0 10px;

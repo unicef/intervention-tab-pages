@@ -32,13 +32,13 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
           margin-top: 24px;
         }
         datepicker-lite {
-          margin-right: 24px;
+          margin-inline-end: 24px;
         }
         paper-button.notify {
           height: 40px;
           white-space: nowrap;
           flex: none;
-          margin-left: 24px;
+          margin-inline-start: 24px;
         }
         .row-h:not(:first-child) {
           padding-top: 0;

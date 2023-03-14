@@ -79,7 +79,7 @@ export class ActivityTimeFrames extends LitElement {
           width: auto !important;
           max-width: 100%;
           right: auto;
-          padding-right: 15px;
+          padding-inline-end: 15px;
           background-size: 5px;
         }
         .time-frame-container {

@@ -100,6 +100,9 @@ export class InterventionReviewTab extends connectStore(LitElement) {
         --text-wrap: none;
         --text-padding: 26px 24px 26px 80px;
       }
+      :host-context([dir="rtl"]) reason-display {
+        --text-padding: 26px 80px 26px 24px;
+      }
       a {
         color: var(--primary-color);
         text-decoration: none;

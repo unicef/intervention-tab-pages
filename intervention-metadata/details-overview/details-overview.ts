@@ -45,8 +45,8 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
           max-width: none;
         }
         .data-column {
-          margin-right: 20px;
-          padding-left: 0px;
+          margin-inline-end: 20px;
+          padding-inline-start: 0px;
         }
       </style>
       <section class="elevation" elevation="1" comment-element="details">

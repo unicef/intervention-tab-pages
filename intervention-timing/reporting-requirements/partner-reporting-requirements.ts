@@ -70,8 +70,8 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
           display: flex;
           align-items: center;
           height: 48px;
-          padding-left: 24px;
-          padding-right: 24px;
+          padding-inline-start: 24px;
+          padding-inline-end: 24px;
           font-size: 14px;
           font-weight: bold;
           text-transform: capitalize;
@@ -86,8 +86,8 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
 
         .nav-menu-item {
           color: var(--secondary-text-color);
-          padding-left: 24px;
-          padding-right: 24px;
+          padding-inline-start: 24px;
+          padding-inline-end: 24px;
           font-size: 14px;
           font-weight: bold;
           text-transform: capitalize;
@@ -102,7 +102,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
 
         .edit-rep-req {
           color: var(--primary-text-color);
-          margin-left: 16px;
+          margin-inline-start: 16px;
         }
 
         info-icon-tooltip {

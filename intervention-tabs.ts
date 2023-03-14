@@ -93,7 +93,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
           z-index: 99;
         }
         .amendment-info a {
-          margin-left: 7px;
+          margin-inline-start: 7px;
           cursor: pointer;
           text-decoration: underline;
         }
@@ -163,6 +163,13 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
         }
         .intervention-number {
           font-size: 16px;
+        }
+
+        reason-display {
+          --text-padding: 26px 24px 26px 80px;
+        }
+        :host-context([dir="rtl"]) reason-display {
+          --text-padding: 26px 80px 26px 24px;
         }
       </style>
 

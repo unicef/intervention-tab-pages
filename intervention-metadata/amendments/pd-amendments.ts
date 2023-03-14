@@ -57,7 +57,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
 
         .attachment {
           color: var(--dark-icon-color);
-          margin-right: 8px;
+          margin-inline-end: 8px;
         }
         .file-label {
           width: calc(100% - 32px);
@@ -77,7 +77,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
         }
         iron-icon {
           width: 18px;
-          margin-left: 5px;
+          margin-inline-start: 5px;
         }
         a {
           line-height: 12px;

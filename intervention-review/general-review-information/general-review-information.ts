@@ -33,7 +33,7 @@ export class GeneralReviewInformation extends LitElement {
           color: var(--primary-text-color);
         }
         .info-block {
-          margin-right: 1.5rem;
+          margin-inline-end: 1.5rem;
           min-width: 110px;
         }
 

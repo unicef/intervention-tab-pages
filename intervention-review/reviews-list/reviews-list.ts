@@ -30,7 +30,7 @@ export class ReviewsList extends connectStore(LitElement) {
           position: relative;
         }
         div[slot='row-data'] div {
-          padding-right: 16px;
+          padding-inline-end: 16px;
         }
         .answer {
           font-size: 14px;
