@@ -19,9 +19,9 @@ export class InterventionTiming extends CommentsMixin(LitElement) {
     // language=HTML
     return html`
       <style></style>
-      <timing-overview></timing-overview>
+      <!-- <timing-overview></timing-overview>
       <intervention-dates></intervention-dates>
-      <activity-timeframes></activity-timeframes>
+      <activity-timeframes></activity-timeframes> -->
       ${this.viewPartnerReportingRequirements
         ? html`<partner-reporting-requirements
             class="content-section"
