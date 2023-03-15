@@ -3,9 +3,10 @@ import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/b
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {AnyObject, PlannedVisit} from '@unicef-polymer/etools-types';
 import {customElement, html, LitElement, property} from 'lit-element';
-import {translate} from 'lit-translate';
+import {langChanged, translate} from 'lit-translate';
 
 @customElement('pv-quarter')
 export class PvQuarter extends LitElement {
@@ -22,10 +23,7 @@ export class PvQuarter extends LitElement {
           flex: 0 0 16.6667%;
           max-width: 16.6667%;
           min-width: 170px;
-          max-width: 200px;
-        }
-        .sites-display {
-          padding-bottom: 10px;
+          max-width: 250px;
         }
 
         .q-label {
@@ -42,11 +40,11 @@ export class PvQuarter extends LitElement {
           padding: 0 8px;
         }
         .visits {
-          padding-bottom: 16px;
+          padding-bottom: 12px;
         }
         .secondary-btn {
           font-size: 12px !important;
-          padding-bottom: 24px !important;
+          margin-bottom: 32px !important;
         }
 
         paper-icon-button.light {
@@ -59,7 +57,9 @@ export class PvQuarter extends LitElement {
       <div>
         <div>
           <div class="q-label">Quarter ${this.qIndex}</div>
-          <div class="q-interval">01 Jan 2022 - 01 Mar 2022</div>
+          <div class="q-interval">
+            ${this.item.quarterIntervals && this.item.quarterIntervals[Number(this.qIndex) - 1]}
+          </div>
         </div>
 
         <div class="layout-horizontal align-items-center visits">
@@ -73,10 +73,10 @@ export class PvQuarter extends LitElement {
           <paper-icon-button id="addBtn" class="light" icon="add-circle" @tap="${this.addClicked}"></paper-icon-button>
         </div>
 
-        <div class="sites-display">
+        <div ?hidden="${!this.item[`programmatic_q${this.qIndex}_sites`].length}">
           <label class="paper-label">${translate('SITES')}</label>
-          ${[{name: 'Lambada'}, {name: 'Nyangada'}].map((s: any) => {
-            return html`<div>${s.name}</div>`;
+          ${this.item[`programmatic_q${this.qIndex}_sites`].map((s: any) => {
+            return html`<div style="padding-bottom: 7px">${s.name}</div>`;
           })}
         </div>
         <paper-button
@@ -110,31 +110,35 @@ export class PvQuarter extends LitElement {
   @property({type: Array})
   allSites!: Site[];
 
-  private openSitesDialog(item: PlannedVisit) {
+  private openSitesDialog() {
     openDialog({
       dialog: 'sites-dialog',
       dialogData: {
         workspaceCoordinates: [this.currentCountry.longitude, this.currentCountry.latitude],
         sites: this.allSites,
-        selectedSites: item.sites
+        selectedSites: this.item['programmatic_q' + this.qIndex + '_sites']
       }
     }).then(({confirmed, response}) => {
       if (!confirmed) {
         return;
       }
-      item.sites = response;
+      this.item['programmatic_q' + this.qIndex + '_sites'] = response;
+      this.requestUpdate();
     });
   }
 
-  inputChanged(e: CustomEvent, qIndex: number) {
-    if (!e.detail) {
+  subtractClicked() {
+    if (Number(this.item['programmatic_q' + this.qIndex]) == 0) {
       return;
     }
-
-    this.item['programmatic_' + qIndex] = e.detail.value;
+    this.item['programmatic_q' + this.qIndex] = Number(this.item['programmatic_q' + this.qIndex]) - 1;
+    this.requestUpdate();
+    fireEvent(this, 'visits-number-change');
   }
 
-  subtractClicked() {}
-
-  addClicked() {}
+  addClicked() {
+    this.item['programmatic_q' + this.qIndex] = Number(this.item['programmatic_q' + this.qIndex]) + 1;
+    this.requestUpdate();
+    fireEvent(this, 'visits-number-change');
+  }
 }

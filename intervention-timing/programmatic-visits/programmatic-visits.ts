@@ -10,7 +10,6 @@ import isEmpty from 'lodash-es/isEmpty';
 import {RootState} from '../../common/types/store.types';
 import {PlannedVisitsPermissions} from './programmaticVisits.models';
 import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown';
-import {PaperInputElement} from '@polymer/paper-input/paper-input';
 import {selectPlannedVisits, selectPlannedVisitsPermissions} from './programmaticVisits.selectors';
 import {selectInterventionDates} from '../intervention-dates/interventionDates.selectors';
 import cloneDeep from 'lodash-es/cloneDeep';
@@ -21,15 +20,15 @@ import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, Intervention, Permission} from '@unicef-polymer/etools-types';
 import {PlannedVisit} from '@unicef-polymer/etools-types';
-import {translate, get as getTranslation} from 'lit-translate';
+import {translate, get as getTranslation, langChanged} from 'lit-translate';
 import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import RepeatableDataSetsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/repeatable-data-sets-mixin';
 import {repeatableDataSetsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/repeatable-data-sets-styles';
 import {getEndpoint as getEndpointHelper} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import '../../common/components/sites-widget/sites-dialog';
 import './pv-quarter';
+declare const dayjs: any;
 
 /**
  * @customElement
@@ -83,6 +82,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
         .totalContainer {
           text-align: center;
           height: 114px;
+          font-weight: bold;
         }
         .bgColor {
           background-color: #0099ff29;
@@ -103,7 +103,6 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
         }
         .total-lbl {
           font-size: 14px;
-          font-weight: bold;
           padding-top: 15px;
           padding-bottom: 15px;
         }
@@ -172,11 +171,16 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
   connectedCallback() {
     super.connectedCallback();
     this.addEventListener('delete-confirm', this.afterItemDeleted as any);
+    this.addEventListener('visits-number-change', this.recalculateTotal.bind(this));
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     this.removeEventListener('delete-confirm', this.afterItemDeleted as any);
+  }
+
+  recalculateTotal() {
+    this.data = [...this.data];
   }
 
   afterItemDeleted() {
@@ -208,11 +212,50 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
   populateVisits(state: any) {
     const planned_visits = selectPlannedVisits(state).planned_visits;
     if (!isJsonStrMatch(this.originalData, planned_visits)) {
-      this.data = planned_visits;
+      const auxData = [
+        {
+          id: 204,
+          year: 2022,
+          programmatic_q1: 1,
+          programmatic_q1_sites: [{name: 'Nyangada'}, {name: 'Lambada Lionella Village'}],
+          programmatic_q2: 2,
+          programmatic_q2_sites: [],
+          programmatic_q3: 3,
+          programmatic_q3_sites: [{name: 'Nyangada'}],
+          programmatic_q4: 4,
+          programmatic_q4_sites: []
+        },
+        {
+          id: 205,
+          year: 2023,
+          programmatic_q1: 0,
+          programmatic_q1_sites: [],
+          programmatic_q2: 1,
+          programmatic_q2_sites: [],
+          programmatic_q3: 0,
+          programmatic_q3_sites: [],
+          programmatic_q4: 0,
+          programmatic_q4_sites: []
+        }
+      ];
+      auxData.forEach((item) => {
+        item.quarterIntervals = this.setQuartersIntervals(item.year);
+      });
+
+      this.data = auxData;
       this.originalData = cloneDeep(this.data);
     }
     const interventionDates = selectInterventionDates(state);
     this._setYears(interventionDates.start, interventionDates.end);
+  }
+
+  setQuartersIntervals(year: number) {
+    return [
+      dayjs('01 Jan ' + year).format('DD MMM YYYY') + ' - ' + dayjs('31 Mar ' + year).format('DD MMM YYYY'),
+      dayjs('01 April ' + year).format('DD MMM YYYY') + ' - ' + dayjs('30 June ' + year).format('DD MMM YYYY'),
+      dayjs('01 July ' + year).format('DD MMM YYYY') + ' - ' + dayjs('30 Sept ' + year).format('DD MMM YYYY'),
+      dayjs('01 Oct ' + year).format('DD MMM YYYY') + ' - ' + dayjs('31 Dec ' + year).format('DD MMM YYYY')
+    ];
   }
 
   _plannedVisitsChanged(planned_visits: any) {
@@ -351,15 +394,6 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
     `;
   }
 
-  inputChanged(e: CustomEvent, index: number, qIndex: string) {
-    if (!e.detail) {
-      return;
-    }
-
-    this.data[index]['programmatic_' + qIndex] = e.detail.value;
-    this.data = [...this.data];
-  }
-
   /**
    * The planned visit row data can be removed only if (intervention status is new or draft) or (if it doesn't have
    * and id assigned(only if is not saved))
@@ -391,6 +425,8 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
       this._clearSelectedYear(index);
     }
     this.data[index]['year'] = yearSelected;
+    this.data[index].quarterIntervals = this.setQuartersIntervals(yearSelected);
+    this.data[index] = {...this.data[index]};
     this.data = [...this.data];
   }
 
@@ -415,7 +451,10 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
   validate() {
     let valid = true;
     this.data?.forEach((item: any, index: number) => {
-      if (!(this._validateYear(index) && this._validateQuarters(item, index))) {
+      if (
+        !this._validateYear(index) &&
+        !this._getTotal(item.programmatic_q1, item.programmatic_q2, item.programmatic_q3, item.programmatic_q4)
+      ) {
         valid = false;
       }
     });
@@ -433,27 +472,6 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
     return valid;
   }
 
-  _validateQuarters(item: any, index: number) {
-    let valid = true;
-    const q1 = this.shadowRoot!.querySelector('#visit_' + index + '_q1') as PaperInputElement;
-    const q2 = this.shadowRoot!.querySelector('#visit_' + index + '_q2') as PaperInputElement;
-    const q3 = this.shadowRoot!.querySelector('#visit_' + index + '_q3') as PaperInputElement;
-    const q4 = this.shadowRoot!.querySelector('#visit_' + index + '_q4') as PaperInputElement;
-
-    [q1, q2, q3, q4].forEach(function (q) {
-      if (q) {
-        if (!q.validate()) {
-          valid = false;
-        }
-      }
-    });
-    if (!this._getTotal(item.programmatic_q1, item.programmatic_q2, item.programmatic_q3, item.programmatic_q4)) {
-      valid = false;
-    }
-
-    return valid;
-  }
-
   /**
    * Validate last added planned visit and if is not empty add a new one
    */
@@ -465,7 +483,6 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
       return;
     }
     this.data = [...this.data, new PlannedVisit()];
-    // this._addElement();
   }
 
   _getAddBtnPadding(itemsLength: number) {
@@ -475,24 +492,6 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
   _getNoPVMsgPadding(itemsLength: number) {
     return !itemsLength && this.editMode ? 'no-top-padd' : '';
   }
-
-  private openSitesDialog(item: PlannedVisit) {
-    openDialog({
-      dialog: 'sites-dialog',
-      dialogData: {
-        workspaceCoordinates: [this.currentCountry.longitude, this.currentCountry.latitude],
-        sites: this.allSites,
-        selectedSites: item.sites
-      }
-    }).then(({confirmed, response}) => {
-      if (!confirmed) {
-        return;
-      }
-      item.sites = response;
-      this.data = {...this.data};
-    });
-  }
-
   saveData() {
     if (!this.validate()) {
       return Promise.resolve(false);
