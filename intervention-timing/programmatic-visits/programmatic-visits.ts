@@ -28,7 +28,6 @@ import {getEndpoint as getEndpointHelper} from '@unicef-polymer/etools-modules-c
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import '../../common/components/sites-widget/sites-dialog';
 import './pv-quarter';
-declare const dayjs: any;
 
 /**
  * @customElement
@@ -60,6 +59,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
         div.col-1.yearContainer {
           min-width: 110px;
           padding-inline-start: 16px;
+          padding-top: 10px;
         }
 
         .error-msg {
@@ -251,10 +251,10 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
 
   setQuartersIntervals(year: number) {
     return [
-      dayjs('01 Jan ' + year).format('DD MMM YYYY') + ' - ' + dayjs('31 Mar ' + year).format('DD MMM YYYY'),
-      dayjs('01 April ' + year).format('DD MMM YYYY') + ' - ' + dayjs('30 June ' + year).format('DD MMM YYYY'),
-      dayjs('01 July ' + year).format('DD MMM YYYY') + ' - ' + dayjs('30 Sept ' + year).format('DD MMM YYYY'),
-      dayjs('01 Oct ' + year).format('DD MMM YYYY') + ' - ' + dayjs('31 Dec ' + year).format('DD MMM YYYY')
+      '01 Jan ' + year + ' - ' + '31 Mar ' + year,
+      '01 April ' + year + ' - ' + '30 June ' + year,
+      '01 July ' + year + ' - ' + '30 Sept ' + year,
+      '01 Oct ' + year + ' - ' + '31 Dec ' + year
     ];
   }
 
@@ -373,7 +373,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
                     item.programmatic_q4
                   )}
                 </div>
-                <div>Visits</div>
+                <div>${translate('VISITS')}</div>
               </div>
               <div
                 class="col flex-c"

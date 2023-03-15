@@ -7,6 +7,7 @@ import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-c
 import {AnyObject, PlannedVisit} from '@unicef-polymer/etools-types';
 import {customElement, html, LitElement, property} from 'lit-element';
 import {langChanged, translate} from 'lit-translate';
+declare const dayjs: any;
 
 @customElement('pv-quarter')
 export class PvQuarter extends LitElement {
@@ -50,16 +51,21 @@ export class PvQuarter extends LitElement {
         paper-icon-button.light {
           color: #979797;
         }
+        paper-icon-button[readonly] {
+          color: #d3d1d1;
+          pointer-events: none;
+        }
         paper-icon-button {
           --paper-icon-button_-_width: 38px;
+        }
+        .sites-display {
+          padding-inline-start: 8px;
         }
       </style>
       <div>
         <div>
-          <div class="q-label">Quarter ${this.qIndex}</div>
-          <div class="q-interval">
-            ${this.item.quarterIntervals && this.item.quarterIntervals[Number(this.qIndex) - 1]}
-          </div>
+          <div class="q-label">${translate(`QUARTER_${this.qIndex}`)}</div>
+          <div class="q-interval">${this.getQuarterInterval()}</div>
         </div>
 
         <div class="layout-horizontal align-items-center visits">
@@ -67,13 +73,20 @@ export class PvQuarter extends LitElement {
             id="subtractBtn"
             class="light"
             icon="remove-circle"
+            ?readonly="${this.readonly}"
             @tap="${this.subtractClicked}"
           ></paper-icon-button>
           <div class="visit-no">${this.item[`programmatic_q${this.qIndex}`]}</div>
-          <paper-icon-button id="addBtn" class="light" icon="add-circle" @tap="${this.addClicked}"></paper-icon-button>
+          <paper-icon-button
+            id="addBtn"
+            class="light"
+            icon="add-circle"
+            ?readonly="${this.readonly}"
+            @tap="${this.addClicked}"
+          ></paper-icon-button>
         </div>
 
-        <div ?hidden="${!this.item[`programmatic_q${this.qIndex}_sites`].length}">
+        <div class="sites-display" ?hidden="${!this.item[`programmatic_q${this.qIndex}_sites`].length}">
           <label class="paper-label">${translate('SITES')}</label>
           ${this.item[`programmatic_q${this.qIndex}_sites`].map((s: any) => {
             return html`<div style="padding-bottom: 7px">${s.name}</div>`;
@@ -125,6 +138,22 @@ export class PvQuarter extends LitElement {
       this.item['programmatic_q' + this.qIndex + '_sites'] = response;
       this.requestUpdate();
     });
+  }
+
+  getQuarterInterval() {
+    return langChanged(() => {
+      if (!this.item.quarterIntervals || this.item.quarterIntervals.length < Number(this.qIndex) - 1) {
+        return '-';
+      }
+      const qInterv = this.item.quarterIntervals;
+
+      let date1 = '';
+      let date2 = '';
+      [date1, date2] = qInterv[Number(this.qIndex) - 1].split(' - ');
+
+      return dayjs(date1).format('DD MMM YYYY') + ' - ' + dayjs(date2).format('DD MMM YYYY');
+    });
+    return this.item.quarterIntervals[Number(this.qIndex) - 1];
   }
 
   subtractClicked() {
