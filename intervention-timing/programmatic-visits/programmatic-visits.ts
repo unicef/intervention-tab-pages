@@ -106,6 +106,10 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
           padding-top: 15px;
           padding-bottom: 15px;
         }
+        paper-button iron-icon {
+          margin-inline-start: 45px;
+          margin-inline-end: 10px;
+        }
       </style>
 
       <etools-content-panel
@@ -115,11 +119,12 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
-        <div class="row-h extra-top-padd" ?hidden="${!this.editMode}">
+        <div class="row-padding-v extra-top-padd" ?hidden="${!this.editMode}">
           <paper-button
             class="secondary-btn ${this._getAddBtnPadding(this.data?.length)}"
             @click="${this._addNewPlannedVisit}"
           >
+            <iron-icon icon="add-box"></iron-icon>
             ${translate('ADD_YEAR')}
           </paper-button>
         </div>

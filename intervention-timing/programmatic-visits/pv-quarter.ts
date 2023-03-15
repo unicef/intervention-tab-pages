@@ -4,15 +4,31 @@ import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/st
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
-import {AnyObject, PlannedVisit} from '@unicef-polymer/etools-types';
-import {customElement, html, LitElement, property} from 'lit-element';
+import {AnyObject, PlannedVisit, Site} from '@unicef-polymer/etools-types';
+import {css, customElement, html, LitElement, property} from 'lit-element';
 import {langChanged, translate} from 'lit-translate';
 declare const dayjs: any;
 
 @customElement('pv-quarter')
 export class PvQuarter extends LitElement {
   static get styles() {
-    return [buttonsStyles, gridLayoutStylesLit];
+    return [
+      buttonsStyles,
+      gridLayoutStylesLit,
+      css`
+        iron-icon#x {
+          width: 16px;
+          color: var(--icon-delete-color);
+          cursor: pointer;
+        }
+        iron-icon#x:hover {
+          color: #b70202;
+        }
+        iron-icon[icon='add'] {
+          width: 15px;
+        }
+      `
+    ];
   }
 
   render() {
@@ -89,12 +105,20 @@ export class PvQuarter extends LitElement {
         <div class="sites-display" ?hidden="${!this.item[`programmatic_q${this.qIndex}_sites`].length}">
           <label class="paper-label">${translate('SITES')}</label>
           ${this.item[`programmatic_q${this.qIndex}_sites`].map((s: any) => {
-            return html`<div style="padding-bottom: 7px">${s.name}</div>`;
+            return html`<div style="padding-bottom: 7px;">
+              <iron-icon
+                id="x"
+                icon="close"
+                ?hidden="${this.readonly}"
+                @click="${() => this.onRemoveSite(s.id)}"
+              ></iron-icon>
+              ${s.name}
+            </div>`;
           })}
         </div>
         <paper-button
           class="secondary-btn"
-          @click="${() => this.openSitesDialog(this.item)}"
+          @click="${() => this.openSitesDialog()}"
           ?hidden="${this.readonly}"
           title=${translate('SELECT_SITE_FROM_MAP')}
         >
@@ -169,5 +193,12 @@ export class PvQuarter extends LitElement {
     this.item['programmatic_q' + this.qIndex] = Number(this.item['programmatic_q' + this.qIndex]) + 1;
     this.requestUpdate();
     fireEvent(this, 'visits-number-change');
+  }
+
+  onRemoveSite(siteId: number) {
+    this.item[`programmatic_q${this.qIndex}_sites`] = this.item[`programmatic_q${this.qIndex}_sites`].filter(
+      (s: Site) => s.id != siteId
+    );
+    this.requestUpdate();
   }
 }
