@@ -457,7 +457,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
     let valid = true;
     this.data?.forEach((item: any, index: number) => {
       if (
-        !this._validateYear(index) &&
+        !this._validateYear(index) ||
         !this._getTotal(item.programmatic_q1, item.programmatic_q2, item.programmatic_q3, item.programmatic_q4)
       ) {
         valid = false;
@@ -499,6 +499,9 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
   }
   saveData() {
     if (!this.validate()) {
+      fireEvent(this, 'toast', {
+        text: getTranslation('FIX_VALIDATION_ERRORS')
+      });
       return Promise.resolve(false);
     }
 
