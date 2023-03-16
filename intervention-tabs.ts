@@ -168,7 +168,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
         reason-display {
           --text-padding: 26px 24px 26px 80px;
         }
-        :host-context([dir="rtl"]) reason-display {
+        :host-context([dir='rtl']) reason-display {
           --text-padding: 26px 80px 26px 24px;
         }
       </style>

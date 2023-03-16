@@ -55,7 +55,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
 
         /* ------------------------------- */
 
-        .reporting-req-data { 
+        .reporting-req-data {
           border-inline-start: 1px solid var(--darker-divider-color);
         }
 
@@ -109,7 +109,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
           --iit-margin: 0 5px 0 0;
         }
 
-        :host-context([dir="rtl"] )  info-icon-tooltip {
+        :host-context([dir='rtl']) info-icon-tooltip {
           --iit-margin: 0 0 0 5px;
         }
       </style>
