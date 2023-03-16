@@ -124,6 +124,9 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
             max-height: 96px;
           }
         }
+        etools-dialog paper-textarea[readonly] {
+          --iron-autogrow-textarea_-_max-height: unset;
+        }
       </style>
 
       <!-- ATTENTION spinner-text property binding WORKS WITHOUT '.'  -->
