@@ -50,10 +50,10 @@ export class AmendmentDifference extends LitElement {
           width: 5px;
           height: 25px;
           top: -9px;
-          left: 25px;
+          inset-inline-start: 25px;
           border: 1px solid transparent;
           border-bottom-color: var(--dark-divider-color);
-          border-left-color: var(--dark-divider-color);
+          border-inline-start-color: var(--dark-divider-color);
         }
         .offset:before {
           content: '';
@@ -61,10 +61,10 @@ export class AmendmentDifference extends LitElement {
           width: 5px;
           height: 32px;
           top: -16px;
-          left: 25px;
+          inset-inline-start: 25px;
           border: 1px solid transparent;
           border-bottom-color: var(--dark-divider-color);
-          border-left-color: var(--dark-divider-color);
+          border-inline-start-color: var(--dark-divider-color);
         }
         .value > .offset {
           padding: 0;

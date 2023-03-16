@@ -76,10 +76,10 @@ export const EditorTableStyles = css`
   }
 
   tr > td:first-of-type {
-    border-left: none;
+    border-inline-start: none;
   }
   tr > td:last-of-type {
-    border-right: none;
+    border-inline-end: none;
   }
 
   td:nth-child(n + 4) {
@@ -162,12 +162,12 @@ export const EditorTableStyles = css`
   }
 
   tr.activity-items-row.readonly-mode > td:last-of-type {
-    border-left: none;
-    border-right: none;
+    border-inline-start: none;
+    border-inline-end: none;
   }
 
   tr.activity-items-row > td.total {
-    border-right: none;
+    border-inline-end: none;
     --paper-input-container-input_-_font-weight: 600;
   }
   tr.activity-items-row > td {
@@ -192,14 +192,14 @@ export const EditorTableStyles = css`
     border-bottom: none;
   }
   td.no-l-r-border {
-    border-left: none;
-    border-right: none;
+    border-inline-start: none;
+    border-inline-end: none;
   }
   td.no-r-border {
-    border-right: none;
+    border-inline-end: none;
   }
   td.no-l-border {
-    border-left: none;
+    border-inline-start: none;
   }
   .no-top-padding {
     padding-top: 0;
@@ -232,8 +232,8 @@ export const EditorTableStyles = css`
     font-weight: bold;
   }
   tr.eepm-header td {
-    border-left: none;
-    border-right: none;
+    border-inline-start: none;
+    border-inline-end: none;
   }
 
   tbody[inEditMode],

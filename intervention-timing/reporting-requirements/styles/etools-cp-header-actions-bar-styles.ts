@@ -17,9 +17,10 @@ export const etoolsCpHeaderActionsBarStyles = `
   }
 
   .cp-header-actions-bar .separator {
-    border-left: solid 1px var(--light-secondary-text-color);
+    border-inline-start: solid 1px var(--light-secondary-text-color);
     padding-inline-end: 10px;
-    margin: 6px 0 6px 10px;
+    margin: 6px 0;
+    margin-inline-start: 10px;
   }
   `;
 
