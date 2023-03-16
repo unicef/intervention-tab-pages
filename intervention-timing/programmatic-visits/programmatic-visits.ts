@@ -506,9 +506,15 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
     }
 
     return getStore()
-      .dispatch<AsyncAction>(patchIntervention({planned_visits: this.data}))
+      .dispatch<AsyncAction>(patchIntervention({planned_visits: this.cleanUpData(this.data)}))
       .then(() => {
         this.editMode = false;
       });
+  }
+
+  cleanUpData(data: PlannedVisit[]) {
+    const dataToSave = cloneDeep(data);
+    dataToSave.forEach((d) => (d.sites = d.sites.map((s: Site) => s.id)));
+    return data;
   }
 }
