@@ -259,11 +259,9 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
     this.items.forEach((row: ManagementBudgetItem) => {
       row.kind = this.data.kind;
     });
-
     this.loadingInProcess = true;
 
     const patchData = cloneDeep(this.data);
-
     patchData.items = patchData.items.concat(this.items);
     this.formatDataBeforeSave(patchData);
     sendRequest({
