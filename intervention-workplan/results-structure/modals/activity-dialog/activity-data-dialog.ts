@@ -41,6 +41,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
   @property({type: String}) spinnerText = getTranslation('GENERAL.LOADING');
   @property() readonly: boolean | undefined = false;
   @query('etools-dialog') private dialogElement!: EtoolsDialog;
+  @query('activity-items-table') private activityItemsTable!: ActivityItemsTable;
   quarters: ActivityTimeFrames[] = [];
 
   set dialogData({activityId, pdOutputId, interventionId, quarters, readonly, currency}: any) {
@@ -289,6 +290,15 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
       cso_cash: '0',
       unicef_cash: '0'
     };
+
+    if ((!this.editedData.items || !this.editedData.items.length) && this.activityItemsTable) {
+      // add by default a row in activity items table if we have none
+      setTimeout(() => {
+        this.activityItemsTable.addNew();
+      }, 100);
+    } else {
+      this.editedData.items = [];
+    }
   }
 
   validate() {
