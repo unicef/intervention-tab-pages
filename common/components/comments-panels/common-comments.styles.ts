@@ -51,7 +51,7 @@ export const CommentPanelsStyles: CSSResult = css`
     }
   }
   .panel-header b {
-    margin-left: 10px;
+    margin-inline-start: 10px;
   }
   *:focus-visible {
     outline: 2px solid rgb(170 165 165 / 50%);
@@ -62,7 +62,7 @@ export const CommentPanelsStyles: CSSResult = css`
     margin: 0;
   }
   .buttons paper-button:last-child {
-    margin-left: 10px;
+    margin-inline-start: 10px;
   }
   paper-button iron-icon {
     width: 30px;

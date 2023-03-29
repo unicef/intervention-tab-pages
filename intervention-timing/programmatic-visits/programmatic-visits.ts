@@ -68,7 +68,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
         }
 
         .padd-left-when-items {
-          margin-left: 46px;
+          margin-inline-start: 46px;
         }
 
         .secondary-btn {

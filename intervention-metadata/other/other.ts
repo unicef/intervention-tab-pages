@@ -58,7 +58,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
         }
 
         .row > * {
-          padding-left: 40px;
+          padding-inline-start: 40px;
           box-sizing: border-box;
         }
 
@@ -68,7 +68,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
 
         #iit-confidential {
           margin-top: 20px;
-          margin-left: 8px;
+          margin-inline-start: 8px;
         }
         paper-textarea {
           outline: none;

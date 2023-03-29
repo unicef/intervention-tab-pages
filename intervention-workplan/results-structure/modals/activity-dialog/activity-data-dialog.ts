@@ -95,7 +95,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
         }
         .total-input,
         etools-currency-amount-input {
-          margin-right: 24px;
+          margin-inline-end: 24px;
         }
         .total {
           justify-content: flex-end;

@@ -83,7 +83,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
           font-size: 10px;
           text-transform: uppercase;
           background-color: var(--paper-grey-300);
-          margin-left: 5px;
+          margin-inline-start: 5px;
           font-weight: bold;
         }
 

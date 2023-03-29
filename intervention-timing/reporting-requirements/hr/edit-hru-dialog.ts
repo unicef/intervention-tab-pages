@@ -45,7 +45,7 @@ export class EditHruDialog extends connectStore(LitElement) {
           display: inline-block;
           width: auto;
           margin-top: 24px;
-          padding-right: 0;
+          padding-inline-end: 0;
         }
 
         .start-date {

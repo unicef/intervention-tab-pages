@@ -80,7 +80,7 @@ export class InterventionResultsReported extends connectStore(
         }
 
         #cash-progress etools-form-element-wrapper:first-child {
-          margin-right: 24px;
+          margin-inline-end: 24px;
         }
 
         etools-data-table-row::part(edt-list-row-collapse-wrapper) {
@@ -88,7 +88,7 @@ export class InterventionResultsReported extends connectStore(
         }
 
         .lower-result-status-date {
-          margin-left: 4px;
+          margin-inline-start: 4px;
         }
 
         .indicator-report {
@@ -97,7 +97,7 @@ export class InterventionResultsReported extends connectStore(
 
         .indicator-report,
         .progress-details {
-          padding-left: 58px;
+          padding-inline-start: 58px;
         }
 
         .progress-details + .indicator-report {
@@ -116,7 +116,7 @@ export class InterventionResultsReported extends connectStore(
 
         indicator-report-target {
           --indicator-report-target-row: {
-            padding-right: 72px;
+            padding-inline-end: 72px;
           }
         }
 
@@ -146,7 +146,7 @@ export class InterventionResultsReported extends connectStore(
           }
 
           .indicator-report .col-data:first-child {
-            margin-right: 24px;
+            margin-inline-end: 24px;
           }
 
           .target-details {
