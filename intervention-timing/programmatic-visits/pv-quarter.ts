@@ -54,7 +54,9 @@ export class PvQuarter extends LitElement {
           padding-inline-start: 8px;
         }
         .visit-no {
-          padding: 0 8px;
+          padding-inline: 8px;
+          font-size: 18px;
+          font-weight: bold;
         }
         .visits {
           padding-bottom: 12px;
@@ -89,7 +91,7 @@ export class PvQuarter extends LitElement {
             id="subtractBtn"
             class="light"
             icon="remove-circle"
-            ?readonly="${this.readonly}"
+            ?hidden="${this.readonly}"
             @tap="${this.subtractClicked}"
           ></paper-icon-button>
           <div class="visit-no">${this.item[`programmatic_q${this.qIndex}`]}</div>
@@ -97,7 +99,7 @@ export class PvQuarter extends LitElement {
             id="addBtn"
             class="light"
             icon="add-circle"
-            ?readonly="${this.readonly}"
+            ?hidden="${this.readonly}"
             @tap="${this.addClicked}"
           ></paper-icon-button>
         </div>
