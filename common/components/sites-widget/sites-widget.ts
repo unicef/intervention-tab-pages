@@ -73,7 +73,7 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-        margin-right: 5px;
+        margin-inline-end: 5px;
       }
 
       .site-line .deselect-btn {

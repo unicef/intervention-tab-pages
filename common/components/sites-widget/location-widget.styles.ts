@@ -31,7 +31,7 @@ export const LocationWidgetStyles: CSSResult = css`
   .widget-container .map-and-list #map {
     flex: 1 30%;
     height: 300px;
-    margin-right: 25px;
+    margin-inline-end: 25px;
   }
 
   .widget-container .map-and-list .list {
@@ -84,7 +84,7 @@ export const LocationWidgetStyles: CSSResult = css`
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    margin-right: 5px;
+    margin-inline-end: 5px;
   }
 
   .site-line .deselect-btn,
