@@ -1,5 +1,5 @@
 import {LitElement, html, TemplateResult, property, customElement, CSSResultArray} from 'lit-element';
-import {prettyDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
+import {prettyDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import CONSTANTS from '../../common/constants';
 import '@unicef-polymer/etools-content-panel';
 import '@unicef-polymer/etools-data-table/etools-data-table.js';
@@ -7,22 +7,25 @@ import '@polymer/iron-icons';
 import './intervention-attachment-dialog';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
-import {InterventionAttachment, Intervention, IdAndName, AsyncAction} from '@unicef-polymer/etools-types';
-import {AttachmentsListStyles} from './attachments-list.styles';
+import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {
-  getFileNameFromURL,
-  cloneDeep,
-  getTranslatedValue
-} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+  InterventionAttachment,
+  Intervention,
+  IdAndName,
+  AsyncAction,
+  EtoolsEndpoint
+} from '@unicef-polymer/etools-types';
+import {AttachmentsListStyles} from './attachments-list.styles';
+import {getTranslatedValue} from '@unicef-polymer/etools-utils/dist/language.util';
+import {getFileNameFromURL, cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
-import {sendRequest} from '@unicef-polymer/etools-ajax';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
+import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {getIntervention} from '../../common/actions/interventions';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-utils/dist/general.util';
 import get from 'lodash-es/get';
 import {translate} from 'lit-translate';
 
@@ -175,7 +178,7 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
   }
 
   deleteAttachment(attachment: InterventionAttachment) {
-    const endpoint = getEndpoint(interventionEndpoints.updatePdAttachment, {
+    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.updatePdAttachment, {
       id: attachment.intervention,
       attachment_id: attachment.id
     });

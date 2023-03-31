@@ -1,20 +1,20 @@
 /* eslint-disable lit/no-legacy-template-syntax */
 import {LitElement, html, property, customElement} from 'lit-element';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
-import {prepareDatepickerDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
+import {prepareDatepickerDate} from '@unicef-polymer/etools-utils/dist/date.util';
 
 import '@polymer/iron-label/iron-label';
 import '@polymer/paper-input/paper-input';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 
 import '@unicef-polymer/etools-date-time/calendar-lite';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
-import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
-import {AnyObject} from '@unicef-polymer/etools-types';
+import {AnyObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 declare const dayjs: any;
 import {translate} from 'lit-translate';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
@@ -110,14 +110,17 @@ export class AddEditSpecialRepReq extends LitElement {
   _getEndpoint() {
     if (this._isNew()) {
       // new/create
-      return getEndpoint(interventionEndpoints.specialReportingRequirements, {
+      return getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.specialReportingRequirements, {
         intervId: this.interventionId
       });
     } else {
       // already saved... update/delete
-      return getEndpoint(interventionEndpoints.specialReportingRequirementsUpdate, {
-        reportId: this.item.id
-      });
+      return getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(
+        interventionEndpoints.specialReportingRequirementsUpdate,
+        {
+          reportId: this.item.id
+        }
+      );
     }
   }
 

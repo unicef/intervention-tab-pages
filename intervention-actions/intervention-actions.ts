@@ -6,12 +6,12 @@ import '@polymer/paper-icon-button';
 import '../common/layout/export-intervention-data';
 import '@unicef-polymer/etools-modules-common/dist/components/cancel/reason-popup';
 import './accept-for-partner';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
-import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
-import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import '../common/components/intervention/pd-termination';
 import '../common/components/intervention/start-review';
@@ -41,9 +41,9 @@ import {
 } from './intervention-actions.constants';
 import {PaperMenuButton} from '@polymer/paper-menu-button/paper-menu-button';
 import {setShouldReGetList, updateCurrentIntervention} from '../common/actions/interventions';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {defaultKeyTranslate, formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {AnyObject, GenericObject} from '@unicef-polymer/etools-types';
+import {AnyObject, EtoolsEndpoint, GenericObject} from '@unicef-polymer/etools-types';
 import {Intervention} from '@unicef-polymer/etools-types';
 import {get as getTranslation} from 'lit-translate';
 import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
@@ -235,7 +235,7 @@ export class InterventionActions extends connectStore(LitElement) {
       return;
     }
 
-    const endpoint = getEndpoint(interventionEndpoints.interventionAction, {
+    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.interventionAction, {
       interventionId: this.interventionPartial.id,
       action
     });

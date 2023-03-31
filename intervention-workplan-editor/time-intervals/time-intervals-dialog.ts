@@ -4,7 +4,7 @@ import '@polymer/paper-input/paper-textarea';
 import '@polymer/paper-toggle-button';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import '../../intervention-workplan/results-structure/modals/activity-dialog/activity-timeframes';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 // eslint-disable-next-line
 import {ActivityTimeFrames} from '../../intervention-workplan/results-structure/modals/activity-dialog/activity-timeframes';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';

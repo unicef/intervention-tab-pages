@@ -13,7 +13,7 @@ import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/st
 import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/fr-warnings-styles';
 import FrNumbersConsistencyMixin from '@unicef-polymer/etools-modules-common/dist/mixins/fr-numbers-consistency-mixin';
 import {customIcons} from '@unicef-polymer/etools-modules-common/dist/styles/custom-icons';
-import {prettyDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
+import {prettyDate} from '@unicef-polymer/etools-utils/dist/date.util';
 
 /**
  * @customElement

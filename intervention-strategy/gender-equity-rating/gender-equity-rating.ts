@@ -12,14 +12,15 @@ import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/st
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {selectGenderEquityRating, selectGenderEquityRatingPermissions} from './genderEquityRating.selectors';
 import {GenderEquityRatingPermissions, GenderEquityRating} from './genderEquityRating.models';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {RootState} from '../../common/types/store.types';
 import {patchIntervention} from '../../common/actions/interventions';
-import {isJsonStrMatch, translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {translateValue} from '@unicef-polymer/etools-utils/dist/language.util';
 import {
   pageIsNotCurrentlyActive,
-  detailsTextareaRowsCount
-} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+  detailsTextareaRowsCount,
+  isJsonStrMatch
+} from '@unicef-polymer/etools-utils/dist/general.util';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';

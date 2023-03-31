@@ -9,22 +9,23 @@ import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/st
 import cloneDeep from 'lodash-es/cloneDeep';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {RootState} from '../../common/types/store.types';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import './prcDocument.models';
 import './prcDocument.selectors';
 import {selectPrcDocumentData, selectPrcDocumentPermissions} from './prcDocument.selectors';
 import {PrcDocumentData, PrcDocumentPermissions} from './prcDocument.models';
-import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/general.util';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-utils/dist/general.util';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
+import {AsyncAction, EtoolsEndpoint, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import CONSTANTS from '../../common/constants';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {patchIntervention} from '../../common/actions/interventions';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import UploadsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uploads-mixin';
+import {EtoolsRequestEndpoint} from '@unicef-polymer/etools-ajax';
 
 /**
  * @customElement
@@ -82,7 +83,8 @@ export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadsMixin(L
   }
 
   @property({type: String})
-  uploadEndpoint: string = getEndpoint(interventionEndpoints.attachmentsUpload).url;
+  uploadEndpoint: string = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.attachmentsUpload)
+    .url;
 
   @property({type: Object})
   data!: PrcDocumentData;

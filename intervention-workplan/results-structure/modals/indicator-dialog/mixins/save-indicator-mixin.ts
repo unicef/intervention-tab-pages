@@ -1,18 +1,18 @@
 // import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin';
 import pick from 'lodash-es/pick';
-import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
 import {LitElement} from 'lit-element';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import {interventionEndpoints} from '../../../../../utils/intervention-endpoints';
 import {NonClusterIndicatorEl} from '../non-cluster-indicator';
 import {ClusterIndicatorEl} from '../cluster-indicator';
 import {IndicatorDisaggregations} from '../indicator-dissaggregations';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {updateCurrentIntervention} from '../../../../../common/actions/interventions';
-import {Constructor} from '@unicef-polymer/etools-types';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {Constructor, EtoolsEndpoint} from '@unicef-polymer/etools-types';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {get as getTranslation} from 'lit-translate';
 
 /**
@@ -114,7 +114,7 @@ function SaveIndicatorMixin<T extends Constructor<LitElement>>(baseClass: T) {
       // @ts-ignore *Defined in component
       this.disableConfirmBtn = true;
 
-      const endpoint = getEndpoint(this._getEndpointName(), {
+      const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(this._getEndpointName(), {
         id: this._getIdForEndpoint()
       });
 

@@ -6,17 +6,17 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {RootState} from '../common/types/store.types';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {AnyObject, CpOutput, StaticPartner, ManagementBudget} from '@unicef-polymer/etools-types';
 import {ExpectedResult, MinimalAgreement, Intervention} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
-import {prettyDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {prettyDate} from '@unicef-polymer/etools-utils/dist/date.util';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-utils/dist/general.util';
 import {TABS} from '../common/constants';
-import {decimalFractionEquals0, isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {decimalFractionEquals0, isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/general.util';
 
 // TODO - NOT USED AT THE MOMENT
 @customElement('intervention-summary')

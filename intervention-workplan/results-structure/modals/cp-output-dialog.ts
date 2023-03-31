@@ -1,18 +1,18 @@
 import {LitElement, html, TemplateResult, property, customElement} from 'lit-element';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
-import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {getIntervention} from '../../../common/actions/interventions';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
-import {AsyncAction, ResultIndicator, GenericObject} from '@unicef-polymer/etools-types';
+import {AsyncAction, ResultIndicator, GenericObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {areEqual} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {areEqual} from '@unicef-polymer/etools-utils/dist/general.util';
 
 @customElement('cp-output-dialog')
 export class CpOutputDialog extends LitElement {
@@ -165,8 +165,12 @@ export class CpOutputDialog extends LitElement {
     this.spinnerText = getTranslation('GENERAL.SAVING_DATA');
     this.loadingInProcess = true;
     const endpoint = this.cpOutputId
-      ? getEndpoint(interventionEndpoints.resultLinkGetDelete, {result_link: this.resultLinkId})
-      : getEndpoint(interventionEndpoints.resultLinks, {id: this.interventionId});
+      ? getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.resultLinkGetDelete, {
+          result_link: this.resultLinkId
+        })
+      : getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.resultLinks, {
+          id: this.interventionId
+        });
     const method = this.cpOutputId ? 'PATCH' : 'POST';
     const body: GenericObject<any> = {ram_indicators: this.selectedIndicators};
     if (!this.cpOutputId) {

@@ -2,22 +2,23 @@ import {LitElement, TemplateResult, html, property, customElement, css} from 'li
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {AnyObject, AsyncAction, GenericObject, InterventionReview} from '@unicef-polymer/etools-types';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {translate, get as getTranslation} from 'lit-translate';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {loadPrcMembersIndividualReviews} from '../../actions/officers-reviews';
 import {REVIEW_ANSVERS, REVIEW_QUESTIONS} from './review.const';
 import {updateCurrentIntervention} from '../../actions/interventions';
 import {getDifference} from '@unicef-polymer/etools-modules-common/dist/mixins/objects-diff';
-import {cloneDeep, translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
+import {translateValue} from '@unicef-polymer/etools-utils/dist/language.util';
 import '@polymer/paper-radio-group';
 import '@polymer/paper-checkbox/paper-checkbox';
 import '@polymer/paper-input/paper-textarea';
-import {formatDate, getTodayDateStr} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
+import {formatDate, getTodayDateStr} from '@unicef-polymer/etools-utils/dist/date.util';
 
 @customElement('review-checklist-popup')
 export class ReviewChecklistPopup extends LitElement {

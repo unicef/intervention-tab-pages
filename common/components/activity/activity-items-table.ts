@@ -9,7 +9,7 @@ import {
   PropertyValues
 } from 'lit-element';
 import {ActivityItemsTableStyles} from './activity-items-table.styles';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {ActivityItemRow} from './activity-item-row';
 import './activity-item-row';
 import {AnyObject, InterventionActivityItem} from '@unicef-polymer/etools-types';
@@ -17,7 +17,7 @@ import {PaperTextareaElement} from '@polymer/paper-input/paper-textarea';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../../utils/intervention-labels-map';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/general.util';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 
 @customElement('activity-items-table')

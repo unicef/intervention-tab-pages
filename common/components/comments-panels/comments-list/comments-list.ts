@@ -1,6 +1,6 @@
 import {customElement, LitElement, html, TemplateResult, CSSResultArray, property} from 'lit-element';
 import {CommentPanelsStyles} from '../common-comments.styles';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import './comments-group';
 import './comments-panel-header';
 import {CommentsCollection} from '../../comments/comments.reducer';

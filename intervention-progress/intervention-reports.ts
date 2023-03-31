@@ -10,7 +10,7 @@ import {abortRequestByKey} from '@unicef-polymer/etools-ajax/etools-iron-request
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 
 import '../common/layout/status/intervention-report-status';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {RootState} from '../common/types/store.types';
 import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
 import get from 'lodash-es/get';
@@ -25,13 +25,13 @@ import CommonMixin from '@unicef-polymer/etools-modules-common/dist/mixins/commo
 import EndpointsLitMixin from '@unicef-polymer/etools-modules-common/dist/mixins/endpoints-mixin-lit';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-utils/dist/general.util';
 import {
   buildUrlQueryString,
   cloneDeep,
   isEmptyObject,
   isJsonStrMatch
-} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+} from '@unicef-polymer/etools-utils/dist/general.util';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
 import {RouteDetails} from '@unicef-polymer/etools-types/dist/router.types';
 import pick from 'lodash-es/pick';

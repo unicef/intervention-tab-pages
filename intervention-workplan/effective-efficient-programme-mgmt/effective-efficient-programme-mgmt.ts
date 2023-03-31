@@ -9,10 +9,10 @@ import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/st
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-utils/dist/general.util';
 import get from 'lodash-es/get';
-import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
-import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/general.util';
+import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {
   selectProgrammeManagement,
   selectProgrammeManagementActivityPermissions

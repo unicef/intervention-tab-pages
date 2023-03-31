@@ -5,7 +5,7 @@ import '@polymer/iron-icons';
 import '@polymer/paper-input/paper-textarea';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {TABS} from '../common/constants';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-utils/dist/general.util';
 import {
   selectInterventionId,
   selectInterventionQuarters,
@@ -14,25 +14,25 @@ import {
 import {currentIntervention, currentInterventionPermissions, isUnicefUser} from '../common/selectors';
 import {ExpectedResult, Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
 import {InterventionQuarter} from '@unicef-polymer/etools-types/dist/intervention.types';
-import {cloneDeep, isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {cloneDeep, isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/general.util';
 import {repeat} from 'lit-html/directives/repeat';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
 import '@polymer/paper-button/paper-button';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {getIntervention, updateCurrentIntervention} from '../common/actions/interventions';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {ActivitiesMixin} from './editor-utils/activities-mixin';
 import {ProgrammeManagementMixin} from './editor-utils/programme-management-mixin';
 import {CommentsMixin} from '../common/components/comments/comments-mixin';
 import {ExpectedResultExtended, ResultLinkLowerResultExtended} from '../common/types/editor-page-types';
-import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {translate} from 'lit-translate';
-import {AsyncAction, IdAndName} from '@unicef-polymer/etools-types';
+import {AsyncAction, EtoolsEndpoint, IdAndName} from '@unicef-polymer/etools-types';
 import {EditorTableArrowKeysStyles} from './editor-utils/editor-table-arrow-keys-styles';
 import {ArrowsNavigationMixin} from './editor-utils/arrows-navigation-mixin';
 import {RootState} from '../common/types/store.types';
@@ -773,7 +773,7 @@ export class EditorTable extends CommentsMixin(
   }
 
   deletePDOutputFromPD(lower_result_id: number) {
-    const endpoint = getEndpoint(interventionEndpoints.lowerResultsDelete, {
+    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.lowerResultsDelete, {
       lower_result_id,
       intervention_id: this.interventionId
     });

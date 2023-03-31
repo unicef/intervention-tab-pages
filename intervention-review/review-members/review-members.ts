@@ -1,13 +1,13 @@
 import {LitElement, TemplateResult, html, customElement, property, CSSResultArray, css} from 'lit-element';
-import {InterventionReview, User} from '@unicef-polymer/etools-types';
+import {EtoolsEndpoint, InterventionReview, User} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
@@ -126,7 +126,7 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
   }
 
   saveData(): Promise<void> {
-    const endpoint = getEndpoint(interventionEndpoints.interventionReview, {
+    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.interventionReview, {
       id: this.data!.id,
       interventionId: this.interventionId
     });
@@ -150,7 +150,7 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
   }
 
   sendNotification(): void {
-    const endpoint = getEndpoint(interventionEndpoints.sendReviewNotification, {
+    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.sendReviewNotification, {
       id: this.data!.id,
       interventionId: this.interventionId
     });

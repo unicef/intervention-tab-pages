@@ -9,19 +9,20 @@ import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-c
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
 import CONSTANTS from '../../../common/constants';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
-import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
 import {translate, get as getTranslation} from 'lit-translate';
-import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import PaginationMixin from '@unicef-polymer/etools-modules-common/dist/mixins/pagination-mixin';
 import cloneDeep from 'lodash-es/cloneDeep';
+import {EtoolsEndpoint} from '@unicef-polymer/etools-types';
 
 /**
  * @customElement
@@ -178,9 +179,12 @@ export class SpecialReportingRequirements extends PaginationMixin(ReportingRequi
     const reportingRequirementsOriginal = this.reportingRequirements;
     if (this._itemToDeleteIndex > -1) {
       const itemToDelete = this.reportingRequirements[this._itemToDeleteIndex] as any;
-      const endpoint = getEndpoint(interventionEndpoints.specialReportingRequirementsUpdate, {
-        reportId: itemToDelete.id
-      });
+      const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(
+        interventionEndpoints.specialReportingRequirementsUpdate,
+        {
+          reportId: itemToDelete.id
+        }
+      );
       sendRequest({
         method: 'DELETE',
         endpoint: endpoint

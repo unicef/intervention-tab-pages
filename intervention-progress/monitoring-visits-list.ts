@@ -2,16 +2,16 @@ import {LitElement, customElement, html, property} from 'lit-element';
 import '@unicef-polymer/etools-loading/etools-loading.js';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging.js';
-import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
 import isEmpty from 'lodash-es/isEmpty';
-import {AnyObject} from '@unicef-polymer/etools-types';
+import {AnyObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import {prettyDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
+import {prettyDate} from '@unicef-polymer/etools-utils/dist/date.util';
 declare const dayjs: any;
 
 /**
@@ -176,10 +176,13 @@ export class MonitoringVisitsList extends LitElement {
     }
 
     this.showLoading = true;
-    const monitoringVisitsEndpoint = getEndpoint(interventionEndpoints.monitoringVisits, {
-      id: interventionOrPartnerId,
-      year: dayjs().year()
-    });
+    const monitoringVisitsEndpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(
+      interventionEndpoints.monitoringVisits,
+      {
+        id: interventionOrPartnerId,
+        year: dayjs().year()
+      }
+    );
 
     sendRequest({
       endpoint: monitoringVisitsEndpoint
@@ -216,11 +219,11 @@ export class MonitoringVisitsList extends LitElement {
       return;
     }
     const endpoint = this.interventionId
-      ? getEndpoint(interventionEndpoints.interventionTPMActivities, {
+      ? getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.interventionTPMActivities, {
           year: dayjs().year(),
           interventionId: this.interventionId
         })
-      : getEndpoint(interventionEndpoints.partnerTPMActivities, {
+      : getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.partnerTPMActivities, {
           year: dayjs().year(),
           partnerId: this.partnerId
         });

@@ -1,5 +1,5 @@
 import {LitElement, customElement, html, css, property} from 'lit-element';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import './workplan-editor-link';
 import '../common/budget-summary/budget-summary';
 import {TABS} from '../common/constants';

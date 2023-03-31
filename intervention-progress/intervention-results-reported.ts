@@ -16,7 +16,7 @@ import './reports/indicator-report-target';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
 
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {RootState} from '../common/types/store.types';
 
 import {logError, logWarn} from '@unicef-polymer/etools-behaviors/etools-logging';
@@ -37,15 +37,15 @@ import {contentSectionStylesLit} from '@unicef-polymer/etools-modules-common/dis
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/fr-warnings-styles';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
-import {isEmptyObject} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-utils/dist/general.util';
+import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/general.util';
 import {
   dateDiff,
   dateIsAfter,
   dateIsBetween,
   datesAreEqual,
   isValidDate
-} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
+} from '@unicef-polymer/etools-utils/dist/date.util';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
 import {getIndicatorDisplayType} from '../utils/utils';
 declare const dayjs: any;

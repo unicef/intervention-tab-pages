@@ -1,12 +1,12 @@
 import {LitElement, html, TemplateResult, property, customElement, CSSResultArray, css} from 'lit-element';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import '@unicef-polymer/etools-upload/etools-upload.js';
 import '@polymer/paper-checkbox';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {
   validateRequiredFields,
@@ -14,9 +14,9 @@ import {
 } from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
-import {IdAndName, GenericObject, ReviewAttachment} from '@unicef-polymer/etools-types';
+import {IdAndName, GenericObject, ReviewAttachment, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {getTranslatedValue} from '@unicef-polymer/etools-utils/dist/language.util';
 
 @customElement('intervention-attachment-dialog')
 export class InterventionAttachmentDialog extends connectStore(LitElement) {
@@ -180,8 +180,13 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
           type
         };
     const endpoint = id
-      ? getEndpoint(interventionEndpoints.updatePdAttachment, {id: this.interventionId, attachment_id: id})
-      : getEndpoint(interventionEndpoints.pdAttachments, {id: this.interventionId});
+      ? getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.updatePdAttachment, {
+          id: this.interventionId,
+          attachment_id: id
+        })
+      : getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.pdAttachments, {
+          id: this.interventionId
+        });
     sendRequest({
       endpoint,
       method: id ? 'PATCH' : 'POST',
