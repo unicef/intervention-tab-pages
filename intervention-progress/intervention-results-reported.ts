@@ -388,7 +388,12 @@ export class InterventionResultsReported extends connectStore(
 
   stateChanged(state: RootState) {
     if (
-      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Progress, TABS.ResultsReported) ||
+      EtoolsRouter.pageIsNotCurrentlyActive(
+        get(state, 'app.routeDetails'),
+        'interventions',
+        TABS.Progress,
+        TABS.ResultsReported
+      ) ||
       !state.interventions.current
     ) {
       return;

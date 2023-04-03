@@ -60,7 +60,9 @@ export class IndicatorReportTarget extends connectStore(ComponentBaseMixin(LitEl
   permissions: any;
 
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Progress, 'reports')) {
+    if (
+      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Progress, 'reports')
+    ) {
       return;
     }
     if (state.interventions.current) {

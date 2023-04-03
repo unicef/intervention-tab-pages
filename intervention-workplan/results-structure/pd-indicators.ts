@@ -36,7 +36,7 @@ import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 import {translate, get as getTranslation, translateConfig} from 'lit-translate';
 import {
   AsyncAction,
-  Disaggregation, 
+  Disaggregation,
   IndicatorDialogData,
   LocationObject,
   Section,

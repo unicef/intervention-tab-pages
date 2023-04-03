@@ -77,7 +77,10 @@ export class InterventionReviewTab extends connectStore(LitElement) {
   }
 
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(state?.app?.routeDetails, 'interventions', 'review') || !state.interventions.current) {
+    if (
+      EtoolsRouter.pageIsNotCurrentlyActive(state?.app?.routeDetails, 'interventions', 'review') ||
+      !state.interventions.current
+    ) {
       return;
     }
     this.review = state.interventions.current.reviews[0] || null;

@@ -16,9 +16,7 @@ import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {RootState} from '../../common/types/store.types';
 import {patchIntervention} from '../../common/actions/interventions';
 import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
-import {
-  isJsonStrMatch
-} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
+import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
