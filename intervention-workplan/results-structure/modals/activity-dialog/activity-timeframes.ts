@@ -13,7 +13,7 @@ import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {InterventionActivityTimeframe} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/general.util';
+import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 
 @customElement('activity-time-frames')
 export class ActivityTimeFrames extends LitElement {

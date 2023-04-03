@@ -17,7 +17,7 @@ import {translate, get as getTranslation, translateConfig} from 'lit-translate';
 import RepeatableDataSetsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/repeatable-data-sets-mixin';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {repeatableDataSetsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/repeatable-data-sets-styles';
-import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/general.util';
+import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 
 /**

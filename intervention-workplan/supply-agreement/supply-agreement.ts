@@ -12,7 +12,7 @@ import {EtoolsTableColumn, EtoolsTableColumnType, EtoolsTableChildRow} from '@un
 import './supply-agreement-dialog';
 import {RootState} from '../../common/types/store.types';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-utils/dist/general.util';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {selectSupplyAgreement, selectSupplyAgreementPermissions} from './supplyAgreement.selectors';
@@ -277,7 +277,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   }
 
   stateChanged(state: RootState): void {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan)) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan)) {
       return;
     }
     if (get(state, 'interventions.current')) {

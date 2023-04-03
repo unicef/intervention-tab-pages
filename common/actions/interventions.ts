@@ -5,7 +5,7 @@ import {AnyObject, PlannedBudget, Intervention} from '@unicef-polymer/etools-typ
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {PartnerReportingRequirements} from '../types/store.types';
 import pick from 'lodash-es/pick';
-import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/general.util';
+import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {_sendRequest} from '@unicef-polymer/etools-modules-common/dist/utils/request-helper';
 
 export const updateCurrentIntervention = (intervention: AnyObject | null) => {

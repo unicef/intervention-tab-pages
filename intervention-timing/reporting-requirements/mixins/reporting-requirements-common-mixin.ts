@@ -5,7 +5,7 @@ import CONSTANTS from '../../../common/constants';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {LitElement, property} from 'lit-element';
-import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/general.util';
+import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {Constructor, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {prettyDate} from '@unicef-polymer/etools-utils/dist/date.util';

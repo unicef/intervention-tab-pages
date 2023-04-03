@@ -12,7 +12,7 @@ import {AsyncAction, ResultIndicator, GenericObject, EtoolsEndpoint} from '@unic
 import {translate, get as getTranslation} from 'lit-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {areEqual} from '@unicef-polymer/etools-utils/dist/general.util';
+import {areEqual} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 
 @customElement('cp-output-dialog')
 export class CpOutputDialog extends LitElement {

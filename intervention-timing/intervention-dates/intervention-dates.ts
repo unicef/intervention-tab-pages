@@ -12,7 +12,7 @@ import {selectInterventionDates, selectInterventionDatesPermissions} from './int
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {patchIntervention} from '../../common/actions/interventions';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-utils/dist/general.util';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
 import '@unicef-polymer/etools-upload/etools-upload';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
@@ -179,7 +179,7 @@ export class InterventionDates extends CommentsMixin(
   }
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'timing')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'timing')) {
       return;
     }
     if (!state.interventions.current) {

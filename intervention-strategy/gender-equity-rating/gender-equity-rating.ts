@@ -17,16 +17,16 @@ import {RootState} from '../../common/types/store.types';
 import {patchIntervention} from '../../common/actions/interventions';
 import {translateValue} from '@unicef-polymer/etools-utils/dist/language.util';
 import {
-  pageIsNotCurrentlyActive,
-  detailsTextareaRowsCount,
   isJsonStrMatch
-} from '@unicef-polymer/etools-utils/dist/general.util';
+} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, LabelAndValue, Permission} from '@unicef-polymer/etools-types';
 import {translate, translateConfig} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
+import {detailsTextareaRowsCount} from '../../utils/utils';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 
 /**
  * @customElement
@@ -204,7 +204,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
   data!: GenderEquityRating;
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'strategy')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'strategy')) {
       return;
     }
 

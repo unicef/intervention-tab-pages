@@ -25,13 +25,9 @@ import CommonMixin from '@unicef-polymer/etools-modules-common/dist/mixins/commo
 import EndpointsLitMixin from '@unicef-polymer/etools-modules-common/dist/mixins/endpoints-mixin-lit';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-utils/dist/general.util';
-import {
-  buildUrlQueryString,
-  cloneDeep,
-  isEmptyObject,
-  isJsonStrMatch
-} from '@unicef-polymer/etools-utils/dist/general.util';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
+import {buildUrlQueryString, cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
+import {isEmptyObject, isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
 import {RouteDetails} from '@unicef-polymer/etools-types/dist/router.types';
 import pick from 'lodash-es/pick';
@@ -250,7 +246,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
   }
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Progress, 'reports')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Progress, 'reports')) {
       return;
     }
 

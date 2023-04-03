@@ -15,13 +15,14 @@ import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {patchIntervention} from '../../common/actions/interventions';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {RootState} from '../../common/types/store.types';
-import {pageIsNotCurrentlyActive, detailsTextareaRowsCount} from '@unicef-polymer/etools-utils/dist/general.util';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {translate, translateConfig} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
+import {detailsTextareaRowsCount} from '../../utils/utils';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 
 /**
  * @customElement
@@ -283,7 +284,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
   autoValidate = false;
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'strategy')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'strategy')) {
       return;
     }
 

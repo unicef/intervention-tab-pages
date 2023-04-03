@@ -6,7 +6,7 @@ import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/st
 import {
   callClickOnEnterPushListener,
   callClickOnSpacePushListener
-} from '@unicef-polymer/etools-utils/dist/general.util';
+} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import {PropertyValues} from 'lit-element/src/lib/updating-element';
 import {TABS} from '../../common/constants';
 

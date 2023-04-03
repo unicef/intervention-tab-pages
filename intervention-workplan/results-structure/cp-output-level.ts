@@ -19,7 +19,7 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {ExpectedResult, Intervention} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/general.util';
+import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import {TruncateMixin} from '../../common/mixins/truncate.mixin';
 import {_canDelete} from '../../common/mixins/results-structure-common';
 

@@ -37,8 +37,8 @@ import {contentSectionStylesLit} from '@unicef-polymer/etools-modules-common/dis
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/fr-warnings-styles';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-utils/dist/general.util';
-import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/general.util';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
+import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {
   dateDiff,
   dateIsAfter,
@@ -388,7 +388,7 @@ export class InterventionResultsReported extends connectStore(
 
   stateChanged(state: RootState) {
     if (
-      pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Progress, TABS.ResultsReported) ||
+      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Progress, TABS.ResultsReported) ||
       !state.interventions.current
     ) {
       return;

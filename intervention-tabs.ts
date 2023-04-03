@@ -18,7 +18,8 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import {getTranslatedValue} from '@unicef-polymer/etools-utils/dist/language.util';
 import {pageContentHeaderSlottedStyles} from './common/layout/page-content-header/page-content-header-slotted-styles';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {buildUrlQueryString, isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/general.util';
+import {buildUrlQueryString} from '@unicef-polymer/etools-utils/dist/general.util';
+import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {enableCommentMode, getComments, setCommentsEndpoint} from './common/components/comments/comments.actions';
 import {commentsData} from './common/components/comments/comments.reducer';
 import {Store} from 'redux';

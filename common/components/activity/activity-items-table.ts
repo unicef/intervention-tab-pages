@@ -17,7 +17,7 @@ import {PaperTextareaElement} from '@polymer/paper-input/paper-textarea';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../../utils/intervention-labels-map';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/general.util';
+import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 
 @customElement('activity-items-table')

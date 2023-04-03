@@ -14,7 +14,7 @@ import CONSTANTS from '../../common/constants';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/general.util';
+import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 
 import {RootState} from '../../common/types/store.types';
 import {selectReviewData, selectDatesAndSignaturesPermissions} from '../../common/managementDocument.selectors';
@@ -25,7 +25,7 @@ import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/b
 import {getDifference} from '@unicef-polymer/etools-modules-common/dist/mixins/objects-diff';
 import {patchIntervention} from '../../common/actions/interventions';
 import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-utils/dist/general.util';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, EtoolsEndpoint, MinimalUser, Permission, User} from '@unicef-polymer/etools-types';
@@ -301,7 +301,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
   private justUploaded = false;
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata')) {
       return;
     }
 

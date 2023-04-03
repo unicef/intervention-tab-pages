@@ -14,7 +14,7 @@ import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/b
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {RootState} from '../../common/types/store.types';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-utils/dist/general.util';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
 import {selectRisks} from './risk.selectors';
 import './risk-dialog';
@@ -147,7 +147,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
     if (!state.interventions.current) {
       return;
     }
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'strategy')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'strategy')) {
       return;
     }
 

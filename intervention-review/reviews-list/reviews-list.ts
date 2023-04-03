@@ -8,7 +8,7 @@ import {loadPrcMembersIndividualReviews} from '../../common/actions/officers-rev
 import isEqual from 'lodash-es/isEqual';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {RootState} from '../../common/types/store.types';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-utils/dist/general.util';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {REVIEW_ANSVERS, REVIEW_QUESTIONS} from '../../common/components/intervention/review.const';
 import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
@@ -117,7 +117,7 @@ export class ReviewsList extends connectStore(LitElement) {
   }
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(state?.app?.routeDetails, 'interventions', 'review')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(state?.app?.routeDetails, 'interventions', 'review')) {
       return;
     }
     this.approvals = state.prcIndividualReviews || [];

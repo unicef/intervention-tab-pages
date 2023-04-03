@@ -25,7 +25,7 @@ import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {getIntervention} from '../../common/actions/interventions';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-utils/dist/general.util';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
 import {translate} from 'lit-translate';
 
@@ -134,7 +134,7 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
   }
 
   stateChanged(state: any): void {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'attachments')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'attachments')) {
       return;
     }
     if (!state.interventions.current) {

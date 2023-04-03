@@ -10,7 +10,7 @@ import './monitoring-visits-list';
 import {TABS} from '../common/constants';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-utils/dist/general.util';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 
 @customElement('intervention-monitoring-activities')
@@ -40,7 +40,7 @@ export class InterventionMonitoringActivities extends connectStore(LitElement) {
 
   stateChanged(state: RootState) {
     if (
-      pageIsNotCurrentlyActive(
+      EtoolsRouter.pageIsNotCurrentlyActive(
         get(state, 'app.routeDetails'),
         'interventions',
         TABS.Progress,

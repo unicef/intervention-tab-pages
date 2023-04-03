@@ -22,9 +22,9 @@ import {AnyObject, AsyncAction, EtoolsEndpoint, Permission} from '@unicef-polyme
 import {Intervention, FrsDetails, Fr} from '@unicef-polymer/etools-types';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {translate, get as getTranslation} from 'lit-translate';
-import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/general.util';
+import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-utils/dist/general.util';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import FrNumbersConsistencyMixin from '@unicef-polymer/etools-modules-common/dist/mixins/fr-numbers-consistency-mixin';
@@ -140,7 +140,7 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
 
   stateChanged(state: RootState) {
     if (
-      pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata') ||
+      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata') ||
       !state.interventions.current
     ) {
       return;

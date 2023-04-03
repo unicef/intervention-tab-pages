@@ -11,7 +11,7 @@ import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {patchIntervention} from '../../common/actions/interventions';
 import {getTranslatedValue} from '@unicef-polymer/etools-utils/dist/language.util';
-import {pageIsNotCurrentlyActive, isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/general.util';
+import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {RootState} from '../../common/types/store.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
@@ -23,6 +23,7 @@ import {selectOtherData, selectOtherPermissions} from './other.selectors';
 import CONSTANTS from '../../common/constants';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import '@polymer/paper-input/paper-textarea';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 
 /**
  * @customElement
@@ -250,7 +251,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   }
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata')) {
       return;
     }
     if (!state.interventions.current) {

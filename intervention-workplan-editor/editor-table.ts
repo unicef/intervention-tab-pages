@@ -5,7 +5,7 @@ import '@polymer/iron-icons';
 import '@polymer/paper-input/paper-textarea';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {TABS} from '../common/constants';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-utils/dist/general.util';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {
   selectInterventionId,
   selectInterventionQuarters,
@@ -14,7 +14,8 @@ import {
 import {currentIntervention, currentInterventionPermissions, isUnicefUser} from '../common/selectors';
 import {ExpectedResult, Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
 import {InterventionQuarter} from '@unicef-polymer/etools-types/dist/intervention.types';
-import {cloneDeep, isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/general.util';
+import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
+import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {repeat} from 'lit-html/directives/repeat';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
@@ -504,7 +505,7 @@ export class EditorTable extends CommentsMixin(
   }
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(state.app?.routeDetails, 'interventions', TABS.WorkplanEditor)) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(state.app?.routeDetails, 'interventions', TABS.WorkplanEditor)) {
       this.prevInterventionId = null;
       this.oneEntityInEditMode = false;
       if (!state.commentsData.commentsModeEnabled) {

@@ -12,10 +12,11 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import {RootState} from '../../common/types/store.types';
 import {prettyDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import {getTranslatedValue} from '@unicef-polymer/etools-utils/dist/language.util';
-import {getFileNameFromURL, isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/general.util';
+import {getFileNameFromURL} from '@unicef-polymer/etools-utils/dist/general.util';
+import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {selectAmendmentsPermissions} from './pd-amendments.selectors';
 import {AmendmentsKind, AmendmentsKindTranslateKeys, PdAmendmentPermissions} from './pd-amendments.models';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-utils/dist/general.util';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, EtoolsEndpoint, LabelAndValue, Permission} from '@unicef-polymer/etools-types';
@@ -222,7 +223,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
 
   stateChanged(state: RootState) {
     if (
-      pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata') ||
+      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata') ||
       !state.interventions.current
     ) {
       return;

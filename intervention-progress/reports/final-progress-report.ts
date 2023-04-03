@@ -5,11 +5,12 @@ import {translate} from 'lit-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import '@polymer/paper-checkbox/paper-checkbox';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-utils/dist/general.util';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
 import {RootState} from '../../common/types/store.types';
 import {TABS} from '../../common/constants';
-import {cloneDeep, isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/general.util';
+import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
+import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {AsyncAction} from '@unicef-polymer/etools-types';
 import {patchIntervention} from '../../common/actions/interventions';
@@ -59,7 +60,7 @@ export class IndicatorReportTarget extends connectStore(ComponentBaseMixin(LitEl
   permissions: any;
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Progress, 'reports')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Progress, 'reports')) {
       return;
     }
     if (state.interventions.current) {

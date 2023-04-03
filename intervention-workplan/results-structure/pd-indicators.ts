@@ -16,7 +16,8 @@ import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {RootState} from '../../common/types/store.types';
 import './modals/indicator-dialog/indicator-dialog';
 import get from 'lodash-es/get';
-import {filterByIds, isEmptyObject, isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/general.util';
+import {filterByIds} from '@unicef-polymer/etools-utils/dist/general.util';
+import {isEmptyObject, isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import EnvironmentFlagsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/environment-flags-mixin';
 import cloneDeep from 'lodash-es/cloneDeep';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
@@ -27,7 +28,7 @@ import {getIntervention} from '../../common/actions/interventions';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-utils/dist/general.util';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import './pd-indicator';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
@@ -35,7 +36,7 @@ import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 import {translate, get as getTranslation, translateConfig} from 'lit-translate';
 import {
   AsyncAction,
-  Disaggregation,
+  Disaggregation, 
   IndicatorDialogData,
   LocationObject,
   Section,
@@ -43,7 +44,7 @@ import {
   Intervention,
   EtoolsEndpoint
 } from '@unicef-polymer/etools-types';
-import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/general.util';
+import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
@@ -135,7 +136,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
 
   stateChanged(state: RootState): void {
     if (
-      pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan) ||
+      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan) ||
       !state.interventions.current
     ) {
       return;

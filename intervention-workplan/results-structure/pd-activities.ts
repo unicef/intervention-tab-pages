@@ -22,7 +22,7 @@ import {
   _canDeactivate,
   _canDelete
 } from '../../common/mixins/results-structure-common';
-import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/general.util';
+import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {PaperMenuButton} from '@polymer/paper-menu-button';
 
 @customElement('pd-activities')

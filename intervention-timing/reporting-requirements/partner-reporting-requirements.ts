@@ -19,13 +19,13 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import {RootState} from '../../common/types/store.types';
 import {ReportingRequirementsPermissions} from './reportingRequirementsPermissions.models';
 import {selectReportingRequirementsPermissions} from './reportingRequirementsPermissions.selectors';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-utils/dist/general.util';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {isUnicefUser} from '../../common/selectors';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {AnyObject, Intervention, Permission} from '@unicef-polymer/etools-types';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
-import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/general.util';
+import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import {translate, translateConfig} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {sectionContentStyles} from '@unicef-polymer/etools-modules-common/dist/styles/content-section-styles-polymer';
@@ -291,7 +291,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
   isReadonly!: boolean;
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'timing')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'timing')) {
       return;
     }
     if (!get(state, 'interventions.current')) {

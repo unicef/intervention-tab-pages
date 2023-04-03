@@ -5,7 +5,7 @@ import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import ReportingReqPastDatesCheckMixin from '../mixins/reporting-req-past-dates-check';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
-import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/general.util';
+import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
 import {translate} from 'lit-translate';

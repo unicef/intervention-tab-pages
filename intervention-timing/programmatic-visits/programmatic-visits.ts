@@ -16,13 +16,13 @@ import {selectInterventionDates} from '../intervention-dates/interventionDates.s
 import cloneDeep from 'lodash-es/cloneDeep';
 import {patchIntervention, updateCurrentIntervention} from '../../common/actions/interventions';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-utils/dist/general.util';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, Intervention, Permission} from '@unicef-polymer/etools-types';
 import {PlannedVisit} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
-import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/general.util';
+import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import RepeatableDataSetsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/repeatable-data-sets-mixin';
 import {repeatableDataSetsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/repeatable-data-sets-styles';
 import {getEndpoint as getEndpointHelper} from '@unicef-polymer/etools-utils/dist/endpoint.util';
@@ -159,7 +159,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
   }
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'timing')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'timing')) {
       return;
     }
     if (!state.interventions.current) {

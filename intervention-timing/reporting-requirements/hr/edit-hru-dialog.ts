@@ -14,7 +14,7 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
-import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/general.util';
+import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {AnyObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin.js';

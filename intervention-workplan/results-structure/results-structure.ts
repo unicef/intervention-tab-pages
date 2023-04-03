@@ -29,7 +29,7 @@ import {RootState} from '../../common/types/store.types';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {TABS} from '../../common/constants';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-utils/dist/general.util';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import get from 'lodash-es/get';
 import {getIntervention} from '../../common/actions/interventions';
@@ -327,7 +327,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
 
   stateChanged(state: RootState) {
     if (
-      pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan) ||
+      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan) ||
       !state.interventions.current
     ) {
       return;

@@ -19,13 +19,14 @@ import {selectFinancialComponentPermissions, selectFinancialComponent} from './f
 import {patchIntervention} from '../../common/actions/interventions';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import {translateValue} from '@unicef-polymer/etools-utils/dist/language.util';
-import {pageIsNotCurrentlyActive, isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/general.util';
+import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, LabelAndValue, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 
 /**
  * @customElement
@@ -115,7 +116,7 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
   }
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Metadata)) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Metadata)) {
       return;
     }
 

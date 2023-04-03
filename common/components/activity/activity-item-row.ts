@@ -14,7 +14,7 @@ import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {InterventionActivityItem} from '@unicef-polymer/etools-types';
 import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
 import {translate} from 'lit-translate';
-import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/general.util';
+import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import {ActivitiesCommonMixin} from '../../mixins/activities-common.mixin';
 
 @customElement('activity-item-row')

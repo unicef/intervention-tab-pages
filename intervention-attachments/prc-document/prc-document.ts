@@ -14,8 +14,8 @@ import './prcDocument.models';
 import './prcDocument.selectors';
 import {selectPrcDocumentData, selectPrcDocumentPermissions} from './prcDocument.selectors';
 import {PrcDocumentData, PrcDocumentPermissions} from './prcDocument.models';
-import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/general.util';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-utils/dist/general.util';
+import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, EtoolsEndpoint, Permission} from '@unicef-polymer/etools-types';
@@ -93,7 +93,7 @@ export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadsMixin(L
   permissions!: Permission<PrcDocumentPermissions>;
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'attachments')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'attachments')) {
       return;
     }
 

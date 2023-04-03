@@ -3,7 +3,7 @@ import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/st
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {BudgetSummary} from './budgetSummary.models';
 import {selectBudgetSummary} from './budgetSummary.selectors';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-utils/dist/general.util';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {RootState} from '../types/store.types';
 import get from 'lodash-es/get';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
@@ -245,8 +245,8 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
 
   public stateChanged(state: RootState) {
     if (
-      (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan) &&
-        pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.WorkplanEditor)) ||
+      (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan) &&
+        EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.WorkplanEditor)) ||
       !state.interventions.current
     ) {
       return;

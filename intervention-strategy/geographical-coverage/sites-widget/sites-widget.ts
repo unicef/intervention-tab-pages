@@ -21,7 +21,7 @@ import {leafletStyles} from './leaflet-styles';
 import {Site} from '@unicef-polymer/etools-types';
 import {debounce} from '@unicef-polymer/etools-utils/dist/debouncer.util';
 import {translate} from 'lit-translate';
-import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/general.util';
+import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 
 const DEFAULT_COORDINATES: LatLngTuple = [-0.09, 51.505];
 
