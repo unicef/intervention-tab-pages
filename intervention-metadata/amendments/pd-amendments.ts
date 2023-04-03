@@ -11,7 +11,7 @@ import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {RootState} from '../../common/types/store.types';
 import {prettyDate} from '@unicef-polymer/etools-utils/dist/date.util';
-import {getTranslatedValue} from '@unicef-polymer/etools-utils/dist/language.util';
+import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import {getFileNameFromURL} from '@unicef-polymer/etools-utils/dist/general.util';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {selectAmendmentsPermissions} from './pd-amendments.selectors';

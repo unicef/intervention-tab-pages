@@ -29,7 +29,7 @@ import {translate, translateConfig} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {translateValue} from '@unicef-polymer/etools-utils/dist/language.util';
+import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 
 const customStyles = html`
   <style>

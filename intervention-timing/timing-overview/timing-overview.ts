@@ -15,7 +15,7 @@ import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {translate, translateConfig} from 'lit-translate';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 import {getPageDirection} from '../../utils/utils';
-import {translateValue} from '@unicef-polymer/etools-utils/dist/language.util';
+import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 
 /**
  * @customElement

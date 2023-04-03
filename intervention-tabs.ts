@@ -15,7 +15,7 @@ import {currentPage, currentSubpage, isUnicefUser, currentSubSubpage, currentUse
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {getIntervention} from './common/actions/interventions';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {getTranslatedValue} from '@unicef-polymer/etools-utils/dist/language.util';
+import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import {pageContentHeaderSlottedStyles} from './common/layout/page-content-header/page-content-header-slotted-styles';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {buildUrlQueryString} from '@unicef-polymer/etools-utils/dist/general.util';

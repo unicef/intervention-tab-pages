@@ -18,7 +18,7 @@ import {EtoolsEndpoint, LabelAndValue} from '@unicef-polymer/etools-types';
 import {Intervention} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
-import {getTranslatedValue} from '@unicef-polymer/etools-utils/dist/language.util';
+import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 
 /**
  * @customElement

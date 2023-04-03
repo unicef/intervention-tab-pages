@@ -4,7 +4,7 @@ import {translate} from 'lit-translate';
 import {GenericObject, LabelAndValue} from '@unicef-polymer/etools-types';
 import {get as getTranslation} from 'lit-translate/util';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {getTranslatedValue} from '@unicef-polymer/etools-utils/dist/language.util';
+import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 
 const ACTIONS: GenericObject<string> = {
   add: 'ADDED',

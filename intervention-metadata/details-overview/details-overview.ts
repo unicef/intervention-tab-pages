@@ -22,7 +22,7 @@ import CONSTANTS from '../../common/constants';
 import {StaticPartner} from '@unicef-polymer/etools-types';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 import {getPageDirection} from '../../utils/utils';
-import {translateValue} from '@unicef-polymer/etools-utils/dist/language.util';
+import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 
 /**
  * @customElement

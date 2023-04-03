@@ -18,7 +18,7 @@ import {FinancialComponentData, FinancialComponentPermissions} from './financial
 import {selectFinancialComponentPermissions, selectFinancialComponent} from './financialComponent.selectors';
 import {patchIntervention} from '../../common/actions/interventions';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
-import {translateValue} from '@unicef-polymer/etools-utils/dist/language.util';
+import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';

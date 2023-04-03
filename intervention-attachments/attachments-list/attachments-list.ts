@@ -16,7 +16,7 @@ import {
   EtoolsEndpoint
 } from '@unicef-polymer/etools-types';
 import {AttachmentsListStyles} from './attachments-list.styles';
-import {getTranslatedValue} from '@unicef-polymer/etools-utils/dist/language.util';
+import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import {getFileNameFromURL, cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';

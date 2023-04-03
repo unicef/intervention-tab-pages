@@ -14,7 +14,7 @@ import {REVIEW_ANSVERS, REVIEW_QUESTIONS} from './review.const';
 import {updateCurrentIntervention} from '../../actions/interventions';
 import {getDifference} from '@unicef-polymer/etools-modules-common/dist/mixins/objects-diff';
 import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
-import {translateValue} from '@unicef-polymer/etools-utils/dist/language.util';
+import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import '@polymer/paper-radio-group';
 import '@polymer/paper-checkbox/paper-checkbox';
 import '@polymer/paper-input/paper-textarea';

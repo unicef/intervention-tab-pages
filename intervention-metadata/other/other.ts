@@ -10,7 +10,7 @@ import {resetRequiredFields} from '@unicef-polymer/etools-modules-common/dist/ut
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {patchIntervention} from '../../common/actions/interventions';
-import {getTranslatedValue} from '@unicef-polymer/etools-utils/dist/language.util';
+import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {RootState} from '../../common/types/store.types';
 import cloneDeep from 'lodash-es/cloneDeep';

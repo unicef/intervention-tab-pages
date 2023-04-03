@@ -15,7 +15,7 @@ import {GenderEquityRatingPermissions, GenderEquityRating} from './genderEquityR
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {RootState} from '../../common/types/store.types';
 import {patchIntervention} from '../../common/actions/interventions';
-import {translateValue} from '@unicef-polymer/etools-utils/dist/language.util';
+import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import {
   isJsonStrMatch
 } from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';

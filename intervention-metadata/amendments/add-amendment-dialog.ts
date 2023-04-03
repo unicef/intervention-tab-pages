@@ -18,7 +18,7 @@ import {translate, get as getTranslation} from 'lit-translate';
 import {AmendmentsKind} from './pd-amendments.models';
 import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin.js';
-import {getTranslatedValue} from '@unicef-polymer/etools-utils/dist/language.util';
+import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import {resetInvalidElement} from '../../utils/utils';
 
 /**

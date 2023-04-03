@@ -16,7 +16,7 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {IdAndName, GenericObject, ReviewAttachment, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {getTranslatedValue} from '@unicef-polymer/etools-utils/dist/language.util';
+import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 
 @customElement('intervention-attachment-dialog')
 export class InterventionAttachmentDialog extends connectStore(LitElement) {
