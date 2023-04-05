@@ -101,6 +101,9 @@ export class PdAmendments extends CommentsMixin(LitElement) {
           flex: 1;
           max-width: 150px;
         }
+        .editable-row {
+          line-height: 24px;
+        }
       </style>
 
       <etools-content-panel show-expand-btn panel-title=${translate('AMENDMENTS')} comment-element="amendments">
