@@ -12,6 +12,7 @@ import {translate, get as getTranslation} from 'lit-translate';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import PaginationMixin from '@unicef-polymer/etools-modules-common/dist/mixins/pagination-mixin';
+import {formatDateLocalized} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
 
 /**
  * @polymer
@@ -50,9 +51,9 @@ export class QprList extends PaginationMixin(
             <etools-data-table-row no-collapse ?secondary-bg-on-hover="${!this._canEdit(this.editMode)}">
               <div slot="row-data" class="layout-horizontal editable-row">
                 <div class="col-data col-1 right-align index-col">${this.getIndex(index, this.qprData.length)}</div>
-                <div class="col-data col-3">${this.getDateDisplayValue(item.start_date)}</div>
-                <div class="col-data col-3">${this.getDateDisplayValue(item.end_date)}</div>
-                <div class="col-data col-3">${this.getDateDisplayValue(item.due_date)}</div>
+                <div class="col-data col-3">${formatDateLocalized(item.start_date)}</div>
+                <div class="col-data col-3">${formatDateLocalized(item.end_date)}</div>
+                <div class="col-data col-3">${formatDateLocalized(item.due_date)}</div>
                 <div class="col-data flex-c actions">
                   <paper-icon-button
                     icon="icons:create"

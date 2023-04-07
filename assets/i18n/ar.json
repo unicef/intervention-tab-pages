@@ -535,7 +535,7 @@
   "REVIEW_CHECKLIST": "مراجعة قائمة التحقق",
   "REVIEW_CREATED": "تاريخ التقديم للمراجعة",
   "REVIEW_DATE_PRC": "تاريخ المراجعة",
-  "REVIEW_MEMBERS": "أعضاء لجنة مراجعة المشروع",
+  "REVIEW_MEMBERS": "أعضاء لجنة مراجعة الشراكة",
   "REVIEW_PROMPT": "اقبل بصفتك مالك الموازنة إذا كنت راضيًا عن جميع المعلومات التي تم إدخالها والميزانية المخططة والنتائج المخططة والمتطلبات الأخرى",
   "REVIEW_QUESTIONS": {
     "BUDGET_IS_ALIGNED": "تتماشى ميزانية PD / SPD المقترحة مع مبادئ القيمة مقابل المال مع تكاليف إدارة البرامج الفعالة والفعالة التي تلتزم بالحدود المحددة للمكتب",
@@ -725,5 +725,22 @@
   "WORKPLAN_TAB": "خطة عمل",
   "YEAR": "سنة",
   "YEAR_SELECTED_ERR": "تم تحديد السنة بالفعل في عنصر الزيارة المخططة الأخرى.",
-  "YES": "نعم"
+  "YES": "نعم",
+  "ATTACHMENT_EXPECTS_AN_INTEGER": "يتوقع المرفق عددًا صحيحًا",
+  "INACTIVE": "غير نشط",
+  "TERMINATE_PD_SPD": "PD/SPD إنهاء",
+  "TERMINATION_DATE": "تاريخ الإنهاء",
+  "PLEASE_SELECT_TERMINATION_DATE": "الرجاء تحديد تاريخ الإنهاء",
+  "TERMINATION_NOTICE_FILE_IS_REQUIRED": "ملف إشعار الإنهاء مطلوب",
+  "UNSUSPEND": "غير معلق",
+  "FIX_VALIDATION_ERRORS": "الرجاء تصحيح أخطاء التحقق من الصحة",
+  "CAN_NOT_SAVE_REVIEW": ".لا يمكن حفظ المراجعة",
+  "TRY_AGAIN_LATER": "حاول مرة أخرى لاحقا",
+  "CAN_NOT_REMOVE_AMENDMENT": "لا يمكن إزالة التعديل. حاول مرة أخرى في وقت لاحق",
+  "NOTIFICATION_SENT_SUCCESS": "تم إرسال الإخطار بنجاح",
+  "CAN_NOT_SEND_NOTIFICATION": "لا يمكن إرسال الإخطار",
+  "CAN_NOT_UPLOAD_SUPPLIES": "لا يمكن تحميل المستلزمات",
+  "ACTIVATION_LETTER_ATTACHMENT": "مرفق خطاب التفعيل",
+  "RESULT__CP_OUTPUT": "نتيجة الناتج CP"
 }
+

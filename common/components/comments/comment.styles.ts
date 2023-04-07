@@ -19,8 +19,8 @@ export const CommentStyles: CSSResult = css`
     flex-direction: row;
   }
   :host([my-comment]) .avatar {
-    margin-right: 0px;
-    margin-left: 12px;
+    margin-inline-end: 0px;
+    margin-inline-start: 12px;
   }
   .avatar {
     display: flex;
@@ -29,7 +29,7 @@ export const CommentStyles: CSSResult = css`
     flex: none;
     width: 40px;
     height: 40px;
-    margin-right: 12px;
+    margin-inline-end: 12px;
     border-radius: 50%;
     background-color: var(--darker-divider-color);
     color: #ffffff;
@@ -49,11 +49,11 @@ export const CommentStyles: CSSResult = css`
     font-size: 16px;
     line-height: 24px;
     color: var(--primary-text-color);
-    padding-right: 6px;
+    padding-inline-end: 6px;
   }
   :host([my-comment]) .name {
-    padding-right: 0px;
-    padding-left: 6px;
+    padding-inline-end: 0px;
+    padding-inline-start: 6px;
   }
   .date {
     font-size: 12px;
@@ -82,7 +82,7 @@ export const CommentStyles: CSSResult = css`
   .actions div {
     display: flex;
     align-items: center;
-    margin-right: 30px;
+    margin-inline-end: 30px;
     font-weight: 500;
     font-size: 13px;
     letter-spacing: 0.038em;
@@ -98,7 +98,7 @@ export const CommentStyles: CSSResult = css`
     text-decoration: underline;
   }
   iron-icon {
-    margin-right: 8px;
+    margin-inline-end: 8px;
   }
   .delete {
     width: 15px;
@@ -116,13 +116,16 @@ export const CommentStyles: CSSResult = css`
   }
   etools-loading {
     width: 20px;
-    margin-right: 8px;
+    margin-inline-end: 8px;
   }
   .retry:hover {
     cursor: pointer;
     text-decoration: underline;
   }
   iron-icon[icon='refresh'] {
-    margin-right: 2px;
+    margin-inline-end: 2px;
+  }
+  *:focus-visible {
+    outline: 2px solid rgb(170 165 165 / 50%);
   }
 `;

@@ -65,7 +65,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
 
 
         paper-input-container{
-          margin-left: 0px;
+          margin-inline-start: 0px;
         }
         paper-input {
           width: 100%;
@@ -75,7 +75,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
           flex-direction: row;
           align-items: center;
           min-height: 24px;
-          margin-left: 0px;
+          margin-inline-start: 0px;
         }
         paper-checkbox[disabled] {
           cursor: not-allowed;

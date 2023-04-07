@@ -535,7 +535,7 @@
   "REVIEW_CHECKLIST": "Review Checklist",
   "REVIEW_CREATED": "Date of submission for review",
   "REVIEW_DATE_PRC": "Review Date",
-  "REVIEW_MEMBERS": "Project Review Committee Members",
+  "REVIEW_MEMBERS": "Partnership Review Committee Members",
   "REVIEW_PROMPT": "Accept as budget owner if you are satisfied with all entered information, planned budget, planned results and other requirements",
   "REVIEW_QUESTIONS": {
     "BUDGET_IS_ALIGNED": "The budget of the proposed PD/SPD is aligned with the principles of value for money with the effective and efficient programme management costs adhering to office defined limits",
@@ -725,5 +725,21 @@
   "WORKPLAN_TAB": "Workplan",
   "YEAR": "Year",
   "YEAR_SELECTED_ERR": "Year already selected on other planned visit item.",
-  "YES": "Yes"
+  "YES": "Yes",
+  "ATTACHMENT_EXPECTS_AN_INTEGER": "Attachment expects an integer",
+  "INACTIVE":"Inactive",
+  "TERMINATE_PD_SPD": "Terminate PD/SPD",
+  "TERMINATION_DATE": "Termination Date",
+  "PLEASE_SELECT_TERMINATION_DATE": "Please select termination date",
+  "TERMINATION_NOTICE_FILE_IS_REQUIRED": "Termination Notice file is required",
+  "UNSUSPEND": "Unsuspend",
+  "FIX_VALIDATION_ERRORS": "Please fix validation errors",
+  "CAN_NOT_SAVE_REVIEW": "Can not save review.",
+  "TRY_AGAIN_LATER": "Try again later",
+  "CAN_NOT_REMOVE_AMENDMENT": "Can not remove amendment. Try again later",
+  "NOTIFICATION_SENT_SUCCESS": "Notification sent successfully",
+  "CAN_NOT_SEND_NOTIFICATION": "Can not send notification",
+  "CAN_NOT_UPLOAD_SUPPLIES": "Can not upload supplies",
+  "ACTIVATION_LETTER_ATTACHMENT": "Activation letter attachment",
+  "RESULT__CP_OUTPUT": "Result CP Output"
 }

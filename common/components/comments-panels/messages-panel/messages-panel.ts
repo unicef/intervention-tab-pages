@@ -120,7 +120,10 @@ export class MessagesPanel extends EditComments {
         .message-input {
           display: flex;
           align-items: flex-end;
-          padding: 12px 20px 11px 25px;
+          padding-top: 12px;
+          padding-bottom: 11px;
+          padding-inline-start: 25px;
+          padding-inline-end: 20px;
           border-top: 1px solid var(--light-divider-color);
           background-color: var(--primary-background-color);
           margin-bottom: 0;
@@ -130,7 +133,7 @@ export class MessagesPanel extends EditComments {
           height: 36px;
           margin-bottom: 7px;
           color: #ffffff;
-          margin-left: 8px;
+          margin-inline-start: 8px !important;
         }
       `
     ];

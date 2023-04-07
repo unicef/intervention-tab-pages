@@ -16,7 +16,7 @@ import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialo
 import EnvironmentFlagsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/environment-flags-mixin';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {AnyObject} from '@unicef-polymer/etools-types';
-import {get as getTranslation} from 'lit-translate';
+import {get as getTranslation, translate} from 'lit-translate';
 declare const dayjs: any;
 
 /**
@@ -49,8 +49,8 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
         ?opened="${this.dialogOpened}"
         size="md"
         ?hidden="${this.warningOpened}"
-        ok-btn-text="Terminate"
-        dialog-title="Terminate PD/SPD"
+        ok-btn-text="${translate('TERMINATE')}"
+        dialog-title="${translate('TERMINATE_PD_SPD')}"
         @confirm-btn-clicked="${this._triggerPdTermination}"
         ?disable-confirm-btn="${this.uploadInProgress}"
         ?disable-dismiss-btn="${this.uploadInProgress}"
@@ -59,10 +59,10 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
         <div class="row-h flex-c">
           <datepicker-lite
             id="terminationDate"
-            label="Termination Date"
+            label="${translate('TERMINATION_DATE')}"
             .value="${this.termination.date}"
             max-date="${this._getMaxDate()}"
-            error-message="Please select termination date"
+            error-message="${translate('PLEASE_SELECT_TERMINATION_DATE')}"
             auto-validate
             required
             selected-date-display-format="D MMM YYYY"
@@ -74,14 +74,14 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
         <div class="row-h flex-c">
           <etools-upload
             id="terminationNotice"
-            label="Termination Notice"
+            label="${translate('TERMINATION_NOTICE')}"
             accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt"
             .fileUrl="${this.termination.attachment_notice}"
             .uploadEndpoint="${this.uploadEndpoint}"
             @upload-finished="${this._uploadFinished}"
             required
             .uploadInProgress="${this.uploadInProgress}"
-            error-message="Termination Notice file is required"
+            error-message="${translate('TERMINATION_NOTICE_FILE_IS_REQUIRED')}"
           >
         </div>
         <div class="row-h flex-c">

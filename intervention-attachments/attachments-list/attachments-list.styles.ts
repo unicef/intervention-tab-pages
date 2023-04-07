@@ -13,7 +13,7 @@ export const AttachmentsListStyles = html`
     }
 
     .attachment {
-      margin-right: 8px;
+      margin-inline-end: 8px;
     }
     iron-icon {
       color: var(--dark-icon-color);
@@ -28,8 +28,8 @@ export const AttachmentsListStyles = html`
       --list-divider-color: var(--light-divider-color);
     }
     .separator {
-      border-left: solid 1px var(--light-secondary-text-color);
-      padding-right: 10px;
+      border-inline-start: solid 1px var(--light-secondary-text-color);
+      padding-inline-end: 10px;
       margin: 6px 0 6px 10px;
     }
     .editable-row {
@@ -43,7 +43,7 @@ export const AttachmentsListStyles = html`
     }
     paper-icon-button[icon='add-box'] {
       color: var(--primary-text-color);
-      margin-left: 20px;
+      margin-inline-start: 20px;
     }
   </style>
 `;

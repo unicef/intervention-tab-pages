@@ -62,7 +62,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
           background: #ffaa0eb8;
         }
         iron-icon {
-          margin-right: 10px;
+          margin-inline-end: 10px;
         }
         *[hidden] {
           display: none;

@@ -135,6 +135,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
     if (!data) {
       return;
     }
+    this.data = {other_description: '', types: []};
     const {intervention, amendmentTypes} = data;
     this.intervention = intervention;
     this.amendmentTypes = amendmentTypes;

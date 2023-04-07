@@ -110,7 +110,8 @@ export class ActivityItemsTable extends LitElement {
       {
         cso_cash: '0',
         unicef_cash: '0',
-        name: ''
+        name: '',
+        unit_price: '0'
       }
     ];
     this.setFocusOnActivityRow();

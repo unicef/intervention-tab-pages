@@ -3,7 +3,7 @@ import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/st
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {AnyObject, AsyncAction, GenericObject, InterventionReview} from '@unicef-polymer/etools-types';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
@@ -31,10 +31,10 @@ export class ReviewChecklistPopup extends LitElement {
           margin-bottom: 24px;
         }
         .pl-none {
-          padding-left: 0px !important;
+          padding-inline-start: 0px !important;
         }
         paper-radio-button:first-child {
-          padding-left: 0px !important;
+          padding-inline-start: 0px !important;
         }
         .form-container {
           padding: 0 24px;
@@ -221,8 +221,8 @@ export class ReviewChecklistPopup extends LitElement {
       )
       .then(() => this.close(true))
       .catch((err: any) => {
-        const errorText = err?.response?.detail || 'Try again later';
-        fireEvent(this, 'toast', {text: `Can not save review. ${errorText}`});
+        const errorText = err?.response?.detail || getTranslation('TRY_AGAIN_LATER');
+        fireEvent(this, 'toast', {text: `${getTranslation('CAN_NOT_SAVE_REVIEW')} ${errorText}`});
       })
       .finally(() => (this.requestInProcess = false));
   }
