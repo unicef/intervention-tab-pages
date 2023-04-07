@@ -25,6 +25,9 @@ import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {translate, translateConfig} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
+import '@shoelace-style/shoelace/dist/components/input/input.js';
+import '@shoelace-style/shoelace/dist/components/textarea/textarea.js';
+import {ShoelaceCustomizations} from '../../../../../../styles/shoelace-customizations';
 
 /**
  * @customElement
@@ -32,7 +35,7 @@ import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 @customElement('document-details')
 export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [gridLayoutStylesLit, buttonsStyles, ShoelaceCustomizations];
   }
 
   render() {
@@ -75,23 +78,23 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="row-padding-v">
-          <paper-textarea
+          <sl-input
             id="title"
             label=${translate('TITLE')}
-            always-float-label
             placeholder="—"
-            .autoValidate="${this.autoValidate}"
             .value="${this.data.title}"
-            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'title')}"
+            @sl-input="${(e: Event) => {
+              console.log(e.target.value);
+              this.valueChanged(e.target, 'title');
+            }}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit?.title)}"
             tabindex="${this.isReadonly(this.editMode, this.permissions?.edit?.title) ? -1 : 0}"
             ?required="${this.permissions?.required.title}"
-            @focus="${() => (this.autoValidate = true)}"
-            error-message="This field is required"
             maxlength="256"
             .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.title)}"
           >
-          </paper-textarea>
+            <div slot="help-text" style="color: red;">This field is required</div>
+          </sl-input>
         </div>
 
         <div class="row-padding-v">
@@ -105,21 +108,21 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
               .tooltipText="${translate('CONTEXT_TOOLTIP')}"
             ></info-icon-tooltip>
           </div>
-          <paper-textarea
+          <sl-textarea
             id="context"
-            no-label-float
+            resize="auto"
             type="text"
             placeholder="—"
             .value="${this.data.context}"
-            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'context')}"
+            @sl-change="${(e: Event) => this.valueChanged(e.target, 'context')}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit?.context)}"
             tabindex="${this.isReadonly(this.editMode, this.permissions?.edit?.context) ? -1 : 0}"
             ?required="${this.permissions?.required.context}"
             maxlength="7000"
-            rows="${detailsTextareaRowsCount(this.editMode)}"
+            .rows="${detailsTextareaRowsCount(this.editMode)}"
             .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.context)}"
           >
-          </paper-textarea>
+          </sl-textarea>
         </div>
 
         <div class="row-padding-v">
@@ -133,20 +136,18 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
               .tooltipText="${translate('IMPLEMENTATION_STRATEGY_AND_TECHNICAL_GUIDANCE_TOOLTIP')}"
             ></info-icon-tooltip>
           </div>
-          <paper-textarea
+          <sl-textarea
             id="implementation-strategy"
-            no-label-float
             placeholder="—"
             .value="${this.data.implementation_strategy}"
-            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'implementation_strategy')}"
+            @sl-change="${({detail}: CustomEvent) => this.valueChanged(detail, 'implementation_strategy')}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit?.implementation_strategy)}"
-            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit?.implementation_strategy) ? -1 : 0}"
             ?required="${this.permissions?.required.implementation_strategy}"
             maxlength="5000"
             rows="${detailsTextareaRowsCount(this.editMode)}"
             .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.implementation_strategy)}"
           >
-          </paper-textarea>
+          </sl-textarea>
         </div>
 
         <div class="row-padding-v">
@@ -161,21 +162,19 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             ></info-icon-tooltip>
           </div>
 
-          <paper-textarea
+          <sl-textarea
             id="capacityDevelopment"
             type="text"
-            no-label-float
             placeholder="—"
             .value="${this.data.capacity_development}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.capacity_development)}"
-            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit?.capacity_development) ? -1 : 0}"
             ?required="${this.permissions?.required.capacity_development}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'capacity_development')}"
             maxlength="5000"
             .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.capacity_development)}"
             rows="${detailsTextareaRowsCount(this.editMode)}"
           >
-          </paper-textarea>
+          </sl-textarea>
         </div>
 
         <div class="row-padding-v">
@@ -188,7 +187,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
               .tooltipText="${translate('OTHER_PARTNERS_INVOLVED_TOOLTIP')}"
             ></info-icon-tooltip>
           </div>
-          <paper-textarea
+          <sl-textarea
             no-label-float
             id="otherPartnersInvolved"
             type="text"
@@ -203,14 +202,14 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             rows="${detailsTextareaRowsCount(this.editMode)}"
             .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.other_partners_involved)}"
           >
-          </paper-textarea>
+          </sl-textarea>
         </div>
 
         <div class="row-padding-v">
           <div>
             <label class="paper-label">${translate(translatesMap.other_details)}</label>
           </div>
-          <paper-textarea
+          <sl-textarea
             no-label-float
             id="otherDetails"
             type="text"
@@ -225,7 +224,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             rows="${detailsTextareaRowsCount(this.editMode)}"
             .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.other_details)}"
           >
-          </paper-textarea>
+          </sl-textarea>
         </div>
 
         <div class="row-padding-v">

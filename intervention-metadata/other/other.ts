@@ -23,6 +23,8 @@ import {selectOtherData, selectOtherPermissions} from './other.selectors';
 import CONSTANTS from '../../common/constants';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import '@polymer/paper-input/paper-textarea';
+import '@shoelace-style/shoelace/dist/components/textarea/textarea.js';
+import {ShoelaceCustomizations} from '../../../../../../styles/shoelace-customizations';
 
 /**
  * @customElement
@@ -30,7 +32,7 @@ import '@polymer/paper-input/paper-textarea';
 @customElement('other-metadata')
 export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [gridLayoutStylesLit, buttonsStyles, ShoelaceCustomizations];
   }
 
   render() {
@@ -155,7 +157,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
         </div>
         <div class="layout-horizontal row-padding-v" ?hidden="${!this.data.contingency_pd}">
           <div class="col col-10">
-            <paper-textarea
+            <sl-textarea
               class="w100"
               label=${translate('ACTIVATION_PROTOCOL')}
               placeholder="&#8212;"
@@ -164,9 +166,8 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               .autoValidate="${this.autoValidateProtocol}"
               @focus="${() => (this.autoValidateProtocol = true)}"
               .value="${this.data.activation_protocol}"
-              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'activation_protocol')}"
             >
-            </paper-textarea>
+            </sl-textarea>
           </div>
         </div>
         <div class="layout-horizontal row-padding-v">
