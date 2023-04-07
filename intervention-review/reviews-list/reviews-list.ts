@@ -39,6 +39,9 @@ export class ReviewsList extends connectStore(LitElement) {
         .answer:last-child {
           margin-bottom: 0;
         }
+        .editable-row {
+          line-height: 24px;
+        }
       `
     ];
   }
