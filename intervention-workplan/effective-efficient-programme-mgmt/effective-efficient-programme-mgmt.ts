@@ -151,6 +151,9 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
   @property({type: Number})
   interventionId!: number;
 
+  @property({type: Boolean})
+  showUnfunded = true;
+
   connectedCallback() {
     super.connectedCallback();
   }
@@ -177,7 +180,15 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
   }
 
   currencyDisplayForTotal() {
-    this.columns[3].label = getTranslation('GENERAL.TOTAL') + ' (' + this.data.currency + ')';
+    this.columns.find((x) => x.name === 'total')!.label =
+      getTranslation('GENERAL.TOTAL') + ' (' + this.data.currency + ')';
+    if (this.showUnfunded && !this.columns.find((x) => x.name === 'unfunded_cash')) {
+      this.columns.splice(3, 0, {
+        label: translate('UNFUNDED_CASH') as unknown as string,
+        name: 'unfunded_cash',
+        type: EtoolsTableColumnType.Number
+      });
+    }
   }
 
   formatData(data: ProgrammeManagement) {

@@ -7,17 +7,20 @@ export function ActivitiesCommonMixin<T extends Constructor<LitElement>>(baseCla
   return class ActivitiesCommonClass extends ModelChangedMixin(baseClass) {
     cashFieldChanged(
       detail: {value: any},
-      field: 'unicef_cash' | 'cso_cash',
-      item: Partial<InterventionActivityItem>
+      field: 'unicef_cash' | 'cso_cash' | 'unfunded_cash',
+      item: Partial<InterventionActivityItem>,
+      setSecondCashField = true
     ): void {
       this.numberChanged(detail, field, item);
       if (!item.unit_price || !item.no_units) {
         return;
       }
-      const secondCashField = field === 'unicef_cash' ? 'cso_cash' : 'unicef_cash';
       const total = getItemTotal(item);
-      const value = Number(Math.max(0, total - detail.value).toFixed(2)); // in js 12019.15-11130 = 889.1499999999996
-      this.numberChanged({value}, secondCashField, item);
+      if (setSecondCashField) {
+        const secondCashField = field === 'unicef_cash' ? 'cso_cash' : 'unicef_cash';
+        const value = Number(Math.max(0, total - detail.value).toFixed(2)); // in js 12019.15-11130 = 889.1499999999996
+        this.numberChanged({value}, secondCashField, item);
+      }
     }
 
     activityItemInvalidChanged(detail: {value: any}, field: string, item: any) {

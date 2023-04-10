@@ -83,9 +83,11 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
             max-height: 96px;
           }
         }
-        .confidential-row {
+        .toggle-row {
+          padding-bottom: 15px;
+        }
+        .mt-4 {
           margin-top: -4px;
-          padding-bottom: 12px;
         }
       </style>
 
@@ -194,7 +196,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
           </div>
         </div>
 
-        <div class="layout-horizontal confidential-row" ?hidden="${!this.permissions?.view?.confidential}">
+        <div class="layout-horizontal mt-4 toggle-row" ?hidden="${!this.permissions?.view?.confidential}">
           <paper-toggle-button
             id="confidential"
             ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit?.confidential)}"
@@ -209,6 +211,17 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
             ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit?.confidential)}"
             .tooltipText="${translate('CONFIDENTIAL_INFO')}"
           ></info-icon-tooltip>
+        </div>
+
+        <div class="layout-horizontal toggle-row" ?hidden="${!this.permissions?.view?.unfunded_amounts}">
+          <paper-toggle-button
+            id="unfundedAmounts"
+            ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit?.unfunded_amounts)}"
+            ?checked="${this.data.unfunded_amounts}"
+            @checked-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unfunded_amounts')}}"
+          >
+            ${translate('PD_UNFUNDED_AMOUNTS')}
+          </paper-toggle-button>
         </div>
 
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}

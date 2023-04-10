@@ -24,6 +24,7 @@ export declare type InterventionActivity = {
   name: string;
   time_frames: number[];
   unicef_cash: string;
+  unfunded_cash: string;
   unicef_suppies: number;
   is_active: boolean;
   created: string;
@@ -61,6 +62,7 @@ type InvalidItem = {
   unit_price: boolean;
   cso_cash: boolean;
   unicef_cash: boolean;
+  unfunded_cash: boolean;
 };
 
 export type InterventionActivityExtended = InterventionActivity & {

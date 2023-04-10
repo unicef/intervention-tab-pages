@@ -42,6 +42,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
   @property() readonly: boolean | undefined = false;
   @query('etools-dialog') private dialogElement!: EtoolsDialog;
   quarters: ActivityTimeFrames[] = [];
+  @property() showUnfunded = true;
 
   set dialogData({activityId, pdOutputId, interventionId, quarters, readonly, currency}: any) {
     this.quarters = quarters;
@@ -191,6 +192,15 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
                     .value="${this.editedData.unicef_cash}"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue('unicef_cash', detail.value)}"
                   ></etools-currency-amount-input>
+
+                  <etools-currency-amount-input
+                    class="col-3"
+                    ?hidden="${!this.showUnfunded}"
+                    label=${translate('UNFUNDED_CASH')}
+                    ?readonly="${this.readonly}"
+                    .value="${this.editedData.unfunded_cash}"
+                    @value-changed="${({detail}: CustomEvent) => this.updateModelValue('unfunded_cash', detail.value)}"
+                  ></etools-currency-amount-input>
                 `
               : html`
                   <paper-input
@@ -206,6 +216,14 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
                     class="col-3 total-input"
                     label=${translate('UNICEF_CASH_BUDGET')}
                     .value="${this.getSumValue('unicef_cash')}"
+                  ></paper-input>
+                  <paper-input
+                    readonly
+                    ?hidden="${!this.showUnfunded}"
+                    tabindex="-1"
+                    class="col-3 total-input"
+                    label=${translate('UNFUNDED_CASH')}
+                    .value="${this.getSumValue('unfunded_cash')}"
                   ></paper-input>
                 `}
 
@@ -234,6 +252,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
             .activityItems="${this.editedData.items || []}"
             .readonly="${this.readonly}"
             .currency="${this.currency}"
+            .showUnfunded="${this.showUnfunded}"
             @activity-items-changed="${({detail}: CustomEvent) => {
               this.editedData.items = detail;
               this.requestUpdate();
@@ -258,7 +277,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
     fireEvent(this, 'dialog-closed', {confirmed: false});
   }
 
-  getSumValue(field: 'cso_cash' | 'unicef_cash'): string {
+  getSumValue(field: 'cso_cash' | 'unicef_cash' | 'unfunded_cash'): string {
     const columnTotal = (this.editedData.items || []).reduce(
       (sum: number, item: Partial<InterventionActivityItem>) => sum + Number(item[field]),
       0
@@ -269,11 +288,16 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
 
   getTotalValue(): string {
     if (!this.useInputLevel) {
-      return getTotalCashFormatted(this.editedData.cso_cash || 0, this.editedData.unicef_cash || 0);
+      return getTotalCashFormatted(
+        this.editedData.cso_cash || 0,
+        this.editedData.unicef_cash || 0,
+        this.editedData.unfunded_cash || 0
+      );
     } else {
       const cso: string = this.getSumValue('cso_cash').replace(/,/g, '');
       const unicef: string = this.getSumValue('unicef_cash').replace(/,/g, '');
-      return getTotalCashFormatted(cso, unicef);
+      const unfunded: string = this.showUnfunded ? this.getSumValue('unfunded_cash').replace(/,/g, '') : '0';
+      return getTotalCashFormatted(cso, unicef, unfunded);
     }
   }
 
@@ -289,6 +313,12 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
       cso_cash: '0',
       unicef_cash: '0'
     };
+  }
+
+  getInvalidTotalMessage() {
+    return this.showUnfunded
+      ? getTranslation('INVALID_TOTAL_UNFUNDED_ACTIVITY_ITEMS')
+      : getTranslation('INVALID_TOTAL_ACTIVITY_ITEMS');
   }
 
   validate() {
@@ -309,7 +339,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
       fireEvent(this, 'toast', {
         text: activityItemsValidationSummary.invalidRequired
           ? getTranslation('FILL_ALL_ACTIVITY_ITEMS')
-          : getTranslation('INVALID_TOTAL_ACTIVITY_ITEMS')
+          : this.getInvalidTotalMessage()
       });
       return;
     }

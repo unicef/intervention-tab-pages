@@ -44,8 +44,8 @@ export class ActivityItemRow extends ActivitiesCommonMixin(LitElement) {
   @property() invalidSum = false;
   @property() readonly: boolean | undefined = false;
   @property() lastItem: boolean | undefined = false;
-  @property({type: String})
-  currency = '';
+  @property({type: String}) currency = '';
+  @property() showUnfunded = true;
 
   protected render(): TemplateResult {
     return this.activityItem
@@ -138,7 +138,7 @@ export class ActivityItemRow extends ActivitiesCommonMixin(LitElement) {
                 no-label-float
                 ?readonly="${this.readonly}"
                 @value-changed="${({detail}: CustomEvent) =>
-                  this.cashFieldChanged(detail, 'cso_cash', this.activityItem)}"
+                  this.cashFieldChanged(detail, 'cso_cash', this.activityItem, !this.showUnfunded)}"
                 @blur="${() => this.onBlur()}"
                 ?invalid="${this.invalidSum}"
                 @focus="${() => (this.invalidSum = false)}"
@@ -155,7 +155,7 @@ export class ActivityItemRow extends ActivitiesCommonMixin(LitElement) {
                 no-label-float
                 ?readonly="${this.readonly}"
                 @value-changed="${({detail}: CustomEvent) =>
-                  this.cashFieldChanged(detail, 'unicef_cash', this.activityItem)}"
+                  this.cashFieldChanged(detail, 'unicef_cash', this.activityItem, !this.showUnfunded)}"
                 @blur="${() => this.onBlur()}"
                 ?invalid="${this.invalidSum}"
                 @focus="${() => (this.invalidSum = false)}"
@@ -163,6 +163,25 @@ export class ActivityItemRow extends ActivitiesCommonMixin(LitElement) {
                 error-message=""
               ></etools-currency-amount-input>
             </div>
+            ${this.showUnfunded
+              ? html`<div
+                  class="grid-cell end ${!this.lastItem || !this.readonly ? 'border' : ''}"
+                  data-col-header-label="${translate('UNFUNDED_CASH')}"
+                >
+                  <etools-currency-amount-input
+                    .value="${this.activityItem.unfunded_cash || 0}"
+                    no-label-float
+                    ?readonly="${this.readonly}"
+                    @value-changed="${({detail}: CustomEvent) =>
+                      this.cashFieldChanged(detail, 'unfunded_cash', this.activityItem, !this.showUnfunded)}"
+                    @blur="${() => this.onBlur()}"
+                    ?invalid="${this.invalidSum}"
+                    @focus="${() => (this.invalidSum = false)}"
+                    @click="${() => (this.invalidSum = false)}"
+                    error-message=""
+                  ></etools-currency-amount-input>
+                </div>`
+              : ``}
             <div
               class="grid-cell last-cell end ${!this.lastItem && this.readonly ? 'border' : ''}"
               data-col-header-label="${translate('TOTAL_CASH')} (${this.currency})"
@@ -209,7 +228,11 @@ export class ActivityItemRow extends ActivitiesCommonMixin(LitElement) {
     this.invalidSum = invalidRequired
       ? false
       : getMultiplyProductCashFormatted(this.activityItem.no_units || 0, this.activityItem.unit_price || 0) !==
-        getTotalCashFormatted(this.activityItem.cso_cash || 0, this.activityItem.unicef_cash || 0);
+        getTotalCashFormatted(
+          this.activityItem.cso_cash || 0,
+          this.activityItem.unicef_cash || 0,
+          this.activityItem.unfunded_cash || 0
+        );
 
     return {invalidRequired: invalidRequired, invalidSum: this.invalidSum};
   }

@@ -231,6 +231,27 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   }}"
                 ></etools-currency-amount-input>
               </td>
+              <td tabindex="${ifDefined(this.commentMode ? undefined : 0)}">
+                <etools-currency-amount-input
+                  label=${this.getLabel(activity.itemsInEditMode, getTranslation('UNFUNDED_CASH'))}
+                  .noLabelFloat="${!activity.itemsInEditMode}"
+                  input
+                  ?readonly="${!activity.itemsInEditMode}"
+                  required
+                  tabindex="${ifDefined(item.inEditMode ? undefined : '-1')}"
+                  error-message="${translate('INCORRECT_VALUE')}"
+                  .invalid="${item.invalid?.unfunded_cash}"
+                  @invalid-changed="${({detail}: CustomEvent) => {
+                    this.activityItemInvalidChanged(detail, 'unfunded_cash', item);
+                  }}"
+                  .value="${item.unfunded_cash}"
+                  @keydown="${(e: any) => this.handleEsc(e)}"
+                  @value-changed="${({detail}: CustomEvent) => {
+                    this.cashFieldChanged(detail, 'unfunded_cash', item);
+                    this.updateActivityCashFromItem(activity, item);
+                  }}"
+                ></etools-currency-amount-input>
+              </td>
               <td class="total action-btns" style="position:relative;" colspan="2">
                 <paper-input
                   readonly
