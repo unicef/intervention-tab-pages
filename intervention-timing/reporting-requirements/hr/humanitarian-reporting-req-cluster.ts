@@ -119,7 +119,11 @@ export class HumanitarianReportingReqCluster extends EndpointsLitMixin(Reporting
         this.requestUpdate();
       })
       .catch((error: any) => {
-        EtoolsLogger.error('Failed to get hr cluster requirements from API!', 'humanitarian-reporting-req-cluster', error);
+        EtoolsLogger.error(
+          'Failed to get hr cluster requirements from API!',
+          'humanitarian-reporting-req-cluster',
+          error
+        );
         parseRequestErrorsAndShowAsToastMsgs(error, this);
         reportingRequirementsOriginal = [];
         this.reportingRequirements = [...reportingRequirementsOriginal];
