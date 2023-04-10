@@ -120,7 +120,7 @@ export class InterventionActions extends connectStore(LitElement) {
   }
 
   private renderGroupedActions(mainAction: string, actions: string[]): TemplateResult {
-    const withAdditional = actions.length && this.dir === 'ltr' ? ' with-additional' : '';
+    const withAdditional = actions.length ? ' with-additional' : '';
     const onlyCancel = !actions.length && mainAction === CANCEL ? ` cancel-background` : '';
     const className = `main-button${withAdditional}${onlyCancel}`;
     return mainAction
@@ -147,7 +147,7 @@ export class InterventionActions extends connectStore(LitElement) {
       return html``;
     }
     return html`
-      <paper-menu-button horizontal-align="right" @click="${(event: MouseEvent) => event.stopImmediatePropagation()}">
+      <paper-menu-button horizontal-align @click="${(event: MouseEvent) => event.stopImmediatePropagation()}">
         <paper-icon-button slot="dropdown-trigger" class="option-button" icon="expand-more"></paper-icon-button>
         <div slot="dropdown-content">
           ${actions.map(

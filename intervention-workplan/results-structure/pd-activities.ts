@@ -141,7 +141,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                     </div>
 
                     <div class="show-actions hover-block" style="z-index: ${99 - index}" ?hidden="${this.commentMode}">
-                      <paper-menu-button id="view-menu-button" close-on-activate horizontal-align="right">
+                      <paper-menu-button id="view-menu-button" close-on-activate horizontal-align>
                         <paper-icon-button
                           slot="dropdown-trigger"
                           icon="icons:more-vert"

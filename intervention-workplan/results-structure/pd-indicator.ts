@@ -83,7 +83,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
             style="z-index: ${99 - (this.index || 0)}; max-height: 59px;"
             ?hidden="${this.commentMode}"
           >
-            <paper-menu-button id="view-menu-button" close-on-activate horizontal-align="right">
+            <paper-menu-button id="view-menu-button" close-on-activate horizontal-align>
               <paper-icon-button slot="dropdown-trigger" icon="icons:more-vert" tabindex="0"></paper-icon-button>
               <paper-listbox slot="dropdown-content">
                 <div
