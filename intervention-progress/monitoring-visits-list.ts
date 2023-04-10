@@ -1,7 +1,7 @@
 import {LitElement, customElement, html, property} from 'lit-element';
 import '@unicef-polymer/etools-loading/etools-loading.js';
 import '@unicef-polymer/etools-data-table/etools-data-table';
-import {logError} from '@unicef-polymer/etools-behaviors/etools-logging.js';
+import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
 import isEmpty from 'lodash-es/isEmpty';
@@ -237,7 +237,7 @@ export class MonitoringVisitsList extends LitElement {
       })
       .catch((_error: any) => {
         this.showLoading = false;
-        logError('Error on get TPM visits');
+        EtoolsLogger.error('Error on get TPM visits');
       });
   }
 

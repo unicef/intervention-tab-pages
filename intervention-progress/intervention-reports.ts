@@ -5,7 +5,7 @@ import '@polymer/paper-tooltip/paper-tooltip';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import '@polymer/iron-media-query/iron-media-query';
 import '@unicef-polymer/etools-content-panel/etools-content-panel.js';
-import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
+import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import {abortRequestByKey} from '@unicef-polymer/etools-ajax/etools-iron-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 
@@ -344,7 +344,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
           // req aborted
           return;
         }
-        logError('Reports list data request failed!', 'reports-list', error);
+        EtoolsLogger.error('Reports list data request failed!', 'reports-list', error);
 
         parseRequestErrorsAndShowAsToastMsgs(error, this);
         fireEvent(this, 'global-loading', {

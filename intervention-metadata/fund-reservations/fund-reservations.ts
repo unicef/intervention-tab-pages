@@ -5,7 +5,7 @@ import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {removeDialog, createDynamicDialog} from '@unicef-polymer/etools-dialog/dynamic-dialog.js';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {logWarn} from '@unicef-polymer/etools-behaviors/etools-logging';
+import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import './update-fr-numbers';
 import {UpdateFrNumbers} from './update-fr-numbers';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
@@ -226,7 +226,7 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
     if (this._frsConfirmationsDialogMessage) {
       this._frsConfirmationsDialogMessage.innerHTML = warning + '<br><br>Do you want to continue?';
     } else {
-      logWarn('frsConfirmationsDialogMessage element not found', 'Fund Reservations');
+      EtoolsLogger.warn('frsConfirmationsDialogMessage element not found', 'Fund Reservations');
     }
   }
 

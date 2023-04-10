@@ -10,7 +10,7 @@ import '@unicef-polymer/etools-dialog/etools-dialog.js';
 
 import '@unicef-polymer/etools-date-time/calendar-lite';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
+import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
@@ -141,7 +141,7 @@ export class AddEditSpecialRepReq extends LitElement {
       })
       .catch((error: any) => {
         dialog.stopSpinner();
-        logError('Failed to save/update special report requirement!', 'add-edit-special-rep-req', error);
+        EtoolsLogger.error('Failed to save/update special report requirement!', 'add-edit-special-rep-req', error);
         parseRequestErrorsAndShowAsToastMsgs(error, this);
       });
   }

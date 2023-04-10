@@ -11,7 +11,7 @@ import CONSTANTS from '../../../common/constants';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
+import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
@@ -267,7 +267,7 @@ export class EditHruDialog extends connectStore(LitElement) {
         fireEvent(this, 'dialog-closed', {confirmed: true, response: response.reporting_requirements});
       })
       .catch((error: any) => {
-        logError('Failed to save/update HR data!', 'edit-hru-dialog', error);
+        EtoolsLogger.error('Failed to save/update HR data!', 'edit-hru-dialog', error);
         parseRequestErrorsAndShowAsToastMsgs(error, this);
         dialog.stopSpinner();
       });

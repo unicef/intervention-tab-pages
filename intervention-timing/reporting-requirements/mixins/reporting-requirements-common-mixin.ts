@@ -2,7 +2,7 @@ import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import CONSTANTS from '../../../common/constants';
-import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
+import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {LitElement, property} from 'lit-element';
 import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
@@ -74,7 +74,7 @@ function ReportingRequirementsCommonMixin<T extends Constructor<LitElement>>(bas
           this.updateReportingRequirements(response, type);
         })
         .catch((error: any) => {
-          logError('Failed to get qpr data from API!', 'reporting-requirements-common-mixin', error);
+          EtoolsLogger.error('Failed to get qpr data from API!', 'reporting-requirements-common-mixin', error);
           parseRequestErrorsAndShowAsToastMsgs(error, this);
         });
     }

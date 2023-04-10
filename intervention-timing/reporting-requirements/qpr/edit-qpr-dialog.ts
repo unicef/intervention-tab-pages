@@ -9,7 +9,7 @@ import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import './qpr-list.js';
 import CONSTANTS from '../../../common/constants';
 import '@unicef-polymer/etools-date-time/calendar-lite.js';
-import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
+import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
@@ -338,7 +338,7 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
         fireEvent(this, 'dialog-closed', {confirmed: true, response: response.reporting_requirements});
       })
       .catch((error: any) => {
-        logError('Failed to save/update qpr data!', 'edit-qpr-dialog', error);
+        EtoolsLogger.error('Failed to save/update qpr data!', 'edit-qpr-dialog', error);
         parseRequestErrorsAndShowAsToastMsgs(error, this);
         dialog.stopSpinner();
       });

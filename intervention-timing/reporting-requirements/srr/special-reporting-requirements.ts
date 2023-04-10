@@ -8,7 +8,7 @@ import './add-edit-special-rep-req';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
 import CONSTANTS from '../../../common/constants';
-import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
+import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
@@ -196,7 +196,7 @@ export class SpecialReportingRequirements extends PaginationMixin(ReportingRequi
           this.requestUpdate();
         })
         .catch((error: any) => {
-          logError('Failed to delete special report requirement!', 'special-reporting-requirements', error);
+          EtoolsLogger.error('Failed to delete special report requirement!', 'special-reporting-requirements', error);
           parseRequestErrorsAndShowAsToastMsgs(error, this);
         })
         .then(() => {

@@ -19,7 +19,7 @@ import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-s
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {RootState} from '../common/types/store.types';
 
-import {logError, logWarn} from '@unicef-polymer/etools-behaviors/etools-logging';
+import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {pmpCustomIcons} from './styles/pmp-icons';
 import get from 'lodash-es/get';
@@ -453,7 +453,7 @@ export class InterventionResultsReported extends connectStore(
         });
       })
       .catch((error: any) => {
-        logError('PD/SPD progress request failed!', 'intervention-results-reported', error);
+        EtoolsLogger.error('PD/SPD progress request failed!', 'intervention-results-reported', error);
         parseRequestErrorsAndShowAsToastMsgs(error, this);
         fireEvent(this, 'global-loading', {
           active: false,
@@ -582,7 +582,7 @@ export class InterventionResultsReported extends connectStore(
         return;
       }
     } catch (err) {
-      logWarn('Time progress compute error', 'intervention-results-reported', err);
+      EtoolsLogger.warn('Time progress compute error', 'intervention-results-reported', err);
     }
     // if end date is valid and is past date or today's date, progress should be 100%
     if (isValidDate(endDt) && (dateIsAfter(today, endDt) || datesAreEqual(today, endDt))) {
