@@ -294,8 +294,6 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
     setTimeout(() => {
       if ((!this.editedData.items || !this.editedData.items.length) && this.activityItemsTable) {
         this.activityItemsTable.addNew();
-      } else {
-        this.editedData.items = [];
       }
     }, 0);
   }
