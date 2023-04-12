@@ -2,7 +2,6 @@ import {LitElement, html, property, customElement} from 'lit-element';
 import '@polymer/paper-button/paper-button';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 
-import {createDynamicDialog} from '@unicef-polymer/etools-dialog/dynamic-dialog.js';
 import '@unicef-polymer/etools-modules-common/dist/layout/icons-actions';
 import './add-edit-special-rep-req';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
@@ -23,6 +22,8 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import PaginationMixin from '@unicef-polymer/etools-modules-common/dist/mixins/pagination-mixin';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {EtoolsEndpoint} from '@unicef-polymer/etools-types';
+import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
+
 
 /**
  * @customElement
@@ -92,15 +93,11 @@ export class SpecialReportingRequirements extends PaginationMixin(ReportingRequi
   @property({type: Boolean})
   editMode!: boolean;
 
-  @property({type: Object})
-  _deleteConfirmationDialog!: EtoolsDialog;
-
   @property({type: Number})
   _itemToDeleteIndex = -1;
 
   connectedCallback() {
     super.connectedCallback();
-    this._createDeleteConfirmationsDialog();
     this._addEventListeners();
   }
 
@@ -122,7 +119,6 @@ export class SpecialReportingRequirements extends PaginationMixin(ReportingRequi
   disconnectedCallback() {
     super.disconnectedCallback();
     this._removeEventListeners();
-    this._removeDeleteConfirmationsDialog();
   }
 
   dataWasLoaded() {
@@ -162,16 +158,26 @@ export class SpecialReportingRequirements extends PaginationMixin(ReportingRequi
     this._onEdit();
   }
 
-  _onDelete(itemIndex: number) {
-    if (this._deleteConfirmationDialog) {
-      if (itemIndex !== null) {
-        this._itemToDeleteIndex = itemIndex;
-      }
-      this._deleteConfirmationDialog.opened = true;
+  async _onDelete(itemIndex: number) {
+    if (itemIndex !== null) {
+      this._itemToDeleteIndex = itemIndex;
+
+      const confirmed = await openDialog({
+        dialog: 'are-you-sure',
+        dialogData: {
+          content: getTranslation('DELETE_SPECIAL_REPORTING_REQUIREMENT_PROMPT'),
+          confirmBtnText: translate('YES'),
+          cancelBtnText: translate('NO')
+        }
+      }).then(({confirmed}) => {
+        return confirmed;
+      });
+
+      this._onDeleteConfirmation({detail: {confirmed: confirmed}});
     }
   }
 
-  _onDeleteConfirmation(e: CustomEvent) {
+  _onDeleteConfirmation(e: any) {
     if (!e.detail.confirmed) {
       this._itemToDeleteIndex = -1;
       return;
@@ -203,28 +209,6 @@ export class SpecialReportingRequirements extends PaginationMixin(ReportingRequi
           // delete complete, reset _itemToDeleteIndex
           this._itemToDeleteIndex = -1;
         });
-    }
-  }
-
-  _createDeleteConfirmationsDialog() {
-    this._onDeleteConfirmation = this._onDeleteConfirmation.bind(this);
-    const confirmationMSg = document.createElement('span');
-    confirmationMSg.innerText = getTranslation('DELETE_SPECIAL_REPORTING_REQUIREMENT_PROMPT');
-    const confirmationDialogConf = {
-      title: getTranslation('DEL_SPECIAL_REPORTING_REQUIREMENT'),
-      size: 'md',
-      okBtnText: getTranslation('GENERAL.YES'),
-      cancelBtnText: getTranslation('GENERAL.NO'),
-      closeCallback: this._onDeleteConfirmation,
-      content: confirmationMSg
-    };
-    this._deleteConfirmationDialog = createDynamicDialog(confirmationDialogConf);
-  }
-
-  _removeDeleteConfirmationsDialog() {
-    if (this._deleteConfirmationDialog) {
-      this._deleteConfirmationDialog.removeEventListener('close', this._onDeleteConfirmation as any);
-      document.querySelector('body')!.removeChild(this._deleteConfirmationDialog);
     }
   }
 
