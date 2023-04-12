@@ -291,14 +291,11 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
       unicef_cash: '0'
     };
 
-    if ((!this.editedData.items || !this.editedData.items.length) && this.activityItemsTable) {
-      // add by default a row in activity items table if we have none
-      setTimeout(() => {
+    setTimeout(() => {
+      if ((!this.editedData.items || !this.editedData.items.length) && this.activityItemsTable) {
         this.activityItemsTable.addNew();
-      }, 100);
-    } else {
-      this.editedData.items = [];
-    }
+      }
+    }, 0);
   }
 
   validate() {
