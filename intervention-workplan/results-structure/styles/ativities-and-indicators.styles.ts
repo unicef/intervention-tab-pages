@@ -33,7 +33,7 @@ export const ActivitiesAndIndicatorsStyles: CSSResult = css`
     position: absolute;
     display: none;
     top: 0;
-    right: 0;
+    inset-inline-end: 0;
     z-index: 999;
   }
   .table-row.active .show-actions,

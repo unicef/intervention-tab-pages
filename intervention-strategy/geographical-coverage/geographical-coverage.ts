@@ -165,7 +165,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
             option-value="id"
             error-message=${translate('LOCATIONS_ERR')}
             trigger-value-change-event
-            horizontal-align="left"
+            horizontal-align
             @etools-selected-items-changed="${({detail}: CustomEvent) =>
               this.selectedItemsChanged(detail, 'flat_locations')}"
           >

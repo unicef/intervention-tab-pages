@@ -50,7 +50,7 @@ export class ExportInterventionData extends LitElement {
   }
   public render() {
     return html`
-      <paper-menu-button id="pdExportMenuBtn" close-on-activate horizontal-align="right">
+      <paper-menu-button id="pdExportMenuBtn" close-on-activate horizontal-align>
         <paper-button slot="dropdown-trigger" class="dropdown-trigger">
           <iron-icon icon="more-vert"></iron-icon>
         </paper-button>

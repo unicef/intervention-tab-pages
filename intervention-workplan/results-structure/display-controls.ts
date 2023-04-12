@@ -63,7 +63,7 @@ export class DisplayControls extends LitElement {
       </paper-toggle-button>
 
       <div class="layout-horizontal">
-        <paper-menu-button id="view-menu-button" close-on-activate horizontal-align="right">
+        <paper-menu-button id="view-menu-button" close-on-activate horizontal-align>
           <paper-button slot="dropdown-trigger" class="dropdown-trigger">
             ${this.selectedViewType}
             <iron-icon icon="expand-more"></iron-icon>
