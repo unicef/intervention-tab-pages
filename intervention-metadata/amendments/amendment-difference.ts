@@ -3,8 +3,8 @@ import {translatesMap} from '../../utils/intervention-labels-map';
 import {translate} from 'lit-translate';
 import {GenericObject, LabelAndValue} from '@unicef-polymer/etools-types';
 import {get as getTranslation} from 'lit-translate/util';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
-import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
+import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 
 const ACTIONS: GenericObject<string> = {
   add: 'ADDED',

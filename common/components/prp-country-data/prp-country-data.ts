@@ -1,7 +1,7 @@
 import {LitElement, customElement} from 'lit-element';
 // eslint-disable-next-line max-len
 import EndpointsLitMixin from '@unicef-polymer/etools-modules-common/dist/mixins/endpoints-mixin-lit';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {setPrpCountries} from '../../actions/interventions';
 import get from 'lodash-es/get';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';

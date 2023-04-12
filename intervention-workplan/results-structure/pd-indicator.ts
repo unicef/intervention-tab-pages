@@ -1,6 +1,6 @@
 import {LitElement, html, customElement, property, TemplateResult, css, query} from 'lit-element';
 import '@unicef-polymer/etools-data-table/etools-data-table';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {ResultStructureStyles} from './styles/results-structure.styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';

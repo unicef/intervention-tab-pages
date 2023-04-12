@@ -1,4 +1,4 @@
-import {logWarn} from '@unicef-polymer/etools-behaviors/etools-logging';
+import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import {LitElement, property} from 'lit-element';
 import {Constructor} from '@unicef-polymer/etools-types';
 
@@ -71,7 +71,7 @@ function IndicatorsCommonMixin<T extends Constructor<LitElement>>(baseClass: T) 
         if (elem) {
           valid = elem.validate() && valid;
         } else {
-          logWarn('Elem ' + elemId + ' not found');
+          EtoolsLogger.warn('Elem ' + elemId + ' not found');
         }
       });
       return valid;

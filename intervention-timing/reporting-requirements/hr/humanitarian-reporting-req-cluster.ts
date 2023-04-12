@@ -1,11 +1,11 @@
 import {LitElement, html, property, customElement} from 'lit-element';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
-import {isEmptyObject} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
-import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
+import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
+import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {ExpectedResult, ResultLinkLowerResult} from '@unicef-polymer/etools-types';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
 import {translate} from 'lit-translate';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
@@ -119,7 +119,11 @@ export class HumanitarianReportingReqCluster extends EndpointsLitMixin(Reporting
         this.requestUpdate();
       })
       .catch((error: any) => {
-        logError('Failed to get hr cluster requirements from API!', 'humanitarian-reporting-req-cluster', error);
+        EtoolsLogger.error(
+          'Failed to get hr cluster requirements from API!',
+          'humanitarian-reporting-req-cluster',
+          error
+        );
         parseRequestErrorsAndShowAsToastMsgs(error, this);
         reportingRequirementsOriginal = [];
         this.reportingRequirements = [...reportingRequirementsOriginal];

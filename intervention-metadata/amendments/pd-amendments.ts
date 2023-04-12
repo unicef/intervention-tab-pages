@@ -10,27 +10,25 @@ import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {RootState} from '../../common/types/store.types';
-import {prettyDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
-import {
-  getFileNameFromURL,
-  getTranslatedValue,
-  isJsonStrMatch
-} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {prettyDate} from '@unicef-polymer/etools-utils/dist/date.util';
+import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
+import {getFileNameFromURL} from '@unicef-polymer/etools-utils/dist/general.util';
+import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {selectAmendmentsPermissions} from './pd-amendments.selectors';
 import {AmendmentsKind, AmendmentsKindTranslateKeys, PdAmendmentPermissions} from './pd-amendments.models';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
-import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
+import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AnyObject, AsyncAction, LabelAndValue, Permission} from '@unicef-polymer/etools-types';
+import {AnyObject, AsyncAction, EtoolsEndpoint, LabelAndValue, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
 import {get as getTranslation} from 'lit-translate/util';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {getIntervention} from '../../common/actions/interventions';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import './amendment-difference';
 
 /**
@@ -228,7 +226,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
 
   stateChanged(state: RootState) {
     if (
-      pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata') ||
+      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata') ||
       !state.interventions.current
     ) {
       return;
@@ -308,7 +306,10 @@ export class PdAmendments extends CommentsMixin(LitElement) {
       });
       const options = {
         method: 'DELETE',
-        endpoint: getEndpoint(interventionEndpoints.interventionAmendmentDelete, {amendmentId})
+        endpoint: getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(
+          interventionEndpoints.interventionAmendmentDelete,
+          {amendmentId}
+        )
       };
       sendRequest(options)
         .then(() => {

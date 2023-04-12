@@ -5,10 +5,10 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import {translate} from 'lit-translate';
 import {InterventionReview} from '@unicef-polymer/etools-types';
 import {REVIEW_ANSVERS, REVIEW_QUESTIONS} from '../../common/components/intervention/review.const';
-import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
-import {formatDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
+import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
+import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import '../../common/components/intervention/review-checklist-popup';
-import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 
 @customElement('overall-approval')
 export class OverallApproval extends LitElement {
