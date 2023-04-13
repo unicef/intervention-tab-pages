@@ -6,7 +6,7 @@ import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/st
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {TimingOverviewData} from './timingOverview.models';
 import {selectTimingOverview} from './timingOverview.selectors';
-import {formatDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
+import {formatDateLocalized} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
 import {RootState} from '../../common/types/store.types';
 import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import get from 'lodash-es/get';
@@ -40,56 +40,56 @@ export class TimingOverview extends CommentsMixin(LitElement) {
           <div class="data-column">
             <label class="paper-label">${translate('DATE_CREATED')}</label>
             <div class="input-label" ?empty="${!this.timingOverview.created}">
-              ${formatDate(this.timingOverview.created)}
+              ${formatDateLocalized(this.timingOverview.created)}
             </div>
           </div>
 
           <div class="data-column">
             <label class="paper-label">${translate('DATE_FIRST_SENT_PARTNER')}</label>
             <div class="input-label" ?empty="${!this.timingOverview.date_sent_to_partner}">
-              ${formatDate(this.timingOverview.date_sent_to_partner)}
+              ${formatDateLocalized(this.timingOverview.date_sent_to_partner)}
             </div>
           </div>
 
           <div class="data-column">
             <label class="paper-label">${translate('DATE_FIRST_DRAFT_PARTNER')}</label>
             <div class="input-label" ?empty="${!this.timingOverview.submission_date}">
-              ${formatDate(this.timingOverview.submission_date)}
+              ${formatDateLocalized(this.timingOverview.submission_date)}
             </div>
           </div>
 
           <div class="data-column">
             <label class="paper-label">${translate('PRC_SUBMISSION_DATE')}</label>
             <div class="input-label" ?empty="${!this.timingOverview.submission_date_prc}">
-              ${formatDate(this.timingOverview.submission_date_prc)}
+              ${formatDateLocalized(this.timingOverview.submission_date_prc)}
             </div>
           </div>
 
           <div class="data-column">
             <label class="paper-label">${translate('PRC_REVIEW_DATE')}</label>
             <div class="input-label" ?empty="${!this.timingOverview.review_date_prc}">
-              ${formatDate(this.timingOverview.review_date_prc)}
+              ${formatDateLocalized(this.timingOverview.review_date_prc)}
             </div>
           </div>
 
           <div class="data-column">
             <label class="paper-label">${translate('DATE_PARTNER_SIGNED')}</label>
             <div class="input-label" ?empty="${!this.timingOverview.signed_by_partner_date}">
-              ${formatDate(this.timingOverview.signed_by_partner_date)}
+              ${formatDateLocalized(this.timingOverview.signed_by_partner_date)}
             </div>
           </div>
 
           <div class="data-column">
             <label class="paper-label">${translate('DATE_UNICEF_SIGNED')}</label>
             <div class="input-label" ?empty="${!this.timingOverview.signed_by_unicef_date}">
-              ${formatDate(this.timingOverview.signed_by_unicef_date)}
+              ${formatDateLocalized(this.timingOverview.signed_by_unicef_date)}
             </div>
           </div>
 
           <div class="data-column">
             <label class="paper-label">${translate('DATE_LAST_AMENDED')}</label>
             <div class="input-label" ?empty="${!this.timingOverview.date_last_amended}">
-              ${formatDate(this.timingOverview.date_last_amended)}
+              ${formatDateLocalized(this.timingOverview.date_last_amended)}
             </div>
           </div>
 

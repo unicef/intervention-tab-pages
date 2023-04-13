@@ -103,7 +103,7 @@
   "CAPACITY_DEVELOPMENT_TOOLTIP": "O UNICEF apoia os parceiros no fortalecimento de suas capacidades de gestão programática e financeira e na prevenção de fraudes, exploração e abuso sexual e na salvaguarda de violações. Esta seção descreve as principais prioridades e planos de desenvolvimento de capacidades do parceiro durante o período de intervenção do programa.",
   "CAPACITY_STRENGTHENING_COST": "Custo de fortalecimento da capacidade",
   "CAPACITY_STRENGTHENING_COST_AUTOMATIC": "Porcentagem de custo de fortalecimento da capacidade",
-   "CAPACITY_STRENGTHENING_COST_DESCRIPTION": "Custo de reforço da capacidade",
+  "CAPACITY_STRENGTHENING_COST_DESCRIPTION": "Custo de reforço da capacidade",
   "CASH_TRANSFERED": "Valor financeiro Transferido",
   "CASH_TRANSFER_MOD": "Modalidade (s) de transferência financeira ",
   "CASH_TRANSFER_MODALITIES": {
@@ -535,7 +535,7 @@
   "REVIEW_CHECKLIST": "Revisar Checklist",
   "REVIEW_CREATED": "Data da submissão para revisão",
   "REVIEW_DATE_PRC": "Data de revisão",
-  "REVIEW_MEMBERS": "Membros do Comitê de Revisão do Projeto",
+  "REVIEW_MEMBERS": "Membros do Comitê de Revisão da Parceria",
   "REVIEW_PROMPT": "Aceite como Budget Owner se estiver satisfeito com todas as informações inseridas, orçamento planejado, resultados planejados e outros requisitos",
   "REVIEW_QUESTIONS": {
     "BUDGET_IS_ALIGNED": "O orçamento do PD/SPD proposto está alinhado com os princípios da relação custo-benefício com os custos de gestão do programa eficaz e eficiente aderindo aos limites definidos pelo escritório",
@@ -725,5 +725,22 @@
   "WORKPLAN_TAB": "Plano de trabalho",
   "YEAR": "Ano",
   "YEAR_SELECTED_ERR": "Ano já selecionado em outro item da visita planejada",
-  "YES": "Sim"
+  "YES": "Sim",
+  "ATTACHMENT_EXPECTS_AN_INTEGER": "O anexo espera um número inteiro",
+  "INACTIVE": "Inativo",
+  "TERMINATE_PD_SPD": "Encerrar PD/SPD",
+  "TERMINATION_DATE": "Data de Encerração",
+  "PLEASE_SELECT_TERMINATION_DATE": "Selecione a data de encerração",
+  "TERMINATION_NOTICE_FILE_IS_REQUIRED": "Nota de rescisão é obrigatória",
+  "UNSUSPEND": "Cancelar a suspensão",
+  "FIX_VALIDATION_ERRORS": "Por favor, corrija erros de validação",
+  "CAN_NOT_SAVE_REVIEW": "Não pode salvar a revisão.",
+  "TRY_AGAIN_LATER": "Tente novamente mais tarde",
+  "CAN_NOT_REMOVE_AMENDMENT": "Não pode remover a emenda. Tente novamente mais tarde",
+  "NOTIFICATION_SENT_SUCCESS": "Notificação enviada com sucesso",
+  "CAN_NOT_SEND_NOTIFICATION": "Não pode enviar notificação",
+  "CAN_NOT_UPLOAD_SUPPLIES": "Não pode carregar fornecimentos",
+  "ACTIVATION_LETTER_ATTACHMENT": "Anexar carta de activação",
+  "RESULT__CP_OUTPUT": "Resultado CP Saída"
 }
+

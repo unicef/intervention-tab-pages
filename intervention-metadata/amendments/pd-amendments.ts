@@ -57,7 +57,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
 
         .attachment {
           color: var(--dark-icon-color);
-          margin-right: 8px;
+          margin-inline-end: 8px;
         }
         .file-label {
           width: calc(100% - 32px);
@@ -77,7 +77,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
         }
         iron-icon {
           width: 18px;
-          margin-left: 5px;
+          margin-inline-start: 5px;
         }
         a {
           line-height: 12px;
@@ -100,6 +100,9 @@ export class PdAmendments extends CommentsMixin(LitElement) {
         .static-column {
           flex: 1;
           max-width: 150px;
+        }
+        .editable-row {
+          line-height: 24px;
         }
       </style>
 
@@ -313,7 +316,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
           return getStore().dispatch<AsyncAction>(getIntervention(this.intervention.id));
         })
         .catch(() => {
-          fireEvent(this, 'toast', {text: 'Can not remove amendment. Try again later'});
+          fireEvent(this, 'toast', {text: getTranslation('CAN_NOT_REMOVE_AMENDMENT')});
         })
         .finally(() => {
           fireEvent(this, 'global-loading', {

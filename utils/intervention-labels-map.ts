@@ -78,5 +78,6 @@ export const translatesMap: GenericObject = {
   context_details: 'CONTEXT',
   has_data_processing_agreement: 'HAS_DATA_PROCESSING_AGREEMENT',
   has_activities_involving_children: 'HAS_ACTIVITIES_INVOLVING_CHILDREN',
-  has_special_conditions_for_construction: 'HAS_SPECIAL_CONDITIONS_FOR_CONSTRUCTION'
+  has_special_conditions_for_construction: 'HAS_SPECIAL_CONDITIONS_FOR_CONSTRUCTION',
+  activation_letter_attachment: 'ACTIVATION_LETTER'
 };

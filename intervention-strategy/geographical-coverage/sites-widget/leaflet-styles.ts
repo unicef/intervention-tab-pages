@@ -208,11 +208,11 @@ export const leafletStyles: CSSResult = css`
   }
 
   .leaflet-left .leaflet-control {
-    margin-left: 10px;
+    margin-inline-start: 10px;
   }
 
   .leaflet-right .leaflet-control {
-    margin-right: 10px;
+    margin-inline-end: 10px;
   }
 
   /* zoom and fade animations */
@@ -432,7 +432,8 @@ export const leafletStyles: CSSResult = css`
   }
 
   .leaflet-control-layers-expanded {
-    padding: 6px 10px 6px 6px;
+    padding: 6px;
+    padding-inline-end: 10px;
     color: #333;
     background: #fff;
   }
@@ -440,7 +441,7 @@ export const leafletStyles: CSSResult = css`
   .leaflet-control-layers-scrollbar {
     overflow-y: scroll;
     overflow-x: hidden;
-    padding-right: 5px;
+    padding-inline-end: 5px;
   }
 
   .leaflet-control-layers-selector {
@@ -456,7 +457,9 @@ export const leafletStyles: CSSResult = css`
   .leaflet-control-layers-separator {
     height: 0;
     border-top: 1px solid #ddd;
-    margin: 5px -10px 5px -6px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-inline: -6px -10px;
   }
 
   /* attribution and scale controls */
@@ -487,7 +490,7 @@ export const leafletStyles: CSSResult = css`
   }
 
   .leaflet-left .leaflet-control-scale {
-    margin-left: 5px;
+    margin-inline-start: 5px;
   }
 
   .leaflet-bottom .leaflet-control-scale {
@@ -552,7 +555,8 @@ export const leafletStyles: CSSResult = css`
   }
 
   .leaflet-popup-content {
-    margin: 1px 13px 1px 10px;
+    margin: 1px;
+    margin-inline: 10px 13px;
     line-height: 1.4;
   }
 
@@ -565,7 +569,7 @@ export const leafletStyles: CSSResult = css`
     height: 20px;
     position: absolute;
     left: 50%;
-    margin-left: -20px;
+    margin-inline-start: -20px;
     overflow: hidden;
     pointer-events: none;
   }
@@ -693,7 +697,7 @@ export const leafletStyles: CSSResult = css`
   .leaflet-tooltip-bottom:before,
   .leaflet-tooltip-top:before {
     left: 50%;
-    margin-left: -6px;
+    margin-inline-start: -6px;
   }
 
   .leaflet-tooltip-top:before {
@@ -705,16 +709,16 @@ export const leafletStyles: CSSResult = css`
   .leaflet-tooltip-bottom:before {
     top: 0;
     margin-top: -12px;
-    margin-left: -6px;
+    margin-inline-start: -6px;
     border-bottom-color: #fff;
   }
 
   .leaflet-tooltip-left {
-    margin-left: -6px;
+    margin-inline-start: -6px;
   }
 
   .leaflet-tooltip-right {
-    margin-left: 6px;
+    margin-inline-start: 6px;
   }
 
   .leaflet-tooltip-left:before,
@@ -725,13 +729,13 @@ export const leafletStyles: CSSResult = css`
 
   .leaflet-tooltip-left:before {
     right: 0;
-    margin-right: -12px;
+    margin-inline-end: -12px;
     border-left-color: #fff;
   }
 
   .leaflet-tooltip-right:before {
     left: 0;
-    margin-left: -12px;
+    margin-inline-start: -12px;
     border-right-color: #fff;
   }
 
@@ -760,7 +764,7 @@ export const leafletStyles: CSSResult = css`
   .marker-cluster div {
     width: 30px;
     height: 30px;
-    margin-left: 5px;
+    margin-inline-start: 5px;
     margin-top: 5px;
 
     text-align: center;

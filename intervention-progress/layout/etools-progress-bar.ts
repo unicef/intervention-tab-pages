@@ -24,7 +24,7 @@ export class EtoolsProgressBar extends LitElement {
         }
 
         #progress-percent {
-          margin-left: 16px;
+          margin-inline-start: 16px;
           min-width: 56px;
         }
 

@@ -42,7 +42,7 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
         }
 
         #qpr-edit-info {
-          margin-right: 24px;
+          margin-inline-end: 24px;
         }
 
         qpr-list {

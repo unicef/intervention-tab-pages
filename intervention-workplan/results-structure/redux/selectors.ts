@@ -1,5 +1,6 @@
 import {createSelector} from 'reselect';
 import {Disaggregation} from '@unicef-polymer/etools-types';
+import {get as getTranslation} from 'lit-translate';
 
 const disaggregationsSelector = (state: any) => state.commonData!.disaggregations;
 
@@ -11,7 +12,7 @@ export const flaggedSortedDisaggregs = createSelector(disaggregationsSelector, (
   return [...disagregs]
     .map((d: Disaggregation) => {
       if (!d.active) {
-        d.name = '(*Inactive) ' + d.name;
+        d.name = `(*${getTranslation('INACTIVE')}) ` + d.name;
       }
       return d;
     })

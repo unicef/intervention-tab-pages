@@ -563,13 +563,14 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
       buttonsStyles,
       css`
         iron-icon[icon='create'] {
-          margin-left: 50px;
+          margin-inline-start: 50px;
         }
         .no-results {
           padding: 24px;
         }
         .pd-title {
-          padding: 8px 42px 0px 22px;
+          padding-block: 8px 0;
+          padding-inline 22px 42px;
           font-size: 16px;
           font-weight: 500;
           line-height: 19px;
@@ -615,7 +616,8 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         etools-data-table-row::part(edt-icon-wrapper) {
           min-height: 0;
           line-height: normal;
-          padding: 4px 8px 0 13px;
+          padding-block: 4px 0;
+          padding-inline: 13px 8px;
           align-self: flex-start;
         }
         etools-data-table-row::part(edt-list-row-wrapper):hover {
@@ -642,7 +644,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         }
         .total-result {
           padding-bottom: 6px;
-          margin-left: 12px;
+          margin-inline-start: 12px;
         }
         .total-result b {
           font-size: 22px;
@@ -651,7 +653,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         }
         .total-result .heading {
           font-size: 14px;
-          margin-right: 10px;
+          margin-inline-end: 10px;
           line-height: 23px;
         }
         etools-content-panel {
@@ -686,7 +688,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           padding: 6px 0 4px;
         }
         .count div:first-child {
-          margin-right: 20px;
+          margin-inline-end: 20px;
         }
 
         etools-data-table-row#pdOutputRow::part(edt-list-row-wrapper) {

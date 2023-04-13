@@ -56,8 +56,8 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
         }
         paper-slider {
           width: 100%;
-          margin-left: -15px;
-          margin-top: -5px;
+          margin-inline-start: -15px;
+          margin-inline-end: -5px;
           height: 30px;
         }
         .hq-info-label {

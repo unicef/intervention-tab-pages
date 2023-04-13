@@ -357,7 +357,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       if (!activity.items) {
         activity.items = [];
       }
-      activity.items?.push({name: '', inEditMode: true} as any);
+      activity.items?.push({name: '', cso_cash: '0', unicef_cash: '0', unit_price: '0', inEditMode: true} as any);
       activity.inEditMode = true;
       activity.itemsInEditMode = true;
       this.oneEntityInEditMode = true;

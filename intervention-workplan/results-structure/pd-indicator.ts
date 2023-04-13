@@ -7,7 +7,7 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {Disaggregation, DisaggregationValue} from '@unicef-polymer/etools-types';
 import {Indicator} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
 import {getIndicatorDisplayType} from '../../utils/utils';
@@ -42,7 +42,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
       </style>
       <div
         class="table-row editable-row"
-        style="padding-right: 0 !important"
+        style="padding-inline-end: 0 !important"
         related-to="indicator-${this.indicator.id}"
         related-to-description="${this.indicator.indicator?.title}"
         comments-container
@@ -50,7 +50,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
         @paper-dropdown-close="${(event: CustomEvent) =>
           (event.currentTarget as HTMLElement)!.classList.remove('active')}"
       >
-        <div class="main-info" style="padding-right:10%">
+        <div class="main-info" style="padding-inline-end:10%">
           <!--    Indicator name    -->
           <div class="flex-1 left-align layout-vertical start-aligned">
             <div class="name layout-horizontal">
@@ -218,7 +218,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
   }
 
   private addInactivePrefix(indicator: any) {
-    return !indicator || indicator.is_active ? '' : html`<strong>(inactive)</strong>`;
+    return !indicator || indicator.is_active ? '' : html`<strong>(${getTranslation('INACTIVE')})</strong>`;
   }
 
   _displayBaselineOrTarget(item: any, indicator: Indicator) {
@@ -271,7 +271,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
         .table-row {
           gap: 0;
           flex-direction: column;
-          padding-right: 10%;
+          padding-inline-end: 10%;
         }
         .main-info {
           display: flex;
@@ -286,7 +286,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
         }
         .details-container {
           text-align: left;
-          padding-left: 0;
+          padding-inline-start: 0;
         }
         .details-list-item {
           font-size: 16px;
@@ -312,13 +312,13 @@ export class PdIndicator extends CommentsMixin(LitElement) {
         }
         div.editable-row .hover-block {
           background: linear-gradient(270deg, var(--main-background) 71.65%, rgba(196, 196, 196, 0) 100%);
-          padding-left: 20px;
+          padding-inline-start: 20px;
         }
         .hf-mark {
           width: 15px;
           height: 15px;
           flex: none;
-          margin-left: 2px;
+          margin-inline-start: 2px;
           border-radius: 50%;
           background-color: #2073b7;
         }

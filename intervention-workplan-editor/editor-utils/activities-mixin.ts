@@ -19,7 +19,7 @@ import {
   InterventionActivityExtended,
   ResultLinkLowerResultExtended
 } from '../../common/types/editor-page-types';
-import {translate} from 'lit-translate/directives/translate';
+import {translate, get as getTranslation} from 'lit-translate';
 import {TruncateMixin} from '../../common/mixins/truncate.mixin';
 import {getTotalCashFormatted} from '../../common/components/activity/get-total.helper';
 import {
@@ -127,7 +127,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'name', activity)}"
                   ></paper-textarea>
                   <div class="truncate-multi-line b" title="${activity.name}" ?hidden="${activity.inEditMode}">
-                    ${activity.is_active ? '' : html`<b>(inactive)</b>`}${activity.name}
+                    ${activity.is_active ? '' : html`<b>(${translate('INACTIVE')})</b>`}${activity.name}
                   </div>
                   <div class="pad-top-8">
                     <paper-textarea
@@ -398,7 +398,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
       if (!this.validateActivity(activity) || !this.validateActivityItems(activity)) {
         this.requestUpdate();
         fireEvent(this, 'toast', {
-          text: 'Please fix validation errors'
+          text: getTranslation('FIX_VALIDATION_ERRORS')
         });
         return;
       }

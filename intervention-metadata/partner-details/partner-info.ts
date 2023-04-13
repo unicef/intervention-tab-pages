@@ -26,7 +26,7 @@ import {RootState} from '../../common/types/store.types';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission, PartnerStaffMember, AnyObject} from '@unicef-polymer/etools-types';
 import {MinimalAgreement} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation, langChanged} from 'lit-translate';
 
 /**
  * @customElement
@@ -114,7 +114,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
             <etools-dropdown-multi
               label=${translate('PARTNER_FOCAL_POINTS')}
               .selectedValues="${this.data?.partner_focal_points?.map((f: any) => f.id)}"
-              .options="${this.partnerStaffMembers}"
+              .options="${langChanged(() => this.formattedPartnerStaffMembers)}"
               option-label="name"
               option-value="id"
               ?required=${this.permissions?.required.partner_focal_points}
@@ -157,6 +157,15 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
 
   @property({type: Array})
   partnerStaffMembers!: PartnerStaffMember[];
+
+  get formattedPartnerStaffMembers() {
+    return this.partnerStaffMembers?.map((member: PartnerStaffMember) => ({
+      name: `${!member.active ? `[${getTranslation('INACTIVE')}]` : ''} ${member.first_name} ${member.last_name} (${
+        member.email
+      })`,
+      id: member.id
+    }));
+  }
 
   connectedCallback() {
     super.connectedCallback();
@@ -208,10 +217,11 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
     return sendRequest({
       endpoint: getEndpoint(interventionEndpoints.partnerStaffMembers, {id: partnerId})
     }).then((resp) => {
-      resp.forEach((staff: PartnerStaffMember) => {
-        staff.name = staff.first_name + ' ' + staff.last_name;
-      });
-      return resp;
+      return resp.sort(
+        (a: PartnerStaffMember, b: PartnerStaffMember) =>
+          Number(b.active) - Number(a.active) ||
+          `${a.first_name} ${a.last_name}`.localeCompare(`${b.first_name} ${b.last_name}`)
+      );
     });
   }
 

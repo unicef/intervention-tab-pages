@@ -119,7 +119,8 @@ export const ActivitiesAndIndicatorsStyles: CSSResult = css`
     border-bottom: none !important;
   }
   etools-data-table-row::part(edt-icon-wrapper) {
-    padding: 0 8px 0 13px;
+    padding: 0;
+    padding-inline: 13px 8px;
   }
 
   .editable-row .hover-block {

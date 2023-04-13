@@ -47,7 +47,9 @@ export class InterventionPageContentHeader extends LitElement {
           flex-wrap: wrap;
           flex: 1;
           align-items: center;
-          padding: 5px 12px 5px 24px;
+          padding-top: 5px;
+          padding-bottom: 5px;
+          padding-inline: 24px 12px;
         }
 
         .content-header-row h1 {
@@ -55,17 +57,17 @@ export class InterventionPageContentHeader extends LitElement {
         }
 
         .modeContainer {
-          padding-right: 20px;
+          padding-inline-end: 20px;
         }
 
         .vb {
-          border-left: 2px solid var(--light-hex-divider-color);
-          padding-right: 20px;
+          border-inline-start: 2px solid var(--light-hex-divider-color);
+          padding-inline-end: 20px;
           height: 30px;
         }
 
         .title {
-          padding-right: 20px;
+          padding-inline-end: 20px;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
@@ -82,7 +84,7 @@ export class InterventionPageContentHeader extends LitElement {
         }
 
         .statusContainer {
-          padding-right: 20px;
+          padding-inline-end: 20px;
         }
 
         .flex-block > * {
