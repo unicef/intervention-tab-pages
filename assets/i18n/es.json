@@ -741,6 +741,24 @@
   "CAN_NOT_SEND_NOTIFICATION": "No se puede enviar la notificación",
   "CAN_NOT_UPLOAD_SUPPLIES": "No se pueden cargar los suministros",
   "ACTIVATION_LETTER_ATTACHMENT": "Carta de activación adjunta",
-  "RESULT__CP_OUTPUT": "Resultado CP Salida"
+  "RESULT__CP_OUTPUT": "Resultado CP Salida",
+  "FRNUMBERSCONSISTENCY" : {
+    "AMOUNTSCANNOTBECOMPARED": "El importe de los FR y la contribución en efectivo de UNICEF no pueden compararse.",
+    "TOOMANYFRSCURENCIES": "Hay más de 1 moneda FR disponible.",
+    "AMOUNTANDDISBURSEMENTNOTDISPLAYED": "No se pueden mostrar los totales de importe FR y Desembolso real.",
+    "CURRENCYMISMATCH": "La moneda FR no coincide con la moneda PD/SPD.",
+    "CANNOTCALCDISBURSEMENT": "Desembolso hasta la fecha % no se puede calcular.",
+    "ADDEDFRSCURRENCIESMISMATCH": "La moneda del PD/SPD y del FR no son la misma y no pueden compararse. Para poder comparar los importes, puede anular e introducir el presupuesto en la misma moneda que el FR.",
+    "AMOUNT": "El importe total del FR no coincide con la contribución en efectivo de UNICEF prevista.",
+    "DATETMPL": "FR <<field_name>> no es lo mismo que PD/SPD <<field_name>>.",
+    "WARNINGTMPL": "Los <<frs_fields>> deben ser los mismos que los <<pd_fields>> de PD/SPD.",
+    "FCMULTICURRFLAGERRORMSG": "En VISION existen múltiples monedas de transacción",
+    "START_DATE": "Fecha de inicio",
+    "END_DATE": "Fecha final",
+    "PD_UNICEF_CASH_CONTRIBUTION": "Contribución en efectivo de UNICEF",
+    "FR_EARLIEST_DATE": "FR Fecha de inicio",
+    "FR_LATEST_DATE": "FR Fecha final",
+    "FR_TOTAL_AMOUNT": "Importe total FR"
+  }
 }
 

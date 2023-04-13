@@ -741,6 +741,24 @@
   "CAN_NOT_SEND_NOTIFICATION": "لا يمكن إرسال الإخطار",
   "CAN_NOT_UPLOAD_SUPPLIES": "لا يمكن تحميل المستلزمات",
   "ACTIVATION_LETTER_ATTACHMENT": "مرفق خطاب التفعيل",
-  "RESULT__CP_OUTPUT": "نتيجة الناتج CP"
+  "RESULT__CP_OUTPUT": "نتيجة الناتج CP",
+  "FRNUMBERSCONSISTENCY" : {
+    "AMOUNTSCANNOTBECOMPARED": "لا يمكن مقارنة مبلغ FRs ومساهمة اليونيسف النقدية.",
+    "TOOMANYFRSCURENCIES": "يتوفر أكثر من عملة FR.",
+    "AMOUNTANDDISBURSEMENTNOTDISPLAYED": "لا يمكن عرض إجماليات مبلغ FR والصرف الفعلي.",
+    "CURRENCYMISMATCH": "عملة FR لا تتطابق مع عملة PD / SPD.",
+    "CANNOTCALCDISBURSEMENT": "لا يمكن حساب الصرف حتى تاريخ٪.",
+    "ADDEDFRSCURRENCIESMISMATCH": "عملة PD / SPD و FR ليست هي نفسها ولا يمكن مقارنتها. لتتمكن من مقارنة المبالغ ، يمكنك إلغاء الميزانية وإدخالها بنفس عملة الفرنك السويسري.",
+    "AMOUNT": "إجمالي المبلغ FR ليس هو نفسه المساهمات النقدية المخططة لليونيسيف.",
+    "DATETMPL": "ليس FR <<field_name>> هو نفسه PD / SPD <<field_name>>.",
+    "WARNINGTMPL": "يجب أن تكون <<frs_fields>> هي نفسها PD / SPD <<pd_fields>>.",
+    "FCMULTICURRFLAGERRORMSG": "هناك العديد من عملات المعاملات في VISION",
+    "START_DATE": "تاريخ البدء",
+    "END_DATE": "تاريخ الانتهاء",
+    "PD_UNICEF_CASH_CONTRIBUTION": "مساهمة اليونيسف النقدية",
+    "FR_EARLIEST_DATE": "تاريخ بدء FR",
+    "FR_LATEST_DATE": "تاريخ انتهاء FR",
+    "FR_TOTAL_AMOUNT": "إجمالي مبلغ FR"
+  }
 }
 

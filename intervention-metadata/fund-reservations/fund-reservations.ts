@@ -136,6 +136,9 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
   @property({type: Boolean})
   isUnicefUser!: boolean;
 
+  @property({type: String})
+  currentLanguage = '';
+
   private _frsConfirmationsDialogMessage!: HTMLSpanElement;
 
   stateChanged(state: RootState) {
@@ -151,6 +154,16 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
       this.intervention = cloneDeep(currentIntervention);
       this._frsDetailsChanged(this.intervention.frs_details);
     }
+    if (this.currentLanguage !== state.activeLanguage.activeLanguage) {
+      if (this.currentLanguage) {
+        // language was already set, this is language change
+        setTimeout(() => {
+          this._frsDetailsChanged(this.intervention.frs_details);
+        }, 100);
+      }
+      this.currentLanguage = state.activeLanguage.activeLanguage;
+    }
+
     this.sePermissions(state);
     super.stateChanged(state);
   }

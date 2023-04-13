@@ -741,5 +741,23 @@
   "CAN_NOT_SEND_NOTIFICATION": "Невозможно отправить уведомление",
   "CAN_NOT_UPLOAD_SUPPLIES": "Не удается загрузить материалы",
   "ACTIVATION_LETTER_ATTACHMENT": "Приложение к письму об активации",
-  "RESULT__CP_OUTPUT": "Результат CP Выход"
+  "RESULT__CP_OUTPUT": "Результат CP Выход",
+  "FRNUMBERSCONSISTENCY" : {
+    "AMOUNTSCANNOTBECOMPARED": "Сумма ФР и денежный взнос ЮНИСЕФ не могут быть сопоставлены.",
+    "TOOMANYFRSCURENCIES": "Доступно более 1 FR валюты.",
+    "AMOUNTANDDISBURSEMENTNOTDISPLAYED": "Итоговые значения для суммы FR и фактической выплаты не могут быть отображены.",
+    "CURRENCYMISMATCH": "Валюта FR не соответствует валюте PD/SPD.",
+    "CANNOTCALCDISBURSEMENT": "Невозможно рассчитать % выплат на сегодняшний день.",
+    "ADDEDFRSCURRENCIESMISMATCH": "Валюта PD/SPD и FR не совпадают и не могут быть сопоставлены. Чтобы иметь возможность сравнить суммы, вы можете отменить и ввести бюджет в той же валюте, что и ФР.",
+    "AMOUNT": "Общая сумма ФР не совпадает с запланированным денежным взносом ЮНИСЕФ.",
+    "DATETMPL": "FR <<field_name>> - это не то же самое, что PD/SPD <<field_name>>.",
+    "WARNINGTMPL": "Поля <<frs_fields>> должны быть такими же, как поля PD/SPD <<pd_fields>>.",
+    "FCMULTICURRFLAGERRORMSG": "В VISION существует несколько валют транзакций",
+    "START_DATE": "Дата начала",
+    "END_DATE": "Дата окончания",
+    "PD_UNICEF_CASH_CONTRIBUTION": "Взнос наличными ЮНИСЕФ",
+    "FR_EARLIEST_DATE": "FR Дата начала",
+    "FR_LATEST_DATE": "Дата окончания ФР",
+    "FR_TOTAL_AMOUNT": "Общая сумма ФР"
+  }
 }
