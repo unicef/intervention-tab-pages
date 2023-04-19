@@ -32,6 +32,7 @@ import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/style
 import ContentPanelMixin from '@unicef-polymer/etools-modules-common/dist/mixins/content-panel-mixin';
 import {customIcons} from '@unicef-polymer/etools-modules-common/dist/styles/custom-icons';
 import {getArraysDiff} from '@unicef-polymer/etools-utils/dist/array.util';
+import {listenForLangChanged} from 'lit-translate';
 
 /**
  * @customElement
@@ -136,9 +137,6 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
   @property({type: Boolean})
   isUnicefUser!: boolean;
 
-  @property({type: String})
-  currentLanguage = '';
-
   private _frsConfirmationsDialogMessage!: HTMLSpanElement;
 
   stateChanged(state: RootState) {
@@ -154,15 +152,6 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
       this.intervention = cloneDeep(currentIntervention);
       this._frsDetailsChanged(this.intervention.frs_details);
     }
-    if (this.currentLanguage !== state.activeLanguage.activeLanguage) {
-      if (this.currentLanguage) {
-        // language was already set, this is language change
-        setTimeout(() => {
-          this._frsDetailsChanged(this.intervention.frs_details);
-        }, 100);
-      }
-      this.currentLanguage = state.activeLanguage.activeLanguage;
-    }
 
     this.sePermissions(state);
     super.stateChanged(state);
@@ -173,6 +162,13 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
     if (!isJsonStrMatch(this.permissions, newPermissions)) {
       this.permissions = newPermissions;
     }
+  }
+
+  constructor() {
+    super();
+    listenForLangChanged(() => {
+      this._frsDetailsChanged(this.intervention?.frs_details);
+    });
   }
 
   connectedCallback() {
@@ -406,7 +402,7 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
   }
 
   _frsDetailsChanged(frsDetails: FrsDetails) {
-    if (typeof frsDetails === 'undefined') {
+    if (!frsDetails) {
       return;
     }
     setTimeout(() => {
