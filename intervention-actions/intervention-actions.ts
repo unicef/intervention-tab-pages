@@ -249,18 +249,20 @@ export class InterventionActions extends connectStore(LitElement) {
       method: 'PATCH'
     })
       .then((intervention: Intervention) => {
+        getStore().dispatch(setShouldReGetList(true));
+
         if (action === AMENDMENT_MERGE) {
           setTimeout(() => {
             this.redirectToTabPage(intervention.id, 'metadata');
           });
         } else {
           getStore().dispatch(updateCurrentIntervention(intervention));
-          getStore().dispatch(setShouldReGetList(true));
-          if (action === REVIEW) {
-            setTimeout(() => {
-              this.redirectToTabPage(intervention.id, REVIEW);
-            });
-          }
+        }
+
+        if (action === REVIEW) {
+          setTimeout(() => {
+            this.redirectToTabPage(intervention.id, REVIEW);
+          });
         }
       })
       .finally(() => {
