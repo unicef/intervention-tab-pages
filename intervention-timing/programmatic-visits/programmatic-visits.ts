@@ -10,7 +10,6 @@ import isEmpty from 'lodash-es/isEmpty';
 import {RootState} from '../../common/types/store.types';
 import {PlannedVisitsPermissions} from './programmaticVisits.models';
 import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown';
-import {PaperInputElement} from '@polymer/paper-input/paper-input';
 import {selectPlannedVisits, selectPlannedVisitsPermissions} from './programmaticVisits.selectors';
 import {selectInterventionDates} from '../intervention-dates/interventionDates.selectors';
 import cloneDeep from 'lodash-es/cloneDeep';
@@ -21,12 +20,14 @@ import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, Intervention, Permission} from '@unicef-polymer/etools-types';
 import {PlannedVisit} from '@unicef-polymer/etools-types';
-import {translate, get as getTranslation} from 'lit-translate';
+import {translate, get as getTranslation, langChanged} from 'lit-translate';
 import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import RepeatableDataSetsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/repeatable-data-sets-mixin';
 import {repeatableDataSetsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/repeatable-data-sets-styles';
 import {getEndpoint as getEndpointHelper} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import '../../common/components/sites-widget/sites-dialog';
+import './pv-quarter';
 
 /**
  * @customElement
@@ -57,6 +58,8 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
 
         div.col-1.yearContainer {
           min-width: 110px;
+          padding-inline-start: 16px;
+          padding-top: 10px;
         }
 
         .error-msg {
@@ -78,6 +81,11 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
         }
         .totalContainer {
           text-align: center;
+          height: 114px;
+          font-weight: bold;
+        }
+        .bgColor {
+          background-color: #0099ff29;
         }
         p {
           margin-top: 24px;
@@ -85,6 +93,22 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
 
         etools-content-panel::part(ecp-content) {
           padding: 8px 24px 16px 24px;
+        }
+
+        .separator {
+          width: 5px;
+          height: 114px;
+          border-inline-end: 1px solid #979797;
+          margin-inline-end: 30px;
+        }
+        .total-lbl {
+          font-size: 14px;
+          padding-top: 15px;
+          padding-bottom: 15px;
+        }
+        paper-button iron-icon {
+          margin-inline-start: 45px;
+          margin-inline-end: 10px;
         }
       </style>
 
@@ -95,11 +119,12 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
-        <div class="row-h extra-top-padd" ?hidden="${!this.editMode}">
+        <div class="row-padding-v extra-top-padd" ?hidden="${!this.editMode}">
           <paper-button
             class="secondary-btn ${this._getAddBtnPadding(this.data?.length)}"
             @click="${this._addNewPlannedVisit}"
           >
+            <iron-icon icon="add-box"></iron-icon>
             ${translate('ADD_YEAR')}
           </paper-button>
         </div>
@@ -140,16 +165,27 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
   intervention!: Intervention;
 
   @property({type: Object})
-  getEndpoint = getEndpointHelper;
+  currentCountry!: AnyObject;
+
+  @property({type: Array})
+  allSites!: Site[];
+
+  @property({type: Object})
+  getEndpoint = getEndpointHelper; // Used in RepeatableDataSetsMixin
 
   connectedCallback() {
     super.connectedCallback();
     this.addEventListener('delete-confirm', this.afterItemDeleted as any);
+    this.addEventListener('visits-number-change', this.recalculateTotal.bind(this));
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     this.removeEventListener('delete-confirm', this.afterItemDeleted as any);
+  }
+
+  recalculateTotal() {
+    this.data = [...this.data];
   }
 
   afterItemDeleted() {
@@ -171,17 +207,60 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
     this.set_canEditAtLeastOneField(this.permissions.edit);
     this.interventionStatus = state.interventions.current.status;
     this.extraEndpointParams = {intervention_id: state.interventions.current.id};
+    this.currentCountry = get(state, 'user.data.country') as any;
+    if (!isJsonStrMatch(this.allSites, state.commonData!.sites)) {
+      this.allSites = [...state.commonData!.sites];
+    }
     super.stateChanged(state);
   }
 
   populateVisits(state: any) {
     const planned_visits = selectPlannedVisits(state).planned_visits;
     if (!isJsonStrMatch(this.originalData, planned_visits)) {
-      this.data = planned_visits;
+      const auxData = [
+        {
+          id: 204,
+          year: 2022,
+          programmatic_q1: 1,
+          programmatic_q1_sites: [{name: 'Nyangada'}, {name: 'Lambada Lionella Village'}],
+          programmatic_q2: 2,
+          programmatic_q2_sites: [],
+          programmatic_q3: 3,
+          programmatic_q3_sites: [{name: 'Nyangada'}],
+          programmatic_q4: 4,
+          programmatic_q4_sites: []
+        },
+        {
+          id: 205,
+          year: 2023,
+          programmatic_q1: 0,
+          programmatic_q1_sites: [],
+          programmatic_q2: 1,
+          programmatic_q2_sites: [],
+          programmatic_q3: 0,
+          programmatic_q3_sites: [],
+          programmatic_q4: 0,
+          programmatic_q4_sites: []
+        }
+      ];
+      auxData.forEach((item) => {
+        item.quarterIntervals = this.setQuartersIntervals(item.year);
+      });
+
+      this.data = auxData;
       this.originalData = cloneDeep(this.data);
     }
     const interventionDates = selectInterventionDates(state);
     this._setYears(interventionDates.start, interventionDates.end);
+  }
+
+  setQuartersIntervals(year: number) {
+    return [
+      '01 Jan ' + year + ' - ' + '31 Mar ' + year,
+      '01 April ' + year + ' - ' + '30 June ' + year,
+      '01 July ' + year + ' - ' + '30 Sept ' + year,
+      '01 Oct ' + year + ' - ' + '31 Dec ' + year
+    ];
   }
 
   _plannedVisitsChanged(planned_visits: any) {
@@ -220,7 +299,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
     return html`
       ${planned_visits?.map(
         (item: PlannedVisit, index: number) => html`
-          <div class="row-h item-container">
+          <div class="layout-horizontal">
             <div class="item-actions-container">
               <div class="actions">
                 <paper-icon-button
@@ -233,136 +312,91 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
                 </paper-icon-button>
               </div>
             </div>
-            <div class="item-content">
-              <div class="row-h layout-wrap">
-                <div class="col col-1 yearContainer">
-                  <etools-dropdown
-                    .id="year_${index}"
-                    class="year"
-                    label=${translate('YEAR')}
-                    placeholder="&#8212;"
-                    .selected="${item.year}"
-                    .options="${this.years}"
-                    ?required=${this.editMode}
-                    error-message=${translate('GENERAL.REQUIRED_FIELD')}
-                    trigger-value-change-event
-                    @etools-selected-item-changed="${(e: CustomEvent) => this._yearChanged(e, index)}"
-                    ?readonly="${!this.editMode}"
-                    auto-validate
-                  >
-                  </etools-dropdown>
-                </div>
-                <div class="col col-1">
-                  <paper-input
-                    .id="visit_${index}_q1"
-                    label=${translate('QUARTER_1')}
-                    .value="${item.programmatic_q1}"
-                    type="number"
-                    min="0"
-                    allowed-pattern="[0-9.]"
-                    placeholder="&#8212;"
-                    ?required="${item.year && this.editMode}"
-                    error-message=${translate('GENERAL.REQUIRED_FIELD')}
-                    auto-validate
-                    @value-changed="${(e: CustomEvent) => this.inputChanged(e, index, 'q1')}"
-                    ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
-                  >
-                  </paper-input>
-                </div>
-                <div class="col col-1">
-                  <paper-input
-                    .id="visit_${index}_q2"
-                    label=${translate('QUARTER_2')}
-                    .value="${item.programmatic_q2}"
-                    type="number"
-                    min="0"
-                    allowed-pattern="[0-9.]"
-                    placeholder="&#8212;"
-                    ?required="${item.year && this.editMode}"
-                    error-message=${translate('GENERAL.REQUIRED_FIELD')}
-                    auto-validate
-                    @value-changed="${(e: CustomEvent) => this.inputChanged(e, index, 'q2')}"
-                    ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
-                  >
-                  </paper-input>
-                </div>
-                <div class="col col-1">
-                  <paper-input
-                    .id="visit_${index}_q3"
-                    label=${translate('QUARTER_3')}
-                    .value="${item.programmatic_q3}"
-                    type="number"
-                    min="0"
-                    allowed-pattern="[0-9.]"
-                    placeholder="&#8212;"
-                    ?required="${item.year && this.editMode}"
-                    error-message=${translate('GENERAL.REQUIRED_FIELD')}
-                    auto-validate
-                    @value-changed="${(e: CustomEvent) => this.inputChanged(e, index, 'q3')}"
-                    ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
-                  >
-                  </paper-input>
-                </div>
-                <div class="col col-1">
-                  <paper-input
-                    .id="visit_${index}_q4"
-                    label=${translate('QUARTER_4')}
-                    .value="${item.programmatic_q4}"
-                    type="number"
-                    min="0"
-                    allowed-pattern="[0-9.]"
-                    placeholder="&#8212;"
-                    ?required="${item.year && this.editMode}"
-                    error-message=${translate('GENERAL.REQUIRED_FIELD')}
-                    auto-validate
-                    @value-changed="${(e: CustomEvent) => this.inputChanged(e, index, 'q4')}"
-                    ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
-                  >
-                  </paper-input>
-                </div>
-                <div class="col col-1 totalContainer">
-                  <paper-input
-                    id="totalComp"
-                    label=${translate('GENERAL.TOTAL_C')}
-                    readonly
-                    tabindex="-1"
-                    class="row-second-bg"
-                    no-placeholder
-                    .value="${this._getTotal(
-                      item.programmatic_q1,
-                      item.programmatic_q2,
-                      item.programmatic_q3,
-                      item.programmatic_q4
-                    )}"
-                  ></paper-input>
-                </div>
-                <div
-                  class="col col-4"
-                  ?hidden="${this._showErrMsg(
-                    item.year!,
+            <div class="col-1 yearContainer">
+              <etools-dropdown
+                .id="year_${index}"
+                class="year"
+                label=${translate('YEAR')}
+                placeholder="&#8212;"
+                .selected="${item.year}"
+                .options="${this.years}"
+                ?required=${this.editMode}
+                error-message=${translate('GENERAL.REQUIRED_FIELD')}
+                trigger-value-change-event
+                @etools-selected-item-changed="${(e: CustomEvent) => this._yearChanged(e, index)}"
+                ?readonly="${!this.editMode}"
+                auto-validate
+              >
+              </etools-dropdown>
+            </div>
+          </div>
+          <div class="row-padding-h">
+            <div class="row-h layout-wrap">
+              <pv-quarter
+                qIndex="1"
+                .item="${item}"
+                .currentCountry="${this.currentCountry}"
+                .allSites="${this.allSites}"
+                ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
+                ?required="${item.year && this.editMode}"
+              ></pv-quarter>
+              <div class="separator"></div>
+              <pv-quarter
+                qIndex="2"
+                .item="${item}"
+                .currentCountry="${this.currentCountry}"
+                .allSites="${this.allSites}"
+                ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
+                ?required="${item.year && this.editMode}"
+              ></pv-quarter>
+              <div class="separator"></div>
+              <pv-quarter
+                qIndex="3"
+                .item="${item}"
+                .currentCountry="${this.currentCountry}"
+                .allSites="${this.allSites}"
+                ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
+                ?required="${item.year && this.editMode}"
+              ></pv-quarter>
+              <div class="separator"></div>
+              <pv-quarter
+                qIndex="4"
+                .item="${item}"
+                .currentCountry="${this.currentCountry}"
+                .allSites="${this.allSites}"
+                ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
+                ?required="${item.year && this.editMode}"
+              ></pv-quarter>
+              <div class="separator"></div>
+              <div class="col-1 totalContainer bgColor">
+                <div class="total-lbl">${translate('GENERAL.TOTAL_C')} ${item.year}</div>
+                <div>
+                  ${this._getTotal(
                     item.programmatic_q1,
                     item.programmatic_q2,
                     item.programmatic_q3,
                     item.programmatic_q4
-                  )}"
-                >
-                  <div class="error-msg">${translate('TOTAL_ERR')}</div>
+                  )}
                 </div>
+                <div>${translate('VISITS')}</div>
+              </div>
+              <div
+                class="col flex-c"
+                ?hidden="${this._showErrMsg(
+                  item.year!,
+                  item.programmatic_q1,
+                  item.programmatic_q2,
+                  item.programmatic_q3,
+                  item.programmatic_q4
+                )}"
+              >
+                <div class="error-msg">${translate('TOTAL_ERR')}</div>
               </div>
             </div>
           </div>
         `
       )}
     `;
-  }
-
-  inputChanged(e: CustomEvent, index: number, qIndex: string) {
-    if (!e.detail) {
-      return;
-    }
-
-    this.data[index]['programmatic_' + qIndex] = e.detail.value;
-    this.data = [...this.data];
   }
 
   /**
@@ -396,6 +430,8 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
       this._clearSelectedYear(index);
     }
     this.data[index]['year'] = yearSelected;
+    this.data[index].quarterIntervals = this.setQuartersIntervals(yearSelected);
+    this.data[index] = {...this.data[index]};
     this.data = [...this.data];
   }
 
@@ -420,7 +456,10 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
   validate() {
     let valid = true;
     this.data?.forEach((item: any, index: number) => {
-      if (!(this._validateYear(index) && this._validateQuarters(item, index))) {
+      if (
+        !this._validateYear(index) ||
+        !this._getTotal(item.programmatic_q1, item.programmatic_q2, item.programmatic_q3, item.programmatic_q4)
+      ) {
         valid = false;
       }
     });
@@ -438,27 +477,6 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
     return valid;
   }
 
-  _validateQuarters(item: any, index: number) {
-    let valid = true;
-    const q1 = this.shadowRoot!.querySelector('#visit_' + index + '_q1') as PaperInputElement;
-    const q2 = this.shadowRoot!.querySelector('#visit_' + index + '_q2') as PaperInputElement;
-    const q3 = this.shadowRoot!.querySelector('#visit_' + index + '_q3') as PaperInputElement;
-    const q4 = this.shadowRoot!.querySelector('#visit_' + index + '_q4') as PaperInputElement;
-
-    [q1, q2, q3, q4].forEach(function (q) {
-      if (q) {
-        if (!q.validate()) {
-          valid = false;
-        }
-      }
-    });
-    if (!this._getTotal(item.programmatic_q1, item.programmatic_q2, item.programmatic_q3, item.programmatic_q4)) {
-      valid = false;
-    }
-
-    return valid;
-  }
-
   /**
    * Validate last added planned visit and if is not empty add a new one
    */
@@ -470,7 +488,6 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
       return;
     }
     this.data = [...this.data, new PlannedVisit()];
-    // this._addElement();
   }
 
   _getAddBtnPadding(itemsLength: number) {
@@ -480,16 +497,24 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
   _getNoPVMsgPadding(itemsLength: number) {
     return !itemsLength && this.editMode ? 'no-top-padd' : '';
   }
-
   saveData() {
     if (!this.validate()) {
+      fireEvent(this, 'toast', {
+        text: getTranslation('FIX_VALIDATION_ERRORS')
+      });
       return Promise.resolve(false);
     }
 
     return getStore()
-      .dispatch<AsyncAction>(patchIntervention({planned_visits: this.data}))
+      .dispatch<AsyncAction>(patchIntervention({planned_visits: this.cleanUpData(this.data)}))
       .then(() => {
         this.editMode = false;
       });
+  }
+
+  cleanUpData(data: PlannedVisit[]) {
+    const dataToSave = cloneDeep(data);
+    dataToSave.forEach((d) => (d.sites = d.sites.map((s: Site) => s.id)));
+    return data;
   }
 }
