@@ -159,7 +159,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
   partnerStaffMembers!: PartnerStaffMember[];
 
   get formattedPartnerStaffMembers() {
-    return this.partnerStaffMembers.map((member: PartnerStaffMember) => ({
+    return this.partnerStaffMembers?.map((member: PartnerStaffMember) => ({
       name: `${!member.active ? `[${getTranslation('INACTIVE')}]` : ''} ${member.first_name} ${member.last_name} (${
         member.email
       })`,

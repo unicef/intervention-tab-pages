@@ -421,7 +421,7 @@
   "PD_INDICATORS": "Indicateurs DP",
   "PD_OUTPUT": "Produit du DP ",
   "PD_OUTPUTS": "Produits du DP ",
-  "PD_OUTPUTS_TITLE": "Produits du document de programme Produits du document de programme ",
+  "PD_OUTPUTS_TITLE": "Produits du document de programme",
   "PD_OUTPUT_NAME": "Nom du Produit du DP sortie ",
   "PD_OUTPUT_S": "Sortie(s) DP",
   "PD_SPD_REF_NUM": "PDP/DPS réf #",
@@ -535,7 +535,7 @@
   "REVIEW_CHECKLIST": "Liste de contrôle de la revue ",
   "REVIEW_CREATED": "Date de soumission pour revue",
   "REVIEW_DATE_PRC": "Date d’Examen",
-  "REVIEW_MEMBERS": "Membres du comité de revue du partenariat ",
+  "REVIEW_MEMBERS": "Membres du comité d'examen des partenariats",
   "REVIEW_PROMPT": "Accepter en tant que responsable du budget si vous êtes satisfait de toutes les informations saisies, du budget et des résultats planifiés ainsi que des autres obligations",
   "REVIEW_QUESTIONS": {
     "BUDGET_IS_ALIGNED": "Le budget du PD / SPD proposé est aligné sur les principes d'optimisation des ressources, les coûts de gestion de programme efficaces et efficients respectant les limites définies par le bureau",

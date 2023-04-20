@@ -322,13 +322,13 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
         }
         .table-row:not(.empty) {
           min-height: 42px;
-          padding-right: 10% !important;
+          padding-inline-end: 10% !important;
         }
         etools-data-table-row::part(edt-list-row-collapse-wrapper) {
           border-bottom: none;
         }
         info-icon-tooltip {
-          margin-left: 10px;
+          margin-inline-start: 10px;
         }
         etools-data-table-row#indicatorsRow::part(edt-list-row-wrapper) {
           padding-inline-start: 25px !important;

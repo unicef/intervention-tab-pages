@@ -41,7 +41,7 @@ export class GroupedLocationsDialog extends LitElement {
         }
 
         .left-padding {
-          padding-left: 16px;
+          padding-inline-start: 16px;
         }
 
         .top-padding {

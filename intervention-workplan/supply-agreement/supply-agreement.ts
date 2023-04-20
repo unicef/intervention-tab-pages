@@ -72,10 +72,10 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         }
 
         .mr-20 {
-          margin-right: 20px;
+          margin-inline-end: 20px;
         }
         .pad-right {
-          padding-right: 6px;
+          padding-inline-end: 6px;
         }
         #uploadHelpPanel {
           margin-block-end: 0;

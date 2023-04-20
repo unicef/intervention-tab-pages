@@ -31,10 +31,10 @@ export class ReviewChecklistPopup extends LitElement {
           margin-bottom: 24px;
         }
         .pl-none {
-          padding-left: 0px !important;
+          padding-inline-start: 0px !important;
         }
         paper-radio-button:first-child {
-          padding-left: 0px !important;
+          padding-inline-start: 0px !important;
         }
         .form-container {
           padding: 0 24px;

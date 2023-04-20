@@ -441,7 +441,7 @@ export const leafletStyles: CSSResult = css`
   .leaflet-control-layers-scrollbar {
     overflow-y: scroll;
     overflow-x: hidden;
-    padding-right: 5px;
+    padding-inline-end: 5px;
   }
 
   .leaflet-control-layers-selector {
@@ -729,7 +729,7 @@ export const leafletStyles: CSSResult = css`
 
   .leaflet-tooltip-left:before {
     right: 0;
-    margin-right: -12px;
+    margin-inline-end: -12px;
     border-left-color: #fff;
   }
 

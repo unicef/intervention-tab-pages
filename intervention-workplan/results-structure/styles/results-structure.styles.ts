@@ -28,7 +28,7 @@ export const ResultStructureStyles: CSSResult = css`
     text-align: right;
   }
   .total-cache .currency {
-    margin-right: 4px;
+    margin-inline-end: 4px;
     font-size: 16px;
     font-weight: 400;
     line-height: 19px;
@@ -67,7 +67,7 @@ export const ResultStructureStyles: CSSResult = css`
   }
   .details-container {
     flex: 30%;
-    padding-left: 10px;
+    padding-inline-start: 10px;
   }
   .details-container-locations {
     flex: 40%;
@@ -133,11 +133,11 @@ export const ResultStructureStyles: CSSResult = css`
   }
   div.editable-row .hover-block {
     background: linear-gradient(270deg, var(--cp-output-background) 71.65%, rgba(196, 196, 196, 0) 100%);
-    padding-left: 20px;
+    padding-inline-start: 20px;
   }
   paper-icon-button.add {
     color: #444444;
-    margin-left: -7px;
+    margin-inline-start: -7px;
   }
   paper-icon-button.add:hover {
     color: #212121;

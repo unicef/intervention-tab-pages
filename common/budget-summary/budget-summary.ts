@@ -34,7 +34,8 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
       css`
         section {
           display: block !important;
-          padding: 5px 15px 0 40px;
+          padding-top: 0;
+          padding-inline: 40px 15px;
           margin-bottom: 0;
         }
         :host([embeded]) section {
@@ -56,7 +57,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
         }
         .amt-data {
           margin-top: 14px;
-          margin-left: 30px;
+          margin-inline-start: 30px;
         }
         .amt-data .paper-label {
           font-weight: 400;
@@ -74,7 +75,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
           font-size: 16px;
           font-weight: 400;
           line-height: 25px;
-          margin-right: 6px;
+          margin-inline-end: 6px;
         }
       `
     ];

@@ -49,7 +49,7 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
           margin-bottom: 24px;
         }
         .pl-none {
-          padding-left: 0px !important;
+          padding-inline-start: 0px !important;
         }
         paper-checkbox[disabled] {
           --paper-checkbox-checked-color: black;

@@ -50,7 +50,9 @@ export class CommentsGroup extends LitElement {
       css`
         :host {
           display: flex;
-          padding: 21px 24px 24px 13px;
+          padding-top: 21px;
+          padding-bottom: 24px;
+          padding-inline: 13px 24px;
           cursor: pointer;
           border-bottom: 1px solid #c4c4c4;
         }
@@ -72,7 +74,7 @@ export class CommentsGroup extends LitElement {
           height: 32px;
           border-radius: 50%;
           background-color: #009688;
-          margin-right: 12px;
+          margin-inline-end: 12px;
           font-size: 18px;
           font-weight: 500;
           line-height: 21px;

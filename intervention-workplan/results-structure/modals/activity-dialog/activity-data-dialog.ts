@@ -41,6 +41,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
   @property({type: String}) spinnerText = getTranslation('GENERAL.LOADING');
   @property() readonly: boolean | undefined = false;
   @query('etools-dialog') private dialogElement!: EtoolsDialog;
+  @query('activity-items-table') private activityItemsTable!: ActivityItemsTable;
   quarters: ActivityTimeFrames[] = [];
 
   set dialogData({activityId, pdOutputId, interventionId, quarters, readonly, currency}: any) {
@@ -94,7 +95,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
         }
         .total-input,
         etools-currency-amount-input {
-          margin-right: 24px;
+          margin-inline-end: 24px;
         }
         .total {
           justify-content: flex-end;
@@ -123,6 +124,9 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
             padding: 0;
             max-height: 96px;
           }
+        }
+        etools-dialog paper-textarea[readonly] {
+          --iron-autogrow-textarea_-_max-height: unset;
         }
       </style>
 
@@ -286,6 +290,15 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
       cso_cash: '0',
       unicef_cash: '0'
     };
+
+    if ((!this.editedData.items || !this.editedData.items.length) && this.activityItemsTable) {
+      // add by default a row in activity items table if we have none
+      setTimeout(() => {
+        this.activityItemsTable.addNew();
+      }, 100);
+    } else {
+      this.editedData.items = [];
+    }
   }
 
   validate() {

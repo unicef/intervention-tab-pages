@@ -50,7 +50,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         }
 
         .see-locations {
-          padding-right: 0;
+          padding-inline-end: 0;
           color: var(--primary-color);
           min-width: 100px;
           display: flex;
@@ -60,11 +60,12 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
 
         .locations-btn {
           white-space: nowrap;
-          padding: 29px 0 0 50px;
+          padding-top: 29px;
+          padding-inline-start: 50px;
         }
 
         .see-locations iron-icon {
-          margin-right: 0;
+          margin-inline-end: 0;
           margin-bottom: 2px;
           --iron-icon-height: 18px;
           --iron-icon-width: 18px;

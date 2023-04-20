@@ -41,7 +41,7 @@ export class EtoolsRamIndicators extends CommonMixin(LitElement) {
 
         #ram-indicators-list {
           margin: 0;
-          padding-left: 24px;
+          padding-inline-start: 24px;
           list-style: circle;
         }
       </style>

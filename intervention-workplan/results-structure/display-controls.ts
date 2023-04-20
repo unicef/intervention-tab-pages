@@ -129,7 +129,7 @@ export class DisplayControls extends LitElement {
           justify-content: flex-end;
         }
         #showInactive {
-          margin-right: 8px;
+          margin-inline-end: 8px;
         }
         #view-menu-button {
           display: block;
@@ -148,7 +148,7 @@ export class DisplayControls extends LitElement {
         }
         #view-menu-button paper-button {
           height: 32px;
-          padding-right: 0;
+          padding-inline-end: 0;
           font-size: 14px;
           text-transform: none;
           font-weight: 500;
@@ -161,7 +161,7 @@ export class DisplayControls extends LitElement {
         }
         a {
           text-decoration: none;
-          margin-left: 16px;
+          margin-inline-start: 16px;
           border-radius: 8px;
           outline: none;
         }
@@ -181,7 +181,7 @@ export class DisplayControls extends LitElement {
           box-sizing: border-box;
         }
         svg {
-          margin-left: 10px;
+          margin-inline-start: 10px;
         }
       `
     ];
