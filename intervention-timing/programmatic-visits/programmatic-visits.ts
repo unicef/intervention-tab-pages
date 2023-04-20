@@ -13,7 +13,7 @@ import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown'
 import {selectPlannedVisits, selectPlannedVisitsPermissions} from './programmaticVisits.selectors';
 import {selectInterventionDates} from '../intervention-dates/interventionDates.selectors';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {getIntervention, patchIntervention, updateCurrentIntervention} from '../../common/actions/interventions';
+import {getIntervention, patchIntervention} from '../../common/actions/interventions';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import get from 'lodash-es/get';
