@@ -189,7 +189,18 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
   }
 
   afterItemDeleted() {
-    getStore().dispatch<AsyncAction>(getIntervention());
+    fireEvent(this, 'global-loading', {
+      active: true,
+      loadingSource: 'p-visitss-delete'
+    });
+    getStore()
+      .dispatch<AsyncAction>(getIntervention())
+      .then(() =>
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: 'p-visitss-delete'
+        })
+      );
   }
 
   stateChanged(state: RootState) {
