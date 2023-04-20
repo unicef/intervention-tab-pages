@@ -66,7 +66,7 @@ export class MessagesPanel extends EditComments {
             @keyup="${(event: KeyboardEvent) => this.onKeyup(event)}"
             @keydown="${(event: KeyboardEvent) => this.onKeydown(event)}"
           ></paper-textarea>
-          <paper-button class="send-btn" @click="${() => this.addComment()}">Post</paper-button>
+          <paper-button class="send-btn" @click="${() => this.addComment()}">${translate('POST')}</paper-button>
         </div>
       </div>
     `;
