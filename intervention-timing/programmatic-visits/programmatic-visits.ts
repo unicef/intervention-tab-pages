@@ -478,6 +478,17 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
       return;
     }
     this.data = [...this.data, new PlannedVisit()];
+    setTimeout(() => {
+      try {
+        document
+          .body!.querySelector('app-shell')!
+          .shadowRoot!.querySelector('#appHeadLayout')!
+          .shadowRoot!.querySelector('#contentContainer')!
+          .scrollBy(0, 270);
+      } catch (error) {
+        console.log(error);
+      }
+    });
   }
 
   _getAddBtnPadding(itemsLength: number) {
