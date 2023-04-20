@@ -742,7 +742,7 @@
   "CAN_NOT_UPLOAD_SUPPLIES": "Impossible de télécharger des fournitures",
   "ACTIVATION_LETTER_ATTACHMENT": "Pièce jointe à la lettre d'activation",
   "RESULT__CP_OUTPUT": "Résultat CP Sortie",
-  "FRNUMBERSCONSISTENCY" : {
+  "FRNUMBERSCONSISTENCY": {
     "AMOUNTSCANNOTBECOMPARED": "Le montant des FR et la contribution en espèces de l'UNICEF ne peuvent pas être comparés.",
     "TOOMANYFRSCURENCIES": "Plus d'une devise FR est disponible.",
     "AMOUNTANDDISBURSEMENTNOTDISPLAYED": "Les totaux du montant FR et du décaissement réel ne peuvent pas être affichés.",
@@ -759,5 +759,6 @@
     "FR_EARLIEST_DATE": "FR Date de début",
     "FR_LATEST_DATE": "FR Date de fin",
     "FR_TOTAL_AMOUNT": "Montant total du FR"
-  }
+  },
+  "VISITS": "Visites"
 }

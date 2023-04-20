@@ -742,7 +742,7 @@
   "CAN_NOT_UPLOAD_SUPPLIES": "No se pueden cargar los suministros",
   "ACTIVATION_LETTER_ATTACHMENT": "Carta de activación adjunta",
   "RESULT__CP_OUTPUT": "Resultado CP Salida",
-  "FRNUMBERSCONSISTENCY" : {
+  "FRNUMBERSCONSISTENCY": {
     "AMOUNTSCANNOTBECOMPARED": "El importe de los FR y la contribución en efectivo de UNICEF no pueden compararse.",
     "TOOMANYFRSCURENCIES": "Hay más de 1 moneda FR disponible.",
     "AMOUNTANDDISBURSEMENTNOTDISPLAYED": "No se pueden mostrar los totales de importe FR y Desembolso real.",
@@ -759,6 +759,6 @@
     "FR_EARLIEST_DATE": "FR Fecha de inicio",
     "FR_LATEST_DATE": "FR Fecha final",
     "FR_TOTAL_AMOUNT": "Importe total FR"
-  }
+  },
+  "VISITS": "Visitas"
 }
-

@@ -742,7 +742,7 @@
   "CAN_NOT_UPLOAD_SUPPLIES": "Не удается загрузить материалы",
   "ACTIVATION_LETTER_ATTACHMENT": "Приложение к письму об активации",
   "RESULT__CP_OUTPUT": "Результат CP Выход",
-  "FRNUMBERSCONSISTENCY" : {
+  "FRNUMBERSCONSISTENCY": {
     "AMOUNTSCANNOTBECOMPARED": "Сумма ФР и денежный взнос ЮНИСЕФ не могут быть сопоставлены.",
     "TOOMANYFRSCURENCIES": "Доступно более 1 FR валюты.",
     "AMOUNTANDDISBURSEMENTNOTDISPLAYED": "Итоговые значения для суммы FR и фактической выплаты не могут быть отображены.",
@@ -759,5 +759,6 @@
     "FR_EARLIEST_DATE": "FR Дата начала",
     "FR_LATEST_DATE": "Дата окончания ФР",
     "FR_TOTAL_AMOUNT": "Общая сумма ФР"
-  }
+  },
+  "VISITS": "Посещения"
 }
