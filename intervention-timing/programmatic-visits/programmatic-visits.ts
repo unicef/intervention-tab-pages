@@ -13,14 +13,14 @@ import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown'
 import {selectPlannedVisits, selectPlannedVisitsPermissions} from './programmaticVisits.selectors';
 import {selectInterventionDates} from '../intervention-dates/interventionDates.selectors';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {patchIntervention, updateCurrentIntervention} from '../../common/actions/interventions';
+import {getIntervention, patchIntervention, updateCurrentIntervention} from '../../common/actions/interventions';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AnyObject, AsyncAction, Intervention, Permission} from '@unicef-polymer/etools-types';
+import {AnyObject, AsyncAction, Intervention, Permission, Site} from '@unicef-polymer/etools-types';
 import {PlannedVisit} from '@unicef-polymer/etools-types';
-import {translate, get as getTranslation, langChanged} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import RepeatableDataSetsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/repeatable-data-sets-mixin';
 import {repeatableDataSetsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/repeatable-data-sets-styles';
@@ -175,13 +175,13 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
 
   connectedCallback() {
     super.connectedCallback();
-    this.addEventListener('delete-confirm', this.afterItemDeleted as any);
+    this.addEventListener('delete-confirm', this.afterItemDeleted.bind(this) as any);
     this.addEventListener('visits-number-change', this.recalculateTotal.bind(this));
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    this.removeEventListener('delete-confirm', this.afterItemDeleted as any);
+    this.removeEventListener('delete-confirm', this.afterItemDeleted.bind(this) as any);
   }
 
   recalculateTotal() {
@@ -189,9 +189,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
   }
 
   afterItemDeleted() {
-    // update intervention planned_visits after visit delete
-    this.intervention.planned_visits = this.data;
-    getStore().dispatch(updateCurrentIntervention(this.intervention));
+    getStore().dispatch<AsyncAction>(getIntervention());
   }
 
   stateChanged(state: RootState) {
@@ -217,34 +215,9 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
   populateVisits(state: any) {
     const planned_visits = selectPlannedVisits(state).planned_visits;
     if (!isJsonStrMatch(this.originalData, planned_visits)) {
-      const auxData = [
-        {
-          id: 204,
-          year: 2022,
-          programmatic_q1: 1,
-          programmatic_q1_sites: [{name: 'Nyangada'}, {name: 'Lambada Lionella Village'}],
-          programmatic_q2: 2,
-          programmatic_q2_sites: [],
-          programmatic_q3: 3,
-          programmatic_q3_sites: [{name: 'Nyangada'}],
-          programmatic_q4: 4,
-          programmatic_q4_sites: []
-        },
-        {
-          id: 205,
-          year: 2023,
-          programmatic_q1: 0,
-          programmatic_q1_sites: [],
-          programmatic_q2: 1,
-          programmatic_q2_sites: [],
-          programmatic_q3: 0,
-          programmatic_q3_sites: [],
-          programmatic_q4: 0,
-          programmatic_q4_sites: []
-        }
-      ];
+      const auxData = cloneDeep(planned_visits);
       auxData.forEach((item) => {
-        item.quarterIntervals = this.setQuartersIntervals(item.year);
+        item.quarterIntervals = this.setQuartersIntervals(Number(item.year)!);
       });
 
       this.data = auxData;
@@ -445,11 +418,17 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
     this.shadowRoot!.querySelector<EtoolsDropdownEl>('#year_' + index)!.selected = null;
   }
 
-  _getTotal(q1: string, q2: string, q3: string, q4: string) {
+  _getTotal(q1: string | number, q2: string | number, q3: string | number, q4: string | number) {
     return (Number(q1) || 0) + (Number(q2) || 0) + (Number(q3) || 0) + (Number(q4) || 0);
   }
 
-  _showErrMsg(year: string, q1: string, q2: string, q3: string, q4: string) {
+  _showErrMsg(
+    year: string | number,
+    q1: string | number,
+    q2: string | number,
+    q3: string | number,
+    q4: string | number
+  ) {
     return year && this._getTotal(q1, q2, q3, q4) > 0;
   }
 
@@ -514,7 +493,19 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
 
   cleanUpData(data: PlannedVisit[]) {
     const dataToSave = cloneDeep(data);
-    dataToSave.forEach((d) => (d.sites = d.sites.map((s: Site) => s.id)));
-    return data;
+    // @ts-ignore
+    delete dataToSave.quarterIntervals;
+    dataToSave.forEach((p: PlannedVisit) => {
+      // @ts-ignore
+      p.programmatic_q1_sites = p.programmatic_q1_sites.map((s: any) => s.id);
+      // @ts-ignore
+      p.programmatic_q2_sites = p.programmatic_q2_sites.map((s: any) => s.id);
+      // @ts-ignore
+      p.programmatic_q3_sites = p.programmatic_q3_sites.map((s: any) => s.id);
+      // @ts-ignore
+      p.programmatic_q4_sites = p.programmatic_q4_sites.map((s: any) => s.id);
+    });
+
+    return dataToSave;
   }
 }
