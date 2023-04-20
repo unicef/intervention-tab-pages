@@ -189,7 +189,18 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
   }
 
   afterItemDeleted() {
-    getStore().dispatch<AsyncAction>(getIntervention());
+    fireEvent(this, 'global-loading', {
+      active: true,
+      loadingSource: 'p-visitss-delete'
+    });
+    getStore()
+      .dispatch<AsyncAction>(getIntervention())
+      .then(() =>
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: 'p-visitss-delete'
+        })
+      );
   }
 
   stateChanged(state: RootState) {
@@ -467,6 +478,17 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
       return;
     }
     this.data = [...this.data, new PlannedVisit()];
+    setTimeout(() => {
+      try {
+        document
+          .body!.querySelector('app-shell')!
+          .shadowRoot!.querySelector('#appHeadLayout')!
+          .shadowRoot!.querySelector('#contentContainer')!
+          .scrollBy(0, 270);
+      } catch (error) {
+        console.log(error);
+      }
+    });
   }
 
   _getAddBtnPadding(itemsLength: number) {

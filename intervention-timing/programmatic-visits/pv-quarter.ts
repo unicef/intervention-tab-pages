@@ -121,7 +121,7 @@ export class PvQuarter extends LitElement {
         <paper-button
           class="secondary-btn"
           @click="${() => this.openSitesDialog()}"
-          ?hidden="${this.readonly}"
+          ?hidden="${this.readonly || !this.item[`programmatic_q${this.qIndex}`]}"
           title=${translate('SELECT_SITE_FROM_MAP')}
         >
           <iron-icon icon="add"></iron-icon>
