@@ -2,7 +2,7 @@ import {customElement, html, LitElement, property} from 'lit-element';
 import '@polymer/paper-button/paper-button';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
 import './grouped-locations-dialog';
-import './sites-dialog';
+import '../../common/components/sites-widget/sites-dialog';
 
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';

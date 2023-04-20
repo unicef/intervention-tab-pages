@@ -741,5 +741,6 @@
   "CAN_NOT_SEND_NOTIFICATION": "Невозможно отправить уведомление",
   "CAN_NOT_UPLOAD_SUPPLIES": "Не удается загрузить материалы",
   "ACTIVATION_LETTER_ATTACHMENT": "Приложение к письму об активации",
-  "RESULT__CP_OUTPUT": "Результат CP Выход"
+  "RESULT__CP_OUTPUT": "Результат CP Выход",
+  "VISITS": "Посещения"
 }
