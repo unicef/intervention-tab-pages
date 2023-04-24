@@ -774,6 +774,10 @@ export class EditorTable extends CommentsMixin(
   }
 
   deletePDOutputFromPD(lower_result_id: number) {
+    fireEvent(this, 'global-loading', {
+      active: true,
+      loadingSource: 'interv-pdoutput-remove'
+    });
     const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.lowerResultsDelete, {
       lower_result_id,
       intervention_id: this.interventionId
@@ -781,9 +785,16 @@ export class EditorTable extends CommentsMixin(
     sendRequest({
       method: 'DELETE',
       endpoint: endpoint
-    }).then(() => {
-      this.getResultLinksDetails();
-      getStore().dispatch<AsyncAction>(getIntervention());
-    });
+    })
+      .then(() => {
+        this.getResultLinksDetails();
+        getStore().dispatch<AsyncAction>(getIntervention());
+      })
+      .finally(() =>
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: 'interv-pdoutput-remove'
+        })
+      );
   }
 }

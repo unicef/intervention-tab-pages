@@ -28,6 +28,7 @@ import {getIntervention} from '../../common/actions/interventions';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
 import {translate} from 'lit-translate';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 
 @customElement('attachments-list')
 export class AttachmentsList extends CommentsMixin(LitElement) {
@@ -178,6 +179,11 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
   }
 
   deleteAttachment(attachment: InterventionAttachment) {
+    fireEvent(this, 'global-loading', {
+      active: true,
+      loadingSource: 'interv-attachment-remove'
+    });
+
     const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.updatePdAttachment, {
       id: attachment.intervention,
       attachment_id: attachment.id
@@ -192,7 +198,13 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
       })
       .catch((error: any) => {
         console.log(error);
-      });
+      })
+      .finally(() =>
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: 'interv-attachment-remove'
+        })
+      );
   }
 
   canEditAttachments() {
