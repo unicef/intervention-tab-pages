@@ -572,7 +572,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         }
         .pd-title {
           padding-block: 8px 0;
-          padding-inline 22px 42px;
+          padding-inline: 22px 42px;
           font-size: 16px;
           font-weight: 500;
           line-height: 19px;
