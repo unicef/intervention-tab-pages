@@ -1,9 +1,9 @@
 import {customElement, html, TemplateResult, property, CSSResultArray, css, query, queryAll} from 'lit-element';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import '@polymer/paper-input/paper-textarea';
 import './comment';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {InterventionComment, GenericObject} from '@unicef-polymer/etools-types';
 import {get as getTranslation, translate} from 'lit-translate';

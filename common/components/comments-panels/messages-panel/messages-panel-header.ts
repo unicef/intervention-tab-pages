@@ -1,5 +1,5 @@
 import {customElement, LitElement, html, TemplateResult, CSSResultArray, property} from 'lit-element';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {CommentPanelsStyles} from '../common-comments.styles';
 import {translate, get as getTranslation} from 'lit-translate';
 import {makeCommentsDraggable} from '../../comments/comments.helpers';

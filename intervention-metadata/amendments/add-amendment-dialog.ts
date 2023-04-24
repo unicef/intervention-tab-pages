@@ -8,17 +8,17 @@ import '@unicef-polymer/etools-modules-common/dist/layout/etools-warn-message';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
-import {AnyObject, InterventionAmendment, LabelAndValue} from '@unicef-polymer/etools-types';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
+import {AnyObject, EtoolsEndpoint, InterventionAmendment, LabelAndValue} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {AmendmentsKind} from './pd-amendments.models';
 import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin.js';
-import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import {resetInvalidElement} from '../../utils/utils';
 
 /**
@@ -202,7 +202,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
   _saveAmendment(newAmendment: Partial<InterventionAmendment>) {
     const options = {
       method: 'POST',
-      endpoint: getEndpoint(interventionEndpoints.interventionAmendmentAdd, {
+      endpoint: getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.interventionAmendmentAdd, {
         intervId: this.intervention.id
       }),
       body: {

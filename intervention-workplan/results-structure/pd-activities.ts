@@ -6,7 +6,7 @@ import '@polymer/iron-icons';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import './modals/activity-dialog/activity-data-dialog';
 import '../../intervention-workplan-editor/time-intervals/time-intervals';
-import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {InterventionActivity, InterventionQuarter} from '@unicef-polymer/etools-types';
@@ -22,7 +22,7 @@ import {
   _canDeactivate,
   _canDelete
 } from '../../common/mixins/results-structure-common';
-import {isEmptyObject} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {PaperMenuButton} from '@polymer/paper-menu-button';
 
 @customElement('pd-activities')
@@ -141,7 +141,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                     </div>
 
                     <div class="show-actions hover-block" style="z-index: ${99 - index}" ?hidden="${this.commentMode}">
-                      <paper-menu-button id="view-menu-button" close-on-activate horizontal-align="right">
+                      <paper-menu-button id="view-menu-button" close-on-activate horizontal-align>
                         <paper-icon-button
                           slot="dropdown-trigger"
                           icon="icons:more-vert"

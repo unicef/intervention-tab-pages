@@ -6,30 +6,30 @@ import {EtoolsTableColumn, EtoolsTableColumnType} from '@unicef-polymer/etools-t
 import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import '@polymer/paper-icon-button/paper-icon-button';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {sendRequest} from '@unicef-polymer/etools-ajax';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
-import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
+import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {RootState} from '../../common/types/store.types';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
 import {selectRisks} from './risk.selectors';
 import './risk-dialog';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {getIntervention} from '../../common/actions/interventions';
 import {currentInterventionPermissions} from '../../common/selectors';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AnyObject, AsyncAction, LabelAndValue, RiskData} from '@unicef-polymer/etools-types';
+import {AnyObject, AsyncAction, EtoolsEndpoint, LabelAndValue, RiskData} from '@unicef-polymer/etools-types';
 import {translate, translateConfig} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 
 const customStyles = html`
   <style>
@@ -147,7 +147,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
     if (!state.interventions.current) {
       return;
     }
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'strategy')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'strategy')) {
       return;
     }
 
@@ -191,7 +191,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   }
 
   deleteRiskItem(riskId: string) {
-    const endpoint = getEndpoint(interventionEndpoints.riskDelete, {
+    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.riskDelete, {
       interventionId: this.interventionId,
       riskId: riskId
     });

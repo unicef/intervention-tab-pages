@@ -1,10 +1,10 @@
 import {LitElement, TemplateResult, html, css, CSSResultArray, property, customElement} from 'lit-element';
 import {InterventionQuarter} from '@unicef-polymer/etools-types';
-import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import './time-intervals-dialog';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {translate} from 'lit-translate';
-import {formatDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
+import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
 
 @customElement('time-intervals')
 export class TimeIntervals extends LitElement {

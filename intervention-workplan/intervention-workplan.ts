@@ -6,7 +6,7 @@ import './effective-efficient-programme-mgmt/effective-efficient-programme-mgmt'
 import './non-financial-contribution/non-financial-contribution';
 import './hq-contribution/hq-contribution';
 import '../intervention-workplan-editor/workplan-editor-link';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 
 /**
  * @customElement

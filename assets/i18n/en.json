@@ -742,5 +742,23 @@
   "CAN_NOT_UPLOAD_SUPPLIES": "Can not upload supplies",
   "ACTIVATION_LETTER_ATTACHMENT": "Activation letter attachment",
   "RESULT__CP_OUTPUT": "Result CP Output",
+  "FRNUMBERSCONSISTENCY": {
+    "AMOUNTSCANNOTBECOMPARED": "FRs Amount and UNICEF Cash Contribution can not be compared.",
+    "TOOMANYFRSCURENCIES": "More than 1 FR currency is available.",
+    "AMOUNTANDDISBURSEMENTNOTDISPLAYED": "Totals for FR amount and Actual Disbursement can not be displayed.",
+    "CURRENCYMISMATCH": "FR currency does not match PD/SPD currency.",
+    "CANNOTCALCDISBURSEMENT": "Disbursement to Date % can not calculate.",
+    "ADDEDFRSCURRENCIESMISMATCH": "The currency of the PD/SPD and the FR are not the same and cannot be compared. To be able to compare the amounts, you can cancel and enter the budget in the same currency as the FR.",
+    "AMOUNT": "Total FR amount is not the same as planned UNICEF Cash Contribution.",
+    "DATETMPL": "FR <<field_name>> is not the same as PD/SPD <<field_name>>.",
+    "WARNINGTMPL": "The <<frs_fields>> should the same as PD/SPD <<pd_fields>>.",
+    "FCMULTICURRFLAGERRORMSG": "There are multiple transaction currencies in VISION",
+    "START_DATE": "Start Date",
+    "END_DATE": "End Date",
+    "PD_UNICEF_CASH_CONTRIBUTION": "UNICEF Cash Contribution",
+    "FR_EARLIEST_DATE": "FR Start Date",
+    "FR_LATEST_DATE": "FR End Date",
+    "FR_TOTAL_AMOUNT": "Total FR amount"
+  },
   "VISITS": "Visits"
 }

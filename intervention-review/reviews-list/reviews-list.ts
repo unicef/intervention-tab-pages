@@ -3,15 +3,15 @@ import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/st
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {translate} from 'lit-translate';
 import {InterventionReview, PrcOfficerReview} from '@unicef-polymer/etools-types';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {loadPrcMembersIndividualReviews} from '../../common/actions/officers-reviews';
 import isEqual from 'lodash-es/isEqual';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {RootState} from '../../common/types/store.types';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
-import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
+import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {REVIEW_ANSVERS, REVIEW_QUESTIONS} from '../../common/components/intervention/review.const';
-import {formatDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
+import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import '../../common/components/intervention/review-checklist-popup';
 
@@ -120,7 +120,7 @@ export class ReviewsList extends connectStore(LitElement) {
   }
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(state?.app?.routeDetails, 'interventions', 'review')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(state?.app?.routeDetails, 'interventions', 'review')) {
       return;
     }
     this.approvals = state.prcIndividualReviews || [];

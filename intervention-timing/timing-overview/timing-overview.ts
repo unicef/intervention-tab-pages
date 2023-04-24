@@ -6,16 +6,16 @@ import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/st
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {TimingOverviewData} from './timingOverview.models';
 import {selectTimingOverview} from './timingOverview.selectors';
-import {formatDateLocalized} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
+import {formatDateLocalized} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import {RootState} from '../../common/types/store.types';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
 import {InfoElementStyles} from '@unicef-polymer/etools-modules-common/dist/styles/info-element-styles';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {translate, translateConfig} from 'lit-translate';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 import {getPageDirection} from '../../utils/utils';
-import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 
 /**
  * @customElement
@@ -128,7 +128,7 @@ export class TimingOverview extends CommentsMixin(LitElement) {
   }
 
   public stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'timing')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'timing')) {
       return;
     }
     if (state.interventions.current) {

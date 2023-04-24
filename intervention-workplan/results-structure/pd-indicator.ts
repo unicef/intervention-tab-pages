@@ -1,6 +1,6 @@
 import {LitElement, html, customElement, property, TemplateResult, css, query} from 'lit-element';
 import '@unicef-polymer/etools-data-table/etools-data-table';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {ResultStructureStyles} from './styles/results-structure.styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
@@ -83,7 +83,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
             style="z-index: ${99 - (this.index || 0)}; max-height: 59px;"
             ?hidden="${this.commentMode}"
           >
-            <paper-menu-button id="view-menu-button" close-on-activate horizontal-align="right">
+            <paper-menu-button id="view-menu-button" close-on-activate horizontal-align>
               <paper-icon-button slot="dropdown-trigger" icon="icons:more-vert" tabindex="0"></paper-icon-button>
               <paper-listbox slot="dropdown-content">
                 <div

@@ -10,7 +10,7 @@ import {
 import {repeat} from 'lit-html/directives/repeat';
 import '@polymer/paper-input/paper-textarea';
 import {translate, get as getTranslation} from 'lit-translate';
-import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {ifDefined} from 'lit-html/directives/if-defined.js';
 import {ActivitiesCommonMixin} from '../../common/mixins/activities-common.mixin';
 import {getItemTotalFormatted} from '../../common/components/activity/get-total.helper';

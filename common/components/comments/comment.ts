@@ -1,6 +1,6 @@
 import {LitElement, html, TemplateResult, CSSResultArray, customElement, property} from 'lit-element';
 import '@polymer/iron-icons';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {CommentStyles} from './comment.styles';
 import {InterventionComment} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';

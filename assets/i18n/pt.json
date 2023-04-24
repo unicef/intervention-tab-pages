@@ -742,5 +742,23 @@
   "CAN_NOT_UPLOAD_SUPPLIES": "Não pode carregar fornecimentos",
   "ACTIVATION_LETTER_ATTACHMENT": "Anexar carta de activação",
   "RESULT__CP_OUTPUT": "Resultado CP Saída",
+  "FRNUMBERSCONSISTENCY": {
+    "AMOUNTSCANNOTBECOMPARED": "O montante de FRs e a contribuição em dinheiro da UNICEF não podem ser comparados.",
+    "TOOMANYFRSCURENCIES": "Está disponível mais de 1 moeda FR.",
+    "AMOUNTANDDISBURSEMENTNOTDISPLAYED": "Os totais para o montante de FR e Desembolso real não podem ser exibidos.",
+    "CURRENCYMISMATCH": "A moeda FR não corresponde à moeda PD/SPD.",
+    "CANNOTCALCDISBURSEMENT": "Desembolso até à data % não pode ser calculado.",
+    "ADDEDFRSCURRENCIESMISMATCH": "A moeda do PD/SPD e do FR não são a mesma e não podem ser comparadas. Para poder comparar os montantes, pode cancelar e introduzir o orçamento na mesma moeda que o FR.",
+    "AMOUNT": "O montante total de FR não é o mesmo que a contribuição em dinheiro planeada da UNICEF.",
+    "DATETMPL": "FR <<field_name>> não é o mesmo que PD/SPD <<field_name>>.",
+    "WARNINGTMPL": "Os campos <<frs_fields>> devem ser os mesmos que PD/SPD <<pd_fields>>.",
+    "FCMULTICURRFLAGERRORMSG": "Existem múltiplas moedas de transacção no VISION",
+    "START_DATE": "Data de início",
+    "END_DATE": "Data de fim",
+    "PD_UNICEF_CASH_CONTRIBUTION": "Contribuição em dinheiro da UNICEF",
+    "FR_EARLIEST_DATE": "FR Data de início",
+    "FR_LATEST_DATE": "FR Data final",
+    "FR_TOTAL_AMOUNT": "Montante total de FR"
+  },
   "VISITS": "Visitas"
 }
