@@ -11,12 +11,13 @@ import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/st
 import {selectHqContributionData, selectHqContributionPermissions} from './hqContribution.selectors';
 import {HqContributionData, HqContributionPermissions} from './hqContribution.models';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {patchIntervention} from '../../common/actions/interventions';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {RootState} from '../../common/types/store.types';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
-import {areEqual, decimalFractionEquals0} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
+import {decimalFractionEquals0} from '@unicef-polymer/etools-utils/dist/general.util';
+import {areEqual} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
@@ -139,7 +140,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
   isUnicefUser = false;
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan)) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan)) {
       return;
     }
 

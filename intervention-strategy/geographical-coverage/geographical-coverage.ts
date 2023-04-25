@@ -7,18 +7,18 @@ import '../../common/components/sites-widget/sites-dialog';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {LocationsPermissions} from './geographicalCoverage.models';
 import {selectLocationsPermissions} from './geographicalCoverage.selectors';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {patchIntervention} from '../../common/actions/interventions';
-import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {RootState} from '../../common/types/store.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import isEmpty from 'lodash-es/isEmpty';
 import get from 'lodash-es/get';
-import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, LocationObject, Permission, Site} from '@unicef-polymer/etools-types';
 import {translate, translateConfig} from 'lit-translate';
@@ -165,7 +165,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
             option-value="id"
             error-message=${translate('LOCATIONS_ERR')}
             trigger-value-change-event
-            horizontal-align="left"
+            horizontal-align
             @etools-selected-items-changed="${({detail}: CustomEvent) =>
               this.selectedItemsChanged(detail, 'flat_locations')}"
           >
@@ -244,7 +244,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
   }
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Strategy)) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Strategy)) {
       return;
     }
     if (!state.interventions.current) {

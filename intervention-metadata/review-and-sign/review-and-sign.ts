@@ -13,8 +13,8 @@ import UploadMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uploa
 import CONSTANTS from '../../common/constants';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
-import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
+import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 
 import {RootState} from '../../common/types/store.types';
 import {selectReviewData, selectDatesAndSignaturesPermissions} from '../../common/managementDocument.selectors';
@@ -24,17 +24,18 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {getDifference} from '@unicef-polymer/etools-modules-common/dist/mixins/objects-diff';
 import {patchIntervention} from '../../common/actions/interventions';
-import {formatDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AsyncAction, MinimalUser, Permission, User} from '@unicef-polymer/etools-types';
+import {AsyncAction, EtoolsEndpoint, MinimalUser, Permission, User} from '@unicef-polymer/etools-types';
 import {MinimalAgreement} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {sectionContentStyles} from '@unicef-polymer/etools-modules-common/dist/styles/content-section-styles-polymer';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {EtoolsUpload} from '@unicef-polymer/etools-upload/etools-upload';
+import {EtoolsRequestEndpoint} from '@unicef-polymer/etools-ajax';
 
 /**
  * @customElement
@@ -270,7 +271,8 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
   }
 
   @property({type: String})
-  uploadEndpoint: string = getEndpoint(interventionEndpoints.attachmentsUpload).url;
+  uploadEndpoint: string = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.attachmentsUpload)
+    .url;
 
   @property({type: Object})
   originalData!: ReviewData;
@@ -299,7 +301,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
   private justUploaded = false;
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata')) {
       return;
     }
 

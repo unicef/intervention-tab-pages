@@ -9,10 +9,10 @@ import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/st
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
-import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
-import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
+import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {
   selectProgrammeManagement,
   selectProgrammeManagementActivityPermissions
@@ -159,7 +159,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
     if (!state.interventions.current) {
       return;
     }
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan)) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan)) {
       return;
     }
     this.interventionId = state.interventions.current.id!;

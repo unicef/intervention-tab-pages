@@ -1,6 +1,6 @@
 import {customElement, LitElement, html, CSSResultArray, TemplateResult, css, property} from 'lit-element';
 import {InterventionComment} from '@unicef-polymer/etools-types';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {translate} from 'lit-translate';
 declare const dayjs: any;

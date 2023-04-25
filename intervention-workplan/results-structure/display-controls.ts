@@ -1,12 +1,12 @@
 /* eslint-disable max-len */
 import {customElement, LitElement, html, TemplateResult, property, CSSResultArray, css} from 'lit-element';
 import {translate} from 'lit-translate';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {
   callClickOnEnterPushListener,
   callClickOnSpacePushListener
-} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import {PropertyValues} from 'lit-element/src/lib/updating-element';
 import {TABS} from '../../common/constants';
 
@@ -63,7 +63,7 @@ export class DisplayControls extends LitElement {
       </paper-toggle-button>
 
       <div class="layout-horizontal">
-        <paper-menu-button id="view-menu-button" close-on-activate horizontal-align="right">
+        <paper-menu-button id="view-menu-button" close-on-activate horizontal-align>
           <paper-button slot="dropdown-trigger" class="dropdown-trigger">
             ${this.selectedViewType}
             <iron-icon icon="expand-more"></iron-icon>

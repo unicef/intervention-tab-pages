@@ -10,20 +10,21 @@ import './common/components/prp-country-data/prp-country-data';
 import {customElement, LitElement, html, property, css, query} from 'lit-element';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
-import {getStore, getStoreAsync} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getStore, getStoreAsync} from '@unicef-polymer/etools-utils/dist/store.util';
 import {currentPage, currentSubpage, isUnicefUser, currentSubSubpage, currentUser} from './common/selectors';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {getIntervention} from './common/actions/interventions';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {getTranslatedValue, isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import {pageContentHeaderSlottedStyles} from './common/layout/page-content-header/page-content-header-slotted-styles';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
-import {buildUrlQueryString} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
+import {buildUrlQueryString} from '@unicef-polymer/etools-utils/dist/general.util';
+import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {enableCommentMode, getComments, setCommentsEndpoint} from './common/components/comments/comments.actions';
 import {commentsData} from './common/components/comments/comments.reducer';
 import {Store} from 'redux';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
-import {EnvFlags, ExpectedResult, Intervention} from '@unicef-polymer/etools-types';
+import {EnvFlags, EtoolsEndpoint, ExpectedResult, Intervention} from '@unicef-polymer/etools-types';
 import {AsyncAction, RouteDetails} from '@unicef-polymer/etools-types';
 import {interventions} from './common/reducers/interventions';
 import {translate, get as getTranslation} from 'lit-translate';
@@ -34,15 +35,16 @@ import {uploadStatus} from './common/reducers/upload-status';
 import CONSTANTS, {TABS} from './common/constants';
 import UploadMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uploads-mixin';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
-import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {RESET_UNSAVED_UPLOADS, RESET_UPLOADS_IN_PROGRESS} from './common/actions/actionsContants';
 import {RootState} from './common/types/store.types';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from './utils/intervention-endpoints';
 import {CommentsEndpoints} from '../intervention-tab-pages/common/components/comments/comments-types';
 import {CommentsPanels} from './common/components/comments-panels/comments-panels';
 import './unresolved-other-info';
 import {translatesMap} from './utils/intervention-labels-map';
+import {EtoolsRequestEndpoint} from '@unicef-polymer/etools-ajax';
 
 /**
  * @LitElement
@@ -310,7 +312,8 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   private commentsPanel: CommentsPanels | null = null;
 
   @property({type: String})
-  uploadEndpoint: string = getEndpoint(interventionEndpoints.attachmentsUpload).url;
+  uploadEndpoint: string = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.attachmentsUpload)
+    .url;
 
   @property({type: String})
   activeTab = TABS.Metadata;

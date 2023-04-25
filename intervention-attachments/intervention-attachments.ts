@@ -1,5 +1,5 @@
 import {LitElement, customElement, html} from 'lit-element';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import './attachments-list/attachments-list';
 import './prc-document/prc-document';
 import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';

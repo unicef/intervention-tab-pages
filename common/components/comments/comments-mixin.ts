@@ -1,13 +1,13 @@
 import {RootState} from '../../types/store.types';
 import {LitElement} from 'lit-element';
 import {CommentsCollection} from './comments.reducer';
-import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import './comments-dialog';
 import '../comments-panels/comments-panels';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {Constructor, InterventionComment} from '@unicef-polymer/etools-types';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 
 type MetaData = CommentElementMeta & {
   oldStyles: string;
