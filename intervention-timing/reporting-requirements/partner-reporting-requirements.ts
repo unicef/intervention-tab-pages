@@ -26,7 +26,7 @@ import {AnyObject, Intervention, Permission} from '@unicef-polymer/etools-types'
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
-import {translate, translateConfig} from 'lit-translate';
+import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {sectionContentStyles} from '@unicef-polymer/etools-modules-common/dist/styles/content-section-styles-polymer';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';

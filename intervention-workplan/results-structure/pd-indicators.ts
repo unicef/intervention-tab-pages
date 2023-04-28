@@ -33,7 +33,7 @@ import './pd-indicator';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
-import {translate, get as getTranslation, translateConfig} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 import {
   AsyncAction,
   Disaggregation,
