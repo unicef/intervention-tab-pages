@@ -130,7 +130,6 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
               id="clickable"
             >
               <info-icon-tooltip
-                .language="${translateConfig.lang}"
                 id="iit-qpr"
                 ?hidden="${this.isReadonly}"
                 .tooltipText="${translate('QUARTERLY_PROGRESS_REPORT_TOOLTIP')}"
@@ -153,7 +152,6 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
               id="clickable"
             >
               <info-icon-tooltip
-                .language="${translateConfig.lang}"
                 id="iit-hrr"
                 ?hidden="${this.isReadonly}"
                 .tooltipText="${translate('HUMANITARIAN_REPORT_TOOLTIP')}"
@@ -177,7 +175,6 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
               id="clickable"
             >
               <info-icon-tooltip
-                .language="${translateConfig.lang}"
                 id="iit-sp"
                 ?hidden="${this.isReadonly}"
                 .tooltipText="${translate('SPECIAL_REPORT_TOOLTIP')}"

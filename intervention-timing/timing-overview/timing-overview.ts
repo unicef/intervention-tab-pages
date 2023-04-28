@@ -110,7 +110,6 @@ export class TimingOverview extends CommentsMixin(LitElement) {
 
         <div class="icon-tooltip-div">
           <info-icon-tooltip
-            .language="${translateConfig.lang}"
             .tooltipText="${translate('TIMING_TOOLTIP')}"
             position="${this.dir == 'rtl' ? 'right' : 'left'}"
           >

@@ -95,7 +95,6 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
           </etools-info-tooltip>
           <info-icon-tooltip
             id="iit-ind"
-            .language="${translateConfig.lang}"
             .tooltipText="${translate('INDICATOR_TOOLTIP')}"
             ?hidden="${this.readonly}"
           ></info-icon-tooltip>

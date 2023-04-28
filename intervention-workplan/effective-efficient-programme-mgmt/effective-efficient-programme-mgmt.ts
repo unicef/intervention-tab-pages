@@ -82,7 +82,6 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
       >
         <div slot="after-title">
           <info-icon-tooltip
-            .language="${translateConfig.lang}"
             id="iit-eepm"
             ?hidden="${!this.canEdit}"
             .tooltipText="${translate('EFFECTIVE_AND_EFFICIENT_PRGMT_MNGMT_INFO')}"

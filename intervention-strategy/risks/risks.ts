@@ -81,7 +81,6 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       <etools-content-panel show-expand-btn panel-title=${translate(translatesMap.risks)} comment-element="risks">
         <div slot="after-title">
           <info-icon-tooltip
-            .language="${translateConfig.lang}"
             id="iit-risk"
             ?hidden="${!this.canEditAtLeastOneField}"
             .tooltipText="${translate('RISKS_INFO')}"

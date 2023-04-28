@@ -18,7 +18,7 @@ import {RootState} from '../../common/types/store.types';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
-import {translate, translateConfig} from 'lit-translate';
+import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 import {detailsTextareaRowsCount} from '../../utils/utils';
@@ -96,7 +96,6 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
           <div>
             <label class="paper-label">${translate(translatesMap.context)}</label>
             <info-icon-tooltip
-              .language="${translateConfig.lang}"
               id="iit-context"
               slot="after-label"
               ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit?.context)}"
@@ -124,7 +123,6 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
           <div>
             <label class="paper-label">${translate(translatesMap.implementation_strategy)}</label>
             <info-icon-tooltip
-              .language="${translateConfig.lang}"
               id="iit-implemen-strat"
               slot="after-label"
               ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit?.implementation_strategy)}"
@@ -151,7 +149,6 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
           <div>
             <label class="paper-label">${translate(translatesMap.capacity_development)}</label>
             <info-icon-tooltip
-              .language="${translateConfig.lang}"
               id="iit-cap-develop"
               slot="after-label"
               ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.capacity_development)}"
@@ -180,7 +177,6 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
           <div>
             <label class="paper-label">${translate(translatesMap.other_partners_involved)}</label>
             <info-icon-tooltip
-              .language="${translateConfig.lang}"
               id="iit-other-p-i"
               ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.other_partners_involved)}"
               .tooltipText="${translate('OTHER_PARTNERS_INVOLVED_TOOLTIP')}"

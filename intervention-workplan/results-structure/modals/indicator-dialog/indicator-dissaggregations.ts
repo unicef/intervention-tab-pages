@@ -111,7 +111,6 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
         </paper-button>
         <info-icon-tooltip
           id="iit-disaggreg"
-          .language="${translateConfig.lang}"
           .tooltipText="${translate('DISAGGREGATION_TOOLTIP')}"
           ?hidden="${this._maxDisaggregations(this.data.length) || this.readonly}"
         ></info-icon-tooltip>
