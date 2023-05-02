@@ -98,7 +98,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                       <b>${activity.code}&nbsp;</b>
                       <div>
                         <div>
-                          <b><u>${activity.is_active ? '' : `(${translate('INACTIVE')})`}</u>${activity.name || '-'}</b>
+                          <b>${activity.is_active ? '' : html`(<u>${translate('INACTIVE')}</u>) `}${activity.name || '-'}</b>
                         </div>
                         <div class="details" ?hidden="${!activity.context_details}">
                           ${this.truncateString(activity.context_details)}
