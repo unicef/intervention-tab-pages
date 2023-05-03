@@ -84,7 +84,7 @@
   "BASELINE": "Linha de base",
   "BUDGET_CURRENCY": "Moeda do orçamento",
   "BUDGET_GT_20_MSG": "Alterações no orçamento das atividades que resultam em uma mudança na contribuição do UNICEF > 20% do valor e/ou suprimentos previamente aprovados, com ou sem alterações nos resultados do programa.",
-  "BUDGET_HQ_RATE": "Taxa orçamentária referente à contribuição à Sede (Head Quarters)",
+  "CAPACITY_STRENGTHENING_COST_RATE": "Taxa de Custo de Fortalecimento da Capacidade",
   "BUDGET_LTE_20_MSG": "Alterações no orçamento das atividades que resultam em uma mudança na contribuição do UNICEF ≤ 20% do valor e/ou suprimentos previamente aprovados, com ou sem alterações nos resultados do programa.",
   "BUDGET_SUMMARY": "Resumo do orçamento",
   "BUDGET_SUMMARY_DESCRIPTION": "Moeda do orçamento, Valor do orçamento referente ao repasse à sede (HQ) e outros dados",

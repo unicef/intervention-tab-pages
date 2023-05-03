@@ -84,7 +84,7 @@
   "BASELINE": "Línea de base",
   "BUDGET_CURRENCY": "Presupuesto Moneda",
   "BUDGET_GT_20_MSG": "Cambios en el presupuesto de las actividades que resulten en un cambio en la contribución de UNICEF >20% del efectivo y/o suministros previamente aprobados, con o sin cambios en los resultados del programa.",
-  "BUDGET_HQ_RATE": "Presupuesto Cuartel General Tasa",
+  "CAPACITY_STRENGTHENING_COST_RATE": "Tasa de Costo de Fortalecimiento de Capacidades",
   "BUDGET_LTE_20_MSG": "Cambios en el presupuesto de las actividades que resulten en un cambio en la contribución de UNICEF ≤20% del efectivo y/o suministros previamente aprobados, con o sin cambios en los resultados del programa.",
   "BUDGET_SUMMARY": "Resumen presupuestario",
   "BUDGET_SUMMARY_DESCRIPTION": "Presupuesto Moneda, presupuesto Tipo HQ y otros datos",
