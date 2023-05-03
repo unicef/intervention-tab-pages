@@ -84,7 +84,7 @@
   "BASELINE": "Baseline",
   "BUDGET_CURRENCY": "Budget Currency",
   "BUDGET_GT_20_MSG": "Changes to the budget of activities resulting in a change in the UNICEF contribution >20% of previously approved cash and/or supplies, with or without changes to the programme results.",
-  "BUDGET_HQ_RATE": "Budget HQ Rate",
+  "CAPACITY_BUILDING_COST_RATE": "Capacity Building Cost Rate",
   "BUDGET_LTE_20_MSG": "Changes to the budget of activities resulting in a change in the UNICEF contribution ≤20% of previously approved cash and/or supplies, with or without changes to the programme results.",
   "BUDGET_SUMMARY": "Budget Summary",
   "BUDGET_SUMMARY_DESCRIPTION": "Budget Currency, Budget HQ Rate and other data",
