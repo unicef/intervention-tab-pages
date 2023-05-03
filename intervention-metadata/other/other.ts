@@ -23,7 +23,9 @@ import {selectOtherData, selectOtherPermissions} from './other.selectors';
 import CONSTANTS from '../../common/constants';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import '@polymer/paper-input/paper-textarea';
+import '@polymer/paper-input/paper-input';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
+import {PaperInputElement} from '@polymer/paper-input/paper-input';
 
 /**
  * @customElement
@@ -87,6 +89,9 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
         .confidential-row {
           margin-top: -4px;
           padding-bottom: 12px;
+        }
+        paper-input {
+          width: 100%;
         }
       </style>
 
@@ -192,6 +197,19 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               trigger-value-change-event
             >
             </etools-dropdown>
+          </div>
+          <div class="col col-6" style="padding-inline-start: 40px;">
+            <paper-input
+              id="unppNumber"
+              pattern="CEF/[a-zA-Z]{3}/\\d{4}/\\d{3}"
+              label=${translate('UNPP_CFEI_DSR_REF_NUM')}
+              placeholder="CEF/___/____/___"
+              .value="${this.data.cfei_number}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.cfei_number)}"
+              error-message="${translate('CFEI_EXPECTED_FORMAT')}"
+              @blur="${(ev: CustomEvent) => this.validateCFEI(ev)}"
+              @value-changed="${({detail}: CustomEvent) => this.cfeiValueChanged(detail, 'cfei_number')}"
+            ></paper-input>
           </div>
         </div>
 
@@ -300,8 +318,22 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
     this.requestUpdate();
   }
 
+  validateCFEI(e?: CustomEvent) {
+    const elem = e
+      ? (e.currentTarget as PaperInputElement)
+      : this.shadowRoot?.querySelector<PaperInputElement>('#unppNumber')!;
+    return elem.validate();
+  }
+
+  cfeiValueChanged(detail: any, field: string) {
+    this.valueChanged(detail, field);
+    if (detail.value && detail.value.length === 16) {
+      this.validateCFEI();
+    }
+  }
+
   saveData() {
-    if (!this.validate()) {
+    if (!this.validate() || !this.validateCFEI()) {
       return Promise.resolve(false);
     }
 

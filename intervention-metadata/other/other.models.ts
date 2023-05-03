@@ -12,6 +12,7 @@ export class OtherData extends ModelsBase {
   contingency_pd = false;
   activation_protocol = '';
   confidential = false;
+  cfei_number = '';
 }
 
 export class OtherPermissions extends ModelsBase {
@@ -22,4 +23,5 @@ export class OtherPermissions extends ModelsBase {
   document_type = true;
   document_currency = true;
   confidential = true;
+  cfei_number = false;
 }
