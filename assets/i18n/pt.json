@@ -760,5 +760,7 @@
     "FR_LATEST_DATE": "FR Data final",
     "FR_TOTAL_AMOUNT": "Montante total de FR"
   },
-  "VISITS": "Visitas"
+  "VISITS": "Visitas",
+  "UNPP_CFEI_DSR_REF_NUM": "Número de referência UNPP CFEI/DSR",
+  "CFEI_EXPECTED_FORMAT": "Formato esperado: CEF/código do país 3 letras/ano 4 dígitos/número 3 dígitos"
 }
