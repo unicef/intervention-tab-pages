@@ -734,6 +734,7 @@
   "TERMINATION_NOTICE_FILE_IS_REQUIRED": "Nota de rescisão é obrigatória",
   "UNSUSPEND": "Cancelar a suspensão",
   "FIX_VALIDATION_ERRORS": "Por favor, corrija erros de validação",
+  "PROGRAMMATIC_VISITS_SITES": "O número de visitas deve ser superior a 0 quando os sítios são seleccionados.",
   "CAN_NOT_SAVE_REVIEW": "Não pode salvar a revisão.",
   "TRY_AGAIN_LATER": "Tente novamente mais tarde",
   "CAN_NOT_REMOVE_AMENDMENT": "Não pode remover a emenda. Tente novamente mais tarde",

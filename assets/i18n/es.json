@@ -734,6 +734,7 @@
   "TERMINATION_NOTICE_FILE_IS_REQUIRED": "Se requiere el archivo de notificación de terminación",
   "UNSUSPEND": "Reactivar",
   "FIX_VALIDATION_ERRORS": "Por favor, corrija los errores de validación",
+  "PROGRAMMATIC_VISITS_SITES": "El número de visitas debe ser superior a 0 cuando se seleccionan los sitios.",
   "CAN_NOT_SAVE_REVIEW": "No se puede guardar la revisión.",
   "TRY_AGAIN_LATER": "Vuelve a intentarlo más tarde",
   "CAN_NOT_REMOVE_AMENDMENT": "No se puede eliminar la enmienda. Vuelva a intentarlo más tarde",
