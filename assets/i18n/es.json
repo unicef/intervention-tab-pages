@@ -84,7 +84,7 @@
   "BASELINE": "Línea de base",
   "BUDGET_CURRENCY": "Presupuesto Moneda",
   "BUDGET_GT_20_MSG": "Cambios en el presupuesto de las actividades que resulten en un cambio en la contribución de UNICEF >20% del efectivo y/o suministros previamente aprobados, con o sin cambios en los resultados del programa.",
-  "BUDGET_HQ_RATE": "Presupuesto Cuartel General Tasa",
+  "CAPACITY_STRENGTHENING_COST_RATE": "Tasa de Costo de Fortalecimiento de Capacidades",
   "BUDGET_LTE_20_MSG": "Cambios en el presupuesto de las actividades que resulten en un cambio en la contribución de UNICEF ≤20% del efectivo y/o suministros previamente aprobados, con o sin cambios en los resultados del programa.",
   "BUDGET_SUMMARY": "Resumen presupuestario",
   "BUDGET_SUMMARY_DESCRIPTION": "Presupuesto Moneda, presupuesto Tipo HQ y otros datos",
@@ -760,5 +760,7 @@
     "FR_LATEST_DATE": "FR Fecha final",
     "FR_TOTAL_AMOUNT": "Importe total FR"
   },
-  "VISITS": "Visitas"
+  "VISITS": "Visitas",
+  "UNPP_CFEI_DSR_REF_NUM": "Número Referencia CFEI/DSR UNPP",
+  "CFEI_EXPECTED_FORMAT": "Formato esperado: CEF/Código del país de 3 letras/Año de 4 dígitos/Número de 3 dígitos"
 }

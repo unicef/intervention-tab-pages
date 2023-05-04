@@ -84,7 +84,7 @@
   "BASELINE": "Baseline",
   "BUDGET_CURRENCY": "Budget Currency",
   "BUDGET_GT_20_MSG": "Changes to the budget of activities resulting in a change in the UNICEF contribution >20% of previously approved cash and/or supplies, with or without changes to the programme results.",
-  "BUDGET_HQ_RATE": "Budget HQ Rate",
+  "CAPACITY_STRENGTHENING_COST_RATE": "Capacity Strengthening Cost Rate",
   "BUDGET_LTE_20_MSG": "Changes to the budget of activities resulting in a change in the UNICEF contribution ≤20% of previously approved cash and/or supplies, with or without changes to the programme results.",
   "BUDGET_SUMMARY": "Budget Summary",
   "BUDGET_SUMMARY_DESCRIPTION": "Budget Currency, Budget HQ Rate and other data",
@@ -760,5 +760,7 @@
     "FR_LATEST_DATE": "FR End Date",
     "FR_TOTAL_AMOUNT": "Total FR amount"
   },
-  "VISITS": "Visits"
+  "VISITS": "Visits",
+  "UNPP_CFEI_DSR_REF_NUM": "UNPP CFEI/DSR Ref Number",
+  "CFEI_EXPECTED_FORMAT": "Exected format: CEF/3 letter country code/4 digit year/3 digit number"
 }
