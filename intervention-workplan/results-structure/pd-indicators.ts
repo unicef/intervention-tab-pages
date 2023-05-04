@@ -224,6 +224,10 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
     const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.getEditDeleteIndicator, {
       id: indicatorId
     });
+    fireEvent(this, 'global-loading', {
+      active: true,
+      loadingSource: 'interv-indicator-deactivate'
+    });
     sendRequest({
       method: 'PATCH',
       endpoint: endpoint,
@@ -236,7 +240,13 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
       })
       .catch((err: any) => {
         fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
-      });
+      })
+      .finally(() =>
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: 'interv-indicator-deactivate'
+        })
+      );
   }
 
   async openDeletionDialog(indicatorId: string) {
