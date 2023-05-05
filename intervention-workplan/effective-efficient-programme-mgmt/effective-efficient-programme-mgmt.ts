@@ -28,7 +28,7 @@ import {get as getTranslation, translate, translateConfig} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
-import { dataTableStylesLit } from '@unicef-polymer/etools-data-table/data-table-styles-lit';
+import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
 
 const customStyles = html`
   <style>
@@ -58,9 +58,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
     return html`
       ${sharedStyles}
       <style>
-        ${dataTableStylesLit}
-
-        :host {
+        ${dataTableStylesLit} :host {
           display: block;
           margin-bottom: 24px;
           --etools-table-col-font-size: 16px;
@@ -94,10 +92,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         }
       </style>
 
-      <etools-content-panel
-        show-expand-btn
-        panel-title=${translate(translatesMap.management_budgets)}
-      >
+      <etools-content-panel show-expand-btn panel-title=${translate(translatesMap.management_budgets)}>
         <div slot="after-title">
           <info-icon-tooltip
             .language="${translateConfig.lang}"
@@ -111,10 +106,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
           ><label class="font-bold-12">${this.data.currency} ${this.total_amount}</label>
         </div>
 
-        <etools-data-table-header
-          id="listHeader"
-          no-title
-        >
+        <etools-data-table-header id="listHeader" no-title>
           <etools-data-table-column class="col-7" field="title">
             ${translate('ITEM_PD_CURRENCY')}
           </etools-data-table-column>
@@ -124,31 +116,21 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
           <etools-data-table-column class="flex-c" field="unicef_cash">
             ${translate('UNICEF_CASH')}
           </etools-data-table-column>
-          <etools-data-table-column class="flex-c" field="total">
-            ${translate('TOTAL')}
-          </etools-data-table-column>
+          <etools-data-table-column class="flex-c" field="total"> ${translate('TOTAL')} </etools-data-table-column>
         </etools-data-table-header>
 
         ${this.formattedData.map(
-          (item: any) => html` 
-          <div comment-element="eepm-${item.index}">
+          (item: any) => html` <div comment-element="eepm-${item.index}">
             <etools-data-table-row>
               <div slot="row-data" class="layout-horizontal editable-row">
-                <div class="col-data col-7" data-col-header-label="${translate('ITEM_PD_CURRENCY')}">
-                  ${item.title}
-                </div>
-                <div
-                  class="col-data flex-c"
-                  data-col-header-label="${translate('PARTNER_FULL_NAME')}"
-                >
+                <div class="col-data col-7" data-col-header-label="${translate('ITEM_PD_CURRENCY')}">${item.title}</div>
+                <div class="col-data flex-c" data-col-header-label="${translate('PARTNER_FULL_NAME')}">
                   ${item.partner_contribution}
                 </div>
                 <div class="col-data flex-c" data-col-header-label="${translate('PARTNER_CASH')}">
                   ${item.unicef_cash}
                 </div>
-                <div class="col-data flex-c" data-col-header-label="${translate('TOTAL')}">
-                  ${item.total}
-                </div>
+                <div class="col-data flex-c" data-col-header-label="${translate('TOTAL')}">${item.total}</div>
                 <div class="actions">
                   <paper-icon-button
                     ?hidden="${!this.canEdit}"
@@ -259,7 +241,6 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         unicef_cash: addCurrencyAmountDelimiter(data.act1_unicef),
         total: addCurrencyAmountDelimiter(data.act1_total),
         index: 1,
-        commentElement:'eepm-1',
         kind: KindChoices.inCountry
       },
       {
@@ -269,7 +250,6 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         unicef_cash: addCurrencyAmountDelimiter(data.act2_unicef),
         total: addCurrencyAmountDelimiter(data.act2_total),
         index: 2,
-        commentElement:'eepm-2',
         kind: KindChoices.operational
       },
       {
@@ -279,7 +259,6 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         unicef_cash: addCurrencyAmountDelimiter(data.act3_unicef),
         total: addCurrencyAmountDelimiter(data.act3_total),
         index: 3,
-        commentElement:'eepm-3',
         kind: KindChoices.planning
       }
     ];
