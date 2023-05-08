@@ -211,15 +211,15 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
       return;
     }
     this.intervention = cloneDeep(state.interventions.current);
+    if (!isJsonStrMatch(this.allSites, this.intervention.sites)) {
+      this.allSites = [...this.intervention.sites];
+    }
     this.populateVisits(state);
     this.permissions = selectPlannedVisitsPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
     this.interventionStatus = state.interventions.current.status;
     this.extraEndpointParams = {intervention_id: state.interventions.current.id};
     this.currentCountry = get(state, 'user.data.country') as any;
-    if (!isJsonStrMatch(this.allSites, state.commonData!.sites)) {
-      this.allSites = [...state.commonData!.sites];
-    }
     super.stateChanged(state);
   }
 
