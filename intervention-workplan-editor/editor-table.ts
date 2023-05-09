@@ -526,8 +526,11 @@ export class EditorTable extends CommentsMixin(
     this.quarters = selectInterventionQuarters(state);
     this.isUnicefUser = isUnicefUser(state);
     this.intervention = cloneDeep(currentIntervention(state));
-    this.formattedProgrammeManagement = this.formatProgrammeManagement(selectProgrammeManagement(state));
-    this.originalFormattedProgrammeManagement = cloneDeep(this.formattedProgrammeManagement);
+    if (!isJsonStrMatch(this.originalProgMgmt, selectProgrammeManagement(state))) {
+      this.originalProgMgmt = selectProgrammeManagement(state);
+      this.formattedProgrammeManagement = this.formatProgrammeManagement(selectProgrammeManagement(state));
+      this.originalFormattedProgrammeManagement = cloneDeep(this.formattedProgrammeManagement);
+    }
 
     this.cpOutputs = this.intervention.result_links
       .map(({cp_output: id, cp_output_name: name}: ExpectedResult) => ({
