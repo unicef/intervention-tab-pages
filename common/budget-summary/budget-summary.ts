@@ -130,7 +130,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
         </div>
 
         <div class="data-column">
-          <label class="paper-label">${translate('BUDGET_HQ_RATE')}</label>
+          <label class="paper-label">${translate('CAPACITY_STRENGTHENING_COST_RATE')}</label>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.hq_support_cost)}">
             ${this.roundPercentage(this.budgetSummary.hq_support_cost)}(${displayCurrencyAmount(
               String(this.budgetSummary.total_hq_cash_local),

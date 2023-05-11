@@ -211,15 +211,15 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
       return;
     }
     this.intervention = cloneDeep(state.interventions.current);
+    if (!isJsonStrMatch(this.allSites, this.intervention.sites)) {
+      this.allSites = [...this.intervention.sites];
+    }
     this.populateVisits(state);
     this.permissions = selectPlannedVisitsPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
     this.interventionStatus = state.interventions.current.status;
     this.extraEndpointParams = {intervention_id: state.interventions.current.id};
     this.currentCountry = get(state, 'user.data.country') as any;
-    if (!isJsonStrMatch(this.allSites, state.commonData!.sites)) {
-      this.allSites = [...state.commonData!.sites];
-    }
     super.stateChanged(state);
   }
 
@@ -445,6 +445,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
 
   validate() {
     let valid = true;
+    let allSitesHaveVisits = true;
     this.data?.forEach((item: any, index: number) => {
       if (
         !this._validateYear(index) ||
@@ -452,9 +453,28 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
       ) {
         valid = false;
       }
+      if (allSitesHaveVisits && !this._validateSitesHaveVisits(item)) {
+        allSitesHaveVisits = false;
+      }
     });
+    if (!valid || !allSitesHaveVisits) {
+      fireEvent(this, 'toast', {
+        text: getTranslation(valid ? 'PROGRAMMATIC_VISITS_SITES' : 'FIX_VALIDATION_ERRORS')
+      });
+    }
+    return valid && allSitesHaveVisits;
+  }
 
-    return valid;
+  _validateSitesHaveVisits(item: any) {
+    if (
+      (item.programmatic_q1_sites.length && !item.programmatic_q1) ||
+      (item.programmatic_q2_sites.length && !item.programmatic_q2) ||
+      (item.programmatic_q3_sites.length && !item.programmatic_q3) ||
+      (item.programmatic_q4_sites.length && !item.programmatic_q4)
+    ) {
+      return false;
+    }
+    return true;
   }
 
   _validateYear(index: number) {
@@ -500,9 +520,6 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
   }
   saveData() {
     if (!this.validate()) {
-      fireEvent(this, 'toast', {
-        text: getTranslation('FIX_VALIDATION_ERRORS')
-      });
       return Promise.resolve(false);
     }
 

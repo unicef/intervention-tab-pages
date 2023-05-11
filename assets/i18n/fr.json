@@ -84,7 +84,7 @@
   "BASELINE": "Base de référence",
   "BUDGET_CURRENCY": "Devise du Budget",
   "BUDGET_GT_20_MSG": "Les modifications du budget des activités entraînant une modification de la c contribution précédemment approuvée en espèces et/ou fournitures de l’UNICEF >20 %, avec ou sans modification des résultats du programme.",
-  "BUDGET_HQ_RATE": "Taux HQ du Budget",
+  "CAPACITY_STRENGTHENING_COST_RATE": "Taux de coût du renforcement des capacités",
   "BUDGET_LTE_20_MSG": "Les modifications du budget des activités entraînant une modification de la contribution précédemment approuvée en espèces et/ou fournitures de l’UNICEF ≤20 %, avec ou sans modification des résultats du programme.",
   "BUDGET_SUMMARY": "Résumé budgétaire",
   "BUDGET_SUMMARY_DESCRIPTION": "Devise du budget, taux du siège du budget et autres données",
@@ -734,6 +734,7 @@
   "TERMINATION_NOTICE_FILE_IS_REQUIRED": "Le fichier d'avis de résiliation est requis",
   "UNSUSPEND": "Annuler la suspension",
   "FIX_VALIDATION_ERRORS": "Veuillez corriger les erreurs de validation",
+  "PROGRAMMATIC_VISITS_SITES": "Le nombre de visites doit être supérieur à 0 lorsque les sites sont sélectionnés.",
   "CAN_NOT_SAVE_REVIEW": "Impossible d'enregistrer l'avis.",
   "TRY_AGAIN_LATER": "Réessayer plus tard",
   "CAN_NOT_REMOVE_AMENDMENT": "Impossible de supprimer l'amendement. Réessayer plus tard",
@@ -760,5 +761,7 @@
     "FR_LATEST_DATE": "FR Date de fin",
     "FR_TOTAL_AMOUNT": "Montant total du FR"
   },
-  "VISITS": "Visites"
+  "VISITS": "Visites",
+  "UNPP_CFEI_DSR_REF_NUM": "Numéro de référence UNPP CFEI/DSR",
+  "CFEI_EXPECTED_FORMAT": "Format attendu: CEF/code pays à 3 lettres/année à 4 chiffres/numéro à 3 chiffres"
 }

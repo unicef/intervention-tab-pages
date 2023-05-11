@@ -19,6 +19,10 @@ import {translate} from 'lit-translate';
 import {InterventionActivityExtended} from '../types/editor-page-types';
 
 function deactivateActivity(activityId: number, pdOutputId: number, interventionId: number) {
+  fireEvent(document.body.querySelector('app-shell')!, 'global-loading', {
+    active: true,
+    loadingSource: 'interv-activity-deactivate'
+  });
   const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.pdActivityDetails, {
     activityId: activityId,
     interventionId: interventionId,
@@ -36,10 +40,21 @@ function deactivateActivity(activityId: number, pdOutputId: number, intervention
     })
     .catch((err: any) => {
       fireEvent(document.body.querySelector('app-shell')!, 'toast', {text: formatServerErrorAsText(err)});
-    });
+    })
+    .finally(() =>
+      fireEvent(document.body.querySelector('app-shell')!, 'global-loading', {
+        active: false,
+        loadingSource: 'interv-activity-deactivate'
+      })
+    );
 }
 
 function deleteActivity(activityId: number, pdOutputId: number, interventionId: number) {
+  fireEvent(document.body.querySelector('app-shell')!, 'global-loading', {
+    active: true,
+    loadingSource: 'interv-activity-remove'
+  });
+
   const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.pdActivityDetails, {
     activityId: activityId,
     interventionId: interventionId,
@@ -54,7 +69,13 @@ function deleteActivity(activityId: number, pdOutputId: number, interventionId: 
     })
     .catch((err: any) => {
       fireEvent(document.body.querySelector('app-shell')!, 'toast', {text: formatServerErrorAsText(err)});
-    });
+    })
+    .finally(() =>
+      fireEvent(document.body.querySelector('app-shell')!, 'global-loading', {
+        active: false,
+        loadingSource: 'interv-activity-remove'
+      })
+    );
 }
 
 export function _canDeactivate(

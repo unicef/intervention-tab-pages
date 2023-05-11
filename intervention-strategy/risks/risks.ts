@@ -30,6 +30,7 @@ import {translatesMap} from '../../utils/intervention-labels-map';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 
 const customStyles = html`
   <style>
@@ -190,6 +191,10 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   }
 
   deleteRiskItem(riskId: string) {
+    fireEvent(this, 'global-loading', {
+      active: true,
+      loadingSource: 'interv-risk-item-remove'
+    });
     const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.riskDelete, {
       interventionId: this.interventionId,
       riskId: riskId
@@ -200,6 +205,12 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       })
       .then(() => {
         getStore().dispatch<AsyncAction>(getIntervention(String(this.interventionId)));
-      });
+      })
+      .finally(() =>
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: 'interv-risk-item-remove'
+        })
+      );
   }
 }

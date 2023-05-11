@@ -31,6 +31,9 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
     @property({type: Array})
     formattedProgrammeManagement: any[] = [];
 
+    @property({type: Object})
+    originalProgMgmt: any;
+
     // @ts-ignore
     @property({type: Array})
     originalFormattedProgrammeManagement: any[] = [];
