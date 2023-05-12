@@ -145,7 +145,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
                 : html``
             }
           </div>
-          <div class="col col-3">
+          <div class="col col-6">
             <!-- Signed by Partner Date -->
             <datepicker-lite
               id="signedByPartnerDateField"
@@ -174,7 +174,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
               </div>
             </paper-input-container>
           </div>
-          <div class="col col-3">
+          <div class="col col-6">
             <!-- Signed by UNICEF Date -->
             <datepicker-lite
               id="signedByUnicefDateField"
