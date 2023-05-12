@@ -59,7 +59,7 @@ export const getIntervention = (interventionId?: string) => (dispatch: any, getS
       fireEvent(document.body.querySelector('app-shell')!, 'global-loading', {
         active: false,
         loadingSource: 'interv-get'
-      })
+      });
     });
 };
 
