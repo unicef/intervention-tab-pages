@@ -763,5 +763,6 @@
   },
   "VISITS": "الزيارات",
   "UNPP_CFEI_DSR_REF_NUM": "رقم مرجع UNPP CFEI / DSR",
-  "CFEI_EXPECTED_FORMAT": "التنسيق المتعارف عليه: CEF / 3 أحرف رمز البلد / 4 أرقام السنة / 3 أرقام"
+  "CFEI_EXPECTED_FORMAT": "التنسيق المتعارف عليه: CEF / 3 أحرف رمز البلد / 4 أرقام السنة / 3 أرقام",
+  "INOPERATIVE": "معطل"
 }
