@@ -236,11 +236,11 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
     ];
   }
 
-  openActivityDialog(event: CustomEvent) {
+  openActivityDialog(activity: any) {
     openDialog({
       dialog: 'activity-dialog',
       dialogData: {
-        activity: {...event.detail, items: cloneDeep(this.data.items)},
+        activity: {...activity, items: cloneDeep(this.data.items)},
         interventionId: this.interventionId,
         currency: this.data.currency,
         readonly: !this.canEdit
