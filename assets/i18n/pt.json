@@ -237,7 +237,7 @@
     "ACTIVITIES_INVOLVING_CHILDREN_AND_YOUNG_PEOPLE": "Atividades envolvendo crianças e jovens",
     "CORRESPONDENCE": "Correspondência",
     "DATA_PROCESSING_AGREEMENT": "Acordo de Processamento de Dados",
-    "FACE": "ENFRENTAR",
+    "FACE": "FACE",
     "FINAL_PARTNERSHIP_REVIEW": "Revisão Final da Parceria",
     "OTHER": "Outro",
     "PROGRESS_REPORT": "Relatório de progresso",
@@ -494,7 +494,7 @@
   "RATINGS": {
     "MARGINAL": "Marginal",
     "NONE": "Nenhum",
-    "PRINCIPAL": "Diretor",
+    "PRINCIPAL": "Principal",
     "SIGNIFICANT": "Significativo"
   },
   "RATIO": "Proporção",
