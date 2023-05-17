@@ -763,5 +763,6 @@
   },
   "VISITS": "Visitas",
   "UNPP_CFEI_DSR_REF_NUM": "Número de referência UNPP CFEI/DSR",
-  "CFEI_EXPECTED_FORMAT": "Formato esperado: CEF/código do país 3 letras/ano 4 dígitos/número 3 dígitos"
+  "CFEI_EXPECTED_FORMAT": "Formato esperado: CEF/código do país 3 letras/ano 4 dígitos/número 3 dígitos",
+  "INOPERATIVE": "Inoperante"
 }

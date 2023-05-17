@@ -763,5 +763,6 @@
   },
   "VISITS": "Visits",
   "UNPP_CFEI_DSR_REF_NUM": "UNPP CFEI/DSR Ref Number",
-  "CFEI_EXPECTED_FORMAT": "Exected format: CEF/3 letter country code/4 digit year/3 digit number"
+  "CFEI_EXPECTED_FORMAT": "Exected format: CEF/3 letter country code/4 digit year/3 digit number",
+  "INOPERATIVE": "Inoperative"
 }
