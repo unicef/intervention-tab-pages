@@ -25,11 +25,12 @@ import {getIntervention} from '../../common/actions/interventions';
 import {currentInterventionPermissions} from '../../common/selectors';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, EtoolsEndpoint, LabelAndValue, RiskData} from '@unicef-polymer/etools-types';
-import {translate, translateConfig} from 'lit-translate';
+import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 
 const customStyles = html`
   <style>
@@ -81,7 +82,6 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       <etools-content-panel show-expand-btn panel-title=${translate(translatesMap.risks)} comment-element="risks">
         <div slot="after-title">
           <info-icon-tooltip
-            .language="${translateConfig.lang}"
             id="iit-risk"
             ?hidden="${!this.canEditAtLeastOneField}"
             .tooltipText="${translate('RISKS_INFO')}"
@@ -191,6 +191,10 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   }
 
   deleteRiskItem(riskId: string) {
+    fireEvent(this, 'global-loading', {
+      active: true,
+      loadingSource: 'interv-risk-item-remove'
+    });
     const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.riskDelete, {
       interventionId: this.interventionId,
       riskId: riskId
@@ -201,6 +205,12 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       })
       .then(() => {
         getStore().dispatch<AsyncAction>(getIntervention(String(this.interventionId)));
-      });
+      })
+      .finally(() =>
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: 'interv-risk-item-remove'
+        })
+      );
   }
 }

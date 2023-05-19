@@ -526,8 +526,11 @@ export class EditorTable extends CommentsMixin(
     this.quarters = selectInterventionQuarters(state);
     this.isUnicefUser = isUnicefUser(state);
     this.intervention = cloneDeep(currentIntervention(state));
-    this.formattedProgrammeManagement = this.formatProgrammeManagement(selectProgrammeManagement(state));
-    this.originalFormattedProgrammeManagement = cloneDeep(this.formattedProgrammeManagement);
+    if (!isJsonStrMatch(this.originalProgMgmt, selectProgrammeManagement(state))) {
+      this.originalProgMgmt = selectProgrammeManagement(state);
+      this.formattedProgrammeManagement = this.formatProgrammeManagement(selectProgrammeManagement(state));
+      this.originalFormattedProgrammeManagement = cloneDeep(this.formattedProgrammeManagement);
+    }
 
     this.cpOutputs = this.intervention.result_links
       .map(({cp_output: id, cp_output_name: name}: ExpectedResult) => ({
@@ -774,6 +777,10 @@ export class EditorTable extends CommentsMixin(
   }
 
   deletePDOutputFromPD(lower_result_id: number) {
+    fireEvent(this, 'global-loading', {
+      active: true,
+      loadingSource: 'interv-pdoutput-remove'
+    });
     const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.lowerResultsDelete, {
       lower_result_id,
       intervention_id: this.interventionId
@@ -781,9 +788,16 @@ export class EditorTable extends CommentsMixin(
     sendRequest({
       method: 'DELETE',
       endpoint: endpoint
-    }).then(() => {
-      this.getResultLinksDetails();
-      getStore().dispatch<AsyncAction>(getIntervention());
-    });
+    })
+      .then(() => {
+        this.getResultLinksDetails();
+        getStore().dispatch<AsyncAction>(getIntervention());
+      })
+      .finally(() =>
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: 'interv-pdoutput-remove'
+        })
+      );
   }
 }

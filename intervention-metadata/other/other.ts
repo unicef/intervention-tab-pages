@@ -17,7 +17,7 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, LabelAndValue, Permission} from '@unicef-polymer/etools-types';
-import {listenForLangChanged, translate, translateConfig} from 'lit-translate';
+import {listenForLangChanged, translate} from 'lit-translate';
 import {OtherData, OtherPermissions} from './other.models';
 import {selectOtherData, selectOtherPermissions} from './other.selectors';
 import CONSTANTS from '../../common/constants';
@@ -223,7 +223,6 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
             ${translate('CONFIDENTIAL')}
           </paper-toggle-button>
           <info-icon-tooltip
-            .language="${translateConfig.lang}"
             id="iit-confidential"
             ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit?.confidential)}"
             .tooltipText="${translate('CONFIDENTIAL_INFO')}"

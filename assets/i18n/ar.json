@@ -237,7 +237,7 @@
     "ACTIVITIES_INVOLVING_CHILDREN_AND_YOUNG_PEOPLE": "الأنشطة التي يشارك فيها الأطفال والشباب",
     "CORRESPONDENCE": "مراسلة",
     "DATA_PROCESSING_AGREEMENT": "اتفاقية معالجة البيانات",
-    "FACE": "وجه",
+    "FACE": "FACE",
     "FINAL_PARTNERSHIP_REVIEW": "مراجعة الشراكة النهائية",
     "OTHER": "آخر",
     "PROGRESS_REPORT": "تقرير التطور",
@@ -734,6 +734,7 @@
   "TERMINATION_NOTICE_FILE_IS_REQUIRED": "ملف إشعار الإنهاء مطلوب",
   "UNSUSPEND": "غير معلق",
   "FIX_VALIDATION_ERRORS": "الرجاء تصحيح أخطاء التحقق من الصحة",
+  "PROGRAMMATIC_VISITS_SITES": "يجب أن يكون عدد الزيارات أعلى من 0 عند اختيار المواقع.",
   "CAN_NOT_SAVE_REVIEW": ".لا يمكن حفظ المراجعة",
   "TRY_AGAIN_LATER": "حاول مرة أخرى لاحقا",
   "CAN_NOT_REMOVE_AMENDMENT": "لا يمكن إزالة التعديل. حاول مرة أخرى في وقت لاحق",
@@ -762,5 +763,6 @@
   },
   "VISITS": "الزيارات",
   "UNPP_CFEI_DSR_REF_NUM": "رقم مرجع UNPP CFEI / DSR",
-  "CFEI_EXPECTED_FORMAT": "التنسيق المتعارف عليه: CEF / 3 أحرف رمز البلد / 4 أرقام السنة / 3 أرقام"
+  "CFEI_EXPECTED_FORMAT": "التنسيق المتعارف عليه: CEF / 3 أحرف رمز البلد / 4 أرقام السنة / 3 أرقام",
+  "INOPERATIVE": "معطل"
 }

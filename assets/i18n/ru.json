@@ -237,7 +237,7 @@
     "ACTIVITIES_INVOLVING_CHILDREN_AND_YOUNG_PEOPLE": "Мероприятия с участием детей и молодежи",
     "CORRESPONDENCE": "Переписка",
     "DATA_PROCESSING_AGREEMENT": "Соглашение об обработке данных",
-    "FACE": "УФСР",
+    "FACE": "FACE",
     "FINAL_PARTNERSHIP_REVIEW": "Окончательный обзор партнерства",
     "OTHER": "Другой",
     "PROGRESS_REPORT": "Отчет о проделанной работе",
@@ -734,6 +734,7 @@
   "TERMINATION_NOTICE_FILE_IS_REQUIRED": "Требуется документ уведомления о прекращении",
   "UNSUSPEND": "Разблокировать",
   "FIX_VALIDATION_ERRORS": "Пожалуйста, исправьте ошибки валидации",
+  "PROGRAMMATIC_VISITS_SITES": "Количество посещений должно быть больше 0 при выборе сайтов.",
   "CAN_NOT_SAVE_REVIEW": "Не удается сохранить отзыв.",
   "TRY_AGAIN_LATER": "Повторите попытку позже",
   "CAN_NOT_REMOVE_AMENDMENT": "Не удается удалить поправку. Повторите попытку позже",
@@ -762,5 +763,6 @@
   },
   "VISITS": "Посещения",
   "UNPP_CFEI_DSR_REF_NUM": "Номер ПВЗ/ПО из ПП ООН",
-  "CFEI_EXPECTED_FORMAT": "Предполагаемый формат: CEF/3-буквенный код страны/4-значный год/3-значный номер"
+  "CFEI_EXPECTED_FORMAT": "Предполагаемый формат: CEF/3-буквенный код страны/4-значный год/3-значный номер",
+  "INOPERATIVE": "Не работает"
 }

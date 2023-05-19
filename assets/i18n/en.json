@@ -734,6 +734,7 @@
   "TERMINATION_NOTICE_FILE_IS_REQUIRED": "Termination Notice file is required",
   "UNSUSPEND": "Unsuspend",
   "FIX_VALIDATION_ERRORS": "Please fix validation errors",
+  "PROGRAMMATIC_VISITS_SITES": "Number of visits must be higher than 0 when sites selected.",
   "CAN_NOT_SAVE_REVIEW": "Can not save review.",
   "TRY_AGAIN_LATER": "Try again later",
   "CAN_NOT_REMOVE_AMENDMENT": "Can not remove amendment. Try again later",
@@ -762,5 +763,6 @@
   },
   "VISITS": "Visits",
   "UNPP_CFEI_DSR_REF_NUM": "UNPP CFEI/DSR Ref Number",
-  "CFEI_EXPECTED_FORMAT": "Exected format: CEF/3 letter country code/4 digit year/3 digit number"
+  "CFEI_EXPECTED_FORMAT": "Exected format: CEF/3 letter country code/4 digit year/3 digit number",
+  "INOPERATIVE": "Inoperative"
 }
