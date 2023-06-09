@@ -14,12 +14,12 @@ import '@unicef-polymer/etools-data-table/etools-data-table.js';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/iron-icons';
 import './modals/cp-output-dialog';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {ExpectedResult, Intervention} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import {TruncateMixin} from '../../common/mixins/truncate.mixin';
 import {_canDelete} from '../../common/mixins/results-structure-common';
 
@@ -173,7 +173,7 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
         }
         etools-data-table-row {
           overflow: hidden;
-          --list-row-wrapper-padding: 0 12px 0 0;
+          --list-row-wrapper-padding-inline: 0 12px;
           --list-second-bg-color: #c4c4c4;
         }
 
@@ -182,13 +182,14 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
           border: none;
         }
         etools-data-table-row::part(edt-icon-wrapper) {
-          padding: 11px 7px 0 9px;
+          padding-block: 11px 0;
+          padding-inline: 9px 7px;
           align-self: flex-start;
         }
         etools-data-table-row::part(edt-list-row-wrapper) {
           border-bottom: none !important;
-          padding-left: 4px;
-          padding-right: 16px;
+          padding-inline-start: 4px;
+          padding-inline-end: 16px;
           background-color: var(--cp-output-background);
         }
         .editable-row:hover .hover-block {

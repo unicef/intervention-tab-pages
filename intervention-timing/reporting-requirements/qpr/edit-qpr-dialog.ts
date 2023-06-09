@@ -3,19 +3,19 @@ import '@polymer/iron-label/iron-label';
 import '@polymer/paper-button/paper-button';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 
-import {prepareDatepickerDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {prepareDatepickerDate} from '@unicef-polymer/etools-utils/dist/date.util';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import './qpr-list.js';
 import CONSTANTS from '../../../common/constants';
 import '@unicef-polymer/etools-date-time/calendar-lite.js';
-import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
-import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
+import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {QprListEl} from './qpr-list.js';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
-import {AnyObject} from '@unicef-polymer/etools-types';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
+import {AnyObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 declare const dayjs: any;
 import {translate, get as getTranslation} from 'lit-translate';
 import {translatesMap} from '../../../utils/intervention-labels-map';
@@ -42,7 +42,7 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
         }
 
         #qpr-edit-info {
-          margin-right: 24px;
+          margin-inline-end: 24px;
         }
 
         qpr-list {
@@ -321,7 +321,7 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
   }
 
   _saveModifiedQprData() {
-    const endpoint = getEndpoint(interventionEndpoints.reportingRequirements, {
+    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.reportingRequirements, {
       intervId: this.interventionId,
       reportType: CONSTANTS.REQUIREMENTS_REPORT_TYPE.QPR
     });
@@ -338,7 +338,7 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
         fireEvent(this, 'dialog-closed', {confirmed: true, response: response.reporting_requirements});
       })
       .catch((error: any) => {
-        logError('Failed to save/update qpr data!', 'edit-qpr-dialog', error);
+        EtoolsLogger.error('Failed to save/update qpr data!', 'edit-qpr-dialog', error);
         parseRequestErrorsAndShowAsToastMsgs(error, this);
         dialog.stopSpinner();
       });

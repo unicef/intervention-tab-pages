@@ -12,20 +12,19 @@ import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/st
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {selectGenderEquityRating, selectGenderEquityRatingPermissions} from './genderEquityRating.selectors';
 import {GenderEquityRatingPermissions, GenderEquityRating} from './genderEquityRating.models';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {RootState} from '../../common/types/store.types';
 import {patchIntervention} from '../../common/actions/interventions';
-import {isJsonStrMatch, translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
-import {
-  pageIsNotCurrentlyActive,
-  detailsTextareaRowsCount
-} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
+import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, LabelAndValue, Permission} from '@unicef-polymer/etools-types';
-import {translate, translateConfig} from 'lit-translate';
+import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
+import {detailsTextareaRowsCount} from '../../utils/utils';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 
 /**
  * @customElement
@@ -49,10 +48,10 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
           margin-bottom: 24px;
         }
         .pl-none {
-          padding-left: 0px !important;
+          padding-inline-start: 0px !important;
         }
         paper-radio-button:first-child {
-          padding-left: 0px !important;
+          padding-inline-start: 0px !important;
         }
 
         etools-content-panel::part(ecp-content) {
@@ -74,7 +73,6 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
       >
         <div slot="after-title">
           <info-icon-tooltip
-            .language="${translateConfig.lang}"
             id="iit-ger"
             .tooltipHtml="${this.getRatingInfoHtml()}"
           ></info-icon-tooltip>
@@ -91,7 +89,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         <div class="row-padding-v pb-20">
           <div class="w100">
             <label class="paper-label">${translate(translatesMap.gender_rating)}</label>
-            <info-icon-tooltip .language="${translateConfig.lang}" id="iit-gender" ?hidden=${!this.editMode}
+            <info-icon-tooltip id="iit-gender" ?hidden=${!this.editMode}
               .tooltipText=${translate('GENDER_RATING_INFO')}>
             </info-icon-tooltip>
           </div>
@@ -124,7 +122,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         <div class="row-padding-v pb-20">
           <div class="w100">
             <label class="paper-label">${translate(translatesMap.equity_rating)}</label>
-            <info-icon-tooltip .language="${translateConfig.lang}" id="iit-equity" ?hidden=${!this.editMode}
+            <info-icon-tooltip id="iit-equity" ?hidden=${!this.editMode}
               .tooltipText=${translate('EQUITY_RATING_INFO')}>
             </info-icon-tooltip>
           </div>
@@ -157,7 +155,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         <div class="row-padding-v pb-20">
           <div class="w100">
             <label class="paper-label">${translate(translatesMap.sustainability_rating)}</label>
-            <info-icon-tooltip .language="${translateConfig.lang}" id="iit-sust" ?hidden=${!this.editMode}
+            <info-icon-tooltip id="iit-sust" ?hidden=${!this.editMode}
               .tooltipText=${translate('SUSTAINABILITY_RATING_INFO')}>
             </info-icon-tooltip>
           </div>
@@ -203,7 +201,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
   data!: GenderEquityRating;
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'strategy')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'strategy')) {
       return;
     }
 

@@ -1,7 +1,7 @@
 import {LitElement, TemplateResult, html, customElement, property, CSSResultArray, css} from 'lit-element';
 import {InterventionReview} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {formatDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
+import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {PRC_REVIEW, NON_PRC_REVIEW, NO_REVIEW} from '../../common/components/intervention/review.const';
@@ -33,7 +33,7 @@ export class GeneralReviewInformation extends LitElement {
           color: var(--primary-text-color);
         }
         .info-block {
-          margin-right: 1.5rem;
+          margin-inline-end: 1.5rem;
           min-width: 110px;
         }
 

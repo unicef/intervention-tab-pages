@@ -10,11 +10,11 @@ import {
 } from 'lit-element';
 import {getTotalCashFormatted, getMultiplyProductCashFormatted} from './get-total.helper';
 import {ActivityItemsTableInlineStyles, ActivityItemsTableStyles} from './activity-items-table.styles';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {InterventionActivityItem} from '@unicef-polymer/etools-types';
 import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
 import {translate} from 'lit-translate';
-import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import {ActivitiesCommonMixin} from '../../mixins/activities-common.mixin';
 
 @customElement('activity-item-row')

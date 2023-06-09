@@ -5,10 +5,10 @@ import {CommentsEndpoints} from './comments-types';
 import {RootState} from '../../types/store.types';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {addComment, updateComment} from './comments.actions';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {setTextareasMaxHeight} from '@unicef-polymer/etools-modules-common/dist/utils/textarea-max-rows-helper';
 import {get as getTranslation} from 'lit-translate';
 

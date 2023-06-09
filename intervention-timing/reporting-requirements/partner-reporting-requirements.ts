@@ -19,14 +19,14 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import {RootState} from '../../common/types/store.types';
 import {ReportingRequirementsPermissions} from './reportingRequirementsPermissions.models';
 import {selectReportingRequirementsPermissions} from './reportingRequirementsPermissions.selectors';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {isUnicefUser} from '../../common/selectors';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {AnyObject, Intervention, Permission} from '@unicef-polymer/etools-types';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
-import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
-import {translate, translateConfig} from 'lit-translate';
+import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
+import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {sectionContentStyles} from '@unicef-polymer/etools-modules-common/dist/styles/content-section-styles-polymer';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
@@ -56,7 +56,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
         /* ------------------------------- */
 
         .reporting-req-data {
-          border-left: 1px solid var(--darker-divider-color);
+          border-inline-start: 1px solid var(--darker-divider-color);
         }
 
         .nav-menu {
@@ -70,8 +70,8 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
           display: flex;
           align-items: center;
           height: 48px;
-          padding-left: 24px;
-          padding-right: 24px;
+          padding-inline-start: 24px;
+          padding-inline-end: 24px;
           font-size: 14px;
           font-weight: bold;
           text-transform: capitalize;
@@ -86,8 +86,8 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
 
         .nav-menu-item {
           color: var(--secondary-text-color);
-          padding-left: 24px;
-          padding-right: 24px;
+          padding-inline-start: 24px;
+          padding-inline-end: 24px;
           font-size: 14px;
           font-weight: bold;
           text-transform: capitalize;
@@ -102,11 +102,15 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
 
         .edit-rep-req {
           color: var(--primary-text-color);
-          margin-left: 16px;
+          margin-inline-start: 16px;
         }
 
         info-icon-tooltip {
           --iit-margin: 0 5px 0 0;
+        }
+
+        :host-context([dir='rtl']) info-icon-tooltip {
+          --iit-margin: 0 0 0 5px;
         }
       </style>
       <etools-content-panel
@@ -126,7 +130,6 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
               id="clickable"
             >
               <info-icon-tooltip
-                .language="${translateConfig.lang}"
                 id="iit-qpr"
                 ?hidden="${this.isReadonly}"
                 .tooltipText="${translate('QUARTERLY_PROGRESS_REPORT_TOOLTIP')}"
@@ -149,7 +152,6 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
               id="clickable"
             >
               <info-icon-tooltip
-                .language="${translateConfig.lang}"
                 id="iit-hrr"
                 ?hidden="${this.isReadonly}"
                 .tooltipText="${translate('HUMANITARIAN_REPORT_TOOLTIP')}"
@@ -173,7 +175,6 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
               id="clickable"
             >
               <info-icon-tooltip
-                .language="${translateConfig.lang}"
                 id="iit-sp"
                 ?hidden="${this.isReadonly}"
                 .tooltipText="${translate('SPECIAL_REPORT_TOOLTIP')}"
@@ -287,7 +288,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
   isReadonly!: boolean;
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'timing')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'timing')) {
       return;
     }
     if (!get(state, 'interventions.current')) {

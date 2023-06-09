@@ -9,11 +9,11 @@ import {
   PropertyValues
 } from 'lit-element';
 import {ActivityTime, groupByYear, serializeTimeFrameData} from '../../../../utils/timeframes.helper';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {InterventionActivityTimeframe} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 
 @customElement('activity-time-frames')
 export class ActivityTimeFrames extends LitElement {
@@ -60,12 +60,12 @@ export class ActivityTimeFrames extends LitElement {
         }
         .frame-divider {
           height: 20px;
-          border-left: 1px solid #9e9e9e;
+          border-inline-start: 1px solid #9e9e9e;
         }
         .year-divider {
           margin: 0 5px;
           height: 50px;
-          border-left: 1px solid #9e9e9e;
+          border-inline-start: 1px solid #9e9e9e;
         }
         label {
           text-align: center;
@@ -79,7 +79,7 @@ export class ActivityTimeFrames extends LitElement {
           width: auto !important;
           max-width: 100%;
           right: auto;
-          padding-right: 15px;
+          padding-inline-end: 15px;
           background-size: 5px;
         }
         .time-frame-container {

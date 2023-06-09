@@ -13,21 +13,19 @@ import {
 } from './nonFinancialContribution.selectors';
 import {NonFinancialContributionData, NonFinancialContributionPermissions} from './nonFinancialContribution.models';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {patchIntervention} from '../../common/actions/interventions';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {RootState} from '../../common/types/store.types';
-import {
-  pageIsNotCurrentlyActive,
-  detailsTextareaRowsCount
-} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
-import {translate, translateConfig} from 'lit-translate';
+import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
+import {detailsTextareaRowsCount} from '../../utils/utils';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 
 /**
  * @customElement
@@ -75,7 +73,6 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
           <div>
             <label class="paper-label">${translate(translatesMap.ip_program_contribution)}</label>
             <info-icon-tooltip
-              .language="${translateConfig.lang}"
               id="iit-non-fin"
               slot="after-label"
               ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit?.ip_program_contribution)}"
@@ -112,7 +109,7 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
   originalData = {};
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan)) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan)) {
       return;
     }
 

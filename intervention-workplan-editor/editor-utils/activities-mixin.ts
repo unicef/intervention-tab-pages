@@ -1,17 +1,18 @@
 // @ts-ignore
 import {Constructor, html, LitElement, property} from 'lit-element';
 import {ifDefined} from 'lit-html/directives/if-defined.js';
-import {InterventionQuarter} from '@unicef-polymer/etools-types';
+import {EtoolsEndpoint, InterventionQuarter} from '@unicef-polymer/etools-types';
 import {Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
 import '../time-intervals/time-intervals';
-import {cloneDeep, isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
+import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {ActivityItemsMixin} from './activity-item-mixin';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
-import {sendRequest} from '@unicef-polymer/etools-ajax';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
+import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {repeat} from 'lit-html/directives/repeat';
 import {
@@ -457,8 +458,15 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
 
     _getEndpoint(activityId: any, pdOutputId: string, interventionId: string) {
       return activityId
-        ? getEndpoint(interventionEndpoints.pdActivityDetails, {activityId, pdOutputId, interventionId})
-        : getEndpoint(interventionEndpoints.pdActivities, {pdOutputId, interventionId});
+        ? getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.pdActivityDetails, {
+            activityId,
+            pdOutputId,
+            interventionId
+          })
+        : getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.pdActivities, {
+            pdOutputId,
+            interventionId
+          });
     }
   };
 }

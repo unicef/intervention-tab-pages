@@ -3,7 +3,7 @@ import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import get from 'lodash-es/get';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {LocationObject} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
@@ -42,7 +42,7 @@ export class GroupedLocationsDialog extends LitElement {
         }
 
         .left-padding {
-          padding-left: 16px;
+          padding-inline-start: 16px;
         }
 
         .top-padding {
@@ -85,8 +85,8 @@ export class GroupedLocationsDialog extends LitElement {
           .selected="${this.adminLevel}"
           placeholder="&#8212;"
           .options="${this.adminLevels}"
-          option-label="admin_level_name"
-          option-value="admin_level_name"
+          option-label="name"
+          option-value="name"
           trigger-value-change-event
           @etools-selected-item-changed="${this.adminLevelChanged}"
         >
@@ -185,7 +185,7 @@ export class GroupedLocationsDialog extends LitElement {
       return [];
     }
     const index = locationTypes.findIndex(function (al: any) {
-      return al.admin_level_name === 'Country';
+      return al.name === 'Country';
     });
     if (index > -1) {
       locationTypes.splice(index, 1);
@@ -215,7 +215,7 @@ export class GroupedLocationsDialog extends LitElement {
   }
 
   adminLevelChanged(event: CustomEvent) {
-    const selectedAdminLevelName = get(event.detail, 'selectedItem.admin_level_name');
+    const selectedAdminLevelName = get(event.detail, 'selectedItem.name');
     if (!selectedAdminLevelName) {
       this.groupedLocations = [];
       return;

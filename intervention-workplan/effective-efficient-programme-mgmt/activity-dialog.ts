@@ -7,15 +7,15 @@ import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/b
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {translate, get as getTranslation} from 'lit-translate';
 import '../../common/components/activity/activity-items-table';
 import {getTotalCashFormatted} from '../../common/components/activity/get-total.helper';
-import {cloneDeep} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 import {AnyObject, ManagementBudgetItem} from '@unicef-polymer/etools-types';
 import {ActivityItemsTable} from '../../common/components/activity/activity-items-table';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
@@ -56,7 +56,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         }
         .total-input,
         etools-currency-amount-input {
-          margin-right: 24px;
+          margin-inline-end: 24px;
         }
         .total {
           justify-content: flex-end;
@@ -144,7 +144,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
                   <etools-currency-amount-input
                     class="col-3"
                     id="unfundedCash"
-                    ?hidden="${!this.showUnfunded}"
+                    ?hidden="${!this.has_unfunded_cash}"
                     label=${translate('UNFUNDED_CASH')}
                      .value="${this.data[this.getPropertyName('unfunded')]}"
                      @value-changed="${({detail}: CustomEvent) =>
@@ -171,7 +171,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
                 ></paper-input>
                 <paper-input
                   readonly
-                  ?hidden="${!this.showUnfunded}"
+                  ?hidden="${!this.has_unfunded_cash}"
                   tabindex="-1"
                   class="col-3 total-input"
                   label=${translate('UNFUNDED_CASH')}
@@ -218,9 +218,10 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
     if (!data) {
       return;
     }
-    const {activity, interventionId, readonly}: any = data;
+    const {activity, interventionId, has_unfunded_cash, readonly}: any = data;
     this.items = (activity.items || []).filter((row: ManagementBudgetItem) => row.kind === activity.kind);
     this.useInputLevel = Boolean((this.items || []).length);
+    this.has_unfunded_cash = has_unfunded_cash;
     this.readonly = readonly;
 
     setTimeout(() => {
@@ -241,7 +242,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
   @property() loadingInProcess = false;
   @property() dialogOpened = true;
   @property() useInputLevel = false;
-  @property() showUnfunded = true;
+  @property() has_unfunded_cash = false;
   @property({type: String}) currency = '';
   @property({type: Array}) items: ManagementBudgetItem[] = [];
   @property({type: Boolean}) readonly = false;
@@ -309,7 +310,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
   }
 
   getInvalidTotalMessage() {
-    return this.showUnfunded
+    return this.has_unfunded_cash
       ? getTranslation('INVALID_TOTAL_UNFUNDED_ACTIVITY_ITEMS')
       : getTranslation('INVALID_TOTAL_ACTIVITY_ITEMS');
   }
@@ -349,12 +350,12 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
       return getTotalCashFormatted(
         this.data[this.getPropertyName('partner')] || 0,
         this.data[this.getPropertyName('unicef')] || 0,
-        this.showUnfunded ? this.data[this.getPropertyName('unfunded')] || 0 : 0
+        this.has_unfunded_cash ? this.data[this.getPropertyName('unfunded')] || 0 : 0
       );
     } else {
       const cso: string = this.getSumValue('cso_cash').replace(/,/g, '');
       const unicef: string = this.getSumValue('unicef_cash').replace(/,/g, '');
-      const unfunded: string = this.showUnfunded ? this.getSumValue('unfunded_cash').replace(/,/g, '') : '0';
+      const unfunded: string = this.has_unfunded_cash ? this.getSumValue('unfunded_cash').replace(/,/g, '') : '0';
       return getTotalCashFormatted(cso, unicef, unfunded);
     }
   }

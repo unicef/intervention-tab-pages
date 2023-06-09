@@ -8,12 +8,12 @@ import {InfoElementStyles} from '@unicef-polymer/etools-modules-common/dist/styl
 import {InterventionOverview} from './interventionOverview.models';
 import {selectInterventionOverview} from './interventionOverview.selectors';
 import {RootState} from '../../common/types/store.types';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
-import {formatDateLocalized} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
+import {formatDateLocalized} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import get from 'lodash-es/get';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {translate, get as getTranslation, langChanged, translateConfig} from 'lit-translate';
+import {translate, get as getTranslation, langChanged} from 'lit-translate';
 import {allPartners, currentIntervention, isUnicefUser} from '../../common/selectors';
 import {AnyObject} from '@unicef-polymer/etools-types/dist/global.types';
 import {Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
@@ -22,7 +22,7 @@ import CONSTANTS from '../../common/constants';
 import {StaticPartner} from '@unicef-polymer/etools-types';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 import {getPageDirection} from '../../utils/utils';
-import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 
 /**
  * @customElement
@@ -45,8 +45,8 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
           max-width: none;
         }
         .data-column {
-          margin-right: 20px;
-          padding-left: 0px;
+          margin-inline-end: 20px;
+          padding-inline-start: 0px;
         }
       </style>
       <section class="elevation" elevation="1" comment-element="details">
@@ -94,7 +94,6 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
         </div>
         <div class="icon-tooltip-div">
           <info-icon-tooltip
-            .language="${translateConfig.lang}"
             .tooltipText="${translate('METADATA_TOOLTIP')}"
             position="${this.dir == 'rtl' ? 'right' : 'left'}"
           >
@@ -121,7 +120,7 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
   }
 
   public stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Metadata)) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Metadata)) {
       return;
     }
 

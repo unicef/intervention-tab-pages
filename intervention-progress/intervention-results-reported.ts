@@ -16,10 +16,10 @@ import './reports/indicator-report-target';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
 
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {RootState} from '../common/types/store.types';
 
-import {logError, logWarn} from '@unicef-polymer/etools-behaviors/etools-logging';
+import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {pmpCustomIcons} from './styles/pmp-icons';
 import get from 'lodash-es/get';
@@ -37,15 +37,15 @@ import {contentSectionStylesLit} from '@unicef-polymer/etools-modules-common/dis
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/fr-warnings-styles';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
-import {isEmptyObject} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
+import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {
   dateDiff,
   dateIsAfter,
   dateIsBetween,
   datesAreEqual,
   isValidDate
-} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
+} from '@unicef-polymer/etools-utils/dist/date.util';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
 import {getIndicatorDisplayType} from '../utils/utils';
 declare const dayjs: any;
@@ -80,7 +80,7 @@ export class InterventionResultsReported extends connectStore(
         }
 
         #cash-progress etools-form-element-wrapper:first-child {
-          margin-right: 24px;
+          margin-inline-end: 24px;
         }
 
         etools-data-table-row::part(edt-list-row-collapse-wrapper) {
@@ -88,7 +88,7 @@ export class InterventionResultsReported extends connectStore(
         }
 
         .lower-result-status-date {
-          margin-left: 4px;
+          margin-inline-start: 4px;
         }
 
         .indicator-report {
@@ -97,7 +97,7 @@ export class InterventionResultsReported extends connectStore(
 
         .indicator-report,
         .progress-details {
-          padding-left: 58px;
+          padding-inline-start: 58px;
         }
 
         .progress-details + .indicator-report {
@@ -116,7 +116,7 @@ export class InterventionResultsReported extends connectStore(
 
         indicator-report-target {
           --indicator-report-target-row: {
-            padding-right: 72px;
+            padding-inline-end: 72px;
           }
         }
 
@@ -146,7 +146,7 @@ export class InterventionResultsReported extends connectStore(
           }
 
           .indicator-report .col-data:first-child {
-            margin-right: 24px;
+            margin-inline-end: 24px;
           }
 
           .target-details {
@@ -388,7 +388,12 @@ export class InterventionResultsReported extends connectStore(
 
   stateChanged(state: RootState) {
     if (
-      pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Progress, TABS.ResultsReported) ||
+      EtoolsRouter.pageIsNotCurrentlyActive(
+        get(state, 'app.routeDetails'),
+        'interventions',
+        TABS.Progress,
+        TABS.ResultsReported
+      ) ||
       !state.interventions.current
     ) {
       return;
@@ -448,7 +453,7 @@ export class InterventionResultsReported extends connectStore(
         });
       })
       .catch((error: any) => {
-        logError('PD/SPD progress request failed!', 'intervention-results-reported', error);
+        EtoolsLogger.error('PD/SPD progress request failed!', 'intervention-results-reported', error);
         parseRequestErrorsAndShowAsToastMsgs(error, this);
         fireEvent(this, 'global-loading', {
           active: false,
@@ -577,7 +582,7 @@ export class InterventionResultsReported extends connectStore(
         return;
       }
     } catch (err) {
-      logWarn('Time progress compute error', 'intervention-results-reported', err);
+      EtoolsLogger.warn('Time progress compute error', 'intervention-results-reported', err);
     }
     // if end date is valid and is past date or today's date, progress should be 100%
     if (isValidDate(endDt) && (dateIsAfter(today, endDt) || datesAreEqual(today, endDt))) {

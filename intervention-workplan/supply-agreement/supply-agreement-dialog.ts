@@ -2,13 +2,13 @@ import {LitElement, html, property, customElement} from 'lit-element';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
-import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
@@ -16,10 +16,10 @@ import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@polymer/paper-input/paper-input';
 import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-currency-amount-input';
-import {ExpectedResult} from '@unicef-polymer/etools-types';
+import {EtoolsEndpoint, ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
-import {cloneDeep} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 import {get as getTranslation} from 'lit-translate';
 
 /**
@@ -246,8 +246,10 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
     }
     this.requestInProcess = true;
     const endpoint = this.isNewRecord
-      ? getEndpoint(interventionEndpoints.supplyAgreementAdd, {interventionId: this.interventionId})
-      : getEndpoint(interventionEndpoints.supplyAgreementEdit, {
+      ? getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.supplyAgreementAdd, {
+          interventionId: this.interventionId
+        })
+      : getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.supplyAgreementEdit, {
           interventionId: this.interventionId,
           supplyId: this.data.id
         });

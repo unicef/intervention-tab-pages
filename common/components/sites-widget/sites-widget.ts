@@ -16,12 +16,12 @@ import {LocationWidgetStyles} from './location-widget.styles';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {leafletStyles} from './leaflet-styles';
 import {Site} from '@unicef-polymer/etools-types';
-import {debounce} from '@unicef-polymer/etools-modules-common/dist/utils/debouncer';
+import {debounce} from '@unicef-polymer/etools-utils/dist/debouncer.util';
 import {translate} from 'lit-translate';
-import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 
 const DEFAULT_COORDINATES: LatLngTuple = [-0.09, 51.505];
 
@@ -73,7 +73,7 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-        margin-right: 5px;
+        margin-inline-end: 5px;
       }
 
       .site-line .deselect-btn {

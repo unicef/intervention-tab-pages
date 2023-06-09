@@ -3,14 +3,14 @@ import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/st
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {BudgetSummary} from './budgetSummary.models';
 import {selectBudgetSummary} from './budgetSummary.selectors';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {RootState} from '../types/store.types';
 import get from 'lodash-es/get';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import {InfoElementStyles} from '@unicef-polymer/etools-modules-common/dist/styles/info-element-styles';
 import {CommentsMixin} from '../components/comments/comments-mixin';
 import {FrsDetails, Intervention} from '@unicef-polymer/etools-types';
-import {translate, translateConfig} from 'lit-translate';
+import {translate} from 'lit-translate';
 import {TABS} from '../constants';
 import {isUnicefUser} from '../selectors';
 import FrNumbersConsistencyMixin from '@unicef-polymer/etools-modules-common/dist/mixins/fr-numbers-consistency-mixin';
@@ -34,7 +34,8 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
       css`
         section {
           display: block !important;
-          padding: 5px 15px 0 40px;
+          padding-top: 0;
+          padding-inline: 40px 15px;
           margin-bottom: 0;
         }
         :host([embeded]) section {
@@ -56,7 +57,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
         }
         .amt-data {
           margin-top: 14px;
-          margin-left: 30px;
+          margin-inline-start: 30px;
         }
         .amt-data .paper-label {
           font-weight: 400;
@@ -74,7 +75,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
           font-size: 16px;
           font-weight: 400;
           line-height: 25px;
-          margin-right: 6px;
+          margin-inline-end: 6px;
         }
       `
     ];
@@ -129,7 +130,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
         </div>
 
         <div class="data-column">
-          <label class="paper-label">${translate('BUDGET_HQ_RATE')}</label>
+          <label class="paper-label">${translate('CAPACITY_STRENGTHENING_COST_RATE')}</label>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.hq_support_cost)}">
             ${this.roundPercentage(this.budgetSummary.hq_support_cost)}(${displayCurrencyAmount(
               String(this.budgetSummary.total_hq_cash_local),
@@ -219,7 +220,6 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
   getIconTooltip(): TemplateResult {
     return html`<div class="icon-tooltip-div">
       <info-icon-tooltip
-        .language="${translateConfig.lang}"
         .tooltipText="${translate('BUDGET_TOOLTIP')}"
         position="${this.dir == 'rtl' ? 'right' : 'left'}"
       >
@@ -244,8 +244,8 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
 
   public stateChanged(state: RootState) {
     if (
-      (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan) &&
-        pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.WorkplanEditor)) ||
+      (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan) &&
+        EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.WorkplanEditor)) ||
       !state.interventions.current
     ) {
       return;

@@ -18,6 +18,7 @@ export const translatesMap: GenericObject = {
   currency: 'DOCUMENT_CURRENCY',
   total_hq_cash_local: 'CAPACITY_STRENGTHENING_COST',
   hq_support_cost: 'CAPACITY_STRENGTHENING_COST_AUTOMATIC',
+  capacity_strenghtening_unfunded: 'CAPACITY_STRENGHTENING_UNFUNDED',
   equity_narrative: 'EQUITY_NARATIVE',
   gender_narrative: 'GENDER_NARATIVE',
   management_budgets: 'EFFECTIVE_EFFICIENT_PROG_MGM',

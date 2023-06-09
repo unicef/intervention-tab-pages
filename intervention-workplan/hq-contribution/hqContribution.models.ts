@@ -17,4 +17,5 @@ export class HqContributionPermissions extends ModelsBase {
   }
   hq_support_cost = true;
   planned_budget = true;
+  unfunded_cash_local = true;
 }

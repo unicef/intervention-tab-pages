@@ -7,20 +7,20 @@ import '../../../../common/components/activity/activity-items-table';
 import {getTotalCashFormatted} from '../../../../common/components/activity/get-total.helper';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {interventionEndpoints} from '../../../../utils/intervention-endpoints';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import './activity-timeframes';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {ActivityItemsTable} from '../../../../common/components/activity/activity-items-table';
 import {updateCurrentIntervention} from '../../../../common/actions/interventions';
 import {ActivityTimeFrames} from './activity-timeframes';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {AnyObject, InterventionActivity, InterventionActivityItem} from '@unicef-polymer/etools-types';
+import {AnyObject, EtoolsEndpoint, InterventionActivity, InterventionActivityItem} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {translatesMap} from '../../../../utils/intervention-labels-map';
 import {DataMixin} from '@unicef-polymer/etools-modules-common/dist/mixins/data-mixin';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import cloneDeep from 'lodash-es/cloneDeep';
@@ -41,6 +41,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
   @property({type: String}) spinnerText = getTranslation('GENERAL.LOADING');
   @property() readonly: boolean | undefined = false;
   @query('etools-dialog') private dialogElement!: EtoolsDialog;
+  @query('activity-items-table') private activityItemsTable!: ActivityItemsTable;
   quarters: ActivityTimeFrames[] = [];
   @property() showUnfunded = true;
 
@@ -51,12 +52,19 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
     if (!activityId) {
       this.data = {} as InterventionActivity;
       this.isEditDialog = false;
-      this.endpoint = getEndpoint(interventionEndpoints.pdActivities, {pdOutputId, interventionId});
+      this.endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.pdActivities, {
+        pdOutputId,
+        interventionId
+      });
       return;
     }
 
     this.loadingInProcess = true;
-    this.endpoint = getEndpoint(interventionEndpoints.pdActivityDetails, {activityId, pdOutputId, interventionId});
+    this.endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.pdActivityDetails, {
+      activityId,
+      pdOutputId,
+      interventionId
+    });
     sendRequest({
       endpoint: this.endpoint
     }).then((data: InterventionActivity) => {
@@ -95,7 +103,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
         }
         .total-input,
         etools-currency-amount-input {
-          margin-right: 24px;
+          margin-inline-end: 24px;
         }
         .total {
           justify-content: flex-end;
@@ -313,6 +321,12 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
       cso_cash: '0',
       unicef_cash: '0'
     };
+
+    setTimeout(() => {
+      if ((!this.editedData.items || !this.editedData.items.length) && this.activityItemsTable) {
+        this.activityItemsTable.addNew();
+      }
+    }, 0);
   }
 
   getInvalidTotalMessage() {

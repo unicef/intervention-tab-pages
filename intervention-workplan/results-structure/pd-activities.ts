@@ -6,7 +6,7 @@ import '@polymer/iron-icons';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import './modals/activity-dialog/activity-data-dialog';
 import '../../intervention-workplan-editor/time-intervals/time-intervals';
-import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {InterventionActivity, InterventionQuarter} from '@unicef-polymer/etools-types';
@@ -22,7 +22,7 @@ import {
   _canDeactivate,
   _canDelete
 } from '../../common/mixins/results-structure-common';
-import {isEmptyObject} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {PaperMenuButton} from '@polymer/paper-menu-button';
 
 @customElement('pd-activities')
@@ -98,7 +98,10 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                       <b>${activity.code}&nbsp;</b>
                       <div>
                         <div>
-                          <b><u>${activity.is_active ? '' : `(${translate('INACTIVE')})`}</u>${activity.name || '-'}</b>
+                          <b
+                            >${activity.is_active ? '' : html`(<u>${translate('INACTIVE')}</u>) `}${activity.name ||
+                            '-'}</b
+                          >
                         </div>
                         <div class="details" ?hidden="${!activity.context_details}">
                           ${this.truncateString(activity.context_details)}
@@ -141,7 +144,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                     </div>
 
                     <div class="show-actions hover-block" style="z-index: ${99 - index}" ?hidden="${this.commentMode}">
-                      <paper-menu-button id="view-menu-button" close-on-activate horizontal-align="right">
+                      <paper-menu-button id="view-menu-button" close-on-activate horizontal-align>
                         <paper-icon-button
                           slot="dropdown-trigger"
                           icon="icons:more-vert"
@@ -295,7 +298,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
         }
         div.editable-row .hover-block {
           background: linear-gradient(270deg, var(--main-background) 71.65%, rgba(196, 196, 196, 0) 100%);
-          padding-left: 20px;
+          padding-inline-start: 20px;
         }
         etools-data-table-row#activitiesRow::part(edt-list-row-wrapper) {
           padding-inline-start: 25px !important;

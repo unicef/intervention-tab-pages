@@ -12,7 +12,7 @@ export class OtherData extends ModelsBase {
   contingency_pd = false;
   activation_protocol = '';
   confidential = false;
-  unfunded_amounts = false;
+  cfei_number = '';
 }
 
 export class OtherPermissions extends ModelsBase {
@@ -23,5 +23,6 @@ export class OtherPermissions extends ModelsBase {
   document_type = true;
   document_currency = true;
   confidential = true;
-  unfunded_amounts = true;
+  has_unfunded_cash = true;
+  cfei_number = false;
 }

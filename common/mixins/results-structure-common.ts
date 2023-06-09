@@ -1,19 +1,29 @@
 import {AsyncAction} from '@unicef-polymer/etools-types/dist/global.types';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {getIntervention} from '../actions/interventions';
-import {sendRequest} from '@unicef-polymer/etools-ajax';
+import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
-import {ExpectedResult, Indicator, InterventionActivity, ResultLinkLowerResult} from '@unicef-polymer/etools-types';
-import {convertDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
-import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
+import {
+  EtoolsEndpoint,
+  ExpectedResult,
+  Indicator,
+  InterventionActivity,
+  ResultLinkLowerResult
+} from '@unicef-polymer/etools-types';
+import {convertDate} from '@unicef-polymer/etools-utils/dist/date.util';
+import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {translate} from 'lit-translate';
 import {InterventionActivityExtended} from '../types/editor-page-types';
 
 function deactivateActivity(activityId: number, pdOutputId: number, interventionId: number) {
-  const endpoint = getEndpoint(interventionEndpoints.pdActivityDetails, {
+  fireEvent(document.body.querySelector('app-shell')!, 'global-loading', {
+    active: true,
+    loadingSource: 'interv-activity-deactivate'
+  });
+  const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.pdActivityDetails, {
     activityId: activityId,
     interventionId: interventionId,
     pdOutputId: pdOutputId
@@ -30,11 +40,22 @@ function deactivateActivity(activityId: number, pdOutputId: number, intervention
     })
     .catch((err: any) => {
       fireEvent(document.body.querySelector('app-shell')!, 'toast', {text: formatServerErrorAsText(err)});
-    });
+    })
+    .finally(() =>
+      fireEvent(document.body.querySelector('app-shell')!, 'global-loading', {
+        active: false,
+        loadingSource: 'interv-activity-deactivate'
+      })
+    );
 }
 
 function deleteActivity(activityId: number, pdOutputId: number, interventionId: number) {
-  const endpoint = getEndpoint(interventionEndpoints.pdActivityDetails, {
+  fireEvent(document.body.querySelector('app-shell')!, 'global-loading', {
+    active: true,
+    loadingSource: 'interv-activity-remove'
+  });
+
+  const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.pdActivityDetails, {
     activityId: activityId,
     interventionId: interventionId,
     pdOutputId: pdOutputId
@@ -48,7 +69,13 @@ function deleteActivity(activityId: number, pdOutputId: number, interventionId: 
     })
     .catch((err: any) => {
       fireEvent(document.body.querySelector('app-shell')!, 'toast', {text: formatServerErrorAsText(err)});
-    });
+    })
+    .finally(() =>
+      fireEvent(document.body.querySelector('app-shell')!, 'global-loading', {
+        active: false,
+        loadingSource: 'interv-activity-remove'
+      })
+    );
 }
 
 export function _canDeactivate(

@@ -12,14 +12,14 @@ import {
   ResultLinkLowerResult
 } from '@unicef-polymer/etools-types';
 import {CommentItemData, CommentRelatedItem, CommentsEndpoints} from '../comments/comments-types';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
-import {buildUrlQueryString} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
+import {buildUrlQueryString} from '@unicef-polymer/etools-utils/dist/general.util';
 import {ComponentsPosition} from '../comments/comments-items-name-map';
 import {removeTrailingIds} from '../comments/comments.helpers';
 import {currentIntervention} from '../../selectors';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 
 @customElement('comments-panels')
 export class CommentsPanels extends connectStore(LitElement) {

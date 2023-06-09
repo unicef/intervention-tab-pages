@@ -44,8 +44,8 @@ export const ActivityItemsTableStyles: CSSResult = css`
       content: attr(data-col-header-label) ': ';
       color: var(--list-secondary-text-color, #757575);
       font-weight: bold;
-      margin-right: 8px;
-      margin-left: 8px;
+      margin-inline-end: 8px;
+      margin-inline-start: 8px;
       white-space: nowrap;
       min-width: 160px;
       width: 160px;
@@ -90,7 +90,7 @@ export const ActivityItemsTableStyles: CSSResult = css`
     background-color: transparent;
   }
   label[required] {
-    --required-star-style_-_padding-right: 20px;
+    --required-star-style_-_padding-inline-end: 20px;
   }
 `;
 

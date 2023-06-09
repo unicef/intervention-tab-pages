@@ -51,13 +51,13 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         }
 
         .unknown {
-          padding-left: 24px;
+          padding-inline-start: 24px;
           padding-bottom: 16px;
           padding-top: 10px;
         }
 
         .no-left-padding {
-          padding-left: 0 !important;
+          padding-inline-start: 0 !important;
         }
 
         .dash-separator {
@@ -66,7 +66,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         }
 
         .add-locations {
-          padding-right: 0;
+          padding-inline-end: 0;
           align-items: flex-end;
         }
 

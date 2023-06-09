@@ -1,16 +1,16 @@
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
-import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import CONSTANTS from '../../../common/constants';
-import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
+import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {LitElement, property} from 'lit-element';
-import {isEmptyObject} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
-import {Constructor} from '@unicef-polymer/etools-types';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
-import {prettyDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
+import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
+import {Constructor, EtoolsEndpoint} from '@unicef-polymer/etools-types';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
+import {prettyDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import {updatePartnerReportingRequirements} from '../../../common/actions/interventions';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 
 /**
  * @polymer
@@ -47,12 +47,12 @@ function ReportingRequirementsCommonMixin<T extends Constructor<LitElement>>(bas
 
     _getEndpointObj(id: number, type: string) {
       if (type === CONSTANTS.REQUIREMENTS_REPORT_TYPE.SPECIAL) {
-        return getEndpoint(interventionEndpoints.specialReportingRequirements, {
+        return getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.specialReportingRequirements, {
           intervId: id
         });
       }
 
-      return getEndpoint(interventionEndpoints.reportingRequirements, {
+      return getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.reportingRequirements, {
         intervId: id,
         reportType: type
       });
@@ -74,7 +74,7 @@ function ReportingRequirementsCommonMixin<T extends Constructor<LitElement>>(bas
           this.updateReportingRequirements(response, type);
         })
         .catch((error: any) => {
-          logError('Failed to get qpr data from API!', 'reporting-requirements-common-mixin', error);
+          EtoolsLogger.error('Failed to get qpr data from API!', 'reporting-requirements-common-mixin', error);
           parseRequestErrorsAndShowAsToastMsgs(error, this);
         });
     }

@@ -13,7 +13,7 @@ import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/st
 import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/fr-warnings-styles';
 import FrNumbersConsistencyMixin from '@unicef-polymer/etools-modules-common/dist/mixins/fr-numbers-consistency-mixin';
 import {customIcons} from '@unicef-polymer/etools-modules-common/dist/styles/custom-icons';
-import {prettyDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
+import {prettyDate} from '@unicef-polymer/etools-utils/dist/date.util';
 
 /**
  * @customElement
@@ -32,7 +32,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
       <style>
         :host {
           --list-column-label: {
-            margin-right: 0;
+            margin-inline-end: 0;
           }
         }
         #totalsRow {
@@ -43,7 +43,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
         }
         #plannedUnicefCash,
         #totalsRow {
-          --list-row-wrapper-padding: 0 24px 0 56px;
+          --list-row-wrapper-padding-inline: 56px 24px;
         }
         #plannedUnicefCash {
           --list-bg-color: none;
@@ -66,13 +66,13 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
         }
         div[simple-header] > span,
         div[simple-row] > span {
-          padding-right: 24px;
+          padding-inline-end: 24px;
         }
         div[simple-header] {
           color: var(--list-secondary-text-color, #757575);
         }
         .pl-5 {
-          padding-left: 5px;
+          padding-inline-start: 5px;
         }
       </style>
 

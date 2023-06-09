@@ -8,16 +8,16 @@ import {PaperInputElement} from '@polymer/paper-input/paper-input.js';
 import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import {LitElement, html, property, customElement} from 'lit-element';
 import {flaggedSortedDisaggregs} from '../../redux/selectors';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {AnyObject, Disaggregation} from '@unicef-polymer/etools-types';
-import {translate, get as getTranslation, translateConfig} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 import RepeatableDataSetsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/repeatable-data-sets-mixin';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {repeatableDataSetsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/repeatable-data-sets-styles';
-import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 
 /**
@@ -111,7 +111,6 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
         </paper-button>
         <info-icon-tooltip
           id="iit-disaggreg"
-          .language="${translateConfig.lang}"
           .tooltipText="${translate('DISAGGREGATION_TOOLTIP')}"
           ?hidden="${this._maxDisaggregations(this.data.length) || this.readonly}"
         ></info-icon-tooltip>

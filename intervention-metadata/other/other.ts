@@ -7,22 +7,25 @@ import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/st
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {resetRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {patchIntervention} from '../../common/actions/interventions';
-import {getTranslatedValue, isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
+import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {RootState} from '../../common/types/store.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, LabelAndValue, Permission} from '@unicef-polymer/etools-types';
-import {listenForLangChanged, translate, translateConfig} from 'lit-translate';
+import {listenForLangChanged, translate} from 'lit-translate';
 import {OtherData, OtherPermissions} from './other.models';
 import {selectOtherData, selectOtherPermissions} from './other.selectors';
 import CONSTANTS from '../../common/constants';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import '@polymer/paper-input/paper-textarea';
+import '@polymer/paper-input/paper-input';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
+import {PaperInputElement} from '@polymer/paper-input/paper-input';
 
 /**
  * @customElement
@@ -58,7 +61,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
         }
 
         .row > * {
-          padding-left: 40px;
+          padding-inline-start: 40px;
           box-sizing: border-box;
         }
 
@@ -68,7 +71,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
 
         #iit-confidential {
           margin-top: 20px;
-          margin-left: 8px;
+          margin-inline-start: 8px;
         }
         paper-textarea {
           outline: none;
@@ -88,6 +91,9 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
         }
         .mt-4 {
           margin-top: -4px;
+        }
+        paper-input {
+          width: 100%;
         }
       </style>
 
@@ -194,6 +200,19 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
             >
             </etools-dropdown>
           </div>
+          <div class="col col-6" style="padding-inline-start: 40px;">
+            <paper-input
+              id="unppNumber"
+              pattern="CEF/[a-zA-Z]{3}/\\d{4}/\\d{3}"
+              label=${translate('UNPP_CFEI_DSR_REF_NUM')}
+              placeholder="CEF/___/____/___"
+              .value="${this.data.cfei_number}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.cfei_number)}"
+              error-message="${translate('CFEI_EXPECTED_FORMAT')}"
+              @blur="${(ev: CustomEvent) => this.validateCFEI(ev)}"
+              @value-changed="${({detail}: CustomEvent) => this.cfeiValueChanged(detail, 'cfei_number')}"
+            ></paper-input>
+          </div>
         </div>
 
         <div class="layout-horizontal mt-4 toggle-row" ?hidden="${!this.permissions?.view?.confidential}">
@@ -206,19 +225,21 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
             ${translate('CONFIDENTIAL')}
           </paper-toggle-button>
           <info-icon-tooltip
-            .language="${translateConfig.lang}"
             id="iit-confidential"
             ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit?.confidential)}"
             .tooltipText="${translate('CONFIDENTIAL_INFO')}"
           ></info-icon-tooltip>
         </div>
 
-        <div class="layout-horizontal toggle-row" ?hidden="${!this.permissions?.view?.unfunded_amounts}">
+        <div class="layout-horizontal toggle-row" ?hidden="${!this.permissions?.view?.has_unfunded_cash}">
           <paper-toggle-button
-            id="unfundedAmounts"
-            ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit?.unfunded_amounts)}"
-            ?checked="${this.data.unfunded_amounts}"
-            @checked-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unfunded_amounts')}}"
+            id="unfundedCash"
+            ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit?.has_unfunded_cash)}"
+            ?checked="${this.data.planned_budget.has_unfunded_cash}"
+            @checked-changed="${({detail}: CustomEvent) => {
+              this.data.planned_budget.has_unfunded_cash = detail.value;
+              this.requestUpdate();
+            }}}"
           >
             ${translate('PD_UNFUNDED_AMOUNTS')}
           </paper-toggle-button>
@@ -263,7 +284,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   }
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata')) {
       return;
     }
     if (!state.interventions.current) {
@@ -312,8 +333,22 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
     this.requestUpdate();
   }
 
+  validateCFEI(e?: CustomEvent) {
+    const elem = e
+      ? (e.currentTarget as PaperInputElement)
+      : this.shadowRoot?.querySelector<PaperInputElement>('#unppNumber')!;
+    return elem.validate();
+  }
+
+  cfeiValueChanged(detail: any, field: string) {
+    this.valueChanged(detail, field);
+    if (detail.value && detail.value.length === 16) {
+      this.validateCFEI();
+    }
+  }
+
   saveData() {
-    if (!this.validate()) {
+    if (!this.validate() || !this.validateCFEI()) {
       return Promise.resolve(false);
     }
 
@@ -337,13 +372,14 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   removeUnchangedData(data: OtherData) {
     Object.keys(data).forEach((key) => {
       if (key == 'planned_budget') {
-        if (!this.permissions.edit.document_currency) {
+        if (!this.permissions.edit.document_currency && !this.permissions.edit.has_unfunded_cash) {
           // @ts-ignore
           delete data.planned_budget;
         } else {
           data.planned_budget = {
             id: data.planned_budget.id,
-            currency: data.planned_budget.currency
+            currency: data.planned_budget.currency,
+            has_unfunded_cash: data.planned_budget.has_unfunded_cash
           };
         }
       }

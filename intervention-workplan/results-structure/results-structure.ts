@@ -1,4 +1,4 @@
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {css, html, CSSResultArray, customElement, LitElement, property} from 'lit-element';
 import {repeat} from 'lit-html/directives/repeat';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
@@ -24,12 +24,12 @@ import './modals/cp-output-dialog';
 import '@polymer/paper-item';
 import '@polymer/paper-listbox';
 import './display-controls';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {RootState} from '../../common/types/store.types';
-import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {TABS} from '../../common/constants';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import get from 'lodash-es/get';
 import {getIntervention} from '../../common/actions/interventions';
@@ -46,7 +46,8 @@ import {
   ExpectedResult,
   Intervention,
   ResultLinkLowerResult,
-  Indicator
+  Indicator,
+  EtoolsEndpoint
 } from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
@@ -56,8 +57,9 @@ import {EtoolsDataTableRow} from '@unicef-polymer/etools-data-table/etools-data-
 import {PdActivities} from './pd-activities';
 import {PdIndicators} from './pd-indicators';
 import {CpOutputLevel} from './cp-output-level';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {_canDelete} from '../../common/mixins/results-structure-common';
+import {EtoolsRequestEndpoint} from '@unicef-polymer/etools-ajax';
 
 /**
  * @customElement
@@ -325,7 +327,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
 
   stateChanged(state: RootState) {
     if (
-      pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan) ||
+      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan) ||
       !state.interventions.current
     ) {
       return;
@@ -413,7 +415,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
       active: true,
       loadingSource: 'interv-pd-remove'
     });
-    const endpoint = getEndpoint(interventionEndpoints.lowerResultsDelete, {
+    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.lowerResultsDelete, {
       lower_result_id,
       intervention_id: this.interventionId
     });
@@ -476,7 +478,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
       active: true,
       loadingSource: 'interv-cp-remove'
     });
-    const endpoint = getEndpoint(interventionEndpoints.resultLinkGetDelete, {
+    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.resultLinkGetDelete, {
       result_link: resultLinkId
     });
     _sendRequest({
@@ -563,13 +565,14 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
       buttonsStyles,
       css`
         iron-icon[icon='create'] {
-          margin-left: 50px;
+          margin-inline-start: 50px;
         }
         .no-results {
           padding: 24px;
         }
         .pd-title {
-          padding: 8px 42px 0px 22px;
+          padding-block: 8px 0;
+          padding-inline: 22px 42px;
           font-size: 16px;
           font-weight: 500;
           line-height: 19px;
@@ -615,7 +618,8 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         etools-data-table-row::part(edt-icon-wrapper) {
           min-height: 0;
           line-height: normal;
-          padding: 4px 8px 0 13px;
+          padding-block: 4px 0;
+          padding-inline: 13px 8px;
           align-self: flex-start;
         }
         etools-data-table-row::part(edt-list-row-wrapper):hover {
@@ -642,7 +646,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         }
         .total-result {
           padding-bottom: 6px;
-          margin-left: 12px;
+          margin-inline-start: 12px;
         }
         .total-result b {
           font-size: 22px;
@@ -651,7 +655,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         }
         .total-result .heading {
           font-size: 14px;
-          margin-right: 10px;
+          margin-inline-end: 10px;
           line-height: 23px;
         }
         etools-content-panel {
@@ -686,7 +690,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           padding: 6px 0 4px;
         }
         .count div:first-child {
-          margin-right: 20px;
+          margin-inline-end: 20px;
         }
 
         etools-data-table-row#pdOutputRow::part(edt-list-row-wrapper) {

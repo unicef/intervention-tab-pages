@@ -1,6 +1,6 @@
 import {customElement, LitElement, html, CSSResultArray, TemplateResult, css, property} from 'lit-element';
 import {InterventionComment} from '@unicef-polymer/etools-types';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {translate} from 'lit-translate';
 declare const dayjs: any;
@@ -153,8 +153,8 @@ export class MessageItem extends LitElement {
           flex-direction: row;
         }
         :host([my-comment]) .avatar {
-          margin-right: 0;
-          margin-left: 7px;
+          margin-inline-end: 0;
+          margin-inline-start: 7px;
         }
         .avatar {
           display: flex;
@@ -163,7 +163,7 @@ export class MessageItem extends LitElement {
           flex: none;
           width: 36px;
           height: 36px;
-          margin-right: 7px;
+          margin-inline-end: 7px;
           border-radius: 50%;
           background-color: var(--darker-divider-color);
           color: #ffffff;
@@ -217,7 +217,7 @@ export class MessageItem extends LitElement {
         .actions div {
           display: flex;
           align-items: center;
-          margin-right: 30px;
+          margin-inline-end: 30px;
           font-weight: 400;
           font-size: 13px;
           line-height: 18px;
@@ -233,7 +233,7 @@ export class MessageItem extends LitElement {
           text-decoration: underline;
         }
         iron-icon {
-          margin-right: 8px;
+          margin-inline-end: 8px;
         }
         .delete {
           width: 18px;
@@ -250,14 +250,14 @@ export class MessageItem extends LitElement {
         }
         etools-loading {
           width: 20px;
-          margin-right: 8px;
+          margin-inline-end: 8px;
         }
         .retry:hover {
           cursor: pointer;
           text-decoration: underline;
         }
         iron-icon[icon='refresh'] {
-          margin-right: 2px;
+          margin-inline-end: 2px;
         }
         *:focus-visible {
           outline: 2px solid rgb(170 165 165 / 50%);

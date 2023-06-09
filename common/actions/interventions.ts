@@ -1,12 +1,13 @@
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {INTERVENTION_LOADING, SHOULD_REGET_LIST, SHOW_TOAST, UPDATE_CURRENT_INTERVENTION} from '../actionsConstants';
 import {AnyObject, PlannedBudget, Intervention} from '@unicef-polymer/etools-types';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {PartnerReportingRequirements} from '../types/store.types';
 import pick from 'lodash-es/pick';
-import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {_sendRequest} from '@unicef-polymer/etools-modules-common/dist/utils/request-helper';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 
 export const updateCurrentIntervention = (intervention: AnyObject | null) => {
   if (intervention && !intervention.planned_budget) {
@@ -36,7 +37,12 @@ export const getIntervention = (interventionId?: string) => (dispatch: any, getS
   if (!interventionId) {
     interventionId = getState().app.routeDetails.params.interventionId;
   }
-  dispatch(setInterventionLoading(Number(interventionId)));
+
+  fireEvent(document.body.querySelector('app-shell')!, 'global-loading', {
+    active: true,
+    loadingSource: 'interv-get'
+  });
+
   return sendRequest({
     endpoint: getEndpoint(interventionEndpoints.intervention, {interventionId: interventionId})
   })
@@ -48,7 +54,13 @@ export const getIntervention = (interventionId?: string) => (dispatch: any, getS
         throw new Error('404');
       }
     })
-    .finally(() => dispatch(setInterventionLoading(null)));
+    .finally(() => {
+      dispatch(setInterventionLoading(null));
+      fireEvent(document.body.querySelector('app-shell')!, 'global-loading', {
+        active: false,
+        loadingSource: 'interv-get'
+      });
+    });
 };
 
 export const showToast = (message: string, showCloseBtn = true) => {

@@ -16,7 +16,7 @@ export const reportingRequirementsListStyles = css`
 
   .col-data.index-col,
   etools-data-table-column.index-col {
-    padding-right: 48px !important;
+    padding-inline-end: 48px !important;
   }
 
   .actions {

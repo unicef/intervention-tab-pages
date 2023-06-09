@@ -12,27 +12,28 @@ import {ResultStructureStyles} from './styles/results-structure.styles';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/iron-icons';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {RootState} from '../../common/types/store.types';
 import './modals/indicator-dialog/indicator-dialog';
 import get from 'lodash-es/get';
-import {filterByIds, isEmptyObject, isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {filterByIds} from '@unicef-polymer/etools-utils/dist/general.util';
+import {isEmptyObject, isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import EnvironmentFlagsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/environment-flags-mixin';
 import cloneDeep from 'lodash-es/cloneDeep';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {sendRequest} from '@unicef-polymer/etools-ajax';
+import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax';
 import {getIntervention} from '../../common/actions/interventions';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
-import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
+import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import './pd-indicator';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
-import {translate, get as getTranslation, translateConfig} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 import {
   AsyncAction,
   Disaggregation,
@@ -40,9 +41,10 @@ import {
   LocationObject,
   Section,
   Indicator,
-  Intervention
+  Intervention,
+  EtoolsEndpoint
 } from '@unicef-polymer/etools-types';
-import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
@@ -93,7 +95,6 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
           </etools-info-tooltip>
           <info-icon-tooltip
             id="iit-ind"
-            .language="${translateConfig.lang}"
             .tooltipText="${translate('INDICATOR_TOOLTIP')}"
             ?hidden="${this.readonly}"
           ></info-icon-tooltip>
@@ -134,7 +135,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
 
   stateChanged(state: RootState): void {
     if (
-      pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan) ||
+      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan) ||
       !state.interventions.current
     ) {
       return;
@@ -219,8 +220,12 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
   }
 
   deactivateIndicator(indicatorId: string) {
-    const endpoint = getEndpoint(interventionEndpoints.getEditDeleteIndicator, {
+    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.getEditDeleteIndicator, {
       id: indicatorId
+    });
+    fireEvent(this, 'global-loading', {
+      active: true,
+      loadingSource: 'interv-indicator-deactivate'
     });
     sendRequest({
       method: 'PATCH',
@@ -234,7 +239,13 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
       })
       .catch((err: any) => {
         fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
-      });
+      })
+      .finally(() =>
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: 'interv-indicator-deactivate'
+        })
+      );
   }
 
   async openDeletionDialog(indicatorId: string) {
@@ -258,7 +269,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
       active: true,
       loadingSource: 'interv-indicator-remove'
     });
-    const endpoint = getEndpoint(interventionEndpoints.getEditDeleteIndicator, {
+    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.getEditDeleteIndicator, {
       id: indicatorId
     });
     sendRequest({
@@ -322,13 +333,13 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
         }
         .table-row:not(.empty) {
           min-height: 42px;
-          padding-right: 10% !important;
+          padding-inline-end: 10% !important;
         }
         etools-data-table-row::part(edt-list-row-collapse-wrapper) {
           border-bottom: none;
         }
         info-icon-tooltip {
-          margin-left: 10px;
+          margin-inline-start: 10px;
         }
         etools-data-table-row#indicatorsRow::part(edt-list-row-wrapper) {
           padding-inline-start: 25px !important;

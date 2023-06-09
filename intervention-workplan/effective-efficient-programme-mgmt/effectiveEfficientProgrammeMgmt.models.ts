@@ -15,12 +15,15 @@ export class ProgrammeManagement extends ModelsBase {
   }
   act1_unicef = '0';
   act1_partner = '0';
+  act1_unfunded = '0';
   act1_total = '0';
   act2_unicef = '0';
   act2_partner = '0';
+  act2_unfunded = '0';
   act2_total = '0';
   act3_unicef = '0';
   act3_partner = '0';
+  act3_unfunded = '0';
   act3_total = '0';
   total = '0';
   currency = '';

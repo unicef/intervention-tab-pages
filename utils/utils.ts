@@ -46,3 +46,7 @@ export function resetInvalidElement(event: any): void {
     event.target.invalid = false;
   }
 }
+
+export const detailsTextareaRowsCount = (editable: boolean) => {
+  return editable ? 3 : 1;
+};
