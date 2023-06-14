@@ -45,7 +45,6 @@ export class ActivityItemRow extends ActivitiesCommonMixin(LitElement) {
   @property() readonly: boolean | undefined = false;
   @property() lastItem: boolean | undefined = false;
   @property({type: String}) currency = '';
-  @property() showUnfunded = true;
 
   protected render(): TemplateResult {
     return this.activityItem
@@ -138,7 +137,7 @@ export class ActivityItemRow extends ActivitiesCommonMixin(LitElement) {
                 no-label-float
                 ?readonly="${this.readonly}"
                 @value-changed="${({detail}: CustomEvent) =>
-                  this.cashFieldChanged(detail, 'cso_cash', this.activityItem, !this.showUnfunded)}"
+                  this.cashFieldChanged(detail, 'cso_cash', this.activityItem, !this.hasUnfundedCash)}"
                 @blur="${() => this.onBlur()}"
                 ?invalid="${this.invalidSum}"
                 @focus="${() => (this.invalidSum = false)}"
@@ -155,7 +154,7 @@ export class ActivityItemRow extends ActivitiesCommonMixin(LitElement) {
                 no-label-float
                 ?readonly="${this.readonly}"
                 @value-changed="${({detail}: CustomEvent) =>
-                  this.cashFieldChanged(detail, 'unicef_cash', this.activityItem, !this.showUnfunded)}"
+                  this.cashFieldChanged(detail, 'unicef_cash', this.activityItem, !this.hasUnfundedCash)}"
                 @blur="${() => this.onBlur()}"
                 ?invalid="${this.invalidSum}"
                 @focus="${() => (this.invalidSum = false)}"
@@ -163,7 +162,7 @@ export class ActivityItemRow extends ActivitiesCommonMixin(LitElement) {
                 error-message=""
               ></etools-currency-amount-input>
             </div>
-            ${this.showUnfunded
+            ${this.hasUnfundedCash
               ? html`<div
                   class="grid-cell end ${!this.lastItem || !this.readonly ? 'border' : ''}"
                   data-col-header-label="${translate('UNFUNDED_CASH')}"
@@ -173,7 +172,7 @@ export class ActivityItemRow extends ActivitiesCommonMixin(LitElement) {
                     no-label-float
                     ?readonly="${this.readonly}"
                     @value-changed="${({detail}: CustomEvent) =>
-                      this.cashFieldChanged(detail, 'unfunded_cash', this.activityItem, !this.showUnfunded)}"
+                      this.cashFieldChanged(detail, 'unfunded_cash', this.activityItem, !this.hasUnfundedCash)}"
                     @blur="${() => this.onBlur()}"
                     ?invalid="${this.invalidSum}"
                     @focus="${() => (this.invalidSum = false)}"

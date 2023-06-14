@@ -45,6 +45,9 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
   @property({type: String})
   interventionStatus!: string;
 
+  @property({type: Boolean})
+  hasUnfundedCash!: boolean;
+
   @property({type: Boolean}) showInactive!: boolean;
 
   interventionId!: number;
@@ -76,6 +79,9 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
             <div class="flex-1 secondary-cell center">${translate('TIME_PERIODS')}</div>
             <div class="flex-1 secondary-cell right">${translate('PARTNER_CASH')}</div>
             <div class="flex-1 secondary-cell right">${translate('UNICEF_CASH')}</div>
+            ${this.hasUnfundedCash
+              ? html` <div class="flex-1 secondary-cell right">${translate('UNFUNDED_CASH')}</div> `
+              : ``}
             <div class="flex-1 secondary-cell right">${translate('GENERAL.TOTAL')} (${this.currency})</div>
           </div>
 
@@ -135,11 +141,22 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                       ${displayCurrencyAmount(String(activity.unicef_cash || 0), '0', 2)}
                     </div>
 
+                    <!--    UNFUNDED Cash    -->
+                    ${this.hasUnfundedCash
+                      ? html`<div class="flex-1 secondary-cell right">
+                          ${displayCurrencyAmount(String(activity.unfunded_cash || 0), '0', 2)}
+                        </div>`
+                      : ``}
+
                     <!--    Total    -->
                     <div class="flex-1 secondary-cell right">
                       <!--       TODO: use field from backend         -->
                       <b>
-                        ${displayCurrencyAmount(String(this.getTotal(activity.cso_cash, activity.unicef_cash)), '0', 2)}
+                        ${displayCurrencyAmount(
+                          String(this.getTotal(activity.cso_cash, activity.unicef_cash, activity.unfunded_cash)),
+                          '0',
+                          2
+                        )}
                       </b>
                     </div>
 
@@ -241,8 +258,8 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
     return [{element, relatedTo, relatedToDescription}];
   }
 
-  getTotal(partner: string, unicef: string): number {
-    return (Number(partner) || 0) + (Number(unicef) || 0);
+  getTotal(partner: string, unicef: string, unfunded: string): number {
+    return (Number(partner) || 0) + (Number(unicef) || 0) + (this.hasUnfundedCash ? Number(unfunded) || 0 : 0);
   }
 
   openAllRows(): void {
@@ -259,7 +276,8 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
         pdOutputId: this.pdOutputId,
         quarters: this.quarters,
         readonly: readonly,
-        currency: this.currency
+        currency: this.currency,
+        hasUnfundedCash: this.hasUnfundedCash
       }
     });
   }

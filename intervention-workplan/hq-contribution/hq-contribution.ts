@@ -116,15 +116,15 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
           >
           </etools-currency-amount-input>
         </div>
-        <div class="layout-horizontal">
+        <div class="layout-horizontal" ?hidden="${!this.data.planned_budget.has_unfunded_cash}">
           <etools-currency-amount-input
             id="unfundedCash"
             class="col-3"
             placeholder="&#8212;"
             label=${translate(translatesMap.capacity_strenghtening_unfunded)}
             .value="${this.data.planned_budget.unfunded_cash_local}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.unfunded_cash_local)}"
-            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.unfunded_cash_local) ? -1 : 0}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.has_unfunded_cash)}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.has_unfunded_cash) ? -1 : 0}"
             @value-changed="${({detail}: CustomEvent) => this.unfundedCashChanged(detail)}"
             .currency="${this.data.planned_budget?.currency}"
           >

@@ -58,9 +58,6 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
     @property({type: Boolean})
     oneEntityInEditMode!: boolean;
 
-    @property({type: Boolean})
-    showUnfunded = true;
-
     handleEsc!: (event: KeyboardEvent) => void;
     refreshResultStructure = false;
     quarters: InterventionQuarter[] = [];
@@ -88,11 +85,11 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
             >
               <tr class="header">
                 <td></td>
-                <td colspan="${this.showUnfunded ? 2 : 3}">${translate('ACTIVITY')}</td>
+                <td colspan="3">${translate('ACTIVITY')}</td>
                 <td class="a-center">${translate('TIME_PERIODS')}</td>
                 <td>${translate('PARTNER_CASH')}</td>
                 <td>${translate('UNICEF_CASH')}</td>
-                ${this.showUnfunded ? html`<td>${translate('UNFUNDED_CASH')}</td>` : ``}
+                ${this.hasUnfundedCash ? html`<td>${translate('UNFUNDED_CASH')}</td>` : ``}
                 <td colspan="2">${translate('GENERAL.TOTAL')}</td>
               </tr>
               <tr class="text action-btns" type="activity">
@@ -106,7 +103,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                   ></paper-input>
                 </td>
                 <td
-                  colspan="${this.showUnfunded ? 2 : 3}"
+                  colspan="3"
                   tabindex="${ifDefined(this.commentMode ? undefined : 0)}"
                   class="no-top-padding height-for-action-btns"
                 >
@@ -215,22 +212,25 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     @value-changed="${({detail}: CustomEvent) => this.numberChanged(detail, 'unicef_cash', activity)}"
                   ></etools-currency-amount-input>
                 </td>
-                <td
-                  tabindex="${(activity.items && activity.items.length) || this.commentMode ? '-1' : '0'}"
-                  class="no-top-padding"
-                >
-                  <etools-currency-amount-input
-                    no-label-float
-                    input
-                    .value="${activity.unfunded_cash}"
-                    tabindex="${ifDefined(
-                      (activity.items && activity.items.length) || !activity.inEditMode ? '-1' : undefined
-                    )}"
-                    ?readonly="${this.isReadonlyCash(activity.inEditMode, activity.items)}"
-                    @keydown="${(e: any) => this.handleEsc(e)}"
-                    @value-changed="${({detail}: CustomEvent) => this.numberChanged(detail, 'unfunded_cash', activity)}"
-                  ></etools-currency-amount-input>
-                </td>
+                ${this.hasUnfundedCash
+                  ? html` <td
+                      tabindex="${(activity.items && activity.items.length) || this.commentMode ? '-1' : '0'}"
+                      class="no-top-padding"
+                    >
+                      <etools-currency-amount-input
+                        no-label-float
+                        input
+                        .value="${activity.unfunded_cash}"
+                        tabindex="${ifDefined(
+                          (activity.items && activity.items.length) || !activity.inEditMode ? '-1' : undefined
+                        )}"
+                        ?readonly="${this.isReadonlyCash(activity.inEditMode, activity.items)}"
+                        @keydown="${(e: any) => this.handleEsc(e)}"
+                        @value-changed="${({detail}: CustomEvent) =>
+                          this.numberChanged(detail, 'unfunded_cash', activity)}"
+                      ></etools-currency-amount-input>
+                    </td>`
+                  : ``}
                 <td
                   colspan="2"
                   class="padd-top-10 action-btns"
@@ -239,7 +239,9 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 >
                   <div>
                     ${this.intervention.planned_budget.currency}
-                    <span class="b"> ${getTotalCashFormatted(activity.cso_cash, activity.unicef_cash)} </span>
+                    <span class="b">
+                      ${getTotalCashFormatted(activity.cso_cash, activity.unicef_cash, activity.unfunded_cash)}
+                    </span>
                   </div>
                   <div class="action-btns align-bottom flex-h">
                     <paper-icon-button
@@ -332,7 +334,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td class="col-p-per-unit">${translate('PRICE_UNIT')}</td>
                 <td class="col-g">${translate('PARTNER_CASH')}</td>
                 <td class="col-g">${translate('UNICEF_CASH')}</td>
-                ${this.showUnfunded ? html`<td class="col-g">${translate('UNFUNDED_CASH')}</td>` : ``}
+                ${this.hasUnfundedCash ? html`<td class="col-g">${translate('UNFUNDED_CASH')}</td>` : ``}
                 <td class="col-g" colspan="2">${translate('TOTAL')} (${this.intervention.planned_budget.currency})</td>
               </tr>
             </tbody>

@@ -10,7 +10,7 @@ import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import {InfoElementStyles} from '@unicef-polymer/etools-modules-common/dist/styles/info-element-styles';
 import {CommentsMixin} from '../components/comments/comments-mixin';
 import {FrsDetails, Intervention} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 import {TABS} from '../constants';
 import {isUnicefUser} from '../selectors';
 import FrNumbersConsistencyMixin from '@unicef-polymer/etools-modules-common/dist/mixins/fr-numbers-consistency-mixin';
@@ -95,7 +95,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
         <div class="information-cells">
           ${this.getTable()}
           <div class="amt-data">
-            <label class="paper-label">${translate('TOTAL_AMT')}</label>
+            <label class="paper-label">${this.getTotalLabel(this.intervention)}</label>
             <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.total_local)}">
               <span>${this.budgetSummary.currency}</span> ${displayCurrencyAmount(
                 String(this.budgetSummary.total_local)
@@ -186,7 +186,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
         </div>
 
         <div class="data-column amt-column">
-          <label class="paper-label">${translate('TOTAL_AMT')}</label>
+          <label class="paper-label">${this.getTotalLabel(this.intervention)}</label>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.total_local)}">
             ${displayCurrencyAmount(String(this.budgetSummary.total_local))}
           </div>
@@ -213,6 +213,14 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
             (${displayCurrencyAmount(String(this.budgetSummary.total_partner_contribution_local))})
           </div>
         </div>
+        ${this.intervention.planned_budget.has_unfunded_cash
+          ? html`<div class="data-column">
+              <label class="paper-label">${translate('TOTAL_UNFUNDED')}</label>
+              <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.total_unfunded)}">
+                ${displayCurrencyAmount(String(this.budgetSummary.total_unfunded))}
+              </div>
+            </div>`
+          : ''}
       </div>
     `;
   }
@@ -250,8 +258,8 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
     ) {
       return;
     }
-    this.budgetSummary = selectBudgetSummary(state);
     this.intervention = state.interventions.current;
+    this.budgetSummary = selectBudgetSummary(state);
     this.frsDetails = this.intervention.frs_details;
     if (isUnicefUser(state)) {
       this.setFrsConsistencyWarning();
@@ -277,6 +285,10 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
 
   isEmpty(value: any): boolean {
     return !value && value !== 0;
+  }
+
+  getTotalLabel(intervention: Intervention) {
+    return getTranslation(intervention.planned_budget.has_unfunded_cash ? 'TOTAL_AMT_UNFUNDED' : 'TOTAL_AMT');
   }
 
   currenciesMatch() {

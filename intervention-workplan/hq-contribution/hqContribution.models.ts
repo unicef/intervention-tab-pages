@@ -7,6 +7,7 @@ export class HqContributionData extends ModelsBase {
     this.setObjProperties(intervention);
   }
   hq_support_cost = '';
+  unfunded_cash_local = '';
   planned_budget = new PlannedBudget();
 }
 
@@ -17,5 +18,5 @@ export class HqContributionPermissions extends ModelsBase {
   }
   hq_support_cost = true;
   planned_budget = true;
-  unfunded_cash_local = true;
+  has_unfunded_cash = true;
 }

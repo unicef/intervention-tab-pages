@@ -241,7 +241,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               this.requestUpdate();
             }}}"
           >
-            ${translate('PD_UNFUNDED_AMOUNTS')}
+            ${translate('HAS_UNFUNDED_CASH')}
           </paper-toggle-button>
         </div>
 
@@ -301,7 +301,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
         }))
       ];
     }
-    this.data = selectOtherData(state);
+    this.data = cloneDeep(selectOtherData(state));
     this.originalData = cloneDeep(this.data);
     this.setPermissions(state);
     super.stateChanged(state);

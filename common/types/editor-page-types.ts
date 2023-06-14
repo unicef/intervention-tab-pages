@@ -100,6 +100,7 @@ export type ProgrammeManagementRow = {
   context_details: string;
   cso_cash: string;
   unicef_cash: string;
+  unfunded_cash: string;
   totalProgrammeManagementCash: number;
   total: string;
   items: ProgrammeManagementRowItemExtended[];
@@ -112,6 +113,6 @@ export type ProgrammeManagementRow = {
 export type ProgrammeManagementRowExtended = ProgrammeManagementRow & {
   inEditMode: boolean;
   itemsInEditMode: boolean;
-  invalid?: Partial<{unicef_cash: boolean; cso_cash: boolean}>;
+  invalid?: Partial<{unicef_cash: boolean; cso_cash: boolean; unfunded_cash: boolean}>;
   total: string;
 };

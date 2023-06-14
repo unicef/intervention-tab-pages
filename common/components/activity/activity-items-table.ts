@@ -45,7 +45,7 @@ export class ActivityItemsTable extends LitElement {
   @property() readonly: boolean | undefined = false;
   @property() dialogElement!: EtoolsDialog;
   @property({type: String}) currency = '';
-  @property() showUnfunded = true;
+  @property() hasUnfundedCash = false;
 
   protected render(): TemplateResult {
     // language=html
@@ -60,7 +60,7 @@ export class ActivityItemsTable extends LitElement {
         <div class="grid-cell header-cell end">${translate('PRICE_UNIT')}</div>
         <div class="grid-cell header-cell end">${translate('PARTNER_CASH')}</div>
         <div class="grid-cell header-cell end">${translate('UNICEF_CASH')}</div>
-        <div class="grid-cell header-cell end" ?hidden="${!this.showUnfunded}" >${translate('UNFUNDED_CASH')}</div>
+        <div class="grid-cell header-cell end" ?hidden="${!this.hasUnfundedCash}">${translate('UNFUNDED_CASH')}</div>
         <div class="grid-cell header-cell end">${translate('TOTAL_CASH')} (${this.currency})</div>
         <div class="grid-cell header-cell"></div>
       </div>
@@ -77,7 +77,7 @@ export class ActivityItemsTable extends LitElement {
             .readonly="${this.readonly}"
             .lastItem="${this.isLastItem(index)}"
             .currency="${this.currency}"
-            .showUnfunded="${this.showUnfunded}"
+            .hasUnfundedCash="${this.hasUnfundedCash}"
           ></activity-item-row>`
       )}
       ${!this.readonly

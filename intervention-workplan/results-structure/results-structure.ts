@@ -266,6 +266,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                         .readonly="${!this.permissions.edit.result_links || this.commentMode}"
                         .currency="${this.intervention.planned_budget.currency}"
                         .inAmendment="${this.intervention.in_amendment}"
+                        .hasUnfundedCash="${this.intervention.planned_budget.has_unfunded_cash}"
                       ></pd-activities>
                       <pd-indicators
                         ?hidden="${!this.showIndicators}"

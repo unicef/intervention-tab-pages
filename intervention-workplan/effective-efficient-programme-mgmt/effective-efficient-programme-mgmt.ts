@@ -111,6 +111,14 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
           <etools-data-table-column class="flex-c text-right" field="unicef_cash">
             ${translate('UNICEF_CASH')}
           </etools-data-table-column>
+           ${
+             this.hasUnfundedCash
+               ? html` <etools-data-table-column class="flex-c text-right" field="unicef_cash">
+                   ${translate('UNFUNDED_CASH')}</etools-data-table-column
+                 >`
+               : ''
+           }
+          </etools-data-table-column>
           <etools-data-table-column class="flex-c text-right" field="total">
             ${getTranslation('GENERAL.TOTAL') + ' (' + this.data.currency + ')'}
           </etools-data-table-column>
@@ -130,6 +138,11 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
                 <div class="col-data flex-c text-right" data-col-header-label="${translate('PARTNER_CASH')}">
                   ${item.unicef_cash}
                 </div>
+                ${this.hasUnfundedCash
+                  ? html` <div class="col-data flex-c text-right" data-col-header-label="${translate('PARTNER_CASH')}">
+                      ${item.unfunded_cash}
+                    </div>`
+                  : ''}
                 <div class="col-data flex-c text-right" data-col-header-label="${translate('TOTAL')}">
                   ${item.total}
                 </div>
@@ -180,7 +193,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
   interventionId!: number;
 
   @property({type: Boolean})
-  has_unfunded_cash?: boolean;
+  hasUnfundedCash?: boolean;
 
   connectedCallback() {
     super.connectedCallback();
@@ -194,7 +207,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
       return;
     }
     this.interventionId = state.interventions.current.id!;
-    this.has_unfunded_cash = state.interventions.current.planned_budget.has_unfunded_cash;
+    this.hasUnfundedCash = state.interventions.current.planned_budget.has_unfunded_cash;
     this.data = selectProgrammeManagement(state);
 
     this.originalData = cloneDeep(this.data);
@@ -250,7 +263,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         activity: {...activity, items: cloneDeep(this.data.items)},
         interventionId: this.interventionId,
         currency: this.data.currency,
-        has_unfunded_cash: this.has_unfunded_cash,
+        hasUnfundedCash: this.hasUnfundedCash,
         readonly: !this.canEdit
       }
     });

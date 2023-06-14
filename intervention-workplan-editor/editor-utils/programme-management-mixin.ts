@@ -70,7 +70,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
         <tbody>
           <tr class="eepm-header lighter-blue">
             <td></td>
-            <td colspan="8">${translate('EFFECTIVE_EFFICIENT_PROG_MGM')}</td>
+            <td colspan="${this.hasUnfundedCash ? 9 : 8}">${translate('EFFECTIVE_EFFICIENT_PROG_MGM')}</td>
           </tr>
         </tbody>
         ${repeat(
@@ -90,6 +90,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                 <td colspan="4">${translate('ACTIVITY')}</td>
                 <td class="a-right">${translate('PARTNER_CASH')}</td>
                 <td>${translate('UNICEF_CASH')}</td>
+                ${this.hasUnfundedCash ? html`<td>${translate('UNFUNDED_CASH')}</td>` : ''}
                 <td colspan="2">${translate('GENERAL.TOTAL')}</td>
               </tr>
               <tr class="text action-btns" type="activity">
@@ -148,6 +149,31 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                     @value-changed="${({detail}: CustomEvent) => this.numberChanged(detail, 'unicef_cash', item)}"
                   ></etools-currency-amount-input>
                 </td>
+                ${this.hasUnfundedCash
+                  ? html`
+                      <td
+                        tabindex="${ifDefined((item.items && item.items.length) || this.commentMode ? undefined : '0')}"
+                        class="no-top-padding"
+                      >
+                        <etools-currency-amount-input
+                          no-label-float
+                          input
+                          .value="${item.unfunded_cash}"
+                          tabindex="${ifDefined(
+                            (item.items && item.items.length) || !item.inEditMode ? '0' : undefined
+                          )}"
+                          ?readonly="${this.isReadonlyCash(item.inEditMode, item.items)}"
+                          ?required="${this.isRequiredCash(item.inEditMode, item.items)}"
+                          auto-validate
+                          .invalid="${item.invalid?.unfunded_cash}"
+                          error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
+                          @keydown="${(e: any) => this.handleEsc(e)}"
+                          @value-changed="${({detail}: CustomEvent) =>
+                            this.numberChanged(detail, 'unfunded_cash', item)}"
+                        ></etools-currency-amount-input>
+                      </td>
+                    `
+                  : ``}
                 <td
                   colspan="2"
                   class="padd-top-10 action-btns"
@@ -158,7 +184,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                 >
                   <div>
                     ${this.intervention.planned_budget.currency}
-                    <span class="b">${getTotalCashFormatted(item.cso_cash, item.unicef_cash)}</span>
+                    <span class="b">${getTotalCashFormatted(item.cso_cash, item.unicef_cash, item.unfunded_cash)}</span>
                   </div>
                   <div class="action-btns align-bottom flex-h">
                     <paper-icon-button
@@ -231,6 +257,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                 <td class="col-p-per-unit">${translate('PRICE_UNIT')}</td>
                 <td class="col-g">${translate('PARTNER_CASH')}</td>
                 <td class="col-g">${translate('UNICEF_CASH')}</td>
+                ${this.hasUnfundedCash ? html`<td class="col-g">${translate('UNFUNDED_CASH')}</td>` : ``}
                 <td class="col-g" colspan="2">${translate('TOTAL')} (${this.intervention.planned_budget.currency})</td>
               </tr>
             </tbody>
@@ -248,6 +275,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
           context_details: getTranslation('DESCRIPTION_1'),
           cso_cash: data.act1_partner,
           unicef_cash: data.act1_unicef,
+          unfunded_cash: data.act1_unfunded,
           totalProgrammeManagementCash: getTotalCash(data.act1_partner, data.act1_unicef),
           total: data.act1_total,
           items: data.items.filter(
@@ -264,6 +292,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
           context_details: getTranslation('DESCRIPTION_2'),
           cso_cash: data.act2_partner,
           unicef_cash: data.act2_unicef,
+          unfunded_cash: data.act2_unfunded,
           totalProgrammeManagementCash: getTotalCash(data.act2_partner, data.act2_unicef),
           total: data.act2_total,
           items: data.items.filter(
@@ -280,6 +309,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
           context_details: getTranslation('DESCRIPTION_3'),
           cso_cash: data.act3_partner,
           unicef_cash: data.act3_unicef,
+          unfunded_cash: data.act3_unfunded,
           totalProgrammeManagementCash: getTotalCash(data.act3_partner, data.act3_unicef),
           total: data.act3_total,
           items: data.items.filter(
@@ -385,6 +415,9 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
     formatDataBeforeSave(data: any) {
       data[this.getPropertyName(data, 'partner')] = data.cso_cash;
       data[this.getPropertyName(data, 'unicef')] = data.unicef_cash;
+      // @dci if (this.hasUnfundedCash) {
+      data[this.getPropertyName(data, 'unfunded')] = data.unfunded_cash;
+      // }
     }
   };
 }

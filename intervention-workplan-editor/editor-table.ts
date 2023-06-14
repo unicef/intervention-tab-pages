@@ -156,6 +156,7 @@ export class EditorTable extends CommentsMixin(
             <td class="col-p-per-unit"></td>
             <td class="col-g"></td>
             <td class="col-g"></td>
+            ${this.hasUnfundedCash ? html`<td class="col-g"></td>` : ''}
             <td class="col-g" colspan="2"></td>
           </tr>
         </tbody>
@@ -175,7 +176,7 @@ export class EditorTable extends CommentsMixin(
                 >
                   <td></td>
                   <td colspan="3" class="v-middle">${translate('ADD_PD_OUTPUT')}</td>
-                  <td colspan="3"></td>
+                  <td colspan="${this.hasUnfundedCash ? 4 : 3}"></td>
                   <td colspan="2" tabindex="${ifDefined(this.commentMode ? undefined : 0)}">
                     <div class="action-btns" style="position:relative">
                       <paper-icon-button
@@ -217,7 +218,7 @@ export class EditorTable extends CommentsMixin(
               <tr class="header">
                 <td>${translate('ID')}</td>
                 <td colspan="3">${translate('COUNTRY_PROGRAME_OUTPUT')}</td>
-                <td colspan="3"></td>
+                <td colspan="${this.hasUnfundedCash ? 4 : 3}"></td>
                 <td colspan="2">${translate('TOTAL')}</td>
               </tr>
               <tr class="text no-b-border">
@@ -233,7 +234,7 @@ export class EditorTable extends CommentsMixin(
                 <td colspan="3" class="${result.cp_output_name ? 'b' : 'red'}">
                   ${result.cp_output_name || translate('UNASSOCIATED_TO_CP_OUTPUT')}
                 </td>
-                <td colspan="3"></td>
+                <td colspan="${this.hasUnfundedCash ? 4 : 3}"></td>
                 <td colspan="2">
                   ${this.intervention.planned_budget.currency}
                   <span class="b">${displayCurrencyAmount(result.total, '0.00')}</span>
@@ -242,7 +243,7 @@ export class EditorTable extends CommentsMixin(
               <tr class="add action-btns" type="cp-output">
                 <td></td>
                 <td colspan="3"></td>
-                <td colspan="3"></td>
+                <td colspan="${this.hasUnfundedCash ? 4 : 3}"></td>
                 <td
                   colspan="2"
                   class="action-btns"
@@ -299,7 +300,7 @@ export class EditorTable extends CommentsMixin(
                   <tr class="header">
                     <td></td>
                     <td colspan="3">${translate('PD_OUTPUT')}</td>
-                    <td colspan="3"></td>
+                    <td colspan="${this.hasUnfundedCash ? 4 : 3}"></td>
                     <td colspan="2">${translate('TOTAL')}</td>
                   </tr>
                   <tr
@@ -366,7 +367,7 @@ export class EditorTable extends CommentsMixin(
                           </div>`
                         : ''}
                     </td>
-                    <td colspan="3"></td>
+                    <td colspan="${this.hasUnfundedCash ? 4 : 3}"></td>
                     <td
                       colspan="2"
                       class="action-btns"
@@ -478,6 +479,9 @@ export class EditorTable extends CommentsMixin(
   originalIntervention!: Intervention;
 
   @property({type: Boolean})
+  hasUnfundedCash = false;
+
+  @property({type: Boolean})
   readonly = false;
 
   @property() cpOutputs: {id: number; name: string}[] = [];
@@ -526,6 +530,7 @@ export class EditorTable extends CommentsMixin(
     this.quarters = selectInterventionQuarters(state);
     this.isUnicefUser = isUnicefUser(state);
     this.intervention = cloneDeep(currentIntervention(state));
+    this.hasUnfundedCash = this.intervention.planned_budget.has_unfunded_cash || false;
     if (!isJsonStrMatch(this.originalProgMgmt, selectProgrammeManagement(state))) {
       this.originalProgMgmt = selectProgrammeManagement(state);
       this.formattedProgrammeManagement = this.formatProgrammeManagement(selectProgrammeManagement(state));
