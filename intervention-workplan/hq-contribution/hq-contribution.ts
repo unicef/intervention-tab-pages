@@ -122,7 +122,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
             class="col-3"
             placeholder="&#8212;"
             label=${translate(translatesMap.capacity_strenghtening_unfunded)}
-            .value="${this.data.planned_budget.unfunded_cash_local}"
+            .value="${this.data.planned_budget.unfunded_hq_cash}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.has_unfunded_cash)}"
             tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.has_unfunded_cash) ? -1 : 0}"
             @value-changed="${({detail}: CustomEvent) => this.unfundedCashChanged(detail)}"
@@ -181,11 +181,11 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
   }
 
   unfundedCashChanged(detail: any) {
-    if (areEqual(this.data.planned_budget.unfunded_cash_local, detail.value)) {
+    if (areEqual(this.data.planned_budget.unfunded_hq_cash, detail.value)) {
       return;
     }
 
-    this.data.planned_budget.unfunded_cash_local = detail.value;
+    this.data.planned_budget.unfunded_hq_cash = detail.value;
     this.requestUpdate();
   }
 
@@ -259,7 +259,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
     data.planned_budget = {
       id: data.planned_budget.id,
       total_hq_cash_local: data.planned_budget.total_hq_cash_local,
-      unfunded_cash_local: data.planned_budget.unfunded_cash_local
+      unfunded_hq_cash: data.planned_budget.unfunded_hq_cash
     };
     return data;
   }
