@@ -315,7 +315,7 @@
   "INVALID_ERR": "غير صالح",
   "INVALID_NUMBER": "رقم غير صالح",
   "INVALID_TOTAL_ACTIVITY_ITEMS": "بيانات الميزانية غير صالحة. يجب أن تكون أموال اليونيسف + الشريك مساوية لإجمالي النقد.",
-  "INVALID_TOTAL_UNFUNDED_ACTIVITY_ITEMS": "Invalid budget data. UNICEF + Partner Cash + Unfunded Cash should be equal to Total Cash.",
+  "INVALID_TOTAL_UNFUNDED_ACTIVITY_ITEMS": "بيانات الميزانية غير صالحة. اليونيسف + النقد الشريك + النقد غير الممول يجب أن يكون مساوياً لإجمالي النقد.",
   "IS_ACTIVE": "نشط",
   "ITEM_ALL_PRICES": "البند (جميع الأسعار بعملة PD)",
   "ITEM_DESCRIPTION": "وصف السلعة",

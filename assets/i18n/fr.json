@@ -315,7 +315,7 @@
   "INVALID_ERR": "Invalide",
   "INVALID_NUMBER": "Numéro non valide",
   "INVALID_TOTAL_ACTIVITY_ITEMS": "Données budgétaires non valides. Espèces UNICEF + Partenaire devrait être égal au Total Espèces.",
-  "INVALID_TOTAL_UNFUNDED_ACTIVITY_ITEMS": "Invalid budget data. UNICEF + Partner Cash + Unfunded Cash should be equal to Total Cash.",
+  "INVALID_TOTAL_UNFUNDED_ACTIVITY_ITEMS": "Données budgétaires non valides. L'UNICEF + l'argent du partenaire + l'argent non financé doit être égal au total de l'argent.",
   "IS_ACTIVE": "C'est actif",
   "ITEM_ALL_PRICES": "Article (tous les prix dans la devise du DP)",
   "ITEM_DESCRIPTION": "Description de l’objet ",

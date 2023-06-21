@@ -315,7 +315,7 @@
   "INVALID_ERR": "Inválido",
   "INVALID_NUMBER": "Número inválido",
   "INVALID_TOTAL_ACTIVITY_ITEMS": "Dado orçamentário inválido. Orçamento financeiro do Unicef + Parceiro deve ser igual ao orçamento total.",
-  "INVALID_TOTAL_UNFUNDED_ACTIVITY_ITEMS": "Invalid budget data. UNICEF + Partner Cash + Unfunded Cash should be equal to Total Cash.",
+  "INVALID_TOTAL_UNFUNDED_ACTIVITY_ITEMS": "Dados de orçamento inválidos. UNICEF + Dinheiro do Parceiro + Dinheiro Não Financiado deve ser igual ao Dinheiro Total.",
   "IS_ACTIVE": "Está ativo",
   "ITEM_ALL_PRICES": "Item (todos os valoresna moeda do PD)",
   "ITEM_DESCRIPTION": "Descrição do item",

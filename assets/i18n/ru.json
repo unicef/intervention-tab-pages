@@ -315,7 +315,7 @@
   "INVALID_ERR": "Неверно",
   "INVALID_NUMBER": "Неправильный номер",
   "INVALID_TOTAL_ACTIVITY_ITEMS": "Ошибка бюджета. Денежный вклад ЮНИСЕФ + денежный вклад партнера должны равняться Общей сумме денежных средств",
-  "INVALID_TOTAL_UNFUNDED_ACTIVITY_ITEMS": "Invalid budget data. UNICEF + Partner Cash + Unfunded Cash should be equal to Total Cash.",
+  "INVALID_TOTAL_UNFUNDED_ACTIVITY_ITEMS": "Неверные данные бюджета. Денежные средства ЮНИСЕФ + Партнерские денежные средства + Необеспеченные денежные средства должны равняться общей сумме денежных средств.",
   "IS_ACTIVE": "Активен",
   "ITEM_ALL_PRICES": "Статья (все суммы в валюте ПД)",
   "ITEM_DESCRIPTION": "Описание статьи",
