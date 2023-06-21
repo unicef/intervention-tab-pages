@@ -1,6 +1,6 @@
 import ModelChangedMixin from '@unicef-polymer/etools-modules-common/dist/mixins/model-changed-mixin';
 import {Constructor, InterventionActivityItem} from '@unicef-polymer/etools-types';
-import {LitElement, property} from 'lit-element';
+import {LitElement} from 'lit-element';
 import {getItemTotal} from '../components/activity/get-total.helper';
 
 export function ActivitiesCommonMixin<T extends Constructor<LitElement>>(baseClass: T) {
