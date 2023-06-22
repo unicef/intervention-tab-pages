@@ -15,6 +15,9 @@ export function ActivitiesCommonMixin<T extends Constructor<LitElement>>(baseCla
       item: Partial<InterventionActivityItem>,
       setSecondCashField = true
     ): void {
+      if (!detail.value) {
+        detail.value = 0; // avoid saving null values, default is 0
+      }
       this.numberChanged(detail, field, item);
       if (this.hasUnfundedCash || !item.unit_price || !item.no_units) {
         return;
