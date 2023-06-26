@@ -145,6 +145,9 @@ export class EditorTable extends CommentsMixin(
         .v-middle {
           vertical-align: middle;
         }
+        label[required] {
+          background: url('./images/required.svg') no-repeat 99% 20%/5px;
+        }
       </style>
       <table>
         <tbody>

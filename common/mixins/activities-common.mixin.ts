@@ -15,13 +15,7 @@ export function ActivitiesCommonMixin<T extends Constructor<LitElement>>(baseCla
       item: Partial<InterventionActivityItem>,
       setSecondCashField = true
     ): void {
-      if (!detail.value) {
-        detail.value = 0; // avoid saving null values, default is 0
-      }
       this.numberChanged(detail, field, item);
-      if (this.hasUnfundedCash || !item.unit_price || !item.no_units) {
-        return;
-      }
       const total = getItemTotal(item);
       if (setSecondCashField) {
         const secondCashField = field === 'unicef_cash' ? 'cso_cash' : 'unicef_cash';
@@ -75,10 +69,6 @@ export function ActivitiesCommonMixin<T extends Constructor<LitElement>>(baseCla
     }
 
     validateCsoAndUnicefCashForItem(item: any) {
-      if (Number(item.no_units) == 0 || Number(item.unit_price) == 0) {
-        return;
-      }
-
       let total = (Number(item.no_units) || 0) * (Number(item.unit_price) || 0);
       total = Number(total.toFixed(2));
       let sum =

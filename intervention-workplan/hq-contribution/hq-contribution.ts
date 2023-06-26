@@ -113,6 +113,8 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
             tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.planned_budget) ? -1 : 0}"
             @value-changed="${({detail}: CustomEvent) => this.hqContribChanged(detail)}"
             .currency="${this.data.planned_budget?.currency}"
+            required
+            auto-validate
           >
           </etools-currency-amount-input>
         </div>
@@ -127,6 +129,8 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
             tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.has_unfunded_cash) ? -1 : 0}"
             @value-changed="${({detail}: CustomEvent) => this.unfundedCashChanged(detail)}"
             .currency="${this.data.planned_budget?.currency}"
+            required
+            auto-validate
           >
           </etools-currency-amount-input>
         </div>

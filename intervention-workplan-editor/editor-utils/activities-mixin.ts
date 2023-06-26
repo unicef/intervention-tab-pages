@@ -87,9 +87,9 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                 <td></td>
                 <td colspan="3">${translate('ACTIVITY')}</td>
                 <td class="a-center">${translate('TIME_PERIODS')}</td>
-                <td>${translate('PARTNER_CASH')}</td>
-                <td>${translate('UNICEF_CASH')}</td>
-                ${this.hasUnfundedCash ? html`<td>${translate('UNFUNDED_CASH')}</td>` : ``}
+                <td><label required>${translate('PARTNER_CASH')}</label></td>
+                <td><label required>${translate('UNICEF_CASH')}</label></td>
+                ${this.hasUnfundedCash ? html`<td><label required>${translate('UNFUNDED_CASH')}</label></td>` : ``}
                 <td colspan="2">${translate('GENERAL.TOTAL')}</td>
               </tr>
               <tr class="text action-btns" type="activity">
@@ -194,6 +194,9 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     ?readonly="${this.isReadonlyCash(activity.inEditMode, activity.items)}"
                     @keydown="${(e: any) => this.handleEsc(e)}"
                     @value-changed="${({detail}: CustomEvent) => this.numberChanged(detail, 'cso_cash', activity)}"
+                    required
+                    .invalid="${activity.invalid?.cso_cash}"
+                    error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
                   ></etools-currency-amount-input>
                 </td>
                 <td
@@ -210,6 +213,9 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     ?readonly="${this.isReadonlyCash(activity.inEditMode, activity.items)}"
                     @keydown="${(e: any) => this.handleEsc(e)}"
                     @value-changed="${({detail}: CustomEvent) => this.numberChanged(detail, 'unicef_cash', activity)}"
+                    required
+                    .invalid="${activity.invalid?.unicef_cash}"
+                    error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
                   ></etools-currency-amount-input>
                 </td>
                 ${this.hasUnfundedCash
@@ -228,6 +234,9 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                         @keydown="${(e: any) => this.handleEsc(e)}"
                         @value-changed="${({detail}: CustomEvent) =>
                           this.numberChanged(detail, 'unfunded_cash', activity)}"
+                        required
+                        .invalid="${activity.invalid?.unfunded_cash}"
+                        error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
                       ></etools-currency-amount-input>
                     </td>`
                   : ``}
@@ -406,15 +415,18 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
 
     validateActivity(activity: InterventionActivityExtended) {
       activity.invalid = {};
-      if (!activity.name) {
-        activity.invalid.name = true;
-      }
+
+      activity.invalid.name = !activity.name;
+      activity.invalid.unicef_cash = isNaN(parseFloat(String(activity.unicef_cash)));
+      activity.invalid.cso_cash = isNaN(parseFloat(String(activity.cso_cash)));
+      activity.invalid.unfunded_cash = isNaN(parseFloat(String(activity.unfunded_cash)));
+
       if (this.quarters && this.quarters.length) {
         if (!(activity.time_frames && activity.time_frames.length)) {
           activity.invalid.time_frames = true;
         }
       }
-      return !Object.keys(activity.invalid).length;
+      return !Object.values(activity.invalid).some((val) => val === true);
     }
 
     // @ts-ignore

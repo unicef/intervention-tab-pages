@@ -187,11 +187,14 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
             ${!this.useInputLevel
               ? html`
                   <etools-currency-amount-input
+                    id="cso_cash"
                     class="col-3"
                     label=${translate(translatesMap.cso_cash)}
                     ?readonly="${this.readonly}"
                     .value="${this.editedData.cso_cash}"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue('cso_cash', detail.value)}"
+                    required
+                    auto-validate
                   ></etools-currency-amount-input>
 
                   <etools-currency-amount-input
@@ -200,15 +203,20 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
                     ?readonly="${this.readonly}"
                     .value="${this.editedData.unicef_cash}"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue('unicef_cash', detail.value)}"
+                    required
+                    auto-validate
                   ></etools-currency-amount-input>
 
                   <etools-currency-amount-input
                     class="col-3"
+                    id="unfunded_cash"
                     ?hidden="${!this.hasUnfundedCash}"
                     label=${translate('UNFUNDED_CASH')}
                     ?readonly="${this.readonly}"
                     .value="${this.editedData.unfunded_cash}"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue('unfunded_cash', detail.value)}"
+                    required
+                    auto-validate
                   ></etools-currency-amount-input>
                 `
               : html`

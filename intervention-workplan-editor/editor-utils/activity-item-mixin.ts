@@ -205,7 +205,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   .value="${item.cso_cash}"
                   @keydown="${(e: any) => this.handleEsc(e)}"
                   @value-changed="${({detail}: CustomEvent) => {
-                    this.cashFieldChanged(detail, 'cso_cash', item);
+                    this.cashFieldChanged(detail, 'cso_cash', item, !this.hasUnfundedCash);
                     this.updateActivityCashFromItem(activity, item);
                   }}"
                 ></etools-currency-amount-input>
@@ -226,7 +226,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   .value="${item.unicef_cash}"
                   @keydown="${(e: any) => this.handleEsc(e)}"
                   @value-changed="${({detail}: CustomEvent) => {
-                    this.cashFieldChanged(detail, 'unicef_cash', item);
+                    this.cashFieldChanged(detail, 'unicef_cash', item, !this.hasUnfundedCash);
                     this.updateActivityCashFromItem(activity, item);
                   }}"
                 ></etools-currency-amount-input>
@@ -248,7 +248,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                       .value="${item.unfunded_cash}"
                       @keydown="${(e: any) => this.handleEsc(e)}"
                       @value-changed="${({detail}: CustomEvent) => {
-                        this.cashFieldChanged(detail, 'unfunded_cash', item);
+                        this.cashFieldChanged(detail, 'unfunded_cash', item, !this.hasUnfundedCash);
                         this.updateActivityCashFromItem(activity, item);
                       }}"
                     ></etools-currency-amount-input>

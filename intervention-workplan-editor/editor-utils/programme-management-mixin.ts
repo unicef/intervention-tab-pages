@@ -22,6 +22,7 @@ import {
   ProgrammeManagementRowItemExtended
 } from '../../common/types/editor-page-types';
 import {getTotalCash, getTotalCashFormatted} from '../../common/components/activity/get-total.helper';
+import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 
 // import {ManagementBudgetItem} from '@unicef-polymer/etools-types';
 
@@ -364,7 +365,11 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
 
     // @ts-ignore
     saveProgrammeManagement(programmeManagement: ProgrammeManagementRowExtended, interventionId: number) {
-      if (!this.validateProgrammeManagement(programmeManagement) || !this.validateActivityItems(programmeManagement)) {
+      if (
+        !validateRequiredFields(this) ||
+        !this.validateProgrammeManagement(programmeManagement) ||
+        !this.validateActivityItems(programmeManagement)
+      ) {
         this.requestUpdate();
         fireEvent(this, 'toast', {
           text: getTranslation('FIX_VALIDATION_ERRORS')

@@ -72,7 +72,14 @@ export type InterventionActivityExtended = InterventionActivity & {
   total: string;
 };
 
-type ItemInvalid = {name: boolean; context_details: boolean; time_frames: boolean};
+type ItemInvalid = {
+  name: boolean;
+  context_details: boolean;
+  time_frames: boolean;
+  cso_cash: boolean;
+  unicef_cash: boolean;
+  unfunded_cash: boolean;
+};
 
 export type ResultLinkLowerResultExtended = ResultLinkLowerResult & {
   inEditMode: boolean;
