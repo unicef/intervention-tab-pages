@@ -108,7 +108,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
         <div class="layout-horizontal">
           <etools-currency-amount-input
             id="hqContrib"
-            class="col-3"
+            class="col-4"
             placeholder="&#8212;"
             label=${translate(translatesMap.total_hq_cash_local)}
             .value="${this.data.planned_budget.total_hq_cash_local}"
@@ -124,7 +124,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
         <div class="layout-horizontal" ?hidden="${!this.data.planned_budget.has_unfunded_cash}">
           <etools-currency-amount-input
             id="unfundedCash"
-            class="col-3"
+            class="col-4"
             placeholder="&#8212;"
             label=${translate(translatesMap.capacity_strenghtening_unfunded)}
             .value="${this.data.planned_budget.unfunded_hq_cash}"

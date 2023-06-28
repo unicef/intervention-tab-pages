@@ -104,7 +104,7 @@
   "CAPACITY_STRENGTHENING_COST": "تكلفة تعزيز القدرات",
   "CAPACITY_STRENGTHENING_COST_AUTOMATIC": "النسبة المئوية لتكلفة تعزيز القدرات",
   "CAPACITY_STRENGTHENING_COST_DESCRIPTION": "تكلفة تعزيز القدرات",
-  "CAPACITY_STRENGHTENING_UNFUNDED": "تعزيز القدرات غير ممولة",
+  "UNFUNDED_HQ_CASH": "تعزيز القدرات غير ممولة",
   "CASH_TRANSFERED": "تحويل نقدي",
   "CASH_TRANSFER_MOD": "طريقة (طرق) التحويل النقدي",
   "CASH_TRANSFER_MODALITIES": {

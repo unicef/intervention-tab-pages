@@ -104,7 +104,7 @@
   "CAPACITY_STRENGTHENING_COST": "Capacity-Strengthening Cost",
   "CAPACITY_STRENGTHENING_COST_AUTOMATIC": "Capacity-Strengthening Cost Percentage",
   "CAPACITY_STRENGTHENING_COST_DESCRIPTION": "Capacity-Strengthening Cost",
-  "CAPACITY_STRENGHTENING_UNFUNDED": "Capacity-Strengthening Unfunded",
+  "UNFUNDED_HQ_CASH": "Capacity-Strengthening Unfunded",
   "CASH_TRANSFERED": "Cash Transferred",
   "CASH_TRANSFER_MOD": "Cash Transfer Modality(ies)",
   "CASH_TRANSFER_MODALITIES": {

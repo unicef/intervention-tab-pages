@@ -104,7 +104,7 @@
   "CAPACITY_STRENGTHENING_COST": "Coste del refuerzo de las capacidades",
   "CAPACITY_STRENGTHENING_COST_AUTOMATIC": "Porcentaje del coste de refuerzo de las capacidades",
   "CAPACITY_STRENGTHENING_COST_DESCRIPTION": "Coste del refuerzo de las capacidades",
-  "CAPACITY_STRENGHTENING_UNFUNDED": "Fortalecimiento de capacidades Sin financiación",
+  "UNFUNDED_HQ_CASH": "Fortalecimiento de capacidades Sin financiación",
   "CASH_TRANSFERED": "Efectivo transferido",
   "CASH_TRANSFER_MOD": "Modalidad(es) de transferencia de efectivo",
   "CASH_TRANSFER_MODALITIES": {

@@ -104,7 +104,7 @@
   "CAPACITY_STRENGTHENING_COST": "Затраты на укрепление потенциала",
   "CAPACITY_STRENGTHENING_COST_AUTOMATIC": "Процент затрат на укрепление мощностей",
   "CAPACITY_STRENGTHENING_COST_DESCRIPTION": "Затраты на укрепление потенциала",
-  "CAPACITY_STRENGHTENING_UNFUNDED": "Укрепление потенциала",
+  "UNFUNDED_HQ_CASH": "Укрепление потенциала",
   "CASH_TRANSFERED": "Перечислено денежных средств",
   "CASH_TRANSFER_MOD": "Метод/ы денежных переводов",
   "CASH_TRANSFER_MODALITIES": {
