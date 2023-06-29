@@ -63,14 +63,6 @@ export class CpOutputDialog extends LitElement {
     return html`
       ${sharedStyles}
       <style>
-        etools-dialog::part(ed-scrollable) {
-          margin-top: 0 !important;
-        }
-
-        etools-dialog::part(ed-button-styles) {
-          margin-top: 0;
-        }
-
         .container {
           padding: 12px 24px;
         }
@@ -78,7 +70,6 @@ export class CpOutputDialog extends LitElement {
       <etools-dialog
         size="md"
         keep-dialog-open
-        ?opened="${this.dialogOpened}"
         dialog-title="${this.dialogTitle} "
         @confirm-btn-clicked="${() => this.processRequest()}"
         @close="${this.onClose}"

@@ -73,11 +73,6 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
         a {
           color: var(--primary-color);
         }
-
-        etools-dialog::part(ed-scrollable) {
-          min-height: 400px;
-          font-size: 16px;
-        }
       </style>
 
       <etools-dialog

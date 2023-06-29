@@ -4,7 +4,6 @@ import '@polymer/paper-menu-button/paper-menu-button';
 import '@polymer/iron-icon/iron-icon';
 import '@polymer/paper-listbox/paper-listbox';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {elevation2} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {AnyObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
@@ -35,7 +34,8 @@ export class ExportInterventionData extends LitElement {
         }
 
         paper-button:focus {
-          ${elevation2}
+          box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12),
+            0 2px 4px -1px rgba(0, 0, 0, 0.4);
         }
 
         paper-item:hover {

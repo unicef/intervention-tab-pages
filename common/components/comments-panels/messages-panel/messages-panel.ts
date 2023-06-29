@@ -22,9 +22,6 @@ export class MessagesPanel extends EditComments {
   protected render(): TemplateResult {
     return html`
       <style>
-        etools-dialog::part(ed-scrollable) {
-          margin-top: 0 !important;
-        }
         paper-textarea {
           outline: none;
           flex: auto;

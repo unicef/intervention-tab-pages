@@ -28,18 +28,6 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
     return html`
       ${sharedStyles}
       <style>
-        :host {
-          --paper-dialog-scrollable: {
-            width: 100%;
-            overflow-x: hidden;
-            overflow-y: auto;
-            max-height: 400px;
-            padding: 0;
-            margin-top: -20px;
-            box-sizing: border-box;
-          }
-        }
-
         paper-input {
           width: 250px;
         }

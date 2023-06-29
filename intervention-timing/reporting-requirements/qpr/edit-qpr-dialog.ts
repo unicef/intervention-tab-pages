@@ -53,7 +53,7 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
           margin-bottom: 24px;
         }
 
-        etools-dialog::part(ed-paper-dialog) {
+        etools-dialog::part(panel) {
           width: 960px;
         }
 

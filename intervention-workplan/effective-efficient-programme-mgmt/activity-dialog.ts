@@ -44,13 +44,10 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         .layout-horizontal {
           overflow: hidden;
         }
-        etools-dialog::part(ed-paper-dialog) {
-          width: 98vw !important;
-          max-width: 1200px;
+        etools-dialog::part(panel) {
+          width: 1200px;
         }
-        etools-dialog::part(ed-scrollable) {
-          margin-top: 0 !important;
-        }
+
         .input-level {
           padding: 25px 0;
         }

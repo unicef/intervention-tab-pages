@@ -52,9 +52,6 @@ export class CommentsDialog extends EditComments {
     return html`
       ${sharedStyles}
       <style>
-        etools-dialog::part(ed-scrollable) {
-          margin-top: 0 !important;
-        }
         paper-textarea {
           outline: none;
           flex: auto;

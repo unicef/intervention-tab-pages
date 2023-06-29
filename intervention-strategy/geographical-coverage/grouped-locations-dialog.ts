@@ -31,11 +31,6 @@ export class GroupedLocationsDialog extends LitElement {
           display: none !important;
         }
 
-        etools-dialog::part(ed-scrollable) {
-          min-height: 300px;
-          font-size: 16px;
-        }
-
         .adminLevelLoc {
           color: var(--primary-color);
           font-weight: bold;
