@@ -132,7 +132,6 @@ export class CommentsDialog extends EditComments {
     if (event.ctrlKey) {
       this.newMessageText += '\n';
       this.requestUpdate();
-      this.updateHeight();
     } else {
       this.addComment();
     }
@@ -141,13 +140,9 @@ export class CommentsDialog extends EditComments {
   scrollDown(): void {
     if (this.dialogElement) {
       this.dialogElement.scrollDown();
-      this.dialogElement.notifyResize();
     }
   }
 
-  private updateHeight(): void {
-    this.dialogElement.notifyResize();
-  }
   static get styles(): CSSResultArray {
     // language=css
     return [

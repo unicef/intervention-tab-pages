@@ -71,7 +71,6 @@ export class ActivityItemsTable extends LitElement {
             @item-changed="${({detail}: CustomEvent) => this.updateActivityItem(index, detail)}"
             @remove-item="${() => {
               this.updateActivityItem(index, null);
-              this.resizeDialog();
             }}"
             .readonly="${this.readonly}"
             .lastItem="${this.isLastItem(index)}"
@@ -86,16 +85,6 @@ export class ActivityItemsTable extends LitElement {
 
   updated(changedProperties: PropertyValues): void {
     super.updated(changedProperties);
-
-    this.resizeDialogIfItemsNumberChanged(changedProperties.get('activityItems') as []);
-  }
-
-  resizeDialogIfItemsNumberChanged(changedActivityItems?: []) {
-    if (changedActivityItems && changedActivityItems.length !== this.activityItems.length) {
-      setTimeout(() => {
-        this.resizeDialog();
-      }, 300);
-    }
   }
 
   firstUpdated(changedProperties: PropertyValues): void {
@@ -115,12 +104,6 @@ export class ActivityItemsTable extends LitElement {
       }
     ];
     this.setFocusOnActivityRow();
-  }
-
-  resizeDialog() {
-    if (this.dialogElement) {
-      this.dialogElement.notifyResize();
-    }
   }
 
   setFocusOnActivityRow(focusLastRow = true) {

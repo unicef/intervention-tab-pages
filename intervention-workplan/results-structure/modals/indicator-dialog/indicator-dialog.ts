@@ -257,7 +257,6 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
       return;
     }
     this.activeTab = newTabName;
-    this._centerDialog();
   }
 
   displayClusterDisaggregations(detail: {prpDisaggregations: []}) {
@@ -356,10 +355,6 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
 
   _showToast(e: CustomEvent) {
     parseRequestErrorsAndShowAsToastMsgs(e.detail.error, this);
-  }
-
-  _centerDialog() {
-    this.indicatorDialog.notifyResize();
   }
 
   _hideAddDisaggreations(isCluster: boolean, currentUser: EtoolsUser | null) {

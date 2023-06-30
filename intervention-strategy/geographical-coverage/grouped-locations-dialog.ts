@@ -255,8 +255,6 @@ export class GroupedLocationsDialog extends LitElement {
     }
 
     this.groupedLocations = groupedLocations;
-
-    (this.groupedLocDialog as EtoolsDialog).notifyResize();
   }
 
   _findInGroupedLocations(groupedLocations: GroupedLocations[], adminLevelLocation: any) {
