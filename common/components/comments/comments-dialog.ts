@@ -126,7 +126,6 @@ export class CommentsDialog extends EditComments {
 
   onKeyup(event: KeyboardEvent): void {
     if (event.key !== 'Enter') {
-      this.updateHeight();
       return;
     }
     if (event.ctrlKey) {
