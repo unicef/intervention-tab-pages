@@ -70,7 +70,6 @@ export class GroupedLocationsDialog extends LitElement {
         size="md"
         dialog-title=${translate('LOCATIONS_PD_COVERS')}
         hide-confirm-btn
-        ?opened="${this.dialogOpened}"
         cancel-btn-text=${translate('GENERAL.CANCEL')}
         @close="${() => this.onClose()}"
       >
@@ -128,8 +127,6 @@ export class GroupedLocationsDialog extends LitElement {
 
   @property({type: String})
   message = '';
-
-  @property({type: Boolean}) dialogOpened = true;
 
   @query('#groupedLocDialog')
   groupedLocDialog!: EtoolsDialog;

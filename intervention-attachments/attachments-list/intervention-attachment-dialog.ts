@@ -40,7 +40,6 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
       `
     ];
   }
-  @property() dialogOpened = true;
   @property() savingInProcess = false;
   @property() data: Partial<ReviewAttachment> = {};
 
@@ -63,7 +62,6 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
       <etools-dialog
         size="md"
         keep-dialog-open
-        ?opened="${this.dialogOpened}"
         dialog-title=${translate('ATTACHMENT')}
         @confirm-btn-clicked="${() => this.processRequest()}"
         @close="${this.onClose}"

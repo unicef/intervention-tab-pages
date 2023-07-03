@@ -76,7 +76,6 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
         ok-btn-text=${translate('GENERAL.SAVE')}
         cancel-btn-text=${translate('GENERAL.CANCEL')}
         keep-dialog-open
-        opened
         ?show-spinner="${this.requestInProgress}"
         spinner-text=${translate('GENERAL.SAVING_DATA')}
       >

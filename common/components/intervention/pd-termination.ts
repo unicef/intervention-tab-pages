@@ -46,7 +46,6 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
         no-padding
         keep-dialog-open
         id="pdTermination"
-        ?opened="${this.dialogOpened}"
         size="md"
         ?hidden="${this.warningOpened}"
         ok-btn-text="${translate('TERMINATE')}"
@@ -102,9 +101,6 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
   interventionId!: number;
 
   @property({type: Boolean})
-  opened!: boolean;
-
-  @property({type: Boolean})
   warningOpened!: boolean;
 
   @property({type: Object})
@@ -118,9 +114,6 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
 
   @property({type: Boolean})
   uploadInProgress = false;
-
-  @property({type: Boolean})
-  dialogOpened = true;
 
   @property()
   savingInProcess = false;
@@ -166,7 +159,6 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
     }
     this.envFlagsStateChanged(getStore().getState());
     if (this.environmentFlags && !this.environmentFlags.prp_mode_off && this.environmentFlags.prp_server_on) {
-      this.dialogOpened = false;
       openDialog({
         dialog: 'are-you-sure',
         dialogData: {

@@ -68,7 +68,6 @@ export class EditHruDialog extends connectStore(LitElement) {
         @confirm-btn-clicked="${this._saveHurData}"
         ok-btn-text=${translate('GENERAL.SAVE')}
         keep-dialog-open
-        opened
         ?hidden="${this.datePickerOpen}"
         @close="${() => this._onClose()}"
         spinner-text=${translate('GENERAL.SAVING_DATA')}

@@ -20,7 +20,6 @@ export class AcceptForPartner extends LitElement {
         size="md"
         no-padding
         keep-dialog-open
-        opened
         .okBtnText="${translate('GENERAL.SAVE')}"
         dialog-title="${translate('ACCEPT_ON_BEHALF_OF_PARTNER')}"
         @close="${this.onClose}"

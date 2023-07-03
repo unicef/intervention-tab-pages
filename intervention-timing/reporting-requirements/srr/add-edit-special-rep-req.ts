@@ -57,7 +57,6 @@ export class AddEditSpecialRepReq extends LitElement {
       <etools-dialog
         id="addEditDialog"
         size="lg"
-        opened
         dialog-title=${translate('ADD_EDIT_SPECIAL_REPORTING_REQUIREMENTS')}
         @confirm-btn-clicked="${this._save}"
         ok-btn-text=${translate('GENERAL.SAVE')}

@@ -16,7 +16,6 @@ export class TimeIntervalsDialog extends LitElement {
   static get styles(): CSSResultArray {
     return [gridLayoutStylesLit];
   }
-  @property() dialogOpened = true;
   @property() readonly: boolean | undefined = false;
   @property() selectedTimeFrames: number[] = [];
   quarters: ActivityTimeFrames[] = [];
@@ -40,7 +39,6 @@ export class TimeIntervalsDialog extends LitElement {
       <etools-dialog
         size="lg"
         keep-dialog-open
-        ?opened="${this.dialogOpened}"
         dialog-title=${this.readonly ? translate('ACTIVITY_TIMES_READONLY') : translate('ACTIVITY_TIMES')}
         @confirm-btn-clicked="${() => this.onClose(this.selectedTimeFrames)}"
         @close="${() => this.onClose()}"

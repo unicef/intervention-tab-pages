@@ -17,7 +17,6 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
 
 @customElement('pd-output-dialog')
 export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElement) {
-  @property() dialogOpened = true;
   @property() loadingInProcess = false;
   @property() isEditDialog = false;
 
@@ -64,7 +63,6 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
       <etools-dialog
         size="md"
         keep-dialog-open
-        ?opened="${this.dialogOpened}"
         ?show-spinner="${this.loadingInProcess}"
         dialog-title="${this.isEditDialog ? translate('GENERAL.EDIT') : translate('GENERAL.ADD')} ${translate(
           'PD_OUTPUT'

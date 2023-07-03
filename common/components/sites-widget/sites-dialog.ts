@@ -84,7 +84,6 @@ export class GroupedLocationsDialog extends LitElement {
         id="sitesDialog"
         size="lg"
         keep-dialog-open
-        opened
         dialog-title=${translate('SELECT_SITE')}
         cancel-btn-text=${translate('GENERAL.CANCEL')}
         ok-btn-text=${translate('SELECT')}

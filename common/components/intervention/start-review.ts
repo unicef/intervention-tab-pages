@@ -44,7 +44,6 @@ export class StartReview extends connectStore(LitElement) {
       <etools-dialog
         no-padding
         keep-dialog-open
-        opened
         size="md"
         ok-btn-text="${translate('START')}"
         dialog-title="${translate('SEND_FOR_REVIEW')}"

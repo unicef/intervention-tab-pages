@@ -50,7 +50,6 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
       <etools-dialog
         id="supplyAgreementDialog"
         size="md"
-        ?opened="${this.dialogOpened}"
         ?hide-confirm-btn="${!this.confirmBtnTxt}"
         ?show-spinner="${this.requestInProcess}"
         dialog-title="${this.dialogTitle}"
@@ -173,9 +172,8 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
       </div>
       </etools-dialog>
     `;
+    s;
   }
-
-  @property() protected dialogOpened = true;
 
   @property({type: Boolean})
   requestInProcess = false;

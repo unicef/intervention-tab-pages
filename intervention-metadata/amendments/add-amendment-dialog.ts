@@ -47,7 +47,6 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
         keep-dialog-open
         id="add-amendment"
         size="md"
-        ?opened="${this.dialogOpened}"
         ok-btn-text="${translate('GENERAL.SAVE')}"
         dialog-title=${translate('ADD_AMENDMENT')}
         @close="${() => this.onClose()}"
@@ -99,8 +98,6 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
       </etools-dialog>
     `;
   }
-
-  @property({type: Boolean}) dialogOpened = true;
 
   @property({type: Boolean}) savingInProcess = false;
 

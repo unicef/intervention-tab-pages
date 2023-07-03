@@ -45,7 +45,6 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
         keep-dialog-open
         id="riskDialog"
         size="md"
-        ?opened="${this.dialogOpened}"
         ok-btn-text=${translate('GENERAL.SAVE')}
         cancel-btn-text=${translate('GENERAL.CANCEL')}
         dialog-title="${this.riskDialogTitle}"
@@ -96,8 +95,6 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
   }
 
   @property({type: Array}) riskTypes!: LabelAndValue[];
-
-  @property({type: Boolean}) dialogOpened = true;
 
   @property({type: Boolean}) savingInProcess = false;
 

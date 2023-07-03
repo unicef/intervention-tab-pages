@@ -79,7 +79,6 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
         id="indicatorDialog"
         size="lg"
         no-padding
-        opened
         @close="${this.onClose}"
         @confirm-btn-clicked="${this._validateAndSaveIndicator}"
         ok-btn-text=${translate('GENERAL.SAVE')}

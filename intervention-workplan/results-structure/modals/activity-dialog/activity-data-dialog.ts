@@ -34,7 +34,6 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
 
   @property({type: String})
   currency = '';
-  @property() dialogOpened = true;
   @property() loadingInProcess = false;
   @property() isEditDialog = true;
   @property() useInputLevel = false;
@@ -135,7 +134,6 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
       <etools-dialog
         size="lg"
         keep-dialog-open
-        ?opened="${this.dialogOpened}"
         ?show-spinner="${this.loadingInProcess}"
         spinner-text="${this.spinnerText}"
         dialog-title=${translate('ACTIVITY_DATA')}

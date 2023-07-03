@@ -16,7 +16,6 @@ import {removeTrailingIds} from './comments.helpers';
 @customElement('comments-dialog')
 export class CommentsDialog extends EditComments {
   @queryAll('paper-textarea') textareas!: PaperTextareaElement[];
-  @property() dialogOpened = true;
 
   get dialogTitle(): string {
     if (!this.relatedTo) {
@@ -60,14 +59,7 @@ export class CommentsDialog extends EditComments {
           }
         }
       </style>
-      <etools-dialog
-        size="md"
-        keep-dialog-open
-        ?opened="${this.dialogOpened}"
-        dialog-title="${this.dialogTitle}"
-        @close="${this.onClose}"
-        no-padding
-      >
+      <etools-dialog size="md" keep-dialog-open dialog-title="${this.dialogTitle}" @close="${this.onClose}" no-padding>
         <div class="container">
           ${this.comments.map(
             (comment: any, index: number) =>
@@ -115,7 +107,6 @@ export class CommentsDialog extends EditComments {
 
   _handleEscape(event: KeyboardEvent) {
     if (event.key === 'Escape') {
-      this.dialogOpened = false;
       this.onClose();
     }
   }

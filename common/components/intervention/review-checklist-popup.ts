@@ -97,7 +97,6 @@ export class ReviewChecklistPopup extends LitElement {
       <etools-dialog
         no-padding
         keep-dialog-open
-        opened
         size="lg"
         dialog-title="${translate('REVIEW_CHECKLIST')}"
         ?show-spinner="${this.requestInProcess}"
