@@ -172,7 +172,6 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
       </div>
       </etools-dialog>
     `;
-    s;
   }
 
   @property({type: Boolean})
