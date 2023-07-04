@@ -254,7 +254,7 @@ export class EditHruDialog extends connectStore(LitElement) {
       intervId: this.interventionId,
       reportType: CONSTANTS.REQUIREMENTS_REPORT_TYPE.HR
     });
-    const dialog = this.shadowRoot!.querySelector(`#editHruDialog`) as EtoolsDialog;
+    const dialog = this.shadowRoot!.querySelector(`#editHruDialog`) as unknown as EtoolsDialog;
     dialog.startSpinner();
     sendRequest({
       method: 'POST',
