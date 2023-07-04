@@ -1,4 +1,4 @@
-import {customElement, html, TemplateResult, property, CSSResultArray, css, query, queryAll} from 'lit-element';
+import {customElement, html, TemplateResult, CSSResultArray, css, query, queryAll} from 'lit-element';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import '@polymer/paper-input/paper-textarea';
