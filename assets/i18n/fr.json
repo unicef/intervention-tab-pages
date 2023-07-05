@@ -445,7 +445,7 @@
   "PRC_REVIEW_DATE": "PRC Date d’examen du CRP",
   "PRC_REVIEW_DOC": "Document d’examen du CRP",
   "PRC_REVIEW_DOC_DESCRIPTION": "Documents d'examen de la CRP d'intervention",
-  "PRC_REVIEW_DOC_TITLE": "Document d’examen de la CRP (*Pour les anciens DP uniquement",
+  "PRC_REVIEW_DOC_TITLE": "Document d’examen de la CRP (*Pour les anciens DP uniquement)",
   "PRC_SUBMISSION_DATE": "PRC Date de soumission au CRP",
   "PREVIOUS_VALUE": "Valeur précédente",
   "PRGM_EFFECTIVENESS": "% Efficacité du Prgm",
@@ -764,5 +764,5 @@
   "VISITS": "Visites",
   "UNPP_CFEI_DSR_REF_NUM": "Numéro de référence UNPP CFEI/DSR",
   "CFEI_EXPECTED_FORMAT": "Format attendu: CEF/code pays à 3 lettres/année à 4 chiffres/numéro à 3 chiffres",
-  "INOPERATIVE": "Inopérant"
+  "NO_ACCESS": "Pas d'accès"
 }
