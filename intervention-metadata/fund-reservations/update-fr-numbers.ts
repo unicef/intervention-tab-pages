@@ -10,7 +10,6 @@ import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/st
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {PaperInputElement} from '@polymer/paper-input/paper-input';
-import {PaperDialogElement} from '@polymer/paper-dialog/paper-dialog';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import RepeatableDataSetsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/repeatable-data-sets-mixin';
@@ -181,23 +180,11 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
     }
     this.data.push({fr_number: ''});
     this.data = [...this.data];
-    setTimeout(this._centerDialog.bind(this), 0);
     setTimeout(this._updateScroll.bind(this), 100);
-  }
-
-  _centerDialog() {
-    const d = this._getPaperDialog();
-    if (d) {
-      d.center();
-    }
   }
 
   _updateScroll() {
     this.frsDialog.scrollDown();
-  }
-
-  _getPaperDialog() {
-    return this.frsDialog.shadowRoot!.querySelector('paper-dialog') as PaperDialogElement;
   }
 
   _frNrValueChanged(item: AnyObject, detail: AnyObject) {
