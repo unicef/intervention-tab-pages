@@ -23,6 +23,7 @@ import {translatesMap} from '../../utils/intervention-labels-map';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 import {detailsTextareaRowsCount} from '../../utils/utils';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
+import '../../../../../../../components/common/components/etools-textarea';
 
 /**
  * @customElement
@@ -73,7 +74,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="row-padding-v">
-          <paper-textarea
+          <etools-textarea
             id="title"
             label=${translate('TITLE')}
             always-float-label
@@ -89,23 +90,15 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             maxlength="256"
             .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.title)}"
           >
-          </paper-textarea>
+          </etools-textarea>
         </div>
 
         <div class="row-padding-v">
-          <div>
-            <label class="paper-label">${translate(translatesMap.context)}</label>
-            <info-icon-tooltip
-              id="iit-context"
-              slot="after-label"
-              ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit?.context)}"
-              .tooltipText="${translate('CONTEXT_TOOLTIP')}"
-            ></info-icon-tooltip>
-          </div>
-          <paper-textarea
+          <etools-textarea
             id="context"
             no-label-float
             type="text"
+            label="${translate(translatesMap.context)}"
             placeholder="—"
             .value="${this.data.context}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'context')}"
@@ -115,8 +108,9 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             maxlength="7000"
             rows="${detailsTextareaRowsCount(this.editMode)}"
             .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.context)}"
+            .infoIconMessage="${translate('CONTEXT_TOOLTIP')}"
           >
-          </paper-textarea>
+          </etools-textarea>
         </div>
 
         <div class="row-padding-v">
