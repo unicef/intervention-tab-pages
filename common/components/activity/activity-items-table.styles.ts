@@ -92,6 +92,28 @@ export const ActivityItemsTableStyles: CSSResult = css`
   label[required] {
     --required-star-style_-_padding-inline-end: 20px;
   }
+  etools-input,
+  etools-textarea {
+    --etools-input-padding-bottom: 0;
+    --etools-input-padding-top: 0;
+  }
+  etools-input {
+    --sl-input-height-small: 17px;
+  }
+  etools-input::part(input) {
+    height: 17px;
+    line-height: 17px;
+    font-size: 14px !important;
+  }
+  etools-textarea::part(textarea) {
+    padding-top: 0;
+    padding-bottom: 0;
+    font-size: 14px !important;
+  }
+  etools-textarea::part(base),
+  etools-input::part(base) {
+    border-bottom: none !important;
+  }
 `;
 
 export const ActivityItemsTableInlineStyles: TemplateResult = html`
@@ -128,8 +150,8 @@ export const ActivityItemsTableInlineStyles: TemplateResult = html`
       cursor: pointer;
     }
     @media (max-width: 1100px) {
-      :host paper-textarea,
-      :host paper-input {
+      :host etools-textarea,
+      :host etools-input {
         width: calc(100% - 190px);
       }
       :host etools-currency-amount-input {

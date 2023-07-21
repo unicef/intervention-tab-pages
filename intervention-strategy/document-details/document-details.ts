@@ -1,8 +1,8 @@
 import {LitElement, html, customElement, property} from 'lit-element';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-icon-button/paper-icon-button';
-import '@polymer/paper-input/paper-input';
-import '@polymer/paper-input/paper-textarea';
+import '@unicef-polymer/etools-unicef/src/etools-input';
+import '@unicef-polymer/etools-unicef/src/etools-textarea';
 import '@unicef-polymer/etools-loading/etools-loading';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
@@ -23,7 +23,6 @@ import {translatesMap} from '../../utils/intervention-labels-map';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 import {detailsTextareaRowsCount} from '../../utils/utils';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
-import '../../../../../../../components/common/components/etools-textarea';
 
 /**
  * @customElement
@@ -123,7 +122,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
               .tooltipText="${translate('IMPLEMENTATION_STRATEGY_AND_TECHNICAL_GUIDANCE_TOOLTIP')}"
             ></info-icon-tooltip>
           </div>
-          <paper-textarea
+          <etools-textarea
             id="implementation-strategy"
             no-label-float
             placeholder="—"
@@ -136,7 +135,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             rows="${detailsTextareaRowsCount(this.editMode)}"
             .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.implementation_strategy)}"
           >
-          </paper-textarea>
+          </etools-textarea>
         </div>
 
         <div class="row-padding-v">
@@ -150,7 +149,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             ></info-icon-tooltip>
           </div>
 
-          <paper-textarea
+          <etools-textarea
             id="capacityDevelopment"
             type="text"
             no-label-float
@@ -164,7 +163,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.capacity_development)}"
             rows="${detailsTextareaRowsCount(this.editMode)}"
           >
-          </paper-textarea>
+          </etools-textarea>
         </div>
 
         <div class="row-padding-v">
@@ -176,7 +175,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
               .tooltipText="${translate('OTHER_PARTNERS_INVOLVED_TOOLTIP')}"
             ></info-icon-tooltip>
           </div>
-          <paper-textarea
+          <etools-textarea
             no-label-float
             id="otherPartnersInvolved"
             type="text"
@@ -191,14 +190,14 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             rows="${detailsTextareaRowsCount(this.editMode)}"
             .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.other_partners_involved)}"
           >
-          </paper-textarea>
+          </etools-textarea>
         </div>
 
         <div class="row-padding-v">
           <div>
             <label class="paper-label">${translate(translatesMap.other_details)}</label>
           </div>
-          <paper-textarea
+          <etools-textarea
             no-label-float
             id="otherDetails"
             type="text"
@@ -213,7 +212,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             rows="${detailsTextareaRowsCount(this.editMode)}"
             .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.other_details)}"
           >
-          </paper-textarea>
+          </etools-textarea>
         </div>
 
         <div class="row-padding-v">

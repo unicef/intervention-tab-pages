@@ -1,6 +1,6 @@
 import {customElement, LitElement, html, property} from 'lit-element';
 import '@polymer/iron-icons/iron-icons';
-import '@polymer/paper-input/paper-input';
+import '@unicef-polymer/etools-unicef/src/etools-input';
 import '@polymer/paper-checkbox';
 
 import '@unicef-polymer/etools-content-panel/etools-content-panel';

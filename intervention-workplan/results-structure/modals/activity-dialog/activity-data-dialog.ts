@@ -1,6 +1,6 @@
 import {CSSResultArray, customElement, html, LitElement, property, TemplateResult, query} from 'lit-element';
 import '@unicef-polymer/etools-currency-amount-input';
-import '@polymer/paper-input/paper-textarea';
+import '@unicef-polymer/etools-unicef/src/etools-textarea';
 import '@polymer/paper-toggle-button';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import '../../../../common/components/activity/activity-items-table';
@@ -145,7 +145,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
         no-padding
       >
         <div class="container layout vertical">
-          <paper-input
+          <etools-input
             class="validate-input flex-1"
             label=${translate('ACTIVITY_NAME')}
             placeholder="&#8212;"
@@ -158,9 +158,9 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
             ?readonly="${this.readonly}"
             @focus="${() => this.resetFieldError('name')}"
             @click="${() => this.resetFieldError('name')}"
-          ></paper-input>
+          ></etools-input>
 
-          <paper-textarea
+          <etools-textarea
             class="validate-input flex-1"
             label=${translate('OTHER_NOTES')}
             placeholder="&#8212;"
@@ -171,7 +171,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
             ?readonly="${this.readonly}"
             @focus="${() => this.resetFieldError('context_details')}"
             @click="${() => this.resetFieldError('context_details')}"
-          ></paper-textarea>
+          ></etools-textarea>
 
           <div class="layout-horizontal align-items-center">
             ${!this.useInputLevel
@@ -193,30 +193,30 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
                   ></etools-currency-amount-input>
                 `
               : html`
-                  <paper-input
+                  <etools-input
                     readonly
                     tabindex="-1"
                     class="col-3 total-input"
                     label=${translate('PARTNER_CASH_BUDGET')}
                     .value="${this.getSumValue('cso_cash')}"
-                  ></paper-input>
-                  <paper-input
+                  ></etools-input>
+                  <etools-input
                     readonly
                     tabindex="-1"
                     class="col-3 total-input"
                     label=${translate('UNICEF_CASH_BUDGET')}
                     .value="${this.getSumValue('unicef_cash')}"
-                  ></paper-input>
+                  ></etools-input>
                 `}
 
             <div class="flex-auto layout-horizontal total">
-              <paper-input
+              <etools-input
                 readonly
                 tabindex="-1"
                 class="col-6 general-total"
                 label="${translate('GENERAL.TOTAL')} (${this.currency})"
                 .value="${this.getTotalValue()}"
-              ></paper-input>
+              ></etools-input>
             </div>
           </div>
 

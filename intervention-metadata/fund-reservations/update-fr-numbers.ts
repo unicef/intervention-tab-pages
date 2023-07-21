@@ -1,6 +1,6 @@
 import {LitElement, html, property, customElement, query} from 'lit-element';
 import '@polymer/iron-icons/iron-icons';
-import '@polymer/paper-input/paper-input';
+import '@unicef-polymer/etools-unicef/src/etools-input';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
@@ -87,7 +87,7 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
               <div class="item-content">
                 <div class="row-h">
                   <!-- FR Number -->
-                  <paper-input
+                  <etools-input
                     .id="fr-nr-${index}"
                     label=${translate('FR_NUMBER')}
                     .value="${item.fr_number}"
@@ -97,7 +97,7 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
                     error-message=${translate('FILL_FR_NUMBER')}
                     @value-changed="${({detail}: CustomEvent) => this._frNrValueChanged(item, detail)}"
                   >
-                  </paper-input>
+                  </etools-input>
                 </div>
               </div>
             </div>

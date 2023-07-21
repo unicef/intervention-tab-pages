@@ -32,7 +32,7 @@ export class UnresolvedOtherInfo extends ComponentBaseMixin(LitElement) {
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.editPermissions)}</div>
         <div class="row-padding">${translate('MAKE_SURE_OTHER_INFO')}</div>
         <div class="row-padding">
-          <paper-textarea
+          <etools-textarea
             id="otherInfo"
             label="${translate('INFO')}"
             always-float-label
@@ -41,7 +41,7 @@ export class UnresolvedOtherInfo extends ComponentBaseMixin(LitElement) {
             .value="${this.data?.other_info}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'other_info')}"
           >
-          </paper-textarea>
+          </etools-textarea>
         </div>
 
         ${this.hideActionButtons(this.editMode, this.editPermissions)

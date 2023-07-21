@@ -83,13 +83,13 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
                   </etools-dropdown>
                 </div>
                 <div class="col col-8">
-                  <paper-input
+                  <etools-input
                     id="disaggregationGroups_${index}"
                     readonly
                     tabindex="-1"
                     label=${translate('DISAGGREGATION_GROUPS')}
                     placeholder="&#8212;"
-                  ></paper-input>
+                  ></etools-input>
                 </div>
               </div>
             </div>

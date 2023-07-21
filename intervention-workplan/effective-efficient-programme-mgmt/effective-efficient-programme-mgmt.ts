@@ -1,5 +1,5 @@
 import {customElement, html, LitElement, property} from 'lit-element';
-import '@polymer/paper-input/paper-textarea';
+import '@unicef-polymer/etools-unicef/src/etools-textarea';
 import '@unicef-polymer/etools-content-panel';
 import '@unicef-polymer/etools-currency-amount-input';
 import './activity-dialog';

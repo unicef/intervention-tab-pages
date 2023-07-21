@@ -118,7 +118,7 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
         <div class="map-and-list">
           <div id="map"></div>
           <div class="list">
-            <paper-input
+            <etools-input
               class="search-input"
               type="search"
               .value="${this.locationSearch}"
@@ -127,7 +127,7 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
               inline
             >
               <iron-icon icon="search" slot="prefix"></iron-icon>
-            </paper-input>
+            </etools-input>
 
             <div class="locations-list" tabindex="0">
               ${repeat(

@@ -1,7 +1,7 @@
 import {LitElement, html, customElement, property} from 'lit-element';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-icon-button/paper-icon-button';
-import '@polymer/paper-input/paper-textarea';
+import '@unicef-polymer/etools-unicef/src/etools-textarea';
 import '@unicef-polymer/etools-loading/etools-loading';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
@@ -79,7 +79,7 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
               .tooltipText="${translate('PARTNER_NON_FINANCIAL_CONTRIBUTION_TOOLTIP')}"
             ></info-icon-tooltip>
           </div>
-          <paper-textarea
+          <etools-textarea
             class="w100"
             id="ip_program_contribution"
             no-label-float
@@ -92,7 +92,7 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
             rows="${detailsTextareaRowsCount(this.editMode)}"
             .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.ip_program_contribution)}"
           >
-          </paper-textarea>
+          </etools-textarea>
         </div>
 
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}

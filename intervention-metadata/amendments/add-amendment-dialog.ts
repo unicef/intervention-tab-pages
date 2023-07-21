@@ -1,5 +1,5 @@
 import {LitElement, html, property, customElement} from 'lit-element';
-import '@polymer/paper-input/paper-input';
+import '@unicef-polymer/etools-unicef/src/etools-input';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
 import '@unicef-polymer/etools-upload/etools-upload';
@@ -81,7 +81,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
         </div>
         </div>
         <div class="row-h" ?hidden="${!this.showOtherInput}">
-          <paper-input
+          <etools-input
             id="other"
             placeholder="&#8212;"
             label="${translate('OTHER')}"
@@ -93,7 +93,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'other_description')}"
             @focus="${(event: any) => resetInvalidElement(event)}"
           >
-          </paper-input>
+          </etools-input>
         </div>
       </etools-dialog>
     `;
