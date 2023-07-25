@@ -11,6 +11,8 @@ import {
   selectInterventionQuarters,
   selectInterventionStatus
 } from '../intervention-workplan/results-structure/results-structure.selectors';
+import '@unicef-polymer/etools-unicef/src/etools-input';
+import '@unicef-polymer/etools-unicef/src/etools-textarea';
 import {currentIntervention, currentInterventionPermissions, isUnicefUser} from '../common/selectors';
 import {ExpectedResult, Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
 import {InterventionQuarter} from '@unicef-polymer/etools-types/dist/intervention.types';
@@ -151,10 +153,10 @@ export class EditorTable extends CommentsMixin(
         }
         etools-textarea::part(base),
         etools-input::part(base) {
-          height: 24px;
+          line-height: 24px;
         }
         etools-input::part(input) {
-          height: 24px;
+          line-height: 24px;
         }
       </style>
       <table>
