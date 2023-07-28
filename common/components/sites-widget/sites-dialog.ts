@@ -1,6 +1,6 @@
 import {LitElement, html, property, customElement} from 'lit-element';
-// import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
-import '@unicef-polymer/etools-unicef/src/etools-textarea';
+// import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';

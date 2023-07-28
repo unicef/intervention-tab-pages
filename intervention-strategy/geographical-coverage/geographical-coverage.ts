@@ -1,6 +1,6 @@
 import {customElement, html, LitElement, property} from 'lit-element';
 import '@polymer/paper-button/paper-button';
-import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
+import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown-multi.js';
 import './grouped-locations-dialog';
 import '../../common/components/sites-widget/sites-dialog';
 
