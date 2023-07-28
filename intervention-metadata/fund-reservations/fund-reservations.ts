@@ -8,7 +8,7 @@ import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/et
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import './update-fr-numbers';
 import {UpdateFrNumbers} from './update-fr-numbers';
-import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
+import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {RootState} from '../../common/types/store.types';

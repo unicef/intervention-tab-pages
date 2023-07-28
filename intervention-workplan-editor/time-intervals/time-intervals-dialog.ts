@@ -2,7 +2,7 @@ import {CSSResultArray, customElement, html, LitElement, property, TemplateResul
 import '@unicef-polymer/etools-currency-amount-input';
 import '@unicef-polymer/etools-unicef/src/etools-textarea';
 import '@polymer/paper-toggle-button';
-import '@unicef-polymer/etools-dialog/etools-dialog.js';
+import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import '../../intervention-workplan/results-structure/modals/activity-dialog/activity-timeframes';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 // eslint-disable-next-line

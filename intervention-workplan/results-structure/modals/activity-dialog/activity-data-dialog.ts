@@ -2,7 +2,7 @@ import {CSSResultArray, customElement, html, LitElement, property, TemplateResul
 import '@unicef-polymer/etools-currency-amount-input';
 import '@unicef-polymer/etools-unicef/src/etools-textarea';
 import '@polymer/paper-toggle-button';
-import '@unicef-polymer/etools-dialog/etools-dialog.js';
+import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import '../../../../common/components/activity/activity-items-table';
 import {getTotalCashFormatted} from '../../../../common/components/activity/get-total.helper';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
@@ -22,7 +22,7 @@ import {DataMixin} from '@unicef-polymer/etools-modules-common/dist/mixins/data-
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
-import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
+import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 
