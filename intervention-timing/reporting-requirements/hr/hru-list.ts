@@ -11,7 +11,7 @@ import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-s
 import {translate} from 'lit-translate';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {EtoolsPaginator} from '@unicef-polymer/etools-table/pagination/etools-pagination';
+import {EtoolsPaginator} from '@unicef-polymer/etools-table/dist/pagination/etools-pagination';
 
 /**
  * @polymer
