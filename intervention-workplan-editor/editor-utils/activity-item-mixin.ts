@@ -233,6 +233,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
               </td>
               <td class="total action-btns" style="position:relative;" colspan="2">
                 <etools-input
+                  total
                   readonly
                   class="bold"
                   tabindex="-1"
