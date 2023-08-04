@@ -63,6 +63,7 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
               option-label="label"
               auto-validate
               required
+              error-message=${translate('GENERAL.REQUIRED_FIELD')}
               @etools-selected-item-changed="${({detail}: CustomEvent) =>
                 this.selectedItemChanged(detail, 'risk_type', 'value')}"
               trigger-value-change-event
