@@ -1,7 +1,7 @@
 import {customElement, html, TemplateResult, CSSResultArray, css, query, queryAll} from 'lit-element';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
-import '@polymer/paper-input/paper-textarea';
+import '@unicef-polymer/etools-unicef/src/etools-textarea';
 import './comment';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
@@ -15,7 +15,7 @@ import {removeTrailingIds} from './comments.helpers';
 
 @customElement('comments-dialog')
 export class CommentsDialog extends EditComments {
-  @queryAll('paper-textarea') textareas!: PaperTextareaElement[];
+  @queryAll('etools-textarea') textareas!: PaperTextareaElement[];
 
   get dialogTitle(): string {
     if (!this.relatedTo) {
@@ -84,7 +84,7 @@ export class CommentsDialog extends EditComments {
           <div class="no-comments" ?hidden="${this.comments.length}">${translate('NO_COMMENTS')}</div>
         </div>
         <div class="message-input" slot="buttons">
-          <paper-textarea
+          <etools-textarea
             max-rows="3"
             no-label-float
             placeholder="${translate('GENERAL.ENTER_MESSAGE_HERE')}"
@@ -95,7 +95,7 @@ export class CommentsDialog extends EditComments {
             }}"
             @keyup="${(event: KeyboardEvent) => this.onKeyup(event)}"
             @keydown="${(event: KeyboardEvent) => this.onKeydown(event)}"
-          ></paper-textarea>
+          ></etools-textarea>
           <paper-button class="send-btn" @click="${() => this.addComment()}">${translate('POST')}</paper-button>
           <paper-button class="cancel-btn" @click="${() => this.onClose()}">${translate('CLOSE')}</paper-button>
         </div>

@@ -46,10 +46,6 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
           display: none !important;
         }
 
-        paper-input {
-          width: 100%;
-        }
-
         :host {
           --border-color: var(--dark-divider-color);
         }

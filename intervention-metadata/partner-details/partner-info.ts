@@ -1,7 +1,7 @@
 import {LitElement, html, property, customElement} from 'lit-element';
 import {selectPartnerDetails, selectPartnerDetailsPermissions} from './partnerInfo.selectors';
 import '@polymer/paper-button/paper-button';
-import '@polymer/paper-input/paper-input';
+import '@unicef-polymer/etools-unicef/src/etools-input';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-loading/etools-loading';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
@@ -63,7 +63,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
 
         <div class="row-padding-v layout-horizontal">
           <div class="col col-7">
-            <paper-input
+            <etools-input
               class="w100"
               label=${translate('PARTNER_ORGANIZATION')}
               .value="${this.data?.partner}"
@@ -72,7 +72,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
               always-float-label
               tabindex="-1"
             >
-            </paper-input>
+            </etools-input>
           </div>
           <div class="col col-5">
             <etools-dropdown
@@ -94,7 +94,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
         </div>
         <div class="row-padding-v layout-horizontal">
           <div class="col col-7">
-            <paper-input
+            <etools-input
               class="w100"
               label=${translate('PARTNER_VENDOR_NUMBER')}
               .value="${this.data?.partner_vendor}"
@@ -102,7 +102,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
               readonly
               always-float-label
             >
-            </paper-input>
+            </etools-input>
           </div>
           <div class="col col-5 layout-vertical">
             <label for="agreementAuthOff" class="paper-label">${translate('AGREEMENT_AUTHORIZED_OFFICERS')}</label>

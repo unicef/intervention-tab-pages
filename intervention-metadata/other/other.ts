@@ -22,8 +22,8 @@ import {OtherData, OtherPermissions} from './other.models';
 import {selectOtherData, selectOtherPermissions} from './other.selectors';
 import CONSTANTS from '../../common/constants';
 import {translatesMap} from '../../utils/intervention-labels-map';
-import '@polymer/paper-input/paper-textarea';
-import '@polymer/paper-input/paper-input';
+import '@unicef-polymer/etools-unicef/src/etools-textarea';
+import '@unicef-polymer/etools-unicef/src/etools-input';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {PaperInputElement} from '@polymer/paper-input/paper-input';
 
@@ -161,7 +161,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
         </div>
         <div class="layout-horizontal row-padding-v" ?hidden="${!this.data.contingency_pd}">
           <div class="col col-10">
-            <paper-textarea
+            <etools-textarea
               class="w100"
               label=${translate('ACTIVATION_PROTOCOL')}
               placeholder="&#8212;"
@@ -172,7 +172,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               .value="${this.data.activation_protocol}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'activation_protocol')}"
             >
-            </paper-textarea>
+            </etools-textarea>
           </div>
         </div>
         <div class="layout-horizontal row-padding-v">
@@ -199,7 +199,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
             </etools-dropdown>
           </div>
           <div class="col col-6" style="padding-inline-start: 40px;">
-            <paper-input
+            <etools-input
               id="unppNumber"
               pattern="CEF/[a-zA-Z]{3}/\\d{4}/\\d{3}"
               label=${translate('UNPP_CFEI_DSR_REF_NUM')}
@@ -209,7 +209,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               error-message="${translate('CFEI_EXPECTED_FORMAT')}"
               @blur="${(ev: CustomEvent) => this.validateCFEI(ev)}"
               @value-changed="${({detail}: CustomEvent) => this.cfeiValueChanged(detail, 'cfei_number')}"
-            ></paper-input>
+            ></etools-input>
           </div>
         </div>
 

@@ -1,10 +1,10 @@
 import {Intervention} from '@unicef-polymer/etools-types';
 import {Constructor} from '@unicef-polymer/etools-types/dist/global.types';
-import '@polymer/paper-input/paper-input';
+import '@unicef-polymer/etools-unicef/src/etools-input';
 import {html, LitElement} from 'lit-element';
 import {repeat} from 'lit-html/directives/repeat';
 import {ifDefined} from 'lit-html/directives/if-defined.js';
-import '@polymer/paper-input/paper-textarea';
+import '@unicef-polymer/etools-unicef/src/etools-textarea';
 import {translate, get as getTranslation} from 'lit-translate';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {ProgrammeManagementRowExtended, ProgrammeManagementRowItemExtended} from '../../common/types/editor-page-types';
@@ -60,17 +60,17 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
               comment-description="${item.name}"
             >
               <td class="index-column">
-                <paper-input
+                <etools-input
                   title="${programmeManagement.code}.${itemIndex + 1}"
                   .noLabelFloat="${!programmeManagement.itemsInEditMode}"
                   readonly
                   tabindex="-1"
                   .value="${programmeManagement.code}.${itemIndex + 1}"
-                ></paper-input>
+                ></etools-input>
               </td>
               <td tabindex="${ifDefined(this.commentMode ? undefined : '0')}" class="a-item-padd">
                 <div class="char-counter" ?hidden="${!programmeManagement.itemsInEditMode}">
-                  <paper-textarea
+                  <etools-textarea
                     .alwaysFloatLabel="${programmeManagement.itemsInEditMode}"
                     .noLabelFloat="${!programmeManagement.itemsInEditMode}"
                     input
@@ -97,7 +97,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                       this.handleEsc(e);
                     }}"
                     @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'name', item)}"
-                  ></paper-textarea>
+                  ></etools-textarea>
                 </div>
                 <div
                   class="truncate-multi-line"
@@ -109,7 +109,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                 </div>
               </td>
               <td tabindex="${ifDefined(this.commentMode ? undefined : '0')}">
-                <paper-input
+                <etools-input
                   input
                   maxlength="150"
                   .alwaysFloatLabel="${programmeManagement.itemsInEditMode}"
@@ -132,7 +132,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                     this.handleEsc(e);
                   }}"
                   @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unit', item)}"
-                ></paper-input>
+                ></etools-input>
                 <div class="truncate-single-line" title="${item.unit}" ?hidden="${programmeManagement.itemsInEditMode}">
                   ${item.unit}
                 </div>
@@ -227,13 +227,13 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                 ></etools-currency-amount-input>
               </td>
               <td class="total action-btns" style="position:relative;" colspan="2">
-                <paper-input
+                <etools-input
                   readonly
                   class="bold"
                   tabindex="-1"
                   .noLabelFloat="${!programmeManagement.itemsInEditMode}"
                   .value="${getItemTotalFormatted(item)}"
-                ></paper-input>
+                ></etools-input>
                 <div
                   class="hover-block flex-h ${programmeManagement.itemsInEditMode && !item.id
                     ? 'in-edit-and-deletable'

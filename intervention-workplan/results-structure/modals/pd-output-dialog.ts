@@ -80,7 +80,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
             : ''}
         </div>
         <div class="container layout vertical">
-          <paper-input
+          <etools-input
             class="validate-input flex-1"
             label=${translate('PD_OUTPUT_NAME')}
             placeholder="&#8212;"
@@ -92,7 +92,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
             .errorMessage="${(this.errors.name && this.errors.name[0]) || translate('GENERAL.REQUIRED_FIELD')}"
             @focus="${() => this.resetFieldError('name')}"
             @click="${() => this.resetFieldError('name')}"
-          ></paper-input>
+          ></etools-input>
 
           ${this.hideCpOutputs
             ? ''

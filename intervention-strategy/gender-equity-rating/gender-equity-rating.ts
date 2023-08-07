@@ -3,7 +3,7 @@ import '@polymer/paper-button/paper-button';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/paper-radio-group';
 import '@unicef-polymer/etools-loading/etools-loading';
-import '@polymer/paper-input/paper-textarea';
+import '@unicef-polymer/etools-unicef/src/etools-textarea';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
@@ -101,7 +101,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
             this.permissions?.edit.gender_rating
           )}
           <div class="col col-12 pl-none">
-            <paper-textarea
+            <etools-textarea
               label=${translate(translatesMap.gender_narrative)}
               always-float-label
               class="w100"
@@ -115,7 +115,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
               rows="${detailsTextareaRowsCount(this.editMode)}"
               .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.gender_narrative)}"
             >
-            </paper-textarea>
+            </etools-textarea>
           </div>
         </div>
 
@@ -134,7 +134,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
             this.permissions?.edit.equity_rating
           )}
           <div class="col col-12 pl-none">
-            <paper-textarea
+            <etools-textarea
               label=${translate(translatesMap.equity_narrative)}
               always-float-label
               class="w100"
@@ -148,7 +148,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
               rows="${detailsTextareaRowsCount(this.editMode)}"
               .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.equity_narrative)}"
             >
-            </paper-textarea>
+            </etools-textarea>
           </div>
         </div>
 
@@ -167,7 +167,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
             this.permissions?.edit.sustainability_rating
           )}
           <div class="col col-12 pl-none">
-            <paper-textarea
+            <etools-textarea
               label=${translate(translatesMap.sustainability_narrative)}
               always-float-label
               class="w100"
@@ -181,7 +181,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
               rows="${detailsTextareaRowsCount(this.editMode)}"
               .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.sustainability_narrative)}"
             >
-            </paper-textarea>
+            </etools-textarea>
           </div>
         </div>
 

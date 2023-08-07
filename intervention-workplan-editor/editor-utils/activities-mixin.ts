@@ -93,20 +93,20 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
               </tr>
               <tr class="text action-btns" type="activity">
                 <td class="index-column">
-                  <paper-input
+                  <etools-input
                     title="${activity.code}"
                     no-label-float
                     readonly
                     tabindex="-1"
                     .value="${activity.code}"
-                  ></paper-input>
+                  ></etools-input>
                 </td>
                 <td
                   colspan="3"
                   tabindex="${ifDefined(this.commentMode ? undefined : 0)}"
                   class="no-top-padding height-for-action-btns"
                 >
-                  <paper-textarea
+                  <etools-textarea
                     no-label-float
                     input
                     class="name bold"
@@ -126,12 +126,12 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     }}"
                     @focus="${() => setTimeout(() => (this.autoValidateActivityName = true))}"
                     @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'name', activity)}"
-                  ></paper-textarea>
+                  ></etools-textarea>
                   <div class="truncate-multi-line b" title="${activity.name}" ?hidden="${activity.inEditMode}">
                     ${activity.is_active ? '' : html`<b>(${translate('INACTIVE')})</b>`}${activity.name}
                   </div>
                   <div class="pad-top-8">
-                    <paper-textarea
+                    <etools-textarea
                       class="other"
                       placeholder="-"
                       input
@@ -152,7 +152,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                       }}"
                       @value-changed="${({detail}: CustomEvent) =>
                         this.valueChanged(detail, 'context_details', activity)}"
-                    ></paper-textarea>
+                    ></etools-textarea>
                     <div title="${activity.context_details}" ?hidden="${activity.inEditMode}">
                       ${this.truncateString(activity.context_details)}
                     </div>

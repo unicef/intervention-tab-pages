@@ -191,7 +191,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
               .tooltipText="${translate('GEOGRAPHICAL_SITES_INFO')}"
             ></info-icon-tooltip>
           </div>
-          <paper-textarea
+          <etools-textarea
             no-label-float
             class="w100"
             placeholder="&#8212;"
@@ -200,7 +200,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
             max-rows="4"
             .value="${this.getSelectedSitesText(this.data.sites)}"
           >
-          </paper-textarea>
+          </etools-textarea>
         </div>
         <div class="flex-c layout-horizontal row-padding-v">
           <paper-button

@@ -38,16 +38,10 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           display: block;
         }
 
-        paper-input,
-        paper-textarea {
-          display: inline-block;
+        etools-input,
+        etools-textarea,
+        etools-dropdown {
           width: 100%;
-        }
-
-        paper-textarea {
-          --paper-input-container-input: {
-            display: block;
-          }
         }
 
         .unknown {
@@ -139,7 +133,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         </div>
       </div>
       <div class="row-h flex-c">
-        <paper-input
+        <etools-input
           id="titleEl"
           required
           label=${translate('INDICATOR')}
@@ -155,13 +149,13 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
             this.indicator!.indicator!.title = detail.value;
           }}"
         >
-        </paper-input>
+        </etools-input>
       </div>
 
       <!-- Baseline & Target -->
       <div class="row-h flex-c" ?hidden="${this._unitIsNumeric(this.indicator!.indicator!.unit)}">
         <div class="col col-3">
-          <paper-input
+          <etools-input
             id="numeratorLbl"
             label=${translate(translatesMap.numerator_label)}
             .value="${this.indicator.numerator_label}"
@@ -171,10 +165,10 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
               this.indicator.numerator_label = detail.value;
             }}"
           >
-          </paper-input>
+          </etools-input>
         </div>
         <div class="col col-3">
-          <paper-input
+          <etools-input
             id="denomitorLbl"
             label=${translate(translatesMap.denominator_label)}
             .value="${this.indicator.denominator_label}"
@@ -184,7 +178,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
               this.indicator.denominator_label = detail.value;
             }}"
           >
-          </paper-input>
+          </etools-input>
         </div>
       </div>
       <div class="row-h flex-c">
@@ -206,7 +200,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                     ></etools-currency-amount-input>`
                   : html``}
                 ${!this._unitIsNumeric(this.indicator!.indicator!.unit)
-                  ? html` <paper-input
+                  ? html` <etools-input
                       id="baselineNonNumeric"
                       label=${translate('BASELINE')}
                       .value="${this.indicator.baseline.v}"
@@ -222,7 +216,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                         this.resetValidations();
                       }}"
                     >
-                    </paper-input>`
+                    </etools-input>`
                   : html``}
               </div>
               <div class="col col-3">
@@ -239,7 +233,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                   ?readonly="${this.readonly}"
                   ?hidden="${!this._unitIsNumeric(this.indicator!.indicator!.unit)}"
                 ></etools-currency-amount-input>
-                <paper-input
+                <etools-input
                   label=${translate('TARGET')}
                   id="targetElForNonNumericUnit"
                   .value="${this.indicator.target.v}"
@@ -257,12 +251,12 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                     this.resetValidations();
                   }}"
                 >
-                </paper-input>
+                </etools-input>
               </div>`
           : html``}
         ${this._isRatioType(this.indicator!.indicator!.unit, this.indicator!.indicator!.display_type)
           ? html` <div class="col-3 layout-horizontal">
-                <paper-input
+                <etools-input
                   id="baselineNumerator"
                   label=${translate(translatesMap.baseline)}
                   .value="${this.indicator.baseline.v}"
@@ -277,9 +271,9 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                     this._baselineChanged(this.indicator.baseline.v);
                   }}"
                 >
-                </paper-input>
+                </etools-input>
                 <div class="layout-horizontal bottom-aligned dash-separator">/</div>
-                <paper-input
+                <etools-input
                   id="baselineDenominator"
                   .value="${this.indicator.baseline.d}"
                   allowed-pattern="[0-9]"
@@ -292,10 +286,10 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                     this.indicator.baseline.d = detail.value;
                   }}"
                 >
-                </paper-input>
+                </etools-input>
               </div>
               <div class="col col-3">
-                <paper-input
+                <etools-input
                   label=${translate('TARGET')}
                   id="targetNumerator"
                   .value="${this.indicator.target.v}"
@@ -311,9 +305,9 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                     this._targetChanged(this.indicator.target.v);
                   }}"
                 >
-                </paper-input>
+                </etools-input>
                 <div class="layout-horizontal bottom-aligned dash-separator">/</div>
-                <paper-input
+                <etools-input
                   id="targetDenominator"
                   .value="${this.indicator.target.d}"
                   required
@@ -327,7 +321,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                     this.indicator.target.d = detail.value;
                   }}"
                 >
-                </paper-input>
+                </etools-input>
               </div>`
           : html``}
         <div class="col col-6" ?hidden=${!this.isUnicefUser}>
@@ -352,7 +346,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
 
       <!-- Baseline & Target -->
       <div class="row-h flex-c">
-        <paper-textarea
+        <etools-textarea
           label=${translate(translatesMap.means_of_verification)}
           type="text"
           .value="${this.indicator.means_of_verification}"
@@ -362,7 +356,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
             this.indicator.means_of_verification = detail.value;
           }}"
         >
-        </paper-textarea>
+        </etools-textarea>
       </div>
       <div class="last-item row-h flex-c">
         <etools-dropdown-multi
