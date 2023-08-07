@@ -104,6 +104,19 @@ export class EditorTable extends CommentsMixin(
           --iron-autogrow-textarea_-_max-height: 96px;
           --paper-input-container-label-floating_-_color: var(--secondary-text-color);
         }
+        etools-input,
+        etools-textarea {
+          --etools-input-padding-bottom: 0;
+          --etools-input-padding-top: 0;
+        }
+        etools-input[total] {
+          --etools-input-padding-bottom: 8px;
+          --etools-input-padding-top: 8px;
+        }
+
+        etools-textarea.other {
+          --etools-input-padding-bottom: 16px;
+        }
         .activity-items-row paper-textarea {
           --iron-autogrow-textarea_-_font-weight: 400;
         }
