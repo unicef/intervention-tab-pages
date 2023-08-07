@@ -29,7 +29,7 @@ import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/ac
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {sectionContentStyles} from '@unicef-polymer/etools-modules-common/dist/styles/content-section-styles-polymer';
-import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
+import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
 
 /**
  * @polymer

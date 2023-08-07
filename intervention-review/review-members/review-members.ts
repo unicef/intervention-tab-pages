@@ -14,8 +14,8 @@ import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixin
 import cloneDeep from 'lodash-es/cloneDeep';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import '@polymer/paper-button/paper-button';
-import '@unicef-polymer/etools-dropdown/etools-dropdown';
-import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
+import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
+import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown-multi.js';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
 import {PRC_REVIEW} from '../../common/components/intervention/review.const';
 

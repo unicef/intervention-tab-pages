@@ -1,7 +1,7 @@
 import {LitElement, html, customElement, property} from 'lit-element';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
-import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
+import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';

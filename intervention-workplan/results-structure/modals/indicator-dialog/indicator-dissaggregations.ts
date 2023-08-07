@@ -2,10 +2,10 @@ import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/paper-input/paper-input.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
-import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
+import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 
 import {PaperInputElement} from '@polymer/paper-input/paper-input.js';
-import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown.js';
+import {EtoolsDropdownEl} from '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import {LitElement, html, property, customElement} from 'lit-element';
 import {flaggedSortedDisaggregs} from '../../redux/selectors';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
@@ -18,7 +18,7 @@ import RepeatableDataSetsMixin from '@unicef-polymer/etools-modules-common/dist/
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {repeatableDataSetsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/repeatable-data-sets-styles';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
-import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
+import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
 
 /**
  * @customElement

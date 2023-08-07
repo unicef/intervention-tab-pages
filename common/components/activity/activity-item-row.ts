@@ -16,7 +16,7 @@ import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-inpu
 import {translate} from 'lit-translate';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import {ActivitiesCommonMixin} from '../../mixins/activities-common.mixin';
-import '@unicef-polymer/etools-unicef/src/etools-input';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-input.js';
 
 @customElement('activity-item-row')
 export class ActivityItemRow extends ActivitiesCommonMixin(LitElement) {

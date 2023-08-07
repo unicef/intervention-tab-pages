@@ -1,6 +1,6 @@
 import {LitElement, customElement, html, property} from 'lit-element';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
+import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
@@ -13,7 +13,7 @@ import get from 'lodash-es/get';
 import {InfoElementStyles} from '@unicef-polymer/etools-modules-common/dist/styles/info-element-styles';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {translate} from 'lit-translate';
-import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
+import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
 import {getPageDirection} from '../../utils/utils';
 import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 

@@ -1,6 +1,6 @@
 import {Intervention} from '@unicef-polymer/etools-types';
 import {Constructor} from '@unicef-polymer/etools-types/dist/global.types';
-import '@unicef-polymer/etools-unicef/src/etools-input';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 import {html, LitElement} from 'lit-element';
 import {
   InterventionActivityExtended,
@@ -8,7 +8,7 @@ import {
   ResultLinkLowerResultExtended
 } from '../../common/types/editor-page-types';
 import {repeat} from 'lit-html/directives/repeat';
-import '@unicef-polymer/etools-unicef/src/etools-textarea';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import {translate, get as getTranslation} from 'lit-translate';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {ifDefined} from 'lit-html/directives/if-defined.js';
@@ -233,6 +233,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
               </td>
               <td class="total action-btns" style="position:relative;" colspan="2">
                 <etools-input
+                  total
                   readonly
                   class="bold"
                   tabindex="-1"

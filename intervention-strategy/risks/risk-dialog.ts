@@ -1,7 +1,7 @@
 import {LitElement, html, property, customElement} from 'lit-element';
-import '@unicef-polymer/etools-dialog/etools-dialog.js';
-import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
-import '@unicef-polymer/etools-unicef/src/etools-textarea';
+import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
+import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
@@ -63,6 +63,7 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
               option-label="label"
               auto-validate
               required
+              error-message=${translate('GENERAL.REQUIRED_FIELD')}
               @etools-selected-item-changed="${({detail}: CustomEvent) =>
                 this.selectedItemChanged(detail, 'risk_type', 'value')}"
               trigger-value-change-event

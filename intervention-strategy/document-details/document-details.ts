@@ -1,8 +1,8 @@
 import {LitElement, html, customElement, property} from 'lit-element';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-icon-button/paper-icon-button';
-import '@unicef-polymer/etools-unicef/src/etools-input';
-import '@unicef-polymer/etools-unicef/src/etools-textarea';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import '@unicef-polymer/etools-loading/etools-loading';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
@@ -20,7 +20,7 @@ import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
-import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
+import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
 import {detailsTextareaRowsCount} from '../../utils/utils';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 

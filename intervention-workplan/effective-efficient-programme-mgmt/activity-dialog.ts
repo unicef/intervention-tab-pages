@@ -1,6 +1,6 @@
 import {LitElement, html, property, customElement, query} from 'lit-element';
-import '@unicef-polymer/etools-unicef/src/etools-input';
-import '@unicef-polymer/etools-unicef/src/etools-textarea';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import '@unicef-polymer/etools-currency-amount-input';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
@@ -18,7 +18,7 @@ import {getTotalCashFormatted} from '../../common/components/activity/get-total.
 import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 import {AnyObject, ManagementBudgetItem} from '@unicef-polymer/etools-types';
 import {ActivityItemsTable} from '../../common/components/activity/activity-items-table';
-import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
+import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {removeCurrencyAmountDelimiter} from '../../utils/utils';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';

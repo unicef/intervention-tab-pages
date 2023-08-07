@@ -11,7 +11,7 @@ import {translate, get as getTranslation} from 'lit-translate';
 import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
 import {getIndicatorDisplayType} from '../../utils/utils';
-import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
+import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
 import {_canDeactivate, _canDelete} from '../../common/mixins/results-structure-common';
 import {PaperMenuButton} from '@polymer/paper-menu-button';
 

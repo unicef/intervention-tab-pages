@@ -1,10 +1,10 @@
 import {customElement, html, TemplateResult, CSSResultArray, css, query, queryAll} from 'lit-element';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import '@unicef-polymer/etools-dialog/etools-dialog.js';
-import '@unicef-polymer/etools-unicef/src/etools-textarea';
+import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import './comment';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
+import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {InterventionComment, GenericObject} from '@unicef-polymer/etools-types';
 import {get as getTranslation, translate} from 'lit-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';

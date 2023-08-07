@@ -17,7 +17,7 @@ import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import '@polymer/paper-radio-group';
 import '@polymer/paper-checkbox/paper-checkbox';
-import '@unicef-polymer/etools-unicef/src/etools-textarea';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import {formatDate, getTodayDateStr} from '@unicef-polymer/etools-utils/dist/date.util';
 
 @customElement('review-checklist-popup')
