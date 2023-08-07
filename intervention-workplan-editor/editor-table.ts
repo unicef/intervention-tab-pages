@@ -106,12 +106,14 @@ export class EditorTable extends CommentsMixin(
         }
         etools-input,
         etools-textarea {
-          --etools-input-padding-bottom: 0;
           --etools-input-padding-top: 0;
+          --etools-input-padding-bottom: 8px;
         }
         etools-input[total] {
-          --etools-input-padding-bottom: 8px;
           --etools-input-padding-top: 8px;
+        }
+        etools-input[total]::part(input) {
+          text-align: right;
         }
 
         etools-textarea.other {
