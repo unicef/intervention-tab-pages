@@ -154,7 +154,9 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
                   ?checked="${this.data.contingency_pd}"
                   @checked-changed="${({detail}: CustomEvent) => {
                     this.valueChanged(detail, 'contingency_pd');
-                    this.data.activation_protocol = '';
+                    if (!detail.value) {
+                      this.data.activation_protocol = '';
+                    }
                   }}"
                 >
                   ${translate('CONTINGENCY_DOC')}
