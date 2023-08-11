@@ -78,6 +78,12 @@ export class GroupedLocationsDialog extends LitElement {
             max-height: 96px;
           }
         }
+
+        etools-dialog etools-textarea::part(textarea) {
+          min-height: 48px;
+          max-height: 96px;
+          overflow-y: auto;
+        }
       </style>
 
       <etools-dialog
@@ -104,8 +110,7 @@ export class GroupedLocationsDialog extends LitElement {
           always-float-label
           class="w100"
           placeholder="&#8212;"
-          max-rows="4"
-          onkeypress="return false;"
+          readonly
           .value="${this.getSelectedSitesText(this.selectedSites)}"
         >
         </etools-textarea>

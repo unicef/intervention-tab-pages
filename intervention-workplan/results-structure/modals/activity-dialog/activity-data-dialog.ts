@@ -125,6 +125,10 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
             max-height: 96px;
           }
         }
+        etools-dialog etools-textarea::part(textarea) {
+          max-height: 96px;
+          overflow-y: auto;
+        }
         etools-dialog paper-textarea[readonly] {
           --iron-autogrow-textarea_-_max-height: unset;
         }

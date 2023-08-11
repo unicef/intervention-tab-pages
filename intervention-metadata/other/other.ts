@@ -86,6 +86,10 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
             max-height: 96px;
           }
         }
+        etools-textarea::part(textarea) {
+          max-height: 96px;
+          overflow-y: auto;
+        }
         .confidential-row {
           margin-top: -4px;
           padding-bottom: 12px;

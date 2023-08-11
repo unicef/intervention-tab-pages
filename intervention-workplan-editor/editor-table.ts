@@ -165,6 +165,8 @@ export class EditorTable extends CommentsMixin(
         etools-textarea::part(textarea) {
           padding-top: 2px;
           padding-bottom: 2px;
+          max-height: 96px;
+          overflow-y: auto;
         }
         etools-textarea::part(base),
         etools-input::part(base) {
