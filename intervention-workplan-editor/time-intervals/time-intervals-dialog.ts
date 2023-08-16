@@ -1,5 +1,5 @@
 import {CSSResultArray, customElement, html, LitElement, property, TemplateResult} from 'lit-element';
-import '@unicef-polymer/etools-currency-amount-input';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import '@polymer/paper-toggle-button';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';

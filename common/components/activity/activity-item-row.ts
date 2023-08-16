@@ -12,7 +12,7 @@ import {getTotalCashFormatted, getMultiplyProductCashFormatted} from './get-tota
 import {ActivityItemsTableInlineStyles, ActivityItemsTableStyles} from './activity-items-table.styles';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {InterventionActivityItem} from '@unicef-polymer/etools-types';
-import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
 import {translate} from 'lit-translate';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import {ActivitiesCommonMixin} from '../../mixins/activities-common.mixin';
@@ -92,7 +92,7 @@ export class ActivityItemRow extends ActivitiesCommonMixin(LitElement) {
               class="grid-cell end ${!this.lastItem || !this.readonly ? 'border' : ''}"
               data-col-header-label="${translate('NUMBER_UNITS')}"
             >
-              <etools-currency-amount-input
+              <etools-currency
                 .value="${this.activityItem.no_units || ''}"
                 no-label-float
                 id="activityNoUnits"
@@ -110,13 +110,13 @@ export class ActivityItemRow extends ActivitiesCommonMixin(LitElement) {
                 }}"
                 no-of-decimals="2"
                 error-message=""
-              ></etools-currency-amount-input>
+              ></etools-currency>
             </div>
             <div
               class="grid-cell end ${!this.lastItem || !this.readonly ? 'border' : ''}"
               data-col-header-label="${translate('PRICE_UNIT')}"
             >
-              <etools-currency-amount-input
+              <etools-currency
                 .value="${this.activityItem.unit_price || 0}"
                 no-label-float
                 ?readonly="${this.readonly}"
@@ -127,14 +127,14 @@ export class ActivityItemRow extends ActivitiesCommonMixin(LitElement) {
                 @focus="${() => (this.invalidSum = false)}"
                 @click="${() => (this.invalidSum = false)}"
                 error-message=""
-              ></etools-currency-amount-input>
+              ></etools-currency>
             </div>
 
             <div
               class="grid-cell end ${!this.lastItem || !this.readonly ? 'border' : ''}"
               data-col-header-label="${translate('PARTNER_CASH')}"
             >
-              <etools-currency-amount-input
+              <etools-currency
                 .value="${this.activityItem.cso_cash || 0}"
                 no-label-float
                 ?readonly="${this.readonly}"
@@ -145,13 +145,13 @@ export class ActivityItemRow extends ActivitiesCommonMixin(LitElement) {
                 @focus="${() => (this.invalidSum = false)}"
                 @click="${() => (this.invalidSum = false)}"
                 error-message=""
-              ></etools-currency-amount-input>
+              ></etools-currency>
             </div>
             <div
               class="grid-cell end ${!this.lastItem || !this.readonly ? 'border' : ''}"
               data-col-header-label="${translate('UNICEF_CASH')}"
             >
-              <etools-currency-amount-input
+              <etools-currency
                 .value="${this.activityItem.unicef_cash || 0}"
                 no-label-float
                 ?readonly="${this.readonly}"
@@ -162,7 +162,7 @@ export class ActivityItemRow extends ActivitiesCommonMixin(LitElement) {
                 @focus="${() => (this.invalidSum = false)}"
                 @click="${() => (this.invalidSum = false)}"
                 error-message=""
-              ></etools-currency-amount-input>
+              ></etools-currency>
             </div>
             <div
               class="grid-cell last-cell end ${!this.lastItem && this.readonly ? 'border' : ''}"

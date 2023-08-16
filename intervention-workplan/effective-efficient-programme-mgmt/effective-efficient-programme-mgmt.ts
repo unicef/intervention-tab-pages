@@ -1,7 +1,7 @@
 import {customElement, html, LitElement, property} from 'lit-element';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import '@unicef-polymer/etools-content-panel';
-import '@unicef-polymer/etools-currency-amount-input';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
 import './activity-dialog';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
@@ -19,7 +19,7 @@ import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixin
 import {RootState} from '../../common/types/store.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {KindChoices, ProgrammeManagement} from './effectiveEfficientProgrammeMgmt.models';
-import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {get as getTranslation, translate} from 'lit-translate';

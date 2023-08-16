@@ -5,7 +5,7 @@ import '@polymer/paper-styles/element-styles/paper-material-styles';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
-import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
+import {EtoolsCurrency} from '@unicef-polymer/etools-unicef/src/mixins/currency';
 
 import '@unicef-polymer/etools-modules-common/dist/layout/etools-form-element-wrapper';
 import './layout/etools-progress-bar';
@@ -26,7 +26,7 @@ import get from 'lodash-es/get';
 import {AnyObject, GenericObject} from '@unicef-polymer/etools-types';
 
 import {translate} from 'lit-translate';
-import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {currentIntervention} from '../common/selectors';
 import {TABS} from '../common/constants';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';

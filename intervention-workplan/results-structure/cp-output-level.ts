@@ -16,7 +16,7 @@ import '@polymer/iron-icons';
 import './modals/cp-output-dialog';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {ExpectedResult, Intervention} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';

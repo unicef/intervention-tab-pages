@@ -37,7 +37,7 @@ import {isUnicefUser, currentIntervention} from '../../common/selectors';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {
   AsyncAction,
   InterventionQuarter,

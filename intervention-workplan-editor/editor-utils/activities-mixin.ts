@@ -183,7 +183,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                   tabindex="${(activity.items && activity.items.length) || this.commentMode ? '-1' : '0'}"
                   class="no-top-padding"
                 >
-                  <etools-currency-amount-input
+                  <etools-currency
                     no-label-float
                     input
                     .value="${activity.cso_cash}"
@@ -193,13 +193,13 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     ?readonly="${this.isReadonlyCash(activity.inEditMode, activity.items)}"
                     @keydown="${(e: any) => this.handleEsc(e)}"
                     @value-changed="${({detail}: CustomEvent) => this.numberChanged(detail, 'cso_cash', activity)}"
-                  ></etools-currency-amount-input>
+                  ></etools-currency>
                 </td>
                 <td
                   tabindex="${(activity.items && activity.items.length) || this.commentMode ? '-1' : '0'}"
                   class="no-top-padding"
                 >
-                  <etools-currency-amount-input
+                  <etools-currency
                     no-label-float
                     input
                     .value="${activity.unicef_cash}"
@@ -209,7 +209,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     ?readonly="${this.isReadonlyCash(activity.inEditMode, activity.items)}"
                     @keydown="${(e: any) => this.handleEsc(e)}"
                     @value-changed="${({detail}: CustomEvent) => this.numberChanged(detail, 'unicef_cash', activity)}"
-                  ></etools-currency-amount-input>
+                  ></etools-currency>
                 </td>
                 <td
                   colspan="2"

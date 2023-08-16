@@ -12,7 +12,7 @@ import {CommentElementMeta, CommentsMixin} from '../../common/components/comment
 import {InterventionActivity, InterventionQuarter} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
-import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
 import {EtoolsDataTableRow} from '@unicef-polymer/etools-data-table/etools-data-table-row';
 import {TruncateMixin} from '../../common/mixins/truncate.mixin';

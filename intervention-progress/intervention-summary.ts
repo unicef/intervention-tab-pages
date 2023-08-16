@@ -1,7 +1,7 @@
 import {LitElement, customElement, html, property} from 'lit-element';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import '@polymer/iron-label/iron-label';
-import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
@@ -79,7 +79,7 @@ export class InterventionSummary extends connectStore(LitElement) {
         padding: 15px 20px;
         background-color: var(--primary-background-color);
       }
-      etools-currency-amount-input {
+      etools-currency {
         width: 160px;
       }
     </style>
@@ -151,7 +151,7 @@ export class InterventionSummary extends connectStore(LitElement) {
             <label class="label-secondary-color"
               >${translate('TOTAL_VAL_EFF_PROG_MGMT_COST')}</label
             >
-            <etools-currency-amount-input
+            <etools-currency
               class="w100"
               type="number"
               .value="${this.intervention.management_budgets?.total}"
@@ -160,7 +160,7 @@ export class InterventionSummary extends connectStore(LitElement) {
               readonly
               tabindex="-1"
             >
-            </etools-currency-amount-input>
+            </etools-currency>
           </div>
         </div>
 
@@ -180,7 +180,7 @@ export class InterventionSummary extends connectStore(LitElement) {
             <label class="label-secondary-color"
               >${translate('UNICEF_CASH_CONTRIBUTION')}</label
             >
-            <etools-currency-amount-input
+            <etools-currency
               .value="${this.intervention.planned_budget.unicef_cash_local}"
               type="number"
               placeholder="&#8212;"
@@ -188,13 +188,13 @@ export class InterventionSummary extends connectStore(LitElement) {
               readonly
               tabindex="-1"
             >
-            </etools-currency-amount-input>
+            </etools-currency>
           </div>
         </div>
         <div class="col col-4">
           <div>
             <label class="label-secondary-color">${translate('UNICEF_SUPPLY_CONTRIB')}</label>
-            <etools-currency-amount-input
+            <etools-currency
               .value="${this.intervention.planned_budget.in_kind_amount_local}"
               type="number"
               placeholder="&#8212;"
@@ -202,13 +202,13 @@ export class InterventionSummary extends connectStore(LitElement) {
               readonly
               tabindex="-1"
             >
-            </etools-currency-amount-input>
+            </etools-currency>
           </div>
         </div>
         <div class="col col-4">
           <div>
             <label class="label-secondary-color">${translate('TOTAL_UNICEF_CONTRIBUTION')}</label>
-            <etools-currency-amount-input
+            <etools-currency
               .value="${this.intervention.planned_budget.total_unicef_contribution_local}"
               type="number"
               placeholder="&#8212;"
@@ -216,7 +216,7 @@ export class InterventionSummary extends connectStore(LitElement) {
               readonly
               tabindex="-1"
             >
-            </etools-currency-amount-input>
+            </etools-currency>
           </div>
         </div>
       </div>

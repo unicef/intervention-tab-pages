@@ -8,7 +8,7 @@ import {CommentElementMeta, CommentsMixin} from '../../common/components/comment
 import {Disaggregation, DisaggregationValue} from '@unicef-polymer/etools-types';
 import {Indicator} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
-import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
 import {getIndicatorDisplayType} from '../../utils/utils';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';

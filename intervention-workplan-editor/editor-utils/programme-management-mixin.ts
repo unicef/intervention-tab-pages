@@ -116,7 +116,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                   class="a-right no-top-padding"
                   tabindex="${ifDefined((item.items && item.items.length) || this.commentMode ? undefined : '0')}"
                 >
-                  <etools-currency-amount-input
+                  <etools-currency
                     no-label-float
                     input
                     .value="${item.cso_cash}"
@@ -128,13 +128,13 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                     .invalid="${item.invalid?.cso_cash}"
                     error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
                     @value-changed="${({detail}: CustomEvent) => this.numberChanged(detail, 'cso_cash', item)}"
-                  ></etools-currency-amount-input>
+                  ></etools-currency>
                 </td>
                 <td
                   tabindex="${ifDefined((item.items && item.items.length) || this.commentMode ? undefined : '0')}"
                   class="no-top-padding"
                 >
-                  <etools-currency-amount-input
+                  <etools-currency
                     no-label-float
                     input
                     .value="${item.unicef_cash}"
@@ -146,7 +146,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                     error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
                     @keydown="${(e: any) => this.handleEsc(e)}"
                     @value-changed="${({detail}: CustomEvent) => this.numberChanged(detail, 'unicef_cash', item)}"
-                  ></etools-currency-amount-input>
+                  ></etools-currency>
                 </td>
                 <td
                   colspan="2"
