@@ -12,7 +12,7 @@ import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {REVIEW_ANSVERS, REVIEW_QUESTIONS} from '../../common/components/intervention/review.const';
 import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
-import '@unicef-polymer/etools-data-table/etools-data-table';
+import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 import '../../common/components/intervention/review-checklist-popup';
 
 @customElement('reviews-list')

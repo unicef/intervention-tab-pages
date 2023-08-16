@@ -3,7 +3,7 @@ import '@polymer/iron-icons/iron-icons';
 import '@polymer/paper-styles/element-styles/paper-material-styles';
 
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import '@unicef-polymer/etools-data-table/etools-data-table';
+import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
 import {EtoolsCurrency} from '@unicef-polymer/etools-unicef/src/mixins/currency';
 
@@ -14,7 +14,7 @@ import '../common/layout/status/intervention-report-status';
 import './reports/indicator-report-target';
 
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
+import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-table/styles/data-table-styles';
 
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {RootState} from '../common/types/store.types';

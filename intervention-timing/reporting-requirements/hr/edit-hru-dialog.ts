@@ -2,7 +2,7 @@ import {LitElement, html, property, customElement} from 'lit-element';
 import '@polymer/paper-button/paper-button.js';
 declare const dayjs: any;
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
-import '@unicef-polymer/etools-data-table/etools-data-table';
+import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 import '@unicef-polymer/etools-date-time/calendar-lite';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';

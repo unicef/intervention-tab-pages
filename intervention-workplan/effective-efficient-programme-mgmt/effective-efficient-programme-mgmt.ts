@@ -26,7 +26,7 @@ import {get as getTranslation, translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
-import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
+import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-table/styles/data-table-styles';
 
 /**
  * @customElement

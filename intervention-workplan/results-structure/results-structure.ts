@@ -11,7 +11,7 @@ import {
   selectResultLinksPermissions
 } from './results-structure.selectors';
 import {ResultStructureStyles} from './styles/results-structure.styles';
-import '@unicef-polymer/etools-data-table/etools-data-table';
+import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 import '@unicef-polymer/etools-content-panel';
 import '@polymer/paper-toggle-button/paper-toggle-button';
 import '@polymer/paper-icon-button/paper-icon-button';
@@ -53,7 +53,7 @@ import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import ContentPanelMixin from '@unicef-polymer/etools-modules-common/dist/mixins/content-panel-mixin';
 import {_sendRequest} from '@unicef-polymer/etools-modules-common/dist/utils/request-helper';
-import {EtoolsDataTableRow} from '@unicef-polymer/etools-data-table/etools-data-table-row';
+import {EtoolsDataTableRow} from '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table-row';
 import {PdActivities} from './pd-activities';
 import {PdIndicators} from './pd-indicators';
 import {CpOutputLevel} from './cp-output-level';
