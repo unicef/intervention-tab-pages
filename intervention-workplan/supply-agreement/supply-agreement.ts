@@ -2,14 +2,18 @@ import {LitElement, html} from 'lit';
 import {property, customElement, query} from 'lit/decorators.js';
 import '@unicef-polymer/etools-content-panel/etools-content-panel.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
-import '@unicef-polymer/etools-table/etools-table';
+import '@unicef-polymer/etools-unicef/src/etools-table/etools-table';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import '@unicef-polymer/etools-loading';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import {EtoolsTableColumn, EtoolsTableColumnType, EtoolsTableChildRow} from '@unicef-polymer/etools-table/etools-table';
+import {
+  EtoolsTableColumn,
+  EtoolsTableColumnType,
+  EtoolsTableChildRow
+} from '@unicef-polymer/etools-unicef/src/etools-table/etools-table';
 import './supply-agreement-dialog';
 import {RootState} from '../../common/types/store.types';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
@@ -24,10 +28,7 @@ import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {getIntervention, updateCurrentIntervention} from '../../common/actions/interventions';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
-import {
-  addCurrencyAmountDelimiter,
-  displayCurrencyAmount
-} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {addCurrencyAmountDelimiter, displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {isUnicefUser} from '../../common/selectors';
 import {EtoolsUpload} from '@unicef-polymer/etools-upload/etools-upload';

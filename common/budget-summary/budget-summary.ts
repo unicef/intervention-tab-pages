@@ -19,7 +19,7 @@ import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/style
 import {customIcons} from '@unicef-polymer/etools-modules-common/dist/styles/custom-icons';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {getPageDirection} from '../../utils/utils';
 
 /**

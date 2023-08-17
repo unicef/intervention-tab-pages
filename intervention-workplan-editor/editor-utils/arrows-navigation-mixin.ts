@@ -396,7 +396,7 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
 
     focusInput(input: any) {
       setTimeout(() => {
-        if (input?.localName == 'etools-currency-amount-input') {
+        if (input?.localName == 'etools-currency') {
           input.shadowRoot.querySelector('paper-input').focus();
         } else {
           input.focus();
@@ -405,7 +405,7 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     }
 
     inputIsFocused(input: any) {
-      if (input?.localName == 'etools-currency-amount-input') {
+      if (input?.localName == 'etools-currency') {
         return input.shadowRoot.querySelector('paper-input').focused;
       } else {
         return input.focused;

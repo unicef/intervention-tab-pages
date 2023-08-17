@@ -16,7 +16,7 @@ import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
-import '@unicef-polymer/etools-currency-amount-input';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
 import {EtoolsEndpoint, ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
@@ -91,7 +91,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
             </etools-input>
           </div>
           <div class="col col-4">
-            <etools-currency-amount-input
+            <etools-currency
               id="unicefCash"
               label=${translate(translatesMap.unit_price)}
               placeholder="—"
@@ -102,7 +102,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
               .autoValidate="${this.autoValidate}"
               .currency="${this.currency}"
             >
-            </etools-currency-amount-input>
+            </etools-currency>
           </div>
           <div class="col col-4">
             <etools-dropdown

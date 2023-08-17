@@ -118,7 +118,7 @@ export const ActivityItemsTableStyles: CSSResult = css`
 
 export const ActivityItemsTableInlineStyles: TemplateResult = html`
   <style>
-    :host etools-currency-amount-input,
+    :host etools-currency,
     :host paper-textarea,
     :host paper-input {
       width: 100%;
@@ -145,7 +145,7 @@ export const ActivityItemsTableInlineStyles: TemplateResult = html`
         display: none;
       }
     }
-    :host etools-currency-amount-input {
+    :host etools-currency {
       text-align: right;
       cursor: pointer;
     }
@@ -154,7 +154,7 @@ export const ActivityItemsTableInlineStyles: TemplateResult = html`
       :host etools-input {
         width: calc(100% - 190px);
       }
-      :host etools-currency-amount-input {
+      :host etools-currency {
         width: 140px;
       }
       :host .total {

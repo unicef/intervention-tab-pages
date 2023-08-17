@@ -5,7 +5,7 @@ import '@polymer/paper-radio-button/paper-radio-button.js';
 import '@polymer/paper-checkbox/paper-checkbox.js';
 import '@polymer/paper-toggle-button/paper-toggle-button.js';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown-multi.js';
-import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
 import IndicatorsCommonMixin from './mixins/indicators-common-mixin';
 import {LitElement, html} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
@@ -186,7 +186,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         ${!this._isRatioType(this.indicator!.indicator!.unit, this.indicator!.indicator!.display_type)
           ? html` <div class="col col-3">
                 ${this._unitIsNumeric(this.indicator!.indicator!.unit)
-                  ? html`<etools-currency-amount-input
+                  ? html`<etools-currency
                       id="baselineNumeric"
                       label=${translate('BASELINE')}
                       .value="${this.indicator.baseline.v ?? ''}"
@@ -198,7 +198,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                       ?disabled="${this.baselineIsUnknown || this.readonly}"
                       ?readonly="${this.readonly}"
                       ?hidden="${!this._unitIsNumeric(this.indicator!.indicator!.unit)}"
-                    ></etools-currency-amount-input>`
+                    ></etools-currency>`
                   : html``}
                 ${!this._unitIsNumeric(this.indicator!.indicator!.unit)
                   ? html` <etools-input
@@ -221,7 +221,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                   : html``}
               </div>
               <div class="col col-3">
-                <etools-currency-amount-input
+                <etools-currency
                   id="targetElForNumericUnit"
                   required
                   label=${translate('TARGET')}
@@ -233,7 +233,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                   error-message=${translate('VALID_TARGET_ERR')}
                   ?readonly="${this.readonly}"
                   ?hidden="${!this._unitIsNumeric(this.indicator!.indicator!.unit)}"
-                ></etools-currency-amount-input>
+                ></etools-currency>
                 <etools-input
                   label=${translate('TARGET')}
                   id="targetElForNonNumericUnit"

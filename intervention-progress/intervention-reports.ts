@@ -3,7 +3,7 @@ import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import '@polymer/paper-styles/element-styles/paper-material-styles';
 import '@polymer/paper-tooltip/paper-tooltip';
-import '@unicef-polymer/etools-data-table/etools-data-table';
+import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 import '@polymer/iron-media-query/iron-media-query';
 import '@unicef-polymer/etools-content-panel/etools-content-panel.js';
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
@@ -13,7 +13,7 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
 import '../common/layout/status/intervention-report-status';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {RootState} from '../common/types/store.types';
-import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
+import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-table/styles/data-table-styles';
 import get from 'lodash-es/get';
 import {GenericObject, User} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';

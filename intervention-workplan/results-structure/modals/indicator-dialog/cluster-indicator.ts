@@ -1,6 +1,6 @@
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown-multi.js';
-import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
 import IndicatorsCommonMixin from './mixins/indicators-common-mixin';
 import EndpointsLitMixin from '@unicef-polymer/etools-modules-common/dist/mixins/endpoints-mixin-lit';
 import {PaperInputElement} from '@polymer/paper-input/paper-input';
@@ -255,7 +255,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
         ? html`
             <div class="row-h flex-c">
               <div class="col col-4">
-                <etools-currency-amount-input
+                <etools-currency
                   id="baselineEl"
                   label=${translate('BASELINE')}
                   .value="${this.indicator.baseline.v ?? ''}"
@@ -265,10 +265,10 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
                   }}"
                   error-message=${translate('INVALID_NUMBER')}
                   ?readonly="${this.readonly}"
-                ></etools-currency-amount-input>
+                ></etools-currency>
               </div>
               <div class="col col-4">
-                <etools-currency-amount-input
+                <etools-currency
                   id="targetEl"
                   label=${translate('TARGET')}
                   required
@@ -279,7 +279,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
                   }}"
                   error-message=${translate('VALID_TARGET_ERR')}
                   ?readonly="${this.readonly}"
-                ></etools-currency-amount-input>
+                ></etools-currency>
               </div>
             </div>
           `

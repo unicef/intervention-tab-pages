@@ -118,7 +118,7 @@ export const EditorTableStyles = css`
     color: #212121;
   }
 
-  etools-currency-amount-input {
+  etools-currency {
     text-align: right;
   }
 

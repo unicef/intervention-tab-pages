@@ -2,7 +2,7 @@ import {LitElement, html} from 'lit';
 import {property, customElement, query} from 'lit/decorators.js';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
-import '@unicef-polymer/etools-currency-amount-input';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
@@ -20,10 +20,10 @@ import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 import {AnyObject, ManagementBudgetItem} from '@unicef-polymer/etools-types';
 import {ActivityItemsTable} from '../../common/components/activity/activity-items-table';
 import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog';
-import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {removeCurrencyAmountDelimiter} from '../../utils/utils';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {EtoolsCurrencyAmountInput} from '@unicef-polymer/etools-currency-amount-input';
+import {EtoolsCurrency} from '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
 
 /**
  * @customElement
@@ -53,7 +53,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
           padding: 25px 0;
         }
         .total-input,
-        etools-currency-amount-input {
+        etools-currency {
           margin-inline-end: 24px;
         }
         .total {
@@ -112,7 +112,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         <div class="layout-horizontal align-items-center padd-bott">
           ${!this.useInputLevel
             ? html`
-                  <etools-currency-amount-input
+                  <etools-currency
                     class="col-3"
                     id="partnerContribution"
                     label=${translate('PARTNER_CASH_BUDGET')}
@@ -123,9 +123,9 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
                     ?required="${!this.useInputLevel}"
                     auto-validate
                   >
-                  </etools-currency-amount-input>
+                  </etools-currency>
 
-                  <etools-currency-amount-input
+                  <etools-currency
                     class="col-3"
                     id="unicefCash"
                     label=${translate('UNICEF_CASH_BUDGET')}
@@ -136,7 +136,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
                     ?required="${!this.useInputLevel}"
                     auto-validate
                   >
-                  </etools-currency-amount-input>
+                  </etools-currency>
                 </div>`
             : html`
                 <etools-input
@@ -223,8 +223,8 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
   @query('activity-items-table') private activityItemsTable!: ActivityItemsTable;
 
   valdateNonInputLevFields() {
-    const pCash = this.shadowRoot?.querySelector<EtoolsCurrencyAmountInput>('#partnerContribution')!;
-    const uCash = this.shadowRoot?.querySelector<EtoolsCurrencyAmountInput>('#unicefCash')!;
+    const pCash = this.shadowRoot?.querySelector<EtoolsCurrency>('#partnerContribution')!;
+    const uCash = this.shadowRoot?.querySelector<EtoolsCurrency>('#unicefCash')!;
     return pCash.validate() && uCash.validate();
   }
 
