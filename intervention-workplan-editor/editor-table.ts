@@ -2,7 +2,7 @@ import {customElement, html, LitElement, property} from 'lit-element';
 import {EditorTableStyles} from './editor-utils/editor-table-styles';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/iron-icons';
-import '@polymer/paper-input/paper-textarea';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {TABS} from '../common/constants';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
@@ -11,6 +11,8 @@ import {
   selectInterventionQuarters,
   selectInterventionStatus
 } from '../intervention-workplan/results-structure/results-structure.selectors';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import {currentIntervention, currentInterventionPermissions, isUnicefUser} from '../common/selectors';
 import {ExpectedResult, Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
 import {InterventionQuarter} from '@unicef-polymer/etools-types/dist/intervention.types';
@@ -38,7 +40,7 @@ import {EditorTableArrowKeysStyles} from './editor-utils/editor-table-arrow-keys
 import {ArrowsNavigationMixin} from './editor-utils/arrows-navigation-mixin';
 import {RootState} from '../common/types/store.types';
 import {EditorHoverStyles} from './editor-utils/editor-hover-styles';
-import '@unicef-polymer/etools-dropdown/etools-dropdown';
+import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import '@polymer/paper-tooltip/paper-tooltip';
 import {ifDefined} from 'lit-html/directives/if-defined.js';
 /* eslint-disable max-len */
@@ -102,6 +104,21 @@ export class EditorTable extends CommentsMixin(
           --iron-autogrow-textarea_-_max-height: 96px;
           --paper-input-container-label-floating_-_color: var(--secondary-text-color);
         }
+        etools-input,
+        etools-textarea {
+          --etools-input-padding-top: 0;
+          --etools-input-padding-bottom: 8px;
+        }
+        etools-input[total] {
+          --etools-input-padding-top: 8px;
+        }
+        etools-input[total]::part(input) {
+          text-align: right;
+        }
+
+        etools-textarea.other {
+          --etools-input-padding-bottom: 16px;
+        }
         .activity-items-row paper-textarea {
           --iron-autogrow-textarea_-_font-weight: 400;
         }
@@ -120,7 +137,6 @@ export class EditorTable extends CommentsMixin(
         }
 
         .char-counter {
-          margin-bottom: -12px;
           display: flex;
         }
 
@@ -144,6 +160,20 @@ export class EditorTable extends CommentsMixin(
         }
         .v-middle {
           vertical-align: middle;
+        }
+
+        etools-textarea::part(textarea) {
+          padding-top: 2px;
+          padding-bottom: 2px;
+          max-height: 96px;
+          overflow-y: auto;
+        }
+        etools-textarea::part(base),
+        etools-input::part(base) {
+          line-height: 24px;
+        }
+        etools-input::part(input) {
+          line-height: 24px;
         }
       </style>
       <table>
@@ -222,13 +252,13 @@ export class EditorTable extends CommentsMixin(
               </tr>
               <tr class="text no-b-border">
                 <td class="index-column">
-                  <paper-input
+                  <etools-input
                     title="${result.code}"
                     no-label-float
                     readonly
                     tabindex="-1"
                     .value="${result.code}"
-                  ></paper-input>
+                  ></etools-input>
                 </td>
                 <td colspan="3" class="${result.cp_output_name ? 'b' : 'red'}">
                   ${result.cp_output_name || translate('UNASSOCIATED_TO_CP_OUTPUT')}
@@ -307,16 +337,16 @@ export class EditorTable extends CommentsMixin(
                     type="pd-output"
                   >
                     <td class="index-column">
-                      <paper-input
+                      <etools-input
                         title="${pdOutput.code}"
                         no-label-float
                         readonly
                         tabindex="-1"
                         .value="${pdOutput.code}"
-                      ></paper-input>
+                      ></etools-input>
                     </td>
                     <td colspan="3" class="b no-top-padding" tabindex="${ifDefined(this.commentMode ? undefined : 0)}">
-                      <paper-textarea
+                      <etools-textarea
                         no-label-float
                         class="bold"
                         input
@@ -339,7 +369,7 @@ export class EditorTable extends CommentsMixin(
                         }}"
                         @focus="${() => (this.autovalidatePdOutput = true)}"
                         @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'name', pdOutput)}"
-                      ></paper-textarea>
+                      ></etools-textarea>
                       <div class="bold truncate-multi-line" title="${pdOutput.name}" ?hidden="${pdOutput.inEditMode}">
                         ${pdOutput.name}
                       </div>

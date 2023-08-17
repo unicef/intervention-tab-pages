@@ -17,7 +17,7 @@ import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import '@polymer/paper-radio-group';
 import '@polymer/paper-checkbox/paper-checkbox';
-import '@polymer/paper-input/paper-textarea';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import {formatDate, getTodayDateStr} from '@unicef-polymer/etools-utils/dist/date.util';
 
 @customElement('review-checklist-popup')
@@ -120,7 +120,7 @@ export class ReviewChecklistPopup extends LitElement {
             this.generateLikertScale(field as keyof InterventionReview, index)
           )}
           <div class="col col-12 pl-none">
-            <paper-textarea
+            <etools-textarea
               label=${translate('APPROVAL_COMMENT')}
               always-float-label
               class="w100"
@@ -129,12 +129,12 @@ export class ReviewChecklistPopup extends LitElement {
               .value="${this.review.overall_comment || ''}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail.value, 'overall_comment')}"
             >
-            </paper-textarea>
+            </etools-textarea>
           </div>
           ${this.isOverallReview
             ? html`
                 <div class="col col-12 pl-none" ?hidden="${!this.isOverallReview}">
-                  <paper-textarea
+                  <etools-textarea
                     label=${translate('ACTIONS_LIST')}
                     always-float-label
                     class="w100"
@@ -143,7 +143,7 @@ export class ReviewChecklistPopup extends LitElement {
                     .value="${this.review.actions_list || ''}"
                     @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail.value, 'actions_list')}"
                   >
-                  </paper-textarea>
+                  </etools-textarea>
                 </div>
               `
             : html` <paper-checkbox

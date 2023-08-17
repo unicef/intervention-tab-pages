@@ -4,7 +4,7 @@ import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/et
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
 import {LitElement} from 'lit-element';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown.js';
+import {EtoolsDropdownEl} from '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import {interventionEndpoints} from '../../../../../utils/intervention-endpoints';
 import {NonClusterIndicatorEl} from '../non-cluster-indicator';
 import {ClusterIndicatorEl} from '../cluster-indicator';

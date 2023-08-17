@@ -16,6 +16,7 @@ import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-inpu
 import {translate} from 'lit-translate';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import {ActivitiesCommonMixin} from '../../mixins/activities-common.mixin';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-input.js';
 
 @customElement('activity-item-row')
 export class ActivityItemRow extends ActivitiesCommonMixin(LitElement) {
@@ -56,7 +57,7 @@ export class ActivityItemRow extends ActivitiesCommonMixin(LitElement) {
               class="grid-cell ${!this.lastItem || !this.readonly ? 'border' : ''}"
               data-col-header-label="${translate('ITEM_DESCRIPTION')}"
             >
-              <paper-textarea
+              <etools-textarea
                 .value="${this.activityItem.name || ''}"
                 no-label-float
                 placeholder="—"
@@ -67,14 +68,14 @@ export class ActivityItemRow extends ActivitiesCommonMixin(LitElement) {
                 @blur="${() => this.onBlur()}"
                 @focus="${() => (this.invalidName = false)}"
                 @click="${() => (this.invalidName = false)}"
-              ></paper-textarea>
+              ></etools-textarea>
             </div>
 
             <div
               class="grid-cell ${!this.lastItem || !this.readonly ? 'border' : ''}"
               data-col-header-label="${translate('UNIT')}"
             >
-              <paper-input
+              <etools-input
                 .value="${this.activityItem.unit || ''}"
                 no-label-float
                 placeholder="—"
@@ -85,7 +86,7 @@ export class ActivityItemRow extends ActivitiesCommonMixin(LitElement) {
                 @blur="${() => this.onBlur()}"
                 @focus="${() => (this.invalidUnit = false)}"
                 @click="${() => (this.invalidUnit = false)}"
-              ></paper-input>
+              ></etools-input>
             </div>
             <div
               class="grid-cell end ${!this.lastItem || !this.readonly ? 'border' : ''}"

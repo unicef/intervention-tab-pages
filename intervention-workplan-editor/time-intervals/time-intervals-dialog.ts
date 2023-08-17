@@ -1,8 +1,8 @@
 import {CSSResultArray, customElement, html, LitElement, property, TemplateResult} from 'lit-element';
 import '@unicef-polymer/etools-currency-amount-input';
-import '@polymer/paper-input/paper-textarea';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import '@polymer/paper-toggle-button';
-import '@unicef-polymer/etools-dialog/etools-dialog.js';
+import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import '../../intervention-workplan/results-structure/modals/activity-dialog/activity-timeframes';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 // eslint-disable-next-line

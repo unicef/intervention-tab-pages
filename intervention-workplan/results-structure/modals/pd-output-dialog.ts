@@ -4,7 +4,7 @@ import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {DataMixin} from '@unicef-polymer/etools-modules-common/dist/mixins/data-mixin';
 import {getDifference} from '@unicef-polymer/etools-modules-common/dist/mixins/objects-diff';
-import '@unicef-polymer/etools-dialog/etools-dialog.js';
+import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {updateCurrentIntervention} from '../../../common/actions/interventions';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
@@ -80,7 +80,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
             : ''}
         </div>
         <div class="container layout vertical">
-          <paper-input
+          <etools-input
             class="validate-input flex-1"
             label=${translate('PD_OUTPUT_NAME')}
             placeholder="&#8212;"
@@ -92,7 +92,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
             .errorMessage="${(this.errors.name && this.errors.name[0]) || translate('GENERAL.REQUIRED_FIELD')}"
             @focus="${() => this.resetFieldError('name')}"
             @click="${() => this.resetFieldError('name')}"
-          ></paper-input>
+          ></etools-input>
 
           ${this.hideCpOutputs
             ? ''

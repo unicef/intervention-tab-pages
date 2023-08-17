@@ -94,13 +94,13 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
               </tr>
               <tr class="text action-btns" type="activity">
                 <td class="index-column">
-                  <paper-input
+                  <etools-input
                     title="${item.code}"
                     no-label-float
                     readonly
                     tabindex="-1"
                     .value="${item.code}"
-                  ></paper-input>
+                  ></etools-input>
                 </td>
                 <td
                   colspan="4"

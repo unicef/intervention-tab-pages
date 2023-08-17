@@ -11,10 +11,10 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
-import '@unicef-polymer/etools-dialog/etools-dialog.js';
-import '@unicef-polymer/etools-dropdown/etools-dropdown';
-import '@polymer/paper-input/paper-input';
-import '@polymer/paper-input/paper-textarea';
+import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
+import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import '@unicef-polymer/etools-currency-amount-input';
 import {EtoolsEndpoint, ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
@@ -35,7 +35,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
     // language=HTML
     return html`
       ${sharedStyles}
-      <style>        
+      <style>
         paper-textarea {
           flex: auto;
           --paper-input-container-input: {
@@ -60,116 +60,111 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
         @confirm-btn-clicked="${this.onSaveClick}"
         @close="${() => this.onClose()}"
       >
+        <div class="layout-horizontal">
+          <div class="col col-12">
+            <etools-input
+              class="w100"
+              value="${this.data.title}"
+              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'title')}"
+              label=${translate(translatesMap.title)}
+              type="text"
+              placeholder="—"
+              error-message=${translate('GENERAL.REQUIRED_FIELD')}
+              auto-validate
+              required
+            ></etools-input>
+          </div>
+        </div>
+        <div class="layout-horizontal">
+          <div class="col col-4">
+            <etools-input
+              value="${this.data.unit_number ? this.data.unit_number : ''}"
+              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unit_number')}"
+              label=${translate(translatesMap.unit_number)}
+              allowed-pattern="[0-9]"
+              placeholder="—"
+              error-message=${translate('GENERAL.REQUIRED_FIELD')}
+              required
+              auto-validate
+            >
+            </etools-input>
+          </div>
+          <div class="col col-4">
+            <etools-currency-amount-input
+              id="unicefCash"
+              label=${translate(translatesMap.unit_price)}
+              placeholder="—"
+              required
+              .value="${this.data.unit_price ? this.data.unit_price : ''}"
+              @focus="${() => (this.autoValidate = true)}"
+              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unit_price')}"
+              .autoValidate="${this.autoValidate}"
+              .currency="${this.currency}"
+            >
+            </etools-currency-amount-input>
+          </div>
+          <div class="col col-4">
+            <etools-dropdown
+              label=${translate(translatesMap.provided_by)}
+              placeholder="&#8212;"
+              .options="${this.providers}"
+              option-label="label"
+              option-value="id"
+              .selected="${this.data.provided_by}"
+              required
+              auto-validate
+              trigger-value-change-event
+              @etools-selected-item-changed="${({detail}: CustomEvent) => {
+                this.selectedItemChanged(detail, 'provided_by');
+              }}"
+            >
+            </etools-dropdown>
+          </div>
+        </div>
+        <div class="layout-horizontal">
+          ${this.isUnicefUser
+            ? html` <div class="col col-8">
+                <etools-dropdown
+                  class="cp-out"
+                  label=${translate(translatesMap.result)}
+                  placeholder="&#8212;"
+                  .options="${this.cpOutputs}"
+                  option-label="cp_output_name"
+                  option-value="id"
+                  .selected="${this.data.result}"
+                  trigger-value-change-event
+                  @etools-selected-item-changed="${({detail}: CustomEvent) => {
+                    this.selectedItemChanged(detail, 'result');
+                  }}"
+                >
+                </etools-dropdown>
+              </div>`
+            : html``}
 
-      <div class="layout-horizontal">
-        <div class="col col-12">
-          <paper-input
-            class="w100"
-            value="${this.data.title}"
-            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'title')}"
-            label=${translate(translatesMap.title)}
-            type="text"
-            placeholder="—"
-            error-message=${translate('GENERAL.REQUIRED_FIELD')}
-            auto-validate
-            required
-          >
-        </div>
-      </div>
-      <div class="layout-horizontal">
-        <div class="col col-4">
-          <paper-input
-            value="${this.data.unit_number ? this.data.unit_number : ''}"
-            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unit_number')}"
-            label=${translate(translatesMap.unit_number)}
-            allowed-pattern="[0-9]"
-            placeholder="—"
-            error-message=${translate('GENERAL.REQUIRED_FIELD')}
-            required
-            auto-validate
-          >
-          </paper-input>
-        </div>
-        <div class="col col-4">
-          <etools-currency-amount-input
-            id="unicefCash"
-            label=${translate(translatesMap.unit_price)}
-            placeholder="—"
-            required
-            .value="${this.data.unit_price ? this.data.unit_price : ''}"
-            @focus="${() => (this.autoValidate = true)}"
-            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unit_price')}"
-            .autoValidate="${this.autoValidate}"
-            .currency="${this.currency}"
-          >
-          </etools-currency-amount-input>
-        </div>
-        <div class="col col-4">
-          <etools-dropdown
-            label=${translate(translatesMap.provided_by)}
-            placeholder="&#8212;"
-            .options="${this.providers}"
-            option-label="label"
-            option-value="id"
-            .selected="${this.data.provided_by}"
-            required
-            auto-validate
-            trigger-value-change-event
-            @etools-selected-item-changed="${({detail}: CustomEvent) => {
-              this.selectedItemChanged(detail, 'provided_by');
-            }}"
-          >
-          </etools-dropdown>
-        </div>
-      </div>
-      <div class="layout-horizontal">
-      ${
-        this.isUnicefUser
-          ? html` <div class="col col-8">
-              <etools-dropdown
-                class="cp-out"
-                label=${translate(translatesMap.result)}
-                placeholder="&#8212;"
-                .options="${this.cpOutputs}"
-                option-label="cp_output_name"
-                option-value="id"
-                .selected="${this.data.result}"
-                trigger-value-change-event
-                @etools-selected-item-changed="${({detail}: CustomEvent) => {
-                  this.selectedItemChanged(detail, 'result');
-                }}"
-              >
-              </etools-dropdown>
-            </div>`
-          : html``
-      }
-
-        <div class="col col-4" ?hidden="${this.data.provided_by == 'partner'}">
-          <paper-input
-            id="unicefProductNumber"
-            label=${translate(translatesMap.unicef_product_number)}
-            placeholder="—"
-            .value="${this.data.unicef_product_number ? this.data.unicef_product_number : ''}"
-            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unicef_product_number')}"
-          >
-          </paper-input>
-
+          <div class="col col-4" ?hidden="${this.data.provided_by == 'partner'}">
+            <etools-input
+              id="unicefProductNumber"
+              label=${translate(translatesMap.unicef_product_number)}
+              placeholder="—"
+              .value="${this.data.unicef_product_number ? this.data.unicef_product_number : ''}"
+              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unicef_product_number')}"
+            >
+            </etools-input>
+          </div>
         </div>
 
-      </div>
-
-      <div class="layout-horizontal">
-        <div class="col col-12">
-          <paper-textarea
-            id="otherMentions"
-            label=${translate(translatesMap.other_mentions)}
-            always-float-label
-            placeholder="—"
-            .value="${this.data.other_mentions}"
-            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'other_mentions')}"
-          ></paper-textarea>
+        <div class="layout-horizontal">
+          <div class="col col-12">
+            <etools-textarea
+              id="otherMentions"
+              label=${translate(translatesMap.other_mentions)}
+              always-float-label
+              placeholder="—"
+              .value="${this.data.other_mentions}"
+              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'other_mentions')}"
+            ></etools-textarea>
+          </div>
         </div>
-      </div>
       </etools-dialog>
     `;
   }

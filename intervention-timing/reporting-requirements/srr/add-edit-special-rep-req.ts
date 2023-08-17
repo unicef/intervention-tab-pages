@@ -5,15 +5,15 @@ import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {prepareDatepickerDate} from '@unicef-polymer/etools-utils/dist/date.util';
 
 import '@polymer/iron-label/iron-label';
-import '@polymer/paper-input/paper-input';
-import '@unicef-polymer/etools-dialog/etools-dialog.js';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
+import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 
 import '@unicef-polymer/etools-date-time/calendar-lite';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
+import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {AnyObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 declare const dayjs: any;
 import {translate} from 'lit-translate';
@@ -78,13 +78,13 @@ export class AddEditSpecialRepReq extends LitElement {
           </div>
         </div>
         <div class="row-h">
-          <paper-input
+          <etool-input
             label=${translate('REPORTING_REQUIREMENT')}
             placeholder="&#8212;"
             value="${this.item.description ? this.item.description : ''}"
             @value-changed="${({detail}: CustomEvent) => (this.item.description = detail.value)}"
           >
-          </paper-input>
+          </etools-input>
         </div>
       </etools-dialog>
     `;

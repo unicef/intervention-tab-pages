@@ -1,5 +1,5 @@
 import {LitElement, html, property, customElement, query} from 'lit-element';
-import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
+import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import get from 'lodash-es/get';

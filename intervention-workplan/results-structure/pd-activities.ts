@@ -3,7 +3,7 @@ import {ResultStructureStyles} from './styles/results-structure.styles';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/iron-icons';
-import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
+import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
 import './modals/activity-dialog/activity-data-dialog';
 import '../../intervention-workplan-editor/time-intervals/time-intervals';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';

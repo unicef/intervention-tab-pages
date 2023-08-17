@@ -1,7 +1,7 @@
 import {LitElement, html, property, customElement} from 'lit-element';
-import '@unicef-polymer/etools-dialog/etools-dialog.js';
-import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
-import '@polymer/paper-input/paper-textarea';
+import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
+import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
@@ -63,6 +63,7 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
               option-label="label"
               auto-validate
               required
+              error-message=${translate('GENERAL.REQUIRED_FIELD')}
               @etools-selected-item-changed="${({detail}: CustomEvent) =>
                 this.selectedItemChanged(detail, 'risk_type', 'value')}"
               trigger-value-change-event
@@ -72,7 +73,7 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
         </div>
         <div class="row-padding layout-horizontal">
           <div class="col col-12">
-            <paper-textarea
+            <etools-textarea
               id="mitigationMeasures"
               class="w100"
               label=${translate(translatesMap.mitigation_measures)}
@@ -87,7 +88,7 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
               .value="${this.originalData.mitigation_measures}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'mitigation_measures')}"
             >
-            </paper-textarea>
+            </etools-textarea>
           </div>
         </div>
       </etools-dialog>

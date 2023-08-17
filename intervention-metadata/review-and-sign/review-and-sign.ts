@@ -1,10 +1,10 @@
 import {customElement, LitElement, html, property} from 'lit-element';
 import '@polymer/iron-icons/iron-icons';
-import '@polymer/paper-input/paper-input';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 import '@polymer/paper-checkbox';
 
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import '@unicef-polymer/etools-dropdown/etools-dropdown';
+import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-upload/etools-upload';
 
 import '@unicef-polymer/etools-date-time/datepicker-lite';

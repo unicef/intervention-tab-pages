@@ -1,5 +1,5 @@
-import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
-import '@unicef-polymer/etools-dropdown/etools-dropdown-multi.js';
+import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
+import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown-multi.js';
 import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
 import IndicatorsCommonMixin from './mixins/indicators-common-mixin';
 import EndpointsLitMixin from '@unicef-polymer/etools-modules-common/dist/mixins/endpoints-mixin-lit';
@@ -152,7 +152,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
 
       <div class="row-h flex-c" ?hidden="${this._typeMatches(this.prpClusterIndicator, 'number')}">
         <div class="col col-4">
-          <paper-input
+          <etools-input
             id="numeratorLbl"
             label=${translate('NUMERATOR_LABEL')}
             .value="${this.indicator.numerator_label}"
@@ -162,10 +162,10 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
               this.indicator.numerator_label = detail.value;
             }}"
           >
-          </paper-input>
+          </etools-input>
         </div>
         <div class="col col-4">
-          <paper-input
+          <etools-input
             id="denomitorLbl"
             label=${translate('DENOMINATOR_LABEL')}
             .value="${this.indicator.denominator_label}"
@@ -175,14 +175,14 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
               this.indicator.denominator_label = detail.value;
             }}"
           >
-          </paper-input>
+          </etools-input>
         </div>
       </div>
 
       ${this._typeMatches(this.prpClusterIndicator, 'ratio')
         ? html` <div class="row-h flex-c">
             <div class="col-4 layout-horizontal">
-              <paper-input
+              <etools-input
                 id="baselineNumerator"
                 label=${translate('BASELINE')}
                 .value="${this.indicator.baseline.v}"
@@ -196,9 +196,9 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
                   this.indicator.baseline.v = detail.value;
                 }}"
               >
-              </paper-input>
+              </etools-input>
               <div class="layout-horizontal bottom-aligned dash-separator">/</div>
-              <paper-input
+              <etools-input
                 id="baselineDenominator"
                 .value="${this.indicator.baseline.d}"
                 placeholder=${translate('DENOMINATOR')}
@@ -211,10 +211,10 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
                   this.indicator.baseline.d = detail.value;
                 }}"
               >
-              </paper-input>
+              </etools-input>
             </div>
             <div class="col col-4">
-              <paper-input
+              <etools-input
                 id="targetNumerator"
                 label=${translate('TARGET')}
                 .value="${this.indicator.target.v}"
@@ -230,9 +230,9 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
                   this._targetChanged(this.indicator.target.v);
                 }}"
               >
-              </paper-input>
+              </etools-input>
               <div class="layout-horizontal bottom-aligned dash-separator">/</div>
-              <paper-input
+              <etools-input
                 id="targetDenominator"
                 placeholder=${translate('DENOMINATOR')}
                 .value="${this.indicator.target.d}"
@@ -246,7 +246,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
                   this.indicator.target.d = detail.value;
                 }}"
               >
-              </paper-input>
+              </etools-input>
             </div>
           </div>`
         : html``}

@@ -1,6 +1,6 @@
 import {customElement, html, LitElement, property} from 'lit-element';
 import '@polymer/paper-button/paper-button';
-import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
+import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown-multi.js';
 import './grouped-locations-dialog';
 import '../../common/components/sites-widget/sites-dialog';
 
@@ -24,7 +24,7 @@ import {AnyObject, AsyncAction, LocationObject, Permission, Site} from '@unicef-
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
-import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
+import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
 
 /**
  * @customElement
@@ -153,7 +153,6 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
           <etools-dropdown-multi
             id="locations"
             placeholder="&#8212;"
-            label=${translate(translatesMap.flat_locations)}
             .options="${this.allLocations}"
             .selectedValues="${cloneDeep(this.data.flat_locations)}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.flat_locations)}"
@@ -191,7 +190,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
               .tooltipText="${translate('GEOGRAPHICAL_SITES_INFO')}"
             ></info-icon-tooltip>
           </div>
-          <paper-textarea
+          <etools-textarea
             no-label-float
             class="w100"
             placeholder="&#8212;"
@@ -200,7 +199,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
             max-rows="4"
             .value="${this.getSelectedSitesText(this.data.sites)}"
           >
-          </paper-textarea>
+          </etools-textarea>
         </div>
         <div class="flex-c layout-horizontal row-padding-v">
           <paper-button

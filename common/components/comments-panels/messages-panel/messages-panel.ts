@@ -51,7 +51,7 @@ export class MessagesPanel extends EditComments {
         </div>
 
         <div class="message-input">
-          <paper-textarea
+          <etools-textarea
             max-rows="3"
             no-label-float
             placeholder="${translate('GENERAL.ENTER_MESSAGE_HERE')}"
@@ -62,7 +62,7 @@ export class MessagesPanel extends EditComments {
             }}"
             @keyup="${(event: KeyboardEvent) => this.onKeyup(event)}"
             @keydown="${(event: KeyboardEvent) => this.onKeydown(event)}"
-          ></paper-textarea>
+          ></etools-textarea>
           <paper-button class="send-btn" @click="${() => this.addComment()}">${translate('POST')}</paper-button>
         </div>
       </div>

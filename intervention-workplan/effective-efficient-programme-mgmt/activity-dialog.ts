@@ -1,6 +1,6 @@
 import {LitElement, html, property, customElement, query} from 'lit-element';
-import '@polymer/paper-input/paper-input';
-import '@polymer/paper-input/paper-textarea';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import '@unicef-polymer/etools-currency-amount-input';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
@@ -18,7 +18,7 @@ import {getTotalCashFormatted} from '../../common/components/activity/get-total.
 import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 import {AnyObject, ManagementBudgetItem} from '@unicef-polymer/etools-types';
 import {ActivityItemsTable} from '../../common/components/activity/activity-items-table';
-import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
+import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {removeCurrencyAmountDelimiter} from '../../utils/utils';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
@@ -84,7 +84,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         .hideConfirmBtn="${this.readonly}"
       >
         <div class="row-padding-v">
-          <paper-input
+          <etools-input
             readonly
             tabindex="-1"
             id="title"
@@ -93,11 +93,11 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
             placeholder="—"
             .value="${this.data.title}"
           >
-          </paper-input>
+          </etools-input>
         </div>
 
         <div class="row-padding-v">
-          <paper-textarea
+          <etools-textarea
             id="description"
             label=${translate('GENERAL.DESCRIPTION')}
             readonly
@@ -105,7 +105,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
             always-float-label
             placeholder="—"
             .value="${this.data.description}"
-          ></paper-textarea>
+          ></etools-textarea>
         </div>
 
         <div class="layout-horizontal align-items-center padd-bott">
@@ -138,29 +138,29 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
                   </etools-currency-amount-input>
                 </div>`
             : html`
-                <paper-input
+                <etools-input
                   readonly
                   tabindex="-1"
                   class="col-3 total-input"
                   label=${translate('PARTNER_CASH_BUDGET')}
                   .value="${this.getSumValue('cso_cash')}"
-                ></paper-input>
-                <paper-input
+                ></etools-input>
+                <etools-input
                   readonly
                   tabindex="-1"
                   class="col-3 total-input"
                   label=${translate('UNICEF_CASH_BUDGET')}
                   .value="${this.getSumValue('unicef_cash')}"
-                ></paper-input>
+                ></etools-input>
               `}
           <div class="flex-auto layout-horizontal total">
-            <paper-input
+            <etools-input
               readonly
               tabindex="-1"
               class="col-6 general-total"
               label="${translate('GENERAL.TOTAL')} (${this.currency})"
               .value="${this.getTotalValue()}"
-            ></paper-input>
+            ></etools-input>
           </div>
         </div>
 

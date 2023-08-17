@@ -1,6 +1,6 @@
 import {LitElement, html, property, customElement} from 'lit-element';
-// import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
-import '@polymer/paper-input/paper-textarea';
+// import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
@@ -78,6 +78,12 @@ export class GroupedLocationsDialog extends LitElement {
             max-height: 96px;
           }
         }
+
+        etools-dialog etools-textarea::part(textarea) {
+          min-height: 48px;
+          max-height: 96px;
+          overflow-y: auto;
+        }
       </style>
 
       <etools-dialog
@@ -99,16 +105,15 @@ export class GroupedLocationsDialog extends LitElement {
           }}"
         ></sites-widget>
 
-        <paper-textarea
+        <etools-textarea
           label="${translate('SELECTED_SITES')}"
           always-float-label
           class="w100"
           placeholder="&#8212;"
-          max-rows="4"
-          onkeypress="return false;"
+          readonly
           .value="${this.getSelectedSitesText(this.selectedSites)}"
         >
-        </paper-textarea>
+        </etools-textarea>
       </etools-dialog>
     `;
   }
