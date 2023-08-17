@@ -138,7 +138,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                 </div>
               </td>
               <td tabindex="${ifDefined(this.commentMode ? undefined : '0')}">
-                <etools-currency-amount-input
+                <etools-currency
                   label=${this.getLabel(programmeManagement.itemsInEditMode, getTranslation('N_OF_UNITS'))}
                   .noLabelFloat="${!programmeManagement.itemsInEditMode}"
                   input
@@ -160,10 +160,10 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                     item.no_units = detail.value;
                     this.updateActivityCashFromItem(programmeManagement, item);
                   }}"
-                ></etools-currency-amount-input>
+                ></etools-currency>
               </td>
               <td tabindex="${ifDefined(this.commentMode ? undefined : '0')}">
-                <etools-currency-amount-input
+                <etools-currency
                   label=${this.getLabel(programmeManagement.itemsInEditMode, getTranslation('PRICE_UNIT'))}
                   .noLabelFloat="${!programmeManagement.itemsInEditMode}"
                   input
@@ -184,10 +184,10 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                     item.unit_price = detail.value;
                     this.updateActivityCashFromItem(programmeManagement, item);
                   }}"
-                ></etools-currency-amount-input>
+                ></etools-currency>
               </td>
               <td tabindex="${ifDefined(this.commentMode ? undefined : '0')}">
-                <etools-currency-amount-input
+                <etools-currency
                   label=${this.getLabel(programmeManagement.itemsInEditMode, getTranslation('PARTNER_CASH'))}
                   .noLabelFloat="${!programmeManagement.itemsInEditMode}"
                   input
@@ -204,10 +204,10 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                     this.cashFieldChanged(detail, 'cso_cash', item);
                     this.updateActivityCashFromItem(programmeManagement, item);
                   }}"
-                ></etools-currency-amount-input>
+                ></etools-currency>
               </td>
               <td tabindex="${ifDefined(this.commentMode ? undefined : '0')}">
-                <etools-currency-amount-input
+                <etools-currency
                   label=${this.getLabel(programmeManagement.itemsInEditMode, getTranslation('UNICEF_CASH'))}
                   .noLabelFloat="${!programmeManagement.itemsInEditMode}"
                   input
@@ -224,7 +224,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                     this.cashFieldChanged(detail, 'unicef_cash', item);
                     this.updateActivityCashFromItem(programmeManagement, item);
                   }}"
-                ></etools-currency-amount-input>
+                ></etools-currency>
               </td>
               <td class="total action-btns" style="position:relative;" colspan="2">
                 <etools-input

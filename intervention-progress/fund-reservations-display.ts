@@ -1,8 +1,8 @@
 import {LitElement, customElement, html, property} from 'lit-element';
 import '@polymer/iron-label/iron-label';
-import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
-import '@unicef-polymer/etools-data-table/etools-data-table';
+import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 import '@polymer/iron-icons/iron-icons';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import isEmpty from 'lodash-es/isEmpty';

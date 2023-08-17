@@ -19,8 +19,8 @@ import {InterventionQuarter} from '@unicef-polymer/etools-types/dist/interventio
 import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {repeat} from 'lit-html/directives/repeat';
-import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
-import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
+import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
 import '@polymer/paper-button/paper-button';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';

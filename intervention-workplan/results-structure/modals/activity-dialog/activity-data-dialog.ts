@@ -1,5 +1,5 @@
 import {CSSResultArray, customElement, html, LitElement, property, TemplateResult, query} from 'lit-element';
-import '@unicef-polymer/etools-currency-amount-input';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import '@polymer/paper-toggle-button';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
@@ -24,7 +24,7 @@ import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 
 @customElement('activity-data-dialog')
 export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitElement) {
@@ -94,7 +94,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
           display: none;
         }
         .total-input,
-        etools-currency-amount-input {
+        etools-currency {
           margin-inline-end: 24px;
         }
         .total {
@@ -180,21 +180,21 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
           <div class="layout-horizontal align-items-center">
             ${!this.useInputLevel
               ? html`
-                  <etools-currency-amount-input
+                  <etools-currency
                     class="col-3"
                     label=${translate(translatesMap.cso_cash)}
                     ?readonly="${this.readonly}"
                     .value="${this.editedData.cso_cash}"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue('cso_cash', detail.value)}"
-                  ></etools-currency-amount-input>
+                  ></etools-currency>
 
-                  <etools-currency-amount-input
+                  <etools-currency
                     class="col-3"
                     label=${translate('UNICEF_CASH_BUDGET')}
                     ?readonly="${this.readonly}"
                     .value="${this.editedData.unicef_cash}"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue('unicef_cash', detail.value)}"
-                  ></etools-currency-amount-input>
+                  ></etools-currency>
                 `
               : html`
                   <etools-input
