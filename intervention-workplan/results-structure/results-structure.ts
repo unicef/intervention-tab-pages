@@ -1,6 +1,7 @@
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {css, html, CSSResultArray, customElement, LitElement, property} from 'lit-element';
-import {repeat} from 'lit-html/directives/repeat';
+import {css, html, CSSResultArray, LitElement} from 'lit';
+import {property, customElement} from 'lit/decorators.js';
+import {repeat} from 'lit/directives/repeat.js';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {

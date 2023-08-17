@@ -1,4 +1,5 @@
-import {LitElement, TemplateResult, html, customElement, property, CSSResultArray, css} from 'lit-element';
+import {LitElement, TemplateResult, html, CSSResultArray, css} from 'lit';
+import {property, customElement} from 'lit/decorators.js';
 import {InterventionReview} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';

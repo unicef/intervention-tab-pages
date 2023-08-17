@@ -1,4 +1,5 @@
-import {customElement, LitElement, html, TemplateResult, CSSResultArray, css, property} from 'lit-element';
+import {LitElement, html, TemplateResult, CSSResultArray, css} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import './comments-list/comments-list';
 import './messages-panel/messages-panel';
 import {CommentPanelsStyles} from './common-comments.styles';

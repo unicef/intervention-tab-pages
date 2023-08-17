@@ -1,13 +1,5 @@
-import {
-  customElement,
-  LitElement,
-  html,
-  TemplateResult,
-  property,
-  CSSResultArray,
-  css,
-  PropertyValues
-} from 'lit-element';
+import {LitElement, html, TemplateResult, CSSResultArray, css, PropertyValues} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import {getTotalCashFormatted, getMultiplyProductCashFormatted} from './get-total.helper';
 import {ActivityItemsTableInlineStyles, ActivityItemsTableStyles} from './activity-items-table.styles';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';

@@ -1,4 +1,5 @@
-import {LitElement, html, property, customElement} from 'lit-element';
+import {LitElement, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import '@polymer/paper-button/paper-button.js';
 declare const dayjs: any;
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';

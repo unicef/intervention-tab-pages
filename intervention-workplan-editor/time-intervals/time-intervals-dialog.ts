@@ -1,4 +1,5 @@
-import {CSSResultArray, customElement, html, LitElement, property, TemplateResult} from 'lit-element';
+import {CSSResultArray, html, LitElement, TemplateResult} from 'lit';
+import {property, customElement} from 'lit/decorators.js';
 import '@unicef-polymer/etools-currency-amount-input';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import '@polymer/paper-toggle-button';

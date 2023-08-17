@@ -1,13 +1,5 @@
-import {
-  LitElement,
-  html,
-  css,
-  TemplateResult,
-  CSSResultArray,
-  customElement,
-  property,
-  PropertyValues
-} from 'lit-element';
+import {LitElement, html, css, TemplateResult, CSSResultArray, PropertyValues} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import {ActivityItemsTableStyles} from './activity-items-table.styles';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {ActivityItemRow} from './activity-item-row';

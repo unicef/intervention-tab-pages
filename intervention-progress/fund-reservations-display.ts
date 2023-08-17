@@ -1,4 +1,5 @@
-import {LitElement, customElement, html, property} from 'lit-element';
+import {LitElement, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import '@polymer/iron-label/iron-label';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';

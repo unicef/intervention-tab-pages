@@ -1,4 +1,5 @@
-import {customElement, html, TemplateResult, css, CSSResultArray, query, property} from 'lit-element';
+import {html, TemplateResult, css} from 'lit';
+import {customElement, query, property} from 'lit/decorators.js';
 import {CommentPanelsStyles} from '../common-comments.styles';
 import './messages-panel-header';
 import './message-item';
@@ -17,7 +18,7 @@ export class MessagesPanel extends EditComments {
     if (!collectionId) {
       return;
     }
-    this.requestUpdate().then(() => this.scrollDown());
+    this.updateComplete.then(() => this.scrollDown());
   }
   protected render(): TemplateResult {
     return html`
@@ -76,7 +77,7 @@ export class MessagesPanel extends EditComments {
     this.container.scrollTop = this.container.scrollHeight;
   }
 
-  static get styles(): CSSResultArray {
+  static get styles() {
     // language=css
     return [
       gridLayoutStylesLit,

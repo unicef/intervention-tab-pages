@@ -1,4 +1,5 @@
-import {customElement, LitElement, html, TemplateResult, CSSResultArray, property} from 'lit-element';
+import {LitElement, html, TemplateResult, CSSResultArray} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import {CommentPanelsStyles} from '../common-comments.styles';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {translate} from 'lit-translate';

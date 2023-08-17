@@ -1,4 +1,5 @@
-import {LitElement, customElement, html, property} from 'lit-element';
+import {LitElement, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import '@unicef-polymer/etools-loading/etools-loading.js';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';

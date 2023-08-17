@@ -1,4 +1,5 @@
-import {CSSResultArray, LitElement, TemplateResult, html, property, customElement} from 'lit-element';
+import {CSSResultArray, LitElement, TemplateResult, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import {arrowLeftIcon} from '@unicef-polymer/etools-modules-common/dist/styles/app-icons';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-menu-button/paper-menu-button';

@@ -1,4 +1,5 @@
-import {LitElement, html, TemplateResult, customElement, CSSResultArray, property} from 'lit-element';
+import {LitElement, html, TemplateResult, CSSResultArray} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {RootState} from '../../common/types/store.types';
 import {ActivityTime, groupByYear, GroupedActivityTime, serializeTimeFrameData} from '../../utils/timeframes.helper';
@@ -16,7 +17,7 @@ import {
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {Intervention, ResultLinkLowerResult, ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
-import {repeat} from 'lit-html/directives/repeat';
+import {repeat} from 'lit/directives/repeat.js';
 
 @customElement('activity-timeframes')
 export class ActivityTimeframes extends CommentsMixin(LitElement) {

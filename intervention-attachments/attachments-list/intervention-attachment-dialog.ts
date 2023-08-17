@@ -1,4 +1,5 @@
-import {LitElement, html, TemplateResult, property, customElement, CSSResultArray, css} from 'lit-element';
+import {LitElement, html, TemplateResult, CSSResultArray, css} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';

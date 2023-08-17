@@ -1,4 +1,5 @@
-import {customElement, html, TemplateResult, CSSResultArray, css, query, queryAll} from 'lit-element';
+import {html, TemplateResult, CSSResultArray, css} from 'lit';
+import {customElement, query, queryAll} from 'lit/decorators.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
@@ -42,7 +43,7 @@ export class CommentsDialog extends EditComments {
       getStore().getState().commentsData.collection[interventionId];
     const relatedToComments: InterventionComment[] = (comments && comments[relatedTo]) || [];
     this.comments = [...relatedToComments];
-    this.requestUpdate().then(() => this.scrollDown());
+    this.updateComplete.then(() => this.scrollDown());
   }
 
   @query('etools-dialog') private dialogElement!: EtoolsDialog;

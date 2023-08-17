@@ -1,5 +1,6 @@
 import {InterventionComment} from '@unicef-polymer/etools-types';
-import {LitElement, property, PropertyValues, queryAll} from 'lit-element';
+import {LitElement, PropertyValues} from 'lit';
+import {property, queryAll} from 'lit/decorators.js';
 import {PaperTextareaElement} from '@polymer/paper-input/paper-textarea';
 import {CommentsEndpoints} from './comments-types';
 import {RootState} from '../../types/store.types';
@@ -103,7 +104,7 @@ export abstract class EditComments extends connectStore(LitElement) {
     if (!comment && !this.newMessageText) {
       return;
     }
-    this.requestUpdate().then(() => {
+    this.updateComplete.then(() => {
       if (!comment) {
         // scroll down if comment is new
         this.scrollDown();
@@ -132,7 +133,7 @@ export abstract class EditComments extends connectStore(LitElement) {
         // add newly created comment to the end of comments array
         this.comments.push(newComment);
         getStore().dispatch(addComment(this.relatedTo, newComment, this.interventionId));
-        this.requestUpdate().then(() => {
+        this.updateComplete.then(() => {
           this.scrollDown();
         });
       })
