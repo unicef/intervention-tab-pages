@@ -1,8 +1,6 @@
 import {html, LitElement} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import get from 'lodash-es/get';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
-import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {TABS} from '../common/constants';
 import {isUnicefUser} from '../common/selectors';
@@ -54,7 +52,11 @@ export class InterventionProgress extends connectStore(LitElement) {
   }
 
   stateChanged(state: RootState) {
-    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Progress)) {
+    if (
+      ![TABS.ImplementationStatus, TABS.MonitoringActivities, TABS.ResultsReported, TABS.Reports].includes(
+        state.app?.routeDetails?.subRouteName!
+      )
+    ) {
       return;
     }
 

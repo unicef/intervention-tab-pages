@@ -46,7 +46,9 @@ import {CommentsPanels} from './common/components/comments-panels/comments-panel
 import './unresolved-other-info';
 import {translatesMap} from './utils/intervention-labels-map';
 import {EtoolsRequestEndpoint} from '@unicef-polymer/etools-ajax';
-
+import '@shoelace-style/shoelace/dist/components/tab-group/tab-group.js';
+import '@shoelace-style/shoelace/dist/components/tab/tab.js';
+import '@shoelace-style/shoelace/dist/components/tab-panel/tab-panel.js';
 /**
  * @LitElement
  * @customElement
@@ -213,13 +215,12 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
           .activeStatus="${this.intervention.status}"
         ></etools-status-lit>
 
-        <etools-tabs-lit
-          .tabs="${this.pageTabs}"
-          .activeTab="${this.activeTab}"
-          .activeSubTab="${this.activeSubTab}"
-          @iron-select="${this.handleTabChange}"
-          @iron-activate="${this.handleTabActivate}"
-        ></etools-tabs-lit>
+        <sl-tab-group @sl-tab-show="${this.handleTabChange}">
+          ${this.pageTabs?.map(
+            (t) =>
+              html` <sl-tab slot="nav" panel="${t.tab}" ?active="${this.activeTab === t.tab}">${t.tabLabel}</sl-tab>`
+          )}
+        </sl-tab-group>
       </intervention-page-content-subheader>
 
       <div class="page-content">
@@ -248,8 +249,13 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
         <intervention-attachments ?hidden="${!this.isActiveTab(this.activeTab, TABS.Attachments)}">
         </intervention-attachments>
         <intervention-progress
-          .activeSubTab="${this.activeSubTab}"
-          ?hidden="${!this.isActiveTab(this.activeTab, TABS.Progress)}"
+          .activeSubTab="${this.activeTab}"
+          ?hidden="${!(
+            this.isActiveTab(this.activeTab, TABS.ImplementationStatus) ||
+            this.isActiveTab(this.activeTab, TABS.MonitoringActivities) ||
+            this.isActiveTab(this.activeTab, TABS.Reports) ||
+            this.isActiveTab(this.activeTab, TABS.ResultsReported)
+          )}"
         ></intervention-progress>
       </div>
 
@@ -290,25 +296,20 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     }
   ];
 
-  progressTabTemplate = {
-    tab: TABS.Progress,
-    tabLabel: translate('PROGRESS_TAB'),
-    tabLabelKey: 'PROGRESS_TAB',
-    hidden: false,
-    disabled: true,
-    subtabs: [
-      {
-        label: translate('IMPLEMENTATION_STATUS_SUBTAB'),
-        labelKey: 'IMPLEMENTATION_STATUS_SUBTAB',
-        value: TABS.ImplementationStatus
-      },
-      {
-        label: translate('MONITORING_ACTIVITIES_SUBTAB'),
-        labelKey: 'MONITORING_ACTIVITIES_SUBTAB',
-        value: TABS.MonitoringActivities
-      }
-    ]
-  };
+  progressTabTemplate = [
+    {
+      tab: TABS.ImplementationStatus,
+      tabLabel: translate('IMPLEMENTATION_STATUS_SUBTAB'),
+      tabLabelKey: 'IMPLEMENTATION_STATUS_SUBTAB',
+      hidden: false
+    },
+    {
+      tab: TABS.MonitoringActivities,
+      tabLabel: translate('MONITORING_ACTIVITIES_SUBTAB'),
+      tabLabelKey: 'MONITORING_ACTIVITIES_SUBTAB',
+      hidden: false
+    }
+  ];
 
   private commentsPanel: CommentsPanels | null = null;
 
@@ -556,14 +557,28 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       return; // ONLY visible for unicef users
     }
 
-    let progressTab = this.pageTabs.find((x) => x.tab === TABS.Progress);
+    const progressTabs = this.pageTabs.find((x) =>
+      [TABS.ImplementationStatus, TABS.MonitoringActivities].includes(x.tab)
+    );
 
-    if (!progressTab) {
-      progressTab = cloneDeep(this.progressTabTemplate);
-      this.pageTabs.push(progressTab);
+    if (!progressTabs) {
+      this.pageTabs.push(...cloneDeep(this.progressTabTemplate));
     }
 
-    this.toggleSubtabs(progressTab, envFlags);
+    if (envFlags && !envFlags.prp_mode_off && !this.pageTabs?.find((t: any) => t.tab === TABS.ResultsReported)) {
+      // @ts-ignore
+      this.pageTabs.push(
+        {
+          tabLabel: translate('RESULTS_REPORTED_SUBTAB'),
+          tabLabelKey: 'RESULTS_REPORTED_SUBTAB',
+          tab: TABS.ResultsReported,
+          hidden: false
+        },
+        {tabLabel: translate('REPORTS'), tabLabelKey: 'REPORTS', tab: TABS.Reports, hidden: false}
+      );
+    }
+
+    // this.toggleSubtabs(progressTab, envFlags);
   }
 
   toggleSubtabs(progressTab: any, envFlags: EnvFlags | null) {
@@ -663,17 +678,17 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   }
 
   handleTabChange(e: CustomEvent) {
-    const isSubtabParent = e.detail.item.getAttribute('is-subtabs-parent');
-    if (isSubtabParent) {
+    // const isSubtabParent = e.detail.item.getAttribute('is-subtabs-parent');
+    // if (isSubtabParent) {
+    //   return;
+    // }
+    const newTabName: string = e.detail.name;
+    // const newSubTab = e.detail.item.getAttribute('subtab');
+    if (newTabName === this.activeTab) {
       return;
     }
-    const newTabName: string = e.detail.item.getAttribute('name');
-    const newSubTab = e.detail.item.getAttribute('subtab');
-    if (newTabName === this.activeTab && newSubTab === this.activeSubTab) {
-      return;
-    }
-    this.tabChanged(newTabName, this.activeTab, newSubTab, this.activeSubTab);
-    this.fixIntermittent2TabsUnderlined(this.etoolsTabs);
+    this.tabChanged(newTabName, this.activeTab, '', this.activeSubTab);
+    //this.fixIntermittent2TabsUnderlined(this.etoolsTabs);
   }
 
   existsUnsavedUploads(e: CustomEvent) {
@@ -713,7 +728,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       // page load, tab init, component is gonna be imported in loadPageComponents action
       return;
     }
-    if (newTabName !== oldTabName || newSubTab != oldSubTab) {
+    if (newTabName !== oldTabName) {
       const tabControl = this.shadowRoot!.querySelector(`intervention-${newTabName}`);
       if (tabControl && !tabControl.shadowRoot) {
         // show loading message if tab was not already loaded
