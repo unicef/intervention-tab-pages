@@ -2,7 +2,6 @@ import '@polymer/paper-button/paper-button';
 import '@polymer/paper-toggle-button';
 import './common/layout/page-content-header/intervention-page-content-header';
 import './common/layout/page-content-header/intervention-page-content-subheader';
-import '@unicef-polymer/etools-modules-common/dist/layout/etools-tabs';
 import '@unicef-polymer/etools-modules-common/dist/components/cancel/reason-display';
 import '@unicef-polymer/etools-modules-common/dist/layout/status/etools-status';
 import './intervention-actions/intervention-actions';
@@ -29,7 +28,6 @@ import {EnvFlags, EtoolsEndpoint, ExpectedResult, Intervention} from '@unicef-po
 import {AsyncAction, RouteDetails} from '@unicef-polymer/etools-types';
 import {interventions} from './common/reducers/interventions';
 import {translate, get as getTranslation} from 'lit-translate';
-import {EtoolsTabs} from '@unicef-polymer/etools-modules-common/dist/layout/etools-tabs';
 import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
 import {prcIndividualReviews} from './common/reducers/officers-reviews';
 import {uploadStatus} from './common/reducers/upload-status';
@@ -48,7 +46,6 @@ import {translatesMap} from './utils/intervention-labels-map';
 import {EtoolsRequestEndpoint} from '@unicef-polymer/etools-ajax';
 import '@shoelace-style/shoelace/dist/components/tab-group/tab-group.js';
 import '@shoelace-style/shoelace/dist/components/tab/tab.js';
-import '@shoelace-style/shoelace/dist/components/tab-panel/tab-panel.js';
 /**
  * @LitElement
  * @customElement
@@ -352,9 +349,6 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
 
   @property({type: Object})
   otherInfo!: {other_info: string};
-
-  @query('etools-tabs-lit')
-  etoolsTabs!: EtoolsTabs;
 
   /*
    * Used to avoid unnecessary get intervention request
@@ -684,17 +678,11 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   }
 
   handleTabChange(e: CustomEvent) {
-    // const isSubtabParent = e.detail.item.getAttribute('is-subtabs-parent');
-    // if (isSubtabParent) {
-    //   return;
-    // }
     const newTabName: string = e.detail.name;
-    // const newSubTab = e.detail.item.getAttribute('subtab');
     if (newTabName === this.activeTab) {
       return;
     }
     this.tabChanged(newTabName, this.activeTab, '', this.activeSubTab);
-    //this.fixIntermittent2TabsUnderlined(this.etoolsTabs);
   }
 
   existsUnsavedUploads(e: CustomEvent) {
@@ -720,12 +708,6 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       getStore().dispatch({type: RESET_UNSAVED_UPLOADS});
       getStore().dispatch({type: RESET_UPLOADS_IN_PROGRESS});
       this.handleTabChange(e);
-    }
-  }
-
-  fixIntermittent2TabsUnderlined(etoolsTabs: EtoolsTabs) {
-    if (this.activeSubTab) {
-      setTimeout(() => etoolsTabs.notifyResize());
     }
   }
 
