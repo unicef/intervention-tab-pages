@@ -176,6 +176,12 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
         :host-context([dir='rtl']) reason-display {
           --text-padding: 26px 80px 26px 24px;
         }
+        sl-tab-group {
+          --indicator-color: var(--primary-color);
+        }
+        sl-tab-group::part(active-tab-indicator) {
+          bottom: 0;
+        }
       </style>
 
       <!-- Loading PRP country data -->
