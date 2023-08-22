@@ -13,7 +13,7 @@ import {
 } from './results-structure.selectors';
 import {ResultStructureStyles} from './styles/results-structure.styles';
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
-import '@unicef-polymer/etools-content-panel';
+import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import '@polymer/paper-toggle-button/paper-toggle-button';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
