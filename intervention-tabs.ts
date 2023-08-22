@@ -619,7 +619,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     const tabIndex = this.pageTabs.findIndex((x) => x.tab === 'attachments');
     const canView = get(state, 'interventions.current.permissions.view.attachments');
     if (tabIndex === -1 && canView) {
-      const pasteTo = this.pageTabs.findIndex((x) => x.tab === TABS.Progress);
+      const pasteTo = this.pageTabs.findIndex((x) => x.tab === TABS.ImplementationStatus);
       this.pageTabs.splice(pasteTo, 0, {
         tab: TABS.Attachments,
         tabLabel: translate('ATTACHMENTS_TAB') as unknown as string,
