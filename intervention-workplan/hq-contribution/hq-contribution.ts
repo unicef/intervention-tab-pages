@@ -2,7 +2,7 @@ import {LitElement, html} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-icon-button/paper-icon-button';
-import '@unicef-polymer/etools-loading/etools-loading';
+import '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
 import '@polymer/paper-slider/paper-slider.js';
