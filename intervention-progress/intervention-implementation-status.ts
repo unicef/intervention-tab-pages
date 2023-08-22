@@ -39,12 +39,7 @@ export class InterventionImplementationStatus extends connectStore(LitElement) {
 
   stateChanged(state: RootState) {
     if (
-      EtoolsRouter.pageIsNotCurrentlyActive(
-        get(state, 'app.routeDetails'),
-        'interventions',
-        TABS.Progress,
-        TABS.ImplementationStatus
-      )
+      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.ImplementationStatus)
     ) {
       return;
     }

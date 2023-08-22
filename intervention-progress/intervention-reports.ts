@@ -247,9 +247,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
   }
 
   stateChanged(state: RootState) {
-    if (
-      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Progress, 'reports')
-    ) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'reports')) {
       return;
     }
 

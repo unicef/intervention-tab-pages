@@ -269,9 +269,7 @@ export class InterventionSummary extends connectStore(LitElement) {
   isUnicefUser = false;
 
   stateChanged(state: RootState) {
-    if (
-      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Progress, 'summary')
-    ) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'summary')) {
       return;
     }
 
