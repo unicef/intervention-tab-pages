@@ -1,7 +1,7 @@
 import {Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
 import {html, LitElement} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import '@unicef-polymer/etools-content-panel/etools-content-panel.js';
+import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import {translate} from 'lit-translate';
 import get from 'lodash-es/get';
 import {RootState} from '../common/types/store.types';
