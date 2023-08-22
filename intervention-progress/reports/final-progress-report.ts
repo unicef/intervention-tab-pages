@@ -1,7 +1,7 @@
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {html, LitElement} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import '@unicef-polymer/etools-content-panel/etools-content-panel.js';
+import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import {translate} from 'lit-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import '@polymer/paper-checkbox/paper-checkbox';

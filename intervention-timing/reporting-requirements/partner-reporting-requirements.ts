@@ -5,7 +5,7 @@ import '@polymer/iron-selector/iron-selector';
 import '@polymer/iron-pages/iron-pages';
 import '@polymer/paper-item/paper-item';
 import '@polymer/paper-icon-button/paper-icon-button';
-import '@unicef-polymer/etools-content-panel/etools-content-panel';
+import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 
 import './qpr/quarterly-reporting-requirements';
 import './hr/humanitarian-reporting-req-unicef';
