@@ -19,7 +19,6 @@ import {GenericObject, User} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {currentIntervention} from '../common/selectors';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {TABS} from '../common/constants';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import PaginationMixin from '@unicef-polymer/etools-modules-common/dist/mixins/pagination-mixin';
 import CommonMixin from '@unicef-polymer/etools-modules-common/dist/mixins/common-mixin';
@@ -345,7 +344,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
         }
         EtoolsLogger.error('Reports list data request failed!', 'reports-list', error);
 
-        parseRequestErrorsAndShowAsToastMsgs(error, this);
+        parseRequestErrorsAndShowAsToastMsgs(error, this as any);
         fireEvent(this, 'global-loading', {
           active: false,
           loadingSource: 'reports-list'

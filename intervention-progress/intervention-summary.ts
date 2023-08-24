@@ -15,7 +15,6 @@ import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/co
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {prettyDate} from '@unicef-polymer/etools-utils/dist/date.util';
-import {TABS} from '../common/constants';
 import {decimalFractionEquals0} from '@unicef-polymer/etools-utils/dist/general.util';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
