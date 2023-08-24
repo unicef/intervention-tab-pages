@@ -67,7 +67,11 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
 
         .pd-ref,
         .view-report {
-          @apply --text-btn-style;
+          color: var(--primary-color);
+          font-weight: 500;
+          text-decoration: none;
+          outline: inherit;
+          text-transform: uppercase;
         }
 
         .pd-ref {

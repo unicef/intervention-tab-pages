@@ -114,12 +114,6 @@ export class InterventionResultsReported extends connectStore(
           padding-top: 0;
         }
 
-        indicator-report-target {
-          --indicator-report-target-row: {
-            padding-inline-end: 72px;
-          }
-        }
-
         etools-ram-indicators {
           border-top: 1px solid var(--list-divider-color);
           border-bottom: 1px solid var(--list-divider-color);
