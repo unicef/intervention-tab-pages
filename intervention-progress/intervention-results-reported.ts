@@ -8,7 +8,6 @@ import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
 import {EtoolsCurrency} from '@unicef-polymer/etools-unicef/src/mixins/currency';
 
-import '@unicef-polymer/etools-modules-common/dist/layout/etools-form-element-wrapper';
 import './layout/etools-progress-bar';
 import './layout/etools-ram-indicators';
 import '../common/layout/status/intervention-report-status';
@@ -76,11 +75,11 @@ export class InterventionResultsReported extends connectStore(
           margin-top: 16px;
         }
 
-        #cash-progress etools-form-element-wrapper {
+        #cash-progress etools-input {
           width: 140px;
         }
 
-        #cash-progress etools-form-element-wrapper:first-child {
+        #cash-progress etools-input:first-child {
           margin-inline-end: 24px;
         }
 
@@ -163,7 +162,7 @@ export class InterventionResultsReported extends connectStore(
           }
         }
 
-        etools-info-tooltip etools-form-element-wrapper {
+        etools-info-tooltip etools-input {
           width: 100% !important;
         }
 
@@ -176,11 +175,13 @@ export class InterventionResultsReported extends connectStore(
       <div id="progress-summary" class="content-section paper-material elevation" elevation="1">
         <div class="row-h">
           <div class="layout-vertical col-4">
-            <etools-form-element-wrapper
+            <etools-input
+              readonly
+              placeholder="—"
               label="${translate('PD_DURATION')}"
               .value="${this._getPdDuration(this.progress.start_date, this.progress.end_date)}"
             >
-            </etools-form-element-wrapper>
+            </etools-input>
             <etools-progress-bar value="${this.pdProgress}" noDecimals></etools-progress-bar>
           </div>
           <div class="layout-vertical col-5">
@@ -191,7 +192,9 @@ export class InterventionResultsReported extends connectStore(
                 icon-first
                 .hideTooltip="${!this.multipleCurrenciesWereUsed(this.progress.disbursement, this.progress)}"
               >
-                <etools-form-element-wrapper
+                <etools-input
+                  readonly
+                  placeholder="—"
                   slot="field"
                   label="${translate('CASH_TRANSFERED')}"
                   .value="${this._getPropertyText(this.progress.disbursement_currency)} ${displayCurrencyAmount(
@@ -200,18 +203,20 @@ export class InterventionResultsReported extends connectStore(
                     0
                   )}"
                 >
-                </etools-form-element-wrapper>
+                </etools-input>
                 <iron-icon icon="pmp-custom-icons:not-equal" slot="custom-icon"></iron-icon>
                 <span slot="message">${translate('DISBURSEMENT_AMOUNTS')}</span>
               </etools-info-tooltip>
 
-              <etools-form-element-wrapper
+              <etools-input
+                readonly
+                placeholder="—"
                 class="col-6"
                 label="${translate('UNICEF_CASH')}"
                 .value="${this._getPropertyText(this.progress.unicef_budget_cash_currency)}
                         ${displayCurrencyAmount(this.progress.unicef_budget_cash, '0', 0)}"
               >
-              </etools-form-element-wrapper>
+              </etools-input>
             </div>
 
             <etools-progress-bar
@@ -234,7 +239,9 @@ export class InterventionResultsReported extends connectStore(
               : ``}
           </div>
           <div class="col col-3">
-            <etools-form-element-wrapper
+            <etools-input
+              readonly
+              placeholder="—"
               label="${translate('OVERALL_PD_SPD_RATING')}"
               .value="${this._getOverallPdStatusDate(this.latestAcceptedPr)}"
               noPlaceholder
@@ -243,7 +250,7 @@ export class InterventionResultsReported extends connectStore(
                 status="${this.latestAcceptedPr ? this.latestAcceptedPr.review_overall_status : ''}"
                 slot="prefix"
               ></intervention-report-status>
-            </etools-form-element-wrapper>
+            </etools-input>
           </div>
         </div>
       </div>
