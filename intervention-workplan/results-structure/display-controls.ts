@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import {LitElement, html, TemplateResult, CSSResultArray, css} from 'lit';
+import {LitElement, html, TemplateResult, CSSResultArray, css, PropertyValues} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
 import {translate} from 'lit-translate';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
@@ -8,7 +8,6 @@ import {
   callClickOnEnterPushListener,
   callClickOnSpacePushListener
 } from '@unicef-polymer/etools-utils/dist/accessibility.util';
-import {PropertyValues} from 'lit-element/src/lib/updating-element';
 import {TABS} from '../../common/constants';
 
 export const RESULT_VIEW = 'result_view';

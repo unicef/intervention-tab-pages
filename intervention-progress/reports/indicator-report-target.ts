@@ -32,7 +32,7 @@ export class IndicatorReportTarget extends UtilsMixin(CommonMixin(LitElement)) {
           width: 100%;
           text-align: right;
           box-sizing: border-box;
-          @apply --indicator-report-target-row;
+          padding-inline-end: 72px;
         }
 
         .target-row span:last-child {

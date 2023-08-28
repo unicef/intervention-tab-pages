@@ -54,7 +54,8 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
       ${sharedStyles}
       <style>
         ${dataTableStylesLit}:host {
-          @apply --layout-flex;
+          flex: 1;
+          flex-basis: 0.000000001px;
           width: 100%;
 
           --paper-tooltip: {
@@ -65,7 +66,11 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
 
         .pd-ref,
         .view-report {
-          @apply --text-btn-style;
+          color: var(--primary-color);
+          font-weight: 500;
+          text-decoration: none;
+          outline: inherit;
+          text-transform: uppercase;
         }
 
         .pd-ref {

@@ -30,6 +30,10 @@ export class MessagesPanel extends EditComments {
             display: block;
           }
         }
+        etools-textarea::part(textarea) {
+          max-height: 96px;
+          overflow-y: auto;
+        }
       </style>
       <messages-panel-header
         .relatedToKey="${this.relatedToKey}"
