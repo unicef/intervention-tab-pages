@@ -1,4 +1,5 @@
-import {LitElement, TemplateResult, html, customElement, property, CSSResultArray, css} from 'lit-element';
+import {LitElement, TemplateResult, html, CSSResultArray, css} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import {EtoolsEndpoint, InterventionReview, User} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
@@ -12,7 +13,7 @@ import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import cloneDeep from 'lodash-es/cloneDeep';
-import '@unicef-polymer/etools-content-panel/etools-content-panel';
+import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import '@polymer/paper-button/paper-button';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown-multi.js';

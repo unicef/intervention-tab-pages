@@ -1,5 +1,5 @@
 import {RootState} from '../../types/store.types';
-import {LitElement} from 'lit-element';
+import {LitElement} from 'lit';
 import {CommentsCollection} from './comments.reducer';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import './comments-dialog';

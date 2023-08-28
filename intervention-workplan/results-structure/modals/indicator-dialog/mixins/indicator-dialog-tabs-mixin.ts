@@ -1,4 +1,5 @@
-import {property, LitElement} from 'lit-element';
+import {LitElement} from 'lit';
+import {property} from 'lit/decorators.js';
 import {Constructor} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 

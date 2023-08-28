@@ -1,4 +1,5 @@
-import {LitElement, customElement, html, property, TemplateResult, css} from 'lit-element';
+import {LitElement, html, TemplateResult, css} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {BudgetSummary} from './budgetSummary.models';

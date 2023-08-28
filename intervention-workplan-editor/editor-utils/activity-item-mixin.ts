@@ -1,17 +1,17 @@
 import {Intervention} from '@unicef-polymer/etools-types';
 import {Constructor} from '@unicef-polymer/etools-types/dist/global.types';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
-import {html, LitElement} from 'lit-element';
+import {html, LitElement} from 'lit';
 import {
   InterventionActivityExtended,
   InterventionActivityItemExtended,
   ResultLinkLowerResultExtended
 } from '../../common/types/editor-page-types';
-import {repeat} from 'lit-html/directives/repeat';
+import {repeat} from 'lit/directives/repeat.js';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import {translate, get as getTranslation} from 'lit-translate';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
-import {ifDefined} from 'lit-html/directives/if-defined.js';
+import {ifDefined} from 'lit/directives/if-defined.js';
 import {ActivitiesCommonMixin} from '../../common/mixins/activities-common.mixin';
 import {getItemTotalFormatted} from '../../common/components/activity/get-total.helper';
 import {ActivitiesFocusMixin} from './activities-focus-mixin';

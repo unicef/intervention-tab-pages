@@ -1,4 +1,5 @@
-import {customElement, html, TemplateResult, CSSResultArray, css, query, queryAll} from 'lit-element';
+import {html, TemplateResult, CSSResultArray, css} from 'lit';
+import {customElement, query} from 'lit/decorators.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
@@ -10,13 +11,10 @@ import {get as getTranslation, translate} from 'lit-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {CommentsItemsNameMap} from './comments-items-name-map';
 import {EditComments} from './edit-comments-base';
-import {PaperTextareaElement} from '@polymer/paper-input/paper-textarea';
 import {removeTrailingIds} from './comments.helpers';
 
 @customElement('comments-dialog')
 export class CommentsDialog extends EditComments {
-  @queryAll('etools-textarea') textareas!: PaperTextareaElement[];
-
   get dialogTitle(): string {
     if (!this.relatedTo) {
       return '';
@@ -42,7 +40,7 @@ export class CommentsDialog extends EditComments {
       getStore().getState().commentsData.collection[interventionId];
     const relatedToComments: InterventionComment[] = (comments && comments[relatedTo]) || [];
     this.comments = [...relatedToComments];
-    this.requestUpdate().then(() => this.scrollDown());
+    this.updateComplete.then(() => this.scrollDown());
   }
 
   @query('etools-dialog') private dialogElement!: EtoolsDialog;
@@ -65,6 +63,10 @@ export class CommentsDialog extends EditComments {
           --paper-input-container-shared-input-style: {
             text-align: left;
           }
+        }
+        etools-textarea::part(textarea) {
+          max-height: 96px;
+          overflow-y: auto;
         }
       </style>
       <etools-dialog size="md" keep-dialog-open dialog-title="${this.dialogTitle}" @close="${this.onClose}" no-padding>

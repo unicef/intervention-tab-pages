@@ -1,6 +1,8 @@
 // @ts-ignore
-import {Constructor, html, LitElement, property} from 'lit-element';
-import {ifDefined} from 'lit-html/directives/if-defined.js';
+import {html, LitElement} from 'lit';
+import {property} from 'lit/decorators.js';
+import {Constructor} from '@unicef-polymer/etools-types/dist/global.types';
+import {ifDefined} from 'lit/directives/if-defined.js';
 import {Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
 import '../time-intervals/time-intervals';
 import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
@@ -10,7 +12,7 @@ import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {repeat} from 'lit-html/directives/repeat';
+import {repeat} from 'lit/directives/repeat.js';
 import {translate, get as getTranslation} from 'lit-translate';
 import {TruncateMixin} from '../../common/mixins/truncate.mixin';
 /* eslint-disable max-len */

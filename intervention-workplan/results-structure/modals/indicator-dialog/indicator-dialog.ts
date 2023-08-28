@@ -1,4 +1,5 @@
-import {LitElement, customElement, html, property, query} from 'lit-element';
+import {LitElement, html} from 'lit';
+import {property, customElement, query} from 'lit/decorators.js';
 import '@polymer/iron-pages/iron-pages.js';
 import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/paper-input/paper-input.js';
@@ -20,7 +21,6 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
 import {userIsPme} from '@unicef-polymer/etools-modules-common/dist/utils/user-permissions';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {PaperCheckboxElement} from '@polymer/paper-checkbox';
-import '@unicef-polymer/etools-modules-common/dist/layout/etools-tabs';
 import './indicator-dissaggregations';
 import './non-cluster-indicator';
 import './cluster-indicator';
@@ -29,6 +29,8 @@ import {Indicator, IndicatorDialogData} from '@unicef-polymer/etools-types';
 import {AnyObject, EtoolsUser, LocationObject, Section} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {translatesMap} from '../../../../utils/intervention-labels-map';
+import '@shoelace-style/shoelace/dist/components/tab-group/tab-group.js';
+import '@shoelace-style/shoelace/dist/components/tab/tab.js';
 
 @customElement('indicator-dialog')
 export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin(ComponentBaseMixin(LitElement))) {
@@ -84,13 +86,12 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
         .hideConfirmBtn="${this.readonly}"
         spinner-text="${this.spinnerText}"
       >
-        <etools-tabs-lit
-          id="indicatorTabs"
-          .tabs="${this.indicatorDataTabs}"
-          .activeTab="${this.activeTab}"
-          border-bottom
-          @iron-select="${this.tabChanged}"
-        ></etools-tabs-lit>
+        <sl-tab-group id="indicatorTabs" @sl-tab-show="${this.tabChanged}">
+          ${this.indicatorDataTabs?.map(
+            (t) =>
+              html` <sl-tab slot="nav" panel="${t.tab}" ?active="${this.activeTab === t.tab}">${t.tabLabel}</sl-tab>`
+          )}
+        </sl-tab-group>
 
         <iron-pages
           id="indicatorPages"
@@ -247,7 +248,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   }
 
   tabChanged(e: CustomEvent) {
-    const newTabName: string = e.detail.item.getAttribute('name');
+    const newTabName: string = e.detail.name;
     if (newTabName === this.activeTab) {
       return;
     }

@@ -1,4 +1,5 @@
-import {LitElement, TemplateResult, html, customElement, property, CSSResultArray, css} from 'lit-element';
+import {LitElement, TemplateResult, html, CSSResultArray, css} from 'lit';
+import {property, customElement} from 'lit/decorators.js';
 import {InterventionReview} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
@@ -6,7 +7,7 @@ import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/st
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {PRC_REVIEW, NON_PRC_REVIEW, NO_REVIEW} from '../../common/components/intervention/review.const';
 import {get as getTranslation} from 'lit-translate';
-import '@unicef-polymer/etools-content-panel/etools-content-panel';
+import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 
 @customElement('general-review-information')
 export class GeneralReviewInformation extends LitElement {

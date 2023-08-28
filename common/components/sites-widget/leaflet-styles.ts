@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import {css, CSSResult} from 'lit-element';
+import {css, CSSResult} from 'lit';
 /* tslint:disable:max-file-line-count */
 /* tslint:disable:max-line-length */
 /* eslint-disable no-tabs */

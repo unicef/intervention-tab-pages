@@ -1,8 +1,8 @@
-import {css, unsafeCSS} from 'lit-element';
+import {css, unsafeCSS} from 'lit';
 
 export const etoolsCpHeaderActionsBarStyles = `
-    .cp-header-actions-bar {
-    @apply --layout-horizontal;
+  .cp-header-actions-bar {
+      display: flex;
   }
 
   .cp-header-actions-bar paper-icon-button[disabled] {

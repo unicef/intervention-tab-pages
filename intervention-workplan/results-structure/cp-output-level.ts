@@ -1,13 +1,5 @@
-import {
-  css,
-  CSSResultArray,
-  customElement,
-  html,
-  LitElement,
-  property,
-  PropertyValues,
-  TemplateResult
-} from 'lit-element';
+import {css, CSSResultArray, html, LitElement, PropertyValues, TemplateResult} from 'lit';
+import {property, customElement} from 'lit/decorators.js';
 import {ResultStructureStyles} from './styles/results-structure.styles';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table.js';

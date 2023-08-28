@@ -1,5 +1,6 @@
-import {LitElement, customElement, html, property} from 'lit-element';
-import '@unicef-polymer/etools-content-panel/etools-content-panel';
+import {LitElement, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
+import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import '@polymer/iron-label/iron-label';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
@@ -268,9 +269,7 @@ export class InterventionSummary extends connectStore(LitElement) {
   isUnicefUser = false;
 
   stateChanged(state: RootState) {
-    if (
-      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Progress, 'summary')
-    ) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'summary')) {
       return;
     }
 

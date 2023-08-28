@@ -1,10 +1,11 @@
 /* eslint-disable lit/no-legacy-template-syntax */
-import {LitElement, customElement, html, property} from 'lit-element';
+import {LitElement, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import '@polymer/paper-styles/element-styles/paper-material-styles';
 import '@polymer/paper-tooltip/paper-tooltip';
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 import '@polymer/iron-media-query/iron-media-query';
-import '@unicef-polymer/etools-content-panel/etools-content-panel.js';
+import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import {abortRequestByKey} from '@unicef-polymer/etools-ajax/etools-iron-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
@@ -54,7 +55,8 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
       ${sharedStyles}
       <style>
         ${dataTableStylesLit}:host {
-          @apply --layout-flex;
+          flex: 1;
+          flex-basis: 0.000000001px;
           width: 100%;
 
           --paper-tooltip: {
@@ -65,7 +67,11 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
 
         .pd-ref,
         .view-report {
-          @apply --text-btn-style;
+          color: var(--primary-color);
+          font-weight: 500;
+          text-decoration: none;
+          outline: inherit;
+          text-transform: uppercase;
         }
 
         .pd-ref {
@@ -246,9 +252,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
   }
 
   stateChanged(state: RootState) {
-    if (
-      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Progress, 'reports')
-    ) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'reports')) {
       return;
     }
 

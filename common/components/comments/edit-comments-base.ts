@@ -1,6 +1,6 @@
 import {InterventionComment} from '@unicef-polymer/etools-types';
-import {LitElement, property, PropertyValues, queryAll} from 'lit-element';
-import {PaperTextareaElement} from '@polymer/paper-input/paper-textarea';
+import {LitElement, PropertyValues} from 'lit';
+import {property} from 'lit/decorators.js';
 import {CommentsEndpoints} from './comments-types';
 import {RootState} from '../../types/store.types';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
@@ -9,12 +9,10 @@ import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {addComment, updateComment} from './comments.actions';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {setTextareasMaxHeight} from '@unicef-polymer/etools-modules-common/dist/utils/textarea-max-rows-helper';
 import {get as getTranslation} from 'lit-translate';
 
 export abstract class EditComments extends connectStore(LitElement) {
   @property() comments: (InterventionComment & {loadingError?: boolean})[] = [];
-  @queryAll('paper-textarea') textareas!: PaperTextareaElement[];
   @property() endpoints!: CommentsEndpoints;
   newMessageText = '';
   currentUser: any;
@@ -28,7 +26,6 @@ export abstract class EditComments extends connectStore(LitElement) {
 
   protected firstUpdated(_changedProperties: PropertyValues): void {
     super.firstUpdated(_changedProperties);
-    setTextareasMaxHeight(this.textareas);
   }
 
   stateChanged(state: RootState): void {
@@ -103,7 +100,7 @@ export abstract class EditComments extends connectStore(LitElement) {
     if (!comment && !this.newMessageText) {
       return;
     }
-    this.requestUpdate().then(() => {
+    this.updateComplete.then(() => {
       if (!comment) {
         // scroll down if comment is new
         this.scrollDown();
@@ -131,8 +128,9 @@ export abstract class EditComments extends connectStore(LitElement) {
         this.comments.splice(index, 1);
         // add newly created comment to the end of comments array
         this.comments.push(newComment);
+        this.comments = [...this.comments];
         getStore().dispatch(addComment(this.relatedTo, newComment, this.interventionId));
-        this.requestUpdate().then(() => {
+        this.updateComplete.then(() => {
           this.scrollDown();
         });
       })

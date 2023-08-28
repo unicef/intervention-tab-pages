@@ -1,9 +1,9 @@
 import {Intervention} from '@unicef-polymer/etools-types';
 import {Constructor} from '@unicef-polymer/etools-types/dist/global.types';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
-import {html, LitElement} from 'lit-element';
-import {repeat} from 'lit-html/directives/repeat';
-import {ifDefined} from 'lit-html/directives/if-defined.js';
+import {html, LitElement} from 'lit';
+import {repeat} from 'lit/directives/repeat.js';
+import {ifDefined} from 'lit/directives/if-defined.js';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import {translate, get as getTranslation} from 'lit-translate';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';

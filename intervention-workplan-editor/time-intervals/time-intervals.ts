@@ -1,4 +1,5 @@
-import {LitElement, TemplateResult, html, css, CSSResultArray, property, customElement} from 'lit-element';
+import {LitElement, TemplateResult, html, css, CSSResultArray} from 'lit';
+import {property, customElement} from 'lit/decorators.js';
 import {InterventionQuarter} from '@unicef-polymer/etools-types';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import './time-intervals-dialog';

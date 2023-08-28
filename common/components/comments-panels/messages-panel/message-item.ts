@@ -1,4 +1,5 @@
-import {customElement, LitElement, html, CSSResultArray, TemplateResult, css, property} from 'lit-element';
+import {LitElement, html, CSSResultArray, TemplateResult, css} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import {InterventionComment} from '@unicef-polymer/etools-types';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';

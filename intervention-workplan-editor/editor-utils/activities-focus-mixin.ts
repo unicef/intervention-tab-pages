@@ -1,5 +1,5 @@
 import {Constructor} from '@unicef-polymer/etools-types';
-import {LitElement} from 'lit-element';
+import {LitElement} from 'lit';
 
 export function ActivitiesFocusMixin<T extends Constructor<LitElement>>(baseClass: T) {
   return class ActivitiesFocusClass extends baseClass {

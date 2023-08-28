@@ -1,5 +1,6 @@
 import {PaperButtonElement} from '@polymer/paper-button';
-import {Constructor, LitElement} from 'lit-element';
+import {LitElement} from 'lit';
+import {Constructor} from '@unicef-polymer/etools-types';
 /**
  * Notes about the functionality:
  * - Only cells that contain editable inputs can be reached through arrows navigation

@@ -1,4 +1,5 @@
-import {LitElement, html, property, customElement} from 'lit-element';
+import {LitElement, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 import '@unicef-polymer/etools-modules-common/dist/layout/icons-actions';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
@@ -12,7 +13,6 @@ import {translate} from 'lit-translate';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {EtoolsPaginator} from '@unicef-polymer/etools-unicef/src/etools-table/pagination/etools-pagination';
-
 
 /**
  * @polymer

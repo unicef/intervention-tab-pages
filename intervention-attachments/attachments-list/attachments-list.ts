@@ -1,7 +1,8 @@
-import {LitElement, html, TemplateResult, property, customElement, CSSResultArray} from 'lit-element';
+import {LitElement, html, TemplateResult, CSSResultArray} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import {prettyDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import CONSTANTS from '../../common/constants';
-import '@unicef-polymer/etools-content-panel';
+import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table.js';
 import '@polymer/iron-icons';
 import './intervention-attachment-dialog';

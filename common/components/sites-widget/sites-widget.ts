@@ -1,14 +1,6 @@
-import {
-  CSSResultArray,
-  customElement,
-  html,
-  LitElement,
-  property,
-  PropertyValues,
-  query,
-  TemplateResult
-} from 'lit-element';
-import {repeat} from 'lit-html/directives/repeat';
+import {CSSResultArray, html, LitElement, PropertyValues, TemplateResult} from 'lit';
+import {customElement, property, query} from 'lit/decorators.js';
+import {repeat} from 'lit/directives/repeat.js';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {LatLngTuple} from 'leaflet';
 import {IMarker, MapHelper, defaultIcon, markedIcon, MarkerDataObj} from './map-mixin';

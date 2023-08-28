@@ -1,4 +1,5 @@
-import {LitElement, html, property, customElement, query} from 'lit-element';
+import {LitElement, html} from 'lit';
+import {customElement, property, query} from 'lit/decorators.js';
 import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';

@@ -1,6 +1,7 @@
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {css, html, CSSResultArray, customElement, LitElement, property} from 'lit-element';
-import {repeat} from 'lit-html/directives/repeat';
+import {css, html, CSSResultArray, LitElement} from 'lit';
+import {property, customElement} from 'lit/decorators.js';
+import {repeat} from 'lit/directives/repeat.js';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {
@@ -12,7 +13,7 @@ import {
 } from './results-structure.selectors';
 import {ResultStructureStyles} from './styles/results-structure.styles';
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
-import '@unicef-polymer/etools-content-panel';
+import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import '@polymer/paper-toggle-button/paper-toggle-button';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';

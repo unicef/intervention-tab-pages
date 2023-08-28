@@ -1,4 +1,4 @@
-import {css, CSSResult, html, TemplateResult} from 'lit-element';
+import {css, CSSResult, html, TemplateResult} from 'lit';
 
 // language=css
 export const ActivityItemsTableStyles: CSSResult = css`

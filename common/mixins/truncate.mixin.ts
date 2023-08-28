@@ -1,5 +1,6 @@
 import {Constructor} from '@unicef-polymer/etools-types';
-import {CSSResultArray, html, LitElement, TemplateResult, css} from 'lit-element';
+import {CSSResultArray, html, LitElement, TemplateResult, css} from 'lit';
+
 import {PaperButtonElement} from '@polymer/paper-button/paper-button';
 
 export function TruncateMixin<T extends Constructor<LitElement>>(baseClass: T) {

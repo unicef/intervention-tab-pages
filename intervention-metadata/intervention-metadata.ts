@@ -1,4 +1,5 @@
-import {LitElement, html, property} from 'lit-element';
+import {LitElement, html} from 'lit';
+import {property} from 'lit/decorators.js';
 import './partner-details/partner-info';
 import './details-overview/details-overview';
 import './unicef-details/unicef-details';
