@@ -19,18 +19,13 @@ export const InterventionActionsStyles: CSSResult = css`
   }
 
   .main-button {
-    height: 36px;
-    padding-inline-start: 18px;
-    padding-inline-end: 18px;
-    color: white;
-    background: var(--green-color);
-    font-weight: 500;
-    text-transform: uppercase;
-    border-radius: 3px;
+    --sl-color-primary-600: var(--green-color);
+    --sl-color-primary-500: var(--green-color);
   }
 
   .back-button {
-    background: var(--back-color);
+    --sl-color-primary-600: var(--back-color);
+    --sl-color-primary-500: var(--back-color);
   }
 
   .back-button span {
@@ -42,20 +37,21 @@ export const InterventionActionsStyles: CSSResult = css`
   }
 
   .cancel-background {
-    background: var(--cancel-color);
+    --sl-color-primary-600: var(--cancel-color);
+    --sl-color-primary-500:: var(--cancel-color);
   }
 
   .reject-button {
-    background: var(--reject-color);
+    --sl-color-primary-600: var(--reject-color);
+    --sl-color-primary-500: var(--reject-color);
   }
 
-  .main-button.with-additional {
-    padding-inline-end: 0 !important;
-    padding-inline-start: 18px;
+  .main-button.with-additional::part(label) {
+    padding-inline-end: 0;
   }
 
   .main-button.with-additional span {
-    margin-inline-end: 15px;
+    margin-inline-end: 12px;
   }
 
   .main-button span {
@@ -64,14 +60,8 @@ export const InterventionActionsStyles: CSSResult = css`
     line-height: 36px;
   }
 
-  .other-options {
-    padding: 10px 24px;
-    color: var(--primary-text-color);
-    white-space: nowrap;
-  }
-
-  .other-options:hover {
-    background-color: var(--secondary-background-color);
+  sl-menu-item {
+    --sl-font-weight-normal: bold;
   }
 
   paper-menu-button {
