@@ -19,7 +19,6 @@ import {GenericObject, User} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {currentIntervention} from '../common/selectors';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {TABS} from '../common/constants';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import PaginationMixin from '@unicef-polymer/etools-modules-common/dist/mixins/pagination-mixin';
 import CommonMixin from '@unicef-polymer/etools-modules-common/dist/mixins/common-mixin';

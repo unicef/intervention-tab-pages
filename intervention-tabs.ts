@@ -7,7 +7,7 @@ import '@unicef-polymer/etools-modules-common/dist/layout/status/etools-status';
 import './intervention-actions/intervention-actions';
 import './common/components/prp-country-data/prp-country-data';
 import {LitElement, html, css} from 'lit';
-import {property, customElement, query} from 'lit/decorators.js';
+import {property, customElement} from 'lit/decorators.js';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {getStore, getStoreAsync} from '@unicef-polymer/etools-utils/dist/store.util';
@@ -711,7 +711,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     }
   }
 
-  tabChanged(newTabName: string, oldTabName: string | undefined, newSubTab: string, oldSubTab: string) {
+  tabChanged(newTabName: string, oldTabName: string | undefined, newSubTab: string, _oldSubTab: string) {
     if (oldTabName === undefined) {
       // page load, tab init, component is gonna be imported in loadPageComponents action
       return;
