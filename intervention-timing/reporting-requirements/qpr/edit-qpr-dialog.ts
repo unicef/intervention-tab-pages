@@ -9,7 +9,7 @@ import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import './qpr-list.js';
 import CONSTANTS from '../../../common/constants';
-import '@unicef-polymer/etools-date-time/calendar-lite.js';
+import '@unicef-polymer/etools-unicef/src/etools-date-time/calendar-lite.js';
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
