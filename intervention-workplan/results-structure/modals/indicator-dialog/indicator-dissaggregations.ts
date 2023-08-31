@@ -20,6 +20,7 @@ import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/st
 import {repeatableDataSetsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/repeatable-data-sets-styles';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
+import '@shoelace-style/shoelace/dist/components/button/button.js';
 
 /**
  * @customElement
@@ -103,13 +104,14 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
       </div>
 
       <div class="row-padding-v" style="margin-bottom:80px;">
-        <paper-button
-          class="secondary-btn"
+        <sl-button
+          variant="text"
+          class="primary-btn no-marg"
           @click="${this._addNewDisaggregation}"
           ?hidden="${this._maxDisaggregations(this.data.length) || this.readonly}"
           title=${translate('ADD_DISAGGREGATION')}
           >${translate('ADD_DISAGREG')}
-        </paper-button>
+        </sl-button>
         <info-icon-tooltip
           id="iit-disaggreg"
           .tooltipText="${translate('DISAGGREGATION_TOOLTIP')}"
