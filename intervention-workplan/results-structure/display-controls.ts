@@ -9,6 +9,7 @@ import {
   callClickOnSpacePushListener
 } from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import {TABS} from '../../common/constants';
+import '@shoelace-style/shoelace/dist/components/button/button.js';
 
 export const RESULT_VIEW = 'result_view';
 export const BUDGET_VIEW = 'budget_view';
@@ -64,10 +65,7 @@ export class DisplayControls extends LitElement {
 
       <div class="layout-horizontal">
         <paper-menu-button id="view-menu-button" close-on-activate horizontal-align>
-          <paper-button slot="dropdown-trigger" class="dropdown-trigger">
-            ${this.selectedViewType}
-            <iron-icon icon="expand-more"></iron-icon>
-          </paper-button>
+          <sl-button variant="default" slot="dropdown-trigger" caret> ${this.selectedViewType} </sl-button>
           <paper-listbox slot="dropdown-content" attr-for-selected="name" .selected="${this.viewType}">
             ${this.viewTabs.map(
               (tab) =>
@@ -138,24 +136,15 @@ export class DisplayControls extends LitElement {
           padding: 0;
           box-sizing: border-box;
         }
-        paper-button {
-          border: 1px solid #5c5c5c;
-          border-radius: 8px;
-        }
         a:focus,
-        paper-button:focus {
+        sl-button:focus {
           box-shadow: rgb(170 165 165 / 40%) 0 0 5px 4px;
         }
-        #view-menu-button paper-button {
-          height: 32px;
-          padding-inline-end: 0;
-          font-size: 14px;
-          text-transform: none;
-          font-weight: 500;
+
+        sl-button:focus-visible {
+          outline: none !important;
         }
-        #view-menu-button paper-button iron-icon {
-          margin: 0 7px;
-        }
+
         paper-item {
           white-space: nowrap;
         }
@@ -182,6 +171,17 @@ export class DisplayControls extends LitElement {
         }
         svg {
           margin-inline-start: 10px;
+        }
+        sl-button {
+          --sl-input-height-medium: 32px;
+          --sl-color-neutral-700: rgb(92, 92, 92);
+          --sl-color-neutral-300: rgb(92, 92, 92);
+          --sl-input-border-radius-medium: 10px;
+          border-radius: 10px;
+          --sl-spacing-medium: 12px;
+          --sl-color-primary-50: transparent;
+          --sl-color-primary-300: rgb(92, 92, 92);
+          --sl-color-primary-700: rgb(92, 92, 92);
         }
       `
     ];

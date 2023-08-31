@@ -16,11 +16,12 @@ export function TruncateMixin<T extends Constructor<LitElement>>(baseClass: T) {
       if (string.length <= this.amountOfFirstLetters) {
         return html`${string}`;
       }
-      return html`${string.substring(0, this.amountOfFirstLetters)}<paper-button
-          class="show-more-btn"
+      return html`${string.substring(0, this.amountOfFirstLetters)}<sl-button
+          variant="text"
+          class="primary-btn no-marg no-pad"
           id="show-more"
           @click="${(event: CustomEvent) => this.showMore(event)}"
-          >...</paper-button
+          >...</sl-button
         ><span hidden aria-hidden>${string.substring(60, string.length)}</span> `;
     }
 
@@ -33,18 +34,7 @@ export function TruncateMixin<T extends Constructor<LitElement>>(baseClass: T) {
     }
 
     static get styles(): CSSResultArray {
-      return [
-        css`
-          .show-more-btn {
-            margin: 0;
-            padding: 0;
-            min-width: 15px;
-            font-weight: bold;
-            color: var(--primary-color);
-            background-color: transparent;
-          }
-        `
-      ];
+      return [css``];
     }
   };
 }
