@@ -23,6 +23,7 @@ import PaginationMixin from '@unicef-polymer/etools-modules-common/dist/mixins/p
 import cloneDeep from 'lodash-es/cloneDeep';
 import {EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
+import '@shoelace-style/shoelace/dist/components/button/button.js';
 
 /**
  * @customElement
@@ -47,8 +48,8 @@ export class SpecialReportingRequirements extends PaginationMixin(ReportingRequi
       </div>
 
       <div class="row-h" ?hidden="${!this.editMode}">
-        <paper-button class="secondary-btn" @click="${this._openAddDialog}"
-          >${translate('ADD_REQUIREMENTS')}</paper-button
+        <sl-button variant="text" class="primary-btn no-marg no-pad" @click="${this._openAddDialog}"
+          >${translate('ADD_REQUIREMENTS')}</sl-button
         >
       </div>
 

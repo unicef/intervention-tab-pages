@@ -19,6 +19,7 @@ import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown-multi.js';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
 import {PRC_REVIEW} from '../../common/components/intervention/review.const';
+import '@shoelace-style/shoelace/dist/components/button/button.js';
 
 @customElement('review-members')
 export class ReviewMembers extends ComponentBaseMixin(LitElement) {
@@ -98,9 +99,14 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
               }}"
             >
             </etools-dropdown-multi>
-            <paper-button class="primary notify" @click="${this.sendNotification}" ?hidden="${!this.showNotifyButton}">
+            <sl-button
+              variant="primary"
+              class="primary-btn"
+              @click="${this.sendNotification}"
+              ?hidden="${!this.showNotifyButton}"
+            >
               ${translate('SEND_NOTIFICATIONS')}
-            </paper-button>
+            </sl-button>
           </div>
           <div class="row-h flex-c align-items-center">
             <etools-dropdown

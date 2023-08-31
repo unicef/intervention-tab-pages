@@ -14,6 +14,7 @@ import {PaperInputElement} from '@polymer/paper-input/paper-input';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import RepeatableDataSetsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/repeatable-data-sets-mixin';
+import '@shoelace-style/shoelace/dist/components/button/button.js';
 
 /**
  * @customElement
@@ -108,10 +109,10 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
         <div class="${(this.data || []).length ? 'hidden' : 'row-h'}">${translate('NO_FUND_RESERVATIONS_ADDED')}</div>
 
         <div class="row-h">
-          <paper-button class="secondary-btn" @click="${() => this._addNewFundReservation()}">
+          <sl-button variant="text" class="primary-btn no-marg no-pad" @click="${() => this._addNewFundReservation()}">
             <iron-icon icon="add"></iron-icon>
             ${translate('ADD_FR_NUM')}
-          </paper-button>
+          </sl-button>
         </div>
       </etools-dialog>
     `;

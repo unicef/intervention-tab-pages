@@ -13,6 +13,7 @@ import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/b
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import PaginationMixin from '@unicef-polymer/etools-modules-common/dist/mixins/pagination-mixin';
 import cloneDeep from 'lodash-es/cloneDeep';
+import '@shoelace-style/shoelace/dist/components/button/button.js';
 
 /**
  * @customElement
@@ -39,9 +40,13 @@ export class HumanitarianReportingReqUnicef extends PaginationMixin(ReportingReq
       <div ?hidden="${!this._empty(this.reportingRequirements)}">
         <div class="row-h">${translate('NO_HUMANITARIAN_REPORT')}</div>
         <div class="row-h" ?hidden="${!this._showAdd(this.expectedResults, this.editMode)}">
-          <paper-button class="secondary-btn" @click="${this.openUnicefHumanitarianRepReqDialog}">
+          <sl-button
+            variant="text"
+            class="primary-btn no-marg no-pad"
+            @click="${this.openUnicefHumanitarianRepReqDialog}"
+          >
             ${translate('ADD_REQUIREMENTS')}
-          </paper-button>
+          </sl-button>
         </div>
         <div class="row-h" ?hidden="${this._thereAreHFIndicators(this.expectedResults)}">
           ${translate('CAN_BE_MODIFIED_PROMPT')}

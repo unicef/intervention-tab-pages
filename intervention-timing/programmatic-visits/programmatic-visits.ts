@@ -28,6 +28,7 @@ import {repeatableDataSetsStyles} from '@unicef-polymer/etools-modules-common/di
 import {getEndpoint as getEndpointHelper} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import '../../common/components/sites-widget/sites-dialog';
+import '@shoelace-style/shoelace/dist/components/button/button.js';
 import './pv-quarter';
 
 /**
@@ -121,13 +122,15 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="row-padding-v extra-top-padd" ?hidden="${!this.editMode}">
-          <paper-button
-            class="secondary-btn ${this._getAddBtnPadding(this.data?.length)}"
+          <sl-button
+          variant="text"
+            class="primary-btn"  
+          ${this._getAddBtnPadding(this.data?.length)}"
             @click="${this._addNewPlannedVisit}"
           >
             <iron-icon icon="add-box"></iron-icon>
             ${translate('ADD_YEAR')}
-          </paper-button>
+          </sl-button>
         </div>
 
         <div class="pv-container">${this.renderVisitsTemplate(this.data)}</div>

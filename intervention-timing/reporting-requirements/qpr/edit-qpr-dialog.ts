@@ -1,4 +1,4 @@
-import {LitElement, html} from 'lit';
+import {LitElement, css, html} from 'lit';
 import {customElement, property, query} from 'lit/decorators.js';
 import '@polymer/iron-label/iron-label';
 import '@polymer/paper-button/paper-button';
@@ -24,6 +24,7 @@ import GenerateQuarterlyReportingRequirementsMixin from '../mixins/generate-quar
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import '@shoelace-style/shoelace/dist/components/button/button.js';
 
 /**
  * @polymer
@@ -32,7 +33,16 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 @customElement('edit-qpr-dialog')
 export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [
+      gridLayoutStylesLit,
+      buttonsStyles,
+      css`
+        sl-button#add-req,
+        sl-button#regen {
+          --sl-input-height-medium: 26px !important;
+        }
+      `
+    ];
   }
   render() {
     return html`
@@ -82,12 +92,18 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
       >
         <div class="layout-horizontal">
           <span id="qpr-edit-info">${translate('ALL_DATES_IN_FUTURE')}</span>
-          <paper-button class="secondary-btn" @click="${this._addNewQpr}">${translate('ADD_REQUIREMENT')}</paper-button>
+          <sl-button id="addReq" variant="text" class="primary-btn no-marg no-pad" @click="${this._addNewQpr}"
+            >${translate('ADD_REQUIREMENT')}</sl-button
+          >
         </div>
         <div class="layout-horizontal" style="padding-top:10px" ?hidden="${!this.insterventionsDatesDiffer()}">
           <span id="regenerate-info">${translate('PD_START_END_DATE_CHANGED')}</span> &nbsp;
-          <paper-button class="secondary-btn" @click="${this.regenerateReportingRequirements}"
-            >${translate('REGENERATE')}</paper-button
+          <sl-button
+            id="regen"
+            variant="text"
+            class="primary-btn no-marg no-pad"
+            @click="${this.regenerateReportingRequirements}"
+            >${translate('REGENERATE')}</sl-button
           >
         </div>
 

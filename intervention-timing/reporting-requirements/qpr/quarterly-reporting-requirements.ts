@@ -15,6 +15,7 @@ import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/st
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import cloneDeep from 'lodash-es/cloneDeep';
+import '@shoelace-style/shoelace/dist/components/button/button.js';
 
 /**
  * @polymer
@@ -47,9 +48,13 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
       <div ?hidden="${!this._empty(this.reportingRequirements)}">
         <div class="row-h">${translate('NO_QUARTERLY_REPORTING_REQUIREMENTS')}</div>
         <div class="row-h" ?hidden="${!this.editMode}">
-          <paper-button class="secondary-btn" @click="${this.openQuarterlyRepRequirementsDialog}">
+          <sl-button
+            variant="text"
+            class="primary-btn no-marg no-pad"
+            @click="${this.openQuarterlyRepRequirementsDialog}"
+          >
             ${translate('ADD_REQUIREMENTS')}
-          </paper-button>
+          </sl-button>
         </div>
       </div>
     `;
