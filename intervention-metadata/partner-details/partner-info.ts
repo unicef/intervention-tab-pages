@@ -1,7 +1,6 @@
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {selectPartnerDetails, selectPartnerDetailsPermissions} from './partnerInfo.selectors';
-import '@polymer/paper-button/paper-button';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading';

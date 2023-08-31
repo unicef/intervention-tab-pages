@@ -11,6 +11,7 @@ import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {AsyncAction} from '@unicef-polymer/etools-types';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {patchIntervention} from './common/actions/interventions';
+import '@shoelace-style/shoelace/dist/components/button/button.js';
 
 @customElement('unresolved-other-info-review')
 export class UnresolvedOtherInfo extends ComponentBaseMixin(LitElement) {
@@ -49,8 +50,12 @@ export class UnresolvedOtherInfo extends ComponentBaseMixin(LitElement) {
         ${this.hideActionButtons(this.editMode, this.editPermissions)
           ? html``
           : html` <div class="layout-horizontal right-align row-padding">
-              <paper-button class="default" @click="${this.cancel}">${translate('GENERAL.CANCEL')}</paper-button>
-              <paper-button class="primary" @click="${this.areYouSure}"> ${translate('MARK_AS_RESOLVED')}</paper-button>
+              <sl-button variant="primary" class="default" @click="${this.cancel}"
+                >${translate('GENERAL.CANCEL')}</sl-button
+              >
+              <sl-button variant="primary" class="primary-btn" @click="${this.areYouSure}">
+                ${translate('MARK_AS_RESOLVED')}</sl-button
+              >
             </div>`}
       </etools-content-panel>
     `;
