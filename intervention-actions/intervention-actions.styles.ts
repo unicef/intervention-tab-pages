@@ -38,7 +38,7 @@ export const InterventionActionsStyles: CSSResult = css`
 
   .cancel-background {
     --sl-color-primary-600: var(--cancel-color);
-    --sl-color-primary-500:: var(--cancel-color);
+    --sl-color-primary-500: var(--cancel-color);
   }
 
   .reject-button {
