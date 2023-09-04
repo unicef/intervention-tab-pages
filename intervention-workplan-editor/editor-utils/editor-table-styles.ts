@@ -130,13 +130,6 @@ export const EditorTableStyles = css`
     max-width: fit-content;
   }
 
-  paper-button {
-    color: white;
-    background-color: var(--primary-color);
-    padding: 5px;
-    border-radius: 7px;
-  }
-
   .pad-top-8 {
     padding-top: 8px;
   }

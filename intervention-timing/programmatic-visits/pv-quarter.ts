@@ -8,6 +8,7 @@ import {AnyObject, PlannedVisit, Site} from '@unicef-polymer/etools-types';
 import {css, html, LitElement} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {langChanged, translate} from 'lit-translate';
+import '@shoelace-style/shoelace/dist/components/button/button.js';
 declare const dayjs: any;
 
 @customElement('pv-quarter')
@@ -62,8 +63,8 @@ export class PvQuarter extends LitElement {
         .visits {
           padding-bottom: 12px;
         }
-        .secondary-btn {
-          font-size: 12px !important;
+        .sel-site-btn {
+          --sl-button-font-size-medium: 12px !important;
           margin-bottom: 32px !important;
         }
 
@@ -119,15 +120,16 @@ export class PvQuarter extends LitElement {
             </div>`;
           })}
         </div>
-        <paper-button
-          class="secondary-btn"
+        <sl-button
+          variant="text"
+          class="primary-btn no-marg no-pad sel-site-btn"
           @click="${() => this.openSitesDialog()}"
           ?hidden="${this.readonly || !this.item[`programmatic_q${this.qIndex}`]}"
           title=${translate('SELECT_SITE_FROM_MAP')}
         >
           <iron-icon icon="add"></iron-icon>
           ${translate('SELECT_SITE_FROM_MAP')}
-        </paper-button>
+        </sl-button>
       </div>
     `;
   }

@@ -1,6 +1,6 @@
-import {PaperButtonElement} from '@polymer/paper-button';
 import {LitElement} from 'lit';
 import {Constructor} from '@unicef-polymer/etools-types';
+import {SlButton} from '@shoelace-style/shoelace';
 /**
  * Notes about the functionality:
  * - Only cells that contain editable inputs can be reached through arrows navigation
@@ -66,7 +66,7 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
       if (event.ctrlKey && event.key == 's') {
         event.preventDefault();
         event.stopImmediatePropagation();
-        const saveBtn = this.shadowRoot?.querySelector<PaperButtonElement>('[id^="btnSave"]:not([hidden])');
+        const saveBtn = this.shadowRoot?.querySelector<SlButton>('[id^="btnSave"]:not([hidden])');
         if (saveBtn) {
           saveBtn.click();
         }
@@ -174,7 +174,7 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
             return;
           }
           // @ts-ignore
-          if (['paper-icon-button', 'paper-button'].includes(path[0]?.localName)) {
+          if (['paper-icon-button', 'sl-button'].includes(path[0]?.localName)) {
             return;
           }
           let actionBtn: any = this.searchForActionBtnInCurrentTd(currentTd);

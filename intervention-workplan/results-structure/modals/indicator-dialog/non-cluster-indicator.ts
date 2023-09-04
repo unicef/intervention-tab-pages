@@ -16,6 +16,7 @@ import {Indicator} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../../../utils/intervention-labels-map';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import '@shoelace-style/shoelace/dist/components/button/button.js';
 
 /**
  * @customElement
@@ -66,10 +67,9 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         }
 
         .all-locations {
-          margin: auto;
           display: flex;
           flex-direction: column;
-          align-items: center;
+          justify-content: end;
         }
 
         .row-h {
@@ -381,14 +381,15 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         >
         </etools-dropdown-multi>
         <div class="all-locations">
-          <paper-button
-            class="secondary-btn add-locations"
+          <sl-button
+            variant="text"
+            class="primary-btn"
             ?hidden="${this.readonly}"
             @click="${this._addAllLocations}"
             title=${translate('ADD_ALL_LOCATIONS')}
           >
             ${translate('ADD_ALL')}
-          </paper-button>
+          </sl-button>
         </div>
       </div>
     `;

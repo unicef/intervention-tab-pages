@@ -20,6 +20,7 @@ import '@polymer/paper-radio-group';
 import '@polymer/paper-checkbox/paper-checkbox';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import {formatDate, getTodayDateStr} from '@unicef-polymer/etools-utils/dist/date.util';
+import '@shoelace-style/shoelace/dist/components/button/button.js';
 
 @customElement('review-checklist-popup')
 export class ReviewChecklistPopup extends LitElement {
@@ -54,10 +55,7 @@ export class ReviewChecklistPopup extends LitElement {
           align-items: inherit;
           justify-content: flex-end;
         }
-        :host paper-button {
-          align-self: stretch;
-          font-size: 14px;
-        }
+
         paper-checkbox {
           margin: 14px 0;
         }
@@ -155,14 +153,16 @@ export class ReviewChecklistPopup extends LitElement {
               </paper-checkbox>`}
         </div>
         <div slot="buttons">
-          <paper-button class="cancel-btn" @click="${() => this.close()}">${translate('GENERAL.CANCEL')}</paper-button>
+          <sl-button variant="text" class="cancel" @click="${() => this.close()}"
+            >${translate('GENERAL.CANCEL')}</sl-button
+          >
           ${this.rejectPopup
-            ? html`<paper-button class="error" @click="${() => this.saveReview()}">
+            ? html`<sl-button variant="text" class="cancel" @click="${() => this.saveReview()}">
                 ${translate('REJECT')}
-              </paper-button>`
-            : html`<paper-button class="primary" @click="${() => this.saveReview()}">
+              </sl-button>`
+            : html`<sl-button variant="primary" class="primary-btn" @click="${() => this.saveReview()}">
                 ${this.approvePopup ? translate('APPROVE') : translate('SAVE_REVIEW')}
-              </paper-button>`}
+              </sl-button>`}
         </div>
       </etools-dialog>
     `;

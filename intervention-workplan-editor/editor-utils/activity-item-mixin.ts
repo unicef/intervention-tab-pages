@@ -290,11 +290,13 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                     class="flex-h justify-right"
                     ?hidden="${!((activity.inEditMode || activity.itemsInEditMode) && activity.items?.length > 3)}"
                   >
-                    <paper-button
+                    <sl-button
                       id="btnSave-activity-2"
+                      variant="primary"
+                      class="primary-btn"
                       ?hidden="${!((activity.inEditMode || activity.itemsInEditMode) && activity.items?.length > 3)}"
                       @click="${() => this.saveActivity(activity, pdOutput.id, this.intervention.id!)}"
-                      >${translate('GENERAL.SAVE')}</paper-button
+                      >${translate('GENERAL.SAVE')}</sl-button
                     >
                     <paper-icon-button
                       class="flex-none"

@@ -1,4 +1,3 @@
-import '@polymer/paper-button/paper-button';
 import '@polymer/paper-toggle-button';
 import './common/layout/page-content-header/intervention-page-content-header';
 import './common/layout/page-content-header/intervention-page-content-subheader';

@@ -290,14 +290,16 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                     programmeManagement.items?.length > 3
                   )}"
                 >
-                  <paper-button
+                  <sl-button
                     id="btnSave-programme-management-2"
+                    variant="primary"
+                    class="primary-btn"
                     ?hidden="${!(
                       (programmeManagement.inEditMode || programmeManagement.itemsInEditMode) &&
                       programmeManagement.items?.length > 3
                     )}"
                     @click="${() => this.saveProgrammeManagement(programmeManagement, this.intervention.id!)}"
-                    >${translate('GENERAL.SAVE')}</paper-button
+                    >${translate('GENERAL.SAVE')}</sl-button
                   >
                   <paper-icon-button
                     class="flex-none"
