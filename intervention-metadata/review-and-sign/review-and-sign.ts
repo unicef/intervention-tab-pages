@@ -8,7 +8,7 @@ import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-pa
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-upload/etools-upload';
 
-import '@unicef-polymer/etools-date-time/datepicker-lite';
+import '@unicef-polymer/etools-unicef/src/etools-date-time/datepicker-lite';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import UploadMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uploads-mixin';
 import CONSTANTS from '../../common/constants';
