@@ -80,7 +80,9 @@ export const ActivityItemsTableStyles: CSSResult = css`
   .border {
     border-bottom: 1px solid var(--darker-divider-color);
   }
-  *:focus {
+  etools-textarea:focus,
+  etools-currency:focus,
+  etools-input:focus {
     outline: 0;
     box-shadow: 0 0 5px 5px rgba(170, 165, 165, 0.4);
     background-color: rgba(170, 165, 165, 0.4);
@@ -90,7 +92,7 @@ export const ActivityItemsTableStyles: CSSResult = css`
     background-color: transparent;
   }
   label[required] {
-    --required-star-style_-_padding-inline-end: 20px;
+    padding-inline-end: 20px;
   }
   etools-input,
   etools-textarea {
