@@ -4,7 +4,6 @@ import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-c
 import CONSTANTS from '../../../common/constants';
 import GenerateQuarterlyReportingRequirementsMixin from '../mixins/generate-quarterly-reporting-requirements-mixin';
 
-import '@polymer/paper-button/paper-button.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 
 import './edit-qpr-dialog';

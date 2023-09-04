@@ -1,8 +1,8 @@
 import {Constructor} from '@unicef-polymer/etools-types';
 import {CSSResultArray, html, LitElement, TemplateResult, css} from 'lit';
 
-import {PaperButtonElement} from '@polymer/paper-button/paper-button';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
+import SlButton from '@shoelace-style/shoelace/dist/components/button/button.js';
 
 export function TruncateMixin<T extends Constructor<LitElement>>(baseClass: T) {
   return class Truncate extends baseClass {
@@ -26,7 +26,7 @@ export function TruncateMixin<T extends Constructor<LitElement>>(baseClass: T) {
     }
 
     private showMore(event: CustomEvent) {
-      const paperBtn = event.target as PaperButtonElement;
+      const paperBtn = event.target as SlButton;
       paperBtn.setAttribute('hidden', '');
       const truncatedText = paperBtn.nextElementSibling;
       truncatedText?.removeAttribute('hidden');

@@ -2,7 +2,6 @@ import {LitElement, html} from 'lit';
 import {customElement, property, query} from 'lit/decorators.js';
 import '@polymer/iron-icons/iron-icons';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
-import '@polymer/paper-button/paper-button';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';

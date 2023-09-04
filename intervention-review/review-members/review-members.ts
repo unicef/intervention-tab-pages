@@ -14,7 +14,6 @@ import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/b
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import cloneDeep from 'lodash-es/cloneDeep';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
-import '@polymer/paper-button/paper-button';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown-multi.js';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
@@ -36,12 +35,7 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
         datepicker-lite {
           margin-inline-end: 24px;
         }
-        paper-button.notify {
-          height: 40px;
-          white-space: nowrap;
-          flex: none;
-          margin-inline-start: 24px;
-        }
+
         .row-h:not(:first-child) {
           padding-top: 0;
         }

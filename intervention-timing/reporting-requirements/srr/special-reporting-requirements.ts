@@ -1,6 +1,5 @@
 import {LitElement, html} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
-import '@polymer/paper-button/paper-button';
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 
 import '@unicef-polymer/etools-modules-common/dist/layout/icons-actions';

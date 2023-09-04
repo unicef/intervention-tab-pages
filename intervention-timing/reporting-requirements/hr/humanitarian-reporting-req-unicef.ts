@@ -2,7 +2,6 @@ import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import CONSTANTS from '../../../common/constants';
-import '@polymer/paper-button/paper-button.js';
 import './edit-hru-dialog.js';
 import './hru-list.js';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';

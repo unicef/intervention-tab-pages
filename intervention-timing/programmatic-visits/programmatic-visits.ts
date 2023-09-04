@@ -1,6 +1,5 @@
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import '@polymer/paper-button/paper-button';
 import '@polymer/paper-icon-button/paper-icon-button';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
@@ -75,12 +74,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
         .padd-left-when-items {
           margin-inline-start: 46px;
         }
-
-        .secondary-btn {
-          --paper-button: {
-            color: #0099ff;
-          }
-        }
+      
         .totalContainer {
           text-align: center;
           height: 114px;
@@ -108,10 +102,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
           padding-top: 15px;
           padding-bottom: 15px;
         }
-        paper-button iron-icon {
-          margin-inline-start: 45px;
-          margin-inline-end: 10px;
-        }
+      
       </style>
 
       <etools-content-panel

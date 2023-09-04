@@ -69,9 +69,6 @@ export const InterventionActionsStyles: CSSResult = css`
     margin-inline-start: 10px;
   }
 
-  paper-button {
-    z-index: 10;
-  }
   .option-button {
     height: 36px;
     border-inline-start: 2px solid rgba(255, 255, 255, 0.12);
