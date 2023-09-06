@@ -3,13 +3,10 @@ import {customElement, property} from 'lit/decorators.js';
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
-import {removeDialog, createDynamicDialog} from '@unicef-polymer/etools-unicef/src/etools-dialog/dynamic-dialog.js';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import './update-fr-numbers';
 import {UpdateFrNumbers} from './update-fr-numbers';
-import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {RootState} from '../../common/types/store.types';
@@ -34,6 +31,8 @@ import ContentPanelMixin from '@unicef-polymer/etools-modules-common/dist/mixins
 import {customIcons} from '@unicef-polymer/etools-modules-common/dist/styles/custom-icons';
 import {getArraysDiff} from '@unicef-polymer/etools-utils/dist/array.util';
 import {listenForLangChanged} from 'lit-translate';
+import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
+import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 
 /**
  * @customElement
@@ -127,9 +126,6 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
   frsDialogEl!: UpdateFrNumbers;
 
   @property({type: Object})
-  frsConfirmationsDialog!: EtoolsDialog;
-
-  @property({type: Object})
   _lastFrsDetailsReceived!: FrsDetails | null;
 
   @property({type: String})
@@ -137,8 +133,6 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
 
   @property({type: Boolean})
   isUnicefUser!: boolean;
-
-  private _frsConfirmationsDialogMessage!: HTMLSpanElement;
 
   stateChanged(state: RootState) {
     if (
@@ -175,16 +169,12 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
   connectedCallback() {
     super.connectedCallback();
     this._createFrsDialogEl();
-    this._createFrsConfirmationsDialog();
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     // remove update frs el on fr el detached
     this._removeFrsDialogEl();
-
-    // remove confirmations frs dialog on fr element detached
-    this._removeFrsConfirmationsDialog();
   }
 
   _createFrsDialogEl() {
@@ -203,40 +193,6 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
     if (this.frsDialogEl) {
       this.frsDialogEl.removeEventListener('update-frs-dialog-close', this.frNumbersUpdateHandler as any);
       document.querySelector('body')!.removeChild(this.frsDialogEl);
-    }
-  }
-
-  _createFrsConfirmationsDialog() {
-    // init frs confirmations dialog element
-    this._frsConfirmationsDialogMessage = document.createElement('span');
-    this._frsConfirmationsDialogMessage.setAttribute('id', 'frsConfirmationsDialogMessage');
-
-    this._frsInconsistenciesConfirmationHandler = this._frsInconsistenciesConfirmationHandler.bind(this);
-    this.frsConfirmationsDialog = createDynamicDialog({
-      title: translate('FR_WARNING') as unknown as string,
-      size: 'md',
-      okBtnText: translate('OK_BTN') as unknown as string,
-      cancelBtnText: translate('CANCEL_BTN') as unknown as string,
-      closeCallback: this._frsInconsistenciesConfirmationHandler,
-      content: this._frsConfirmationsDialogMessage
-    });
-  }
-
-  _removeFrsConfirmationsDialog() {
-    if (this.frsConfirmationsDialog) {
-      this.frsConfirmationsDialog.removeEventListener('close', this._frsInconsistenciesConfirmationHandler as any);
-      removeDialog(this.frsConfirmationsDialog);
-    }
-  }
-
-  _updateFrsInconsistenciesDialogMessage(warning: string) {
-    if (!this.frsConfirmationsDialog) {
-      return;
-    }
-    if (this._frsConfirmationsDialogMessage) {
-      this._frsConfirmationsDialogMessage.innerHTML = warning + '<br><br>Do you want to continue?';
-    } else {
-      EtoolsLogger.warn('frsConfirmationsDialogMessage element not found', 'Fund Reservations');
     }
   }
 
@@ -298,10 +254,8 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
   }
 
   // handle frs validations warning confirmation
-  _frsInconsistenciesConfirmationHandler(e: CustomEvent) {
-    e.stopImmediatePropagation();
-
-    if (e.detail.confirmed) {
+  _frsInconsistenciesConfirmationHandler(confirmed: boolean) {
+    if (confirmed) {
       // confirmed, add numbers to intervention
       this._triggerPdFrsUpdate(Object.assign({}, this._lastFrsDetailsReceived));
       this._lastFrsDetailsReceived = null;
@@ -348,8 +302,7 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
       // there are inconsistencies
       this._lastFrsDetailsReceived = frsDetails;
 
-      this._updateFrsInconsistenciesDialogMessage(inconsistencyMsg);
-      this._openFrsInconsistenciesDialog();
+      this._openFrsInconsistenciesDialog(inconsistencyMsg);
     } else {
       // append FR numbers to intervention
       this._triggerPdFrsUpdate(frsDetails);
@@ -387,11 +340,18 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
     return !!frs.length;
   }
 
-  _openFrsInconsistenciesDialog() {
-    if (this.frsConfirmationsDialog) {
-      this.frsConfirmationsDialog.opened = true;
-      this.frsDialogEl.closeDialog();
-    }
+  async _openFrsInconsistenciesDialog(inconsistencyMsg: string) {
+    this.frsDialogEl.closeDialog();
+    const confirmed = await openDialog({
+      dialog: 'are-you-sure',
+      dialogData: {
+        content: html`${inconsistencyMsg} <br /><br />Do you want to continue?`,
+        confirmBtnText: translate('YES')
+      }
+    }).then(({confirmed}) => {
+      return confirmed;
+    });
+    this._frsInconsistenciesConfirmationHandler(confirmed);
   }
 
   _getNoFrsWarningText(interventionId: string) {
