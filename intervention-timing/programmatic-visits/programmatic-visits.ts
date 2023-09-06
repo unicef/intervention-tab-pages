@@ -74,7 +74,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
         .padd-left-when-items {
           margin-inline-start: 46px;
         }
-      
+
         .totalContainer {
           text-align: center;
           height: 114px;
@@ -102,7 +102,6 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
           padding-top: 15px;
           padding-bottom: 15px;
         }
-      
       </style>
 
       <etools-content-panel
@@ -114,9 +113,9 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
 
         <div class="row-padding-v extra-top-padd" ?hidden="${!this.editMode}">
           <sl-button
-          variant="text"
-            class="primary-btn"  
-          ${this._getAddBtnPadding(this.data?.length)}"
+            variant="text"
+            class="primary-btn"
+            ${this._getAddBtnPadding(this.data?.length)}
             @click="${this._addNewPlannedVisit}"
           >
             <iron-icon icon="add-box"></iron-icon>
