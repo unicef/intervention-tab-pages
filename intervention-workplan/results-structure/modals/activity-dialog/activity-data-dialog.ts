@@ -187,12 +187,14 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
                     ?readonly="${this.readonly}"
                     .value="${this.editedData.cso_cash}"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue('cso_cash', detail.value)}"
+                    required
                   ></etools-currency>
 
                   <etools-currency
                     class="col-3"
                     label=${translate('UNICEF_CASH_BUDGET')}
                     ?readonly="${this.readonly}"
+                    required
                     .value="${this.editedData.unicef_cash}"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue('unicef_cash', detail.value)}"
                   ></etools-currency>
