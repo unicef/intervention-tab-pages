@@ -233,4 +233,7 @@ export const EditorTableStyles = css`
   tr[inEditMode] {
     background-color: #b5d5f050 !important;
   }
+  etools-currency::part(input) {
+    text-align: end;
+  }
 `;

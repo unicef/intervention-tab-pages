@@ -134,8 +134,8 @@ export const ActivityItemsTableInlineStyles: TemplateResult = html`
       width: 100%;
       margin-top: 1px;
     }
-    :host etools-currency {
-      text-align: right;
+    etools-currency::part(input) {
+      text-align: end;
       cursor: pointer;
     }
     etools-currency::part(input) {
