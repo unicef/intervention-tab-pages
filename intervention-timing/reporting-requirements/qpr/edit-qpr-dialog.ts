@@ -36,9 +36,9 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
       gridLayoutStylesLit,
       buttonsStyles,
       css`
-        sl-button#add-req,
+        sl-button#addReq,
         sl-button#regen {
-          --sl-input-height-medium: 26px !important;
+          --sl-input-height-medium: 24px !important;
         }
       `
     ];
