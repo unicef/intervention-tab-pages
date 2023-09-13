@@ -14,6 +14,7 @@ export class AcceptForPartner extends LitElement {
       <style>
         .container {
           padding: 15px 20px;
+          max-width: 220px;
         }
       </style>
       <etools-dialog
