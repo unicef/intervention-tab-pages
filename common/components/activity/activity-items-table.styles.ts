@@ -5,6 +5,8 @@ export const ActivityItemsTableStyles: CSSResult = css`
   :host {
     display: block;
     background-color: var(--secondary-background-color);
+    --etools-input-padding-top: 0;
+    --etools-input-padding-bottom: 0;
   }
   .grid-row {
     display: grid;
@@ -18,7 +20,7 @@ export const ActivityItemsTableStyles: CSSResult = css`
     padding: 8px 4px;
     box-sizing: border-box;
     font-weight: normal;
-    font-size: 13px;
+    font-size: 14px;
     letter-spacing: -0.1px;
     color: var(--primary-text-color);
   }
@@ -103,10 +105,11 @@ export const ActivityItemsTableStyles: CSSResult = css`
     --sl-input-height-small: 17px;
   }
   etools-input::part(input) {
-    height: 17px;
-    line-height: 17px;
+    height: 17px !important;
+    line-height: 17px !important;
     font-size: 14px !important;
   }
+
   etools-textarea::part(textarea) {
     padding-top: 0;
     padding-bottom: 0;
@@ -120,36 +123,25 @@ export const ActivityItemsTableStyles: CSSResult = css`
 
 export const ActivityItemsTableInlineStyles: TemplateResult = html`
   <style>
+    :host {
+      --etools-input-padding-top: 0;
+      --etools-input-padding-bottom: 0;
+      --sl-input-height-small: 17px;
+    }
     :host etools-currency,
     :host paper-textarea,
     :host paper-input {
       width: 100%;
       margin-top: 1px;
-      --paper-input-container: {
-        padding: 0;
-      }
-      --paper-input-container-input: {
-        display: block;
-      }
-      --paper-input-container-shared-input-style: {
-        font-size: 13px;
-        min-height: 17px;
-        line-height: 17px;
-        width: 100%;
-      }
-      --paper-input-container-underline: {
-        display: none;
-      }
-      --iron-autogrow-textarea: {
-        cursor: pointer;
-      }
-      --paper-input-prefix: {
-        display: none;
-      }
     }
-    :host etools-currency {
-      text-align: right;
+    etools-currency::part(input) {
+      text-align: end;
       cursor: pointer;
+    }
+    etools-currency::part(input) {
+      height: 17px !important;
+      line-height: 17px !important;
+      font-size: 14px !important;
     }
     @media (max-width: 1100px) {
       :host etools-textarea,
