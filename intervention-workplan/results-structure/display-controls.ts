@@ -59,9 +59,9 @@ export class DisplayControls extends LitElement {
 
   protected render(): TemplateResult {
     return html`
-      <paper-toggle-button id="showInactive" ?hidden="${!this.showInactiveToggle}" @iron-change=${this.inactiveChange}>
+      <sl-switch id="showInactive" ?hidden="${!this.showInactiveToggle}" @sl-change=${this.inactiveChange}>
         ${translate('SHOW_INACTIVE')}
-      </paper-toggle-button>
+      </sl-switch>
 
       <div class="layout-horizontal">
         <paper-menu-button id="view-menu-button" close-on-activate horizontal-align>
@@ -103,7 +103,7 @@ export class DisplayControls extends LitElement {
   }
 
   inactiveChange(e: CustomEvent): void {
-    if (!e.detail) {
+    if (!e.target) {
       return;
     }
     const element = e.currentTarget as HTMLInputElement;

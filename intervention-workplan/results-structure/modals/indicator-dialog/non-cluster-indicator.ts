@@ -3,7 +3,7 @@ import '@polymer/paper-input/paper-textarea.js';
 import '@polymer/paper-radio-group/paper-radio-group.js';
 import '@polymer/paper-radio-button/paper-radio-button.js';
 import '@polymer/paper-checkbox/paper-checkbox.js';
-import '@polymer/paper-toggle-button/paper-toggle-button.js';
+import '@shoelace-style/shoelace/dist/components/switch/switch.js';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown-multi.js';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
 import IndicatorsCommonMixin from './mixins/indicators-common-mixin';
@@ -85,6 +85,9 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         }
         .mr-20 {
           margin-inline-end: 20px;
+        }
+        sl-switch {
+          margin-top: 25px;
         }
       </style>
 
@@ -326,13 +329,13 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
               </div>`
           : html``}
         <div class="col col-6" ?hidden=${!this.isUnicefUser}>
-          <paper-toggle-button
+          <sl-switch
             ?checked="${this.indicator.is_high_frequency}"
             ?disabled="${this.readonly || !this.isUnicefUser}"
-            @iron-change="${this.isHighFrequencyChanged}"
+            @sl-change="${this.isHighFrequencyChanged}"
           >
             ${translate(translatesMap.is_high_frequency)}
-          </paper-toggle-button>
+          </sl-switch>
         </div>
       </div>
       <div class="unknown">

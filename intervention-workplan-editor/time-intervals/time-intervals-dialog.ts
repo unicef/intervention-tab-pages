@@ -2,7 +2,6 @@ import {CSSResultArray, html, LitElement, TemplateResult} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
-import '@polymer/paper-toggle-button';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import '../../intervention-workplan/results-structure/modals/activity-dialog/activity-timeframes';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';

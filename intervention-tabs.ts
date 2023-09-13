@@ -1,4 +1,4 @@
-import '@polymer/paper-toggle-button';
+import '@shoelace-style/shoelace/dist/components/switch/switch.js';
 import './common/layout/page-content-header/intervention-page-content-header';
 import './common/layout/page-content-header/intervention-page-content-subheader';
 import '@unicef-polymer/etools-modules-common/dist/components/cancel/reason-display';
@@ -187,8 +187,8 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
         <span class="intervention-partner" slot="page-title">${this.intervention.partner}</span>
         <span class="intervention-number" slot="page-title">${this.intervention.number}</span>
         <div slot="mode">
-          <paper-toggle-button id="commentMode" ?checked="${this.commentMode}" @iron-change="${this.commentModeChange}"
-            >${translate('GENERAL.COMMENT_MODE')}</paper-toggle-button
+          <sl-switch id="commentMode" ?checked="${this.commentMode}" @sl-change="${this.commentModeChange}"
+            >${translate('GENERAL.COMMENT_MODE')}</sl-switch
           >
         </div>
 
