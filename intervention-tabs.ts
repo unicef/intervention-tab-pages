@@ -411,7 +411,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       return;
     }
     this.setActiveTab(state);
-    // this.activeSubTab = currentSubSubpage(state) as string; //TODO - clean up
+    // this.activeSubTab = currentSubSubpage(state) as string; //TODO - clean up after Rob agrees with new Tabs
     this.isUnicefUser = isUnicefUser(state);
 
     // add attribute to host to edit specific styles
