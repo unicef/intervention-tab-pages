@@ -473,7 +473,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     /**
      * Avoid 2 tabs partially selected in situations like:
      * - after language change
-     * - navigating to a different Tab fby clicking a comment in Comments Panel
+     * - navigating to a different Tab by clicking a comment in Comments Panel
      */
     setTimeout(() => this.shadowRoot?.querySelector('sl-tab-group')?.syncIndicator());
   }
