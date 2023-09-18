@@ -37,6 +37,7 @@ import {Intervention, ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
+import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
 
 const customStyles = html`
   <style>
@@ -118,12 +119,12 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           </etools-info-tooltip>
 
           <etools-loading ?active="${this.uploadInProcess}" no-overlay loading-text></etools-loading>
-          <paper-icon-button
+          <sl-icon-button
             ?hidden="${!this.permissions.edit.supply_items}"
             @click="${() => this.addSupplyItem()}"
-            icon="add-box"
+            name="plus-square-fill"
           >
-          </paper-icon-button>
+          </sl-icon-button>
         </div>
         <div class="row-h" ?hidden="${!this.permissions.edit.supply_items || this.supply_items?.length}">
           ${this.getUploadHelpElement()}

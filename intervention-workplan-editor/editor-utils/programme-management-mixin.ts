@@ -25,6 +25,7 @@ import {
 } from '../../common/types/editor-page-types';
 import {getTotalCash, getTotalCashFormatted} from '../../common/components/activity/get-total.helper';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
+import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
 
 // import {ManagementBudgetItem} from '@unicef-polymer/etools-types';
 
@@ -186,13 +187,13 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                       }}"
                     ></paper-icon-button>
 
-                    <paper-icon-button
+                    <sl-icon-button
                       id="add-item-${item.id}"
-                      icon="add-box"
+                      name="plus-square-fill"
                       slot="custom-icon"
                       @click="${(e: CustomEvent) => this.addNewItem(e, item, 'focusBelow')}"
                       ?hidden="${item.items?.length || !this.permissions.edit.management_budgets}"
-                    ></paper-icon-button>
+                    ></sl-icon-button>
                     <paper-tooltip
                       for="add-item-${item.id}"
                       .animationDelay="${0}"

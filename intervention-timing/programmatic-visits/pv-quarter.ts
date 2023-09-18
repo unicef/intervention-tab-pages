@@ -9,6 +9,7 @@ import {css, html, LitElement} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {langChanged, translate} from 'lit-translate';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
+import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
 declare const dayjs: any;
 
 @customElement('pv-quarter')

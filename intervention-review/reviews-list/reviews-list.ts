@@ -15,6 +15,7 @@ import {REVIEW_ANSVERS, REVIEW_QUESTIONS} from '../../common/components/interven
 import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 import '../../common/components/intervention/review-checklist-popup';
+import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
 
 @customElement('reviews-list')
 export class ReviewsList extends connectStore(LitElement) {

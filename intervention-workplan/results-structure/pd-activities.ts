@@ -25,6 +25,7 @@ import {
 } from '../../common/mixins/results-structure-common';
 import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {PaperMenuButton} from '@polymer/paper-menu-button';
+import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
 
 @customElement('pd-activities')
 export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
@@ -60,14 +61,14 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
         <div slot="row-data" class="layout-horizontal align-items-center editable-row start-justified">
           <div class="title-text">${translate(translatesMap.activities)} (${this.activities.length})</div>
           <etools-info-tooltip position="top" custom-icon ?hide-tooltip="${this.readonly}" offset="0">
-            <paper-icon-button
-              icon="add-box"
+            <sl-icon-button
+              name="plus-square-fill"
               slot="custom-icon"
               class="add"
               tabindex="0"
               @click="${() => this.openDialog()}"
               ?hidden="${this.readonly}"
-            ></paper-icon-button>
+            ></sl-icon-button>
             <span class="no-wrap" slot="message">${translate('ADD_PD_ACTIVITY')}</span>
           </etools-info-tooltip>
         </div>
@@ -146,11 +147,11 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
 
                     <div class="show-actions hover-block" style="z-index: ${99 - index}" ?hidden="${this.commentMode}">
                       <paper-menu-button id="view-menu-button" close-on-activate horizontal-align>
-                        <paper-icon-button
+                        <sl-icon-button
                           slot="dropdown-trigger"
-                          icon="icons:more-vert"
+                          name="three-dots-vertical"
                           tabindex="0"
-                        ></paper-icon-button>
+                        ></sl-icon-button>
                         <paper-listbox slot="dropdown-content">
                           <div
                             class="action"

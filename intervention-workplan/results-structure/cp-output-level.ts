@@ -14,6 +14,7 @@ import {translate} from 'lit-translate';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import {TruncateMixin} from '../../common/mixins/truncate.mixin';
 import {_canDelete} from '../../common/mixins/results-structure-common';
+import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
 
 @customElement('cp-output-level')
 export class CpOutputLevel extends TruncateMixin(LitElement) {

@@ -10,6 +10,7 @@ import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import '../../common/components/intervention/review-checklist-popup';
 import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
+import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
 
 @customElement('overall-approval')
 export class OverallApproval extends LitElement {
@@ -65,7 +66,7 @@ export class OverallApproval extends LitElement {
       ${sharedStyles}
       <etools-content-panel class="content-section" panel-title=${translate('OVERALL_REVIEW')}>
         <div slot="panel-btns" ?hidden="${this.readonly}">
-          <paper-icon-button icon="icons:create" @click="${() => this.openReviewPopup()}"></paper-icon-button>
+          <sl-icon-button name="pencil-fill" @click="${() => this.openReviewPopup()}"></sl-icon-button>
         </div>
         <etools-data-table-row class="overall-row" no-collapse details-opened>
           <div slot="row-data">

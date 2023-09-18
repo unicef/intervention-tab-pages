@@ -104,8 +104,9 @@ export const EditorTableStyles = css`
   paper-icon-button {
     color: #504e4e;
   }
-  paper-icon-button[icon='close'] {
+  sl-icon-button[name='x-lg'] {
     color: red;
+    stroke: red;
   }
   paper-icon-button[icon='delete']:hover {
     color: #212121;

@@ -1,7 +1,6 @@
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import '@polymer/iron-icons/iron-icons';
-import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
@@ -30,6 +29,7 @@ import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/et
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {getIntervention, setShouldReGetList} from '../../common/actions/interventions';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
+import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
 import './amendment-difference';
 
 /**
@@ -107,13 +107,13 @@ export class PdAmendments extends CommentsMixin(LitElement) {
 
       <etools-content-panel show-expand-btn panel-title=${translate('AMENDMENTS')} comment-element="amendments">
         <div slot="panel-btns">
-          <paper-icon-button
-            icon="add-box"
+          <sl-icon-button
+            name="plus-square-fill"
             title=${translate('ADD_AMENDMENT')}
             @click="${() => this._showAddAmendmentDialog()}"
             ?hidden="${!this.intervention?.permissions?.edit.amendments}"
           >
-          </paper-icon-button>
+          </sl-icon-button>
         </div>
         <div class="p-relative" id="amendments-wrapper">
           <etools-data-table-header id="listHeader" no-title ?hidden="${!this.amendments.length}">
@@ -156,10 +156,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
                   </span>
 
                   <div class="hover-block" ?hidden="${!item.is_active}">
-                    <paper-icon-button
-                      icon="delete"
-                      @click="${() => this.deleteAmendment(item.id)}"
-                    ></paper-icon-button>
+                    <sl-icon-button name="trash-fill" @click="${() => this.deleteAmendment(item.id)}"></sl-icon-button>
                   </div>
                 </div>
 

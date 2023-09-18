@@ -14,6 +14,7 @@ import {AnyObject} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import RepeatableDataSetsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/repeatable-data-sets-mixin';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
+import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
 
 /**
  * @customElement
@@ -55,6 +56,7 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
         }
         .action.delete {
           color: var(--error-color);
+          --sl-color-primary-600: var(--error-color);
         }
       </style>
 
@@ -75,14 +77,14 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
             <div class="row-h item-container">
               <div class="item-actions-container">
                 <div class="actions">
-                  <paper-icon-button
+                  <sl-icon-button
                     class="action delete"
                     @click="${(event: CustomEvent) => this._openDeleteConfirmation(event, index)}"
                     .data-args="${index}"
-                    icon="cancel"
+                    name="x-circle-fill"
                     ?hidden="${!this._showDeleteFrBtn(this.interventionStatus, this.data.length)}"
                   >
-                  </paper-icon-button>
+                  </sl-icon-button>
                 </div>
               </div>
               <div class="item-content">

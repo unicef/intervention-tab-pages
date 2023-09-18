@@ -60,6 +60,7 @@ import {CpOutputLevel} from './cp-output-level';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {_canDelete} from '../../common/mixins/results-structure-common';
 import {EtoolsRequestEndpoint} from '@unicef-polymer/etools-ajax';
+import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
 
 /**
  * @customElement
@@ -137,7 +138,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           @click="${() => this.openCpOutputDialog()}"
           ?hidden="${!this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
         >
-          <paper-icon-button slot="custom-icon" icon="add-box" tabindex="0"></paper-icon-button>
+          <sl-icon-button slot="custom-icon" name="plus-square-fill" tabindex="0"></sl-icon-button>
           <span class="no-wrap">${translate('ADD_CP_OUTPUT')}</span>
         </div>
 
@@ -149,13 +150,13 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           <div class="pd-title layout-horizontal align-items-center">
             ${translate('PD_OUTPUTS_TITLE')}
             <etools-info-tooltip position="top" custom-icon offset="0">
-              <paper-icon-button
-                icon="add-box"
+              <sl-icon-button
+                name="plus-square-fill"
                 slot="custom-icon"
                 class="add"
                 tabindex="0"
                 @click="${() => this.openPdOutputDialog()}"
-              ></paper-icon-button>
+              ></sl-icon-button>
               <span class="no-wrap" slot="message">${translate('ADD_PD_OUTPUT')}</span>
             </etools-info-tooltip>
           </div>
@@ -191,13 +192,13 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                 : html`
                     <div class="pd-title layout-horizontal align-items-center">
                       ${translate('PD_OUTPUTS_TITLE')}<etools-info-tooltip position="top" custom-icon offset="0">
-                        <paper-icon-button
-                          icon="add-box"
+                        <sl-icon-button
+                          name="plus-square-fill"
                           slot="custom-icon"
                           class="add"
                           tabindex="0"
                           @click="${() => this.openPdOutputDialog({}, result.cp_output)}"
-                        ></paper-icon-button>
+                        ></sl-icon-button>
                         <span class="no-wrap" slot="message">${translate('ADD_PD_OUTPUT')}</span>
                       </etools-info-tooltip>
                     </div>

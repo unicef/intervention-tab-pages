@@ -15,6 +15,7 @@ import {ifDefined} from 'lit/directives/if-defined.js';
 import {ActivitiesCommonMixin} from '../../common/mixins/activities-common.mixin';
 import {getItemTotalFormatted} from '../../common/components/activity/get-total.helper';
 import {ActivitiesFocusMixin} from './activities-focus-mixin';
+import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
 
 export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass: T) {
   return class ActivityItemsClass extends ActivitiesCommonMixin(ActivitiesFocusMixin(baseClass)) {
@@ -277,7 +278,8 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                 <td></td>
                 <td tabindex="${ifDefined(this.commentMode ? undefined : 0)}" class="a-item-add-padd">
                   <div class="icon" @click="${(e: CustomEvent) => this.addNewActivityItem(e, activity, 'focusAbove')}">
-                    <paper-icon-button icon="add-box"></paper-icon-button> ${translate('ADD_NEW_ITEM')}
+                    <sl-icon-button name="plus-square-fill"></sl-icon-button>
+                    <span style="padding-bottom: 5px;"> ${translate('ADD_NEW_ITEM')}</span>
                   </div>
                 </td>
                 <td></td>
