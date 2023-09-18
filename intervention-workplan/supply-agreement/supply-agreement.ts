@@ -1,7 +1,7 @@
 import {LitElement, html} from 'lit';
 import {property, customElement, query} from 'lit/decorators.js';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
-import '@polymer/paper-icon-button/paper-icon-button.js';
+
 import '@unicef-polymer/etools-unicef/src/etools-table/etools-table';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
@@ -87,6 +87,9 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           display: flex;
           align-items: center;
         }
+        sl-icon-button[name='upload'] {
+          stroke: var(--primary-text-color);
+        }
       </style>
 
       <etools-content-panel
@@ -108,13 +111,13 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
             position="left"
             ?hide-tooltip="${!this.permissions.edit.supply_items || this.uploadInProcess}"
           >
-            <paper-icon-button
+            <sl-icon-button
               slot="custom-icon"
               ?hidden="${!this.permissions.edit.supply_items || this.uploadInProcess}"
               @click="${() => this.uploader?._openFileChooser()}"
-              icon="file-upload"
+              name="upload"
             >
-            </paper-icon-button>
+            </sl-icon-button>
             <span slot="message">${translate('UPLOAD_SUPPLY_TOOLTIP')}</span>
           </etools-info-tooltip>
 

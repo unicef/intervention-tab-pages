@@ -1,6 +1,6 @@
 import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/paper-input/paper-input.js';
-import '@polymer/paper-icon-button/paper-icon-button.js';
+
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 
 import {PaperInputElement} from '@polymer/paper-input/paper-input.js';

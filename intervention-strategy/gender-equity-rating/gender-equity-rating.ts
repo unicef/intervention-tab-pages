@@ -1,6 +1,6 @@
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import '@polymer/paper-icon-button/paper-icon-button';
+
 import '@polymer/paper-radio-group';
 import '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
@@ -79,12 +79,12 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
           ></info-icon-tooltip>
         </div>
        <div slot="panel-btns">
-          <paper-icon-button
+          <sl-icon-button
             ?hidden="${this.hideEditIcon(this.editMode, this.canEditAtLeastOneField)}"
             @click="${this.allowEdit}"
-            icon="create"
+            name="pencil-fill"
           >
-          </paper-icon-button>
+          </sl-icon-button>
         </div>
 
         <div class="row-padding-v pb-20">

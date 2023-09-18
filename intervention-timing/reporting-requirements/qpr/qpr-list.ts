@@ -57,16 +57,16 @@ export class QprList extends PaginationMixin(
                 <div class="col-data col-3">${formatDateLocalized(item.end_date)}</div>
                 <div class="col-data col-3">${formatDateLocalized(item.due_date)}</div>
                 <div class="col-data flex-c actions">
-                  <paper-icon-button
-                    icon="icons:create"
+                  <sl-icon-button
+                    name="pencil-fill"
                     @click="${() => this._editQprReq(index)}"
                     ?hidden="${!this.editMode}"
-                  ></paper-icon-button>
-                  <paper-icon-button
-                    icon="icons:delete"
+                  ></sl-icon-button>
+                  <sl-icon-button
+                    name="trash-fill"
                     ?hidden="${!this.editMode}"
                     @click="${() => this._deleteQprReq(index)}"
-                  ></paper-icon-button>
+                  ></sl-icon-button>
                 </div>
               </div>
             </etools-data-table-row>

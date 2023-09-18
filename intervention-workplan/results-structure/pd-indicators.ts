@@ -2,7 +2,7 @@ import {LitElement, html, TemplateResult, CSSResultArray, css, PropertyValues} f
 import {property, customElement} from 'lit/decorators.js';
 import {ResultStructureStyles} from './styles/results-structure.styles';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import '@polymer/paper-icon-button/paper-icon-button';
+
 import '@polymer/iron-icons';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {RootState} from '../../common/types/store.types';

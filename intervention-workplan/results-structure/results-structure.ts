@@ -14,7 +14,6 @@ import {
 import {ResultStructureStyles} from './styles/results-structure.styles';
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
-import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
 import './cp-output-level';
 import './pd-indicators';
@@ -236,12 +235,12 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                         class="hover-block"
                         ?hidden="${!this.permissions.edit.result_links || this.commentsModeEnabledFlag}"
                       >
-                        <paper-icon-button
-                          icon="icons:create"
+                        <sl-icon-button
+                          name="pencil-fill"
                           @click="${() => this.openPdOutputDialog(pdOutput, result.cp_output)}"
-                        ></paper-icon-button>
-                        <paper-icon-button
-                          icon="icons:delete"
+                        ></sl-icon-button>
+                        <sl-icon-button
+                          name="trash-fill"
                           ?hidden="${!_canDelete(
                             pdOutput,
                             !this.permissions.edit.result_links!,
@@ -250,7 +249,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                             this.intervention.in_amendment_date
                           )}"
                           @click="${() => this.openDeletePdOutputDialog(pdOutput.id)}"
-                        ></paper-icon-button>
+                        ></sl-icon-button>
                       </div>
                     </div>
 
@@ -696,6 +695,10 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
 
         etools-data-table-row#pdOutputRow::part(edt-list-row-wrapper) {
           padding-inline-start: 25px !important;
+        }
+        sl-icon-button[name='trash-fill'],
+        sl-icon-button[name='pencil-fill'] {
+          stroke: inherit !important;
         }
       `
     ];

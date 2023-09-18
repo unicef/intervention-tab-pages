@@ -5,7 +5,7 @@ export const etoolsCpHeaderActionsBarStyles = `
       display: flex;
   }
 
-  .cp-header-actions-bar paper-icon-button[disabled] {
+  .cp-header-actions-bar sl-icon-button[disabled] {
     visibility: hidden;
   }
 

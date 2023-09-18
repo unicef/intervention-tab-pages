@@ -4,7 +4,7 @@ import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-selector/iron-selector';
 import '@polymer/iron-pages/iron-pages';
 import '@polymer/paper-item/paper-item';
-import '@polymer/paper-icon-button/paper-icon-button';
+
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 
 import './qpr/quarterly-reporting-requirements';
@@ -137,12 +137,12 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
                 .tooltipText="${translate('QUARTERLY_PROGRESS_REPORT_TOOLTIP')}"
               ></info-icon-tooltip>
               <span>${translate('QUARTERLY_PROGRESS_REPORTS')} (${this.qprRequirementsCount})</span>
-              <paper-icon-button
+              <sl-icon-button
                 class="edit-rep-req"
-                icon="create"
+                name="pencil-fill"
                 @click="${this._openQprEditDialog}"
                 ?hidden="${this._hideRepReqEditBtn(this.isReadonly, this.qprRequirementsCount)}"
-              ></paper-icon-button>
+              ></sl-icon-button>
             </div>
             <div
               name="humanitarianUnicef"
@@ -159,12 +159,12 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
                 .tooltipText="${translate('HUMANITARIAN_REPORT_TOOLTIP')}"
               ></info-icon-tooltip>
               <span>${translate('HUMANITARIAN_REPORTS_UNICEF')} (${this.hrUnicefRequirementsCount})</span>
-              <paper-icon-button
+              <sl-icon-button
                 class="edit-rep-req"
-                icon="create"
+                name="pencil-fill"
                 @click="${this._openHruEditDialog}"
                 ?hidden="${this._hideRepReqEditBtn(this.isReadonly, this.hrUnicefRequirementsCount)}"
-              ></paper-icon-button>
+              ></sl-icon-button>
             </div>
             ${this.getHumanitarianLink(this.hrClusterRequirementsCount)}
             <div

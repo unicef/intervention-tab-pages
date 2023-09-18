@@ -165,8 +165,8 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                     <span class="b">${getTotalCashFormatted(item.cso_cash, item.unicef_cash)}</span>
                   </div>
                   <div class="action-btns align-bottom flex-h">
-                    <paper-icon-button
-                      icon="create"
+                    <sl-icon-button
+                      name="pencil-fill"
                       ?hidden="${item.inEditMode || !this.permissions.edit.management_budgets}"
                       @click="${(e: any) => {
                         item.inEditMode = true;
@@ -185,7 +185,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                           }
                         }
                       }}"
-                    ></paper-icon-button>
+                    ></sl-icon-button>
 
                     <sl-icon-button
                       id="add-item-${item.id}"
@@ -219,10 +219,10 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                       @click="${() => this.saveProgrammeManagement(item, this.intervention.id!)}"
                       >${translate('GENERAL.SAVE')}</sl-button
                     >
-                    <paper-icon-button
-                      icon="close"
+                    <sl-icon-button
+                      name="x-lg"
                       @click="${() => this.cancelProgrammeManagement(item.items, item, itemIndex)}"
-                    ></paper-icon-button>
+                    ></sl-icon-button>
                   </div>
                 </td>
               </tr>

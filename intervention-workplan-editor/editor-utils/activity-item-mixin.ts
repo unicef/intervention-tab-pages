@@ -242,8 +242,8 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   .value="${getItemTotalFormatted(item)}"
                 ></etools-input>
                 <div class="hover-block flex-h ${activity.itemsInEditMode && !item.id ? 'in-edit-and-deletable' : ''}">
-                  <paper-icon-button
-                    icon="create"
+                  <sl-icon-button
+                    name="pencil-fill"
                     ?hidden="${!this.permissions.edit.result_links || !item.id}"
                     @click="${(e: CustomEvent) => {
                       activity.inEditMode = true;
@@ -256,14 +256,14 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                         this.preserveFocusOnRow(e.target);
                       }
                     }}"
-                  ></paper-icon-button>
-                  <paper-icon-button
+                  ></sl-icon-button>
+                  <sl-icon-button
                     id="delItem"
-                    icon="delete"
+                    name="trash-fill"
                     tabindex="0"
                     ?hidden="${!this.permissions.edit.result_links}"
                     @click="${() => this.removeActivityItem(activity, pdOutput, itemIndex)}"
-                  ></paper-icon-button>
+                  ></sl-icon-button>
                 </div>
               </td>
             </tr>
@@ -300,12 +300,12 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                       @click="${() => this.saveActivity(activity, pdOutput.id, this.intervention.id!)}"
                       >${translate('GENERAL.SAVE')}</sl-button
                     >
-                    <paper-icon-button
+                    <sl-icon-button
                       class="flex-none"
-                      icon="close"
+                      name="x-lg"
                       @click="${() =>
                         this.cancelActivity(pdOutput.activities, activity, resultIndex, pdOutputIndex, activityIndex)}"
-                    ></paper-icon-button>
+                    ></sl-icon-button>
                   </div>
                 </td>
               </tr>

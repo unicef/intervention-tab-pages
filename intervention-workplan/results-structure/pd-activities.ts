@@ -2,7 +2,7 @@ import {LitElement, html, TemplateResult, CSSResultArray, css} from 'lit';
 import {property, customElement, queryAll} from 'lit/decorators.js';
 import {ResultStructureStyles} from './styles/results-structure.styles';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import '@polymer/paper-icon-button/paper-icon-button';
+
 import '@polymer/iron-icons';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
 import './modals/activity-dialog/activity-data-dialog';
@@ -307,6 +307,9 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
         }
         etools-data-table-row#activitiesRow::part(edt-list-row-collapse-wrapper) {
           border-top: none;
+        }
+        sl-icon-button[name='three-dots-vertical'] {
+          stroke: inherit;
         }
       `
     ];

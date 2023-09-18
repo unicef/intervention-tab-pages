@@ -108,16 +108,6 @@ export const EditorTableStyles = css`
     color: red;
     stroke: red;
   }
-  paper-icon-button[icon='delete']:hover {
-    color: #212121;
-  }
-  paper-icon-button[icon='create']:hover {
-    color: #212121;
-  }
-
-  paper-icon-button:hover {
-    color: #212121;
-  }
 
   etools-currency {
     text-align: right;

@@ -240,8 +240,8 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                     ? 'in-edit-and-deletable'
                     : ''}"
                 >
-                  <paper-icon-button
-                    icon="create"
+                  <sl-icon-button
+                    name="pencil-fill"
                     ?hidden="${!this.permissions.edit.management_budgets || !item.id}"
                     @click="${(e: CustomEvent) => {
                       programmeManagement.inEditMode = true;
@@ -254,14 +254,14 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                         this.preserveFocusOnRow(e.target);
                       }
                     }}"
-                  ></paper-icon-button>
-                  <paper-icon-button
+                  ></sl-icon-button>
+                  <sl-icon-button
                     id="delItem"
-                    icon="delete"
+                    name="trash-fill"
                     tabindex="0"
                     ?hidden="${!this.permissions.edit.management_budgets}"
                     @click="${() => this.removeProgrammeManagementItem(programmeManagement, itemIndex)}"
-                  ></paper-icon-button>
+                  ></sl-icon-button>
                 </div>
               </td>
             </tr>
@@ -302,16 +302,16 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                     @click="${() => this.saveProgrammeManagement(programmeManagement, this.intervention.id!)}"
                     >${translate('GENERAL.SAVE')}</sl-button
                   >
-                  <paper-icon-button
+                  <sl-icon-button
                     class="flex-none"
-                    icon="close"
+                    name="x-lg"
                     @click="${() =>
                       this.cancelProgrammeManagement(
                         programmeManagement.items,
                         programmeManagement,
                         programmeManagementIndex
                       )}"
-                  ></paper-icon-button>
+                  ></sl-icon-button>
                 </div>
               </td>
             </tr>`}

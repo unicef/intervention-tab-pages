@@ -136,18 +136,18 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
                   ${item.total}
                 </div>
                 <div class="actions">
-                  <paper-icon-button
+                  <sl-icon-button
                     ?hidden="${!this.canEdit}"
-                    icon="create"
+                    name="pencil-fill"
                     @click="${() => this.openActivityDialog(item)}"
                     tabindex="0"
-                  ></paper-icon-button>
-                  <paper-icon-button
+                  ></sl-icon-button>
+                  <sl-icon-button
                     ?hidden="${this.canEdit}"
-                    icon="icons:visibility"
+                    name="eye-fill"
                     @click="${() => this.openActivityDialog(item)}"
                     tabindex="0"
-                  ></paper-icon-button>
+                  ></sl-icon-button>
                 </div>
               </div>
               <div slot="row-data-details">

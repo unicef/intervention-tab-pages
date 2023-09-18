@@ -27,9 +27,7 @@ export class OverallApproval extends LitElement {
         .no-approval {
           padding: 16px 24px;
         }
-        paper-icon-button {
-          margin-inline-end: 16px;
-        }
+
         .label {
           font-size: 12px;
           line-height: 16px;
