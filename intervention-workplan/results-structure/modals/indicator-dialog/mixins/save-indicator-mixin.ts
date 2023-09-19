@@ -106,7 +106,6 @@ function SaveIndicatorMixin<T extends Constructor<LitElement>>(baseClass: T) {
       if (!this.validate()) {
         fireEvent(this, 'toast', {text: getTranslation('REQUIRED_ERROR')});
         this.activeTab = 'details';
-        this._centerDialog();
         return;
       }
 
