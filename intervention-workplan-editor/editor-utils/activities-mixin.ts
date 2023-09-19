@@ -32,7 +32,7 @@ import {
 } from '../../common/mixins/results-structure-common';
 import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
 
-export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T) {
+export const ActivitiesMixin = <T extends Constructor<LitElement>>(baseClass: T) => {
   return class ActivitiesClass extends ActivityItemsMixin(TruncateMixin(baseClass)) {
     // @ts-ignore
     @property({type: Array})
@@ -64,6 +64,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
     refreshResultStructure = false;
     quarters: InterventionQuarter[] = [];
     commentMode: any;
+    localName: any;
 
     renderActivities(pdOutput: ResultLinkLowerResultExtended, resultIndex: number, pdOutputIndex: number) {
       if (!pdOutput || !pdOutput.activities) {
@@ -327,7 +328,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
 
     attachTimeIntervalsListener() {
       setTimeout(() => {
-        this.shadowRoot!.querySelectorAll('.tdTimeIntervals').forEach((el) =>
+        this.shadowRoot!.querySelectorAll('.tdTimeIntervals').forEach((el: any) =>
           el.addEventListener('keydown', this._onTimeIntervalsKeyDown)
         );
       }, 400);
@@ -451,5 +452,5 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
             interventionId
           });
     }
-  };
-}
+  } as any;
+};

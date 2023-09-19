@@ -349,7 +349,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
         }
         EtoolsLogger.error('Reports list data request failed!', 'reports-list', error);
 
-        parseRequestErrorsAndShowAsToastMsgs(error, this);
+        parseRequestErrorsAndShowAsToastMsgs(error, this as any);
         fireEvent(this, 'global-loading', {
           active: false,
           loadingSource: 'reports-list'

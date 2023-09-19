@@ -280,6 +280,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                 <div class="layout-horizontal bottom-aligned dash-separator">/</div>
                 <etools-input
                   id="baselineDenominator"
+                  always-float-label
                   .value="${this.indicator.baseline.d}"
                   allowed-pattern="[0-9]"
                   .pattern="${this.digitsNotStartingWith0Pattern}"
@@ -314,6 +315,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                 <div class="layout-horizontal bottom-aligned dash-separator">/</div>
                 <etools-input
                   id="targetDenominator"
+                  always-float-label
                   .value="${this.indicator.target.d}"
                   required
                   allowed-pattern="[0-9]"
