@@ -17,6 +17,7 @@ import {translate} from 'lit-translate';
 import {translatesMap} from '../../../../utils/intervention-labels-map';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
+import {EtoolsDropdownMulti} from '@unicef-polymer/etools-unicef/src/etools-dropdown/EtoolsDropdownMulti';
 
 /**
  * @customElement
@@ -535,6 +536,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
     const locationIDs = this.locationOptions.map((x: any) => x.id);
     this.indicator.locations = locationIDs;
     this.requestUpdate();
+    setTimeout(() => this.shadowRoot?.querySelector<EtoolsDropdownMulti>('#locationsDropdw')!.validate());
   }
 }
 
