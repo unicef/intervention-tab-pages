@@ -7,6 +7,8 @@ import {translate} from 'lit-translate';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {EditComments} from '../../comments/edit-comments-base';
 import {CommentRelatedItem} from '../../comments/comments-types';
+import '@shoelace-style/shoelace/dist/components/button/button.js';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 
 @customElement('messages-panel')
 export class MessagesPanel extends EditComments {
@@ -68,7 +70,9 @@ export class MessagesPanel extends EditComments {
             @keyup="${(event: KeyboardEvent) => this.onKeyup(event)}"
             @keydown="${(event: KeyboardEvent) => this.onKeydown(event)}"
           ></etools-textarea>
-          <paper-button class="send-btn" @click="${() => this.addComment()}">${translate('POST')}</paper-button>
+          <sl-button variant="primary" class="send-btn" @click="${() => this.addComment()}"
+            >${translate('POST')}</sl-button
+          >
         </div>
       </div>
     `;
@@ -86,6 +90,7 @@ export class MessagesPanel extends EditComments {
     return [
       gridLayoutStylesLit,
       CommentPanelsStyles,
+      buttonsStyles,
       css`
         :host {
           transition: 0.5s;
@@ -131,11 +136,8 @@ export class MessagesPanel extends EditComments {
           margin-bottom: 0;
         }
         .send-btn {
-          background: #009688;
-          height: 36px;
-          margin-bottom: 7px;
-          color: #ffffff;
-          margin-inline-start: 8px !important;
+          --sl-color-primary-600: #009688;
+          margin: 0 4px 7px 8px !important;
         }
       `
     ];

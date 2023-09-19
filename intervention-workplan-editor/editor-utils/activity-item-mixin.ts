@@ -124,7 +124,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   required
                   .autoValidate="${item.autovalidate?.unit}"
                   @focus="${() => this.setAutoValidate(item, 'unit')}"
-                  error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
+                  error-message="${translate('REQUIRED')}"
                   .value="${item.unit}"
                   @keydown="${(e: any) => {
                     if (activity.itemsInEditMode && ['ArrowLeft', 'ArrowRight'].includes(e.key)) {
@@ -152,7 +152,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   }}"
                   required
                   auto-validate
-                  error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
+                  error-message="${translate('REQUIRED')}"
                   .value="${item.no_units}"
                   @keydown="${(e: any) => this.handleEsc(e)}"
                   @value-changed="${({detail}: CustomEvent) => {
@@ -177,7 +177,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   }}"
                   required
                   auto-validate
-                  error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
+                  error-message="${translate('REQUIRED')}"
                   .value="${item.unit_price}"
                   @keydown="${(e: any) => this.handleEsc(e)}"
                   @value-changed="${({detail}: CustomEvent) => {
@@ -290,11 +290,13 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                     class="flex-h justify-right"
                     ?hidden="${!((activity.inEditMode || activity.itemsInEditMode) && activity.items?.length > 3)}"
                   >
-                    <paper-button
+                    <sl-button
                       id="btnSave-activity-2"
+                      variant="primary"
+                      class="primary-btn"
                       ?hidden="${!((activity.inEditMode || activity.itemsInEditMode) && activity.items?.length > 3)}"
                       @click="${() => this.saveActivity(activity, pdOutput.id, this.intervention.id!)}"
-                      >${translate('GENERAL.SAVE')}</paper-button
+                      >${translate('GENERAL.SAVE')}</sl-button
                     >
                     <paper-icon-button
                       class="flex-none"

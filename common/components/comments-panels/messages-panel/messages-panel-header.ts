@@ -1,10 +1,11 @@
-import {LitElement, html, TemplateResult, CSSResultArray} from 'lit';
+import {LitElement, html, TemplateResult, CSSResultArray, css} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {CommentPanelsStyles} from '../common-comments.styles';
 import {translate, get as getTranslation} from 'lit-translate';
 import {makeCommentsDraggable} from '../../comments/comments.helpers';
 import {CommentRelatedItem} from '../../comments/comments-types';
+import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
 
 @customElement('messages-panel-header')
 export class MessagesPanelHeader extends LitElement {
@@ -18,9 +19,7 @@ export class MessagesPanelHeader extends LitElement {
         <b>${this.relatedToKey ? translate(this.relatedToKey) : ''} ${this.relatedItem?.code || ''}</b>
       </div>
       <div class="buttons">
-        <paper-button tabindex="0" @click="${() => this.hideMessages(false)}">
-          <iron-icon icon="chevron-right"></iron-icon>
-        </paper-button>
+        <sl-icon-button name="chevron-right" @click="${() => this.hideMessages(false)}"> </sl-icon-button>
       </div>
     `;
   }
@@ -54,6 +53,14 @@ export class MessagesPanelHeader extends LitElement {
 
   static get styles(): CSSResultArray {
     // language=css
-    return [CommentPanelsStyles];
+    return [
+      CommentPanelsStyles,
+      css`
+        sl-icon-button {
+          font-size: 1.5em;
+          stroke: white;
+        }
+      `
+    ];
   }
 }

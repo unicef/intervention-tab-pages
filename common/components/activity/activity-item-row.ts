@@ -78,6 +78,7 @@ export class ActivityItemRow extends ActivitiesCommonMixin(LitElement) {
                 @blur="${() => this.onBlur()}"
                 @focus="${() => (this.invalidUnit = false)}"
                 @click="${() => (this.invalidUnit = false)}"
+                error-message=""
               ></etools-input>
             </div>
             <div

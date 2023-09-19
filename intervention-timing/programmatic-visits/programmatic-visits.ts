@@ -1,6 +1,5 @@
-import {LitElement, html} from 'lit';
+import {LitElement, css, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import '@polymer/paper-button/paper-button';
 import '@polymer/paper-icon-button/paper-icon-button';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
@@ -28,6 +27,7 @@ import {repeatableDataSetsStyles} from '@unicef-polymer/etools-modules-common/di
 import {getEndpoint as getEndpointHelper} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import '../../common/components/sites-widget/sites-dialog';
+import '@shoelace-style/shoelace/dist/components/button/button.js';
 import './pv-quarter';
 
 /**
@@ -36,7 +36,15 @@ import './pv-quarter';
 @customElement('programmatic-visits')
 export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(RepeatableDataSetsMixin(LitElement))) {
   static get styles() {
-    return [buttonsStyles, gridLayoutStylesLit];
+    return [
+      buttonsStyles,
+      gridLayoutStylesLit,
+      css`
+        sl-button {
+          margin-inline-start: 30px;
+        }
+      `
+    ];
   }
 
   render() {
@@ -75,11 +83,6 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
           margin-inline-start: 46px;
         }
 
-        .secondary-btn {
-          --paper-button: {
-            color: #0099ff;
-          }
-        }
         .totalContainer {
           text-align: center;
           height: 114px;
@@ -107,10 +110,6 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
           padding-top: 15px;
           padding-bottom: 15px;
         }
-        paper-button iron-icon {
-          margin-inline-start: 45px;
-          margin-inline-end: 10px;
-        }
       </style>
 
       <etools-content-panel
@@ -121,13 +120,15 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="row-padding-v extra-top-padd" ?hidden="${!this.editMode}">
-          <paper-button
-            class="secondary-btn ${this._getAddBtnPadding(this.data?.length)}"
+          <sl-button
+            variant="text"
+            class="primary-btn"
+            ${this._getAddBtnPadding(this.data?.length)}
             @click="${this._addNewPlannedVisit}"
           >
             <iron-icon icon="add-box"></iron-icon>
             ${translate('ADD_YEAR')}
-          </paper-button>
+          </sl-button>
         </div>
 
         <div class="pv-container">${this.renderVisitsTemplate(this.data)}</div>

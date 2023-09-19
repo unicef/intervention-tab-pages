@@ -24,6 +24,7 @@ import {
   ProgrammeManagementRowItemExtended
 } from '../../common/types/editor-page-types';
 import {getTotalCash, getTotalCashFormatted} from '../../common/components/activity/get-total.helper';
+import '@shoelace-style/shoelace/dist/components/button/button.js';
 
 // import {ManagementBudgetItem} from '@unicef-polymer/etools-types';
 
@@ -209,11 +210,13 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                     class="flex-h justify-right align-bottom"
                     ?hidden="${!(item.inEditMode || item.itemsInEditMode)}"
                   >
-                    <paper-button
+                    <sl-button
+                      variant="primary"
+                      class="primary-btn"
                       id="btnSave-ProgrammeManagement"
                       ?hidden="${!(item.inEditMode || item.itemsInEditMode)}"
                       @click="${() => this.saveProgrammeManagement(item, this.intervention.id!)}"
-                      >${translate('GENERAL.SAVE')}</paper-button
+                      >${translate('GENERAL.SAVE')}</sl-button
                     >
                     <paper-icon-button
                       icon="close"

@@ -1,5 +1,4 @@
-import '@polymer/paper-button/paper-button';
-import '@polymer/paper-toggle-button';
+import '@shoelace-style/shoelace/dist/components/switch/switch.js';
 import './common/layout/page-content-header/intervention-page-content-header';
 import './common/layout/page-content-header/intervention-page-content-subheader';
 import '@unicef-polymer/etools-modules-common/dist/components/cancel/reason-display';
@@ -27,7 +26,7 @@ import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/co
 import {EnvFlags, EtoolsEndpoint, ExpectedResult, Intervention} from '@unicef-polymer/etools-types';
 import {AsyncAction, RouteDetails} from '@unicef-polymer/etools-types';
 import {interventions} from './common/reducers/interventions';
-import {translate, get as getTranslation} from 'lit-translate';
+import {translate, get as getTranslation, listenForLangChanged} from 'lit-translate';
 import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
 import {prcIndividualReviews} from './common/reducers/officers-reviews';
 import {uploadStatus} from './common/reducers/upload-status';
@@ -176,6 +175,9 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
         sl-tab-group {
           --indicator-color: var(--primary-color);
         }
+        sl-tab-group::part(tabs) {
+          border-bottom: 0;
+        }
         sl-tab-group::part(active-tab-indicator) {
           bottom: 0;
         }
@@ -188,8 +190,8 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
         <span class="intervention-partner" slot="page-title">${this.intervention.partner}</span>
         <span class="intervention-number" slot="page-title">${this.intervention.number}</span>
         <div slot="mode">
-          <paper-toggle-button id="commentMode" ?checked="${this.commentMode}" @iron-change="${this.commentModeChange}"
-            >${translate('GENERAL.COMMENT_MODE')}</paper-toggle-button
+          <sl-switch id="commentMode" ?checked="${this.commentMode}" @sl-change="${this.commentModeChange}"
+            >${translate('GENERAL.COMMENT_MODE')}</sl-switch
           >
         </div>
 
@@ -408,9 +410,8 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     if (notInterventionTabs || state.interventions?.interventionLoading || !currentUser(state)) {
       return;
     }
-
-    this.activeTab = currentSubpage(state) as string;
-    this.activeSubTab = currentSubSubpage(state) as string;
+    this.setActiveTab(state);
+    // this.activeSubTab = currentSubSubpage(state) as string; //TODO - clean up after Rob agrees with new Tabs
     this.isUnicefUser = isUnicefUser(state);
 
     // add attribute to host to edit specific styles
@@ -465,6 +466,16 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       this._routeDetails = cloneDeep(state.app!.routeDetails);
       fireEvent(this, 'scroll-up');
     }
+  }
+
+  setActiveTab(state: RootState) {
+    this.activeTab = currentSubpage(state) as string;
+    /**
+     * Avoid 2 tabs partially selected in situations like:
+     * - after language change
+     * - navigating to a different Tab by clicking a comment in Comments Panel
+     */
+    setTimeout(() => this.shadowRoot?.querySelector('sl-tab-group')?.syncIndicator());
   }
 
   checkCommentsMode(newState: boolean): void {

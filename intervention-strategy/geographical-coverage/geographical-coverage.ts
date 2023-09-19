@@ -1,6 +1,5 @@
 import {html, LitElement} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import '@polymer/paper-button/paper-button';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown-multi.js';
 import './grouped-locations-dialog';
 import '../../common/components/sites-widget/sites-dialog';
@@ -26,6 +25,7 @@ import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
+import '@shoelace-style/shoelace/dist/components/button/button.js';
 
 /**
  * @customElement
@@ -50,30 +50,10 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
           margin-bottom: 24px;
         }
 
-        .see-locations {
-          padding-inline-end: 0;
-          color: var(--primary-color);
-          min-width: 100px;
-          display: flex;
-          flex-direction: row;
-          padding-bottom: 12px;
-        }
-
         .locations-btn {
           white-space: nowrap;
-          padding-top: 29px;
+          padding-top: 24px;
           padding-inline-start: 50px;
-        }
-
-        .see-locations iron-icon {
-          margin-inline-end: 0;
-          margin-bottom: 2px;
-          --iron-icon-height: 18px;
-          --iron-icon-width: 18px;
-        }
-
-        .see-locations[disabled] {
-          background-color: transparent;
         }
 
         #locations {
@@ -123,6 +103,9 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         .prevent-see-hierarchy-link-overlap {
           height: 10px;
         }
+        sl-button[variant='text'] {
+          --sl-input-height-medium: 20px !important;
+        }
       </style>
 
       <etools-content-panel
@@ -169,14 +152,15 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
           >
           </etools-dropdown-multi>
           <div class="locations-btn">
-            <paper-button
-              class="secondary-btn see-locations right-align"
+            <sl-button
+              variant="text"
+              class="primary-btn"
               @click="${this.openLocationsDialog}"
               ?hidden="${this._isEmpty(this.data.flat_locations)}"
               title=${translate('SEE_ALL_LOCATIONS')}
             >
               ${translate('SEE_HIERARCHY')}
-            </paper-button>
+            </sl-button>
           </div>
         </div>
         <div class="flex-c row-padding-v mt-50">
@@ -203,15 +187,16 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
           </etools-textarea>
         </div>
         <div class="flex-c layout-horizontal row-padding-v">
-          <paper-button
-            class="secondary-btn see-locations f-left"
+          <sl-button
+            variant="text"
+            class="primary-btn no-pad no-marg"
             @click="${this.openSitesDialog}"
             ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.sites)}"
             title=${translate('SELECT_SITE_FROM_MAP')}
           >
             <iron-icon icon="add"></iron-icon>
             ${translate('SELECT_SITE_FROM_MAP')}
-          </paper-button>
+          </sl-button>
         </div>
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
       </etools-content-panel>

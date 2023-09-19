@@ -1,7 +1,6 @@
-import {CSSResultArray, LitElement, TemplateResult, html} from 'lit';
+import {CSSResultArray, LitElement, TemplateResult, css, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {arrowLeftIcon} from '@unicef-polymer/etools-modules-common/dist/styles/app-icons';
-import '@polymer/paper-button/paper-button';
 import '@polymer/paper-menu-button/paper-menu-button';
 import '@polymer/paper-icon-button';
 import '../common/layout/export-intervention-data';
@@ -50,11 +49,26 @@ import {get as getTranslation} from 'lit-translate';
 import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
 import {translatesMap} from '../utils/intervention-labels-map';
 import {RootState} from '../common/types/store.types';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
+import '@shoelace-style/shoelace/dist/components/button/button.js';
+import '@shoelace-style/shoelace/dist/components/menu/menu.js';
+import '@shoelace-style/shoelace/dist/components/icon/icon.js';
 
 @customElement('intervention-actions')
 export class InterventionActions extends connectStore(LitElement) {
   static get styles(): CSSResultArray {
-    return [InterventionActionsStyles];
+    return [
+      InterventionActionsStyles,
+      buttonsStyles,
+      css`
+        sl-button[slot='trigger'] {
+          width: 40px;
+          border-inline-start: 1px solid rgba(255, 255, 255, 0.12);
+          --sl-spacing-medium: 0;
+        }
+      `
+    ];
   }
 
   @property() actions: string[] = [];
@@ -113,9 +127,9 @@ export class InterventionActions extends connectStore(LitElement) {
   private renderBackAction(action?: string): TemplateResult {
     return action
       ? html`
-          <paper-button class="main-button back-button" @click="${() => this.processAction(action)}">
+          <sl-button variant="primary" class="back-button" @click="${() => this.processAction(action)}">
             ${arrowLeftIcon} <span>${this.actionsNamesMap[action]}</span>
-          </paper-button>
+          </sl-button>
         `
       : html``;
   }
@@ -126,9 +140,12 @@ export class InterventionActions extends connectStore(LitElement) {
     const className = `main-button${withAdditional}${onlyCancel}`;
     return mainAction
       ? html`
-          <paper-button class="${className}" @click="${() => this.processAction(mainAction)}">
-            ${this.getMainActionTranslatedText(mainAction)} ${this.getAdditionalTransitions(actions)}
-          </paper-button>
+          <sl-button variant="primary" class="${className} split-btn" @click="${() => this.processAction(mainAction)}">
+            <span>${this.getMainActionTranslatedText(mainAction)}</span> ${this.getAdditionalTransitions(
+              actions,
+              className
+            )}
+          </sl-button>
         `
       : html``;
   }
@@ -143,23 +160,25 @@ export class InterventionActions extends connectStore(LitElement) {
     }
   }
 
-  private getAdditionalTransitions(actions?: string[]): TemplateResult {
+  private getAdditionalTransitions(actions?: string[], className?: string): TemplateResult {
     if (!actions || !actions.length) {
       return html``;
     }
     return html`
-      <paper-menu-button horizontal-align @click="${(event: MouseEvent) => event.stopImmediatePropagation()}">
-        <paper-icon-button slot="dropdown-trigger" class="option-button" icon="expand-more"></paper-icon-button>
-        <div slot="dropdown-content">
+      <sl-dropdown @click="${(event: MouseEvent) => event.stopImmediatePropagation()}">
+        <sl-button slot="trigger" variant="primary" class="${className} no-marg">
+          <sl-icon name="chevron-down"></sl-icon>
+        </sl-button>
+        <sl-menu>
           ${actions.map(
             (action: string) => html`
-              <div class="other-options" @click="${() => this.processAction(action)}">
+              <sl-menu-item @click="${() => this.processAction(action)}">
                 ${this.actionsNamesMap[action]}
-              </div>
+              </sl-menu-item>
             `
           )}
-        </div>
-      </paper-menu-button>
+        </sl-menu>
+      </sl-dropdown>
     `;
   }
 

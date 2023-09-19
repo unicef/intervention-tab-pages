@@ -1,9 +1,10 @@
-import {LitElement, html, TemplateResult, CSSResultArray} from 'lit';
+import {LitElement, html, TemplateResult, CSSResultArray, css} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {CommentPanelsStyles} from '../common-comments.styles';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {translate} from 'lit-translate';
 import {fitCommentsToWindow, makeCommentsDraggable} from '../../comments/comments.helpers';
+import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
 
 @customElement('comments-panel-header')
 /* eslint-disable max-len */
@@ -14,13 +15,13 @@ export class CommentsPanelHeader extends LitElement {
     return html`
       <div>${translate('COMMENTS_PANEL')} <b>(${this.count})</b></div>
       <div class="buttons">
-        <paper-button tabindex="0" @click="${() => this.toggleMinimize()}">
-          <iron-icon icon="${this.isExpanded ? 'unfold-more' : 'unfold-less'}"></iron-icon>
-        </paper-button>
+        <sl-icon-button
+          @click="${() => this.toggleMinimize()}"
+          name="${this.isExpanded ? 'arrows-expand' : 'arrows-collapse'}"
+        >
+        </sl-icon-button>
 
-        <paper-button tabindex="0" @click="${() => this.closePanel()}">
-          <iron-icon icon="close"></iron-icon>
-        </paper-button>
+        <sl-icon-button name="x-lg" @click="${() => this.closePanel()}"> </sl-icon-button>
       </div>
     `;
   }
@@ -48,6 +49,14 @@ export class CommentsPanelHeader extends LitElement {
 
   static get styles(): CSSResultArray {
     // language=css
-    return [CommentPanelsStyles];
+    return [
+      CommentPanelsStyles,
+      css`
+        sl-icon-button {
+          font-size: 1.5em;
+          stroke: white;
+        }
+      `
+    ];
   }
 }

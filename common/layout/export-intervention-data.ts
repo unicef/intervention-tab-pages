@@ -1,6 +1,5 @@
 import {html, LitElement, css} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import '@polymer/paper-button/paper-button';
 import '@polymer/paper-menu-button/paper-menu-button';
 import '@polymer/iron-icon/iron-icon';
 import '@polymer/paper-listbox/paper-listbox';
@@ -9,6 +8,10 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {AnyObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import {EtoolsRequestEndpoint} from '@unicef-polymer/etools-ajax';
+import '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
+import '@shoelace-style/shoelace/dist/components/button/button.js';
+import '@shoelace-style/shoelace/dist/components/menu/menu.js';
+import '@shoelace-style/shoelace/dist/components/icon/icon.js';
 
 /**
  * @customElement
@@ -19,48 +22,27 @@ export class ExportInterventionData extends LitElement {
   static get styles() {
     return [
       css`
-        paper-menu-button {
-          padding: 0px;
-        }
-        paper-button {
-          height: 34px;
-          padding: 0px;
-          min-width: 20px;
-          font-weight: bold;
+        sl-button iron-icon {
           color: var(--secondary-text-color);
         }
-
-        paper-button iron-icon {
-          color: var(--secondary-text-color);
-        }
-
-        paper-button:focus {
-          box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12),
-            0 2px 4px -1px rgba(0, 0, 0, 0.4);
-        }
-
-        paper-item:hover {
-          cursor: pointer;
-        }
-
-        paper-item {
-          white-space: nowrap;
+        sl-button[slot='trigger']::part(label) {
+          padding: 0;
         }
       `
     ];
   }
   public render() {
     return html`
-      <paper-menu-button id="pdExportMenuBtn" close-on-activate horizontal-align>
-        <paper-button slot="dropdown-trigger" class="dropdown-trigger">
+      <sl-dropdown id="pdExportMenuBtn" close-on-activate horizontal-align>
+        <sl-button variant="text" slot="trigger">
           <iron-icon icon="more-vert"></iron-icon>
-        </paper-button>
-        <paper-listbox slot="dropdown-content">
+        </sl-button>
+        <sl-menu>
           ${this.exportLinks.map(
-            (item) => html` <paper-item @click="${() => this.export(item.type)}">${item.name}</paper-item>`
+            (item) => html` <sl-menu-item @click="${() => this.export(item.type)}">${item.name}</sl-menu-item>`
           )}
-        </paper-listbox>
-      </paper-menu-button>
+        </sl-menu>
+      </sl-dropdown>
     `;
   }
 

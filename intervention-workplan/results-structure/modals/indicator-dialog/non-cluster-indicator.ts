@@ -3,7 +3,7 @@ import '@polymer/paper-input/paper-textarea.js';
 import '@polymer/paper-radio-group/paper-radio-group.js';
 import '@polymer/paper-radio-button/paper-radio-button.js';
 import '@polymer/paper-checkbox/paper-checkbox.js';
-import '@polymer/paper-toggle-button/paper-toggle-button.js';
+import '@shoelace-style/shoelace/dist/components/switch/switch.js';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown-multi.js';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
 import IndicatorsCommonMixin from './mixins/indicators-common-mixin';
@@ -16,6 +16,8 @@ import {Indicator} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../../../utils/intervention-labels-map';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import '@shoelace-style/shoelace/dist/components/button/button.js';
+import {EtoolsDropdownMulti} from '@unicef-polymer/etools-unicef/src/etools-dropdown/EtoolsDropdownMulti';
 
 /**
  * @customElement
@@ -66,10 +68,9 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         }
 
         .all-locations {
-          margin: auto;
           display: flex;
           flex-direction: column;
-          align-items: center;
+          justify-content: end;
         }
 
         .row-h {
@@ -85,6 +86,9 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         }
         .mr-20 {
           margin-inline-end: 20px;
+        }
+        sl-switch {
+          margin-top: 25px;
         }
       </style>
 
@@ -276,6 +280,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                 <div class="layout-horizontal bottom-aligned dash-separator">/</div>
                 <etools-input
                   id="baselineDenominator"
+                  always-float-label
                   .value="${this.indicator.baseline.d}"
                   allowed-pattern="[0-9]"
                   .pattern="${this.digitsNotStartingWith0Pattern}"
@@ -310,6 +315,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                 <div class="layout-horizontal bottom-aligned dash-separator">/</div>
                 <etools-input
                   id="targetDenominator"
+                  always-float-label
                   .value="${this.indicator.target.d}"
                   required
                   allowed-pattern="[0-9]"
@@ -326,13 +332,13 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
               </div>`
           : html``}
         <div class="col col-6" ?hidden=${!this.isUnicefUser}>
-          <paper-toggle-button
+          <sl-switch
             ?checked="${this.indicator.is_high_frequency}"
             ?disabled="${this.readonly || !this.isUnicefUser}"
-            @iron-change="${this.isHighFrequencyChanged}"
+            @sl-change="${this.isHighFrequencyChanged}"
           >
             ${translate(translatesMap.is_high_frequency)}
-          </paper-toggle-button>
+          </sl-switch>
         </div>
       </div>
       <div class="unknown">
@@ -381,14 +387,15 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         >
         </etools-dropdown-multi>
         <div class="all-locations">
-          <paper-button
-            class="secondary-btn add-locations"
+          <sl-button
+            variant="text"
+            class="primary-btn"
             ?hidden="${this.readonly}"
             @click="${this._addAllLocations}"
             title=${translate('ADD_ALL_LOCATIONS')}
           >
             ${translate('ADD_ALL')}
-          </paper-button>
+          </sl-button>
         </div>
       </div>
     `;
@@ -531,6 +538,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
     const locationIDs = this.locationOptions.map((x: any) => x.id);
     this.indicator.locations = locationIDs;
     this.requestUpdate();
+    setTimeout(() => this.shadowRoot?.querySelector<EtoolsDropdownMulti>('#locationsDropdw')!.validate());
   }
 }
 

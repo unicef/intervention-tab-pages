@@ -2,7 +2,7 @@ import {CSSResultArray, html, LitElement, TemplateResult} from 'lit';
 import {property, customElement, query} from 'lit/decorators.js';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
-import '@polymer/paper-toggle-button';
+import '@shoelace-style/shoelace/dist/components/switch/switch.js';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import '../../../../common/components/activity/activity-items-table';
 import {getTotalCashFormatted} from '../../../../common/components/activity/get-total.helper';
@@ -114,7 +114,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
             display: block;
           }
         }
-        paper-toggle-button {
+        sl-switch {
           margin: 25px 0;
           width: min-content;
           white-space: nowrap;
@@ -187,12 +187,14 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
                     ?readonly="${this.readonly}"
                     .value="${this.editedData.cso_cash}"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue('cso_cash', detail.value)}"
+                    required
                   ></etools-currency>
 
                   <etools-currency
                     class="col-3"
                     label=${translate('UNICEF_CASH_BUDGET')}
                     ?readonly="${this.readonly}"
+                    required
                     .value="${this.editedData.unicef_cash}"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue('unicef_cash', detail.value)}"
                   ></etools-currency>
@@ -225,14 +227,13 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
             </div>
           </div>
 
-          <paper-toggle-button
+          <sl-switch
             ?disabled="${this.readonly}"
             ?checked="${this.useInputLevel}"
-            @iron-change="${this.inputLevelChange}"
-            class="col-5"
+            @sl-change="${this.inputLevelChange}"
           >
             ${translate('USE_INPUT_LEVEL')}
-          </paper-toggle-button>
+          </sl-switch>
           <activity-items-table
             .dialogElement=${this.dialogElement}
             ?hidden="${!this.useInputLevel}"
@@ -283,7 +284,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
   }
 
   inputLevelChange(e: CustomEvent): void {
-    if (!e.detail) {
+    if (!e.target) {
       return;
     }
     const element = e.currentTarget as HTMLInputElement;

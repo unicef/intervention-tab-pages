@@ -24,6 +24,7 @@ import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/cur
 import {removeCurrencyAmountDelimiter} from '../../utils/utils';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {EtoolsCurrency} from '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
+import '@shoelace-style/shoelace/dist/components/switch/switch.js';
 
 /**
  * @customElement
@@ -69,6 +70,9 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         }
         .padd-bott {
           padding-bottom: 10px;
+        }
+        sl-switch {
+          padding-inline-start: 2px;
         }
       </style>
 
@@ -166,14 +170,13 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         </div>
 
         <div class="layout-horizontal input-level">
-          <paper-toggle-button
+          <sl-switch
             ?checked="${this.useInputLevel}"
-            @checked-changed="${this.inputLevelChange}"
-            class="col-5"
+            @sl-change="${this.inputLevelChange}"
             ?disabled="${this.readonly}"
           >
             ${translate('USE_INPUT_LEVEL')}
-          </paper-toggle-button>
+          </sl-switch>
         </div>
         <activity-items-table
           .dialogElement=${this.dialogElement}
@@ -287,7 +290,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
   }
 
   inputLevelChange(e: CustomEvent): void {
-    if (!e.detail) {
+    if (!e.target) {
       return;
     }
     const element = e.currentTarget as HTMLInputElement;

@@ -1,11 +1,10 @@
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import '@polymer/paper-button/paper-button.js';
 declare const dayjs: any;
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
-import '@unicef-polymer/etools-date-time/calendar-lite';
-import '@unicef-polymer/etools-date-time/datepicker-lite';
+import '@unicef-polymer/etools-unicef/src/etools-date-time/calendar-lite';
+import '@unicef-polymer/etools-unicef/src/etools-date-time/datepicker-lite';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import './hru-list.js';
 import CONSTANTS from '../../../common/constants';
@@ -22,6 +21,7 @@ import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/co
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit.js';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles.js';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit.js';
+import '@shoelace-style/shoelace/dist/components/button/button.js';
 
 /**
  * @polymer
@@ -120,9 +120,14 @@ export class EditHruDialog extends connectStore(LitElement) {
         </div>
         <div class="layout-horizontal row-padding-v">
           <div class="col layout-vertical col-3">
-            <paper-button id="add-selected-date" class="secondary-btn" @click="${() => this._addToList()}">
+            <sl-button
+              variant="text"
+              class="primary-btn no-marg no-pad"
+              id="add-selected-date"
+              @click="${() => this._addToList()}"
+            >
               ${translate('ADD_SELECTED_DATE')}
-            </paper-button>
+            </sl-button>
           </div>
         </div>
       </etools-dialog>

@@ -22,7 +22,6 @@ import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-compari
 import {repeat} from 'lit/directives/repeat.js';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
-import '@polymer/paper-button/paper-button';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
@@ -48,14 +47,15 @@ import {ifDefined} from 'lit/directives/if-defined.js';
 import {selectProgrammeManagement} from '../intervention-workplan/effective-efficient-programme-mgmt/effectiveEfficientProgrammeMgmt.selectors';
 import {ActivitiesFocusMixin} from './editor-utils/activities-focus-mixin';
 import {_canDelete} from '../common/mixins/results-structure-common';
-
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import '@shoelace-style/shoelace/dist/components/button/button.js';
 // @ts-ignore
 @customElement('editor-table')
 export class EditorTable extends CommentsMixin(
   ProgrammeManagementMixin(ActivitiesMixin(ActivitiesFocusMixin(ArrowsNavigationMixin(LitElement))))
 ) {
   static get styles() {
-    return [EditorTableStyles, EditorTableArrowKeysStyles, EditorHoverStyles, ...super.styles];
+    return [EditorTableStyles, EditorTableArrowKeysStyles, EditorHoverStyles, buttonsStyles, ...super.styles];
   }
   render() {
     if (!this.intervention) {
@@ -457,11 +457,13 @@ export class EditorTable extends CommentsMixin(
                         ></paper-icon-button>
                       </div>
                       <div class="flex-h justify-right align-bottom" ?hidden="${!pdOutput.inEditMode}">
-                        <paper-button
+                        <sl-button
                           id="btnSave"
+                          variant="primary"
+                          class="primary-btn"
                           @click="${() => this.savePdOutput(pdOutput, result)}"
                           ?hidden="${!pdOutput.inEditMode}"
-                          >${translate('GENERAL.SAVE')}</paper-button
+                          >${translate('GENERAL.SAVE')}</sl-button
                         >
                         <paper-icon-button
                           icon="close"

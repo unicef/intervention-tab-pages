@@ -30,6 +30,7 @@ import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
 import {translate} from 'lit-translate';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
+import '@shoelace-style/shoelace/dist/components/switch/switch.js';
 
 @customElement('attachments-list')
 export class AttachmentsList extends CommentsMixin(LitElement) {
@@ -59,14 +60,14 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
         comment-element="attachments"
       >
         <div slot="panel-btns" class="layout-horizontal">
-          <paper-toggle-button
+          <sl-switch
             id="showInvalid"
             ?checked="${this.showInvalid}"
-            @iron-change="${(event: CustomEvent) =>
+            @sl-change="${(event: CustomEvent) =>
               (this.showInvalid = (event.currentTarget as HTMLInputElement).checked)}"
           >
             ${translate('SHOW_INVALID')}
-          </paper-toggle-button>
+          </sl-switch>
 
           <paper-icon-button
             icon="add-box"

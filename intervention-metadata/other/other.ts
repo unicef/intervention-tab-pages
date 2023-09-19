@@ -1,7 +1,6 @@
 import {html, LitElement} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import '@polymer/paper-button/paper-button';
-import '@polymer/paper-toggle-button/paper-toggle-button';
+import '@shoelace-style/shoelace/dist/components/switch/switch.js';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
@@ -27,6 +26,7 @@ import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {PaperInputElement} from '@polymer/paper-input/paper-input';
+import {SlSwitch} from '@shoelace-style/shoelace';
 
 /**
  * @customElement
@@ -66,7 +66,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
           box-sizing: border-box;
         }
 
-        paper-toggle-button {
+        sl-switch#confidential {
           margin-top: 25px;
         }
 
@@ -136,32 +136,32 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
             <div class="row">
               <!--   SPD is Humanitarian   -->
               <div ?hidden="${!this.isSPD}">
-                <paper-toggle-button
+                <sl-switch
                   ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit.document_type)}"
                   ?checked="${this.data.humanitarian_flag}"
-                  @checked-changed="${({detail}: CustomEvent) => {
+                  @sl-change="${(e: CustomEvent) => {
                     this.data.contingency_pd = false;
-                    this.valueChanged(detail, 'humanitarian_flag');
+                    this.valueChanged({value: (e.target as SlSwitch).checked}, 'humanitarian_flag');
                   }}"
                 >
                   ${translate('SPD_HUMANITARIAN')}
-                </paper-toggle-button>
+                </sl-switch>
               </div>
 
               <!--   Contingency Document   -->
               <div ?hidden="${!this.data.humanitarian_flag}">
-                <paper-toggle-button
+                <sl-switch
                   ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit.document_type)}"
                   ?checked="${this.data.contingency_pd}"
-                  @checked-changed="${({detail}: CustomEvent) => {
-                    this.valueChanged(detail, 'contingency_pd');
-                    if (!detail.value) {
+                  @sl-change="${(e: CustomEvent) => {
+                    this.valueChanged({value: (e.target as SlSwitch).checked}, 'contingency_pd');
+                    if (!(e.target as SlSwitch).checked) {
                       this.data.activation_protocol = '';
                     }
                   }}"
                 >
                   ${translate('CONTINGENCY_DOC')}
-                </paper-toggle-button>
+                </sl-switch>
               </div>
             </div>
           </div>
@@ -221,14 +221,15 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
         </div>
 
         <div class="layout-horizontal confidential-row" ?hidden="${!this.permissions?.view?.confidential}">
-          <paper-toggle-button
+          <sl-switch
             id="confidential"
             ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit?.confidential)}"
             ?checked="${this.data.confidential}"
-            @checked-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'confidential')}}"
+            @sl-change="${(e: CustomEvent) =>
+              this.valueChanged({value: (e.target! as SlSwitch).checked}, 'confidential')}}"
           >
             ${translate('CONFIDENTIAL')}
-          </paper-toggle-button>
+          </sl-switch>
           <info-icon-tooltip
             id="iit-confidential"
             ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit?.confidential)}"
