@@ -15,6 +15,7 @@ import {REVIEW_ANSVERS, REVIEW_QUESTIONS} from '../../common/components/interven
 import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 import '../../common/components/intervention/review-checklist-popup';
+import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
 
 @customElement('reviews-list')
 export class ReviewsList extends connectStore(LitElement) {
@@ -88,10 +89,7 @@ export class ReviewsList extends connectStore(LitElement) {
                 <div class="flex-4">${approval.overall_comment || '-'}</div>
                 <div class="flex-1">${formatDate(approval.review_date as string, 'DD MMM YYYY')}</div>
                 <div class="hover-block" ?hidden="${this.readonly || approval.user.id !== this.currentUserId}">
-                  <paper-icon-button
-                    icon="icons:create"
-                    @click="${() => this.openReviewPopup(approval)}"
-                  ></paper-icon-button>
+                  <sl-icon-button name="pencil-fill" @click="${() => this.openReviewPopup(approval)}"></sl-icon-button>
                 </div>
               </div>
 

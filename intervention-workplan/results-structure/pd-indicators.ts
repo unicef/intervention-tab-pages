@@ -2,7 +2,7 @@ import {LitElement, html, TemplateResult, CSSResultArray, css, PropertyValues} f
 import {property, customElement} from 'lit/decorators.js';
 import {ResultStructureStyles} from './styles/results-structure.styles';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import '@polymer/paper-icon-button/paper-icon-button';
+
 import '@polymer/iron-icons';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {RootState} from '../../common/types/store.types';
@@ -41,6 +41,7 @@ import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
 import {EtoolsDataTableRow} from '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table-row';
+import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
 
 @customElement('pd-indicators')
 export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)) {
@@ -75,14 +76,14 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
         <div slot="row-data" class="layout-horizontal align-items-center editable-row start-justified">
           <div class="title-text">${translate(translatesMap.applied_indicators)} (${this.indicators.length})</div>
           <etools-info-tooltip position="top" custom-icon ?hide-tooltip="${this.readonly}" offset="0">
-            <paper-icon-button
-              icon="add-box"
+            <sl-icon-button
+              name="plus-square-fill"
               slot="custom-icon"
               class="add"
               tabindex="0"
               @click="${() => this.openIndicatorDialog()}"
               ?hidden="${this.readonly}"
-            ></paper-icon-button>
+            ></sl-icon-button>
             <span class="no-wrap" slot="message">${translate('ADD_PD_INDICATOR')}</span>
           </etools-info-tooltip>
           <info-icon-tooltip

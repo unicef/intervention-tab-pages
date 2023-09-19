@@ -12,6 +12,7 @@ import '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
 import '@shoelace-style/shoelace/dist/components/menu/menu.js';
 import '@shoelace-style/shoelace/dist/components/icon/icon.js';
+import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
 
 /**
  * @customElement
@@ -22,21 +23,16 @@ export class ExportInterventionData extends LitElement {
   static get styles() {
     return [
       css`
-        sl-button iron-icon {
-          color: var(--secondary-text-color);
-        }
-        sl-button[slot='trigger']::part(label) {
-          padding: 0;
+        sl-icon-button {
+          font-size: 20px;
         }
       `
     ];
   }
   public render() {
     return html`
-      <sl-dropdown id="pdExportMenuBtn" close-on-activate horizontal-align>
-        <sl-button variant="text" slot="trigger">
-          <iron-icon icon="more-vert"></iron-icon>
-        </sl-button>
+      <sl-dropdown id="pdExportMenuBtn">
+        <sl-icon-button name="three-dots-vertical" slot="trigger"> </sl-icon-button>
         <sl-menu>
           ${this.exportLinks.map(
             (item) => html` <sl-menu-item @click="${() => this.export(item.type)}">${item.name}</sl-menu-item>`

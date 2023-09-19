@@ -104,18 +104,9 @@ export const EditorTableStyles = css`
   paper-icon-button {
     color: #504e4e;
   }
-  paper-icon-button[icon='close'] {
+  sl-icon-button[name='x-lg'] {
     color: red;
-  }
-  paper-icon-button[icon='delete']:hover {
-    color: #212121;
-  }
-  paper-icon-button[icon='create']:hover {
-    color: #212121;
-  }
-
-  paper-icon-button:hover {
-    color: #212121;
+    stroke: red;
   }
 
   etools-currency {

@@ -31,6 +31,7 @@ import get from 'lodash-es/get';
 import {translate} from 'lit-translate';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import '@shoelace-style/shoelace/dist/components/switch/switch.js';
+import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
 
 @customElement('attachments-list')
 export class AttachmentsList extends CommentsMixin(LitElement) {
@@ -69,13 +70,13 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
             ${translate('SHOW_INVALID')}
           </sl-switch>
 
-          <paper-icon-button
-            icon="add-box"
+          <sl-icon-button
+            name="plus-square-fill"
             ?hidden="${!this.canEdit}"
             title=${translate('GENERAL.ADD')}
             @click="${() => this.openAttachmentDialog()}"
           >
-          </paper-icon-button>
+          </sl-icon-button>
         </div>
 
         ${this.attachments.length
@@ -111,16 +112,16 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
                         <iron-icon icon="check" ?hidden="${attachment.active}"></iron-icon>
                       </span>
                       <div class="hover-block">
-                        <paper-icon-button
+                        <sl-icon-button
                           ?hidden="${!this.canEdit || !this.canEditAttachments()}"
-                          icon="create"
+                          name="pencil-fill"
                           @click="${() => this.openAttachmentDialog(attachment)}"
-                        ></paper-icon-button>
-                        <paper-icon-button
+                        ></sl-icon-button>
+                        <sl-icon-button
                           ?hidden="${!this.canEdit || !this.canDeleteAttachments()}"
-                          icon="delete"
+                          name="trash-fill"
                           @click="${() => this.openDeleteConfirmation(attachment)}"
-                        ></paper-icon-button>
+                        ></sl-icon-button>
                       </div>
                     </div>
                   </etools-data-table-row>

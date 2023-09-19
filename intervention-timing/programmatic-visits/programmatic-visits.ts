@@ -1,6 +1,6 @@
 import {LitElement, css, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import '@polymer/paper-icon-button/paper-icon-button';
+
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
@@ -29,6 +29,7 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import '../../common/components/sites-widget/sites-dialog';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
 import './pv-quarter';
+import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
 
 /**
  * @customElement
@@ -288,14 +289,14 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
           <div class="layout-horizontal">
             <div class="item-actions-container">
               <div class="actions">
-                <paper-icon-button
+                <sl-icon-button
                   class="action delete"
                   @click="${(event: CustomEvent) => this._openDeleteConfirmation(event, index)}"
                   data-args="${index}"
                   ?disabled="${!this._canBeRemoved(index, this.editMode)}"
-                  icon="cancel"
+                  name="x-circle-fill"
                 >
-                </paper-icon-button>
+                </sl-icon-button>
               </div>
             </div>
             <div class="col-1 yearContainer">

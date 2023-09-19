@@ -1,6 +1,6 @@
 import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/paper-input/paper-input.js';
-import '@polymer/paper-icon-button/paper-icon-button.js';
+
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 
 import {PaperInputElement} from '@polymer/paper-input/paper-input.js';
@@ -20,6 +20,7 @@ import {repeatableDataSetsStyles} from '@unicef-polymer/etools-modules-common/di
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
+import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
 
 /**
  * @customElement
@@ -56,13 +57,13 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
           (item: any, index: number) => html` <div class="row-h item-container no-h-margin">
             <div class="item-actions-container">
               <div class="actions">
-                <paper-icon-button
+                <sl-icon-button
                   class="action delete"
                   ?disabled="${this.readonly}"
                   @click="${(e: CustomEvent) => this._openDeleteConfirmation(e, index)}"
                   data-args="${index}"
-                  icon="cancel"
-                ></paper-icon-button>
+                  name="x-circle-fill"
+                ></sl-icon-button>
               </div>
             </div>
             <div class="item-content">
@@ -105,7 +106,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
       <div class="row-padding-v" style="margin-bottom:80px;">
         <sl-button
           variant="text"
-          class="primary-btn no-marg"
+          class="primary-btn no-marg no-pad"
           @click="${this._addNewDisaggregation}"
           ?hidden="${this._maxDisaggregations(this.data.length) || this.readonly}"
           title=${translate('ADD_DISAGGREGATION')}

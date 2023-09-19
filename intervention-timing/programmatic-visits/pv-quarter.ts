@@ -1,4 +1,3 @@
-import '@polymer/paper-icon-button/paper-icon-button';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
@@ -9,6 +8,7 @@ import {css, html, LitElement} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {langChanged, translate} from 'lit-translate';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
+import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
 declare const dayjs: any;
 
 @customElement('pv-quarter')
@@ -18,12 +18,12 @@ export class PvQuarter extends LitElement {
       buttonsStyles,
       gridLayoutStylesLit,
       css`
-        iron-icon#x {
+        sl-icon-button#x {
           width: 16px;
           color: var(--icon-delete-color);
           cursor: pointer;
         }
-        iron-icon#x:hover {
+        sl-icon-button#x:hover {
           color: #b70202;
         }
         iron-icon[icon='add'] {
@@ -68,16 +68,14 @@ export class PvQuarter extends LitElement {
           margin-bottom: 32px !important;
         }
 
-        paper-icon-button.light {
+        sl-icon-button.light {
           color: #979797;
         }
-        paper-icon-button[readonly] {
+        sl-icon-button[readonly] {
           color: #d3d1d1;
           pointer-events: none;
         }
-        paper-icon-button {
-          --paper-icon-button_-_width: 38px;
-        }
+
         .sites-display {
           padding-inline-start: 8px;
         }
@@ -89,21 +87,21 @@ export class PvQuarter extends LitElement {
         </div>
 
         <div class="layout-horizontal align-items-center visits">
-          <paper-icon-button
+          <sl-icon-button
             id="subtractBtn"
             class="light"
-            icon="remove-circle"
+            name="dash-circle-fill"
             ?hidden="${this.readonly}"
             @tap="${this.subtractClicked}"
-          ></paper-icon-button>
+          ></sl-icon-button>
           <div class="visit-no">${this.item[`programmatic_q${this.qIndex}`]}</div>
-          <paper-icon-button
+          <sl-icon-button
             id="addBtn"
             class="light"
-            icon="add-circle"
+            name="plus-circle-fill"
             ?hidden="${this.readonly}"
             @tap="${this.addClicked}"
-          ></paper-icon-button>
+          ></sl-icon-button>
         </div>
 
         <div class="sites-display" ?hidden="${!this.item[`programmatic_q${this.qIndex}_sites`].length}">

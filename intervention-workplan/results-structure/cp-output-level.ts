@@ -3,7 +3,7 @@ import {property, customElement} from 'lit/decorators.js';
 import {ResultStructureStyles} from './styles/results-structure.styles';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table.js';
-import '@polymer/paper-icon-button/paper-icon-button';
+
 import '@polymer/iron-icons';
 import './modals/cp-output-dialog';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
@@ -14,6 +14,7 @@ import {translate} from 'lit-translate';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import {TruncateMixin} from '../../common/mixins/truncate.mixin';
 import {_canDelete} from '../../common/mixins/results-structure-common';
+import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
 
 @customElement('cp-output-level')
 export class CpOutputLevel extends TruncateMixin(LitElement) {
@@ -69,12 +70,9 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
                           </div>
                         </div>
                         <div class="hover-block" ?hidden="${this.readonly}">
-                          <paper-icon-button
-                            icon="icons:create"
-                            @click="${this.openEditCpOutputPopup}"
-                          ></paper-icon-button>
-                          <paper-icon-button
-                            icon="icons:delete"
+                          <sl-icon-button name="pencil-fill" @click="${this.openEditCpOutputPopup}"></sl-icon-button>
+                          <sl-icon-button
+                            name="trash-fill"
                             ?hidden="${!_canDelete(
                               this.resultLink,
                               this.readonly,
@@ -83,7 +81,7 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
                               this.interventionInfo.in_amendment_date!
                             )}"
                             @click="${this.openDeleteCPOutputPopup}"
-                          ></paper-icon-button>
+                          ></sl-icon-button>
                         </div>
                       `
                     : html`
@@ -186,6 +184,10 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
         }
         .editable-row:hover .hover-block {
           opacity: 1;
+        }
+        sl-icon-button[name='trash-fill'],
+        sl-icon-button[name='pencil-fill'] {
+          stroke: inherit !important;
         }
       `
     ];

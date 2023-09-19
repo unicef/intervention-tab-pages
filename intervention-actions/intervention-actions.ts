@@ -2,7 +2,6 @@ import {CSSResultArray, LitElement, TemplateResult, css, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {arrowLeftIcon} from '@unicef-polymer/etools-modules-common/dist/styles/app-icons';
 import '@polymer/paper-menu-button/paper-menu-button';
-import '@polymer/paper-icon-button';
 import '../common/layout/export-intervention-data';
 import '@unicef-polymer/etools-modules-common/dist/components/cancel/reason-popup';
 import './accept-for-partner';

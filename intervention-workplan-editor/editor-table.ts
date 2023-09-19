@@ -1,7 +1,6 @@
 import {html, LitElement} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
 import {EditorTableStyles} from './editor-utils/editor-table-styles';
-import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/iron-icons';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
@@ -49,6 +48,8 @@ import {ActivitiesFocusMixin} from './editor-utils/activities-focus-mixin';
 import {_canDelete} from '../common/mixins/results-structure-common';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
+import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
+
 // @ts-ignore
 @customElement('editor-table')
 export class EditorTable extends CommentsMixin(
@@ -90,22 +91,7 @@ export class EditorTable extends CommentsMixin(
             font-weight: 600;
           }
         }
-        paper-textarea[readonly] {
-          --iron-autogrow-textarea_-_overflow: hidden;
-        }
-        paper-textarea.bold {
-          --iron-autogrow-textarea_-_font-weight: bold;
-        }
-        paper-textarea.other[readonly] {
-          --iron-autogrow-textarea_-_font-weight: 400;
-          --iron-autogrow-textarea_-_overflow: hidden;
-          --iron-autogrow-textarea_-_max-height: 21px;
-        }
-        paper-textarea.other {
-          --iron-autogrow-textarea_-_font-weight: 400;
-          --iron-autogrow-textarea_-_max-height: 96px;
-          --paper-input-container-label-floating_-_color: var(--secondary-text-color);
-        }
+
         etools-input,
         etools-textarea {
           --etools-input-padding-top: 0;
@@ -177,6 +163,10 @@ export class EditorTable extends CommentsMixin(
         etools-input::part(input) {
           line-height: 24px;
         }
+        sl-icon-button[name='trash-fill'],
+        sl-icon-button[name='pencil-fill'] {
+          stroke: inherit;
+        }
       </style>
       <table>
         <tbody>
@@ -210,16 +200,16 @@ export class EditorTable extends CommentsMixin(
                   <td colspan="3"></td>
                   <td colspan="2" tabindex="${ifDefined(this.commentMode ? undefined : 0)}">
                     <div class="action-btns" style="position:relative">
-                      <paper-icon-button
+                      <sl-icon-button
                         id="add-pd-output"
                         @click="${(e: any) => {
                           this.addNewUnassignedPDOutput();
                           this.moveFocusToNewllyAdded(e.target);
                         }}"
                         ?hidden="${!this.permissions?.edit.result_links}"
-                        icon="add-box"
+                        name="plus-square-fill"
                         tabindex="0"
-                      ></paper-icon-button>
+                      ></sl-icon-button>
 
                       <paper-tooltip
                         for="add-pd-output"
@@ -287,7 +277,7 @@ export class EditorTable extends CommentsMixin(
                   )}"
                 >
                   <div class="action-btns" style="position:relative">
-                    <paper-icon-button
+                    <sl-icon-button
                       id="add-pd-output-${result.id}"
                       slot="custom-icon"
                       @click="${(e: any) => {
@@ -296,9 +286,9 @@ export class EditorTable extends CommentsMixin(
                       }}"
                       ?hidden="${!this.permissions?.edit.result_links ||
                       !this.getOriginalCPOutput(resultIndex)?.cp_output}"
-                      icon="add-box"
+                      name="plus-square-fill"
                       tabindex="0"
-                    ></paper-icon-button>
+                    ></sl-icon-button>
                     <paper-tooltip
                       for="add-pd-output-${result.id}"
                       .animationDelay="${0}"
@@ -410,8 +400,8 @@ export class EditorTable extends CommentsMixin(
                         <span class="b">${displayCurrencyAmount(pdOutput.total, '0.00')}</span>
                       </div>
                       <div class="action-btns align-bottom flex-h action-btns">
-                        <paper-icon-button
-                          icon="create"
+                        <sl-icon-button
+                          name="pencil-fill"
                           ?hidden="${pdOutput.inEditMode || !this.permissions?.edit.result_links}"
                           @click="${(e: any) => {
                             pdOutput.inEditMode = true;
@@ -419,18 +409,18 @@ export class EditorTable extends CommentsMixin(
                             this.requestUpdate();
                             this.moveFocusToFirstInput(e.target);
                           }}"
-                        ></paper-icon-button>
+                        ></sl-icon-button>
 
-                        <paper-icon-button
+                        <sl-icon-button
                           id="add-a-${pdOutput.id}"
-                          icon="add-box"
+                          name="plus-square-fill"
                           slot="custom-icon"
                           @click="${(e: any) => {
                             this.addNewActivity(pdOutput);
                             this.moveFocusToNewllyAdded(e.target);
                           }}"
                           ?hidden="${pdOutput.inEditMode || !this.permissions?.edit.result_links}"
-                        ></paper-icon-button>
+                        ></sl-icon-button>
                         <paper-tooltip
                           for="add-a-${pdOutput.id}"
                           .animationDelay="${0}"
@@ -443,8 +433,8 @@ export class EditorTable extends CommentsMixin(
                         >
                           ${translate('ADD_NEW_ACTIVITY')}
                         </paper-tooltip>
-                        <paper-icon-button
-                          icon="delete"
+                        <sl-icon-button
+                          name="trash-fill"
                           ?hidden="${pdOutput.inEditMode ||
                           !_canDelete(
                             pdOutput,
@@ -454,7 +444,7 @@ export class EditorTable extends CommentsMixin(
                             this.intervention.in_amendment_date
                           )}"
                           @click="${() => this.openDeletePdOutputDialog(pdOutput.id)}"
-                        ></paper-icon-button>
+                        ></sl-icon-button>
                       </div>
                       <div class="flex-h justify-right align-bottom" ?hidden="${!pdOutput.inEditMode}">
                         <sl-button
@@ -465,10 +455,10 @@ export class EditorTable extends CommentsMixin(
                           ?hidden="${!pdOutput.inEditMode}"
                           >${translate('GENERAL.SAVE')}</sl-button
                         >
-                        <paper-icon-button
-                          icon="close"
+                        <sl-icon-button
+                          name="x-lg"
                           @click="${() => this.cancelPdOutput(result as any, pdOutput, resultIndex, pdOutputIndex)}"
-                        ></paper-icon-button>
+                        ></sl-icon-button>
                       </div>
                     </td>
                   </tr>

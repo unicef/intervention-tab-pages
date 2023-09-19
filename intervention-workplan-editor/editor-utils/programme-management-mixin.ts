@@ -25,6 +25,7 @@ import {
 } from '../../common/types/editor-page-types';
 import {getTotalCash, getTotalCashFormatted} from '../../common/components/activity/get-total.helper';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
+import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
 
 // import {ManagementBudgetItem} from '@unicef-polymer/etools-types';
 
@@ -164,8 +165,8 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                     <span class="b">${getTotalCashFormatted(item.cso_cash, item.unicef_cash)}</span>
                   </div>
                   <div class="action-btns align-bottom flex-h">
-                    <paper-icon-button
-                      icon="create"
+                    <sl-icon-button
+                      name="pencil-fill"
                       ?hidden="${item.inEditMode || !this.permissions.edit.management_budgets}"
                       @click="${(e: any) => {
                         item.inEditMode = true;
@@ -184,15 +185,15 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                           }
                         }
                       }}"
-                    ></paper-icon-button>
+                    ></sl-icon-button>
 
-                    <paper-icon-button
+                    <sl-icon-button
                       id="add-item-${item.id}"
-                      icon="add-box"
+                      name="plus-square-fill"
                       slot="custom-icon"
                       @click="${(e: CustomEvent) => this.addNewItem(e, item, 'focusBelow')}"
                       ?hidden="${item.items?.length || !this.permissions.edit.management_budgets}"
-                    ></paper-icon-button>
+                    ></sl-icon-button>
                     <paper-tooltip
                       for="add-item-${item.id}"
                       .animationDelay="${0}"
@@ -218,10 +219,10 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                       @click="${() => this.saveProgrammeManagement(item, this.intervention.id!)}"
                       >${translate('GENERAL.SAVE')}</sl-button
                     >
-                    <paper-icon-button
-                      icon="close"
+                    <sl-icon-button
+                      name="x-lg"
                       @click="${() => this.cancelProgrammeManagement(item.items, item, itemIndex)}"
-                    ></paper-icon-button>
+                    ></sl-icon-button>
                   </div>
                 </td>
               </tr>

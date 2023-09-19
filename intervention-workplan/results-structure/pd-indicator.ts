@@ -85,7 +85,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
             ?hidden="${this.commentMode}"
           >
             <paper-menu-button id="view-menu-button" close-on-activate horizontal-align>
-              <paper-icon-button slot="dropdown-trigger" icon="icons:more-vert" tabindex="0"></paper-icon-button>
+              <sl-icon-button slot="dropdown-trigger" name="three-dots-vertical"></sl-icon-button>
               <paper-listbox slot="dropdown-content">
                 <div
                   class="action"

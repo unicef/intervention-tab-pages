@@ -41,8 +41,7 @@ export const AttachmentsListStyles = html`
     etools-data-table-header {
       --list-header-wrapper-column-height: 48px;
     }
-    paper-icon-button[icon='add-box'] {
-      color: var(--primary-text-color);
+    sl-icon-button[name='plus-square-fill'] {
       margin-inline-start: 20px;
     }
   </style>

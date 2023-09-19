@@ -78,7 +78,7 @@ export const InterventionActionsStyles: CSSResult = css`
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    inset-inline-end: 10px;
+    inset-inline-end: 2px;
     z-index: 100;
   }
 `;

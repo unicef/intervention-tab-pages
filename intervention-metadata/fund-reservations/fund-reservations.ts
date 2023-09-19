@@ -1,7 +1,7 @@
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import '@polymer/iron-icons/iron-icons';
-import '@polymer/paper-icon-button/paper-icon-button';
+
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
@@ -33,6 +33,7 @@ import {getArraysDiff} from '@unicef-polymer/etools-utils/dist/array.util';
 import {listenForLangChanged} from 'lit-translate';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
+import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
 
 /**
  * @customElement
@@ -87,12 +88,12 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
         panel-title=${translate('FUND_RESERVATIONS')}
         comment-element="fund-reservations"
       >
-        <paper-icon-button
+        <sl-icon-button
           slot="panel-btns"
-          icon="add-box"
+          name="plus-square-fill"
           @click="${() => this._openFrsDialog()}"
           ?hidden="${!this.permissions.edit.frs}"
-        ></paper-icon-button>
+        ></sl-icon-button>
         <div id="frs-container" ?hidden="${!this.thereAreFrs(this.intervention.frs_details)}">
           <etools-info-tooltip
             class="frs-inline-list"

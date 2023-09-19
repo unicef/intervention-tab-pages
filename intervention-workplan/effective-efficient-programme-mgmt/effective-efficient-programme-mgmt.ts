@@ -28,6 +28,7 @@ import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
 import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-table/styles/data-table-styles';
+import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
 
 /**
  * @customElement
@@ -135,18 +136,18 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
                   ${item.total}
                 </div>
                 <div class="actions">
-                  <paper-icon-button
+                  <sl-icon-button
                     ?hidden="${!this.canEdit}"
-                    icon="create"
+                    name="pencil-fill"
                     @click="${() => this.openActivityDialog(item)}"
                     tabindex="0"
-                  ></paper-icon-button>
-                  <paper-icon-button
+                  ></sl-icon-button>
+                  <sl-icon-button
                     ?hidden="${this.canEdit}"
-                    icon="icons:visibility"
+                    name="eye-fill"
                     @click="${() => this.openActivityDialog(item)}"
                     tabindex="0"
-                  ></paper-icon-button>
+                  ></sl-icon-button>
                 </div>
               </div>
               <div slot="row-data-details">

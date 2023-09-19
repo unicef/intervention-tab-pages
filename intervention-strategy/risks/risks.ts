@@ -5,7 +5,6 @@ import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-pa
 import '@unicef-polymer/etools-unicef/src/etools-table/etools-table';
 import {EtoolsTableColumn, EtoolsTableColumnType} from '@unicef-polymer/etools-unicef/src/etools-table/etools-table';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
-import '@polymer/paper-icon-button/paper-icon-button';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
@@ -32,6 +31,7 @@ import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip'
 import cloneDeep from 'lodash-es/cloneDeep';
 import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
+import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
 
 const customStyles = html`
   <style>
@@ -89,12 +89,12 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           ></info-icon-tooltip>
         </div>
         <div slot="panel-btns">
-          <paper-icon-button
+          <sl-icon-button
             ?hidden="${!this.canEditAtLeastOneField}"
             @click="${() => this.openRiskDialog()}"
-            icon="add-box"
+            name="plus-square-fill"
           >
-          </paper-icon-button>
+          </sl-icon-button>
         </div>
         <etools-table
           ?hidden="${!this.data?.length}"
