@@ -26,7 +26,7 @@ import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/co
 import {EnvFlags, EtoolsEndpoint, ExpectedResult, Intervention} from '@unicef-polymer/etools-types';
 import {AsyncAction, RouteDetails} from '@unicef-polymer/etools-types';
 import {interventions} from './common/reducers/interventions';
-import {translate, get as getTranslation, listenForLangChanged} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
 import {prcIndividualReviews} from './common/reducers/officers-reviews';
 import {uploadStatus} from './common/reducers/upload-status';
