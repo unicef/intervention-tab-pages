@@ -1,4 +1,4 @@
-import {LitElement, html} from 'lit';
+import {LitElement, css, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import '@polymer/paper-icon-button/paper-icon-button';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
@@ -36,7 +36,15 @@ import './pv-quarter';
 @customElement('programmatic-visits')
 export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(RepeatableDataSetsMixin(LitElement))) {
   static get styles() {
-    return [buttonsStyles, gridLayoutStylesLit];
+    return [
+      buttonsStyles,
+      gridLayoutStylesLit,
+      css`
+        sl-button {
+          margin-inline-start: 30px;
+        }
+      `
+    ];
   }
 
   render() {

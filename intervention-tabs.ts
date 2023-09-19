@@ -388,10 +388,6 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       getStore().dispatch(setCommentsEndpoint(commentsEndpoints));
       getStore().dispatch(enableCommentMode(Boolean(this._routeDetails?.queryParams?.comment_mode)));
     });
-
-    listenForLangChanged(() => {
-      this.shadowRoot?.querySelector('sl-tab-group')?.syncIndicator();
-    });
   }
 
   disconnectedCallback() {
@@ -414,9 +410,8 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     if (notInterventionTabs || state.interventions?.interventionLoading || !currentUser(state)) {
       return;
     }
-
-    this.activeTab = currentSubpage(state) as string;
-    this.activeSubTab = currentSubSubpage(state) as string;
+    this.setActiveTab(state);
+    // this.activeSubTab = currentSubSubpage(state) as string; //TODO - clean up after Rob agrees with new Tabs
     this.isUnicefUser = isUnicefUser(state);
 
     // add attribute to host to edit specific styles
@@ -471,6 +466,16 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
       this._routeDetails = cloneDeep(state.app!.routeDetails);
       fireEvent(this, 'scroll-up');
     }
+  }
+
+  setActiveTab(state: RootState) {
+    this.activeTab = currentSubpage(state) as string;
+    /**
+     * Avoid 2 tabs partially selected in situations like:
+     * - after language change
+     * - navigating to a different Tab by clicking a comment in Comments Panel
+     */
+    setTimeout(() => this.shadowRoot?.querySelector('sl-tab-group')?.syncIndicator());
   }
 
   checkCommentsMode(newState: boolean): void {
