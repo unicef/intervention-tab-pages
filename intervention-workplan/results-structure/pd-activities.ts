@@ -24,9 +24,12 @@ import {
   _canDelete
 } from '../../common/mixins/results-structure-common';
 import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
-import {PaperMenuButton} from '@polymer/paper-menu-button';
-import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
 
+import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
+import '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
+import '@shoelace-style/shoelace/dist/components/menu/menu.js';
+import '@shoelace-style/shoelace/dist/components/menu-item/menu-item.js';
+import SlDropdown from '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
 @customElement('pd-activities')
 export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
   @property({type: String})
@@ -90,9 +93,10 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                     related-to-description="${activity.name}"
                     comments-container
                     ?hidden="${this._hideActivity(activity, this.showInactive)}"
-                    @paper-dropdown-open="${(event: CustomEvent) =>
-                      (event.currentTarget as HTMLElement)!.classList.add('active')}"
-                    @paper-dropdown-close="${(event: CustomEvent) =>
+                    @sl-show="${(event: CustomEvent) => {
+                      (event.currentTarget as HTMLElement)!.classList.add('active');
+                    }}"
+                    @sl-hide="${(event: CustomEvent) =>
                       (event.currentTarget as HTMLElement)!.classList.remove('active')}"
                   >
                     <!--    Activity Data: code / name / other info / items link    -->
@@ -146,23 +150,20 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                     </div>
 
                     <div class="show-actions hover-block" style="z-index: ${99 - index}" ?hidden="${this.commentMode}">
-                      <paper-menu-button id="view-menu-button" close-on-activate horizontal-align>
-                        <sl-icon-button
-                          slot="dropdown-trigger"
-                          name="three-dots-vertical"
-                          tabindex="0"
-                        ></sl-icon-button>
-                        <paper-listbox slot="dropdown-content">
-                          <div
+                      <sl-dropdown id="view-menu-button">
+                        <sl-icon-button slot="trigger" name="three-dots-vertical" tabindex="0"></sl-icon-button>
+                        <sl-menu>
+                          <sl-menu-item
                             class="action"
                             @click="${() => this.openDialog(activity, this.readonly || !activity.is_active)}"
                           >
-                            <iron-icon
-                              icon="${this.readonly || !activity.is_active ? 'visibility' : 'create'}"
-                            ></iron-icon>
+                            <sl-icon
+                              slot="prefix"
+                              name="${this.readonly || !activity.is_active ? 'eye-fill' : 'pencil-fill'}"
+                            ></sl-icon>
                             ${this.readonly || !activity.is_active ? translate('VIEW') : translate('EDIT')}
-                          </div>
-                          <div
+                          </sl-menu-item>
+                          <sl-menu-item
                             class="action"
                             ?hidden="${!_canDeactivate(
                               activity,
@@ -174,10 +175,10 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                             @click="${() =>
                               openActivityDeactivationDialog(activity.id, this.pdOutputId, this.interventionId)}"
                           >
-                            <iron-icon icon="icons:block"></iron-icon>
+                            <sl-icon slot="prefix" name="slash-circle"></sl-icon>
                             ${translate('DEACTIVATE')}
-                          </div>
-                          <div
+                          </sl-menu-item>
+                          <sl-menu-item
                             class="action delete-action"
                             ?hidden="${!_canDelete(
                               activity,
@@ -189,11 +190,11 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                             @click="${() =>
                               openDeleteActivityDialog(activity.id, this.pdOutputId, this.interventionId)}"
                           >
-                            <iron-icon icon="delete"></iron-icon>
+                            <sl-icon slot="prefix" name="trash-fill"></sl-icon>
                             ${translate('DELETE')}
-                          </div>
-                        </paper-listbox>
-                      </paper-menu-button>
+                          </sl-menu-item>
+                        </sl-menu>
+                      </sl-dropdown>
                     </div>
                   </div>
                 `
@@ -204,8 +205,8 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
     `;
   }
 
-  @queryAll('paper-menu-button#view-menu-button')
-  actionsMenuBtns!: PaperMenuButton[];
+  @queryAll('#view-menu-button')
+  actionsMenuBtns!: SlDropdown[];
 
   connectedCallback(): void {
     super.connectedCallback();
@@ -222,7 +223,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
   }
 
   closeMenusOnScroll() {
-    this.actionsMenuBtns.forEach((p) => (p.opened = false));
+    this.actionsMenuBtns.forEach((p) => (p.open = false));
   }
 
   disconnectedCallback(): void {

@@ -20,8 +20,6 @@ import './pd-indicators';
 import './pd-activities';
 import './modals/pd-output-dialog';
 import './modals/cp-output-dialog';
-import '@polymer/paper-item';
-import '@polymer/paper-listbox';
 import './display-controls';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {RootState} from '../../common/types/store.types';

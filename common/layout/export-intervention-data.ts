@@ -1,8 +1,5 @@
 import {html, LitElement, css} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import '@polymer/paper-menu-button/paper-menu-button';
-import '@polymer/iron-icon/iron-icon';
-import '@polymer/paper-listbox/paper-listbox';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';

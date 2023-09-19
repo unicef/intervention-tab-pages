@@ -10,6 +10,10 @@ import {
 } from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import {TABS} from '../../common/constants';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
+import '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
+import '@shoelace-style/shoelace/dist/components/menu/menu.js';
+import '@shoelace-style/shoelace/dist/components/menu-item/menu-item.js';
+import {SlSelectEvent} from '@shoelace-style/shoelace';
 
 export const RESULT_VIEW = 'result_view';
 export const BUDGET_VIEW = 'budget_view';
@@ -64,20 +68,36 @@ export class DisplayControls extends LitElement {
       </sl-switch>
 
       <div class="layout-horizontal">
-        <paper-menu-button id="view-menu-button" close-on-activate horizontal-align>
-          <sl-button variant="default" slot="dropdown-trigger" caret> ${this.selectedViewType} </sl-button>
-          <paper-listbox slot="dropdown-content" attr-for-selected="name" .selected="${this.viewType}">
+        <sl-dropdown
+          id="view-menu-button"
+          close-on-activate
+          horizontal-align
+          @sl-select=${(e: SlSelectEvent) => {
+            const tab = this.viewTabs.find((x) => x.type === e.detail.item.value)!;
+            this.fireTabChange(tab.showIndicators, tab.showActivities);
+          }}
+        >
+          <sl-button variant="default" slot="trigger" caret>${this.selectedViewType} </sl-button>
+          <sl-menu>
             ${this.viewTabs.map(
               (tab) =>
-                html` <paper-item
-                  @click="${() => this.fireTabChange(tab.showIndicators, tab.showActivities)}"
-                  name="${tab.type}"
+                html` <sl-menu-item
+                  @click=${(e: Event) => {
+                    // prevent selecting checked item
+                    if ((e.target as any).checked) {
+                      e.preventDefault();
+                      e.stopImmediatePropagation();
+                    }
+                  }}
+                  .checked="${this.viewType === tab.type}"
+                  value="${tab.type}"
+                  type="checkbox"
                 >
                   ${tab.name}
-                </paper-item>`
+                </sl-menu-item>`
             )}
-          </paper-listbox>
-        </paper-menu-button>
+          </sl-menu>
+        </sl-dropdown>
         <a href="interventions/${this.interventionId}/${TABS.WorkplanEditor}">
           <div class="editor-link">
             ${translate('ACTIVITES_EDITOR')}
