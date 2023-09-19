@@ -49,8 +49,8 @@ import {ActivitiesFocusMixin} from './editor-utils/activities-focus-mixin';
 import {_canDelete} from '../common/mixins/results-structure-common';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
-@customElement('editor-table')
 // @ts-ignore
+@customElement('editor-table')
 export class EditorTable extends CommentsMixin(
   ProgrammeManagementMixin(ActivitiesMixin(ActivitiesFocusMixin(ArrowsNavigationMixin(LitElement))))
 ) {
@@ -291,7 +291,7 @@ export class EditorTable extends CommentsMixin(
                       id="add-pd-output-${result.id}"
                       slot="custom-icon"
                       @click="${(e: any) => {
-                        this.addNewPDOutput(result.ll_results);
+                        this.addNewPDOutput(result.ll_results as any);
                         this.moveFocusToNewllyAdded(e.target);
                       }}"
                       ?hidden="${!this.permissions?.edit.result_links ||
@@ -316,7 +316,7 @@ export class EditorTable extends CommentsMixin(
               </tr>
             </tbody>
             ${repeat(
-              result.ll_results,
+              result.ll_results as any[],
               (pdOutput: ResultLinkLowerResultExtended) => pdOutput.id,
               (pdOutput: ResultLinkLowerResultExtended, pdOutputIndex) => html`
                 <tbody
@@ -467,7 +467,7 @@ export class EditorTable extends CommentsMixin(
                         >
                         <paper-icon-button
                           icon="close"
-                          @click="${() => this.cancelPdOutput(result, pdOutput, resultIndex, pdOutputIndex)}"
+                          @click="${() => this.cancelPdOutput(result as any, pdOutput, resultIndex, pdOutputIndex)}"
                         ></paper-icon-button>
                       </div>
                     </td>
@@ -713,7 +713,7 @@ export class EditorTable extends CommentsMixin(
         fireEvent(this, 'dialog-closed', {confirmed: true});
       })
       .catch((error: any) => {
-        parseRequestErrorsAndShowAsToastMsgs(error, this);
+        parseRequestErrorsAndShowAsToastMsgs(error, this as any);
       })
       .finally(() =>
         fireEvent(this, 'global-loading', {

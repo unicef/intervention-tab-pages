@@ -367,5 +367,5 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       this.requestUpdate();
       this.moveFocusToAddedItemAndAttachListeners(e.target, focusClue);
     }
-  };
+  } as any;
 }
