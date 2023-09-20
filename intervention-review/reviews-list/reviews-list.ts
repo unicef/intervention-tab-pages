@@ -89,7 +89,7 @@ export class ReviewsList extends connectStore(LitElement) {
                 <div class="flex-4">${approval.overall_comment || '-'}</div>
                 <div class="flex-1">${formatDate(approval.review_date as string, 'DD MMM YYYY')}</div>
                 <div class="hover-block" ?hidden="${this.readonly || approval.user.id !== this.currentUserId}">
-                  <sl-icon-button name="pencil-fill" @click="${() => this.openReviewPopup(approval)}"></sl-icon-button>
+                  <sl-icon-button name="create" @click="${() => this.openReviewPopup(approval)}"></sl-icon-button>
                 </div>
               </div>
 

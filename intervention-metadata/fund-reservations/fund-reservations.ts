@@ -90,7 +90,7 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
       >
         <sl-icon-button
           slot="panel-btns"
-          name="plus-square-fill"
+          name="add-box"
           @click="${() => this._openFrsDialog()}"
           ?hidden="${!this.permissions.edit.frs}"
         ></sl-icon-button>

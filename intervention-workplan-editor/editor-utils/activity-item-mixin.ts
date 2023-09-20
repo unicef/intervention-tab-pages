@@ -243,7 +243,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                 ></etools-input>
                 <div class="hover-block flex-h ${activity.itemsInEditMode && !item.id ? 'in-edit-and-deletable' : ''}">
                   <sl-icon-button
-                    name="pencil-fill"
+                    name="create"
                     ?hidden="${!this.permissions.edit.result_links || !item.id}"
                     @click="${(e: CustomEvent) => {
                       activity.inEditMode = true;
@@ -259,7 +259,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   ></sl-icon-button>
                   <sl-icon-button
                     id="delItem"
-                    name="trash-fill"
+                    name="delete"
                     tabindex="0"
                     ?hidden="${!this.permissions.edit.result_links}"
                     @click="${() => this.removeActivityItem(activity, pdOutput, itemIndex)}"
@@ -278,7 +278,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                 <td></td>
                 <td tabindex="${ifDefined(this.commentMode ? undefined : 0)}" class="a-item-add-padd">
                   <div class="icon" @click="${(e: CustomEvent) => this.addNewActivityItem(e, activity, 'focusAbove')}">
-                    <sl-icon-button name="plus-square-fill"></sl-icon-button>
+                    <sl-icon-button name="add-box"></sl-icon-button>
                     <span style="padding-bottom: 5px;"> ${translate('ADD_NEW_ITEM')}</span>
                   </div>
                 </td>
@@ -302,7 +302,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                     >
                     <sl-icon-button
                       class="flex-none"
-                      name="x-lg"
+                      name="close"
                       @click="${() =>
                         this.cancelActivity(pdOutput.activities, activity, resultIndex, pdOutputIndex, activityIndex)}"
                     ></sl-icon-button>

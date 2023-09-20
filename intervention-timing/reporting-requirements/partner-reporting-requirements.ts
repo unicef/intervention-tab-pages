@@ -139,7 +139,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
               <span>${translate('QUARTERLY_PROGRESS_REPORTS')} (${this.qprRequirementsCount})</span>
               <sl-icon-button
                 class="edit-rep-req"
-                name="pencil-fill"
+                name="create"
                 @click="${this._openQprEditDialog}"
                 ?hidden="${this._hideRepReqEditBtn(this.isReadonly, this.qprRequirementsCount)}"
               ></sl-icon-button>
@@ -161,7 +161,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
               <span>${translate('HUMANITARIAN_REPORTS_UNICEF')} (${this.hrUnicefRequirementsCount})</span>
               <sl-icon-button
                 class="edit-rep-req"
-                name="pencil-fill"
+                name="create"
                 @click="${this._openHruEditDialog}"
                 ?hidden="${this._hideRepReqEditBtn(this.isReadonly, this.hrUnicefRequirementsCount)}"
               ></sl-icon-button>

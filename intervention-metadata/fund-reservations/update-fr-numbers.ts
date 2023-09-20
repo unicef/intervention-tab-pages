@@ -81,7 +81,7 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
                     class="action delete"
                     @click="${(event: CustomEvent) => this._openDeleteConfirmation(event, index)}"
                     .data-args="${index}"
-                    name="x-circle-fill"
+                    name="cancel"
                     ?hidden="${!this._showDeleteFrBtn(this.interventionStatus, this.data.length)}"
                   >
                   </sl-icon-button>

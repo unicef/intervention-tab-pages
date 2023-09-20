@@ -90,7 +90,7 @@ export class PvQuarter extends LitElement {
           <sl-icon-button
             id="subtractBtn"
             class="light"
-            name="dash-circle-fill"
+            name="remove-circle"
             ?hidden="${this.readonly}"
             @tap="${this.subtractClicked}"
           ></sl-icon-button>
@@ -98,7 +98,7 @@ export class PvQuarter extends LitElement {
           <sl-icon-button
             id="addBtn"
             class="light"
-            name="plus-circle-fill"
+            name="add-circle"
             ?hidden="${this.readonly}"
             @tap="${this.addClicked}"
           ></sl-icon-button>

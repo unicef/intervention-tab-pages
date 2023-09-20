@@ -163,8 +163,8 @@ export class EditorTable extends CommentsMixin(
         etools-input::part(input) {
           line-height: 24px;
         }
-        sl-icon-button[name='trash-fill'],
-        sl-icon-button[name='pencil-fill'] {
+        sl-icon-button[name='delete'],
+        sl-icon-button[name='create'] {
           stroke: inherit;
         }
       </style>
@@ -207,7 +207,7 @@ export class EditorTable extends CommentsMixin(
                           this.moveFocusToNewllyAdded(e.target);
                         }}"
                         ?hidden="${!this.permissions?.edit.result_links}"
-                        name="plus-square-fill"
+                        name="add-box"
                         tabindex="0"
                       ></sl-icon-button>
 
@@ -286,7 +286,7 @@ export class EditorTable extends CommentsMixin(
                       }}"
                       ?hidden="${!this.permissions?.edit.result_links ||
                       !this.getOriginalCPOutput(resultIndex)?.cp_output}"
-                      name="plus-square-fill"
+                      name="add-box"
                       tabindex="0"
                     ></sl-icon-button>
                     <paper-tooltip
@@ -401,7 +401,7 @@ export class EditorTable extends CommentsMixin(
                       </div>
                       <div class="action-btns align-bottom flex-h action-btns">
                         <sl-icon-button
-                          name="pencil-fill"
+                          name="create"
                           ?hidden="${pdOutput.inEditMode || !this.permissions?.edit.result_links}"
                           @click="${(e: any) => {
                             pdOutput.inEditMode = true;
@@ -413,7 +413,7 @@ export class EditorTable extends CommentsMixin(
 
                         <sl-icon-button
                           id="add-a-${pdOutput.id}"
-                          name="plus-square-fill"
+                          name="add-box"
                           slot="custom-icon"
                           @click="${(e: any) => {
                             this.addNewActivity(pdOutput);
@@ -434,7 +434,7 @@ export class EditorTable extends CommentsMixin(
                           ${translate('ADD_NEW_ACTIVITY')}
                         </paper-tooltip>
                         <sl-icon-button
-                          name="trash-fill"
+                          name="delete"
                           ?hidden="${pdOutput.inEditMode ||
                           !_canDelete(
                             pdOutput,
@@ -456,7 +456,7 @@ export class EditorTable extends CommentsMixin(
                           >${translate('GENERAL.SAVE')}</sl-button
                         >
                         <sl-icon-button
-                          name="x-lg"
+                          name="close"
                           @click="${() => this.cancelPdOutput(result as any, pdOutput, resultIndex, pdOutputIndex)}"
                         ></sl-icon-button>
                       </div>

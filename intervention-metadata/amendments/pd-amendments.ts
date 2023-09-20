@@ -108,7 +108,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
       <etools-content-panel show-expand-btn panel-title=${translate('AMENDMENTS')} comment-element="amendments">
         <div slot="panel-btns">
           <sl-icon-button
-            name="plus-square-fill"
+            name="add-box"
             title=${translate('ADD_AMENDMENT')}
             @click="${() => this._showAddAmendmentDialog()}"
             ?hidden="${!this.intervention?.permissions?.edit.amendments}"
@@ -156,7 +156,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
                   </span>
 
                   <div class="hover-block" ?hidden="${!item.is_active}">
-                    <sl-icon-button name="trash-fill" @click="${() => this.deleteAmendment(item.id)}"></sl-icon-button>
+                    <sl-icon-button name="delete" @click="${() => this.deleteAmendment(item.id)}"></sl-icon-button>
                   </div>
                 </div>
 

@@ -65,7 +65,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
           <div class="title-text">${translate(translatesMap.activities)} (${this.activities.length})</div>
           <etools-info-tooltip position="top" custom-icon ?hide-tooltip="${this.readonly}" offset="0">
             <sl-icon-button
-              name="plus-square-fill"
+              name="add-box"
               slot="custom-icon"
               class="add"
               tabindex="0"
@@ -151,7 +151,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
 
                     <div class="show-actions hover-block" style="z-index: ${99 - index}" ?hidden="${this.commentMode}">
                       <sl-dropdown id="view-menu-button">
-                        <sl-icon-button slot="trigger" name="three-dots-vertical" tabindex="0"></sl-icon-button>
+                        <sl-icon-button slot="trigger" name="more-vert" tabindex="0"></sl-icon-button>
                         <sl-menu>
                           <sl-menu-item
                             class="action"
@@ -309,7 +309,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
         etools-data-table-row#activitiesRow::part(edt-list-row-collapse-wrapper) {
           border-top: none;
         }
-        sl-icon-button[name='three-dots-vertical'] {
+        sl-icon-button[name='more-vert'] {
           stroke: inherit;
         }
       `

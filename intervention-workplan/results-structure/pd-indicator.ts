@@ -83,7 +83,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
             ?hidden="${this.commentMode}"
           >
             <sl-dropdown id="view-menu-button">
-              <sl-icon-button slot="trigger" name="three-dots-vertical"></sl-icon-button>
+              <sl-icon-button slot="trigger" name="more-vert"></sl-icon-button>
               <sl-menu>
                 <sl-menu-item
                   class="action"

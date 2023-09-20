@@ -58,12 +58,12 @@ export class QprList extends PaginationMixin(
                 <div class="col-data col-3">${formatDateLocalized(item.due_date)}</div>
                 <div class="col-data flex-c actions">
                   <sl-icon-button
-                    name="pencil-fill"
+                    name="create"
                     @click="${() => this._editQprReq(index)}"
                     ?hidden="${!this.editMode}"
                   ></sl-icon-button>
                   <sl-icon-button
-                    name="trash-fill"
+                    name="delete"
                     ?hidden="${!this.editMode}"
                     @click="${() => this._deleteQprReq(index)}"
                   ></sl-icon-button>

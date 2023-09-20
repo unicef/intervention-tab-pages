@@ -135,7 +135,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           @click="${() => this.openCpOutputDialog()}"
           ?hidden="${!this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
         >
-          <sl-icon-button slot="custom-icon" name="plus-square-fill" tabindex="0"></sl-icon-button>
+          <sl-icon-button slot="custom-icon" name="add-box" tabindex="0"></sl-icon-button>
           <span class="no-wrap">${translate('ADD_CP_OUTPUT')}</span>
         </div>
 
@@ -148,7 +148,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
             ${translate('PD_OUTPUTS_TITLE')}
             <etools-info-tooltip position="top" custom-icon offset="0">
               <sl-icon-button
-                name="plus-square-fill"
+                name="add-box"
                 slot="custom-icon"
                 class="add"
                 tabindex="0"
@@ -190,7 +190,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                     <div class="pd-title layout-horizontal align-items-center">
                       ${translate('PD_OUTPUTS_TITLE')}<etools-info-tooltip position="top" custom-icon offset="0">
                         <sl-icon-button
-                          name="plus-square-fill"
+                          name="add-box"
                           slot="custom-icon"
                           class="add"
                           tabindex="0"
@@ -234,11 +234,11 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                         ?hidden="${!this.permissions.edit.result_links || this.commentsModeEnabledFlag}"
                       >
                         <sl-icon-button
-                          name="pencil-fill"
+                          name="create"
                           @click="${() => this.openPdOutputDialog(pdOutput, result.cp_output)}"
                         ></sl-icon-button>
                         <sl-icon-button
-                          name="trash-fill"
+                          name="delete"
                           ?hidden="${!_canDelete(
                             pdOutput,
                             !this.permissions.edit.result_links!,
@@ -694,8 +694,8 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         etools-data-table-row#pdOutputRow::part(edt-list-row-wrapper) {
           padding-inline-start: 25px !important;
         }
-        sl-icon-button[name='trash-fill'],
-        sl-icon-button[name='pencil-fill'] {
+        sl-icon-button[name='create'],
+        sl-icon-button[name='delete'] {
           stroke: inherit !important;
         }
       `

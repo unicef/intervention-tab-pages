@@ -138,13 +138,13 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
                 <div class="actions">
                   <sl-icon-button
                     ?hidden="${!this.canEdit}"
-                    name="pencil-fill"
+                    name="create"
                     @click="${() => this.openActivityDialog(item)}"
                     tabindex="0"
                   ></sl-icon-button>
                   <sl-icon-button
                     ?hidden="${this.canEdit}"
-                    name="eye-fill"
+                    name="icons:visibility"
                     @click="${() => this.openActivityDialog(item)}"
                     tabindex="0"
                   ></sl-icon-button>

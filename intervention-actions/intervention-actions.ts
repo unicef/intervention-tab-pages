@@ -165,7 +165,7 @@ export class InterventionActions extends connectStore(LitElement) {
     return html`
       <sl-dropdown @click="${(event: MouseEvent) => event.stopImmediatePropagation()}">
         <sl-button slot="trigger" variant="primary" class="${className} no-marg">
-          <sl-icon name="chevron-down"></sl-icon>
+          <sl-icon name="expand-more"></sl-icon>
         </sl-button>
         <sl-menu>
           ${actions.map(

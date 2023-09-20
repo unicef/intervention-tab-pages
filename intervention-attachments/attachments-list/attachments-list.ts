@@ -71,7 +71,7 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
           </sl-switch>
 
           <sl-icon-button
-            name="plus-square-fill"
+            name="add-box"
             ?hidden="${!this.canEdit}"
             title=${translate('GENERAL.ADD')}
             @click="${() => this.openAttachmentDialog()}"
@@ -114,12 +114,12 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
                       <div class="hover-block">
                         <sl-icon-button
                           ?hidden="${!this.canEdit || !this.canEditAttachments()}"
-                          name="pencil-fill"
+                          name="create"
                           @click="${() => this.openAttachmentDialog(attachment)}"
                         ></sl-icon-button>
                         <sl-icon-button
                           ?hidden="${!this.canEdit || !this.canDeleteAttachments()}"
-                          name="trash-fill"
+                          name="delete"
                           @click="${() => this.openDeleteConfirmation(attachment)}"
                         ></sl-icon-button>
                       </div>

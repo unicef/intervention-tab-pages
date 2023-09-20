@@ -62,7 +62,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
                   ?disabled="${this.readonly}"
                   @click="${(e: CustomEvent) => this._openDeleteConfirmation(e, index)}"
                   data-args="${index}"
-                  name="x-circle-fill"
+                  name="cancel"
                 ></sl-icon-button>
               </div>
             </div>

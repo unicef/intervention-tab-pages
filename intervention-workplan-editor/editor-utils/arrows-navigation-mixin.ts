@@ -140,6 +140,7 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
         setTimeout(() => {
           input.focus();
           this.lastFocusedTd = this.determineParentTd(input);
+          console.log(input, this.lastFocusedTd);
         });
       }
     }
@@ -374,6 +375,8 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     handleEsc(event: KeyboardEvent) {
       if (event.key == 'Escape') {
         this.lastFocusedTd.focus();
+        console.log(this.lastFocusedTd.focus());
+        console.log('hello', event.key, this.lastFocusedTd);
       }
     }
 
@@ -387,10 +390,11 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
 
     findEditOrAddBtn(element: any) {
       return (
-        element.querySelector('sl-icon-button[name="pencil-fil"]') ||
-        element.querySelector('sl-icon-button[name="plus-square-fill"]')
+        element.querySelector('sl-icon-button[name="create"]') ||
+        element.querySelector('sl-icon-button[name="add-box"]')
       );
     }
+
     enterClickedOnActionBtnsTd() {
       return this.lastFocusedTd && this.lastFocusedTd.classList.value.includes('action-btns');
     }

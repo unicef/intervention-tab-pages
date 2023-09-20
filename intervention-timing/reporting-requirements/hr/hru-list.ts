@@ -55,7 +55,7 @@ export class HruList extends ReportingReqPastDatesCheckMixin(ReportingRequiremen
             <div class="col-data flex-c">${this.getDateDisplayValue(item.end_date)}</div>
             <div class="col-data col-2 actions">
               <sl-icon-button
-                name="trash-fill"
+                name="delete"
                 ?hidden="${!this.editMode}"
                 @click="${() => this._deleteHruReq(index)}"
               ></sl-icon-button>
