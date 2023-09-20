@@ -60,6 +60,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
         sl-range {
           width: 85%;
           margin-top: 10px;
+          --track-color-active: var(--primary-color);
         }
         .hq-info-label {
           color: darkred;
