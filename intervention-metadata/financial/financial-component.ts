@@ -2,7 +2,7 @@ import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 
 import '@polymer/paper-radio-group';
-import '@polymer/paper-checkbox';
+import '@shoelace-style/shoelace/dist/components/checkbox/checkbox.js';
 import '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
@@ -52,10 +52,14 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
         .pl-none {
           padding-inline-start: 0px !important;
         }
-        paper-checkbox[disabled] {
-          --paper-checkbox-checked-color: black;
-          --paper-checkbox-unchecked-color: black;
-          --paper-checkbox-label-color: black;
+        sl-checkbox[disabled]::part(base) {
+          opacity: 1;
+        }
+        sl-checkbox[disabled]::part(control) {
+          opacity: 0.5;
+        }
+        sl-checkbox[disabled]::part(control--checked) {
+          opacity: 0.5;
         }
 
         .padd-top {
@@ -83,13 +87,13 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
           ${this.cashTransferModalities.map(
             (option: LabelAndValue) =>
               html`<div class="col col-3">
-                <paper-checkbox
+                <sl-checkbox
                   ?checked="${this.checkCashTransferModality(option.value)}"
                   ?disabled="${this.isReadonly(this.editMode, true)}"
-                  @checked-changed=${(e: CustomEvent) => this.updateData(e.detail.value, option.value)}
+                  @sl-change=${(e: any) => this.updateData(e.target.checked, option.value)}
                 >
                   ${translateValue(option.label, 'CASH_TRANSFER_MODALITIES')}
-                </paper-checkbox>
+                </sl-checkbox>
               </div>`
           )}
         </div>

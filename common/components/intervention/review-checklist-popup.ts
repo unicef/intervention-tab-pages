@@ -17,7 +17,7 @@ import {getDifference} from '@unicef-polymer/etools-modules-common/dist/mixins/o
 import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import '@polymer/paper-radio-group';
-import '@polymer/paper-checkbox/paper-checkbox';
+import '@shoelace-style/shoelace/dist/components/checkbox/checkbox.js';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import {formatDate, getTodayDateStr} from '@unicef-polymer/etools-utils/dist/date.util';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
@@ -56,7 +56,7 @@ export class ReviewChecklistPopup extends LitElement {
           justify-content: flex-end;
         }
 
-        paper-checkbox {
+        sl-checkbox {
           margin: 14px 0;
         }
       `
@@ -145,12 +145,12 @@ export class ReviewChecklistPopup extends LitElement {
                   </etools-textarea>
                 </div>
               `
-            : html` <paper-checkbox
+            : html` <sl-checkbox
                 ?checked="${this.review?.overall_approval}"
-                @checked-changed="${(e: CustomEvent) => this.valueChanged(e.detail.value, 'overall_approval')}"
+                @sl-change="${(e: any) => this.valueChanged(e.target.checked, 'overall_approval')}"
               >
                 ${translate('APPROVED_BY_PRC')}
-              </paper-checkbox>`}
+              </sl-checkbox>`}
         </div>
         <div slot="buttons">
           <sl-button variant="text" class="cancel" @click="${() => this.close()}"
