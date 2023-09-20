@@ -159,7 +159,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                           >
                             <sl-icon
                               slot="prefix"
-                              name="${this.readonly || !activity.is_active ? 'eye-fill' : 'pencil-fill'}"
+                              name="${this.readonly || !activity.is_active ? 'icons:visibility' : 'create'}"
                             ></sl-icon>
                             ${this.readonly || !activity.is_active ? translate('VIEW') : translate('EDIT')}
                           </sl-menu-item>
@@ -175,7 +175,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                             @click="${() =>
                               openActivityDeactivationDialog(activity.id, this.pdOutputId, this.interventionId)}"
                           >
-                            <sl-icon slot="prefix" name="slash-circle"></sl-icon>
+                            <sl-icon slot="prefix" name="icons:block"></sl-icon>
                             ${translate('DEACTIVATE')}
                           </sl-menu-item>
                           <sl-menu-item
@@ -190,7 +190,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                             @click="${() =>
                               openDeleteActivityDialog(activity.id, this.pdOutputId, this.interventionId)}"
                           >
-                            <sl-icon slot="prefix" name="trash-fill"></sl-icon>
+                            <sl-icon slot="prefix" name="delete"></sl-icon>
                             ${translate('DELETE')}
                           </sl-menu-item>
                         </sl-menu>
