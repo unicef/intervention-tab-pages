@@ -40,7 +40,6 @@ import {ArrowsNavigationMixin} from './editor-utils/arrows-navigation-mixin';
 import {RootState} from '../common/types/store.types';
 import {EditorHoverStyles} from './editor-utils/editor-hover-styles';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
-import '@polymer/paper-tooltip/paper-tooltip';
 import {ifDefined} from 'lit/directives/if-defined.js';
 /* eslint-disable max-len */
 import {selectProgrammeManagement} from '../intervention-workplan/effective-efficient-programme-mgmt/effectiveEfficientProgrammeMgmt.selectors';
@@ -49,6 +48,7 @@ import {_canDelete} from '../common/mixins/results-structure-common';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
 import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
+import '@shoelace-style/shoelace/dist/components/tooltip/tooltip.js';
 
 // @ts-ignore
 @customElement('editor-table')
@@ -67,9 +67,6 @@ export class EditorTable extends CommentsMixin(
       ${sharedStyles}
       <style>
         :host {
-          --paper-tooltip: {
-            font-size: 12px;
-          }
         }
         paper-textarea {
           outline: none;
@@ -200,28 +197,22 @@ export class EditorTable extends CommentsMixin(
                   <td colspan="3"></td>
                   <td colspan="2" tabindex="${ifDefined(this.commentMode ? undefined : 0)}">
                     <div class="action-btns" style="position:relative">
-                      <sl-icon-button
-                        id="add-pd-output"
-                        @click="${(e: any) => {
-                          this.addNewUnassignedPDOutput();
-                          this.moveFocusToNewllyAdded(e.target);
-                        }}"
+                      <sl-tooltip
                         ?hidden="${!this.permissions?.edit.result_links}"
-                        name="plus-square-fill"
-                        tabindex="0"
-                      ></sl-icon-button>
-
-                      <paper-tooltip
-                        for="add-pd-output"
-                        .animationDelay="${0}"
-                        .animationConfig="${{}}"
-                        animation-entry=""
-                        animation-exit=""
-                        ?hide-tooltip="${!this.permissions?.edit.result_links}"
-                        position="top"
+                        placement="top"
+                        content="${translate('ADD_PD_OUTPUT')}"
                       >
-                        ${translate('ADD_PD_OUTPUT')}
-                      </paper-tooltip>
+                        <sl-icon-button
+                          id="add-pd-output"
+                          @click="${(e: any) => {
+                            this.addNewUnassignedPDOutput();
+                            this.moveFocusToNewllyAdded(e.target);
+                          }}"
+                          ?hidden="${!this.permissions?.edit.result_links}"
+                          name="plus-square-fill"
+                          tabindex="0"
+                        ></sl-icon-button>
+                      </sl-tooltip>
                     </div>
                   </td>
                 </tr>
@@ -277,30 +268,23 @@ export class EditorTable extends CommentsMixin(
                   )}"
                 >
                   <div class="action-btns" style="position:relative">
-                    <sl-icon-button
-                      id="add-pd-output-${result.id}"
-                      slot="custom-icon"
-                      @click="${(e: any) => {
-                        this.addNewPDOutput(result.ll_results as any);
-                        this.moveFocusToNewllyAdded(e.target);
-                      }}"
-                      ?hidden="${!this.permissions?.edit.result_links ||
-                      !this.getOriginalCPOutput(resultIndex)?.cp_output}"
-                      name="plus-square-fill"
-                      tabindex="0"
-                    ></sl-icon-button>
-                    <paper-tooltip
-                      for="add-pd-output-${result.id}"
-                      .animationDelay="${0}"
-                      .animationConfig="${{}}"
-                      animation-entry=""
-                      animation-exit=""
+                    <sl-tooltip
                       ?hidden="${!this.permissions?.edit.result_links}"
-                      position="top"
-                      offset="1"
+                      content="${translate('ADD_PD_OUTPUT')}"
+                      placement="top"
                     >
-                      ${translate('ADD_PD_OUTPUT')}
-                    </paper-tooltip>
+                      <sl-icon-button
+                        id="add-pd-output-${result.id}"
+                        @click="${(e: any) => {
+                          this.addNewPDOutput(result.ll_results as any);
+                          this.moveFocusToNewllyAdded(e.target);
+                        }}"
+                        ?hidden="${!this.permissions?.edit.result_links ||
+                        !this.getOriginalCPOutput(resultIndex)?.cp_output}"
+                        name="plus-square-fill"
+                        tabindex="0"
+                      ></sl-icon-button>
+                    </sl-tooltip>
                   </div>
                 </td>
               </tr>
@@ -410,29 +394,21 @@ export class EditorTable extends CommentsMixin(
                             this.moveFocusToFirstInput(e.target);
                           }}"
                         ></sl-icon-button>
-
-                        <sl-icon-button
-                          id="add-a-${pdOutput.id}"
-                          name="plus-square-fill"
-                          slot="custom-icon"
-                          @click="${(e: any) => {
-                            this.addNewActivity(pdOutput);
-                            this.moveFocusToNewllyAdded(e.target);
-                          }}"
-                          ?hidden="${pdOutput.inEditMode || !this.permissions?.edit.result_links}"
-                        ></sl-icon-button>
-                        <paper-tooltip
-                          for="add-a-${pdOutput.id}"
-                          .animationDelay="${0}"
-                          .animationConfig="${{}}"
-                          animation-entry=""
-                          animation-exit=""
+                        <sl-tooltip
                           ?hidden="${!this.permissions?.edit.result_links}"
-                          position="top"
-                          offset="1"
+                          placement="top"
+                          content="${translate('ADD_NEW_ACTIVITY')}"
                         >
-                          ${translate('ADD_NEW_ACTIVITY')}
-                        </paper-tooltip>
+                          <sl-icon-button
+                            id="add-a-${pdOutput.id}"
+                            name="plus-square-fill"
+                            @click="${(e: any) => {
+                              this.addNewActivity(pdOutput);
+                              this.moveFocusToNewllyAdded(e.target);
+                            }}"
+                            ?hidden="${pdOutput.inEditMode || !this.permissions?.edit.result_links}"
+                          ></sl-icon-button>
+                        </sl-tooltip>
                         <sl-icon-button
                           name="trash-fill"
                           ?hidden="${pdOutput.inEditMode ||

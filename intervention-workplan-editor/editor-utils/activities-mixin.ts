@@ -242,25 +242,19 @@ export const ActivitiesMixin = <T extends Constructor<LitElement>>(baseClass: T)
                         }
                       }}"
                     ></sl-icon-button>
-                    <sl-icon-button
-                      id="add-item-${activity.id}"
-                      name="plus-square-fill"
-                      slot="custom-icon"
-                      @click="${(e: CustomEvent) => this.addNewActivityItem(e, activity, 'focusBelow')}"
-                      ?hidden="${activity.items?.length || !this.permissions.edit.result_links}"
-                    ></sl-icon-button>
-                    <paper-tooltip
+                    <sl-tooltip
                       for="add-item-${activity.id}"
-                      .animationDelay="${0}"
-                      .animationConfig="${{}}"
-                      animation-entry=""
-                      animation-exit=""
                       ?hidden="${activity.items?.length || !this.permissions.edit.result_links}"
-                      position="top"
-                      offset="1"
+                      placement="top"
+                      content="${translate('ADD_NEW_ITEM')}"
                     >
-                      ${translate('ADD_NEW_ITEM')}
-                    </paper-tooltip>
+                      <sl-icon-button
+                        id="add-item-${activity.id}"
+                        name="plus-square-fill"
+                        @click="${(e: CustomEvent) => this.addNewActivityItem(e, activity, 'focusBelow')}"
+                        ?hidden="${activity.items?.length || !this.permissions.edit.result_links}"
+                      ></sl-icon-button>
+                    </sl-tooltip>
                     <sl-icon-button
                       name="trash-fill"
                       ?hidden="${activity.inEditMode ||
