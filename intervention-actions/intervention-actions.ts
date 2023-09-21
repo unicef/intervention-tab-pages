@@ -1,7 +1,6 @@
 import {CSSResultArray, LitElement, TemplateResult, css, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {arrowLeftIcon} from '@unicef-polymer/etools-modules-common/dist/styles/app-icons';
-import '@polymer/paper-menu-button/paper-menu-button';
 import '../common/layout/export-intervention-data';
 import '@unicef-polymer/etools-modules-common/dist/components/cancel/reason-popup';
 import './accept-for-partner';
@@ -38,7 +37,6 @@ import {
   SEND_BACK_REVIEW,
   UNLOCK
 } from './intervention-actions.constants';
-import {PaperMenuButton} from '@polymer/paper-menu-button/paper-menu-button';
 import {setShouldReGetList, updateCurrentIntervention} from '../common/actions/interventions';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {defaultKeyTranslate, formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
@@ -53,6 +51,7 @@ import '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
 import '@shoelace-style/shoelace/dist/components/menu/menu.js';
 import '@shoelace-style/shoelace/dist/components/icon/icon.js';
+import SlDropdown from '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
 
 @customElement('intervention-actions')
 export class InterventionActions extends connectStore(LitElement) {
@@ -413,9 +412,9 @@ export class InterventionActions extends connectStore(LitElement) {
   }
 
   private closeDropdown(): void {
-    const element: PaperMenuButton | null = this.shadowRoot!.querySelector('paper-menu-button');
+    const element: SlDropdown | null = this.shadowRoot!.querySelector('sl-dropdown');
     if (element) {
-      element.close();
+      element.open = false;
     }
   }
 
