@@ -1,4 +1,4 @@
-import '@polymer/iron-icons/iron-icons.js';
+import '@shoelace-style/shoelace/dist/components/icon/icon.js';
 import '@polymer/paper-input/paper-input.js';
 
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';

@@ -97,7 +97,7 @@ export const CommentStyles: CSSResult = css`
   .actions div:hover {
     text-decoration: underline;
   }
-  iron-icon {
+  sl-icon {
     margin-inline-end: 8px;
   }
   .delete {
@@ -105,7 +105,7 @@ export const CommentStyles: CSSResult = css`
     height: 15px;
     color: var(--primary-shade-of-red);
   }
-  iron-icon[icon='refresh'],
+  sl-icon[name='refresh'],
   .resolve {
     width: 18px;
     height: 18px;
@@ -122,7 +122,7 @@ export const CommentStyles: CSSResult = css`
     cursor: pointer;
     text-decoration: underline;
   }
-  iron-icon[icon='refresh'] {
+  sl-icon[name='refresh'] {
     margin-inline-end: 2px;
   }
   *:focus-visible {

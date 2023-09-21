@@ -84,7 +84,7 @@ export class ReviewsList extends connectStore(LitElement) {
               <div slot="row-data" class="editable-row">
                 <div class="flex-2">${approval.user.name}</div>
                 <div class="flex-1">
-                  <iron-icon icon="${approval.overall_approval ? 'check' : 'close'}"></iron-icon>
+                  <sl-icon name="${approval.overall_approval ? 'check' : 'close'}"></sl-icon>
                 </div>
                 <div class="flex-4">${approval.overall_comment || '-'}</div>
                 <div class="flex-1">${formatDate(approval.review_date as string, 'DD MMM YYYY')}</div>

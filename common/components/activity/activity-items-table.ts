@@ -19,7 +19,7 @@ export class ActivityItemsTable extends LitElement {
     return [
       ActivityItemsTableStyles,
       css`
-        iron-icon {
+        sl-icon {
           margin: 11px 25px 11px;
           color: var(--secondary-text-color);
           cursor: pointer;
@@ -70,7 +70,7 @@ export class ActivityItemsTable extends LitElement {
           ></activity-item-row>`
       )}
       ${!this.readonly
-        ? html`<iron-icon id="btnAddItem" icon="add" tabIndex="0" @click="${() => this.addNew()}"></iron-icon>`
+        ? html`<sl-icon id="btnAddItem" name="add" tabIndex="0" @click="${() => this.addNew()}"></sl-icon>`
         : html``}
     `;
   }

@@ -99,7 +99,7 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
                       <span class="col-data col-2">${prettyDate(String(attachment.created)) || '-'}</span>
                       <span class="col-data col-3">${this.getAttachmentType(attachment.type!)}</span>
                       <span class="col-data col-6">
-                        <iron-icon icon="attachment" class="attachment"></iron-icon>
+                        <sl-icon name="attachment" class="attachment"></sl-icon>
                         <span class="break-word file-label">
                           <!-- target="_blank" is there for IE -->
                           <a href="${attachment.attachment_document || attachment.attachment}" target="_blank" download>
@@ -109,7 +109,7 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
                       </span>
                       <span class="col-data col-1 center-align">
                         <span ?hidden="${!attachment.active}" class="placeholder-style">&#8212;</span>
-                        <iron-icon icon="check" ?hidden="${attachment.active}"></iron-icon>
+                        <sl-icon name="check" ?hidden="${attachment.active}"></sl-icon>
                       </span>
                       <div class="hover-block">
                         <sl-icon-button

@@ -54,7 +54,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
           padding: 12px 22px;
           background: #ffaa0eb8;
         }
-        iron-icon {
+        sl-icon {
           margin-inline-end: 10px;
         }
         *[hidden] {
@@ -75,9 +75,9 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
         no-padding
       >
         <div class="unassociated-warning" ?hidden="${!this.unassociated || this.hideCpOutputs}">
-          <div><iron-icon icon="warning"></iron-icon>${translate('ASSOCIATE_PROMPT')}</div>
+          <div><sl-icon name="warning"></sl-icon>${translate('ASSOCIATE_PROMPT')}</div>
           ${!this.cpOutputs.length
-            ? html` <div><br /><iron-icon icon="warning"></iron-icon> ${translate('ASSOCIATE_MSG')}</div> `
+            ? html` <div><br /><sl-icon name="warning"></sl-icon> ${translate('ASSOCIATE_MSG')}</div> `
             : ''}
         </div>
         <div class="container layout vertical">

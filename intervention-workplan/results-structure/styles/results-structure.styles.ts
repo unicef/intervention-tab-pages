@@ -87,12 +87,12 @@ export const ResultStructureStyles: CSSResult = css`
     border-top: 1px solid var(--main-border-color);
     background-color: var(--primary-background-color);
   }
-  iron-icon {
+  sl-icon {
     margin: 0 15px;
     opacity: 0.9;
     cursor: pointer;
   }
-  iron-icon:hover {
+  sl-icon:hover {
     opacity: 1;
   }
   *[hidden] {

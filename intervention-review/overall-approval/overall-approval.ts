@@ -79,7 +79,7 @@ export class OverallApproval extends LitElement {
                 <div class="label">${translate('APPROVED_BY_PRC')}</div>
                 <div class="value">
                   ${typeof this.review.overall_approval === 'boolean'
-                    ? html` <iron-icon icon="${this.review.overall_approval ? 'check' : 'close'}"></iron-icon>`
+                    ? html` <sl-icon name="${this.review.overall_approval ? 'check' : 'close'}"></sl-icon>`
                     : '-'}
                 </div>
               </div>

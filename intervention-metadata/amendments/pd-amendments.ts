@@ -1,6 +1,6 @@
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import '@polymer/iron-icons/iron-icons';
+import '@shoelace-style/shoelace/dist/components/icon/icon.js';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
@@ -74,7 +74,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
           padding: 12px 0;
           margin: 0;
         }
-        iron-icon {
+        sl-icon {
           width: 18px;
           margin-inline-start: 5px;
         }
@@ -149,7 +149,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
                             class="layout-horizontal align-items-center"
                             href="${ROOT_PATH}interventions/${item.amended_intervention}/metadata"
                           >
-                            ${translate('ACTIVE')} <iron-icon icon="launch"></iron-icon>
+                            ${translate('ACTIVE')} <sl-icon name="launch"></sl-icon>
                           </a>
                         `
                       : translate('COMPLETED')}
@@ -178,7 +178,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
                   <div class="info-block">
                     <div class="label">${translate('SIGNED_AMENDMENT')}</div>
                     <div class="value" ?hidden="${!item.signed_amendment_attachment}">
-                      <iron-icon icon="attachment" class="attachment"></iron-icon>
+                      <sl-icon name="attachment" class="attachment"></sl-icon>
                       <span class="break-word file-label">
                         <a href="${item.signed_amendment_attachment}" target="_blank" download>
                           ${getFileNameFromURL(item.signed_amendment_attachment) || html`&#8212;`}

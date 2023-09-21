@@ -15,7 +15,7 @@ export const AttachmentsListStyles = html`
     .attachment {
       margin-inline-end: 8px;
     }
-    iron-icon {
+    sl-icon {
       color: var(--dark-icon-color);
     }
     icons-actions {

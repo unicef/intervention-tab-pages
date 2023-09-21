@@ -94,7 +94,7 @@ export class InterventionDates extends CommentsMixin(
                 @date-has-changed="${({detail}: CustomEvent) => this.dateHasChanged(detail, 'start')}"
               >
               </datepicker-lite>
-              <iron-icon icon="pmp-custom-icons:not-equal" slot="custom-icon"></iron-icon>
+              <sl-icon name="not-equal" slot="custom-icon"></sl-icon>
               <span slot="message">${this._frsStartConsistencyWarning}</span>
             </etools-info-tooltip>
           </div>
@@ -122,7 +122,7 @@ export class InterventionDates extends CommentsMixin(
                 @date-has-changed="${({detail}: CustomEvent) => this.dateHasChanged(detail, 'end')}"
               >
               </datepicker-lite>
-              <iron-icon icon="pmp-custom-icons:not-equal" slot="custom-icon"></iron-icon>
+              <sl-icon name="not-equal" slot="custom-icon"></sl-icon>
               <span slot="message">${this._frsEndConsistencyWarning}</span>
             </etools-info-tooltip>
           </div>

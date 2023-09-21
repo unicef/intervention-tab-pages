@@ -51,7 +51,7 @@ export class MessageItem extends LitElement {
                       }
                     }}"
                   >
-                    <iron-icon icon="refresh"></iron-icon>${translate('RETRY')}
+                    <sl-icon name="refresh"></sl-icon>${translate('RETRY')}
                   </div> `}
             </div>
           </div>
@@ -83,11 +83,11 @@ export class MessageItem extends LitElement {
                 ?hidden="${!this.comment.id}"
               >
                 <etools-loading no-overlay ?active="${this.resolving}" loading-text=""></etools-loading>
-                <iron-icon
+                <sl-icon
                   ?hidden="${this.resolving}"
                   class="resolve"
-                  icon="${this.comment.state === 'resolved' ? 'check' : 'archive'}"
-                ></iron-icon>
+                  name="${this.comment.state === 'resolved' ? 'check' : 'archive'}"
+                ></sl-icon>
                 ${translate(this.comment.state === 'resolved' ? 'RESOLVED' : 'RESOLVE')}
               </div>
               <!--      Delete action        -->
@@ -104,7 +104,7 @@ export class MessageItem extends LitElement {
                 }}"
               >
                 <etools-loading no-overlay ?active="${this.deleting}" loading-text=""></etools-loading>
-                <iron-icon ?hidden="${this.deleting}" class="delete" icon="delete"></iron-icon> ${translate('DELETE')}
+                <sl-icon ?hidden="${this.deleting}" class="delete" name="delete"></sl-icon> ${translate('DELETE')}
               </div>
             </div>
           `}
@@ -233,14 +233,14 @@ export class MessageItem extends LitElement {
         .actions div:hover {
           text-decoration: underline;
         }
-        iron-icon {
+        sl-icon {
           margin-inline-end: 8px;
         }
         .delete {
           width: 18px;
           height: 18px;
         }
-        iron-icon[icon='refresh'],
+        sl-icon[name='refresh'],
         .resolve {
           width: 18px;
           height: 18px;
@@ -257,7 +257,7 @@ export class MessageItem extends LitElement {
           cursor: pointer;
           text-decoration: underline;
         }
-        iron-icon[icon='refresh'] {
+        sl-icon[name='refresh'] {
           margin-inline-end: 2px;
         }
         *:focus-visible {

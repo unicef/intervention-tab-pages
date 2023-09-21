@@ -30,7 +30,7 @@ import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
 // import {ManagementBudgetItem} from '@unicef-polymer/etools-types';
 
 export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(baseClass: T) {
-  return class ProgrammeManagementClass extends ProgrammeManagementItemMixin(TruncateMixin(baseClass)) {
+  class ProgrammeManagementClass extends ProgrammeManagementItemMixin(TruncateMixin(baseClass)) {
     // @ts-ignore
     @property({type: Array})
     formattedProgrammeManagement: any[] = [];
@@ -392,5 +392,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
       data[this.getPropertyName(data, 'partner')] = data.cso_cash;
       data[this.getPropertyName(data, 'unicef')] = data.unicef_cash;
     }
-  };
+  }
+
+  return ProgrammeManagementClass;
 }

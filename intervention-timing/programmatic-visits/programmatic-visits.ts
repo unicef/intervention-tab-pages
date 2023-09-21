@@ -127,7 +127,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
             ${this._getAddBtnPadding(this.data?.length)}
             @click="${this._addNewPlannedVisit}"
           >
-            <iron-icon icon="add-box"></iron-icon>
+            <sl-icon name="add-box"></sl-icon>
             ${translate('ADD_YEAR')}
           </sl-button>
         </div>

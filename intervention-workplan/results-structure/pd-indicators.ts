@@ -146,9 +146,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
   firstUpdated(changedProperties: PropertyValues): void {
     super.firstUpdated(changedProperties);
 
-    this.shadowRoot!.querySelectorAll('#view-toggle-button, iron-icon').forEach((el) =>
-      callClickOnSpacePushListener(el)
-    );
+    this.shadowRoot!.querySelectorAll('#view-toggle-button, sl-icon').forEach((el) => callClickOnSpacePushListener(el));
   }
 
   openAllRows(): void {

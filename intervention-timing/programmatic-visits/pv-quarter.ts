@@ -26,7 +26,7 @@ export class PvQuarter extends LitElement {
         sl-icon-button#x:hover {
           color: #b70202;
         }
-        iron-icon[icon='add'] {
+        sl-icon[name='add'] {
           width: 15px;
         }
       `
@@ -108,12 +108,12 @@ export class PvQuarter extends LitElement {
           <label class="paper-label">${translate('SITES')}</label>
           ${this.item[`programmatic_q${this.qIndex}_sites`].map((s: any) => {
             return html`<div style="padding-bottom: 7px;">
-              <iron-icon
+              <sl-icon
                 id="x"
-                icon="close"
+                name="close"
                 ?hidden="${this.readonly}"
                 @click="${() => this.onRemoveSite(s.id)}"
-              ></iron-icon>
+              ></sl-icon>
               ${s.name}
             </div>`;
           })}
@@ -125,7 +125,7 @@ export class PvQuarter extends LitElement {
           ?hidden="${this.readonly || !this.item[`programmatic_q${this.qIndex}`]}"
           title=${translate('SELECT_SITE_FROM_MAP')}
         >
-          <iron-icon icon="add"></iron-icon>
+          <sl-icon name="add"></sl-icon>
           ${translate('SELECT_SITE_FROM_MAP')}
         </sl-button>
       </div>

@@ -1,5 +1,5 @@
-// @ts-ignore
-import {Constructor, html, LitElement} from 'lit';
+import {Constructor} from '@unicef-polymer/etools-types';
+import {html, LitElement} from 'lit';
 import {property} from 'lit/decorators.js';
 import {ifDefined} from 'lit/directives/if-defined.js';
 import {EtoolsEndpoint, InterventionQuarter} from '@unicef-polymer/etools-types';
@@ -32,31 +32,26 @@ import {
 } from '../../common/mixins/results-structure-common';
 import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
 
-export const ActivitiesMixin = <T extends Constructor<LitElement>>(baseClass: T) => {
-  return class ActivitiesClass extends ActivityItemsMixin(TruncateMixin(baseClass)) {
-    // @ts-ignore
+export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T) {
+  class ActivitiesClass extends ActivityItemsMixin(TruncateMixin(baseClass)) {
     @property({type: Array})
     originalResultStructureDetails!: ExpectedResultExtended[];
 
-    // @ts-ignore
     @property({type: Array})
     resultStructureDetails!: ExpectedResultExtended[];
 
-    // @ts-ignore
     @property({type: Object})
     intervention!: Intervention;
 
-    // @ts-ignore
     @property({type: Object})
     permissions!: {
       edit: {result_links?: boolean};
       required: {result_links?: boolean};
     };
 
-    // @ts-ignore
     @property({type: Boolean})
     autoValidateActivityName = false;
-    // @ts-ignore
+
     @property({type: Boolean})
     oneEntityInEditMode!: boolean;
 
@@ -452,5 +447,7 @@ export const ActivitiesMixin = <T extends Constructor<LitElement>>(baseClass: T)
             interventionId
           });
     }
-  } as any;
-};
+  }
+
+  return ActivitiesClass as any;
+}

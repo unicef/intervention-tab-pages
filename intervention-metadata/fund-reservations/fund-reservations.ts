@@ -1,6 +1,6 @@
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import '@polymer/iron-icons/iron-icons';
+import '@shoelace-style/shoelace/dist/components/icon/icon.js';
 
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
@@ -106,7 +106,7 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
                 (item: AnyObject) => html`<span class="fr-number">${item.fr_number}</span>`
               )}
             </div>
-            <iron-icon icon="pmp-custom-icons:not-equal" slot="custom-icon"></iron-icon>
+            <sl-icon name="not-equal" slot="custom-icon"></sl-icon>
             <span slot="message"><span>${this._frsConsistencyWarning}</span></span>
           </etools-info-tooltip>
         </div>

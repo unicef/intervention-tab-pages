@@ -1,7 +1,7 @@
 import {LitElement, html} from 'lit';
 import {property, customElement, query} from 'lit/decorators.js';
 import '@polymer/iron-pages/iron-pages.js';
-import '@polymer/iron-icons/iron-icons.js';
+import '@shoelace-style/shoelace/dist/components/icon/icon.js';
 import '@polymer/paper-input/paper-input.js';
 import '@polymer/paper-tabs/paper-tab.js';
 import '@polymer/paper-tabs/paper-tabs.js';

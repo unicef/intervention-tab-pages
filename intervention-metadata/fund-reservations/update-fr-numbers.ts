@@ -1,6 +1,6 @@
 import {LitElement, html} from 'lit';
 import {customElement, property, query} from 'lit/decorators.js';
-import '@polymer/iron-icons/iron-icons';
+import '@shoelace-style/shoelace/dist/components/icon/icon.js';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
@@ -111,7 +111,7 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
 
         <div class="row-h">
           <sl-button variant="text" class="primary-btn no-marg no-pad" @click="${() => this._addNewFundReservation()}">
-            <iron-icon icon="add"></iron-icon>
+            <sl-icon name="add"></sl-icon>
             ${translate('ADD_FR_NUM')}
           </sl-button>
         </div>

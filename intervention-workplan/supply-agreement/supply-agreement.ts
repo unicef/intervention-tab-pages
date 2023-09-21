@@ -48,7 +48,7 @@ const customStyles = html`
       width: 1%;
       white-space: nowrap;
     }
-    .expand-cell iron-icon {
+    .expand-cell sl-icon {
       width: 70px !important;
       color: #2b2b2b !important;
     }

@@ -1,6 +1,6 @@
 import {LitElement, html, PropertyValues} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import '@polymer/iron-icons/iron-icons';
+import '@shoelace-style/shoelace/dist/components/icon/icon.js';
 import '@polymer/iron-selector/iron-selector';
 import '@polymer/iron-pages/iron-pages';
 import '@polymer/paper-item/paper-item';

@@ -104,7 +104,7 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
   firstUpdated(changedProperties: PropertyValues): void {
     super.firstUpdated(changedProperties);
 
-    this.shadowRoot!.querySelectorAll('iron-icon').forEach((el) => callClickOnSpacePushListener(el));
+    this.shadowRoot!.querySelectorAll('sl-icon').forEach((el) => callClickOnSpacePushListener(el));
   }
 
   openEditCpOutputPopup(): void {

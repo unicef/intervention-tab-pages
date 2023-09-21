@@ -562,7 +562,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
       ResultStructureStyles,
       buttonsStyles,
       css`
-        iron-icon[icon='create'] {
+        sl-icon[name='create'] {
           margin-inline-start: 50px;
         }
         .no-results {

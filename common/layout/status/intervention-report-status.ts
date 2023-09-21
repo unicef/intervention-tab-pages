@@ -1,7 +1,6 @@
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import '@polymer/iron-icons/iron-icons.js';
-import '@polymer/iron-icons/image-icons.js';
+import '@shoelace-style/shoelace/dist/components/icon/icon.js';
 import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import {listenForLangChanged} from 'lit-translate';
 
@@ -17,32 +16,32 @@ export class InterventionReportStatus extends LitElement {
           display: inline-block;
         }
 
-        iron-icon {
-          --iron-icon-width: 16px;
-          --iron-icon-height: 16px;
+        sl-icon {
+          --sl-icon-width: 16px;
+          --sl-icon-height: 16px;
           padding-inline-end: 4px;
           margin-top: -2px;
         }
 
-        iron-icon[status-type='default'] {
+        sl-icon[status-type='default'] {
           color: var(--primary-color);
         }
 
-        iron-icon[status-type='submitted'],
-        iron-icon[status-type='success'] {
+        sl-icon[status-type='submitted'],
+        sl-icon[status-type='success'] {
           color: var(--success-color);
         }
 
-        iron-icon[status-type='no-status'],
-        iron-icon[status-type='error'] {
+        sl-icon[status-type='no-status'],
+        sl-icon[status-type='error'] {
           color: var(--dark-error-color);
         }
 
-        iron-icon[status-type='neutral'] {
+        sl-icon[status-type='neutral'] {
           color: var(--secondary-text-color);
         }
 
-        iron-icon[status-type='warning'] {
+        sl-icon[status-type='warning'] {
           color: var(--warning-color);
         }
 
@@ -51,7 +50,7 @@ export class InterventionReportStatus extends LitElement {
         }
       </style>
 
-      <iron-icon ?hidden="${this.noIcon}" status-type="${this.statusType}" .icon="${this.icon}"></iron-icon>
+      <sl-icon ?hidden="${this.noIcon}" status-type="${this.statusType}" .name="${this.icon}"></sl-icon>
       <span id="label" ?hidden="${this.noLabel}">${this.label}</span>
       <slot></slot>
     `;
