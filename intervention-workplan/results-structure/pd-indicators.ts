@@ -80,7 +80,6 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
               name="plus-square-fill"
               slot="custom-icon"
               class="add"
-              tabindex="0"
               @click="${() => this.openIndicatorDialog()}"
               ?hidden="${this.readonly}"
             ></sl-icon-button>
