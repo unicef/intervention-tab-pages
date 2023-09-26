@@ -28,7 +28,7 @@ import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
 import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-table/styles/data-table-styles';
-import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 /**
  * @customElement
@@ -67,7 +67,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         .actions {
           width: 100px;
         }
-        .actions paper-icon-button {
+        .actions etools-icon-button {
           color: var(--dark-icon-color, #6f6f70);
         }
         .col-data,
@@ -81,8 +81,8 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         etools-data-table-row:hover .actions {
           visibility: visible;
         }
-        etools-data-table-row .actions paper-icon-button {
-          height: 24px;
+        etools-data-table-row .actions etools-icon-button {
+          --etools-icon-font-size: 24px;
           padding: 0;
         }
         .text-right {
@@ -136,18 +136,18 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
                   ${item.total}
                 </div>
                 <div class="actions">
-                  <sl-icon-button
+                  <etools-icon-button
                     ?hidden="${!this.canEdit}"
                     name="create"
                     @click="${() => this.openActivityDialog(item)}"
                     tabindex="0"
-                  ></sl-icon-button>
-                  <sl-icon-button
+                  ></etools-icon-button>
+                  <etools-icon-button
                     ?hidden="${this.canEdit}"
                     name="icons:visibility"
                     @click="${() => this.openActivityDialog(item)}"
                     tabindex="0"
-                  ></sl-icon-button>
+                  ></etools-icon-button>
                 </div>
               </div>
               <div slot="row-data-details">

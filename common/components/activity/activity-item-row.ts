@@ -17,13 +17,13 @@ export class ActivityItemRow extends ActivitiesCommonMixin(LitElement) {
     return [
       ActivityItemsTableStyles,
       css`
-        sl-icon {
-          width: 14px;
+        etools-icon {
+          --etools-icon-font-size: 14px;
           color: var(--secondary-text-color);
           cursor: pointer;
           position: relative;
         }
-        sl-icon:hover {
+        etools-icon:hover {
           color: var(--primary-text-color);
         }
       `
@@ -167,13 +167,13 @@ export class ActivityItemRow extends ActivitiesCommonMixin(LitElement) {
             </div>
             ${!this.readonly
               ? html`<div class="grid-cell end remove" data-col-header-label="${translate('GENERAL.DELETE')}">
-                  <sl-icon
+                  <etools-icon
                     id="btnRemove"
                     name="close"
                     tabindex="0"
                     ?hidden="${this.readonly}"
                     @click="${() => this.onRemove()}"
-                  ></sl-icon>
+                  ></etools-icon>
                 </div>`
               : html`<div class="${!this.lastItem ? 'border' : ''}"></div>`}
           </div>

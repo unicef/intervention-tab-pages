@@ -30,7 +30,7 @@ import {
   _canDeactivate,
   _canDelete
 } from '../../common/mixins/results-structure-common';
-import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class ActivitiesClass extends ActivityItemsMixin(TruncateMixin(baseClass)) {
@@ -220,7 +220,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     <span class="b"> ${getTotalCashFormatted(activity.cso_cash, activity.unicef_cash)} </span>
                   </div>
                   <div class="action-btns align-bottom flex-h">
-                    <sl-icon-button
+                    <etools-icon-button
                       name="create"
                       ?hidden="${activity.inEditMode || !this.permissions.edit.result_links || !activity.is_active}"
                       @click="${(e: any) => {
@@ -236,14 +236,14 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                           this.moveFocusToFirstInput(e.target);
                         }
                       }}"
-                    ></sl-icon-button>
-                    <sl-icon-button
+                    ></etools-icon-button>
+                    <etools-icon-button
                       id="add-item-${activity.id}"
                       name="add-box"
                       slot="custom-icon"
                       @click="${(e: CustomEvent) => this.addNewActivityItem(e, activity, 'focusBelow')}"
                       ?hidden="${activity.items?.length || !this.permissions.edit.result_links}"
-                    ></sl-icon-button>
+                    ></etools-icon-button>
                     <paper-tooltip
                       for="add-item-${activity.id}"
                       .animationDelay="${0}"
@@ -256,7 +256,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     >
                       ${translate('ADD_NEW_ITEM')}
                     </paper-tooltip>
-                    <sl-icon-button
+                    <etools-icon-button
                       name="delete"
                       ?hidden="${activity.inEditMode ||
                       !_canDelete(
@@ -267,8 +267,8 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                         this.intervention.in_amendment_date
                       )}"
                       @click="${() => openDeleteActivityDialog(activity.id, pdOutput.id, this.intervention.id!)}"
-                    ></sl-icon-button>
-                    <sl-icon-button
+                    ></etools-icon-button>
+                    <etools-icon-button
                       name="block"
                       ?hidden="${activity.inEditMode ||
                       !_canDeactivate(
@@ -279,7 +279,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                         this.intervention.in_amendment_date
                       )}"
                       @click="${() => openActivityDeactivationDialog(activity.id, pdOutput.id, this.intervention.id!)}"
-                    ></sl-icon-button>
+                    ></etools-icon-button>
                   </div>
                   <div
                     class="flex-h justify-right align-bottom"
@@ -293,11 +293,11 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                       @click="${() => this.saveActivity(activity, pdOutput.id, this.intervention.id!)}"
                       >${translate('GENERAL.SAVE')}</sl-button
                     >
-                    <sl-icon-button
+                    <etools-icon-button
                       name="close"
                       @click="${() =>
                         this.cancelActivity(pdOutput.activities, activity, resultIndex, pdOutputIndex, activityIndex)}"
-                    ></sl-icon-button>
+                    ></etools-icon-button>
                   </div>
                 </td>
               </tr>
@@ -331,7 +331,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
 
     _onTimeIntervalsKeyDown(event: any) {
       if (event.key === 'Enter') {
-        const editBtnEl = event.currentTarget.parentElement.querySelector('sl-icon-button[name="create"]');
+        const editBtnEl = event.currentTarget.parentElement.querySelector('etools-icon-button[name="create"]');
         const timeIntervalEl = event.currentTarget.querySelector('time-intervals');
         // if in edit mode and found time-interval component, open Time Periods dialog
         if (timeIntervalEl && editBtnEl && editBtnEl.hasAttribute('hidden')) {

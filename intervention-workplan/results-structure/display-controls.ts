@@ -116,8 +116,8 @@ export class DisplayControls extends LitElement {
   firstUpdated(_changedProperties: PropertyValues): void {
     super.firstUpdated(_changedProperties);
 
-    this.shadowRoot!.querySelectorAll('#view-toggle-button, .add-button paper-icon-button, sl-icon').forEach((el) =>
-      callClickOnSpacePushListener(el)
+    this.shadowRoot!.querySelectorAll('#view-toggle-button, .add-button etools-icon-button, etools-icon').forEach(
+      (el) => callClickOnSpacePushListener(el)
     );
     this.shadowRoot!.querySelectorAll('#clickable').forEach((el) => callClickOnEnterPushListener(el));
   }

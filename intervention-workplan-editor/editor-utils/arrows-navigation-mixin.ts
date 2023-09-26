@@ -1,7 +1,7 @@
 import {LitElement} from 'lit';
 import {Constructor} from '@unicef-polymer/etools-types';
 import {SlButton} from '@shoelace-style/shoelace';
-import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 /**
  * Notes about the functionality:
  * - Only cells that contain editable inputs can be reached through arrows navigation
@@ -176,7 +176,7 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
             return;
           }
           // @ts-ignore
-          if (['sl-icon-button', 'sl-button'].includes(path[0]?.localName)) {
+          if (['etools-icon-button', 'sl-button'].includes(path[0]?.localName)) {
             return;
           }
           let actionBtn: any = this.searchForActionBtnInCurrentTd(currentTd);
@@ -390,8 +390,8 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
 
     findEditOrAddBtn(element: any) {
       return (
-        element.querySelector('sl-icon-button[name="create"]') ||
-        element.querySelector('sl-icon-button[name="add-box"]')
+        element.querySelector('etools-icon-button[name="create"]') ||
+        element.querySelector('etools-icon-button[name="add-box"]')
       );
     }
 

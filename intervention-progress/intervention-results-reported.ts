@@ -1,6 +1,6 @@
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import '@shoelace-style/shoelace/dist/components/icon/icon.js';
+import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
 import '@polymer/paper-styles/element-styles/paper-material-styles';
 
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
@@ -196,7 +196,7 @@ export class InterventionResultsReported extends connectStore(
                   )}"
                 >
                 </etools-input>
-                <sl-icon name="not-equal" slot="custom-icon"></sl-icon>
+                <etools-icon name="not-equal" slot="custom-icon"></etools-icon>
                 <span slot="message">${translate('DISBURSEMENT_AMOUNTS')}</span>
               </etools-info-tooltip>
 
@@ -225,7 +225,7 @@ export class InterventionResultsReported extends connectStore(
                   .hideTooltip="${!this.multipleCurrenciesWereUsed(this.progress.disbursement_percent, this.progress)}"
                 >
                   <span slot="field">${translate('NA_%')}</span>
-                  <sl-icon slot="custom-icon" name="not-equal"></sl-icon>
+                  <etools-icon slot="custom-icon" name="not-equal"></etools-icon>
                   <span slot="message">${translate('FR_CURRENCY_NOT_MATCH')}</span>
                 </etools-info-tooltip>`
               : ``}

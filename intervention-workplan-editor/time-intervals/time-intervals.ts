@@ -58,7 +58,7 @@ export class TimeIntervals extends LitElement {
           <div ?hidden="${!this.invalid}" class="invalid">${translate('PLS_SELECT_TIME_PERIODS')}</div>`
       : html`
           <etools-info-tooltip class="" icon-first custom-icon>
-            <sl-icon name="info" slot="custom-icon"></sl-icon>
+            <etools-icon name="info" slot="custom-icon"></etools-icon>
             <div slot="message">${translate('ACTIVITY_TIMES_MSG')}</div>
           </etools-info-tooltip>
         `;
@@ -130,7 +130,7 @@ export class TimeIntervals extends LitElement {
           padding: 4px 0;
           font-size: 12px;
         }
-        sl-icon {
+        etools-icon {
           color: var(--primary-color);
         }
       `

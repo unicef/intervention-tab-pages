@@ -97,18 +97,16 @@ export const CommentStyles: CSSResult = css`
   .actions div:hover {
     text-decoration: underline;
   }
-  sl-icon {
+  etools-icon {
     margin-inline-end: 8px;
   }
   .delete {
-    width: 15px;
-    height: 15px;
+    --etools-icon-font-size: 15px;
     color: var(--primary-shade-of-red);
   }
-  sl-icon[name='refresh'],
+  etools-icon[name='refresh'],
   .resolve {
-    width: 18px;
-    height: 18px;
+    --etools-icon-font-size: 18px;
     color: var(--secondary-text-color);
   }
   *[hidden] {
@@ -122,7 +120,7 @@ export const CommentStyles: CSSResult = css`
     cursor: pointer;
     text-decoration: underline;
   }
-  sl-icon[name='refresh'] {
+  etools-icon[name='refresh'] {
     margin-inline-end: 2px;
   }
   *:focus-visible {

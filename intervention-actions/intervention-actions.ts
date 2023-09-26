@@ -50,7 +50,7 @@ import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/b
 import '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
 import '@shoelace-style/shoelace/dist/components/menu/menu.js';
-import '@shoelace-style/shoelace/dist/components/icon/icon.js';
+import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
 import SlDropdown from '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
 
 @customElement('intervention-actions')
@@ -165,7 +165,7 @@ export class InterventionActions extends connectStore(LitElement) {
     return html`
       <sl-dropdown @click="${(event: MouseEvent) => event.stopImmediatePropagation()}">
         <sl-button slot="trigger" variant="primary" class="${className} no-marg">
-          <sl-icon name="expand-more"></sl-icon>
+          <etools-icon name="expand-more"></etools-icon>
         </sl-button>
         <sl-menu>
           ${actions.map(

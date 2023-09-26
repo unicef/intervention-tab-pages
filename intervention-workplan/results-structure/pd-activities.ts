@@ -3,7 +3,6 @@ import {property, customElement, queryAll} from 'lit/decorators.js';
 import {ResultStructureStyles} from './styles/results-structure.styles';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 
-import '@polymer/iron-icons';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
 import './modals/activity-dialog/activity-data-dialog';
 import '../../intervention-workplan-editor/time-intervals/time-intervals';
@@ -24,8 +23,8 @@ import {
   _canDelete
 } from '../../common/mixins/results-structure-common';
 import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
-
-import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
+import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 import '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
 import '@shoelace-style/shoelace/dist/components/menu/menu.js';
 import '@shoelace-style/shoelace/dist/components/menu-item/menu-item.js';
@@ -64,14 +63,14 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
         <div slot="row-data" class="layout-horizontal align-items-center editable-row start-justified">
           <div class="title-text">${translate(translatesMap.activities)} (${this.activities.length})</div>
           <etools-info-tooltip position="top" custom-icon ?hide-tooltip="${this.readonly}" offset="0">
-            <sl-icon-button
+            <etools-icon-button
               name="add-box"
               slot="custom-icon"
               class="add"
               tabindex="0"
               @click="${() => this.openDialog()}"
               ?hidden="${this.readonly}"
-            ></sl-icon-button>
+            ></etools-icon-button>
             <span class="no-wrap" slot="message">${translate('ADD_PD_ACTIVITY')}</span>
           </etools-info-tooltip>
         </div>
@@ -151,16 +150,16 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
 
                     <div class="show-actions hover-block" style="z-index: ${99 - index}" ?hidden="${this.commentMode}">
                       <sl-dropdown id="view-menu-button">
-                        <sl-icon-button slot="trigger" name="more-vert" tabindex="0"></sl-icon-button>
+                        <etools-icon-button slot="trigger" name="more-vert" tabindex="0"></etools-icon-button>
                         <sl-menu>
                           <sl-menu-item
                             class="action"
                             @click="${() => this.openDialog(activity, this.readonly || !activity.is_active)}"
                           >
-                            <sl-icon
+                            <etools-icon
                               slot="prefix"
                               name="${this.readonly || !activity.is_active ? 'icons:visibility' : 'create'}"
-                            ></sl-icon>
+                            ></etools-icon>
                             ${this.readonly || !activity.is_active ? translate('VIEW') : translate('EDIT')}
                           </sl-menu-item>
                           <sl-menu-item
@@ -175,7 +174,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                             @click="${() =>
                               openActivityDeactivationDialog(activity.id, this.pdOutputId, this.interventionId)}"
                           >
-                            <sl-icon slot="prefix" name="icons:block"></sl-icon>
+                            <etools-icon slot="prefix" name="icons:block"></etools-icon>
                             ${translate('DEACTIVATE')}
                           </sl-menu-item>
                           <sl-menu-item
@@ -190,7 +189,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                             @click="${() =>
                               openDeleteActivityDialog(activity.id, this.pdOutputId, this.interventionId)}"
                           >
-                            <sl-icon slot="prefix" name="delete"></sl-icon>
+                            <etools-icon slot="prefix" name="delete"></etools-icon>
                             ${translate('DELETE')}
                           </sl-menu-item>
                         </sl-menu>
@@ -309,8 +308,8 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
         etools-data-table-row#activitiesRow::part(edt-list-row-collapse-wrapper) {
           border-top: none;
         }
-        sl-icon-button[name='more-vert'] {
-          stroke: inherit;
+        etools-icon-button[name='more-vert'] {
+          color: inherit;
         }
       `
     ];

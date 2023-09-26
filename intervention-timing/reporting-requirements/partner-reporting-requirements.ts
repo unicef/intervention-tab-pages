@@ -1,6 +1,6 @@
 import {LitElement, html, PropertyValues} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import '@shoelace-style/shoelace/dist/components/icon/icon.js';
+import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
 import '@polymer/iron-selector/iron-selector';
 import '@polymer/iron-pages/iron-pages';
 import '@polymer/paper-item/paper-item';
@@ -31,7 +31,7 @@ import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {sectionContentStyles} from '@unicef-polymer/etools-modules-common/dist/styles/content-section-styles-polymer';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
-import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 /**
  * @polymer
@@ -137,12 +137,12 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
                 .tooltipText="${translate('QUARTERLY_PROGRESS_REPORT_TOOLTIP')}"
               ></info-icon-tooltip>
               <span>${translate('QUARTERLY_PROGRESS_REPORTS')} (${this.qprRequirementsCount})</span>
-              <sl-icon-button
+              <etools-icon-button
                 class="edit-rep-req"
                 name="create"
                 @click="${this._openQprEditDialog}"
                 ?hidden="${this._hideRepReqEditBtn(this.isReadonly, this.qprRequirementsCount)}"
-              ></sl-icon-button>
+              ></etools-icon-button>
             </div>
             <div
               name="humanitarianUnicef"
@@ -159,12 +159,12 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
                 .tooltipText="${translate('HUMANITARIAN_REPORT_TOOLTIP')}"
               ></info-icon-tooltip>
               <span>${translate('HUMANITARIAN_REPORTS_UNICEF')} (${this.hrUnicefRequirementsCount})</span>
-              <sl-icon-button
+              <etools-icon-button
                 class="edit-rep-req"
                 name="create"
                 @click="${this._openHruEditDialog}"
                 ?hidden="${this._hideRepReqEditBtn(this.isReadonly, this.hrUnicefRequirementsCount)}"
-              ></sl-icon-button>
+              ></etools-icon-button>
             </div>
             ${this.getHumanitarianLink(this.hrClusterRequirementsCount)}
             <div

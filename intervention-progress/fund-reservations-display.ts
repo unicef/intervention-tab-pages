@@ -4,7 +4,7 @@ import '@polymer/iron-label/iron-label';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
-import '@shoelace-style/shoelace/dist/components/icon/icon.js';
+import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import isEmpty from 'lodash-es/isEmpty';
 import {AnyObject} from '@unicef-polymer/etools-types';
@@ -104,7 +104,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
                 <span class="col-data col-2"
                   >${fr.fr_number}
                   <a title="See more details" class="pl-5" target="_blank" href="${this.getFRNumberLink(fr.fr_number)}">
-                    <sl-icon class="lifted-up-icon" external-icon"></sl-icon>
+                    <etools-icon class="lifted-up-icon" external-icon"></etools-icon>
                   </a>
                 </span>
                 <span class="col-data col-2 right-align">${prettyDate(fr.start_date)}</span>
@@ -120,7 +120,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
                     )}"
                   >
                     <span slot="field">${fr.currency}</span>
-                    <sl-icon name="not-equal" slot="custom-icon"></sl-icon>
+                    <etools-icon name="not-equal" slot="custom-icon"></etools-icon>
                     <span slot="message">
                       <span>${this.getFrCurrencyTooltipMsg()}</span>
                     </span>
@@ -137,7 +137,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
                     <span slot="field" class="${this.getFrsValueNAClass(fr.multi_curr_flag, true)}">
                       ${this.getFrsTotal(fr.multi_curr_flag, fr.actual_amt_local, true)}
                     </span>
-                    <sl-icon name="not-equal" slot="custom-icon"></sl-icon>
+                    <etools-icon name="not-equal" slot="custom-icon"></etools-icon>
                     <span slot="message">
                       <span>${this.getFrsMultiCurrFlagErrTooltipMsg()}</span>
                     </span>
@@ -196,10 +196,10 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
                 <span slot="field" class="${this.getFrsValueNAClass(this.frsDetails.currencies_match)}">
                   ${this.getFrsCurrency(this.frsDetails.currencies_match, this.frsDetails.frs)}
                 </span>
-                <sl-icon
+                <etools-icon
                   name="${this.getFrsCurrencyTooltipIcon(this.frsDetails.currencies_match)}"
                   slot="custom-icon"
-                ></sl-icon>
+                ></etools-icon>
                 <span slot="message">${this.getFrsCurrencyTooltipMsg(this.frsDetails.currencies_match)}</span>
               </etools-info-tooltip>
             </span>
@@ -218,7 +218,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
                 <span slot="field" class="${this.getFrsValueNAClass(this.frsDetails.currencies_match)}">
                   ${this.getFrsTotal(this.frsDetails.currencies_match, this.frsDetails.total_frs_amt)}
                 </span>
-                <sl-icon name="not-equal" slot="custom-icon"></sl-icon>
+                <etools-icon name="not-equal" slot="custom-icon"></etools-icon>
                 <span slot="message">${this._frsTotalAmountWarning}</span>
               </etools-info-tooltip>
             </span>
@@ -232,7 +232,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
                 <span slot="field" class="${this.getFrsValueNAClass(this.frsDetails.multi_curr_flag, true)}">
                   ${this.getFrsTotal(this.frsDetails.multi_curr_flag, String(this.frsDetails.total_actual_amt), true)}
                 </span>
-                <sl-icon name="not-equal" slot="custom-icon"></sl-icon>
+                <etools-icon name="not-equal" slot="custom-icon"></etools-icon>
                 <span slot="message">
                   <span>${this.getFrsMultiCurrFlagErrTooltipMsg()}</span>
                 </span>

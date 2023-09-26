@@ -83,14 +83,14 @@ export class PdIndicator extends CommentsMixin(LitElement) {
             ?hidden="${this.commentMode}"
           >
             <sl-dropdown id="view-menu-button">
-              <sl-icon-button slot="trigger" name="more-vert"></sl-icon-button>
+              <etools-icon-button slot="trigger" name="more-vert"></etools-icon-button>
               <sl-menu>
                 <sl-menu-item
                   class="action"
                   ?hidden="${!this._canEdit() && !this._canView()}"
                   @click="${() => this.openIndicatorDialog(this.indicator, this.readonly)}"
                 >
-                  <sl-icon slot="prefix" name="${this._canEdit() ? 'pencil' : 'icons:visibility'}"></sl-icon>
+                  <etools-icon slot="prefix" name="${this._canEdit() ? 'pencil' : 'icons:visibility'}"></etools-icon>
                   ${this._canEdit() ? translate('EDIT') : translate('VIEW')}
                 </sl-menu-item>
                 <sl-menu-item
@@ -104,7 +104,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
                   )}"
                   @click="${() => this.openDeactivationDialog(String(this.indicator.id))}"
                 >
-                  <sl-icon slot="prefix" name="icons:block"></sl-icon>
+                  <etools-icon slot="prefix" name="icons:block"></etools-icon>
                   ${translate('DEACTIVATE')}
                 </sl-menu-item>
                 <sl-menu-item
@@ -118,7 +118,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
                   )}"
                   @click="${() => this.openDeletionDialog(String(this.indicator.id))}"
                 >
-                  <sl-icon slot="prefix" name="delete"></sl-icon>
+                  <etools-icon slot="prefix" name="delete"></etools-icon>
                   ${translate('DELETE')}
                 </sl-menu-item>
               </sl-menu>

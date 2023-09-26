@@ -3,7 +3,7 @@ import {property, customElement} from 'lit/decorators.js';
 import {ResultStructureStyles} from './styles/results-structure.styles';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 
-import '@polymer/iron-icons';
+
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {RootState} from '../../common/types/store.types';
 import './modals/indicator-dialog/indicator-dialog';
@@ -41,7 +41,7 @@ import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
 import {EtoolsDataTableRow} from '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table-row';
-import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 @customElement('pd-indicators')
 export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)) {
@@ -76,14 +76,14 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
         <div slot="row-data" class="layout-horizontal align-items-center editable-row start-justified">
           <div class="title-text">${translate(translatesMap.applied_indicators)} (${this.indicators.length})</div>
           <etools-info-tooltip position="top" custom-icon ?hide-tooltip="${this.readonly}" offset="0">
-            <sl-icon-button
+            <etools-icon-button
               name="add-box"
               slot="custom-icon"
               class="add"
               tabindex="0"
               @click="${() => this.openIndicatorDialog()}"
               ?hidden="${this.readonly}"
-            ></sl-icon-button>
+            ></etools-icon-button>
             <span class="no-wrap" slot="message">${translate('ADD_PD_INDICATOR')}</span>
           </etools-info-tooltip>
           <info-icon-tooltip
@@ -146,7 +146,9 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
   firstUpdated(changedProperties: PropertyValues): void {
     super.firstUpdated(changedProperties);
 
-    this.shadowRoot!.querySelectorAll('#view-toggle-button, sl-icon').forEach((el) => callClickOnSpacePushListener(el));
+    this.shadowRoot!.querySelectorAll('#view-toggle-button, etools-icon-button').forEach((el) =>
+      callClickOnSpacePushListener(el)
+    );
   }
 
   openAllRows(): void {

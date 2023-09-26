@@ -1,4 +1,4 @@
-import '@shoelace-style/shoelace/dist/components/icon/icon.js';
+import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
 import '@polymer/paper-input/paper-input.js';
 
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
@@ -20,7 +20,7 @@ import {repeatableDataSetsStyles} from '@unicef-polymer/etools-modules-common/di
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
-import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 /**
  * @customElement
@@ -57,13 +57,13 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
           (item: any, index: number) => html` <div class="row-h item-container no-h-margin">
             <div class="item-actions-container">
               <div class="actions">
-                <sl-icon-button
+                <etools-icon-button
                   class="action delete"
                   ?disabled="${this.readonly}"
                   @click="${(e: CustomEvent) => this._openDeleteConfirmation(e, index)}"
                   data-args="${index}"
                   name="cancel"
-                ></sl-icon-button>
+                ></etools-icon-button>
               </div>
             </div>
             <div class="item-content">

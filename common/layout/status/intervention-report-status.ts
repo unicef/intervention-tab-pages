@@ -1,6 +1,6 @@
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import '@shoelace-style/shoelace/dist/components/icon/icon.js';
+import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
 import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import {listenForLangChanged} from 'lit-translate';
 
@@ -16,32 +16,31 @@ export class InterventionReportStatus extends LitElement {
           display: inline-block;
         }
 
-        sl-icon {
-          --sl-icon-width: 16px;
-          --sl-icon-height: 16px;
+        etools-icon {
+          --etools-icon-font-size: 16px;
           padding-inline-end: 4px;
           margin-top: -2px;
         }
 
-        sl-icon[status-type='default'] {
+        etools-icon[status-type='default'] {
           color: var(--primary-color);
         }
 
-        sl-icon[status-type='submitted'],
-        sl-icon[status-type='success'] {
+        etools-icon[status-type='submitted'],
+        etools-icon[status-type='success'] {
           color: var(--success-color);
         }
 
-        sl-icon[status-type='no-status'],
-        sl-icon[status-type='error'] {
+        etools-icon[status-type='no-status'],
+        etools-icon[status-type='error'] {
           color: var(--dark-error-color);
         }
 
-        sl-icon[status-type='neutral'] {
+        etools-icon[status-type='neutral'] {
           color: var(--secondary-text-color);
         }
 
-        sl-icon[status-type='warning'] {
+        etools-icon[status-type='warning'] {
           color: var(--warning-color);
         }
 
@@ -50,7 +49,7 @@ export class InterventionReportStatus extends LitElement {
         }
       </style>
 
-      <sl-icon ?hidden="${this.noIcon}" status-type="${this.statusType}" .name="${this.icon}"></sl-icon>
+      <etools-icon ?hidden="${this.noIcon}" status-type="${this.statusType}" .name="${this.icon}"></etools-icon>
       <span id="label" ?hidden="${this.noLabel}">${this.label}</span>
       <slot></slot>
     `;

@@ -37,7 +37,7 @@ import {Intervention, ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
-import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 const customStyles = html`
   <style>
@@ -48,7 +48,7 @@ const customStyles = html`
       width: 1%;
       white-space: nowrap;
     }
-    .expand-cell sl-icon {
+    .expand-cell etools-icon {
       width: 70px !important;
       color: #2b2b2b !important;
     }
@@ -87,8 +87,8 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           display: flex;
           align-items: center;
         }
-        sl-icon-button[name='file-upload'] {
-          stroke: var(--primary-text-color);
+        etools-icon-button[name='file-upload'] {
+          color: var(--primary-text-color);
         }
       </style>
 
@@ -111,23 +111,23 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
             position="left"
             ?hide-tooltip="${!this.permissions.edit.supply_items || this.uploadInProcess}"
           >
-            <sl-icon-button
+            <etools-icon-button
               slot="custom-icon"
               ?hidden="${!this.permissions.edit.supply_items || this.uploadInProcess}"
               @click="${() => this.uploader?._openFileChooser()}"
               name="file-upload"
             >
-            </sl-icon-button>
+            </etools-icon-button>
             <span slot="message">${translate('UPLOAD_SUPPLY_TOOLTIP')}</span>
           </etools-info-tooltip>
 
           <etools-loading ?active="${this.uploadInProcess}" no-overlay loading-text></etools-loading>
-          <sl-icon-button
+          <etools-icon-button
             ?hidden="${!this.permissions.edit.supply_items}"
             @click="${() => this.addSupplyItem()}"
             name="add-box"
           >
-          </sl-icon-button>
+          </etools-icon-button>
         </div>
         <div class="row-h" ?hidden="${!this.permissions.edit.supply_items || this.supply_items?.length}">
           ${this.getUploadHelpElement()}

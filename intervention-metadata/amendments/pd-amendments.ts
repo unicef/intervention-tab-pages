@@ -1,6 +1,6 @@
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import '@shoelace-style/shoelace/dist/components/icon/icon.js';
+import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
@@ -29,7 +29,7 @@ import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/et
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {getIntervention, setShouldReGetList} from '../../common/actions/interventions';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 import './amendment-difference';
 
 /**
@@ -74,8 +74,8 @@ export class PdAmendments extends CommentsMixin(LitElement) {
           padding: 12px 0;
           margin: 0;
         }
-        sl-icon {
-          width: 18px;
+        etools-icon {
+          --etools-icon-font-size: 18px;
           margin-inline-start: 5px;
         }
         a {
@@ -107,13 +107,13 @@ export class PdAmendments extends CommentsMixin(LitElement) {
 
       <etools-content-panel show-expand-btn panel-title=${translate('AMENDMENTS')} comment-element="amendments">
         <div slot="panel-btns">
-          <sl-icon-button
+          <etools-icon-button
             name="add-box"
             title=${translate('ADD_AMENDMENT')}
             @click="${() => this._showAddAmendmentDialog()}"
             ?hidden="${!this.intervention?.permissions?.edit.amendments}"
           >
-          </sl-icon-button>
+          </etools-icon-button>
         </div>
         <div class="p-relative" id="amendments-wrapper">
           <etools-data-table-header id="listHeader" no-title ?hidden="${!this.amendments.length}">
@@ -149,14 +149,17 @@ export class PdAmendments extends CommentsMixin(LitElement) {
                             class="layout-horizontal align-items-center"
                             href="${ROOT_PATH}interventions/${item.amended_intervention}/metadata"
                           >
-                            ${translate('ACTIVE')} <sl-icon name="launch"></sl-icon>
+                            ${translate('ACTIVE')} <etools-icon name="launch"></etools-icon>
                           </a>
                         `
                       : translate('COMPLETED')}
                   </span>
 
                   <div class="hover-block" ?hidden="${!item.is_active}">
-                    <sl-icon-button name="delete" @click="${() => this.deleteAmendment(item.id)}"></sl-icon-button>
+                    <etools-icon-button
+                      name="delete"
+                      @click="${() => this.deleteAmendment(item.id)}"
+                    ></etools-icon-button>
                   </div>
                 </div>
 
@@ -178,7 +181,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
                   <div class="info-block">
                     <div class="label">${translate('SIGNED_AMENDMENT')}</div>
                     <div class="value" ?hidden="${!item.signed_amendment_attachment}">
-                      <sl-icon name="attachment" class="attachment"></sl-icon>
+                      <etools-icon name="attachment" class="attachment"></etools-icon>
                       <span class="break-word file-label">
                         <a href="${item.signed_amendment_attachment}" target="_blank" download>
                           ${getFileNameFromURL(item.signed_amendment_attachment) || html`&#8212;`}

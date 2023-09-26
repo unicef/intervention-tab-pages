@@ -8,8 +8,8 @@ import {EtoolsRequestEndpoint} from '@unicef-polymer/etools-ajax';
 import '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
 import '@shoelace-style/shoelace/dist/components/menu/menu.js';
-import '@shoelace-style/shoelace/dist/components/icon/icon.js';
-import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
+import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 /**
  * @customElement
@@ -17,19 +17,10 @@ import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
  */
 @customElement('export-intervention-data')
 export class ExportInterventionData extends LitElement {
-  static get styles() {
-    return [
-      css`
-        sl-icon-button {
-          font-size: 20px;
-        }
-      `
-    ];
-  }
   public render() {
     return html`
       <sl-dropdown id="pdExportMenuBtn">
-        <sl-icon-button name="more-vert" slot="trigger"> </sl-icon-button>
+        <etools-icon-button name="more-vert" slot="trigger"> </etools-icon-button>
         <sl-menu>
           ${this.exportLinks.map(
             (item) => html` <sl-menu-item @click="${() => this.export(item.type)}">${item.name}</sl-menu-item>`
