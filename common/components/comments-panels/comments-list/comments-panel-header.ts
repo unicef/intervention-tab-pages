@@ -4,7 +4,7 @@ import {CommentPanelsStyles} from '../common-comments.styles';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {translate} from 'lit-translate';
 import {fitCommentsToWindow, makeCommentsDraggable} from '../../comments/comments.helpers';
-import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 @customElement('comments-panel-header')
 /* eslint-disable max-len */
@@ -15,13 +15,13 @@ export class CommentsPanelHeader extends LitElement {
     return html`
       <div>${translate('COMMENTS_PANEL')} <b>(${this.count})</b></div>
       <div class="buttons">
-        <sl-icon-button
+        <etools-icon-button
           @click="${() => this.toggleMinimize()}"
           name="${this.isExpanded ? 'unfold-more' : 'unfold-less'}"
         >
-        </sl-icon-button>
+        </etools-icon-button>
 
-        <sl-icon-button name="close" @click="${() => this.closePanel()}"> </sl-icon-button>
+        <etools-icon-button name="close" @click="${() => this.closePanel()}"> </etools-icon-button>
       </div>
     `;
   }
@@ -52,9 +52,10 @@ export class CommentsPanelHeader extends LitElement {
     return [
       CommentPanelsStyles,
       css`
-        sl-icon-button {
-          font-size: 1.5em;
-          stroke: white;
+        etools-icon-button {
+          --etools-icon-font-size: 30px;
+          width: 30px;
+          color: white;
         }
       `
     ];

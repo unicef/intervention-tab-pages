@@ -4,7 +4,6 @@ import {prettyDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import CONSTANTS from '../../common/constants';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table.js';
-import '@polymer/iron-icons';
 import './intervention-attachment-dialog';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
@@ -31,7 +30,7 @@ import get from 'lodash-es/get';
 import {translate} from 'lit-translate';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import '@shoelace-style/shoelace/dist/components/switch/switch.js';
-import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 @customElement('attachments-list')
 export class AttachmentsList extends CommentsMixin(LitElement) {
@@ -70,13 +69,13 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
             ${translate('SHOW_INVALID')}
           </sl-switch>
 
-          <sl-icon-button
+          <etools-icon-button
             name="add-box"
             ?hidden="${!this.canEdit}"
             title=${translate('GENERAL.ADD')}
             @click="${() => this.openAttachmentDialog()}"
           >
-          </sl-icon-button>
+          </etools-icon-button>
         </div>
 
         ${this.attachments.length
@@ -99,7 +98,7 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
                       <span class="col-data col-2">${prettyDate(String(attachment.created)) || '-'}</span>
                       <span class="col-data col-3">${this.getAttachmentType(attachment.type!)}</span>
                       <span class="col-data col-6">
-                        <iron-icon icon="attachment" class="attachment"></iron-icon>
+                        <etools-icon name="attachment" class="attachment"></etools-icon>
                         <span class="break-word file-label">
                           <!-- target="_blank" is there for IE -->
                           <a href="${attachment.attachment_document || attachment.attachment}" target="_blank" download>
@@ -109,19 +108,19 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
                       </span>
                       <span class="col-data col-1 center-align">
                         <span ?hidden="${!attachment.active}" class="placeholder-style">&#8212;</span>
-                        <iron-icon icon="check" ?hidden="${attachment.active}"></iron-icon>
+                        <etools-icon name="check" ?hidden="${attachment.active}"></etools-icon>
                       </span>
                       <div class="hover-block">
-                        <sl-icon-button
+                        <etools-icon-button
                           ?hidden="${!this.canEdit || !this.canEditAttachments()}"
                           name="create"
                           @click="${() => this.openAttachmentDialog(attachment)}"
-                        ></sl-icon-button>
-                        <sl-icon-button
+                        ></etools-icon-button>
+                        <etools-icon-button
                           ?hidden="${!this.canEdit || !this.canDeleteAttachments()}"
                           name="delete"
                           @click="${() => this.openDeleteConfirmation(attachment)}"
-                        ></sl-icon-button>
+                        ></etools-icon-button>
                       </div>
                     </div>
                   </etools-data-table-row>

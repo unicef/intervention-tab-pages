@@ -15,7 +15,7 @@ export const AttachmentsListStyles = html`
     .attachment {
       margin-inline-end: 8px;
     }
-    iron-icon {
+    etools-icon {
       color: var(--dark-icon-color);
     }
     icons-actions {
@@ -41,7 +41,7 @@ export const AttachmentsListStyles = html`
     etools-data-table-header {
       --list-header-wrapper-column-height: 48px;
     }
-    sl-icon-button[name='add-box'] {
+    etools-icon-button[name='add-box'] {
       margin-inline-start: 20px;
     }
   </style>

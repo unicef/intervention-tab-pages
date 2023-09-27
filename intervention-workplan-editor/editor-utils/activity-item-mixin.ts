@@ -15,7 +15,7 @@ import {ifDefined} from 'lit/directives/if-defined.js';
 import {ActivitiesCommonMixin} from '../../common/mixins/activities-common.mixin';
 import {getItemTotalFormatted} from '../../common/components/activity/get-total.helper';
 import {ActivitiesFocusMixin} from './activities-focus-mixin';
-import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass: T) {
   return class ActivityItemsClass extends ActivitiesCommonMixin(ActivitiesFocusMixin(baseClass)) {
@@ -242,7 +242,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   .value="${getItemTotalFormatted(item)}"
                 ></etools-input>
                 <div class="hover-block flex-h ${activity.itemsInEditMode && !item.id ? 'in-edit-and-deletable' : ''}">
-                  <sl-icon-button
+                  <etools-icon-button
                     name="create"
                     ?hidden="${!this.permissions.edit.result_links || !item.id}"
                     @click="${(e: CustomEvent) => {
@@ -256,14 +256,14 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                         this.preserveFocusOnRow(e.target);
                       }
                     }}"
-                  ></sl-icon-button>
-                  <sl-icon-button
+                  ></etools-icon-button>
+                  <etools-icon-button
                     id="delItem"
                     name="delete"
                     tabindex="0"
                     ?hidden="${!this.permissions.edit.result_links}"
                     @click="${() => this.removeActivityItem(activity, pdOutput, itemIndex)}"
-                  ></sl-icon-button>
+                  ></etools-icon-button>
                 </div>
               </td>
             </tr>
@@ -278,7 +278,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                 <td></td>
                 <td tabindex="${ifDefined(this.commentMode ? undefined : 0)}" class="a-item-add-padd">
                   <div class="icon" @click="${(e: CustomEvent) => this.addNewActivityItem(e, activity, 'focusAbove')}">
-                    <sl-icon-button name="add-box"></sl-icon-button>
+                    <etools-icon-button name="add-box"></etools-icon-button>
                     <span style="padding-bottom: 5px;"> ${translate('ADD_NEW_ITEM')}</span>
                   </div>
                 </td>
@@ -300,12 +300,12 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                       @click="${() => this.saveActivity(activity, pdOutput.id, this.intervention.id!)}"
                       >${translate('GENERAL.SAVE')}</sl-button
                     >
-                    <sl-icon-button
+                    <etools-icon-button
                       class="flex-none"
                       name="close"
                       @click="${() =>
                         this.cancelActivity(pdOutput.activities, activity, resultIndex, pdOutputIndex, activityIndex)}"
-                    ></sl-icon-button>
+                    ></etools-icon-button>
                   </div>
                 </td>
               </tr>

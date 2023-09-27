@@ -8,7 +8,7 @@ import {css, html, LitElement} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {langChanged, translate} from 'lit-translate';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
-import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 declare const dayjs: any;
 
 @customElement('pv-quarter')
@@ -18,16 +18,16 @@ export class PvQuarter extends LitElement {
       buttonsStyles,
       gridLayoutStylesLit,
       css`
-        sl-icon-button#x {
-          width: 16px;
+        etools-icon-button#x {
+          --etools-icon-font-size: 16px;
           color: var(--icon-delete-color);
           cursor: pointer;
         }
-        sl-icon-button#x:hover {
+        etools-icon-button#x:hover {
           color: #b70202;
         }
-        iron-icon[icon='add'] {
-          width: 15px;
+        etools-icon-button[name='add'] {
+          --etools-icon-font-size: 15px;
         }
       `
     ];
@@ -68,10 +68,10 @@ export class PvQuarter extends LitElement {
           margin-bottom: 32px !important;
         }
 
-        sl-icon-button.light {
+        etools-icon-button.light {
           color: #979797;
         }
-        sl-icon-button[readonly] {
+        etools-icon-button[readonly] {
           color: #d3d1d1;
           pointer-events: none;
         }
@@ -87,33 +87,33 @@ export class PvQuarter extends LitElement {
         </div>
 
         <div class="layout-horizontal align-items-center visits">
-          <sl-icon-button
+          <etools-icon-button
             id="subtractBtn"
             class="light"
             name="remove-circle"
             ?hidden="${this.readonly}"
             @tap="${this.subtractClicked}"
-          ></sl-icon-button>
+          ></etools-icon-button>
           <div class="visit-no">${this.item[`programmatic_q${this.qIndex}`]}</div>
-          <sl-icon-button
+          <etools-icon-button
             id="addBtn"
             class="light"
             name="add-circle"
             ?hidden="${this.readonly}"
             @tap="${this.addClicked}"
-          ></sl-icon-button>
+          ></etools-icon-button>
         </div>
 
         <div class="sites-display" ?hidden="${!this.item[`programmatic_q${this.qIndex}_sites`].length}">
           <label class="paper-label">${translate('SITES')}</label>
           ${this.item[`programmatic_q${this.qIndex}_sites`].map((s: any) => {
             return html`<div style="padding-bottom: 7px;">
-              <iron-icon
+              <etools-icon
                 id="x"
-                icon="close"
+                name="close"
                 ?hidden="${this.readonly}"
                 @click="${() => this.onRemoveSite(s.id)}"
-              ></iron-icon>
+              ></etools-icon>
               ${s.name}
             </div>`;
           })}
@@ -125,7 +125,7 @@ export class PvQuarter extends LitElement {
           ?hidden="${this.readonly || !this.item[`programmatic_q${this.qIndex}`]}"
           title=${translate('SELECT_SITE_FROM_MAP')}
         >
-          <iron-icon icon="add"></iron-icon>
+          <etools-icon name="add"></etools-icon>
           ${translate('SELECT_SITE_FROM_MAP')}
         </sl-button>
       </div>

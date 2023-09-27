@@ -194,7 +194,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
             ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.sites)}"
             title=${translate('SELECT_SITE_FROM_MAP')}
           >
-            <iron-icon icon="add"></iron-icon>
+            <etools-icon name="add"></etools-icon>
             ${translate('SELECT_SITE_FROM_MAP')}
           </sl-button>
         </div>

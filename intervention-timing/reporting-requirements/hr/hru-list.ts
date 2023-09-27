@@ -13,7 +13,7 @@ import {translate} from 'lit-translate';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {EtoolsPaginator} from '@unicef-polymer/etools-unicef/src/etools-table/pagination/etools-pagination';
-import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 /**
  * @polymer
@@ -54,11 +54,11 @@ export class HruList extends ReportingReqPastDatesCheckMixin(ReportingRequiremen
             <div class="col-data col-1 right-align index-col">${this._getIndex(index)}</div>
             <div class="col-data flex-c">${this.getDateDisplayValue(item.end_date)}</div>
             <div class="col-data col-2 actions">
-              <sl-icon-button
+              <etools-icon-button
                 name="delete"
                 ?hidden="${!this.editMode}"
                 @click="${() => this._deleteHruReq(index)}"
-              ></sl-icon-button>
+              ></etools-icon-button>
             </div>
           </div>
         </etools-data-table-row>`

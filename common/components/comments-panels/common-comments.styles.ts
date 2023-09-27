@@ -56,4 +56,8 @@ export const CommentPanelsStyles: CSSResult = css`
   *:focus-visible {
     outline: 2px solid rgb(170 165 165 / 50%);
   }
+
+  .buttons etools-icon-button:last-child {
+    margin-inline-start: 10px;
+  }
 `;

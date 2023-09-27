@@ -123,7 +123,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
               <label class="input-label" ?empty="${!this.budgetSummary.currency}">
                 ${this.budgetSummary.currency}
               </label>
-              <iron-icon icon="pmp-custom-icons:not-equal" slot="custom-icon"></iron-icon>
+              <etools-icon name="not-equal" slot="custom-icon"></etools-icon>
               <span slot="message">${this.getFrsCurrencyTooltipMsg(this.frsDetails.currencies_match)}</span>
             </etools-info-tooltip>
             <div class="input-label" ?empty="${!this.budgetSummary.currency}">${this.budgetSummary.currency}</div>
@@ -163,7 +163,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
               custom-icon
               ?hide-tooltip="${!this.frsConsistencyWarningIsActive(this._frsConsistencyWarning)}"
             >
-              <iron-icon icon="pmp-custom-icons:not-equal" slot="custom-icon"></iron-icon>
+              <etools-icon name="not-equal" slot="custom-icon"></etools-icon>
               <span slot="message">${this._frsConsistencyWarning}</span>
             </etools-info-tooltip>
             <div class="input-label" ?empty="${!this.budgetSummary.unicef_cash_local}">

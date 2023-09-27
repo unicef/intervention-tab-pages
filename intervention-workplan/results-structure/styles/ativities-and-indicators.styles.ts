@@ -82,7 +82,7 @@ export const ActivitiesAndIndicatorsStyles: CSSResult = css`
     /* hover state */
     --sl-color-neutral-1000: #000000;
   }
-  .action sl-icon {
+  .action etools-icon {
     margin-inline: 14px 11px;
   }
   .action::part(label) {

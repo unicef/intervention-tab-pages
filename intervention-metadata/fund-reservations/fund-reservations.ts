@@ -1,6 +1,6 @@
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import '@polymer/iron-icons/iron-icons';
+import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
 
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
@@ -33,7 +33,7 @@ import {getArraysDiff} from '@unicef-polymer/etools-utils/dist/array.util';
 import {listenForLangChanged} from 'lit-translate';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
-import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 /**
  * @customElement
@@ -88,12 +88,12 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
         panel-title=${translate('FUND_RESERVATIONS')}
         comment-element="fund-reservations"
       >
-        <sl-icon-button
+        <etools-icon-button
           slot="panel-btns"
           name="add-box"
           @click="${() => this._openFrsDialog()}"
           ?hidden="${!this.permissions.edit.frs}"
-        ></sl-icon-button>
+        ></etools-icon-button>
         <div id="frs-container" ?hidden="${!this.thereAreFrs(this.intervention.frs_details)}">
           <etools-info-tooltip
             class="frs-inline-list"
@@ -106,7 +106,7 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
                 (item: AnyObject) => html`<span class="fr-number">${item.fr_number}</span>`
               )}
             </div>
-            <iron-icon icon="pmp-custom-icons:not-equal" slot="custom-icon"></iron-icon>
+            <etools-icon name="not-equal" slot="custom-icon"></etools-icon>
             <span slot="message"><span>${this._frsConsistencyWarning}</span></span>
           </etools-info-tooltip>
         </div>
