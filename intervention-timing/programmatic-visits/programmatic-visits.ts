@@ -29,7 +29,7 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import '../../common/components/sites-widget/sites-dialog';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
 import './pv-quarter';
-import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 /**
  * @customElement
@@ -127,7 +127,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
             ${this._getAddBtnPadding(this.data?.length)}
             @click="${this._addNewPlannedVisit}"
           >
-            <iron-icon icon="add-box"></iron-icon>
+            <etools-icon name="add-box"></etools-icon>
             ${translate('ADD_YEAR')}
           </sl-button>
         </div>
@@ -289,14 +289,14 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
           <div class="layout-horizontal">
             <div class="item-actions-container">
               <div class="actions">
-                <sl-icon-button
+                <etools-icon-button
                   class="action delete"
                   @click="${(event: CustomEvent) => this._openDeleteConfirmation(event, index)}"
                   data-args="${index}"
                   ?disabled="${!this._canBeRemoved(index, this.editMode)}"
-                  name="x-circle-fill"
+                  name="cancel"
                 >
-                </sl-icon-button>
+                </etools-icon-button>
               </div>
             </div>
             <div class="col-1 yearContainer">

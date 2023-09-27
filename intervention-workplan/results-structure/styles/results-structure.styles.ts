@@ -87,12 +87,12 @@ export const ResultStructureStyles: CSSResult = css`
     border-top: 1px solid var(--main-border-color);
     background-color: var(--primary-background-color);
   }
-  iron-icon {
+  etools-icon {
     margin: 0 15px;
     opacity: 0.9;
     cursor: pointer;
   }
-  iron-icon:hover {
+  etools-icon:hover {
     opacity: 1;
   }
   *[hidden] {
@@ -135,11 +135,11 @@ export const ResultStructureStyles: CSSResult = css`
     background: linear-gradient(270deg, var(--cp-output-background) 71.65%, rgba(196, 196, 196, 0) 100%);
     padding-inline-start: 20px;
   }
-  paper-icon-button.add {
+  etools-icon-button.add {
     color: #444444;
     margin-inline-start: -7px;
   }
-  paper-icon-button.add:hover {
+  etools-icon-button.add:hover {
     color: #212121;
   }
 `;

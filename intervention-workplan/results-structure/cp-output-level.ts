@@ -4,7 +4,6 @@ import {ResultStructureStyles} from './styles/results-structure.styles';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table.js';
 
-import '@polymer/iron-icons';
 import './modals/cp-output-dialog';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
@@ -14,7 +13,7 @@ import {translate} from 'lit-translate';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import {TruncateMixin} from '../../common/mixins/truncate.mixin';
 import {_canDelete} from '../../common/mixins/results-structure-common';
-import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 @customElement('cp-output-level')
 export class CpOutputLevel extends TruncateMixin(LitElement) {
@@ -70,9 +69,9 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
                           </div>
                         </div>
                         <div class="hover-block" ?hidden="${this.readonly}">
-                          <sl-icon-button name="pencil-fill" @click="${this.openEditCpOutputPopup}"></sl-icon-button>
-                          <sl-icon-button
-                            name="trash-fill"
+                          <etools-icon-button name="create" @click="${this.openEditCpOutputPopup}"></etools-icon-button>
+                          <etools-icon-button
+                            name="delete"
                             ?hidden="${!_canDelete(
                               this.resultLink,
                               this.readonly,
@@ -81,7 +80,7 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
                               this.interventionInfo.in_amendment_date!
                             )}"
                             @click="${this.openDeleteCPOutputPopup}"
-                          ></sl-icon-button>
+                          ></etools-icon-button>
                         </div>
                       `
                     : html`
@@ -104,7 +103,7 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
   firstUpdated(changedProperties: PropertyValues): void {
     super.firstUpdated(changedProperties);
 
-    this.shadowRoot!.querySelectorAll('iron-icon').forEach((el) => callClickOnSpacePushListener(el));
+    this.shadowRoot!.querySelectorAll('etools-icon').forEach((el) => callClickOnSpacePushListener(el));
   }
 
   openEditCpOutputPopup(): void {
@@ -185,9 +184,9 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
         .editable-row:hover .hover-block {
           opacity: 1;
         }
-        sl-icon-button[name='trash-fill'],
-        sl-icon-button[name='pencil-fill'] {
-          stroke: inherit !important;
+        etools-icon-button[name='delete'],
+        etools-icon-button[name='create'] {
+          color: inherit !important;
         }
       `
     ];

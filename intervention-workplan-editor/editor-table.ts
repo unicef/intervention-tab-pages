@@ -1,7 +1,6 @@
 import {html, LitElement} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
 import {EditorTableStyles} from './editor-utils/editor-table-styles';
-import '@polymer/iron-icons';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {TABS} from '../common/constants';
@@ -49,6 +48,7 @@ import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/b
 import '@shoelace-style/shoelace/dist/components/button/button.js';
 import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
 import '@shoelace-style/shoelace/dist/components/tooltip/tooltip.js';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 // @ts-ignore
 @customElement('editor-table')
@@ -160,9 +160,9 @@ export class EditorTable extends CommentsMixin(
         etools-input::part(input) {
           line-height: 24px;
         }
-        sl-icon-button[name='trash-fill'],
-        sl-icon-button[name='pencil-fill'] {
-          stroke: inherit;
+        etools-icon-button[name='delete'],
+        etools-icon-button[name='create'] {
+          color: inherit;
         }
       </style>
       <table>
@@ -202,16 +202,16 @@ export class EditorTable extends CommentsMixin(
                         placement="top"
                         content="${translate('ADD_PD_OUTPUT')}"
                       >
-                        <sl-icon-button
+                        <etools-icon-button
                           id="add-pd-output"
                           @click="${(e: any) => {
                             this.addNewUnassignedPDOutput();
                             this.moveFocusToNewllyAdded(e.target);
                           }}"
                           ?hidden="${!this.permissions?.edit.result_links}"
-                          name="plus-square-fill"
+                          name="add-box"
                           tabindex="0"
-                        ></sl-icon-button>
+                        ></etools-icon-button>
                       </sl-tooltip>
                     </div>
                   </td>
@@ -273,17 +273,18 @@ export class EditorTable extends CommentsMixin(
                       content="${translate('ADD_PD_OUTPUT')}"
                       placement="top"
                     >
-                      <sl-icon-button
+                      <etools-icon-button
                         id="add-pd-output-${result.id}"
+                        slot="custom-icon"
                         @click="${(e: any) => {
                           this.addNewPDOutput(result.ll_results as any);
                           this.moveFocusToNewllyAdded(e.target);
                         }}"
                         ?hidden="${!this.permissions?.edit.result_links ||
                         !this.getOriginalCPOutput(resultIndex)?.cp_output}"
-                        name="plus-square-fill"
+                        name="add-box"
                         tabindex="0"
-                      ></sl-icon-button>
+                      ></etools-icon-button>
                     </sl-tooltip>
                   </div>
                 </td>
@@ -384,8 +385,8 @@ export class EditorTable extends CommentsMixin(
                         <span class="b">${displayCurrencyAmount(pdOutput.total, '0.00')}</span>
                       </div>
                       <div class="action-btns align-bottom flex-h action-btns">
-                        <sl-icon-button
-                          name="pencil-fill"
+                        <etools-icon-button
+                          name="create"
                           ?hidden="${pdOutput.inEditMode || !this.permissions?.edit.result_links}"
                           @click="${(e: any) => {
                             pdOutput.inEditMode = true;
@@ -393,24 +394,26 @@ export class EditorTable extends CommentsMixin(
                             this.requestUpdate();
                             this.moveFocusToFirstInput(e.target);
                           }}"
-                        ></sl-icon-button>
+                        ></etools-icon-button>
                         <sl-tooltip
                           ?hidden="${!this.permissions?.edit.result_links}"
                           placement="top"
                           content="${translate('ADD_NEW_ACTIVITY')}"
                         >
-                          <sl-icon-button
+                          <etools-icon-button
                             id="add-a-${pdOutput.id}"
-                            name="plus-square-fill"
+                            name="add-box"
+                            slot="custom-icon"
                             @click="${(e: any) => {
                               this.addNewActivity(pdOutput);
                               this.moveFocusToNewllyAdded(e.target);
                             }}"
                             ?hidden="${pdOutput.inEditMode || !this.permissions?.edit.result_links}"
-                          ></sl-icon-button>
+                          ></etools-icon-button>
                         </sl-tooltip>
-                        <sl-icon-button
-                          name="trash-fill"
+
+                        <etools-icon-button
+                          name="delete"
                           ?hidden="${pdOutput.inEditMode ||
                           !_canDelete(
                             pdOutput,
@@ -420,7 +423,7 @@ export class EditorTable extends CommentsMixin(
                             this.intervention.in_amendment_date
                           )}"
                           @click="${() => this.openDeletePdOutputDialog(pdOutput.id)}"
-                        ></sl-icon-button>
+                        ></etools-icon-button>
                       </div>
                       <div class="flex-h justify-right align-bottom" ?hidden="${!pdOutput.inEditMode}">
                         <sl-button
@@ -431,10 +434,10 @@ export class EditorTable extends CommentsMixin(
                           ?hidden="${!pdOutput.inEditMode}"
                           >${translate('GENERAL.SAVE')}</sl-button
                         >
-                        <sl-icon-button
-                          name="x-lg"
+                        <etools-icon-button
+                          name="close"
                           @click="${() => this.cancelPdOutput(result as any, pdOutput, resultIndex, pdOutputIndex)}"
-                        ></sl-icon-button>
+                        ></etools-icon-button>
                       </div>
                     </td>
                   </tr>

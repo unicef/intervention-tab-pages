@@ -5,7 +5,7 @@ import {CommentPanelsStyles} from '../common-comments.styles';
 import {translate, get as getTranslation} from 'lit-translate';
 import {makeCommentsDraggable} from '../../comments/comments.helpers';
 import {CommentRelatedItem} from '../../comments/comments-types';
-import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 @customElement('messages-panel-header')
 export class MessagesPanelHeader extends LitElement {
@@ -19,7 +19,7 @@ export class MessagesPanelHeader extends LitElement {
         <b>${this.relatedToKey ? translate(this.relatedToKey) : ''} ${this.relatedItem?.code || ''}</b>
       </div>
       <div class="buttons">
-        <sl-icon-button name="chevron-right" @click="${() => this.hideMessages(false)}"> </sl-icon-button>
+        <etools-icon-button name="chevron-right" @click="${() => this.hideMessages(false)}"> </etools-icon-button>
       </div>
     `;
   }
@@ -56,9 +56,10 @@ export class MessagesPanelHeader extends LitElement {
     return [
       CommentPanelsStyles,
       css`
-        sl-icon-button {
-          font-size: 1.5em;
-          stroke: white;
+        etools-icon-button {
+          --etools-icon-font-size: 30px;
+          width: 30px;
+          color: white;
         }
       `
     ];

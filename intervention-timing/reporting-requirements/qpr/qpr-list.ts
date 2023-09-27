@@ -14,7 +14,7 @@ import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/st
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import PaginationMixin from '@unicef-polymer/etools-modules-common/dist/mixins/pagination-mixin';
 import {formatDateLocalized} from '@unicef-polymer/etools-modules-common/dist/utils/language';
-import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 /**
  * @polymer
@@ -57,16 +57,16 @@ export class QprList extends PaginationMixin(
                 <div class="col-data col-3">${formatDateLocalized(item.end_date)}</div>
                 <div class="col-data col-3">${formatDateLocalized(item.due_date)}</div>
                 <div class="col-data flex-c actions">
-                  <sl-icon-button
-                    name="pencil-fill"
+                  <etools-icon-button
+                    name="create"
                     @click="${() => this._editQprReq(index)}"
                     ?hidden="${!this.editMode}"
-                  ></sl-icon-button>
-                  <sl-icon-button
-                    name="trash-fill"
+                  ></etools-icon-button>
+                  <etools-icon-button
+                    name="delete"
                     ?hidden="${!this.editMode}"
                     @click="${() => this._deleteQprReq(index)}"
-                  ></sl-icon-button>
+                  ></etools-icon-button>
                 </div>
               </div>
             </etools-data-table-row>

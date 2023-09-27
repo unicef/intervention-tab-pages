@@ -15,7 +15,7 @@ import {REVIEW_ANSVERS, REVIEW_QUESTIONS} from '../../common/components/interven
 import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 import '../../common/components/intervention/review-checklist-popup';
-import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 @customElement('reviews-list')
 export class ReviewsList extends connectStore(LitElement) {
@@ -84,12 +84,15 @@ export class ReviewsList extends connectStore(LitElement) {
               <div slot="row-data" class="editable-row">
                 <div class="flex-2">${approval.user.name}</div>
                 <div class="flex-1">
-                  <iron-icon icon="${approval.overall_approval ? 'check' : 'close'}"></iron-icon>
+                  <etools-icon name="${approval.overall_approval ? 'check' : 'close'}"></etools-icon>
                 </div>
                 <div class="flex-4">${approval.overall_comment || '-'}</div>
                 <div class="flex-1">${formatDate(approval.review_date as string, 'DD MMM YYYY')}</div>
                 <div class="hover-block" ?hidden="${this.readonly || approval.user.id !== this.currentUserId}">
-                  <sl-icon-button name="pencil-fill" @click="${() => this.openReviewPopup(approval)}"></sl-icon-button>
+                  <etools-icon-button
+                    name="create"
+                    @click="${() => this.openReviewPopup(approval)}"
+                  ></etools-icon-button>
                 </div>
               </div>
 

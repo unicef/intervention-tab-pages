@@ -101,10 +101,10 @@ export const EditorTableStyles = css`
     font-weight: 600;
   }
 
-  paper-icon-button {
+  etools-icon-button {
     color: #504e4e;
   }
-  sl-icon-button[name='x-lg'] {
+  etools-icon-button[name='close'] {
     color: red;
     stroke: red;
   }

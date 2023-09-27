@@ -3,7 +3,6 @@ import {property, customElement, queryAll} from 'lit/decorators.js';
 import {ResultStructureStyles} from './styles/results-structure.styles';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 
-import '@polymer/iron-icons';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
 import './modals/activity-dialog/activity-data-dialog';
 import '../../intervention-workplan-editor/time-intervals/time-intervals';
@@ -24,9 +23,12 @@ import {
   _canDelete
 } from '../../common/mixins/results-structure-common';
 import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
-import {PaperMenuButton} from '@polymer/paper-menu-button';
-import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
-
+import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
+import '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
+import '@shoelace-style/shoelace/dist/components/menu/menu.js';
+import '@shoelace-style/shoelace/dist/components/menu-item/menu-item.js';
+import SlDropdown from '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
 @customElement('pd-activities')
 export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
   @property({type: String})
@@ -61,13 +63,13 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
         <div slot="row-data" class="layout-horizontal align-items-center editable-row start-justified">
           <div class="title-text">${translate(translatesMap.activities)} (${this.activities.length})</div>
           <etools-info-tooltip position="top" custom-icon ?hide-tooltip="${this.readonly}" offset="0">
-            <sl-icon-button
-              name="plus-square-fill"
+            <etools-icon-button
+              name="add-box"
               slot="custom-icon"
               class="add"
               @click="${() => this.openDialog()}"
               ?hidden="${this.readonly}"
-            ></sl-icon-button>
+            ></etools-icon-button>
             <span class="no-wrap" slot="message">${translate('ADD_PD_ACTIVITY')}</span>
           </etools-info-tooltip>
         </div>
@@ -89,9 +91,10 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                     related-to-description="${activity.name}"
                     comments-container
                     ?hidden="${this._hideActivity(activity, this.showInactive)}"
-                    @paper-dropdown-open="${(event: CustomEvent) =>
-                      (event.currentTarget as HTMLElement)!.classList.add('active')}"
-                    @paper-dropdown-close="${(event: CustomEvent) =>
+                    @sl-show="${(event: CustomEvent) => {
+                      (event.currentTarget as HTMLElement)!.classList.add('active');
+                    }}"
+                    @sl-hide="${(event: CustomEvent) =>
                       (event.currentTarget as HTMLElement)!.classList.remove('active')}"
                   >
                     <!--    Activity Data: code / name / other info / items link    -->
@@ -145,19 +148,20 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                     </div>
 
                     <div class="show-actions hover-block" style="z-index: ${99 - index}" ?hidden="${this.commentMode}">
-                      <paper-menu-button id="view-menu-button" close-on-activate horizontal-align>
-                        <sl-icon-button slot="dropdown-trigger" name="three-dots-vertical"></sl-icon-button>
-                        <paper-listbox slot="dropdown-content">
-                          <div
+                      <sl-dropdown id="view-menu-button">
+                        <etools-icon-button slot="trigger" name="more-vert" tabindex="0"></etools-icon-button>
+                        <sl-menu>
+                          <sl-menu-item
                             class="action"
                             @click="${() => this.openDialog(activity, this.readonly || !activity.is_active)}"
                           >
-                            <iron-icon
-                              icon="${this.readonly || !activity.is_active ? 'visibility' : 'create'}"
-                            ></iron-icon>
+                            <etools-icon
+                              slot="prefix"
+                              name="${this.readonly || !activity.is_active ? 'icons:visibility' : 'create'}"
+                            ></etools-icon>
                             ${this.readonly || !activity.is_active ? translate('VIEW') : translate('EDIT')}
-                          </div>
-                          <div
+                          </sl-menu-item>
+                          <sl-menu-item
                             class="action"
                             ?hidden="${!_canDeactivate(
                               activity,
@@ -169,10 +173,10 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                             @click="${() =>
                               openActivityDeactivationDialog(activity.id, this.pdOutputId, this.interventionId)}"
                           >
-                            <iron-icon icon="icons:block"></iron-icon>
+                            <etools-icon slot="prefix" name="icons:block"></etools-icon>
                             ${translate('DEACTIVATE')}
-                          </div>
-                          <div
+                          </sl-menu-item>
+                          <sl-menu-item
                             class="action delete-action"
                             ?hidden="${!_canDelete(
                               activity,
@@ -184,11 +188,11 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                             @click="${() =>
                               openDeleteActivityDialog(activity.id, this.pdOutputId, this.interventionId)}"
                           >
-                            <iron-icon icon="delete"></iron-icon>
+                            <etools-icon slot="prefix" name="delete"></etools-icon>
                             ${translate('DELETE')}
-                          </div>
-                        </paper-listbox>
-                      </paper-menu-button>
+                          </sl-menu-item>
+                        </sl-menu>
+                      </sl-dropdown>
                     </div>
                   </div>
                 `
@@ -199,8 +203,8 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
     `;
   }
 
-  @queryAll('paper-menu-button#view-menu-button')
-  actionsMenuBtns!: PaperMenuButton[];
+  @queryAll('#view-menu-button')
+  actionsMenuBtns!: SlDropdown[];
 
   connectedCallback(): void {
     super.connectedCallback();
@@ -217,7 +221,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
   }
 
   closeMenusOnScroll() {
-    this.actionsMenuBtns.forEach((p) => (p.opened = false));
+    this.actionsMenuBtns.forEach((p) => (p.open = false));
   }
 
   disconnectedCallback(): void {
@@ -303,8 +307,8 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
         etools-data-table-row#activitiesRow::part(edt-list-row-collapse-wrapper) {
           border-top: none;
         }
-        sl-icon-button[name='three-dots-vertical'] {
-          stroke: inherit;
+        etools-icon-button[name='more-vert'] {
+          color: inherit;
         }
       `
     ];

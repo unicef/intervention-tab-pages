@@ -10,7 +10,7 @@ import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import '../../common/components/intervention/review-checklist-popup';
 import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
-import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 @customElement('overall-approval')
 export class OverallApproval extends LitElement {
@@ -64,7 +64,7 @@ export class OverallApproval extends LitElement {
       ${sharedStyles}
       <etools-content-panel class="content-section" panel-title=${translate('OVERALL_REVIEW')}>
         <div slot="panel-btns" ?hidden="${this.readonly}">
-          <sl-icon-button name="pencil-fill" @click="${() => this.openReviewPopup()}"></sl-icon-button>
+          <etools-icon-button name="create" @click="${() => this.openReviewPopup()}"></etools-icon-button>
         </div>
         <etools-data-table-row class="overall-row" no-collapse details-opened>
           <div slot="row-data">
@@ -79,7 +79,7 @@ export class OverallApproval extends LitElement {
                 <div class="label">${translate('APPROVED_BY_PRC')}</div>
                 <div class="value">
                   ${typeof this.review.overall_approval === 'boolean'
-                    ? html` <iron-icon icon="${this.review.overall_approval ? 'check' : 'close'}"></iron-icon>`
+                    ? html` <etools-icon name="${this.review.overall_approval ? 'check' : 'close'}"></etools-icon>`
                     : '-'}
                 </div>
               </div>

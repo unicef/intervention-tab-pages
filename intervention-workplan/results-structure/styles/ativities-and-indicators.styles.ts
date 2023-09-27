@@ -38,7 +38,7 @@ export const ActivitiesAndIndicatorsStyles: CSSResult = css`
   }
   .table-row.active .show-actions,
   .table-row:hover .show-actions {
-    display: block;
+    display: flex;
     opacity: 1;
   }
   .table-row.active,
@@ -72,25 +72,36 @@ export const ActivitiesAndIndicatorsStyles: CSSResult = css`
     text-align: left;
   }
   .action {
-    display: flex;
-    align-items: center;
+    text-align: left;
     font-size: 16px;
     font-weight: 400;
     line-height: 19px;
-    padding: 10px 14px;
-    color: #000000;
     white-space: nowrap;
-    text-align: left;
-    cursor: pointer;
+    /* normal state */
+    --sl-color-neutral-700: #000000;
+    /* hover state */
+    --sl-color-neutral-1000: #000000;
   }
-  .action iron-icon {
-    margin: 0 11px 0 0;
+  .action etools-icon {
+    margin-inline: 14px 11px;
+  }
+  .action::part(label) {
+    padding-inline-end: 14px;
+  }
+  .action::part(checked-icon) {
+    width: 0;
+  }
+  .action::part(submenu-icon) {
+    width: 0;
   }
   .action:hover {
     background-color: var(--secondary-background-color);
   }
   .delete-action {
-    color: #e14f4f;
+    /* normal state */
+    --sl-color-neutral-700: #e14f4f;
+    /* hover state */
+    --sl-color-neutral-1000: #e14f4f;
   }
   .item-link {
     margin-top: 7px;
@@ -128,7 +139,7 @@ export const ActivitiesAndIndicatorsStyles: CSSResult = css`
     bottom: 1px;
   }
 
-  .editable-row .hover-block paper-menu-button {
+  .editable-row .hover-block sl-dropdown {
     padding: 0;
   }
 

@@ -1,6 +1,6 @@
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import '@polymer/iron-icons/iron-icons';
+import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
 import '@polymer/paper-styles/element-styles/paper-material-styles';
 
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
@@ -21,7 +21,6 @@ import {RootState} from '../common/types/store.types';
 
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {pmpCustomIcons} from './styles/pmp-icons';
 import get from 'lodash-es/get';
 import {AnyObject, GenericObject} from '@unicef-polymer/etools-types';
 
@@ -69,7 +68,6 @@ export class InterventionResultsReported extends connectStore(
   }
   render() {
     return html`
-      ${pmpCustomIcons}
       <style>
         ${sharedStyles}${dataTableStylesLit} #progress-summary etools-progress-bar {
           margin-top: 16px;
@@ -198,7 +196,7 @@ export class InterventionResultsReported extends connectStore(
                   )}"
                 >
                 </etools-input>
-                <iron-icon icon="pmp-custom-icons:not-equal" slot="custom-icon"></iron-icon>
+                <etools-icon name="not-equal" slot="custom-icon"></etools-icon>
                 <span slot="message">${translate('DISBURSEMENT_AMOUNTS')}</span>
               </etools-info-tooltip>
 
@@ -227,7 +225,7 @@ export class InterventionResultsReported extends connectStore(
                   .hideTooltip="${!this.multipleCurrenciesWereUsed(this.progress.disbursement_percent, this.progress)}"
                 >
                   <span slot="field">${translate('NA_%')}</span>
-                  <iron-icon slot="custom-icon" icon="pmp-custom-icons:not-equal"></iron-icon>
+                  <etools-icon slot="custom-icon" name="not-equal"></etools-icon>
                   <span slot="message">${translate('FR_CURRENCY_NOT_MATCH')}</span>
                 </etools-info-tooltip>`
               : ``}

@@ -11,7 +11,7 @@ import {ProgrammeManagementRowExtended, ProgrammeManagementRowItemExtended} from
 import {ActivitiesCommonMixin} from '../../common/mixins/activities-common.mixin';
 import {getItemTotalFormatted} from '../../common/components/activity/get-total.helper';
 import {ActivitiesFocusMixin} from './activities-focus-mixin';
-import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(baseClass: T) {
   return class ProgrammeManagementItemClass extends ActivitiesCommonMixin(ActivitiesFocusMixin(baseClass)) {
@@ -240,8 +240,8 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                     ? 'in-edit-and-deletable'
                     : ''}"
                 >
-                  <sl-icon-button
-                    name="pencil-fill"
+                  <etools-icon-button
+                    name="create"
                     ?hidden="${!this.permissions.edit.management_budgets || !item.id}"
                     @click="${(e: CustomEvent) => {
                       programmeManagement.inEditMode = true;
@@ -254,14 +254,14 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                         this.preserveFocusOnRow(e.target);
                       }
                     }}"
-                  ></sl-icon-button>
-                  <sl-icon-button
+                  ></etools-icon-button>
+                  <etools-icon-button
                     id="delItem"
-                    name="trash-fill"
+                    name="delete"
                     tabindex="0"
                     ?hidden="${!this.permissions.edit.management_budgets}"
                     @click="${() => this.removeProgrammeManagementItem(programmeManagement, itemIndex)}"
-                  ></sl-icon-button>
+                  ></etools-icon-button>
                 </div>
               </td>
             </tr>
@@ -275,7 +275,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
               <td></td>
               <td tabindex="${ifDefined(this.commentMode ? undefined : '0')}" class="a-item-add-padd">
                 <div class="icon" @click="${(e: CustomEvent) => this.addNewItem(e, programmeManagement, 'focusAbove')}">
-                  <sl-icon-button name="plus-square-fill"></sl-icon-button> ${translate('ADD_NEW_ITEM')}
+                  <etools-icon-button name="add-box"></etools-icon-button> ${translate('ADD_NEW_ITEM')}
                 </div>
               </td>
               <td></td>
@@ -302,16 +302,16 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                     @click="${() => this.saveProgrammeManagement(programmeManagement, this.intervention.id!)}"
                     >${translate('GENERAL.SAVE')}</sl-button
                   >
-                  <sl-icon-button
+                  <etools-icon-button
                     class="flex-none"
-                    name="x-lg"
+                    name="close"
                     @click="${() =>
                       this.cancelProgrammeManagement(
                         programmeManagement.items,
                         programmeManagement,
                         programmeManagementIndex
                       )}"
-                  ></sl-icon-button>
+                  ></etools-icon-button>
                 </div>
               </td>
             </tr>`}

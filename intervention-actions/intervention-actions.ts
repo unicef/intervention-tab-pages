@@ -1,7 +1,6 @@
 import {CSSResultArray, LitElement, TemplateResult, css, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {arrowLeftIcon} from '@unicef-polymer/etools-modules-common/dist/styles/app-icons';
-import '@polymer/paper-menu-button/paper-menu-button';
 import '../common/layout/export-intervention-data';
 import '@unicef-polymer/etools-modules-common/dist/components/cancel/reason-popup';
 import './accept-for-partner';
@@ -38,7 +37,6 @@ import {
   SEND_BACK_REVIEW,
   UNLOCK
 } from './intervention-actions.constants';
-import {PaperMenuButton} from '@polymer/paper-menu-button/paper-menu-button';
 import {setShouldReGetList, updateCurrentIntervention} from '../common/actions/interventions';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {defaultKeyTranslate, formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
@@ -52,7 +50,8 @@ import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/b
 import '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
 import '@shoelace-style/shoelace/dist/components/menu/menu.js';
-import '@shoelace-style/shoelace/dist/components/icon/icon.js';
+import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
+import SlDropdown from '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
 
 @customElement('intervention-actions')
 export class InterventionActions extends connectStore(LitElement) {
@@ -166,7 +165,7 @@ export class InterventionActions extends connectStore(LitElement) {
     return html`
       <sl-dropdown @click="${(event: MouseEvent) => event.stopImmediatePropagation()}">
         <sl-button slot="trigger" variant="primary" class="${className} no-marg">
-          <sl-icon name="chevron-down"></sl-icon>
+          <etools-icon name="expand-more"></etools-icon>
         </sl-button>
         <sl-menu>
           ${actions.map(
@@ -413,9 +412,9 @@ export class InterventionActions extends connectStore(LitElement) {
   }
 
   private closeDropdown(): void {
-    const element: PaperMenuButton | null = this.shadowRoot!.querySelector('paper-menu-button');
+    const element: SlDropdown | null = this.shadowRoot!.querySelector('sl-dropdown');
     if (element) {
-      element.close();
+      element.open = false;
     }
   }
 

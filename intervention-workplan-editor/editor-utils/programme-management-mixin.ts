@@ -25,12 +25,12 @@ import {
 } from '../../common/types/editor-page-types';
 import {getTotalCash, getTotalCashFormatted} from '../../common/components/activity/get-total.helper';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
-import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 // import {ManagementBudgetItem} from '@unicef-polymer/etools-types';
 
 export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(baseClass: T) {
-  return class ProgrammeManagementClass extends ProgrammeManagementItemMixin(TruncateMixin(baseClass)) {
+  class ProgrammeManagementClass extends ProgrammeManagementItemMixin(TruncateMixin(baseClass)) {
     // @ts-ignore
     @property({type: Array})
     formattedProgrammeManagement: any[] = [];
@@ -165,8 +165,8 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                     <span class="b">${getTotalCashFormatted(item.cso_cash, item.unicef_cash)}</span>
                   </div>
                   <div class="action-btns align-bottom flex-h">
-                    <sl-icon-button
-                      name="pencil-fill"
+                    <etools-icon-button
+                      name="create"
                       ?hidden="${item.inEditMode || !this.permissions.edit.management_budgets}"
                       @click="${(e: any) => {
                         item.inEditMode = true;
@@ -185,18 +185,20 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                           }
                         }
                       }}"
-                    ></sl-icon-button>
+                    ></etools-icon-button>
+
                     <sl-tooltip
                       ?hidden="${item.items?.length || !this.permissions.edit.management_budgets}"
                       placement="top"
                       content="${translate('ADD_NEW_ITEM')}"
                     >
-                      <sl-icon-button
+                      <etools-icon-button
                         id="add-item-${item.id}"
-                        name="plus-square-fill"
+                        name="add-box"
+                        slot="custom-icon"
                         @click="${(e: CustomEvent) => this.addNewItem(e, item, 'focusBelow')}"
                         ?hidden="${item.items?.length || !this.permissions.edit.management_budgets}"
-                      ></sl-icon-button>
+                      ></etools-icon-button>
                     </sl-tooltip>
                   </div>
                   <div
@@ -211,10 +213,10 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                       @click="${() => this.saveProgrammeManagement(item, this.intervention.id!)}"
                       >${translate('GENERAL.SAVE')}</sl-button
                     >
-                    <sl-icon-button
-                      name="x-lg"
+                    <etools-icon-button
+                      name="close"
                       @click="${() => this.cancelProgrammeManagement(item.items, item, itemIndex)}"
-                    ></sl-icon-button>
+                    ></etools-icon-button>
                   </div>
                 </td>
               </tr>
@@ -384,5 +386,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
       data[this.getPropertyName(data, 'partner')] = data.cso_cash;
       data[this.getPropertyName(data, 'unicef')] = data.unicef_cash;
     }
-  };
+  }
+
+  return ProgrammeManagementClass;
 }

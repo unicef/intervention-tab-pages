@@ -1,7 +1,7 @@
 import {LitElement} from 'lit';
 import {Constructor} from '@unicef-polymer/etools-types';
 import {SlButton} from '@shoelace-style/shoelace';
-import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 /**
  * Notes about the functionality:
  * - Only cells that contain editable inputs can be reached through arrows navigation
@@ -140,6 +140,7 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
         setTimeout(() => {
           input.focus();
           this.lastFocusedTd = this.determineParentTd(input);
+          console.log(input, this.lastFocusedTd);
         });
       }
     }
@@ -175,7 +176,7 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
             return;
           }
           // @ts-ignore
-          if (['sl-icon-button', 'sl-button'].includes(path[0]?.localName)) {
+          if (['etools-icon-button', 'sl-button'].includes(path[0]?.localName)) {
             return;
           }
           let actionBtn: any = this.searchForActionBtnInCurrentTd(currentTd);
@@ -374,6 +375,8 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     handleEsc(event: KeyboardEvent) {
       if (event.key == 'Escape') {
         this.lastFocusedTd.focus();
+        console.log(this.lastFocusedTd.focus());
+        console.log('hello', event.key, this.lastFocusedTd);
       }
     }
 
@@ -387,10 +390,11 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
 
     findEditOrAddBtn(element: any) {
       return (
-        element.querySelector('sl-icon-button[name="pencil-fil"]') ||
-        element.querySelector('sl-icon-button[name="plus-square-fill"]')
+        element.querySelector('etools-icon-button[name="create"]') ||
+        element.querySelector('etools-icon-button[name="add-box"]')
       );
     }
+
     enterClickedOnActionBtnsTd() {
       return this.lastFocusedTd && this.lastFocusedTd.classList.value.includes('action-btns');
     }

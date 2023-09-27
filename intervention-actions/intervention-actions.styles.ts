@@ -64,11 +64,6 @@ export const InterventionActionsStyles: CSSResult = css`
     --sl-font-weight-normal: bold;
   }
 
-  paper-menu-button {
-    padding: 8px 2px;
-    margin-inline-start: 10px;
-  }
-
   .option-button {
     height: 36px;
     border-inline-start: 2px solid rgba(255, 255, 255, 0.12);

@@ -26,6 +26,7 @@ import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
 import '@shoelace-style/shoelace/dist/components/radio-group/radio-group.js';
 import '@shoelace-style/shoelace/dist/components/radio/radio.js';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 /**
  * @customElement
@@ -85,12 +86,12 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
           ></info-icon-tooltip>
         </div>
        <div slot="panel-btns">
-          <sl-icon-button
+          <etools-icon-button
             ?hidden="${this.hideEditIcon(this.editMode, this.canEditAtLeastOneField)}"
             @click="${this.allowEdit}"
-            name="pencil-fill"
+            name="create"
           >
-          </sl-icon-button>
+          </etools-icon-button>
         </div>
 
         <div class="row-padding-v pb-20">

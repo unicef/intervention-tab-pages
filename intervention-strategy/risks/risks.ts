@@ -31,7 +31,7 @@ import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip'
 import cloneDeep from 'lodash-es/cloneDeep';
 import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 const customStyles = html`
   <style>
@@ -89,12 +89,12 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           ></info-icon-tooltip>
         </div>
         <div slot="panel-btns">
-          <sl-icon-button
+          <etools-icon-button
             ?hidden="${!this.canEditAtLeastOneField}"
             @click="${() => this.openRiskDialog()}"
-            name="plus-square-fill"
+            name="add-box"
           >
-          </sl-icon-button>
+          </etools-icon-button>
         </div>
         <etools-table
           ?hidden="${!this.data?.length}"

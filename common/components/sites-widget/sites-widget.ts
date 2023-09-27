@@ -118,7 +118,7 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
               placeholder="${translate('INTERVENTIONS_LIST.SEARCH_RECORDS')}"
               inline
             >
-              <iron-icon icon="search" slot="prefix"></iron-icon>
+              <etools-icon name="search" slot="prefix"></etools-icon>
             </etools-input>
 
             <div class="locations-list" tabindex="0">

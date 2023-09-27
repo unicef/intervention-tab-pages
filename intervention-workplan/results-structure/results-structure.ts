@@ -20,8 +20,6 @@ import './pd-indicators';
 import './pd-activities';
 import './modals/pd-output-dialog';
 import './modals/cp-output-dialog';
-import '@polymer/paper-item';
-import '@polymer/paper-listbox';
 import './display-controls';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {RootState} from '../../common/types/store.types';
@@ -59,7 +57,7 @@ import {CpOutputLevel} from './cp-output-level';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {_canDelete} from '../../common/mixins/results-structure-common';
 import {EtoolsRequestEndpoint} from '@unicef-polymer/etools-ajax';
-import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 /**
  * @customElement
@@ -137,7 +135,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           @click="${() => this.openCpOutputDialog()}"
           ?hidden="${!this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
         >
-          <sl-icon-button slot="custom-icon" name="plus-square-fill"></sl-icon-button>
+          <etools-icon-button slot="custom-icon" name="add-box" tabindex="0"></etools-icon-button>
           <span class="no-wrap">${translate('ADD_CP_OUTPUT')}</span>
         </div>
 
@@ -149,12 +147,12 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           <div class="pd-title layout-horizontal align-items-center">
             ${translate('PD_OUTPUTS_TITLE')}
             <etools-info-tooltip position="top" custom-icon offset="0">
-              <sl-icon-button
-                name="plus-square-fill"
+              <etools-icon-button
+                name="add-box"
                 slot="custom-icon"
                 class="add"
                 @click="${() => this.openPdOutputDialog()}"
-              ></sl-icon-button>
+              ></etools-icon-button>
               <span class="no-wrap" slot="message">${translate('ADD_PD_OUTPUT')}</span>
             </etools-info-tooltip>
           </div>
@@ -190,12 +188,12 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                 : html`
                     <div class="pd-title layout-horizontal align-items-center">
                       ${translate('PD_OUTPUTS_TITLE')}<etools-info-tooltip position="top" custom-icon offset="0">
-                        <sl-icon-button
-                          name="plus-square-fill"
+                        <etools-icon-button
+                          name="add-box"
                           slot="custom-icon"
                           class="add"
                           @click="${() => this.openPdOutputDialog({}, result.cp_output)}"
-                        ></sl-icon-button>
+                        ></etools-icon-button>
                         <span class="no-wrap" slot="message">${translate('ADD_PD_OUTPUT')}</span>
                       </etools-info-tooltip>
                     </div>
@@ -233,12 +231,12 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                         class="hover-block"
                         ?hidden="${!this.permissions.edit.result_links || this.commentsModeEnabledFlag}"
                       >
-                        <sl-icon-button
-                          name="pencil-fill"
+                        <etools-icon-button
+                          name="create"
                           @click="${() => this.openPdOutputDialog(pdOutput, result.cp_output)}"
-                        ></sl-icon-button>
-                        <sl-icon-button
-                          name="trash-fill"
+                        ></etools-icon-button>
+                        <etools-icon-button
+                          name="delete"
                           ?hidden="${!_canDelete(
                             pdOutput,
                             !this.permissions.edit.result_links!,
@@ -247,7 +245,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                             this.intervention.in_amendment_date
                           )}"
                           @click="${() => this.openDeletePdOutputDialog(pdOutput.id)}"
-                        ></sl-icon-button>
+                        ></etools-icon-button>
                       </div>
                     </div>
 
@@ -562,7 +560,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
       ResultStructureStyles,
       buttonsStyles,
       css`
-        iron-icon[icon='create'] {
+        etools-icon[name='create'] {
           margin-inline-start: 50px;
         }
         .no-results {
@@ -694,9 +692,9 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         etools-data-table-row#pdOutputRow::part(edt-list-row-wrapper) {
           padding-inline-start: 25px !important;
         }
-        sl-icon-button[name='trash-fill'],
-        sl-icon-button[name='pencil-fill'] {
-          stroke: inherit !important;
+        etools-icon-button[name='create'],
+        etools-icon-button[name='delete'] {
+          color: inherit !important;
         }
       `
     ];

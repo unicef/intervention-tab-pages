@@ -23,7 +23,7 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import {EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
-import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 /**
  * @customElement
@@ -67,8 +67,8 @@ export class SpecialReportingRequirements extends PaginationMixin(ReportingRequi
               <div class="col-data col-3">${this.getDateDisplayValue(item.due_date)}</div>
               <div class="col-data col-6">${item.description}</div>
               <div class="col-data flex-c actions">
-                <sl-icon-button name="pencil-fill" @click="${() => this._onEdit(index)}"></sl-icon-button>
-                <sl-icon-button name="trash-fill" @click="${() => this._onDelete(index)}"></sl-icon-button>
+                <etools-icon-button name="create" @click="${() => this._onEdit(index)}"></etools-icon-button>
+                <etools-icon-button name="delete" @click="${() => this._onDelete(index)}"></etools-icon-button>
               </div>
             </div>
           </etools-data-table-row>`
