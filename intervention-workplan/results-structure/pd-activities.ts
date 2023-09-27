@@ -65,7 +65,6 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
               name="plus-square-fill"
               slot="custom-icon"
               class="add"
-              tabindex="0"
               @click="${() => this.openDialog()}"
               ?hidden="${this.readonly}"
             ></sl-icon-button>
@@ -147,11 +146,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
 
                     <div class="show-actions hover-block" style="z-index: ${99 - index}" ?hidden="${this.commentMode}">
                       <paper-menu-button id="view-menu-button" close-on-activate horizontal-align>
-                        <sl-icon-button
-                          slot="dropdown-trigger"
-                          name="three-dots-vertical"
-                          tabindex="0"
-                        ></sl-icon-button>
+                        <sl-icon-button slot="dropdown-trigger" name="three-dots-vertical"></sl-icon-button>
                         <paper-listbox slot="dropdown-content">
                           <div
                             class="action"

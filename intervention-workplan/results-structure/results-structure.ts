@@ -137,7 +137,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           @click="${() => this.openCpOutputDialog()}"
           ?hidden="${!this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
         >
-          <sl-icon-button slot="custom-icon" name="plus-square-fill" tabindex="0"></sl-icon-button>
+          <sl-icon-button slot="custom-icon" name="plus-square-fill"></sl-icon-button>
           <span class="no-wrap">${translate('ADD_CP_OUTPUT')}</span>
         </div>
 
@@ -153,7 +153,6 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                 name="plus-square-fill"
                 slot="custom-icon"
                 class="add"
-                tabindex="0"
                 @click="${() => this.openPdOutputDialog()}"
               ></sl-icon-button>
               <span class="no-wrap" slot="message">${translate('ADD_PD_OUTPUT')}</span>
@@ -195,7 +194,6 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                           name="plus-square-fill"
                           slot="custom-icon"
                           class="add"
-                          tabindex="0"
                           @click="${() => this.openPdOutputDialog({}, result.cp_output)}"
                         ></sl-icon-button>
                         <span class="no-wrap" slot="message">${translate('ADD_PD_OUTPUT')}</span>
