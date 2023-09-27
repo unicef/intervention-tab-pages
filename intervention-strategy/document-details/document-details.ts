@@ -23,6 +23,7 @@ import {translatesMap} from '../../utils/intervention-labels-map';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
 import {detailsTextareaRowsCount} from '../../utils/utils';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
+import '@shoelace-style/shoelace/dist/components/checkbox/checkbox.js';
 
 /**
  * @customElement
@@ -58,10 +59,14 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
         .row-padding-v {
           position: relative;
         }
-        paper-checkbox[disabled] {
-          --paper-checkbox-checked-color: black;
-          --paper-checkbox-unchecked-color: black;
-          --paper-checkbox-label-color: black;
+        sl-checkbox[disabled]::part(base) {
+          opacity: 1;
+        }
+        sl-checkbox[disabled]::part(control) {
+          opacity: 0.5;
+        }
+        sl-checkbox[disabled]::part(control--checked) {
+          opacity: 0.5;
         }
       </style>
 
@@ -216,42 +221,41 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
         </div>
 
         <div class="row-padding-v">
-          <paper-checkbox
+          <sl-checkbox
             ?checked="${this.data.has_data_processing_agreement}"
             ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.has_data_processing_agreement)}"
             tabindex="${this.isReadonly(this.editMode, this.permissions.edit.has_data_processing_agreement) ? -1 : 0}"
-            @checked-changed=${({detail}: CustomEvent) => this.valueChanged(detail, 'has_data_processing_agreement')}
+            @sl-change=${(e: any) => this.valueChanged({value: e.target.checked}, 'has_data_processing_agreement')}
           >
             ${translate(translatesMap.has_data_processing_agreement)}
-          </paper-checkbox>
+          </sl-checkbox>
         </div>
 
         <div class="row-padding-v">
-          <paper-checkbox
+          <sl-checkbox
             ?checked="${this.data.has_activities_involving_children}"
             ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.has_activities_involving_children)}"
             tabindex="${this.isReadonly(this.editMode, this.permissions.edit.has_activities_involving_children)
               ? -1
               : 0}"
-            @checked-changed=${({detail}: CustomEvent) =>
-              this.valueChanged(detail, 'has_activities_involving_children')}
+            @sl-change=${(e: any) => this.valueChanged({value: e.target.checked}, 'has_activities_involving_children')}
           >
             ${translate(translatesMap.has_activities_involving_children)}
-          </paper-checkbox>
+          </sl-checkbox>
         </div>
 
         <div class="row-padding-v">
-          <paper-checkbox
+          <sl-checkbox
             ?checked="${this.data.has_special_conditions_for_construction}"
             ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.has_special_conditions_for_construction)}"
             tabindex="${this.isReadonly(this.editMode, this.permissions.edit.has_special_conditions_for_construction)
               ? -1
               : 0}"
-            @checked-changed=${({detail}: CustomEvent) =>
-              this.valueChanged(detail, 'has_special_conditions_for_construction')}
+            @sl-change=${(e: any) =>
+              this.valueChanged({value: e.target.checked}, 'has_special_conditions_for_construction')}
           >
             ${translate(translatesMap.has_special_conditions_for_construction)}
-          </paper-checkbox>
+          </sl-checkbox>
         </div>
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
       </etools-content-panel>

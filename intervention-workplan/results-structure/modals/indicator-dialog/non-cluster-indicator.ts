@@ -2,7 +2,7 @@ import '@polymer/paper-input/paper-input.js';
 import '@polymer/paper-input/paper-textarea.js';
 import '@polymer/paper-radio-group/paper-radio-group.js';
 import '@polymer/paper-radio-button/paper-radio-button.js';
-import '@polymer/paper-checkbox/paper-checkbox.js';
+import '@shoelace-style/shoelace/dist/components/checkbox/checkbox.js';
 import '@shoelace-style/shoelace/dist/components/switch/switch.js';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown-multi.js';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
@@ -11,13 +11,14 @@ import {LitElement, html} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
-import {PaperCheckboxElement} from '@polymer/paper-checkbox/paper-checkbox.js';
 import {Indicator} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../../../utils/intervention-labels-map';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
 import {EtoolsDropdownMulti} from '@unicef-polymer/etools-unicef/src/etools-dropdown/EtoolsDropdownMulti';
+import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.js';
+import SlSwitch from '@shoelace-style/shoelace/dist/components/switch/switch.js';
 
 /**
  * @customElement
@@ -342,12 +343,12 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         </div>
       </div>
       <div class="unknown">
-        <paper-checkbox
+        <sl-checkbox
           ?checked="${this.baselineIsUnknown}"
           ?disabled="${this.readonly}"
-          @checked-changed="${({target}: CustomEvent) =>
-            this.baselineIsUnknownChanged(Boolean((target as PaperCheckboxElement).checked))}"
-          >${translate('UNKNOWN')}</paper-checkbox
+          @sl-change="${({target}: CustomEvent) =>
+            this.baselineIsUnknownChanged(Boolean((target as SlCheckbox).checked))}"
+          >${translate('UNKNOWN')}</sl-checkbox
         >
       </div>
 
@@ -432,7 +433,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
   isUnicefUser = false;
 
   private isHighFrequencyChanged(e: CustomEvent) {
-    const chk = e.target as PaperCheckboxElement;
+    const chk = e.target as SlSwitch;
     if (chk.checked === undefined || chk.checked === null) {
       return;
     }
