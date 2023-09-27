@@ -92,7 +92,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           <sl-icon-button
             ?hidden="${!this.canEditAtLeastOneField}"
             @click="${() => this.openRiskDialog()}"
-            name="plus-square-fill"
+            name="add-box"
           >
           </sl-icon-button>
         </div>

@@ -17,11 +17,11 @@ export class CommentsPanelHeader extends LitElement {
       <div class="buttons">
         <sl-icon-button
           @click="${() => this.toggleMinimize()}"
-          name="${this.isExpanded ? 'arrows-expand' : 'arrows-collapse'}"
+          name="${this.isExpanded ? 'unfold-more' : 'unfold-less'}"
         >
         </sl-icon-button>
 
-        <sl-icon-button name="x-lg" @click="${() => this.closePanel()}"> </sl-icon-button>
+        <sl-icon-button name="close" @click="${() => this.closePanel()}"> </sl-icon-button>
       </div>
     `;
   }

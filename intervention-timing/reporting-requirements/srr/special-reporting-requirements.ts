@@ -67,8 +67,8 @@ export class SpecialReportingRequirements extends PaginationMixin(ReportingRequi
               <div class="col-data col-3">${this.getDateDisplayValue(item.due_date)}</div>
               <div class="col-data col-6">${item.description}</div>
               <div class="col-data flex-c actions">
-                <sl-icon-button name="pencil-fill" @click="${() => this._onEdit(index)}"></sl-icon-button>
-                <sl-icon-button name="trash-fill" @click="${() => this._onDelete(index)}"></sl-icon-button>
+                <sl-icon-button name="create" @click="${() => this._onEdit(index)}"></sl-icon-button>
+                <sl-icon-button name="delete" @click="${() => this._onDelete(index)}"></sl-icon-button>
               </div>
             </div>
           </etools-data-table-row>`

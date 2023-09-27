@@ -166,7 +166,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                   </div>
                   <div class="action-btns align-bottom flex-h">
                     <sl-icon-button
-                      name="pencil-fill"
+                      name="create"
                       ?hidden="${item.inEditMode || !this.permissions.edit.management_budgets}"
                       @click="${(e: any) => {
                         item.inEditMode = true;
@@ -189,7 +189,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
 
                     <sl-icon-button
                       id="add-item-${item.id}"
-                      name="plus-square-fill"
+                      name="add-box"
                       slot="custom-icon"
                       @click="${(e: CustomEvent) => this.addNewItem(e, item, 'focusBelow')}"
                       ?hidden="${item.items?.length || !this.permissions.edit.management_budgets}"
@@ -220,7 +220,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                       >${translate('GENERAL.SAVE')}</sl-button
                     >
                     <sl-icon-button
-                      name="x-lg"
+                      name="close"
                       @click="${() => this.cancelProgrammeManagement(item.items, item, itemIndex)}"
                     ></sl-icon-button>
                   </div>

@@ -65,7 +65,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
           <div class="title-text">${translate(translatesMap.activities)} (${this.activities.length})</div>
           <etools-info-tooltip position="top" custom-icon ?hide-tooltip="${this.readonly}" offset="0">
             <sl-icon-button
-              name="plus-square-fill"
+              name="add-box"
               slot="custom-icon"
               class="add"
               tabindex="0"
@@ -151,7 +151,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
 
                     <div class="show-actions hover-block" style="z-index: ${99 - index}" ?hidden="${this.commentMode}">
                       <sl-dropdown id="view-menu-button">
-                        <sl-icon-button slot="trigger" name="three-dots-vertical" tabindex="0"></sl-icon-button>
+                        <sl-icon-button slot="trigger" name="more-vert" tabindex="0"></sl-icon-button>
                         <sl-menu>
                           <sl-menu-item
                             class="action"
@@ -159,7 +159,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                           >
                             <sl-icon
                               slot="prefix"
-                              name="${this.readonly || !activity.is_active ? 'eye-fill' : 'pencil-fill'}"
+                              name="${this.readonly || !activity.is_active ? 'icons:visibility' : 'create'}"
                             ></sl-icon>
                             ${this.readonly || !activity.is_active ? translate('VIEW') : translate('EDIT')}
                           </sl-menu-item>
@@ -175,7 +175,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                             @click="${() =>
                               openActivityDeactivationDialog(activity.id, this.pdOutputId, this.interventionId)}"
                           >
-                            <sl-icon slot="prefix" name="slash-circle"></sl-icon>
+                            <sl-icon slot="prefix" name="icons:block"></sl-icon>
                             ${translate('DEACTIVATE')}
                           </sl-menu-item>
                           <sl-menu-item
@@ -190,7 +190,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                             @click="${() =>
                               openDeleteActivityDialog(activity.id, this.pdOutputId, this.interventionId)}"
                           >
-                            <sl-icon slot="prefix" name="trash-fill"></sl-icon>
+                            <sl-icon slot="prefix" name="delete"></sl-icon>
                             ${translate('DELETE')}
                           </sl-menu-item>
                         </sl-menu>
@@ -309,7 +309,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
         etools-data-table-row#activitiesRow::part(edt-list-row-collapse-wrapper) {
           border-top: none;
         }
-        sl-icon-button[name='three-dots-vertical'] {
+        sl-icon-button[name='more-vert'] {
           stroke: inherit;
         }
       `

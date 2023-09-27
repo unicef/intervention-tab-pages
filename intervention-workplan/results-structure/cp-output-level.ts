@@ -70,9 +70,9 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
                           </div>
                         </div>
                         <div class="hover-block" ?hidden="${this.readonly}">
-                          <sl-icon-button name="pencil-fill" @click="${this.openEditCpOutputPopup}"></sl-icon-button>
+                          <sl-icon-button name="create" @click="${this.openEditCpOutputPopup}"></sl-icon-button>
                           <sl-icon-button
-                            name="trash-fill"
+                            name="delete"
                             ?hidden="${!_canDelete(
                               this.resultLink,
                               this.readonly,
@@ -185,8 +185,8 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
         .editable-row:hover .hover-block {
           opacity: 1;
         }
-        sl-icon-button[name='trash-fill'],
-        sl-icon-button[name='pencil-fill'] {
+        sl-icon-button[name='delete'],
+        sl-icon-button[name='create'] {
           stroke: inherit !important;
         }
       `

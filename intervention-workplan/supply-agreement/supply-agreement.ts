@@ -87,7 +87,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           display: flex;
           align-items: center;
         }
-        sl-icon-button[name='upload'] {
+        sl-icon-button[name='file-upload'] {
           stroke: var(--primary-text-color);
         }
       </style>
@@ -115,7 +115,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
               slot="custom-icon"
               ?hidden="${!this.permissions.edit.supply_items || this.uploadInProcess}"
               @click="${() => this.uploader?._openFileChooser()}"
-              name="upload"
+              name="file-upload"
             >
             </sl-icon-button>
             <span slot="message">${translate('UPLOAD_SUPPLY_TOOLTIP')}</span>
@@ -125,7 +125,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           <sl-icon-button
             ?hidden="${!this.permissions.edit.supply_items}"
             @click="${() => this.addSupplyItem()}"
-            name="plus-square-fill"
+            name="add-box"
           >
           </sl-icon-button>
         </div>

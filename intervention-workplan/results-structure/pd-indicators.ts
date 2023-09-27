@@ -77,7 +77,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
           <div class="title-text">${translate(translatesMap.applied_indicators)} (${this.indicators.length})</div>
           <etools-info-tooltip position="top" custom-icon ?hide-tooltip="${this.readonly}" offset="0">
             <sl-icon-button
-              name="plus-square-fill"
+              name="add-box"
               slot="custom-icon"
               class="add"
               tabindex="0"

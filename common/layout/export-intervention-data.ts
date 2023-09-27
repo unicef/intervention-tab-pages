@@ -29,7 +29,7 @@ export class ExportInterventionData extends LitElement {
   public render() {
     return html`
       <sl-dropdown id="pdExportMenuBtn">
-        <sl-icon-button name="three-dots-vertical" slot="trigger"> </sl-icon-button>
+        <sl-icon-button name="more-vert" slot="trigger"> </sl-icon-button>
         <sl-menu>
           ${this.exportLinks.map(
             (item) => html` <sl-menu-item @click="${() => this.export(item.type)}">${item.name}</sl-menu-item>`

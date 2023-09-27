@@ -104,7 +104,7 @@ export const EditorTableStyles = css`
   paper-icon-button {
     color: #504e4e;
   }
-  sl-icon-button[name='x-lg'] {
+  sl-icon-button[name='close'] {
     color: red;
     stroke: red;
   }

@@ -82,7 +82,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
           <sl-icon-button
             ?hidden="${this.hideEditIcon(this.editMode, this.canEditAtLeastOneField)}"
             @click="${this.allowEdit}"
-            name="pencil-fill"
+            name="create"
           >
           </sl-icon-button>
         </div>

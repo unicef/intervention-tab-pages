@@ -294,7 +294,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
                   @click="${(event: CustomEvent) => this._openDeleteConfirmation(event, index)}"
                   data-args="${index}"
                   ?disabled="${!this._canBeRemoved(index, this.editMode)}"
-                  name="x-circle-fill"
+                  name="cancel"
                 >
                 </sl-icon-button>
               </div>

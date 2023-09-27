@@ -226,7 +226,7 @@ export const ActivitiesMixin = <T extends Constructor<LitElement>>(baseClass: T)
                   </div>
                   <div class="action-btns align-bottom flex-h">
                     <sl-icon-button
-                      name="pencil-fill"
+                      name="create"
                       ?hidden="${activity.inEditMode || !this.permissions.edit.result_links || !activity.is_active}"
                       @click="${(e: any) => {
                         activity.inEditMode = true;
@@ -244,7 +244,7 @@ export const ActivitiesMixin = <T extends Constructor<LitElement>>(baseClass: T)
                     ></sl-icon-button>
                     <sl-icon-button
                       id="add-item-${activity.id}"
-                      name="plus-square-fill"
+                      name="add-box"
                       slot="custom-icon"
                       @click="${(e: CustomEvent) => this.addNewActivityItem(e, activity, 'focusBelow')}"
                       ?hidden="${activity.items?.length || !this.permissions.edit.result_links}"
@@ -262,7 +262,7 @@ export const ActivitiesMixin = <T extends Constructor<LitElement>>(baseClass: T)
                       ${translate('ADD_NEW_ITEM')}
                     </paper-tooltip>
                     <sl-icon-button
-                      name="trash-fill"
+                      name="delete"
                       ?hidden="${activity.inEditMode ||
                       !_canDelete(
                         activity,
@@ -274,7 +274,7 @@ export const ActivitiesMixin = <T extends Constructor<LitElement>>(baseClass: T)
                       @click="${() => openDeleteActivityDialog(activity.id, pdOutput.id, this.intervention.id!)}"
                     ></sl-icon-button>
                     <sl-icon-button
-                      name="slash-circle"
+                      name="block"
                       ?hidden="${activity.inEditMode ||
                       !_canDeactivate(
                         activity,
@@ -299,7 +299,7 @@ export const ActivitiesMixin = <T extends Constructor<LitElement>>(baseClass: T)
                       >${translate('GENERAL.SAVE')}</sl-button
                     >
                     <sl-icon-button
-                      name="x-lg"
+                      name="close"
                       @click="${() =>
                         this.cancelActivity(pdOutput.activities, activity, resultIndex, pdOutputIndex, activityIndex)}"
                     ></sl-icon-button>
@@ -336,7 +336,7 @@ export const ActivitiesMixin = <T extends Constructor<LitElement>>(baseClass: T)
 
     _onTimeIntervalsKeyDown(event: any) {
       if (event.key === 'Enter') {
-        const editBtnEl = event.currentTarget.parentElement.querySelector('sl-icon-button[name="pencil-fill"]');
+        const editBtnEl = event.currentTarget.parentElement.querySelector('sl-icon-button[name="create"]');
         const timeIntervalEl = event.currentTarget.querySelector('time-intervals');
         // if in edit mode and found time-interval component, open Time Periods dialog
         if (timeIntervalEl && editBtnEl && editBtnEl.hasAttribute('hidden')) {
