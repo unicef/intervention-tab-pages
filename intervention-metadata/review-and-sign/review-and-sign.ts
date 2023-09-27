@@ -2,7 +2,6 @@ import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
-import '@polymer/paper-checkbox';
 
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
@@ -72,21 +71,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
         paper-input {
           width: 100%;
         }
-        paper-checkbox {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          min-height: 24px;
-          margin-inline-start: 0px;
-        }
-        paper-checkbox[disabled] {
-          cursor: not-allowed;
-          --paper-checkbox-unchecked-color: black;
-          --paper-checkbox-label: {
-            color: var(--primary-text-color);
-            opacity: 1;
-          }
-        }
+       
         datepicker-lite {
           min-width: 100%;
         }

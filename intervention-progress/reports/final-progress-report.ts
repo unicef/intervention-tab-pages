@@ -4,7 +4,7 @@ import {customElement, property} from 'lit/decorators.js';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import {translate} from 'lit-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import '@polymer/paper-checkbox/paper-checkbox';
+import '@shoelace-style/shoelace/dist/components/checkbox/checkbox.js';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
@@ -30,10 +30,14 @@ export class IndicatorReportTarget extends connectStore(ComponentBaseMixin(LitEl
         ${sharedStyles} ${buttonsStyles} .padding {
           padding: 35px 24px;
         }
-        paper-checkbox[disabled] {
-          --paper-checkbox-checked-color: black;
-          --paper-checkbox-unchecked-color: black;
-          --paper-checkbox-label-color: black;
+        sl-checkbox[disabled]::part(base) {
+          opacity: 1;
+        }
+        sl-checkbox[disabled]::part(control) {
+          opacity: 0.5;
+        }
+        sl-checkbox[disabled]::part(control--checked) {
+          opacity: 0.5;
         }
       </style>
       <etools-content-panel
@@ -44,11 +48,11 @@ export class IndicatorReportTarget extends connectStore(ComponentBaseMixin(LitEl
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.permissions?.edit?.final_review_approved)}</div>
 
         <div class="padding">
-          <paper-checkbox
+          <sl-checkbox
             ?checked="${this.data.final_review_approved}"
             ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit.final_review_approved)}"
-            @checked-changed="${(e: CustomEvent) => this.valueChanged(e.detail, 'final_review_approved')}"
-            >${translate('FINAL_PROGRESS_REPORT_AND_REVIEW_WAS_APPROVED')}</paper-checkbox
+            @sl-change="${(e: any) => this.valueChanged({value: e.target.checked}, 'final_review_approved')}"
+            >${translate('FINAL_PROGRESS_REPORT_AND_REVIEW_WAS_APPROVED')}</sl-checkbox
           >
         </div>
 

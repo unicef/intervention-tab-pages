@@ -3,7 +3,6 @@ import {property, customElement} from 'lit/decorators.js';
 import {ResultStructureStyles} from './styles/results-structure.styles';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 
-
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {RootState} from '../../common/types/store.types';
 import './modals/indicator-dialog/indicator-dialog';

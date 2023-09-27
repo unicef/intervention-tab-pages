@@ -18,7 +18,6 @@ import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {userIsPme} from '@unicef-polymer/etools-modules-common/dist/utils/user-permissions';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
-import {PaperCheckboxElement} from '@polymer/paper-checkbox';
 import './indicator-dissaggregations';
 import './non-cluster-indicator';
 import './cluster-indicator';
@@ -261,7 +260,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   }
 
   isClusterChanged(e: CustomEvent) {
-    const chk = e.target as PaperCheckboxElement;
+    const chk = e.target as any;
     if (chk.checked === undefined || chk.checked === null) {
       return;
     }
