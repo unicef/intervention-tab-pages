@@ -187,25 +187,19 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                       }}"
                     ></etools-icon-button>
 
-                    <etools-icon-button
-                      id="add-item-${item.id}"
-                      name="add-box"
-                      slot="custom-icon"
-                      @click="${(e: CustomEvent) => this.addNewItem(e, item, 'focusBelow')}"
+                    <sl-tooltip
                       ?hidden="${item.items?.length || !this.permissions.edit.management_budgets}"
-                    ></etools-icon-button>
-                    <paper-tooltip
-                      for="add-item-${item.id}"
-                      .animationDelay="${0}"
-                      .animationConfig="${{}}"
-                      animation-entry=""
-                      animation-exit=""
-                      ?hidden="${item.items?.length || !this.permissions.edit.management_budgets}"
-                      position="top"
-                      offset="1"
+                      placement="top"
+                      content="${translate('ADD_NEW_ITEM')}"
                     >
-                      ${translate('ADD_NEW_ITEM')}
-                    </paper-tooltip>
+                      <etools-icon-button
+                        id="add-item-${item.id}"
+                        name="add-box"
+                        slot="custom-icon"
+                        @click="${(e: CustomEvent) => this.addNewItem(e, item, 'focusBelow')}"
+                        ?hidden="${item.items?.length || !this.permissions.edit.management_budgets}"
+                      ></etools-icon-button>
+                    </sl-tooltip>
                   </div>
                   <div
                     class="flex-h justify-right align-bottom"

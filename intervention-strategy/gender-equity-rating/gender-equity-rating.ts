@@ -1,7 +1,5 @@
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-
-import '@polymer/paper-radio-group';
 import '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
@@ -25,6 +23,9 @@ import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {detailsTextareaRowsCount} from '../../utils/utils';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
+import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
+import '@shoelace-style/shoelace/dist/components/radio-group/radio-group.js';
+import '@shoelace-style/shoelace/dist/components/radio/radio.js';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 /**
@@ -51,8 +52,14 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         .pl-none {
           padding-inline-start: 0px !important;
         }
-        paper-radio-button:first-child {
-          padding-inline-start: 0px !important;
+      
+        sl-radio-group {
+          margin-top: 10px;
+          margin-bottom: 10px;
+        }
+        sl-radio {
+          display: inline-block;
+          margin-inline-end: 20px;
         }
 
         etools-content-panel::part(ecp-content) {
@@ -237,23 +244,20 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
     const ratingText = editMode ? '' : ratings.find((r) => r.value === ratingSelected)?.label || '';
 
     return editMode
-      ? html`<paper-radio-group
-          selected="${ratingSelected}"
-          @selected-changed="${({detail}: CustomEvent) => this.valueChanged(detail, ratingKey)}"
+      ? html`<sl-radio-group
+          .value="${ratingSelected}"
+          @sl-change="${(e: any) => this.valueChanged({value: e.target.value}, ratingKey)}"
         >
           ${this._getRatingRadioButtonsTemplate(ratings, permission)}
-        </paper-radio-group>`
+        </sl-radio-group>`
       : html`<label>${translateValue(ratingText, 'RATINGS')}</label>`;
   }
 
   _getRatingRadioButtonsTemplate(ratings: LabelAndValue[], permission: boolean) {
     return ratings.map(
       (r: LabelAndValue) =>
-        html`<paper-radio-button
-          class="${this.isReadonly(this.editMode, permission) ? 'readonly' : ''}"
-          name="${r.value}"
-        >
-          ${translateValue(r.label, 'RATINGS')}</paper-radio-button
+        html`<sl-radio class="${this.isReadonly(this.editMode, permission) ? 'readonly' : ''}" value="${r.value}">
+          ${translateValue(r.label, 'RATINGS')}</sl-radio
         >`
     );
   }

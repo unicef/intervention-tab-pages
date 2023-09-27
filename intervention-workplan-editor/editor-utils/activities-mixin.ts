@@ -237,25 +237,20 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                         }
                       }}"
                     ></etools-icon-button>
-                    <etools-icon-button
-                      id="add-item-${activity.id}"
-                      name="add-box"
-                      slot="custom-icon"
-                      @click="${(e: CustomEvent) => this.addNewActivityItem(e, activity, 'focusBelow')}"
+                    <sl-tooltip
                       ?hidden="${activity.items?.length || !this.permissions.edit.result_links}"
-                    ></etools-icon-button>
-                    <paper-tooltip
-                      for="add-item-${activity.id}"
-                      .animationDelay="${0}"
-                      .animationConfig="${{}}"
-                      animation-entry=""
-                      animation-exit=""
-                      ?hidden="${activity.items?.length || !this.permissions.edit.result_links}"
-                      position="top"
-                      offset="1"
+                      placement="top"
+                      content="${translate('ADD_NEW_ITEM')}"
                     >
-                      ${translate('ADD_NEW_ITEM')}
-                    </paper-tooltip>
+                      <etools-icon-button
+                        id="add-item-${activity.id}"
+                        name="add-box"
+                        slot="custom-icon"
+                        @click="${(e: CustomEvent) => this.addNewActivityItem(e, activity, 'focusBelow')}"
+                        ?hidden="${activity.items?.length || !this.permissions.edit.result_links}"
+                      ></etools-icon-button>
+                    </sl-tooltip>
+
                     <etools-icon-button
                       name="delete"
                       ?hidden="${activity.inEditMode ||

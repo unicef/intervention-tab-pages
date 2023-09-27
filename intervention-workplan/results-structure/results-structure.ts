@@ -151,7 +151,6 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                 name="add-box"
                 slot="custom-icon"
                 class="add"
-                tabindex="0"
                 @click="${() => this.openPdOutputDialog()}"
               ></etools-icon-button>
               <span class="no-wrap" slot="message">${translate('ADD_PD_OUTPUT')}</span>
@@ -193,7 +192,6 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                           name="add-box"
                           slot="custom-icon"
                           class="add"
-                          tabindex="0"
                           @click="${() => this.openPdOutputDialog({}, result.cp_output)}"
                         ></etools-icon-button>
                         <span class="no-wrap" slot="message">${translate('ADD_PD_OUTPUT')}</span>

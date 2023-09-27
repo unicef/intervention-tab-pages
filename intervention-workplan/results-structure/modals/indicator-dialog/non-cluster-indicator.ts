@@ -1,7 +1,7 @@
 import '@polymer/paper-input/paper-input.js';
 import '@polymer/paper-input/paper-textarea.js';
-import '@polymer/paper-radio-group/paper-radio-group.js';
-import '@polymer/paper-radio-button/paper-radio-button.js';
+import '@shoelace-style/shoelace/dist/components/radio-group/radio-group.js';
+import '@shoelace-style/shoelace/dist/components/radio/radio.js';
 import '@shoelace-style/shoelace/dist/components/checkbox/checkbox.js';
 import '@shoelace-style/shoelace/dist/components/switch/switch.js';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown-multi.js';
@@ -91,50 +91,56 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         sl-switch {
           margin-top: 25px;
         }
+        sl-radio {
+          display: inline-block;
+        }
+        sl-radio-group {
+          margin-top: 10px;
+        }
       </style>
 
       <div class="row-h flex-c">
         <div class="layout-vertical mr-20">
           <label class="paper-label">${translate('TYPE')}</label>
           <div class="radioGroup">
-            <paper-radio-group
+            <sl-radio-group
               .disabled="${this.readonly}"
-              .selected="${this.indicator!.indicator!.unit}"
-              @selected-changed="${({detail}: CustomEvent) => {
-                this.indicator!.indicator!.unit = detail.value;
+              .value="${this.indicator!.indicator!.unit}"
+              @sl-change="${(e: any) => {
+                this.indicator!.indicator!.unit = e.target.value;
                 this._baselineChanged(this.indicator.baseline.v);
                 this._targetChanged(this.indicator.target.v);
                 this._typeChanged();
                 this.requestUpdate();
               }}"
             >
-              <paper-radio-button ?disabled="${this.isReadonly()}" class="no-left-padding mr-12" name="number"
+              <sl-radio ?disabled="${this.isReadonly()}" class="no-left-padding mr-12" value="number"
                 >${translate('QUANTITY_SCALE')}
-              </paper-radio-button>
-              <paper-radio-button ?disabled="${this.isReadonly()}" class="no-left-padding" name="percentage"
-                >${translate('PERCENT_RATIO')}</paper-radio-button
+              </sl-radio>
+              <sl-radio ?disabled="${this.isReadonly()}" class="no-left-padding" value="percentage"
+                >${translate('PERCENT_RATIO')}</sl-radio
               >
-            </paper-radio-group>
+            </sl-radio-group>
           </div>
         </div>
         <div class="layout-vertical" ?hidden="${this._unitIsNumeric(this.indicator!.indicator!.unit)}">
           <label class="paper-label">${translate('DISPLAY_TYPE')}</label>
           <div class="radioGroup">
-            <paper-radio-group
-              .selected="${this.indicator!.indicator!.display_type}"
-              @selected-changed="${({detail}: CustomEvent) => {
-                this.indicator!.indicator!.display_type = detail.value;
+            <sl-radio-group
+              .value="${this.indicator!.indicator!.display_type}"
+              @sl-change="${(e: any) => {
+                this.indicator!.indicator!.display_type = e.target.value;
                 this._typeChanged();
                 this.requestUpdate();
               }}"
             >
-              <paper-radio-button ?disabled="${this.isReadonly()}" class="no-left-padding mr-12" name="percentage"
+              <sl-radio ?disabled="${this.isReadonly()}" class="no-left-padding mr-12" value="percentage"
                 >${translate('PERCENTAGE')}
-              </paper-radio-button>
-              <paper-radio-button ?disabled="${this.isReadonly()}" class="no-left-padding" name="ratio"
-                >${translate('RATIO')}</paper-radio-button
+              </sl-radio>
+              <sl-radio ?disabled="${this.isReadonly()}" class="no-left-padding" value="ratio"
+                >${translate('RATIO')}</sl-radio
               >
-            </paper-radio-group>
+            </sl-radio-group>
           </div>
         </div>
       </div>

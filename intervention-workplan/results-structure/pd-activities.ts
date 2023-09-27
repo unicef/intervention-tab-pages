@@ -67,7 +67,6 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
               name="add-box"
               slot="custom-icon"
               class="add"
-              tabindex="0"
               @click="${() => this.openDialog()}"
               ?hidden="${this.readonly}"
             ></etools-icon-button>

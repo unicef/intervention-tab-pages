@@ -79,7 +79,6 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
               name="add-box"
               slot="custom-icon"
               class="add"
-              tabindex="0"
               @click="${() => this.openIndicatorDialog()}"
               ?hidden="${this.readonly}"
             ></etools-icon-button>

@@ -16,11 +16,12 @@ import {updateCurrentIntervention} from '../../actions/interventions';
 import {getDifference} from '@unicef-polymer/etools-modules-common/dist/mixins/objects-diff';
 import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
-import '@polymer/paper-radio-group';
 import '@shoelace-style/shoelace/dist/components/checkbox/checkbox.js';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import {formatDate, getTodayDateStr} from '@unicef-polymer/etools-utils/dist/date.util';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
+import '@shoelace-style/shoelace/dist/components/radio-group/radio-group.js';
+import '@shoelace-style/shoelace/dist/components/radio/radio.js';
 
 @customElement('review-checklist-popup')
 export class ReviewChecklistPopup extends LitElement {
@@ -36,8 +37,14 @@ export class ReviewChecklistPopup extends LitElement {
         .pl-none {
           padding-inline-start: 0px !important;
         }
-        paper-radio-button:first-child {
-          padding-inline-start: 0px !important;
+
+        sl-radio {
+          display: inline-block;
+          margin-inline-end: 15px;
+        }
+        sl-radio-group {
+          margin-top: 10px;
+          margin-bottom: 10px;
         }
         .form-container {
           padding: 0 24px;
@@ -174,15 +181,15 @@ export class ReviewChecklistPopup extends LitElement {
         <div class="w100">
           <label class="paper-label">Q${index + 1}: ${translateValue(field, `REVIEW_QUESTIONS`)}</label>
         </div>
-        <paper-radio-group
-          selected="${this.review[field] || ''}"
-          @selected-changed="${({detail}: CustomEvent) => this.valueChanged(detail.value, field)}"
+        <sl-radio-group
+          value="${this.review[field] || ''}"
+          @sl-change="${(e: any) => this.valueChanged(e.target.value, field)}"
         >
           ${Array.from(REVIEW_ANSVERS.entries()).map(
             ([key, text]: [string, string]) =>
-              html` <paper-radio-button name="${key}">${translateValue(text, 'REVIEW_ANSWERS')}</paper-radio-button> `
+              html` <sl-radio value="${key}">${translateValue(text, 'REVIEW_ANSWERS')}</sl-radio> `
           )}
-        </paper-radio-group>
+        </sl-radio-group>
       </div>
     `;
   }
