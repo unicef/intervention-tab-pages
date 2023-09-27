@@ -1,4 +1,4 @@
-import {html, LitElement, css} from 'lit';
+import {html, LitElement} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';

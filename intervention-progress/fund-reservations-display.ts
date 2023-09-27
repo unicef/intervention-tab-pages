@@ -104,7 +104,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
                 <span class="col-data col-2"
                   >${fr.fr_number}
                   <a title="See more details" class="pl-5" target="_blank" href="${this.getFRNumberLink(fr.fr_number)}">
-                    <etools-icon class="lifted-up-icon" external-icon"></etools-icon>
+                    <etools-icon class="lifted-up-icon" name="external-icon"></etools-icon>
                   </a>
                 </span>
                 <span class="col-data col-2 right-align">${prettyDate(fr.start_date)}</span>
