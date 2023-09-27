@@ -5,6 +5,7 @@ import '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
 import '@polymer/paper-slider/paper-slider.js';
+import '@shoelace-style/shoelace/dist/components/range/range.js';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
@@ -25,6 +26,7 @@ import {translate, translateUnsafeHTML} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 import {getPageDirection} from '../../utils/utils';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-input.js';
 
 /**
  * @customElement
@@ -55,15 +57,20 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
           padding-top: 16px !important;
           padding-bottom: 0 !important;
         }
-        paper-slider {
-          width: 100%;
-          margin-inline-start: -15px;
-          margin-inline-end: -5px;
-          height: 30px;
+        sl-range {
+          width: 85%;
+          margin-top: 10px;
+          --track-color-active: var(--primary-color);
         }
         .hq-info-label {
           color: darkred;
           padding-bottom: 5px;
+        }
+        etools-input {
+          width: 10%;
+        }
+        .space-betw {
+          justify-content: space-between;
         }
       </style>
 
@@ -80,8 +87,8 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
           </div>
         </div>
         <div class="layout-horizontal">
-          <div class="col col-4">
-            <paper-slider
+          <div class="col col-4 space-betw">
+            <sl-range
               dir="${this.dir}"
               .value="${this.data.hq_support_cost}"
               width="100%"
@@ -89,9 +96,13 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
               step="0.1"
               ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit.hq_support_cost)}"
               .editable="${!this.isReadonly(this.editMode, this.permissions?.edit.hq_support_cost)}"
-              @value-changed="${(e: CustomEvent) => this.updateSlider(e)}"
-            ></paper-slider>
-            <span ?hidden="${this.editMode}">${this.data.hq_support_cost}</span>
+              @sl-change="${(e: CustomEvent) => this.updateSlider(e)}"
+            ></sl-range>
+            <etools-input
+              .readonly="${!this.editMode}"
+              .value="${this.data.hq_support_cost}"
+              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'hq_support_cost', this.data)}"
+            ></etools-input>
           </div>
         </div>
         <div class="layout-horizontal row-padding-v" ?hidden="${!this.isUnicefUser || !this.editMode}">
@@ -168,27 +179,11 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
   }
 
   updateSlider(e: CustomEvent) {
-    if (!e.detail) {
+    if (!e.target) {
       return;
     }
-    this.handleCornerCase();
-    this.data = {...this.data, hq_support_cost: e.detail.value} as HqContributionData;
+    this.data = {...this.data, hq_support_cost: (e.target as any).value} as HqContributionData;
     this.autoCalculatedHqContrib = this.autoCalcHqContrib();
-  }
-  /**
-   *  Change the slider value by entering a greater than 7 value in the input field
-   *  Hit Cancel btn, Hit Edit again
-   *  Issue: The input has the greater than 7 value entered before
-   */
-  handleCornerCase() {
-    const inputInsidePaperSlider = this.shadowRoot
-      ?.querySelector('paper-slider')
-      ?.shadowRoot?.querySelector('paper-input');
-    if (inputInsidePaperSlider) {
-      if (Number(inputInsidePaperSlider.value) > 7) {
-        inputInsidePaperSlider.value = '7';
-      }
-    }
   }
 
   autoCalcHqContrib() {
