@@ -262,7 +262,6 @@ export class InterventionResultsReported extends connectStore(
 
             <!-- RAM indicators display -->
             <etools-ram-indicators
-              class="row-h"
               interventionId="${this.interventionId}"
               cpId="${item.external_cp_output_id}"
             ></etools-ram-indicators>

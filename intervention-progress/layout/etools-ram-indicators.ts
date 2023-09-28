@@ -1,6 +1,5 @@
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import '@polymer/iron-label/iron-label';
 import '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading';
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
@@ -26,18 +25,22 @@ export class EtoolsRamIndicators extends CommonMixin(LitElement) {
           position: relative;
           background-color: var(--light-theme-background-color);
         }
+        .container {
+          padding: 16px 24px;
+        }
 
         *[hidden] {
           display: none !important;
         }
 
-        iron-label {
+        label {
           font-size: 14px;
         }
 
         #label,
         #no-ram-indicators {
           color: var(--secondary-text-color, #737373);
+          display: block;
         }
 
         #ram-indicators-list {
@@ -48,11 +51,10 @@ export class EtoolsRamIndicators extends CommonMixin(LitElement) {
       </style>
 
       <etools-loading ?active="${this.loading}"></etools-loading>
-
-      <iron-label>
-        <span id="label">${translate('RAM_INDICATORS')}</span>
-        <div id="ram-indicators" iron-label-target>${this.getRamIndicatorsHTML(this.ramIndicators)}</div>
-      </iron-label>
+      <div class="container">
+        <label for="ram-indicators" id="label">${translate('RAM_INDICATORS')}</label>
+        <div id="ram-indicators">${this.getRamIndicatorsHTML(this.ramIndicators)}</div>
+      </div>
     `;
   }
   _interventionId!: number;
