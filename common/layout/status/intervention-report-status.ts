@@ -221,12 +221,12 @@ export class InterventionReportStatus extends LitElement {
   _computeIcon(type: string) {
     switch (type) {
       case 'success':
-        return (this.icon = 'icons:check-circle');
+        return (this.icon = 'check-circle');
       case 'submitted':
-        return (this.icon = 'icons:assignment-turned-in');
+        return (this.icon = 'assignment-turned-in');
       case 'error':
       case 'warning':
-        return (this.icon = 'icons:error');
+        return (this.icon = 'error');
       default:
         return (this.icon = 'image:lens');
     }

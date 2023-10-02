@@ -157,7 +157,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                           >
                             <etools-icon
                               slot="prefix"
-                              name="${this.readonly || !activity.is_active ? 'icons:visibility' : 'create'}"
+                              name="${this.readonly || !activity.is_active ? 'visibility' : 'create'}"
                             ></etools-icon>
                             ${this.readonly || !activity.is_active ? translate('VIEW') : translate('EDIT')}
                           </sl-menu-item>
@@ -173,7 +173,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                             @click="${() =>
                               openActivityDeactivationDialog(activity.id, this.pdOutputId, this.interventionId)}"
                           >
-                            <etools-icon slot="prefix" name="icons:block"></etools-icon>
+                            <etools-icon slot="prefix" name="block"></etools-icon>
                             ${translate('DEACTIVATE')}
                           </sl-menu-item>
                           <sl-menu-item
