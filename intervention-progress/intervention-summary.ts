@@ -1,7 +1,6 @@
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
-import '@polymer/iron-label/iron-label';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import cloneDeep from 'lodash-es/cloneDeep';
@@ -46,7 +45,7 @@ export class InterventionSummary extends connectStore(LitElement) {
         margin-top: 8px;
         font-size: 14px;
       }
-      iron-label {
+      label {
         color: var(--dark-secondary-text-color);
       }
       .secondary {
@@ -92,7 +91,7 @@ export class InterventionSummary extends connectStore(LitElement) {
         this.isUnicefUser
           ? html` <div class="row-h flex-c">
               <div class="col col-12 block">
-                <iron-label for="cp_outputs_list" class="label-secondary-color">${translate('CP_OUTPUTS')}</iron-label>
+                <label for="cp_outputs_list" class="label-secondary-color">${translate('CP_OUTPUTS')}</label>
                 <br />
                 <div class="content" id="cp_outputs_list">
                   ${this.interventionCpOutputs.length
@@ -106,8 +105,8 @@ export class InterventionSummary extends connectStore(LitElement) {
 
       <div class="row-h flex-c">
         <div class="col col-12 block">
-          <iron-label for="document_title" class="label-secondary-color"
-            >${translate('DOCUMENT_TITLE')}</iron-label
+          <label for="document_title" class="label-secondary-color"
+            >${translate('DOCUMENT_TITLE')}</label
           >
           <br />
           <div class="content" id="document_title">${this.intervention.title}</div>
@@ -128,8 +127,8 @@ export class InterventionSummary extends connectStore(LitElement) {
 
       <div class="row-h flex-c">
         <div class="col col-4 block">
-          <iron-label for="interventions_timeline" class="label-secondary-color"
-            >${translate('TIMELINE')}</iron-label
+          <label for="interventions_timeline" class="label-secondary-color"
+            >${translate('TIMELINE')}</label
           >
           <br />
           <div class="content" id="interventions_timeline">
@@ -137,9 +136,9 @@ export class InterventionSummary extends connectStore(LitElement) {
           </div>
         </div>
         <div class="col col-4 block">
-          <iron-label for="intervention-sections" class="label-secondary-color"
+          <label for="intervention-sections" class="label-secondary-color"
             >${translate('SECTIONS')}
-          </iron-label>
+          </label>
           <br />
           <div class="content" id="intervention-sections">${this.inteventionSections}</div>
         </div>

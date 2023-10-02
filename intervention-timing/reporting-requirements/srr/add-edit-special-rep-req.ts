@@ -4,11 +4,8 @@ import {property, customElement} from 'lit/decorators.js';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {prepareDatepickerDate} from '@unicef-polymer/etools-utils/dist/date.util';
-
-import '@polymer/iron-label/iron-label';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
-
 import '@unicef-polymer/etools-unicef/src/etools-date-time/calendar-lite';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
@@ -46,7 +43,7 @@ export class AddEditSpecialRepReq extends LitElement {
           width: 100%;
         }
 
-        iron-label {
+        label {
           margin-bottom: 24px;
         }
 
@@ -67,7 +64,7 @@ export class AddEditSpecialRepReq extends LitElement {
       >
         <div class="row-h">
           <div class="col layout-vertical col-5">
-            <iron-label for="startDate">${translate('REPORT_DUE_DATE')}</iron-label>
+            <label for="startDate">${translate('REPORT_DUE_DATE')}</label>
             <calendar-lite
               id="startDate"
               pretty-date="${this.item.due_date ? this.item.due_date : ''}"
@@ -79,7 +76,7 @@ export class AddEditSpecialRepReq extends LitElement {
           </div>
         </div>
         <div class="row-h">
-          <etool-input
+          <etools-input
             label=${translate('REPORTING_REQUIREMENT')}
             placeholder="&#8212;"
             value="${this.item.description ? this.item.description : ''}"

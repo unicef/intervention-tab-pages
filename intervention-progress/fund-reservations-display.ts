@@ -1,6 +1,5 @@
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import '@polymer/iron-label/iron-label';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
@@ -60,7 +59,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
           flex-direction: column;
           justify-content: flex-end;
         }
-        .unicef-cash-col iron-label {
+        .unicef-cash-col label {
           font-size: 12px;
           color: var(--secondary-text-color);
           font-weight: bold;
@@ -251,11 +250,11 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
               <strong>${translate('PLANNED')}</strong><strong>${translate('UNICEF_CASH')}</strong>
             </span>
             <span class="col-data col-2 right-align unicef-cash-col">
-              <iron-label for="pd-currency">${translate('PD_CURRENCY')}</iron-label>
+              <label for="pd-currency">${translate('PD_CURRENCY')}</label>
               ${this.renderPdCurrency()}
             </span>
             <span class="col-data col-2 right-align unicef-cash-col">
-              <iron-label for="unicef-cash">${translate('UNICEF_CASH')}</iron-label>
+              <label for="unicef-cash">${translate('UNICEF_CASH')}</label>
               <span id="unicef-cash"
                 >${displayCurrencyAmount(this.intervention.planned_budget.unicef_cash_local!, '0.0')}</span
               >

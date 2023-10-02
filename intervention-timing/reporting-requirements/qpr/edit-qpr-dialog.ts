@@ -1,6 +1,5 @@
 import {LitElement, css, html} from 'lit';
 import {customElement, property, query} from 'lit/decorators.js';
-import '@polymer/iron-label/iron-label';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 
 import {prepareDatepickerDate} from '@unicef-polymer/etools-utils/dist/date.util';
@@ -59,7 +58,9 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
           margin-top: 24px;
         }
 
-        iron-label {
+        .paper-label {
+          font-size: 16px;
+          color: var(--primary-text-color);
           margin-bottom: 24px;
         }
 
@@ -135,7 +136,7 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
 
         <div class="row-h">
           <div class="col layout-vertical">
-            <iron-label for="startDate">${translate(translatesMap.start_date)}</iron-label>
+            <label class="paper-label" for="startDate">${translate(translatesMap.start_date)}</label>
             <calendar-lite
               id="startDate"
               pretty-date="${this._editedQprDatesSet!.start_date ? this._editedQprDatesSet!.start_date : ''}"
@@ -146,7 +147,7 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
             </calendar-lite>
           </div>
           <div class="col layout-vertical">
-            <iron-label for="endDate">${translate('END_DATE')}</iron-label>
+            <label class="paper-label" for="endDate">${translate('END_DATE')}</label>
             <calendar-lite
               id="endDate"
               pretty-date="${this._editedQprDatesSet!.end_date ? this._editedQprDatesSet!.end_date : ''}"
@@ -157,7 +158,7 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
             </calendar-lite>
           </div>
           <div class="col layout-vertical">
-            <iron-label for="dueDate">${translate('DUE_DATE')}</iron-label>
+            <label class="paper-label" for="dueDate">${translate('DUE_DATE')}</label>
             <calendar-lite
               id="dueDate"
               pretty-date="${this._editedQprDatesSet!.due_date ? this._editedQprDatesSet!.due_date : ''}"
