@@ -144,7 +144,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
                   ></etools-icon-button>
                   <etools-icon-button
                     ?hidden="${this.canEdit}"
-                    name="icons:visibility"
+                    name="visibility"
                     @click="${() => this.openActivityDialog(item)}"
                     tabindex="0"
                   ></etools-icon-button>

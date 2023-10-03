@@ -90,7 +90,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
                   ?hidden="${!this._canEdit() && !this._canView()}"
                   @click="${() => this.openIndicatorDialog(this.indicator, this.readonly)}"
                 >
-                  <etools-icon slot="prefix" name="${this._canEdit() ? 'pencil' : 'icons:visibility'}"></etools-icon>
+                  <etools-icon slot="prefix" name="${this._canEdit() ? 'pencil' : 'visibility'}"></etools-icon>
                   ${this._canEdit() ? translate('EDIT') : translate('VIEW')}
                 </sl-menu-item>
                 <sl-menu-item
@@ -104,7 +104,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
                   )}"
                   @click="${() => this.openDeactivationDialog(String(this.indicator.id))}"
                 >
-                  <etools-icon slot="prefix" name="icons:block"></etools-icon>
+                  <etools-icon slot="prefix" name="block"></etools-icon>
                   ${translate('DEACTIVATE')}
                 </sl-menu-item>
                 <sl-menu-item
