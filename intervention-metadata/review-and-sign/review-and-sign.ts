@@ -71,7 +71,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
         paper-input {
           width: 100%;
         }
-       
+
         datepicker-lite {
           min-width: 100%;
         }
@@ -81,6 +81,16 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
 
         etools-content-panel::part(ecp-content) {
           padding: 8px 24px 16px 24px;
+        }
+        .paper-input-container {
+          margin: 0 12px 0 0;
+          color: var(--primary-text-color, #737373);
+          padding: 8px 0;
+          display: block;
+        }
+        .paper-input-container .input-value {
+          border-bottom: 1px groove rgba(0, 0, 0, 0.34);
+          padding: 3px 0px;
         }
       </style>
       <etools-content-panel
@@ -154,11 +164,9 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
         <div class="layout-horizontal row-padding-v">
           <div class="col col-6">
             <!-- Signed by UNICEF Authorized Officer -->
-            <paper-input-container>
-              <div slot="input" class="paper-input-input">
-                <span class="input-value"> ${translate('SIGNED_UNICEF_AUTH_OFFICER')}</span>
-              </div>
-            </paper-input-container>
+            <div class="paper-input-container">
+                <span class="input-value">${translate('SIGNED_UNICEF_AUTH_OFFICER')}</span>
+            </div>
           </div>
           <div class="col col-6">
             <!-- Signed by UNICEF Date -->

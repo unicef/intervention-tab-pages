@@ -1,11 +1,6 @@
 import {LitElement, html} from 'lit';
 import {property, customElement, query} from 'lit/decorators.js';
-import '@polymer/iron-pages/iron-pages.js';
 import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
-import '@polymer/paper-input/paper-input.js';
-import '@polymer/paper-tabs/paper-tab.js';
-import '@polymer/paper-tabs/paper-tabs.js';
-import '@polymer/paper-item/paper-item.js';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
@@ -28,6 +23,7 @@ import {translate, get as getTranslation} from 'lit-translate';
 import {translatesMap} from '../../../../utils/intervention-labels-map';
 import '@shoelace-style/shoelace/dist/components/tab-group/tab-group.js';
 import '@shoelace-style/shoelace/dist/components/tab/tab.js';
+import {isActiveTab} from '../../../../utils/utils';
 
 @customElement('indicator-dialog')
 export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin(ComponentBaseMixin(LitElement))) {
@@ -93,82 +89,75 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
           )}
         </sl-tab-group>
 
-        <iron-pages
-          id="indicatorPages"
-          .selected="${this.activeTab}"
-          attr-for-selected="name"
-          fallback-selection="details"
-        >
-          <div name="details">
-            <div class="row-h flex-c">
-              <div class="col col-4">
-                <etools-dropdown
-                  id="sectionDropdw"
-                  label=${translate(translatesMap.section)}
-                  .selected="${this.data?.section}"
-                  placeholder="&#8212;"
-                  .options="${this.sectionOptions}"
-                  option-label="name"
-                  option-value="id"
-                  required
-                  auto-validate
-                  error-message=${translate('PLEASE_SELECT_SECTIONS')}
-                  fit-into="etools-dialog"
-                  ?readonly="${this.readonly}"
-                  trigger-value-change-event
-                  @etools-selected-item-changed="${({detail}: CustomEvent) =>
-                    this.selectedItemChanged(detail, 'section')}"
-                >
-                </etools-dropdown>
-              </div>
-            </div>
-            <div class="row-h" ?hidden="${!this.isCluster}">${translate('CLUSTER_INDICATOR')}</div>
-            <div class="indicator-content${this.isCluster ? ' cluster' : ''}">
-              ${!this.isCluster
-                ? html` <non-cluster-indicator
-                    id="nonClusterIndicatorEl"
-                    .indicator="${this.data}"
-                    .locationOptions="${this.locationOptions}"
-                    .interventionStatus="${this.interventionStatus}"
-                    .readonly="${this.readonly}"
-                    .isUnicefUser="${this.currentUser?.is_unicef_user}"
-                  ></non-cluster-indicator>`
-                : html``}
-              ${this.isCluster
-                ? html` <cluster-indicator
-                    id="clusterIndicatorEl"
-                    .indicator="${this.data}"
-                    .locationOptions="${this.locationOptions}"
-                    .readonly="${this.readonly}"
-                    @prp-disaggregations-changed="${({detail}: CustomEvent) =>
-                      this.displayClusterDisaggregations(detail)}"
-                  ></cluster-indicator>`
-                : html``}
+        <div name="details" ?hidden="${!isActiveTab(this.activeTab, 'details')}">
+          <div class="row-h flex-c">
+            <div class="col col-4">
+              <etools-dropdown
+                id="sectionDropdw"
+                label=${translate(translatesMap.section)}
+                .selected="${this.data?.section}"
+                placeholder="&#8212;"
+                .options="${this.sectionOptions}"
+                option-label="name"
+                option-value="id"
+                required
+                auto-validate
+                error-message=${translate('PLEASE_SELECT_SECTIONS')}
+                fit-into="etools-dialog"
+                ?readonly="${this.readonly}"
+                trigger-value-change-event
+                @etools-selected-item-changed="${({detail}: CustomEvent) =>
+                  this.selectedItemChanged(detail, 'section')}"
+              >
+              </etools-dropdown>
             </div>
           </div>
-          <div class="row-padding" name="disaggregations">
-            <div ?hidden="${this._hideAddDisaggreations(this.isCluster, this.currentUser)}" class="createDisaggreg">
-              ${translate('IF_NO_DISAGGREG_GROUPS')}
-              <a href="/pmp/settings" target="_blank">${translate('HERE')}</a>.
-            </div>
+          <div class="row-h" ?hidden="${!this.isCluster}">${translate('CLUSTER_INDICATOR')}</div>
+          <div class="indicator-content${this.isCluster ? ' cluster' : ''}">
             ${!this.isCluster
-              ? html` <indicator-dissaggregations
-                  id="indicatorDisaggregations"
-                  .data="${this.disaggregations}"
+              ? html` <non-cluster-indicator
+                  id="nonClusterIndicatorEl"
+                  .indicator="${this.data}"
+                  .locationOptions="${this.locationOptions}"
+                  .interventionStatus="${this.interventionStatus}"
                   .readonly="${this.readonly}"
-                  @add-new-disaggreg="${({detail}: CustomEvent) => {
-                    this._updateScroll();
-                    this.disaggregations = detail;
-                  }}"
-                >
-                </indicator-dissaggregations>`
+                  .isUnicefUser="${this.currentUser?.is_unicef_user}"
+                ></non-cluster-indicator>`
               : html``}
             ${this.isCluster
-              ? html` <cluster-indicator-disaggregations .disaggregations="${this.prpDisaggregations}">
-                </cluster-indicator-disaggregations>`
+              ? html` <cluster-indicator
+                  id="clusterIndicatorEl"
+                  .indicator="${this.data}"
+                  .locationOptions="${this.locationOptions}"
+                  .readonly="${this.readonly}"
+                  @prp-disaggregations-changed="${({detail}: CustomEvent) =>
+                    this.displayClusterDisaggregations(detail)}"
+                ></cluster-indicator>`
               : html``}
           </div>
-        </iron-pages>
+        </div>
+        <div class="row-padding" name="disaggregations" ?hidden="${!isActiveTab(this.activeTab, 'disaggregations')}">
+          <div ?hidden="${this._hideAddDisaggreations(this.isCluster, this.currentUser)}" class="createDisaggreg">
+            ${translate('IF_NO_DISAGGREG_GROUPS')}
+            <a href="/pmp/settings" target="_blank">${translate('HERE')}</a>.
+          </div>
+          ${!this.isCluster
+            ? html` <indicator-dissaggregations
+                id="indicatorDisaggregations"
+                .data="${this.disaggregations}"
+                .readonly="${this.readonly}"
+                @add-new-disaggreg="${({detail}: CustomEvent) => {
+                  this._updateScroll();
+                  this.disaggregations = detail;
+                }}"
+              >
+              </indicator-dissaggregations>`
+            : html``}
+          ${this.isCluster
+            ? html` <cluster-indicator-disaggregations .disaggregations="${this.prpDisaggregations}">
+              </cluster-indicator-disaggregations>`
+            : html``}
+        </div>
       </etools-dialog>
     `;
   }

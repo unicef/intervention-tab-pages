@@ -9,12 +9,12 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
-import {PaperInputElement} from '@polymer/paper-input/paper-input';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import RepeatableDataSetsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/repeatable-data-sets-mixin';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
+import {EtoolsInput} from '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 
 /**
  * @customElement
@@ -167,7 +167,7 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
     let valid = true;
     if (this.data instanceof Array && this.data.length > 0) {
       this.data.forEach((_item, index) => {
-        const lastItem = this.shadowRoot!.querySelector('#fr-nr-' + index) as PaperInputElement;
+        const lastItem = this.shadowRoot!.querySelector('#fr-nr-' + index) as EtoolsInput;
         if (lastItem && !lastItem.validate()) {
           valid = false;
         }
