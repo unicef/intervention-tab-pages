@@ -5,12 +5,12 @@ import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {ActivityItemRow} from './activity-item-row';
 import './activity-item-row';
 import {AnyObject, InterventionActivityItem} from '@unicef-polymer/etools-types';
-import {PaperTextareaElement} from '@polymer/paper-input/paper-textarea';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../../utils/intervention-labels-map';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog';
+import {EtoolsTextarea} from '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 
 @customElement('activity-items-table')
 export class ActivityItemsTable extends LitElement {
@@ -103,9 +103,7 @@ export class ActivityItemsTable extends LitElement {
       const activityRows = this.shadowRoot!.querySelectorAll('activity-item-row');
       if (activityRows.length) {
         const rowIndex = focusLastRow ? activityRows.length - 1 : 0;
-        const activityNameEl = activityRows[rowIndex].shadowRoot!.querySelector(
-          '#activityName'
-        ) as PaperTextareaElement;
+        const activityNameEl = activityRows[rowIndex].shadowRoot!.querySelector('#activityName') as EtoolsTextarea;
         if (activityNameEl) {
           activityNameEl.focus();
         }

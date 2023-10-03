@@ -1,9 +1,7 @@
 import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
-import '@polymer/paper-input/paper-input.js';
 
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 
-import {PaperInputElement} from '@polymer/paper-input/paper-input.js';
 import {EtoolsDropdownEl} from '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import {LitElement, html} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
@@ -21,6 +19,7 @@ import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/ac
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
+import {EtoolsInput} from '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 
 /**
  * @customElement
@@ -48,7 +47,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
           box-sizing: border-box;
         }
 
-        paper-input {
+        etools-input {
           width: 100%;
         }
       </style>
@@ -182,7 +181,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
   }
 
   _getDisagregGroupElem(index: number) {
-    return this.shadowRoot!.querySelector('#disaggregationGroups_' + index) as PaperInputElement;
+    return this.shadowRoot!.querySelector('#disaggregationGroups_' + index) as EtoolsInput;
   }
 
   _updateTabCounter() {
@@ -192,7 +191,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
   _mapSpaceToClick() {
     setTimeout(() => {
       this.shadowRoot!.querySelectorAll('etools-dropdown').forEach((el, index) => {
-        const paperEl = el.shadowRoot!.querySelector('paper-input');
+        const paperEl = el.shadowRoot!.querySelector('etools-input') as EtoolsInput;
         if (paperEl) {
           callClickOnSpacePushListener(paperEl);
           if (index === 0) {

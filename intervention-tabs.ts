@@ -45,6 +45,7 @@ import {translatesMap} from './utils/intervention-labels-map';
 import {EtoolsRequestEndpoint} from '@unicef-polymer/etools-ajax';
 import '@shoelace-style/shoelace/dist/components/tab-group/tab-group.js';
 import '@shoelace-style/shoelace/dist/components/tab/tab.js';
+import {isActiveTab} from './utils/utils';
 /**
  * @LitElement
  * @customElement
@@ -238,28 +239,28 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
               .editPermissions="${this.intervention.permissions?.edit.other_info}"
             ></unresolved-other-info-review>`
           : html``}
-        <intervention-metadata ?hidden="${!this.isActiveTab(this.activeTab, TABS.Metadata)}"> </intervention-metadata>
-        <intervention-strategy ?hidden="${!this.isActiveTab(this.activeTab, TABS.Strategy)}"></intervention-strategy>
+        <intervention-metadata ?hidden="${!isActiveTab(this.activeTab, TABS.Metadata)}"> </intervention-metadata>
+        <intervention-strategy ?hidden="${!isActiveTab(this.activeTab, TABS.Strategy)}"></intervention-strategy>
         <intervention-workplan
-          ?hidden="${!this.isActiveTab(this.activeTab, TABS.Workplan)}"
+          ?hidden="${!isActiveTab(this.activeTab, TABS.Workplan)}"
           .interventionId="${this.interventionId}"
         ></intervention-workplan>
         <intervention-workplan-editor
-          ?hidden="${!this.isActiveTab(this.activeTab, TABS.WorkplanEditor)}"
+          ?hidden="${!isActiveTab(this.activeTab, TABS.WorkplanEditor)}"
           .interventionId="${this.interventionId}"
         >
         </intervention-workplan-editor>
-        <intervention-timing ?hidden="${!this.isActiveTab(this.activeTab, TABS.Timing)}"> </intervention-timing>
-        <intervention-review ?hidden="${!this.isActiveTab(this.activeTab, TABS.Review)}"></intervention-review>
-        <intervention-attachments ?hidden="${!this.isActiveTab(this.activeTab, TABS.Attachments)}">
+        <intervention-timing ?hidden="${!isActiveTab(this.activeTab, TABS.Timing)}"> </intervention-timing>
+        <intervention-review ?hidden="${!isActiveTab(this.activeTab, TABS.Review)}"></intervention-review>
+        <intervention-attachments ?hidden="${!isActiveTab(this.activeTab, TABS.Attachments)}">
         </intervention-attachments>
         <intervention-progress
           .activeSubTab="${this.activeTab}"
           ?hidden="${!(
-            this.isActiveTab(this.activeTab, TABS.ImplementationStatus) ||
-            this.isActiveTab(this.activeTab, TABS.MonitoringActivities) ||
-            this.isActiveTab(this.activeTab, TABS.Reports) ||
-            this.isActiveTab(this.activeTab, TABS.ResultsReported)
+            isActiveTab(this.activeTab, TABS.ImplementationStatus) ||
+            isActiveTab(this.activeTab, TABS.MonitoringActivities) ||
+            isActiveTab(this.activeTab, TABS.Reports) ||
+            isActiveTab(this.activeTab, TABS.ResultsReported)
           )}"
         ></intervention-progress>
       </div>
@@ -392,10 +393,6 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
 
   disconnectedCallback() {
     super.disconnectedCallback();
-  }
-
-  isActiveTab(tab: string, expectedTab: string): boolean {
-    return tab === expectedTab;
   }
 
   public stateChanged(state: RootState) {

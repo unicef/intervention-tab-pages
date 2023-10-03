@@ -25,8 +25,8 @@ import {translatesMap} from '../../utils/intervention-labels-map';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
-import {PaperInputElement} from '@polymer/paper-input/paper-input';
 import {SlSwitch} from '@shoelace-style/shoelace';
+import {EtoolsInput} from '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 
 /**
  * @customElement
@@ -326,9 +326,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   }
 
   validateCFEI(e?: CustomEvent) {
-    const elem = e
-      ? (e.currentTarget as PaperInputElement)
-      : this.shadowRoot?.querySelector<PaperInputElement>('#unppNumber')!;
+    const elem = e ? (e.currentTarget as EtoolsInput) : this.shadowRoot?.querySelector<EtoolsInput>('#unppNumber')!;
     return elem.validate();
   }
 

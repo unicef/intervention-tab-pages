@@ -3,7 +3,6 @@ import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown-multi.
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
 import IndicatorsCommonMixin from './mixins/indicators-common-mixin';
 import EndpointsLitMixin from '@unicef-polymer/etools-modules-common/dist/mixins/endpoints-mixin-lit';
-import {PaperInputElement} from '@polymer/paper-input/paper-input';
 import {html, LitElement} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
@@ -15,6 +14,7 @@ import {AnyObject} from '@unicef-polymer/etools-types';
 import {Indicator} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {interventionEndpoints} from '../../../../utils/intervention-endpoints';
+import {EtoolsInput} from '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 
 /**
  * @customElement
@@ -558,7 +558,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
 
       this._resetInvalid('#targetEl');
 
-      const targetNumerator = this.shadowRoot!.querySelector('#targetNumerator') as PaperInputElement;
+      const targetNumerator = this.shadowRoot!.querySelector('#targetNumerator') as EtoolsInput;
       if (targetNumerator) {
         targetNumerator.invalid = false;
 

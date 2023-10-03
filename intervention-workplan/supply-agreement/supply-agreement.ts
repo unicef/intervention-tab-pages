@@ -236,29 +236,24 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
     // hide CP Output for Partner User, and preserve layout
     childRow.rowHTML = html`
       <td></td>
-      ${
-        this.isUnicefUser
-          ? html`<td class="ptb-0">
-              <div class="child-row-inner-container">
-                <label class="paper-label">${translate('CP_OUTPUTS')}</label><br />
-                <label>${output || '—'}</label><br />
-              </div>
-            </td>`
-          : html``
-      }
+      ${this.isUnicefUser
+        ? html`<td class="ptb-0">
+            <div class="child-row-inner-container">
+              <label class="paper-label">${translate('CP_OUTPUTS')}</label><br />
+              <label>${output || '—'}</label><br />
+            </div>
+          </td>`
+        : html``}
       <td colspan="${this.isUnicefUser ? '3' : '4'}" class="ptb-0">
         <div class="child-row-inner-container">
           <label class="paper-label">${translate('OTHER_MENTIONS')}</label><br />
           <label>${item.other_mentions || '—'}</label>
-          </paper-input>
         </div>
       </td>
       <td colspan="2" class="ptb-0">
         <div class="child-row-inner-container" ?hidden="${item.provided_by.toLowerCase() === 'partner'}">
-          <label class="paper-label">
-            ${translate('UNICEF_PRODUCT_NUMBER')}</label><br />
+          <label class="paper-label"> ${translate('UNICEF_PRODUCT_NUMBER')}</label><br />
           <label>${item.unicef_product_number || '—'}</label>
-          </paper-input>
         </div>
       </td>
     `;
