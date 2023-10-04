@@ -1,7 +1,6 @@
 import {LitElement, html, PropertyValues} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
-import '@polymer/iron-selector/iron-selector';
 
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 

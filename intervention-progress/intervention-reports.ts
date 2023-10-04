@@ -2,7 +2,7 @@
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
-import '@polymer/iron-media-query/iron-media-query';
+import '@unicef-polymer/etools-unicef/src/etools-media-query/etools-media-query';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import {abortRequestByKey} from '@unicef-polymer/etools-ajax/etools-iron-request';
@@ -89,10 +89,10 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
           padding-bottom: 25px;
         }
       </style>
-      <iron-media-query
+      <etools-media-query
         query="(max-width: 767px)"
         @query-matches-changed="${this.resolutionChanged}"
-      ></iron-media-query>
+      ></etools-media-query>
       <etools-content-panel panel-title="${translate('REPORTS')}" class="pad-bottom">
         ${!this.reports.length
           ? html` <div class="row-h">
