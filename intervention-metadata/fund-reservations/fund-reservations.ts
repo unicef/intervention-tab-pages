@@ -28,7 +28,6 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import FrNumbersConsistencyMixin from '@unicef-polymer/etools-modules-common/dist/mixins/fr-numbers-consistency-mixin';
 import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/fr-warnings-styles';
 import ContentPanelMixin from '@unicef-polymer/etools-modules-common/dist/mixins/content-panel-mixin';
-import {customIcons} from '@unicef-polymer/etools-modules-common/dist/styles/custom-icons';
 import {getArraysDiff} from '@unicef-polymer/etools-utils/dist/array.util';
 import {listenForLangChanged} from 'lit-translate';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
@@ -52,7 +51,7 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
       return html`<etools-loading source="fund-res" active></etools-loading>`;
     }
     return html`
-      ${customIcons} ${sharedStyles}
+      ${sharedStyles}
       <style>
         :host {
           display: block;

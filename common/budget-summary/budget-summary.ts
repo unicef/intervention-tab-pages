@@ -16,7 +16,6 @@ import {TABS} from '../constants';
 import {isUnicefUser} from '../selectors';
 import FrNumbersConsistencyMixin from '@unicef-polymer/etools-modules-common/dist/mixins/fr-numbers-consistency-mixin';
 import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/fr-warnings-styles';
-import {customIcons} from '@unicef-polymer/etools-modules-common/dist/styles/custom-icons';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
@@ -84,13 +83,13 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
   render() {
     if (!this.budgetSummary) {
       return html`<style>
-          ${customIcons} ${sharedStyles} ${InfoElementStyles}
+          ${sharedStyles} ${InfoElementStyles}
         </style>
         <etools-loading source="b-s" active></etools-loading>`;
     }
     // language=HTML
     return html`
-      ${customIcons}${sharedStyles} ${InfoElementStyles}
+      ${sharedStyles} ${InfoElementStyles}
       <section class="elevation layout-horizontal" elevation="1" comment-element="budget-summary">
         <div class="tooltip">${this.getIconTooltip()}</div>
         <div class="information-cells">

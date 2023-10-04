@@ -26,7 +26,6 @@ import UploadsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uplo
 import FrNumbersConsistencyMixin from '@unicef-polymer/etools-modules-common/dist/mixins/fr-numbers-consistency-mixin';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {customIcons} from '@unicef-polymer/etools-modules-common/dist/styles/custom-icons';
 import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/fr-warnings-styles';
 import pick from 'lodash-es/pick';
 import {EtoolsRequestEndpoint} from '@unicef-polymer/etools-ajax';
@@ -49,7 +48,7 @@ export class InterventionDates extends CommentsMixin(
     }
     // language=HTML
     return html`
-      ${customIcons}${sharedStyles}
+      ${sharedStyles}
       <style>
         :host {
           display: block;

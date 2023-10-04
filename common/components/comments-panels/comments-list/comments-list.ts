@@ -8,6 +8,7 @@ import {CommentsCollection} from '../../comments/comments.reducer';
 import {CommentsDescription, CommentsItemsNameMap} from '../../comments/comments-items-name-map';
 import {extractId, removeTrailingIds} from '../../comments/comments.helpers';
 import {CommentItemData, CommentRelatedItem} from '../../comments/comments-types';
+import {EtoolsTextarea} from '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 
 @customElement('comments-list')
 export class CommentsList extends LitElement {
@@ -60,7 +61,7 @@ export class CommentsList extends LitElement {
                   this.showMessages(group);
                   const commentsPanelElement = document.querySelector('comments-panels');
                   const messagesPanelElement = commentsPanelElement?.shadowRoot?.querySelector('messages-panel');
-                  messagesPanelElement?.shadowRoot?.querySelector('paper-textarea')?.focus();
+                  (messagesPanelElement?.shadowRoot?.querySelector('etools-textarea') as EtoolsTextarea)?.focus();
                 }
               }}"
             ></comments-group>

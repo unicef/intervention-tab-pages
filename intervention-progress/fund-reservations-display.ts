@@ -12,7 +12,6 @@ import {translate} from 'lit-translate';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/fr-warnings-styles';
 import FrNumbersConsistencyMixin from '@unicef-polymer/etools-modules-common/dist/mixins/fr-numbers-consistency-mixin';
-import {customIcons} from '@unicef-polymer/etools-modules-common/dist/styles/custom-icons';
 import {prettyDate} from '@unicef-polymer/etools-utils/dist/date.util';
 
 /**
@@ -28,7 +27,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
       return html`<etools-loading source="fund-res-display" active></etools-loading>`;
     }
     return html`
-      ${customIcons} ${sharedStyles}
+      ${sharedStyles}
       <style>
         :host {
           --list-column-label: {

@@ -1,7 +1,6 @@
 /* eslint-disable lit/no-legacy-template-syntax */
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import '@polymer/paper-styles/element-styles/paper-material-styles';
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 import '@polymer/iron-media-query/iron-media-query';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
