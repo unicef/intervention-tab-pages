@@ -2,7 +2,7 @@ import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
-import '@unicef-polymer/etools-upload/etools-upload.js';
+import '@unicef-polymer/etools-unicef/src/etools-upload/etools-upload';
 import '@unicef-polymer/etools-unicef/src/etools-date-time/datepicker-lite';
 import '@unicef-polymer/etools-modules-common/dist/layout/etools-warn-message';
 import '@unicef-polymer/etools-utils/dist/fire-event.util';

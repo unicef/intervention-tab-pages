@@ -31,7 +31,7 @@ import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import {addCurrencyAmountDelimiter, displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {isUnicefUser} from '../../common/selectors';
-import {EtoolsUpload} from '@unicef-polymer/etools-upload/etools-upload';
+import {EtoolsUpload} from '@unicef-polymer/etools-unicef/src/etools-upload';
 import {AnyObject, AsyncAction, EtoolsEndpoint, InterventionSupplyItem} from '@unicef-polymer/etools-types';
 import {Intervention, ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';

@@ -5,7 +5,7 @@ import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
-import '@unicef-polymer/etools-upload/etools-upload';
+import '@unicef-polymer/etools-unicef/src/etools-upload/etools-upload';
 
 import '@unicef-polymer/etools-unicef/src/etools-date-time/datepicker-lite';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
@@ -34,7 +34,7 @@ import {translate} from 'lit-translate';
 import {sectionContentStyles} from '@unicef-polymer/etools-modules-common/dist/styles/content-section-styles-polymer';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {EtoolsUpload} from '@unicef-polymer/etools-upload/etools-upload';
+import {EtoolsUpload} from '@unicef-polymer/etools-unicef/src/etools-upload';
 import {EtoolsRequestEndpoint} from '@unicef-polymer/etools-ajax';
 
 /**

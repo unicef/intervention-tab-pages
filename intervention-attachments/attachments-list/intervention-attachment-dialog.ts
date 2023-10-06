@@ -4,7 +4,7 @@ import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import '@unicef-polymer/etools-upload/etools-upload.js';
+import '@unicef-polymer/etools-unicef/src/etools-upload/etools-upload';
 import '@shoelace-style/shoelace/dist/components/checkbox/checkbox.js';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
