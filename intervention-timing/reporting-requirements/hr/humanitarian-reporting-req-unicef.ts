@@ -16,7 +16,7 @@ import '@shoelace-style/shoelace/dist/components/button/button.js';
 
 /**
  * @customElement
- * @polymer
+ * @LitElement
  * @mixinFunction
  * @appliesMixin ReportingRequirementsCommonMixin
  * @appliesMixin PaginationMixin

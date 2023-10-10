@@ -48,10 +48,6 @@ export const LocationWidgetStyles: CSSResult = css`
     overflow-y: auto;
   }
 
-  .widget-container .map-and-list .list paper-input {
-    margin-top: -20px;
-  }
-
   .site-line,
   .location-line {
     position: relative;

@@ -375,8 +375,6 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     handleEsc(event: KeyboardEvent) {
       if (event.key == 'Escape') {
         this.lastFocusedTd.focus();
-        console.log(this.lastFocusedTd.focus());
-        console.log('hello', event.key, this.lastFocusedTd);
       }
     }
 

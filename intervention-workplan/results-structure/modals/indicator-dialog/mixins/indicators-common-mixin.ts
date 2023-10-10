@@ -4,7 +4,7 @@ import {property} from 'lit/decorators.js';
 import {Constructor} from '@unicef-polymer/etools-types';
 
 /**
- * @polymer
+ * @LitElement
  * @mixinFunction
  */
 function IndicatorsCommonMixin<T extends Constructor<LitElement>>(baseClass: T) {

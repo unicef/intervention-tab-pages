@@ -32,14 +32,6 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
   render() {
     return html`
       ${sharedStyles}
-      <style>
-        paper-textarea {
-          flex: auto;
-          --paper-input-container-input: {
-            display: block;
-          }
-        }
-      </style>
 
       <etools-dialog
         no-padding
@@ -108,14 +100,14 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
 
   firstUpdated(_changedProperties: any) {
     super.firstUpdated(_changedProperties);
-    this._handlePaperTextareaAutovalidateError();
+    this._handleEtoolsTextareaAutovalidateError();
   }
 
   /**
    * This will prevent a console error "Uncaught TypeError: Cannot read property 'textarea' of undefined"
-   * The error occurs only on first load/ hard refresh and on paper-textareas that have auto-validate
+   * The error occurs only on first load/ hard refresh and on etools-textareas that have auto-validate
    */
-  _handlePaperTextareaAutovalidateError() {
+  _handleEtoolsTextareaAutovalidateError() {
     this.autoValidate = true;
   }
 

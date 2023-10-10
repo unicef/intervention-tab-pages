@@ -7,7 +7,7 @@ import CommonMixin from '@unicef-polymer/etools-modules-common/dist/mixins/commo
 import UtilsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/utils-mixin';
 
 /**
- * @polymer
+ * @LitElement
  * @customElement
  * @appliesMixin UtilsMixin
  */

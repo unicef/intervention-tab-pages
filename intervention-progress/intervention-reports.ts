@@ -33,7 +33,7 @@ import './reports/final-progress-report';
 import '@shoelace-style/shoelace/dist/components/tooltip/tooltip.js';
 
 /**
- * @polymer
+ * @LitElement
  * @customElement
  * @mixinFunction
  * @appliesMixin PaginationMixin
@@ -77,7 +77,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
           padding: 1px 6px;
           font-size: 10px;
           text-transform: uppercase;
-          background-color: var(--paper-grey-300);
+          background-color: var(--sl-color-gray-200);
           margin-inline-start: 5px;
           font-weight: bold;
         }

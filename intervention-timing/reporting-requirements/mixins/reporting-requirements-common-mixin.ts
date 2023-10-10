@@ -14,7 +14,7 @@ import {updatePartnerReportingRequirements} from '../../../common/actions/interv
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 
 /**
- * @polymer
+ * @LitElement
  * @mixinFunction
  * @appliesMixin EndpointsMixin
  */

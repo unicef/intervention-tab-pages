@@ -105,7 +105,7 @@ export class PvQuarter extends LitElement {
         </div>
 
         <div class="sites-display" ?hidden="${!this.item[`programmatic_q${this.qIndex}_sites`].length}">
-          <label class="paper-label">${translate('SITES')}</label>
+          <label class="label">${translate('SITES')}</label>
           ${this.item[`programmatic_q${this.qIndex}_sites`].map((s: any) => {
             return html`<div style="padding-bottom: 7px;">
               <etools-icon

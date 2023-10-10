@@ -23,22 +23,6 @@ export class TimeIntervals extends LitElement {
             :host([without-popup]) {
               cursor: text;
             }
-            paper-tooltip[theme='light'] {
-              --paper-tooltip-background: var(--primary-background-color, #ffffff);
-              --paper-tooltip-opacity: 1;
-              --paper-tooltip-text-color: var(--primary-text-color, rgba(0, 0, 0, 0.87));
-
-              --paper-tooltip: {
-                text-align: center;
-                line-height: 1.4;
-                -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-                -moz-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-                border: 1px solid rgba(0, 0, 0, 0.15);
-                font-size: 12px;
-                white-space: nowrap;
-              }
-            }
           </style>
           ${this.quarters.map(
             (quarter: InterventionQuarter) =>

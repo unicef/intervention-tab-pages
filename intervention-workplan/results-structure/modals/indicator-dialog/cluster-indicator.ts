@@ -33,7 +33,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
           display: block;
         }
 
-        paper-input {
+        etools-input {
           width: 100%;
         }
 
@@ -56,7 +56,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
             <div class="row-h flex-c">
               <div class="col col-6">
                 <div class="layout-vertical">
-                  <label class="paper-label">${translate('RESPONSE_PLAN')}</label>
+                  <label class="label">${translate('RESPONSE_PLAN')}</label>
                   <label class="input-label" ?empty="${!this.indicator?.response_plan_name}"
                     >${this.indicator?.response_plan_name}</label
                   >
@@ -64,7 +64,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
               </div>
               <div class="col col-6">
                 <div class="layout-vertical">
-                  <label class="paper-label">${translate('CLUSTER')}</label>
+                  <label class="label">${translate('CLUSTER')}</label>
                   <label class="input-label" ?empty="${!this.indicator?.cluster_name}"
                     >${this.indicator?.cluster_name}</label
                   >
@@ -73,7 +73,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
             </div>
             <div class="row-h flex-c">
               <div class="layout-vertical">
-                <label class="paper-label">${translate('INDICATOR')}</label>
+                <label class="label">${translate('INDICATOR')}</label>
                 <label class="input-label" ?empty="${!this.indicator?.cluster_indicator_title}"
                   >${this.indicator?.cluster_indicator_title}</label
                 >
@@ -286,7 +286,7 @@ class ClusterIndicator extends connectStore(EndpointsLitMixin(IndicatorsCommonMi
         : html``}
       <div class="row-h flex-c">
         <div class="layout-vertical">
-          <label class="paper-label">${translate('MEANS_OF_VERIFICATION')}</label>
+          <label class="label">${translate('MEANS_OF_VERIFICATION')}</label>
           <label class="input-label" ?empty="${!this.prpClusterIndicator.means_of_verification}">
             ${this.prpClusterIndicator.means_of_verification}
           </label>

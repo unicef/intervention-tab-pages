@@ -16,7 +16,7 @@ import {EtoolsPaginator} from '@unicef-polymer/etools-unicef/src/etools-table/pa
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 /**
- * @polymer
+ * @LitElement
  * @customElement
  * @appliesMixin ReportingReqPastDatesCheckMixin
  * @appliesMixin ReportingRequirementsCommonMixin

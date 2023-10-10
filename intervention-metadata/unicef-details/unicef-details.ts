@@ -129,7 +129,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
                   class="padd-top"
                   ?hidden="${!this.isReadonly(this.editMode, this.permissions?.edit.unicef_focal_points)}"
                 >
-                  <label for="focalPointInput" class="paper-label">${translate('UNICEF_FOCAL_POINTS')}</label>
+                  <label for="focalPointInput" class="label">${translate('UNICEF_FOCAL_POINTS')}</label>
                   <div id="focalPointDetails">
                     ${this.renderReadonlyUserDetails(
                       this.originalData?.unicef_focal_points ? this.originalData?.unicef_focal_points! : []
@@ -158,7 +158,7 @@ export class UnicefDetailsElement extends CommentsMixin(ComponentBaseMixin(LitEl
             </etools-dropdown>
 
             <div class="padd-top" ?hidden="${!this.isReadonly(this.editMode, this.permissions?.edit.budget_owner)}">
-              <label for="budgetOwnerInput" class="paper-label">${translate('UNICEF_BUDGET_OWNER')}</label>
+              <label for="budgetOwnerInput" class="label">${translate('UNICEF_BUDGET_OWNER')}</label>
               <div id="budgetOwnerDetails">
                 ${this.renderReadonlyUserDetails(
                   this.originalData?.budget_owner ? [this.originalData?.budget_owner!] : []

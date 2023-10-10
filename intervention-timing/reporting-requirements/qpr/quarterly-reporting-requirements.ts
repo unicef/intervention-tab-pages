@@ -17,7 +17,7 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
 
 /**
- * @polymer
+ * @LitElement
  * @customElement
  * @mixinFunction
  * @appliesMixin ReportingRequirementsCommonMixin

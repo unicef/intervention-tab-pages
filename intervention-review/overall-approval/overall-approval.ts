@@ -95,7 +95,7 @@ export class OverallApproval extends LitElement {
             <div class="row-padding">
               ${Object.entries(REVIEW_QUESTIONS).map(
                 ([field]: [string, string], index: number) => html`
-                  <label class="paper-label">Q${index + 1}: ${translateValue(field, 'REVIEW_QUESTIONS')}</label>
+                  <label class="label">Q${index + 1}: ${translateValue(field, 'REVIEW_QUESTIONS')}</label>
                   <div class="answer">
                     ${translateValue(
                       REVIEW_ANSVERS.get(String(this.review[field as keyof InterventionReview])) || '-',

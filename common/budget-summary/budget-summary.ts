@@ -59,7 +59,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
           margin-top: 14px;
           margin-inline-start: 30px;
         }
-        .amt-data .paper-label {
+        .amt-data .label {
           font-weight: 400;
           font-size: 14px;
           line-height: 16px;
@@ -95,7 +95,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
         <div class="information-cells">
           ${this.getTable()}
           <div class="amt-data">
-            <label class="paper-label">${translate('TOTAL_AMT')}</label>
+            <label class="label">${translate('TOTAL_AMT')}</label>
             <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.total_local)}">
               <span>${this.budgetSummary.currency}</span> ${displayCurrencyAmount(
                 String(this.budgetSummary.total_local)
@@ -111,7 +111,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
     return html`
       <div class="table not-allowed">
         <div class="data-column">
-          <label class="paper-label">${translate('BUDGET_CURRENCY')}</label>
+          <label class="label">${translate('BUDGET_CURRENCY')}</label>
           <div>
             <etools-info-tooltip
               class="fr-nr-warn currency-mismatch"
@@ -130,7 +130,7 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
         </div>
 
         <div class="data-column">
-          <label class="paper-label">${translate('CAPACITY_STRENGTHENING_COST_RATE')}</label>
+          <label class="label">${translate('CAPACITY_STRENGTHENING_COST_RATE')}</label>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.hq_support_cost)}">
             ${this.roundPercentage(this.budgetSummary.hq_support_cost)}(${displayCurrencyAmount(
               String(this.budgetSummary.total_hq_cash_local),
@@ -140,21 +140,21 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
         </div>
 
         <div class="data-column">
-          <label class="paper-label">${translate('PRGM_EFFECTIVENESS')}</label>
+          <label class="label">${translate('PRGM_EFFECTIVENESS')}</label>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.programme_effectiveness)}">
             ${this.roundPercentage(this.budgetSummary.programme_effectiveness)}
           </div>
         </div>
 
         <div class="data-column">
-          <label class="paper-label">${translate('TOTAL_UNICEF_CONTRIB')}</label>
+          <label class="label">${translate('TOTAL_UNICEF_CONTRIB')}</label>
           <div class="input-label" ?empty="${!this.budgetSummary.total_unicef_contribution_local}">
             ${displayCurrencyAmount(String(this.budgetSummary.total_unicef_contribution_local), '0.00')}
           </div>
         </div>
 
         <div class="data-column">
-          <label class="paper-label">${translate('TOTAL_UNICEF_CASH')}</label>
+          <label class="label">${translate('TOTAL_UNICEF_CASH')}</label>
           <div>
             <etools-info-tooltip
               class="fr-nr-warn"
@@ -172,42 +172,42 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
         </div>
 
         <div class="data-column">
-          <label class="paper-label">${translate('TOTAL_UNICEF_SUPPLY')}</label>
+          <label class="label">${translate('TOTAL_UNICEF_SUPPLY')}</label>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.in_kind_amount_local)}">
             ${displayCurrencyAmount(String(this.budgetSummary.in_kind_amount_local), '0.00')}
           </div>
         </div>
 
         <div class="data-column">
-          <label class="paper-label">${translate('TOTAL_CASH_AMT')}</label>
+          <label class="label">${translate('TOTAL_CASH_AMT')}</label>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.total_cash_local)}">
             ${displayCurrencyAmount(String(this.budgetSummary.total_cash_local))}
           </div>
         </div>
 
         <div class="data-column amt-column">
-          <label class="paper-label">${translate('TOTAL_AMT')}</label>
+          <label class="label">${translate('TOTAL_AMT')}</label>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.total_local)}">
             ${displayCurrencyAmount(String(this.budgetSummary.total_local))}
           </div>
         </div>
 
         <div class="data-column">
-          <label class="paper-label">${translate('TOTAL_PARTNER_SUPPLY')}</label>
+          <label class="label">${translate('TOTAL_PARTNER_SUPPLY')}</label>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.partner_supply_local)}">
             ${displayCurrencyAmount(String(this.budgetSummary.partner_supply_local))}
           </div>
         </div>
 
         <div class="data-column">
-          <label class="paper-label">${translate('TOTAL_PARTNER_CASH')}</label>
+          <label class="label">${translate('TOTAL_PARTNER_CASH')}</label>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.partner_contribution_local)}">
             ${displayCurrencyAmount(String(this.budgetSummary.partner_contribution_local), '0.00')}
           </div>
         </div>
 
         <div class="data-column">
-          <label class="paper-label">${translate('TOTAL_PARTNER_CONTRIBUTION')}</label>
+          <label class="label">${translate('TOTAL_PARTNER_CONTRIBUTION')}</label>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.total_partner_contribution_local)}">
             ${this.roundPercentage(this.budgetSummary.partner_contribution_percent)}
             (${displayCurrencyAmount(String(this.budgetSummary.total_partner_contribution_local))})

@@ -100,7 +100,7 @@ export class ReviewsList extends connectStore(LitElement) {
                 ${Object.entries(REVIEW_QUESTIONS).map(
                   ([field, question]: [string, string], index: number) => html`
                     <div>
-                      <label class="paper-label">Q${index + 1}: ${question}</label>
+                      <label class="label">Q${index + 1}: ${question}</label>
                     </div>
                     <div class="answer">${REVIEW_ANSVERS.get((approval as any)[field]) || '-'}</div>
                   `

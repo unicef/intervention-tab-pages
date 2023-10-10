@@ -245,7 +245,6 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                       <etools-icon-button
                         id="add-item-${activity.id}"
                         name="add-box"
-                        slot="custom-icon"
                         @click="${(e: CustomEvent) => this.addNewActivityItem(e, activity, 'focusBelow')}"
                         ?hidden="${activity.items?.length || !this.permissions.edit.result_links}"
                       ></etools-icon-button>

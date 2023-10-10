@@ -24,7 +24,7 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import '@shoelace-style/shoelace/dist/components/button/button.js';
 
 /**
- * @polymer
+ * @LitElement
  * @customElement
  * @appliesMixin EndpointsMixin
  */

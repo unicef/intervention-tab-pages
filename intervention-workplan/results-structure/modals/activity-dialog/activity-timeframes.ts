@@ -112,7 +112,7 @@ export class ActivityTimeFrames extends LitElement {
 
   protected render(): TemplateResult {
     return html`
-      <label class="paper-label layout-horizontal center-align" required ?hidden="${this.hideLabel}">
+      <label class="label layout-horizontal center-align" required ?hidden="${this.hideLabel}">
         ${translate('ACTIVITY_TIMES')}
       </label>
       <div class="layout-horizontal center-align time-frame-container">

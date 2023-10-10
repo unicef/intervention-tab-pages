@@ -179,7 +179,7 @@ export class ReviewChecklistPopup extends LitElement {
     return html`
       <div class="likert-scale pb-20">
         <div class="w100">
-          <label class="paper-label">Q${index + 1}: ${translateValue(field, `REVIEW_QUESTIONS`)}</label>
+          <label class="label">Q${index + 1}: ${translateValue(field, `REVIEW_QUESTIONS`)}</label>
         </div>
         <sl-radio-group
           value="${this.review[field] || ''}"

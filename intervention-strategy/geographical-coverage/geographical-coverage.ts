@@ -123,7 +123,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="flex-c layout-horizontal row-padding-v location-icon">
-          <label class="paper-label"> ${translate(translatesMap.flat_locations)}</label>
+          <label class="label"> ${translate(translatesMap.flat_locations)}</label>
           <info-icon-tooltip
             id="iit-locations"
             class="iit"
@@ -165,7 +165,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         </div>
         <div class="flex-c row-padding-v mt-50">
           <div>
-            <label class="paper-label">${translate(translatesMap.sites)}</label>
+            <label class="label">${translate(translatesMap.sites)}</label>
             <info-icon-tooltip
               id="iit-sites"
               class="iit"

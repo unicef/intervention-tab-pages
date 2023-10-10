@@ -82,7 +82,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
 
         <div class="layout-horizontal row-padding-v extra-padd-top-no-bottom">
           <div class="w100">
-            <label class="paper-label">${translate(translatesMap.hq_support_cost)}</label>
+            <label class="label">${translate(translatesMap.hq_support_cost)}</label>
           </div>
         </div>
         <div class="layout-horizontal">
@@ -105,7 +105,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
           </div>
         </div>
         <div class="layout-horizontal row-padding-v" ?hidden="${!this.isUnicefUser || !this.editMode}">
-          <label class="paper-label hq-info-label">
+          <label class="label hq-info-label">
             ${translateUnsafeHTML('TOTAL_FOR_PERCENT_HQ', {
               PERCENT: `<b>${this.data.hq_support_cost}%</b>`,
               VALUE: `<b>${this.autoCalculatedHqContrib} ${this.data.planned_budget.currency}</b>`

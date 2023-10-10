@@ -51,21 +51,6 @@ export class CommentsDialog extends EditComments {
     return html`
       ${sharedStyles}
       <style>
-        :host-context([dir='rtl']) paper-textarea {
-          --paper-input-container-shared-input-style: {
-            text-align: rigth;
-          }
-        }
-        paper-textarea {
-          outline: none;
-          flex: auto;
-          --paper-input-container-input: {
-            display: block;
-          }
-          --paper-input-container-shared-input-style: {
-            text-align: left;
-          }
-        }
         etools-textarea::part(textarea) {
           max-height: 96px;
           overflow-y: auto;

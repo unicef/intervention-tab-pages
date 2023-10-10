@@ -64,22 +64,6 @@ export class GroupedLocationsDialog extends LitElement {
           padding-bottom: 0;
         }
 
-        etools-dialog paper-textarea {
-          outline: none;
-          --paper-input-container-underline: {
-            display: none;
-          }
-          --paper-input-container-underline-focus: {
-            display: none;
-          }
-          --iron-autogrow-textarea: {
-            overflow: auto;
-            padding: 0;
-            min-height: 48px;
-            max-height: 96px;
-          }
-        }
-
         etools-dialog etools-textarea::part(textarea) {
           min-height: 48px;
           max-height: 96px;

@@ -66,27 +66,9 @@ export class EditorTable extends CommentsMixin(
     return html`
       ${sharedStyles}
       <style>
-        :host {
-        }
-        paper-textarea {
-          outline: none;
-          flex: auto;
-          --paper-input-container-input: {
-            display: block;
-            text-overflow: hidden;
-          }
-
-          --iron-autogrow-textarea: {
-            overflow: auto;
-            padding: 0;
-            max-height: 96px;
-            font-weight: bold;
-          }
-          --paper-input-container-label-floating_-_font-weight: 600;
-          --paper-font-subhead_-_font-weight: 600;
-          --paper-input-container-label-floating: {
-            font-weight: 600;
-          }
+        etools-textarea::part(textarea) {
+          max-height: 96px;
+          font-weight: bold;
         }
 
         etools-input,
@@ -104,21 +86,15 @@ export class EditorTable extends CommentsMixin(
         etools-textarea.other {
           --etools-input-padding-bottom: 16px;
         }
-        .activity-items-row paper-textarea {
-          --iron-autogrow-textarea_-_font-weight: 400;
+        .activity-items-row etools-textarea::part(base) {
+          font-weight: 400;
         }
-        .activity-items-row paper-input.bold {
-          --paper-input-container-input: {
-            font-weight: bold;
-          }
+        .activity-items-row etools-input.bold::part(base) {
+          font-weight: bold;
         }
 
-        .index-column {
-          padding-top: 0;
-
-          --paper-input-container-input: {
-            font-size: 14px !important;
-          }
+        .index-column etools-input::part(sl-input) {
+          --sl-input-font-size-small: 14px !important;
         }
 
         .char-counter {
@@ -275,7 +251,6 @@ export class EditorTable extends CommentsMixin(
                     >
                       <etools-icon-button
                         id="add-pd-output-${result.id}"
-                        slot="custom-icon"
                         @click="${(e: any) => {
                           this.addNewPDOutput(result.ll_results as any);
                           this.moveFocusToNewllyAdded(e.target);
@@ -403,7 +378,6 @@ export class EditorTable extends CommentsMixin(
                           <etools-icon-button
                             id="add-a-${pdOutput.id}"
                             name="add-box"
-                            slot="custom-icon"
                             @click="${(e: any) => {
                               this.addNewActivity(pdOutput);
                               this.moveFocusToNewllyAdded(e.target);

@@ -18,7 +18,7 @@ export function TruncateMixin<T extends Constructor<LitElement>>(baseClass: T) {
       }
       return html`${string.substring(0, this.amountOfFirstLetters)}<sl-button
           variant="text"
-          class="primary-btn no-marg no-pad"
+          class="primary-btn no-marg no-pad show-more-btn"
           id="show-more"
           @click="${(event: CustomEvent) => this.showMore(event)}"
           >...</sl-button
@@ -26,15 +26,26 @@ export function TruncateMixin<T extends Constructor<LitElement>>(baseClass: T) {
     }
 
     private showMore(event: CustomEvent) {
-      const paperBtn = event.target as SlButton;
-      paperBtn.setAttribute('hidden', '');
-      const truncatedText = paperBtn.nextElementSibling;
+      const slBtn = event.target as SlButton;
+      slBtn.setAttribute('hidden', '');
+      const truncatedText = slBtn.nextElementSibling;
       truncatedText?.removeAttribute('hidden');
       truncatedText?.removeAttribute('aria-hidden');
     }
 
     static get styles(): CSSResultArray {
-      return [css``];
+      return [
+        css`
+          .show-more-btn::part(base) {
+            margin: 0px;
+            padding: 0px;
+            min-width: 15px;
+            font-weight: bold;
+            color: var(--primary-color);
+            background-color: transparent;
+          }
+        `
+      ];
     }
   };
 }

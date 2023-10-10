@@ -32,7 +32,7 @@ import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button'
 import {isActiveTab} from '../../utils/utils';
 
 /**
- * @polymer
+ * @LitElement
  * @customElement
  */
 @customElement('partner-reporting-requirements')
