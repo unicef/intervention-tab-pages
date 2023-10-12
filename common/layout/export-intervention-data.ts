@@ -19,6 +19,11 @@ import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button'
 export class ExportInterventionData extends LitElement {
   public render() {
     return html`
+      <style>
+        sl-menu-item::part(label) {
+          text-align: left;
+        }
+      </style>
       <sl-dropdown id="pdExportMenuBtn">
         <etools-icon-button name="more-vert" slot="trigger"> </etools-icon-button>
         <sl-menu>
