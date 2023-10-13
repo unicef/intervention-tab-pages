@@ -182,6 +182,12 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
         sl-tab-group::part(active-tab-indicator) {
           bottom: 0;
         }
+        sl-tab::part(base) {
+          color: var(--secondary-text-color);
+          text-transform: uppercase;
+          min-width: 120px;
+          place-content: center;
+        }
       </style>
 
       <!-- Loading PRP country data -->

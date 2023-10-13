@@ -35,9 +35,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
           }
         }
         #totalsRow {
-          --list-row-no-collapse: {
-            background-color: var(--light-theme-background-color);
-          }
+          --list-row-no-collapse-bg-color: var(--light-theme-background-color);
           --list-bg-color: var(--light-theme-background-color);
         }
         #plannedUnicefCash,
