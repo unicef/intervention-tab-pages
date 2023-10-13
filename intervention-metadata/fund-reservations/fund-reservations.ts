@@ -4,7 +4,7 @@ import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
 
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import './update-fr-numbers';
 import {UpdateFrNumbers} from './update-fr-numbers';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
@@ -273,7 +273,7 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
     (this.frsDialogEl as UpdateFrNumbers).startSpinner();
 
     let url =
-      getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.frNumbersDetails).url +
+      getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.frNumbersDetails).url +
       '?values=' +
       frNumbers.join(',');
     if (this.intervention.id) {

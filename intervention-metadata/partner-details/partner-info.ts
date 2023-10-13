@@ -16,7 +16,7 @@ import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {patchIntervention} from '../../common/actions/interventions';
-import {sendRequest} from '@unicef-polymer/etools-ajax';
+import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';

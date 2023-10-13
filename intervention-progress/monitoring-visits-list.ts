@@ -3,8 +3,8 @@ import {customElement, property} from 'lit/decorators.js';
 import '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading';
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import isEmpty from 'lodash-es/isEmpty';
 import {AnyObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
@@ -177,7 +177,7 @@ export class MonitoringVisitsList extends LitElement {
     }
 
     this.showLoading = true;
-    const monitoringVisitsEndpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(
+    const monitoringVisitsEndpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(
       interventionEndpoints.monitoringVisits,
       {
         id: interventionOrPartnerId,
@@ -220,11 +220,11 @@ export class MonitoringVisitsList extends LitElement {
       return;
     }
     const endpoint = this.interventionId
-      ? getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.interventionTPMActivities, {
+      ? getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.interventionTPMActivities, {
           year: dayjs().year(),
           interventionId: this.interventionId
         })
-      : getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.partnerTPMActivities, {
+      : getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.partnerTPMActivities, {
           year: dayjs().year(),
           partnerId: this.partnerId
         });

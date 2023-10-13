@@ -9,12 +9,12 @@ import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {ActivityItemsMixin} from './activity-item-mixin';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {repeat} from 'lit/directives/repeat.js';
 import {
   ExpectedResultExtended,
@@ -432,12 +432,12 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
 
     _getEndpoint(activityId: any, pdOutputId: string, interventionId: string) {
       return activityId
-        ? getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.pdActivityDetails, {
+        ? getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.pdActivityDetails, {
             activityId,
             pdOutputId,
             interventionId
           })
-        : getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.pdActivities, {
+        : getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.pdActivities, {
             pdOutputId,
             interventionId
           });

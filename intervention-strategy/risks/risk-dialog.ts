@@ -3,8 +3,8 @@ import {customElement, property} from 'lit/decorators.js';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
@@ -104,7 +104,7 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
 
   @property({type: Boolean}) autoValidate = false;
 
-  private endpoint!: EtoolsRequestEndpoint;
+  private endpoint!: RequestEndpoint;
 
   firstUpdated(_changedProperties: any) {
     super.firstUpdated(_changedProperties);
@@ -125,7 +125,7 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
     }
     const {item, interventionId, permissions, riskTypes} = data;
     this.originalData = item;
-    this.endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.intervention, {
+    this.endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.intervention, {
       interventionId
     });
     this.permissions = permissions;

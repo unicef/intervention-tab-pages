@@ -7,7 +7,7 @@ import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/st
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
@@ -22,7 +22,7 @@ import {ActivityItemsTable} from '../../common/components/activity/activity-item
 import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {removeCurrencyAmountDelimiter} from '../../utils/utils';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {EtoolsCurrency} from '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
 import '@shoelace-style/shoelace/dist/components/switch/switch.js';
 

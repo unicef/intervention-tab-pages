@@ -14,9 +14,9 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getIntervention} from '../../common/actions/interventions';
-import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
@@ -211,7 +211,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
   }
 
   deactivateIndicator(indicatorId: string) {
-    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.getEditDeleteIndicator, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.getEditDeleteIndicator, {
       id: indicatorId
     });
     fireEvent(this, 'global-loading', {
@@ -260,7 +260,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
       active: true,
       loadingSource: 'interv-indicator-remove'
     });
-    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.getEditDeleteIndicator, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.getEditDeleteIndicator, {
       id: indicatorId
     });
     sendRequest({

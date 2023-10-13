@@ -25,7 +25,7 @@ import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/confi
 import {get as getTranslation} from 'lit-translate/util';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {getIntervention, setShouldReGetList} from '../../common/actions/interventions';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
@@ -300,10 +300,9 @@ export class PdAmendments extends CommentsMixin(LitElement) {
       });
       const options = {
         method: 'DELETE',
-        endpoint: getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(
-          interventionEndpoints.interventionAmendmentDelete,
-          {amendmentId}
-        )
+        endpoint: getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.interventionAmendmentDelete, {
+          amendmentId
+        })
       };
       sendRequest(options)
         .then(() => {

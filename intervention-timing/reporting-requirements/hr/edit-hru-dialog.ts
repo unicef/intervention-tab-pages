@@ -5,12 +5,12 @@ import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 import '@unicef-polymer/etools-unicef/src/etools-date-time/calendar-lite';
 import '@unicef-polymer/etools-unicef/src/etools-date-time/datepicker-lite';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import './hru-list.js';
 import CONSTANTS from '../../../common/constants';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
@@ -256,7 +256,7 @@ export class EditHruDialog extends connectStore(LitElement) {
 
   _saveHurData() {
     this.updateStartDates(this.repStartDate);
-    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.reportingRequirements, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.reportingRequirements, {
       intervId: this.interventionId,
       reportType: CONSTANTS.REQUIREMENTS_REPORT_TYPE.HR
     });

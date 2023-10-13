@@ -4,7 +4,7 @@ import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
 import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {ExpectedResult, ResultLinkLowerResult} from '@unicef-polymer/etools-types';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-table/styles/data-table-styles';

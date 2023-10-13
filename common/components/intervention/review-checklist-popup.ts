@@ -7,7 +7,7 @@ import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {translate, get as getTranslation} from 'lit-translate';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {loadPrcMembersIndividualReviews} from '../../actions/officers-reviews';

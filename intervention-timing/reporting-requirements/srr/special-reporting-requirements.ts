@@ -8,8 +8,8 @@ import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-c
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
 import CONSTANTS from '../../../common/constants';
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-table/styles/data-table-styles';
@@ -185,7 +185,7 @@ export class SpecialReportingRequirements extends PaginationMixin(ReportingRequi
     const reportingRequirementsOriginal = this.reportingRequirements;
     if (this._itemToDeleteIndex > -1) {
       const itemToDelete = this.reportingRequirements[this._itemToDeleteIndex] as any;
-      const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(
+      const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(
         interventionEndpoints.specialReportingRequirementsUpdate,
         {
           reportId: itemToDelete.id

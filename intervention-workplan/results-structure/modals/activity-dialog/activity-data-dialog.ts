@@ -6,7 +6,7 @@ import '@shoelace-style/shoelace/dist/components/switch/switch.js';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import '../../../../common/components/activity/activity-items-table';
 import {getTotalCashFormatted} from '../../../../common/components/activity/get-total.helper';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {interventionEndpoints} from '../../../../utils/intervention-endpoints';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import './activity-timeframes';
@@ -14,7 +14,7 @@ import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {ActivityItemsTable} from '../../../../common/components/activity/activity-items-table';
 import {updateCurrentIntervention} from '../../../../common/actions/interventions';
 import {ActivityTimeFrames} from './activity-timeframes';
-import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {AnyObject, EtoolsEndpoint, InterventionActivity, InterventionActivityItem} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
@@ -51,7 +51,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
     if (!activityId) {
       this.data = {} as InterventionActivity;
       this.isEditDialog = false;
-      this.endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.pdActivities, {
+      this.endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.pdActivities, {
         pdOutputId,
         interventionId
       });
@@ -59,7 +59,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
     }
 
     this.loadingInProcess = true;
-    this.endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.pdActivityDetails, {
+    this.endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.pdActivityDetails, {
       activityId,
       pdOutputId,
       interventionId
@@ -77,7 +77,7 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
     });
   }
 
-  private endpoint!: EtoolsRequestEndpoint;
+  private endpoint!: RequestEndpoint;
 
   protected render(): TemplateResult {
     // language=html
