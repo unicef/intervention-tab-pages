@@ -21,11 +21,11 @@ import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {selectSupplyAgreement, selectSupplyAgreementPermissions} from './supplyAgreement.selectors';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {getIntervention, updateCurrentIntervention} from '../../common/actions/interventions';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import {addCurrencyAmountDelimiter, displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
@@ -154,7 +154,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         hidden
         accept=".csv"
         .endpointInfo="${{
-          endpoint: getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.supplyItemsUpload, {
+          endpoint: getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.supplyItemsUpload, {
             interventionId: this.intervention.id
           }).url,
           rawFilePropertyName: 'supply_items_file',
@@ -339,7 +339,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   }
 
   deleteSupplyItem(supplyId: number) {
-    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.supplyAgreementEdit, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.supplyAgreementEdit, {
       interventionId: this.intervention.id,
       supplyId: supplyId
     });

@@ -15,7 +15,7 @@ import SaveIndicatorMixin from './mixins/save-indicator-mixin';
 import IndicatorDialogTabsMixin from './mixins/indicator-dialog-tabs-mixin';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {userIsPme} from '@unicef-polymer/etools-modules-common/dist/utils/user-permissions';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import './indicator-dissaggregations';

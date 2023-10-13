@@ -4,7 +4,7 @@ import {property} from 'lit/decorators.js';
 import {CommentsEndpoints} from './comments-types';
 import {RootState} from '../../types/store.types';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
-import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {addComment, updateComment} from './comments.actions';

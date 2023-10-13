@@ -20,7 +20,7 @@ import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {RootState} from '../common/types/store.types';
 
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import get from 'lodash-es/get';
 import {AnyObject, GenericObject} from '@unicef-polymer/etools-types';
 

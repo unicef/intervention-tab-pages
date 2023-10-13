@@ -10,8 +10,8 @@ import './qpr-list.js';
 import CONSTANTS from '../../../common/constants';
 import '@unicef-polymer/etools-unicef/src/etools-date-time/calendar-lite.js';
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {QprListEl} from './qpr-list.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
@@ -348,7 +348,7 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
   }
 
   _saveModifiedQprData() {
-    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.reportingRequirements, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.reportingRequirements, {
       intervId: this.interventionId,
       reportType: CONSTANTS.REQUIREMENTS_REPORT_TYPE.QPR
     });

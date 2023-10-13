@@ -35,7 +35,7 @@ import {sectionContentStyles} from '@unicef-polymer/etools-modules-common/dist/s
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {EtoolsUpload} from '@unicef-polymer/etools-unicef/src/etools-upload';
-import {EtoolsRequestEndpoint} from '@unicef-polymer/etools-ajax';
+import {RequestEndpoint} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 
 /**
  * @customElement
@@ -257,8 +257,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
   }
 
   @property({type: String})
-  uploadEndpoint: string = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.attachmentsUpload)
-    .url;
+  uploadEndpoint: string = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.attachmentsUpload).url;
 
   @property({type: Object})
   originalData!: ReviewData;

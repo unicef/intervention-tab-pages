@@ -22,7 +22,7 @@ import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {getIntervention} from '../../common/actions/interventions';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
@@ -186,7 +186,7 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
       loadingSource: 'interv-attachment-remove'
     });
 
-    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.updatePdAttachment, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.updatePdAttachment, {
       id: attachment.intervention,
       attachment_id: attachment.id
     });

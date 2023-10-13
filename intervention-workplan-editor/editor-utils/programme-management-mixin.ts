@@ -7,7 +7,7 @@ import {Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes
 import '../time-intervals/time-intervals';
 import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {sendRequest} from '@unicef-polymer/etools-ajax';
+import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {updateCurrentIntervention} from '../../common/actions/interventions';

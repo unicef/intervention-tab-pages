@@ -5,8 +5,8 @@ import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-pa
 import '@unicef-polymer/etools-unicef/src/etools-table/etools-table';
 import {EtoolsTableColumn, EtoolsTableColumnType} from '@unicef-polymer/etools-unicef/src/etools-table/etools-table';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
@@ -196,7 +196,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       active: true,
       loadingSource: 'interv-risk-item-remove'
     });
-    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.riskDelete, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.riskDelete, {
       interventionId: this.interventionId,
       riskId: riskId
     });

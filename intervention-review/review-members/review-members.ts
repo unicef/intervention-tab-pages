@@ -7,7 +7,7 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
@@ -127,7 +127,7 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
   }
 
   saveData(): Promise<void> {
-    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.interventionReview, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.interventionReview, {
       id: this.data!.id,
       interventionId: this.interventionId
     });
@@ -151,7 +151,7 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
   }
 
   sendNotification(): void {
-    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.sendReviewNotification, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.sendReviewNotification, {
       id: this.data!.id,
       interventionId: this.interventionId
     });

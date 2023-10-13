@@ -6,8 +6,8 @@ import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 import '@polymer/iron-media-query/iron-media-query';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
-import {abortRequestByKey} from '@unicef-polymer/etools-ajax/etools-iron-request';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {abortRequestByKey} from '@unicef-polymer/etools-utils/dist/etools-ajax/request';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 
 import '../common/layout/status/intervention-report-status';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
