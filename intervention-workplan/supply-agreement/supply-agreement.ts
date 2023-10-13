@@ -99,7 +99,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       >
         <div slot="panel-btns">
           <span class="mr-20">
-            <label class="paper-label font-bold pad-right">${translate('TOTAL_SUPPLY_BUDGET')} </label>
+            <label class="label font-bold pad-right">${translate('TOTAL_SUPPLY_BUDGET')} </label>
             <label class="font-bold-12"
               >${this.intervention.planned_budget.currency}
               ${displayCurrencyAmount(this.intervention.planned_budget.total_supply!, '0.00')}</label
@@ -239,20 +239,20 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       ${this.isUnicefUser
         ? html`<td class="ptb-0">
             <div class="child-row-inner-container">
-              <label class="paper-label">${translate('CP_OUTPUTS')}</label><br />
+              <label class="label">${translate('CP_OUTPUTS')}</label><br />
               <label>${output || '—'}</label><br />
             </div>
           </td>`
         : html``}
       <td colspan="${this.isUnicefUser ? '3' : '4'}" class="ptb-0">
         <div class="child-row-inner-container">
-          <label class="paper-label">${translate('OTHER_MENTIONS')}</label><br />
+          <label class="label">${translate('OTHER_MENTIONS')}</label><br />
           <label>${item.other_mentions || '—'}</label>
         </div>
       </td>
       <td colspan="2" class="ptb-0">
         <div class="child-row-inner-container" ?hidden="${item.provided_by.toLowerCase() === 'partner'}">
-          <label class="paper-label"> ${translate('UNICEF_PRODUCT_NUMBER')}</label><br />
+          <label class="label"> ${translate('UNICEF_PRODUCT_NUMBER')}</label><br />
           <label>${item.unicef_product_number || '—'}</label>
         </div>
       </td>

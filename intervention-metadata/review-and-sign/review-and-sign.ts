@@ -63,12 +63,11 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
           margin-bottom: 24px;
         }
 
-
-
-        paper-input-container{
+        input-container {
           margin-inline-start: 0px;
         }
-        paper-input {
+
+        etools-input {
           width: 100%;
         }
 
@@ -82,13 +81,13 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
         etools-content-panel::part(ecp-content) {
           padding: 8px 24px 16px 24px;
         }
-        .paper-input-container {
+        .input-container {
           margin: 0 12px 0 0;
           color: var(--primary-text-color, #737373);
           padding: 8px 0;
           display: block;
         }
-        .paper-input-container .input-value {
+        .input-container .input-value {
           border-bottom: 1px groove rgba(0, 0, 0, 0.34);
           padding: 3px 0px;
         }
@@ -128,9 +127,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
             </etools-dropdown>
             ${
               this.isReadonly(this.editMode, this.permissions?.edit.partner_authorized_officer_signatory)
-                ? html`<label for="partnerAuth" class="paper-label">
-                      ${translate('SIGNED_PARTNER_AUTH_OFFICER')}
-                    </label>
+                ? html`<label for="partnerAuth" class="label"> ${translate('SIGNED_PARTNER_AUTH_OFFICER')} </label>
                     <div id="partnerAuth">
                       ${this.renderReadonlyUserDetails(
                         this.originalData?.partner_authorized_officer_signatory
@@ -164,7 +161,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
         <div class="layout-horizontal row-padding-v">
           <div class="col col-6">
             <!-- Signed by UNICEF Authorized Officer -->
-            <div class="paper-input-container">
+            <div class="input-container">
                 <span class="input-value">${translate('SIGNED_UNICEF_AUTH_OFFICER')}</span>
             </div>
           </div>
@@ -215,7 +212,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
             </etools-dropdown>
             ${
               this.isReadonly(this.editMode, this.permissions?.edit.unicef_signatory)
-                ? html`<label for="unicefSignatory" class="paper-label">${translate('SIGNED_UNICEF')}</label>
+                ? html`<label for="unicefSignatory" class="label">${translate('SIGNED_UNICEF')}</label>
                     <div id="unicefSignatory">
                       ${this.renderReadonlyUserDetails(
                         this.originalData?.unicef_signatory ? [this.originalData?.unicef_signatory] : []

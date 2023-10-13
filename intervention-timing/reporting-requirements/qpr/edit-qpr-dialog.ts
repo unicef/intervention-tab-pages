@@ -25,7 +25,7 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import '@shoelace-style/shoelace/dist/components/button/button.js';
 
 /**
- * @polymer
+ * @LitElement
  * @customElement
  */
 @customElement('edit-qpr-dialog')
@@ -58,7 +58,7 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
           margin-top: 24px;
         }
 
-        .paper-label {
+        .label {
           font-size: 16px;
           color: var(--primary-text-color);
           margin-bottom: 24px;
@@ -136,7 +136,7 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
 
         <div class="row-h">
           <div class="col layout-vertical">
-            <label class="paper-label" for="startDate">${translate(translatesMap.start_date)}</label>
+            <label class="label" for="startDate">${translate(translatesMap.start_date)}</label>
             <calendar-lite
               id="startDate"
               pretty-date="${this._editedQprDatesSet!.start_date ? this._editedQprDatesSet!.start_date : ''}"
@@ -147,7 +147,7 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
             </calendar-lite>
           </div>
           <div class="col layout-vertical">
-            <label class="paper-label" for="endDate">${translate('END_DATE')}</label>
+            <label class="label" for="endDate">${translate('END_DATE')}</label>
             <calendar-lite
               id="endDate"
               pretty-date="${this._editedQprDatesSet!.end_date ? this._editedQprDatesSet!.end_date : ''}"
@@ -158,7 +158,7 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
             </calendar-lite>
           </div>
           <div class="col layout-vertical">
-            <label class="paper-label" for="dueDate">${translate('DUE_DATE')}</label>
+            <label class="label" for="dueDate">${translate('DUE_DATE')}</label>
             <calendar-lite
               id="dueDate"
               pretty-date="${this._editedQprDatesSet!.due_date ? this._editedQprDatesSet!.due_date : ''}"

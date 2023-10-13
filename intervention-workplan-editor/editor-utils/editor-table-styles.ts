@@ -152,7 +152,7 @@ export const EditorTableStyles = css`
 
   tr.activity-items-row > td.total {
     border-inline-end: none;
-    --paper-input-container-input_-_font-weight: 600;
+    font-weight: 600;
   }
   tr.activity-items-row > td {
     vertical-align: bottom;

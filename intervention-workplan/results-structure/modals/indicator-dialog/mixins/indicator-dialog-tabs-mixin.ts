@@ -12,7 +12,7 @@ interface EtoolsTab {
 }
 
 /**
- * @polymer
+ * @LitElement
  * @mixinFunction
  */
 function IndicatorDialogTabsMixin<T extends Constructor<LitElement>>(baseClass: T) {

@@ -89,10 +89,6 @@ export const ActivityItemsTableStyles: CSSResult = css`
     box-shadow: 0 0 5px 5px rgba(170, 165, 165, 0.4);
     background-color: rgba(170, 165, 165, 0.4);
   }
-  paper-textarea:focus {
-    box-shadow: none;
-    background-color: transparent;
-  }
   label[required] {
     padding-inline-end: 20px;
   }
@@ -129,8 +125,8 @@ export const ActivityItemsTableInlineStyles: TemplateResult = html`
       --sl-input-height-small: 17px;
     }
     :host etools-currency,
-    :host paper-textarea,
-    :host paper-input {
+    :host etools-textarea,
+    :host etools-input {
       width: 100%;
       margin-top: 1px;
     }

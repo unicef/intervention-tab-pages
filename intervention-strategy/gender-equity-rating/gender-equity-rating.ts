@@ -96,7 +96,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
 
         <div class="row-padding-v pb-20">
           <div class="w100">
-            <label class="paper-label">${translate(translatesMap.gender_rating)}</label>
+            <label class="label">${translate(translatesMap.gender_rating)}</label>
             <info-icon-tooltip id="iit-gender" ?hidden=${!this.editMode}
               .tooltipText=${translate('GENDER_RATING_INFO')}>
             </info-icon-tooltip>
@@ -129,7 +129,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
 
         <div class="row-padding-v pb-20">
           <div class="w100">
-            <label class="paper-label">${translate(translatesMap.equity_rating)}</label>
+            <label class="label">${translate(translatesMap.equity_rating)}</label>
             <info-icon-tooltip id="iit-equity" ?hidden=${!this.editMode}
               .tooltipText=${translate('EQUITY_RATING_INFO')}>
             </info-icon-tooltip>
@@ -162,7 +162,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
 
         <div class="row-padding-v pb-20">
           <div class="w100">
-            <label class="paper-label">${translate(translatesMap.sustainability_rating)}</label>
+            <label class="label">${translate(translatesMap.sustainability_rating)}</label>
             <info-icon-tooltip id="iit-sust" ?hidden=${!this.editMode}
               .tooltipText=${translate('SUSTAINABILITY_RATING_INFO')}>
             </info-icon-tooltip>

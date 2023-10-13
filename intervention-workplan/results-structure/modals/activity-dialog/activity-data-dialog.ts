@@ -101,37 +101,20 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
         .total {
           justify-content: flex-end;
         }
-        .total-input,
-        .total paper-input {
-          --paper-input-container-color: transparent;
-          --paper-input-container-focus-color: transparent;
-        }
         .general-total {
           min-width: 155px;
-        }
-        paper-textarea {
-          --paper-input-container-input: {
-            display: block;
-          }
         }
         sl-switch {
           margin: 25px 0;
           width: min-content;
           white-space: nowrap;
         }
-        etools-dialog paper-textarea {
-          --iron-autogrow-textarea: {
-            overflow: auto;
-            padding: 0;
-            max-height: 96px;
-          }
-        }
         etools-dialog etools-textarea::part(textarea) {
           max-height: 96px;
           overflow-y: auto;
         }
-        etools-dialog paper-textarea[readonly] {
-          --iron-autogrow-textarea_-_max-height: unset;
+        etools-dialog etools-textarea::part(textarea) {
+          max-height: unset;
         }
       </style>
 

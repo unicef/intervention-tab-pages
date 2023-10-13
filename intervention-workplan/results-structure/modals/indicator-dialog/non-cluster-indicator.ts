@@ -99,7 +99,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
 
       <div class="row-h flex-c">
         <div class="layout-vertical mr-20">
-          <label class="paper-label">${translate('TYPE')}</label>
+          <label class="label">${translate('TYPE')}</label>
           <div class="radioGroup">
             <sl-radio-group
               .disabled="${this.readonly}"
@@ -122,7 +122,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           </div>
         </div>
         <div class="layout-vertical" ?hidden="${this._unitIsNumeric(this.indicator!.indicator!.unit)}">
-          <label class="paper-label">${translate('DISPLAY_TYPE')}</label>
+          <label class="label">${translate('DISPLAY_TYPE')}</label>
           <div class="radioGroup">
             <sl-radio-group
               .value="${this.indicator!.indicator!.display_type}"

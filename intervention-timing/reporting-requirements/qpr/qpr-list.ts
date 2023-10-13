@@ -17,7 +17,7 @@ import {formatDateLocalized} from '@unicef-polymer/etools-modules-common/dist/ut
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 /**
- * @polymer
+ * @LitElement
  * @customElement
  * @appliesMixin ReportingRequirementsCommonMixin
  * @appliesMixin ReportingReqPastDatesCheckMixin

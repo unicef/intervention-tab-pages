@@ -19,7 +19,7 @@ import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/st
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 
 /**
- * @polymer
+ * @LitElement
  * @customElement
  * @mixinFunction
  */
@@ -39,7 +39,7 @@ export class AddEditSpecialRepReq extends LitElement {
           display: block;
         }
 
-        paper-input {
+        etools-input {
           width: 100%;
         }
 

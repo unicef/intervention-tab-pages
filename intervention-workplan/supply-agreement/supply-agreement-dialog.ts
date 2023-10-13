@@ -36,18 +36,6 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
     // language=HTML
     return html`
       ${sharedStyles}
-      <style>
-        paper-textarea {
-          flex: auto;
-          --paper-input-container-input: {
-            display: block;
-          }
-        }
-        paper-input {
-          width: 100%;
-        }
-      </style>
-
       <etools-dialog
         id="supplyAgreementDialog"
         size="md"

@@ -18,7 +18,6 @@ export class EtoolsProgressBar extends LitElement {
           display: flex;
           flex-direction: row;
           align-items: center;
-          --paper-progress-secondary-color: var(--primary-background-color);
         }
 
         #progress-percent {
@@ -50,7 +49,7 @@ export class EtoolsProgressBar extends LitElement {
           sl-progress-bar::before {
             z-index: 1;
             right: 0;
-            border-bottom: 10px solid var(--paper-progress-container-color, var(--google-grey-300));
+            border-bottom: 10px solid var(--sl-color-grey-300);
           }
 
           sl-progress-bar::after {

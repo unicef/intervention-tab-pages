@@ -33,7 +33,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
   render() {
     return html`${sharedStyles}
       <style>
-        paper-input#other {
+        etools-input#other {
           width: 100%;
         }
         .row-h {

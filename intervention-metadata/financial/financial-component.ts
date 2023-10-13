@@ -78,7 +78,7 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
         <div class="layout-horizontal padd-top">
           <div class="w100">
-            <label class="paper-label">${translate(translatesMap.cash_transfer_modalities)}</label>
+            <label class="label">${translate(translatesMap.cash_transfer_modalities)}</label>
           </div>
         </div>
         <div class="layout-horizontal row-padding-v padd-bott">

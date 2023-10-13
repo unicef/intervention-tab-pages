@@ -53,41 +53,41 @@ export class DetailsOverview extends CommentsMixin(ComponentBaseMixin(LitElement
       <section class="elevation" elevation="1" comment-element="details">
         <div class="table not-allowed">
           <div class="data-column">
-            <label class="paper-label">${translate('DOCUMENT_TYPE')}</label>
+            <label class="label">${translate('DOCUMENT_TYPE')}</label>
             <div class="input-label" ?empty="${!this.interventionOverview.document_type}">
               ${this.getDocumentLongName(this.interventionOverview.document_type)}
             </div>
           </div>
           <div class="data-column">
-            <label class="paper-label">${translate('UNPP_CFEI_DSR')}</label>
+            <label class="label">${translate('UNPP_CFEI_DSR')}</label>
             <div class="input-label" ?empty="${!this.interventionOverview.cfei_number}">
               ${this.interventionOverview.cfei_number}
             </div>
           </div>
           <div class="data-column">
-            <label class="paper-label">${translate('HUMANITARIAN')}</label>
+            <label class="label">${translate('HUMANITARIAN')}</label>
             <div class="input-label">${this._getText(this.interventionOverview.humanitarian_flag)}</div>
           </div>
           <div class="data-column">
-            <label class="paper-label">${translate('CONTINGENCY')}</label>
+            <label class="label">${translate('CONTINGENCY')}</label>
             <div class="input-label">${this._getText(this.interventionOverview.contingency_pd)}</div>
           </div>
           <div class="data-column" ?hidden="${!this.isUnicefUser}">
-            <label class="paper-label">${translate('PARTNER_HACT_RR')}</label>
+            <label class="label">${translate('PARTNER_HACT_RR')}</label>
             <div class="input-label">${this.getPartnerHactRiskRatingHtml()}</div>
           </div>
           <div class="data-column" ?hidden="${!this.isUnicefUser}">
-            <label class="paper-label">${translate('PARTNER_PSEA_RR')}</label>
+            <label class="label">${translate('PARTNER_PSEA_RR')}</label>
             <div class="input-label">${this.getPartnerPseaRiskRatingHtml()}</div>
           </div>
           <div class="data-column">
-            <label class="paper-label">${translate('CORE_VALUES_ASSESSMENT_DATE')}</label>
+            <label class="label">${translate('CORE_VALUES_ASSESSMENT_DATE')}</label>
             <div class="input-label" ?empty="${!this.interventionPartner?.last_assessment_date}">
               ${formatDateLocalized(this.interventionPartner?.last_assessment_date)}
             </div>
           </div>
           <div class="data-column">
-            <label class="paper-label">${translate('PSEA_ASSESSMENT_DATE')}</label>
+            <label class="label">${translate('PSEA_ASSESSMENT_DATE')}</label>
             <div class="input-label" ?empty="${!this.interventionPartner?.psea_assessment_date}">
               ${formatDateLocalized(this.interventionPartner?.psea_assessment_date)}
             </div>

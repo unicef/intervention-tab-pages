@@ -57,7 +57,7 @@ export class InterventionSummary extends connectStore(LitElement) {
         font-size: 14px;
       }
       .blue {
-        color: var(--paper-blue-500);
+        color: var(--sl-color-blue-500);
       }
       .sector-label {
         display: inline-block;

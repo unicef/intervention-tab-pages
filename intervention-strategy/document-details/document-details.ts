@@ -119,7 +119,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
 
         <div class="row-padding-v">
           <div>
-            <label class="paper-label">${translate(translatesMap.implementation_strategy)}</label>
+            <label class="label">${translate(translatesMap.implementation_strategy)}</label>
             <info-icon-tooltip
               id="iit-implemen-strat"
               slot="after-label"
@@ -145,7 +145,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
 
         <div class="row-padding-v">
           <div>
-            <label class="paper-label">${translate(translatesMap.capacity_development)}</label>
+            <label class="label">${translate(translatesMap.capacity_development)}</label>
             <info-icon-tooltip
               id="iit-cap-develop"
               slot="after-label"
@@ -173,7 +173,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
 
         <div class="row-padding-v">
           <div>
-            <label class="paper-label">${translate(translatesMap.other_partners_involved)}</label>
+            <label class="label">${translate(translatesMap.other_partners_involved)}</label>
             <info-icon-tooltip
               id="iit-other-p-i"
               ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.other_partners_involved)}"
@@ -200,7 +200,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
 
         <div class="row-padding-v">
           <div>
-            <label class="paper-label">${translate(translatesMap.other_details)}</label>
+            <label class="label">${translate(translatesMap.other_details)}</label>
           </div>
           <etools-textarea
             no-label-float

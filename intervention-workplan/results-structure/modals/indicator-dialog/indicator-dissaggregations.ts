@@ -191,11 +191,11 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
   _mapSpaceToClick() {
     setTimeout(() => {
       this.shadowRoot!.querySelectorAll('etools-dropdown').forEach((el, index) => {
-        const paperEl = el.shadowRoot!.querySelector('etools-input') as EtoolsInput;
-        if (paperEl) {
-          callClickOnSpacePushListener(paperEl);
+        const etoolsInputEl = el.shadowRoot!.querySelector('etools-input') as EtoolsInput;
+        if (etoolsInputEl) {
+          callClickOnSpacePushListener(etoolsInputEl);
           if (index === 0) {
-            paperEl.focus();
+            etoolsInputEl.focus();
           }
         }
       }, 200);

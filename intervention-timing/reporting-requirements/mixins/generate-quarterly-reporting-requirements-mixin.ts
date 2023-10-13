@@ -5,7 +5,7 @@ import {property} from 'lit/decorators.js';
 import {Constructor} from '@unicef-polymer/etools-types';
 
 /**
- * @polymer
+ * @LitElement
  * @mixinFunction
  */
 function GenerateQuarterlyReportingRequirementsMixin<T extends Constructor<LitElement>>(baseClass: T) {

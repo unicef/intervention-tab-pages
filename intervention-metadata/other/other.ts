@@ -74,19 +74,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
           margin-top: 20px;
           margin-inline-start: 8px;
         }
-        paper-textarea {
-          outline: none;
-          --paper-input-container-input: {
-            display: block;
-            text-overflow: hidden;
-          }
 
-          --iron-autogrow-textarea: {
-            overflow: auto;
-            padding: 0;
-            max-height: 96px;
-          }
-        }
         etools-textarea::part(textarea) {
           max-height: 96px;
           overflow-y: auto;
@@ -95,7 +83,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
           margin-top: -4px;
           padding-bottom: 12px;
         }
-        paper-input {
+        etools-input {
           width: 100%;
         }
       </style>

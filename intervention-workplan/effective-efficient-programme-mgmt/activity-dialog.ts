@@ -60,11 +60,6 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         .total {
           justify-content: flex-end;
         }
-        .total-input,
-        .total paper-input {
-          --paper-input-container-color: transparent;
-          --paper-input-container-focus-color: transparent;
-        }
         .general-total {
           min-width: 155px;
         }

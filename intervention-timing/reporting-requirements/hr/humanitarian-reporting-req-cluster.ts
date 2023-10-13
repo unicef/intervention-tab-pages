@@ -15,7 +15,7 @@ import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 
 /**
  * @customElement
- * @polymer
+ * @LitElement
  * @mixinFunction
  * @appliesMixin EndpointsMixinLit
  * @appliesMixin ReportingRequirementsCommonMixin

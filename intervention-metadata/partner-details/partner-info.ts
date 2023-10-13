@@ -105,7 +105,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
             </etools-input>
           </div>
           <div class="col col-5 layout-vertical">
-            <label for="agreementAuthOff" class="paper-label">${translate('AGREEMENT_AUTHORIZED_OFFICERS')}</label>
+            <label for="agreementAuthOff" class="label">${translate('AGREEMENT_AUTHORIZED_OFFICERS')}</label>
             <div id="agreementAuthOff">${this.renderAgreementAuthorizedOfficers(this.agreementAuthorizedOfficers)}</div>
           </div>
         </div>
@@ -125,7 +125,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
             >
             </etools-dropdown-multi>
             ${this.isReadonly(this.editMode, this.permissions?.edit.partner_focal_points)
-              ? html`<label for="focalPointsDetails" class="paper-label">${translate('PARTNER_FOCAL_POINTS')}</label>
+              ? html`<label for="focalPointsDetails" class="label">${translate('PARTNER_FOCAL_POINTS')}</label>
                   <div id="focalPointsDetails">
                     ${this.renderReadonlyUserDetails(
                       this.originalData?.partner_focal_points ? this.originalData?.partner_focal_points : []

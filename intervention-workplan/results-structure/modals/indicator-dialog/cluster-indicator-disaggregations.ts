@@ -29,7 +29,7 @@ export class ClusterIndicatorDisaggregations extends LitElement {
           -moz-box-sizing: border-box;
           box-sizing: border-box;
         }
-        paper-input {
+        etools-input {
           width: 100%;
         }
       </style>
@@ -39,13 +39,13 @@ export class ClusterIndicatorDisaggregations extends LitElement {
             <div class="row-h ">
               <div class="col col-4">
                 <div class="layout-vertical">
-                  <label class="paper-label">${translate('DISAGREG_BY')}</label>
+                  <label class="label">${translate('DISAGREG_BY')}</label>
                   <label class="input-label" empty="${!item.name}">${item.name}</label>
                 </div>
               </div>
               <div class="col col-8">
                 <div class="layout-vertical">
-                  <label class="paper-label">${translate('DISAGREG_GROUPS')}</label>
+                  <label class="label">${translate('DISAGREG_GROUPS')}</label>
                   <label class="input-label" empty="${!item.choices}">${this._getGroupNames(item.choices)}</label>
                 </div>
               </div>

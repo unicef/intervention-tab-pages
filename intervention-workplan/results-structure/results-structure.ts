@@ -135,7 +135,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           @click="${() => this.openCpOutputDialog()}"
           ?hidden="${!this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
         >
-          <etools-icon-button slot="custom-icon" name="add-box" tabindex="0"></etools-icon-button>
+          <etools-icon-button name="add-box" tabindex="0"></etools-icon-button>
           <span class="no-wrap">${translate('ADD_CP_OUTPUT')}</span>
         </div>
 
@@ -603,7 +603,6 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         :host {
           display: block;
           margin-bottom: 24px;
-          --paper-tooltip-background: #818181;
         }
 
         etools-data-table-row::part(edt-list-row-wrapper) {

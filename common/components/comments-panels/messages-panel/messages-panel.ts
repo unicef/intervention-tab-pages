@@ -25,13 +25,6 @@ export class MessagesPanel extends EditComments {
   protected render(): TemplateResult {
     return html`
       <style>
-        paper-textarea {
-          outline: none;
-          flex: auto;
-          --paper-input-container-input: {
-            display: block;
-          }
-        }
         etools-textarea::part(textarea) {
           max-height: 96px;
           overflow-y: auto;

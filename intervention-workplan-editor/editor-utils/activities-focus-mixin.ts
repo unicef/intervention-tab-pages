@@ -17,7 +17,7 @@ export function ActivitiesFocusMixin<T extends Constructor<LitElement>>(baseClas
             : targetTrParent?.parentElement.nextElementSibling.nextElementSibling.children[0]
         )?.children[1];
         // @ts-ignore
-        itemDescTd?.querySelector('paper-textarea')?.focus();
+        itemDescTd?.querySelector('etools-textarea')?.focus();
         // @ts-ignore Defined in arrows-nav-mixin
         this.lastFocusedTd = itemDescTd;
         // @ts-ignore Defined in arrows-nav-mixin
@@ -31,7 +31,7 @@ export function ActivitiesFocusMixin<T extends Constructor<LitElement>>(baseClas
       setTimeout(() => {
         const itemDescTd = targetTrParent?.children[1];
         // @ts-ignore
-        itemDescTd?.querySelector('paper-textarea')?.focus();
+        itemDescTd?.querySelector('etools-textarea')?.focus();
         // @ts-ignore
         this.lastFocusedTd = itemDescTd;
       });

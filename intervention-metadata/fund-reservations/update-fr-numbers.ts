@@ -29,7 +29,7 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
     return html`
       ${sharedStyles}
       <style>
-        paper-input {
+        etools-input {
           width: 250px;
         }
 

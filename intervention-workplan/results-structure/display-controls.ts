@@ -165,9 +165,6 @@ export class DisplayControls extends LitElement {
           outline: none !important;
         }
 
-        paper-item {
-          white-space: nowrap;
-        }
         a {
           text-decoration: none;
           margin-inline-start: 16px;

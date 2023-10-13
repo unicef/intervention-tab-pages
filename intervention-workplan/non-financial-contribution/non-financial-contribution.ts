@@ -71,7 +71,7 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
 
         <div class="row-padding-v">
           <div>
-            <label class="paper-label">${translate(translatesMap.ip_program_contribution)}</label>
+            <label class="label">${translate(translatesMap.ip_program_contribution)}</label>
             <info-icon-tooltip
               id="iit-non-fin"
               slot="after-label"
