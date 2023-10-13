@@ -28,7 +28,7 @@ import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/fr-warnings-styles';
 import pick from 'lodash-es/pick';
-import {EtoolsRequestEndpoint} from '@unicef-polymer/etools-ajax';
+import {RequestEndpoint} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 
 /**
  * @customElement
@@ -154,8 +154,7 @@ export class InterventionDates extends CommentsMixin(
   }
 
   @property({type: String})
-  uploadEndpoint: string = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.attachmentsUpload)
-    .url;
+  uploadEndpoint: string = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.attachmentsUpload).url;
 
   @property({type: Object})
   originalData!: ProgrammeDocDates;

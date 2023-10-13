@@ -6,11 +6,11 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
@@ -239,10 +239,10 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
     }
     this.requestInProcess = true;
     const endpoint = this.isNewRecord
-      ? getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.supplyAgreementAdd, {
+      ? getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.supplyAgreementAdd, {
           interventionId: this.interventionId
         })
-      : getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.supplyAgreementEdit, {
+      : getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.supplyAgreementEdit, {
           interventionId: this.interventionId,
           supplyId: this.data.id
         });

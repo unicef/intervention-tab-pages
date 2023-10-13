@@ -4,7 +4,7 @@ import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {AnyObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
-import {EtoolsRequestEndpoint} from '@unicef-polymer/etools-ajax';
+import {RequestEndpoint} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
 import '@shoelace-style/shoelace/dist/components/menu/menu.js';
@@ -47,28 +47,28 @@ export class ExportInterventionData extends LitElement {
   export(_type: string) {
     let url = '';
     if (_type == 'download_comments') {
-      url = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.downloadComment, {
+      url = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.downloadComment, {
         interventionId: this.interventionId
       }).url;
       window.open(url, '_blank');
       return;
     }
     if (_type == 'export_results') {
-      url = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.expectedResultsExport, {
+      url = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.expectedResultsExport, {
         intervention_id: this.interventionId
       }).url;
       window.open(url, '_blank');
       return;
     }
     if (_type == 'export_pdf') {
-      url = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.exportPdf, {
+      url = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.exportPdf, {
         interventionId: this.interventionId
       }).url;
       window.open(url, '_blank');
       return;
     }
     if (_type == 'export_xls') {
-      url = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.exportXls, {
+      url = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.exportXls, {
         interventionId: this.interventionId
       }).url;
       window.open(url, '_blank');

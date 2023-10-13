@@ -9,8 +9,8 @@ import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import '@unicef-polymer/etools-unicef/src/etools-date-time/calendar-lite';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {AnyObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 declare const dayjs: any;
@@ -107,17 +107,14 @@ export class AddEditSpecialRepReq extends LitElement {
   _getEndpoint() {
     if (this._isNew()) {
       // new/create
-      return getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.specialReportingRequirements, {
+      return getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.specialReportingRequirements, {
         intervId: this.interventionId
       });
     } else {
       // already saved... update/delete
-      return getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(
-        interventionEndpoints.specialReportingRequirementsUpdate,
-        {
-          reportId: this.item.id
-        }
-      );
+      return getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.specialReportingRequirementsUpdate, {
+        reportId: this.item.id
+      });
     }
   }
 

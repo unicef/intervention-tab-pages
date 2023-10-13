@@ -1,7 +1,7 @@
 import {LitElement, html, TemplateResult} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
@@ -12,7 +12,7 @@ import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown-multi.
 import {AsyncAction, ResultIndicator, GenericObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {areEqual} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 
 @customElement('cp-output-dialog')
@@ -157,10 +157,10 @@ export class CpOutputDialog extends LitElement {
     this.spinnerText = getTranslation('GENERAL.SAVING_DATA');
     this.loadingInProcess = true;
     const endpoint = this.cpOutputId
-      ? getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.resultLinkGetDelete, {
+      ? getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.resultLinkGetDelete, {
           result_link: this.resultLinkId
         })
-      : getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.resultLinks, {
+      : getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.resultLinks, {
           id: this.interventionId
         });
     const method = this.cpOutputId ? 'PATCH' : 'POST';

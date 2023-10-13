@@ -23,10 +23,10 @@ import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {getIntervention, updateCurrentIntervention} from '../common/actions/interventions';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {ActivitiesMixin} from './editor-utils/activities-mixin';
 import {ProgrammeManagementMixin} from './editor-utils/programme-management-mixin';
 import {CommentsMixin} from '../common/components/comments/comments-mixin';
@@ -662,7 +662,7 @@ export class EditorTable extends CommentsMixin(
       loadingSource: this.localName
     });
 
-    const endpoint: EtoolsRequestEndpoint = pdOutput.id
+    const endpoint: RequestEndpoint = pdOutput.id
       ? getEndpoint(interventionEndpoints.pdOutputDetails, {pd_id: pdOutput.id, intervention_id: this.interventionId})
       : getEndpoint(interventionEndpoints.createPdOutput, {intervention_id: this.interventionId});
 
@@ -784,7 +784,7 @@ export class EditorTable extends CommentsMixin(
       active: true,
       loadingSource: 'interv-pdoutput-remove'
     });
-    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.lowerResultsDelete, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.lowerResultsDelete, {
       lower_result_id,
       intervention_id: this.interventionId
     });

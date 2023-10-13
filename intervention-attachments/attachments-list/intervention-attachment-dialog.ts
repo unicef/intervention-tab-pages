@@ -3,7 +3,7 @@ import {customElement, property} from 'lit/decorators.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import '@unicef-polymer/etools-unicef/src/etools-upload/etools-upload';
 import '@shoelace-style/shoelace/dist/components/checkbox/checkbox.js';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
@@ -171,11 +171,11 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
           type
         };
     const endpoint = id
-      ? getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.updatePdAttachment, {
+      ? getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.updatePdAttachment, {
           id: this.interventionId,
           attachment_id: id
         })
-      : getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.pdAttachments, {
+      : getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.pdAttachments, {
           id: this.interventionId
         });
     sendRequest({

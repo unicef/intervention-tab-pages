@@ -18,7 +18,7 @@ import {buildUrlQueryString} from '@unicef-polymer/etools-utils/dist/general.uti
 import {ComponentsPosition} from '../comments/comments-items-name-map';
 import {removeTrailingIds} from '../comments/comments.helpers';
 import {currentIntervention} from '../../selectors';
-import {sendRequest} from '@unicef-polymer/etools-ajax';
+import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 

@@ -1,7 +1,7 @@
 // import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin';
 import pick from 'lodash-es/pick';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {LitElement} from 'lit';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {EtoolsDropdownEl} from '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
@@ -113,7 +113,7 @@ function SaveIndicatorMixin<T extends Constructor<LitElement>>(baseClass: T) {
       // @ts-ignore *Defined in component
       this.disableConfirmBtn = true;
 
-      const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(this._getEndpointName(), {
+      const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(this._getEndpointName(), {
         id: this._getIdForEndpoint()
       });
 

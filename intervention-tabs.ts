@@ -42,7 +42,7 @@ import {CommentsEndpoints} from '../intervention-tab-pages/common/components/com
 import {CommentsPanels} from './common/components/comments-panels/comments-panels';
 import './unresolved-other-info';
 import {translatesMap} from './utils/intervention-labels-map';
-import {EtoolsRequestEndpoint} from '@unicef-polymer/etools-ajax';
+import {RequestEndpoint} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import '@shoelace-style/shoelace/dist/components/tab-group/tab-group.js';
 import '@shoelace-style/shoelace/dist/components/tab/tab.js';
 import {isActiveTab} from './utils/utils';
@@ -326,8 +326,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
   private commentsPanel: CommentsPanels | null = null;
 
   @property({type: String})
-  uploadEndpoint: string = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.attachmentsUpload)
-    .url;
+  uploadEndpoint: string = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.attachmentsUpload).url;
 
   @property({type: String})
   activeTab = TABS.Metadata;
@@ -373,7 +372,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     super.connectedCallback();
     // this._showInterventionPageLoadingMessage();
 
-    // Override ajax error parser inside @unicef-polymer/etools-ajax
+    // Override ajax error parser inside @unicef-polymer/etools-utils/dist/etools-ajax
     // for string translation using lit-translate and translatesMap from within
     // interventions-tab-pages
     window.ajaxErrorParserTranslateFunction = (key = '') => {

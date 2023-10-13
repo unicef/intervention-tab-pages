@@ -11,8 +11,8 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {AnyObject, EtoolsEndpoint, InterventionAmendment, LabelAndValue} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
@@ -200,7 +200,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
   _saveAmendment(newAmendment: Partial<InterventionAmendment>) {
     const options = {
       method: 'POST',
-      endpoint: getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.interventionAmendmentAdd, {
+      endpoint: getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.interventionAmendmentAdd, {
         intervId: this.intervention.id
       }),
       body: {

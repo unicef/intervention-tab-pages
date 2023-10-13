@@ -56,7 +56,7 @@ import {PdIndicators} from './pd-indicators';
 import {CpOutputLevel} from './cp-output-level';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {_canDelete} from '../../common/mixins/results-structure-common';
-import {EtoolsRequestEndpoint} from '@unicef-polymer/etools-ajax';
+import {RequestEndpoint} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 /**
@@ -411,7 +411,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
       active: true,
       loadingSource: 'interv-pd-remove'
     });
-    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.lowerResultsDelete, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.lowerResultsDelete, {
       lower_result_id,
       intervention_id: this.interventionId
     });
@@ -474,7 +474,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
       active: true,
       loadingSource: 'interv-cp-remove'
     });
-    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.resultLinkGetDelete, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.resultLinkGetDelete, {
       result_link: resultLinkId
     });
     _sendRequest({

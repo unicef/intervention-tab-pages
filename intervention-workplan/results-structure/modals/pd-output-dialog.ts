@@ -2,7 +2,7 @@ import {LitElement, html, TemplateResult} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {DataMixin} from '@unicef-polymer/etools-modules-common/dist/mixins/data-mixin';
 import {getDifference} from '@unicef-polymer/etools-modules-common/dist/mixins/objects-diff';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
@@ -14,7 +14,7 @@ import {CpOutput} from '@unicef-polymer/etools-types';
 import {ResultLinkLowerResult} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 
 @customElement('pd-output-dialog')
 export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElement) {
@@ -139,7 +139,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
     }
     this.loadingInProcess = true;
     // get endpoint
-    const endpoint: EtoolsRequestEndpoint = this.isEditDialog
+    const endpoint: RequestEndpoint = this.isEditDialog
       ? getEndpoint(interventionEndpoints.pdOutputDetails, {
           pd_id: this.editedData.id,
           intervention_id: this.interventionId
