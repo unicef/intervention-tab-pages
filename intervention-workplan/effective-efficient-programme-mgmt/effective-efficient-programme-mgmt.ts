@@ -88,6 +88,9 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         .text-right {
           place-content: end;
         }
+        .padding-top-6 {
+          padding-top: 6px;
+        }
       </style>
 
       <etools-content-panel show-expand-btn panel-title=${translate(translatesMap.management_budgets)}>
@@ -100,7 +103,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         </div>
         <div slot="panel-btns">
           <label class="label font-bold pad-right">${translate('TOTAL')}:</label
-          ><label class="font-bold-12">${this.data.currency} ${this.total_amount}</label>
+          ><label class="font-bold-12 padding-top-6">${this.data.currency} ${this.total_amount}</label>
         </div>
 
         <etools-data-table-header id="listHeader" no-title>

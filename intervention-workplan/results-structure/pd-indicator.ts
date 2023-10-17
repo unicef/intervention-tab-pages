@@ -90,7 +90,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
                   ?hidden="${!this._canEdit() && !this._canView()}"
                   @click="${() => this.openIndicatorDialog(this.indicator, this.readonly)}"
                 >
-                  <etools-icon slot="prefix" name="${this._canEdit() ? 'pencil' : 'visibility'}"></etools-icon>
+                  <etools-icon slot="prefix" name="${this._canEdit() ? 'create' : 'visibility'}"></etools-icon>
                   ${this._canEdit() ? translate('EDIT') : translate('VIEW')}
                 </sl-menu-item>
                 <sl-menu-item

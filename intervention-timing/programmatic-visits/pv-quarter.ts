@@ -92,7 +92,7 @@ export class PvQuarter extends LitElement {
             class="light"
             name="remove-circle"
             ?hidden="${this.readonly}"
-            @tap="${this.subtractClicked}"
+            @click="${this.subtractClicked}"
           ></etools-icon-button>
           <div class="visit-no">${this.item[`programmatic_q${this.qIndex}`]}</div>
           <etools-icon-button
@@ -100,7 +100,7 @@ export class PvQuarter extends LitElement {
             class="light"
             name="add-circle"
             ?hidden="${this.readonly}"
-            @tap="${this.addClicked}"
+            @click="${this.addClicked}"
           ></etools-icon-button>
         </div>
 
