@@ -88,8 +88,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
           display: block;
         }
         .input-container .input-value {
-          border-bottom: 1px groove rgba(0, 0, 0, 0.34);
-          padding: 3px 0px;
+          padding: 3px 0;
         }
       </style>
       <etools-content-panel
