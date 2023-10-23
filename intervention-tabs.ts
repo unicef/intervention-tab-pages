@@ -175,6 +175,7 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
         }
         sl-tab-group {
           --indicator-color: var(--primary-color);
+          max-width: calc(100% - 2px);
         }
         sl-tab-group::part(tabs) {
           border-bottom: 0;
