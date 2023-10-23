@@ -50,12 +50,8 @@ export class UnresolvedOtherInfo extends ComponentBaseMixin(LitElement) {
         ${this.hideActionButtons(this.editMode, this.editPermissions)
           ? html``
           : html` <div class="layout-horizontal right-align row-padding">
-              <sl-button variant="primary" class="default" @click="${this.cancel}"
-                >${translate('GENERAL.CANCEL')}</sl-button
-              >
-              <sl-button variant="primary" class="primary-btn" @click="${this.areYouSure}">
-                ${translate('MARK_AS_RESOLVED')}</sl-button
-              >
+              <sl-button variant="neutral" @click="${this.cancel}">${translate('GENERAL.CANCEL')}</sl-button>
+              <sl-button variant="primary" @click="${this.areYouSure}">${translate('MARK_AS_RESOLVED')}</sl-button>
             </div>`}
       </etools-content-panel>
     `;
