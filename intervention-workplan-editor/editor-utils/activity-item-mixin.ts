@@ -2,6 +2,7 @@ import {Intervention} from '@unicef-polymer/etools-types';
 import {Constructor} from '@unicef-polymer/etools-types/dist/global.types';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 import {html, LitElement} from 'lit';
+import {property} from 'lit/decorators.js';
 import {
   InterventionActivityExtended,
   InterventionActivityItemExtended,
@@ -18,7 +19,7 @@ import {ActivitiesFocusMixin} from './activities-focus-mixin';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass: T) {
-  return class ActivityItemsClass extends ActivitiesCommonMixin(ActivitiesFocusMixin(baseClass)) {
+  class ActivityItemsClass extends ActivitiesCommonMixin(ActivitiesFocusMixin(baseClass)) {
     // @ts-ignore
     @property({type: Object})
     intervention!: Intervention;
@@ -370,5 +371,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       this.requestUpdate();
       this.moveFocusToAddedItemAndAttachListeners(e.target, focusClue);
     }
-  } as any;
+  }
+
+  return ActivityItemsClass as any;
 }
