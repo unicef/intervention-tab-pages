@@ -76,6 +76,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
               <td tabindex="${ifDefined(this.commentMode ? undefined : 0)}" class="a-item-padd">
                 <div class="char-counter" ?hidden="${!activity.itemsInEditMode}">
                   <etools-textarea
+                    class="item-description"
                     .alwaysFloatLabel="${activity.itemsInEditMode}"
                     .noLabelFloat="${!activity.itemsInEditMode}"
                     input

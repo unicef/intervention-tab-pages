@@ -72,6 +72,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
               <td tabindex="${ifDefined(this.commentMode ? undefined : '0')}" class="a-item-padd">
                 <div class="char-counter" ?hidden="${!programmeManagement.itemsInEditMode}">
                   <etools-textarea
+                    class="item-description"
                     .alwaysFloatLabel="${programmeManagement.itemsInEditMode}"
                     .noLabelFloat="${!programmeManagement.itemsInEditMode}"
                     input

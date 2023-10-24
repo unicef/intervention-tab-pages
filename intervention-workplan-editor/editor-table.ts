@@ -86,6 +86,10 @@ export class EditorTable extends CommentsMixin(
         etools-textarea.other {
           --etools-input-padding-bottom: 16px;
         }
+        etools-textarea.other::part(textarea),
+        etools-textarea.item-description::part(textarea) {
+          font-weight: normal;
+        }
         .activity-items-row etools-textarea::part(base) {
           font-weight: 400;
         }
