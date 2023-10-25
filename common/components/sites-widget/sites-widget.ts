@@ -131,14 +131,14 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
                     @keypress="${this.onSiteKeyPress}"
                     tabindex="-1"
                   >
-                    <div class="location-name" tabindex="0" @tap="${() => this.onSiteLineClick(site)}">
+                    <div class="location-name" tabindex="0" @click="${() => this.onSiteLineClick(site)}">
                       <b>${site.name}</b>
                     </div>
                     <div
                       class="deselect-btn"
                       id="deselect_btn_${site.id}"
                       tabindex="${this.isSiteSelected(site.id) ? 0 : -1}"
-                      @tap="${() => this.onRemoveSiteClick(site)}"
+                      @click="${() => this.onRemoveSiteClick(site)}"
                     >
                       <span>&#10008;</span>
                     </div>
