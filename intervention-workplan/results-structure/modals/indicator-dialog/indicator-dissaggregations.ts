@@ -105,7 +105,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
       <div class="row-padding-v" style="margin-bottom:80px;">
         <sl-button
           variant="text"
-          class="primary-btn no-marg no-pad"
+          class="no-marg no-pad"
           @click="${this._addNewDisaggregation}"
           ?hidden="${this._maxDisaggregations(this.data.length) || this.readonly}"
           title=${translate('ADD_DISAGGREGATION')}

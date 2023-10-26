@@ -23,6 +23,21 @@ export const InterventionActionsStyles: CSSResult = css`
     --sl-color-primary-500: var(--green-color);
   }
 
+  .main-button::part(prefix) {
+    width: 10px;
+  }
+  .main-button.with-additional::part(label) {
+    padding-inline-end: 0;
+  }
+
+  .main-button.with-additional span {
+    margin-inline-end: 12px;
+  }
+
+  .main-button span {
+    margin-inline-end: 7px;
+  }
+
   .back-button {
     --sl-color-primary-600: var(--back-color);
     --sl-color-primary-500: var(--back-color);
@@ -46,26 +61,12 @@ export const InterventionActionsStyles: CSSResult = css`
     --sl-color-primary-500: var(--reject-color);
   }
 
-  .main-button.with-additional::part(label) {
-    padding-inline-end: 0;
-  }
-
-  .main-button.with-additional span {
-    margin-inline-end: 12px;
-  }
-
-  .main-button span {
-    margin-inline-end: 7px;
-    vertical-align: middle;
-    line-height: 36px;
-  }
-
   sl-menu-item {
     --sl-font-weight-normal: bold;
+    text-align: left;
   }
 
   .option-button {
-    height: 36px;
     border-inline-start: 2px solid rgba(255, 255, 255, 0.12);
   }
 
@@ -75,5 +76,9 @@ export const InterventionActionsStyles: CSSResult = css`
     transform: translateY(-50%);
     inset-inline-end: 2px;
     z-index: 100;
+  }
+  sl-button[size='small'] > etools-icon {
+    padding-bottom: 2px;
+    padding-left: 2px;
   }
 `;

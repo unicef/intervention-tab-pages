@@ -394,7 +394,6 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         <div class="all-locations">
           <sl-button
             variant="text"
-            class="primary-btn"
             ?hidden="${this.readonly}"
             @click="${this._addAllLocations}"
             title=${translate('ADD_ALL_LOCATIONS')}

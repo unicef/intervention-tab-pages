@@ -295,7 +295,6 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                   <sl-button
                     id="btnSave-programme-management-2"
                     variant="primary"
-                    class="primary-btn"
                     ?hidden="${!(
                       (programmeManagement.inEditMode || programmeManagement.itemsInEditMode) &&
                       programmeManagement.items?.length > 3

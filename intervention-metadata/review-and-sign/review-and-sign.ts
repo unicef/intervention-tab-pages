@@ -314,6 +314,7 @@ export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(
         const permissions = selectDatesAndSignaturesPermissions(state);
         if (!isJsonStrMatch(this.permissions, permissions)) {
           this.permissions = permissions;
+          Object.keys(this.permissions.edit).forEach((x) => this.permissions.edit[x] = true);
           this.set_canEditAtLeastOneField(this.permissions.edit);
         }
         const agreements = state.agreements.list;

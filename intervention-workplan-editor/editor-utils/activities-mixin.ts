@@ -282,7 +282,6 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     <sl-button
                       id="btnSave-Activity"
                       variant="primary"
-                      class="primary-btn"
                       ?hidden="${!(activity.inEditMode || activity.itemsInEditMode)}"
                       @click="${() => this.saveActivity(activity, pdOutput.id, this.intervention.id!)}"
                       >${translate('GENERAL.SAVE')}</sl-button

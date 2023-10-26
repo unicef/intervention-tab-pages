@@ -64,7 +64,8 @@ export class InterventionActions extends connectStore(LitElement) {
       buttonsStyles,
       css`
         sl-button[slot='trigger'] {
-          width: 40px;
+          min-width: 45px;
+          width: 45px;
           border-inline-start: 1px solid rgba(255, 255, 255, 0.12);
           --sl-spacing-medium: 0;
         }
@@ -142,10 +143,7 @@ export class InterventionActions extends connectStore(LitElement) {
     return mainAction
       ? html`
           <sl-button variant="primary" class="${className} split-btn" @click="${() => this.processAction(mainAction)}">
-            <span>${this.getMainActionTranslatedText(mainAction)}</span> ${this.getAdditionalTransitions(
-              actions,
-              className
-            )}
+            <span>${this.getMainActionTranslatedText(mainAction)}</span> ${this.getAdditionalTransitions(actions)}
           </sl-button>
         `
       : html``;
@@ -161,13 +159,13 @@ export class InterventionActions extends connectStore(LitElement) {
     }
   }
 
-  private getAdditionalTransitions(actions?: string[], className?: string): TemplateResult {
+  private getAdditionalTransitions(actions?: string[]): TemplateResult {
     if (!actions || !actions.length) {
       return html``;
     }
     return html`
       <sl-dropdown @click="${(event: MouseEvent) => event.stopImmediatePropagation()}">
-        <sl-button slot="trigger" variant="primary" class="${className} no-marg">
+        <sl-button slot="trigger" variant="primary" size="small">
           <etools-icon name="expand-more"></etools-icon>
         </sl-button>
         <sl-menu>

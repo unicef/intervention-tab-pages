@@ -49,7 +49,7 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
         <div class="row-h" ?hidden="${!this.editMode}">
           <sl-button
             variant="text"
-            class="primary-btn no-marg no-pad"
+            class="no-marg no-pad"
             @click="${this.openQuarterlyRepRequirementsDialog}"
           >
             ${translate('ADD_REQUIREMENTS')}

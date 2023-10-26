@@ -154,7 +154,6 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
           <div class="locations-btn">
             <sl-button
               variant="text"
-              class="primary-btn"
               @click="${this.openLocationsDialog}"
               ?hidden="${this._isEmpty(this.data.flat_locations)}"
               title=${translate('SEE_ALL_LOCATIONS')}
@@ -189,7 +188,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         <div class="flex-c layout-horizontal row-padding-v">
           <sl-button
             variant="text"
-            class="primary-btn no-pad no-marg"
+            class="no-pad no-marg"
             @click="${this.openSitesDialog}"
             ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.sites)}"
             title=${translate('SELECT_SITE_FROM_MAP')}
