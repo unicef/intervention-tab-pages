@@ -120,12 +120,7 @@ export class EditHruDialog extends connectStore(LitElement) {
         </div>
         <div class="layout-horizontal row-padding-v">
           <div class="col layout-vertical col-3">
-            <sl-button
-              variant="text"
-              class="no-marg no-pad"
-              id="add-selected-date"
-              @click="${() => this._addToList()}"
-            >
+            <sl-button variant="text" class="no-marg no-pad" id="add-selected-date" @click="${() => this._addToList()}">
               ${translate('ADD_SELECTED_DATE')}
             </sl-button>
           </div>

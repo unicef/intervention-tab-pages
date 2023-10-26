@@ -93,11 +93,7 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
               }}"
             >
             </etools-dropdown-multi>
-            <sl-button
-              variant="primary"
-              @click="${this.sendNotification}"
-              ?hidden="${!this.showNotifyButton}"
-            >
+            <sl-button variant="primary" @click="${this.sendNotification}" ?hidden="${!this.showNotifyButton}">
               ${translate('SEND_NOTIFICATIONS')}
             </sl-button>
           </div>

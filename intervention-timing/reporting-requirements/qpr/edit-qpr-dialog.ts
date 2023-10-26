@@ -98,11 +98,7 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
         </div>
         <div class="layout-horizontal" style="padding-top:10px" ?hidden="${!this.insterventionsDatesDiffer()}">
           <span id="regenerate-info">${translate('PD_START_END_DATE_CHANGED')}</span> &nbsp;
-          <sl-button
-            id="regen"
-            variant="text"
-            class="no-marg no-pad"
-            @click="${this.regenerateReportingRequirements}"
+          <sl-button id="regen" variant="text" class="no-marg no-pad" @click="${this.regenerateReportingRequirements}"
             >${translate('REGENERATE')}</sl-button
           >
         </div>

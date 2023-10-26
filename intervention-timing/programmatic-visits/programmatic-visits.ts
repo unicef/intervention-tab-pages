@@ -121,11 +121,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="row-padding-v extra-top-padd" ?hidden="${!this.editMode}">
-          <sl-button
-            variant="text"
-            ${this._getAddBtnPadding(this.data?.length)}
-            @click="${this._addNewPlannedVisit}"
-          >
+          <sl-button variant="text" ${this._getAddBtnPadding(this.data?.length)} @click="${this._addNewPlannedVisit}">
             <etools-icon name="add-box"></etools-icon>
             ${translate('ADD_YEAR')}
           </sl-button>
