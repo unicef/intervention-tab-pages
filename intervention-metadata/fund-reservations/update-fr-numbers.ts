@@ -110,7 +110,7 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
         <div class="${(this.data || []).length ? 'hidden' : 'row-h'}">${translate('NO_FUND_RESERVATIONS_ADDED')}</div>
 
         <div class="row-h">
-          <sl-button variant="text" class="primary-btn no-marg no-pad" @click="${() => this._addNewFundReservation()}">
+          <sl-button variant="text" class="no-marg no-pad" @click="${() => this._addNewFundReservation()}">
             <etools-icon name="add"></etools-icon>
             ${translate('ADD_FR_NUM')}
           </sl-button>

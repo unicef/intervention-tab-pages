@@ -123,7 +123,6 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
         <div class="row-padding-v extra-top-padd" ?hidden="${!this.editMode}">
           <sl-button
             variant="text"
-            class="primary-btn"
             ${this._getAddBtnPadding(this.data?.length)}
             @click="${this._addNewPlannedVisit}"
           >

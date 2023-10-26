@@ -407,7 +407,6 @@ export class EditorTable extends CommentsMixin(
                         <sl-button
                           id="btnSave"
                           variant="primary"
-                          class="primary-btn"
                           @click="${() => this.savePdOutput(pdOutput, result)}"
                           ?hidden="${!pdOutput.inEditMode}"
                           >${translate('GENERAL.SAVE')}</sl-button

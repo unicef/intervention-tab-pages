@@ -48,7 +48,7 @@ export class SpecialReportingRequirements extends PaginationMixin(ReportingRequi
       </div>
 
       <div class="row-h" ?hidden="${!this.editMode}">
-        <sl-button variant="text" class="primary-btn no-marg no-pad" @click="${this._openAddDialog}"
+        <sl-button variant="text" class="no-marg no-pad" @click="${this._openAddDialog}"
           >${translate('ADD_REQUIREMENTS')}</sl-button
         >
       </div>

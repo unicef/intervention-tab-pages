@@ -206,7 +206,6 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                   >
                     <sl-button
                       variant="primary"
-                      class="primary-btn"
                       id="btnSave-ProgrammeManagement"
                       ?hidden="${!(item.inEditMode || item.itemsInEditMode)}"
                       @click="${() => this.saveProgrammeManagement(item, this.intervention.id!)}"

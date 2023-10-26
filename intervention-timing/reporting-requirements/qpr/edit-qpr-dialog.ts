@@ -92,7 +92,7 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
       >
         <div class="layout-horizontal">
           <span id="qpr-edit-info">${translate('ALL_DATES_IN_FUTURE')}</span>
-          <sl-button id="addReq" variant="text" class="primary-btn no-marg no-pad" @click="${this._addNewQpr}"
+          <sl-button id="addReq" variant="text" class="no-marg no-pad" @click="${this._addNewQpr}"
             >${translate('ADD_REQUIREMENT')}</sl-button
           >
         </div>
@@ -101,7 +101,7 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
           <sl-button
             id="regen"
             variant="text"
-            class="primary-btn no-marg no-pad"
+            class="no-marg no-pad"
             @click="${this.regenerateReportingRequirements}"
             >${translate('REGENERATE')}</sl-button
           >

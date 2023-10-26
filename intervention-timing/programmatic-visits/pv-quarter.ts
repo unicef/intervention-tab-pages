@@ -120,7 +120,7 @@ export class PvQuarter extends LitElement {
         </div>
         <sl-button
           variant="text"
-          class="primary-btn no-marg no-pad sel-site-btn"
+          class="no-marg no-pad sel-site-btn"
           @click="${() => this.openSitesDialog()}"
           ?hidden="${this.readonly || !this.item[`programmatic_q${this.qIndex}`]}"
           title=${translate('SELECT_SITE_FROM_MAP')}

@@ -95,7 +95,6 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
             </etools-dropdown-multi>
             <sl-button
               variant="primary"
-              class="primary-btn"
               @click="${this.sendNotification}"
               ?hidden="${!this.showNotifyButton}"
             >

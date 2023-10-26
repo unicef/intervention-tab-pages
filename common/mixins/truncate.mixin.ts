@@ -18,7 +18,7 @@ export function TruncateMixin<T extends Constructor<LitElement>>(baseClass: T) {
       }
       return html`${string.substring(0, this.amountOfFirstLetters)}<sl-button
           variant="text"
-          class="primary-btn no-marg no-pad show-more-btn"
+          class="no-marg no-pad show-more-btn"
           id="show-more"
           @click="${(event: CustomEvent) => this.showMore(event)}"
           >...</sl-button
