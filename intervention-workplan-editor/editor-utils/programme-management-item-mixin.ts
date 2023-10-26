@@ -2,6 +2,7 @@ import {Intervention} from '@unicef-polymer/etools-types';
 import {Constructor} from '@unicef-polymer/etools-types/dist/global.types';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 import {html, LitElement} from 'lit';
+import {property} from 'lit/decorators.js';
 import {repeat} from 'lit/directives/repeat.js';
 import {ifDefined} from 'lit/directives/if-defined.js';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
@@ -14,7 +15,7 @@ import {ActivitiesFocusMixin} from './activities-focus-mixin';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(baseClass: T) {
-  return class ProgrammeManagementItemClass extends ActivitiesCommonMixin(ActivitiesFocusMixin(baseClass)) {
+  class ProgrammeManagementItemClass extends ActivitiesCommonMixin(ActivitiesFocusMixin(baseClass)) {
     // @ts-ignore
     @property({type: Object})
     intervention!: Intervention;
@@ -368,5 +369,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
       this.requestUpdate();
       this.moveFocusToAddedItemAndAttachListeners(e.target, focusClue);
     }
-  };
+  }
+
+  return ProgrammeManagementItemClass;
 }
