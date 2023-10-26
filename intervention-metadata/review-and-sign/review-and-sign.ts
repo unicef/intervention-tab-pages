@@ -21,7 +21,7 @@ import {selectReviewData, selectDatesAndSignaturesPermissions} from '../../commo
 import {ReviewDataPermission, ReviewData} from './managementDocument.model';
 import isEmpty from 'lodash-es/isEmpty';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import {buttonsStyles} from '@unicef-polymer/etools-unicef/src/styles/button-styles';
 import {getDifference} from '@unicef-polymer/etools-modules-common/dist/mixins/objects-diff';
 import {patchIntervention} from '../../common/actions/interventions';
 import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';

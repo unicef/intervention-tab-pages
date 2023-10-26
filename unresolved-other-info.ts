@@ -1,4 +1,4 @@
-import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import {buttonsStyles} from '@unicef-polymer/etools-unicef/src/styles/button-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import {html, LitElement} from 'lit';

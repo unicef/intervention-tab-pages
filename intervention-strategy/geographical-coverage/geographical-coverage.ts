@@ -5,7 +5,7 @@ import './grouped-locations-dialog';
 import '../../common/components/sites-widget/sites-dialog';
 
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import {buttonsStyles} from '@unicef-polymer/etools-unicef/src/styles/button-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {LocationsPermissions} from './geographicalCoverage.models';
