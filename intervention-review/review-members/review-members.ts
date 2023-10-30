@@ -45,6 +45,9 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
         etools-dropdown-multi {
           max-width: initial;
         }
+        sl-button::part(base) {
+          padding: 0 10px;
+        }
       `
     ];
   }

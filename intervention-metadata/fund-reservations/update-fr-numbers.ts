@@ -142,6 +142,7 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
 
   openDialog() {
     this.frsDialog.opened = true;
+    this.disableConfirmBtn = true;
   }
 
   stopSpinner(e?: CustomEvent) {
@@ -165,7 +166,7 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
 
   validate() {
     let valid = true;
-    if (this.data instanceof Array && this.data.length > 0) {
+    if (this.data?.length > 0) {
       this.data.forEach((_item, index) => {
         const lastItem = this.shadowRoot!.querySelector('#fr-nr-' + index) as EtoolsInput;
         if (lastItem && !lastItem.validate()) {
