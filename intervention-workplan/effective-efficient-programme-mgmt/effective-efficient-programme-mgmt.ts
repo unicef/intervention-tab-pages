@@ -85,6 +85,10 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
           --etools-icon-font-size: 24px;
           padding: 0;
         }
+        etools-data-table-row *[slot="row-data"] {
+          margin-top: 0px;
+          margin-bottom: 0px;
+        }
         .text-right {
           place-content: end;
         }

@@ -36,6 +36,10 @@ export function TruncateMixin<T extends Constructor<LitElement>>(baseClass: T) {
     static get styles(): CSSResultArray {
       return [
         css`
+          .show-more-btn {
+            --sl-input-height-medium: 24px;
+            max-height: 24px;
+          }
           .show-more-btn::part(base) {
             margin: 0px;
             padding: 0px;

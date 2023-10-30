@@ -310,6 +310,9 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
         etools-icon-button[name='more-vert'] {
           color: inherit;
         }
+        sl-dropdown {
+         --sl-spacing-x-small: 4px;
+        }
       `
     ];
   }
