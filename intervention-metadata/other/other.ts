@@ -1,4 +1,4 @@
-import {html, LitElement} from 'lit';
+import {html, LitElement, PropertyValues} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import '@shoelace-style/shoelace/dist/components/switch/switch.js';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
@@ -263,6 +263,13 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
     listenForLangChanged(this.handleLanguageChanged.bind(this));
   }
 
+  updated(changedProperties: PropertyValues) {
+    if (changedProperties.has('editMode') && !this.editMode) {
+      // reset validation for #unppNumber field
+      const elem = this.shadowRoot?.querySelector<EtoolsInput>('#unppNumber')!;
+      elem.invalid = false;
+    }
+  }
   stateChanged(state: RootState) {
     if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata')) {
       return;
