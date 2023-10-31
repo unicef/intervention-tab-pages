@@ -30,15 +30,6 @@ export class IndicatorReportTarget extends connectStore(ComponentBaseMixin(LitEl
         ${sharedStyles} ${buttonsStyles} .padding {
           padding: 35px 24px;
         }
-        sl-checkbox[disabled]::part(base) {
-          opacity: 1;
-        }
-        sl-checkbox[disabled]::part(control) {
-          opacity: 0.5;
-        }
-        sl-checkbox[disabled]::part(control--checked) {
-          opacity: 0.5;
-        }
       </style>
       <etools-content-panel
         show-expand-btn

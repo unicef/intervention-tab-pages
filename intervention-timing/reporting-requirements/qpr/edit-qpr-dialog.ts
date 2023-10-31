@@ -59,7 +59,7 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
         }
 
         .label {
-          font-size: 16px;
+          font-size: 14px;
           color: var(--primary-text-color);
           margin-bottom: 24px;
         }

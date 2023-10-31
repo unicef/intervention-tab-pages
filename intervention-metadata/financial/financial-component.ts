@@ -50,16 +50,6 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
         .pl-none {
           padding-inline-start: 0px !important;
         }
-        sl-checkbox[disabled]::part(base) {
-          opacity: 1;
-        }
-        sl-checkbox[disabled]::part(control) {
-          opacity: 0.5;
-        }
-        sl-checkbox[disabled]::part(control--checked) {
-          opacity: 0.5;
-        }
-
         .padd-top {
           padding-top: 8px;
         }

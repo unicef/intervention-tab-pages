@@ -59,15 +59,6 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
         .row-padding-v {
           position: relative;
         }
-        sl-checkbox[disabled]::part(base) {
-          opacity: 1;
-        }
-        sl-checkbox[disabled]::part(control) {
-          opacity: 0.5;
-        }
-        sl-checkbox[disabled]::part(control--checked) {
-          opacity: 0.5;
-        }
       </style>
 
       <etools-content-panel
