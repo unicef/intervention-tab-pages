@@ -713,7 +713,9 @@ export class EditorTable extends CommentsMixin(
     this.oneEntityInEditMode = false;
 
     this.requestUpdate();
-    this.lastFocusedTd.focus();
+    if (this.lastFocusedTd) {
+      this.lastFocusedTd.focus();
+    }
   }
 
   getOriginalPDOutput(resultIndex: number, pdOutputIndex: number) {
