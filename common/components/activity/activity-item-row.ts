@@ -26,6 +26,9 @@ export class ActivityItemRow extends ActivitiesCommonMixin(LitElement) {
         etools-icon:hover {
           color: var(--primary-text-color);
         }
+        etools-textarea {
+          --etools-input-padding-bottom: 3px;
+        }
       `
     ];
   }
