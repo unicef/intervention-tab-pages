@@ -67,6 +67,9 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
         sl-tab-group {
           --indicator-color: var(--primary-color);
         }
+        sl-tab::part(base) {
+          text-transform: uppercase;
+        }
       </style>
 
       <etools-dialog
