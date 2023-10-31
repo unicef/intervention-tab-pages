@@ -311,7 +311,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
           color: inherit;
         }
         sl-dropdown {
-         --sl-spacing-x-small: 4px;
+          --sl-spacing-x-small: 4px;
         }
       `
     ];
