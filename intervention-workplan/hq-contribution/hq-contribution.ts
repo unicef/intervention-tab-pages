@@ -66,7 +66,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
           padding-bottom: 5px;
         }
         etools-input {
-          width: 10%;
+          width: 3.5rem;
         }
         .space-betw {
           justify-content: space-between;
