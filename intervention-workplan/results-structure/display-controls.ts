@@ -69,6 +69,7 @@ export class DisplayControls extends LitElement {
 
       <div class="layout-horizontal">
         <sl-dropdown
+          distance="-30"
           id="view-menu-button"
           close-on-activate
           horizontal-align

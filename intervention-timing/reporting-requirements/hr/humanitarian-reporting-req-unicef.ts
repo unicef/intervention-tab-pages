@@ -39,7 +39,7 @@ export class HumanitarianReportingReqUnicef extends PaginationMixin(ReportingReq
       <div ?hidden="${!this._empty(this.reportingRequirements)}">
         <div class="row-h">${translate('NO_HUMANITARIAN_REPORT')}</div>
         <div class="row-h" ?hidden="${!this._showAdd(this.expectedResults, this.editMode)}">
-          <sl-button variant="text" class="no-marg no-pad" @click="${this.openUnicefHumanitarianRepReqDialog}">
+          <sl-button variant="text" class="no-marg no-pad font-14" @click="${this.openUnicefHumanitarianRepReqDialog}">
             ${translate('ADD_REQUIREMENTS')}
           </sl-button>
         </div>

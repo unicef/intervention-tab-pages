@@ -148,7 +148,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                     </div>
 
                     <div class="show-actions hover-block" style="z-index: ${99 - index}" ?hidden="${this.commentMode}">
-                      <sl-dropdown id="view-menu-button">
+                      <sl-dropdown distance="-40" id="view-menu-button">
                         <etools-icon-button slot="trigger" name="more-vert" tabindex="0"></etools-icon-button>
                         <sl-menu>
                           <sl-menu-item
