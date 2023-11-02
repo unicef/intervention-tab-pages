@@ -160,13 +160,11 @@ export class ReviewChecklistPopup extends LitElement {
               </sl-checkbox>`}
         </div>
         <div slot="buttons">
-          <sl-button variant="text" class="cancel" @click="${() => this.close()}"
+          <sl-button variant="text" class="neutral" @click="${() => this.close()}"
             >${translate('GENERAL.CANCEL')}</sl-button
           >
           ${this.rejectPopup
-            ? html`<sl-button variant="primary" class="cancel" @click="${() => this.saveReview()}">
-                ${translate('REJECT')}
-              </sl-button>`
+            ? html`<sl-button variant="danger" @click="${() => this.saveReview()}"> ${translate('REJECT')} </sl-button>`
             : html`<sl-button variant="primary" @click="${() => this.saveReview()}">
                 ${this.approvePopup ? translate('APPROVE') : translate('SAVE_REVIEW')}
               </sl-button>`}

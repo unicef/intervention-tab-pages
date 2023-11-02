@@ -18,12 +18,12 @@ export class PvQuarter extends LitElement {
       buttonsStyles,
       gridLayoutStylesLit,
       css`
-        etools-icon-button#x {
+        etools-icon#x {
           --etools-icon-font-size: 16px;
           color: var(--icon-delete-color);
           cursor: pointer;
         }
-        etools-icon-button#x:hover {
+        etools-icon#x:hover {
           color: #b70202;
         }
         etools-icon-button[name='add'] {
