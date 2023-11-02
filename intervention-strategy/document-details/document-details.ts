@@ -78,7 +78,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             .value="${this.data.title}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'title')}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit?.title)}"
-            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit?.title) ? -1 : 0}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit?.title) ? -1 : undefined}"
             ?required="${this.permissions?.required.title}"
             @focus="${() => (this.autoValidate = true)}"
             error-message="This field is required"
@@ -98,7 +98,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             .value="${this.data.context}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'context')}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit?.context)}"
-            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit?.context) ? -1 : 0}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit?.context) ? -1 : undefined}"
             ?required="${this.permissions?.required.context}"
             maxlength="7000"
             rows="${detailsTextareaRowsCount(this.editMode)}"
@@ -125,7 +125,9 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             .value="${this.data.implementation_strategy}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'implementation_strategy')}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit?.implementation_strategy)}"
-            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit?.implementation_strategy) ? -1 : 0}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit?.implementation_strategy)
+              ? -1
+              : undefined}"
             ?required="${this.permissions?.required.implementation_strategy}"
             maxlength="5000"
             rows="${detailsTextareaRowsCount(this.editMode)}"
@@ -152,7 +154,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             placeholder="—"
             .value="${this.data.capacity_development}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.capacity_development)}"
-            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit?.capacity_development) ? -1 : 0}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit?.capacity_development) ? -1 : undefined}"
             ?required="${this.permissions?.required.capacity_development}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'capacity_development')}"
             maxlength="5000"
@@ -179,7 +181,9 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             placeholder="—"
             .value="${this.data.other_partners_involved}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.other_partners_involved)}"
-            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.other_partners_involved) ? -1 : 0}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.other_partners_involved)
+              ? -1
+              : undefined}"
             ?required="${this.permissions?.required.other_partners_involved}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'other_partners_involved')}"
             maxlength="5000"
@@ -201,7 +205,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             placeholder="—"
             .value="${this.data.other_details}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.other_details)}"
-            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.other_details) ? -1 : 0}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.other_details) ? -1 : undefined}"
             ?required="${this.permissions?.required.other_details}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'other_details')}"
             maxlength="5000"
@@ -215,7 +219,9 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
           <sl-checkbox
             ?checked="${this.data.has_data_processing_agreement}"
             ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.has_data_processing_agreement)}"
-            tabindex="${this.isReadonly(this.editMode, this.permissions.edit.has_data_processing_agreement) ? -1 : 0}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions.edit.has_data_processing_agreement)
+              ? -1
+              : undefined}"
             @sl-change=${(e: any) => this.valueChanged({value: e.target.checked}, 'has_data_processing_agreement')}
           >
             ${translate(translatesMap.has_data_processing_agreement)}
@@ -228,7 +234,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.has_activities_involving_children)}"
             tabindex="${this.isReadonly(this.editMode, this.permissions.edit.has_activities_involving_children)
               ? -1
-              : 0}"
+              : undefined}"
             @sl-change=${(e: any) => this.valueChanged({value: e.target.checked}, 'has_activities_involving_children')}
           >
             ${translate(translatesMap.has_activities_involving_children)}
@@ -241,7 +247,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.has_special_conditions_for_construction)}"
             tabindex="${this.isReadonly(this.editMode, this.permissions.edit.has_special_conditions_for_construction)
               ? -1
-              : 0}"
+              : undefined}"
             @sl-change=${(e: any) =>
               this.valueChanged({value: e.target.checked}, 'has_special_conditions_for_construction')}
           >

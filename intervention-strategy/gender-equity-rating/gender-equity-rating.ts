@@ -117,7 +117,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
               .value="${this.data.gender_narrative}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'gender_narrative')}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.gender_narrative)}"
-              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.gender_narrative) ? -1 : 0}"
+              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.gender_narrative) ? -1 : undefined}"
               ?required="${this.permissions?.required.gender_narrative}"
               maxlength="3000"
               rows="${detailsTextareaRowsCount(this.editMode)}"
@@ -150,7 +150,7 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
               .value="${this.data.equity_narrative}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'equity_narrative')}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.equity_narrative)}"
-              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.equity_narrative) ? -1 : 0}"
+              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.equity_narrative) ? -1 : undefined}"
               ?required="${this.permissions?.required.equity_narrative}"
               maxlength="3000"
               rows="${detailsTextareaRowsCount(this.editMode)}"
@@ -183,7 +183,9 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
               .value="${this.data.sustainability_narrative}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'sustainability_narrative')}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.sustainability_narrative)}"
-              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.sustainability_narrative) ? -1 : 0}"
+              tabindex="${
+                this.isReadonly(this.editMode, this.permissions?.edit.sustainability_narrative) ? -1 : undefined
+              }"
               ?required="${this.permissions?.required.sustainability_narrative}"
               maxlength="3000"
               rows="${detailsTextareaRowsCount(this.editMode)}"
