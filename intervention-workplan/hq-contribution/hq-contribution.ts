@@ -99,6 +99,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
             ></sl-range>
             <etools-input
               type="number"
+              allowed-pattern="^\\d*\\.?\\d*$"
               .readonly="${!this.editMode}"
               .value="${this.data.hq_support_cost}"
               min="0"

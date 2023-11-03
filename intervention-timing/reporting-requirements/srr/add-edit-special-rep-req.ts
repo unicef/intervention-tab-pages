@@ -69,7 +69,7 @@ export class AddEditSpecialRepReq extends LitElement {
             <calendar-lite
               id="startDate"
               pretty-date="${this.item.due_date ? this.item.due_date : ''}"
-              .date="${this.item.due_date ? new Date(this.item.due_date) : null}"
+              .date="${this.item.due_date}"
               format="YYYY-MM-DD"
               @date-changed="${({detail}: CustomEvent) =>
                 (this.item.due_date = dayjs(new Date(detail.value)).format('YYYY-MM-DD'))}"
