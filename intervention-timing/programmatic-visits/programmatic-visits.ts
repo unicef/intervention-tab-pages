@@ -1,4 +1,4 @@
-import {LitElement, css, html} from 'lit';
+import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
