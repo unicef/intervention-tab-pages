@@ -99,12 +99,16 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
             ></sl-range>
             <etools-input
               type="number"
+              allowed-pattern="^\\d*\\.?\\d*$"
               .readonly="${!this.editMode}"
               .value="${this.data.hq_support_cost}"
               min="0"
               max="7"
               step="0.1"
-              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'hq_support_cost', this.data)}"
+              @value-changed="${({detail}: CustomEvent) => {
+                this.valueChanged(detail, 'hq_support_cost', this.data);
+                this.autoCalculatedHqContrib = this.autoCalcHqContrib();
+              }}"
             ></etools-input>
           </div>
         </div>
