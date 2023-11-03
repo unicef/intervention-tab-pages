@@ -51,6 +51,7 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
         ?hidden="${this.warningOpened}"
         ok-btn-text="${translate('TERMINATE')}"
         dialog-title="${translate('TERMINATE_PD_SPD')}"
+        confirmBtnVariant="danger"
         @confirm-btn-clicked="${this._triggerPdTermination}"
         ?disable-confirm-btn="${this.uploadInProgress}"
         ?disable-dismiss-btn="${this.uploadInProgress}"
@@ -160,6 +161,7 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
     }
     this.envFlagsStateChanged(getStore().getState());
     if (this.environmentFlags && !this.environmentFlags.prp_mode_off && this.environmentFlags.prp_server_on) {
+      this.warningOpened = true;
       openDialog({
         dialog: 'are-you-sure',
         dialogData: {
@@ -169,6 +171,8 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
       }).then(({confirmed}) => {
         if (confirmed) {
           this.terminatePD();
+        } else {
+          this.warningOpened = false;
         }
       });
     } else {
