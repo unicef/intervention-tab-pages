@@ -82,7 +82,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
             style="z-index: ${99 - (this.index || 0)}; max-height: 59px;"
             ?hidden="${this.commentMode}"
           >
-            <sl-dropdown id="view-menu-button">
+            <sl-dropdown distance="-65" id="view-menu-button">
               <etools-icon-button slot="trigger" name="more-vert"></etools-icon-button>
               <sl-menu>
                 <sl-menu-item
