@@ -17,6 +17,7 @@ import './indicator-dissaggregations';
 import './non-cluster-indicator';
 import './cluster-indicator';
 import './cluster-indicator-disaggregations';
+import '@unicef-polymer/etools-modules-common/dist/layout/etools-tabs';
 import {Indicator, IndicatorDialogData} from '@unicef-polymer/etools-types';
 import {AnyObject, EtoolsUser, LocationObject, Section} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
@@ -85,12 +86,13 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
         .hideConfirmBtn="${this.readonly}"
         spinner-text="${this.spinnerText}"
       >
-        <sl-tab-group id="indicatorTabs" @sl-tab-show="${this.tabChanged}">
-          ${this.indicatorDataTabs?.map(
-            (t) =>
-              html` <sl-tab slot="nav" panel="${t.tab}" ?active="${this.activeTab === t.tab}">${t.tabLabel}</sl-tab>`
-          )}
-        </sl-tab-group>
+        <etools-tabs-lit
+          id="indicatorTabs"
+          .tabs="${this.indicatorDataTabs}"
+          .activeTab="${this.activeTab}"
+          border-bottom
+          @sl-tab-show="${this.tabChanged}"
+        ></etools-tabs-lit>
 
         <div name="details" ?hidden="${!isActiveTab(this.activeTab, 'details')}">
           <div class="row-h flex-c">

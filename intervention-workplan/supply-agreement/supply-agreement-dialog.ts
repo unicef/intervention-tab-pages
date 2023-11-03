@@ -101,6 +101,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
               option-value="id"
               .selected="${this.data.provided_by}"
               required
+              hide-search
               auto-validate
               trigger-value-change-event
               @etools-selected-item-changed="${({detail}: CustomEvent) => {
