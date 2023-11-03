@@ -97,7 +97,7 @@ export class EditHruDialog extends connectStore(LitElement) {
             <calendar-lite
               id="datepicker"
               min-date="${this.repStartDate}"
-              pretty-date="${this.selectedDate ? this.selectedDate : ''}"
+              .date="${this.selectedDate ? this.selectedDate : ''}"
               @date-changed="${({detail}: CustomEvent) => this.changed(detail.value)}"
               format="YYYY-MM-DD"
               hide-header
@@ -120,7 +120,7 @@ export class EditHruDialog extends connectStore(LitElement) {
         </div>
         <div class="layout-horizontal row-padding-v">
           <div class="col layout-vertical col-3">
-            <sl-button variant="text" class="no-marg no-pad" id="add-selected-date" @click="${() => this._addToList()}">
+            <sl-button variant="text" class="no-marg no-pad font-14" id="add-selected-date" @click="${() => this._addToList()}">
               ${translate('ADD_SELECTED_DATE')}
             </sl-button>
           </div>

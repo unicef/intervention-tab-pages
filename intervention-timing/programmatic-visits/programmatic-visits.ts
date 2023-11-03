@@ -37,15 +37,7 @@ import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button'
 @customElement('programmatic-visits')
 export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(RepeatableDataSetsMixin(LitElement))) {
   static get styles() {
-    return [
-      buttonsStyles,
-      gridLayoutStylesLit,
-      css`
-        sl-button {
-          margin-inline-start: 30px;
-        }
-      `
-    ];
+    return [buttonsStyles, gridLayoutStylesLit];
   }
 
   render() {
@@ -110,6 +102,9 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
           font-size: 14px;
           padding-top: 15px;
           padding-bottom: 15px;
+        }
+        .extra-top-padd sl-button {
+          margin-inline-start: 20px;
         }
       </style>
 

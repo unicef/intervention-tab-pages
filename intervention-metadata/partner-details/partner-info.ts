@@ -85,7 +85,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
               trigger-value-change-event
               @etools-selected-item-changed="${({detail}: CustomEvent) => this.selectedAgreementChanged(detail)}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.agreement)}"
-              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.agreement) ? -1 : 0}"
+              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.agreement) ? -1 : undefined}"
               required
               auto-validate
             >

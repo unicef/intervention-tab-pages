@@ -92,13 +92,13 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
       >
         <div class="layout-horizontal">
           <span id="qpr-edit-info">${translate('ALL_DATES_IN_FUTURE')}</span>
-          <sl-button id="addReq" variant="text" class="no-marg no-pad" @click="${this._addNewQpr}"
+          <sl-button id="addReq" variant="text" class="no-marg no-pad font-14" @click="${this._addNewQpr}"
             >${translate('ADD_REQUIREMENT')}</sl-button
           >
         </div>
         <div class="layout-horizontal" style="padding-top:10px" ?hidden="${!this.insterventionsDatesDiffer()}">
           <span id="regenerate-info">${translate('PD_START_END_DATE_CHANGED')}</span> &nbsp;
-          <sl-button id="regen" variant="text" class="no-marg no-pad" @click="${this.regenerateReportingRequirements}"
+          <sl-button id="regen" variant="text" class="no-marg no-pad font-14" @click="${this.regenerateReportingRequirements}"
             >${translate('REGENERATE')}</sl-button
           >
         </div>
@@ -135,7 +135,7 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
             <label class="label" for="startDate">${translate(translatesMap.start_date)}</label>
             <calendar-lite
               id="startDate"
-              pretty-date="${this._editedQprDatesSet!.start_date ? this._editedQprDatesSet!.start_date : ''}"
+              .date="${this._editedQprDatesSet!.start_date ? this._editedQprDatesSet!.start_date : ''}"
               format="YYYY-MM-DD"
               @date-changed="${({detail}: CustomEvent) => this.changed(detail.value, 'start_date')}"
               hide-header
@@ -146,7 +146,7 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
             <label class="label" for="endDate">${translate('END_DATE')}</label>
             <calendar-lite
               id="endDate"
-              pretty-date="${this._editedQprDatesSet!.end_date ? this._editedQprDatesSet!.end_date : ''}"
+              .date="${this._editedQprDatesSet!.end_date ? this._editedQprDatesSet!.end_date : ''}"
               format="YYYY-MM-DD"
               @date-changed="${({detail}: CustomEvent) => this.changed(detail.value, 'end_date')}"
               hide-header
@@ -157,7 +157,7 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
             <label class="label" for="dueDate">${translate('DUE_DATE')}</label>
             <calendar-lite
               id="dueDate"
-              pretty-date="${this._editedQprDatesSet!.due_date ? this._editedQprDatesSet!.due_date : ''}"
+              .date="${this._editedQprDatesSet!.due_date ? this._editedQprDatesSet!.due_date : ''}"
               format="YYYY-MM-DD"
               @date-changed="${({detail}: CustomEvent) => this.changed(detail.value, 'due_date')}"
               hide-header
@@ -224,6 +224,11 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
     this.addEventListener('edit-qpr', this._editQprDatesSet as any);
   }
 
+   disconnectedCallback() {
+    super.disconnectedCallback();
+    this.removeEventListener('edit-qpr', this._editQprDatesSet as any);
+  }
+
   changed(value: string, item: string) {
     if (this._editedQprDatesSet) {
       const newDate = dayjs(new Date(value)).format('YYYY-MM-DD');
@@ -237,7 +242,6 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
   }
 
   handleEditQprDialogClosed() {
-    this.removeEventListener('edit-qpr', this._editQprDatesSet as any);
     this.editQprDialogOpened = false;
     if (!this.editQprDialogOpened && !this.addOrModifyQprDialogOpened) {
       fireEvent(this, 'dialog-closed', {confirmed: false});
@@ -358,7 +362,6 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
     })
       .then((response: any) => {
         dialog.stopSpinner();
-        this.removeEventListener('edit-qpr', this._editQprDatesSet as any);
         fireEvent(this, 'dialog-closed', {confirmed: true, response: response.reporting_requirements});
       })
       .catch((error: any) => {
