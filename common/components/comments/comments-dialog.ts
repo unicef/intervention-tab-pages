@@ -86,9 +86,7 @@ export class CommentsDialog extends EditComments {
             @keydown="${(event: KeyboardEvent) => this.onKeydown(event)}"
           ></etools-textarea>
           <sl-button variant="primary" @click="${() => this.addComment()}">${translate('POST')}</sl-button>
-          <sl-button variant="primary" class="default" @click="${() => this.onClose()}"
-            >${translate('CLOSE')}</sl-button
-          >
+          <sl-button variant="text" class="neutral" @click="${() => this.onClose()}">${translate('CLOSE')}</sl-button>
         </div>
       </etools-dialog>
     `;

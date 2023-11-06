@@ -23,6 +23,10 @@ export class ExportInterventionData extends LitElement {
         sl-menu-item::part(label) {
           text-align: left;
         }
+        sl-dropdown sl-menu-item:focus-visible::part(base) {
+          background-color: rgba(0, 0, 0, 0.1);
+          color: var(--sl-color-neutral-1000);
+        }
       </style>
       <sl-dropdown id="pdExportMenuBtn">
         <etools-icon-button name="more-vert" slot="trigger"> </etools-icon-button>
