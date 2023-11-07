@@ -204,8 +204,11 @@ export class InterventionResultsReported extends connectStore(
                 placeholder="—"
                 class="col-6"
                 label="${translate('UNICEF_CASH')}"
-                .value="${this._getPropertyText(this.progress.unicef_budget_cash_currency)}
-                        ${displayCurrencyAmount(this.progress.unicef_budget_cash, '0', 0)}"
+                .value="${this._getPropertyText(this.progress.unicef_budget_cash_currency)} ${displayCurrencyAmount(
+                  this.progress.unicef_budget_cash,
+                  '0',
+                  0
+                )}"
               >
               </etools-input>
             </div>
