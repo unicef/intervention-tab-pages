@@ -313,6 +313,10 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
         sl-dropdown {
           --sl-spacing-x-small: 4px;
         }
+        sl-dropdown sl-menu-item:focus-visible::part(base) {
+          background-color: rgba(0, 0, 0, 0.1);
+          color: var(--sl-color-neutral-1000);
+        }
       `
     ];
   }

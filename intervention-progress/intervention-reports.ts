@@ -361,11 +361,7 @@ export class InterventionReports extends connectStore(PaginationMixin(CommonMixi
 
     const stringParams: string = buildUrlQueryString(this.prevQueryStringObj);
 
-    history.pushState(
-      window.history.state,
-      '',
-      `interventions/${this.interventionId}/progress/reports?${stringParams}`
-    );
+    history.pushState(window.history.state, '', `interventions/${this.interventionId}/reports?${stringParams}`);
     window.dispatchEvent(new CustomEvent('popstate'));
   }
 
