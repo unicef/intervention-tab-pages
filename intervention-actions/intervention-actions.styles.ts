@@ -23,6 +23,11 @@ export const InterventionActionsStyles: CSSResult = css`
     --sl-color-primary-500: var(--green-color);
   }
 
+  .main-button sl-menu-item:focus-visible::part(base) {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: var(--sl-color-neutral-1000);
+  }
+
   .main-button::part(prefix) {
     width: 10px;
   }

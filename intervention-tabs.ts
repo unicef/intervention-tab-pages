@@ -188,6 +188,12 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
           text-transform: uppercase;
           min-width: 120px;
           place-content: center;
+          opacity: 0.8;
+        }
+        sl-tab::part(base):focus-visible {
+          outline: 0;
+          opacity: 1;
+          font-weight: 700;
         }
       </style>
 
