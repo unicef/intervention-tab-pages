@@ -171,6 +171,25 @@ export class DisplayControls extends LitElement {
           color: var(--sl-color-neutral-1000);
         }
 
+        sl-menu-item::part(base) {
+          line-height: 38px;
+        }
+
+        sl-menu-item[checked]::part(checked-icon) {
+          color: var(--sl-color-primary-600);
+          width: 24px;
+          visibility: visible;
+        }
+
+        sl-menu-item[checked]::part(base) {
+          background-color: #dcdcdc;
+          color: var(--sl-color-neutral-1000);
+        }
+
+        sl-menu-item[checked]:focus-visible::part(base) {
+          background-color: #cfcfcf;
+        }
+
         a {
           text-decoration: none;
           margin-inline-start: 16px;
