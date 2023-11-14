@@ -140,10 +140,6 @@ export class EditorTable extends CommentsMixin(
         etools-input::part(input) {
           line-height: 24px;
         }
-        etools-icon-button[name='delete'],
-        etools-icon-button[name='create'] {
-          color: inherit;
-        }
       </style>
       <table>
         <tbody>
