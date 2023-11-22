@@ -690,10 +690,6 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         etools-data-table-row#pdOutputRow::part(edt-list-row-wrapper) {
           padding-inline-start: 25px !important;
         }
-        etools-icon-button[name='create'],
-        etools-icon-button[name='delete'] {
-          color: inherit !important;
-        }
       `
     ];
   }

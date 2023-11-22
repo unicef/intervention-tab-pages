@@ -184,10 +184,6 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
         .editable-row:hover .hover-block {
           opacity: 1;
         }
-        etools-icon-button[name='delete'],
-        etools-icon-button[name='create'] {
-          color: inherit !important;
-        }
       `
     ];
   }

@@ -188,6 +188,12 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
           text-transform: uppercase;
           min-width: 120px;
           place-content: center;
+          opacity: 0.8;
+        }
+        sl-tab::part(base):focus-visible {
+          outline: 0;
+          opacity: 1;
+          font-weight: 700;
         }
       </style>
 
@@ -231,7 +237,13 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
         <sl-tab-group @sl-tab-show="${this.handleTabChange}">
           ${this.pageTabs?.map(
             (t) =>
-              html` <sl-tab slot="nav" panel="${t.tab}" ?active="${this.activeTab === t.tab}">${t.tabLabel}</sl-tab>`
+              html` <sl-tab
+                @mousedown="${this.handleTabActivate}"
+                slot="nav"
+                panel="${t.tab}"
+                ?active="${this.activeTab === t.tab}"
+                >${t.tabLabel}</sl-tab
+              >`
           )}
         </sl-tab-group>
       </intervention-page-content-subheader>
@@ -684,10 +696,10 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     return '';
   }
 
-  handleTabActivate(e: CustomEvent) {
-    if (this.existsUnsavedUploads(e)) {
+  async handleTabActivate(e: CustomEvent) {
+    const confirmLeave = await this.confirmLeaveUploadsUnsavedDialog(e);
+    if (!confirmLeave) {
       e.preventDefault();
-      return;
     }
   }
 
@@ -699,30 +711,29 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
     this.tabChanged(newTabName, this.activeTab, '', this.activeSubTab);
   }
 
-  existsUnsavedUploads(e: CustomEvent) {
-    if (Number(this.uploadsInProgress) > 0 || Number(this.unsavedUploads) > 0) {
-      this.confirmLeaveUploadsUnsavedDialog(e);
-      return true;
-    }
-    return false;
-  }
-
   async confirmLeaveUploadsUnsavedDialog(e: CustomEvent) {
-    const confirmed = await openDialog({
-      dialog: 'are-you-sure',
-      dialogData: {
-        content: translate('LEAVE_UPLOADS_UNSAVED'),
-        confirmBtnText: translate('LEAVE'),
-        cancelBtnText: translate('STAY')
+    if (Number(this.uploadsInProgress) > 0 || Number(this.unsavedUploads) > 0) {
+      const confirmed = await openDialog({
+        dialog: 'are-you-sure',
+        dialogData: {
+          content: translate('LEAVE_UPLOADS_UNSAVED'),
+          confirmBtnText: translate('LEAVE'),
+          cancelBtnText: translate('STAY')
+        }
+      }).then(({confirmed}) => {
+        return confirmed;
+      });
+
+      if (confirmed) {
+        getStore().dispatch({type: RESET_UNSAVED_UPLOADS});
+        getStore().dispatch({type: RESET_UPLOADS_IN_PROGRESS});
+        e.currentTarget?.dispatchEvent(e);
       }
-    }).then(({confirmed}) => {
+
       return confirmed;
-    });
-    if (confirmed) {
-      getStore().dispatch({type: RESET_UNSAVED_UPLOADS});
-      getStore().dispatch({type: RESET_UPLOADS_IN_PROGRESS});
-      this.handleTabChange(e);
     }
+
+    return true;
   }
 
   tabChanged(newTabName: string, oldTabName: string | undefined, newSubTab: string, _oldSubTab: string) {
