@@ -9,7 +9,7 @@ import {
   callClickOnSpacePushListener
 } from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import {TABS} from '../../common/constants';
-import '@shoelace-style/shoelace/dist/components/button/button.js';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 import '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
 import '@shoelace-style/shoelace/dist/components/menu/menu.js';
 import '@shoelace-style/shoelace/dist/components/menu-item/menu-item.js';
@@ -78,7 +78,7 @@ export class DisplayControls extends LitElement {
             this.fireTabChange(tab.showIndicators, tab.showActivities);
           }}
         >
-          <sl-button variant="default" slot="trigger" caret>${this.selectedViewType} </sl-button>
+          <etools-button variant="default" slot="trigger" caret>${this.selectedViewType} </etools-button>
           <sl-menu>
             ${this.viewTabs.map(
               (tab) =>
@@ -158,11 +158,11 @@ export class DisplayControls extends LitElement {
           box-sizing: border-box;
         }
         a:focus,
-        sl-button:focus {
+        etools-button:focus {
           box-shadow: rgb(170 165 165 / 40%) 0 0 5px 4px;
         }
 
-        sl-button:focus-visible {
+        etools-button:focus-visible {
           outline: none !important;
         }
 
@@ -195,7 +195,7 @@ export class DisplayControls extends LitElement {
         svg {
           margin-inline-start: 10px;
         }
-        sl-button {
+        etools-button {
           --sl-input-height-medium: 32px;
           --sl-color-neutral-700: rgb(92, 92, 92);
           --sl-color-neutral-300: rgb(92, 92, 92);

@@ -11,10 +11,10 @@ import './qpr-list';
 import {translate, get as getTranslation} from 'lit-translate';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '@unicef-polymer/etools-unicef/src/styles/button-styles';
+
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import cloneDeep from 'lodash-es/cloneDeep';
-import '@shoelace-style/shoelace/dist/components/button/button.js';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 
 /**
  * @LitElement
@@ -29,7 +29,7 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
   ReportingRequirementsCommonMixin(LitElement)
 ) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [gridLayoutStylesLit];
   }
   render() {
     return html`
@@ -47,9 +47,13 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
       <div ?hidden="${!this._empty(this.reportingRequirements)}">
         <div class="row-h">${translate('NO_QUARTERLY_REPORTING_REQUIREMENTS')}</div>
         <div class="row-h" ?hidden="${!this.editMode}">
-          <sl-button variant="text" class="no-marg no-pad font-14" @click="${this.openQuarterlyRepRequirementsDialog}">
+          <etools-button
+            variant="text"
+            class="no-marg no-pad font-14"
+            @click="${this.openQuarterlyRepRequirementsDialog}"
+          >
             ${translate('ADD_REQUIREMENTS')}
-          </sl-button>
+          </etools-button>
         </div>
       </div>
     `;

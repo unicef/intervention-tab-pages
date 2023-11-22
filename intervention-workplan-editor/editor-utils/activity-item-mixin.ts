@@ -294,12 +294,12 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                     class="flex-h justify-right"
                     ?hidden="${!((activity.inEditMode || activity.itemsInEditMode) && activity.items?.length > 3)}"
                   >
-                    <sl-button
+                    <etools-button
                       id="btnSave-activity-2"
                       variant="primary"
                       ?hidden="${!((activity.inEditMode || activity.itemsInEditMode) && activity.items?.length > 3)}"
                       @click="${() => this.saveActivity(activity, pdOutput.id, this.intervention.id!)}"
-                      >${translate('GENERAL.SAVE')}</sl-button
+                      >${translate('GENERAL.SAVE')}</etools-button
                     >
                     <etools-icon-button
                       class="flex-none"

@@ -5,7 +5,7 @@ import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import '@unicef-polymer/etools-unicef/src/etools-upload/etools-upload';
-import '@shoelace-style/shoelace/dist/components/checkbox/checkbox.js';
+import '@unicef-polymer/etools-unicef/src/etools-checkbox/etools-checkbox';
 import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
@@ -34,7 +34,7 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
         etools-upload {
           margin-top: 14px;
         }
-        sl-checkbox {
+        etools-checkbox {
           display: block;
           margin-top: 18px;
         }
@@ -109,12 +109,12 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
             @click="${() => this.resetFieldError('attachment_document', this)}"
           ></etools-upload>
 
-          <sl-checkbox
+          <etools-checkbox
             ?checked="${!this.data?.active}"
             @sl-change="${(e: any) => this.updateField('active', !e.target.checked)}"
           >
             ${translate('INVALID')}
-          </sl-checkbox>
+          </etools-checkbox>
         </div>
       </etools-dialog>
     `;

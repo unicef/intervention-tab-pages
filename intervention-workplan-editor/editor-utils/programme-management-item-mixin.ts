@@ -293,7 +293,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                     programmeManagement.items?.length > 3
                   )}"
                 >
-                  <sl-button
+                  <etools-button
                     id="btnSave-programme-management-2"
                     variant="primary"
                     ?hidden="${!(
@@ -301,7 +301,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                       programmeManagement.items?.length > 3
                     )}"
                     @click="${() => this.saveProgrammeManagement(programmeManagement, this.intervention.id!)}"
-                    >${translate('GENERAL.SAVE')}</sl-button
+                    >${translate('GENERAL.SAVE')}</etools-button
                   >
                   <etools-icon-button
                     class="flex-none"

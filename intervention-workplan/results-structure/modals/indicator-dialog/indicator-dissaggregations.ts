@@ -7,7 +7,7 @@ import {LitElement, html} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
 import {flaggedSortedDisaggregs} from '../../redux/selectors';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {buttonsStyles} from '@unicef-polymer/etools-unicef/src/styles/button-styles';
+
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {AnyObject, Disaggregation} from '@unicef-polymer/etools-types';
@@ -17,7 +17,7 @@ import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/st
 import {repeatableDataSetsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/repeatable-data-sets-styles';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
-import '@shoelace-style/shoelace/dist/components/button/button.js';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 import {EtoolsInput} from '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 
@@ -28,7 +28,7 @@ import {EtoolsInput} from '@unicef-polymer/etools-unicef/src/etools-input/etools
 @customElement('indicator-dissaggregations')
 export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [gridLayoutStylesLit];
   }
 
   render() {
@@ -103,14 +103,14 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
       </div>
 
       <div class="row-padding-v" style="margin-bottom:80px;">
-        <sl-button
+        <etools-button
           variant="text"
           class="no-marg no-pad"
           @click="${this._addNewDisaggregation}"
           ?hidden="${this._maxDisaggregations(this.data.length) || this.readonly}"
           title=${translate('ADD_DISAGGREGATION')}
           >${translate('ADD_DISAGREG')}
-        </sl-button>
+        </etools-button>
         <info-icon-tooltip
           id="iit-disaggreg"
           .tooltipText="${translate('DISAGGREGATION_TOOLTIP')}"

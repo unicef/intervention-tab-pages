@@ -7,12 +7,12 @@ import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '@unicef-polymer/etools-unicef/src/styles/button-styles';
+
 import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import RepeatableDataSetsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/repeatable-data-sets-mixin';
-import '@shoelace-style/shoelace/dist/components/button/button.js';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 import {EtoolsInput} from '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 
@@ -22,7 +22,7 @@ import {EtoolsInput} from '@unicef-polymer/etools-unicef/src/etools-input/etools
 @customElement('update-fr-numbers')
 export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [gridLayoutStylesLit];
   }
   render() {
     // ${repeatableDataSetsStyles}
@@ -110,10 +110,10 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
         <div class="${(this.data || []).length ? 'hidden' : 'row-h'}">${translate('NO_FUND_RESERVATIONS_ADDED')}</div>
 
         <div class="row-h">
-          <sl-button variant="text" class="no-marg no-pad" @click="${() => this._addNewFundReservation()}">
+          <etools-button variant="text" class="no-marg no-pad" @click="${() => this._addNewFundReservation()}">
             <etools-icon name="add"></etools-icon>
             ${translate('ADD_FR_NUM')}
-          </sl-button>
+          </etools-button>
         </div>
       </etools-dialog>
     `;

@@ -10,7 +10,7 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
-import {buttonsStyles} from '@unicef-polymer/etools-unicef/src/styles/button-styles';
+
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import cloneDeep from 'lodash-es/cloneDeep';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
@@ -18,7 +18,7 @@ import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown-multi.js';
 import '@unicef-polymer/etools-unicef/src/etools-date-time/datepicker-lite';
 import {PRC_REVIEW} from '../../common/components/intervention/review.const';
-import '@shoelace-style/shoelace/dist/components/button/button.js';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 
 @customElement('review-members')
 export class ReviewMembers extends ComponentBaseMixin(LitElement) {
@@ -26,7 +26,6 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
     // language=CSS
     return [
       gridLayoutStylesLit,
-      buttonsStyles,
       css`
         :host {
           display: block;
@@ -45,7 +44,7 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
         etools-dropdown-multi {
           max-width: initial;
         }
-        sl-button::part(base) {
+        etools-button::part(base) {
           padding: 0 10px;
         }
       `
@@ -96,9 +95,9 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
               }}"
             >
             </etools-dropdown-multi>
-            <sl-button variant="primary" @click="${this.sendNotification}" ?hidden="${!this.showNotifyButton}">
+            <etools-button variant="primary" @click="${this.sendNotification}" ?hidden="${!this.showNotifyButton}">
               ${translate('SEND_NOTIFICATIONS')}
-            </sl-button>
+            </etools-button>
           </div>
           <div class="row-h flex-c align-items-center">
             <etools-dropdown

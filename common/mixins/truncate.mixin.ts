@@ -1,7 +1,7 @@
 import {Constructor} from '@unicef-polymer/etools-types';
 import {CSSResultArray, html, LitElement, TemplateResult, css} from 'lit';
 
-import '@shoelace-style/shoelace/dist/components/button/button.js';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 import SlButton from '@shoelace-style/shoelace/dist/components/button/button.js';
 
 export function TruncateMixin<T extends Constructor<LitElement>>(baseClass: T) {
@@ -16,12 +16,12 @@ export function TruncateMixin<T extends Constructor<LitElement>>(baseClass: T) {
       if (string.length <= this.amountOfFirstLetters) {
         return html`${string}`;
       }
-      return html`${string.substring(0, this.amountOfFirstLetters)}<sl-button
+      return html`${string.substring(0, this.amountOfFirstLetters)}<etools-button
           variant="text"
           class="no-marg no-pad show-more-btn"
           id="show-more"
           @click="${(event: CustomEvent) => this.showMore(event)}"
-          >...</sl-button
+          >...</etools-button
         ><span hidden aria-hidden>${string.substring(60, string.length)}</span> `;
     }
 

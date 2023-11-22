@@ -2,7 +2,7 @@ import {LitElement, html} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '@unicef-polymer/etools-unicef/src/styles/button-styles';
+
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 
@@ -12,7 +12,7 @@ import {translate} from 'lit-translate';
 @customElement('cluster-indicator-disaggregations')
 export class ClusterIndicatorDisaggregations extends LitElement {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [gridLayoutStylesLit];
   }
 
   render() {

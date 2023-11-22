@@ -7,8 +7,7 @@ import {translate} from 'lit-translate';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {EditComments} from '../../comments/edit-comments-base';
 import {CommentRelatedItem} from '../../comments/comments-types';
-import '@shoelace-style/shoelace/dist/components/button/button.js';
-import {buttonsStyles} from '@unicef-polymer/etools-unicef/src/styles/button-styles';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 
 @customElement('messages-panel')
 export class MessagesPanel extends EditComments {
@@ -83,7 +82,6 @@ export class MessagesPanel extends EditComments {
     return [
       gridLayoutStylesLit,
       CommentPanelsStyles,
-      buttonsStyles,
       css`
         :host {
           transition: 0.5s;

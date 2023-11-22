@@ -24,7 +24,7 @@ import {
   ProgrammeManagementRowItemExtended
 } from '../../common/types/editor-page-types';
 import {getTotalCash, getTotalCashFormatted} from '../../common/components/activity/get-total.helper';
-import '@shoelace-style/shoelace/dist/components/button/button.js';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 // import {ManagementBudgetItem} from '@unicef-polymer/etools-types';
@@ -204,12 +204,12 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                     class="flex-h justify-right align-bottom"
                     ?hidden="${!(item.inEditMode || item.itemsInEditMode)}"
                   >
-                    <sl-button
+                    <etools-button
                       variant="primary"
                       id="btnSave-ProgrammeManagement"
                       ?hidden="${!(item.inEditMode || item.itemsInEditMode)}"
                       @click="${() => this.saveProgrammeManagement(item, this.intervention.id!)}"
-                      >${translate('GENERAL.SAVE')}</sl-button
+                      >${translate('GENERAL.SAVE')}</etools-button
                     >
                     <etools-icon-button
                       name="close"

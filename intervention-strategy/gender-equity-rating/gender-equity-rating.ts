@@ -4,7 +4,7 @@ import '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
-import {buttonsStyles} from '@unicef-polymer/etools-unicef/src/styles/button-styles';
+
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
@@ -24,7 +24,7 @@ import {translatesMap} from '../../utils/intervention-labels-map';
 import {detailsTextareaRowsCount} from '../../utils/utils';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
-import '@shoelace-style/shoelace/dist/components/radio-group/radio-group.js';
+import '@unicef-polymer/etools-unicef/src/etools-radio/etools-radio-group';
 import '@shoelace-style/shoelace/dist/components/radio/radio.js';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
@@ -34,7 +34,7 @@ import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button'
 @customElement('gender-equity-rating')
 export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [gridLayoutStylesLit];
   }
   render() {
     if (!this.data || !this.ratings || !this.permissions) {
@@ -52,13 +52,8 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
         .pl-none {
           padding-inline-start: 0px !important;
         }
-
-        sl-radio-group {
-          margin-top: 10px;
-          margin-bottom: 10px;
-        }
+        
         sl-radio {
-          display: inline-block;
           margin-inline-end: 20px;
         }
 
@@ -246,12 +241,12 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
     const ratingText = editMode ? '' : ratings.find((r) => r.value === ratingSelected)?.label || '';
 
     return editMode
-      ? html`<sl-radio-group
+      ? html`<etools-radio-group
           .value="${ratingSelected}"
           @sl-change="${(e: any) => this.valueChanged({value: e.target.value}, ratingKey)}"
         >
           ${this._getRatingRadioButtonsTemplate(ratings, permission)}
-        </sl-radio-group>`
+        </etools-radio-group>`
       : html`<label>${translateValue(ratingText, 'RATINGS')}</label>`;
   }
 

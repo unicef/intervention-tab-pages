@@ -8,11 +8,11 @@ import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-c
 import {ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
-import {buttonsStyles} from '@unicef-polymer/etools-unicef/src/styles/button-styles';
+
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import PaginationMixin from '@unicef-polymer/etools-modules-common/dist/mixins/pagination-mixin';
 import cloneDeep from 'lodash-es/cloneDeep';
-import '@shoelace-style/shoelace/dist/components/button/button.js';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 
 /**
  * @customElement
@@ -24,7 +24,7 @@ import '@shoelace-style/shoelace/dist/components/button/button.js';
 @customElement('humanitarian-reporting-req-unicef')
 export class HumanitarianReportingReqUnicef extends PaginationMixin(ReportingRequirementsCommonMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [gridLayoutStylesLit];
   }
   render() {
     return html`
@@ -39,9 +39,13 @@ export class HumanitarianReportingReqUnicef extends PaginationMixin(ReportingReq
       <div ?hidden="${!this._empty(this.reportingRequirements)}">
         <div class="row-h">${translate('NO_HUMANITARIAN_REPORT')}</div>
         <div class="row-h" ?hidden="${!this._showAdd(this.expectedResults, this.editMode)}">
-          <sl-button variant="text" class="no-marg no-pad font-14" @click="${this.openUnicefHumanitarianRepReqDialog}">
+          <etools-button
+            variant="text"
+            class="no-marg no-pad font-14"
+            @click="${this.openUnicefHumanitarianRepReqDialog}"
+          >
             ${translate('ADD_REQUIREMENTS')}
-          </sl-button>
+          </etools-button>
         </div>
         <div class="row-h" ?hidden="${this._thereAreHFIndicators(this.expectedResults)}">
           ${translate('CAN_BE_MODIFIED_PROMPT')}

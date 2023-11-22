@@ -19,9 +19,9 @@ import {AnyObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin.js';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit.js';
-import {buttonsStyles} from '@unicef-polymer/etools-unicef/src/styles/button-styles';
+
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit.js';
-import '@shoelace-style/shoelace/dist/components/button/button.js';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 
 /**
  * @LitElement
@@ -32,7 +32,7 @@ import '@shoelace-style/shoelace/dist/components/button/button.js';
 @customElement('edit-hru-dialog')
 export class EditHruDialog extends connectStore(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [gridLayoutStylesLit];
   }
   render() {
     return html`
@@ -120,14 +120,14 @@ export class EditHruDialog extends connectStore(LitElement) {
         </div>
         <div class="layout-horizontal row-padding-v">
           <div class="col layout-vertical col-3">
-            <sl-button
+            <etools-button
               variant="text"
               class="no-marg no-pad font-14"
               id="add-selected-date"
               @click="${() => this._addToList()}"
             >
               ${translate('ADD_SELECTED_DATE')}
-            </sl-button>
+            </etools-button>
           </div>
         </div>
       </etools-dialog>

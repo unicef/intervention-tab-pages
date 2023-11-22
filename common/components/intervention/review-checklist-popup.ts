@@ -5,7 +5,7 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import {AnyObject, AsyncAction, GenericObject, InterventionReview} from '@unicef-polymer/etools-types';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {translate, get as getTranslation} from 'lit-translate';
-import {buttonsStyles} from '@unicef-polymer/etools-unicef/src/styles/button-styles';
+
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
@@ -16,11 +16,11 @@ import {updateCurrentIntervention} from '../../actions/interventions';
 import {getDifference} from '@unicef-polymer/etools-modules-common/dist/mixins/objects-diff';
 import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
-import '@shoelace-style/shoelace/dist/components/checkbox/checkbox.js';
+import '@unicef-polymer/etools-unicef/src/etools-checkbox/etools-checkbox';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import {formatDate, getTodayDateStr} from '@unicef-polymer/etools-utils/dist/date.util';
-import '@shoelace-style/shoelace/dist/components/button/button.js';
-import '@shoelace-style/shoelace/dist/components/radio-group/radio-group.js';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
+import '@unicef-polymer/etools-unicef/src/etools-radio/etools-radio-group';
 import '@shoelace-style/shoelace/dist/components/radio/radio.js';
 
 @customElement('review-checklist-popup')
@@ -28,7 +28,6 @@ export class ReviewChecklistPopup extends LitElement {
   static get styles() {
     return [
       gridLayoutStylesLit,
-      buttonsStyles,
       css`
         :host {
           display: block;
@@ -36,15 +35,6 @@ export class ReviewChecklistPopup extends LitElement {
         }
         .pl-none {
           padding-inline-start: 0px !important;
-        }
-
-        sl-radio {
-          display: inline-block;
-          margin-inline-end: 15px;
-        }
-        sl-radio-group {
-          margin-top: 10px;
-          margin-bottom: 10px;
         }
         .form-container {
           padding: 0 24px;
@@ -63,7 +53,7 @@ export class ReviewChecklistPopup extends LitElement {
           justify-content: flex-end;
         }
 
-        sl-checkbox {
+        etools-checkbox {
           margin: 14px 0;
         }
       `
@@ -152,22 +142,24 @@ export class ReviewChecklistPopup extends LitElement {
                   </etools-textarea>
                 </div>
               `
-            : html` <sl-checkbox
+            : html` <etools-checkbox
                 ?checked="${this.review?.overall_approval}"
                 @sl-change="${(e: any) => this.valueChanged(e.target.checked, 'overall_approval')}"
               >
                 ${translate('APPROVED_BY_PRC')}
-              </sl-checkbox>`}
+              </etools-checkbox>`}
         </div>
         <div slot="buttons">
-          <sl-button variant="text" class="neutral" @click="${() => this.close()}"
-            >${translate('GENERAL.CANCEL')}</sl-button
+          <etools-button variant="text" class="neutral" @click="${() => this.close()}"
+            >${translate('GENERAL.CANCEL')}</etools-button
           >
           ${this.rejectPopup
-            ? html`<sl-button variant="danger" @click="${() => this.saveReview()}"> ${translate('REJECT')} </sl-button>`
-            : html`<sl-button variant="primary" @click="${() => this.saveReview()}">
+            ? html`<etools-button variant="danger" @click="${() => this.saveReview()}">
+                ${translate('REJECT')}
+              </etools-button>`
+            : html`<etools-button variant="primary" @click="${() => this.saveReview()}">
                 ${this.approvePopup ? translate('APPROVE') : translate('SAVE_REVIEW')}
-              </sl-button>`}
+              </etools-button>`}
         </div>
       </etools-dialog>
     `;
@@ -179,7 +171,7 @@ export class ReviewChecklistPopup extends LitElement {
         <div class="w100">
           <label class="label">Q${index + 1}: ${translateValue(field, `REVIEW_QUESTIONS`)}</label>
         </div>
-        <sl-radio-group
+        <etools-radio-group
           value="${this.review[field] || ''}"
           @sl-change="${(e: any) => this.valueChanged(e.target.value, field)}"
         >
@@ -187,7 +179,7 @@ export class ReviewChecklistPopup extends LitElement {
             ([key, text]: [string, string]) =>
               html` <sl-radio value="${key}">${translateValue(text, 'REVIEW_ANSWERS')}</sl-radio> `
           )}
-        </sl-radio-group>
+        </etools-radio-group>
       </div>
     `;
   }

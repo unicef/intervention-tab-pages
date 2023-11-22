@@ -21,7 +21,7 @@ import {selectReviewData, selectDatesAndSignaturesPermissions} from '../../commo
 import {ReviewDataPermission, ReviewData} from './managementDocument.model';
 import isEmpty from 'lodash-es/isEmpty';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {buttonsStyles} from '@unicef-polymer/etools-unicef/src/styles/button-styles';
+
 import {getDifference} from '@unicef-polymer/etools-modules-common/dist/mixins/objects-diff';
 import {patchIntervention} from '../../common/actions/interventions';
 import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
@@ -45,7 +45,7 @@ import {RequestEndpoint} from '@unicef-polymer/etools-utils/dist/etools-ajax/aja
 @customElement('review-and-sign')
 export class InterventionReviewAndSign extends CommentsMixin(ComponentBaseMixin(UploadMixin(LitElement))) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [gridLayoutStylesLit];
   }
   render() {
     if (!this.data || !this.permissions) {

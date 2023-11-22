@@ -44,8 +44,8 @@ import {ifDefined} from 'lit/directives/if-defined.js';
 import {selectProgrammeManagement} from '../intervention-workplan/effective-efficient-programme-mgmt/effectiveEfficientProgrammeMgmt.selectors';
 import {ActivitiesFocusMixin} from './editor-utils/activities-focus-mixin';
 import {_canDelete} from '../common/mixins/results-structure-common';
-import {buttonsStyles} from '@unicef-polymer/etools-unicef/src/styles/button-styles';
-import '@shoelace-style/shoelace/dist/components/button/button.js';
+
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
 import '@shoelace-style/shoelace/dist/components/tooltip/tooltip.js';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
@@ -56,7 +56,7 @@ export class EditorTable extends CommentsMixin(
   ProgrammeManagementMixin(ActivitiesMixin(ActivitiesFocusMixin(ArrowsNavigationMixin(LitElement))))
 ) {
   static get styles() {
-    return [EditorTableStyles, EditorTableArrowKeysStyles, EditorHoverStyles, buttonsStyles, ...super.styles];
+    return [EditorTableStyles, EditorTableArrowKeysStyles, EditorHoverStyles, ...super.styles];
   }
   render() {
     if (!this.intervention) {
@@ -404,12 +404,12 @@ export class EditorTable extends CommentsMixin(
                         ></etools-icon-button>
                       </div>
                       <div class="flex-h justify-right align-bottom" ?hidden="${!pdOutput.inEditMode}">
-                        <sl-button
+                        <etools-button
                           id="btnSave"
                           variant="primary"
                           @click="${() => this.savePdOutput(pdOutput, result)}"
                           ?hidden="${!pdOutput.inEditMode}"
-                          >${translate('GENERAL.SAVE')}</sl-button
+                          >${translate('GENERAL.SAVE')}</etools-button
                         >
                         <etools-icon-button
                           name="close"

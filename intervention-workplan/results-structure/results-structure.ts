@@ -3,7 +3,7 @@ import {css, html, CSSResultArray, LitElement} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
 import {repeat} from 'lit/directives/repeat.js';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '@unicef-polymer/etools-unicef/src/styles/button-styles';
+
 import {
   selectInterventionId,
   selectInterventionStatus,
@@ -558,7 +558,6 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     return [
       gridLayoutStylesLit,
       ResultStructureStyles,
-      buttonsStyles,
       css`
         etools-icon[name='create'] {
           margin-inline-start: 50px;

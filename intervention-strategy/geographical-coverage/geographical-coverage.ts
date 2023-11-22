@@ -5,7 +5,7 @@ import './grouped-locations-dialog';
 import '../../common/components/sites-widget/sites-dialog';
 
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '@unicef-polymer/etools-unicef/src/styles/button-styles';
+
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {LocationsPermissions} from './geographicalCoverage.models';
@@ -25,7 +25,7 @@ import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
-import '@shoelace-style/shoelace/dist/components/button/button.js';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 
 /**
  * @customElement
@@ -33,7 +33,7 @@ import '@shoelace-style/shoelace/dist/components/button/button.js';
 @customElement('geographical-coverage')
 export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [gridLayoutStylesLit];
   }
 
   render() {
@@ -103,7 +103,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         .prevent-see-hierarchy-link-overlap {
           height: 10px;
         }
-        sl-button[variant='text'] {
+        etools-button[variant='text'] {
           --sl-input-height-medium: 20px !important;
         }
       </style>
@@ -152,14 +152,14 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
           >
           </etools-dropdown-multi>
           <div class="locations-btn">
-            <sl-button
+            <etools-button
               variant="text"
               @click="${this.openLocationsDialog}"
               ?hidden="${this._isEmpty(this.data.flat_locations)}"
               title=${translate('SEE_ALL_LOCATIONS')}
             >
               ${translate('SEE_HIERARCHY')}
-            </sl-button>
+            </etools-button>
           </div>
         </div>
         <div class="flex-c row-padding-v mt-50">
@@ -186,7 +186,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
           </etools-textarea>
         </div>
         <div class="flex-c layout-horizontal row-padding-v">
-          <sl-button
+          <etools-button
             variant="text"
             class="no-pad no-marg"
             @click="${this.openSitesDialog}"
@@ -195,7 +195,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
           >
             <etools-icon name="add"></etools-icon>
             ${translate('SELECT_SITE_FROM_MAP')}
-          </sl-button>
+          </etools-button>
         </div>
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
       </etools-content-panel>

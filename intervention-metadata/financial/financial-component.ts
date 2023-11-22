@@ -1,9 +1,9 @@
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import '@shoelace-style/shoelace/dist/components/checkbox/checkbox.js';
+import '@unicef-polymer/etools-unicef/src/etools-checkbox/etools-checkbox';
 import '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
-import {buttonsStyles} from '@unicef-polymer/etools-unicef/src/styles/button-styles';
+
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import cloneDeep from 'lodash-es/cloneDeep';
@@ -32,7 +32,7 @@ import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 @customElement('financial-component')
 export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [gridLayoutStylesLit];
   }
   render() {
     // language=HTML
@@ -75,13 +75,13 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
           ${this.cashTransferModalities.map(
             (option: LabelAndValue) =>
               html`<div class="col col-3">
-                <sl-checkbox
+                <etools-checkbox
                   ?checked="${this.checkCashTransferModality(option.value)}"
                   ?disabled="${this.isReadonly(this.editMode, true)}"
                   @sl-change=${(e: any) => this.updateData(e.target.checked, option.value)}
                 >
                   ${translateValue(option.label, 'CASH_TRANSFER_MODALITIES')}
-                </sl-checkbox>
+                </etools-checkbox>
               </div>`
           )}
         </div>

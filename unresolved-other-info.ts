@@ -1,4 +1,3 @@
-import {buttonsStyles} from '@unicef-polymer/etools-unicef/src/styles/button-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import {html, LitElement} from 'lit';
@@ -11,12 +10,12 @@ import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {AsyncAction} from '@unicef-polymer/etools-types';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {patchIntervention} from './common/actions/interventions';
-import '@shoelace-style/shoelace/dist/components/button/button.js';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 
 @customElement('unresolved-other-info-review')
 export class UnresolvedOtherInfo extends ComponentBaseMixin(LitElement) {
   static get styles() {
-    return [buttonsStyles, gridLayoutStylesLit];
+    return [gridLayoutStylesLit];
   }
   render() {
     // language=HTML
@@ -50,8 +49,10 @@ export class UnresolvedOtherInfo extends ComponentBaseMixin(LitElement) {
         ${this.hideActionButtons(this.editMode, this.editPermissions)
           ? html``
           : html` <div class="layout-horizontal right-align row-padding">
-              <sl-button variant="neutral" @click="${this.cancel}">${translate('GENERAL.CANCEL')}</sl-button>
-              <sl-button variant="primary" @click="${this.areYouSure}">${translate('MARK_AS_RESOLVED')}</sl-button>
+              <etools-button variant="neutral" @click="${this.cancel}">${translate('GENERAL.CANCEL')}</etools-button>
+              <etools-button variant="primary" @click="${this.areYouSure}"
+                >${translate('MARK_AS_RESOLVED')}</etools-button
+              >
             </div>`}
       </etools-content-panel>
     `;

@@ -5,7 +5,7 @@ import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
-import {buttonsStyles} from '@unicef-polymer/etools-unicef/src/styles/button-styles';
+
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {selectDocumentDetails, selectDocumentDetailsPermissions} from './documentDetails.selectors';
@@ -23,7 +23,7 @@ import {translatesMap} from '../../utils/intervention-labels-map';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
 import {detailsTextareaRowsCount} from '../../utils/utils';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
-import '@shoelace-style/shoelace/dist/components/checkbox/checkbox.js';
+import '@unicef-polymer/etools-unicef/src/etools-checkbox/etools-checkbox';
 
 /**
  * @customElement
@@ -31,7 +31,7 @@ import '@shoelace-style/shoelace/dist/components/checkbox/checkbox.js';
 @customElement('document-details')
 export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [gridLayoutStylesLit];
   }
 
   render() {
@@ -216,7 +216,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
         </div>
 
         <div class="row-padding-v">
-          <sl-checkbox
+          <etools-checkbox
             ?checked="${this.data.has_data_processing_agreement}"
             ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.has_data_processing_agreement)}"
             tabindex="${this.isReadonly(this.editMode, this.permissions.edit.has_data_processing_agreement)
@@ -225,11 +225,11 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             @sl-change=${(e: any) => this.valueChanged({value: e.target.checked}, 'has_data_processing_agreement')}
           >
             ${translate(translatesMap.has_data_processing_agreement)}
-          </sl-checkbox>
+          </etools-checkbox>
         </div>
 
         <div class="row-padding-v">
-          <sl-checkbox
+          <etools-checkbox
             ?checked="${this.data.has_activities_involving_children}"
             ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.has_activities_involving_children)}"
             tabindex="${this.isReadonly(this.editMode, this.permissions.edit.has_activities_involving_children)
@@ -238,11 +238,11 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             @sl-change=${(e: any) => this.valueChanged({value: e.target.checked}, 'has_activities_involving_children')}
           >
             ${translate(translatesMap.has_activities_involving_children)}
-          </sl-checkbox>
+          </etools-checkbox>
         </div>
 
         <div class="row-padding-v">
-          <sl-checkbox
+          <etools-checkbox
             ?checked="${this.data.has_special_conditions_for_construction}"
             ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.has_special_conditions_for_construction)}"
             tabindex="${this.isReadonly(this.editMode, this.permissions.edit.has_special_conditions_for_construction)
@@ -252,7 +252,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
               this.valueChanged({value: e.target.checked}, 'has_special_conditions_for_construction')}
           >
             ${translate(translatesMap.has_special_conditions_for_construction)}
-          </sl-checkbox>
+          </etools-checkbox>
         </div>
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
       </etools-content-panel>

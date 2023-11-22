@@ -3,7 +3,7 @@ import {customElement, property} from 'lit/decorators.js';
 
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
-import {buttonsStyles} from '@unicef-polymer/etools-unicef/src/styles/button-styles';
+
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import isEmpty from 'lodash-es/isEmpty';
@@ -27,7 +27,7 @@ import {repeatableDataSetsStyles} from '@unicef-polymer/etools-modules-common/di
 import {getEndpoint as getEndpointHelper} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import '../../common/components/sites-widget/sites-dialog';
-import '@shoelace-style/shoelace/dist/components/button/button.js';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 import './pv-quarter';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
@@ -37,7 +37,7 @@ import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button'
 @customElement('programmatic-visits')
 export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(RepeatableDataSetsMixin(LitElement))) {
   static get styles() {
-    return [buttonsStyles, gridLayoutStylesLit];
+    return [gridLayoutStylesLit];
   }
 
   render() {
@@ -103,7 +103,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
           padding-top: 15px;
           padding-bottom: 15px;
         }
-        .extra-top-padd sl-button {
+        .extra-top-padd etools-button {
           margin-inline-start: 20px;
         }
       </style>
@@ -116,10 +116,14 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="row-padding-v extra-top-padd" ?hidden="${!this.editMode}">
-          <sl-button variant="text" ${this._getAddBtnPadding(this.data?.length)} @click="${this._addNewPlannedVisit}">
+          <etools-button
+            variant="text"
+            ${this._getAddBtnPadding(this.data?.length)}
+            @click="${this._addNewPlannedVisit}"
+          >
             <etools-icon name="add-box"></etools-icon>
             ${translate('ADD_YEAR')}
-          </sl-button>
+          </etools-button>
         </div>
 
         <div class="pv-container">${this.renderVisitsTemplate(this.data)}</div>

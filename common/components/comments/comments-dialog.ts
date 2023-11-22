@@ -12,8 +12,7 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import {CommentsItemsNameMap} from './comments-items-name-map';
 import {EditComments} from './edit-comments-base';
 import {removeTrailingIds} from './comments.helpers';
-import '@shoelace-style/shoelace/dist/components/button/button.js';
-import {buttonsStyles} from '@unicef-polymer/etools-unicef/src/styles/button-styles';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 
 @customElement('comments-dialog')
 export class CommentsDialog extends EditComments {
@@ -85,8 +84,10 @@ export class CommentsDialog extends EditComments {
             @keyup="${(event: KeyboardEvent) => this.onKeyup(event)}"
             @keydown="${(event: KeyboardEvent) => this.onKeydown(event)}"
           ></etools-textarea>
-          <sl-button variant="primary" @click="${() => this.addComment()}">${translate('POST')}</sl-button>
-          <sl-button variant="text" class="neutral" @click="${() => this.onClose()}">${translate('CLOSE')}</sl-button>
+          <etools-button variant="primary" @click="${() => this.addComment()}">${translate('POST')}</etools-button>
+          <etools-button variant="text" class="neutral" @click="${() => this.onClose()}"
+            >${translate('CLOSE')}</etools-button
+          >
         </div>
       </etools-dialog>
     `;
@@ -133,7 +134,6 @@ export class CommentsDialog extends EditComments {
   static get styles(): CSSResultArray {
     // language=css
     return [
-      buttonsStyles,
       css`
         .message-input {
           display: flex;

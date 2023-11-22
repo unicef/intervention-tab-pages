@@ -77,7 +77,7 @@ export const InterventionActionsStyles: CSSResult = css`
     inset-inline-end: 2px;
     z-index: 100;
   }
-  sl-button[size='small'] > etools-icon {
+  etools-button[size='small'] > etools-icon {
     padding-bottom: 2px;
     padding-left: 2px;
   }

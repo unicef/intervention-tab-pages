@@ -176,7 +176,7 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
             return;
           }
           // @ts-ignore
-          if (['etools-icon-button', 'sl-button'].includes(path[0]?.localName)) {
+          if (['etools-icon-button', 'etools-button'].includes(path[0]?.localName)) {
             return;
           }
           let actionBtn: any = this.searchForActionBtnInCurrentTd(currentTd);

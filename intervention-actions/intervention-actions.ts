@@ -49,9 +49,9 @@ import {get as getTranslation} from 'lit-translate';
 import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
 import {translatesMap} from '../utils/intervention-labels-map';
 import {RootState} from '../common/types/store.types';
-import {buttonsStyles} from '@unicef-polymer/etools-unicef/src/styles/button-styles';
+
 import '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
-import '@shoelace-style/shoelace/dist/components/button/button.js';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 import '@shoelace-style/shoelace/dist/components/menu/menu.js';
 import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
 import SlDropdown from '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
@@ -61,9 +61,8 @@ export class InterventionActions extends connectStore(LitElement) {
   static get styles(): CSSResultArray {
     return [
       InterventionActionsStyles,
-      buttonsStyles,
       css`
-        sl-button[slot='trigger'] {
+        etools-button[slot='trigger'] {
           min-width: 45px;
           width: 45px;
           border-inline-start: 1px solid rgba(255, 255, 255, 0.12);
@@ -129,9 +128,9 @@ export class InterventionActions extends connectStore(LitElement) {
   private renderBackAction(action?: string): TemplateResult {
     return action
       ? html`
-          <sl-button variant="primary" class="back-button" @click="${() => this.processAction(action)}">
+          <etools-button variant="primary" class="back-button" @click="${() => this.processAction(action)}">
             ${arrowLeftIcon} <span>${this.actionsNamesMap[action]}</span>
-          </sl-button>
+          </etools-button>
         `
       : html``;
   }
@@ -142,9 +141,13 @@ export class InterventionActions extends connectStore(LitElement) {
     const className = `main-button${withAdditional}${onlyCancel}`;
     return mainAction
       ? html`
-          <sl-button variant="primary" class="${className} split-btn" @click="${() => this.processAction(mainAction)}">
+          <etools-button
+            variant="primary"
+            class="${className} split-btn"
+            @click="${() => this.processAction(mainAction)}"
+          >
             <span>${this.getMainActionTranslatedText(mainAction)}</span> ${this.getAdditionalTransitions(actions)}
-          </sl-button>
+          </etools-button>
         `
       : html``;
   }
@@ -165,9 +168,9 @@ export class InterventionActions extends connectStore(LitElement) {
     }
     return html`
       <sl-dropdown @click="${(event: MouseEvent) => event.stopImmediatePropagation()}">
-        <sl-button slot="trigger" variant="primary" size="small">
+        <etools-button slot="trigger" variant="primary" size="small">
           <etools-icon name="expand-more"></etools-icon>
-        </sl-button>
+        </etools-button>
         <sl-menu>
           ${actions.map(
             (action: string) => html`

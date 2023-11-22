@@ -22,7 +22,7 @@ import {isUnicefUser} from '../../common/selectors';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {AnyObject, Intervention, Permission} from '@unicef-polymer/etools-types';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {buttonsStyles} from '@unicef-polymer/etools-unicef/src/styles/button-styles';
+
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
@@ -38,7 +38,7 @@ import {isActiveTab} from '../../utils/utils';
 @customElement('partner-reporting-requirements')
 export class PartnerReportingRequirements extends connectStore(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [gridLayoutStylesLit];
   }
   render() {
     return html`

@@ -1,6 +1,6 @@
-import '@shoelace-style/shoelace/dist/components/radio-group/radio-group.js';
+import '@unicef-polymer/etools-unicef/src/etools-radio/etools-radio-group';
 import '@shoelace-style/shoelace/dist/components/radio/radio.js';
-import '@shoelace-style/shoelace/dist/components/checkbox/checkbox.js';
+import '@unicef-polymer/etools-unicef/src/etools-checkbox/etools-checkbox';
 import '@shoelace-style/shoelace/dist/components/switch/switch.js';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown-multi.js';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
@@ -8,12 +8,12 @@ import IndicatorsCommonMixin from './mixins/indicators-common-mixin';
 import {LitElement, html} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {buttonsStyles} from '@unicef-polymer/etools-unicef/src/styles/button-styles';
+
 import {Indicator} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../../../utils/intervention-labels-map';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import '@shoelace-style/shoelace/dist/components/button/button.js';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 import {EtoolsDropdownMulti} from '@unicef-polymer/etools-unicef/src/etools-dropdown/EtoolsDropdownMulti';
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.js';
 import SlSwitch from '@shoelace-style/shoelace/dist/components/switch/switch.js';
@@ -25,7 +25,7 @@ import SlSwitch from '@shoelace-style/shoelace/dist/components/switch/switch.js'
 @customElement('non-cluster-indicator')
 class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [gridLayoutStylesLit];
   }
 
   render() {
@@ -89,19 +89,13 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         sl-switch {
           margin-top: 25px;
         }
-        sl-radio {
-          display: inline-block;
-        }
-        sl-radio-group {
-          margin-top: 10px;
-        }
       </style>
 
       <div class="row-h flex-c">
         <div class="layout-vertical mr-20">
           <label class="label">${translate('TYPE')}</label>
           <div class="radioGroup">
-            <sl-radio-group
+            <etools-radio-group
               .disabled="${this.readonly}"
               .value="${this.indicator!.indicator!.unit}"
               @sl-change="${(e: any) => {
@@ -118,13 +112,13 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
               <sl-radio ?disabled="${this.isReadonly()}" class="no-left-padding" value="percentage"
                 >${translate('PERCENT_RATIO')}</sl-radio
               >
-            </sl-radio-group>
+            </etools-radio-group>
           </div>
         </div>
         <div class="layout-vertical" ?hidden="${this._unitIsNumeric(this.indicator!.indicator!.unit)}">
           <label class="label">${translate('DISPLAY_TYPE')}</label>
           <div class="radioGroup">
-            <sl-radio-group
+            <etools-radio-group
               .value="${this.indicator!.indicator!.display_type}"
               @sl-change="${(e: any) => {
                 this.indicator!.indicator!.display_type = e.target.value;
@@ -138,7 +132,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
               <sl-radio ?disabled="${this.isReadonly()}" class="no-left-padding" value="ratio"
                 >${translate('RATIO')}</sl-radio
               >
-            </sl-radio-group>
+            </etools-radio-group>
           </div>
         </div>
       </div>
@@ -347,12 +341,12 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         </div>
       </div>
       <div class="unknown">
-        <sl-checkbox
+        <etools-checkbox
           ?checked="${this.baselineIsUnknown}"
           ?disabled="${this.readonly}"
           @sl-change="${({target}: CustomEvent) =>
             this.baselineIsUnknownChanged(Boolean((target as SlCheckbox).checked))}"
-          >${translate('UNKNOWN')}</sl-checkbox
+          >${translate('UNKNOWN')}</etools-checkbox
         >
       </div>
 
@@ -392,14 +386,14 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         >
         </etools-dropdown-multi>
         <div class="all-locations">
-          <sl-button
+          <etools-button
             variant="text"
             ?hidden="${this.readonly}"
             @click="${this._addAllLocations}"
             title=${translate('ADD_ALL_LOCATIONS')}
           >
             ${translate('ADD_ALL')}
-          </sl-button>
+          </etools-button>
         </div>
       </div>
     `;

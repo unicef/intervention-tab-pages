@@ -15,14 +15,14 @@ import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-table/styles/data-table-styles';
 import {translate, get as getTranslation} from 'lit-translate';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
-import {buttonsStyles} from '@unicef-polymer/etools-unicef/src/styles/button-styles';
+
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import PaginationMixin from '@unicef-polymer/etools-modules-common/dist/mixins/pagination-mixin';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
-import '@shoelace-style/shoelace/dist/components/button/button.js';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 /**
@@ -34,7 +34,7 @@ import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button'
 @customElement('special-reporting-requirements')
 export class SpecialReportingRequirements extends PaginationMixin(ReportingRequirementsCommonMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles, reportingRequirementsListStyles];
+    return [gridLayoutStylesLit, reportingRequirementsListStyles];
   }
   render() {
     return html`
@@ -48,8 +48,8 @@ export class SpecialReportingRequirements extends PaginationMixin(ReportingRequi
       </div>
 
       <div class="row-h" ?hidden="${!this.editMode}">
-        <sl-button variant="text" class="no-marg no-pad font-14" @click="${this._openAddDialog}"
-          >${translate('ADD_REQUIREMENTS')}</sl-button
+        <etools-button variant="text" class="no-marg no-pad font-14" @click="${this._openAddDialog}"
+          >${translate('ADD_REQUIREMENTS')}</etools-button
         >
       </div>
 

@@ -20,9 +20,9 @@ import {translate, get as getTranslation} from 'lit-translate';
 import {translatesMap} from '../../../utils/intervention-labels-map';
 import GenerateQuarterlyReportingRequirementsMixin from '../mixins/generate-quarterly-reporting-requirements-mixin';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '@unicef-polymer/etools-unicef/src/styles/button-styles';
+
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import '@shoelace-style/shoelace/dist/components/button/button.js';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 
 /**
  * @LitElement
@@ -33,10 +33,9 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
   static get styles() {
     return [
       gridLayoutStylesLit,
-      buttonsStyles,
       css`
-        sl-button#addReq,
-        sl-button#regen {
+        etools-button#addReq,
+        etools-button#regen {
           --sl-input-height-medium: 24px !important;
         }
       `
@@ -92,18 +91,18 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
       >
         <div class="layout-horizontal">
           <span id="qpr-edit-info">${translate('ALL_DATES_IN_FUTURE')}</span>
-          <sl-button id="addReq" variant="text" class="no-marg no-pad font-14" @click="${this._addNewQpr}"
-            >${translate('ADD_REQUIREMENT')}</sl-button
+          <etools-button id="addReq" variant="text" class="no-marg no-pad font-14" @click="${this._addNewQpr}"
+            >${translate('ADD_REQUIREMENT')}</etools-button
           >
         </div>
         <div class="layout-horizontal" style="padding-top:10px" ?hidden="${!this.insterventionsDatesDiffer()}">
           <span id="regenerate-info">${translate('PD_START_END_DATE_CHANGED')}</span> &nbsp;
-          <sl-button
+          <etools-button
             id="regen"
             variant="text"
             class="no-marg no-pad font-14"
             @click="${this.regenerateReportingRequirements}"
-            >${translate('REGENERATE')}</sl-button
+            >${translate('REGENERATE')}</etools-button
           >
         </div>
 

@@ -1,4 +1,3 @@
-import {buttonsStyles} from '@unicef-polymer/etools-unicef/src/styles/button-styles';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
@@ -7,7 +6,7 @@ import {AnyObject, PlannedVisit, Site} from '@unicef-polymer/etools-types';
 import {css, html, LitElement} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {langChanged, translate} from 'lit-translate';
-import '@shoelace-style/shoelace/dist/components/button/button.js';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 declare const dayjs: any;
 
@@ -15,7 +14,6 @@ declare const dayjs: any;
 export class PvQuarter extends LitElement {
   static get styles() {
     return [
-      buttonsStyles,
       gridLayoutStylesLit,
       css`
         etools-icon#x {
@@ -118,7 +116,7 @@ export class PvQuarter extends LitElement {
             </div>`;
           })}
         </div>
-        <sl-button
+        <etools-button
           variant="text"
           class="no-marg no-pad sel-site-btn"
           @click="${() => this.openSitesDialog()}"
@@ -127,7 +125,7 @@ export class PvQuarter extends LitElement {
         >
           <etools-icon name="add"></etools-icon>
           ${translate('SELECT_SITE_FROM_MAP')}
-        </sl-button>
+        </etools-button>
       </div>
     `;
   }
