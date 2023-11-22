@@ -62,8 +62,8 @@ export class MessagesPanel extends EditComments {
             @keyup="${(event: KeyboardEvent) => this.onKeyup(event)}"
             @keydown="${(event: KeyboardEvent) => this.onKeydown(event)}"
           ></etools-textarea>
-          <sl-button variant="primary" class="send-btn" @click="${() => this.addComment()}"
-            >${translate('POST')}</sl-button
+          <etools-button variant="primary" class="send-btn" @click="${() => this.addComment()}"
+            >${translate('POST')}</etools-button
           >
         </div>
       </div>
