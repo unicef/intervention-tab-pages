@@ -64,6 +64,10 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
           padding-top: 10px;
         }
 
+        etools-dropdown.year {
+          min-width: 125px;
+        }
+
         .error-msg {
           color: var(--error-color);
           font-size: 12px;
