@@ -1,10 +1,11 @@
 declare const dayjs: any;
 import {convertDate} from '@unicef-polymer/etools-utils/dist/date.util';
-import {LitElement, property} from 'lit-element';
+import {LitElement} from 'lit';
+import {property} from 'lit/decorators.js';
 import {Constructor} from '@unicef-polymer/etools-types';
 
 /**
- * @polymer
+ * @LitElement
  * @mixinFunction
  */
 function GenerateQuarterlyReportingRequirementsMixin<T extends Constructor<LitElement>>(baseClass: T) {

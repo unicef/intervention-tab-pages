@@ -1,4 +1,4 @@
-import {css, CSSResult} from 'lit-element';
+import {css, CSSResult} from 'lit';
 
 // language=css
 export const CommentPanelsStyles: CSSResult = css`
@@ -56,16 +56,8 @@ export const CommentPanelsStyles: CSSResult = css`
   *:focus-visible {
     outline: 2px solid rgb(170 165 165 / 50%);
   }
-  paper-button:not(.send-btn) {
-    min-width: 30px;
-    padding: 0;
-    margin: 0;
-  }
-  .buttons paper-button:last-child {
+
+  .buttons etools-icon-button:last-child {
     margin-inline-start: 10px;
-  }
-  paper-button iron-icon {
-    width: 30px;
-    height: 30px;
   }
 `;

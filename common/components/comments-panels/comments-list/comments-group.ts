@@ -1,4 +1,5 @@
-import {css, CSSResultArray, customElement, LitElement, html, TemplateResult, property} from 'lit-element';
+import {css, LitElement, html, TemplateResult} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {translate} from 'lit-translate';
 import {CommentRelatedItem} from '../../comments/comments-types';
@@ -43,7 +44,7 @@ export class CommentsGroup extends LitElement {
     return html`${this.relatedToDescription} ${this.fieldDescription ? translate(this.fieldDescription) : ''}`;
   }
 
-  static get styles(): CSSResultArray {
+  static get styles() {
     // language=css
     return [
       gridLayoutStylesLit,

@@ -1,4 +1,5 @@
-import {LitElement, TemplateResult, html, customElement, property, CSSResultArray, css} from 'lit-element';
+import {LitElement, TemplateResult, html, CSSResultArray, css} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import {EtoolsEndpoint, InterventionReview, User} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
@@ -6,18 +7,18 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
-import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import cloneDeep from 'lodash-es/cloneDeep';
-import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import '@polymer/paper-button/paper-button';
-import '@unicef-polymer/etools-dropdown/etools-dropdown';
-import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
-import '@unicef-polymer/etools-date-time/datepicker-lite';
+import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
+import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
+import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown-multi.js';
+import '@unicef-polymer/etools-unicef/src/etools-date-time/datepicker-lite';
 import {PRC_REVIEW} from '../../common/components/intervention/review.const';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 
 @customElement('review-members')
 export class ReviewMembers extends ComponentBaseMixin(LitElement) {
@@ -25,7 +26,6 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
     // language=CSS
     return [
       gridLayoutStylesLit,
-      buttonsStyles,
       css`
         :host {
           display: block;
@@ -34,12 +34,7 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
         datepicker-lite {
           margin-inline-end: 24px;
         }
-        paper-button.notify {
-          height: 40px;
-          white-space: nowrap;
-          flex: none;
-          margin-inline-start: 24px;
-        }
+
         .row-h:not(:first-child) {
           padding-top: 0;
         }
@@ -48,6 +43,9 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
         }
         etools-dropdown-multi {
           max-width: initial;
+        }
+        etools-button::part(base) {
+          padding: 0 10px;
         }
       `
     ];
@@ -97,9 +95,9 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
               }}"
             >
             </etools-dropdown-multi>
-            <paper-button class="primary notify" @click="${this.sendNotification}" ?hidden="${!this.showNotifyButton}">
+            <etools-button variant="primary" @click="${this.sendNotification}" ?hidden="${!this.showNotifyButton}">
               ${translate('SEND_NOTIFICATIONS')}
-            </paper-button>
+            </etools-button>
           </div>
           <div class="row-h flex-c align-items-center">
             <etools-dropdown
@@ -126,7 +124,7 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
   }
 
   saveData(): Promise<void> {
-    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.interventionReview, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.interventionReview, {
       id: this.data!.id,
       interventionId: this.interventionId
     });
@@ -150,7 +148,7 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
   }
 
   sendNotification(): void {
-    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.sendReviewNotification, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.sendReviewNotification, {
       id: this.data!.id,
       interventionId: this.interventionId
     });

@@ -1,11 +1,12 @@
-import {LitElement, html, TemplateResult, property, customElement, CSSResultArray, css} from 'lit-element';
+import {LitElement, html, TemplateResult, CSSResultArray, css} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import '@unicef-polymer/etools-upload/etools-upload.js';
-import '@polymer/paper-checkbox';
-import '@unicef-polymer/etools-dialog/etools-dialog.js';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
+import '@unicef-polymer/etools-unicef/src/etools-upload/etools-upload';
+import '@unicef-polymer/etools-unicef/src/etools-checkbox/etools-checkbox';
+import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {
@@ -33,14 +34,13 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
         etools-upload {
           margin-top: 14px;
         }
-        paper-checkbox {
+        etools-checkbox {
           display: block;
           margin-top: 18px;
         }
       `
     ];
   }
-  @property() dialogOpened = true;
   @property() savingInProcess = false;
   @property() data: Partial<ReviewAttachment> = {};
 
@@ -59,19 +59,10 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
   protected render(): TemplateResult {
     return html`
       ${sharedStyles}
-      <style>
-        etools-dialog::part(ed-scrollable) {
-          margin-top: 0 !important;
-        }
 
-        etools-dialog::part(ed-button-styles) {
-          margin-top: 0;
-        }
-      </style>
       <etools-dialog
         size="md"
         keep-dialog-open
-        ?opened="${this.dialogOpened}"
         dialog-title=${translate('ATTACHMENT')}
         @confirm-btn-clicked="${() => this.processRequest()}"
         @close="${this.onClose}"
@@ -118,12 +109,12 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
             @click="${() => this.resetFieldError('attachment_document', this)}"
           ></etools-upload>
 
-          <paper-checkbox
+          <etools-checkbox
             ?checked="${!this.data?.active}"
-            @checked-changed="${(e: CustomEvent) => this.updateField('active', !e.detail.value)}"
+            @sl-change="${(e: any) => this.updateField('active', !e.target.checked)}"
           >
             ${translate('INVALID')}
-          </paper-checkbox>
+          </etools-checkbox>
         </div>
       </etools-dialog>
     `;
@@ -180,11 +171,11 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
           type
         };
     const endpoint = id
-      ? getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.updatePdAttachment, {
+      ? getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.updatePdAttachment, {
           id: this.interventionId,
           attachment_id: id
         })
-      : getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.pdAttachments, {
+      : getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.pdAttachments, {
           id: this.interventionId
         });
     sendRequest({

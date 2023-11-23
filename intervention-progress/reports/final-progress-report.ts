@@ -1,9 +1,10 @@
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
-import {customElement, html, LitElement, property} from 'lit-element';
-import '@unicef-polymer/etools-content-panel/etools-content-panel.js';
+import {html, LitElement} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
+import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import {translate} from 'lit-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import '@polymer/paper-checkbox/paper-checkbox';
+import '@unicef-polymer/etools-unicef/src/etools-checkbox/etools-checkbox';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
@@ -15,7 +16,6 @@ import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {AsyncAction} from '@unicef-polymer/etools-types';
 import {patchIntervention} from '../../common/actions/interventions';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
-import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 
 /** Visible only when PD is in status Ended */
 @customElement('final-progress-report')
@@ -26,13 +26,8 @@ export class IndicatorReportTarget extends connectStore(ComponentBaseMixin(LitEl
   render() {
     return html`
       <style>
-        ${sharedStyles} ${buttonsStyles} .padding {
+        ${sharedStyles} .padding {
           padding: 35px 24px;
-        }
-        paper-checkbox[disabled] {
-          --paper-checkbox-checked-color: black;
-          --paper-checkbox-unchecked-color: black;
-          --paper-checkbox-label-color: black;
         }
       </style>
       <etools-content-panel
@@ -43,11 +38,11 @@ export class IndicatorReportTarget extends connectStore(ComponentBaseMixin(LitEl
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.permissions?.edit?.final_review_approved)}</div>
 
         <div class="padding">
-          <paper-checkbox
+          <etools-checkbox
             ?checked="${this.data.final_review_approved}"
             ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit.final_review_approved)}"
-            @checked-changed="${(e: CustomEvent) => this.valueChanged(e.detail, 'final_review_approved')}"
-            >${translate('FINAL_PROGRESS_REPORT_AND_REVIEW_WAS_APPROVED')}</paper-checkbox
+            @sl-change="${(e: any) => this.valueChanged({value: e.target.checked}, 'final_review_approved')}"
+            >${translate('FINAL_PROGRESS_REPORT_AND_REVIEW_WAS_APPROVED')}</etools-checkbox
           >
         </div>
 

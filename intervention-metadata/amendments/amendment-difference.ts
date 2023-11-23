@@ -1,4 +1,5 @@
-import {css, customElement, html, LitElement, property, TemplateResult} from 'lit-element';
+import {css, html, LitElement, TemplateResult} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {translate} from 'lit-translate';
 import {GenericObject, LabelAndValue} from '@unicef-polymer/etools-types';

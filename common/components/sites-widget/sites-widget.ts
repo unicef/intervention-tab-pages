@@ -1,14 +1,6 @@
-import {
-  CSSResultArray,
-  customElement,
-  html,
-  LitElement,
-  property,
-  PropertyValues,
-  query,
-  TemplateResult
-} from 'lit-element';
-import {repeat} from 'lit-html/directives/repeat';
+import {CSSResultArray, html, LitElement, PropertyValues, TemplateResult} from 'lit';
+import {customElement, property, query} from 'lit/decorators.js';
+import {repeat} from 'lit/directives/repeat.js';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {LatLngTuple} from 'leaflet';
 import {IMarker, MapHelper, defaultIcon, markedIcon, MarkerDataObj} from './map-mixin';
@@ -118,7 +110,7 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
         <div class="map-and-list">
           <div id="map"></div>
           <div class="list">
-            <paper-input
+            <etools-input
               class="search-input"
               type="search"
               .value="${this.locationSearch}"
@@ -126,8 +118,8 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
               placeholder="${translate('INTERVENTIONS_LIST.SEARCH_RECORDS')}"
               inline
             >
-              <iron-icon icon="search" slot="prefix"></iron-icon>
-            </paper-input>
+              <etools-icon name="search" slot="prefix"></etools-icon>
+            </etools-input>
 
             <div class="locations-list" tabindex="0">
               ${repeat(
@@ -139,14 +131,14 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
                     @keypress="${this.onSiteKeyPress}"
                     tabindex="-1"
                   >
-                    <div class="location-name" tabindex="0" @tap="${() => this.onSiteLineClick(site)}">
+                    <div class="location-name" tabindex="0" @click="${() => this.onSiteLineClick(site)}">
                       <b>${site.name}</b>
                     </div>
                     <div
                       class="deselect-btn"
                       id="deselect_btn_${site.id}"
                       tabindex="${this.isSiteSelected(site.id) ? 0 : -1}"
-                      @tap="${() => this.onRemoveSiteClick(site)}"
+                      @click="${() => this.onRemoveSiteClick(site)}"
                     >
                       <span>&#10008;</span>
                     </div>

@@ -1,20 +1,21 @@
-import {LitElement, html, customElement, property} from 'lit-element';
+import {LitElement, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
-import '@unicef-polymer/etools-date-time/datepicker-lite';
-import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
-import '@unicef-polymer/etools-content-panel/etools-content-panel';
+import '@unicef-polymer/etools-unicef/src/etools-date-time/datepicker-lite';
+import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
+import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {PartnerReportingRequirements, RootState} from '../../common/types/store.types';
 import {ProgrammeDocDates, InterventionDatesPermissions} from './interventionDates.models';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {selectInterventionDates, selectInterventionDatesPermissions} from './interventionDates.selectors';
-import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {patchIntervention} from '../../common/actions/interventions';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
-import '@unicef-polymer/etools-upload/etools-upload';
+import '@unicef-polymer/etools-unicef/src/etools-upload/etools-upload';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, EtoolsEndpoint, FrsDetails, Intervention, Permission} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
@@ -25,10 +26,9 @@ import UploadsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uplo
 import FrNumbersConsistencyMixin from '@unicef-polymer/etools-modules-common/dist/mixins/fr-numbers-consistency-mixin';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {customIcons} from '@unicef-polymer/etools-modules-common/dist/styles/custom-icons';
 import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/fr-warnings-styles';
 import pick from 'lodash-es/pick';
-import {EtoolsRequestEndpoint} from '@unicef-polymer/etools-ajax';
+import {RequestEndpoint} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 
 /**
  * @customElement
@@ -38,7 +38,7 @@ export class InterventionDates extends CommentsMixin(
   UploadsMixin(ComponentBaseMixin(FrNumbersConsistencyMixin(ReportingRequirementsCommonMixin(LitElement))))
 ) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles, frWarningsStyles];
+    return [gridLayoutStylesLit, frWarningsStyles];
   }
 
   render() {
@@ -48,7 +48,7 @@ export class InterventionDates extends CommentsMixin(
     }
     // language=HTML
     return html`
-      ${customIcons}${sharedStyles}
+      ${sharedStyles}
       <style>
         :host {
           display: block;
@@ -93,7 +93,7 @@ export class InterventionDates extends CommentsMixin(
                 @date-has-changed="${({detail}: CustomEvent) => this.dateHasChanged(detail, 'start')}"
               >
               </datepicker-lite>
-              <iron-icon icon="pmp-custom-icons:not-equal" slot="custom-icon"></iron-icon>
+              <etools-icon name="not-equal" slot="custom-icon"></etools-icon>
               <span slot="message">${this._frsStartConsistencyWarning}</span>
             </etools-info-tooltip>
           </div>
@@ -121,7 +121,7 @@ export class InterventionDates extends CommentsMixin(
                 @date-has-changed="${({detail}: CustomEvent) => this.dateHasChanged(detail, 'end')}"
               >
               </datepicker-lite>
-              <iron-icon icon="pmp-custom-icons:not-equal" slot="custom-icon"></iron-icon>
+              <etools-icon name="not-equal" slot="custom-icon"></etools-icon>
               <span slot="message">${this._frsEndConsistencyWarning}</span>
             </etools-info-tooltip>
           </div>
@@ -154,8 +154,7 @@ export class InterventionDates extends CommentsMixin(
   }
 
   @property({type: String})
-  uploadEndpoint: string = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.attachmentsUpload)
-    .url;
+  uploadEndpoint: string = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.attachmentsUpload).url;
 
   @property({type: Object})
   originalData!: ProgrammeDocDates;

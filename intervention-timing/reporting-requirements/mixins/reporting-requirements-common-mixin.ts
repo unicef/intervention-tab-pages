@@ -1,10 +1,11 @@
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import CONSTANTS from '../../../common/constants';
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {LitElement, property} from 'lit-element';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
+import {LitElement} from 'lit';
+import {property} from 'lit/decorators.js';
 import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {Constructor, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
@@ -13,7 +14,7 @@ import {updatePartnerReportingRequirements} from '../../../common/actions/interv
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 
 /**
- * @polymer
+ * @LitElement
  * @mixinFunction
  * @appliesMixin EndpointsMixin
  */
@@ -47,12 +48,12 @@ function ReportingRequirementsCommonMixin<T extends Constructor<LitElement>>(bas
 
     _getEndpointObj(id: number, type: string) {
       if (type === CONSTANTS.REQUIREMENTS_REPORT_TYPE.SPECIAL) {
-        return getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.specialReportingRequirements, {
+        return getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.specialReportingRequirements, {
           intervId: id
         });
       }
 
-      return getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.reportingRequirements, {
+      return getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.reportingRequirements, {
         intervId: id,
         reportType: type
       });

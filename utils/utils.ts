@@ -50,3 +50,7 @@ export function resetInvalidElement(event: any): void {
 export const detailsTextareaRowsCount = (editable: boolean) => {
   return editable ? 3 : 1;
 };
+
+export const isActiveTab = (tab: string, expectedTab: string): boolean => {
+  return tab === expectedTab;
+};

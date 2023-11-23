@@ -1,29 +1,30 @@
-import {LitElement, html, property, customElement} from 'lit-element';
-import '@polymer/paper-button/paper-button.js';
+import {LitElement, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 declare const dayjs: any;
-import '@unicef-polymer/etools-dialog/etools-dialog.js';
-import '@unicef-polymer/etools-data-table/etools-data-table';
-import '@unicef-polymer/etools-date-time/calendar-lite';
-import '@unicef-polymer/etools-date-time/datepicker-lite';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
+import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
+import '@unicef-polymer/etools-unicef/src/etools-date-time/calendar-lite';
+import '@unicef-polymer/etools-unicef/src/etools-date-time/datepicker-lite';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import './hru-list.js';
 import CONSTANTS from '../../../common/constants';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
-import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
+import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {AnyObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin.js';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit.js';
-import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles.js';
+
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit.js';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 
 /**
- * @polymer
+ * @LitElement
  * @customElement
  * @appliesMixin EndpointsMixin
  */
@@ -31,7 +32,7 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 @customElement('edit-hru-dialog')
 export class EditHruDialog extends connectStore(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [gridLayoutStylesLit];
   }
   render() {
     return html`
@@ -68,7 +69,6 @@ export class EditHruDialog extends connectStore(LitElement) {
         @confirm-btn-clicked="${this._saveHurData}"
         ok-btn-text=${translate('GENERAL.SAVE')}
         keep-dialog-open
-        opened
         ?hidden="${this.datePickerOpen}"
         @close="${() => this._onClose()}"
         spinner-text=${translate('GENERAL.SAVING_DATA')}
@@ -97,7 +97,7 @@ export class EditHruDialog extends connectStore(LitElement) {
             <calendar-lite
               id="datepicker"
               min-date="${this.repStartDate}"
-              pretty-date="${this.selectedDate ? this.selectedDate : ''}"
+              .date="${this.selectedDate ? this.selectedDate : ''}"
               @date-changed="${({detail}: CustomEvent) => this.changed(detail.value)}"
               format="YYYY-MM-DD"
               hide-header
@@ -120,9 +120,14 @@ export class EditHruDialog extends connectStore(LitElement) {
         </div>
         <div class="layout-horizontal row-padding-v">
           <div class="col layout-vertical col-3">
-            <paper-button id="add-selected-date" class="secondary-btn" @click="${() => this._addToList()}">
+            <etools-button
+              variant="text"
+              class="no-marg no-pad font-14"
+              id="add-selected-date"
+              @click="${() => this._addToList()}"
+            >
               ${translate('ADD_SELECTED_DATE')}
-            </paper-button>
+            </etools-button>
           </div>
         </div>
       </etools-dialog>
@@ -251,11 +256,11 @@ export class EditHruDialog extends connectStore(LitElement) {
 
   _saveHurData() {
     this.updateStartDates(this.repStartDate);
-    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.reportingRequirements, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.reportingRequirements, {
       intervId: this.interventionId,
       reportType: CONSTANTS.REQUIREMENTS_REPORT_TYPE.HR
     });
-    const dialog = this.shadowRoot!.querySelector(`#editHruDialog`) as EtoolsDialog;
+    const dialog = this.shadowRoot!.querySelector(`#editHruDialog`) as unknown as EtoolsDialog;
     dialog.startSpinner();
     sendRequest({
       method: 'POST',

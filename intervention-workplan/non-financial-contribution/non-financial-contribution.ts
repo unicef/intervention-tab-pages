@@ -1,10 +1,10 @@
-import {LitElement, html, customElement, property} from 'lit-element';
-import '@polymer/paper-button/paper-button';
-import '@polymer/paper-icon-button/paper-icon-button';
-import '@polymer/paper-input/paper-textarea';
-import '@unicef-polymer/etools-loading/etools-loading';
-import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import {LitElement, html} from 'lit';
+import {property, customElement} from 'lit/decorators.js';
+
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
+import '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading';
+import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
+
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {
@@ -23,7 +23,7 @@ import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
-import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
+import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
 import {detailsTextareaRowsCount} from '../../utils/utils';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 
@@ -33,7 +33,7 @@ import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 @customElement('non-financial-contribution')
 export class NonFinancialContributionElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [gridLayoutStylesLit];
   }
 
   render() {
@@ -71,7 +71,7 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
 
         <div class="row-padding-v">
           <div>
-            <label class="paper-label">${translate(translatesMap.ip_program_contribution)}</label>
+            <label class="label">${translate(translatesMap.ip_program_contribution)}</label>
             <info-icon-tooltip
               id="iit-non-fin"
               slot="after-label"
@@ -79,7 +79,7 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
               .tooltipText="${translate('PARTNER_NON_FINANCIAL_CONTRIBUTION_TOOLTIP')}"
             ></info-icon-tooltip>
           </div>
-          <paper-textarea
+          <etools-textarea
             class="w100"
             id="ip_program_contribution"
             no-label-float
@@ -92,7 +92,7 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
             rows="${detailsTextareaRowsCount(this.editMode)}"
             .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.ip_program_contribution)}"
           >
-          </paper-textarea>
+          </etools-textarea>
         </div>
 
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}

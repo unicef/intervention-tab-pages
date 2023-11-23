@@ -1,6 +1,7 @@
-import {LitElement, customElement, html, property} from 'lit-element';
-import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
+import {LitElement, html} from 'lit';
+import {property, customElement} from 'lit/decorators.js';
+import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
+import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
@@ -13,7 +14,7 @@ import get from 'lodash-es/get';
 import {InfoElementStyles} from '@unicef-polymer/etools-modules-common/dist/styles/info-element-styles';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {translate} from 'lit-translate';
-import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
+import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
 import {getPageDirection} from '../../utils/utils';
 import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 
@@ -38,70 +39,70 @@ export class TimingOverview extends CommentsMixin(LitElement) {
       <section class="elevation" elevation="1" comment-element="timing-overview">
         <div class="table not-allowed">
           <div class="data-column">
-            <label class="paper-label">${translate('DATE_CREATED')}</label>
+            <label class="label">${translate('DATE_CREATED')}</label>
             <div class="input-label" ?empty="${!this.timingOverview.created}">
               ${formatDateLocalized(this.timingOverview.created)}
             </div>
           </div>
 
           <div class="data-column">
-            <label class="paper-label">${translate('DATE_FIRST_SENT_PARTNER')}</label>
+            <label class="label">${translate('DATE_FIRST_SENT_PARTNER')}</label>
             <div class="input-label" ?empty="${!this.timingOverview.date_sent_to_partner}">
               ${formatDateLocalized(this.timingOverview.date_sent_to_partner)}
             </div>
           </div>
 
           <div class="data-column">
-            <label class="paper-label">${translate('DATE_FIRST_DRAFT_PARTNER')}</label>
+            <label class="label">${translate('DATE_FIRST_DRAFT_PARTNER')}</label>
             <div class="input-label" ?empty="${!this.timingOverview.submission_date}">
               ${formatDateLocalized(this.timingOverview.submission_date)}
             </div>
           </div>
 
           <div class="data-column">
-            <label class="paper-label">${translate('PRC_SUBMISSION_DATE')}</label>
+            <label class="label">${translate('PRC_SUBMISSION_DATE')}</label>
             <div class="input-label" ?empty="${!this.timingOverview.submission_date_prc}">
               ${formatDateLocalized(this.timingOverview.submission_date_prc)}
             </div>
           </div>
 
           <div class="data-column">
-            <label class="paper-label">${translate('PRC_REVIEW_DATE')}</label>
+            <label class="label">${translate('PRC_REVIEW_DATE')}</label>
             <div class="input-label" ?empty="${!this.timingOverview.review_date_prc}">
               ${formatDateLocalized(this.timingOverview.review_date_prc)}
             </div>
           </div>
 
           <div class="data-column">
-            <label class="paper-label">${translate('DATE_PARTNER_SIGNED')}</label>
+            <label class="label">${translate('DATE_PARTNER_SIGNED')}</label>
             <div class="input-label" ?empty="${!this.timingOverview.signed_by_partner_date}">
               ${formatDateLocalized(this.timingOverview.signed_by_partner_date)}
             </div>
           </div>
 
           <div class="data-column">
-            <label class="paper-label">${translate('DATE_UNICEF_SIGNED')}</label>
+            <label class="label">${translate('DATE_UNICEF_SIGNED')}</label>
             <div class="input-label" ?empty="${!this.timingOverview.signed_by_unicef_date}">
               ${formatDateLocalized(this.timingOverview.signed_by_unicef_date)}
             </div>
           </div>
 
           <div class="data-column">
-            <label class="paper-label">${translate('DATE_LAST_AMENDED')}</label>
+            <label class="label">${translate('DATE_LAST_AMENDED')}</label>
             <div class="input-label" ?empty="${!this.timingOverview.date_last_amended}">
               ${formatDateLocalized(this.timingOverview.date_last_amended)}
             </div>
           </div>
 
           <div class="data-column">
-            <label class="paper-label">${translate('DAYS_SUBMISSION_SIGNED')}</label>
+            <label class="label">${translate('DAYS_SUBMISSION_SIGNED')}</label>
             <div class="input-label" ?empty="${!this.timingOverview.days_from_submission_to_signed}">
               ${translateValue(this.timingOverview.days_from_submission_to_signed)}
             </div>
           </div>
 
           <div class="data-column">
-            <label class="paper-label">${translate('DAYS_REVIEW_SIGNED')}</label>
+            <label class="label">${translate('DAYS_REVIEW_SIGNED')}</label>
             <div class="input-label" ?empty="${!this.timingOverview.days_from_review_to_signed}">
               ${translateValue(this.timingOverview.days_from_review_to_signed)}
             </div>

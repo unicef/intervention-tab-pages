@@ -1,4 +1,5 @@
-import {LitElement, html, CSSResult, css, customElement, TemplateResult, property} from 'lit-element';
+import {LitElement, html, CSSResult, css, TemplateResult} from 'lit';
+import {property, customElement} from 'lit/decorators.js';
 
 @customElement('workplan-editor-link')
 export class WorkplanEditorLink extends LitElement {

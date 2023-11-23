@@ -1,4 +1,5 @@
-import {LitElement, customElement, html, property, CSSResult, css} from 'lit-element';
+import {LitElement, html, CSSResult, css} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {RootState} from '../common/types/store.types';
 import {InterventionReview, User} from '@unicef-polymer/etools-types';

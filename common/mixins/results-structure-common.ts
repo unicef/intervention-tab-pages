@@ -1,8 +1,8 @@
 import {AsyncAction} from '@unicef-polymer/etools-types/dist/global.types';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {getIntervention} from '../actions/interventions';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax';
-import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
+import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
@@ -23,7 +23,7 @@ function deactivateActivity(activityId: number, pdOutputId: number, intervention
     active: true,
     loadingSource: 'interv-activity-deactivate'
   });
-  const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.pdActivityDetails, {
+  const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.pdActivityDetails, {
     activityId: activityId,
     interventionId: interventionId,
     pdOutputId: pdOutputId
@@ -55,7 +55,7 @@ function deleteActivity(activityId: number, pdOutputId: number, interventionId: 
     loadingSource: 'interv-activity-remove'
   });
 
-  const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.pdActivityDetails, {
+  const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.pdActivityDetails, {
     activityId: activityId,
     interventionId: interventionId,
     pdOutputId: pdOutputId

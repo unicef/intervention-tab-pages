@@ -1,17 +1,18 @@
-import {LitElement, html, property, customElement} from 'lit-element';
-import '@polymer/paper-input/paper-input';
-import '@unicef-polymer/etools-dialog/etools-dialog.js';
-import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
-import '@unicef-polymer/etools-upload/etools-upload';
-import '@unicef-polymer/etools-date-time/datepicker-lite';
+import {LitElement, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
+import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
+import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown-multi.js';
+import '@unicef-polymer/etools-unicef/src/etools-upload/etools-upload';
+import '@unicef-polymer/etools-unicef/src/etools-date-time/datepicker-lite';
 import '@unicef-polymer/etools-modules-common/dist/layout/etools-warn-message';
-import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {AnyObject, EtoolsEndpoint, InterventionAmendment, LabelAndValue} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
@@ -27,12 +28,12 @@ import {resetInvalidElement} from '../../utils/utils';
 @customElement('add-amendment-dialog')
 export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [gridLayoutStylesLit];
   }
   render() {
     return html`${sharedStyles}
       <style>
-        paper-input#other {
+        etools-input#other {
           width: 100%;
         }
         .row-h {
@@ -47,7 +48,6 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
         keep-dialog-open
         id="add-amendment"
         size="md"
-        ?opened="${this.dialogOpened}"
         ok-btn-text="${translate('GENERAL.SAVE')}"
         dialog-title=${translate('ADD_AMENDMENT')}
         @close="${() => this.onClose()}"
@@ -82,7 +82,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
         </div>
         </div>
         <div class="row-h" ?hidden="${!this.showOtherInput}">
-          <paper-input
+          <etools-input
             id="other"
             placeholder="&#8212;"
             label="${translate('OTHER')}"
@@ -94,13 +94,11 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'other_description')}"
             @focus="${(event: any) => resetInvalidElement(event)}"
           >
-          </paper-input>
+          </etools-input>
         </div>
       </etools-dialog>
     `;
   }
-
-  @property({type: Boolean}) dialogOpened = true;
 
   @property({type: Boolean}) savingInProcess = false;
 
@@ -202,7 +200,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
   _saveAmendment(newAmendment: Partial<InterventionAmendment>) {
     const options = {
       method: 'POST',
-      endpoint: getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.interventionAmendmentAdd, {
+      endpoint: getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.interventionAmendmentAdd, {
         intervId: this.intervention.id
       }),
       body: {

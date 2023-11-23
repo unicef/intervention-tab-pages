@@ -1,6 +1,6 @@
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {PrcOfficerReview} from '@unicef-polymer/etools-types';
 
 export const SET_REVIEWS = 'SET_REVIEWS';

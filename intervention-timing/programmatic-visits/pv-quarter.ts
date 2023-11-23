@@ -1,31 +1,31 @@
-import '@polymer/paper-icon-button/paper-icon-button';
-import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {AnyObject, PlannedVisit, Site} from '@unicef-polymer/etools-types';
-import {css, customElement, html, LitElement, property} from 'lit-element';
+import {css, html, LitElement} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import {langChanged, translate} from 'lit-translate';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 declare const dayjs: any;
 
 @customElement('pv-quarter')
 export class PvQuarter extends LitElement {
   static get styles() {
     return [
-      buttonsStyles,
       gridLayoutStylesLit,
       css`
-        iron-icon#x {
-          width: 16px;
+        etools-icon#x {
+          --etools-icon-font-size: 16px;
           color: var(--icon-delete-color);
           cursor: pointer;
         }
-        iron-icon#x:hover {
+        etools-icon#x:hover {
           color: #b70202;
         }
-        iron-icon[icon='add'] {
-          width: 15px;
+        etools-icon-button[name='add'] {
+          --etools-icon-font-size: 15px;
         }
       `
     ];
@@ -61,21 +61,19 @@ export class PvQuarter extends LitElement {
         .visits {
           padding-bottom: 12px;
         }
-        .secondary-btn {
-          font-size: 12px !important;
+        .sel-site-btn {
+          --sl-button-font-size-medium: 12px !important;
           margin-bottom: 32px !important;
         }
 
-        paper-icon-button.light {
+        etools-icon-button.light {
           color: #979797;
         }
-        paper-icon-button[readonly] {
+        etools-icon-button[readonly] {
           color: #d3d1d1;
           pointer-events: none;
         }
-        paper-icon-button {
-          --paper-icon-button_-_width: 38px;
-        }
+
         .sites-display {
           padding-inline-start: 8px;
         }
@@ -87,46 +85,47 @@ export class PvQuarter extends LitElement {
         </div>
 
         <div class="layout-horizontal align-items-center visits">
-          <paper-icon-button
+          <etools-icon-button
             id="subtractBtn"
             class="light"
-            icon="remove-circle"
+            name="remove-circle"
             ?hidden="${this.readonly}"
-            @tap="${this.subtractClicked}"
-          ></paper-icon-button>
+            @click="${this.subtractClicked}"
+          ></etools-icon-button>
           <div class="visit-no">${this.item[`programmatic_q${this.qIndex}`]}</div>
-          <paper-icon-button
+          <etools-icon-button
             id="addBtn"
             class="light"
-            icon="add-circle"
+            name="add-circle"
             ?hidden="${this.readonly}"
-            @tap="${this.addClicked}"
-          ></paper-icon-button>
+            @click="${this.addClicked}"
+          ></etools-icon-button>
         </div>
 
         <div class="sites-display" ?hidden="${!this.item[`programmatic_q${this.qIndex}_sites`].length}">
-          <label class="paper-label">${translate('SITES')}</label>
+          <label class="label">${translate('SITES')}</label>
           ${this.item[`programmatic_q${this.qIndex}_sites`].map((s: any) => {
             return html`<div style="padding-bottom: 7px;">
-              <iron-icon
+              <etools-icon
                 id="x"
-                icon="close"
+                name="close"
                 ?hidden="${this.readonly}"
                 @click="${() => this.onRemoveSite(s.id)}"
-              ></iron-icon>
+              ></etools-icon>
               ${s.name}
             </div>`;
           })}
         </div>
-        <paper-button
-          class="secondary-btn"
+        <etools-button
+          variant="text"
+          class="no-marg no-pad sel-site-btn"
           @click="${() => this.openSitesDialog()}"
           ?hidden="${this.readonly || !this.item[`programmatic_q${this.qIndex}`]}"
           title=${translate('SELECT_SITE_FROM_MAP')}
         >
-          <iron-icon icon="add"></iron-icon>
+          <etools-icon name="add"></etools-icon>
           ${translate('SELECT_SITE_FROM_MAP')}
-        </paper-button>
+        </etools-button>
       </div>
     `;
   }

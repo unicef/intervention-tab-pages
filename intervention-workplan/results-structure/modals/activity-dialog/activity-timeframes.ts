@@ -1,13 +1,5 @@
-import {
-  LitElement,
-  html,
-  TemplateResult,
-  CSSResultArray,
-  css,
-  property,
-  customElement,
-  PropertyValues
-} from 'lit-element';
+import {LitElement, html, TemplateResult, CSSResultArray, css, PropertyValues} from 'lit';
+import {property, customElement} from 'lit/decorators.js';
 import {ActivityTime, groupByYear, serializeTimeFrameData} from '../../../../utils/timeframes.helper';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {InterventionActivityTimeframe} from '@unicef-polymer/etools-types';
@@ -120,7 +112,7 @@ export class ActivityTimeFrames extends LitElement {
 
   protected render(): TemplateResult {
     return html`
-      <label class="paper-label layout-horizontal center-align" required ?hidden="${this.hideLabel}">
+      <label class="label layout-horizontal center-align" required ?hidden="${this.hideLabel}">
         ${translate('ACTIVITY_TIMES')}
       </label>
       <div class="layout-horizontal center-align time-frame-container">

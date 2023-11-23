@@ -1,4 +1,5 @@
-import {customElement, html, TemplateResult, css, CSSResultArray, query, property} from 'lit-element';
+import {html, TemplateResult, css} from 'lit';
+import {customElement, query, property} from 'lit/decorators.js';
 import {CommentPanelsStyles} from '../common-comments.styles';
 import './messages-panel-header';
 import './message-item';
@@ -6,6 +7,7 @@ import {translate} from 'lit-translate';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {EditComments} from '../../comments/edit-comments-base';
 import {CommentRelatedItem} from '../../comments/comments-types';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 
 @customElement('messages-panel')
 export class MessagesPanel extends EditComments {
@@ -17,20 +19,14 @@ export class MessagesPanel extends EditComments {
     if (!collectionId) {
       return;
     }
-    this.requestUpdate().then(() => this.scrollDown());
+    this.updateComplete.then(() => this.scrollDown());
   }
   protected render(): TemplateResult {
     return html`
       <style>
-        etools-dialog::part(ed-scrollable) {
-          margin-top: 0 !important;
-        }
-        paper-textarea {
-          outline: none;
-          flex: auto;
-          --paper-input-container-input: {
-            display: block;
-          }
+        etools-textarea::part(textarea) {
+          max-height: 96px;
+          overflow-y: auto;
         }
       </style>
       <messages-panel-header
@@ -54,7 +50,7 @@ export class MessagesPanel extends EditComments {
         </div>
 
         <div class="message-input">
-          <paper-textarea
+          <etools-textarea
             max-rows="3"
             no-label-float
             placeholder="${translate('GENERAL.ENTER_MESSAGE_HERE')}"
@@ -65,8 +61,10 @@ export class MessagesPanel extends EditComments {
             }}"
             @keyup="${(event: KeyboardEvent) => this.onKeyup(event)}"
             @keydown="${(event: KeyboardEvent) => this.onKeydown(event)}"
-          ></paper-textarea>
-          <paper-button class="send-btn" @click="${() => this.addComment()}">${translate('POST')}</paper-button>
+          ></etools-textarea>
+          <etools-button variant="primary" class="send-btn" @click="${() => this.addComment()}"
+            >${translate('POST')}</etools-button
+          >
         </div>
       </div>
     `;
@@ -79,7 +77,7 @@ export class MessagesPanel extends EditComments {
     this.container.scrollTop = this.container.scrollHeight;
   }
 
-  static get styles(): CSSResultArray {
+  static get styles() {
     // language=css
     return [
       gridLayoutStylesLit,
@@ -129,11 +127,8 @@ export class MessagesPanel extends EditComments {
           margin-bottom: 0;
         }
         .send-btn {
-          background: #009688;
-          height: 36px;
-          margin-bottom: 7px;
-          color: #ffffff;
-          margin-inline-start: 8px !important;
+          --sl-color-primary-600: #009688;
+          margin: 0 4px 7px 8px !important;
         }
       `
     ];

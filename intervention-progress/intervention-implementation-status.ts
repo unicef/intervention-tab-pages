@@ -1,6 +1,7 @@
 import {Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
-import {customElement, html, LitElement, property} from 'lit-element';
-import '@unicef-polymer/etools-content-panel/etools-content-panel.js';
+import {html, LitElement} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
+import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import {translate} from 'lit-translate';
 import get from 'lodash-es/get';
 import {RootState} from '../common/types/store.types';
@@ -38,12 +39,7 @@ export class InterventionImplementationStatus extends connectStore(LitElement) {
 
   stateChanged(state: RootState) {
     if (
-      EtoolsRouter.pageIsNotCurrentlyActive(
-        get(state, 'app.routeDetails'),
-        'interventions',
-        TABS.Progress,
-        TABS.ImplementationStatus
-      )
+      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.ImplementationStatus)
     ) {
       return;
     }

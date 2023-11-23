@@ -1,5 +1,6 @@
-import {LitElement, html, property, customElement} from 'lit-element';
-import '@unicef-polymer/etools-data-table/etools-data-table.js';
+import {LitElement, html} from 'lit';
+import {property, customElement} from 'lit/decorators.js';
+import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table.js';
 import '../mixins/reporting-req-past-dates-check';
 import '../styles/reporting-requirements-lists-styles';
 import ReportingReqPastDatesCheckMixin from '../mixins/reporting-req-past-dates-check';
@@ -7,15 +8,16 @@ import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-c
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
-import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
+import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-table/styles/data-table-styles';
 import {translate, get as getTranslation} from 'lit-translate';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import PaginationMixin from '@unicef-polymer/etools-modules-common/dist/mixins/pagination-mixin';
 import {formatDateLocalized} from '@unicef-polymer/etools-modules-common/dist/utils/language';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 /**
- * @polymer
+ * @LitElement
  * @customElement
  * @appliesMixin ReportingRequirementsCommonMixin
  * @appliesMixin ReportingReqPastDatesCheckMixin
@@ -55,16 +57,16 @@ export class QprList extends PaginationMixin(
                 <div class="col-data col-3">${formatDateLocalized(item.end_date)}</div>
                 <div class="col-data col-3">${formatDateLocalized(item.due_date)}</div>
                 <div class="col-data flex-c actions">
-                  <paper-icon-button
-                    icon="icons:create"
+                  <etools-icon-button
+                    name="create"
                     @click="${() => this._editQprReq(index)}"
                     ?hidden="${!this.editMode}"
-                  ></paper-icon-button>
-                  <paper-icon-button
-                    icon="icons:delete"
+                  ></etools-icon-button>
+                  <etools-icon-button
+                    name="delete"
                     ?hidden="${!this.editMode}"
                     @click="${() => this._deleteQprReq(index)}"
-                  ></paper-icon-button>
+                  ></etools-icon-button>
                 </div>
               </div>
             </etools-data-table-row>

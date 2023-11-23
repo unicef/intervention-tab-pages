@@ -1,4 +1,4 @@
-import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 
 export function getTotalCash(csoCash: number | string, unicefCash: number | string): number {
   return Number(((Number(csoCash) || 0) + (Number(unicefCash) || 0)).toFixed(2));

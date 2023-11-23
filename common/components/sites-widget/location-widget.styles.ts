@@ -1,4 +1,4 @@
-import {css, CSSResult} from 'lit-element';
+import {css, CSSResult} from 'lit';
 
 // language=CSS
 export const LocationWidgetStyles: CSSResult = css`
@@ -46,10 +46,6 @@ export const LocationWidgetStyles: CSSResult = css`
     height: calc(100% - 43px);
     position: relative;
     overflow-y: auto;
-  }
-
-  .widget-container .map-and-list .list paper-input {
-    margin-top: -20px;
   }
 
   .site-line,

@@ -1,4 +1,4 @@
-import {html} from 'lit-element';
+import {html} from 'lit';
 
 // language=html
 export const AttachmentsListStyles = html`
@@ -15,7 +15,7 @@ export const AttachmentsListStyles = html`
     .attachment {
       margin-inline-end: 8px;
     }
-    iron-icon {
+    etools-icon {
       color: var(--dark-icon-color);
     }
     icons-actions {
@@ -41,8 +41,7 @@ export const AttachmentsListStyles = html`
     etools-data-table-header {
       --list-header-wrapper-column-height: 48px;
     }
-    paper-icon-button[icon='add-box'] {
-      color: var(--primary-text-color);
+    etools-icon-button[name='add-box'] {
       margin-inline-start: 20px;
     }
   </style>
