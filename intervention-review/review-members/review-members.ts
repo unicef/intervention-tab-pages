@@ -18,6 +18,7 @@ import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
 import {PRC_REVIEW} from '../../common/components/intervention/review.const';
+import {addItemToListIfMissing} from '../../utils/utils';
 
 @customElement('review-members')
 export class ReviewMembers extends ComponentBaseMixin(LitElement) {
@@ -55,8 +56,15 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
   @property() set review(review: InterventionReview) {
     this.originalData = review;
     this.data = cloneDeep(review);
+    addItemToListIfMissing(this.data?.overall_approver, this.users, 'id');
   }
-  @property() usersList: User[] = [];
+
+  users!: User[];
+
+  @property() set usersList(users: User[]) {
+    this.users = users;
+    addItemToListIfMissing(this.data?.overall_approver, this.users, 'id');
+  }
 
   get showNotifyButton(): boolean {
     return this.canEditAtLeastOneField && !this.editMode && this.data?.meeting_date && this.data?.prc_officers?.length;
@@ -86,12 +94,12 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
             <etools-dropdown-multi
               label=${translate('REVIEWERS')}
               placeholder="&#8212;"
-              .options="${this.usersList}"
+              .options="${this.users}"
               .selectedValues="${this.data?.prc_officers}"
               ?readonly="${this.isReadonly(this.editMode, this.canEditAtLeastOneField)}"
               option-label="name"
               option-value="id"
-              ?trigger-value-change-event="${this.usersList.length}"
+              ?trigger-value-change-event="${this.users.length}"
               @etools-selected-items-changed="${({detail}: CustomEvent) => {
                 this.selectedItemsChanged(detail, 'prc_officers', 'id');
               }}"
@@ -106,12 +114,12 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
               class="col-4"
               label=${translate('OVERALL_APPROVER')}
               placeholder="&#8212;"
-              .options="${this.usersList}"
+              .options="${this.users}"
               .selected="${this.data?.overall_approver?.id}"
               ?readonly="${this.isReadonly(this.editMode, this.canEditAtLeastOneField)}"
               option-label="name"
               option-value="id"
-              ?trigger-value-change-event="${this.usersList.length}"
+              ?trigger-value-change-event="${this.users.length}"
               @etools-selected-item-changed="${({detail}: CustomEvent) => {
                 this.selectedUserChanged(detail, 'overall_approver');
               }}"
