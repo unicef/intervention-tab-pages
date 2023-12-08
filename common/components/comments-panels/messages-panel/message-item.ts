@@ -4,7 +4,6 @@ import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {translate} from 'lit-translate';
 import {formatDateLocalized} from '@unicef-polymer/etools-modules-common/dist/utils/language';
-declare const dayjs: any;
 
 @customElement('message-item')
 export class MessageItem extends LitElement {
