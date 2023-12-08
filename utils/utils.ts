@@ -1,3 +1,5 @@
+import {AnyObject} from '@unicef-polymer/etools-types';
+
 export const removeCurrencyAmountDelimiter = (value: any) => {
   if (!value && value != 0) {
     return '';
@@ -50,3 +52,11 @@ export function resetInvalidElement(event: any): void {
 export const detailsTextareaRowsCount = (editable: boolean) => {
   return editable ? 3 : 1;
 };
+
+export const addItemToListIfMissing = (item: AnyObject, list: AnyObject[], key: string) => {
+  if(item && list && key) {
+    if(!list.find((el) => el[key] === item[key])) {
+      list.push(item);
+    }
+  }
+}
