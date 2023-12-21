@@ -55,6 +55,7 @@
   "AMENDMENTS_DESCRIPTION": "Поправки к интервенции",
   "AMENDMENT_MERGE": "Объединение поправок",
   "AMENDMENT_MERGE_PROMPT": "Вы уверены, что хотите объединить поправки?",
+  "AMENDMENT_MERGE_MESSAGE": "Это может занять некоторое время. Пожалуйста, будьте терпеливы",
   "AMENDMENT_MODE_TEXT": "Этот ПД под правкой. Смотрите",
   "AMENDMENT_TYPES": "Типы поправок",
   "AMENDMENT_TYPES_ITEMS": {
