@@ -58,9 +58,9 @@ export const isActiveTab = (tab: string, expectedTab: string): boolean => {
 };
 
 export const addItemToListIfMissing = (item: AnyObject, list: AnyObject[], key: string) => {
-  if(item && list && key) {
-    if(!list.find((el) => el[key] === item[key])) {
+  if (item && list && key) {
+    if (!list.find((el) => el[key] === item[key])) {
       list.push(item);
     }
   }
-}
+};
