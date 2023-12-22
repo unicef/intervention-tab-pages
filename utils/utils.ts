@@ -1,3 +1,5 @@
+import {AnyObject} from '@unicef-polymer/etools-types';
+
 export const removeCurrencyAmountDelimiter = (value: any) => {
   if (!value && value != 0) {
     return '';
@@ -54,3 +56,11 @@ export const detailsTextareaRowsCount = (editable: boolean) => {
 export const isActiveTab = (tab: string, expectedTab: string): boolean => {
   return tab === expectedTab;
 };
+
+export const addItemToListIfMissing = (item: AnyObject, list: AnyObject[], key: string) => {
+  if(item && list && key) {
+    if(!list.find((el) => el[key] === item[key])) {
+      list.push(item);
+    }
+  }
+}

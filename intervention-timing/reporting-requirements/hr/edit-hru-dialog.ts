@@ -19,9 +19,9 @@ import {AnyObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin.js';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit.js';
-
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit.js';
 import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
+import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 
 /**
  * @LitElement
@@ -255,6 +255,10 @@ export class EditHruDialog extends connectStore(LitElement) {
   }
 
   _saveHurData() {
+    if (!this.validate()) {
+      return;
+    }
+
     this.updateStartDates(this.repStartDate);
     const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.reportingRequirements, {
       intervId: this.interventionId,
@@ -276,6 +280,10 @@ export class EditHruDialog extends connectStore(LitElement) {
         parseRequestErrorsAndShowAsToastMsgs(error, this);
         dialog.stopSpinner();
       });
+  }
+
+  validate() {
+    return validateRequiredFields(this);
   }
 
   changed(value: string) {

@@ -56,6 +56,7 @@
   "AMENDMENT_MERGE": "Mesclar Aditivo",
   "AMENDMENT_MERGE_PROMPT": "Tem certeza de que deseja mesclar aditivo?",
   "AMENDMENT_MODE_TEXT": "Este PD é um aditivo. Ver",
+  "AMENDMENT_MERGE_MESSAGE": "Isto pode demorar algum tempo. Por favor, seja paciente",
   "AMENDMENT_TYPES": "Tipos de aditivo.",
   "AMENDMENT_TYPES_ITEMS": {
     "TYPE_1:_ADMINISTRATIVE_ERROR_(CORRECTION)": "Tipo 1: Erro administrativo (correção)",
