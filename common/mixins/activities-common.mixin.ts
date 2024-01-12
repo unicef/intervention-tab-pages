@@ -5,19 +5,23 @@ import {getItemTotal} from '../components/activity/get-total.helper';
 
 export function ActivitiesCommonMixin<T extends Constructor<LitElement>>(baseClass: T) {
   return class ActivitiesCommonClass extends ModelChangedMixin(baseClass) {
+    // @ts-ignore
+    @property({type: Boolean})
+    hasUnfundedCash!: boolean;
+
     cashFieldChanged(
       detail: {value: any},
-      field: 'unicef_cash' | 'cso_cash',
-      item: Partial<InterventionActivityItem>
+      field: 'unicef_cash' | 'cso_cash' | 'unfunded_cash',
+      item: Partial<InterventionActivityItem>,
+      setSecondCashField = true
     ): void {
       this.numberChanged(detail, field, item);
-      if (!item.unit_price || !item.no_units) {
-        return;
-      }
-      const secondCashField = field === 'unicef_cash' ? 'cso_cash' : 'unicef_cash';
       const total = getItemTotal(item);
-      const value = Number(Math.max(0, total - detail.value).toFixed(2)); // in js 12019.15-11130 = 889.1499999999996
-      this.numberChanged({value}, secondCashField, item);
+      if (setSecondCashField) {
+        const secondCashField = field === 'unicef_cash' ? 'cso_cash' : 'unicef_cash';
+        const value = Number(Math.max(0, total - detail.value).toFixed(2)); // in js 12019.15-11130 = 889.1499999999996
+        this.numberChanged({value}, secondCashField, item);
+      }
     }
 
     activityItemInvalidChanged(detail: {value: any}, field: string, item: any) {
@@ -65,22 +69,22 @@ export function ActivitiesCommonMixin<T extends Constructor<LitElement>>(baseCla
     }
 
     validateCsoAndUnicefCashForItem(item: any) {
-      if (Number(item.no_units) == 0 || Number(item.unit_price) == 0) {
-        return;
-      }
-
       let total = (Number(item.no_units) || 0) * (Number(item.unit_price) || 0);
       total = Number(total.toFixed(2));
-      let sum = (Number(item.cso_cash) || 0) + (Number(item.unicef_cash) || 0);
+      let sum =
+        (Number(item.cso_cash) || 0) +
+        (Number(item.unicef_cash) || 0) +
+        (this.hasUnfundedCash ? Number(item.unfunded_cash) || 0 : 0);
       sum = Number(sum.toFixed(2));
       if (total != sum) {
-        item.invalid = {...item.invalid, ...{cso_cash: true, unicef_cash: true}};
+        item.invalid = {...item.invalid, ...{cso_cash: true, unicef_cash: true, unfunded_cash: true}};
       } else {
         item.invalid = {
           ...item.invalid,
           ...{
             cso_cash: item.cso_cash === null || item.cso_cash === undefined || isNaN(item.cso_cash),
-            unicef_cash: item.unicef_cash === null || item.unicef_cash === undefined || isNaN(item.unicef_cash)
+            unicef_cash: item.unicef_cash === null || item.unicef_cash === undefined || isNaN(item.unicef_cash),
+            unfunded_cash: item.unfunded_cash === null || item.unfunded_cash === undefined || isNaN(item.unfunded_cash)
           }
         };
       }
@@ -98,7 +102,8 @@ export function ActivitiesCommonMixin<T extends Constructor<LitElement>>(baseCla
           no_units: false,
           unit_price: false,
           cso_cash: false,
-          unicef_cash: false
+          unicef_cash: false,
+          unfunded_cash: false
         };
       });
     }
@@ -119,6 +124,11 @@ export function ActivitiesCommonMixin<T extends Constructor<LitElement>>(baseCla
       activity.unicef_cash = String(
         activity.items.reduce((sum: number, item: {unicef_cash: any}) => sum + Number(item.unicef_cash), 0)
       );
+      if (this.hasUnfundedCash) {
+        activity.unfunded_cash = String(
+          activity.items.reduce((sum: number, item: {unfunded_cash: any}) => sum + Number(item.unfunded_cash), 0)
+        );
+      }
     }
   };
 }

@@ -140,6 +140,19 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
                     auto-validate
                   >
                   </etools-currency-amount-input>
+
+                  <etools-currency-amount-input
+                    class="col-3"
+                    id="unfundedCash"
+                    ?hidden="${!this.hasUnfundedCash}"
+                    label=${translate('UNFUNDED_CASH')}
+                     .value="${this.data[this.getPropertyName('unfunded')]}"
+                     @value-changed="${({detail}: CustomEvent) =>
+                       this.valueChanged(detail, this.getPropertyName('unfunded'))}"
+                    ?readonly="${this.readonly}"
+                    ?required="${!this.useInputLevel}"
+                    auto-validate
+                  ></etools-currency-amount-input>
                 </div>`
             : html`
                 <paper-input
@@ -155,6 +168,14 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
                   class="col-3 total-input"
                   label=${translate('UNICEF_CASH_BUDGET')}
                   .value="${this.getSumValue('unicef_cash')}"
+                ></paper-input>
+                <paper-input
+                  readonly
+                  ?hidden="${!this.hasUnfundedCash}"
+                  tabindex="-1"
+                  class="col-3 total-input"
+                  label=${translate('UNFUNDED_CASH')}
+                  .value="${this.getSumValue('unfunded_cash')}"
                 ></paper-input>
               `}
           <div class="flex-auto layout-horizontal total">
@@ -184,6 +205,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
           .activityItems="${this.items || []}"
           .currency="${this.currency}"
           .readonly="${this.readonly}"
+          .hasUnfundedCash="${this.hasUnfundedCash}"
           @activity-items-changed="${({detail}: CustomEvent) => {
             this.items = detail;
             this.requestUpdate();
@@ -197,9 +219,10 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
     if (!data) {
       return;
     }
-    const {activity, interventionId, readonly}: any = data;
+    const {activity, interventionId, hasUnfundedCash, readonly}: any = data;
     this.items = (activity.items || []).filter((row: ManagementBudgetItem) => row.kind === activity.kind);
     this.useInputLevel = Boolean((this.items || []).length);
+    this.hasUnfundedCash = hasUnfundedCash;
     this.readonly = readonly;
 
     setTimeout(() => {
@@ -207,8 +230,9 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
       this.data = activity;
       this.data.items = (this.data.items || []).filter((row: ManagementBudgetItem) => row.kind !== this.data.kind);
       this.originalData = cloneDeep(this.data);
-      this.data[this.getPropertyName('partner')] = this.data.partner_contribution; // ?
-      this.data[this.getPropertyName('unicef')] = this.data.unicef_cash; // ?
+      this.data[this.getPropertyName('partner')] = this.data.partner_contribution;
+      this.data[this.getPropertyName('unicef')] = this.data.unicef_cash;
+      this.data[this.getPropertyName('unfunded')] = this.data.unfunded_cash;
       this.interventionId = interventionId;
       this.currency = data.currency || '';
     });
@@ -219,6 +243,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
   @property() loadingInProcess = false;
   @property() dialogOpened = true;
   @property() useInputLevel = false;
+  @property() hasUnfundedCash = false;
   @property({type: String}) currency = '';
   @property({type: Array}) items: ManagementBudgetItem[] = [];
   @property({type: Boolean}) readonly = false;
@@ -243,7 +268,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         fireEvent(this, 'toast', {
           text: activityItemsValidationSummary.invalidRequired
             ? getTranslation('FILL_ALL_ACTIVITY_ITEMS')
-            : getTranslation('INVALID_TOTAL_ACTIVITY_ITEMS')
+            : this.getInvalidTotalMessage()
         });
         return false;
       }
@@ -285,6 +310,12 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
     fireEvent(this, 'dialog-closed', {confirmed: false});
   }
 
+  getInvalidTotalMessage() {
+    return this.hasUnfundedCash
+      ? getTranslation('INVALID_TOTAL_UNFUNDED_ACTIVITY_ITEMS')
+      : getTranslation('INVALID_TOTAL_ACTIVITY_ITEMS');
+  }
+
   getPropertyName(sufix: string) {
     return this.originalData ? `act${this.originalData.index}_${sufix}` : '';
   }
@@ -298,6 +329,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
     if (this.useInputLevel) {
       this.data[this.getPropertyName('unicef')] = '0';
       this.data[this.getPropertyName('partner')] = '0';
+      this.data[this.getPropertyName('unfunded')] = '0';
       if ((!this.items || !this.items.length) && this.activityItemsTable) {
         // add by default a row in activity items table if we have none
         setTimeout(() => {
@@ -309,7 +341,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
     }
   }
 
-  getSumValue(field: 'cso_cash' | 'unicef_cash'): string {
+  getSumValue(field: 'cso_cash' | 'unicef_cash' | 'unfunded_cash'): string {
     const total = (this.items || []).reduce((sum: number, item: AnyObject) => sum + Number(item[field]), 0);
     return displayCurrencyAmount(String(total), '0', 2);
   }
@@ -318,12 +350,14 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
     if (!this.useInputLevel) {
       return getTotalCashFormatted(
         this.data[this.getPropertyName('partner')] || 0,
-        this.data[this.getPropertyName('unicef')] || 0
+        this.data[this.getPropertyName('unicef')] || 0,
+        this.hasUnfundedCash ? this.data[this.getPropertyName('unfunded')] || 0 : 0
       );
     } else {
       const cso: string = this.getSumValue('cso_cash').replace(/,/g, '');
       const unicef: string = this.getSumValue('unicef_cash').replace(/,/g, '');
-      return getTotalCashFormatted(cso, unicef);
+      const unfunded: string = this.hasUnfundedCash ? this.getSumValue('unfunded_cash').replace(/,/g, '') : '0';
+      return getTotalCashFormatted(cso, unicef, unfunded);
     }
   }
 

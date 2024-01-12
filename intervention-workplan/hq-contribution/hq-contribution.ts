@@ -65,6 +65,9 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
           color: darkred;
           padding-bottom: 5px;
         }
+        etools-currency-amount-input[required] {
+          --paper-input-container-label-floating_-_max-width: 133%;
+        }
       </style>
 
       <etools-content-panel
@@ -105,7 +108,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
         <div class="layout-horizontal">
           <etools-currency-amount-input
             id="hqContrib"
-            class="col-3"
+            class="col-4"
             placeholder="&#8212;"
             label=${translate(translatesMap.total_hq_cash_local)}
             .value="${this.data.planned_budget.total_hq_cash_local}"
@@ -113,6 +116,24 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
             tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.planned_budget) ? -1 : 0}"
             @value-changed="${({detail}: CustomEvent) => this.hqContribChanged(detail)}"
             .currency="${this.data.planned_budget?.currency}"
+            required
+            auto-validate
+          >
+          </etools-currency-amount-input>
+        </div>
+        <div class="layout-horizontal" ?hidden="${!this.data.planned_budget.has_unfunded_cash}">
+          <etools-currency-amount-input
+            id="unfundedCash"
+            class="col-4"
+            placeholder="&#8212;"
+            label=${translate(translatesMap.capacity_strenghtening_unfunded)}
+            .value="${this.data.planned_budget.unfunded_hq_cash}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.has_unfunded_cash)}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.has_unfunded_cash) ? -1 : 0}"
+            @value-changed="${({detail}: CustomEvent) => this.unfundedCashChanged(detail)}"
+            .currency="${this.data.planned_budget?.currency}"
+            required
+            auto-validate
           >
           </etools-currency-amount-input>
         </div>
@@ -163,6 +184,15 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
     }
 
     this.data.planned_budget.total_hq_cash_local = detail.value;
+    this.requestUpdate();
+  }
+
+  unfundedCashChanged(detail: any) {
+    if (areEqual(this.data.planned_budget.unfunded_hq_cash, detail.value)) {
+      return;
+    }
+
+    this.data.planned_budget.unfunded_hq_cash = detail.value;
     this.requestUpdate();
   }
 
@@ -235,7 +265,8 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
     }
     data.planned_budget = {
       id: data.planned_budget.id,
-      total_hq_cash_local: data.planned_budget.total_hq_cash_local
+      total_hq_cash_local: data.planned_budget.total_hq_cash_local,
+      unfunded_hq_cash: data.planned_budget.unfunded_hq_cash
     };
     return data;
   }

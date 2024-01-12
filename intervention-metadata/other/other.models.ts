@@ -23,5 +23,6 @@ export class OtherPermissions extends ModelsBase {
   document_type = true;
   document_currency = true;
   confidential = true;
+  has_unfunded_cash = true;
   cfei_number = false;
 }

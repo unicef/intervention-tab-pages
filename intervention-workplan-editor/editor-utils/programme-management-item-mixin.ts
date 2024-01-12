@@ -201,7 +201,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                   .value="${item.cso_cash}"
                   @keydown="${(e: any) => this.handleEsc(e)}"
                   @value-changed="${({detail}: CustomEvent) => {
-                    this.cashFieldChanged(detail, 'cso_cash', item);
+                    this.cashFieldChanged(detail, 'cso_cash', item, !this.hasUnfundedCash);
                     this.updateActivityCashFromItem(programmeManagement, item);
                   }}"
                 ></etools-currency-amount-input>
@@ -221,11 +221,34 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
                   .value="${item.unicef_cash}"
                   @keydown="${(e: any) => this.handleEsc(e)}"
                   @value-changed="${({detail}: CustomEvent) => {
-                    this.cashFieldChanged(detail, 'unicef_cash', item);
+                    this.cashFieldChanged(detail, 'unicef_cash', item, !this.hasUnfundedCash);
                     this.updateActivityCashFromItem(programmeManagement, item);
                   }}"
                 ></etools-currency-amount-input>
               </td>
+              ${this.hasUnfundedCash
+                ? html` <td tabindex="${ifDefined(this.commentMode ? undefined : '0')}">
+                    <etools-currency-amount-input
+                      label=${this.getLabel(programmeManagement.itemsInEditMode, getTranslation('UNFUNDED_CASH'))}
+                      .noLabelFloat="${!programmeManagement.itemsInEditMode}"
+                      input
+                      ?readonly="${!programmeManagement.itemsInEditMode}"
+                      required
+                      error-message="${translate('INCORRECT_VALUE')}"
+                      .invalid="${item.invalid?.unfunded_cash}"
+                      @invalid-changed="${({detail}: CustomEvent) => {
+                        this.activityItemInvalidChanged(detail, 'unfunded_cash', item);
+                      }}"
+                      .value="${item.unfunded_cash}"
+                      @keydown="${(e: any) => this.handleEsc(e)}"
+                      @value-changed="${({detail}: CustomEvent) => {
+                        this.cashFieldChanged(detail, 'unfunded_cash', item, !this.hasUnfundedCash);
+                        this.updateActivityCashFromItem(programmeManagement, item);
+                      }}"
+                    ></etools-currency-amount-input>
+                  </td>`
+                : ``}
+
               <td class="total action-btns" style="position:relative;" colspan="2">
                 <paper-input
                   readonly
@@ -282,6 +305,7 @@ export function ProgrammeManagementItemMixin<T extends Constructor<LitElement>>(
               <td></td>
               <td></td>
               <td></td>
+              ${this.hasUnfundedCash ? html`<td></td>` : ``}
               <td colspan="2">
                 <div
                   class="flex-h justify-right"

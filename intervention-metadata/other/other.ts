@@ -86,9 +86,11 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
             max-height: 96px;
           }
         }
-        .confidential-row {
+        .toggle-row {
+          padding-bottom: 15px;
+        }
+        .mt-4 {
           margin-top: -4px;
-          padding-bottom: 12px;
         }
         paper-input {
           width: 100%;
@@ -213,7 +215,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
           </div>
         </div>
 
-        <div class="layout-horizontal confidential-row" ?hidden="${!this.permissions?.view?.confidential}">
+        <div class="layout-horizontal mt-4 toggle-row" ?hidden="${!this.permissions?.view?.confidential}">
           <paper-toggle-button
             id="confidential"
             ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit?.confidential)}"
@@ -227,6 +229,20 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
             ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit?.confidential)}"
             .tooltipText="${translate('CONFIDENTIAL_INFO')}"
           ></info-icon-tooltip>
+        </div>
+
+        <div class="layout-horizontal toggle-row" ?hidden="${!this.permissions?.view?.has_unfunded_cash}">
+          <paper-toggle-button
+            id="unfundedCash"
+            ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit?.has_unfunded_cash)}"
+            ?checked="${this.data.planned_budget.has_unfunded_cash}"
+            @checked-changed="${({detail}: CustomEvent) => {
+              this.data.planned_budget.has_unfunded_cash = detail.value;
+              this.requestUpdate();
+            }}}"
+          >
+            ${translate('HAS_UNFUNDED_CASH')}
+          </paper-toggle-button>
         </div>
 
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
@@ -285,7 +301,7 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
         }))
       ];
     }
-    this.data = selectOtherData(state);
+    this.data = cloneDeep(selectOtherData(state));
     this.originalData = cloneDeep(this.data);
     this.setPermissions(state);
     super.stateChanged(state);
@@ -356,13 +372,14 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   removeUnchangedData(data: OtherData) {
     Object.keys(data).forEach((key) => {
       if (key == 'planned_budget') {
-        if (!this.permissions.edit.document_currency) {
+        if (!this.permissions.edit.document_currency && !this.permissions.edit.has_unfunded_cash) {
           // @ts-ignore
           delete data.planned_budget;
         } else {
           data.planned_budget = {
             id: data.planned_budget.id,
-            currency: data.planned_budget.currency
+            currency: data.planned_budget.currency,
+            has_unfunded_cash: data.planned_budget.has_unfunded_cash
           };
         }
       }

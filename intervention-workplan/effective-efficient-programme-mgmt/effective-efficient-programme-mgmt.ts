@@ -111,6 +111,14 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
           <etools-data-table-column class="flex-c text-right" field="unicef_cash">
             ${translate('UNICEF_CASH')}
           </etools-data-table-column>
+           ${
+             this.hasUnfundedCash
+               ? html` <etools-data-table-column class="flex-c text-right" field="unicef_cash">
+                   ${translate('UNFUNDED_CASH')}</etools-data-table-column
+                 >`
+               : ''
+           }
+          </etools-data-table-column>
           <etools-data-table-column class="flex-c text-right" field="total">
             ${getTranslation('GENERAL.TOTAL') + ' (' + this.data.currency + ')'}
           </etools-data-table-column>
@@ -130,6 +138,11 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
                 <div class="col-data flex-c text-right" data-col-header-label="${translate('PARTNER_CASH')}">
                   ${item.unicef_cash}
                 </div>
+                ${this.hasUnfundedCash
+                  ? html` <div class="col-data flex-c text-right" data-col-header-label="${translate('PARTNER_CASH')}">
+                      ${item.unfunded_cash}
+                    </div>`
+                  : ''}
                 <div class="col-data flex-c text-right" data-col-header-label="${translate('TOTAL')}">
                   ${item.total}
                 </div>
@@ -179,6 +192,9 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
   @property({type: Number})
   interventionId!: number;
 
+  @property({type: Boolean})
+  hasUnfundedCash?: boolean;
+
   connectedCallback() {
     super.connectedCallback();
   }
@@ -191,6 +207,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
       return;
     }
     this.interventionId = state.interventions.current.id!;
+    this.hasUnfundedCash = state.interventions.current.planned_budget.has_unfunded_cash;
     this.data = selectProgrammeManagement(state);
 
     this.originalData = cloneDeep(this.data);
@@ -211,6 +228,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         description: translate('DESCRIPTION_1'),
         partner_contribution: addCurrencyAmountDelimiter(data.act1_partner),
         unicef_cash: addCurrencyAmountDelimiter(data.act1_unicef),
+        unfunded_cash: addCurrencyAmountDelimiter(data.act1_unfunded),
         total: addCurrencyAmountDelimiter(data.act1_total),
         index: 1,
         kind: KindChoices.inCountry
@@ -220,6 +238,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         description: translate('DESCRIPTION_2'),
         partner_contribution: addCurrencyAmountDelimiter(data.act2_partner),
         unicef_cash: addCurrencyAmountDelimiter(data.act2_unicef),
+        unfunded_cash: addCurrencyAmountDelimiter(data.act2_unfunded),
         total: addCurrencyAmountDelimiter(data.act2_total),
         index: 2,
         kind: KindChoices.operational
@@ -229,6 +248,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         description: translate('DESCRIPTION_3'),
         partner_contribution: addCurrencyAmountDelimiter(data.act3_partner),
         unicef_cash: addCurrencyAmountDelimiter(data.act3_unicef),
+        unfunded_cash: addCurrencyAmountDelimiter(data.act3_unfunded),
         total: addCurrencyAmountDelimiter(data.act3_total),
         index: 3,
         kind: KindChoices.planning
@@ -243,6 +263,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         activity: {...activity, items: cloneDeep(this.data.items)},
         interventionId: this.interventionId,
         currency: this.data.currency,
+        hasUnfundedCash: this.hasUnfundedCash,
         readonly: !this.canEdit
       }
     });

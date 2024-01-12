@@ -1,10 +1,18 @@
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 
-export function getTotalCash(csoCash: number | string, unicefCash: number | string): number {
-  return Number(((Number(csoCash) || 0) + (Number(unicefCash) || 0)).toFixed(2));
+export function getTotalCash(
+  csoCash: number | string,
+  unicefCash: number | string,
+  unfundedCash?: number | string
+): number {
+  return Number(((Number(csoCash) || 0) + (Number(unicefCash) || 0) + (Number(unfundedCash) || 0)).toFixed(2));
 }
-export function getTotalCashFormatted(csoCash: number | string, unicefCash: number | string): string {
-  return displayCurrencyAmount(String(getTotalCash(csoCash, unicefCash)), '0', 2);
+export function getTotalCashFormatted(
+  csoCash: number | string,
+  unicefCash: number | string,
+  unfundedCash?: number | string
+): string {
+  return displayCurrencyAmount(String(getTotalCash(csoCash, unicefCash, unfundedCash)), '0', 2);
 }
 
 export function getMultiplyProductCash(unit: number | string, price: number | string): number {

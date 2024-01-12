@@ -44,8 +44,8 @@ export class ActivityItemsTable extends LitElement {
   @property() activityItems: Partial<InterventionActivityItem>[] = [];
   @property() readonly: boolean | undefined = false;
   @property() dialogElement!: EtoolsDialog;
-  @property({type: String})
-  currency = '';
+  @property({type: String}) currency = '';
+  @property() hasUnfundedCash = false;
 
   protected render(): TemplateResult {
     // language=html
@@ -57,9 +57,12 @@ export class ActivityItemsTable extends LitElement {
         </div>
         <div class="grid-cell header-cell left"><label required>${translate(translatesMap.unit)}</label></div>
         <div class="grid-cell header-cell end"><label required>${translate(translatesMap.no_units)}</label></div>
-        <div class="grid-cell header-cell end">${translate('PRICE_UNIT')}</div>
-        <div class="grid-cell header-cell end">${translate('PARTNER_CASH')}</div>
-        <div class="grid-cell header-cell end">${translate('UNICEF_CASH')}</div>
+        <div class="grid-cell header-cell end"><label required>${translate('PRICE_UNIT')}</label></div>
+        <div class="grid-cell header-cell end"><label required>${translate('PARTNER_CASH')}</label></div>
+        <div class="grid-cell header-cell end"><label required>${translate('UNICEF_CASH')}</label></div>
+        <div class="grid-cell header-cell end" ?hidden="${!this.hasUnfundedCash}">
+          <label required>${translate('UNFUNDED_CASH')}</label>
+        </div>
         <div class="grid-cell header-cell end">${translate('TOTAL_CASH')} (${this.currency})</div>
         <div class="grid-cell header-cell"></div>
       </div>
@@ -76,6 +79,7 @@ export class ActivityItemsTable extends LitElement {
             .readonly="${this.readonly}"
             .lastItem="${this.isLastItem(index)}"
             .currency="${this.currency}"
+            .hasUnfundedCash="${this.hasUnfundedCash}"
           ></activity-item-row>`
       )}
       ${!this.readonly
@@ -111,7 +115,8 @@ export class ActivityItemsTable extends LitElement {
         cso_cash: '0',
         unicef_cash: '0',
         name: '',
-        unit_price: '0'
+        unit_price: '0',
+        unfunded_cash: '0'
       }
     ];
     this.setFocusOnActivityRow();

@@ -205,7 +205,7 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   .value="${item.cso_cash}"
                   @keydown="${(e: any) => this.handleEsc(e)}"
                   @value-changed="${({detail}: CustomEvent) => {
-                    this.cashFieldChanged(detail, 'cso_cash', item);
+                    this.cashFieldChanged(detail, 'cso_cash', item, !this.hasUnfundedCash);
                     this.updateActivityCashFromItem(activity, item);
                   }}"
                 ></etools-currency-amount-input>
@@ -226,11 +226,35 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
                   .value="${item.unicef_cash}"
                   @keydown="${(e: any) => this.handleEsc(e)}"
                   @value-changed="${({detail}: CustomEvent) => {
-                    this.cashFieldChanged(detail, 'unicef_cash', item);
+                    this.cashFieldChanged(detail, 'unicef_cash', item, !this.hasUnfundedCash);
                     this.updateActivityCashFromItem(activity, item);
                   }}"
                 ></etools-currency-amount-input>
               </td>
+              ${this.hasUnfundedCash
+                ? html` <td tabindex="${ifDefined(this.commentMode ? undefined : 0)}">
+                    <etools-currency-amount-input
+                      label=${this.getLabel(activity.itemsInEditMode, getTranslation('UNFUNDED_CASH'))}
+                      .noLabelFloat="${!activity.itemsInEditMode}"
+                      input
+                      ?readonly="${!activity.itemsInEditMode}"
+                      required
+                      tabindex="${ifDefined(item.inEditMode ? undefined : '-1')}"
+                      error-message="${translate('INCORRECT_VALUE')}"
+                      .invalid="${item.invalid?.unfunded_cash}"
+                      @invalid-changed="${({detail}: CustomEvent) => {
+                        this.activityItemInvalidChanged(detail, 'unfunded_cash', item);
+                      }}"
+                      .value="${item.unfunded_cash}"
+                      @keydown="${(e: any) => this.handleEsc(e)}"
+                      @value-changed="${({detail}: CustomEvent) => {
+                        this.cashFieldChanged(detail, 'unfunded_cash', item, !this.hasUnfundedCash);
+                        this.updateActivityCashFromItem(activity, item);
+                      }}"
+                    ></etools-currency-amount-input>
+                  </td>`
+                : ``}
+
               <td class="total action-btns" style="position:relative;" colspan="2">
                 <paper-input
                   readonly
@@ -357,7 +381,14 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       if (!activity.items) {
         activity.items = [];
       }
-      activity.items?.push({name: '', cso_cash: '0', unicef_cash: '0', unit_price: '0', inEditMode: true} as any);
+      activity.items?.push({
+        name: '',
+        cso_cash: '0',
+        unicef_cash: '0',
+        unit_price: '0',
+        unfunded_cash: '0',
+        inEditMode: true
+      } as any);
       activity.inEditMode = true;
       activity.itemsInEditMode = true;
       this.oneEntityInEditMode = true;
