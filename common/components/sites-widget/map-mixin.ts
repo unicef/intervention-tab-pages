@@ -1,9 +1,8 @@
 import {GenericObject} from '@unicef-polymer/etools-types';
-import {Map, Marker} from 'leaflet';
+import {Map, Marker, icon} from 'leaflet';
 const TILE_LAYER: Readonly<string> = 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png';
 const TILE_LAYER_LABELS: Readonly<string> = 'https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png';
 const arcgisWebmapId = '71608a6be8984b4694f7c613d7048114'; // Default WebMap ID
-declare const L: any;
 
 export interface IMarker extends Marker {
   staticData?: any;
@@ -15,7 +14,7 @@ export type MarkerDataObj = {
   popup?: string;
 };
 
-export const defaultIcon = L.icon({
+export const defaultIcon = icon({
   iconUrl: 'node_modules/leaflet/dist/images/marker-icon.png',
   iconSize: [25, 41],
   shadowSize: [41, 41],
@@ -24,7 +23,7 @@ export const defaultIcon = L.icon({
   tooltipAnchor: [16, -28]
 });
 
-export const markedIcon = L.icon({
+export const markedIcon = icon({
   iconUrl: 'node_modules/leaflet/dist/images/marker-icon.png',
   iconSize: [25, 41],
   shadowSize: [41, 41],
@@ -53,6 +52,27 @@ export class MapHelper {
       });
   }
 
+  loadScript(src: string) {
+    return new Promise((resolve) => {
+      var list = document.getElementsByTagName('script');
+      var i = list.length;
+      while (i--) {
+        if (list[i].src.includes(src)) {
+          resolve(true);
+          return;
+        }
+      }
+
+      const script = document.createElement('script');
+      script.src = src;
+      script.onload = function () {
+        resolve(true);
+      };
+
+      document.head.append(script);
+    });
+  }
+
   async initMap(element: HTMLElement) {
     if (!element) {
       throw new Error('Please provide HTMLElement for map initialization!');
@@ -64,7 +84,12 @@ export class MapHelper {
     }
 
     const arcgisMapIsAvailable = JSON.parse(sessionStorage.getItem('arcgisMapIsAvailable') || '');
-    arcgisMapIsAvailable ? this.initArcgisMap(element) : this.initOpenStreetMap(element);
+    await this.loadScript('node_modules/leaflet/dist/leaflet.js');
+    await this.loadScript('node_modules/esri-leaflet/dist/esri-leaflet.js');
+    await this.loadScript('node_modules/leaflet.markercluster/dist/leaflet.markercluster.js');
+    await this.loadScript('node_modules/@mapbox/leaflet-omnivore/leaflet-omnivore.min.js');
+    await this.loadScript('assets/packages/esri-leaflet-webmap.js');
+    return arcgisMapIsAvailable ? this.initArcgisMap(element) : this.initOpenStreetMap(element);
   }
 
   initOpenStreetMap(element: HTMLElement): void {

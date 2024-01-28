@@ -3,8 +3,7 @@ import {customElement, property} from 'lit/decorators.js';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {translate} from 'lit-translate';
 import {CommentRelatedItem} from '../../comments/comments-types';
-
-declare const dayjs: any;
+import dayjs from 'dayjs';
 
 @customElement('comments-group')
 export class CommentsGroup extends LitElement {

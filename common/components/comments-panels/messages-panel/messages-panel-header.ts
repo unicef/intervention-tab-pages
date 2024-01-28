@@ -19,7 +19,8 @@ export class MessagesPanelHeader extends LitElement {
         <b>${this.relatedToKey ? translate(this.relatedToKey) : ''} ${this.relatedItem?.code || ''}</b>
       </div>
       <div class="buttons">
-        <etools-icon-button name="chevron-right" @click="${() => this.hideMessages(false)}"> </etools-icon-button>
+        <etools-icon-button label="view comments" name="chevron-right" @click="${() => this.hideMessages(false)}">
+        </etools-icon-button>
       </div>
     `;
   }

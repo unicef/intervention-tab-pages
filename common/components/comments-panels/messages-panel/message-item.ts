@@ -4,8 +4,7 @@ import {InterventionComment} from '@unicef-polymer/etools-types';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {translate} from 'lit-translate';
-declare const dayjs: any;
-
+import dayjs from 'dayjs';
 @customElement('message-item')
 export class MessageItem extends LitElement {
   @property({type: Boolean, reflect: true, attribute: 'my-comment'}) myComment!: boolean;

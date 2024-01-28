@@ -46,7 +46,7 @@ import {
 } from '@unicef-polymer/etools-utils/dist/date.util';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
 import {getIndicatorDisplayType} from '../utils/utils';
-declare const dayjs: any;
+import dayjs from 'dayjs';
 
 /**
  * @customElement
@@ -574,7 +574,7 @@ export class InterventionResultsReported extends connectStore(
       if (dateIsBetween(startDt, endDt, today)) {
         const intervalTotalDays = dateDiff(startDt, endDt);
         const intervalDaysCompleted = dateDiff(startDt, today);
-        this.pdProgress = (intervalDaysCompleted * 100) / intervalTotalDays;
+        this.pdProgress = (intervalDaysCompleted! * 100) / intervalTotalDays!;
         return;
       }
     } catch (err) {

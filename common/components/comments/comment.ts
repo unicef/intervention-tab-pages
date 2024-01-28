@@ -5,7 +5,7 @@ import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {CommentStyles} from './comment.styles';
 import {InterventionComment} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
-declare const dayjs: any;
+import dayjs from 'dayjs';
 
 @customElement('comment-element')
 export class CommentElement extends LitElement {

@@ -15,7 +15,7 @@ import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools
 import {QprListEl} from './qpr-list.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {AnyObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
-declare const dayjs: any;
+import dayjs from 'dayjs';
 import {translate, get as getTranslation} from 'lit-translate';
 import {translatesMap} from '../../../utils/intervention-labels-map';
 import GenerateQuarterlyReportingRequirementsMixin from '../mixins/generate-quarterly-reporting-requirements-mixin';

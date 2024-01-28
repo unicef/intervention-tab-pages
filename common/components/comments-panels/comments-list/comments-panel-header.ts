@@ -16,12 +16,14 @@ export class CommentsPanelHeader extends LitElement {
       <div>${translate('COMMENTS_PANEL')} <b>(${this.count})</b></div>
       <div class="buttons">
         <etools-icon-button
+          label="expand/collapse comments"
           @click="${() => this.toggleMinimize()}"
           name="${this.isExpanded ? 'unfold-more' : 'unfold-less'}"
         >
         </etools-icon-button>
 
-        <etools-icon-button name="close" @click="${() => this.closePanel()}"> </etools-icon-button>
+        <etools-icon-button label="close comments" name="close" @click="${() => this.closePanel()}">
+        </etools-icon-button>
       </div>
     `;
   }

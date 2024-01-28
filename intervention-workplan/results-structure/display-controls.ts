@@ -13,7 +13,7 @@ import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 import '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
 import '@shoelace-style/shoelace/dist/components/menu/menu.js';
 import '@shoelace-style/shoelace/dist/components/menu-item/menu-item.js';
-import {SlSelectEvent} from '@shoelace-style/shoelace';
+import {SlSelectEvent} from '@shoelace-style/shoelace/dist/events/sl-select.js';
 
 export const RESULT_VIEW = 'result_view';
 export const BUDGET_VIEW = 'budget_view';

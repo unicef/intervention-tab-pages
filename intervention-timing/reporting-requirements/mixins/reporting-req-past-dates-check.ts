@@ -1,8 +1,7 @@
 import {LitElement} from 'lit';
 import {property} from 'lit/decorators.js';
 import {Constructor} from '@unicef-polymer/etools-types';
-
-declare const dayjs: any;
+import dayjs from 'dayjs';
 
 /**
  * Common reporting requirements past dates check used for UI

@@ -18,7 +18,7 @@ import EnvironmentFlagsMixin from '@unicef-polymer/etools-modules-common/dist/mi
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {get as getTranslation, translate} from 'lit-translate';
-declare const dayjs: any;
+import dayjs from 'dayjs';
 
 /**
  * @LitElement
@@ -147,7 +147,7 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
   }
 
   updateDate(terminationDate: Date) {
-    this.termination.date = formatDate(terminationDate, 'YYYY-MM-DD');
+    this.termination.date = formatDate(terminationDate, 'YYYY-MM-DD')!;
     this.termination = {...this.termination};
   }
 
