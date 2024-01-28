@@ -1,3 +1,4 @@
+import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
 import {GenericObject} from '@unicef-polymer/etools-types';
 const TILE_LAYER: Readonly<string> = 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png';
 const TILE_LAYER_LABELS: Readonly<string> = 'https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png';
@@ -73,7 +74,7 @@ export class MapHelper {
   }
 
   initOpenStreetMap(element: HTMLElement): void {
-    L.Icon.Default.imagePath = '/pmp/assets/images/';
+    L.Icon.Default.imagePath = `/${ROOT_PATH}/assets/images/`;
     this.map = L.map(element);
     L.tileLayer(TILE_LAYER, {pane: 'tilePane'}).addTo(this.map);
     L.tileLayer(TILE_LAYER_LABELS, {pane: 'overlayPane'}).addTo(this.map);
