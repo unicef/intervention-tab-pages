@@ -2,8 +2,7 @@ import {CSSResultArray, html, LitElement, PropertyValues, TemplateResult} from '
 import {customElement, property, query} from 'lit/decorators.js';
 import {repeat} from 'lit/directives/repeat.js';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
-import {LatLngTuple} from 'leaflet';
-import {IMarker, MapHelper, defaultIcon, markedIcon, MarkerDataObj} from './map-mixin';
+import {IMarker, MapHelper, MarkerDataObj} from './map-mixin';
 import {LocationWidgetStyles} from './location-widget.styles';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
@@ -15,7 +14,7 @@ import {debounce} from '@unicef-polymer/etools-utils/dist/debouncer.util';
 import {translate} from 'lit-translate';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 
-const DEFAULT_COORDINATES: LatLngTuple = [-0.09, 51.505];
+const DEFAULT_COORDINATES = [-0.09, 51.505];
 
 @customElement('sites-widget')
 export class LocationSitesWidgetComponent extends connectStore(LitElement) {
@@ -29,7 +28,7 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
   @property() private mapInitializationProcess = false;
   @query('#map') private mapElement!: HTMLElement;
 
-  protected defaultMapCenter: LatLngTuple = DEFAULT_COORDINATES;
+  protected defaultMapCenter = DEFAULT_COORDINATES;
   private MapHelper!: MapHelper;
 
   static get styles(): CSSResultArray {
@@ -246,6 +245,24 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
   setMarkerIcon(id: number, selected: boolean) {
     const marker = this.MapHelper.staticMarkers?.filter((m) => m.staticData.id === id);
     if (marker && marker.length) {
+      const defaultIcon = L.icon({
+        iconUrl: 'node_modules/leaflet/dist/images/marker-icon.png',
+        iconSize: [25, 41],
+        shadowSize: [41, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        tooltipAnchor: [16, -28]
+      });
+
+      const markedIcon = L.icon({
+        iconUrl: 'node_modules/leaflet/dist/images/marker-icon.png',
+        iconSize: [25, 41],
+        shadowSize: [41, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        tooltipAnchor: [16, -28],
+        className: 'selectedMarker'
+      });
       marker[0].setIcon(selected ? markedIcon : defaultIcon);
     }
   }
@@ -307,9 +324,9 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
     setTimeout(
       () => {
         this.MapHelper.map!.invalidateSize();
-        const reversedCoords: LatLngTuple = [...this.defaultMapCenter].reverse() as LatLngTuple;
+        const reversedCoords = [...this.defaultMapCenter].reverse();
         const zoom = 6;
-        this.MapHelper.map!.setView(reversedCoords, zoom);
+        this.MapHelper.map!.setView(reversedCoords as any, zoom);
         this.addClickOnSpaceForSites();
       },
       500,
