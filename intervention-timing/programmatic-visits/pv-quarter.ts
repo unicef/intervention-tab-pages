@@ -8,7 +8,7 @@ import {customElement, property} from 'lit/decorators.js';
 import {langChanged, translate} from 'lit-translate';
 import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
-declare const dayjs: any;
+import dayjs from 'dayjs';
 
 @customElement('pv-quarter')
 export class PvQuarter extends LitElement {

@@ -13,7 +13,7 @@ import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {prettyDate} from '@unicef-polymer/etools-utils/dist/date.util';
-declare const dayjs: any;
+import dayjs from 'dayjs';
 
 /**
  * @customElement

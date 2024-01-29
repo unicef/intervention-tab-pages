@@ -67,7 +67,7 @@ export class ActivityTimeFrames extends LitElement {
         label[required] {
           font-size: 12px;
           color: var(--secondary-text-color);
-          background: url('./images/required.svg') no-repeat 99% 20%/5px;
+          background: url('./assets/images/required.svg') no-repeat 99% 20%/5px;
           width: auto !important;
           max-width: 100%;
           right: auto;

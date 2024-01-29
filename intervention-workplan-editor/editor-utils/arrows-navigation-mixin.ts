@@ -1,6 +1,6 @@
 import {LitElement} from 'lit';
 import {Constructor} from '@unicef-polymer/etools-types';
-import {SlButton} from '@shoelace-style/shoelace';
+import SlButton from '@shoelace-style/shoelace/dist/components/button/button.component';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 /**
  * Notes about the functionality:

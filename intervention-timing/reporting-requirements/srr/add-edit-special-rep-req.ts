@@ -13,7 +13,7 @@ import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/et
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {AnyObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
-declare const dayjs: any;
+import dayjs from 'dayjs';
 import {translate} from 'lit-translate';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';

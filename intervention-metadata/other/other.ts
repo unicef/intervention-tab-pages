@@ -25,7 +25,7 @@ import {translatesMap} from '../../utils/intervention-labels-map';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
-import {SlSwitch} from '@shoelace-style/shoelace';
+import SlSwitch from '@shoelace-style/shoelace/dist/components/switch/switch.component';
 import {EtoolsInput} from '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
 
 /**
@@ -267,7 +267,9 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
     if (changedProperties.has('editMode') && !this.editMode) {
       // reset validation for #unppNumber field
       const elem = this.shadowRoot?.querySelector<EtoolsInput>('#unppNumber')!;
-      elem.invalid = false;
+      if (elem) {
+        elem.invalid = false;
+      }
     }
   }
   stateChanged(state: RootState) {

@@ -29,7 +29,7 @@ export class ExportInterventionData extends LitElement {
         }
       </style>
       <sl-dropdown id="pdExportMenuBtn">
-        <etools-icon-button name="more-vert" slot="trigger"> </etools-icon-button>
+        <etools-icon-button label="export" name="more-vert" slot="trigger"> </etools-icon-button>
         <sl-menu>
           ${this.exportLinks.map(
             (item) => html` <sl-menu-item @click="${() => this.export(item.type)}">${item.name}</sl-menu-item>`

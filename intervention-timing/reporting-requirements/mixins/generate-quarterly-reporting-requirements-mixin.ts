@@ -1,8 +1,10 @@
-declare const dayjs: any;
 import {convertDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import {LitElement} from 'lit';
 import {property} from 'lit/decorators.js';
 import {Constructor} from '@unicef-polymer/etools-types';
+import dayjs from 'dayjs';
+import dayjsUtc from 'dayjs/plugin/utc';
+dayjs.extend(dayjsUtc);
 
 /**
  * @LitElement
