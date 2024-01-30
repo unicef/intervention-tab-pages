@@ -5,7 +5,7 @@ import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
@@ -27,14 +27,13 @@ import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/uti
 @customElement('risk-dialog')
 export class RiskDialog extends ComponentBaseMixin(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
   render() {
     return html`
       ${sharedStyles}
 
       <etools-dialog
-        no-padding
         keep-dialog-open
         id="riskDialog"
         size="md"
@@ -45,8 +44,8 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
         @close="${() => this.onClose()}"
         @confirm-btn-clicked="${() => this._validateAndSaveRisk()}"
       >
-        <div class="row-padding layout-horizontal">
-          <div class="col col-4">
+        <div class="row">
+          <div class="col-md-4 col-12">
             <etools-dropdown
               id="type"
               label=${translate(translatesMap.risk_type)}
@@ -64,8 +63,8 @@ export class RiskDialog extends ComponentBaseMixin(LitElement) {
             </etools-dropdown>
           </div>
         </div>
-        <div class="row-padding layout-horizontal">
-          <div class="col col-12">
+        <div class="row">
+          <div class="col-12">
             <etools-textarea
               id="mitigationMeasures"
               class="w100"

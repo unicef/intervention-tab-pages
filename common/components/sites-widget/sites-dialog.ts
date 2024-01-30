@@ -2,7 +2,7 @@ import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 // import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {translate} from 'lit-translate';
@@ -16,7 +16,7 @@ import {Site} from '@unicef-polymer/etools-types';
 @customElement('sites-dialog')
 export class GroupedLocationsDialog extends LitElement {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
 
   render() {
@@ -81,24 +81,29 @@ export class GroupedLocationsDialog extends LitElement {
         @confirm-btn-clicked="${() => this.onConfirm()}"
         @close="${() => this.onClose()}"
       >
-        <sites-widget
-          .workspaceCoordinates="${this.workspaceCoordinates}"
-          .sites="${this.sites}"
-          .selectedSites="${this.selectedSites}"
-          @sites-changed="${({detail}: CustomEvent) => {
-            this.onSitesChanged(detail.sites || []);
-          }}"
-        ></sites-widget>
-
-        <etools-textarea
-          label="${translate('SELECTED_SITES')}"
-          always-float-label
-          class="w100"
-          placeholder="&#8212;"
-          readonly
-          .value="${this.getSelectedSitesText(this.selectedSites)}"
-        >
-        </etools-textarea>
+        <div class="row">
+          <div class="col-12">
+            <sites-widget
+              .workspaceCoordinates="${this.workspaceCoordinates}"
+              .sites="${this.sites}"
+              .selectedSites="${this.selectedSites}"
+              @sites-changed="${({detail}: CustomEvent) => {
+                this.onSitesChanged(detail.sites || []);
+              }}"
+            ></sites-widget>
+          </div>
+          <div class="col-12">
+            <etools-textarea
+              label="${translate('SELECTED_SITES')}"
+              always-float-label
+              class="w100"
+              placeholder="&#8212;"
+              readonly
+              .value="${this.getSelectedSitesText(this.selectedSites)}"
+            >
+            </etools-textarea>
+          </div>
+        </div>
       </etools-dialog>
     `;
   }

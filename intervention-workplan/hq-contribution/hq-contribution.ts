@@ -7,7 +7,7 @@ import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
 import '@shoelace-style/shoelace/dist/components/range/range.js';
 
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {selectHqContributionData, selectHqContributionPermissions} from './hqContribution.selectors';
 import {HqContributionData, HqContributionPermissions} from './hqContribution.models';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
@@ -33,7 +33,7 @@ import '@unicef-polymer/etools-unicef/src/etools-input/etools-input.js';
 @customElement('hq-contribution')
 export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
 
   render() {
@@ -70,6 +70,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
         }
         .space-betw {
           justify-content: space-between;
+          display: flex;
         }
       </style>
 
@@ -80,13 +81,11 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
-        <div class="layout-horizontal row-padding-v extra-padd-top-no-bottom">
-          <div class="w100">
+        <div class="row extra-padd-top-no-bottom">
+          <div class="col-12">
             <label class="label">${translate(translatesMap.hq_support_cost)}</label>
           </div>
-        </div>
-        <div class="layout-horizontal">
-          <div class="col col-4 space-betw">
+          <div class="col-md-4 col-12 space-betw">
             <sl-range
               dir="${this.dir}"
               .value="${this.data.hq_support_cost}"
@@ -112,28 +111,32 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
             ></etools-input>
           </div>
         </div>
-        <div class="layout-horizontal row-padding-v" ?hidden="${!this.isUnicefUser || !this.editMode}">
-          <label class="label hq-info-label">
-            ${translateUnsafeHTML('TOTAL_FOR_PERCENT_HQ', {
-              PERCENT: `<b>${this.data.hq_support_cost}%</b>`,
-              VALUE: `<b>${this.autoCalculatedHqContrib} ${this.data.planned_budget.currency}</b>`
-            })}
-          </label>
+        <div class="row" ?hidden="${!this.isUnicefUser || !this.editMode}">
+          <div class="col-12">
+            <label class="label hq-info-label">
+              ${translateUnsafeHTML('TOTAL_FOR_PERCENT_HQ', {
+                PERCENT: `<b>${this.data.hq_support_cost}%</b>`,
+                VALUE: `<b>${this.autoCalculatedHqContrib} ${this.data.planned_budget.currency}</b>`
+              })}
+            </label>
+          </div>
         </div>
-        <div class="layout-horizontal">
-          <etools-currency
-            id="hqContrib"
-            class="col-3"
-            placeholder="&#8212;"
-            required
-            label=${translate(translatesMap.total_hq_cash_local)}
-            .value="${this.data.planned_budget.total_hq_cash_local}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_budget)}"
-            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.planned_budget) ? -1 : undefined}"
-            @value-changed="${({detail}: CustomEvent) => this.hqContribChanged(detail)}"
-            .currency="${this.data.planned_budget?.currency}"
-          >
-          </etools-currency>
+        <div class="row">
+          <div class="col-3">
+            <etools-currency
+              id="hqContrib"
+              class="w100"
+              placeholder="&#8212;"
+              required
+              label=${translate(translatesMap.total_hq_cash_local)}
+              .value="${this.data.planned_budget.total_hq_cash_local}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_budget)}"
+              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.planned_budget) ? -1 : undefined}"
+              @value-changed="${({detail}: CustomEvent) => this.hqContribChanged(detail)}"
+              .currency="${this.data.planned_budget?.currency}"
+            >
+            </etools-currency>
+          </div>
         </div>
 
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
