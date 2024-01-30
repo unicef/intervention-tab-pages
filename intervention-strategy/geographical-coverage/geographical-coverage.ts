@@ -4,8 +4,7 @@ import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown-multi.
 import './grouped-locations-dialog';
 import '../../common/components/sites-widget/sites-dialog';
 
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {LocationsPermissions} from './geographicalCoverage.models';
@@ -33,7 +32,7 @@ import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 @customElement('geographical-coverage')
 export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
 
   render() {
@@ -79,6 +78,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
 
         .dropdown-row {
           margin-top: -38px;
+          display: flex;
         }
 
         #iit-geo {
@@ -93,9 +93,6 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         etools-dropdown-multi::part(esmm-dropdownmenu) {
           left: 0px !important;
         }
-        .row-padding-v {
-          position: relative;
-        }
         .location-icon {
           z-index: 90;
           padding-bottom: 0 !important;
@@ -105,6 +102,16 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         }
         etools-button[variant='text'] {
           --sl-input-height-medium: 20px !important;
+        }
+        @media (max-width: 768px) {
+          .locations-btn {
+            width: 100%;
+            padding-inline-start: 0px;
+            margin-left: -14px;
+          }
+          .dropdown-row {
+            flex-wrap: wrap;
+          }
         }
       </style>
 
@@ -122,7 +129,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         </div>
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
-        <div class="flex-c layout-horizontal row-padding-v location-icon">
+        <div class="location-icon">
           <label class="label"> ${translate(translatesMap.flat_locations)}</label>
           <info-icon-tooltip
             id="iit-locations"
@@ -133,37 +140,39 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
           ></info-icon-tooltip>
         </div>
         <div class="prevent-see-hierarchy-link-overlap"></div>
-        <div class="flex-c layout-horizontal dropdown-row">
-          <etools-dropdown-multi
-            id="locations"
-            placeholder="&#8212;"
-            .options="${this.allLocations}"
-            .selectedValues="${cloneDeep(this.data.flat_locations)}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.flat_locations)}"
-            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.flat_locations) ? -1 : undefined}"
-            ?required="${this.permissions?.required.flat_locations}"
-            option-label="name"
-            option-value="id"
-            error-message=${translate('LOCATIONS_ERR')}
-            trigger-value-change-event
-            horizontal-align
-            @etools-selected-items-changed="${({detail}: CustomEvent) =>
-              this.selectedItemsChanged(detail, 'flat_locations')}"
-          >
-          </etools-dropdown-multi>
-          <div class="locations-btn">
-            <etools-button
-              variant="text"
-              @click="${this.openLocationsDialog}"
-              ?hidden="${this._isEmpty(this.data.flat_locations)}"
-              title=${translate('SEE_ALL_LOCATIONS')}
+        <div class="row">
+          <div class="col-12 dropdown-row">
+            <etools-dropdown-multi
+              id="locations"
+              placeholder="&#8212;"
+              .options="${this.allLocations}"
+              .selectedValues="${cloneDeep(this.data.flat_locations)}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.flat_locations)}"
+              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.flat_locations) ? -1 : undefined}"
+              ?required="${this.permissions?.required.flat_locations}"
+              option-label="name"
+              option-value="id"
+              error-message=${translate('LOCATIONS_ERR')}
+              trigger-value-change-event
+              horizontal-align
+              @etools-selected-items-changed="${({detail}: CustomEvent) =>
+                this.selectedItemsChanged(detail, 'flat_locations')}"
             >
-              ${translate('SEE_HIERARCHY')}
-            </etools-button>
+            </etools-dropdown-multi>
+            <div class="locations-btn">
+              <etools-button
+                variant="text"
+                @click="${this.openLocationsDialog}"
+                ?hidden="${this._isEmpty(this.data.flat_locations)}"
+                title=${translate('SEE_ALL_LOCATIONS')}
+              >
+                ${translate('SEE_HIERARCHY')}
+              </etools-button>
+            </div>
           </div>
         </div>
-        <div class="flex-c row-padding-v mt-50">
-          <div>
+        <div class="row mt-50">
+          <div class="col-12">
             <label class="label">${translate(translatesMap.sites)}</label>
             <info-icon-tooltip
               id="iit-sites"
@@ -174,6 +183,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
               .tooltipText="${translate('GEOGRAPHICAL_SITES_INFO')}"
             ></info-icon-tooltip>
           </div>
+          <div class="col-12">
           <etools-textarea
             no-label-float
             class="w100"
@@ -184,18 +194,21 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
             .value="${this.getSelectedSitesText(this.data.sites)}"
           >
           </etools-textarea>
+         </div>
         </div>
-        <div class="flex-c layout-horizontal row-padding-v">
-          <etools-button
-            variant="text"
-            class="no-pad no-marg"
-            @click="${this.openSitesDialog}"
-            ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.sites)}"
-            title=${translate('SELECT_SITE_FROM_MAP')}
-          >
-            <etools-icon name="add"></etools-icon>
-            ${translate('SELECT_SITE_FROM_MAP')}
-          </etools-button>
+        <div class="row">
+          <div class="col-12">
+            <etools-button
+              variant="text"
+              class="no-pad no-marg"
+              @click="${this.openSitesDialog}"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.sites)}"
+              title=${translate('SELECT_SITE_FROM_MAP')}
+            >
+              <etools-icon name="add"></etools-icon>
+              ${translate('SELECT_SITE_FROM_MAP')}
+            </etools-button>
+          </div>
         </div>
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
       </etools-content-panel>

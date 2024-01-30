@@ -5,7 +5,7 @@ import '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import cloneDeep from 'lodash-es/cloneDeep';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {RootState} from '../../common/types/store.types';
@@ -32,7 +32,7 @@ import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 @customElement('financial-component')
 export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
   render() {
     // language=HTML
@@ -71,10 +71,10 @@ export class FinancialComponent extends CommentsMixin(ComponentBaseMixin(LitElem
             <label class="label">${translate(translatesMap.cash_transfer_modalities)}</label>
           </div>
         </div>
-        <div class="layout-horizontal row-padding-v padd-bott">
+        <div class="row">
           ${this.cashTransferModalities.map(
             (option: LabelAndValue) =>
-              html`<div class="col col-3">
+              html`<div class="col-lg-4 col-md-6 col-12">
                 <etools-checkbox
                   ?checked="${this.checkCashTransferModality(option.value)}"
                   ?disabled="${this.isReadonly(this.editMode, true)}"

@@ -4,7 +4,7 @@ import {customElement, property} from 'lit/decorators.js';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import isEmpty from 'lodash-es/isEmpty';
 import {RootState} from '../../common/types/store.types';
@@ -37,7 +37,7 @@ import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button'
 @customElement('programmatic-visits')
 export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(RepeatableDataSetsMixin(LitElement))) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
 
   render() {
@@ -106,9 +106,13 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
           font-size: 14px;
           padding-top: 15px;
           padding-bottom: 15px;
+          text-wrap: nowrap;
         }
         .extra-top-padd etools-button {
           margin-inline-start: 20px;
+        }
+        .pl-48 {
+          padding-left: 48px !important;
         }
       </style>
 
@@ -119,15 +123,17 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
-        <div class="row-padding-v extra-top-padd" ?hidden="${!this.editMode}">
-          <etools-button
-            variant="text"
-            ${this._getAddBtnPadding(this.data?.length)}
-            @click="${this._addNewPlannedVisit}"
-          >
-            <etools-icon name="add-box"></etools-icon>
-            ${translate('ADD_YEAR')}
-          </etools-button>
+        <div class="row extra-top-padd" ?hidden="${!this.editMode}">
+          <div class="col-12">
+            <etools-button
+              variant="text"
+              ${this._getAddBtnPadding(this.data?.length)}
+              @click="${this._addNewPlannedVisit}"
+            >
+              <etools-icon name="add-box"></etools-icon>
+              ${translate('ADD_YEAR')}
+            </etools-button>
+          </div>
         </div>
 
         <div class="pv-container">${this.renderVisitsTemplate(this.data)}</div>
@@ -284,7 +290,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
     return html`
       ${planned_visits?.map(
         (item: PlannedVisit, index: number) => html`
-          <div class="layout-horizontal">
+          <div class="row">
             <div class="item-actions-container">
               <div class="actions">
                 <etools-icon-button
@@ -314,9 +320,8 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
               >
               </etools-dropdown>
             </div>
-          </div>
-          <div class="row-padding-h">
-            <div class="row-h layout-wrap">
+
+            <div class="col-12 layout-horizontal layout-wrap pl-48">
               <pv-quarter
                 qIndex="1"
                 .item="${item}"
@@ -378,7 +383,6 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
                 <div class="error-msg">${translate('TOTAL_ERR')}</div>
               </div>
             </div>
-          </div>
         `
       )}
     `;

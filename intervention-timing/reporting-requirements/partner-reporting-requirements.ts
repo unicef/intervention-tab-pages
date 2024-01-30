@@ -8,8 +8,8 @@ import './qpr/quarterly-reporting-requirements';
 import './hr/humanitarian-reporting-req-unicef';
 import './hr/humanitarian-reporting-req-cluster';
 import './srr/special-reporting-requirements';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {HumanitarianReportingReqUnicefEl} from './hr/humanitarian-reporting-req-unicef';
 import {QuarterlyReportingRequirementsEL} from './qpr/quarterly-reporting-requirements';
 import get from 'lodash-es/get';
@@ -38,7 +38,7 @@ import {isActiveTab} from '../../utils/utils';
 @customElement('partner-reporting-requirements')
 export class PartnerReportingRequirements extends connectStore(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
   render() {
     return html`
@@ -57,6 +57,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
 
         .reporting-req-data {
           border-inline-start: 1px solid var(--darker-divider-color);
+          width: 100%;
         }
 
         .nav-menu {
@@ -77,6 +78,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
           text-transform: capitalize;
           cursor: pointer;
           height: 45px;
+          text-wrap: nowrap;
         }
 
         .nav-menu-item[selected] {
@@ -112,13 +114,33 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
         :host-context([dir='rtl']) info-icon-tooltip {
           --iit-margin: 0 0 0 5px;
         }
+        .d-flex {
+          display: flex;
+        }
+        @media (max-width: 768px) {
+          .reports-menu {
+              width: 100%;
+              display: flex;
+              flex-wrap: wrap;
+              box-sizing: border-box;
+              border-bottom: 1px solid var(--darker-divider-color);
+          }
+          .d-flex {
+            flex-wrap: wrap;
+          }
+          .reporting-req-data {
+            width: 100%;
+            border-inline-start: none;
+          }
+        }
       </style>
       <etools-content-panel
         show-expand-btn
         class="content-section"
         panel-title=${translate(translatesMap.reporting_requirements)}
       >
-        <div class="flex-c layout-horizontal">
+        <div class="row">
+         <div class="col-12 d-flex">
           <div class="reports-menu nav-menu">
             <div
               name="qtyProgress"
@@ -182,7 +204,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
               ${translate('SPECIAL_REPORT')} (${this.specialRequirementsCount})
             </div>
           </div>
-          <div class="flex-c reporting-req-data">
+          <div class="reporting-req-data">
             <quarterly-reporting-requirements
               ?hidden="${!isActiveTab(this.selectedReportType, 'qtyProgress')}"
               id="qpr"
@@ -231,6 +253,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
             </special-reporting-requirements>
           </div>
         </div>
+       </div>
       </etools-content-panel>
     `;
   }

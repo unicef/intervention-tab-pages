@@ -4,7 +4,7 @@ import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixin
 import '@unicef-polymer/etools-unicef/src/etools-date-time/datepicker-lite';
 import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {PartnerReportingRequirements, RootState} from '../../common/types/store.types';
 import {ProgrammeDocDates, InterventionDatesPermissions} from './interventionDates.models';
@@ -38,7 +38,7 @@ export class InterventionDates extends CommentsMixin(
   UploadsMixin(ComponentBaseMixin(FrNumbersConsistencyMixin(ReportingRequirementsCommonMixin(LitElement))))
 ) {
   static get styles() {
-    return [gridLayoutStylesLit, frWarningsStyles];
+    return [layoutStyles, frWarningsStyles];
   }
 
   render() {
@@ -69,8 +69,8 @@ export class InterventionDates extends CommentsMixin(
         comment-element="programme-document-dates"
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
-        <div class="layout-horizontal row-padding-v">
-          <div class="col col-3">
+        <div class="row">
+          <div class="col-md-3 col-12">
             <!-- Start date -->
             <etools-info-tooltip
               class="fr-nr-warn"
@@ -99,7 +99,7 @@ export class InterventionDates extends CommentsMixin(
           </div>
 
           <!-- End date -->
-          <div class="col col-3">
+          <div class="col-md-3 col-12">
             <etools-info-tooltip
               class="fr-nr-warn"
               custom-icon
@@ -127,25 +127,27 @@ export class InterventionDates extends CommentsMixin(
           </div>
         </div>
         <div
-          class="layout-horizontal row-padding-v"
+          class="row"
           ?hidden="${this.hideActivationLetter(this.data.status, this.data.contingency_pd)}"
         >
-          <etools-upload
-            label=${translate('ACTIVATION_LETTER')}
-            id="activationLetterUpload"
-            .fileUrl="${this.data.activation_letter_attachment}"
-            .uploadEndpoint="${this.uploadEndpoint}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.activation_letter_attachment)}"
-            @upload-finished="${(e: CustomEvent) => this.activationLetterUploadFinished(e)}"
-            @upload-started="${this._onUploadStarted}"
-            @change-unsaved-file="${this._onChangeUnsavedFile}"
-            .showDeleteBtn="${this.showActivationLetterDeleteBtn(
-              this.data.status,
-              this.permissions?.edit.activation_letter_attachment,
-              this.editMode
-            )}"
-          >
-          </etools-upload>
+          <div class="col-12">
+            <etools-upload
+              label=${translate('ACTIVATION_LETTER')}
+              id="activationLetterUpload"
+              .fileUrl="${this.data.activation_letter_attachment}"
+              .uploadEndpoint="${this.uploadEndpoint}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.activation_letter_attachment)}"
+              @upload-finished="${(e: CustomEvent) => this.activationLetterUploadFinished(e)}"
+              @upload-started="${this._onUploadStarted}"
+              @change-unsaved-file="${this._onChangeUnsavedFile}"
+              .showDeleteBtn="${this.showActivationLetterDeleteBtn(
+                this.data.status,
+                this.permissions?.edit.activation_letter_attachment,
+                this.editMode
+              )}"
+            >
+            </etools-upload>
+          </div>
         </div>
 
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}

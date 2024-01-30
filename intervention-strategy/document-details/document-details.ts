@@ -7,7 +7,7 @@ import '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {selectDocumentDetails, selectDocumentDetailsPermissions} from './documentDetails.selectors';
 import {DocumentDetailsPermissions, DocumentDetails} from './documentDetails.models';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
@@ -31,7 +31,7 @@ import '@unicef-polymer/etools-unicef/src/etools-checkbox/etools-checkbox';
 @customElement('document-details')
 export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
 
   render() {
@@ -68,7 +68,8 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
-        <div class="row-padding-v">
+        <div class="row">
+         <div class="col-12">
           <etools-textarea
             id="title"
             label=${translate('TITLE')}
@@ -88,7 +89,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
           </etools-textarea>
         </div>
 
-        <div class="row-padding-v">
+        <div class="col-12">
           <etools-textarea
             id="context"
             no-label-float
@@ -108,7 +109,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
           </etools-textarea>
         </div>
 
-        <div class="row-padding-v">
+        <div class="col-12">
           <div>
             <label class="label">${translate(translatesMap.implementation_strategy)}</label>
             <info-icon-tooltip
@@ -136,7 +137,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
           </etools-textarea>
         </div>
 
-        <div class="row-padding-v">
+        <div class="col-12">
           <div>
             <label class="label">${translate(translatesMap.capacity_development)}</label>
             <info-icon-tooltip
@@ -164,7 +165,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
           </etools-textarea>
         </div>
 
-        <div class="row-padding-v">
+        <div class="col-12">
           <div>
             <label class="label">${translate(translatesMap.other_partners_involved)}</label>
             <info-icon-tooltip
@@ -193,7 +194,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
           </etools-textarea>
         </div>
 
-        <div class="row-padding-v">
+        <div class="col-12">
           <div>
             <label class="label">${translate(translatesMap.other_details)}</label>
           </div>
@@ -215,7 +216,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
           </etools-textarea>
         </div>
 
-        <div class="row-padding-v">
+        <div class="col-12">
           <etools-checkbox
             ?checked="${this.data.has_data_processing_agreement}"
             ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.has_data_processing_agreement)}"
@@ -228,7 +229,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
           </etools-checkbox>
         </div>
 
-        <div class="row-padding-v">
+        <div class="col-12">
           <etools-checkbox
             ?checked="${this.data.has_activities_involving_children}"
             ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.has_activities_involving_children)}"
@@ -241,7 +242,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
           </etools-checkbox>
         </div>
 
-        <div class="row-padding-v">
+        <div class="col-12">
           <etools-checkbox
             ?checked="${this.data.has_special_conditions_for_construction}"
             ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.has_special_conditions_for_construction)}"
@@ -254,7 +255,8 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
             ${translate(translatesMap.has_special_conditions_for_construction)}
           </etools-checkbox>
         </div>
-        ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
+      </div>
+      ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
       </etools-content-panel>
     `;
   }

@@ -20,7 +20,7 @@ import {AnyObject, EtoolsEndpoint, InterventionActivity, InterventionActivityIte
 import {translate, get as getTranslation} from 'lit-translate';
 import {translatesMap} from '../../../../utils/intervention-labels-map';
 import {DataMixin} from '@unicef-polymer/etools-modules-common/dist/mixins/data-mixin';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
@@ -30,7 +30,7 @@ import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/cur
 @customElement('activity-data-dialog')
 export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitElement) {
   static get styles(): CSSResultArray {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
 
   @property({type: String})
@@ -99,13 +99,15 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
           margin-inline-end: 24px;
         }
         .total {
-          justify-content: flex-end;
+          justify-content: center;
+          display: flex;
         }
         .general-total {
           min-width: 155px;
+          width: auto !important;
         }
         sl-switch {
-          margin: 25px 0;
+          margin: 8px 0;
           width: min-content;
           white-space: nowrap;
         }
@@ -115,6 +117,11 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
         }
         etools-dialog etools-textarea::part(textarea) {
           max-height: unset;
+        }
+        @media (max-width: 768px) {
+          .total {
+            justify-content: start;
+          }
         }
       </style>
 
@@ -130,83 +137,91 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
         ok-btn-text=${translate('GENERAL.SAVE')}
         cancel-btn-text=${translate('GENERAL.CANCEL')}
         .hideConfirmBtn="${this.readonly}"
-        no-padding
       >
-        <div class="container layout vertical">
-          <etools-input
-            class="validate-input flex-1"
-            label=${translate('ACTIVITY_NAME')}
-            placeholder="&#8212;"
-            .value="${this.editedData.name}"
-            @value-changed="${({detail}: CustomEvent) => this.updateModelValue('name', detail.value)}"
-            required
-            auto-validate
-            ?invalid="${this.errors.name}"
-            .errorMessage="${(this.errors.name && this.errors.name[0]) || translate('GENERAL.REQUIRED_FIELD')}"
-            ?readonly="${this.readonly}"
-            @focus="${() => this.resetFieldError('name')}"
-            @click="${() => this.resetFieldError('name')}"
-          ></etools-input>
-
-          <etools-textarea
-            class="validate-input flex-1"
-            label=${translate('OTHER_NOTES')}
-            placeholder="&#8212;"
-            .value="${this.editedData.context_details}"
-            @value-changed="${({detail}: CustomEvent) => this.updateModelValue('context_details', detail.value)}"
-            ?invalid="${this.errors.context_details}"
-            .errorMessage="${this.errors.context_details && this.errors.context_details[0]}"
-            ?readonly="${this.readonly}"
-            @focus="${() => this.resetFieldError('context_details')}"
-            @click="${() => this.resetFieldError('context_details')}"
-          ></etools-textarea>
-
-          <div class="layout-horizontal align-items-center">
+        <div class="row">
+          <div class="col-12">
+            <etools-input
+              class="validate-input"
+              label=${translate('ACTIVITY_NAME')}
+              placeholder="&#8212;"
+              .value="${this.editedData.name}"
+              @value-changed="${({detail}: CustomEvent) => this.updateModelValue('name', detail.value)}"
+              required
+              auto-validate
+              ?invalid="${this.errors.name}"
+              .errorMessage="${(this.errors.name && this.errors.name[0]) || translate('GENERAL.REQUIRED_FIELD')}"
+              ?readonly="${this.readonly}"
+              @focus="${() => this.resetFieldError('name')}"
+              @click="${() => this.resetFieldError('name')}"
+            ></etools-input>
+          </div>
+          <div class="col-12">
+            <etools-textarea
+              class="validate-input"
+              label=${translate('OTHER_NOTES')}
+              placeholder="&#8212;"
+              .value="${this.editedData.context_details}"
+              @value-changed="${({detail}: CustomEvent) => this.updateModelValue('context_details', detail.value)}"
+              ?invalid="${this.errors.context_details}"
+              .errorMessage="${this.errors.context_details && this.errors.context_details[0]}"
+              ?readonly="${this.readonly}"
+              @focus="${() => this.resetFieldError('context_details')}"
+              @click="${() => this.resetFieldError('context_details')}"
+            ></etools-textarea>
+          </div>
+          </div>
+          <div class="row">
             ${!this.useInputLevel
               ? html`
+                  <div class="col-md-3 col-6">
+                    <etools-currency
+                      label=${translate(translatesMap.cso_cash)}
+                      ?readonly="${this.readonly}"
+                      .value="${this.editedData.cso_cash}"
+                      @value-changed="${({detail}: CustomEvent) => this.updateModelValue('cso_cash', detail.value)}"
+                      required
+                    ></etools-currency>
+                </div>
+                <div class="col-md-3 col-6">
                   <etools-currency
-                    class="col-3"
-                    label=${translate(translatesMap.cso_cash)}
-                    ?readonly="${this.readonly}"
-                    .value="${this.editedData.cso_cash}"
-                    @value-changed="${({detail}: CustomEvent) => this.updateModelValue('cso_cash', detail.value)}"
-                    required
-                  ></etools-currency>
-
-                  <etools-currency
-                    class="col-3"
                     label=${translate('UNICEF_CASH_BUDGET')}
                     ?readonly="${this.readonly}"
                     required
                     .value="${this.editedData.unicef_cash}"
                     @value-changed="${({detail}: CustomEvent) => this.updateModelValue('unicef_cash', detail.value)}"
                   ></etools-currency>
+                </div>
                 `
               : html`
+                <div class="col-md-3 col-6">
                   <etools-input
                     readonly
                     tabindex="-1"
-                    class="col-3 total-input"
+                    class="total-input"
                     label=${translate('PARTNER_CASH_BUDGET')}
                     .value="${this.getSumValue('cso_cash')}"
                   ></etools-input>
+                </div>
+                <div class="col-md-3 col-6">
                   <etools-input
                     readonly
                     tabindex="-1"
-                    class="col-3 total-input"
+                    class="total-input"
                     label=${translate('UNICEF_CASH_BUDGET')}
                     .value="${this.getSumValue('unicef_cash')}"
                   ></etools-input>
+                </div>
                 `}
 
-            <div class="flex-auto layout-horizontal total">
-              <etools-input
-                readonly
-                tabindex="-1"
-                class="col-6 general-total"
-                label="${translate('GENERAL.TOTAL')} (${this.currency})"
-                .value="${this.getTotalValue()}"
-              ></etools-input>
+              <div class="col-md-6 col-12 total">
+                <etools-input
+                  readonly
+                  tabindex="-1"
+                  class="general-total"
+                  label="${translate('GENERAL.TOTAL')} (${this.currency})"
+                  .value="${this.getTotalValue()}"
+                ></etools-input>
+                </div>
             </div>
           </div>
 

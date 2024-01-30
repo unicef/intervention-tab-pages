@@ -11,7 +11,7 @@ import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-pa
 import {PartnerInfo, PartnerInfoPermissions} from './partnerInfo.models';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
@@ -34,7 +34,7 @@ import {translate, get as getTranslation, langChanged} from 'lit-translate';
 @customElement('partner-info')
 export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
   render() {
     // language=HTML
@@ -61,8 +61,8 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
-        <div class="row-padding-v layout-horizontal">
-          <div class="col col-7">
+        <div class="row">
+          <div class="col-md-8 col-12">
             <etools-input
               class="w100"
               label=${translate('PARTNER_ORGANIZATION')}
@@ -74,7 +74,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
             >
             </etools-input>
           </div>
-          <div class="col col-5">
+          <div class="col-md-4 col-12">
             <etools-dropdown
               id="agreements"
               label=${translate('AGREEMENTS')}
@@ -91,9 +91,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
             >
             </etools-dropdown>
           </div>
-        </div>
-        <div class="row-padding-v layout-horizontal">
-          <div class="col col-7">
+          <div class="col-md-8 col-12">
             <etools-input
               class="w100"
               label=${translate('PARTNER_VENDOR_NUMBER')}
@@ -104,13 +102,11 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
             >
             </etools-input>
           </div>
-          <div class="col col-5 layout-vertical">
+          <div class="col-md-4 col-12">
             <label for="agreementAuthOff" class="label">${translate('AGREEMENT_AUTHORIZED_OFFICERS')}</label>
             <div id="agreementAuthOff">${this.renderAgreementAuthorizedOfficers(this.agreementAuthorizedOfficers)}</div>
           </div>
-        </div>
-        <div class="row-padding-v">
-          <div class="col col-7 layout-vertical" ?hidden="${!this.permissions?.view!.partner_focal_points}">
+        <div class="col-md-8 col-12" ?hidden="${!this.permissions?.view!.partner_focal_points}">
             <etools-dropdown-multi
               label=${translate('PARTNER_FOCAL_POINTS')}
               .selectedValues="${this.data?.partner_focal_points?.map((f: any) => f.id)}"

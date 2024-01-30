@@ -14,6 +14,7 @@ import {translate, get as getTranslation} from 'lit-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {areEqual} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 
 @customElement('cp-output-dialog')
 export class CpOutputDialog extends LitElement {
@@ -59,6 +60,10 @@ export class CpOutputDialog extends LitElement {
     return title;
   }
 
+  static get styles() {
+    return [layoutStyles];
+  }
+
   protected render(): TemplateResult {
     // language=html
     return html`
@@ -78,13 +83,13 @@ export class CpOutputDialog extends LitElement {
         spinner-text="${this.spinnerText}"
         ok-btn-text=${translate('GENERAL.SAVE')}
         cancel-btn-text=${translate('GENERAL.CANCEL')}
-        no-padding
       >
-        <div class="container layout vertical">
+        <div class="row">
           ${!this.cpOutputId
             ? html`
+              <div class="col-12">
                 <etools-dropdown
-                  class="validate-input flex-1"
+                  class="validate-input"
                   @etools-selected-item-changed="${({detail}: CustomEvent) =>
                     this.onCpOutputSelected(detail.selectedItem && detail.selectedItem.id)}"
                   ?trigger-value-change-event="${!this.loadingInProcess}"
@@ -102,27 +107,30 @@ export class CpOutputDialog extends LitElement {
                   @focus="${() => this.resetFieldError('cp_output')}"
                   @click="${() => this.resetFieldError('cp_output')}"
                 ></etools-dropdown>
+              </div>
               `
             : html``}
-          <etools-dropdown-multi
-            class="validate-input disabled-as-readonly flex-1"
-            @etools-selected-items-changed="${({detail}: CustomEvent) =>
-              this.onIndicatorsSelected(detail.selectedItems)}"
-            ?trigger-value-change-event="${!this.loadingInProcess}"
-            .selectedValues="${this.selectedIndicators}"
-            label=${translate('RAM_INDICATORS')}
-            placeholder="&#8212;"
-            .options="${this.indicators}"
-            option-label="name"
-            option-value="id"
-            allow-outside-scroll
-            dynamic-align
-            ?invalid="${this.errors.ram_indicators}"
-            ?disabled="${!this.selectedCpOutput}"
-            .errorMessage="${this.errors.ram_indicators && this.errors.ram_indicators[0]}"
-            @focus="${() => this.resetFieldError('ram_indicators')}"
-            @click="${() => this.resetFieldError('ram_indicators')}"
-          ></etools-dropdown-multi>
+            <div class="col-12">
+            <etools-dropdown-multi
+              class="validate-input disabled-as-readonly"
+              @etools-selected-items-changed="${({detail}: CustomEvent) =>
+                this.onIndicatorsSelected(detail.selectedItems)}"
+              ?trigger-value-change-event="${!this.loadingInProcess}"
+              .selectedValues="${this.selectedIndicators}"
+              label=${translate('RAM_INDICATORS')}
+              placeholder="&#8212;"
+              .options="${this.indicators}"
+              option-label="name"
+              option-value="id"
+              allow-outside-scroll
+              dynamic-align
+              ?invalid="${this.errors.ram_indicators}"
+              ?disabled="${!this.selectedCpOutput}"
+              .errorMessage="${this.errors.ram_indicators && this.errors.ram_indicators[0]}"
+              @focus="${() => this.resetFieldError('ram_indicators')}"
+              @click="${() => this.resetFieldError('ram_indicators')}"
+            ></etools-dropdown-multi>
+          </div>
         </div>
       </etools-dialog>
     `;
