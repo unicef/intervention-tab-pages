@@ -41,7 +41,6 @@ export class ActivityTimeFrames extends LitElement {
           padding: 5px;
           box-sizing: border-box;
           margin: 5px;
-          height: 42px;
           border-radius: 10px;
         }
         .time-frame.selected {

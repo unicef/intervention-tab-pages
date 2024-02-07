@@ -1,6 +1,6 @@
 import {LitElement, html} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
@@ -29,7 +29,7 @@ import {get as getTranslation} from 'lit-translate';
 @customElement('supply-agreement-dialog')
 export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
 
   render() {
@@ -49,7 +49,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
         @confirm-btn-clicked="${this.onSaveClick}"
         @close="${() => this.onClose()}"
       >
-        <div class="layout-horizontal">
+        <div class="row">
           <div class="col col-12">
             <etools-input
               class="w100"
@@ -63,9 +63,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
               required
             ></etools-input>
           </div>
-        </div>
-        <div class="layout-horizontal">
-          <div class="col col-4">
+          <div class="col col-md-4 col-6">
             <etools-input
               value="${this.data.unit_number ? this.data.unit_number : ''}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'unit_number')}"
@@ -78,7 +76,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
             >
             </etools-input>
           </div>
-          <div class="col col-4">
+          <div class="col col-md-4 col-6">
             <etools-currency
               id="unicefCash"
               label=${translate(translatesMap.unit_price)}
@@ -92,7 +90,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
             >
             </etools-currency>
           </div>
-          <div class="col col-4">
+          <div class="col col-md-4 col-12">
             <etools-dropdown
               label=${translate(translatesMap.provided_by)}
               placeholder="&#8212;"
@@ -110,10 +108,8 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
             >
             </etools-dropdown>
           </div>
-        </div>
-        <div class="layout-horizontal">
           ${this.isUnicefUser
-            ? html` <div class="col col-8">
+            ? html` <div class="col col-md-8 col-12">
                 <etools-dropdown
                   class="cp-out"
                   label=${translate(translatesMap.result)}
@@ -131,7 +127,7 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
               </div>`
             : html``}
 
-          <div class="col col-4" ?hidden="${this.data.provided_by == 'partner'}">
+          <div class="col col-md-4 col-12" ?hidden="${this.data.provided_by == 'partner'}">
             <etools-input
               id="unicefProductNumber"
               label=${translate(translatesMap.unicef_product_number)}
@@ -141,9 +137,6 @@ export class SupplyAgreementDialog extends ComponentBaseMixin(LitElement) {
             >
             </etools-input>
           </div>
-        </div>
-
-        <div class="layout-horizontal">
           <div class="col col-12">
             <etools-textarea
               id="otherMentions"

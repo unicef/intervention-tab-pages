@@ -1,5 +1,6 @@
 import {html, LitElement} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
+import '@unicef-polymer/etools-unicef/src/etools-media-query/etools-media-query';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
@@ -60,9 +61,11 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         .pad-right {
           padding-inline-end: 6px;
           text-transform: uppercase;
+          padding-inline-start: 18px;
         }
         info-icon-tooltip {
-          --iit-margin: 8px 0 8px -15px;
+          --iit-margin: 0 0 0 4px;
+          --iit-icon-size: 22px;
         }
         .actions {
           width: 100px;
@@ -95,8 +98,15 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         .padding-top-6 {
           padding-top: 6px;
         }
+        etools-content-panel::part(ecp-header) {
+          --ecp-header-height: auto;
+        }
       </style>
 
+      <etools-media-query
+        query="(max-width: 767px)"
+        @query-matches-changed="${this.resolutionChanged}"
+      ></etools-media-query>
       <etools-content-panel show-expand-btn panel-title=${translate(translatesMap.management_budgets)}>
         <div slot="after-title">
           <info-icon-tooltip
@@ -104,13 +114,15 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
             ?hidden="${!this.canEdit}"
             .tooltipText="${translate('EFFECTIVE_AND_EFFICIENT_PRGMT_MNGMT_INFO')}"
           ></info-icon-tooltip>
+          <div>
+          </div>
         </div>
         <div slot="panel-btns">
           <label class="label font-bold pad-right">${translate('TOTAL')}:</label
           ><label class="font-bold-12 padding-top-6">${this.data.currency} ${this.total_amount}</label>
         </div>
 
-        <etools-data-table-header id="listHeader" no-title>
+        <etools-data-table-header id="listHeader" .lowResolutionLayout="${this.lowResolutionLayout}" no-title>
           <etools-data-table-column class="flex-7" field="title">
             ${translate('ITEM_PD_CURRENCY')}
           </etools-data-table-column>
@@ -128,7 +140,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
 
         ${this.formattedData.map(
           (item: any) => html` <div comment-element="eepm-${item.index}">
-            <etools-data-table-row>
+            <etools-data-table-row .lowResolutionLayout="${this.lowResolutionLayout}">
               <div slot="row-data" class="layout-horizontal editable-row">
                 <div class="col-data flex-7" data-col-header-label="${translate('ITEM_PD_CURRENCY')}">
                   ${item.title}
@@ -187,6 +199,9 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
 
   @property({type: Number})
   interventionId!: number;
+
+  @property({type: Boolean})
+  lowResolutionLayout = false;
 
   connectedCallback() {
     super.connectedCallback();
@@ -255,5 +270,9 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         readonly: !this.canEdit
       }
     });
+  }
+
+  resolutionChanged(e: CustomEvent) {
+    this.lowResolutionLayout = e.detail.value;
   }
 }

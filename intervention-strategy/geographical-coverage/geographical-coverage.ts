@@ -82,7 +82,8 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         }
 
         #iit-geo {
-          --iit-margin: 8px 0 8px -15px;
+          --iit-margin: 0 0 0 4px;
+          --iit-icon-size: 22px;
         }
 
         .iit {

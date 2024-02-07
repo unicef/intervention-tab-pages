@@ -3,7 +3,7 @@ import {LitElement, html, TemplateResult, CSSResultArray, css, PropertyValues} f
 import {property, customElement} from 'lit/decorators.js';
 import {translate} from 'lit-translate';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {
   callClickOnEnterPushListener,
   callClickOnSpacePushListener
@@ -67,7 +67,7 @@ export class DisplayControls extends LitElement {
         ${translate('SHOW_INACTIVE')}
       </sl-switch>
 
-      <div class="layout-horizontal">
+      <div class="layout-horizontal layout-wrap">
         <sl-dropdown
           distance="-30"
           id="view-menu-button"
@@ -137,7 +137,7 @@ export class DisplayControls extends LitElement {
   static get styles(): CSSResultArray {
     // language=CSS
     return [
-      gridLayoutStylesLit,
+      layoutStyles,
       css`
         :host {
           display: flex;

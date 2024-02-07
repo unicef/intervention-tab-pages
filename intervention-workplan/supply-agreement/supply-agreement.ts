@@ -8,7 +8,7 @@ import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixin
 import '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {
   EtoolsTableColumn,
   EtoolsTableColumnType,
@@ -58,11 +58,11 @@ const customStyles = html`
 @customElement('supply-agreements')
 export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
   render() {
     if (!this.supply_items) {
-      return html` ${sharedStyles}
+      return html` ${sharedStyles}      
         <etools-loading source="supply-a" active></etools-loading>`;
     }
     return html`
@@ -73,12 +73,8 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           margin-bottom: 24px;
           --etools-table-col-font-size: 16px;
         }
-
-        .mr-20 {
-          margin-inline-end: 20px;
-        }
-        .pad-right {
-          padding-inline-end: 6px;
+        .headerLabel {
+          padding-inline-end: 4px;
         }
         #uploadHelpPanel {
           margin-block-end: 0;
@@ -90,6 +86,9 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         etools-icon-button[name='file-upload'] {
           color: var(--primary-text-color);
         }
+        etools-content-panel::part(ecp-header) {
+          --ecp-header-height: auto;
+        }
       </style>
 
       <etools-content-panel
@@ -97,14 +96,18 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         panel-title=${translate(translatesMap.supply_items)}
         comment-element="supply-agreement"
       >
-        <div slot="panel-btns">
-          <span class="mr-20">
-            <label class="label font-bold pad-right">${translate('TOTAL_SUPPLY_BUDGET')} </label>
+
+        <div slot="after-title">
+            <span>
+            <label class="label font-bold headerLabel">${translate('TOTAL_SUPPLY_BUDGET')} </label>
             <label class="font-bold-12"
               >${this.intervention.planned_budget.currency}
               ${displayCurrencyAmount(this.intervention.planned_budget.total_supply!, '0.00')}</label
             >
-          </span>
+            </span>
+        </div>
+        <div slot="panel-btns">
+        
 
           <etools-info-tooltip
             custom-icon
@@ -129,7 +132,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           >
           </etools-icon-button>
         </div>
-        <div class="row-h" ?hidden="${!this.permissions.edit.supply_items || this.supply_items?.length}">
+        <div class="row" ?hidden="${!this.permissions.edit.supply_items || this.supply_items?.length}">
           ${this.getUploadHelpElement()}
         </div>
 

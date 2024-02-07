@@ -64,8 +64,8 @@ export class GenderEquityRatingElement extends CommentsMixin(ComponentBaseMixin(
           --iit-icon-size: 18px;
         }
         #iit-ger {
-          --iit-margin: 8px 0 8px -15px;
-          --iit-icon-size: 24px;
+          --iit-margin: 0 0 0 4px;
+          --iit-icon-size: 22px;
         }
       </style>
 

@@ -108,21 +108,27 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     // language=HTML
     return html`
       ${sharedStyles}
+      <style>
+        etools-content-panel::part(ecp-header-title-panel) {
+          justify-content: space-between;
+        }
+      </style>
       <etools-content-panel
         show-expand-btn
         panel-title="${translate(translatesMap.result_links)} (${this.noOfPdOutputs})"
         elevation="0"
       >
-        <div slot="panel-btns" class="layout-horizontal flex-1">
-          <display-controls
-            class="flex-1"
-            ?show-inactive-toggle="${this.showInactiveToggle}"
-            .showIndicators="${this.showIndicators}"
-            .showActivities="${this.showActivities}"
-            .interventionId="${this.interventionId}"
-            @show-inactive-changed="${this.inactiveChange}"
-            @tab-view-changed="${this.updateTableView}"
-          ></display-controls>
+      <div slot="after-title">
+        <display-controls
+          ?show-inactive-toggle="${this.showInactiveToggle}"
+          .showIndicators="${this.showIndicators}"
+          .showActivities="${this.showActivities}"
+          .interventionId="${this.interventionId}"
+          @show-inactive-changed="${this.inactiveChange}"
+          @tab-view-changed="${this.updateTableView}"
+        ></display-controls>
+      </div>
+        <div slot="panel-btns">        
           <div class="total-result layout-horizontal bottom-aligned" ?hidden="${!this.showActivities}">
             <div class="heading">${translate('TOTAL')}:</div>
             <div class="data">${this.intervention.planned_budget.currency} <b>${this.getTotal()}</b></div>
@@ -655,15 +661,11 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         etools-content-panel {
           box-shadow: 0 2px 7px 3px rgba(0, 0, 0, 0.15);
         }
-        etools-content-panel::part(ecp-header-btns-wrapper) {
-          flex: 1;
-        }
         etools-content-panel::part(ecp-header) {
           border-bottom: none;
         }
         etools-content-panel::part(ecp-header) {
           position: relative;
-          height: 66px;
           padding: 13px 16px;
         }
         etools-content-panel::part(ecp-header):after {

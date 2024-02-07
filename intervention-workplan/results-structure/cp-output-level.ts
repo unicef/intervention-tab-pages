@@ -148,6 +148,8 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
           line-height: 26px;
           padding-top: 8px;
           padding-bottom: 3px;
+          text-wrap: wrap;
+          word-wrap: break-word;
         }
         :host div.outputs-count {
           padding: 0 0 9px;
@@ -183,6 +185,11 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
         }
         .editable-row:hover .hover-block {
           opacity: 1;
+        }
+        @media (max-width: 576px) {
+          .cp-output-row {
+            flex-direction: column;
+          }
         }
       `
     ];

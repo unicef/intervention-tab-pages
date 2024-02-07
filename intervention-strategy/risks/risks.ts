@@ -77,7 +77,8 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           padding: 20px;
         }
         info-icon-tooltip {
-          --iit-margin: 8px 0 8px -15px;
+          --iit-margin: 0 0 0 4px;
+          --iit-icon-size: 22px;
         }
       </style>
       <etools-content-panel show-expand-btn panel-title=${translate(translatesMap.risks)} comment-element="risks">

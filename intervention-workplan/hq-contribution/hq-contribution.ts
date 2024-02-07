@@ -69,8 +69,14 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
           width: 3.5rem;
         }
         .space-betw {
+          width: 340px;
           justify-content: space-between;
           display: flex;
+        }
+        @media (max-width: 576px) {
+          .space-betw {
+            width: 100%;
+          }
         }
       </style>
 
@@ -85,7 +91,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
           <div class="col-12">
             <label class="label">${translate(translatesMap.hq_support_cost)}</label>
           </div>
-          <div class="col-md-4 col-12 space-betw">
+          <div class="space-betw">
             <sl-range
               dir="${this.dir}"
               .value="${this.data.hq_support_cost}"
@@ -122,7 +128,7 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
           </div>
         </div>
         <div class="row">
-          <div class="col-3">
+          <div class="col-12">
             <etools-currency
               id="hqContrib"
               class="w100"

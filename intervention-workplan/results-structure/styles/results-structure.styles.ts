@@ -143,3 +143,23 @@ export const ResultStructureStyles: CSSResult = css`
     color: #212121;
   }
 `;
+
+// @media (max-width: 576px) {
+//   .add-button {
+//     font-size: 12px;
+//   }
+//   .total-cache .heading,
+//   .total-cache .currency,
+//   .data,
+//   .bold-data {
+//     font-size: 12px;
+//     line-height: 15px;
+//   }
+//   .details-text {
+//     font-size: 11px;
+//   }
+//   .total-cache .data {
+//     font-size: 14px;
+//     line-height: 18px;
+//   }
+// }

@@ -12,7 +12,7 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import {Indicator} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../../../utils/intervention-labels-map';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 import {EtoolsDropdownMulti} from '@unicef-polymer/etools-unicef/src/etools-dropdown/EtoolsDropdownMulti';
 import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.js';
@@ -25,7 +25,7 @@ import SlSwitch from '@shoelace-style/shoelace/dist/components/switch/switch.js'
 @customElement('non-cluster-indicator')
 class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [layoutStyles];
   }
 
   render() {
@@ -47,7 +47,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         }
 
         .unknown {
-          padding-inline-start: 24px;
+          padding-inline-start: 30px;
           padding-bottom: 16px;
           padding-top: 10px;
         }
@@ -72,27 +72,31 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           justify-content: end;
         }
 
-        .row-h {
-          padding-top: 16px !important;
+        .with-padding {
+          padding: 16px 24px;
           padding-bottom: 0 !important;
         }
-
+        .row {
+          margin: 0 15px !important;
+        }
         .last-item {
           padding-bottom: 24px !important;
         }
         .mr-12 {
           margin-inline-end: 12px;
         }
-        .mr-20 {
-          margin-inline-end: 20px;
-        }
         sl-switch {
           margin-top: 25px;
         }
+        @media (max-width: 576px) {
+          .last-item {
+            flex-direction: column !important;
+          }
+        }
       </style>
 
-      <div class="row-h flex-c">
-        <div class="layout-vertical mr-20">
+      <div class="row">
+        <div class="col-md-6 col-12">
           <label class="label">${translate('TYPE')}</label>
           <div class="radioGroup">
             <etools-radio-group
@@ -115,7 +119,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
             </etools-radio-group>
           </div>
         </div>
-        <div class="layout-vertical" ?hidden="${this._unitIsNumeric(this.indicator!.indicator!.unit)}">
+        <div class="col-md-6 col-12" ?hidden="${this._unitIsNumeric(this.indicator!.indicator!.unit)}">
           <label class="label">${translate('DISPLAY_TYPE')}</label>
           <div class="radioGroup">
             <etools-radio-group
@@ -136,29 +140,31 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           </div>
         </div>
       </div>
-      <div class="row-h flex-c">
-        <etools-input
-          id="titleEl"
-          required
-          label=${translate('INDICATOR')}
-          .value="${this.indicator!.indicator!.title}"
-          placeholder="&#8212;"
-          error-message=${translate('ADD_TITLE_ERR')}
-          auto-validate
-          ?readonly="${this.isReadonlyTitle()}"
-          @value-changed="${({detail}: CustomEvent) => {
-            if (detail.value === undefined) {
-              return;
-            }
-            this.indicator!.indicator!.title = detail.value;
-          }}"
-        >
-        </etools-input>
+      <div class="row">
+        <div class="col-12">
+          <etools-input
+            id="titleEl"
+            required
+            label=${translate('INDICATOR')}
+            .value="${this.indicator!.indicator!.title}"
+            placeholder="&#8212;"
+            error-message=${translate('ADD_TITLE_ERR')}
+            auto-validate
+            ?readonly="${this.isReadonlyTitle()}"
+            @value-changed="${({detail}: CustomEvent) => {
+              if (detail.value === undefined) {
+                return;
+              }
+              this.indicator!.indicator!.title = detail.value;
+            }}"
+          >
+          </etools-input>
+        </div>
       </div>
 
       <!-- Baseline & Target -->
-      <div class="row-h flex-c" ?hidden="${this._unitIsNumeric(this.indicator!.indicator!.unit)}">
-        <div class="col col-3">
+      <div class="row" ?hidden="${this._unitIsNumeric(this.indicator!.indicator!.unit)}">
+        <div class="col-md-3 col-6">
           <etools-input
             id="numeratorLbl"
             label=${translate(translatesMap.numerator_label)}
@@ -171,7 +177,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           >
           </etools-input>
         </div>
-        <div class="col col-3">
+        <div class="col-md-3 col-6">
           <etools-input
             id="denomitorLbl"
             label=${translate(translatesMap.denominator_label)}
@@ -185,11 +191,12 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           </etools-input>
         </div>
       </div>
-      <div class="row-h flex-c">
+      <div class="row">
         ${!this._isRatioType(this.indicator!.indicator!.unit, this.indicator!.indicator!.display_type)
-          ? html` <div class="col col-3">
+          ? html`
                 ${this._unitIsNumeric(this.indicator!.indicator!.unit)
-                  ? html`<etools-currency
+                  ? html` <div class="col-md-3 col-6" ?hidden="${!this._unitIsNumeric(this.indicator!.indicator!.unit)}">
+                  <etools-currency
                       id="baselineNumeric"
                       label=${translate('BASELINE')}
                       .value="${this.indicator.baseline.v ?? ''}"
@@ -199,12 +206,14 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                       }}"
                       error-message=${translate('INVALID_NUMBER')}
                       ?disabled="${this.baselineIsUnknown || this.readonly}"
-                      ?readonly="${this.readonly}"
-                      ?hidden="${!this._unitIsNumeric(this.indicator!.indicator!.unit)}"
-                    ></etools-currency>`
+                      ?readonly="${this.readonly}"                      
+                    ></etools-currency>
+                    </div>`
                   : html``}
                 ${!this._unitIsNumeric(this.indicator!.indicator!.unit)
-                  ? html` <etools-input
+                  ? html` 
+                  <div class="col-md-3 col-6">
+                  <etools-input
                       id="baselineNonNumeric"
                       label=${translate('BASELINE')}
                       .value="${this.indicator.baseline.v}"
@@ -220,10 +229,11 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                         this.resetValidations();
                       }}"
                     >
-                    </etools-input>`
+                    </etools-input>
+                    </div>`
                   : html``}
-              </div>
-              <div class="col col-3">
+              
+              <div class="col-md-3 col-6" ?hidden="${!this._unitIsNumeric(this.indicator!.indicator!.unit)}">
                 <etools-currency
                   id="targetElForNumericUnit"
                   required
@@ -234,9 +244,10 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                     this._targetChanged(this.indicator.target.v);
                   }}"
                   error-message=${translate('VALID_TARGET_ERR')}
-                  ?readonly="${this.readonly}"
-                  ?hidden="${!this._unitIsNumeric(this.indicator!.indicator!.unit)}"
+                  ?readonly="${this.readonly}"                  
                 ></etools-currency>
+                </div>
+                <div class="col-md-3 col-6" ?hidden="${this._unitIsNumeric(this.indicator!.indicator!.unit)}">
                 <etools-input
                   label=${translate('TARGET')}
                   id="targetElForNonNumericUnit"
@@ -247,8 +258,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                   .pattern="${this.digitsPattern}"
                   auto-validate
                   error-message=${translate('VALID_TARGET_ERR')}
-                  ?readonly="${this.readonly}"
-                  ?hidden="${this._unitIsNumeric(this.indicator!.indicator!.unit)}"
+                  ?readonly="${this.readonly}"                  
                   @value-changed="${({detail}: CustomEvent) => {
                     this.indicator.target.v = detail.value;
                     this._targetChanged(this.indicator.target.v);
@@ -259,7 +269,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
               </div>`
           : html``}
         ${this._isRatioType(this.indicator!.indicator!.unit, this.indicator!.indicator!.display_type)
-          ? html` <div class="col-3 layout-horizontal">
+          ? html` <div class="col-md-3 col-12 layout-horizontal">
                 <etools-input
                   id="baselineNumerator"
                   label=${translate(translatesMap.baseline)}
@@ -293,7 +303,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                 >
                 </etools-input>
               </div>
-              <div class="col col-3">
+              <div class="col-md-3 col-12 layout-horizontal">
                 <etools-input
                   label=${translate('TARGET')}
                   id="targetNumerator"
@@ -330,7 +340,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                 </etools-input>
               </div>`
           : html``}
-        <div class="col col-6" ?hidden=${!this.isUnicefUser}>
+        <div class="col-md-6 col-12" ?hidden=${!this.isUnicefUser}>
           <sl-switch
             ?checked="${this.indicator.is_high_frequency}"
             ?disabled="${this.readonly || !this.isUnicefUser}"
@@ -351,20 +361,21 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
       </div>
 
       <!-- Baseline & Target -->
-      <div class="row-h flex-c">
-        <etools-textarea
-          label=${translate(translatesMap.means_of_verification)}
-          type="text"
-          .value="${this.indicator.means_of_verification}"
-          ?readonly="${this.readonly}"
-          placeholder="&#8212;"
-          @value-changed="${({detail}: CustomEvent) => {
-            this.indicator.means_of_verification = detail.value;
-          }}"
-        >
-        </etools-textarea>
-      </div>
-      <div class="last-item row-h flex-c">
+      <div class="row">
+        <div class="col-12">
+          <etools-textarea
+            label=${translate(translatesMap.means_of_verification)}
+            type="text"
+            .value="${this.indicator.means_of_verification}"
+            ?readonly="${this.readonly}"
+            placeholder="&#8212;"
+            @value-changed="${({detail}: CustomEvent) => {
+              this.indicator.means_of_verification = detail.value;
+            }}"
+          >
+          </etools-textarea>
+        </div>
+      <div class="col-12 layout-horizontal last-item">
         <etools-dropdown-multi
           id="locationsDropdw"
           label=${translate(translatesMap.locations)}
