@@ -3,7 +3,7 @@ import {css, CSSResult} from 'lit';
 // language=CSS
 export const ActivitiesAndIndicatorsStyles: CSSResult = css`
   .title-text {
-    font-size: 16px;
+    font-size: var(--etools-font-size-16, 16px);
     font-weight: 500;
     line-height: 26px;
   }
@@ -11,7 +11,7 @@ export const ActivitiesAndIndicatorsStyles: CSSResult = css`
     display: flex;
     position: relative;
     gap: 10px;
-    font-size: 16px;
+    font-size: var(--etools-font-size-16, 16px);
     font-weight: 400;
     line-height: 26px;
     color: #212121;
@@ -19,7 +19,7 @@ export const ActivitiesAndIndicatorsStyles: CSSResult = css`
   }
   .table-head {
     padding: 4px 16px !important;
-    font-size: 16px;
+    font-size: var(--etools-font-size-16, 16px);
     line-height: 16px;
     color: #5c5c5c;
     background-color: var(--main-background);
@@ -73,7 +73,7 @@ export const ActivitiesAndIndicatorsStyles: CSSResult = css`
   }
   .action {
     text-align: left;
-    font-size: 16px;
+    font-size: var(--etools-font-size-16, 16px);
     font-weight: 400;
     line-height: 19px;
     white-space: nowrap;
@@ -105,7 +105,7 @@ export const ActivitiesAndIndicatorsStyles: CSSResult = css`
   }
   .item-link {
     margin-top: 7px;
-    font-size: 16px;
+    font-size: var(--etools-font-size-16, 16px);
     line-height: 26px;
     color: #5c5c5c;
     cursor: pointer;

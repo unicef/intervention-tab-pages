@@ -45,7 +45,7 @@ export class AddEditSpecialRepReq extends LitElement {
 
         label {
           margin-bottom: 24px;
-          font-size: 14px;
+          font-size: var(--etools-font-size-14, 14px);
         }
 
         calendar-lite {

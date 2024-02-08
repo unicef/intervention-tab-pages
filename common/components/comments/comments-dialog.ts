@@ -152,7 +152,7 @@ export class CommentsDialog extends EditComments {
         }
 
         .no-comments {
-          font-size: 15px;
+          font-size: var(--etools-font-size-15, 15px);
           font-style: italic;
           line-height: 16px;
           color: var(--secondary-text-color);

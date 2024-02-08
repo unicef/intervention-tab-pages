@@ -278,7 +278,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
         }
         .details-heading {
           margin-bottom: 12px;
-          font-size: 16px;
+          font-size: var(--etools-font-size-16, 16px);
           font-weight: 700;
           line-height: 16px;
           color: #5c5c5c;
@@ -288,7 +288,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
           padding-inline-start: 0;
         }
         .details-list-item {
-          font-size: 16px;
+          font-size: var(--etools-font-size-16, 16px);
           font-weight: 400;
           line-height: 26px;
           color: #212121;

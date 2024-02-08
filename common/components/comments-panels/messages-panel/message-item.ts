@@ -170,7 +170,7 @@ export class MessageItem extends LitElement {
           background-color: var(--darker-divider-color);
           color: #ffffff;
           font-weight: 500;
-          font-size: 18px;
+          font-size: var(--etools-font-size-18, 18px);
           text-transform: uppercase;
         }
         .info {
@@ -183,26 +183,26 @@ export class MessageItem extends LitElement {
           margin-bottom: 10px;
         }
         .name {
-          font-size: 14px;
+          font-size: var(--etools-font-size-14, 14px);
           font-weight: 400;
           line-height: 16px;
           color: #212121;
         }
         .date {
-          font-size: 13px;
+          font-size: var(--etools-font-size-13, 13px);
           font-weight: 400;
           line-height: 15px;
           color: #5c5c5c;
         }
         .message {
-          font-size: 16px;
+          font-size: var(--etools-font-size-16, 16px);
           font-weight: 400;
           line-height: 20px;
           color: #5c5c5c;
           white-space: pre-line;
         }
         .deleted-message {
-          font-size: 14px;
+          font-size: var(--etools-font-size-14, 14px);
           line-height: 20px;
           color: var(--secondary-text-color);
           font-style: italic;
@@ -221,7 +221,7 @@ export class MessageItem extends LitElement {
           align-items: center;
           margin-inline-end: 30px;
           font-weight: 400;
-          font-size: 13px;
+          font-size: var(--etools-font-size-13, 13px);
           line-height: 18px;
           color: #5c5c5c;
           cursor: pointer;
@@ -238,11 +238,11 @@ export class MessageItem extends LitElement {
           margin-inline-end: 8px;
         }
         .delete {
-          --etools-icon-font-size: 18px;
+          --etools-icon-font-size: var(--etools-font-size-18, 18px);
         }
         etools-icon[name='refresh'],
         .resolve {
-          --etools-icon-font-size: 18px;
+          --etools-icon-font-size: var(--etools-font-size-18, 18px);
           color: var(--secondary-text-color);
         }
         *[hidden] {

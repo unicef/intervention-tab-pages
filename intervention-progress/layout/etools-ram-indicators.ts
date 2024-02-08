@@ -34,7 +34,7 @@ export class EtoolsRamIndicators extends CommonMixin(LitElement) {
         }
 
         label {
-          font-size: 14px;
+          font-size: var(--etools-font-size-14, 14px);
         }
 
         #label,
