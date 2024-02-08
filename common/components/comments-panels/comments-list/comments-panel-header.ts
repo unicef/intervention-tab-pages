@@ -55,7 +55,7 @@ export class CommentsPanelHeader extends LitElement {
       CommentPanelsStyles,
       css`
         etools-icon-button {
-          --etools-icon-font-size: 30px;
+          --etools-icon-font-size: var(--etools-font-size-30, 30px);
           width: 30px;
           color: white;
         }

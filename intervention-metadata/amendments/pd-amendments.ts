@@ -75,7 +75,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
           margin: 0;
         }
         etools-icon {
-          --etools-icon-font-size: 18px;
+          --etools-icon-font-size: var(--etools-font-size-18, 18px);
           margin-inline-start: 5px;
         }
         a {
@@ -83,12 +83,12 @@ export class PdAmendments extends CommentsMixin(LitElement) {
         }
         .label {
           margin-bottom: 5px;
-          font-size: 12px;
+          font-size: var(--etools-font-size-12, 12px);
           line-height: 16px;
           color: var(--secondary-text-color);
         }
         .value {
-          font-size: 16px;
+          font-size: var(--etools-font-size-16, 16px);
           line-height: 24px;
           color: var(--primary-text-color);
         }

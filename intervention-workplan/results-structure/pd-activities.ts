@@ -281,7 +281,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
         }
         .activity-data div {
           text-align: left !important;
-          font-size: 16px;
+          font-size: var(--etools-font-size-16, 16px);
           font-weight: 400;
           line-height: 26px;
         }

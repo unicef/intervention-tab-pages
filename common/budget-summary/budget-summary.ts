@@ -61,18 +61,18 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
         }
         .amt-data .label {
           font-weight: 400;
-          font-size: 14px;
+          font-size: var(--etools-font-size-14, 14px);
           line-height: 16px;
           white-space: nowrap;
         }
         .amt-data .input-label {
           align-items: flex-end;
-          font-size: 24px;
+          font-size: var(--etools-font-size-24, 24px);
           font-weight: 900;
           line-height: 28px;
         }
         .amt-data .input-label span {
-          font-size: 16px;
+          font-size: var(--etools-font-size-16, 16px);
           font-weight: 400;
           line-height: 25px;
           margin-inline-end: 6px;

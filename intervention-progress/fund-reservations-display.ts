@@ -57,7 +57,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
           justify-content: flex-end;
         }
         .unicef-cash-col label {
-          font-size: 12px;
+          font-size: var(--etools-font-size-12, 12px);
           color: var(--secondary-text-color);
           font-weight: bold;
         }

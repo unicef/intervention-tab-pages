@@ -159,12 +159,12 @@ export class InterventionTabs extends connectStore(UploadMixin(LitElement)) {
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
-          font-size: 18px;
+          font-size: var(--etools-font-size-18, 18px);
           font-weight: 700;
           display: block;
         }
         .intervention-number {
-          font-size: 16px;
+          font-size: var(--etools-font-size-16, 16px);
         }
 
         reason-display {

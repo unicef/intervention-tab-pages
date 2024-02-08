@@ -24,12 +24,12 @@ export class GeneralReviewInformation extends LitElement {
           align-items: center;
         }
         .label {
-          font-size: 12px;
+          font-size: var(--etools-font-size-12, 12px);
           line-height: 16px;
           color: var(--secondary-text-color);
         }
         .value {
-          font-size: 16px;
+          font-size: var(--etools-font-size-16, 16px);
           line-height: 24px;
           color: var(--primary-text-color);
         }

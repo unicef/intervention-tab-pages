@@ -247,7 +247,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         background-color: #5B2121;
         border-radius: 50%;
         font-weight: bold;
-        font-size: 10px;
+        font-size: var(--etools-font-size-10, 10px);
         color: #ffffff;
         z-index: 92;
       `;

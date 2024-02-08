@@ -7,35 +7,35 @@ export const ResultStructureStyles: CSSResult = css`
     --cp-output-background: #a6dbff;
   }
   .heading {
-    font-size: 12px;
+    font-size: var(--etools-font-size-12, 12px);
     line-height: 16px;
     color: var(--secondary-text-color);
   }
   .data {
-    font-size: 16px;
+    font-size: var(--etools-font-size-16, 16px);
     line-height: 24px;
     color: var(--primary-text-color);
   }
   .total-cache .heading {
-    font-size: 14px;
+    font-size: var(--etools-font-size-14, 14px);
     margin-bottom: 10px;
     text-align: right;
   }
   .total-cache .data {
-    font-size: 20px;
+    font-size: var(--etools-font-size-20, 20px);
     font-weight: 900;
     line-height: 23px;
     text-align: right;
   }
   .total-cache .currency {
     margin-inline-end: 4px;
-    font-size: 16px;
+    font-size: var(--etools-font-size-16, 16px);
     font-weight: 400;
     line-height: 19px;
   }
   .bold-data {
     font-weight: bold;
-    font-size: 16px;
+    font-size: var(--etools-font-size-16, 16px);
   }
   .truncate {
     white-space: nowrap;
@@ -43,7 +43,7 @@ export const ResultStructureStyles: CSSResult = css`
     text-overflow: ellipsis;
   }
   .text {
-    font-size: 12px;
+    font-size: var(--etools-font-size-12, 12px);
     line-height: 14px;
   }
   .details-heading {
@@ -51,7 +51,7 @@ export const ResultStructureStyles: CSSResult = css`
     color: var(--secondary-text-color);
   }
   .details-text {
-    font-size: 13px;
+    font-size: var(--etools-font-size-13, 13px);
     line-height: 15px;
   }
   .header {
@@ -79,7 +79,7 @@ export const ResultStructureStyles: CSSResult = css`
     width: 100%;
     height: 48px;
     background-color: var(--secondary-background-color);
-    font-size: 12px;
+    font-size: var(--etools-font-size-12, 12px);
     color: var(--secondary-text-color);
     box-sizing: border-box;
   }
@@ -123,7 +123,7 @@ export const ResultStructureStyles: CSSResult = css`
     align-items: center;
     padding: 5px 5px 0;
     cursor: pointer;
-    font-size: 15px;
+    font-size: var(--etools-font-size-15, 15px);
     line-height: 18px;
     color: #444444;
     white-space: nowrap;

@@ -43,18 +43,18 @@ export class InterventionSummary extends connectStore(LitElement) {
       }
       .content {
         margin-top: 8px;
-        font-size: 14px;
+        font-size: var(--etools-font-size-14, 14px);
       }
       label {
         color: var(--dark-secondary-text-color);
       }
       .secondary {
         color: var(--dark-secondary-text-color);
-        font-size: 14px;
+        font-size: var(--etools-font-size-14, 14px);
       }
       .label-secondary-color {
         color: var(--secondary-text-color);
-        font-size: 14px;
+        font-size: var(--etools-font-size-14, 14px);
       }
       .blue {
         color: var(--sl-color-blue-500);

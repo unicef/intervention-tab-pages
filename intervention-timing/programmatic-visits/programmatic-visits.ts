@@ -70,7 +70,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
 
         .error-msg {
           color: var(--error-color);
-          font-size: 12px;
+          font-size: var(--etools-font-size-12, 12px);
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -103,7 +103,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
           margin-inline-end: 30px;
         }
         .total-lbl {
-          font-size: 14px;
+          font-size: var(--etools-font-size-14, 14px);
           padding-top: 15px;
           padding-bottom: 15px;
         }

@@ -20,7 +20,7 @@ export const ActivityItemsTableStyles: CSSResult = css`
     padding: 8px 4px;
     box-sizing: border-box;
     font-weight: normal;
-    font-size: 14px;
+    font-size: var(--etools-font-size-14, 14px);
     letter-spacing: -0.1px;
     color: var(--primary-text-color);
   }
@@ -70,7 +70,7 @@ export const ActivityItemsTableStyles: CSSResult = css`
   }
   div.header-cell {
     font-weight: 500;
-    font-size: 12px;
+    font-size: var(--etools-font-size-12, 12px);
     color: var(--secondary-text-color);
   }
   .center {
@@ -103,13 +103,13 @@ export const ActivityItemsTableStyles: CSSResult = css`
   etools-input::part(input) {
     height: 17px !important;
     line-height: 17px !important;
-    font-size: 14px !important;
+    font-size: var(--etools-font-size-14, 14px) !important;
   }
 
   etools-textarea::part(textarea) {
     padding-top: 0;
     padding-bottom: 0;
-    font-size: 14px !important;
+    font-size: var(--etools-font-size-14, 14px) !important;
   }
   etools-textarea::part(base),
   etools-input::part(base) {
@@ -137,7 +137,7 @@ export const ActivityItemsTableInlineStyles: TemplateResult = html`
     etools-currency::part(input) {
       height: 17px !important;
       line-height: 17px !important;
-      font-size: 14px !important;
+      font-size: var(--etools-font-size-14, 14px) !important;
     }
     @media (max-width: 1100px) {
       :host etools-textarea,

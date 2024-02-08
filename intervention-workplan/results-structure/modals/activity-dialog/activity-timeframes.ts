@@ -24,12 +24,12 @@ export class ActivityTimeFrames extends LitElement {
         }
         .title {
           font-weight: 500;
-          font-size: 16px;
+          font-size: var(--etools-font-size-16, 16px);
           line-height: 18px;
           color: var(--primary-text-color);
         }
         .description {
-          font-size: 12px;
+          font-size: var(--etools-font-size-12, 12px);
           line-height: 16px;
         }
         .year {
@@ -65,7 +65,7 @@ export class ActivityTimeFrames extends LitElement {
           max-width: inherit;
         }
         label[required] {
-          font-size: 12px;
+          font-size: var(--etools-font-size-12, 12px);
           color: var(--secondary-text-color);
           background: url('./assets/images/required.svg') no-repeat 99% 20%/5px;
           width: auto !important;

@@ -117,7 +117,7 @@ export class InterventionResultsReported extends connectStore(
         }
 
         .row-details-content {
-          font-size: 15px;
+          font-size: var(--etools-font-size-15, 15px);
         }
 
         @media print {

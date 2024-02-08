@@ -17,7 +17,7 @@ export class PvQuarter extends LitElement {
       gridLayoutStylesLit,
       css`
         etools-icon#x {
-          --etools-icon-font-size: 16px;
+          --etools-icon-font-size: var(--etools-font-size-16, 16px);
           color: var(--icon-delete-color);
           cursor: pointer;
         }
@@ -25,7 +25,7 @@ export class PvQuarter extends LitElement {
           color: #b70202;
         }
         etools-icon-button[name='add'] {
-          --etools-icon-font-size: 15px;
+          --etools-icon-font-size: var(--etools-font-size-15, 15px);
         }
       `
     ];
@@ -44,18 +44,18 @@ export class PvQuarter extends LitElement {
         }
 
         .q-label {
-          font-size: 14px;
+          font-size: var(--etools-font-size-14, 14px);
           font-weight: bold;
           padding-inline-start: 8px;
         }
         .q-interval {
-          font-size: 12px;
+          font-size: var(--etools-font-size-12, 12px);
           padding-bottom: 8px;
           padding-inline-start: 8px;
         }
         .visit-no {
           padding-inline: 8px;
-          font-size: 18px;
+          font-size: var(--etools-font-size-18, 18px);
           font-weight: bold;
         }
         .visits {
