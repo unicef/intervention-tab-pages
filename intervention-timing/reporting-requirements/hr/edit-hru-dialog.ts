@@ -137,7 +137,7 @@ export class EditHruDialog extends connectStore(LitElement) {
   interventionStart!: Date | string;
 
   @property({type: Date})
-  repStartDate!: Date | string;
+  _repStartDate!: Date | string;
 
   @property({type: String})
   selectedDate!: string;
@@ -160,6 +160,24 @@ export class EditHruDialog extends connectStore(LitElement) {
   @property({type: String})
   get interventionId() {
     return this._interventionId;
+  }
+  set repStartDate(newValue: Date | string) {
+    const newStartDate = dayjs(newValue).startOf('day');
+    if (this.selectedDate) {
+      const currentSelectedDate = dayjs(this.selectedDate).startOf('day');
+      // Check if selectedDate is lower than the new repStartDate
+      if (currentSelectedDate.isBefore(newStartDate)) {
+        // Reset selectedDate
+        this.selectedDate = '';
+      }
+    }
+
+    // Set the repStartDate property
+    this._repStartDate = newStartDate.format('YYYY-MM-DD');
+  }
+
+  get repStartDate() {
+    return this._repStartDate;
   }
 
   set dialogData(data: any) {
@@ -197,7 +215,9 @@ export class EditHruDialog extends connectStore(LitElement) {
   }
 
   _addToList() {
-    if (!this.selectedDate) {
+    const repStartDate = dayjs(this.repStartDate).startOf('day');
+
+    if (!this.selectedDate || !repStartDate.isValid()) {
       fireEvent(this, 'toast', {
         text: getTranslation('PLEASE_SELECT_DATE')
       });
