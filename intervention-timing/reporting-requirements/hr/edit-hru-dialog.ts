@@ -163,12 +163,13 @@ export class EditHruDialog extends connectStore(LitElement) {
   }
   set repStartDate(newValue: Date | string) {
     const newStartDate = dayjs(newValue).startOf('day');
-    const currentSelectedDate = dayjs(this.selectedDate).startOf('day');
-
-    // Check if selectedDate is lower than the new repStartDate
-    if (currentSelectedDate.isBefore(newStartDate) && this.selectedDate) {
-      // Reset selectedDate
-      this.selectedDate = '';
+    if(this.selectedDate) {
+      const currentSelectedDate = dayjs(this.selectedDate).startOf('day');
+      // Check if selectedDate is lower than the new repStartDate
+      if (currentSelectedDate.isBefore(newStartDate)) {
+        // Reset selectedDate
+        this.selectedDate = '';
+      }
     }
 
     // Set the repStartDate property
