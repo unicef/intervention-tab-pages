@@ -41,7 +41,7 @@ export class CpOutputDialog extends LitElement {
     const {cpOutputs, resultLink, interventionId, canChangeCpOp}: any = data;
     if (resultLink) {
       this.cpOutputId = resultLink.cp_output;
-      this.selectedCpOutput = resultLink.cp_output;
+      this.selectedCpOutput = Number(resultLink.cp_output);
       this.cpOutputName = resultLink.cp_output_name;
       this.selectedIndicators = [...(resultLink.ram_indicators || [])];
       this.resultLinkId = resultLink.id;
@@ -141,8 +141,11 @@ export class CpOutputDialog extends LitElement {
   }
 
   onCpOutputSelected(id: number) {
-    this.selectedCpOutput = id;
-    this.loadRamIndicators(id);
+    if (this.selectedCpOutput !== Number(id)) {
+      this.selectedCpOutput = Number(id);
+      this.selectedIndicators = [];
+      this.loadRamIndicators(id);
+    }
   }
 
   resetFieldError(field: string) {
