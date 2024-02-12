@@ -74,7 +74,7 @@ export class CpOutputDialog extends LitElement {
         }
       </style>
       <etools-dialog
-        size="lg"
+        size="md"
         keep-dialog-open
         dialog-title="${this.dialogTitle} "
         @confirm-btn-clicked="${() => this.processRequest()}"
