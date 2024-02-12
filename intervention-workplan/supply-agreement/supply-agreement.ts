@@ -90,6 +90,10 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         etools-icon-button[name='file-upload'] {
           color: var(--primary-text-color);
         }
+        #iit-ger {
+          --iit-margin: 8px 0 8px -15px;
+          --iit-icon-size: 24px;
+        }
       </style>
 
       <etools-content-panel
@@ -97,6 +101,14 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         panel-title=${translate(translatesMap.supply_items)}
         comment-element="supply-agreement"
       >
+        ${this.supply_items?.length && this.permissions.edit.supply_items
+          ? html` <div slot="after-title">
+              <info-icon-tooltip
+                id="iit-ger"
+                .tooltipText="${translate('SUPPLY_CONTRIBUTION_INFO')}"
+              ></info-icon-tooltip>
+            </div>`
+          : ``}
         <div slot="panel-btns">
           <span class="mr-20">
             <label class="label font-bold pad-right">${translate('TOTAL_SUPPLY_BUDGET')} </label>
