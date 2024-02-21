@@ -235,14 +235,18 @@ export class InterventionActions extends connectStore(LitElement) {
       return;
     }
 
+    const loadingMessage = getTranslation(action === AMENDMENT_MERGE ? 'AMENDMENT_MERGE_MESSAGE' : 'GENERAL.LOADING');
+
     const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.interventionAction, {
       interventionId: this.interventionPartial.id,
       action
     });
     fireEvent(this, 'global-loading', {
       active: true,
-      loadingSource: 'intervention-actions'
+      loadingSource: 'intervention-actions',
+      message: loadingMessage
     });
+
     sendRequest({
       endpoint,
       body,

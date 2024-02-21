@@ -1,7 +1,7 @@
 import {customElement, LitElement, html, TemplateResult, CSSResultArray, property} from 'lit-element';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {CommentPanelsStyles} from '../common-comments.styles';
-import {translate, get as getTranslation} from 'lit-translate';
+import {translate} from 'lit-translate';
 import {makeCommentsDraggable} from '../../comments/comments.helpers';
 import {CommentRelatedItem} from '../../comments/comments-types';
 
@@ -13,7 +13,7 @@ export class MessagesPanelHeader extends LitElement {
   protected render(): TemplateResult {
     return html`
       <div>
-        ${getTranslation('COMMENTS_ON')}
+        ${translate('COMMENTS_ON')}
         <b>${this.relatedToKey ? translate(this.relatedToKey) : ''} ${this.relatedItem?.code || ''}</b>
       </div>
       <div class="buttons">
