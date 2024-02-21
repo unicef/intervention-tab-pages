@@ -3,7 +3,7 @@ import {InterventionComment} from '@unicef-polymer/etools-types';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {translate} from 'lit-translate';
-import {formatDateLocalized} from '@unicef-polymer/etools-modules-common/dist/utils/language';
+declare const dayjs: any;
 
 @customElement('message-item')
 export class MessageItem extends LitElement {
@@ -20,6 +20,11 @@ export class MessageItem extends LitElement {
         }`;
   }
 
+  get date(): string {
+    const date = dayjs(this.comment.created);
+    return `${date.format('MMM DD YYYY')} at ${date.format('HH:mm')}`;
+  }
+
   protected render(): TemplateResult {
     return html`
       <div class="info">
@@ -34,7 +39,7 @@ export class MessageItem extends LitElement {
             ></etools-loading>
             <div class="date" ?hidden="${!this.comment.id && !this.comment.loadingError}">
               ${this.comment.id
-                ? formatDateLocalized(this.comment.created, 'MMM DD YYYY HH:mm')
+                ? this.date
                 : html`<div
                     class="retry"
                     tabindex="0"

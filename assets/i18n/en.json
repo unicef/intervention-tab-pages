@@ -55,7 +55,6 @@
   "AMENDMENTS_DESCRIPTION": "Intervention Amendments",
   "AMENDMENT_MERGE": "Amendment Merge",
   "AMENDMENT_MERGE_PROMPT": "Are you sure you want to merge amendment?",
-  "AMENDMENT_MERGE_MESSAGE": "This can take a while. Please be patient",
   "AMENDMENT_MODE_TEXT": "This PD is in amendment. See",
   "AMENDMENT_TYPES": "Amendment Types",
   "AMENDMENT_TYPES_ITEMS": {
