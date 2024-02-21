@@ -55,7 +55,6 @@
   "AMENDMENTS_DESCRIPTION": "Intervenções dos aditivos",
   "AMENDMENT_MERGE": "Mesclar Aditivo",
   "AMENDMENT_MERGE_PROMPT": "Tem certeza de que deseja mesclar aditivo?",
-  "AMENDMENT_MERGE_MESSAGE": "Isto pode demorar algum tempo. Por favor, seja paciente",
   "AMENDMENT_MODE_TEXT": "Este PD é um aditivo. Ver",
   "AMENDMENT_TYPES": "Tipos de aditivo.",
   "AMENDMENT_TYPES_ITEMS": {

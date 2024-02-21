@@ -55,7 +55,6 @@
   "AMENDMENTS_DESCRIPTION": "Enmiendas de intervención",
   "AMENDMENT_MERGE": "Enmienda Fusión",
   "AMENDMENT_MERGE_PROMPT": "¿Estás seguro de que quieres fusionar la enmienda?",
-  "AMENDMENT_MERGE_MESSAGE": "Esto puede llevar un tiempo. Tenga paciencia.",
   "AMENDMENT_MODE_TEXT": "Este PD está en enmienda. Véase",
   "AMENDMENT_TYPES": "Tipos de enmiendas",
   "AMENDMENT_TYPES_ITEMS": {

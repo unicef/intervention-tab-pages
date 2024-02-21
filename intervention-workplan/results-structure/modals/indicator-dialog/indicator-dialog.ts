@@ -242,7 +242,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
     // this.prpServerOn = data.prpServerOn;
     this.currentUser = getStore().getState().user.data;
     this.interventionStatus = getStore().getState().interventions.current?.status || '';
-    this.readonly = data.readonly || !this.data.is_active;
+    this.readonly = data.readonly;
 
     if (!this.data.id) {
       this.preselectSectionAndLocation();

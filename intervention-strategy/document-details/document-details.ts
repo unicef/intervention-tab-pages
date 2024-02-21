@@ -233,7 +233,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
           </paper-checkbox>
         </div>
 
-        <div class="row-padding-v" ?hidden="${!this.data.has_activities_involving_children}">
+        <div class="row-padding-v">
           <paper-checkbox
             ?checked="${this.data.has_activities_involving_children}"
             ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.has_activities_involving_children)}"
