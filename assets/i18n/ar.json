@@ -55,6 +55,7 @@
   "AMENDMENTS_DESCRIPTION": "تعديلات التدخل",
   "AMENDMENT_MERGE": "دمج التعديل",
   "AMENDMENT_MERGE_PROMPT": "هل أنت متأكد أنك تريد دمج التعديل؟",
+  "AMENDMENT_MERGE_MESSAGE": "سوف يأخذ هذا بعض الوقت. يرجى التحلي بالصبر",
   "AMENDMENT_MODE_TEXT": "هذا PD قيد التعديل. نرى",
   "AMENDMENT_TYPES": "أنواع التعديل",
   "AMENDMENT_TYPES_ITEMS": {
