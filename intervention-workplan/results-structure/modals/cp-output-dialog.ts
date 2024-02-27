@@ -54,8 +54,8 @@ export class CpOutputDialog extends LitElement {
     let title = '';
     if (this.cpOutputName) {
       title = this.canChangeCPOutput
-      ? getTranslation('EDIT_CP_OUTPUT')
-      : getTranslation('INDICATORS_FOR_CP_OUTPUT') + this.cpOutputName;
+        ? getTranslation('EDIT_CP_OUTPUT')
+        : getTranslation('INDICATORS_FOR_CP_OUTPUT') + this.cpOutputName;
     } else {
       title = getTranslation('ADD_CP_OUTPUT');
     }
