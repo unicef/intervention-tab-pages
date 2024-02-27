@@ -31,6 +31,7 @@ export const translatesMap: GenericObject = {
   unicef_cash: 'UNICEF_CASH',
   target: 'TARGET',
   reporting_requirements: 'PARTNER_REPORTING_REQUIREMENTS',
+  special_reporting_requirements: 'SPECIAL_REPORTING_REQUIREMENTS',
   start_date: 'START_DATE',
   provided_by: 'PROVIDED_BY',
   title: 'GENERAL.TITLE',
