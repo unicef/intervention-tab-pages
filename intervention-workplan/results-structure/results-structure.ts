@@ -433,19 +433,23 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
   }
 
   openCpOutputDialog(resultLink?: ExpectedResult): void {
+    const canChangeCpOp = ['draft', 'development'].includes(this.intervention.status);
     openDialog({
       dialog: 'cp-output-dialog',
       dialogData: {
         resultLink,
-        cpOutputs: this.filterOutAlreadySelectedAndByCPStructure(),
-        interventionId: this.interventionId
+        cpOutputs: this.filterOutAlreadySelectedAndByCPStructure(canChangeCpOp),
+        interventionId: this.interventionId,
+        canChangeCpOp: canChangeCpOp
       }
     });
     this.openContentPanel();
   }
 
-  filterOutAlreadySelectedAndByCPStructure() {
-    const alreadyUsedCpOs = new Set(this.resultLinks.map(({cp_output}: ExpectedResult) => cp_output));
+  filterOutAlreadySelectedAndByCPStructure(canChangeCpOp: boolean) {
+    const alreadyUsedCpOs = canChangeCpOp
+    ? new Set()
+    : new Set(this.resultLinks.map(({cp_output}: ExpectedResult) => cp_output));
     const cpStructures = this.intervention.country_programmes?.map((c: string) => Number(c));
 
     return this.cpOutputs.filter(({id, country_programme}: CpOutput) => {
