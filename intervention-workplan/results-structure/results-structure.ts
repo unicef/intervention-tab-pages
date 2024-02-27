@@ -448,8 +448,8 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
 
   filterOutAlreadySelectedAndByCPStructure(canChangeCpOp: boolean) {
     const alreadyUsedCpOs = canChangeCpOp
-    ? new Set()
-    : new Set(this.resultLinks.map(({cp_output}: ExpectedResult) => cp_output));
+      ? new Set()
+      : new Set(this.resultLinks.map(({cp_output}: ExpectedResult) => cp_output));
     const cpStructures = this.intervention.country_programmes?.map((c: string) => Number(c));
 
     return this.cpOutputs.filter(({id, country_programme}: CpOutput) => {
