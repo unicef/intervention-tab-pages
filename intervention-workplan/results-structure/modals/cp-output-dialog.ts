@@ -149,6 +149,7 @@ export class CpOutputDialog extends LitElement {
 
   onCpOutputSelected(id: number) {
     this.selectedCpOutput = id;
+    this.selectedIndicators = [];
     this.loadRamIndicators(id);
   }
 
