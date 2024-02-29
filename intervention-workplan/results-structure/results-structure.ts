@@ -433,7 +433,8 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
   }
 
   openCpOutputDialog(resultLink?: ExpectedResult): void {
-    const canChangeCpOp = ['draft', 'development'].includes(this.intervention.status);
+    const canChangeCpOp =
+      !this.intervention.in_amendment && ['draft', 'development'].includes(this.intervention.status);
     openDialog({
       dialog: 'cp-output-dialog',
       dialogData: {
