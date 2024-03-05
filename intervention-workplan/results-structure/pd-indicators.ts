@@ -8,31 +8,32 @@ import {
   property,
   PropertyValues
 } from 'lit-element';
-import {ResultStructureStyles} from './results-structure.styles';
+import {ResultStructureStyles} from './styles/results-structure.styles';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/iron-icons';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {RootState} from '../../common/types/store.types';
 import './modals/indicator-dialog/indicator-dialog';
 import get from 'lodash-es/get';
-import {filterByIds, isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {filterByIds} from '@unicef-polymer/etools-utils/dist/general.util';
+import {isEmptyObject, isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import EnvironmentFlagsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/environment-flags-mixin';
 import cloneDeep from 'lodash-es/cloneDeep';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {sendRequest} from '@unicef-polymer/etools-ajax';
+import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax';
 import {getIntervention} from '../../common/actions/interventions';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
-import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
+import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import './pd-indicator';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 import {
   AsyncAction,
   Disaggregation,
@@ -40,29 +41,17 @@ import {
   LocationObject,
   Section,
   Indicator,
-  Intervention
+  Intervention,
+  EtoolsEndpoint
 } from '@unicef-polymer/etools-types';
-import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
+import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
+import {EtoolsDataTableRow} from '@unicef-polymer/etools-data-table/etools-data-table-row';
 
 @customElement('pd-indicators')
 export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)) {
-  static get styles(): CSSResultArray {
-    // language=CSS
-    return [
-      gridLayoutStylesLit,
-      ResultStructureStyles,
-      css`
-        :host {
-          --blue-background: #b6d5f1;
-          display: block;
-          background: var(--blue-background);
-        }
-      `
-    ];
-  }
-
   @property({type: Array}) indicators: Indicator[] = [];
   @property() private locations: LocationObject[] = [];
   @property() private sections: Section[] = [];
@@ -71,6 +60,8 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
   @property({type: Boolean}) readonly!: boolean;
   @property({type: Boolean}) showInactiveIndicators!: boolean;
   @property({type: Boolean}) inAmendment!: boolean;
+  @property({type: String})
+  inAmendmentDate!: string;
 
   /** On create/edit indicator only sections already saved on the intervention can be selected */
   set interventionSections(ids: string[]) {
@@ -88,81 +79,65 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
     // language=HTML
     return html`
       ${sharedStyles}
-      <style>
-        :host etools-data-table-row {
-          --list-bg-color: var(--blue-background);
-          --list-second-bg-color: var(--blue-background);
-          etools-data-table-row::part(edt-list-row-collapse-wrapper) {
-            padding: 0 !important;
-            background-color: var(--blue-background-dark);
-            border-top: 1px solid var(--main-border-color);
-          }
-          --list-row-wrapper: {
-            min-height: 48px;
-            border: 1px solid var(--main-border-color) !important;
-            border-bottom: none !important;
-            align-items: stretch;
-            padding-bottom: 0px;
-            padding-top: 0px;
-          }
-        }
-      </style>
-
-      <div class="row-h align-items-center header" ?hidden="${!this.indicators.length && this.readonly}">
-        <div class="heading flex-auto">
-          ${translate(translatesMap.applied_indicators)}
+      <etools-data-table-row .detailsOpened="${true}" id="indicatorsRow">
+        <div slot="row-data" class="layout-horizontal align-items-center editable-row start-justified">
+          <div class="title-text">${translate(translatesMap.applied_indicators)} (${this.indicators.length})</div>
+          <etools-info-tooltip position="top" custom-icon ?hide-tooltip="${this.readonly}" offset="0">
+            <paper-icon-button
+              icon="add-box"
+              slot="custom-icon"
+              class="add"
+              tabindex="0"
+              @click="${() => this.openIndicatorDialog()}"
+              ?hidden="${this.readonly}"
+            ></paper-icon-button>
+            <span class="no-wrap" slot="message">${translate('ADD_PD_INDICATOR')}</span>
+          </etools-info-tooltip>
           <info-icon-tooltip
             id="iit-ind"
             .tooltipText="${translate('INDICATOR_TOOLTIP')}"
             ?hidden="${this.readonly}"
           ></info-icon-tooltip>
-          <paper-icon-button
-            class="add-box"
-            icon="add-box"
-            @click="${() => this.openIndicatorDialog()}"
-            ?hidden="${this.readonly}"
-          ></paper-icon-button>
         </div>
-        <div class="heading number-data flex-none">${translate('BASELINE')}</div>
-        <div class="heading number-data flex-none">${translate('TARGET')}</div>
-      </div>
-
-      ${this.indicators.map(
-        (indicator: Indicator) => html`
-          <pd-indicator
-            .indicator="${indicator}"
-            .disaggregations="${this.disaggregations}"
-            .locationNames="${this.getLocationNames(indicator.locations)}"
-            .sectionClusterNames="${this.getSectionAndCluster(indicator.section, indicator.cluster_name)}"
-            .interventionStatus="${this.interventionStatus}"
-            .readonly="${this.readonly}"
-            .inAmendment="${this.inAmendment}"
-            ?hidden="${this._hideIndicator(indicator, this.showInactiveIndicators)}"
-            ?cluster-indicator="${indicator.cluster_indicator_id}"
-            ?high-frequency-indicator="${indicator.is_high_frequency}"
-            @open-edit-indicator-dialog="${(e: CustomEvent) =>
-              this.openIndicatorDialog(e.detail.indicator, e.detail.readonly)}"
-            @open-deactivate-confirmation="${(e: CustomEvent) => this.openDeactivationDialog(e.detail.indicatorId)}"
-            @open-delete-confirmation="${(e: CustomEvent) => this.openDeletionDialog(e.detail.indicatorId)}"
-          ></pd-indicator>
-        `
-      )}
-      ${!this.indicators.length
-        ? this.readonly
-          ? html`<div class="empty-row heading">${translate('THERE_ARE_NO_PD_INDICATORS')}</div>`
-          : html`
-              <div class="layout-horizontal empty-row">
-                <div class="text flex-auto">—</div>
-                <div class="text number-data flex-none">—</div>
-                <div class="text number-data flex-none">—</div>
-              </div>
-            `
-        : ''}
+        <div slot="row-data-details">
+          <div class="table-row table-head align-items-center" ?hidden="${isEmptyObject(this.indicators)}">
+            <div class="flex-1 left-align">${translate('INDICATOR')}</div>
+            <div class="flex-1 secondary-cell right">${translate('BASELINE')}</div>
+            <div class="flex-1 secondary-cell right">${translate('TARGET')}</div>
+          </div>
+          ${this.indicators.length
+            ? this.indicators.map(
+                (indicator: Indicator, index: number) => html`
+                  <pd-indicator
+                    .index="${index}"
+                    .indicator="${indicator}"
+                    .disaggregations="${this.disaggregations}"
+                    .locationNames="${this.getLocationNames(indicator.locations)}"
+                    .sectionClusterNames="${this.getSectionAndCluster(indicator.section, indicator.cluster_name)}"
+                    .interventionStatus="${this.interventionStatus}"
+                    .readonly="${this.readonly}"
+                    .inAmendment="${this.inAmendment}"
+                    .inAmendmentDate="${this.inAmendmentDate}"
+                    ?hidden="${this._hideIndicator(indicator, this.showInactiveIndicators)}"
+                    @open-edit-indicator-dialog="${(e: CustomEvent) =>
+                      this.openIndicatorDialog(e.detail.indicator, e.detail.readonly)}"
+                    @open-deactivate-confirmation="${(e: CustomEvent) =>
+                      this.openDeactivationDialog(e.detail.indicatorId)}"
+                    @open-delete-confirmation="${(e: CustomEvent) => this.openDeletionDialog(e.detail.indicatorId)}"
+                  ></pd-indicator>
+                `
+              )
+            : html` <div class="table-row empty center-align">${translate('THERE_ARE_NO_PD_INDICATORS')}</div> `}
+        </div>
+      </etools-data-table-row>
     `;
   }
 
   stateChanged(state: RootState): void {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan)) {
+    if (
+      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan) ||
+      !state.interventions.current
+    ) {
       return;
     }
     this.sections = (state.commonData && state.commonData.sections) || [];
@@ -171,7 +146,7 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
     /**
      * Computing here to avoid recomputation on every open indicator dialog
      */
-    this.computeAvailableOptionsForIndicators(get(state, 'interventions.current'));
+    this.computeAvailableOptionsForIndicators(get(state, 'interventions.current') as Intervention);
     this.envFlagsStateChanged(state);
   }
 
@@ -181,6 +156,11 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
     this.shadowRoot!.querySelectorAll('#view-toggle-button, iron-icon').forEach((el) =>
       callClickOnSpacePushListener(el)
     );
+  }
+
+  openAllRows(): void {
+    const row: EtoolsDataTableRow = this.shadowRoot!.querySelector('etools-data-table-row') as EtoolsDataTableRow;
+    row.detailsOpened = true;
   }
 
   computeAvailableOptionsForIndicators(intervention: Intervention) {
@@ -196,6 +176,20 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
   }
 
   openIndicatorDialog(indicator?: Indicator, readonly?: boolean) {
+    if (!this.indicatorSectionOptions?.length && !this.indicatorLocationOptions?.length) {
+      fireEvent(this, 'toast', {text: getTranslation('PLS_SELECT_SECTIONS_AND_LOCATIONS_FIRST')});
+      return;
+    }
+
+    if (!this.indicatorSectionOptions?.length) {
+      fireEvent(this, 'toast', {text: getTranslation('PLS_SELECT_SECTIONS_FIRST')});
+      return;
+    }
+
+    if (!this.indicatorLocationOptions?.length) {
+      fireEvent(this, 'toast', {text: getTranslation('PLS_SELECT_LOCATIONS_FIRST')});
+      return;
+    }
     openDialog<IndicatorDialogData>({
       dialog: 'indicator-dialog',
       dialogData: {
@@ -226,8 +220,12 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
   }
 
   deactivateIndicator(indicatorId: string) {
-    const endpoint = getEndpoint(interventionEndpoints.getEditDeleteIndicator, {
+    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.getEditDeleteIndicator, {
       id: indicatorId
+    });
+    fireEvent(this, 'global-loading', {
+      active: true,
+      loadingSource: 'interv-indicator-deactivate'
     });
     sendRequest({
       method: 'PATCH',
@@ -241,7 +239,13 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
       })
       .catch((err: any) => {
         fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
-      });
+      })
+      .finally(() =>
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: 'interv-indicator-deactivate'
+        })
+      );
   }
 
   async openDeletionDialog(indicatorId: string) {
@@ -261,7 +265,11 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
   }
 
   deleteIndicator(indicatorId: string) {
-    const endpoint = getEndpoint(interventionEndpoints.getEditDeleteIndicator, {
+    fireEvent(this, 'global-loading', {
+      active: true,
+      loadingSource: 'interv-indicator-remove'
+    });
+    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.getEditDeleteIndicator, {
       id: indicatorId
     });
     sendRequest({
@@ -273,7 +281,13 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
       })
       .catch((err: any) => {
         fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
-      });
+      })
+      .finally(() =>
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: 'interv-indicator-remove'
+        })
+      );
   }
 
   getSectionAndCluster(sectionId: string | null, clusterName: string | null): string {
@@ -290,8 +304,8 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
     const locations = filterByIds<LocationObject>(this.locations, ids);
     const locNames = locations.map((l: any) => {
       return {
-        name: l.name.substring(0, l.name.indexOf('[')),
-        adminLevel: l.name.substring(l.name.indexOf('['))
+        name: l.name.substring(0, l.name.indexOf('[') == -1 ? l.name.indexOf('(') : l.name.indexOf('[')),
+        adminLevel: l.name.substring(l.name.indexOf('[') == -1 ? l.name.indexOf('(') : l.name.indexOf('['))
       };
     });
     return locNames;
@@ -302,5 +316,38 @@ export class PdIndicators extends connectStore(EnvironmentFlagsMixin(LitElement)
       return !showInactiveIndicators;
     }
     return false;
+  }
+
+  static get styles(): CSSResultArray {
+    // language=CSS
+    return [
+      gridLayoutStylesLit,
+      ResultStructureStyles,
+      ActivitiesAndIndicatorsStyles,
+      css`
+        :host {
+          --main-background: #e1edd3;
+          --main-background-dark: #e1edd3;
+          display: block;
+          background: var(--main-background);
+        }
+        .table-row:not(.empty) {
+          min-height: 42px;
+          padding-inline-end: 10% !important;
+        }
+        etools-data-table-row::part(edt-list-row-collapse-wrapper) {
+          border-bottom: none;
+        }
+        info-icon-tooltip {
+          margin-inline-start: 10px;
+        }
+        etools-data-table-row#indicatorsRow::part(edt-list-row-wrapper) {
+          padding-inline-start: 25px !important;
+        }
+        etools-data-table-row#indicatorsRow::part(edt-list-row-collapse-wrapper) {
+          border-top: none;
+        }
+      `
+    ];
   }
 }

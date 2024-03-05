@@ -16,9 +16,12 @@ import {LocationWidgetStyles} from './location-widget.styles';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {leafletStyles} from './leaflet-styles';
 import {Site} from '@unicef-polymer/etools-types';
+import {debounce} from '@unicef-polymer/etools-utils/dist/debouncer.util';
+import {translate} from 'lit-translate';
+import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 
 const DEFAULT_COORDINATES: LatLngTuple = [-0.09, 51.505];
 
@@ -70,7 +73,7 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-        margin-right: 5px;
+        margin-inline-end: 5px;
       }
 
       .site-line .deselect-btn {
@@ -120,24 +123,31 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
               type="search"
               .value="${this.locationSearch}"
               @value-changed="${({detail}: CustomEvent<{value: string}>) => this.search(detail)}"
-              placeholder="Search"
+              placeholder="${translate('INTERVENTIONS_LIST.SEARCH_RECORDS')}"
               inline
             >
               <iron-icon icon="search" slot="prefix"></iron-icon>
             </paper-input>
 
-            <div class="locations-list">
+            <div class="locations-list" tabindex="0">
               ${repeat(
                 this.displayedSites || [],
                 (site: Site) => html`
                   <div
                     class="site-line ${this.getSiteLineClass(site.id)}"
                     @mouseenter="${() => this.onSiteHoverStart(site)}"
+                    @keypress="${this.onSiteKeyPress}"
+                    tabindex="-1"
                   >
-                    <div class="location-name" @tap="${() => this.onSiteLineClick(site)}">
+                    <div class="location-name" tabindex="0" @tap="${() => this.onSiteLineClick(site)}">
                       <b>${site.name}</b>
                     </div>
-                    <div class="deselect-btn" @tap="${() => this.onRemoveSiteClick(site)}">
+                    <div
+                      class="deselect-btn"
+                      id="deselect_btn_${site.id}"
+                      tabindex="${this.isSiteSelected(site.id) ? 0 : -1}"
+                      @tap="${() => this.onRemoveSiteClick(site)}"
+                    >
                       <span>&#10008;</span>
                     </div>
                   </div>
@@ -158,12 +168,13 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
 
     this.defaultMapCenter = this.workspaceCoordinates || DEFAULT_COORDINATES;
     this.displayedSites = (this.sites || []).filter((s: Site) => s.is_active);
+    this.onSiteHoverStart = debounce(this.onSiteHoverStart.bind(this), 300) as any;
     this.checkSelectedSitesExistence();
     this.mapInitialisation();
   }
 
   addSitesToMap(): void {
-    if (!this.MapHelper.map || !this.displayedSites || this.MapHelper.markerClusters) {
+    if (!this.MapHelper.map || this.MapHelper.markerClusters) {
       return;
     }
 
@@ -180,6 +191,7 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
     this.requestUpdate();
     setTimeout(() => {
       this.markSelectedSitesOnMap();
+      this.setInitialMapView();
     }, 100);
   }
 
@@ -195,6 +207,13 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
           marker.openPopup();
         }, 10);
       });
+    }
+  }
+
+  onSiteKeyPress(event: KeyboardEvent) {
+    if (event.key === ' ' && !event.ctrlKey) {
+      // prevent scrolling if user add/remove sites with keyboard
+      event.preventDefault();
     }
   }
 
@@ -218,6 +237,13 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
     this.selectedSites = this.selectedSites.filter((x) => x.id !== site.id);
     this.setMarkerIcon(site.id, false);
     this.onSitesSelectionChange();
+    setTimeout(() => {
+      // move focus on site name(needed for tab navigation)
+      const el = this.shadowRoot?.querySelector(`#deselect_btn_${site.id}`);
+      if (el && el.previousElementSibling) {
+        (el.previousElementSibling as HTMLDivElement).focus();
+      }
+    }, 50);
   }
 
   onSitesSelectionChange(): void {
@@ -233,8 +259,11 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
   }
 
   getSiteLineClass(siteId: number | string): string {
-    const isSelected: boolean = this.selectedSites.some((x: Site) => x.id === siteId);
-    return isSelected ? 'selected' : '';
+    return this.isSiteSelected(siteId) ? 'selected' : '';
+  }
+
+  isSiteSelected(siteId: number | string): boolean {
+    return this.selectedSites.some((x: Site) => x.id === siteId);
   }
 
   search({value}: {value: string} = {value: ''}): void {
@@ -276,9 +305,10 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
     if (this.mapInitializationProcess) {
       this.mapInitializationProcess = false;
       this.MapHelper.initMap(this.mapElement);
-      this.addSitesToMap();
+      this.MapHelper.waitForMapToLoad().then(() => {
+        this.addSitesToMap();
+      });
     }
-    this.setInitialMapView();
   }
 
   private setInitialMapView(): void {
@@ -288,9 +318,16 @@ export class LocationSitesWidgetComponent extends connectStore(LitElement) {
         const reversedCoords: LatLngTuple = [...this.defaultMapCenter].reverse() as LatLngTuple;
         const zoom = 6;
         this.MapHelper.map!.setView(reversedCoords, zoom);
+        this.addClickOnSpaceForSites();
       },
       500,
       this
+    );
+  }
+
+  private addClickOnSpaceForSites() {
+    this.shadowRoot!.querySelectorAll('.location-name, .deselect-btn').forEach((el) =>
+      callClickOnSpacePushListener(el)
     );
   }
 }

@@ -1,13 +1,13 @@
 import {LitElement, TemplateResult, html, customElement, property, CSSResultArray, css} from 'lit-element';
-import {InterventionReview, User} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {EtoolsEndpoint, InterventionReview, User} from '@unicef-polymer/etools-types';
+import {translate, get as getTranslation} from 'lit-translate';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
@@ -17,7 +17,8 @@ import '@polymer/paper-button/paper-button';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
-import {PRC_REVIEW} from '../review.const';
+import {PRC_REVIEW} from '../../common/components/intervention/review.const';
+import {addItemToListIfMissing} from '../../utils/utils';
 
 @customElement('review-members')
 export class ReviewMembers extends ComponentBaseMixin(LitElement) {
@@ -32,13 +33,13 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
           margin-top: 24px;
         }
         datepicker-lite {
-          margin-right: 24px;
+          margin-inline-end: 24px;
         }
         paper-button.notify {
           height: 40px;
           white-space: nowrap;
           flex: none;
-          margin-left: 24px;
+          margin-inline-start: 24px;
         }
         .row-h:not(:first-child) {
           padding-top: 0;
@@ -55,8 +56,15 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
   @property() set review(review: InterventionReview) {
     this.originalData = review;
     this.data = cloneDeep(review);
+    addItemToListIfMissing(this.data?.overall_approver, this.users, 'id');
   }
-  @property() usersList: User[] = [];
+
+  users!: User[];
+
+  @property() set usersList(users: User[]) {
+    this.users = users;
+    addItemToListIfMissing(this.data?.overall_approver, this.users, 'id');
+  }
 
   get showNotifyButton(): boolean {
     return this.canEditAtLeastOneField && !this.editMode && this.data?.meeting_date && this.data?.prc_officers?.length;
@@ -86,12 +94,12 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
             <etools-dropdown-multi
               label=${translate('REVIEWERS')}
               placeholder="&#8212;"
-              .options="${this.usersList}"
+              .options="${this.users}"
               .selectedValues="${this.data?.prc_officers}"
               ?readonly="${this.isReadonly(this.editMode, this.canEditAtLeastOneField)}"
               option-label="name"
               option-value="id"
-              ?trigger-value-change-event="${this.usersList.length}"
+              ?trigger-value-change-event="${this.users.length}"
               @etools-selected-items-changed="${({detail}: CustomEvent) => {
                 this.selectedItemsChanged(detail, 'prc_officers', 'id');
               }}"
@@ -106,12 +114,12 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
               class="col-4"
               label=${translate('OVERALL_APPROVER')}
               placeholder="&#8212;"
-              .options="${this.usersList}"
+              .options="${this.users}"
               .selected="${this.data?.overall_approver?.id}"
               ?readonly="${this.isReadonly(this.editMode, this.canEditAtLeastOneField)}"
               option-label="name"
               option-value="id"
-              ?trigger-value-change-event="${this.usersList.length}"
+              ?trigger-value-change-event="${this.users.length}"
               @etools-selected-item-changed="${({detail}: CustomEvent) => {
                 this.selectedUserChanged(detail, 'overall_approver');
               }}"
@@ -126,7 +134,7 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
   }
 
   saveData(): Promise<void> {
-    const endpoint = getEndpoint(interventionEndpoints.interventionReview, {
+    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.interventionReview, {
       id: this.data!.id,
       interventionId: this.interventionId
     });
@@ -144,13 +152,13 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
         this.editMode = false;
       })
       .catch((err: any) => {
-        const errorText = err?.response?.detail || 'Try again later';
-        fireEvent(this, 'toast', {text: `Can not save review. ${errorText}`});
+        const errorText = err?.response?.detail || getTranslation('TRY_AGAIN_LATER');
+        fireEvent(this, 'toast', {text: `${getTranslation('CAN_NOT_SAVE_REVIEW')} ${errorText}`});
       });
   }
 
   sendNotification(): void {
-    const endpoint = getEndpoint(interventionEndpoints.sendReviewNotification, {
+    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.sendReviewNotification, {
       id: this.data!.id,
       interventionId: this.interventionId
     });
@@ -159,11 +167,11 @@ export class ReviewMembers extends ComponentBaseMixin(LitElement) {
       method: 'POST'
     })
       .then(() => {
-        fireEvent(this, 'toast', {text: 'Notification sent successfully'});
+        fireEvent(this, 'toast', {text: getTranslation('NOTIFICATION_SENT_SUCCESS')});
       })
       .catch((err: any) => {
-        const errorText = err?.response?.detail || 'Try again later';
-        fireEvent(this, 'toast', {text: `Can not send notification. ${errorText}`});
+        const errorText = err?.response?.detail || getTranslation('TRY_AGAIN_LATER');
+        fireEvent(this, 'toast', {text: `${getTranslation('CAN_NOT_SEND_NOTIFICATION')} ${errorText}`});
       });
   }
 }

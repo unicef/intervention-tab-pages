@@ -4,18 +4,19 @@ import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import '@unicef-polymer/etools-upload/etools-upload.js';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
 import '@unicef-polymer/etools-modules-common/dist/layout/etools-warn-message';
-import '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import {formatDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
+import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
-import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
+import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import EnvironmentFlagsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/environment-flags-mixin';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {AnyObject} from '@unicef-polymer/etools-types';
+import {get as getTranslation, translate} from 'lit-translate';
 declare const dayjs: any;
 
 /**
@@ -48,8 +49,8 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
         ?opened="${this.dialogOpened}"
         size="md"
         ?hidden="${this.warningOpened}"
-        ok-btn-text="Terminate"
-        dialog-title="Terminate PD/SPD"
+        ok-btn-text="${translate('TERMINATE')}"
+        dialog-title="${translate('TERMINATE_PD_SPD')}"
         @confirm-btn-clicked="${this._triggerPdTermination}"
         ?disable-confirm-btn="${this.uploadInProgress}"
         ?disable-dismiss-btn="${this.uploadInProgress}"
@@ -58,10 +59,10 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
         <div class="row-h flex-c">
           <datepicker-lite
             id="terminationDate"
-            label="Termination Date"
+            label="${translate('TERMINATION_DATE')}"
             .value="${this.termination.date}"
             max-date="${this._getMaxDate()}"
-            error-message="Please select termination date"
+            error-message="${translate('PLEASE_SELECT_TERMINATION_DATE')}"
             auto-validate
             required
             selected-date-display-format="D MMM YYYY"
@@ -73,14 +74,14 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
         <div class="row-h flex-c">
           <etools-upload
             id="terminationNotice"
-            label="Termination Notice"
+            label="${translate('TERMINATION_NOTICE')}"
             accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt"
             .fileUrl="${this.termination.attachment_notice}"
             .uploadEndpoint="${this.uploadEndpoint}"
             @upload-finished="${this._uploadFinished}"
             required
             .uploadInProgress="${this.uploadInProgress}"
-            error-message="Termination Notice file is required"
+            error-message="${translate('TERMINATION_NOTICE_FILE_IS_REQUIRED')}"
           >
         </div>
         <div class="row-h flex-c">
@@ -132,7 +133,7 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
     this.interventionId = interventionId;
   }
 
-  warnMessages: string[] = ['Once you hit save, the PD/SPD will be Terminated and this action can not be reversed'];
+  warnMessages: string[] = [getTranslation('ONCE_YOU_HIT_SAVE_THE_PD_WILL_BE_TERMINATED_AND_UNREVERSABLE')];
 
   _getMaxDate() {
     return dayjs(Date.now()).add(30, 'd').toDate();
@@ -169,8 +170,8 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
       openDialog({
         dialog: 'are-you-sure',
         dialogData: {
-          content: 'Please make sure that the reporting requirements for the PD/SPD are updated with the correct dates',
-          confirmBtnText: 'Terminate'
+          content: getTranslation('PLEASE_MAKE_SURE_THE_REPORTIN_REQ_ARE_UPDATED_WITH_THE_CORRECT_DATES'),
+          confirmBtnText: getTranslation('TERMINATE')
         }
       }).then(({confirmed}) => {
         if (confirmed) {

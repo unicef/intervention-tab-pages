@@ -13,14 +13,10 @@ import {
 } from './nonFinancialContribution.selectors';
 import {NonFinancialContributionData, NonFinancialContributionPermissions} from './nonFinancialContribution.models';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {patchIntervention} from '../../common/actions/interventions';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {RootState} from '../../common/types/store.types';
-import {
-  pageIsNotCurrentlyActive,
-  detailsTextareaRowsCount
-} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
@@ -28,7 +24,8 @@ import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
-import '../../common/paper-textarea-with-icon';
+import {detailsTextareaRowsCount} from '../../utils/utils';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 
 /**
  * @customElement
@@ -42,7 +39,7 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
   render() {
     if (!this.data || !this.permissions) {
       return html` ${sharedStyles}
-        <etools-loading source="non-f" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="non-f" active></etools-loading>`;
     }
     // language=HTML
     return html`
@@ -56,38 +53,46 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
         etools-content-panel::part(ecp-content) {
           padding: 8px 24px 16px 24px;
         }
+        .row-padding-v {
+          position: relative;
+        }
+        #iit-non-fin {
+          --iit-icon-size: 18px;
+          --iit-margin: 0 0 4px 4px;
+        }
       </style>
 
       <etools-content-panel
         show-expand-btn
         panel-title=${translate('PARTNER_NON_FINANCIAL_CONTRIBUTION')}
         comment-element="non-financial-contribution"
-        comment-description=${translate('PARTNER_NON_FINANCIAL_CONTRIBUTION')}
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
-        <div class="layout-horizontal row-padding-v">
-          <paper-textarea-with-icon
-            class="w100"
-            id="ip_program_contribution"
-            label=${translate(translatesMap.ip_program_contribution)}
-            always-float-label
-            placeholder="—"
-            .value="${this.data.ip_program_contribution}"
-            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'ip_program_contribution')}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit?.ip_program_contribution)}"
-            ?required="${this.permissions.required.ip_program_contribution}"
-            maxlength="5000"
-            rows="${detailsTextareaRowsCount(this.editMode)}"
-            .charCounter="${!this.isReadonly(this.editMode, this.permissions.edit?.ip_program_contribution)}"
-          >
+        <div class="row-padding-v">
+          <div>
+            <label class="paper-label">${translate(translatesMap.ip_program_contribution)}</label>
             <info-icon-tooltip
               id="iit-non-fin"
               slot="after-label"
-              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit?.ip_program_contribution)}"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit?.ip_program_contribution)}"
               .tooltipText="${translate('PARTNER_NON_FINANCIAL_CONTRIBUTION_TOOLTIP')}"
             ></info-icon-tooltip>
-          </paper-textarea-with-icon>
+          </div>
+          <paper-textarea
+            class="w100"
+            id="ip_program_contribution"
+            no-label-float
+            placeholder="—"
+            .value="${this.data.ip_program_contribution}"
+            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'ip_program_contribution')}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit?.ip_program_contribution)}"
+            ?required="${this.permissions?.required.ip_program_contribution}"
+            maxlength="5000"
+            rows="${detailsTextareaRowsCount(this.editMode)}"
+            .charCounter="${!this.isReadonly(this.editMode, this.permissions?.edit?.ip_program_contribution)}"
+          >
+          </paper-textarea>
         </div>
 
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
@@ -104,7 +109,7 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
   originalData = {};
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan)) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan)) {
       return;
     }
 

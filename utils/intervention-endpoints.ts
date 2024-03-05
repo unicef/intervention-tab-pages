@@ -9,14 +9,14 @@ export interface EtoolsEndpoints {
   reportingRequirements: EtoolsEndpoint;
   specialReportingRequirementsUpdate: EtoolsEndpoint;
   monitoringVisits: EtoolsEndpoint;
-  partnerT2fProgrammaticVisits: EtoolsEndpoint;
   partnerTPMActivities: EtoolsEndpoint;
   interventionTPMActivities: EtoolsEndpoint;
+  resultLinksDetails: EtoolsEndpoint;
   resultLinks: EtoolsEndpoint;
   ramIndicators: EtoolsEndpoint;
   resultLinkGetDelete: EtoolsEndpoint;
-  pdDetails: EtoolsEndpoint;
-  createPd: EtoolsEndpoint;
+  pdOutputDetails: EtoolsEndpoint;
+  createPdOutput: EtoolsEndpoint;
   pdActivityDetails: EtoolsEndpoint;
   pdActivities: EtoolsEndpoint;
   interventionBudgetUpdate: EtoolsEndpoint;
@@ -53,6 +53,7 @@ export interface EtoolsEndpoints {
   sendReviewNotification: EtoolsEndpoint;
   officersReviews: EtoolsEndpoint;
   officerReviewData: EtoolsEndpoint;
+  interventionPVDelete: EtoolsEndpoint;
 }
 
 export const interventionEndpoints: EtoolsEndpoints = {
@@ -80,9 +81,6 @@ export const interventionEndpoints: EtoolsEndpoints = {
   monitoringVisits: {
     template: '/api/t2f/travels/activities/partnership/<%=id%>/?year=<%=year%>'
   },
-  partnerT2fProgrammaticVisits: {
-    template: '/api/t2f/travels/activities/<%=id%>/?year=<%=year%>&status=completed'
-  },
   partnerTPMActivities: {
     template:
       '/api/tpm/activities/?tpm_visit__status=unicef_approved&is_pv=true&date__year=<%=year%>&partner=<%=partnerId%>'
@@ -90,6 +88,9 @@ export const interventionEndpoints: EtoolsEndpoints = {
   interventionTPMActivities: {
     template:
       '/api/tpm/activities/?tpm_visit__status=unicef_approved&date__year=<%=year%>&intervention=<%=interventionId%>'
+  },
+  resultLinksDetails: {
+    template: '/api/pmp/v3/interventions/<%=id%>/results-structure/'
   },
   resultLinks: {
     template: '/api/v2/interventions/<%=id%>/result-links/'
@@ -100,10 +101,10 @@ export const interventionEndpoints: EtoolsEndpoints = {
   ramIndicators: {
     template: '/api/v2/reports/results/<%=id%>/indicators/'
   },
-  pdDetails: {
+  pdOutputDetails: {
     template: '/api/pmp/v3/interventions/<%=intervention_id%>/pd-outputs/<%=pd_id%>/'
   },
-  createPd: {
+  createPdOutput: {
     template: '/api/pmp/v3/interventions/<%=intervention_id%>/pd-outputs/'
   },
   pdActivities: {
@@ -224,5 +225,8 @@ export const interventionEndpoints: EtoolsEndpoints = {
   },
   exportXls: {
     template: '/api/pmp/v3/interventions/<%=interventionId%>/xls'
+  },
+  interventionPVDelete: {
+    template: '/api/v2/interventions/<%=intervention_id%>/planned-visits/<%=id%>/'
   }
 };

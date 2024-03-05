@@ -4,7 +4,7 @@ import './intervention-dates/intervention-dates';
 import './timing-overview/timing-overview';
 import './activity-timeframes/activity-timeframes';
 import './programmatic-visits/programmatic-visits';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {CommentElementMeta, CommentsMixin} from '../common/components/comments/comments-mixin';
 import {RootState} from '../common/types/store.types';
 
@@ -52,8 +52,8 @@ export class InterventionTiming extends CommentsMixin(LitElement) {
   }
 
   getSpecialElements(container: HTMLElement): CommentElementMeta[] {
-    return Array.from(container.shadowRoot!.querySelectorAll('.nav-menu-item')).map((element: any) => {
-      const relatedTo: string = element.getAttribute('name') as string;
+    return Array.from(container.shadowRoot!.querySelectorAll('.nav-menu-item')).map((element: any, index: number) => {
+      const relatedTo = `prp-${index}`;
       const relatedToDescription = element.getAttribute('title') as string;
       return {element, relatedTo, relatedToDescription};
     });

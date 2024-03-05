@@ -1,8 +1,8 @@
 import {customElement, html, LitElement, property} from 'lit-element';
 import get from 'lodash-es/get';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {TABS} from '../common/constants';
 import {isUnicefUser} from '../common/selectors';
 import {RootState} from '../common/types/store.types';
@@ -53,7 +53,7 @@ export class InterventionProgress extends connectStore(LitElement) {
   }
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Progress)) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Progress)) {
       return;
     }
 

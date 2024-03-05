@@ -9,7 +9,7 @@ import {
   PropertyValues
 } from 'lit-element';
 import {ActivityItemsTableStyles} from './activity-items-table.styles';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {ActivityItemRow} from './activity-item-row';
 import './activity-item-row';
 import {AnyObject, InterventionActivityItem} from '@unicef-polymer/etools-types';
@@ -17,7 +17,7 @@ import {PaperTextareaElement} from '@polymer/paper-input/paper-textarea';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../../utils/intervention-labels-map';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 
 @customElement('activity-items-table')
@@ -58,7 +58,6 @@ export class ActivityItemsTable extends LitElement {
         <div class="grid-cell header-cell left"><label required>${translate(translatesMap.unit)}</label></div>
         <div class="grid-cell header-cell end"><label required>${translate(translatesMap.no_units)}</label></div>
         <div class="grid-cell header-cell end">${translate('PRICE_UNIT')}</div>
-        <div class="grid-cell header-cell end">${translate('TOTAL_COST')}</div>
         <div class="grid-cell header-cell end">${translate('PARTNER_CASH')}</div>
         <div class="grid-cell header-cell end">${translate('UNICEF_CASH')}</div>
         <div class="grid-cell header-cell end">${translate('TOTAL_CASH')} (${this.currency})</div>
@@ -111,7 +110,8 @@ export class ActivityItemsTable extends LitElement {
       {
         cso_cash: '0',
         unicef_cash: '0',
-        name: ''
+        name: '',
+        unit_price: '0'
       }
     ];
     this.setFocusOnActivityRow();

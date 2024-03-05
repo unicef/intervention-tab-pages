@@ -3,7 +3,7 @@ import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import get from 'lodash-es/get';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {LocationObject} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
@@ -42,7 +42,7 @@ export class GroupedLocationsDialog extends LitElement {
         }
 
         .left-padding {
-          padding-left: 16px;
+          padding-inline-start: 16px;
         }
 
         .top-padding {

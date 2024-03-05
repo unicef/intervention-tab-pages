@@ -1,18 +1,22 @@
 import {LitElement, html, TemplateResult, property, customElement, CSSResultArray, css} from 'lit-element';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import '@unicef-polymer/etools-upload/etools-upload.js';
 import '@polymer/paper-checkbox';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
-import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
+import {
+  validateRequiredFields,
+  resetRequiredFields
+} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
-import {IdAndName, GenericObject, ReviewAttachment} from '@unicef-polymer/etools-types';
+import {IdAndName, GenericObject, ReviewAttachment, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 
 @customElement('intervention-attachment-dialog')
 export class InterventionAttachmentDialog extends connectStore(LitElement) {
@@ -24,7 +28,7 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
           padding: 24px;
         }
         etools-dropdown {
-          width: 50%;
+          width: 100%;
         }
         etools-upload {
           margin-top: 14px;
@@ -94,8 +98,8 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
             required
             ?invalid="${this.errors.type}"
             .errorMessage="${(this.errors.type && this.errors.type[0]) || translate('GENERAL.REQUIRED_FIELD')}"
-            @focus="${() => this.resetFieldError('type')}"
-            @click="${() => this.resetFieldError('type')}"
+            @focus="${() => this.resetFieldError('type', this)}"
+            @click="${() => this.resetFieldError('type', this)}"
           ></etools-dropdown>
 
           <!-- Attachment -->
@@ -110,8 +114,8 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
             @upload-finished="${(event: CustomEvent) => this.fileSelected(event.detail)}"
             ?invalid="${this.errors.attachment_document}"
             .errorMessage="${this.errors.attachment_document && this.errors.attachment_document[0]}"
-            @focus="${() => this.resetFieldError('attachment_document')}"
-            @click="${() => this.resetFieldError('attachment_document')}"
+            @focus="${() => this.resetFieldError('attachment_document', this)}"
+            @click="${() => this.resetFieldError('attachment_document', this)}"
           ></etools-upload>
 
           <paper-checkbox
@@ -127,7 +131,11 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
 
   stateChanged(state: any): void {
     this.interventionId = state.interventions?.current.id;
-    this.fileTypes = state.commonData.fileTypes || [];
+    this.fileTypes =
+      state.commonData.fileTypes.map((x: any) => ({
+        ...x,
+        name: getTranslatedValue(x.name, 'FILE_TYPES')
+      })) || [];
   }
 
   onClose(): void {
@@ -138,8 +146,9 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
     this.data[field] = value;
   }
 
-  resetFieldError(field: string): void {
+  resetFieldError(field: string, el: any): void {
     delete this.errors[field];
+    resetRequiredFields(el);
     this.performUpdate();
   }
 
@@ -171,8 +180,13 @@ export class InterventionAttachmentDialog extends connectStore(LitElement) {
           type
         };
     const endpoint = id
-      ? getEndpoint(interventionEndpoints.updatePdAttachment, {id: this.interventionId, attachment_id: id})
-      : getEndpoint(interventionEndpoints.pdAttachments, {id: this.interventionId});
+      ? getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.updatePdAttachment, {
+          id: this.interventionId,
+          attachment_id: id
+        })
+      : getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.pdAttachments, {
+          id: this.interventionId
+        });
     sendRequest({
       endpoint,
       method: id ? 'PATCH' : 'POST',

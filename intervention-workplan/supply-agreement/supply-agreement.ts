@@ -2,7 +2,7 @@ import {LitElement, html, property, customElement, query} from 'lit-element';
 import '@unicef-polymer/etools-content-panel/etools-content-panel.js';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@unicef-polymer/etools-table/etools-table';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import '@unicef-polymer/etools-loading';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
@@ -11,15 +11,15 @@ import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/st
 import {EtoolsTableColumn, EtoolsTableColumnType, EtoolsTableChildRow} from '@unicef-polymer/etools-table/etools-table';
 import './supply-agreement-dialog';
 import {RootState} from '../../common/types/store.types';
-import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {selectSupplyAgreement, selectSupplyAgreementPermissions} from './supplyAgreement.selectors';
-import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {getIntervention, updateCurrentIntervention} from '../../common/actions/interventions';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
@@ -30,7 +30,7 @@ import {
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {isUnicefUser} from '../../common/selectors';
 import {EtoolsUpload} from '@unicef-polymer/etools-upload/etools-upload';
-import {AnyObject, AsyncAction, InterventionSupplyItem} from '@unicef-polymer/etools-types';
+import {AnyObject, AsyncAction, EtoolsEndpoint, InterventionSupplyItem} from '@unicef-polymer/etools-types';
 import {Intervention, ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
@@ -60,7 +60,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   render() {
     if (!this.supply_items) {
       return html` ${sharedStyles}
-        <etools-loading source="supply-a" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="supply-a" active></etools-loading>`;
     }
     return html`
       ${sharedStyles}
@@ -68,13 +68,14 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         :host {
           display: block;
           margin-bottom: 24px;
+          --etools-table-col-font-size: 16px;
         }
 
         .mr-20 {
-          margin-right: 20px;
+          margin-inline-end: 20px;
         }
         .pad-right {
-          padding-right: 6px;
+          padding-inline-end: 6px;
         }
         #uploadHelpPanel {
           margin-block-end: 0;
@@ -83,20 +84,30 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           display: flex;
           align-items: center;
         }
+        #iit-ger {
+          --iit-margin: 8px 0 8px -15px;
+          --iit-icon-size: 24px;
+        }
       </style>
 
       <etools-content-panel
         show-expand-btn
         panel-title=${translate(translatesMap.supply_items)}
         comment-element="supply-agreement"
-        comment-description=${translate('SUPPLY_CONTRIBUTION')}
       >
+        <div slot="after-title">
+          <info-icon-tooltip
+            id="iit-ger"
+            ?hidden="${!this.permissions.edit.supply_items}"
+            .tooltipText="${translate('SUPPLY_CONTRIBUTION_INFO')}"
+          ></info-icon-tooltip>
+        </div>
         <div slot="panel-btns">
           <span class="mr-20">
             <label class="paper-label font-bold pad-right">${translate('TOTAL_SUPPLY_BUDGET')} </label>
             <label class="font-bold-12"
               >${this.intervention.planned_budget.currency}
-              ${displayCurrencyAmount(this.intervention.planned_budget.in_kind_amount_local!)}</label
+              ${displayCurrencyAmount(this.intervention.planned_budget.total_supply!, '0.00')}</label
             >
           </span>
 
@@ -126,6 +137,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         <div class="row-h" ?hidden="${!this.permissions.edit.supply_items || this.supply_items?.length}">
           ${this.getUploadHelpElement()}
         </div>
+
         <etools-table
           ?hidden="${!this.supply_items?.length}"
           .columns="${this.columns}"
@@ -147,7 +159,9 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         hidden
         accept=".csv"
         .endpointInfo="${{
-          endpoint: getEndpoint(interventionEndpoints.supplyItemsUpload, {interventionId: this.intervention.id}).url,
+          endpoint: getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.supplyItemsUpload, {
+            interventionId: this.intervention.id
+          }).url,
           rawFilePropertyName: 'supply_items_file',
           rejectWithRequest: true
         }}"
@@ -274,12 +288,12 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   }
 
   stateChanged(state: RootState): void {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan)) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan)) {
       return;
     }
     if (get(state, 'interventions.current')) {
       const currentIntervention = get(state, 'interventions.current');
-      this.intervention = cloneDeep(currentIntervention);
+      this.intervention = cloneDeep(currentIntervention) as Intervention;
       this.currencyDisplayForTotal();
     }
     this.supply_items = selectSupplyAgreement(state);
@@ -330,9 +344,14 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   }
 
   deleteSupplyItem(supplyId: number) {
-    const endpoint = getEndpoint(interventionEndpoints.supplyAgreementEdit, {
+    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.supplyAgreementEdit, {
       interventionId: this.intervention.id,
       supplyId: supplyId
+    });
+
+    fireEvent(this, 'global-loading', {
+      active: true,
+      loadingSource: 'intervention-tabs'
     });
 
     sendRequest({
@@ -340,10 +359,21 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       method: 'DELETE'
     })
       .then(() => {
-        getStore().dispatch<AsyncAction>(getIntervention());
+        getStore()
+          .dispatch<AsyncAction>(getIntervention())
+          .finally(() =>
+            fireEvent(this, 'global-loading', {
+              active: false,
+              loadingSource: 'intervention-tabs'
+            })
+          );
       })
       .catch((err: any) => {
         fireEvent(this, 'toast', {text: formatServerErrorAsText(err)});
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: 'intervention-tabs'
+        });
       });
   }
 
@@ -356,7 +386,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       });
     } else {
       const message = this.getUploadError(error);
-      fireEvent(this, 'toast', {text: `Can not upload supplies: ${message}`});
+      fireEvent(this, 'toast', {text: `${getTranslation('CAN_NOT_UPLOAD_SUPPLIES')}: ${message}`});
     }
   }
 
@@ -375,7 +405,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
     openDialog({
       dialog: 'supply-agreement-dialog',
       dialogData: {
-        data: item,
+        data: cloneDeep(item),
         interventionId: this.intervention.id,
         result_links: this.intervention.result_links,
         isUnicefUser: this.isUnicefUser,

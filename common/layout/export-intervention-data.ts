@@ -3,11 +3,12 @@ import '@polymer/paper-button/paper-button';
 import '@polymer/paper-menu-button/paper-menu-button';
 import '@polymer/iron-icon/iron-icon';
 import '@polymer/paper-listbox/paper-listbox';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {elevation2} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
-import {AnyObject} from '@unicef-polymer/etools-types';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
+import {AnyObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
+import {EtoolsRequestEndpoint} from '@unicef-polymer/etools-ajax';
 
 /**
  * @customElement
@@ -22,7 +23,7 @@ export class ExportInterventionData extends LitElement {
           padding: 0px;
         }
         paper-button {
-          height: 40px;
+          height: 34px;
           padding: 0px;
           min-width: 20px;
           font-weight: bold;
@@ -49,20 +50,7 @@ export class ExportInterventionData extends LitElement {
   }
   public render() {
     return html`
-      <style>
-        #pdExportMenuBtn {
-          /* Prevent first item highlighted by default */
-          --paper-item-focused-before: {
-            background: none;
-            opacity: 0;
-          }
-          --paper-item-focused-after: {
-            background: none;
-            opacity: 0;
-          }
-        }
-      </style>
-      <paper-menu-button id="pdExportMenuBtn" close-on-activate horizontal-align="right">
+      <paper-menu-button id="pdExportMenuBtn" close-on-activate horizontal-align>
         <paper-button slot="dropdown-trigger" class="dropdown-trigger">
           <iron-icon icon="more-vert"></iron-icon>
         </paper-button>
@@ -87,22 +75,30 @@ export class ExportInterventionData extends LitElement {
   export(_type: string) {
     let url = '';
     if (_type == 'download_comments') {
-      url = getEndpoint(interventionEndpoints.downloadComment, {interventionId: this.interventionId}).url;
+      url = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.downloadComment, {
+        interventionId: this.interventionId
+      }).url;
       window.open(url, '_blank');
       return;
     }
     if (_type == 'export_results') {
-      url = getEndpoint(interventionEndpoints.expectedResultsExport, {intervention_id: this.interventionId}).url;
+      url = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.expectedResultsExport, {
+        intervention_id: this.interventionId
+      }).url;
       window.open(url, '_blank');
       return;
     }
     if (_type == 'export_pdf') {
-      url = getEndpoint(interventionEndpoints.exportPdf, {interventionId: this.interventionId}).url;
+      url = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.exportPdf, {
+        interventionId: this.interventionId
+      }).url;
       window.open(url, '_blank');
       return;
     }
     if (_type == 'export_xls') {
-      url = getEndpoint(interventionEndpoints.exportXls, {interventionId: this.interventionId}).url;
+      url = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.exportXls, {
+        interventionId: this.interventionId
+      }).url;
       window.open(url, '_blank');
       return;
     }

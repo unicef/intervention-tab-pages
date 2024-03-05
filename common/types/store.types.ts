@@ -12,14 +12,14 @@ import {
   CpOutput,
   Section,
   GenericObject,
-  EtoolsUser
+  EtoolsUser,
+  CountryProgram
 } from '@unicef-polymer/etools-types';
 import {CommentsEndpoints} from '../components/comments/comments-types';
 import {UploadStatusState} from '../reducers/upload-status';
 
 export interface AppState {
   routeDetails: RouteDetails;
-  drawerOpened: boolean;
   toastNotification: {
     active: boolean;
     message: string;
@@ -29,8 +29,9 @@ export interface AppState {
 
 export interface InterventionsState {
   current: Intervention | null;
-  partnerReportingRequirements: PartnerReportingRequirements;
   interventionLoading: number | null;
+  partnerReportingRequirements: PartnerReportingRequirements;
+  shouldReGetList: boolean;
 }
 
 export interface AgreementsState {
@@ -44,7 +45,7 @@ export interface UserState {
 
 export interface CommonDataState {
   unicefUsersData: [];
-  partners: AnyObject[];
+  partners: [];
   locations: LocationObject[];
   sites: Site[];
   sections: Section[];
@@ -52,15 +53,19 @@ export interface CommonDataState {
   cpOutputs: CpOutput[];
   locationTypes: [];
   documentTypes: [];
-  genderEquityRatings: LabelAndValue[];
+  genderEquityRatings: [];
   interventionAmendmentTypes: LabelAndValue[];
+  interventionStatuses: LabelAndValue[];
   offices: [];
-  envFlags: EnvFlags | null;
   currencies: LabelAndValue[];
-  // used on PMP
-  PRPCountryData?: AnyObject[];
+  envFlags: EnvFlags | null;
   riskTypes: LabelAndValue[];
-  cashTransferModalities: LabelAndValue[];
+  fileTypes: any[];
+  cashTransferModalities: any[];
+  PRPCountryData: any[];
+  countryProgrammes: CountryProgram[];
+  loadedTimestamp: number;
+  providedBy: LabelAndValue[];
 }
 
 export interface RootState {
@@ -76,6 +81,7 @@ export interface RootState {
     endpoints: CommentsEndpoints;
   };
   uploadStatus: UploadStatusState;
+  activeLanguage: any;
 }
 
 export interface PartnerReportingRequirements {

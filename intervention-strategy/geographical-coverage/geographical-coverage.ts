@@ -2,23 +2,23 @@ import {customElement, html, LitElement, property} from 'lit-element';
 import '@polymer/paper-button/paper-button';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
 import './grouped-locations-dialog';
-import './sites-dialog';
+import '../../common/components/sites-widget/sites-dialog';
 
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {LocationsPermissions} from './geographicalCoverage.models';
 import {selectLocationsPermissions} from './geographicalCoverage.selectors';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {patchIntervention} from '../../common/actions/interventions';
-import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {RootState} from '../../common/types/store.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import isEmpty from 'lodash-es/isEmpty';
 import get from 'lodash-es/get';
-import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, LocationObject, Permission, Site} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
@@ -38,7 +38,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
   render() {
     if (!this.data || !this.permissions) {
       return html` ${sharedStyles}
-        <etools-loading source="geo" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="geo" active></etools-loading>`;
     }
     // language=HTML
     return html`
@@ -50,7 +50,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         }
 
         .see-locations {
-          padding-right: 0;
+          padding-inline-end: 0;
           color: var(--primary-color);
           min-width: 100px;
           display: flex;
@@ -59,15 +59,13 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         }
 
         .locations-btn {
-          margin: auto;
-          width: 100px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
+          white-space: nowrap;
+          padding-top: 29px;
+          padding-inline-start: 50px;
         }
 
         .see-locations iron-icon {
-          margin-right: 0;
+          margin-inline-end: 0;
           margin-bottom: 2px;
           --iron-icon-height: 18px;
           --iron-icon-width: 18px;
@@ -78,7 +76,12 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         }
 
         #locations {
-          max-width: 100%;
+          max-width: fit-content;
+          min-width: 300px;
+        }
+
+        #locations::part(esmm-label) {
+          opacity: 0;
         }
 
         .f-left {
@@ -89,8 +92,35 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
           padding: 8px 24px 16px 24px;
         }
 
-        info-icon-tooltip {
+        .mt-50 {
+          margin-top: 50px;
+        }
+
+        .dropdown-row {
+          margin-top: -38px;
+        }
+
+        #iit-geo {
           --iit-margin: 8px 0 8px -15px;
+        }
+
+        .iit {
+          --iit-icon-size: 18px;
+          --iit-margin: 0 0 4px 4px;
+        }
+
+        etools-dropdown-multi::part(esmm-dropdownmenu) {
+          left: 0px !important;
+        }
+        .row-padding-v {
+          position: relative;
+        }
+        .location-icon {
+          z-index: 90;
+          padding-bottom: 0 !important;
+        }
+        .prevent-see-hierarchy-link-overlap {
+          height: 10px;
         }
       </style>
 
@@ -98,7 +128,6 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         show-expand-btn
         panel-title=${translate('GEOGRAPHICAL_COVERAGE')}
         comment-element="geographical-coverage"
-        comment-description="Geographical Coverage"
       >
         <div slot="after-title">
           <info-icon-tooltip
@@ -109,19 +138,32 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
         </div>
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
-        <div class="flex-c layout-horizontal row-padding-v">
+        <div class="flex-c layout-horizontal row-padding-v location-icon">
+          <label class="paper-label"> ${translate(translatesMap.flat_locations)}</label>
+          <info-icon-tooltip
+            id="iit-locations"
+            class="iit"
+            position="right"
+            ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.flat_locations)}"
+            .tooltipText="${translate('GEOGRAPHICAL_LOCATIONS_INFO')}"
+          ></info-icon-tooltip>
+        </div>
+        <div class="prevent-see-hierarchy-link-overlap"></div>
+        <div class="flex-c layout-horizontal dropdown-row">
           <etools-dropdown-multi
             id="locations"
-            label=${translate(translatesMap.flat_locations)}
             placeholder="&#8212;"
+            label=${translate(translatesMap.flat_locations)}
             .options="${this.allLocations}"
-            .selectedValues="${this.data.flat_locations}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.flat_locations)}"
-            ?required="${this.permissions.required.flat_locations}"
+            .selectedValues="${cloneDeep(this.data.flat_locations)}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.flat_locations)}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.flat_locations) ? -1 : 0}"
+            ?required="${this.permissions?.required.flat_locations}"
             option-label="name"
             option-value="id"
             error-message=${translate('LOCATIONS_ERR')}
             trigger-value-change-event
+            horizontal-align
             @etools-selected-items-changed="${({detail}: CustomEvent) =>
               this.selectedItemsChanged(detail, 'flat_locations')}"
           >
@@ -133,32 +175,42 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
               ?hidden="${this._isEmpty(this.data.flat_locations)}"
               title=${translate('SEE_ALL_LOCATIONS')}
             >
-              <iron-icon icon="add"></iron-icon>
-              ${translate('SEE_ALL')}
+              ${translate('SEE_HIERARCHY')}
             </paper-button>
           </div>
         </div>
-        <div class="flex-c layout-horizontal row-padding-v">
+        <div class="flex-c row-padding-v mt-50">
+          <div>
+            <label class="paper-label">${translate(translatesMap.sites)}</label>
+            <info-icon-tooltip
+              id="iit-sites"
+              class="iit"
+              slot="after-label"
+              position="right"
+              ?hidden="${!this.editMode}"
+              .tooltipText="${translate('GEOGRAPHICAL_SITES_INFO')}"
+            ></info-icon-tooltip>
+          </div>
           <paper-textarea
-            label=${translate(translatesMap.sites)}
-            always-float-label
+            no-label-float
             class="w100"
             placeholder="&#8212;"
             readonly
+            tabindex="-1"
             max-rows="4"
             .value="${this.getSelectedSitesText(this.data.sites)}"
-          ></paper-textarea>
-          <div class="locations-btn"></div>
+          >
+          </paper-textarea>
         </div>
         <div class="flex-c layout-horizontal row-padding-v">
           <paper-button
             class="secondary-btn see-locations f-left"
             @click="${this.openSitesDialog}"
-            ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.sites)}"
-            title=${translate('SELECT_LOCATION_BY_SITE_FROM_MAP')}
+            ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit.sites)}"
+            title=${translate('SELECT_SITE_FROM_MAP')}
           >
             <iron-icon icon="add"></iron-icon>
-            ${translate('SELECT_LOCATION_BY_SITE_FROM_MAP')}
+            ${translate('SELECT_SITE_FROM_MAP')}
           </paper-button>
         </div>
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
@@ -189,7 +241,7 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
   }
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Strategy)) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Strategy)) {
       return;
     }
     if (!state.interventions.current) {
@@ -204,14 +256,23 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
     if (!isJsonStrMatch(this.adminLevels, state.commonData!.locationTypes)) {
       this.adminLevels = [...state.commonData!.locationTypes];
     }
-    this.data = {
-      flat_locations: get(state, 'interventions.current.flat_locations'),
-      sites: get(state, 'interventions.current.sites') || []
-    };
-    this.currentCountry = get(state, 'user.data.country');
-    this.originalData = cloneDeep(this.data);
+
+    if (!isJsonStrMatch(this.originalData, this.selectCurrentLocationSites(state))) {
+      this.data = this.selectCurrentLocationSites(state);
+      this.originalData = cloneDeep(this.data);
+    }
+
+    this.currentCountry = get(state, 'user.data.country') as any;
+
     this.setPermissions(state);
     super.stateChanged(state);
+  }
+
+  selectCurrentLocationSites(state: RootState) {
+    return {
+      flat_locations: get(state, 'interventions.current.flat_locations') as unknown as string[],
+      sites: get(state, 'interventions.current.sites') || []
+    };
   }
 
   private setPermissions(state: any) {

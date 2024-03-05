@@ -6,11 +6,12 @@ import '@polymer/paper-icon-button';
 import '../common/layout/export-intervention-data';
 import '@unicef-polymer/etools-modules-common/dist/components/cancel/reason-popup';
 import './accept-for-partner';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
-import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
-import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
+import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
+import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import '../common/components/intervention/pd-termination';
 import '../common/components/intervention/start-review';
@@ -35,20 +36,22 @@ import {
   SIGN,
   ACCEPT_ON_BEHALF_OF_PARTNER,
   SIGN_BUDGET_OWNER,
-  SEND_BACK_REVIEW
+  SEND_BACK_REVIEW,
+  UNLOCK
 } from './intervention-actions.constants';
 import {PaperMenuButton} from '@polymer/paper-menu-button/paper-menu-button';
-import {updateCurrentIntervention} from '../common/actions/interventions';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {setShouldReGetList, updateCurrentIntervention} from '../common/actions/interventions';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {defaultKeyTranslate, formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {GenericObject} from '@unicef-polymer/etools-types';
+import {AnyObject, EtoolsEndpoint, GenericObject} from '@unicef-polymer/etools-types';
 import {Intervention} from '@unicef-polymer/etools-types';
 import {get as getTranslation} from 'lit-translate';
 import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
 import {translatesMap} from '../utils/intervention-labels-map';
+import {RootState} from '../common/types/store.types';
 
 @customElement('intervention-actions')
-export class InterventionActions extends LitElement {
+export class InterventionActions extends connectStore(LitElement) {
   static get styles(): CSSResultArray {
     return [InterventionActionsStyles];
   }
@@ -61,14 +64,19 @@ export class InterventionActions extends LitElement {
   @property({type: Boolean})
   userIsBudgetOwner = false;
 
+  @property({type: Number})
+  commonDataLoadedTimestamp = 0;
+
+  private isEPDApp = ROOT_PATH === '/epd/';
+
   connectedCallback() {
     super.connectedCallback();
     this.dir = getComputedStyle(document.body).direction;
   }
 
   private actionsNamesMap = new Proxy(ActionNamesMap, {
-    get(target: GenericObject<string>, property: string): string {
-      return target[property] || property.replace('_', ' ');
+    get(target: AnyObject, property: string): string {
+      return target[property] && target[property].text ? target[property].text : property.replace('_', ' ');
     }
   });
 
@@ -86,8 +94,9 @@ export class InterventionActions extends LitElement {
   }
 
   private renderExport(actions: string[]): TemplateResult {
+    // for ePD app must add ePD text on Export links
     const preparedExportActions = actions.map((action: string) => ({
-      name: this.actionsNamesMap[action],
+      name: this.actionsNamesMap[this.isEPDApp ? `${action}_epd` : action],
       type: action
     }));
     return actions.length
@@ -111,7 +120,7 @@ export class InterventionActions extends LitElement {
   }
 
   private renderGroupedActions(mainAction: string, actions: string[]): TemplateResult {
-    const withAdditional = actions.length && this.dir === 'ltr' ? ' with-additional' : '';
+    const withAdditional = actions.length ? ' with-additional' : '';
     const onlyCancel = !actions.length && mainAction === CANCEL ? ` cancel-background` : '';
     const className = `main-button${withAdditional}${onlyCancel}`;
     return mainAction
@@ -123,12 +132,22 @@ export class InterventionActions extends LitElement {
       : html``;
   }
 
+  public stateChanged(state: RootState) {
+    if (this.commonDataLoadedTimestamp !== state.commonData!.loadedTimestamp) {
+      // static data reloaded (because of language change), need to update texts
+      this.commonDataLoadedTimestamp = state.commonData!.loadedTimestamp;
+      Object.keys(ActionNamesMap).forEach(
+        (key) => (ActionNamesMap[key].text = getTranslation(ActionNamesMap[key].textKey))
+      );
+    }
+  }
+
   private getAdditionalTransitions(actions?: string[]): TemplateResult {
     if (!actions || !actions.length) {
       return html``;
     }
     return html`
-      <paper-menu-button horizontal-align="right" @click="${(event: MouseEvent) => event.stopImmediatePropagation()}">
+      <paper-menu-button horizontal-align @click="${(event: MouseEvent) => event.stopImmediatePropagation()}">
         <paper-icon-button slot="dropdown-trigger" class="option-button" icon="expand-more"></paper-icon-button>
         <div slot="dropdown-content">
           ${actions.map(
@@ -164,7 +183,7 @@ export class InterventionActions extends LitElement {
         break;
       case AMENDMENT_MERGE:
         btn = getTranslation('GENERAL.YES');
-        message = getTranslation('AMENDMENT_MERGE');
+        message = getTranslation('AMENDMENT_MERGE_PROMPT');
         break;
       case SEND_TO_PARTNER:
         btn = getTranslation('GENERAL.YES');
@@ -182,9 +201,13 @@ export class InterventionActions extends LitElement {
         btn = getTranslation('ACCEPT');
         message = getTranslation('REVIEW_PROMPT');
         break;
+      case UNLOCK:
+        btn = getTranslation('UNLOCK');
+        message = getTranslation('UNLOCK_PROMPT');
+        break;
       default:
         btn = this.actionsNamesMap[action];
-        message = getTranslation('ARE_YOU_SURE_PROMPT') + this.actionsNamesMap[action]?.toLowerCase() + ' ?';
+        message = `${getTranslation('ARE_YOU_SURE_PROMPT')} ${this.getActionTextForPopup(action).toLowerCase()} ?`;
     }
     return await openDialog({
       dialog: 'are-you-sure',
@@ -193,6 +216,11 @@ export class InterventionActions extends LitElement {
         confirmBtnText: btn
       }
     }).then(({confirmed}) => confirmed);
+  }
+
+  // for popup cannot use translate from actionsNamesMap, need to pass a string and so will use getTranslation
+  getActionTextForPopup(action: string): string {
+    return ActionNamesMap[action] ? getTranslation(ActionNamesMap[action].textKey) : action;
   }
 
   async processAction(action: string): Promise<void> {
@@ -207,27 +235,38 @@ export class InterventionActions extends LitElement {
       return;
     }
 
-    const endpoint = getEndpoint(interventionEndpoints.interventionAction, {
+    const loadingMessage = getTranslation(action === AMENDMENT_MERGE ? 'AMENDMENT_MERGE_MESSAGE' : 'GENERAL.LOADING');
+
+    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.interventionAction, {
       interventionId: this.interventionPartial.id,
       action
     });
     fireEvent(this, 'global-loading', {
       active: true,
-      loadingSource: 'intervention-actions'
+      loadingSource: 'intervention-actions',
+      message: loadingMessage
     });
+
     sendRequest({
       endpoint,
       body,
       method: 'PATCH'
     })
       .then((intervention: Intervention) => {
+        getStore().dispatch(setShouldReGetList(true));
+
         if (action === AMENDMENT_MERGE) {
-          this.redirectToTabPage(intervention.id, 'metadata');
+          setTimeout(() => {
+            this.redirectToTabPage(intervention.id, 'metadata');
+          });
         } else {
           getStore().dispatch(updateCurrentIntervention(intervention));
-          if (action === REVIEW) {
+        }
+
+        if (action === REVIEW) {
+          setTimeout(() => {
             this.redirectToTabPage(intervention.id, REVIEW);
-          }
+          });
         }
       })
       .finally(() => {
@@ -267,8 +306,8 @@ export class InterventionActions extends LitElement {
     return openDialog({
       dialog: 'reason-popup',
       dialogData: {
-        popupTitle: `${this.actionsNamesMap[action]} Reason`,
-        label: `${this.actionsNamesMap[action]} Comment`
+        popupTitle: `${this.getActionTextForPopup(action)} ${getTranslation('REASON')}`,
+        label: `${this.getActionTextForPopup(action)} ${getTranslation('COMMENT')}`
       }
     }).then(({confirmed, response}) => {
       if (!confirmed || !response) {
@@ -285,8 +324,8 @@ export class InterventionActions extends LitElement {
     return openDialog({
       dialog: 'reason-popup',
       dialogData: {
-        popupTitle: `${this.actionsNamesMap[action]} Reason`,
-        label: `${this.actionsNamesMap[action]} Comment`
+        popupTitle: `${this.getActionTextForPopup(action)} ${getTranslation('REASON')}`,
+        label: `${this.getActionTextForPopup(action)} ${getTranslation('COMMENT')}`
       }
     }).then(({confirmed, response}) => {
       if (!confirmed || !response) {

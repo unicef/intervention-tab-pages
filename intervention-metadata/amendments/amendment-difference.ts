@@ -3,7 +3,8 @@ import {translatesMap} from '../../utils/intervention-labels-map';
 import {translate} from 'lit-translate';
 import {GenericObject, LabelAndValue} from '@unicef-polymer/etools-types';
 import {get as getTranslation} from 'lit-translate/util';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
+import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 
 const ACTIONS: GenericObject<string> = {
   add: 'ADDED',
@@ -21,7 +22,9 @@ export class AmendmentDifference extends LitElement {
       css`
         .offset {
           position: relative;
-          padding: 5px 0 5px 40px;
+          padding-top: 5px;
+          padding-bottom: 5px;
+          padding-inline: 40px 0;
         }
         .field-name {
           margin: 0 0 10px;
@@ -47,10 +50,10 @@ export class AmendmentDifference extends LitElement {
           width: 5px;
           height: 25px;
           top: -9px;
-          left: 25px;
+          inset-inline-start: 25px;
           border: 1px solid transparent;
           border-bottom-color: var(--dark-divider-color);
-          border-left-color: var(--dark-divider-color);
+          border-inline-start-color: var(--dark-divider-color);
         }
         .offset:before {
           content: '';
@@ -58,10 +61,10 @@ export class AmendmentDifference extends LitElement {
           width: 5px;
           height: 32px;
           top: -16px;
-          left: 25px;
+          inset-inline-start: 25px;
           border: 1px solid transparent;
           border-bottom-color: var(--dark-divider-color);
-          border-left-color: var(--dark-divider-color);
+          border-inline-start-color: var(--dark-divider-color);
         }
         .value > .offset {
           padding: 0;
@@ -139,7 +142,7 @@ export class AmendmentDifference extends LitElement {
 
   getSimpleValue(value: any): string {
     if (value === null || typeof value !== 'object') {
-      return String(value);
+      return getTranslatedValue(String(value));
     } else if (value.name) {
       return value.name;
     } else if (Object.hasOwnProperty.call(value, 'd') && Object.hasOwnProperty.call(value, 'v')) {

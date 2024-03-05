@@ -3,15 +3,15 @@ import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/st
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {translate} from 'lit-translate';
 import {InterventionReview, PrcOfficerReview} from '@unicef-polymer/etools-types';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {loadPrcMembersIndividualReviews} from '../../common/actions/officers-reviews';
 import isEqual from 'lodash-es/isEqual';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {RootState} from '../../common/types/store.types';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
-import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
-import {REVIEW_ANSVERS, REVIEW_QUESTIONS} from '../review.const';
-import {formatDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
+import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
+import {REVIEW_ANSVERS, REVIEW_QUESTIONS} from '../../common/components/intervention/review.const';
+import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import '../../common/components/intervention/review-checklist-popup';
 
@@ -30,7 +30,7 @@ export class ReviewsList extends connectStore(LitElement) {
           position: relative;
         }
         div[slot='row-data'] div {
-          padding-right: 16px;
+          padding-inline-end: 16px;
         }
         .answer {
           font-size: 14px;
@@ -38,6 +38,9 @@ export class ReviewsList extends connectStore(LitElement) {
         }
         .answer:last-child {
           margin-bottom: 0;
+        }
+        .editable-row {
+          line-height: 24px;
         }
       `
     ];
@@ -66,7 +69,7 @@ export class ReviewsList extends connectStore(LitElement) {
   render(): TemplateResult {
     return html`
       ${sharedStyles}
-      <etools-content-panel class="content-section" panel-title="PRC Member Reviews">
+      <etools-content-panel class="content-section" panel-title=${translate('PRC_MEMBER_REVIEWS')}>
         <etools-data-table-header no-title ?no-collapse="${!this.approvals.length}">
           <etools-data-table-column class="flex-2">${translate('PRC_NAME')}</etools-data-table-column>
           <etools-data-table-column class="flex-1">${translate('APPROVED_BY_PRC')}</etools-data-table-column>
@@ -117,7 +120,7 @@ export class ReviewsList extends connectStore(LitElement) {
   }
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(state?.app?.routeDetails, 'interventions', 'review')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(state?.app?.routeDetails, 'interventions', 'review')) {
       return;
     }
     this.approvals = state.prcIndividualReviews || [];

@@ -7,20 +7,22 @@ import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/b
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {translate, get as getTranslation} from 'lit-translate';
 import '../../common/components/activity/activity-items-table';
-import {getTotal} from '../../common/components/activity/get-total.helper';
-import {cloneDeep} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {getTotalCashFormatted} from '../../common/components/activity/get-total.helper';
+import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 import {AnyObject, ManagementBudgetItem} from '@unicef-polymer/etools-types';
 import {ActivityItemsTable} from '../../common/components/activity/activity-items-table';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {removeCurrencyAmountDelimiter} from '../../utils/utils';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {EtoolsCurrencyAmountInput} from '@unicef-polymer/etools-currency-amount-input';
 
 /**
  * @customElement
@@ -49,12 +51,12 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         etools-dialog::part(ed-scrollable) {
           margin-top: 0 !important;
         }
-        paper-toggle-button {
-          margin: 25px 0;
+        .input-level {
+          padding: 25px 0;
         }
         .total-input,
         etools-currency-amount-input {
-          margin-right: 24px;
+          margin-inline-end: 24px;
         }
         .total {
           justify-content: flex-end;
@@ -66,6 +68,9 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         }
         .general-total {
           min-width: 155px;
+        }
+        .padd-bott {
+          padding-bottom: 10px;
         }
       </style>
 
@@ -107,7 +112,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
           ></paper-textarea>
         </div>
 
-        <div class="layout-horizontal align-items-center">
+        <div class="layout-horizontal align-items-center padd-bott">
           ${!this.useInputLevel
             ? html`
                   <etools-currency-amount-input
@@ -117,7 +122,9 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
                     .value="${this.data[this.getPropertyName('partner')]}"
                     @value-changed="${({detail}: CustomEvent) =>
                       this.valueChanged(detail, this.getPropertyName('partner'))}"
-                      ?readonly="${this.readonly}"
+                    ?readonly="${this.readonly}"
+                    ?required="${!this.useInputLevel}"
+                    auto-validate
                   >
                   </etools-currency-amount-input>
 
@@ -128,7 +135,9 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
                     .value="${this.data[this.getPropertyName('unicef')]}"
                     @value-changed="${({detail}: CustomEvent) =>
                       this.valueChanged(detail, this.getPropertyName('unicef'))}"
-                      ?readonly="${this.readonly}"
+                    ?readonly="${this.readonly}"
+                    ?required="${!this.useInputLevel}"
+                    auto-validate
                   >
                   </etools-currency-amount-input>
                 </div>`
@@ -159,7 +168,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
           </div>
         </div>
 
-        <div class="layout-horizontal">
+        <div class="layout-horizontal input-level">
           <paper-toggle-button
             ?checked="${this.useInputLevel}"
             @checked-changed="${this.inputLevelChange}"
@@ -216,16 +225,37 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
   @query('etools-dialog') private dialogElement!: EtoolsDialog;
   @query('activity-items-table') private activityItemsTable!: ActivityItemsTable;
 
+  valdateNonInputLevFields() {
+    const pCash = this.shadowRoot?.querySelector<EtoolsCurrencyAmountInput>('#partnerContribution')!;
+    const uCash = this.shadowRoot?.querySelector<EtoolsCurrencyAmountInput>('#unicefCash')!;
+    return pCash.validate() && uCash.validate();
+  }
+
+  validate() {
+    if (!this.useInputLevel) {
+      if (!this.valdateNonInputLevFields()) {
+        fireEvent(this, 'toast', {text: getTranslation('REQUIRED_ERROR')});
+        return false;
+      }
+    } else {
+      const activityItemsValidationSummary = this.validateActivityItems();
+      if (activityItemsValidationSummary) {
+        fireEvent(this, 'toast', {
+          text: activityItemsValidationSummary.invalidRequired
+            ? getTranslation('FILL_ALL_ACTIVITY_ITEMS')
+            : getTranslation('INVALID_TOTAL_ACTIVITY_ITEMS')
+        });
+        return false;
+      }
+    }
+    return true;
+  }
+
   onSaveClick() {
-    const activityItemsValidationSummary = this.validateActivityItems();
-    if (activityItemsValidationSummary) {
-      fireEvent(this, 'toast', {
-        text: activityItemsValidationSummary.invalidRequired
-          ? getTranslation('FILL_ALL_ACTIVITY_ITEMS')
-          : getTranslation('INVALID_TOTAL_ACTIVITY_ITEMS')
-      });
+    if (!this.validate()) {
       return;
     }
+
     this.items.forEach((row: ManagementBudgetItem) => {
       row.kind = this.data.kind;
     });
@@ -245,9 +275,9 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         getStore().dispatch(updateCurrentIntervention(intervention));
         fireEvent(this, 'dialog-closed', {confirmed: true});
       })
-      .catch(() => {
+      .catch((error: any) => {
         this.loadingInProcess = false;
-        fireEvent(this, 'toast', {text: getTranslation('GENERAL.ERR_OCCURRED')});
+        parseRequestErrorsAndShowAsToastMsgs(error, this);
       });
   }
 
@@ -286,11 +316,14 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
 
   getTotalValue(): string {
     if (!this.useInputLevel) {
-      return getTotal(this.data[this.getPropertyName('partner')] || 0, this.data[this.getPropertyName('unicef')] || 0);
+      return getTotalCashFormatted(
+        this.data[this.getPropertyName('partner')] || 0,
+        this.data[this.getPropertyName('unicef')] || 0
+      );
     } else {
       const cso: string = this.getSumValue('cso_cash').replace(/,/g, '');
       const unicef: string = this.getSumValue('unicef_cash').replace(/,/g, '');
-      return getTotal(cso, unicef);
+      return getTotalCashFormatted(cso, unicef);
     }
   }
 

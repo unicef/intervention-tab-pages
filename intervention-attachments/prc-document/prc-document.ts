@@ -9,22 +9,23 @@ import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/st
 import cloneDeep from 'lodash-es/cloneDeep';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {RootState} from '../../common/types/store.types';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import './prcDocument.models';
 import './prcDocument.selectors';
 import {selectPrcDocumentData, selectPrcDocumentPermissions} from './prcDocument.selectors';
 import {PrcDocumentData, PrcDocumentPermissions} from './prcDocument.models';
-import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AsyncAction, Permission} from '@unicef-polymer/etools-types';
+import {AsyncAction, EtoolsEndpoint, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import CONSTANTS from '../../common/constants';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {patchIntervention} from '../../common/actions/interventions';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import UploadsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uploads-mixin';
+import {EtoolsRequestEndpoint} from '@unicef-polymer/etools-ajax';
 
 /**
  * @customElement
@@ -38,7 +39,7 @@ export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadsMixin(L
     // language=HTML
     if (!this.data || !this.permissions) {
       return html` ${sharedStyles}
-        <etools-loading source="prc-doc" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="prc-doc" active></etools-loading>`;
     }
     return html`
       ${sharedStyles}
@@ -55,7 +56,6 @@ export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadsMixin(L
         show-expand-btn
         panel-title=${translate('PRC_REVIEW_DOC_TITLE')}
         comment-element="prc-document"
-        comment-description=${translate('PRC_REVIEW_DOC_TITLE')}
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
         <div class="layout-horizontal row-padding-v">
@@ -67,7 +67,7 @@ export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadsMixin(L
               accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt"
               .fileUrl="${this.data.prc_review_attachment}"
               .uploadEndpoint="${this.uploadEndpoint}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.prc_review_attachment)}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.prc_review_attachment)}"
               .showDeleteBtn="${this.showPrcReviewDeleteBtn(this.data.status)}"
               @delete-file="${this._prcRevDocDelete}"
               @upload-started="${this._onUploadStarted}"
@@ -83,7 +83,8 @@ export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadsMixin(L
   }
 
   @property({type: String})
-  uploadEndpoint: string = getEndpoint(interventionEndpoints.attachmentsUpload).url;
+  uploadEndpoint: string = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.attachmentsUpload)
+    .url;
 
   @property({type: Object})
   data!: PrcDocumentData;
@@ -92,7 +93,7 @@ export class PrcDocument extends CommentsMixin(ComponentBaseMixin(UploadsMixin(L
   permissions!: Permission<PrcDocumentPermissions>;
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'attachments')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'attachments')) {
       return;
     }
 

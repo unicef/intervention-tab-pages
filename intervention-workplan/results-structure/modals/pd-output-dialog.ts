@@ -1,18 +1,19 @@
 import {LitElement, html, TemplateResult, property, customElement} from 'lit-element';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {DataMixin} from '@unicef-polymer/etools-modules-common/dist/mixins/data-mixin';
 import {getDifference} from '@unicef-polymer/etools-modules-common/dist/mixins/objects-diff';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
-import {getIntervention} from '../../../common/actions/interventions';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
+import {updateCurrentIntervention} from '../../../common/actions/interventions';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
-import {AsyncAction, CpOutput} from '@unicef-polymer/etools-types';
+import {CpOutput} from '@unicef-polymer/etools-types';
 import {ResultLinkLowerResult} from '@unicef-polymer/etools-types';
-import {translate, get as getTranslation} from 'lit-translate';
+import {translate} from 'lit-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 
 @customElement('pd-output-dialog')
 export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElement) {
@@ -61,7 +62,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
           background: #ffaa0eb8;
         }
         iron-icon {
-          margin-right: 10px;
+          margin-inline-end: 10px;
         }
         *[hidden] {
           display: none;
@@ -147,8 +148,11 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
     this.loadingInProcess = true;
     // get endpoint
     const endpoint: EtoolsRequestEndpoint = this.isEditDialog
-      ? getEndpoint(interventionEndpoints.pdDetails, {pd_id: this.editedData.id, intervention_id: this.interventionId})
-      : getEndpoint(interventionEndpoints.createPd, {intervention_id: this.interventionId});
+      ? getEndpoint(interventionEndpoints.pdOutputDetails, {
+          pd_id: this.editedData.id,
+          intervention_id: this.interventionId
+        })
+      : getEndpoint(interventionEndpoints.createPdOutput, {intervention_id: this.interventionId});
 
     // get changed fields
     const diff: Partial<ResultLinkLowerResult> = getDifference<ResultLinkLowerResult>(
@@ -163,18 +167,14 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
       method: this.isEditDialog ? 'PATCH' : 'POST',
       body: this.isEditDialog ? {id: this.editedData.id, ...diff} : diff
     })
-      .then(() =>
-        getStore()
-          .dispatch<AsyncAction>(getIntervention(String(this.interventionId)))
-          .catch(() => Promise.resolve())
-      )
+      .then((response: any) => getStore().dispatch(updateCurrentIntervention(response.intervention)))
       .then(() => {
         fireEvent(this, 'dialog-closed', {confirmed: true});
       })
       .catch((error: any) => {
         this.loadingInProcess = false;
         this.errors = (error && error.response) || {};
-        fireEvent(this, 'toast', {text: getTranslation('ERR_SAVE_PD_OUTPUT')});
+        parseRequestErrorsAndShowAsToastMsgs(error, this);
       });
   }
 }

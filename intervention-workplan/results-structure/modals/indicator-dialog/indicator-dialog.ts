@@ -14,8 +14,8 @@ import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/st
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import SaveIndicatorMixin from './mixins/save-indicator-mixin';
 import IndicatorDialogTabsMixin from './mixins/indicator-dialog-tabs-mixin';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {userIsPme} from '@unicef-polymer/etools-modules-common/dist/utils/user-permissions';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
@@ -242,7 +242,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
     // this.prpServerOn = data.prpServerOn;
     this.currentUser = getStore().getState().user.data;
     this.interventionStatus = getStore().getState().interventions.current?.status || '';
-    this.readonly = data.readonly;
+    this.readonly = data.readonly || !this.data.is_active;
 
     if (!this.data.id) {
       this.preselectSectionAndLocation();
@@ -311,7 +311,11 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   }
 
   setTitle() {
-    const title = this.isEditRecord ? getTranslation('EDIT_INDICATOR') : getTranslation('ADD_INDICATOR');
+    const title = this.readonly
+      ? getTranslation('VIEW_INDICATOR')
+      : this.isEditRecord
+      ? getTranslation('EDIT_INDICATOR')
+      : getTranslation('ADD_INDICATOR');
     setTimeout(() => {
       this.indicatorDialog.dialogTitle = title;
     });
@@ -344,7 +348,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
       e.stopImmediatePropagation();
     }
     this.indicatorDialog.stopSpinner();
-    this.spinnerText = 'Saving...';
+    this.spinnerText = getTranslation('GENERAL.SAVING_DATA');
   }
 
   _startSpinner(e?: CustomEvent) {

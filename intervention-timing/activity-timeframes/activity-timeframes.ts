@@ -4,7 +4,7 @@ import {RootState} from '../../common/types/store.types';
 import {ActivityTime, groupByYear, GroupedActivityTime, serializeTimeFrameData} from '../../utils/timeframes.helper';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {ActivityTimeframesStyles} from './activity-timeframes.styles';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {
@@ -16,6 +16,7 @@ import {
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {Intervention, ResultLinkLowerResult, ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
+import {repeat} from 'lit-html/directives/repeat';
 
 @customElement('activity-timeframes')
 export class ActivityTimeframes extends CommentsMixin(LitElement) {
@@ -25,8 +26,7 @@ export class ActivityTimeframes extends CommentsMixin(LitElement) {
   }
 
   @property() intervention: Intervention | null = null;
-  @property({type: String})
-  dir = 'ltr';
+  @property() language = 'en';
 
   protected render(): TemplateResult {
     if (!this.intervention) {
@@ -46,7 +46,6 @@ export class ActivityTimeframes extends CommentsMixin(LitElement) {
         show-expand-btn
         panel-title=${translate('ACTIVITY_TIMEFRAMES')}
         comment-element="activity-timeframes"
-        comment-description=${translate('ACTIVITY_TIMEFRAMES')}
       >
         ${!timeFrames.length
           ? html`
@@ -56,14 +55,18 @@ export class ActivityTimeframes extends CommentsMixin(LitElement) {
             `
           : ''}
         <div class="layout-vertical align-items-center">
-          ${timeFrames.map(
+          ${repeat(
+            timeFrames,
+            (timeFrames) => timeFrames[1],
             ([year, frames]: GroupedActivityTime, index: number) => html`
               <div class="layout-horizontal align-items-center time-frames">
                 <!--      Year title        -->
                 <div class="year">${year}</div>
 
-                <div class="frames-grid" ?rtl="${this.dir === 'rtl'}">
-                  ${frames.map(
+                <div class="frames-grid">
+                  ${repeat(
+                    frames,
+                    (frame) => frame.frameDisplay,
                     ({name, frameDisplay, id}: ActivityTime, index: number) => html`
                       <!--   Frame data   -->
                       <div class="frame ${index === frames.length - 1 ? 'hide-border' : ''}">
@@ -77,7 +80,7 @@ export class ActivityTimeframes extends CommentsMixin(LitElement) {
                         </div>
                         ${mappedActivities[id].map(
                           ({name: activityName}: InterventionActivity) => html`
-                            <div class="activity-name">Activity ${activityName}</div>
+                            <div class="activity-name">${translate('ACTIVITY')} ${activityName}</div>
                           `
                         )}
                       </div>
@@ -94,17 +97,14 @@ export class ActivityTimeframes extends CommentsMixin(LitElement) {
   }
 
   stateChanged(state: RootState): void {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'timing')) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'timing')) {
       return;
     }
+    this.language = state.activeLanguage.activeLanguage; // Set language property in order to trigger re-render
     this.intervention = state.interventions.current;
     super.stateChanged(state);
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-    this.dir = getComputedStyle(this).direction;
-  }
   private getTimeFrames(): GroupedActivityTime[] {
     if (!this.intervention) {
       return [];

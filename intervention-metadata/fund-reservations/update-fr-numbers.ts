@@ -4,7 +4,7 @@ import '@polymer/paper-input/paper-input';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
@@ -80,7 +80,7 @@ export class UpdateFrNumbers extends RepeatableDataSetsMixin(LitElement) {
         @confirm-btn-clicked="${() => this._checkFrNumbers()}"
         no-padding
         keep-dialog-open
-        spinner-text="Checking FR Numbers updates..."
+        spinner-text="${translate('CHECKING_FR_NUMBERS_UPDATES')}"
       >
         ${(this.data || []).map(
           (item: AnyObject, index: number) => html`

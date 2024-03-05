@@ -8,16 +8,18 @@ import '@unicef-polymer/etools-modules-common/dist/layout/etools-warn-message';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
-import {AnyObject, InterventionAmendment, LabelAndValue} from '@unicef-polymer/etools-types';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
+import {AnyObject, EtoolsEndpoint, InterventionAmendment, LabelAndValue} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {AmendmentsKind} from './pd-amendments.models';
 import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin.js';
+import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
+import {resetInvalidElement} from '../../utils/utils';
 
 /**
  * @customElement
@@ -46,7 +48,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
         id="add-amendment"
         size="md"
         ?opened="${this.dialogOpened}"
-        ok-btn-text="Save"
+        ok-btn-text="${translate('GENERAL.SAVE')}"
         dialog-title=${translate('ADD_AMENDMENT')}
         @close="${() => this.onClose()}"
         @confirm-btn-clicked="${() => this._validateAndSaveAmendment()}"
@@ -71,6 +73,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
               this.selectedItemsChanged(detail, 'types', 'value');
               this.onTypesChanged();
             }}"
+            @focus="${(event: any) => resetInvalidElement(event)}"
           >
           </etools-dropdown-multi>
         </div>
@@ -89,6 +92,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
             error-message="${translate('GENERAL.REQUIRED_FIELD')}"
             .value="${this.data.other_description}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'other_description')}"
+            @focus="${(event: any) => resetInvalidElement(event)}"
           >
           </paper-input>
         </div>
@@ -131,6 +135,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
     if (!data) {
       return;
     }
+    this.data = {other_description: '', types: []};
     const {intervention, amendmentTypes} = data;
     this.intervention = intervention;
     this.amendmentTypes = amendmentTypes;
@@ -142,7 +147,14 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
       return;
     }
 
-    this.filteredAmendmentTypes = JSON.parse(JSON.stringify(this.amendmentTypes));
+    this.filteredAmendmentTypes = JSON.parse(
+      JSON.stringify(
+        this.amendmentTypes.map((x) => ({
+          ...x,
+          label: getTranslatedValue(x.label, 'AMENDMENT_TYPES_ITEMS')
+        }))
+      )
+    );
   }
 
   onTypesChanged() {
@@ -190,7 +202,7 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
   _saveAmendment(newAmendment: Partial<InterventionAmendment>) {
     const options = {
       method: 'POST',
-      endpoint: getEndpoint(interventionEndpoints.interventionAmendmentAdd, {
+      endpoint: getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.interventionAmendmentAdd, {
         intervId: this.intervention.id
       }),
       body: {

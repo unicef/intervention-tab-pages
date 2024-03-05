@@ -10,23 +10,25 @@ import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {RootState} from '../../common/types/store.types';
-import {prettyDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
-import {getFileNameFromURL, isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {prettyDate} from '@unicef-polymer/etools-utils/dist/date.util';
+import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
+import {getFileNameFromURL} from '@unicef-polymer/etools-utils/dist/general.util';
+import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {selectAmendmentsPermissions} from './pd-amendments.selectors';
 import {AmendmentsKind, AmendmentsKindTranslateKeys, PdAmendmentPermissions} from './pd-amendments.models';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
-import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
+import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {AnyObject, AsyncAction, LabelAndValue, Permission} from '@unicef-polymer/etools-types';
+import {AnyObject, AsyncAction, EtoolsEndpoint, LabelAndValue, Permission} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
 import {get as getTranslation} from 'lit-translate/util';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
-import {getIntervention} from '../../common/actions/interventions';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
+import {getIntervention, setShouldReGetList} from '../../common/actions/interventions';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import './amendment-difference';
 
 /**
@@ -53,7 +55,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
 
         .attachment {
           color: var(--dark-icon-color);
-          margin-right: 8px;
+          margin-inline-end: 8px;
         }
         .file-label {
           width: calc(100% - 32px);
@@ -73,7 +75,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
         }
         iron-icon {
           width: 18px;
-          margin-left: 5px;
+          margin-inline-start: 5px;
         }
         a {
           line-height: 12px;
@@ -97,14 +99,12 @@ export class PdAmendments extends CommentsMixin(LitElement) {
           flex: 1;
           max-width: 150px;
         }
+        .editable-row {
+          line-height: 24px;
+        }
       </style>
 
-      <etools-content-panel
-        show-expand-btn
-        panel-title=${translate('AMENDMENTS')}
-        comment-element="amendments"
-        comment-description=${translate('AMENDMENTS')}
-      >
+      <etools-content-panel show-expand-btn panel-title=${translate('AMENDMENTS')} comment-element="amendments">
         <div slot="panel-btns">
           <paper-icon-button
             icon="add-box"
@@ -148,16 +148,16 @@ export class PdAmendments extends CommentsMixin(LitElement) {
                             class="layout-horizontal align-items-center"
                             href="${ROOT_PATH}interventions/${item.amended_intervention}/metadata"
                           >
-                            Active <iron-icon icon="launch"></iron-icon>
+                            ${translate('ACTIVE')} <iron-icon icon="launch"></iron-icon>
                           </a>
                         `
-                      : 'Completed'}
+                      : translate('COMPLETED')}
                   </span>
 
                   <div class="hover-block" ?hidden="${!item.is_active}">
                     <paper-icon-button
                       icon="delete"
-                      @click="${() => this.deleteAmendment(item.id, item.amended_intervention)}"
+                      @click="${() => this.deleteAmendment(item.id)}"
                     ></paper-icon-button>
                   </div>
                 </div>
@@ -175,7 +175,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
                   </div>
                   <div class="info-block">
                     <div class="label">${translate('PARTNER_AUTHORIZED_OFFICER_SIGNATORY')}</div>
-                    <div class="value">${item.partner_authorized_officer_signatory?.user.name || html`&#8212;`}</div>
+                    <div class="value">${item.partner_authorized_officer_signatory?.user?.name || html`&#8212;`}</div>
                   </div>
                   <div class="info-block">
                     <div class="label">${translate('SIGNED_AMENDMENT')}</div>
@@ -191,7 +191,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
                   </div>
 
                   <div class="info-block">
-                    <div class="label">Difference</div>
+                    <div class="label">${translate('DIFFERENCE')}</div>
                     <amendment-difference .difference="${item.difference}"></amendment-difference>
                   </div>
                 </div>
@@ -221,11 +221,11 @@ export class PdAmendments extends CommentsMixin(LitElement) {
   @property({type: Object})
   intervention!: AnyObject;
 
-  @property({type: Boolean})
-  isNewAmendment = false;
-
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata')) {
+    if (
+      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata') ||
+      !state.interventions.current
+    ) {
       return;
     }
 
@@ -236,11 +236,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
     const currentIntervention = get(state, 'interventions.current');
     if (currentIntervention && !isJsonStrMatch(this.intervention, currentIntervention)) {
       this.intervention = cloneDeep(currentIntervention);
-      this.amendments = this.intervention.amendments;
-      if (this.isNewAmendment) {
-        this.isNewAmendment = false;
-        fireEvent(this, 'amendment-added', currentIntervention);
-      }
+      this.amendments = this.intervention.amendments?.sort((a: any, b: any) => b.id - a.id);
     }
     this.setPermissions(state);
     super.stateChanged(state);
@@ -263,7 +259,7 @@ export class PdAmendments extends CommentsMixin(LitElement) {
     });
     if (amdTypes.length) {
       const amdTypesLabels = amdTypes.map((t: AnyObject) => {
-        return t.label;
+        return getTranslatedValue(t.label, 'AMENDMENT_TYPES_ITEMS');
       });
       return amdTypesLabels.join(', ');
     }
@@ -279,14 +275,14 @@ export class PdAmendments extends CommentsMixin(LitElement) {
       }
     }).then(({response}) => {
       if (response?.id) {
-        this.isNewAmendment = true;
+        getStore().dispatch(setShouldReGetList(true));
         history.pushState(window.history.state, '', `${ROOT_PATH}interventions/${response.id}/metadata`);
         window.dispatchEvent(new CustomEvent('popstate'));
       }
     });
   }
 
-  deleteAmendment(amendmentId: number, amended_intervention: number): void {
+  deleteAmendment(amendmentId: number): void {
     openDialog({
       dialog: 'are-you-sure',
       dialogData: {
@@ -303,15 +299,18 @@ export class PdAmendments extends CommentsMixin(LitElement) {
       });
       const options = {
         method: 'DELETE',
-        endpoint: getEndpoint(interventionEndpoints.interventionAmendmentDelete, {amendmentId})
+        endpoint: getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(
+          interventionEndpoints.interventionAmendmentDelete,
+          {amendmentId}
+        )
       };
       sendRequest(options)
         .then(() => {
-          fireEvent(this, 'amendment-deleted', {id: amended_intervention});
+          getStore().dispatch(setShouldReGetList(true));
           return getStore().dispatch<AsyncAction>(getIntervention(this.intervention.id));
         })
         .catch(() => {
-          fireEvent(this, 'toast', {text: 'Can not remove amendment. Try again later'});
+          fireEvent(this, 'toast', {text: getTranslation('CAN_NOT_REMOVE_AMENDMENT')});
         })
         .finally(() => {
           fireEvent(this, 'global-loading', {

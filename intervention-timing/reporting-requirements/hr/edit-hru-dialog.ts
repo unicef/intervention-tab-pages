@@ -5,23 +5,23 @@ import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import '@unicef-polymer/etools-date-time/calendar-lite';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
-import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import './hru-list.js';
 import CONSTANTS from '../../../common/constants';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
-import {convertDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
+import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
-import {isEmptyObject} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
-import {AnyObject} from '@unicef-polymer/etools-types';
+import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
+import {AnyObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin.js';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit.js';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles.js';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit.js';
+import {validateRequiredFields} from '@unicef-polymer/etools-modules-common/dist/utils/validation-helper';
 
 /**
  * @polymer
@@ -46,7 +46,7 @@ export class EditHruDialog extends connectStore(LitElement) {
           display: inline-block;
           width: auto;
           margin-top: 24px;
-          padding-right: 0;
+          padding-inline-end: 0;
         }
 
         .start-date {
@@ -80,10 +80,14 @@ export class EditHruDialog extends connectStore(LitElement) {
             label=${translate('SELECT_START_DATE')}
             .value="${this.repStartDate}"
             required
-            min-date="${this.minDate}"
+            min-date="${this.interventionStart}"
             auto-validate
             open="${this.datePickerOpen}"
             selected-date-display-format="D MMM YYYY"
+            fire-date-has-changed
+            @date-has-changed="${(e: CustomEvent) => {
+              this.repStartDate = e.detail.date;
+            }}"
           >
           </datepicker-lite>
         </div>
@@ -93,6 +97,7 @@ export class EditHruDialog extends connectStore(LitElement) {
           <div class="col layout-vertical col-6">
             <calendar-lite
               id="datepicker"
+              min-date="${this.repStartDate}"
               pretty-date="${this.selectedDate ? this.selectedDate : ''}"
               @date-changed="${({detail}: CustomEvent) => this.changed(detail.value)}"
               format="YYYY-MM-DD"
@@ -130,9 +135,6 @@ export class EditHruDialog extends connectStore(LitElement) {
   @property({type: Date})
   repStartDate!: Date | string;
 
-  @property({type: Date})
-  minDate!: Date;
-
   @property({type: String})
   selectedDate!: string;
 
@@ -149,7 +151,6 @@ export class EditHruDialog extends connectStore(LitElement) {
 
   set interventionId(interventionId) {
     this._interventionId = interventionId;
-    this.intervDataChanged();
   }
 
   @property({type: String})
@@ -165,21 +166,6 @@ export class EditHruDialog extends connectStore(LitElement) {
     this.interventionStart = interventionStart;
 
     this._setDefaultStartDate();
-  }
-
-  intervDataChanged() {
-    this.minDate = this._getMinDate();
-  }
-
-  _getMinDate() {
-    if (!this.interventionStart) {
-      return null;
-    }
-    const stDt = this.interventionStart instanceof Date ? this.interventionStart : convertDate(this.interventionStart);
-    if (stDt) {
-      return dayjs(stDt).toDate();
-    }
-    return null;
   }
 
   _setDefaultStartDate() {
@@ -209,16 +195,14 @@ export class EditHruDialog extends connectStore(LitElement) {
   _addToList() {
     if (!this.selectedDate) {
       fireEvent(this, 'toast', {
-        text: getTranslation('PLEASE_SELECT_DATE'),
-        showCloseBtn: true
+        text: getTranslation('PLEASE_SELECT_DATE')
       });
       return;
     }
     const alreadySelected = this.hruData.find((d: any) => d.end_date === this.selectedDate);
     if (alreadySelected) {
       fireEvent(this, 'toast', {
-        text: getTranslation('DATE_ALREADY_ADDED'),
-        showCloseBtn: true
+        text: getTranslation('DATE_ALREADY_ADDED')
       });
       return;
     }
@@ -267,8 +251,12 @@ export class EditHruDialog extends connectStore(LitElement) {
   }
 
   _saveHurData() {
+    if (!this.validate()) {
+      return;
+    }
+
     this.updateStartDates(this.repStartDate);
-    const endpoint = getEndpoint(interventionEndpoints.reportingRequirements, {
+    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.reportingRequirements, {
       intervId: this.interventionId,
       reportType: CONSTANTS.REQUIREMENTS_REPORT_TYPE.HR
     });
@@ -284,10 +272,14 @@ export class EditHruDialog extends connectStore(LitElement) {
         fireEvent(this, 'dialog-closed', {confirmed: true, response: response.reporting_requirements});
       })
       .catch((error: any) => {
-        logError('Failed to save/update HR data!', 'edit-hru-dialog', error);
+        EtoolsLogger.error('Failed to save/update HR data!', 'edit-hru-dialog', error);
         parseRequestErrorsAndShowAsToastMsgs(error, this);
         dialog.stopSpinner();
       });
+  }
+
+  validate() {
+    return validateRequiredFields(this);
   }
 
   changed(value: string) {

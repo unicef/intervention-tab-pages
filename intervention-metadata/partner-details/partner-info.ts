@@ -9,7 +9,7 @@ import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {PartnerInfo, PartnerInfoPermissions} from './partnerInfo.models';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import get from 'lodash-es/get';
@@ -17,16 +17,16 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {patchIntervention} from '../../common/actions/interventions';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
-import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
+import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import isEmpty from 'lodash-es/isEmpty';
 import {RootState} from '../../common/types/store.types';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AsyncAction, Permission, PartnerStaffMember, AnyObject} from '@unicef-polymer/etools-types';
 import {MinimalAgreement} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation, langChanged} from 'lit-translate';
 
 /**
  * @customElement
@@ -58,7 +58,6 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
         show-expand-btn
         panel-title="${translate('PARTNER_DETAILS')}"
         comment-element="partner-details"
-        comment-description=${translate('PARTNER_DETAILS')}
       >
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
@@ -71,6 +70,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
               required
               readonly
               always-float-label
+              tabindex="-1"
             >
             </paper-input>
           </div>
@@ -85,6 +85,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
               trigger-value-change-event
               @etools-selected-item-changed="${({detail}: CustomEvent) => this.selectedAgreementChanged(detail)}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.agreement)}"
+              tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.agreement) ? -1 : 0}"
               required
               auto-validate
             >
@@ -97,6 +98,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
               class="w100"
               label=${translate('PARTNER_VENDOR_NUMBER')}
               .value="${this.data?.partner_vendor}"
+              tabindex="-1"
               readonly
               always-float-label
             >
@@ -112,7 +114,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
             <etools-dropdown-multi
               label=${translate('PARTNER_FOCAL_POINTS')}
               .selectedValues="${this.data?.partner_focal_points?.map((f: any) => f.id)}"
-              .options="${this.partnerStaffMembers}"
+              .options="${langChanged(() => this.formattedPartnerStaffMembers)}"
               option-label="name"
               option-value="id"
               ?required=${this.permissions?.required.partner_focal_points}
@@ -156,6 +158,19 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
   @property({type: Array})
   partnerStaffMembers!: PartnerStaffMember[];
 
+  get formattedPartnerStaffMembers() {
+    return this.partnerStaffMembers?.map((member: PartnerStaffMember) => ({
+      name: `${
+        !member.active
+          ? `[${getTranslation('INACTIVE')}]`
+          : member.has_active_realm
+          ? ''
+          : `[${getTranslation('NO_ACCESS')}]`
+      } ${member.first_name} ${member.last_name} (${member.email})`,
+      id: member.id
+    }));
+  }
+
   connectedCallback() {
     super.connectedCallback();
   }
@@ -163,7 +178,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
   async stateChanged(state: RootState) {
     if (
       !state.interventions.current ||
-      pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata')
+      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata')
     ) {
       return;
     }
@@ -184,9 +199,11 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
     }
 
     if (!isJsonStrMatch(this.originalData, newPartnerDetails)) {
-      if (this.partnerIdHasChanged(newPartnerDetails)) {
+      const partnerIdHasChanged = this.partnerIdHasChanged(newPartnerDetails);
+      if (partnerIdHasChanged) {
         this.partnerStaffMembers = await this.getAllPartnerStaffMembers(newPartnerDetails.partner_id!);
       }
+      // Wait for partnerStaffMembers to be set, to avoid timing issues on dropdown selectedItems
       this.data = cloneDeep(newPartnerDetails);
       this.originalData = cloneDeep(this.data);
     }
@@ -204,10 +221,11 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
     return sendRequest({
       endpoint: getEndpoint(interventionEndpoints.partnerStaffMembers, {id: partnerId})
     }).then((resp) => {
-      resp.forEach((staff: PartnerStaffMember) => {
-        staff.name = staff.first_name + ' ' + staff.last_name;
-      });
-      return resp;
+      return resp.sort(
+        (a: PartnerStaffMember, b: PartnerStaffMember) =>
+          Number(b.active) - Number(a.active) ||
+          `${a.first_name} ${a.last_name}`.localeCompare(`${b.first_name} ${b.last_name}`)
+      );
     });
   }
 

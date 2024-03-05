@@ -3,10 +3,10 @@ import {LitElement, html, property, customElement} from 'lit-element';
 import '@polymer/paper-input/paper-textarea';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {translate} from 'lit-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import './sites-widget/sites-widget';
+import './sites-widget';
 import {Site} from '@unicef-polymer/etools-types';
 
 /**
@@ -41,7 +41,7 @@ export class GroupedLocationsDialog extends LitElement {
         }
 
         .left-padding {
-          padding-left: 16px;
+          padding-inline-start: 16px;
         }
 
         .top-padding {
@@ -67,6 +67,22 @@ export class GroupedLocationsDialog extends LitElement {
         div.child-bottom-padding:last-of-type {
           padding-bottom: 0;
         }
+
+        etools-dialog paper-textarea {
+          outline: none;
+          --paper-input-container-underline: {
+            display: none;
+          }
+          --paper-input-container-underline-focus: {
+            display: none;
+          }
+          --iron-autogrow-textarea: {
+            overflow: auto;
+            padding: 0;
+            min-height: 48px;
+            max-height: 96px;
+          }
+        }
       </style>
 
       <etools-dialog
@@ -74,9 +90,9 @@ export class GroupedLocationsDialog extends LitElement {
         size="lg"
         keep-dialog-open
         opened
-        dialog-title=${translate('SELECT_LOCATION_BY_SITE')}
+        dialog-title=${translate('SELECT_SITE')}
         cancel-btn-text=${translate('GENERAL.CANCEL')}
-        ok-btn-text=${translate('GENERAL.ADD_UPDATE')}
+        ok-btn-text=${translate('SELECT')}
         @confirm-btn-clicked="${() => this.onConfirm()}"
         @close="${() => this.onClose()}"
       >
@@ -90,12 +106,12 @@ export class GroupedLocationsDialog extends LitElement {
         ></sites-widget>
 
         <paper-textarea
-          label="Selected sites"
+          label="${translate('SELECTED_SITES')}"
           always-float-label
           class="w100"
           placeholder="&#8212;"
-          readonly
           max-rows="4"
+          onkeypress="return false;"
           .value="${this.getSelectedSitesText(this.selectedSites)}"
         >
         </paper-textarea>

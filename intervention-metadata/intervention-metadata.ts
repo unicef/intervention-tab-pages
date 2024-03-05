@@ -6,7 +6,7 @@ import './amendments/pd-amendments';
 import './fund-reservations/fund-reservations';
 import './review-and-sign/review-and-sign';
 import './other/other';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {RootState} from '../common/types/store.types';
 import {InterventionPermissionsFields, Permission} from '@unicef-polymer/etools-types';
 import {currentInterventionPermissions, currentPage, currentSubpage} from '../common/selectors';
@@ -49,7 +49,11 @@ export class InterventionMetadata extends connectStore(LitElement) {
   }
 
   stateChanged(state: RootState): void {
-    if (currentPage(state) !== 'interventions' || currentSubpage(state) !== 'metadata') {
+    if (
+      currentPage(state) !== 'interventions' ||
+      currentSubpage(state) !== 'metadata' ||
+      !state.interventions.current
+    ) {
       return;
     }
     this.permissions = currentInterventionPermissions(state);

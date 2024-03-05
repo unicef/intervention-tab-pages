@@ -4,12 +4,12 @@ import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {removeDialog, createDynamicDialog} from '@unicef-polymer/etools-dialog/dynamic-dialog.js';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
-import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {logWarn} from '@unicef-polymer/etools-behaviors/etools-logging';
+import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import './update-fr-numbers';
 import {UpdateFrNumbers} from './update-fr-numbers';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {RootState} from '../../common/types/store.types';
 import get from 'lodash-es/get';
@@ -18,20 +18,21 @@ import {patchIntervention} from '../../common/actions/interventions';
 import {FundReservationsPermissions} from './fund-reservations.models';
 import {selectFundReservationPermissions} from './fund-reservations.selectors';
 import {isUnicefUser} from '../../common/selectors';
-import {AnyObject, AsyncAction, Permission} from '@unicef-polymer/etools-types';
+import {AnyObject, AsyncAction, EtoolsEndpoint, Permission} from '@unicef-polymer/etools-types';
 import {Intervention, FrsDetails, Fr} from '@unicef-polymer/etools-types';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {translate} from 'lit-translate';
-import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
-import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {translate, get as getTranslation} from 'lit-translate';
+import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
+import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import FrNumbersConsistencyMixin from '@unicef-polymer/etools-modules-common/dist/mixins/fr-numbers-consistency-mixin';
 import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/fr-warnings-styles';
 import ContentPanelMixin from '@unicef-polymer/etools-modules-common/dist/mixins/content-panel-mixin';
 import {customIcons} from '@unicef-polymer/etools-modules-common/dist/styles/custom-icons';
-import {getArraysDiff} from '@unicef-polymer/etools-modules-common/dist/utils/array-helper';
+import {getArraysDiff} from '@unicef-polymer/etools-utils/dist/array.util';
+import {listenForLangChanged} from 'lit-translate';
 
 /**
  * @customElement
@@ -47,7 +48,7 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
       return html``;
     }
     if (!this.intervention) {
-      return html`<etools-loading source="fund-res" loading-text="Loading..." active></etools-loading>`;
+      return html`<etools-loading source="fund-res" active></etools-loading>`;
     }
     return html`
       ${customIcons} ${sharedStyles}
@@ -85,7 +86,6 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
         show-expand-btn
         panel-title=${translate('FUND_RESERVATIONS')}
         comment-element="fund-reservations"
-        comment-description=${translate('FUND_RESERVATIONS')}
       >
         <paper-icon-button
           slot="panel-btns"
@@ -140,7 +140,10 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
   private _frsConfirmationsDialogMessage!: HTMLSpanElement;
 
   stateChanged(state: RootState) {
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata')) {
+    if (
+      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'metadata') ||
+      !state.interventions.current
+    ) {
       return;
     }
     this.isUnicefUser = isUnicefUser(state);
@@ -149,6 +152,7 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
       this.intervention = cloneDeep(currentIntervention);
       this._frsDetailsChanged(this.intervention.frs_details);
     }
+
     this.sePermissions(state);
     super.stateChanged(state);
   }
@@ -158,6 +162,13 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
     if (!isJsonStrMatch(this.permissions, newPermissions)) {
       this.permissions = newPermissions;
     }
+  }
+
+  constructor() {
+    super();
+    listenForLangChanged(() => {
+      this._frsDetailsChanged(this.intervention?.frs_details);
+    });
   }
 
   connectedCallback() {
@@ -224,7 +235,7 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
     if (this._frsConfirmationsDialogMessage) {
       this._frsConfirmationsDialogMessage.innerHTML = warning + '<br><br>Do you want to continue?';
     } else {
-      logWarn('frsConfirmationsDialogMessage element not found', 'Fund Reservations');
+      EtoolsLogger.warn('frsConfirmationsDialogMessage element not found', 'Fund Reservations');
     }
   }
 
@@ -306,7 +317,10 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
   _triggerFrsDetailsRequest(frNumbers: string[]) {
     (this.frsDialogEl as UpdateFrNumbers).startSpinner();
 
-    let url = getEndpoint(interventionEndpoints.frNumbersDetails).url + '?values=' + frNumbers.join(',');
+    let url =
+      getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.frNumbersDetails).url +
+      '?values=' +
+      frNumbers.join(',');
     if (this.intervention.id) {
       url += '&intervention=' + this.intervention.id;
     }
@@ -349,15 +363,14 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
     let toastMsg =
       responseErr && responseErr.error
         ? responseErr.error
-        : (translate('ADD_UPDATE_FR_NUMBER_ERR') as unknown as string);
+        : (getTranslation('ADD_UPDATE_FR_NUMBER_ERR') as unknown as string);
     if (toastMsg.includes('HTTPConnection')) {
       const index = toastMsg.indexOf('HTTPConnection');
       toastMsg = toastMsg.slice(0, index);
     }
     // show the invalid frs warning
     fireEvent(this, 'toast', {
-      text: toastMsg,
-      showCloseBtn: true
+      text: toastMsg
     });
   }
 
@@ -389,7 +402,7 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
   }
 
   _frsDetailsChanged(frsDetails: FrsDetails) {
-    if (typeof frsDetails === 'undefined') {
+    if (!frsDetails) {
       return;
     }
     setTimeout(() => {

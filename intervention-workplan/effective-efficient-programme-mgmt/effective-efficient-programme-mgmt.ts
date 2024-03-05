@@ -1,18 +1,16 @@
 import {customElement, html, LitElement, property} from 'lit-element';
 import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-content-panel';
-import '@unicef-polymer/etools-table/etools-table';
-import {EtoolsTableChildRow, EtoolsTableColumn, EtoolsTableColumnType} from '@unicef-polymer/etools-table/etools-table';
 import '@unicef-polymer/etools-currency-amount-input';
 import './activity-dialog';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
-import {pageIsNotCurrentlyActive} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
-import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
-import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
+import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {
   selectProgrammeManagement,
   selectProgrammeManagementActivityPermissions
@@ -28,17 +26,8 @@ import {get as getTranslation, translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
+import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
 
-const customStyles = html`
-  <style>
-    .row-actions {
-      width: 10%;
-    }
-    .right-a {
-      text-align: right;
-    }
-  </style>
-`;
 /**
  * @customElement
  */
@@ -51,34 +40,55 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
   render() {
     if (!this.data || this.data.constructor == Object) {
       return html` ${sharedStyles}
-        <etools-loading source="eepm" loading-text="Loading..." active></etools-loading>`;
+        <etools-loading source="eepm" active></etools-loading>`;
     }
     // language=HTML
     return html`
       ${sharedStyles}
       <style>
-        :host {
+        ${dataTableStylesLit} :host {
           display: block;
           margin-bottom: 24px;
+          --etools-table-col-font-size: 16px;
         }
 
         etools-table {
           padding-top: 0;
         }
         .pad-right {
-          padding-right: 6px;
+          padding-inline-end: 6px;
+          text-transform: uppercase;
         }
         info-icon-tooltip {
           --iit-margin: 8px 0 8px -15px;
         }
+        .actions {
+          width: 100px;
+        }
+        .actions paper-icon-button {
+          color: var(--dark-icon-color, #6f6f70);
+        }
+        .col-data,
+        .row-details-content {
+          font-size: 16px;
+        }
+        etools-data-table-row .actions {
+          visibility: hidden;
+          text-align: right;
+        }
+        etools-data-table-row:hover .actions {
+          visibility: visible;
+        }
+        etools-data-table-row .actions paper-icon-button {
+          height: 24px;
+          padding: 0;
+        }
+        .text-right {
+          place-content: end;
+        }
       </style>
 
-      <etools-content-panel
-        show-expand-btn
-        panel-title=${translate(translatesMap.management_budgets)}
-        comment-element="programme-management"
-        comment-description=${translate(translatesMap.management_budgets)}
-      >
+      <etools-content-panel show-expand-btn panel-title=${translate(translatesMap.management_budgets)}>
         <div slot="after-title">
           <info-icon-tooltip
             id="iit-eepm"
@@ -87,21 +97,66 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
           ></info-icon-tooltip>
         </div>
         <div slot="panel-btns">
-          <label class="paper-label font-bold pad-right">${translate('TOTAL')}</label
+          <label class="paper-label font-bold pad-right">${translate('TOTAL')}:</label
           ><label class="font-bold-12">${this.data.currency} ${this.total_amount}</label>
         </div>
 
-        <etools-table
-          .items="${this.formattedData}"
-          .columns="${this.columns}"
-          .extraCSS="${this.getTableStyle()}"
-          .showEdit=${this.canEdit}
-          .showView=${!this.canEdit}
-          @edit-item="${this.openActivityDialog}"
-          @view-item="${this.openActivityDialog}"
-          .getChildRowTemplateMethod="${this.getChildRowTemplate.bind(this)}"
-        >
-        </etools-table>
+        <etools-data-table-header id="listHeader" no-title>
+          <etools-data-table-column class="flex-7" field="title">
+            ${translate('ITEM_PD_CURRENCY')}
+          </etools-data-table-column>
+          <etools-data-table-column class="flex-c text-right" field="partner_contribution">
+            ${translate('PARTNER_CASH')}
+          </etools-data-table-column>
+          <etools-data-table-column class="flex-c text-right" field="unicef_cash">
+            ${translate('UNICEF_CASH')}
+          </etools-data-table-column>
+          <etools-data-table-column class="flex-c text-right" field="total">
+            ${getTranslation('GENERAL.TOTAL') + ' (' + this.data.currency + ')'}
+          </etools-data-table-column>
+          <etools-data-table-column class="actions"></etools-data-table-column>
+        </etools-data-table-header>
+
+        ${this.formattedData.map(
+          (item: any) => html` <div comment-element="eepm-${item.index}">
+            <etools-data-table-row>
+              <div slot="row-data" class="layout-horizontal editable-row">
+                <div class="col-data flex-7" data-col-header-label="${translate('ITEM_PD_CURRENCY')}">
+                  ${item.title}
+                </div>
+                <div class="col-data flex-c text-right" data-col-header-label="${translate('PARTNER_FULL_NAME')}">
+                  ${item.partner_contribution}
+                </div>
+                <div class="col-data flex-c text-right" data-col-header-label="${translate('PARTNER_CASH')}">
+                  ${item.unicef_cash}
+                </div>
+                <div class="col-data flex-c text-right" data-col-header-label="${translate('TOTAL')}">
+                  ${item.total}
+                </div>
+                <div class="actions">
+                  <paper-icon-button
+                    ?hidden="${!this.canEdit}"
+                    icon="create"
+                    @click="${() => this.openActivityDialog(item)}"
+                    tabindex="0"
+                  ></paper-icon-button>
+                  <paper-icon-button
+                    ?hidden="${this.canEdit}"
+                    icon="icons:visibility"
+                    @click="${() => this.openActivityDialog(item)}"
+                    tabindex="0"
+                  ></paper-icon-button>
+                </div>
+              </div>
+              <div slot="row-data-details">
+                <div class="row-details-content">
+                  <label class="paper-label">${translate('GENERAL.DESCRIPTION')}</label><br />
+                  <label>${item.description}</label>
+                </div>
+              </div>
+            </etools-data-table-row>
+          </div>`
+        )}
       </etools-content-panel>
     `;
   }
@@ -118,31 +173,6 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
   @property({type: Object})
   data!: ProgrammeManagement;
 
-  @property({type: Array})
-  columns: EtoolsTableColumn[] = [
-    {
-      label: translate('ITEM_PD_CURRENCY') as unknown as string,
-      name: 'title',
-      type: EtoolsTableColumnType.Text
-    },
-    {
-      label: translate('PARTNER_CASH') as unknown as string,
-      name: 'partner_contribution',
-      type: EtoolsTableColumnType.Number
-    },
-    {
-      label: translate('UNICEF_CASH') as unknown as string,
-      name: 'unicef_cash',
-      type: EtoolsTableColumnType.Number
-    },
-    {
-      label: '',
-      name: 'total',
-      cssClass: 'right-a',
-      type: EtoolsTableColumnType.Number
-    }
-  ];
-
   @property({type: Number})
   total_amount = '0';
 
@@ -157,12 +187,11 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
     if (!state.interventions.current) {
       return;
     }
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan)) {
+    if (EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.Workplan)) {
       return;
     }
     this.interventionId = state.interventions.current.id!;
     this.data = selectProgrammeManagement(state);
-    this.currencyDisplayForTotal();
 
     this.originalData = cloneDeep(this.data);
 
@@ -172,10 +201,6 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
     }
     this.formattedData = this.formatData(this.data);
     super.stateChanged(state);
-  }
-
-  currencyDisplayForTotal() {
-    this.columns[3].label = getTranslation('GENERAL.TOTAL') + ' (' + this.data.currency + ')';
   }
 
   formatData(data: ProgrammeManagement) {
@@ -211,33 +236,15 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
     ];
   }
 
-  getTableStyle() {
-    return html` ${sharedStyles} ${customStyles}`;
-  }
-
-  openActivityDialog(event: CustomEvent) {
+  openActivityDialog(activity: any) {
     openDialog({
       dialog: 'activity-dialog',
       dialogData: {
-        activity: {...event.detail, items: this.data.items},
+        activity: {...activity, items: cloneDeep(this.data.items)},
         interventionId: this.interventionId,
         currency: this.data.currency,
         readonly: !this.canEdit
       }
     });
-  }
-
-  getChildRowTemplate(item: any): EtoolsTableChildRow {
-    const childRow = {} as EtoolsTableChildRow;
-    childRow.showExpanded = false;
-    childRow.rowHTML = html`
-      <td colspan="7">
-        <div class="child-row-inner-container">
-          <label class="paper-label">${translate('GENERAL.DESCRIPTION')}</label><br />
-          <label>${item.description}</label>
-        </div>
-      </td>
-    `;
-    return childRow;
   }
 }

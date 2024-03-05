@@ -38,10 +38,6 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           display: block;
         }
 
-        .radioGroup {
-          width: 320px;
-        }
-
         paper-input,
         paper-textarea {
           display: inline-block;
@@ -55,13 +51,13 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         }
 
         .unknown {
-          padding-left: 24px;
+          padding-inline-start: 24px;
           padding-bottom: 16px;
           padding-top: 10px;
         }
 
         .no-left-padding {
-          padding-left: 0 !important;
+          padding-inline-start: 0 !important;
         }
 
         .dash-separator {
@@ -70,7 +66,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         }
 
         .add-locations {
-          padding-right: 0;
+          padding-inline-end: 0;
           align-items: flex-end;
         }
 
@@ -89,10 +85,16 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         .last-item {
           padding-bottom: 24px !important;
         }
+        .mr-12 {
+          margin-inline-end: 12px;
+        }
+        .mr-20 {
+          margin-inline-end: 20px;
+        }
       </style>
 
       <div class="row-h flex-c">
-        <div class="layout-vertical">
+        <div class="layout-vertical mr-20">
           <label class="paper-label">${translate('TYPE')}</label>
           <div class="radioGroup">
             <paper-radio-group
@@ -106,10 +108,10 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                 this.requestUpdate();
               }}"
             >
-              <paper-radio-button ?disabled="${this.isReadonly()}" class="no-left-padding" name="number"
+              <paper-radio-button ?disabled="${this.isReadonly()}" class="no-left-padding mr-12" name="number"
                 >${translate('QUANTITY_SCALE')}
               </paper-radio-button>
-              <paper-radio-button ?disabled="${this.isReadonly()}" name="percentage"
+              <paper-radio-button ?disabled="${this.isReadonly()}" class="no-left-padding" name="percentage"
                 >${translate('PERCENT_RATIO')}</paper-radio-button
               >
             </paper-radio-group>
@@ -126,10 +128,10 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                 this.requestUpdate();
               }}"
             >
-              <paper-radio-button ?disabled="${this.isReadonly()}" class="no-left-padding" name="percentage"
+              <paper-radio-button ?disabled="${this.isReadonly()}" class="no-left-padding mr-12" name="percentage"
                 >${translate('PERCENTAGE')}
               </paper-radio-button>
-              <paper-radio-button ?disabled="${this.isReadonly()}" name="ratio"
+              <paper-radio-button ?disabled="${this.isReadonly()}" class="no-left-padding" name="ratio"
                 >${translate('RATIO')}</paper-radio-button
               >
             </paper-radio-group>
@@ -145,7 +147,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           placeholder="&#8212;"
           error-message=${translate('ADD_TITLE_ERR')}
           auto-validate
-          ?readonly="${this.isReadonly()}"
+          ?readonly="${this.isReadonlyTitle()}"
           @value-changed="${({detail}: CustomEvent) => {
             if (detail.value === undefined) {
               return;
@@ -437,6 +439,13 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
 
   private isReadonly() {
     return this.readonly || !this.indicatorIsNew;
+  }
+
+  private isReadonlyTitle() {
+    return (
+      this.readonly ||
+      (!this.indicatorIsNew && !['draft', 'development'].includes(this.interventionStatus.toLowerCase()))
+    );
   }
 
   private baselineIsUnknownChanged(checked: boolean) {

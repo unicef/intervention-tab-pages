@@ -31,7 +31,7 @@ export const LocationWidgetStyles: CSSResult = css`
   .widget-container .map-and-list #map {
     flex: 1 30%;
     height: 300px;
-    margin-right: 25px;
+    margin-inline-end: 25px;
   }
 
   .widget-container .map-and-list .list {
@@ -84,7 +84,7 @@ export const LocationWidgetStyles: CSSResult = css`
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    margin-right: 5px;
+    margin-inline-end: 5px;
   }
 
   .site-line .deselect-btn,
@@ -114,5 +114,9 @@ export const LocationWidgetStyles: CSSResult = css`
     position: absolute;
     top: 0;
     left: 0;
+  }
+  div:focus-visible {
+    outline: none !important;
+    box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.4);
   }
 `;

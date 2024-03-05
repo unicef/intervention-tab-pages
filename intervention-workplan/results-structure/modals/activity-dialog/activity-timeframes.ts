@@ -9,11 +9,11 @@ import {
   PropertyValues
 } from 'lit-element';
 import {ActivityTime, groupByYear, serializeTimeFrameData} from '../../../../utils/timeframes.helper';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {InterventionActivityTimeframe} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import {callClickOnSpacePushListener} from '@unicef-polymer/etools-modules-common/dist/utils/common-methods';
+import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
 
 @customElement('activity-time-frames')
 export class ActivityTimeFrames extends LitElement {
@@ -26,6 +26,9 @@ export class ActivityTimeFrames extends LitElement {
           display: flex;
           flex-direction: column;
           align-items: center;
+        }
+        *[hidden] {
+          display: none !important;
         }
         .title {
           font-weight: 500;
@@ -57,23 +60,27 @@ export class ActivityTimeFrames extends LitElement {
         }
         .frame-divider {
           height: 20px;
-          border-left: 1px solid #9e9e9e;
+          border-inline-start: 1px solid #9e9e9e;
         }
         .year-divider {
           margin: 0 5px;
           height: 50px;
-          border-left: 1px solid #9e9e9e;
-        }
-        label[required] {
-          font-size: 12px;
-          color: var(--secondary-text-color);
-          @apply --required-star-style;
-          background: url('./images/required.svg') no-repeat 66% 33%/5px;
+          border-inline-start: 1px solid #9e9e9e;
         }
         label {
           text-align: center;
           width: 100%;
           max-width: inherit;
+        }
+        label[required] {
+          font-size: 12px;
+          color: var(--secondary-text-color);
+          background: url('./images/required.svg') no-repeat 99% 20%/5px;
+          width: auto !important;
+          max-width: 100%;
+          right: auto;
+          padding-inline-end: 15px;
+          background-size: 5px;
         }
         .time-frame-container {
           flex-wrap: wrap;
@@ -109,10 +116,13 @@ export class ActivityTimeFrames extends LitElement {
   @property() private _timeFrames: [string, ActivityTime[]][] = [];
   @property() selectedTimeFrames: number[] = [];
   @property() readonly: boolean | undefined = false;
+  @property({type: Boolean, attribute: 'hide-label', reflect: true}) hideLabel = false;
 
   protected render(): TemplateResult {
     return html`
-      <label class="paper-label layout-horizontal center-align" required>${translate('ACTIVITY_TIMES')}</label>
+      <label class="paper-label layout-horizontal center-align" required ?hidden="${this.hideLabel}">
+        ${translate('ACTIVITY_TIMES')}
+      </label>
       <div class="layout-horizontal center-align time-frame-container">
         ${!this._timeFrames.length ? html`${translate('ACTIVITY_TIMES_MSG')}` : html``}
         ${this._timeFrames.map(
@@ -146,6 +156,11 @@ export class ActivityTimeFrames extends LitElement {
 
   firstUpdated(changedProperties: PropertyValues): void {
     super.firstUpdated(changedProperties);
+    this.addEventListener('focus', () => {
+      if (!this.readonly) {
+        (this.shadowRoot!.querySelector('.time-frame') as HTMLElement)?.focus();
+      }
+    });
 
     this.shadowRoot!.querySelectorAll('.time-frame').forEach((el) => {
       callClickOnSpacePushListener(el);

@@ -1,13 +1,13 @@
 import {LitElement, html, property, customElement} from 'lit-element';
 import '@polymer/iron-label/iron-label';
 import '@unicef-polymer/etools-loading/etools-loading.js';
-import {logError} from '@unicef-polymer/etools-behaviors/etools-logging.js';
+import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
-import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 import CommonMixin from '@unicef-polymer/etools-modules-common/dist/mixins/common-mixin';
 
 /**
@@ -41,12 +41,12 @@ export class EtoolsRamIndicators extends CommonMixin(LitElement) {
 
         #ram-indicators-list {
           margin: 0;
-          padding-left: 24px;
+          padding-inline-start: 24px;
           list-style: circle;
         }
       </style>
 
-      <etools-loading ?active="${this.loading}">Loading...</etools-loading>
+      <etools-loading ?active="${this.loading}"></etools-loading>
 
       <iron-label>
         <span id="label">${translate('RAM_INDICATORS')}</span>
@@ -128,13 +128,12 @@ export class EtoolsRamIndicators extends CommonMixin(LitElement) {
       .catch((error: any) => {
         if (error.status === 404) {
           fireEvent(this, 'toast', {
-            text: this._translate('DUE_DATE'),
-            showCloseBtn: true
+            text: getTranslation('PMP_IS_NOT_SYNCED_WITH_PRP')
           });
         } else {
           parseRequestErrorsAndShowAsToastMsgs(error, this);
         }
-        logError(
+        EtoolsLogger.error(
           'Error occurred on RAM Indicators request for PD ID: ' +
             reqPayload.intervention_id +
             ' and CP Output ID: ' +
