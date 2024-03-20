@@ -56,7 +56,7 @@ export class CommentsDialog extends EditComments {
         }
       </style>
       <etools-dialog size="md" keep-dialog-open dialog-title="${this.dialogTitle}" @close="${this.onClose}" no-padding>
-        <div class="container">
+        <div class="container-dialog">
           ${this.comments.map(
             (comment: any, index: number) =>
               html`<comment-element

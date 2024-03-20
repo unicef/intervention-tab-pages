@@ -103,7 +103,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                       (event.currentTarget as HTMLElement)!.classList.remove('active')}"
                   >
                     <!--    Activity Data: code / name / other info / items link    -->
-                    <div class="flex-1 left-align layout-horizontal">
+                    <div class="left-align layout-horizontal">
                       <b>${activity.code}&nbsp;</b>
                       <div>
                         <div>
@@ -126,7 +126,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                     </div>
 
                     <!--    Time intervals    -->
-                    <div class="flex-1 secondary-cell center">
+                    <div class="secondary-cell center">
                       <time-intervals
                         .quarters="${this.quarters}"
                         .selectedTimeFrames="${activity.time_frames}"
@@ -135,17 +135,17 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                     </div>
 
                     <!--    CSO Cash    -->
-                    <div class="flex-1 secondary-cell right">
+                    <div class="secondary-cell right">
                       ${displayCurrencyAmount(String(activity.cso_cash || 0), '0', 2)}
                     </div>
 
                     <!--    UNICEF Cash    -->
-                    <div class="flex-1 secondary-cell right">
+                    <div class="secondary-cell right">
                       ${displayCurrencyAmount(String(activity.unicef_cash || 0), '0', 2)}
                     </div>
 
                     <!--    Total    -->
-                    <div class="flex-1 secondary-cell right">
+                    <div class="secondary-cell right">
                       <!--       TODO: use field from backend         -->
                       <b>
                         ${displayCurrencyAmount(String(this.getTotal(activity.cso_cash, activity.unicef_cash)), '0', 2)}

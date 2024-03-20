@@ -77,6 +77,25 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
           line-height: 25px;
           margin-inline-end: 6px;
         }
+        @media (max-width:768px) {
+          section {
+            padding-inline: 15px 15px;
+        }
+        .information-cells {
+          flex-direction: column-reverse;
+        }
+        .amt-data {
+          margin-inline-start: 4px;
+        }
+        .amt-data .input-label span {
+          font-size: 12px;
+          line-height: 20px;
+          margin-inline-end: 2px;
+        }
+        .amt-data .input-label {
+          font-size: 18px;
+          line-height: 24px;
+        }
       `
     ];
   }

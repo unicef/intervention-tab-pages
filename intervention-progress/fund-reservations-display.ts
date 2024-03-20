@@ -73,12 +73,20 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
         }
       </style>
 
+      <etools-media-query
+        query="(max-width: 767px)"
+        @query-matches-changed="${(e: CustomEvent) => {
+          this.lowResolutionLayout = e.detail.value;
+        }}"
+      ></etools-media-query>
+
       <div class="row-h" ?hidden="${this.frsDetails.frs.length}">
         <p>${translate('NO_FUND_RESERVATIONS')}</p>
       </div>
 
       <div class="list-container" ?hidden="${this._noFrs(this.frsDetails)}">
-        <etools-data-table-header id="listHeader" no-title ?hidden="${!this.frsDetails || !this.frsDetails.frs.length}">
+        <etools-data-table-header .lowResolutionLayout="${this.lowResolutionLayout}" id="listHeader" no-title 
+          ?hidden="${!this.frsDetails || !this.frsDetails.frs.length}">
           <etools-data-table-column class="col-2"> FR# </etools-data-table-column>
           <etools-data-table-column class="col-2 right-align">
             ${translate('FR_POSTING_DATE')}
@@ -144,7 +152,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
                 >
               </div>
               <div slot="row-data-details">
-                <div class="flex-c" ?hidden="${isEmpty(fr.line_item_details)}">
+                <div class="row" ?hidden="${isEmpty(fr.line_item_details)}">
                   <div simple-header class="layout-horizontal">
                     <span class="col-2">${translate('FR_LINE_ITEM')}</span>
                     <span class="col-2">${translate('DONOR')}</span>
@@ -166,7 +174,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
                     `
                   )}
                 </div>
-                <div class="flex-c" ?hidden="${!isEmpty(fr.line_item_details)}">
+                <div class="row" ?hidden="${!isEmpty(fr.line_item_details)}">
                   ${translate('NO_DETAILS_TO_DISPLAY')}
                 </div>
               </div>
@@ -289,6 +297,9 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
 
   @property({type: String})
   _frsTotalAmountWarning!: string;
+
+  @property({type: Boolean})
+  lowResolutionLayout = false;
 
   _noFrs(frsDetails: FrsDetails) {
     return !frsDetails || !frsDetails.frs || !frsDetails.frs.length;

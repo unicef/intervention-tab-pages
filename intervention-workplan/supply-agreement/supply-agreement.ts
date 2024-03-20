@@ -83,6 +83,13 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           display: flex;
           align-items: center;
         }
+        .afterTitle {
+          padding-block-start: 4px;
+        }
+        .h-padding {
+          padding-inline-start: 24px;
+          padding-inline-end: 24px;
+        }
         etools-icon-button[name='file-upload'] {
           color: var(--primary-text-color);
         }
@@ -98,7 +105,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       >
 
         <div slot="after-title">
-            <span>
+            <span class="afterTitle">
             <label class="label font-bold headerLabel">${translate('TOTAL_SUPPLY_BUDGET')} </label>
             <label class="font-bold-12"
               >${this.intervention.planned_budget.currency}
@@ -133,7 +140,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           </etools-icon-button>
         </div>
         <div class="row" ?hidden="${!this.permissions.edit.supply_items || this.supply_items?.length}">
-          ${this.getUploadHelpElement()}
+          <div class="col-12">${this.getUploadHelpElement()}</div>
         </div>
 
         <etools-table
@@ -148,8 +155,10 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           .showEdit=${this.permissions.edit.supply_items}
           .showDelete=${this.permissions.edit.supply_items}
         ></etools-table>
-        <div class="row-h" ?hidden="${this.supply_items?.length}">
-          <p>${translate('NO_SUPPLY_CONTRIBUTION')}</p>
+        <div class="row" ?hidden="${this.supply_items?.length}">
+          <div class="col-12">
+            <p class="h-padding">${translate('NO_SUPPLY_CONTRIBUTION')}</p>
+          </div>
         </div>
       </etools-content-panel>
 
@@ -273,6 +282,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   getUploadHelpElement() {
     const link = 'https://supply.unicef.org/all-materials.html';
     const paragraph = document.createElement('p');
+    paragraph.classList.add('h-padding');
     paragraph.innerHTML = getTranslation('UPLOAD_SUPPLY_HELPER').replace(
       '{0}',
       `<a target='_blank' href=${link}>${link}</a>`

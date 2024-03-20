@@ -56,8 +56,9 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
           --iit-icon-size: 18px;
           --iit-margin: 0 0 4px 4px;
         }
-        .row-padding-v {
-          position: relative;
+        .padding-v {
+          padding-block-start: 2px;
+          padding-block-end: 2px;
         }
       </style>
 
@@ -216,7 +217,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
           </etools-textarea>
         </div>
 
-        <div class="col-12">
+        <div class="col-12 padding-v">
           <etools-checkbox
             ?checked="${this.data.has_data_processing_agreement}"
             ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.has_data_processing_agreement)}"
@@ -229,7 +230,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
           </etools-checkbox>
         </div>
 
-        <div class="col-12">
+        <div class="col-12 padding-v">
           <etools-checkbox
             ?checked="${this.data.has_activities_involving_children}"
             ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.has_activities_involving_children)}"
@@ -242,7 +243,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
           </etools-checkbox>
         </div>
 
-        <div class="col-12">
+        <div class="col-12 padding-v">
           <etools-checkbox
             ?checked="${this.data.has_special_conditions_for_construction}"
             ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.has_special_conditions_for_construction)}"

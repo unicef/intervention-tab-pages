@@ -112,6 +112,9 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         etools-content-panel::part(ecp-header-title-panel) {
           justify-content: space-between;
         }
+        etools-content-panel::part(ecp-header) {
+          --ecp-header-height: auto;
+        }
       </style>
       <etools-content-panel
         show-expand-btn
