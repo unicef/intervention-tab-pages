@@ -49,7 +49,9 @@ export class InterventionReviewTab extends connectStore(LitElement) {
           </reason-display>`
         : ''}
 
-      <general-review-information .reviews="${this.reviews}" .currentReview="${this.currentReview}" @review-changed="${this.reviewChanged}"></general-review-information>
+      <general-review-information .reviews="${this.reviews}" .currentReview="${this.currentReview}" 
+        @review-changed="${this.reviewChanged}" .interventionId="${this.interventionId}">
+      </general-review-information>
 
       ${this.currentReview && this.currentReview.review_type != NO_REVIEW
         ? html`<review-members

@@ -12,6 +12,7 @@ import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-pa
 import { SlSelectEvent } from '@shoelace-style/shoelace/dist/events/sl-select';
 import '@shoelace-style/shoelace/dist/components/menu/menu.js';
 import { fireEvent } from '@unicef-polymer/etools-utils/dist/fire-event.util';
+import { ROOT_PATH } from '@unicef-polymer/etools-modules-common/dist/config/config';
 
 @customElement('general-review-information')
 export class GeneralReviewInformation extends LitElement {
@@ -83,12 +84,21 @@ export class GeneralReviewInformation extends LitElement {
           --sl-color-primary-50: transparent;
           --sl-color-primary-300: rgb(92, 92, 92);
           --sl-color-primary-700: rgb(92, 92, 92);
-        }       
+        }
+        #cloud-download {
+          margin-inline-end: 5px;
+        }
+        a {
+          font-weight: bold;
+          margin-inline-start: 8px;
+          margin-inline-end: 8px;
+        }
       `
     ];
   }
   @property() currentReview?: InterventionReview;
   @property() reviews: InterventionReview[] = [];
+  @property() interventionId!: number;
 
   @property({type: Object})
   reviewTypes = new Map([
@@ -139,9 +149,11 @@ export class GeneralReviewInformation extends LitElement {
                   )}
                 </sl-menu>
               </sl-dropdown>
-              <etools-button id="reviewDownload" variant="text" class="download-button primary-btn" title="Download">
-                <etools-icon name="cloud-download" class="dw-icon"></etools-icon> Download
-              </etools-button>
+              <a target="_blank" href="${this.getReviewDownloadLink(this.interventionId, this.currentReview!.id)}">
+                <div class="layout-horizontal align-items-center">
+                  <etools-icon id="cloud-download" name="cloud-download" class="dw-icon"></etools-icon>${translate('DOWNLOAD')}                
+                </div>
+              </a>
             </div>
         </div>
         <div class="row-padding-v">
@@ -164,5 +176,9 @@ export class GeneralReviewInformation extends LitElement {
         </div>
       </etools-content-panel>
     `;
+  }
+
+  getReviewDownloadLink(interventionId: number, reviewId: number) {
+    return `${ROOT_PATH}interventions/${interventionId}/reviews/${reviewId}/officers-reviews/${reviewId}/pdf/`;
   }
 }
