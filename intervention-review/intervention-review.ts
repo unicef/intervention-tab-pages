@@ -12,12 +12,14 @@ import {NO_REVIEW, PRC_REVIEW} from '../common/components/intervention/review.co
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {translate} from 'lit-translate';
+import { cloneDeep } from 'lodash-es';
 
 @customElement('intervention-review')
 export class InterventionReviewTab extends connectStore(LitElement) {
   @property() canEditReview = false;
   @property() canEditPRCReviews = false;
-  @property() review: InterventionReview | null = null;
+  @property() currentReview!: InterventionReview;
+  @property() reviews: InterventionReview[] = [];
   @property() unicefUsers: User[] = [];
   @property() cfeiNumber = '';
   @property() interventionStatus = '';
@@ -33,9 +35,9 @@ export class InterventionReviewTab extends connectStore(LitElement) {
   render() {
     // language=HTML
     return html`
-      ${this.review?.sent_back_comment && ['draft', 'development'].includes(this.interventionStatus)
+      ${this.currentReview?.sent_back_comment && ['draft', 'development'].includes(this.interventionStatus)
         ? html`<reason-display .title="${translate('SECRETARY_COMMENT')}">
-            <div class="text">${this.review?.sent_back_comment}</div>
+            <div class="text">${this.currentReview?.sent_back_comment}</div>
           </reason-display>`
         : ''}
       ${this.cfeiNumber
@@ -47,23 +49,23 @@ export class InterventionReviewTab extends connectStore(LitElement) {
           </reason-display>`
         : ''}
 
-      <general-review-information .review="${this.review}"></general-review-information>
+      <general-review-information .reviews="${this.reviews}" .currentReview="${this.currentReview}" @review-changed="${this.reviewChanged}"></general-review-information>
 
-      ${this.review && this.review.review_type != NO_REVIEW
+      ${this.currentReview && this.currentReview.review_type != NO_REVIEW
         ? html`<review-members
-              .review="${this.review}"
+              .review="${this.currentReview}"
               .interventionId="${this.interventionId}"
               .usersList="${this.unicefUsers}"
               .canEditAtLeastOneField="${this.canEditReview}"
             ></review-members>
 
             <reviews-list
-              .review="${this.review}"
+              .review="${this.currentReview}"
               .readonly="${!this.canEditPRCReviews}"
-              ?hidden="${this.review?.review_type !== PRC_REVIEW}"
+              ?hidden="${this.currentReview?.review_type !== PRC_REVIEW}"
             ></reviews-list>
 
-            <overall-approval .review="${this.review}" .readonly="${!this.canEditReview}"></overall-approval>`
+            <overall-approval .review="${this.currentReview}" .readonly="${!this.canEditReview}"></overall-approval>`
         : null}
     `;
   }
@@ -84,13 +86,23 @@ export class InterventionReviewTab extends connectStore(LitElement) {
     ) {
       return;
     }
-    this.review = state.interventions.current.reviews[0] || null;
+    this.reviews = state.interventions.current.reviews;
+    if (!this.currentReview) {
+      this.currentReview = state.interventions.current.reviews[0] || null;
+    }
     this.unicefUsers = state.commonData?.unicefUsersData || [];
     this.canEditReview = state.interventions.current.permissions!.edit.reviews || false;
     this.canEditPRCReviews = state.interventions.current.permissions!.edit.prc_reviews || false;
     this.interventionId = state.interventions.current.id;
     this.interventionStatus = state.interventions.current.status;
     this.cfeiNumber = state.interventions.current.cfei_number || '';
+  }
+
+  reviewChanged(ev: CustomEvent) {
+    const selectedReview = this.reviews.find(x => String(x.id) === String(ev.detail.id));
+    if (selectedReview) {
+      this.currentReview = cloneDeep(selectedReview);
+    }
   }
 
   static get styles(): CSSResult {
