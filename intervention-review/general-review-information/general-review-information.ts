@@ -128,7 +128,7 @@ export class GeneralReviewInformation extends LitElement {
                   fireEvent(this, 'review-changed', {id: e.detail.item.value});
                 }}
               >
-                <etools-button variant="default" slot="trigger" caret>Review History</etools-button>
+                <etools-button variant="default" slot="trigger" caret>${translate('REVIEW_HISTORY')}</etools-button>
                 <sl-menu>
                   ${this.reviews.map(
                     (item) =>

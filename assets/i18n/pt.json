@@ -552,6 +552,7 @@
   },
   "REVIEW_TAB": "Revisar",
   "REVIEW_TYPE": "Tipo de revisão",
+  "REVIEW_HISTORY": "Rever histórico",
   "RISKS": "Riscos",
   "RISKS_DESCRIPTION": "Riscos e medidas de mitigação propostas",
   "RISKS_INFO": "As intervenções do programa podem encontrar uma variedade de riscos. Este campo descreve os principais riscos identificados e as medidas de mitigação propostas. Esses riscos devem informar o projeto e o monitoramento do programa",
