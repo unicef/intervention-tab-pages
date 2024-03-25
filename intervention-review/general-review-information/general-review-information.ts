@@ -1,6 +1,6 @@
 import {LitElement, TemplateResult, html, CSSResultArray, css} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
-import {InterventionReview} from '@unicef-polymer/etools-types';
+import {EtoolsEndpoint, InterventionReview} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
@@ -9,10 +9,13 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import {PRC_REVIEW, NON_PRC_REVIEW, NO_REVIEW} from '../../common/components/intervention/review.const';
 import {get as getTranslation} from 'lit-translate';
 import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
-import { SlSelectEvent } from '@shoelace-style/shoelace/dist/events/sl-select';
+import {SlSelectEvent} from '@shoelace-style/shoelace/dist/events/sl-select';
 import '@shoelace-style/shoelace/dist/components/menu/menu.js';
-import { fireEvent } from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import { ROOT_PATH } from '@unicef-polymer/etools-modules-common/dist/config/config';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
+import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
+import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
+import {RequestEndpoint} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
+import {interventionEndpoints} from '../../utils/intervention-endpoints';
 
 @customElement('general-review-information')
 export class GeneralReviewInformation extends LitElement {
@@ -88,10 +91,13 @@ export class GeneralReviewInformation extends LitElement {
         #cloud-download {
           margin-inline-end: 5px;
         }
-        a {
+        .download-link {
           font-weight: bold;
           margin-inline-start: 8px;
           margin-inline-end: 8px;
+        }
+        #btnReviewHistory::part(label) {
+          text-transform: none;
         }
       `
     ];
@@ -117,44 +123,52 @@ export class GeneralReviewInformation extends LitElement {
       ${sharedStyles}
       <etools-content-panel class="content-section" panel-title="${translate('INTERVENTION_REVIEW')}">
         <div slot="panel-btns" class="layout-horizontal">
-          <div class="layout-horizontal align-items-center">
-              <sl-dropdown
-                id="history-button"
-                hoist
-                close-on-activate
-                horizontal-align
-                @sl-select=${(e: SlSelectEvent) => {
-                  console.log('selected...', e.detail.item.value);
-                  fireEvent(this, 'review-changed', {id: e.detail.item.value});
-                }}
+          <div class="layout-horizontal align-items-center" ?hidden="${!(this.reviews || []).length}">
+            <sl-dropdown
+              id="history-button"
+              hoist
+              close-on-activate
+              horizontal-align
+              @sl-select=${(e: SlSelectEvent) => {
+                fireEvent(this, 'review-changed', {id: e.detail.item.value});
+              }}
+            >
+              <etools-button id="btnReviewHistory" variant="default" slot="trigger" caret
+                >${translate('REVIEW_HISTORY')}</etools-button
               >
-                <etools-button variant="default" slot="trigger" caret>${translate('REVIEW_HISTORY')}</etools-button>
-                <sl-menu>
-                  ${this.reviews.map(
-                    (item) =>
-                      html` <sl-menu-item
-                        @click=${(e: Event) => {
-                          // prevent selecting checked item
-                          if ((e.target as any).checked) {
-                            e.preventDefault();
-                            e.stopImmediatePropagation();
-                          }
-                        }}
-                        .checked="${this.currentReview?.id === item.id}"
-                        value="${item.id}"
-                        type="checkbox"
-                      >
-                        ${item.review_date} ${item.review_type}
-                      </sl-menu-item>`
-                  )}
-                </sl-menu>
-              </sl-dropdown>
-              <a target="_blank" href="${this.getReviewDownloadLink(this.interventionId, this.currentReview!.id)}">
-                <div class="layout-horizontal align-items-center">
-                  <etools-icon id="cloud-download" name="cloud-download" class="dw-icon"></etools-icon>${translate('DOWNLOAD')}                
-                </div>
-              </a>
-            </div>
+              <sl-menu>
+                ${this.reviews.map(
+                  (item) =>
+                    html` <sl-menu-item
+                      @click=${(e: Event) => {
+                        // prevent selecting checked item
+                        if ((e.target as any).checked) {
+                          e.preventDefault();
+                          e.stopImmediatePropagation();
+                        }
+                      }}
+                      .checked="${this.currentReview?.id === item.id}"
+                      value="${item.id}"
+                      type="checkbox"
+                    >
+                      ${item.review_date} ${item.review_type}
+                    </sl-menu-item>`
+                )}
+              </sl-menu>
+            </sl-dropdown>
+            <a
+              target="_blank"
+              download
+              class="download-link"
+              href="${this.getReviewDownloadLink(this.interventionId, this.currentReview?.id)}"
+            >
+              <div class="layout-horizontal align-items-center">
+                <etools-icon id="cloud-download" name="cloud-download" class="dw-icon"></etools-icon>${translate(
+                  'DOWNLOAD'
+                )}
+              </div>
+            </a>
+          </div>
         </div>
         <div class="row-padding-v">
           <div ?hidden="${this.currentReview}">${translate('EMPTY_REVIEW')}</div>
@@ -178,7 +192,13 @@ export class GeneralReviewInformation extends LitElement {
     `;
   }
 
-  getReviewDownloadLink(interventionId: number, reviewId: number) {
-    return `${ROOT_PATH}interventions/${interventionId}/reviews/${reviewId}/officers-reviews/${reviewId}/pdf/`;
+  getReviewDownloadLink(interventionId?: number, reviewId?: number) {
+    if (!interventionId || !reviewId) {
+      return '';
+    }
+    return getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.exportReviewPdf, {
+      interventionId: interventionId,
+      reviewId: reviewId
+    }).url;
   }
 }

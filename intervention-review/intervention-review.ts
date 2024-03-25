@@ -12,13 +12,13 @@ import {NO_REVIEW, PRC_REVIEW} from '../common/components/intervention/review.co
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {translate} from 'lit-translate';
-import { cloneDeep } from 'lodash-es';
+import {cloneDeep} from 'lodash-es';
 
 @customElement('intervention-review')
 export class InterventionReviewTab extends connectStore(LitElement) {
   @property() canEditReview = false;
   @property() canEditPRCReviews = false;
-  @property() currentReview!: InterventionReview;
+  @property() currentReview: InterventionReview | null = null;
   @property() reviews: InterventionReview[] = [];
   @property() unicefUsers: User[] = [];
   @property() cfeiNumber = '';
@@ -49,8 +49,12 @@ export class InterventionReviewTab extends connectStore(LitElement) {
           </reason-display>`
         : ''}
 
-      <general-review-information .reviews="${this.reviews}" .currentReview="${this.currentReview}" 
-        @review-changed="${this.reviewChanged}" .interventionId="${this.interventionId}">
+      <general-review-information
+        .reviews="${this.reviews}"
+        .currentReview="${this.currentReview}"
+        @review-changed="${this.reviewChanged}"
+        .interventionId="${this.interventionId}"
+      >
       </general-review-information>
 
       ${this.currentReview && this.currentReview.review_type != NO_REVIEW
@@ -88,9 +92,13 @@ export class InterventionReviewTab extends connectStore(LitElement) {
     ) {
       return;
     }
+
     this.reviews = state.interventions.current.reviews;
-    if (!this.currentReview) {
-      this.currentReview = state.interventions.current.reviews[0] || null;
+    if (this.currentReview?.id) {
+      this.currentReview = state.interventions.current.reviews.find((x) => x.id === this.currentReview!.id) || null;
+    }
+    if (!this.currentReview && this.reviews?.length) {
+      this.currentReview = state.interventions.current.reviews[0];
     }
     this.unicefUsers = state.commonData?.unicefUsersData || [];
     this.canEditReview = state.interventions.current.permissions!.edit.reviews || false;
@@ -101,7 +109,7 @@ export class InterventionReviewTab extends connectStore(LitElement) {
   }
 
   reviewChanged(ev: CustomEvent) {
-    const selectedReview = this.reviews.find(x => String(x.id) === String(ev.detail.id));
+    const selectedReview = this.reviews.find((x) => String(x.id) === String(ev.detail.id));
     if (selectedReview) {
       this.currentReview = cloneDeep(selectedReview);
     }
