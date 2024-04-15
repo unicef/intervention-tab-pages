@@ -12,7 +12,6 @@ import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-pa
 import {SlSelectEvent} from '@shoelace-style/shoelace/dist/events/sl-select';
 import '@shoelace-style/shoelace/dist/components/menu/menu.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {RequestEndpoint} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';

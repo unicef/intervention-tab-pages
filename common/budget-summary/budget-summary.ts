@@ -145,11 +145,8 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
 
         <div class="data-column">
           <div class="icon-wrapper">
-            <label class="label">${translate('PRGM_EFFECTIVENESS')}</label>          
-            <info-icon-tooltip
-              .tooltipText="${translate('PRGM_EFFECTIVENESS_TOOLTIP')}"
-            >
-            </info-icon-tooltip>
+            <label class="label">${translate('PRGM_EFFECTIVENESS')}</label>
+            <info-icon-tooltip .tooltipText="${translate('PRGM_EFFECTIVENESS_TOOLTIP')}"></info-icon-tooltip>
           </div>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.programme_effectiveness)}">
             ${this.roundPercentage(this.budgetSummary.programme_effectiveness)}
