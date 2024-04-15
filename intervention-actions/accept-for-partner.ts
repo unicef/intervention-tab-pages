@@ -47,7 +47,7 @@ export class AcceptForPartner extends LitElement {
 
   dateHasChanged(detail: {date: Date}) {
     const newValue = detail.date ? formatDate(detail.date, 'YYYY-MM-DD') : null;
-    this.submission_date = newValue;
+    this.submission_date = newValue || '';
   }
 
   onClose(): void {

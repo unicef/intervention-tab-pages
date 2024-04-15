@@ -310,10 +310,6 @@ export class EditHruDialog extends connectStore(LitElement) {
     return validateRequiredFields(this);
   }
 
-  validate() {
-    return validateRequiredFields(this);
-  }
-
   changed(value: string) {
     this.selectedDate = dayjs(new Date(value)).format('YYYY-MM-DD');
   }
