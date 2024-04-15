@@ -77,6 +77,10 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
           line-height: 25px;
           margin-inline-end: 6px;
         }
+        .icon-wrapper {
+          flex-wrap: nowrap;
+          padding-top: 0 !important;
+        }
       `
     ];
   }
@@ -140,7 +144,13 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
         </div>
 
         <div class="data-column">
-          <label class="label">${translate('PRGM_EFFECTIVENESS')}</label>
+          <div class="icon-wrapper">
+            <label class="label">${translate('PRGM_EFFECTIVENESS')}</label>          
+            <info-icon-tooltip
+              .tooltipText="${translate('PRGM_EFFECTIVENESS_TOOLTIP')}"
+            >
+            </info-icon-tooltip>
+          </div>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.programme_effectiveness)}">
             ${this.roundPercentage(this.budgetSummary.programme_effectiveness)}
           </div>

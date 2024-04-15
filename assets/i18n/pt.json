@@ -452,6 +452,7 @@
   "PRC_SUBMISSION_DATE": "Data de Submissão ao PRC",
   "PREVIOUS_VALUE": "Valor anterior",
   "PRGM_EFFECTIVENESS": "% Efetividade do Programa",
+  "PRGM_EFFECTIVENESS_TOOLTIP": "E&E% calculado com base no seguinte: <br>% da contribuição do UNICEF para E&E = contribuição do UNICEF para “gestão eficaz e eficiente do programa” ÷ Contribuição total em dinheiro do UNICEF para PD (custo prog. UNICEF + custo E&E do UNICEF + custo de fortalecimento da capacidade do UNICEF)",
   "PRICE_UNIT": "Valor/Unidade",
   "PROGRAMATIC_VISITS": "Visitas Programáticas",
   "PROGRAMATIC_VISITS_DESCRIPTION": "Visitas programáticas planejadas",
