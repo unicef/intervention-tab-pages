@@ -279,6 +279,10 @@ export class EditHruDialog extends connectStore(LitElement) {
       return;
     }
 
+    if (!this.validate()) {
+      return;
+    }
+
     this.updateStartDates(this.repStartDate);
     const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.reportingRequirements, {
       intervId: this.interventionId,
@@ -300,6 +304,10 @@ export class EditHruDialog extends connectStore(LitElement) {
         parseRequestErrorsAndShowAsToastMsgs(error, this);
         dialog.stopSpinner();
       });
+  }
+
+  validate() {
+    return validateRequiredFields(this);
   }
 
   validate() {

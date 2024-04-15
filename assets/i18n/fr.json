@@ -56,8 +56,8 @@
   "AMENDMENTS_DESCRIPTION": "Modifications d'intervention",
   "AMENDMENT_MERGE": "Fusion d'amendements",
   "AMENDMENT_MERGE_PROMPT": "Êtes-vous sûr de vouloir fusionner l’amendement؟",
-  "AMENDMENT_MODE_TEXT": "Ce DP est en cours d’amendement. Voir ",
-  "AMENDMENT_MERGE_MESSAGE": "Isto pode demorar algum tempo. Por favor, seja paciente",
+  "AMENDMENT_MERGE_MESSAGE": "Cela peut prendre un certain temps. Nous vous demandons d'être patient",
+  "AMENDMENT_MODE_TEXT": "Ce DP est en cours d’amendement. Voir ",  
   "AMENDMENT_TYPES": "Types de modifications",
   "AMENDMENT_TYPES_ITEMS": {
     "TYPE_1:_ADMINISTRATIVE_ERROR_(CORRECTION)": "Type 1 : erreur administrative (correction)",
