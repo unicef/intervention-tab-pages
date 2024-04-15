@@ -1,10 +1,12 @@
-import {LitElement, TemplateResult, html, css, CSSResultArray, property, customElement} from 'lit-element';
+import {LitElement, TemplateResult, html, css, CSSResultArray} from 'lit';
+import {property, customElement} from 'lit/decorators.js';
 import {InterventionQuarter} from '@unicef-polymer/etools-types';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import './time-intervals-dialog';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {translate} from 'lit-translate';
 import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
+import '@shoelace-style/shoelace/dist/components/tooltip/tooltip.js';
 
 @customElement('time-intervals')
 export class TimeIntervals extends LitElement {
@@ -21,40 +23,26 @@ export class TimeIntervals extends LitElement {
             :host([without-popup]) {
               cursor: text;
             }
-            paper-tooltip[theme='light'] {
-              --paper-tooltip-background: var(--primary-background-color, #ffffff);
-              --paper-tooltip-opacity: 1;
-              --paper-tooltip-text-color: var(--primary-text-color, rgba(0, 0, 0, 0.87));
-
-              --paper-tooltip: {
-                text-align: center;
-                line-height: 1.4;
-                -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-                -moz-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-                border: 1px solid rgba(0, 0, 0, 0.15);
-                font-size: 12px;
-                white-space: nowrap;
-              }
-            }
           </style>
           ${this.quarters.map(
             (quarter: InterventionQuarter) =>
               html`
-                <div id="quarter_${quarter.id}" class="quarter ${this.isSelected(quarter) ? 'selected' : ''}">
-                  ${quarter.name}
-                </div>
-                <paper-tooltip for="quarter_${quarter.id}" position="top" theme="light" animation-delay="0" offset="4">
-                  <strong>${quarter.name}:</strong>
-                  ${formatDate(quarter.start, 'DD MMM')} - ${formatDate(quarter.end, 'DD MMM')}
-                  ${formatDate(quarter.start, 'YYYY')}
-                </paper-tooltip>
+                <sl-tooltip>
+                  <div slot="content">
+                    <strong>${quarter.name}:</strong>
+                    ${formatDate(quarter.start, 'DD MMM')} - ${formatDate(quarter.end, 'DD MMM')}
+                    ${formatDate(quarter.start, 'YYYY')}
+                  </div>
+                  <div id="quarter_${quarter.id}" class="quarter ${this.isSelected(quarter) ? 'selected' : ''}">
+                    ${quarter.name}
+                  </div>
+                </sl-tooltip>
               `
           )}
           <div ?hidden="${!this.invalid}" class="invalid">${translate('PLS_SELECT_TIME_PERIODS')}</div>`
       : html`
           <etools-info-tooltip class="" icon-first custom-icon>
-            <iron-icon icon="info" slot="custom-icon"></iron-icon>
+            <etools-icon name="info" slot="custom-icon"></etools-icon>
             <div slot="message">${translate('ACTIVITY_TIMES_MSG')}</div>
           </etools-info-tooltip>
         `;
@@ -113,7 +101,7 @@ export class TimeIntervals extends LitElement {
           border-radius: 4px;
           background-color: #a3a3a3;
           font-family: Roboto;
-          font-size: 12px;
+          font-size: var(--etools-font-size-12, 12px);
           font-weight: 500;
           color: #ffffff;
           box-sizing: border-box;
@@ -124,9 +112,9 @@ export class TimeIntervals extends LitElement {
         .invalid {
           color: var(--error-color);
           padding: 4px 0;
-          font-size: 12px;
+          font-size: var(--etools-font-size-12, 12px);
         }
-        iron-icon {
+        etools-icon {
           color: var(--primary-color);
         }
       `

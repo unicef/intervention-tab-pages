@@ -1,9 +1,9 @@
-import {LitElement, html, property, customElement} from 'lit-element';
+import {LitElement, html} from 'lit';
+import {property, customElement} from 'lit/decorators.js';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
 import CONSTANTS from '../../../common/constants';
 import GenerateQuarterlyReportingRequirementsMixin from '../mixins/generate-quarterly-reporting-requirements-mixin';
 
-import '@polymer/paper-button/paper-button.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 
 import './edit-qpr-dialog';
@@ -11,12 +11,13 @@ import './qpr-list';
 import {translate, get as getTranslation} from 'lit-translate';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import cloneDeep from 'lodash-es/cloneDeep';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 
 /**
- * @polymer
+ * @LitElement
  * @customElement
  * @mixinFunction
  * @appliesMixin ReportingRequirementsCommonMixin
@@ -28,7 +29,7 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
   ReportingRequirementsCommonMixin(LitElement)
 ) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [gridLayoutStylesLit];
   }
   render() {
     return html`
@@ -46,9 +47,13 @@ export class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRe
       <div ?hidden="${!this._empty(this.reportingRequirements)}">
         <div class="row-h">${translate('NO_QUARTERLY_REPORTING_REQUIREMENTS')}</div>
         <div class="row-h" ?hidden="${!this.editMode}">
-          <paper-button class="secondary-btn" @click="${this.openQuarterlyRepRequirementsDialog}">
+          <etools-button
+            variant="text"
+            class="no-marg no-pad font-14"
+            @click="${this.openQuarterlyRepRequirementsDialog}"
+          >
             ${translate('ADD_REQUIREMENTS')}
-          </paper-button>
+          </etools-button>
         </div>
       </div>
     `;

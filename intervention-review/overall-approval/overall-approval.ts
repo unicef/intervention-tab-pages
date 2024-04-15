@@ -1,6 +1,7 @@
-import {customElement, LitElement, html, CSSResultArray, css, TemplateResult, property} from 'lit-element';
+import {LitElement, html, CSSResultArray, css, TemplateResult} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import '@unicef-polymer/etools-data-table/etools-data-table';
+import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {translate} from 'lit-translate';
 import {InterventionReview} from '@unicef-polymer/etools-types';
@@ -9,6 +10,7 @@ import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import '../../common/components/intervention/review-checklist-popup';
 import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 @customElement('overall-approval')
 export class OverallApproval extends LitElement {
@@ -25,17 +27,15 @@ export class OverallApproval extends LitElement {
         .no-approval {
           padding: 16px 24px;
         }
-        paper-icon-button {
-          margin-inline-end: 16px;
-        }
+
         .label {
-          font-size: 12px;
+          font-size: var(--etools-font-size-12, 12px);
           line-height: 16px;
           color: var(--secondary-text-color);
         }
         .answer,
         .value {
-          font-size: 16px;
+          font-size: var(--etools-font-size-16, 16px);
           line-height: 24px;
           color: var(--primary-text-color);
         }
@@ -64,7 +64,7 @@ export class OverallApproval extends LitElement {
       ${sharedStyles}
       <etools-content-panel class="content-section" panel-title=${translate('OVERALL_REVIEW')}>
         <div slot="panel-btns" ?hidden="${this.readonly}">
-          <paper-icon-button icon="icons:create" @click="${() => this.openReviewPopup()}"></paper-icon-button>
+          <etools-icon-button name="create" @click="${() => this.openReviewPopup()}"></etools-icon-button>
         </div>
         <etools-data-table-row class="overall-row" no-collapse details-opened>
           <div slot="row-data">
@@ -79,7 +79,7 @@ export class OverallApproval extends LitElement {
                 <div class="label">${translate('APPROVED_BY_PRC')}</div>
                 <div class="value">
                   ${typeof this.review.overall_approval === 'boolean'
-                    ? html` <iron-icon icon="${this.review.overall_approval ? 'check' : 'close'}"></iron-icon>`
+                    ? html` <etools-icon name="${this.review.overall_approval ? 'check' : 'close'}"></etools-icon>`
                     : '-'}
                 </div>
               </div>
@@ -95,7 +95,7 @@ export class OverallApproval extends LitElement {
             <div class="row-padding">
               ${Object.entries(REVIEW_QUESTIONS).map(
                 ([field]: [string, string], index: number) => html`
-                  <label class="paper-label">Q${index + 1}: ${translateValue(field, 'REVIEW_QUESTIONS')}</label>
+                  <label class="label">Q${index + 1}: ${translateValue(field, 'REVIEW_QUESTIONS')}</label>
                   <div class="answer">
                     ${translateValue(
                       REVIEW_ANSVERS.get(String(this.review[field as keyof InterventionReview])) || '-',

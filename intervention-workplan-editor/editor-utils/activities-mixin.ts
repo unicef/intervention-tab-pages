@@ -1,6 +1,7 @@
-// @ts-ignore
-import {Constructor, html, LitElement, property} from 'lit-element';
-import {ifDefined} from 'lit-html/directives/if-defined.js';
+import {Constructor} from '@unicef-polymer/etools-types';
+import {html, LitElement} from 'lit';
+import {property} from 'lit/decorators.js';
+import {ifDefined} from 'lit/directives/if-defined.js';
 import {EtoolsEndpoint, InterventionQuarter} from '@unicef-polymer/etools-types';
 import {Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
 import '../time-intervals/time-intervals';
@@ -8,13 +9,13 @@ import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {ActivityItemsMixin} from './activity-item-mixin';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {repeat} from 'lit-html/directives/repeat';
+import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
+import {repeat} from 'lit/directives/repeat.js';
 import {
   ExpectedResultExtended,
   InterventionActivityExtended,
@@ -29,32 +30,28 @@ import {
   _canDeactivate,
   _canDelete
 } from '../../common/mixins/results-structure-common';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T) {
-  return class ActivitiesClass extends ActivityItemsMixin(TruncateMixin(baseClass)) {
-    // @ts-ignore
+  class ActivitiesClass extends ActivityItemsMixin(TruncateMixin(baseClass)) {
     @property({type: Array})
     originalResultStructureDetails!: ExpectedResultExtended[];
 
-    // @ts-ignore
     @property({type: Array})
     resultStructureDetails!: ExpectedResultExtended[];
 
-    // @ts-ignore
     @property({type: Object})
     intervention!: Intervention;
 
-    // @ts-ignore
     @property({type: Object})
     permissions!: {
       edit: {result_links?: boolean};
       required: {result_links?: boolean};
     };
 
-    // @ts-ignore
     @property({type: Boolean})
     autoValidateActivityName = false;
-    // @ts-ignore
+
     @property({type: Boolean})
     oneEntityInEditMode!: boolean;
 
@@ -62,6 +59,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
     refreshResultStructure = false;
     quarters: InterventionQuarter[] = [];
     commentMode: any;
+    localName: any;
 
     renderActivities(pdOutput: ResultLinkLowerResultExtended, resultIndex: number, pdOutputIndex: number) {
       if (!pdOutput || !pdOutput.activities) {
@@ -93,20 +91,20 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
               </tr>
               <tr class="text action-btns" type="activity">
                 <td class="index-column">
-                  <paper-input
+                  <etools-input
                     title="${activity.code}"
                     no-label-float
                     readonly
                     tabindex="-1"
                     .value="${activity.code}"
-                  ></paper-input>
+                  ></etools-input>
                 </td>
                 <td
                   colspan="3"
                   tabindex="${ifDefined(this.commentMode ? undefined : 0)}"
                   class="no-top-padding height-for-action-btns"
                 >
-                  <paper-textarea
+                  <etools-textarea
                     no-label-float
                     input
                     class="name bold"
@@ -126,12 +124,12 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     }}"
                     @focus="${() => setTimeout(() => (this.autoValidateActivityName = true))}"
                     @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'name', activity)}"
-                  ></paper-textarea>
+                  ></etools-textarea>
                   <div class="truncate-multi-line b" title="${activity.name}" ?hidden="${activity.inEditMode}">
                     ${activity.is_active ? '' : html`<b>(${translate('INACTIVE')})</b>`}${activity.name}
                   </div>
                   <div class="pad-top-8">
-                    <paper-textarea
+                    <etools-textarea
                       class="other"
                       placeholder="-"
                       input
@@ -152,7 +150,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                       }}"
                       @value-changed="${({detail}: CustomEvent) =>
                         this.valueChanged(detail, 'context_details', activity)}"
-                    ></paper-textarea>
+                    ></etools-textarea>
                     <div title="${activity.context_details}" ?hidden="${activity.inEditMode}">
                       ${this.truncateString(activity.context_details)}
                     </div>
@@ -183,7 +181,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                   tabindex="${(activity.items && activity.items.length) || this.commentMode ? '-1' : '0'}"
                   class="no-top-padding"
                 >
-                  <etools-currency-amount-input
+                  <etools-currency
                     no-label-float
                     input
                     .value="${activity.cso_cash}"
@@ -193,13 +191,13 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     ?readonly="${this.isReadonlyCash(activity.inEditMode, activity.items)}"
                     @keydown="${(e: any) => this.handleEsc(e)}"
                     @value-changed="${({detail}: CustomEvent) => this.numberChanged(detail, 'cso_cash', activity)}"
-                  ></etools-currency-amount-input>
+                  ></etools-currency>
                 </td>
                 <td
                   tabindex="${(activity.items && activity.items.length) || this.commentMode ? '-1' : '0'}"
                   class="no-top-padding"
                 >
-                  <etools-currency-amount-input
+                  <etools-currency
                     no-label-float
                     input
                     .value="${activity.unicef_cash}"
@@ -209,7 +207,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     ?readonly="${this.isReadonlyCash(activity.inEditMode, activity.items)}"
                     @keydown="${(e: any) => this.handleEsc(e)}"
                     @value-changed="${({detail}: CustomEvent) => this.numberChanged(detail, 'unicef_cash', activity)}"
-                  ></etools-currency-amount-input>
+                  ></etools-currency>
                 </td>
                 <td
                   colspan="2"
@@ -222,8 +220,8 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                     <span class="b"> ${getTotalCashFormatted(activity.cso_cash, activity.unicef_cash)} </span>
                   </div>
                   <div class="action-btns align-bottom flex-h">
-                    <paper-icon-button
-                      icon="create"
+                    <etools-icon-button
+                      name="create"
                       ?hidden="${activity.inEditMode || !this.permissions.edit.result_links || !activity.is_active}"
                       @click="${(e: any) => {
                         activity.inEditMode = true;
@@ -238,28 +236,22 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                           this.moveFocusToFirstInput(e.target);
                         }
                       }}"
-                    ></paper-icon-button>
-                    <paper-icon-button
-                      id="add-item-${activity.id}"
-                      icon="add-box"
-                      slot="custom-icon"
-                      @click="${(e: CustomEvent) => this.addNewActivityItem(e, activity, 'focusBelow')}"
+                    ></etools-icon-button>
+                    <sl-tooltip
                       ?hidden="${activity.items?.length || !this.permissions.edit.result_links}"
-                    ></paper-icon-button>
-                    <paper-tooltip
-                      for="add-item-${activity.id}"
-                      .animationDelay="${0}"
-                      .animationConfig="${{}}"
-                      animation-entry=""
-                      animation-exit=""
-                      ?hidden="${activity.items?.length || !this.permissions.edit.result_links}"
-                      position="top"
-                      offset="1"
+                      placement="top"
+                      content="${translate('ADD_NEW_ITEM')}"
                     >
-                      ${translate('ADD_NEW_ITEM')}
-                    </paper-tooltip>
-                    <paper-icon-button
-                      icon="delete"
+                      <etools-icon-button
+                        id="add-item-${activity.id}"
+                        name="add-box"
+                        @click="${(e: CustomEvent) => this.addNewActivityItem(e, activity, 'focusBelow')}"
+                        ?hidden="${activity.items?.length || !this.permissions.edit.result_links}"
+                      ></etools-icon-button>
+                    </sl-tooltip>
+
+                    <etools-icon-button
+                      name="delete"
                       ?hidden="${activity.inEditMode ||
                       !_canDelete(
                         activity,
@@ -269,9 +261,9 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                         this.intervention.in_amendment_date
                       )}"
                       @click="${() => openDeleteActivityDialog(activity.id, pdOutput.id, this.intervention.id!)}"
-                    ></paper-icon-button>
-                    <paper-icon-button
-                      icon="block"
+                    ></etools-icon-button>
+                    <etools-icon-button
+                      name="block"
                       ?hidden="${activity.inEditMode ||
                       !_canDeactivate(
                         activity,
@@ -281,23 +273,24 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                         this.intervention.in_amendment_date
                       )}"
                       @click="${() => openActivityDeactivationDialog(activity.id, pdOutput.id, this.intervention.id!)}"
-                    ></paper-icon-button>
+                    ></etools-icon-button>
                   </div>
                   <div
                     class="flex-h justify-right align-bottom"
                     ?hidden="${!(activity.inEditMode || activity.itemsInEditMode)}"
                   >
-                    <paper-button
+                    <etools-button
                       id="btnSave-Activity"
+                      variant="primary"
                       ?hidden="${!(activity.inEditMode || activity.itemsInEditMode)}"
                       @click="${() => this.saveActivity(activity, pdOutput.id, this.intervention.id!)}"
-                      >${translate('GENERAL.SAVE')}</paper-button
+                      >${translate('GENERAL.SAVE')}</etools-button
                     >
-                    <paper-icon-button
-                      icon="close"
+                    <etools-icon-button
+                      name="close"
                       @click="${() =>
                         this.cancelActivity(pdOutput.activities, activity, resultIndex, pdOutputIndex, activityIndex)}"
-                    ></paper-icon-button>
+                    ></etools-icon-button>
                   </div>
                 </td>
               </tr>
@@ -323,7 +316,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
 
     attachTimeIntervalsListener() {
       setTimeout(() => {
-        this.shadowRoot!.querySelectorAll('.tdTimeIntervals').forEach((el) =>
+        this.shadowRoot!.querySelectorAll('.tdTimeIntervals').forEach((el: any) =>
           el.addEventListener('keydown', this._onTimeIntervalsKeyDown)
         );
       }, 400);
@@ -331,7 +324,7 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
 
     _onTimeIntervalsKeyDown(event: any) {
       if (event.key === 'Enter') {
-        const editBtnEl = event.currentTarget.parentElement.querySelector('paper-icon-button[icon="create"]');
+        const editBtnEl = event.currentTarget.parentElement.querySelector('etools-icon-button[name="create"]');
         const timeIntervalEl = event.currentTarget.querySelector('time-intervals');
         // if in edit mode and found time-interval component, open Time Periods dialog
         if (timeIntervalEl && editBtnEl && editBtnEl.hasAttribute('hidden')) {
@@ -437,15 +430,17 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
 
     _getEndpoint(activityId: any, pdOutputId: string, interventionId: string) {
       return activityId
-        ? getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.pdActivityDetails, {
+        ? getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.pdActivityDetails, {
             activityId,
             pdOutputId,
             interventionId
           })
-        : getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.pdActivities, {
+        : getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.pdActivities, {
             pdOutputId,
             interventionId
           });
     }
-  };
+  }
+
+  return ActivitiesClass as any;
 }

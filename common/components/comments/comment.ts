@@ -1,10 +1,11 @@
-import {LitElement, html, TemplateResult, CSSResultArray, customElement, property} from 'lit-element';
-import '@polymer/iron-icons';
+import {LitElement, html, TemplateResult, CSSResultArray} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
+import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {CommentStyles} from './comment.styles';
 import {InterventionComment} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
-declare const dayjs: any;
+import dayjs from 'dayjs';
 
 @customElement('comment-element')
 export class CommentElement extends LitElement {
@@ -55,7 +56,7 @@ export class CommentElement extends LitElement {
                     }
                   }}"
                 >
-                  <iron-icon icon="refresh"></iron-icon>${translate('RETRY')}
+                  <etools-icon name="refresh"></etools-icon>${translate('RETRY')}
                 </div> `}
           </div>
         </div>
@@ -81,11 +82,11 @@ export class CommentElement extends LitElement {
                   ?hidden="${!this.comment.id}"
                 >
                   <etools-loading no-overlay ?active="${this.resolving}" loading-text=""></etools-loading>
-                  <iron-icon
+                  <etools-icon
                     ?hidden="${this.resolving}"
                     class="resolve"
-                    icon="${this.comment.state === 'resolved' ? 'check' : 'archive'}"
-                  ></iron-icon>
+                    name="${this.comment.state === 'resolved' ? 'check' : 'archive'}"
+                  ></etools-icon>
                   ${translate(this.comment.state === 'resolved' ? 'RESOLVED' : 'RESOLVE')}
                 </div>
                 <!--      Delete action        -->
@@ -102,7 +103,9 @@ export class CommentElement extends LitElement {
                   }}"
                 >
                   <etools-loading no-overlay ?active="${this.deleting}" loading-text=""></etools-loading>
-                  <iron-icon ?hidden="${this.deleting}" class="delete" icon="cancel"></iron-icon> ${translate('DELETE')}
+                  <etools-icon ?hidden="${this.deleting}" class="delete" name="cancel"></etools-icon> ${translate(
+                    'DELETE'
+                  )}
                 </div>
               </div>
             `}

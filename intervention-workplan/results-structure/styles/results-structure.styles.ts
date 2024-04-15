@@ -1,4 +1,4 @@
-import {css, CSSResult} from 'lit-element';
+import {css, CSSResult} from 'lit';
 
 // language=CSS
 export const ResultStructureStyles: CSSResult = css`
@@ -7,35 +7,35 @@ export const ResultStructureStyles: CSSResult = css`
     --cp-output-background: #a6dbff;
   }
   .heading {
-    font-size: 12px;
+    font-size: var(--etools-font-size-12, 12px);
     line-height: 16px;
     color: var(--secondary-text-color);
   }
   .data {
-    font-size: 16px;
+    font-size: var(--etools-font-size-16, 16px);
     line-height: 24px;
     color: var(--primary-text-color);
   }
   .total-cache .heading {
-    font-size: 14px;
+    font-size: var(--etools-font-size-14, 14px);
     margin-bottom: 10px;
     text-align: right;
   }
   .total-cache .data {
-    font-size: 20px;
+    font-size: var(--etools-font-size-20, 20px);
     font-weight: 900;
     line-height: 23px;
     text-align: right;
   }
   .total-cache .currency {
     margin-inline-end: 4px;
-    font-size: 16px;
+    font-size: var(--etools-font-size-16, 16px);
     font-weight: 400;
     line-height: 19px;
   }
   .bold-data {
     font-weight: bold;
-    font-size: 16px;
+    font-size: var(--etools-font-size-16, 16px);
   }
   .truncate {
     white-space: nowrap;
@@ -43,7 +43,7 @@ export const ResultStructureStyles: CSSResult = css`
     text-overflow: ellipsis;
   }
   .text {
-    font-size: 12px;
+    font-size: var(--etools-font-size-12, 12px);
     line-height: 14px;
   }
   .details-heading {
@@ -51,7 +51,7 @@ export const ResultStructureStyles: CSSResult = css`
     color: var(--secondary-text-color);
   }
   .details-text {
-    font-size: 13px;
+    font-size: var(--etools-font-size-13, 13px);
     line-height: 15px;
   }
   .header {
@@ -79,7 +79,7 @@ export const ResultStructureStyles: CSSResult = css`
     width: 100%;
     height: 48px;
     background-color: var(--secondary-background-color);
-    font-size: 12px;
+    font-size: var(--etools-font-size-12, 12px);
     color: var(--secondary-text-color);
     box-sizing: border-box;
   }
@@ -87,12 +87,12 @@ export const ResultStructureStyles: CSSResult = css`
     border-top: 1px solid var(--main-border-color);
     background-color: var(--primary-background-color);
   }
-  iron-icon {
+  etools-icon {
     margin: 0 15px;
     opacity: 0.9;
     cursor: pointer;
   }
-  iron-icon:hover {
+  etools-icon:hover {
     opacity: 1;
   }
   *[hidden] {
@@ -123,7 +123,7 @@ export const ResultStructureStyles: CSSResult = css`
     align-items: center;
     padding: 5px 5px 0;
     cursor: pointer;
-    font-size: 15px;
+    font-size: var(--etools-font-size-15, 15px);
     line-height: 18px;
     color: #444444;
     white-space: nowrap;
@@ -135,11 +135,11 @@ export const ResultStructureStyles: CSSResult = css`
     background: linear-gradient(270deg, var(--cp-output-background) 71.65%, rgba(196, 196, 196, 0) 100%);
     padding-inline-start: 20px;
   }
-  paper-icon-button.add {
+  etools-icon-button.add {
     color: #444444;
     margin-inline-start: -7px;
   }
-  paper-icon-button.add:hover {
+  etools-icon-button.add:hover {
     color: #212121;
   }
 `;

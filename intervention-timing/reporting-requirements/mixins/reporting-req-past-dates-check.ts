@@ -1,12 +1,11 @@
-import {LitElement, property} from 'lit-element';
+import {LitElement} from 'lit';
+import {property} from 'lit/decorators.js';
 import {Constructor} from '@unicef-polymer/etools-types';
-
-declare const dayjs: any;
-// import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin';
+import dayjs from 'dayjs';
 
 /**
  * Common reporting requirements past dates check used for UI
- * @polymer
+ * @LitElement
  * @mixinFunction
  */
 function ReportingReqPastDatesCheckMixin<T extends Constructor<LitElement>>(baseClass: T) {

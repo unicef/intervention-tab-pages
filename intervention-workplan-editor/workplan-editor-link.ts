@@ -1,4 +1,5 @@
-import {LitElement, html, CSSResult, css, customElement, TemplateResult, property} from 'lit-element';
+import {LitElement, html, CSSResult, css, TemplateResult} from 'lit';
+import {property, customElement} from 'lit/decorators.js';
 
 @customElement('workplan-editor-link')
 export class WorkplanEditorLink extends LitElement {
@@ -36,7 +37,7 @@ export class WorkplanEditorLink extends LitElement {
         width: min-content;
         white-space: nowrap;
         font-family: Roboto;
-        font-size: 15px;
+        font-size: var(--etools-font-size-15, 15px);
         font-weight: 500;
         line-height: 18px;
         color: #5c5c5c;

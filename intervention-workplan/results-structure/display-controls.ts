@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
-import {customElement, LitElement, html, TemplateResult, property, CSSResultArray, css} from 'lit-element';
+import {LitElement, html, TemplateResult, CSSResultArray, css, PropertyValues} from 'lit';
+import {property, customElement} from 'lit/decorators.js';
 import {translate} from 'lit-translate';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
@@ -7,8 +8,12 @@ import {
   callClickOnEnterPushListener,
   callClickOnSpacePushListener
 } from '@unicef-polymer/etools-utils/dist/accessibility.util';
-import {PropertyValues} from 'lit-element/src/lib/updating-element';
 import {TABS} from '../../common/constants';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
+import '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
+import '@shoelace-style/shoelace/dist/components/menu/menu.js';
+import '@shoelace-style/shoelace/dist/components/menu-item/menu-item.js';
+import {SlSelectEvent} from '@shoelace-style/shoelace/dist/events/sl-select.js';
 
 export const RESULT_VIEW = 'result_view';
 export const BUDGET_VIEW = 'budget_view';
@@ -58,28 +63,42 @@ export class DisplayControls extends LitElement {
 
   protected render(): TemplateResult {
     return html`
-      <paper-toggle-button id="showInactive" ?hidden="${!this.showInactiveToggle}" @iron-change=${this.inactiveChange}>
+      <sl-switch id="showInactive" ?hidden="${!this.showInactiveToggle}" @sl-change=${this.inactiveChange}>
         ${translate('SHOW_INACTIVE')}
-      </paper-toggle-button>
+      </sl-switch>
 
       <div class="layout-horizontal">
-        <paper-menu-button id="view-menu-button" close-on-activate horizontal-align>
-          <paper-button slot="dropdown-trigger" class="dropdown-trigger">
-            ${this.selectedViewType}
-            <iron-icon icon="expand-more"></iron-icon>
-          </paper-button>
-          <paper-listbox slot="dropdown-content" attr-for-selected="name" .selected="${this.viewType}">
+        <sl-dropdown
+          distance="-30"
+          id="view-menu-button"
+          close-on-activate
+          horizontal-align
+          @sl-select=${(e: SlSelectEvent) => {
+            const tab = this.viewTabs.find((x) => x.type === e.detail.item.value)!;
+            this.fireTabChange(tab.showIndicators, tab.showActivities);
+          }}
+        >
+          <etools-button variant="default" slot="trigger" caret>${this.selectedViewType} </etools-button>
+          <sl-menu>
             ${this.viewTabs.map(
               (tab) =>
-                html` <paper-item
-                  @click="${() => this.fireTabChange(tab.showIndicators, tab.showActivities)}"
-                  name="${tab.type}"
+                html` <sl-menu-item
+                  @click=${(e: Event) => {
+                    // prevent selecting checked item
+                    if ((e.target as any).checked) {
+                      e.preventDefault();
+                      e.stopImmediatePropagation();
+                    }
+                  }}
+                  .checked="${this.viewType === tab.type}"
+                  value="${tab.type}"
+                  type="checkbox"
                 >
                   ${tab.name}
-                </paper-item>`
+                </sl-menu-item>`
             )}
-          </paper-listbox>
-        </paper-menu-button>
+          </sl-menu>
+        </sl-dropdown>
         <a href="interventions/${this.interventionId}/${TABS.WorkplanEditor}">
           <div class="editor-link">
             ${translate('ACTIVITES_EDITOR')}
@@ -98,14 +117,14 @@ export class DisplayControls extends LitElement {
   firstUpdated(_changedProperties: PropertyValues): void {
     super.firstUpdated(_changedProperties);
 
-    this.shadowRoot!.querySelectorAll('#view-toggle-button, .add-button paper-icon-button, iron-icon').forEach((el) =>
-      callClickOnSpacePushListener(el)
+    this.shadowRoot!.querySelectorAll('#view-toggle-button, .add-button etools-icon-button, etools-icon').forEach(
+      (el) => callClickOnSpacePushListener(el)
     );
     this.shadowRoot!.querySelectorAll('#clickable').forEach((el) => callClickOnEnterPushListener(el));
   }
 
   inactiveChange(e: CustomEvent): void {
-    if (!e.detail) {
+    if (!e.target) {
       return;
     }
     const element = e.currentTarget as HTMLInputElement;
@@ -138,27 +157,39 @@ export class DisplayControls extends LitElement {
           padding: 0;
           box-sizing: border-box;
         }
-        paper-button {
-          border: 1px solid #5c5c5c;
-          border-radius: 8px;
-        }
         a:focus,
-        paper-button:focus {
+        etools-button:focus {
           box-shadow: rgb(170 165 165 / 40%) 0 0 5px 4px;
         }
-        #view-menu-button paper-button {
-          height: 32px;
-          padding-inline-end: 0;
-          font-size: 14px;
-          text-transform: none;
-          font-weight: 500;
+
+        etools-button:focus-visible {
+          outline: none !important;
         }
-        #view-menu-button paper-button iron-icon {
-          margin: 0 7px;
+
+        sl-dropdown sl-menu-item:focus-visible::part(base) {
+          background-color: rgba(0, 0, 0, 0.1);
+          color: var(--sl-color-neutral-1000);
         }
-        paper-item {
-          white-space: nowrap;
+
+        sl-menu-item::part(base) {
+          line-height: 38px;
         }
+
+        sl-menu-item[checked]::part(checked-icon) {
+          color: var(--sl-color-primary-600);
+          width: 24px;
+          visibility: visible;
+        }
+
+        sl-menu-item[checked]::part(base) {
+          background-color: #dcdcdc;
+          color: var(--sl-color-neutral-1000);
+        }
+
+        sl-menu-item[checked]:focus-visible::part(base) {
+          background-color: #cfcfcf;
+        }
+
         a {
           text-decoration: none;
           margin-inline-start: 16px;
@@ -175,13 +206,24 @@ export class DisplayControls extends LitElement {
           border-radius: 8px;
           color: #009688;
           font-weight: 500;
-          font-size: 14px;
+          font-size: var(--etools-font-size-14, 14px);
           line-height: 16px;
           text-decoration: none;
           box-sizing: border-box;
         }
         svg {
           margin-inline-start: 10px;
+        }
+        etools-button {
+          --sl-input-height-medium: 32px;
+          --sl-color-neutral-700: rgb(92, 92, 92);
+          --sl-color-neutral-300: rgb(92, 92, 92);
+          --sl-input-border-radius-medium: 10px;
+          border-radius: 10px;
+          --sl-spacing-medium: 12px;
+          --sl-color-primary-50: transparent;
+          --sl-color-primary-300: rgb(92, 92, 92);
+          --sl-color-primary-700: rgb(92, 92, 92);
         }
       `
     ];

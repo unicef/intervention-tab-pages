@@ -1,11 +1,11 @@
-import {LitElement, html, customElement, property} from 'lit-element';
-import '@polymer/paper-button/paper-button';
-import '@polymer/paper-icon-button/paper-icon-button';
-import '@unicef-polymer/etools-loading/etools-loading';
-import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
-import '@polymer/paper-slider/paper-slider.js';
-import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import {LitElement, html} from 'lit';
+import {property, customElement} from 'lit/decorators.js';
+
+import '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading';
+import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
+import '@shoelace-style/shoelace/dist/components/range/range.js';
+
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {selectHqContributionData, selectHqContributionPermissions} from './hqContribution.selectors';
@@ -25,6 +25,7 @@ import {translate, translateUnsafeHTML} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
 import {getPageDirection} from '../../utils/utils';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-input.js';
 
 /**
  * @customElement
@@ -32,7 +33,7 @@ import {getPageDirection} from '../../utils/utils';
 @customElement('hq-contribution')
 export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [gridLayoutStylesLit];
   }
 
   render() {
@@ -55,15 +56,20 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
           padding-top: 16px !important;
           padding-bottom: 0 !important;
         }
-        paper-slider {
-          width: 100%;
-          margin-inline-start: -15px;
-          margin-inline-end: -5px;
-          height: 30px;
+        sl-range {
+          width: 85%;
+          margin-top: 10px;
+          --track-color-active: var(--primary-color);
         }
         .hq-info-label {
           color: darkred;
           padding-bottom: 5px;
+        }
+        etools-input {
+          width: 3.5rem;
+        }
+        .space-betw {
+          justify-content: space-between;
         }
       </style>
 
@@ -76,12 +82,12 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
 
         <div class="layout-horizontal row-padding-v extra-padd-top-no-bottom">
           <div class="w100">
-            <label class="paper-label">${translate(translatesMap.hq_support_cost)}</label>
+            <label class="label">${translate(translatesMap.hq_support_cost)}</label>
           </div>
         </div>
         <div class="layout-horizontal">
-          <div class="col col-4">
-            <paper-slider
+          <div class="col col-4 space-betw">
+            <sl-range
               dir="${this.dir}"
               .value="${this.data.hq_support_cost}"
               width="100%"
@@ -89,13 +95,25 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
               step="0.1"
               ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit.hq_support_cost)}"
               .editable="${!this.isReadonly(this.editMode, this.permissions?.edit.hq_support_cost)}"
-              @value-changed="${(e: CustomEvent) => this.updateSlider(e)}"
-            ></paper-slider>
-            <span ?hidden="${this.editMode}">${this.data.hq_support_cost}</span>
+              @sl-change="${(e: CustomEvent) => this.updateSlider(e)}"
+            ></sl-range>
+            <etools-input
+              type="number"
+              allowed-pattern="^\\d*\\.?\\d*$"
+              .readonly="${!this.editMode}"
+              .value="${this.data.hq_support_cost}"
+              min="0"
+              max="7"
+              step="0.1"
+              @value-changed="${({detail}: CustomEvent) => {
+                this.valueChanged(detail, 'hq_support_cost', this.data);
+                this.autoCalculatedHqContrib = this.autoCalcHqContrib();
+              }}"
+            ></etools-input>
           </div>
         </div>
         <div class="layout-horizontal row-padding-v" ?hidden="${!this.isUnicefUser || !this.editMode}">
-          <label class="paper-label hq-info-label">
+          <label class="label hq-info-label">
             ${translateUnsafeHTML('TOTAL_FOR_PERCENT_HQ', {
               PERCENT: `<b>${this.data.hq_support_cost}%</b>`,
               VALUE: `<b>${this.autoCalculatedHqContrib} ${this.data.planned_budget.currency}</b>`
@@ -103,18 +121,19 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
           </label>
         </div>
         <div class="layout-horizontal">
-          <etools-currency-amount-input
+          <etools-currency
             id="hqContrib"
             class="col-3"
             placeholder="&#8212;"
+            required
             label=${translate(translatesMap.total_hq_cash_local)}
             .value="${this.data.planned_budget.total_hq_cash_local}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_budget)}"
-            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.planned_budget) ? -1 : 0}"
+            tabindex="${this.isReadonly(this.editMode, this.permissions?.edit.planned_budget) ? -1 : undefined}"
             @value-changed="${({detail}: CustomEvent) => this.hqContribChanged(detail)}"
             .currency="${this.data.planned_budget?.currency}"
           >
-          </etools-currency-amount-input>
+          </etools-currency>
         </div>
 
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
@@ -167,27 +186,11 @@ export class HqContributionElement extends CommentsMixin(ComponentBaseMixin(LitE
   }
 
   updateSlider(e: CustomEvent) {
-    if (!e.detail) {
+    if (!e.target) {
       return;
     }
-    this.handleCornerCase();
-    this.data = {...this.data, hq_support_cost: e.detail.value} as HqContributionData;
+    this.data = {...this.data, hq_support_cost: (e.target as any).value} as HqContributionData;
     this.autoCalculatedHqContrib = this.autoCalcHqContrib();
-  }
-  /**
-   *  Change the slider value by entering a greater than 7 value in the input field
-   *  Hit Cancel btn, Hit Edit again
-   *  Issue: The input has the greater than 7 value entered before
-   */
-  handleCornerCase() {
-    const inputInsidePaperSlider = this.shadowRoot
-      ?.querySelector('paper-slider')
-      ?.shadowRoot?.querySelector('paper-input');
-    if (inputInsidePaperSlider) {
-      if (Number(inputInsidePaperSlider.value) > 7) {
-        inputInsidePaperSlider.value = '7';
-      }
-    }
   }
 
   autoCalcHqContrib() {

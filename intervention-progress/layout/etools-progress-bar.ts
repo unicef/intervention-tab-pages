@@ -1,5 +1,6 @@
-import {LitElement, html, property, customElement} from 'lit-element';
-import '@polymer/paper-progress/paper-progress';
+import {LitElement, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
+import '@shoelace-style/shoelace/dist/components/progress-bar/progress-bar.js';
 
 /**
  * LitElement
@@ -17,10 +18,6 @@ export class EtoolsProgressBar extends LitElement {
           display: flex;
           flex-direction: row;
           align-items: center;
-
-          --paper-progress-active-color: var(--primary-color);
-          --paper-progress-secondary-color: var(--primary-background-color);
-          --paper-progress-height: 10px;
         }
 
         #progress-percent {
@@ -28,17 +25,19 @@ export class EtoolsProgressBar extends LitElement {
           min-width: 56px;
         }
 
-        paper-progress {
+        sl-progress-bar {
           width: var(--etools-progress-bar-width, 200px);
+          --height: 10px;
+          --indicator-color: var(--primary-color);
         }
 
         @media print {
-          paper-progress {
+          sl-progress-bar {
             position: relative;
           }
 
-          paper-progress::before,
-          paper-progress::after {
+          sl-progress-bar::before,
+          sl-progress-bar::after {
             content: ' ';
             display: inline-block;
             position: absolute;
@@ -47,23 +46,20 @@ export class EtoolsProgressBar extends LitElement {
             height: 0;
           }
 
-          paper-progress::before {
+          sl-progress-bar::before {
             z-index: 1;
             right: 0;
-            border-bottom: 10px solid var(--paper-progress-container-color, var(--google-grey-300));
+            border-bottom: 10px solid var(--sl-color-grey-300);
           }
 
-          paper-progress::after {
+          sl-progress-bar::after {
             z-index: 1;
             border-bottom: 10px solid var(--primary-color);
             width: ${this.progressWidthOnPrint};
           }
         }
       </style>
-      <paper-progress
-        .value="${this.progressValue}"
-        secondaryPprogress="${this._getSecondaryProgress(this.progressValue)}"
-      ></paper-progress>
+      <sl-progress-bar .value="${this.progressValue}"></sl-progress-bar>
       <span id="progress-percent">${this._prepareDisplayedValue(this.progressValue)} %</span>
     `;
   }

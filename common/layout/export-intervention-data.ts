@@ -1,14 +1,15 @@
-import {customElement, html, LitElement, property, css} from 'lit-element';
-import '@polymer/paper-button/paper-button';
-import '@polymer/paper-menu-button/paper-menu-button';
-import '@polymer/iron-icon/iron-icon';
-import '@polymer/paper-listbox/paper-listbox';
+import {html, LitElement} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {elevation2} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {AnyObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
-import {EtoolsRequestEndpoint} from '@unicef-polymer/etools-ajax';
+import {RequestEndpoint} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
+import '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
+import '@shoelace-style/shoelace/dist/components/menu/menu.js';
+import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 /**
  * @customElement
@@ -16,50 +17,25 @@ import {EtoolsRequestEndpoint} from '@unicef-polymer/etools-ajax';
  */
 @customElement('export-intervention-data')
 export class ExportInterventionData extends LitElement {
-  static get styles() {
-    return [
-      css`
-        paper-menu-button {
-          padding: 0px;
-        }
-        paper-button {
-          height: 34px;
-          padding: 0px;
-          min-width: 20px;
-          font-weight: bold;
-          color: var(--secondary-text-color);
-        }
-
-        paper-button iron-icon {
-          color: var(--secondary-text-color);
-        }
-
-        paper-button:focus {
-          ${elevation2}
-        }
-
-        paper-item:hover {
-          cursor: pointer;
-        }
-
-        paper-item {
-          white-space: nowrap;
-        }
-      `
-    ];
-  }
   public render() {
     return html`
-      <paper-menu-button id="pdExportMenuBtn" close-on-activate horizontal-align>
-        <paper-button slot="dropdown-trigger" class="dropdown-trigger">
-          <iron-icon icon="more-vert"></iron-icon>
-        </paper-button>
-        <paper-listbox slot="dropdown-content">
+      <style>
+        sl-menu-item::part(label) {
+          text-align: left;
+        }
+        sl-dropdown sl-menu-item:focus-visible::part(base) {
+          background-color: rgba(0, 0, 0, 0.1);
+          color: var(--sl-color-neutral-1000);
+        }
+      </style>
+      <sl-dropdown id="pdExportMenuBtn">
+        <etools-icon-button label="export" name="more-vert" slot="trigger"> </etools-icon-button>
+        <sl-menu>
           ${this.exportLinks.map(
-            (item) => html` <paper-item @click="${() => this.export(item.type)}">${item.name}</paper-item>`
+            (item) => html` <sl-menu-item @click="${() => this.export(item.type)}">${item.name}</sl-menu-item>`
           )}
-        </paper-listbox>
-      </paper-menu-button>
+        </sl-menu>
+      </sl-dropdown>
     `;
   }
 
@@ -75,28 +51,28 @@ export class ExportInterventionData extends LitElement {
   export(_type: string) {
     let url = '';
     if (_type == 'download_comments') {
-      url = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.downloadComment, {
+      url = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.downloadComment, {
         interventionId: this.interventionId
       }).url;
       window.open(url, '_blank');
       return;
     }
     if (_type == 'export_results') {
-      url = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.expectedResultsExport, {
+      url = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.expectedResultsExport, {
         intervention_id: this.interventionId
       }).url;
       window.open(url, '_blank');
       return;
     }
     if (_type == 'export_pdf') {
-      url = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.exportPdf, {
+      url = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.exportPdf, {
         interventionId: this.interventionId
       }).url;
       window.open(url, '_blank');
       return;
     }
     if (_type == 'export_xls') {
-      url = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.exportXls, {
+      url = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.exportXls, {
         interventionId: this.interventionId
       }).url;
       window.open(url, '_blank');

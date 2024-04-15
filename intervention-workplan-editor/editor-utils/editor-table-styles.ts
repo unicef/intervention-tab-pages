@@ -1,4 +1,4 @@
-import {css} from 'lit-element';
+import {css} from 'lit';
 
 export const EditorTableStyles = css`
   * {
@@ -101,24 +101,15 @@ export const EditorTableStyles = css`
     font-weight: 600;
   }
 
-  paper-icon-button {
+  etools-icon-button {
     color: #504e4e;
   }
-  paper-icon-button[icon='close'] {
+  etools-icon-button[name='close'] {
     color: red;
-  }
-  paper-icon-button[icon='delete']:hover {
-    color: #212121;
-  }
-  paper-icon-button[icon='create']:hover {
-    color: #212121;
+    stroke: red;
   }
 
-  paper-icon-button:hover {
-    color: #212121;
-  }
-
-  etools-currency-amount-input {
+  etools-currency {
     text-align: right;
   }
 
@@ -128,13 +119,6 @@ export const EditorTableStyles = css`
   }
   div.icon {
     max-width: fit-content;
-  }
-
-  paper-button {
-    color: white;
-    background-color: var(--primary-color);
-    padding: 5px;
-    border-radius: 7px;
   }
 
   .pad-top-8 {
@@ -168,7 +152,7 @@ export const EditorTableStyles = css`
 
   tr.activity-items-row > td.total {
     border-inline-end: none;
-    --paper-input-container-input_-_font-weight: 600;
+    font-weight: 600;
   }
   tr.activity-items-row > td {
     vertical-align: bottom;
@@ -239,5 +223,8 @@ export const EditorTableStyles = css`
   tbody[inEditMode],
   tr[inEditMode] {
     background-color: #b5d5f050 !important;
+  }
+  etools-currency::part(input) {
+    text-align: end;
   }
 `;

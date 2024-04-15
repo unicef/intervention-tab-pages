@@ -1,27 +1,25 @@
 /* eslint-disable lit/no-legacy-template-syntax */
-import {LitElement, html, property, customElement} from 'lit-element';
+import {LitElement, html} from 'lit';
+import {property, customElement} from 'lit/decorators.js';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {prepareDatepickerDate} from '@unicef-polymer/etools-utils/dist/date.util';
-
-import '@polymer/iron-label/iron-label';
-import '@polymer/paper-input/paper-input';
-import '@unicef-polymer/etools-dialog/etools-dialog.js';
-
-import '@unicef-polymer/etools-date-time/calendar-lite';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
+import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
+import '@unicef-polymer/etools-unicef/src/etools-date-time/calendar-lite';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
+import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {AnyObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
-declare const dayjs: any;
+import dayjs from 'dayjs';
 import {translate} from 'lit-translate';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 
 /**
- * @polymer
+ * @LitElement
  * @customElement
  * @mixinFunction
  */
@@ -41,12 +39,13 @@ export class AddEditSpecialRepReq extends LitElement {
           display: block;
         }
 
-        paper-input {
+        etools-input {
           width: 100%;
         }
 
-        iron-label {
+        label {
           margin-bottom: 24px;
+          font-size: var(--etools-font-size-14, 14px);
         }
 
         calendar-lite {
@@ -57,7 +56,6 @@ export class AddEditSpecialRepReq extends LitElement {
       <etools-dialog
         id="addEditDialog"
         size="lg"
-        opened
         dialog-title=${translate('ADD_EDIT_SPECIAL_REPORTING_REQUIREMENTS')}
         @confirm-btn-clicked="${this._save}"
         ok-btn-text=${translate('GENERAL.SAVE')}
@@ -67,10 +65,11 @@ export class AddEditSpecialRepReq extends LitElement {
       >
         <div class="row-h">
           <div class="col layout-vertical col-5">
-            <iron-label for="startDate">${translate('REPORT_DUE_DATE')}</iron-label>
+            <label for="startDate">${translate('REPORT_DUE_DATE')}</label>
             <calendar-lite
               id="startDate"
               pretty-date="${this.item.due_date ? this.item.due_date : ''}"
+              .date="${this.item.due_date}"
               format="YYYY-MM-DD"
               @date-changed="${({detail}: CustomEvent) =>
                 (this.item.due_date = dayjs(new Date(detail.value)).format('YYYY-MM-DD'))}"
@@ -79,13 +78,13 @@ export class AddEditSpecialRepReq extends LitElement {
           </div>
         </div>
         <div class="row-h">
-          <paper-input
+          <etools-input
             label=${translate('REPORTING_REQUIREMENT')}
             placeholder="&#8212;"
             value="${this.item.description ? this.item.description : ''}"
             @value-changed="${({detail}: CustomEvent) => (this.item.description = detail.value)}"
           >
-          </paper-input>
+          </etools-input>
         </div>
       </etools-dialog>
     `;
@@ -110,22 +109,19 @@ export class AddEditSpecialRepReq extends LitElement {
   _getEndpoint() {
     if (this._isNew()) {
       // new/create
-      return getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.specialReportingRequirements, {
+      return getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.specialReportingRequirements, {
         intervId: this.interventionId
       });
     } else {
       // already saved... update/delete
-      return getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(
-        interventionEndpoints.specialReportingRequirementsUpdate,
-        {
-          reportId: this.item.id
-        }
-      );
+      return getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.specialReportingRequirementsUpdate, {
+        reportId: this.item.id
+      });
     }
   }
 
   _save() {
-    const dialog = this.shadowRoot!.querySelector(`#addEditDialog`) as EtoolsDialog;
+    const dialog = this.shadowRoot!.querySelector(`#addEditDialog`) as unknown as EtoolsDialog;
     dialog.startSpinner();
 
     const endpoint = this._getEndpoint();

@@ -1,7 +1,8 @@
-import {LitElement, html, property, customElement, query} from 'lit-element';
-import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
+import {LitElement, html} from 'lit';
+import {customElement, property, query} from 'lit/decorators.js';
+import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+
 import get from 'lodash-es/get';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {LocationObject} from '@unicef-polymer/etools-types';
@@ -19,7 +20,7 @@ class GroupedLocations {
 @customElement('grouped-locations-dialog')
 export class GroupedLocationsDialog extends LitElement {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [gridLayoutStylesLit];
   }
 
   render() {
@@ -29,11 +30,6 @@ export class GroupedLocationsDialog extends LitElement {
       <style>
         [hidden] {
           display: none !important;
-        }
-
-        etools-dialog::part(ed-scrollable) {
-          min-height: 300px;
-          font-size: 16px;
         }
 
         .adminLevelLoc {
@@ -75,7 +71,6 @@ export class GroupedLocationsDialog extends LitElement {
         size="md"
         dialog-title=${translate('LOCATIONS_PD_COVERS')}
         hide-confirm-btn
-        ?opened="${this.dialogOpened}"
         cancel-btn-text=${translate('GENERAL.CANCEL')}
         @close="${() => this.onClose()}"
       >
@@ -133,8 +128,6 @@ export class GroupedLocationsDialog extends LitElement {
 
   @property({type: String})
   message = '';
-
-  @property({type: Boolean}) dialogOpened = true;
 
   @query('#groupedLocDialog')
   groupedLocDialog!: EtoolsDialog;
@@ -260,8 +253,6 @@ export class GroupedLocationsDialog extends LitElement {
     }
 
     this.groupedLocations = groupedLocations;
-
-    (this.groupedLocDialog as EtoolsDialog).notifyResize();
   }
 
   _findInGroupedLocations(groupedLocations: GroupedLocations[], adminLevelLocation: any) {

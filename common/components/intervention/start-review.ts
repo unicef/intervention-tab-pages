@@ -1,6 +1,7 @@
-import {customElement, html, LitElement, property} from 'lit-element';
-import '@unicef-polymer/etools-dialog/etools-dialog.js';
-import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
+import {html, LitElement} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
+import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
+import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {
   validateRequiredFields,
@@ -44,7 +45,6 @@ export class StartReview extends connectStore(LitElement) {
       <etools-dialog
         no-padding
         keep-dialog-open
-        opened
         size="md"
         ok-btn-text="${translate('START')}"
         dialog-title="${translate('SEND_FOR_REVIEW')}"

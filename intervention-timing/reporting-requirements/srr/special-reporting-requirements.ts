@@ -1,6 +1,6 @@
-import {LitElement, html, property, customElement} from 'lit-element';
-import '@polymer/paper-button/paper-button';
-import '@unicef-polymer/etools-data-table/etools-data-table';
+import {LitElement, html} from 'lit';
+import {property, customElement} from 'lit/decorators.js';
+import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 
 import '@unicef-polymer/etools-modules-common/dist/layout/icons-actions';
 import './add-edit-special-rep-req';
@@ -8,31 +8,33 @@ import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-c
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
 import CONSTANTS from '../../../common/constants';
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
-import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
+import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-table/styles/data-table-styles';
 import {translate, get as getTranslation} from 'lit-translate';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
-import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import PaginationMixin from '@unicef-polymer/etools-modules-common/dist/mixins/pagination-mixin';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {EtoolsEndpoint} from '@unicef-polymer/etools-types';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 /**
  * @customElement
- * @polymer
+ * @LitElement
  * @mixinFunction
  * @appliesMixin ReportingRequirementsCommonMixin
  */
 @customElement('special-reporting-requirements')
 export class SpecialReportingRequirements extends PaginationMixin(ReportingRequirementsCommonMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles, reportingRequirementsListStyles];
+    return [gridLayoutStylesLit, reportingRequirementsListStyles];
   }
   render() {
     return html`
@@ -46,8 +48,8 @@ export class SpecialReportingRequirements extends PaginationMixin(ReportingRequi
       </div>
 
       <div class="row-h" ?hidden="${!this.editMode}">
-        <paper-button class="secondary-btn" @click="${this._openAddDialog}"
-          >${translate('ADD_REQUIREMENTS')}</paper-button
+        <etools-button variant="text" class="no-marg no-pad font-14" @click="${this._openAddDialog}"
+          >${translate('ADD_REQUIREMENTS')}</etools-button
         >
       </div>
 
@@ -65,8 +67,8 @@ export class SpecialReportingRequirements extends PaginationMixin(ReportingRequi
               <div class="col-data col-3">${this.getDateDisplayValue(item.due_date)}</div>
               <div class="col-data col-6">${item.description}</div>
               <div class="col-data flex-c actions">
-                <paper-icon-button icon="icons:create" @click="${() => this._onEdit(index)}"></paper-icon-button>
-                <paper-icon-button icon="icons:delete" @click="${() => this._onDelete(index)}"></paper-icon-button>
+                <etools-icon-button name="create" @click="${() => this._onEdit(index)}"></etools-icon-button>
+                <etools-icon-button name="delete" @click="${() => this._onDelete(index)}"></etools-icon-button>
               </div>
             </div>
           </etools-data-table-row>`
@@ -183,7 +185,7 @@ export class SpecialReportingRequirements extends PaginationMixin(ReportingRequi
     const reportingRequirementsOriginal = this.reportingRequirements;
     if (this._itemToDeleteIndex > -1) {
       const itemToDelete = this.reportingRequirements[this._itemToDeleteIndex] as any;
-      const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(
+      const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(
         interventionEndpoints.specialReportingRequirementsUpdate,
         {
           reportId: itemToDelete.id

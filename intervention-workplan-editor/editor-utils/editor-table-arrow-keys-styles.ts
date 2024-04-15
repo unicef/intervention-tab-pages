@@ -1,4 +1,4 @@
-import {css} from 'lit-element';
+import {css} from 'lit';
 
 export const EditorTableArrowKeysStyles = css`
   tbody > tr > td[tabindex]:focus {

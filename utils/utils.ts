@@ -53,6 +53,10 @@ export const detailsTextareaRowsCount = (editable: boolean) => {
   return editable ? 3 : 1;
 };
 
+export const isActiveTab = (tab: string, expectedTab: string): boolean => {
+  return tab === expectedTab;
+};
+
 export const addItemToListIfMissing = (item: AnyObject, list: AnyObject[], key: string) => {
   if (item && list && key) {
     if (!list.find((el) => el[key] === item[key])) {

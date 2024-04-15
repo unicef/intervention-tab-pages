@@ -1,37 +1,45 @@
-import {LitElement, html, property, query, customElement} from 'lit-element';
-import '@polymer/iron-label/iron-label';
-import '@polymer/paper-button/paper-button';
-import '@unicef-polymer/etools-dialog/etools-dialog.js';
+import {LitElement, css, html} from 'lit';
+import {customElement, property, query} from 'lit/decorators.js';
+import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 
 import {prepareDatepickerDate} from '@unicef-polymer/etools-utils/dist/date.util';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import './qpr-list.js';
 import CONSTANTS from '../../../common/constants';
-import '@unicef-polymer/etools-date-time/calendar-lite.js';
+import '@unicef-polymer/etools-unicef/src/etools-date-time/calendar-lite.js';
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
-import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
+import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {QprListEl} from './qpr-list.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {AnyObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
-declare const dayjs: any;
+import dayjs from 'dayjs';
 import {translate, get as getTranslation} from 'lit-translate';
 import {translatesMap} from '../../../utils/intervention-labels-map';
 import GenerateQuarterlyReportingRequirementsMixin from '../mixins/generate-quarterly-reporting-requirements-mixin';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 
 /**
- * @polymer
+ * @LitElement
  * @customElement
  */
 @customElement('edit-qpr-dialog')
 export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [
+      gridLayoutStylesLit,
+      css`
+        etools-button#addReq,
+        etools-button#regen {
+          --sl-input-height-medium: 24px !important;
+        }
+      `
+    ];
   }
   render() {
     return html`
@@ -49,11 +57,13 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
           margin-top: 24px;
         }
 
-        iron-label {
+        .label {
+          font-size: var(--etools-font-size-14, 14px);
+          color: var(--primary-text-color);
           margin-bottom: 24px;
         }
 
-        etools-dialog::part(ed-paper-dialog) {
+        etools-dialog::part(panel) {
           width: 960px;
         }
 
@@ -70,24 +80,29 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
         id="editQprDialog"
         size="lg"
         dialog-title=${translate('EDIT_QPR_REQUIREMENTS')}
-        ?hidden="${this.addOrModifyQprDialogOpened}"
+        ?opened="${this.editQprDialogOpened}"
         @confirm-btn-clicked="${() => this._saveModifiedQprData()}"
-        @close="${() => this.closeQprDialog()}"
+        @close="${() => this.handleEditQprDialogClosed()}"
         ok-btn-text=${translate('GENERAL.SAVE')}
         cancel-btn-text=${translate('GENERAL.CANCEL')}
         keep-dialog-open
-        opened
         ?show-spinner="${this.requestInProgress}"
         spinner-text=${translate('GENERAL.SAVING_DATA')}
       >
         <div class="layout-horizontal">
           <span id="qpr-edit-info">${translate('ALL_DATES_IN_FUTURE')}</span>
-          <paper-button class="secondary-btn" @click="${this._addNewQpr}">${translate('ADD_REQUIREMENT')}</paper-button>
+          <etools-button id="addReq" variant="text" class="no-marg no-pad font-14" @click="${this._addNewQpr}"
+            >${translate('ADD_REQUIREMENT')}</etools-button
+          >
         </div>
         <div class="layout-horizontal" style="padding-top:10px" ?hidden="${!this.insterventionsDatesDiffer()}">
           <span id="regenerate-info">${translate('PD_START_END_DATE_CHANGED')}</span> &nbsp;
-          <paper-button class="secondary-btn" @click="${this.regenerateReportingRequirements}"
-            >${translate('REGENERATE')}</paper-button
+          <etools-button
+            id="regen"
+            variant="text"
+            class="no-marg no-pad font-14"
+            @click="${this.regenerateReportingRequirements}"
+            >${translate('REGENERATE')}</etools-button
           >
         </div>
 
@@ -109,7 +124,7 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
         ?opened="${this.addOrModifyQprDialogOpened}"
         no-padding
         @confirm-btn-clicked="${() => this._updateQprData()}"
-        @close="${() => this.handleDialogClosed()}"
+        @close="${() => this.handleAddOrModifyQprDialogClosed()}"
         keep-dialog-open
         ok-btn-text=${translate('GENERAL.SAVE')}
         cancel-btn-text=${translate('GENERAL.CANCEL')}
@@ -120,10 +135,10 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
 
         <div class="row-h">
           <div class="col layout-vertical">
-            <iron-label for="startDate">${translate(translatesMap.start_date)}</iron-label>
+            <label class="label" for="startDate">${translate(translatesMap.start_date)}</label>
             <calendar-lite
               id="startDate"
-              pretty-date="${this._editedQprDatesSet!.start_date ? this._editedQprDatesSet!.start_date : ''}"
+              .date="${this._editedQprDatesSet!.start_date ? this._editedQprDatesSet!.start_date : ''}"
               format="YYYY-MM-DD"
               @date-changed="${({detail}: CustomEvent) => this.changed(detail.value, 'start_date')}"
               hide-header
@@ -131,10 +146,10 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
             </calendar-lite>
           </div>
           <div class="col layout-vertical">
-            <iron-label for="endDate">${translate('END_DATE')}</iron-label>
+            <label class="label" for="endDate">${translate('END_DATE')}</label>
             <calendar-lite
               id="endDate"
-              pretty-date="${this._editedQprDatesSet!.end_date ? this._editedQprDatesSet!.end_date : ''}"
+              .date="${this._editedQprDatesSet!.end_date ? this._editedQprDatesSet!.end_date : ''}"
               format="YYYY-MM-DD"
               @date-changed="${({detail}: CustomEvent) => this.changed(detail.value, 'end_date')}"
               hide-header
@@ -142,10 +157,10 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
             </calendar-lite>
           </div>
           <div class="col layout-vertical">
-            <iron-label for="dueDate">${translate('DUE_DATE')}</iron-label>
+            <label class="label" for="dueDate">${translate('DUE_DATE')}</label>
             <calendar-lite
               id="dueDate"
-              pretty-date="${this._editedQprDatesSet!.due_date ? this._editedQprDatesSet!.due_date : ''}"
+              .date="${this._editedQprDatesSet!.due_date ? this._editedQprDatesSet!.due_date : ''}"
               format="YYYY-MM-DD"
               @date-changed="${({detail}: CustomEvent) => this.changed(detail.value, 'due_date')}"
               hide-header
@@ -162,6 +177,9 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
 
   @property({type: Boolean})
   addOrModifyQprDialogOpened = false;
+
+  @property({type: Boolean})
+  editQprDialogOpened = true;
 
   @property({type: Object})
   _qprDatesSetModel = {
@@ -209,6 +227,11 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
     this.addEventListener('edit-qpr', this._editQprDatesSet as any);
   }
 
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.removeEventListener('edit-qpr', this._editQprDatesSet as any);
+  }
+
   changed(value: string, item: string) {
     if (this._editedQprDatesSet) {
       const newDate = dayjs(new Date(value)).format('YYYY-MM-DD');
@@ -216,18 +239,22 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
     }
   }
 
-  handleDialogClosed() {
+  handleAddOrModifyQprDialogClosed() {
+    this.editQprDialogOpened = true;
     this.addOrModifyQprDialogOpened = false;
   }
 
-  closeQprDialog() {
-    this.removeEventListener('edit-qpr', this._editQprDatesSet as any);
-    fireEvent(this, 'dialog-closed', {confirmed: false});
+  handleEditQprDialogClosed() {
+    this.editQprDialogOpened = false;
+    if (!this.editQprDialogOpened && !this.addOrModifyQprDialogOpened) {
+      fireEvent(this, 'dialog-closed', {confirmed: false});
+    }
   }
 
   _addNewQpr() {
     this._editedQprDatesSet = Object.assign({}, this._qprDatesSetModel);
     this.addOrModifyQprDialogOpened = true;
+    this.editQprDialogOpened = false;
   }
 
   regenerateReportingRequirements() {
@@ -277,8 +304,10 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
   _updateQprData() {
     if (!this._validateDataBeforeAdd()) {
       this.addOrModifyQprDialogOpened = true;
+      this.editQprDialogOpened = false;
       return;
     }
+    this.editQprDialogOpened = true;
     this.addOrModifyQprDialogOpened = false;
     const auxQprData = [...this.qprData];
     if (this._qprDatesSetEditedIndex < 0) {
@@ -290,6 +319,7 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
     }
     this.qprData = [...auxQprData];
     this._qprDatesSetEditedIndex = -1;
+    this.editQprDialogOpened = true;
     this.addOrModifyQprDialogOpened = false;
     this.requestUpdate();
   }
@@ -301,6 +331,7 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
     this._qprDatesSetEditedIndex = e.detail.index;
     this._editedQprDatesSet = Object.assign({}, this.qprData[this._qprDatesSetEditedIndex]);
     this.addOrModifyQprDialogOpened = true;
+    this.editQprDialogOpened = false;
   }
 
   _deleteQprDatesSet(event: CustomEvent) {
@@ -321,7 +352,7 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
   }
 
   _saveModifiedQprData() {
-    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.reportingRequirements, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.reportingRequirements, {
       intervId: this.interventionId,
       reportType: CONSTANTS.REQUIREMENTS_REPORT_TYPE.QPR
     });
@@ -334,7 +365,6 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
     })
       .then((response: any) => {
         dialog.stopSpinner();
-        this.removeEventListener('edit-qpr', this._editQprDatesSet as any);
         fireEvent(this, 'dialog-closed', {confirmed: true, response: response.reporting_requirements});
       })
       .catch((error: any) => {

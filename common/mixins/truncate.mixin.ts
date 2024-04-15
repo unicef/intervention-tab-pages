@@ -1,6 +1,8 @@
 import {Constructor} from '@unicef-polymer/etools-types';
-import {CSSResultArray, html, LitElement, TemplateResult, css} from 'lit-element';
-import {PaperButtonElement} from '@polymer/paper-button/paper-button';
+import {CSSResultArray, html, LitElement, TemplateResult, css} from 'lit';
+
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
+import SlButton from '@shoelace-style/shoelace/dist/components/button/button.js';
 
 export function TruncateMixin<T extends Constructor<LitElement>>(baseClass: T) {
   return class Truncate extends baseClass {
@@ -14,18 +16,19 @@ export function TruncateMixin<T extends Constructor<LitElement>>(baseClass: T) {
       if (string.length <= this.amountOfFirstLetters) {
         return html`${string}`;
       }
-      return html`${string.substring(0, this.amountOfFirstLetters)}<paper-button
-          class="show-more-btn"
+      return html`${string.substring(0, this.amountOfFirstLetters)}<etools-button
+          variant="text"
+          class="no-marg no-pad show-more-btn"
           id="show-more"
           @click="${(event: CustomEvent) => this.showMore(event)}"
-          >...</paper-button
+          >...</etools-button
         ><span hidden aria-hidden>${string.substring(60, string.length)}</span> `;
     }
 
     private showMore(event: CustomEvent) {
-      const paperBtn = event.target as PaperButtonElement;
-      paperBtn.setAttribute('hidden', '');
-      const truncatedText = paperBtn.nextElementSibling;
+      const slBtn = event.target as SlButton;
+      slBtn.setAttribute('hidden', '');
+      const truncatedText = slBtn.nextElementSibling;
       truncatedText?.removeAttribute('hidden');
       truncatedText?.removeAttribute('aria-hidden');
     }
@@ -34,8 +37,12 @@ export function TruncateMixin<T extends Constructor<LitElement>>(baseClass: T) {
       return [
         css`
           .show-more-btn {
-            margin: 0;
-            padding: 0;
+            --sl-input-height-medium: 24px;
+            max-height: 24px;
+          }
+          .show-more-btn::part(base) {
+            margin: 0px;
+            padding: 0px;
             min-width: 15px;
             font-weight: bold;
             color: var(--primary-color);

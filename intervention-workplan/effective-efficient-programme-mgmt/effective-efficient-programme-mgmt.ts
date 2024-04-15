@@ -1,10 +1,11 @@
-import {customElement, html, LitElement, property} from 'lit-element';
-import '@polymer/paper-input/paper-textarea';
-import '@unicef-polymer/etools-content-panel';
-import '@unicef-polymer/etools-currency-amount-input';
+import {html, LitElement} from 'lit';
+import {property, customElement} from 'lit/decorators.js';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
+import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
 import './activity-dialog';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
@@ -19,14 +20,15 @@ import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixin
 import {RootState} from '../../common/types/store.types';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {KindChoices, ProgrammeManagement} from './effectiveEfficientProgrammeMgmt.models';
-import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject} from '@unicef-polymer/etools-types';
 import {get as getTranslation, translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
-import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
-import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
+import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
+import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-table/styles/data-table-styles';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 /**
  * @customElement
@@ -34,7 +36,7 @@ import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-s
 @customElement('effective-and-efficient-programme-management')
 export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles, elevationStyles];
+    return [gridLayoutStylesLit, elevationStyles];
   }
 
   render() {
@@ -49,7 +51,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         ${dataTableStylesLit} :host {
           display: block;
           margin-bottom: 24px;
-          --etools-table-col-font-size: 16px;
+          --etools-table-col-font-size: var(--etools-font-size-16, 16px);
         }
 
         etools-table {
@@ -65,12 +67,12 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         .actions {
           width: 100px;
         }
-        .actions paper-icon-button {
+        .actions etools-icon-button {
           color: var(--dark-icon-color, #6f6f70);
         }
         .col-data,
         .row-details-content {
-          font-size: 16px;
+          font-size: var(--etools-font-size-16, 16px);
         }
         etools-data-table-row .actions {
           visibility: hidden;
@@ -79,12 +81,19 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         etools-data-table-row:hover .actions {
           visibility: visible;
         }
-        etools-data-table-row .actions paper-icon-button {
-          height: 24px;
+        etools-data-table-row .actions etools-icon-button {
+          --etools-icon-font-size: var(--etools-font-size-24, 24px);
           padding: 0;
+        }
+        etools-data-table-row *[slot='row-data'] {
+          margin-top: 0px;
+          margin-bottom: 0px;
         }
         .text-right {
           place-content: end;
+        }
+        .padding-top-6 {
+          padding-top: 6px;
         }
       </style>
 
@@ -97,8 +106,8 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
           ></info-icon-tooltip>
         </div>
         <div slot="panel-btns">
-          <label class="paper-label font-bold pad-right">${translate('TOTAL')}:</label
-          ><label class="font-bold-12">${this.data.currency} ${this.total_amount}</label>
+          <label class="label font-bold pad-right">${translate('TOTAL')}:</label
+          ><label class="font-bold-12 padding-top-6">${this.data.currency} ${this.total_amount}</label>
         </div>
 
         <etools-data-table-header id="listHeader" no-title>
@@ -134,23 +143,23 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
                   ${item.total}
                 </div>
                 <div class="actions">
-                  <paper-icon-button
+                  <etools-icon-button
                     ?hidden="${!this.canEdit}"
-                    icon="create"
+                    name="create"
                     @click="${() => this.openActivityDialog(item)}"
                     tabindex="0"
-                  ></paper-icon-button>
-                  <paper-icon-button
+                  ></etools-icon-button>
+                  <etools-icon-button
                     ?hidden="${this.canEdit}"
-                    icon="icons:visibility"
+                    name="visibility"
                     @click="${() => this.openActivityDialog(item)}"
                     tabindex="0"
-                  ></paper-icon-button>
+                  ></etools-icon-button>
                 </div>
               </div>
               <div slot="row-data-details">
                 <div class="row-details-content">
-                  <label class="paper-label">${translate('GENERAL.DESCRIPTION')}</label><br />
+                  <label class="label">${translate('GENERAL.DESCRIPTION')}</label><br />
                   <label>${item.description}</label>
                 </div>
               </div>

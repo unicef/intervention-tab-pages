@@ -1,34 +1,30 @@
-import {LitElement, customElement, html, property, query} from 'lit-element';
-import '@polymer/iron-pages/iron-pages.js';
-import '@polymer/iron-icons/iron-icons.js';
-import '@polymer/paper-input/paper-input.js';
-import '@polymer/paper-tabs/paper-tab.js';
-import '@polymer/paper-tabs/paper-tabs.js';
-import '@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
-import '@polymer/paper-item/paper-item.js';
-import '@polymer/paper-toggle-button/paper-toggle-button.js';
-import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
-import '@unicef-polymer/etools-dialog/etools-dialog.js';
+import {LitElement, html} from 'lit';
+import {property, customElement, query} from 'lit/decorators.js';
+import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
+import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
+import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
+import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
 import SaveIndicatorMixin from './mixins/save-indicator-mixin';
 import IndicatorDialogTabsMixin from './mixins/indicator-dialog-tabs-mixin';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {userIsPme} from '@unicef-polymer/etools-modules-common/dist/utils/user-permissions';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
-import {PaperCheckboxElement} from '@polymer/paper-checkbox';
-import '@unicef-polymer/etools-modules-common/dist/layout/etools-tabs';
 import './indicator-dissaggregations';
 import './non-cluster-indicator';
 import './cluster-indicator';
 import './cluster-indicator-disaggregations';
+import '@unicef-polymer/etools-modules-common/dist/layout/etools-tabs';
 import {Indicator, IndicatorDialogData} from '@unicef-polymer/etools-types';
 import {AnyObject, EtoolsUser, LocationObject, Section} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {translatesMap} from '../../../../utils/intervention-labels-map';
+import '@shoelace-style/shoelace/dist/components/tab-group/tab-group.js';
+import '@shoelace-style/shoelace/dist/components/tab/tab.js';
+import {isActiveTab} from '../../../../utils/utils';
 
 @customElement('indicator-dialog')
 export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin(ComponentBaseMixin(LitElement))) {
@@ -44,10 +40,6 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
       <style>
         [hidden] {
           display: none !important;
-        }
-
-        paper-input {
-          width: 100%;
         }
 
         :host {
@@ -67,16 +59,23 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
           color: var(--secondary-text-color);
           padding: 8px 0;
           font-weight: 500;
-          font-size: 16px !important;
+          font-size: var(--etools-font-size-16, 16px) !important;
         }
 
         a {
           color: var(--primary-color);
         }
-
-        etools-dialog::part(ed-scrollable) {
-          min-height: 400px;
-          font-size: 16px;
+        sl-tab-group {
+          --indicator-color: var(--primary-color);
+        }
+        sl-tab::part(base) {
+          text-transform: uppercase;
+          opacity: 0.8;
+        }
+        sl-tab::part(base):focus-visible {
+          outline: 0;
+          opacity: 1;
+          font-weight: 700;
         }
       </style>
 
@@ -84,7 +83,6 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
         id="indicatorDialog"
         size="lg"
         no-padding
-        opened
         @close="${this.onClose}"
         @confirm-btn-clicked="${this._validateAndSaveIndicator}"
         ok-btn-text=${translate('GENERAL.SAVE')}
@@ -99,85 +97,78 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
           .tabs="${this.indicatorDataTabs}"
           .activeTab="${this.activeTab}"
           border-bottom
-          @iron-select="${this.tabChanged}"
+          @sl-tab-show="${this.tabChanged}"
         ></etools-tabs-lit>
 
-        <iron-pages
-          id="indicatorPages"
-          .selected="${this.activeTab}"
-          attr-for-selected="name"
-          fallback-selection="details"
-        >
-          <div name="details">
-            <div class="row-h flex-c">
-              <div class="col col-4">
-                <etools-dropdown
-                  id="sectionDropdw"
-                  label=${translate(translatesMap.section)}
-                  .selected="${this.data?.section}"
-                  placeholder="&#8212;"
-                  .options="${this.sectionOptions}"
-                  option-label="name"
-                  option-value="id"
-                  required
-                  auto-validate
-                  error-message=${translate('PLEASE_SELECT_SECTIONS')}
-                  fit-into="etools-dialog"
-                  ?readonly="${this.readonly}"
-                  trigger-value-change-event
-                  @etools-selected-item-changed="${({detail}: CustomEvent) =>
-                    this.selectedItemChanged(detail, 'section')}"
-                >
-                </etools-dropdown>
-              </div>
-            </div>
-            <div class="row-h" ?hidden="${!this.isCluster}">${translate('CLUSTER_INDICATOR')}</div>
-            <div class="indicator-content${this.isCluster ? ' cluster' : ''}">
-              ${!this.isCluster
-                ? html` <non-cluster-indicator
-                    id="nonClusterIndicatorEl"
-                    .indicator="${this.data}"
-                    .locationOptions="${this.locationOptions}"
-                    .interventionStatus="${this.interventionStatus}"
-                    .readonly="${this.readonly}"
-                    .isUnicefUser="${this.currentUser?.is_unicef_user}"
-                  ></non-cluster-indicator>`
-                : html``}
-              ${this.isCluster
-                ? html` <cluster-indicator
-                    id="clusterIndicatorEl"
-                    .indicator="${this.data}"
-                    .locationOptions="${this.locationOptions}"
-                    .readonly="${this.readonly}"
-                    @prp-disaggregations-changed="${({detail}: CustomEvent) =>
-                      this.displayClusterDisaggregations(detail)}"
-                  ></cluster-indicator>`
-                : html``}
+        <div name="details" ?hidden="${!isActiveTab(this.activeTab, 'details')}">
+          <div class="row-h flex-c">
+            <div class="col col-4">
+              <etools-dropdown
+                id="sectionDropdw"
+                label=${translate(translatesMap.section)}
+                .selected="${this.data?.section}"
+                placeholder="&#8212;"
+                .options="${this.sectionOptions}"
+                option-label="name"
+                option-value="id"
+                required
+                auto-validate
+                error-message=${translate('PLEASE_SELECT_SECTIONS')}
+                fit-into="etools-dialog"
+                ?readonly="${this.readonly}"
+                trigger-value-change-event
+                @etools-selected-item-changed="${({detail}: CustomEvent) =>
+                  this.selectedItemChanged(detail, 'section')}"
+              >
+              </etools-dropdown>
             </div>
           </div>
-          <div class="row-padding" name="disaggregations">
-            <div ?hidden="${this._hideAddDisaggreations(this.isCluster, this.currentUser)}" class="createDisaggreg">
-              ${translate('IF_NO_DISAGGREG_GROUPS')}
-              <a href="/pmp/settings" target="_blank">${translate('HERE')}</a>.
-            </div>
+          <div class="row-h" ?hidden="${!this.isCluster}">${translate('CLUSTER_INDICATOR')}</div>
+          <div class="indicator-content${this.isCluster ? ' cluster' : ''}">
             ${!this.isCluster
-              ? html` <indicator-dissaggregations
-                  id="indicatorDisaggregations"
-                  .data="${this.disaggregations}"
+              ? html` <non-cluster-indicator
+                  id="nonClusterIndicatorEl"
+                  .indicator="${this.data}"
+                  .locationOptions="${this.locationOptions}"
+                  .interventionStatus="${this.interventionStatus}"
                   .readonly="${this.readonly}"
-                  @add-new-disaggreg="${({detail}: CustomEvent) => {
-                    this._updateScroll();
-                    this.disaggregations = detail;
-                  }}"
-                >
-                </indicator-dissaggregations>`
+                  .isUnicefUser="${this.currentUser?.is_unicef_user}"
+                ></non-cluster-indicator>`
               : html``}
             ${this.isCluster
-              ? html` <cluster-indicator-disaggregations .disaggregations="${this.prpDisaggregations}">
-                </cluster-indicator-disaggregations>`
+              ? html` <cluster-indicator
+                  id="clusterIndicatorEl"
+                  .indicator="${this.data}"
+                  .locationOptions="${this.locationOptions}"
+                  .readonly="${this.readonly}"
+                  @prp-disaggregations-changed="${({detail}: CustomEvent) =>
+                    this.displayClusterDisaggregations(detail)}"
+                ></cluster-indicator>`
               : html``}
           </div>
-        </iron-pages>
+        </div>
+        <div class="row-padding" name="disaggregations" ?hidden="${!isActiveTab(this.activeTab, 'disaggregations')}">
+          <div ?hidden="${this._hideAddDisaggreations(this.isCluster, this.currentUser)}" class="createDisaggreg">
+            ${translate('IF_NO_DISAGGREG_GROUPS')}
+            <a href="/pmp/settings" target="_blank">${translate('HERE')}</a>.
+          </div>
+          ${!this.isCluster
+            ? html` <indicator-dissaggregations
+                id="indicatorDisaggregations"
+                .data="${this.disaggregations}"
+                .readonly="${this.readonly}"
+                @add-new-disaggreg="${({detail}: CustomEvent) => {
+                  this._updateScroll();
+                  this.disaggregations = detail;
+                }}"
+              >
+              </indicator-dissaggregations>`
+            : html``}
+          ${this.isCluster
+            ? html` <cluster-indicator-disaggregations .disaggregations="${this.prpDisaggregations}">
+              </cluster-indicator-disaggregations>`
+            : html``}
+        </div>
       </etools-dialog>
     `;
   }
@@ -257,12 +248,11 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   }
 
   tabChanged(e: CustomEvent) {
-    const newTabName: string = e.detail.item.getAttribute('name');
+    const newTabName: string = e.detail.name;
     if (newTabName === this.activeTab) {
       return;
     }
     this.activeTab = newTabName;
-    this._centerDialog();
   }
 
   displayClusterDisaggregations(detail: {prpDisaggregations: []}) {
@@ -270,7 +260,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
   }
 
   isClusterChanged(e: CustomEvent) {
-    const chk = e.target as PaperCheckboxElement;
+    const chk = e.target as any;
     if (chk.checked === undefined || chk.checked === null) {
       return;
     }
@@ -361,10 +351,6 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
 
   _showToast(e: CustomEvent) {
     parseRequestErrorsAndShowAsToastMsgs(e.detail.error, this);
-  }
-
-  _centerDialog() {
-    this.indicatorDialog.notifyResize();
   }
 
   _hideAddDisaggreations(isCluster: boolean, currentUser: EtoolsUser | null) {

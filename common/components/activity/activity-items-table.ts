@@ -1,24 +1,16 @@
-import {
-  LitElement,
-  html,
-  css,
-  TemplateResult,
-  CSSResultArray,
-  customElement,
-  property,
-  PropertyValues
-} from 'lit-element';
+import {LitElement, html, css, TemplateResult, CSSResultArray, PropertyValues} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import {ActivityItemsTableStyles} from './activity-items-table.styles';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {ActivityItemRow} from './activity-item-row';
 import './activity-item-row';
 import {AnyObject, InterventionActivityItem} from '@unicef-polymer/etools-types';
-import {PaperTextareaElement} from '@polymer/paper-input/paper-textarea';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../../utils/intervention-labels-map';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {callClickOnSpacePushListener} from '@unicef-polymer/etools-utils/dist/accessibility.util';
-import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
+import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog';
+import {EtoolsTextarea} from '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 
 @customElement('activity-items-table')
 export class ActivityItemsTable extends LitElement {
@@ -27,7 +19,7 @@ export class ActivityItemsTable extends LitElement {
     return [
       ActivityItemsTableStyles,
       css`
-        iron-icon {
+        etools-icon {
           margin: 11px 25px 11px;
           color: var(--secondary-text-color);
           cursor: pointer;
@@ -71,7 +63,6 @@ export class ActivityItemsTable extends LitElement {
             @item-changed="${({detail}: CustomEvent) => this.updateActivityItem(index, detail)}"
             @remove-item="${() => {
               this.updateActivityItem(index, null);
-              this.resizeDialog();
             }}"
             .readonly="${this.readonly}"
             .lastItem="${this.isLastItem(index)}"
@@ -79,23 +70,13 @@ export class ActivityItemsTable extends LitElement {
           ></activity-item-row>`
       )}
       ${!this.readonly
-        ? html`<iron-icon id="btnAddItem" icon="add" tabIndex="0" @click="${() => this.addNew()}"></iron-icon>`
+        ? html`<etools-icon id="btnAddItem" name="add" tabIndex="0" @click="${() => this.addNew()}"></etools-icon>`
         : html``}
     `;
   }
 
   updated(changedProperties: PropertyValues): void {
     super.updated(changedProperties);
-
-    this.resizeDialogIfItemsNumberChanged(changedProperties.get('activityItems') as []);
-  }
-
-  resizeDialogIfItemsNumberChanged(changedActivityItems?: []) {
-    if (changedActivityItems && changedActivityItems.length !== this.activityItems.length) {
-      setTimeout(() => {
-        this.resizeDialog();
-      }, 300);
-    }
   }
 
   firstUpdated(changedProperties: PropertyValues): void {
@@ -117,20 +98,12 @@ export class ActivityItemsTable extends LitElement {
     this.setFocusOnActivityRow();
   }
 
-  resizeDialog() {
-    if (this.dialogElement) {
-      this.dialogElement.notifyResize();
-    }
-  }
-
   setFocusOnActivityRow(focusLastRow = true) {
     setTimeout(() => {
       const activityRows = this.shadowRoot!.querySelectorAll('activity-item-row');
       if (activityRows.length) {
         const rowIndex = focusLastRow ? activityRows.length - 1 : 0;
-        const activityNameEl = activityRows[rowIndex].shadowRoot!.querySelector(
-          '#activityName'
-        ) as PaperTextareaElement;
+        const activityNameEl = activityRows[rowIndex].shadowRoot!.querySelector('#activityName') as EtoolsTextarea;
         if (activityNameEl) {
           activityNameEl.focus();
         }

@@ -1,8 +1,9 @@
-import {LitElement, html, property, customElement} from 'lit-element';
-// import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
-import '@polymer/paper-input/paper-textarea';
+import {LitElement, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
+// import EtoolsDialog from '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {translate} from 'lit-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
@@ -15,7 +16,7 @@ import {Site} from '@unicef-polymer/etools-types';
 @customElement('sites-dialog')
 export class GroupedLocationsDialog extends LitElement {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [gridLayoutStylesLit];
   }
 
   render() {
@@ -28,11 +29,6 @@ export class GroupedLocationsDialog extends LitElement {
       <style>
         [hidden] {
           display: none !important;
-        }
-
-        etools-dialog::part(ed-scrollable) {
-          min-height: 300px;
-          font-size: 16px;
         }
 
         .adminLevelLoc {
@@ -68,20 +64,10 @@ export class GroupedLocationsDialog extends LitElement {
           padding-bottom: 0;
         }
 
-        etools-dialog paper-textarea {
-          outline: none;
-          --paper-input-container-underline: {
-            display: none;
-          }
-          --paper-input-container-underline-focus: {
-            display: none;
-          }
-          --iron-autogrow-textarea: {
-            overflow: auto;
-            padding: 0;
-            min-height: 48px;
-            max-height: 96px;
-          }
+        etools-dialog etools-textarea::part(textarea) {
+          min-height: 48px;
+          max-height: 96px;
+          overflow-y: auto;
         }
       </style>
 
@@ -89,7 +75,6 @@ export class GroupedLocationsDialog extends LitElement {
         id="sitesDialog"
         size="lg"
         keep-dialog-open
-        opened
         dialog-title=${translate('SELECT_SITE')}
         cancel-btn-text=${translate('GENERAL.CANCEL')}
         ok-btn-text=${translate('SELECT')}
@@ -105,16 +90,15 @@ export class GroupedLocationsDialog extends LitElement {
           }}"
         ></sites-widget>
 
-        <paper-textarea
+        <etools-textarea
           label="${translate('SELECTED_SITES')}"
           always-float-label
           class="w100"
           placeholder="&#8212;"
-          max-rows="4"
-          onkeypress="return false;"
+          readonly
           .value="${this.getSelectedSitesText(this.selectedSites)}"
         >
-        </paper-textarea>
+        </etools-textarea>
       </etools-dialog>
     `;
   }
