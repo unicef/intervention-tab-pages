@@ -90,7 +90,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
           margin-bottom: 0px;
         }
         .text-right {
-          place-content: end;
+          place-content: end !important;
         }
         .padding-top-6 {
           padding-top: 6px;
