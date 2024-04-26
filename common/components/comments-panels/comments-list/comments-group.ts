@@ -1,9 +1,9 @@
-import {css, CSSResultArray, customElement, LitElement, html, TemplateResult, property} from 'lit-element';
+import {css, LitElement, html, TemplateResult} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {translate} from 'lit-translate';
 import {CommentRelatedItem} from '../../comments/comments-types';
-
-declare const dayjs: any;
+import dayjs from 'dayjs';
 
 @customElement('comments-group')
 export class CommentsGroup extends LitElement {
@@ -43,7 +43,7 @@ export class CommentsGroup extends LitElement {
     return html`${this.relatedToDescription} ${this.fieldDescription ? translate(this.fieldDescription) : ''}`;
   }
 
-  static get styles(): CSSResultArray {
+  static get styles() {
     // language=css
     return [
       gridLayoutStylesLit,
@@ -75,19 +75,19 @@ export class CommentsGroup extends LitElement {
           border-radius: 50%;
           background-color: #009688;
           margin-inline-end: 12px;
-          font-size: 18px;
+          font-size: var(--etools-font-size-18, 18px);
           font-weight: 500;
           line-height: 21px;
           color: #ffffff;
         }
         .description,
         .title {
-          font-size: 16px;
+          font-size: var(--etools-font-size-16, 16px);
           line-height: 19px;
           color: #212121;
         }
         .date {
-          font-size: 14px;
+          font-size: var(--etools-font-size-14, 14px);
           line-height: 16px;
           color: #979797;
         }

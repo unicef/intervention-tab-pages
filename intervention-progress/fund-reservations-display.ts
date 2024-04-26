@@ -1,9 +1,9 @@
-import {LitElement, customElement, html, property} from 'lit-element';
-import '@polymer/iron-label/iron-label';
-import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
-import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
-import '@unicef-polymer/etools-data-table/etools-data-table';
-import '@polymer/iron-icons/iron-icons';
+import {LitElement, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
+import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
+import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
+import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
+import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import isEmpty from 'lodash-es/isEmpty';
 import {AnyObject} from '@unicef-polymer/etools-types';
@@ -12,7 +12,6 @@ import {translate} from 'lit-translate';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {frWarningsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/fr-warnings-styles';
 import FrNumbersConsistencyMixin from '@unicef-polymer/etools-modules-common/dist/mixins/fr-numbers-consistency-mixin';
-import {customIcons} from '@unicef-polymer/etools-modules-common/dist/styles/custom-icons';
 import {prettyDate} from '@unicef-polymer/etools-utils/dist/date.util';
 
 /**
@@ -28,7 +27,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
       return html`<etools-loading source="fund-res-display" active></etools-loading>`;
     }
     return html`
-      ${customIcons} ${sharedStyles}
+      ${sharedStyles}
       <style>
         :host {
           --list-column-label: {
@@ -36,9 +35,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
           }
         }
         #totalsRow {
-          --list-row-no-collapse: {
-            background-color: var(--light-theme-background-color);
-          }
+          --list-row-no-collapse-bg-color: var(--light-theme-background-color);
           --list-bg-color: var(--light-theme-background-color);
         }
         #plannedUnicefCash,
@@ -59,8 +56,8 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
           flex-direction: column;
           justify-content: flex-end;
         }
-        .unicef-cash-col iron-label {
-          font-size: 12px;
+        .unicef-cash-col label {
+          font-size: var(--etools-font-size-12, 12px);
           color: var(--secondary-text-color);
           font-weight: bold;
         }
@@ -103,7 +100,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
                 <span class="col-data col-2"
                   >${fr.fr_number}
                   <a title="See more details" class="pl-5" target="_blank" href="${this.getFRNumberLink(fr.fr_number)}">
-                    <iron-icon class="lifted-up-icon" icon="pmp-custom-icons:external-icon"></iron-icon>
+                    <etools-icon class="lifted-up-icon" name="external-icon"></etools-icon>
                   </a>
                 </span>
                 <span class="col-data col-2 right-align">${prettyDate(fr.start_date)}</span>
@@ -119,7 +116,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
                     )}"
                   >
                     <span slot="field">${fr.currency}</span>
-                    <iron-icon icon="pmp-custom-icons:not-equal" slot="custom-icon"></iron-icon>
+                    <etools-icon name="not-equal" slot="custom-icon"></etools-icon>
                     <span slot="message">
                       <span>${this.getFrCurrencyTooltipMsg()}</span>
                     </span>
@@ -136,7 +133,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
                     <span slot="field" class="${this.getFrsValueNAClass(fr.multi_curr_flag, true)}">
                       ${this.getFrsTotal(fr.multi_curr_flag, fr.actual_amt_local, true)}
                     </span>
-                    <iron-icon icon="pmp-custom-icons:not-equal" slot="custom-icon"></iron-icon>
+                    <etools-icon name="not-equal" slot="custom-icon"></etools-icon>
                     <span slot="message">
                       <span>${this.getFrsMultiCurrFlagErrTooltipMsg()}</span>
                     </span>
@@ -195,10 +192,10 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
                 <span slot="field" class="${this.getFrsValueNAClass(this.frsDetails.currencies_match)}">
                   ${this.getFrsCurrency(this.frsDetails.currencies_match, this.frsDetails.frs)}
                 </span>
-                <iron-icon
-                  icon="${this.getFrsCurrencyTooltipIcon(this.frsDetails.currencies_match)}"
+                <etools-icon
+                  name="${this.getFrsCurrencyTooltipIcon(this.frsDetails.currencies_match)}"
                   slot="custom-icon"
-                ></iron-icon>
+                ></etools-icon>
                 <span slot="message">${this.getFrsCurrencyTooltipMsg(this.frsDetails.currencies_match)}</span>
               </etools-info-tooltip>
             </span>
@@ -217,7 +214,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
                 <span slot="field" class="${this.getFrsValueNAClass(this.frsDetails.currencies_match)}">
                   ${this.getFrsTotal(this.frsDetails.currencies_match, this.frsDetails.total_frs_amt)}
                 </span>
-                <iron-icon icon="pmp-custom-icons:not-equal" slot="custom-icon"></iron-icon>
+                <etools-icon name="not-equal" slot="custom-icon"></etools-icon>
                 <span slot="message">${this._frsTotalAmountWarning}</span>
               </etools-info-tooltip>
             </span>
@@ -231,7 +228,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
                 <span slot="field" class="${this.getFrsValueNAClass(this.frsDetails.multi_curr_flag, true)}">
                   ${this.getFrsTotal(this.frsDetails.multi_curr_flag, String(this.frsDetails.total_actual_amt), true)}
                 </span>
-                <iron-icon icon="pmp-custom-icons:not-equal" slot="custom-icon"></iron-icon>
+                <etools-icon name="not-equal" slot="custom-icon"></etools-icon>
                 <span slot="message">
                   <span>${this.getFrsMultiCurrFlagErrTooltipMsg()}</span>
                 </span>
@@ -250,11 +247,11 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
               <strong>${translate('PLANNED')}</strong><strong>${translate('UNICEF_CASH')}</strong>
             </span>
             <span class="col-data col-2 right-align unicef-cash-col">
-              <iron-label for="pd-currency">${translate('PD_CURRENCY')}</iron-label>
+              <label for="pd-currency">${translate('PD_CURRENCY')}</label>
               ${this.renderPdCurrency()}
             </span>
             <span class="col-data col-2 right-align unicef-cash-col">
-              <iron-label for="unicef-cash">${translate('UNICEF_CASH')}</iron-label>
+              <label for="unicef-cash">${translate('UNICEF_CASH')}</label>
               <span id="unicef-cash"
                 >${displayCurrencyAmount(this.intervention.planned_budget.unicef_cash_local!, '0.0')}</span
               >

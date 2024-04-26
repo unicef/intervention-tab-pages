@@ -1,5 +1,7 @@
-import {PaperButtonElement} from '@polymer/paper-button';
-import {Constructor, LitElement} from 'lit-element';
+import {LitElement} from 'lit';
+import {Constructor} from '@unicef-polymer/etools-types';
+import SlButton from '@shoelace-style/shoelace/dist/components/button/button.component';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 /**
  * Notes about the functionality:
  * - Only cells that contain editable inputs can be reached through arrows navigation
@@ -65,7 +67,7 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
       if (event.ctrlKey && event.key == 's') {
         event.preventDefault();
         event.stopImmediatePropagation();
-        const saveBtn = this.shadowRoot?.querySelector<PaperButtonElement>('[id^="btnSave"]:not([hidden])');
+        const saveBtn = this.shadowRoot?.querySelector<SlButton>('[id^="btnSave"]:not([hidden])');
         if (saveBtn) {
           saveBtn.click();
         }
@@ -138,6 +140,7 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
         setTimeout(() => {
           input.focus();
           this.lastFocusedTd = this.determineParentTd(input);
+          console.log(input, this.lastFocusedTd);
         });
       }
     }
@@ -173,7 +176,7 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
             return;
           }
           // @ts-ignore
-          if (['paper-icon-button', 'paper-button'].includes(path[0]?.localName)) {
+          if (['etools-icon-button', 'etools-button'].includes(path[0]?.localName)) {
             return;
           }
           let actionBtn: any = this.searchForActionBtnInCurrentTd(currentTd);
@@ -385,18 +388,19 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
 
     findEditOrAddBtn(element: any) {
       return (
-        element.querySelector('paper-icon-button[icon="create"]') ||
-        element.querySelector('paper-icon-button[icon="add-box"]')
+        element.querySelector('etools-icon-button[name="create"]') ||
+        element.querySelector('etools-icon-button[name="add-box"]')
       );
     }
+
     enterClickedOnActionBtnsTd() {
       return this.lastFocusedTd && this.lastFocusedTd.classList.value.includes('action-btns');
     }
 
     focusInput(input: any) {
       setTimeout(() => {
-        if (input?.localName == 'etools-currency-amount-input') {
-          input.shadowRoot.querySelector('paper-input').focus();
+        if (input?.localName == 'etools-currency') {
+          input.shadowRoot.querySelector('etools-input').shadowRoot.querySelector('sl-input').focus();
         } else {
           input.focus();
         }
@@ -404,8 +408,11 @@ export function ArrowsNavigationMixin<T extends Constructor<LitElement>>(baseCla
     }
 
     inputIsFocused(input: any) {
-      if (input?.localName == 'etools-currency-amount-input') {
-        return input.shadowRoot.querySelector('paper-input').focused;
+      if (input?.localName == 'etools-currency') {
+        return !!input.shadowRoot
+          .querySelector('etools-input')
+          .shadowRoot.querySelector('sl-input')
+          .shadowRoot.querySelector('.input--focused');
       } else {
         return input.focused;
       }

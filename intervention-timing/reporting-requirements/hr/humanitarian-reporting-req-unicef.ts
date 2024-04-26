@@ -1,21 +1,22 @@
-import {LitElement, html, property, customElement} from 'lit-element';
+import {LitElement, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import CONSTANTS from '../../../common/constants';
-import '@polymer/paper-button/paper-button.js';
 import './edit-hru-dialog.js';
 import './hru-list.js';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
 import {ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
-import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import PaginationMixin from '@unicef-polymer/etools-modules-common/dist/mixins/pagination-mixin';
 import cloneDeep from 'lodash-es/cloneDeep';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 
 /**
  * @customElement
- * @polymer
+ * @LitElement
  * @mixinFunction
  * @appliesMixin ReportingRequirementsCommonMixin
  * @appliesMixin PaginationMixin
@@ -23,7 +24,7 @@ import cloneDeep from 'lodash-es/cloneDeep';
 @customElement('humanitarian-reporting-req-unicef')
 export class HumanitarianReportingReqUnicef extends PaginationMixin(ReportingRequirementsCommonMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [gridLayoutStylesLit];
   }
   render() {
     return html`
@@ -38,9 +39,13 @@ export class HumanitarianReportingReqUnicef extends PaginationMixin(ReportingReq
       <div ?hidden="${!this._empty(this.reportingRequirements)}">
         <div class="row-h">${translate('NO_HUMANITARIAN_REPORT')}</div>
         <div class="row-h" ?hidden="${!this._showAdd(this.expectedResults, this.editMode)}">
-          <paper-button class="secondary-btn" @click="${this.openUnicefHumanitarianRepReqDialog}">
+          <etools-button
+            variant="text"
+            class="no-marg no-pad font-14"
+            @click="${this.openUnicefHumanitarianRepReqDialog}"
+          >
             ${translate('ADD_REQUIREMENTS')}
-          </paper-button>
+          </etools-button>
         </div>
         <div class="row-h" ?hidden="${this._thereAreHFIndicators(this.expectedResults)}">
           ${translate('CAN_BE_MODIFIED_PROMPT')}

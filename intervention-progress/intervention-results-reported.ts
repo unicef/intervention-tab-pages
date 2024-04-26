@@ -1,32 +1,30 @@
-import {LitElement, html, property, customElement} from 'lit-element';
-import '@polymer/iron-icons/iron-icons';
-import '@polymer/paper-styles/element-styles/paper-material-styles';
+import {LitElement, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
+import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
 
-import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import '@unicef-polymer/etools-data-table/etools-data-table';
-import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
-import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
+import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
+import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
+import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
+import {EtoolsCurrency} from '@unicef-polymer/etools-unicef/src/mixins/currency';
 
-import '@unicef-polymer/etools-modules-common/dist/layout/etools-form-element-wrapper';
 import './layout/etools-progress-bar';
 import './layout/etools-ram-indicators';
 import '../common/layout/status/intervention-report-status';
 import './reports/indicator-report-target';
 
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {dataTableStylesLit} from '@unicef-polymer/etools-data-table/data-table-styles-lit';
+import {dataTableStylesLit} from '@unicef-polymer/etools-unicef/src/etools-data-table/styles/data-table-styles';
 
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {RootState} from '../common/types/store.types';
 
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {pmpCustomIcons} from './styles/pmp-icons';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import get from 'lodash-es/get';
 import {AnyObject, GenericObject} from '@unicef-polymer/etools-types';
 
 import {translate} from 'lit-translate';
-import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {currentIntervention} from '../common/selectors';
 import {TABS} from '../common/constants';
 import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
@@ -48,7 +46,7 @@ import {
 } from '@unicef-polymer/etools-utils/dist/date.util';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
 import {getIndicatorDisplayType} from '../utils/utils';
-declare const dayjs: any;
+import dayjs from 'dayjs';
 
 /**
  * @customElement
@@ -69,17 +67,16 @@ export class InterventionResultsReported extends connectStore(
   }
   render() {
     return html`
-      ${pmpCustomIcons}
       <style>
         ${sharedStyles}${dataTableStylesLit} #progress-summary etools-progress-bar {
           margin-top: 16px;
         }
 
-        #cash-progress etools-form-element-wrapper {
+        #cash-progress etools-input {
           width: 140px;
         }
 
-        #cash-progress etools-form-element-wrapper:first-child {
+        #cash-progress etools-input:first-child {
           margin-inline-end: 24px;
         }
 
@@ -114,19 +111,13 @@ export class InterventionResultsReported extends connectStore(
           padding-top: 0;
         }
 
-        indicator-report-target {
-          --indicator-report-target-row: {
-            padding-inline-end: 72px;
-          }
-        }
-
         etools-ram-indicators {
           border-top: 1px solid var(--list-divider-color);
           border-bottom: 1px solid var(--list-divider-color);
         }
 
         .row-details-content {
-          font-size: 15px;
+          font-size: var(--etools-font-size-15, 15px);
         }
 
         @media print {
@@ -162,7 +153,7 @@ export class InterventionResultsReported extends connectStore(
           }
         }
 
-        etools-info-tooltip etools-form-element-wrapper {
+        etools-info-tooltip etools-input {
           width: 100% !important;
         }
 
@@ -175,11 +166,13 @@ export class InterventionResultsReported extends connectStore(
       <div id="progress-summary" class="content-section paper-material elevation" elevation="1">
         <div class="row-h">
           <div class="layout-vertical col-4">
-            <etools-form-element-wrapper
+            <etools-input
+              readonly
+              placeholder="—"
               label="${translate('PD_DURATION')}"
               .value="${this._getPdDuration(this.progress.start_date, this.progress.end_date)}"
             >
-            </etools-form-element-wrapper>
+            </etools-input>
             <etools-progress-bar value="${this.pdProgress}" noDecimals></etools-progress-bar>
           </div>
           <div class="layout-vertical col-5">
@@ -190,7 +183,9 @@ export class InterventionResultsReported extends connectStore(
                 icon-first
                 .hideTooltip="${!this.multipleCurrenciesWereUsed(this.progress.disbursement, this.progress)}"
               >
-                <etools-form-element-wrapper
+                <etools-input
+                  readonly
+                  placeholder="—"
                   slot="field"
                   label="${translate('CASH_TRANSFERED')}"
                   .value="${this._getPropertyText(this.progress.disbursement_currency)} ${displayCurrencyAmount(
@@ -199,18 +194,23 @@ export class InterventionResultsReported extends connectStore(
                     0
                   )}"
                 >
-                </etools-form-element-wrapper>
-                <iron-icon icon="pmp-custom-icons:not-equal" slot="custom-icon"></iron-icon>
+                </etools-input>
+                <etools-icon name="not-equal" slot="custom-icon"></etools-icon>
                 <span slot="message">${translate('DISBURSEMENT_AMOUNTS')}</span>
               </etools-info-tooltip>
 
-              <etools-form-element-wrapper
+              <etools-input
+                readonly
+                placeholder="—"
                 class="col-6"
                 label="${translate('UNICEF_CASH')}"
-                .value="${this._getPropertyText(this.progress.unicef_budget_cash_currency)}
-                        ${displayCurrencyAmount(this.progress.unicef_budget_cash, '0', 0)}"
+                .value="${this._getPropertyText(this.progress.unicef_budget_cash_currency)} ${displayCurrencyAmount(
+                  this.progress.unicef_budget_cash,
+                  '0',
+                  0
+                )}"
               >
-              </etools-form-element-wrapper>
+              </etools-input>
             </div>
 
             <etools-progress-bar
@@ -227,13 +227,15 @@ export class InterventionResultsReported extends connectStore(
                   .hideTooltip="${!this.multipleCurrenciesWereUsed(this.progress.disbursement_percent, this.progress)}"
                 >
                   <span slot="field">${translate('NA_%')}</span>
-                  <iron-icon slot="custom-icon" icon="pmp-custom-icons:not-equal"></iron-icon>
+                  <etools-icon slot="custom-icon" name="not-equal"></etools-icon>
                   <span slot="message">${translate('FR_CURRENCY_NOT_MATCH')}</span>
                 </etools-info-tooltip>`
               : ``}
           </div>
           <div class="col col-3">
-            <etools-form-element-wrapper
+            <etools-input
+              readonly
+              placeholder="—"
               label="${translate('OVERALL_PD_SPD_RATING')}"
               .value="${this._getOverallPdStatusDate(this.latestAcceptedPr)}"
               noPlaceholder
@@ -242,7 +244,7 @@ export class InterventionResultsReported extends connectStore(
                 status="${this.latestAcceptedPr ? this.latestAcceptedPr.review_overall_status : ''}"
                 slot="prefix"
               ></intervention-report-status>
-            </etools-form-element-wrapper>
+            </etools-input>
           </div>
         </div>
       </div>
@@ -262,7 +264,6 @@ export class InterventionResultsReported extends connectStore(
 
             <!-- RAM indicators display -->
             <etools-ram-indicators
-              class="row-h"
               interventionId="${this.interventionId}"
               cpId="${item.external_cp_output_id}"
             ></etools-ram-indicators>
@@ -388,12 +389,7 @@ export class InterventionResultsReported extends connectStore(
 
   stateChanged(state: RootState) {
     if (
-      EtoolsRouter.pageIsNotCurrentlyActive(
-        get(state, 'app.routeDetails'),
-        'interventions',
-        TABS.Progress,
-        TABS.ResultsReported
-      ) ||
+      EtoolsRouter.pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', TABS.ResultsReported) ||
       !state.interventions.current
     ) {
       return;
@@ -578,7 +574,7 @@ export class InterventionResultsReported extends connectStore(
       if (dateIsBetween(startDt, endDt, today)) {
         const intervalTotalDays = dateDiff(startDt, endDt);
         const intervalDaysCompleted = dateDiff(startDt, today);
-        this.pdProgress = (intervalDaysCompleted * 100) / intervalTotalDays;
+        this.pdProgress = (intervalDaysCompleted! * 100) / intervalTotalDays!;
         return;
       }
     } catch (err) {

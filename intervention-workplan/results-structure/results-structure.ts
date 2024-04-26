@@ -1,8 +1,9 @@
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {css, html, CSSResultArray, customElement, LitElement, property} from 'lit-element';
-import {repeat} from 'lit-html/directives/repeat';
+import {css, html, CSSResultArray, LitElement} from 'lit';
+import {property, customElement} from 'lit/decorators.js';
+import {repeat} from 'lit/directives/repeat.js';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+
 import {
   selectInterventionId,
   selectInterventionStatus,
@@ -11,18 +12,14 @@ import {
   selectResultLinksPermissions
 } from './results-structure.selectors';
 import {ResultStructureStyles} from './styles/results-structure.styles';
-import '@unicef-polymer/etools-data-table/etools-data-table';
-import '@unicef-polymer/etools-content-panel';
-import '@polymer/paper-toggle-button/paper-toggle-button';
-import '@polymer/paper-icon-button/paper-icon-button';
-import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
+import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
+import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
+import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
 import './cp-output-level';
 import './pd-indicators';
 import './pd-activities';
 import './modals/pd-output-dialog';
 import './modals/cp-output-dialog';
-import '@polymer/paper-item';
-import '@polymer/paper-listbox';
 import './display-controls';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {RootState} from '../../common/types/store.types';
@@ -37,7 +34,7 @@ import {isUnicefUser, currentIntervention} from '../../common/selectors';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
-import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {
   AsyncAction,
   InterventionQuarter,
@@ -53,13 +50,14 @@ import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import ContentPanelMixin from '@unicef-polymer/etools-modules-common/dist/mixins/content-panel-mixin';
 import {_sendRequest} from '@unicef-polymer/etools-modules-common/dist/utils/request-helper';
-import {EtoolsDataTableRow} from '@unicef-polymer/etools-data-table/etools-data-table-row';
+import {EtoolsDataTableRow} from '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table-row';
 import {PdActivities} from './pd-activities';
 import {PdIndicators} from './pd-indicators';
 import {CpOutputLevel} from './cp-output-level';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {_canDelete} from '../../common/mixins/results-structure-common';
-import {EtoolsRequestEndpoint} from '@unicef-polymer/etools-ajax';
+import {RequestEndpoint} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 /**
  * @customElement
@@ -137,7 +135,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           @click="${() => this.openCpOutputDialog()}"
           ?hidden="${!this.isUnicefUser || !this.permissions.edit.result_links || this.commentMode}"
         >
-          <paper-icon-button slot="custom-icon" icon="add-box" tabindex="0"></paper-icon-button>
+          <etools-icon-button name="add-box" tabindex="0"></etools-icon-button>
           <span class="no-wrap">${translate('ADD_CP_OUTPUT')}</span>
         </div>
 
@@ -149,13 +147,12 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           <div class="pd-title layout-horizontal align-items-center">
             ${translate('PD_OUTPUTS_TITLE')}
             <etools-info-tooltip position="top" custom-icon offset="0">
-              <paper-icon-button
-                icon="add-box"
+              <etools-icon-button
+                name="add-box"
                 slot="custom-icon"
                 class="add"
-                tabindex="0"
                 @click="${() => this.openPdOutputDialog()}"
-              ></paper-icon-button>
+              ></etools-icon-button>
               <span class="no-wrap" slot="message">${translate('ADD_PD_OUTPUT')}</span>
             </etools-info-tooltip>
           </div>
@@ -191,13 +188,12 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                 : html`
                     <div class="pd-title layout-horizontal align-items-center">
                       ${translate('PD_OUTPUTS_TITLE')}<etools-info-tooltip position="top" custom-icon offset="0">
-                        <paper-icon-button
-                          icon="add-box"
+                        <etools-icon-button
+                          name="add-box"
                           slot="custom-icon"
                           class="add"
-                          tabindex="0"
                           @click="${() => this.openPdOutputDialog({}, result.cp_output)}"
-                        ></paper-icon-button>
+                        ></etools-icon-button>
                         <span class="no-wrap" slot="message">${translate('ADD_PD_OUTPUT')}</span>
                       </etools-info-tooltip>
                     </div>
@@ -235,12 +231,12 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                         class="hover-block"
                         ?hidden="${!this.permissions.edit.result_links || this.commentsModeEnabledFlag}"
                       >
-                        <paper-icon-button
-                          icon="icons:create"
+                        <etools-icon-button
+                          name="create"
                           @click="${() => this.openPdOutputDialog(pdOutput, result.cp_output)}"
-                        ></paper-icon-button>
-                        <paper-icon-button
-                          icon="icons:delete"
+                        ></etools-icon-button>
+                        <etools-icon-button
+                          name="delete"
                           ?hidden="${!_canDelete(
                             pdOutput,
                             !this.permissions.edit.result_links!,
@@ -249,7 +245,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
                             this.intervention.in_amendment_date
                           )}"
                           @click="${() => this.openDeletePdOutputDialog(pdOutput.id)}"
-                        ></paper-icon-button>
+                        ></etools-icon-button>
                       </div>
                     </div>
 
@@ -415,7 +411,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
       active: true,
       loadingSource: 'interv-pd-remove'
     });
-    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.lowerResultsDelete, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.lowerResultsDelete, {
       lower_result_id,
       intervention_id: this.interventionId
     });
@@ -483,7 +479,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
       active: true,
       loadingSource: 'interv-cp-remove'
     });
-    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.resultLinkGetDelete, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.resultLinkGetDelete, {
       result_link: resultLinkId
     });
     _sendRequest({
@@ -567,9 +563,8 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
     return [
       gridLayoutStylesLit,
       ResultStructureStyles,
-      buttonsStyles,
       css`
-        iron-icon[icon='create'] {
+        etools-icon[name='create'] {
           margin-inline-start: 50px;
         }
         .no-results {
@@ -578,7 +573,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         .pd-title {
           padding-block: 8px 0;
           padding-inline: 22px 42px;
-          font-size: 16px;
+          font-size: var(--etools-font-size-16, 16px);
           font-weight: 500;
           line-height: 19px;
         }
@@ -612,7 +607,6 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         :host {
           display: block;
           margin-bottom: 24px;
-          --paper-tooltip-background: #818181;
         }
 
         etools-data-table-row::part(edt-list-row-wrapper) {
@@ -654,12 +648,12 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           margin-inline-start: 12px;
         }
         .total-result b {
-          font-size: 22px;
+          font-size: var(--etools-font-size-22, 22px);
           font-weight: 900;
           line-height: 23px;
         }
         .total-result .heading {
-          font-size: 14px;
+          font-size: var(--etools-font-size-14, 14px);
           margin-inline-end: 10px;
           line-height: 23px;
         }
@@ -689,7 +683,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         }
         .count {
           display: flex;
-          font-size: 14px;
+          font-size: var(--etools-font-size-14, 14px);
           font-weight: 400;
           line-height: 16px;
           padding: 6px 0 4px;

@@ -1,9 +1,9 @@
-import {LitElement, html, TemplateResult, CSSResultArray, css, customElement, property, queryAll} from 'lit-element';
+import {LitElement, html, TemplateResult, CSSResultArray, css} from 'lit';
+import {property, customElement, queryAll} from 'lit/decorators.js';
 import {ResultStructureStyles} from './styles/results-structure.styles';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import '@polymer/paper-icon-button/paper-icon-button';
-import '@polymer/iron-icons';
-import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
+
+import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
 import './modals/activity-dialog/activity-data-dialog';
 import '../../intervention-workplan-editor/time-intervals/time-intervals';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
@@ -12,9 +12,9 @@ import {CommentElementMeta, CommentsMixin} from '../../common/components/comment
 import {InterventionActivity, InterventionQuarter} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
-import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
-import {EtoolsDataTableRow} from '@unicef-polymer/etools-data-table/etools-data-table-row';
+import {EtoolsDataTableRow} from '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table-row';
 import {TruncateMixin} from '../../common/mixins/truncate.mixin';
 import {
   openActivityDeactivationDialog,
@@ -23,8 +23,12 @@ import {
   _canDelete
 } from '../../common/mixins/results-structure-common';
 import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
-import {PaperMenuButton} from '@polymer/paper-menu-button';
-
+import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
+import '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
+import '@shoelace-style/shoelace/dist/components/menu/menu.js';
+import '@shoelace-style/shoelace/dist/components/menu-item/menu-item.js';
+import SlDropdown from '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
 @customElement('pd-activities')
 export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
   @property({type: String})
@@ -59,14 +63,13 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
         <div slot="row-data" class="layout-horizontal align-items-center editable-row start-justified">
           <div class="title-text">${translate(translatesMap.activities)} (${this.activities.length})</div>
           <etools-info-tooltip position="top" custom-icon ?hide-tooltip="${this.readonly}" offset="0">
-            <paper-icon-button
-              icon="add-box"
+            <etools-icon-button
+              name="add-box"
               slot="custom-icon"
               class="add"
-              tabindex="0"
               @click="${() => this.openDialog()}"
               ?hidden="${this.readonly}"
-            ></paper-icon-button>
+            ></etools-icon-button>
             <span class="no-wrap" slot="message">${translate('ADD_PD_ACTIVITY')}</span>
           </etools-info-tooltip>
         </div>
@@ -88,9 +91,10 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                     related-to-description="${activity.name}"
                     comments-container
                     ?hidden="${this._hideActivity(activity, this.showInactive)}"
-                    @paper-dropdown-open="${(event: CustomEvent) =>
-                      (event.currentTarget as HTMLElement)!.classList.add('active')}"
-                    @paper-dropdown-close="${(event: CustomEvent) =>
+                    @sl-show="${(event: CustomEvent) => {
+                      (event.currentTarget as HTMLElement)!.classList.add('active');
+                    }}"
+                    @sl-hide="${(event: CustomEvent) =>
                       (event.currentTarget as HTMLElement)!.classList.remove('active')}"
                   >
                     <!--    Activity Data: code / name / other info / items link    -->
@@ -144,23 +148,20 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                     </div>
 
                     <div class="show-actions hover-block" style="z-index: ${99 - index}" ?hidden="${this.commentMode}">
-                      <paper-menu-button id="view-menu-button" close-on-activate horizontal-align>
-                        <paper-icon-button
-                          slot="dropdown-trigger"
-                          icon="icons:more-vert"
-                          tabindex="0"
-                        ></paper-icon-button>
-                        <paper-listbox slot="dropdown-content">
-                          <div
+                      <sl-dropdown distance="-40" id="view-menu-button">
+                        <etools-icon-button slot="trigger" name="more-vert" tabindex="0"></etools-icon-button>
+                        <sl-menu>
+                          <sl-menu-item
                             class="action"
                             @click="${() => this.openDialog(activity, this.readonly || !activity.is_active)}"
                           >
-                            <iron-icon
-                              icon="${this.readonly || !activity.is_active ? 'visibility' : 'create'}"
-                            ></iron-icon>
+                            <etools-icon
+                              slot="prefix"
+                              name="${this.readonly || !activity.is_active ? 'visibility' : 'create'}"
+                            ></etools-icon>
                             ${this.readonly || !activity.is_active ? translate('VIEW') : translate('EDIT')}
-                          </div>
-                          <div
+                          </sl-menu-item>
+                          <sl-menu-item
                             class="action"
                             ?hidden="${!_canDeactivate(
                               activity,
@@ -172,10 +173,10 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                             @click="${() =>
                               openActivityDeactivationDialog(activity.id, this.pdOutputId, this.interventionId)}"
                           >
-                            <iron-icon icon="icons:block"></iron-icon>
+                            <etools-icon slot="prefix" name="block"></etools-icon>
                             ${translate('DEACTIVATE')}
-                          </div>
-                          <div
+                          </sl-menu-item>
+                          <sl-menu-item
                             class="action delete-action"
                             ?hidden="${!_canDelete(
                               activity,
@@ -187,11 +188,11 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
                             @click="${() =>
                               openDeleteActivityDialog(activity.id, this.pdOutputId, this.interventionId)}"
                           >
-                            <iron-icon icon="delete"></iron-icon>
+                            <etools-icon slot="prefix" name="delete"></etools-icon>
                             ${translate('DELETE')}
-                          </div>
-                        </paper-listbox>
-                      </paper-menu-button>
+                          </sl-menu-item>
+                        </sl-menu>
+                      </sl-dropdown>
                     </div>
                   </div>
                 `
@@ -202,8 +203,8 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
     `;
   }
 
-  @queryAll('paper-menu-button#view-menu-button')
-  actionsMenuBtns!: PaperMenuButton[];
+  @queryAll('#view-menu-button')
+  actionsMenuBtns!: SlDropdown[];
 
   connectedCallback(): void {
     super.connectedCallback();
@@ -220,7 +221,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
   }
 
   closeMenusOnScroll() {
-    this.actionsMenuBtns.forEach((p) => (p.opened = false));
+    this.actionsMenuBtns.forEach((p) => (p.open = false));
   }
 
   disconnectedCallback(): void {
@@ -280,7 +281,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
         }
         .activity-data div {
           text-align: left !important;
-          font-size: 16px;
+          font-size: var(--etools-font-size-16, 16px);
           font-weight: 400;
           line-height: 26px;
         }
@@ -305,6 +306,16 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
         }
         etools-data-table-row#activitiesRow::part(edt-list-row-collapse-wrapper) {
           border-top: none;
+        }
+        etools-icon-button[name='more-vert'] {
+          color: inherit;
+        }
+        sl-dropdown {
+          --sl-spacing-x-small: 4px;
+        }
+        sl-dropdown sl-menu-item:focus-visible::part(base) {
+          background-color: rgba(0, 0, 0, 0.1);
+          color: var(--sl-color-neutral-1000);
         }
       `
     ];

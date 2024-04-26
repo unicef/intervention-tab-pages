@@ -1,14 +1,19 @@
-import {LitElement, html, property, customElement, query} from 'lit-element';
-import '@unicef-polymer/etools-content-panel/etools-content-panel.js';
-import '@polymer/paper-icon-button/paper-icon-button.js';
-import '@unicef-polymer/etools-table/etools-table';
+import {LitElement, html} from 'lit';
+import {property, customElement, query} from 'lit/decorators.js';
+import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
+
+import '@unicef-polymer/etools-unicef/src/etools-table/etools-table';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
-import '@unicef-polymer/etools-loading';
+import '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
-import {EtoolsTableColumn, EtoolsTableColumnType, EtoolsTableChildRow} from '@unicef-polymer/etools-table/etools-table';
+import {
+  EtoolsTableColumn,
+  EtoolsTableColumnType,
+  EtoolsTableChildRow
+} from '@unicef-polymer/etools-unicef/src/etools-table/etools-table';
 import './supply-agreement-dialog';
 import {RootState} from '../../common/types/store.types';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
@@ -16,25 +21,23 @@ import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {selectSupplyAgreement, selectSupplyAgreementPermissions} from './supplyAgreement.selectors';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {formatServerErrorAsText} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {getIntervention, updateCurrentIntervention} from '../../common/actions/interventions';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
-import {
-  addCurrencyAmountDelimiter,
-  displayCurrencyAmount
-} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {addCurrencyAmountDelimiter, displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {isUnicefUser} from '../../common/selectors';
-import {EtoolsUpload} from '@unicef-polymer/etools-upload/etools-upload';
+import {EtoolsUpload} from '@unicef-polymer/etools-unicef/src/etools-upload';
 import {AnyObject, AsyncAction, EtoolsEndpoint, InterventionSupplyItem} from '@unicef-polymer/etools-types';
 import {Intervention, ExpectedResult} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
 import {TABS} from '../../common/constants';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 const customStyles = html`
   <style>
@@ -45,7 +48,7 @@ const customStyles = html`
       width: 1%;
       white-space: nowrap;
     }
-    .expand-cell iron-icon {
+    .expand-cell etools-icon {
       width: 70px !important;
       color: #2b2b2b !important;
     }
@@ -55,7 +58,7 @@ const customStyles = html`
 @customElement('supply-agreements')
 export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [gridLayoutStylesLit];
   }
   render() {
     if (!this.supply_items) {
@@ -68,7 +71,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         :host {
           display: block;
           margin-bottom: 24px;
-          --etools-table-col-font-size: 16px;
+          --etools-table-col-font-size: var(--etools-font-size-16, 16px);
         }
 
         .mr-20 {
@@ -84,6 +87,9 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           display: flex;
           align-items: center;
         }
+        etools-icon-button[name='file-upload'] {
+          color: var(--primary-text-color);
+        }
         #iit-ger {
           --iit-margin: 8px 0 8px -15px;
           --iit-icon-size: 24px;
@@ -95,16 +101,14 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         panel-title=${translate(translatesMap.supply_items)}
         comment-element="supply-agreement"
       >
-        <div slot="after-title">
-          <info-icon-tooltip
-            id="iit-ger"
-            ?hidden="${!this.permissions.edit.supply_items}"
-            .tooltipText="${translate('SUPPLY_CONTRIBUTION_INFO')}"
-          ></info-icon-tooltip>
-        </div>
+        ${this.supply_items?.length && this.permissions.edit.supply_items
+          ? html` <div slot="after-title">
+              <info-icon-tooltip id="iit-ger" .tooltipText="${this.getUploadHelpText()}"></info-icon-tooltip>
+            </div>`
+          : ``}
         <div slot="panel-btns">
           <span class="mr-20">
-            <label class="paper-label font-bold pad-right">${translate('TOTAL_SUPPLY_BUDGET')} </label>
+            <label class="label font-bold pad-right">${translate('TOTAL_SUPPLY_BUDGET')} </label>
             <label class="font-bold-12"
               >${this.intervention.planned_budget.currency}
               ${displayCurrencyAmount(this.intervention.planned_budget.total_supply!, '0.00')}</label
@@ -116,23 +120,23 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
             position="left"
             ?hide-tooltip="${!this.permissions.edit.supply_items || this.uploadInProcess}"
           >
-            <paper-icon-button
+            <etools-icon-button
               slot="custom-icon"
               ?hidden="${!this.permissions.edit.supply_items || this.uploadInProcess}"
               @click="${() => this.uploader?._openFileChooser()}"
-              icon="file-upload"
+              name="file-upload"
             >
-            </paper-icon-button>
+            </etools-icon-button>
             <span slot="message">${translate('UPLOAD_SUPPLY_TOOLTIP')}</span>
           </etools-info-tooltip>
 
           <etools-loading ?active="${this.uploadInProcess}" no-overlay loading-text></etools-loading>
-          <paper-icon-button
+          <etools-icon-button
             ?hidden="${!this.permissions.edit.supply_items}"
             @click="${() => this.addSupplyItem()}"
-            icon="add-box"
+            name="add-box"
           >
-          </paper-icon-button>
+          </etools-icon-button>
         </div>
         <div class="row-h" ?hidden="${!this.permissions.edit.supply_items || this.supply_items?.length}">
           ${this.getUploadHelpElement()}
@@ -159,7 +163,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         hidden
         accept=".csv"
         .endpointInfo="${{
-          endpoint: getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.supplyItemsUpload, {
+          endpoint: getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.supplyItemsUpload, {
             interventionId: this.intervention.id
           }).url,
           rawFilePropertyName: 'supply_items_file',
@@ -241,29 +245,24 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
     // hide CP Output for Partner User, and preserve layout
     childRow.rowHTML = html`
       <td></td>
-      ${
-        this.isUnicefUser
-          ? html`<td class="ptb-0">
-              <div class="child-row-inner-container">
-                <label class="paper-label">${translate('CP_OUTPUTS')}</label><br />
-                <label>${output || '—'}</label><br />
-              </div>
-            </td>`
-          : html``
-      }
+      ${this.isUnicefUser
+        ? html`<td class="ptb-0">
+            <div class="child-row-inner-container">
+              <label class="label">${translate('CP_OUTPUTS')}</label><br />
+              <label>${output || '—'}</label><br />
+            </div>
+          </td>`
+        : html``}
       <td colspan="${this.isUnicefUser ? '3' : '4'}" class="ptb-0">
         <div class="child-row-inner-container">
-          <label class="paper-label">${translate('OTHER_MENTIONS')}</label><br />
+          <label class="label">${translate('OTHER_MENTIONS')}</label><br />
           <label>${item.other_mentions || '—'}</label>
-          </paper-input>
         </div>
       </td>
       <td colspan="2" class="ptb-0">
         <div class="child-row-inner-container" ?hidden="${item.provided_by.toLowerCase() === 'partner'}">
-          <label class="paper-label">
-            ${translate('UNICEF_PRODUCT_NUMBER')}</label><br />
+          <label class="label"> ${translate('UNICEF_PRODUCT_NUMBER')}</label><br />
           <label>${item.unicef_product_number || '—'}</label>
-          </paper-input>
         </div>
       </td>
     `;
@@ -277,13 +276,16 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       ${customStyles}`;
   }
 
+  getUploadHelpText() {
+    const link1 = 'https://supply.unicef.org/all-materials.html';
+    const link2 = 'https://unpartnerportalcso.zendesk.com/hc/en-us/articles/12669187044631-Creating-a-supply-plan';
+    return getTranslation('UPLOAD_SUPPLY_HELPER')
+      .replace('{0}', `<a target='_blank' href=${link1}>${link1}</a>`)
+      .replace('{1}', `<a target='_blank' href=${link2}>${getTranslation('GUIDE')}</a>`);
+  }
   getUploadHelpElement() {
-    const link = 'https://supply.unicef.org/all-materials.html';
     const paragraph = document.createElement('p');
-    paragraph.innerHTML = getTranslation('UPLOAD_SUPPLY_HELPER').replace(
-      '{0}',
-      `<a target='_blank' href=${link}>${link}</a>`
-    );
+    paragraph.innerHTML = this.getUploadHelpText();
     return paragraph;
   }
 
@@ -344,7 +346,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   }
 
   deleteSupplyItem(supplyId: number) {
-    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.supplyAgreementEdit, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.supplyAgreementEdit, {
       interventionId: this.intervention.id,
       supplyId: supplyId
     });

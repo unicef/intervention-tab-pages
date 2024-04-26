@@ -1,8 +1,7 @@
-import {customElement, html, LitElement, property} from 'lit-element';
+import {html, LitElement} from 'lit';
+import {property, customElement} from 'lit/decorators.js';
 import {EditorTableStyles} from './editor-utils/editor-table-styles';
-import '@polymer/paper-icon-button/paper-icon-button';
-import '@polymer/iron-icons';
-import '@polymer/paper-input/paper-textarea';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {TABS} from '../common/constants';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
@@ -11,22 +10,23 @@ import {
   selectInterventionQuarters,
   selectInterventionStatus
 } from '../intervention-workplan/results-structure/results-structure.selectors';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-input';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
 import {currentIntervention, currentInterventionPermissions, isUnicefUser} from '../common/selectors';
 import {ExpectedResult, Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
 import {InterventionQuarter} from '@unicef-polymer/etools-types/dist/intervention.types';
 import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 import {isJsonStrMatch} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
-import {repeat} from 'lit-html/directives/repeat';
-import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
-import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
-import '@polymer/paper-button/paper-button';
+import {repeat} from 'lit/directives/repeat.js';
+import {displayCurrencyAmount} from '@unicef-polymer/etools-unicef/src/utils/currency';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {getIntervention, updateCurrentIntervention} from '../common/actions/interventions';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import {ActivitiesMixin} from './editor-utils/activities-mixin';
 import {ProgrammeManagementMixin} from './editor-utils/programme-management-mixin';
 import {CommentsMixin} from '../common/components/comments/comments-mixin';
@@ -38,17 +38,23 @@ import {EditorTableArrowKeysStyles} from './editor-utils/editor-table-arrow-keys
 import {ArrowsNavigationMixin} from './editor-utils/arrows-navigation-mixin';
 import {RootState} from '../common/types/store.types';
 import {EditorHoverStyles} from './editor-utils/editor-hover-styles';
-import '@unicef-polymer/etools-dropdown/etools-dropdown';
-import '@polymer/paper-tooltip/paper-tooltip';
-import {ifDefined} from 'lit-html/directives/if-defined.js';
+import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
+import {ifDefined} from 'lit/directives/if-defined.js';
 /* eslint-disable max-len */
 import {selectProgrammeManagement} from '../intervention-workplan/effective-efficient-programme-mgmt/effectiveEfficientProgrammeMgmt.selectors';
 import {ActivitiesFocusMixin} from './editor-utils/activities-focus-mixin';
 import {_canDelete} from '../common/mixins/results-structure-common';
-@customElement('editor-table')
+
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
+import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
+import '@shoelace-style/shoelace/dist/components/tooltip/tooltip.js';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
+import MatomoMixin from '@unicef-polymer/etools-piwik-analytics/matomo-mixin';
+
 // @ts-ignore
+@customElement('editor-table')
 export class EditorTable extends CommentsMixin(
-  ProgrammeManagementMixin(ActivitiesMixin(ActivitiesFocusMixin(ArrowsNavigationMixin(LitElement))))
+  ProgrammeManagementMixin(ActivitiesMixin(ActivitiesFocusMixin(ArrowsNavigationMixin(MatomoMixin(LitElement)))))
 ) {
   static get styles() {
     return [EditorTableStyles, EditorTableArrowKeysStyles, EditorHoverStyles, ...super.styles];
@@ -61,66 +67,42 @@ export class EditorTable extends CommentsMixin(
     return html`
       ${sharedStyles}
       <style>
-        :host {
-          --paper-tooltip: {
-            font-size: 12px;
-          }
-        }
-        paper-textarea {
-          outline: none;
-          flex: auto;
-          --paper-input-container-input: {
-            display: block;
-            text-overflow: hidden;
-          }
-
-          --iron-autogrow-textarea: {
-            overflow: auto;
-            padding: 0;
-            max-height: 96px;
-            font-weight: bold;
-          }
-          --paper-input-container-label-floating_-_font-weight: 600;
-          --paper-font-subhead_-_font-weight: 600;
-          --paper-input-container-label-floating: {
-            font-weight: 600;
-          }
-        }
-        paper-textarea[readonly] {
-          --iron-autogrow-textarea_-_overflow: hidden;
-        }
-        paper-textarea.bold {
-          --iron-autogrow-textarea_-_font-weight: bold;
-        }
-        paper-textarea.other[readonly] {
-          --iron-autogrow-textarea_-_font-weight: 400;
-          --iron-autogrow-textarea_-_overflow: hidden;
-          --iron-autogrow-textarea_-_max-height: 21px;
-        }
-        paper-textarea.other {
-          --iron-autogrow-textarea_-_font-weight: 400;
-          --iron-autogrow-textarea_-_max-height: 96px;
-          --paper-input-container-label-floating_-_color: var(--secondary-text-color);
-        }
-        .activity-items-row paper-textarea {
-          --iron-autogrow-textarea_-_font-weight: 400;
-        }
-        .activity-items-row paper-input.bold {
-          --paper-input-container-input: {
-            font-weight: bold;
-          }
+        etools-textarea::part(textarea) {
+          max-height: 96px;
+          font-weight: bold;
         }
 
-        .index-column {
-          padding-top: 0;
+        etools-input,
+        etools-textarea {
+          --etools-input-padding-top: 0;
+          --etools-input-padding-bottom: 8px;
+        }
+        etools-input[total] {
+          --etools-input-padding-top: 8px;
+        }
+        etools-input[total]::part(input) {
+          text-align: right;
+        }
 
-          --paper-input-container-input: {
-            font-size: 14px !important;
-          }
+        etools-textarea.other {
+          --etools-input-padding-bottom: 16px;
+        }
+        etools-textarea.other::part(textarea),
+        etools-textarea.item-description::part(textarea) {
+          font-weight: normal;
+        }
+        .activity-items-row etools-textarea::part(base) {
+          font-weight: 400;
+        }
+        .activity-items-row etools-input.bold::part(base) {
+          font-weight: bold;
+        }
+
+        .index-column etools-input::part(sl-input) {
+          --sl-input-font-size-small: 14px !important;
         }
 
         .char-counter {
-          margin-bottom: -12px;
           display: flex;
         }
 
@@ -144,6 +126,20 @@ export class EditorTable extends CommentsMixin(
         }
         .v-middle {
           vertical-align: middle;
+        }
+
+        etools-textarea::part(textarea) {
+          padding-top: 2px;
+          padding-bottom: 2px;
+          max-height: 96px;
+          overflow-y: auto;
+        }
+        etools-textarea::part(base),
+        etools-input::part(base) {
+          line-height: 24px;
+        }
+        etools-input::part(input) {
+          line-height: 24px;
         }
       </style>
       <table>
@@ -178,28 +174,22 @@ export class EditorTable extends CommentsMixin(
                   <td colspan="3"></td>
                   <td colspan="2" tabindex="${ifDefined(this.commentMode ? undefined : 0)}">
                     <div class="action-btns" style="position:relative">
-                      <paper-icon-button
-                        id="add-pd-output"
-                        @click="${(e: any) => {
-                          this.addNewUnassignedPDOutput();
-                          this.moveFocusToNewllyAdded(e.target);
-                        }}"
+                      <sl-tooltip
                         ?hidden="${!this.permissions?.edit.result_links}"
-                        icon="add-box"
-                        tabindex="0"
-                      ></paper-icon-button>
-
-                      <paper-tooltip
-                        for="add-pd-output"
-                        .animationDelay="${0}"
-                        .animationConfig="${{}}"
-                        animation-entry=""
-                        animation-exit=""
-                        ?hide-tooltip="${!this.permissions?.edit.result_links}"
-                        position="top"
+                        placement="top"
+                        content="${translate('ADD_PD_OUTPUT')}"
                       >
-                        ${translate('ADD_PD_OUTPUT')}
-                      </paper-tooltip>
+                        <etools-icon-button
+                          id="add-pd-output"
+                          @click="${(e: any) => {
+                            this.addNewUnassignedPDOutput();
+                            this.moveFocusToNewllyAdded(e.target);
+                          }}"
+                          ?hidden="${!this.permissions?.edit.result_links}"
+                          name="add-box"
+                          tabindex="0"
+                        ></etools-icon-button>
+                      </sl-tooltip>
                     </div>
                   </td>
                 </tr>
@@ -222,13 +212,13 @@ export class EditorTable extends CommentsMixin(
               </tr>
               <tr class="text no-b-border">
                 <td class="index-column">
-                  <paper-input
+                  <etools-input
                     title="${result.code}"
                     no-label-float
                     readonly
                     tabindex="-1"
                     .value="${result.code}"
-                  ></paper-input>
+                  ></etools-input>
                 </td>
                 <td colspan="3" class="${result.cp_output_name ? 'b' : 'red'}">
                   ${result.cp_output_name || translate('UNASSOCIATED_TO_CP_OUTPUT')}
@@ -255,36 +245,29 @@ export class EditorTable extends CommentsMixin(
                   )}"
                 >
                   <div class="action-btns" style="position:relative">
-                    <paper-icon-button
-                      id="add-pd-output-${result.id}"
-                      slot="custom-icon"
-                      @click="${(e: any) => {
-                        this.addNewPDOutput(result.ll_results);
-                        this.moveFocusToNewllyAdded(e.target);
-                      }}"
-                      ?hidden="${!this.permissions?.edit.result_links ||
-                      !this.getOriginalCPOutput(resultIndex)?.cp_output}"
-                      icon="add-box"
-                      tabindex="0"
-                    ></paper-icon-button>
-                    <paper-tooltip
-                      for="add-pd-output-${result.id}"
-                      .animationDelay="${0}"
-                      .animationConfig="${{}}"
-                      animation-entry=""
-                      animation-exit=""
+                    <sl-tooltip
                       ?hidden="${!this.permissions?.edit.result_links}"
-                      position="top"
-                      offset="1"
+                      content="${translate('ADD_PD_OUTPUT')}"
+                      placement="top"
                     >
-                      ${translate('ADD_PD_OUTPUT')}
-                    </paper-tooltip>
+                      <etools-icon-button
+                        id="add-pd-output-${result.id}"
+                        @click="${(e: any) => {
+                          this.addNewPDOutput(result.ll_results as any);
+                          this.moveFocusToNewllyAdded(e.target);
+                        }}"
+                        ?hidden="${!this.permissions?.edit.result_links ||
+                        !this.getOriginalCPOutput(resultIndex)?.cp_output}"
+                        name="add-box"
+                        tabindex="0"
+                      ></etools-icon-button>
+                    </sl-tooltip>
                   </div>
                 </td>
               </tr>
             </tbody>
             ${repeat(
-              result.ll_results,
+              result.ll_results as any[],
               (pdOutput: ResultLinkLowerResultExtended) => pdOutput.id,
               (pdOutput: ResultLinkLowerResultExtended, pdOutputIndex) => html`
                 <tbody
@@ -307,16 +290,16 @@ export class EditorTable extends CommentsMixin(
                     type="pd-output"
                   >
                     <td class="index-column">
-                      <paper-input
+                      <etools-input
                         title="${pdOutput.code}"
                         no-label-float
                         readonly
                         tabindex="-1"
                         .value="${pdOutput.code}"
-                      ></paper-input>
+                      ></etools-input>
                     </td>
                     <td colspan="3" class="b no-top-padding" tabindex="${ifDefined(this.commentMode ? undefined : 0)}">
-                      <paper-textarea
+                      <etools-textarea
                         no-label-float
                         class="bold"
                         input
@@ -339,7 +322,7 @@ export class EditorTable extends CommentsMixin(
                         }}"
                         @focus="${() => (this.autovalidatePdOutput = true)}"
                         @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'name', pdOutput)}"
-                      ></paper-textarea>
+                      ></etools-textarea>
                       <div class="bold truncate-multi-line" title="${pdOutput.name}" ?hidden="${pdOutput.inEditMode}">
                         ${pdOutput.name}
                       </div>
@@ -378,8 +361,8 @@ export class EditorTable extends CommentsMixin(
                         <span class="b">${displayCurrencyAmount(pdOutput.total, '0.00')}</span>
                       </div>
                       <div class="action-btns align-bottom flex-h action-btns">
-                        <paper-icon-button
-                          icon="create"
+                        <etools-icon-button
+                          name="create"
                           ?hidden="${pdOutput.inEditMode || !this.permissions?.edit.result_links}"
                           @click="${(e: any) => {
                             pdOutput.inEditMode = true;
@@ -387,32 +370,25 @@ export class EditorTable extends CommentsMixin(
                             this.requestUpdate();
                             this.moveFocusToFirstInput(e.target);
                           }}"
-                        ></paper-icon-button>
-
-                        <paper-icon-button
-                          id="add-a-${pdOutput.id}"
-                          icon="add-box"
-                          slot="custom-icon"
-                          @click="${(e: any) => {
-                            this.addNewActivity(pdOutput);
-                            this.moveFocusToNewllyAdded(e.target);
-                          }}"
-                          ?hidden="${pdOutput.inEditMode || !this.permissions?.edit.result_links}"
-                        ></paper-icon-button>
-                        <paper-tooltip
-                          for="add-a-${pdOutput.id}"
-                          .animationDelay="${0}"
-                          .animationConfig="${{}}"
-                          animation-entry=""
-                          animation-exit=""
+                        ></etools-icon-button>
+                        <sl-tooltip
                           ?hidden="${!this.permissions?.edit.result_links}"
-                          position="top"
-                          offset="1"
+                          placement="top"
+                          content="${translate('ADD_NEW_ACTIVITY')}"
                         >
-                          ${translate('ADD_NEW_ACTIVITY')}
-                        </paper-tooltip>
-                        <paper-icon-button
-                          icon="delete"
+                          <etools-icon-button
+                            id="add-a-${pdOutput.id}"
+                            name="add-box"
+                            @click="${(e: any) => {
+                              this.addNewActivity(pdOutput);
+                              this.moveFocusToNewllyAdded(e.target);
+                            }}"
+                            ?hidden="${pdOutput.inEditMode || !this.permissions?.edit.result_links}"
+                          ></etools-icon-button>
+                        </sl-tooltip>
+
+                        <etools-icon-button
+                          name="delete"
                           ?hidden="${pdOutput.inEditMode ||
                           !_canDelete(
                             pdOutput,
@@ -422,19 +398,21 @@ export class EditorTable extends CommentsMixin(
                             this.intervention.in_amendment_date
                           )}"
                           @click="${() => this.openDeletePdOutputDialog(pdOutput.id)}"
-                        ></paper-icon-button>
+                        ></etools-icon-button>
                       </div>
                       <div class="flex-h justify-right align-bottom" ?hidden="${!pdOutput.inEditMode}">
-                        <paper-button
+                        <etools-button
                           id="btnSave"
-                          @click="${() => this.savePdOutput(pdOutput, result)}"
+                          variant="primary"
+                          @click="${(e: any) => this.savePdOutput(e, pdOutput, result)}"
                           ?hidden="${!pdOutput.inEditMode}"
-                          >${translate('GENERAL.SAVE')}</paper-button
+                          tracker="WorkplanEditor Save PdOutput"
+                          >${translate('GENERAL.SAVE')}</etools-button
                         >
-                        <paper-icon-button
-                          icon="close"
-                          @click="${() => this.cancelPdOutput(result, pdOutput, resultIndex, pdOutputIndex)}"
-                        ></paper-icon-button>
+                        <etools-icon-button
+                          name="close"
+                          @click="${() => this.cancelPdOutput(result as any, pdOutput, resultIndex, pdOutputIndex)}"
+                        ></etools-icon-button>
                       </div>
                     </td>
                   </tr>
@@ -647,7 +625,7 @@ export class EditorTable extends CommentsMixin(
     }
   }
 
-  savePdOutput(pdOutput: ResultLinkLowerResultExtended, cpOutput: ExpectedResult) {
+  savePdOutput(e: CustomEvent, pdOutput: ResultLinkLowerResultExtended, cpOutput: ExpectedResult) {
     const cpOutputId: number | null = cpOutput.cp_output || this.unassignedPDMap.get(pdOutput.id) || null;
     if (!this.validatePdOutput(pdOutput, cpOutputId)) {
       this.requestUpdate();
@@ -659,7 +637,8 @@ export class EditorTable extends CommentsMixin(
       loadingSource: this.localName
     });
 
-    const endpoint: EtoolsRequestEndpoint = pdOutput.id
+    this.trackAnalytics(e);
+    const endpoint: RequestEndpoint = pdOutput.id
       ? getEndpoint(interventionEndpoints.pdOutputDetails, {pd_id: pdOutput.id, intervention_id: this.interventionId})
       : getEndpoint(interventionEndpoints.createPdOutput, {intervention_id: this.interventionId});
 
@@ -679,7 +658,7 @@ export class EditorTable extends CommentsMixin(
         fireEvent(this, 'dialog-closed', {confirmed: true});
       })
       .catch((error: any) => {
-        parseRequestErrorsAndShowAsToastMsgs(error, this);
+        parseRequestErrorsAndShowAsToastMsgs(error, this as any);
       })
       .finally(() =>
         fireEvent(this, 'global-loading', {
@@ -733,7 +712,9 @@ export class EditorTable extends CommentsMixin(
     this.oneEntityInEditMode = false;
 
     this.requestUpdate();
-    this.lastFocusedTd.focus();
+    if (this.lastFocusedTd) {
+      this.lastFocusedTd.focus();
+    }
   }
 
   getOriginalPDOutput(resultIndex: number, pdOutputIndex: number) {
@@ -781,7 +762,7 @@ export class EditorTable extends CommentsMixin(
       active: true,
       loadingSource: 'interv-pdoutput-remove'
     });
-    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.lowerResultsDelete, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.lowerResultsDelete, {
       lower_result_id,
       intervention_id: this.interventionId
     });

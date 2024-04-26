@@ -1,5 +1,5 @@
 import {RootState} from '../../types/store.types';
-import {LitElement} from 'lit-element';
+import {LitElement} from 'lit';
 import {CommentsCollection} from './comments.reducer';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import './comments-dialog';
@@ -247,7 +247,7 @@ export function CommentsMixin<T extends Constructor<LitElement>>(baseClass: T) {
         background-color: #5B2121;
         border-radius: 50%;
         font-weight: bold;
-        font-size: 10px;
+        font-size: var(--etools-font-size-10, 10px);
         color: #ffffff;
         z-index: 92;
       `;

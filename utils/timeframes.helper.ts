@@ -1,4 +1,5 @@
 import {InterventionActivityTimeframe, GenericObject} from '@unicef-polymer/etools-types';
+import dayjs from 'dayjs';
 
 export type ActivityTime = {
   start: Date;
@@ -11,8 +12,6 @@ export type ActivityTime = {
 
 export type GroupedActivityTime = [string, ActivityTime[]];
 
-// @ts-ignore
-const dayjs = window.dayjs;
 export function serializeTimeFrameData(data: InterventionActivityTimeframe[]): ActivityTime[] {
   return (data || []).map((frame: InterventionActivityTimeframe) => {
     const start = dayjs(frame.start);

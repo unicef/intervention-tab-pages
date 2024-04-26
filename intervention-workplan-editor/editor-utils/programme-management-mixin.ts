@@ -1,16 +1,18 @@
 // @ts-ignore
-import {Constructor, html, LitElement, property} from 'lit-element';
-import {ifDefined} from 'lit-html/directives/if-defined.js';
+import {html, LitElement} from 'lit';
+import {property} from 'lit/decorators.js';
+import {Constructor} from '@unicef-polymer/etools-types/dist/global.types';
+import {ifDefined} from 'lit/directives/if-defined.js';
 import {Intervention} from '@unicef-polymer/etools-types/dist/models-and-classes/intervention.classes';
 import '../time-intervals/time-intervals';
 import {cloneDeep} from '@unicef-polymer/etools-utils/dist/general.util';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {sendRequest} from '@unicef-polymer/etools-ajax';
+import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax';
 import {getEndpoint} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {updateCurrentIntervention} from '../../common/actions/interventions';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
-import {repeat} from 'lit-html/directives/repeat';
+import {repeat} from 'lit/directives/repeat.js';
 import {translate, get as getTranslation} from 'lit-translate';
 import {TruncateMixin} from '../../common/mixins/truncate.mixin';
 /* eslint-disable max-len */
@@ -22,11 +24,14 @@ import {
   ProgrammeManagementRowItemExtended
 } from '../../common/types/editor-page-types';
 import {getTotalCash, getTotalCashFormatted} from '../../common/components/activity/get-total.helper';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
+import MatomoMixin from '@unicef-polymer/etools-piwik-analytics/matomo-mixin';
 
 // import {ManagementBudgetItem} from '@unicef-polymer/etools-types';
 
 export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(baseClass: T) {
-  return class ProgrammeManagementClass extends ProgrammeManagementItemMixin(TruncateMixin(baseClass)) {
+  class ProgrammeManagementClass extends ProgrammeManagementItemMixin(TruncateMixin(MatomoMixin(baseClass))) {
     // @ts-ignore
     @property({type: Array})
     formattedProgrammeManagement: any[] = [];
@@ -94,13 +99,13 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
               </tr>
               <tr class="text action-btns" type="activity">
                 <td class="index-column">
-                  <paper-input
+                  <etools-input
                     title="${item.code}"
                     no-label-float
                     readonly
                     tabindex="-1"
                     .value="${item.code}"
-                  ></paper-input>
+                  ></etools-input>
                 </td>
                 <td
                   colspan="4"
@@ -116,7 +121,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                   class="a-right no-top-padding"
                   tabindex="${ifDefined((item.items && item.items.length) || this.commentMode ? undefined : '0')}"
                 >
-                  <etools-currency-amount-input
+                  <etools-currency
                     no-label-float
                     input
                     .value="${item.cso_cash}"
@@ -128,13 +133,13 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                     .invalid="${item.invalid?.cso_cash}"
                     error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
                     @value-changed="${({detail}: CustomEvent) => this.numberChanged(detail, 'cso_cash', item)}"
-                  ></etools-currency-amount-input>
+                  ></etools-currency>
                 </td>
                 <td
                   tabindex="${ifDefined((item.items && item.items.length) || this.commentMode ? undefined : '0')}"
                   class="no-top-padding"
                 >
-                  <etools-currency-amount-input
+                  <etools-currency
                     no-label-float
                     input
                     .value="${item.unicef_cash}"
@@ -146,7 +151,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                     error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
                     @keydown="${(e: any) => this.handleEsc(e)}"
                     @value-changed="${({detail}: CustomEvent) => this.numberChanged(detail, 'unicef_cash', item)}"
-                  ></etools-currency-amount-input>
+                  ></etools-currency>
                 </td>
                 <td
                   colspan="2"
@@ -161,8 +166,8 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                     <span class="b">${getTotalCashFormatted(item.cso_cash, item.unicef_cash)}</span>
                   </div>
                   <div class="action-btns align-bottom flex-h">
-                    <paper-icon-button
-                      icon="create"
+                    <etools-icon-button
+                      name="create"
                       ?hidden="${item.inEditMode || !this.permissions.edit.management_budgets}"
                       @click="${(e: any) => {
                         item.inEditMode = true;
@@ -181,42 +186,37 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                           }
                         }
                       }}"
-                    ></paper-icon-button>
+                    ></etools-icon-button>
 
-                    <paper-icon-button
-                      id="add-item-${item.id}"
-                      icon="add-box"
-                      slot="custom-icon"
-                      @click="${(e: CustomEvent) => this.addNewItem(e, item, 'focusBelow')}"
+                    <sl-tooltip
                       ?hidden="${item.items?.length || !this.permissions.edit.management_budgets}"
-                    ></paper-icon-button>
-                    <paper-tooltip
-                      for="add-item-${item.id}"
-                      .animationDelay="${0}"
-                      .animationConfig="${{}}"
-                      animation-entry=""
-                      animation-exit=""
-                      ?hidden="${item.items?.length || !this.permissions.edit.management_budgets}"
-                      position="top"
-                      offset="1"
+                      placement="top"
+                      content="${translate('ADD_NEW_ITEM')}"
                     >
-                      ${translate('ADD_NEW_ITEM')}
-                    </paper-tooltip>
+                      <etools-icon-button
+                        id="add-item-${item.id}"
+                        name="add-box"
+                        @click="${(e: CustomEvent) => this.addNewItem(e, item, 'focusBelow')}"
+                        ?hidden="${item.items?.length || !this.permissions.edit.management_budgets}"
+                      ></etools-icon-button>
+                    </sl-tooltip>
                   </div>
                   <div
                     class="flex-h justify-right align-bottom"
                     ?hidden="${!(item.inEditMode || item.itemsInEditMode)}"
                   >
-                    <paper-button
+                    <etools-button
+                      variant="primary"
                       id="btnSave-ProgrammeManagement"
                       ?hidden="${!(item.inEditMode || item.itemsInEditMode)}"
-                      @click="${() => this.saveProgrammeManagement(item, this.intervention.id!)}"
-                      >${translate('GENERAL.SAVE')}</paper-button
+                      @click="${(e: any) => this.saveProgrammeManagement(e, item, this.intervention.id!)}"
+                      tracker="WorkplanEditor Save ProgrammeManagement"
+                      >${translate('GENERAL.SAVE')}</etools-button
                     >
-                    <paper-icon-button
-                      icon="close"
+                    <etools-icon-button
+                      name="close"
                       @click="${() => this.cancelProgrammeManagement(item.items, item, itemIndex)}"
-                    ></paper-icon-button>
+                    ></etools-icon-button>
                   </div>
                 </td>
               </tr>
@@ -333,7 +333,11 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
     }
 
     // @ts-ignore
-    saveProgrammeManagement(programmeManagement: ProgrammeManagementRowExtended, interventionId: number) {
+    saveProgrammeManagement(
+      e: CustomEvent,
+      programmeManagement: ProgrammeManagementRowExtended,
+      interventionId: number
+    ) {
       if (!this.validateProgrammeManagement(programmeManagement) || !this.validateActivityItems(programmeManagement)) {
         this.requestUpdate();
         fireEvent(this, 'toast', {
@@ -345,7 +349,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
         active: true,
         loadingSource: this.localName
       });
-
+      this.trackAnalytics(e);
       const programmeManagementToSave = cloneDeep(programmeManagement);
       if (programmeManagementToSave.items?.length) {
         // Let backend calculate these
@@ -386,5 +390,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
       data[this.getPropertyName(data, 'partner')] = data.cso_cash;
       data[this.getPropertyName(data, 'unicef')] = data.unicef_cash;
     }
-  };
+  }
+
+  return ProgrammeManagementClass;
 }

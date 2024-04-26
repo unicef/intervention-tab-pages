@@ -1,5 +1,6 @@
-import {LitElement, html, customElement, property, TemplateResult, css, query} from 'lit-element';
-import '@unicef-polymer/etools-data-table/etools-data-table';
+import {LitElement, html, TemplateResult, css} from 'lit';
+import {property, customElement, query} from 'lit/decorators.js';
+import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {ResultStructureStyles} from './styles/results-structure.styles';
@@ -8,13 +9,12 @@ import {CommentElementMeta, CommentsMixin} from '../../common/components/comment
 import {Disaggregation, DisaggregationValue} from '@unicef-polymer/etools-types';
 import {Indicator} from '@unicef-polymer/etools-types';
 import {translate, get as getTranslation} from 'lit-translate';
-import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {ActivitiesAndIndicatorsStyles} from './styles/ativities-and-indicators.styles';
 import {getIndicatorDisplayType} from '../../utils/utils';
-import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
+import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/etools-info-tooltip';
 import {_canDeactivate, _canDelete} from '../../common/mixins/results-structure-common';
-import {PaperMenuButton} from '@polymer/paper-menu-button';
-
+import SlDropdown from '@shoelace-style/shoelace/dist/components/dropdown/dropdown.js';
 @customElement('pd-indicator')
 export class PdIndicator extends CommentsMixin(LitElement) {
   @property() private disaggregations: Disaggregation[] = [];
@@ -27,8 +27,8 @@ export class PdIndicator extends CommentsMixin(LitElement) {
   @property({type: Boolean}) detailsOpened = false;
   @property({type: Number}) index?: number;
   @property({type: String})
-  @query('paper-menu-button#view-menu-button')
-  actionsMenuBtn!: PaperMenuButton;
+  @query('#view-menu-button')
+  actionsMenuBtn!: SlDropdown;
 
   inAmendmentDate!: string;
 
@@ -46,9 +46,8 @@ export class PdIndicator extends CommentsMixin(LitElement) {
         related-to="indicator-${this.indicator.id}"
         related-to-description="${this.indicator.indicator?.title}"
         comments-container
-        @paper-dropdown-open="${(event: CustomEvent) => (event.currentTarget as HTMLElement)!.classList.add('active')}"
-        @paper-dropdown-close="${(event: CustomEvent) =>
-          (event.currentTarget as HTMLElement)!.classList.remove('active')}"
+        @sl-show="${(event: CustomEvent) => (event.currentTarget as HTMLElement)!.classList.add('active')}"
+        @sl-hide="${(event: CustomEvent) => (event.currentTarget as HTMLElement)!.classList.remove('active')}"
       >
         <div class="main-info" style="padding-inline-end:10%">
           <!--    Indicator name    -->
@@ -83,18 +82,18 @@ export class PdIndicator extends CommentsMixin(LitElement) {
             style="z-index: ${99 - (this.index || 0)}; max-height: 59px;"
             ?hidden="${this.commentMode}"
           >
-            <paper-menu-button id="view-menu-button" close-on-activate horizontal-align>
-              <paper-icon-button slot="dropdown-trigger" icon="icons:more-vert" tabindex="0"></paper-icon-button>
-              <paper-listbox slot="dropdown-content">
-                <div
+            <sl-dropdown distance="-65" id="view-menu-button">
+              <etools-icon-button slot="trigger" name="more-vert"></etools-icon-button>
+              <sl-menu>
+                <sl-menu-item
                   class="action"
                   ?hidden="${!this._canEdit() && !this._canView()}"
                   @click="${() => this.openIndicatorDialog(this.indicator, this.readonly)}"
                 >
-                  <iron-icon icon="${this._canEdit() ? 'create' : 'visibility'}"></iron-icon>
+                  <etools-icon slot="prefix" name="${this._canEdit() ? 'create' : 'visibility'}"></etools-icon>
                   ${this._canEdit() ? translate('EDIT') : translate('VIEW')}
-                </div>
-                <div
+                </sl-menu-item>
+                <sl-menu-item
                   class="action"
                   ?hidden="${!_canDeactivate(
                     this.indicator,
@@ -105,10 +104,10 @@ export class PdIndicator extends CommentsMixin(LitElement) {
                   )}"
                   @click="${() => this.openDeactivationDialog(String(this.indicator.id))}"
                 >
-                  <iron-icon icon="icons:block"></iron-icon>
+                  <etools-icon slot="prefix" name="block"></etools-icon>
                   ${translate('DEACTIVATE')}
-                </div>
-                <div
+                </sl-menu-item>
+                <sl-menu-item
                   class="action delete-action"
                   ?hidden="${!_canDelete(
                     this.indicator,
@@ -119,11 +118,11 @@ export class PdIndicator extends CommentsMixin(LitElement) {
                   )}"
                   @click="${() => this.openDeletionDialog(String(this.indicator.id))}"
                 >
-                  <iron-icon icon="delete"></iron-icon>
+                  <etools-icon slot="prefix" name="delete"></etools-icon>
                   ${translate('DELETE')}
-                </div>
-              </paper-listbox>
-            </paper-menu-button>
+                </sl-menu-item>
+              </sl-menu>
+            </sl-dropdown>
           </div>
         </div>
         <div class="details indent ${this.detailsOpened ? 'opened' : ''}" style="max-height:350px; overflow-y:auto">
@@ -150,7 +149,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
 
   closeMenuOnScroll() {
     this.actionsMenuBtn.removeAttribute('focused');
-    setTimeout(() => (this.actionsMenuBtn.opened = false));
+    setTimeout(() => (this.actionsMenuBtn.open = false));
   }
 
   disconnectedCallback(): void {
@@ -279,7 +278,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
         }
         .details-heading {
           margin-bottom: 12px;
-          font-size: 16px;
+          font-size: var(--etools-font-size-16, 16px);
           font-weight: 700;
           line-height: 16px;
           color: #5c5c5c;
@@ -289,7 +288,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
           padding-inline-start: 0;
         }
         .details-list-item {
-          font-size: 16px;
+          font-size: var(--etools-font-size-16, 16px);
           font-weight: 400;
           line-height: 26px;
           color: #212121;
@@ -324,6 +323,10 @@ export class PdIndicator extends CommentsMixin(LitElement) {
         }
         .start-aligned {
           align-items: flex-start;
+        }
+        sl-dropdown sl-menu-item:focus-visible::part(base) {
+          background-color: rgba(0, 0, 0, 0.1);
+          color: var(--sl-color-neutral-1000);
         }
       `
     ];

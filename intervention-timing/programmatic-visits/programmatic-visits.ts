@@ -1,15 +1,15 @@
-import {LitElement, html, property, customElement} from 'lit-element';
-import '@polymer/paper-button/paper-button';
-import '@polymer/paper-icon-button/paper-icon-button';
+import {LitElement, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
+
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
-import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import isEmpty from 'lodash-es/isEmpty';
 import {RootState} from '../../common/types/store.types';
 import {PlannedVisitsPermissions} from './programmaticVisits.models';
-import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown';
+import {EtoolsDropdownEl} from '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import {selectPlannedVisits, selectPlannedVisitsPermissions} from './programmaticVisits.selectors';
 import {selectInterventionDates} from '../intervention-dates/interventionDates.selectors';
 import cloneDeep from 'lodash-es/cloneDeep';
@@ -27,7 +27,9 @@ import {repeatableDataSetsStyles} from '@unicef-polymer/etools-modules-common/di
 import {getEndpoint as getEndpointHelper} from '@unicef-polymer/etools-utils/dist/endpoint.util';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import '../../common/components/sites-widget/sites-dialog';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 import './pv-quarter';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 /**
  * @customElement
@@ -35,7 +37,7 @@ import './pv-quarter';
 @customElement('programmatic-visits')
 export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(RepeatableDataSetsMixin(LitElement))) {
   static get styles() {
-    return [buttonsStyles, gridLayoutStylesLit];
+    return [gridLayoutStylesLit];
   }
 
   render() {
@@ -62,9 +64,13 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
           padding-top: 10px;
         }
 
+        etools-dropdown.year {
+          min-width: 125px;
+        }
+
         .error-msg {
           color: var(--error-color);
-          font-size: 12px;
+          font-size: var(--etools-font-size-12, 12px);
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -74,11 +80,6 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
           margin-inline-start: 46px;
         }
 
-        .secondary-btn {
-          --paper-button: {
-            color: #0099ff;
-          }
-        }
         .totalContainer {
           text-align: center;
           height: 114px;
@@ -102,13 +103,12 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
           margin-inline-end: 30px;
         }
         .total-lbl {
-          font-size: 14px;
+          font-size: var(--etools-font-size-14, 14px);
           padding-top: 15px;
           padding-bottom: 15px;
         }
-        paper-button iron-icon {
-          margin-inline-start: 45px;
-          margin-inline-end: 10px;
+        .extra-top-padd etools-button {
+          margin-inline-start: 20px;
         }
       </style>
 
@@ -120,13 +120,14 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
         <div slot="panel-btns">${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}</div>
 
         <div class="row-padding-v extra-top-padd" ?hidden="${!this.editMode}">
-          <paper-button
-            class="secondary-btn ${this._getAddBtnPadding(this.data?.length)}"
+          <etools-button
+            variant="text"
+            ${this._getAddBtnPadding(this.data?.length)}
             @click="${this._addNewPlannedVisit}"
           >
-            <iron-icon icon="add-box"></iron-icon>
+            <etools-icon name="add-box"></etools-icon>
             ${translate('ADD_YEAR')}
-          </paper-button>
+          </etools-button>
         </div>
 
         <div class="pv-container">${this.renderVisitsTemplate(this.data)}</div>
@@ -286,14 +287,14 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
           <div class="layout-horizontal">
             <div class="item-actions-container">
               <div class="actions">
-                <paper-icon-button
+                <etools-icon-button
                   class="action delete"
                   @click="${(event: CustomEvent) => this._openDeleteConfirmation(event, index)}"
                   data-args="${index}"
                   ?disabled="${!this._canBeRemoved(index, this.editMode)}"
-                  icon="cancel"
+                  name="cancel"
                 >
-                </paper-icon-button>
+                </etools-icon-button>
               </div>
             </div>
             <div class="col-1 yearContainer">

@@ -54,6 +54,7 @@ export interface EtoolsEndpoints {
   officersReviews: EtoolsEndpoint;
   officerReviewData: EtoolsEndpoint;
   interventionPVDelete: EtoolsEndpoint;
+  exportReviewPdf: EtoolsEndpoint;
 }
 
 export const interventionEndpoints: EtoolsEndpoints = {
@@ -228,5 +229,8 @@ export const interventionEndpoints: EtoolsEndpoints = {
   },
   interventionPVDelete: {
     template: '/api/v2/interventions/<%=intervention_id%>/planned-visits/<%=id%>/'
+  },
+  exportReviewPdf: {
+    template: '/api/pmp/v3/interventions/<%=interventionId%>/reviews/<%=reviewId%>/pdf'
   }
 };

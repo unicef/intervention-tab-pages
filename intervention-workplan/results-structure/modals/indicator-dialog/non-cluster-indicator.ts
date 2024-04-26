@@ -1,20 +1,22 @@
-import '@polymer/paper-input/paper-input.js';
-import '@polymer/paper-input/paper-textarea.js';
-import '@polymer/paper-radio-group/paper-radio-group.js';
-import '@polymer/paper-radio-button/paper-radio-button.js';
-import '@polymer/paper-checkbox/paper-checkbox.js';
-import '@polymer/paper-toggle-button/paper-toggle-button.js';
-import '@unicef-polymer/etools-dropdown/etools-dropdown-multi.js';
-import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
+import '@unicef-polymer/etools-unicef/src/etools-radio/etools-radio-group';
+import '@shoelace-style/shoelace/dist/components/radio/radio.js';
+import '@unicef-polymer/etools-unicef/src/etools-checkbox/etools-checkbox';
+import '@shoelace-style/shoelace/dist/components/switch/switch.js';
+import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown-multi.js';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-currency';
 import IndicatorsCommonMixin from './mixins/indicators-common-mixin';
-import {LitElement, html, property, customElement} from 'lit-element';
+import {LitElement, html} from 'lit';
+import {property, customElement} from 'lit/decorators.js';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
-import {PaperCheckboxElement} from '@polymer/paper-checkbox/paper-checkbox.js';
+
 import {Indicator} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../../../utils/intervention-labels-map';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
+import {EtoolsDropdownMulti} from '@unicef-polymer/etools-unicef/src/etools-dropdown/EtoolsDropdownMulti';
+import SlCheckbox from '@shoelace-style/shoelace/dist/components/checkbox/checkbox.js';
+import SlSwitch from '@shoelace-style/shoelace/dist/components/switch/switch.js';
 
 /**
  * @customElement
@@ -23,7 +25,7 @@ import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/st
 @customElement('non-cluster-indicator')
 class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
   static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
+    return [gridLayoutStylesLit];
   }
 
   render() {
@@ -38,16 +40,10 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           display: block;
         }
 
-        paper-input,
-        paper-textarea {
-          display: inline-block;
+        etools-input,
+        etools-textarea,
+        etools-dropdown {
           width: 100%;
-        }
-
-        paper-textarea {
-          --paper-input-container-input: {
-            display: block;
-          }
         }
 
         .unknown {
@@ -71,10 +67,9 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         }
 
         .all-locations {
-          margin: auto;
           display: flex;
           flex-direction: column;
-          align-items: center;
+          justify-content: end;
         }
 
         .row-h {
@@ -91,55 +86,58 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         .mr-20 {
           margin-inline-end: 20px;
         }
+        sl-switch {
+          margin-top: 25px;
+        }
       </style>
 
       <div class="row-h flex-c">
         <div class="layout-vertical mr-20">
-          <label class="paper-label">${translate('TYPE')}</label>
+          <label class="label">${translate('TYPE')}</label>
           <div class="radioGroup">
-            <paper-radio-group
+            <etools-radio-group
               .disabled="${this.readonly}"
-              .selected="${this.indicator!.indicator!.unit}"
-              @selected-changed="${({detail}: CustomEvent) => {
-                this.indicator!.indicator!.unit = detail.value;
+              .value="${this.indicator!.indicator!.unit}"
+              @sl-change="${(e: any) => {
+                this.indicator!.indicator!.unit = e.target.value;
                 this._baselineChanged(this.indicator.baseline.v);
                 this._targetChanged(this.indicator.target.v);
                 this._typeChanged();
                 this.requestUpdate();
               }}"
             >
-              <paper-radio-button ?disabled="${this.isReadonly()}" class="no-left-padding mr-12" name="number"
+              <sl-radio ?disabled="${this.isReadonly()}" class="no-left-padding mr-12" value="number"
                 >${translate('QUANTITY_SCALE')}
-              </paper-radio-button>
-              <paper-radio-button ?disabled="${this.isReadonly()}" class="no-left-padding" name="percentage"
-                >${translate('PERCENT_RATIO')}</paper-radio-button
+              </sl-radio>
+              <sl-radio ?disabled="${this.isReadonly()}" class="no-left-padding" value="percentage"
+                >${translate('PERCENT_RATIO')}</sl-radio
               >
-            </paper-radio-group>
+            </etools-radio-group>
           </div>
         </div>
         <div class="layout-vertical" ?hidden="${this._unitIsNumeric(this.indicator!.indicator!.unit)}">
-          <label class="paper-label">${translate('DISPLAY_TYPE')}</label>
+          <label class="label">${translate('DISPLAY_TYPE')}</label>
           <div class="radioGroup">
-            <paper-radio-group
-              .selected="${this.indicator!.indicator!.display_type}"
-              @selected-changed="${({detail}: CustomEvent) => {
-                this.indicator!.indicator!.display_type = detail.value;
+            <etools-radio-group
+              .value="${this.indicator!.indicator!.display_type}"
+              @sl-change="${(e: any) => {
+                this.indicator!.indicator!.display_type = e.target.value;
                 this._typeChanged();
                 this.requestUpdate();
               }}"
             >
-              <paper-radio-button ?disabled="${this.isReadonly()}" class="no-left-padding mr-12" name="percentage"
+              <sl-radio ?disabled="${this.isReadonly()}" class="no-left-padding mr-12" value="percentage"
                 >${translate('PERCENTAGE')}
-              </paper-radio-button>
-              <paper-radio-button ?disabled="${this.isReadonly()}" class="no-left-padding" name="ratio"
-                >${translate('RATIO')}</paper-radio-button
+              </sl-radio>
+              <sl-radio ?disabled="${this.isReadonly()}" class="no-left-padding" value="ratio"
+                >${translate('RATIO')}</sl-radio
               >
-            </paper-radio-group>
+            </etools-radio-group>
           </div>
         </div>
       </div>
       <div class="row-h flex-c">
-        <paper-input
+        <etools-input
           id="titleEl"
           required
           label=${translate('INDICATOR')}
@@ -155,13 +153,13 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
             this.indicator!.indicator!.title = detail.value;
           }}"
         >
-        </paper-input>
+        </etools-input>
       </div>
 
       <!-- Baseline & Target -->
       <div class="row-h flex-c" ?hidden="${this._unitIsNumeric(this.indicator!.indicator!.unit)}">
         <div class="col col-3">
-          <paper-input
+          <etools-input
             id="numeratorLbl"
             label=${translate(translatesMap.numerator_label)}
             .value="${this.indicator.numerator_label}"
@@ -171,10 +169,10 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
               this.indicator.numerator_label = detail.value;
             }}"
           >
-          </paper-input>
+          </etools-input>
         </div>
         <div class="col col-3">
-          <paper-input
+          <etools-input
             id="denomitorLbl"
             label=${translate(translatesMap.denominator_label)}
             .value="${this.indicator.denominator_label}"
@@ -184,14 +182,14 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
               this.indicator.denominator_label = detail.value;
             }}"
           >
-          </paper-input>
+          </etools-input>
         </div>
       </div>
       <div class="row-h flex-c">
         ${!this._isRatioType(this.indicator!.indicator!.unit, this.indicator!.indicator!.display_type)
           ? html` <div class="col col-3">
                 ${this._unitIsNumeric(this.indicator!.indicator!.unit)
-                  ? html`<etools-currency-amount-input
+                  ? html`<etools-currency
                       id="baselineNumeric"
                       label=${translate('BASELINE')}
                       .value="${this.indicator.baseline.v ?? ''}"
@@ -203,10 +201,10 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                       ?disabled="${this.baselineIsUnknown || this.readonly}"
                       ?readonly="${this.readonly}"
                       ?hidden="${!this._unitIsNumeric(this.indicator!.indicator!.unit)}"
-                    ></etools-currency-amount-input>`
+                    ></etools-currency>`
                   : html``}
                 ${!this._unitIsNumeric(this.indicator!.indicator!.unit)
-                  ? html` <paper-input
+                  ? html` <etools-input
                       id="baselineNonNumeric"
                       label=${translate('BASELINE')}
                       .value="${this.indicator.baseline.v}"
@@ -222,11 +220,11 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                         this.resetValidations();
                       }}"
                     >
-                    </paper-input>`
+                    </etools-input>`
                   : html``}
               </div>
               <div class="col col-3">
-                <etools-currency-amount-input
+                <etools-currency
                   id="targetElForNumericUnit"
                   required
                   label=${translate('TARGET')}
@@ -238,8 +236,8 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                   error-message=${translate('VALID_TARGET_ERR')}
                   ?readonly="${this.readonly}"
                   ?hidden="${!this._unitIsNumeric(this.indicator!.indicator!.unit)}"
-                ></etools-currency-amount-input>
-                <paper-input
+                ></etools-currency>
+                <etools-input
                   label=${translate('TARGET')}
                   id="targetElForNonNumericUnit"
                   .value="${this.indicator.target.v}"
@@ -257,12 +255,12 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                     this.resetValidations();
                   }}"
                 >
-                </paper-input>
+                </etools-input>
               </div>`
           : html``}
         ${this._isRatioType(this.indicator!.indicator!.unit, this.indicator!.indicator!.display_type)
           ? html` <div class="col-3 layout-horizontal">
-                <paper-input
+                <etools-input
                   id="baselineNumerator"
                   label=${translate(translatesMap.baseline)}
                   .value="${this.indicator.baseline.v}"
@@ -277,10 +275,11 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                     this._baselineChanged(this.indicator.baseline.v);
                   }}"
                 >
-                </paper-input>
+                </etools-input>
                 <div class="layout-horizontal bottom-aligned dash-separator">/</div>
-                <paper-input
+                <etools-input
                   id="baselineDenominator"
+                  always-float-label
                   .value="${this.indicator.baseline.d}"
                   allowed-pattern="[0-9]"
                   .pattern="${this.digitsNotStartingWith0Pattern}"
@@ -292,10 +291,10 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                     this.indicator.baseline.d = detail.value;
                   }}"
                 >
-                </paper-input>
+                </etools-input>
               </div>
               <div class="col col-3">
-                <paper-input
+                <etools-input
                   label=${translate('TARGET')}
                   id="targetNumerator"
                   .value="${this.indicator.target.v}"
@@ -311,10 +310,11 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                     this._targetChanged(this.indicator.target.v);
                   }}"
                 >
-                </paper-input>
+                </etools-input>
                 <div class="layout-horizontal bottom-aligned dash-separator">/</div>
-                <paper-input
+                <etools-input
                   id="targetDenominator"
+                  always-float-label
                   .value="${this.indicator.target.d}"
                   required
                   allowed-pattern="[0-9]"
@@ -327,32 +327,32 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                     this.indicator.target.d = detail.value;
                   }}"
                 >
-                </paper-input>
+                </etools-input>
               </div>`
           : html``}
         <div class="col col-6" ?hidden=${!this.isUnicefUser}>
-          <paper-toggle-button
+          <sl-switch
             ?checked="${this.indicator.is_high_frequency}"
             ?disabled="${this.readonly || !this.isUnicefUser}"
-            @iron-change="${this.isHighFrequencyChanged}"
+            @sl-change="${this.isHighFrequencyChanged}"
           >
             ${translate(translatesMap.is_high_frequency)}
-          </paper-toggle-button>
+          </sl-switch>
         </div>
       </div>
       <div class="unknown">
-        <paper-checkbox
+        <etools-checkbox
           ?checked="${this.baselineIsUnknown}"
           ?disabled="${this.readonly}"
-          @checked-changed="${({target}: CustomEvent) =>
-            this.baselineIsUnknownChanged(Boolean((target as PaperCheckboxElement).checked))}"
-          >${translate('UNKNOWN')}</paper-checkbox
+          @sl-change="${({target}: CustomEvent) =>
+            this.baselineIsUnknownChanged(Boolean((target as SlCheckbox).checked))}"
+          >${translate('UNKNOWN')}</etools-checkbox
         >
       </div>
 
       <!-- Baseline & Target -->
       <div class="row-h flex-c">
-        <paper-textarea
+        <etools-textarea
           label=${translate(translatesMap.means_of_verification)}
           type="text"
           .value="${this.indicator.means_of_verification}"
@@ -362,7 +362,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
             this.indicator.means_of_verification = detail.value;
           }}"
         >
-        </paper-textarea>
+        </etools-textarea>
       </div>
       <div class="last-item row-h flex-c">
         <etools-dropdown-multi
@@ -386,14 +386,14 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
         >
         </etools-dropdown-multi>
         <div class="all-locations">
-          <paper-button
-            class="secondary-btn add-locations"
+          <etools-button
+            variant="text"
             ?hidden="${this.readonly}"
             @click="${this._addAllLocations}"
             title=${translate('ADD_ALL_LOCATIONS')}
           >
             ${translate('ADD_ALL')}
-          </paper-button>
+          </etools-button>
         </div>
       </div>
     `;
@@ -430,7 +430,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
   isUnicefUser = false;
 
   private isHighFrequencyChanged(e: CustomEvent) {
-    const chk = e.target as PaperCheckboxElement;
+    const chk = e.target as SlSwitch;
     if (chk.checked === undefined || chk.checked === null) {
       return;
     }
@@ -536,6 +536,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
     const locationIDs = this.locationOptions.map((x: any) => x.id);
     this.indicator.locations = locationIDs;
     this.requestUpdate();
+    setTimeout(() => this.shadowRoot?.querySelector<EtoolsDropdownMulti>('#locationsDropdw')!.validate());
   }
 }
 

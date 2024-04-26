@@ -1,6 +1,7 @@
-import {customElement, html, LitElement, property} from 'lit-element';
-import '@unicef-polymer/etools-dialog/etools-dialog.js';
-import '@unicef-polymer/etools-date-time/datepicker-lite';
+import {html, LitElement} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
+import '@unicef-polymer/etools-unicef/src/etools-dialog/etools-dialog.js';
+import '@unicef-polymer/etools-unicef/src/etools-date-time/datepicker-lite';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {translate} from 'lit-translate';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
@@ -13,6 +14,7 @@ export class AcceptForPartner extends LitElement {
       <style>
         .container {
           padding: 15px 20px;
+          max-width: 220px;
         }
       </style>
       <etools-dialog
@@ -20,7 +22,6 @@ export class AcceptForPartner extends LitElement {
         size="md"
         no-padding
         keep-dialog-open
-        opened
         .okBtnText="${translate('GENERAL.SAVE')}"
         dialog-title="${translate('ACCEPT_ON_BEHALF_OF_PARTNER')}"
         @close="${this.onClose}"
@@ -46,7 +47,7 @@ export class AcceptForPartner extends LitElement {
 
   dateHasChanged(detail: {date: Date}) {
     const newValue = detail.date ? formatDate(detail.date, 'YYYY-MM-DD') : null;
-    this.submission_date = newValue;
+    this.submission_date = newValue || '';
   }
 
   onClose(): void {

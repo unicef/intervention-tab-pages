@@ -1,4 +1,5 @@
-import {customElement, LitElement, html, CSSResultArray, css, TemplateResult, property} from 'lit-element';
+import {LitElement, html, CSSResultArray, css, TemplateResult} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {translate} from 'lit-translate';
@@ -12,8 +13,9 @@ import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {REVIEW_ANSVERS, REVIEW_QUESTIONS} from '../../common/components/intervention/review.const';
 import {formatDate} from '@unicef-polymer/etools-utils/dist/date.util';
-import '@unicef-polymer/etools-data-table/etools-data-table';
+import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 import '../../common/components/intervention/review-checklist-popup';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 @customElement('reviews-list')
 export class ReviewsList extends connectStore(LitElement) {
@@ -33,7 +35,7 @@ export class ReviewsList extends connectStore(LitElement) {
           padding-inline-end: 16px;
         }
         .answer {
-          font-size: 14px;
+          font-size: var(--etools-font-size-14, 14px);
           margin-bottom: 10px;
         }
         .answer:last-child {
@@ -82,15 +84,15 @@ export class ReviewsList extends connectStore(LitElement) {
               <div slot="row-data" class="editable-row">
                 <div class="flex-2">${approval.user.name}</div>
                 <div class="flex-1">
-                  <iron-icon icon="${approval.overall_approval ? 'check' : 'close'}"></iron-icon>
+                  <etools-icon name="${approval.overall_approval ? 'check' : 'close'}"></etools-icon>
                 </div>
                 <div class="flex-4">${approval.overall_comment || '-'}</div>
                 <div class="flex-1">${formatDate(approval.review_date as string, 'DD MMM YYYY')}</div>
                 <div class="hover-block" ?hidden="${this.readonly || approval.user.id !== this.currentUserId}">
-                  <paper-icon-button
-                    icon="icons:create"
+                  <etools-icon-button
+                    name="create"
                     @click="${() => this.openReviewPopup(approval)}"
-                  ></paper-icon-button>
+                  ></etools-icon-button>
                 </div>
               </div>
 
@@ -98,7 +100,7 @@ export class ReviewsList extends connectStore(LitElement) {
                 ${Object.entries(REVIEW_QUESTIONS).map(
                   ([field, question]: [string, string], index: number) => html`
                     <div>
-                      <label class="paper-label">Q${index + 1}: ${question}</label>
+                      <label class="label">Q${index + 1}: ${question}</label>
                     </div>
                     <div class="answer">${REVIEW_ANSVERS.get((approval as any)[field]) || '-'}</div>
                   `

@@ -1,13 +1,5 @@
-import {
-  LitElement,
-  html,
-  TemplateResult,
-  CSSResultArray,
-  css,
-  property,
-  customElement,
-  PropertyValues
-} from 'lit-element';
+import {LitElement, html, TemplateResult, CSSResultArray, css, PropertyValues} from 'lit';
+import {property, customElement} from 'lit/decorators.js';
 import {ActivityTime, groupByYear, serializeTimeFrameData} from '../../../../utils/timeframes.helper';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {InterventionActivityTimeframe} from '@unicef-polymer/etools-types';
@@ -32,12 +24,12 @@ export class ActivityTimeFrames extends LitElement {
         }
         .title {
           font-weight: 500;
-          font-size: 16px;
+          font-size: var(--etools-font-size-16, 16px);
           line-height: 18px;
           color: var(--primary-text-color);
         }
         .description {
-          font-size: 12px;
+          font-size: var(--etools-font-size-12, 12px);
           line-height: 16px;
         }
         .year {
@@ -73,9 +65,9 @@ export class ActivityTimeFrames extends LitElement {
           max-width: inherit;
         }
         label[required] {
-          font-size: 12px;
+          font-size: var(--etools-font-size-12, 12px);
           color: var(--secondary-text-color);
-          background: url('./images/required.svg') no-repeat 99% 20%/5px;
+          background: url('./assets/images/required.svg') no-repeat 99% 20%/5px;
           width: auto !important;
           max-width: 100%;
           right: auto;
@@ -120,7 +112,7 @@ export class ActivityTimeFrames extends LitElement {
 
   protected render(): TemplateResult {
     return html`
-      <label class="paper-label layout-horizontal center-align" required ?hidden="${this.hideLabel}">
+      <label class="label layout-horizontal center-align" required ?hidden="${this.hideLabel}">
         ${translate('ACTIVITY_TIMES')}
       </label>
       <div class="layout-horizontal center-align time-frame-container">

@@ -1,10 +1,10 @@
-import {customElement, LitElement, html, CSSResultArray, TemplateResult, css, property} from 'lit-element';
+import {LitElement, html, CSSResultArray, TemplateResult, css} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import {InterventionComment} from '@unicef-polymer/etools-types';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {translate} from 'lit-translate';
-import {formatDateLocalized} from '@unicef-polymer/etools-modules-common/dist/utils/language';
-
+import dayjs from 'dayjs';
 @customElement('message-item')
 export class MessageItem extends LitElement {
   @property({type: Boolean, reflect: true, attribute: 'my-comment'}) myComment!: boolean;
@@ -18,6 +18,11 @@ export class MessageItem extends LitElement {
       : `${this.comment.user.first_name ? this.comment.user.first_name[0] : ''}${
           this.comment.user.last_name ? this.comment.user.last_name[0] : ''
         }`;
+  }
+
+  get date(): string {
+    const date = dayjs(this.comment.created);
+    return `${date.format('MMM DD YYYY')} at ${date.format('HH:mm')}`;
   }
 
   protected render(): TemplateResult {
@@ -34,7 +39,7 @@ export class MessageItem extends LitElement {
             ></etools-loading>
             <div class="date" ?hidden="${!this.comment.id && !this.comment.loadingError}">
               ${this.comment.id
-                ? formatDateLocalized(this.comment.created, 'MMM DD YYYY HH:mm')
+                ? this.date
                 : html`<div
                     class="retry"
                     tabindex="0"
@@ -45,7 +50,7 @@ export class MessageItem extends LitElement {
                       }
                     }}"
                   >
-                    <iron-icon icon="refresh"></iron-icon>${translate('RETRY')}
+                    <etools-icon name="refresh"></etools-icon>${translate('RETRY')}
                   </div> `}
             </div>
           </div>
@@ -77,11 +82,11 @@ export class MessageItem extends LitElement {
                 ?hidden="${!this.comment.id}"
               >
                 <etools-loading no-overlay ?active="${this.resolving}" loading-text=""></etools-loading>
-                <iron-icon
+                <etools-icon
                   ?hidden="${this.resolving}"
                   class="resolve"
-                  icon="${this.comment.state === 'resolved' ? 'check' : 'archive'}"
-                ></iron-icon>
+                  name="${this.comment.state === 'resolved' ? 'check' : 'archive'}"
+                ></etools-icon>
                 ${translate(this.comment.state === 'resolved' ? 'RESOLVED' : 'RESOLVE')}
               </div>
               <!--      Delete action        -->
@@ -98,7 +103,9 @@ export class MessageItem extends LitElement {
                 }}"
               >
                 <etools-loading no-overlay ?active="${this.deleting}" loading-text=""></etools-loading>
-                <iron-icon ?hidden="${this.deleting}" class="delete" icon="delete"></iron-icon> ${translate('DELETE')}
+                <etools-icon ?hidden="${this.deleting}" class="delete" name="delete"></etools-icon> ${translate(
+                  'DELETE'
+                )}
               </div>
             </div>
           `}
@@ -163,7 +170,7 @@ export class MessageItem extends LitElement {
           background-color: var(--darker-divider-color);
           color: #ffffff;
           font-weight: 500;
-          font-size: 18px;
+          font-size: var(--etools-font-size-18, 18px);
           text-transform: uppercase;
         }
         .info {
@@ -176,26 +183,26 @@ export class MessageItem extends LitElement {
           margin-bottom: 10px;
         }
         .name {
-          font-size: 14px;
+          font-size: var(--etools-font-size-14, 14px);
           font-weight: 400;
           line-height: 16px;
           color: #212121;
         }
         .date {
-          font-size: 13px;
+          font-size: var(--etools-font-size-13, 13px);
           font-weight: 400;
           line-height: 15px;
           color: #5c5c5c;
         }
         .message {
-          font-size: 16px;
+          font-size: var(--etools-font-size-16, 16px);
           font-weight: 400;
           line-height: 20px;
           color: #5c5c5c;
           white-space: pre-line;
         }
         .deleted-message {
-          font-size: 14px;
+          font-size: var(--etools-font-size-14, 14px);
           line-height: 20px;
           color: var(--secondary-text-color);
           font-style: italic;
@@ -214,7 +221,7 @@ export class MessageItem extends LitElement {
           align-items: center;
           margin-inline-end: 30px;
           font-weight: 400;
-          font-size: 13px;
+          font-size: var(--etools-font-size-13, 13px);
           line-height: 18px;
           color: #5c5c5c;
           cursor: pointer;
@@ -227,17 +234,15 @@ export class MessageItem extends LitElement {
         .actions div:hover {
           text-decoration: underline;
         }
-        iron-icon {
+        etools-icon {
           margin-inline-end: 8px;
         }
         .delete {
-          width: 18px;
-          height: 18px;
+          --etools-icon-font-size: var(--etools-font-size-18, 18px);
         }
-        iron-icon[icon='refresh'],
+        etools-icon[name='refresh'],
         .resolve {
-          width: 18px;
-          height: 18px;
+          --etools-icon-font-size: var(--etools-font-size-18, 18px);
           color: var(--secondary-text-color);
         }
         *[hidden] {
@@ -251,7 +256,7 @@ export class MessageItem extends LitElement {
           cursor: pointer;
           text-decoration: underline;
         }
-        iron-icon[icon='refresh'] {
+        etools-icon[name='refresh'] {
           margin-inline-end: 2px;
         }
         *:focus-visible {

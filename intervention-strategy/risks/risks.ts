@@ -1,16 +1,16 @@
-import {LitElement, html, property, customElement} from 'lit-element';
-import '@polymer/paper-input/paper-textarea';
-import '@unicef-polymer/etools-content-panel/etools-content-panel';
-import '@unicef-polymer/etools-table/etools-table';
-import {EtoolsTableColumn, EtoolsTableColumnType} from '@unicef-polymer/etools-table/etools-table';
-import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
-import '@polymer/paper-icon-button/paper-icon-button';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax';
+import {LitElement, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
+import '@unicef-polymer/etools-unicef/src/etools-input/etools-textarea';
+import '@unicef-polymer/etools-unicef/src/etools-content-panel/etools-content-panel';
+import '@unicef-polymer/etools-unicef/src/etools-table/etools-table';
+import {EtoolsTableColumn, EtoolsTableColumnType} from '@unicef-polymer/etools-unicef/src/etools-table/etools-table';
+import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
+import {RequestEndpoint, sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax';
 import {getStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import ComponentBaseMixin from '@unicef-polymer/etools-modules-common/dist/mixins/component-base-mixin';
-import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+
 import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {RootState} from '../../common/types/store.types';
@@ -27,10 +27,11 @@ import {CommentsMixin} from '../../common/components/comments/comments-mixin';
 import {AnyObject, AsyncAction, EtoolsEndpoint, LabelAndValue, RiskData} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 import {translatesMap} from '../../utils/intervention-labels-map';
-import '@unicef-polymer/etools-info-tooltip/info-icon-tooltip';
+import '@unicef-polymer/etools-unicef/src/etools-info-tooltip/info-icon-tooltip';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {translateValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 
 const customStyles = html`
   <style>
@@ -49,7 +50,7 @@ const customStyles = html`
 @customElement('risks-element')
 export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) {
   static get styles() {
-    return [buttonsStyles, gridLayoutStylesLit];
+    return [gridLayoutStylesLit];
   }
 
   render() {
@@ -65,7 +66,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         :host {
           display: block;
           margin-bottom: 24px;
-          --etools-table-col-font-size: 16px;
+          --etools-table-col-font-size: var(--etools-font-size-16, 16px);
         }
 
         #mitigationMeasures {
@@ -88,12 +89,12 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           ></info-icon-tooltip>
         </div>
         <div slot="panel-btns">
-          <paper-icon-button
+          <etools-icon-button
             ?hidden="${!this.canEditAtLeastOneField}"
             @click="${() => this.openRiskDialog()}"
-            icon="add-box"
+            name="add-box"
           >
-          </paper-icon-button>
+          </etools-icon-button>
         </div>
         <etools-table
           ?hidden="${!this.data?.length}"
@@ -195,7 +196,7 @@ export class RisksElement extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       active: true,
       loadingSource: 'interv-risk-item-remove'
     });
-    const endpoint = getEndpoint<EtoolsEndpoint, EtoolsRequestEndpoint>(interventionEndpoints.riskDelete, {
+    const endpoint = getEndpoint<EtoolsEndpoint, RequestEndpoint>(interventionEndpoints.riskDelete, {
       interventionId: this.interventionId,
       riskId: riskId
     });
