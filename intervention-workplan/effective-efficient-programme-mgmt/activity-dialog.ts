@@ -80,17 +80,17 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         .hideConfirmBtn="${this.readonly}"
       >
         <div class="row">
-            <div class="col-12">
-              <etools-input
-                readonly
-                tabindex="-1"
-                id="title"
-                label=${translate('GENERAL.TITLE')}
-                always-float-label
-                placeholder="—"
-                .value="${this.data.title}"
-              >
-              </etools-input>
+          <div class="col-12">
+            <etools-input
+              readonly
+              tabindex="-1"
+              id="title"
+              label=${translate('GENERAL.TITLE')}
+              always-float-label
+              placeholder="—"
+              .value="${this.data.title}"
+            >
+            </etools-input>
           </div>
           <div class="col-12">
             <etools-textarea
@@ -106,8 +106,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
         </div>
         <div class="row align-items-center padd-bott">
           ${!this.useInputLevel
-            ? html`
-                <div class="col-md-3 col-6">
+            ? html` <div class="col-md-3 col-6">
                   <etools-currency
                     id="partnerContribution"
                     label=${translate('PARTNER_CASH_BUDGET')}
@@ -119,7 +118,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
                     auto-validate
                   >
                   </etools-currency>
-                </div>  
+                </div>
                 <div class="col-md-3 col-6">
                   <etools-currency
                     id="unicefCash"
@@ -134,22 +133,22 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
                   </etools-currency>
                 </div>`
             : html`
-              <div class="col-md-3 col-6">
-                <etools-input
-                  readonly
-                  tabindex="-1"
-                  label=${translate('PARTNER_CASH_BUDGET')}
-                  .value="${this.getSumValue('cso_cash')}"
-                ></etools-input>
-              </div>
-              <div class="col-md-3 col-6">  
-                <etools-input
-                  readonly
-                  tabindex="-1"
-                  label=${translate('UNICEF_CASH_BUDGET')}
-                  .value="${this.getSumValue('unicef_cash')}"
-                ></etools-input>
-              </div>
+                <div class="col-md-3 col-6">
+                  <etools-input
+                    readonly
+                    tabindex="-1"
+                    label=${translate('PARTNER_CASH_BUDGET')}
+                    .value="${this.getSumValue('cso_cash')}"
+                  ></etools-input>
+                </div>
+                <div class="col-md-3 col-6">
+                  <etools-input
+                    readonly
+                    tabindex="-1"
+                    label=${translate('UNICEF_CASH_BUDGET')}
+                    .value="${this.getSumValue('unicef_cash')}"
+                  ></etools-input>
+                </div>
               `}
           <div class="offset-md-3 offset-sm-0 col-md-3 col-12 total">
             <etools-input
@@ -172,7 +171,7 @@ export class ActivityDialog extends ComponentBaseMixin(LitElement) {
               ${translate('USE_INPUT_LEVEL')}
             </sl-switch>
           </div>
-        </div>  
+        </div>
         <activity-items-table
           .dialogElement=${this.dialogElement}
           ?hidden="${!this.useInputLevel}"

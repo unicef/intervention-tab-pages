@@ -54,7 +54,7 @@ export class IndicatorDisaggregations extends RepeatableDataSetsMixin(LitElement
           margin: 0 15px !important;
         }
         .bottom {
-          padding-bottom:80px;
+          padding-bottom: 80px;
           padding-top: 20px;
         }
         .item-container .item-content {

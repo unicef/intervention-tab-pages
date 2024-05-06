@@ -126,10 +126,7 @@ export class InterventionDates extends CommentsMixin(
             </etools-info-tooltip>
           </div>
         </div>
-        <div
-          class="row"
-          ?hidden="${this.hideActivationLetter(this.data.status, this.data.contingency_pd)}"
-        >
+        <div class="row" ?hidden="${this.hideActivationLetter(this.data.status, this.data.contingency_pd)}">
           <div class="col-12">
             <etools-upload
               label=${translate('ACTIVATION_LETTER')}

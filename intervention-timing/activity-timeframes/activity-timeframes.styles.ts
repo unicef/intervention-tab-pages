@@ -96,7 +96,7 @@ export const ActivityTimeframesStyles: CSSResult = css`
     line-height: 20px;
     color: var(--primary-text-color);
   }
-  .align-items-center  {
+  .align-items-center {
     margin: 0 auto;
   }
 `;

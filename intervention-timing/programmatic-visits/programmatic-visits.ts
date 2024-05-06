@@ -383,6 +383,7 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
                 <div class="error-msg">${translate('TOTAL_ERR')}</div>
               </div>
             </div>
+          </div>
         `
       )}
     `;

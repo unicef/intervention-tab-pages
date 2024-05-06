@@ -201,23 +201,23 @@ export class Other extends CommentsMixin(ComponentBaseMixin(LitElement)) {
               @value-changed="${({detail}: CustomEvent) => this.cfeiValueChanged(detail, 'cfei_number')}"
             ></etools-input>
           </div>
-        <div class="col-12" ?hidden="${!this.permissions?.view?.confidential}">
-          <sl-switch
-            id="confidential"
-            ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit?.confidential)}"
-            ?checked="${this.data.confidential}"
-            @sl-change="${(e: CustomEvent) =>
-              this.valueChanged({value: (e.target! as SlSwitch).checked}, 'confidential')}}"
-          >
-            ${translate('CONFIDENTIAL')}
-          </sl-switch>
-          <info-icon-tooltip
-            id="iit-confidential"
-            ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit?.confidential)}"
-            .tooltipText="${translate('CONFIDENTIAL_INFO')}"
-          ></info-icon-tooltip>
+          <div class="col-12" ?hidden="${!this.permissions?.view?.confidential}">
+            <sl-switch
+              id="confidential"
+              ?disabled="${this.isReadonly(this.editMode, this.permissions?.edit?.confidential)}"
+              ?checked="${this.data.confidential}"
+              @sl-change="${(e: CustomEvent) =>
+                this.valueChanged({value: (e.target! as SlSwitch).checked}, 'confidential')}}"
+            >
+              ${translate('CONFIDENTIAL')}
+            </sl-switch>
+            <info-icon-tooltip
+              id="iit-confidential"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit?.confidential)}"
+              .tooltipText="${translate('CONFIDENTIAL_INFO')}"
+            ></info-icon-tooltip>
+          </div>
         </div>
-      </div>
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
       </etools-content-panel>
     `;

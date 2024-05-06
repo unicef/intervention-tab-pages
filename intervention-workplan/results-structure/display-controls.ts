@@ -64,7 +64,7 @@ export class DisplayControls extends LitElement {
   protected render(): TemplateResult {
     return html`
       <style>
-        @media(max-width:768px)   {
+        @media (max-width: 768px) {
           .editorLink {
             display: none;
           }
@@ -106,7 +106,7 @@ export class DisplayControls extends LitElement {
             )}
           </sl-menu>
         </sl-dropdown>
-        <a class='editorLink' href="interventions/${this.interventionId}/${TABS.WorkplanEditor}">
+        <a class="editorLink" href="interventions/${this.interventionId}/${TABS.WorkplanEditor}">
           <div class="editor-link">
             ${translate('ACTIVITES_EDITOR')}
             <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">

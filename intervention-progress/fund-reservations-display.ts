@@ -85,8 +85,12 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
       </div>
 
       <div class="list-container" ?hidden="${this._noFrs(this.frsDetails)}">
-        <etools-data-table-header .lowResolutionLayout="${this.lowResolutionLayout}" id="listHeader" no-title 
-          ?hidden="${!this.frsDetails || !this.frsDetails.frs.length}">
+        <etools-data-table-header
+          .lowResolutionLayout="${this.lowResolutionLayout}"
+          id="listHeader"
+          no-title
+          ?hidden="${!this.frsDetails || !this.frsDetails.frs.length}"
+        >
           <etools-data-table-column class="col-2"> FR# </etools-data-table-column>
           <etools-data-table-column class="col-2 right-align">
             ${translate('FR_POSTING_DATE')}
@@ -174,9 +178,7 @@ export class FundReservationsDisplay extends FrNumbersConsistencyMixin(LitElemen
                     `
                   )}
                 </div>
-                <div class="row" ?hidden="${!isEmpty(fr.line_item_details)}">
-                  ${translate('NO_DETAILS_TO_DISPLAY')}
-                </div>
+                <div class="row" ?hidden="${!isEmpty(fr.line_item_details)}">${translate('NO_DETAILS_TO_DISPLAY')}</div>
               </div>
             </etools-data-table-row>
           `

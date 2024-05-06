@@ -103,29 +103,29 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
           ${this.hideCpOutputs
             ? ''
             : html`
-               <div class="col-12">
-                <etools-dropdown
-                  class="validate-input flex-1"
-                  @etools-selected-item-changed="${({detail}: CustomEvent) =>
-                    this.updateModelValue('cp_output', detail.selectedItem && detail.selectedItem.id)}"
-                  ?trigger-value-change-event="${!this.loadingInProcess}"
-                  .selected="${this.editedData.cp_output}"
-                  label="CP Output"
-                  placeholder="&#8212;"
-                  .options="${this.cpOutputs}"
-                  option-label="name"
-                  option-value="id"
-                  allow-outside-scroll
-                  dynamic-align
-                  auto-validate
-                  required
-                  ?invalid="${this.errors.cp_output}"
-                  .errorMessage="${(this.errors.cp_output && this.errors.cp_output[0]) ||
-                  translate('GENERAL.REQUIRED_FIELD')}"
-                  @focus="${() => this.resetFieldError('cp_output')}"
-                  @click="${() => this.resetFieldError('cp_output')}"
-                ></etools-dropdown>
-              </div>
+                <div class="col-12">
+                  <etools-dropdown
+                    class="validate-input flex-1"
+                    @etools-selected-item-changed="${({detail}: CustomEvent) =>
+                      this.updateModelValue('cp_output', detail.selectedItem && detail.selectedItem.id)}"
+                    ?trigger-value-change-event="${!this.loadingInProcess}"
+                    .selected="${this.editedData.cp_output}"
+                    label="CP Output"
+                    placeholder="&#8212;"
+                    .options="${this.cpOutputs}"
+                    option-label="name"
+                    option-value="id"
+                    allow-outside-scroll
+                    dynamic-align
+                    auto-validate
+                    required
+                    ?invalid="${this.errors.cp_output}"
+                    .errorMessage="${(this.errors.cp_output && this.errors.cp_output[0]) ||
+                    translate('GENERAL.REQUIRED_FIELD')}"
+                    @focus="${() => this.resetFieldError('cp_output')}"
+                    @click="${() => this.resetFieldError('cp_output')}"
+                  ></etools-dropdown>
+                </div>
               `}
         </div>
       </etools-dialog>

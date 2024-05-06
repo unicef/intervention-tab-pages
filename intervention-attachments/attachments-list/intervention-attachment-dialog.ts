@@ -24,7 +24,8 @@ import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/uti
 export class InterventionAttachmentDialog extends connectStore(LitElement) {
   static get styles(): CSSResultArray {
     // language=css
-    return [layoutStyles,
+    return [
+      layoutStyles,
       css`
         etools-upload {
           margin-top: 14px;

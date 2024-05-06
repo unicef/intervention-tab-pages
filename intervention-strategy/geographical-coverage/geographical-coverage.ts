@@ -185,17 +185,17 @@ export class GeographicalCoverage extends CommentsMixin(ComponentBaseMixin(LitEl
             ></info-icon-tooltip>
           </div>
           <div class="col-12">
-          <etools-textarea
-            no-label-float
-            class="w100"
-            placeholder="&#8212;"
-            readonly
-            tabindex="-1"
-            max-rows="4"
-            .value="${this.getSelectedSitesText(this.data.sites)}"
-          >
-          </etools-textarea>
-         </div>
+            <etools-textarea
+              no-label-float
+              class="w100"
+              placeholder="&#8212;"
+              readonly
+              tabindex="-1"
+              max-rows="4"
+              .value="${this.getSelectedSitesText(this.data.sites)}"
+            >
+            </etools-textarea>
+          </div>
         </div>
         <div class="row">
           <div class="col-12">

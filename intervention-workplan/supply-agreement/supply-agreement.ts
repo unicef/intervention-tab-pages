@@ -62,7 +62,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   }
   render() {
     if (!this.supply_items) {
-      return html` ${sharedStyles}      
+      return html` ${sharedStyles}
         <etools-loading source="supply-a" active></etools-loading>`;
     }
     return html`
@@ -116,11 +116,9 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
               >${this.intervention.planned_budget.currency}
               ${displayCurrencyAmount(this.intervention.planned_budget.total_supply!, '0.00')}</label
             >
-            </span>
+          </span>
         </div>
         <div slot="panel-btns">
-        
-
           <etools-info-tooltip
             custom-icon
             position="left"

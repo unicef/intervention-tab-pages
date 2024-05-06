@@ -106,7 +106,7 @@ export class PartnerInfoElement extends CommentsMixin(ComponentBaseMixin(LitElem
             <label for="agreementAuthOff" class="label">${translate('AGREEMENT_AUTHORIZED_OFFICERS')}</label>
             <div id="agreementAuthOff">${this.renderAgreementAuthorizedOfficers(this.agreementAuthorizedOfficers)}</div>
           </div>
-        <div class="col-md-8 col-12" ?hidden="${!this.permissions?.view!.partner_focal_points}">
+          <div class="col-md-8 col-12" ?hidden="${!this.permissions?.view!.partner_focal_points}">
             <etools-dropdown-multi
               label=${translate('PARTNER_FOCAL_POINTS')}
               .selectedValues="${this.data?.partner_focal_points?.map((f: any) => f.id)}"

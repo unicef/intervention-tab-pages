@@ -84,7 +84,7 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
               ?hidden="${this.isReadonly(this.editMode, this.permissions?.edit?.ip_program_contribution)}"
               .tooltipText="${translate('PARTNER_NON_FINANCIAL_CONTRIBUTION_TOOLTIP')}"
             ></info-icon-tooltip>
-          </div>     
+          </div>
           <div class="col-12">
             <etools-textarea
               class="w100"

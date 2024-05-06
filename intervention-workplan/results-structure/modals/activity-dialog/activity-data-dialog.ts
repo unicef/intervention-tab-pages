@@ -171,47 +171,50 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
           </div>
           </div>
           <div class="row">
-            ${!this.useInputLevel
-              ? html`
-                  <div class="col-md-3 col-6">
-                    <etools-currency
-                      label=${translate(translatesMap.cso_cash)}
-                      ?readonly="${this.readonly}"
-                      .value="${this.editedData.cso_cash}"
-                      @value-changed="${({detail}: CustomEvent) => this.updateModelValue('cso_cash', detail.value)}"
-                      required
-                    ></etools-currency>
-                </div>
-                <div class="col-md-3 col-6">
-                  <etools-currency
-                    label=${translate('UNICEF_CASH_BUDGET')}
-                    ?readonly="${this.readonly}"
-                    required
-                    .value="${this.editedData.unicef_cash}"
-                    @value-changed="${({detail}: CustomEvent) => this.updateModelValue('unicef_cash', detail.value)}"
-                  ></etools-currency>
-                </div>
-                `
-              : html`
-                <div class="col-md-3 col-6">
-                  <etools-input
-                    readonly
-                    tabindex="-1"
-                    class="total-input"
-                    label=${translate('PARTNER_CASH_BUDGET')}
-                    .value="${this.getSumValue('cso_cash')}"
-                  ></etools-input>
-                </div>
-                <div class="col-md-3 col-6">
-                  <etools-input
-                    readonly
-                    tabindex="-1"
-                    class="total-input"
-                    label=${translate('UNICEF_CASH_BUDGET')}
-                    .value="${this.getSumValue('unicef_cash')}"
-                  ></etools-input>
-                </div>
-                `}
+            ${
+              !this.useInputLevel
+                ? html`
+                    <div class="col-md-3 col-6">
+                      <etools-currency
+                        label=${translate(translatesMap.cso_cash)}
+                        ?readonly="${this.readonly}"
+                        .value="${this.editedData.cso_cash}"
+                        @value-changed="${({detail}: CustomEvent) => this.updateModelValue('cso_cash', detail.value)}"
+                        required
+                      ></etools-currency>
+                    </div>
+                    <div class="col-md-3 col-6">
+                      <etools-currency
+                        label=${translate('UNICEF_CASH_BUDGET')}
+                        ?readonly="${this.readonly}"
+                        required
+                        .value="${this.editedData.unicef_cash}"
+                        @value-changed="${({detail}: CustomEvent) =>
+                          this.updateModelValue('unicef_cash', detail.value)}"
+                      ></etools-currency>
+                    </div>
+                  `
+                : html`
+                    <div class="col-md-3 col-6">
+                      <etools-input
+                        readonly
+                        tabindex="-1"
+                        class="total-input"
+                        label=${translate('PARTNER_CASH_BUDGET')}
+                        .value="${this.getSumValue('cso_cash')}"
+                      ></etools-input>
+                    </div>
+                    <div class="col-md-3 col-6">
+                      <etools-input
+                        readonly
+                        tabindex="-1"
+                        class="total-input"
+                        label=${translate('UNICEF_CASH_BUDGET')}
+                        .value="${this.getSumValue('unicef_cash')}"
+                      ></etools-input>
+                    </div>
+                  `
+            }
 
               <div class="col-md-6 col-12 total">
                 <etools-input

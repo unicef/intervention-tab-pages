@@ -99,34 +99,34 @@ export class EditQprDialog extends GenerateQuarterlyReportingRequirementsMixin(L
         ?show-spinner="${this.requestInProgress}"
         spinner-text=${translate('GENERAL.SAVING_DATA')}
       >
-      <div class="row">
-        <div class="col-12">
-          <span id="qpr-edit-info">${translate('ALL_DATES_IN_FUTURE')}</span>
-          <etools-button id="addReq" variant="text" class="no-marg no-pad font-14" @click="${this._addNewQpr}"
-            >${translate('ADD_REQUIREMENT')}</etools-button
-          >
+        <div class="row">
+          <div class="col-12">
+            <span id="qpr-edit-info">${translate('ALL_DATES_IN_FUTURE')}</span>
+            <etools-button id="addReq" variant="text" class="no-marg no-pad font-14" @click="${this._addNewQpr}"
+              >${translate('ADD_REQUIREMENT')}</etools-button
+            >
+          </div>
+          <div class="col-12" style="padding-top:10px" ?hidden="${!this.insterventionsDatesDiffer()}">
+            <span id="regenerate-info">${translate('PD_START_END_DATE_CHANGED')}</span> &nbsp;
+            <etools-button
+              id="regen"
+              variant="text"
+              class="no-marg no-pad font-14"
+              @click="${this.regenerateReportingRequirements}"
+              >${translate('REGENERATE')}</etools-button
+            >
+          </div>
+          <div class="col-12">
+            <qpr-list
+              id="qprList"
+              with-scroll
+              .qprData="${this.qprData}"
+              always-show-row-actions
+              ?editMode="${true}"
+              @delete-qpr="${(event: CustomEvent) => this._deleteQprDatesSet(event)}"
+            ></qpr-list>
+          </div>
         </div>
-        <div class="col-12" style="padding-top:10px" ?hidden="${!this.insterventionsDatesDiffer()}">
-          <span id="regenerate-info">${translate('PD_START_END_DATE_CHANGED')}</span> &nbsp;
-          <etools-button
-            id="regen"
-            variant="text"
-            class="no-marg no-pad font-14"
-            @click="${this.regenerateReportingRequirements}"
-            >${translate('REGENERATE')}</etools-button
-          >
-        </div>
-        <div class="col-12">
-          <qpr-list
-            id="qprList"
-            with-scroll
-            .qprData="${this.qprData}"
-            always-show-row-actions
-            ?editMode="${true}"
-            @delete-qpr="${(event: CustomEvent) => this._deleteQprDatesSet(event)}"
-          ></qpr-list>
-        </div>
-       </div>
       </etools-dialog>
 
       <!-- add or edit a QPR row -->

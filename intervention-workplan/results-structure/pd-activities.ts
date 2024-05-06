@@ -58,11 +58,10 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
   protected render(): TemplateResult {
     // language=HTML
     return html`
-      ${sharedStyles} 
+      ${sharedStyles}
       <style>
-      @media (max-width: 576px) {
-
-      }
+        @media (max-width: 576px) {
+        }
       </style>
       <etools-data-table-row .detailsOpened="${true}" id="activitiesRow">
         <div slot="row-data" class="layout-horizontal align-items-center editable-row start-justified">
@@ -81,7 +80,7 @@ export class PdActivities extends CommentsMixin(TruncateMixin(LitElement)) {
         <div slot="row-data-details">
           <div class="table-row table-head align-items-center" ?hidden="${isEmptyObject(this.activities)}">
             <div class="left-align layout-vertical">${translate('ACTIVITY_NAME')}</div>
-            <div class=secondary-cell center">${translate('TIME_PERIODS')}</div>
+            <div class="secondary-cell center">${translate('TIME_PERIODS')}</div>
             <div class="secondary-cell right">${translate('PARTNER_CASH')}</div>
             <div class="secondary-cell right">${translate('UNICEF_CASH')}</div>
             <div class="secondary-cell right">${translate('GENERAL.TOTAL')} (${this.currency})</div>

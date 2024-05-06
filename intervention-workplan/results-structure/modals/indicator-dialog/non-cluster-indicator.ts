@@ -193,10 +193,9 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
       </div>
       <div class="row">
         ${!this._isRatioType(this.indicator!.indicator!.unit, this.indicator!.indicator!.display_type)
-          ? html`
-                ${this._unitIsNumeric(this.indicator!.indicator!.unit)
-                  ? html` <div class="col-md-3 col-6" ?hidden="${!this._unitIsNumeric(this.indicator!.indicator!.unit)}">
-                  <etools-currency
+          ? html` ${this._unitIsNumeric(this.indicator!.indicator!.unit)
+                ? html` <div class="col-md-3 col-6" ?hidden="${!this._unitIsNumeric(this.indicator!.indicator!.unit)}">
+                    <etools-currency
                       id="baselineNumeric"
                       label=${translate('BASELINE')}
                       .value="${this.indicator.baseline.v ?? ''}"
@@ -206,14 +205,13 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                       }}"
                       error-message=${translate('INVALID_NUMBER')}
                       ?disabled="${this.baselineIsUnknown || this.readonly}"
-                      ?readonly="${this.readonly}"                      
+                      ?readonly="${this.readonly}"
                     ></etools-currency>
-                    </div>`
-                  : html``}
-                ${!this._unitIsNumeric(this.indicator!.indicator!.unit)
-                  ? html` 
-                  <div class="col-md-3 col-6">
-                  <etools-input
+                  </div>`
+                : html``}
+              ${!this._unitIsNumeric(this.indicator!.indicator!.unit)
+                ? html` <div class="col-md-3 col-6">
+                    <etools-input
                       id="baselineNonNumeric"
                       label=${translate('BASELINE')}
                       .value="${this.indicator.baseline.v}"
@@ -230,9 +228,9 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                       }}"
                     >
                     </etools-input>
-                    </div>`
-                  : html``}
-              
+                  </div>`
+                : html``}
+
               <div class="col-md-3 col-6" ?hidden="${!this._unitIsNumeric(this.indicator!.indicator!.unit)}">
                 <etools-currency
                   id="targetElForNumericUnit"
@@ -244,10 +242,10 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                     this._targetChanged(this.indicator.target.v);
                   }}"
                   error-message=${translate('VALID_TARGET_ERR')}
-                  ?readonly="${this.readonly}"                  
+                  ?readonly="${this.readonly}"
                 ></etools-currency>
-                </div>
-                <div class="col-md-3 col-6" ?hidden="${this._unitIsNumeric(this.indicator!.indicator!.unit)}">
+              </div>
+              <div class="col-md-3 col-6" ?hidden="${this._unitIsNumeric(this.indicator!.indicator!.unit)}">
                 <etools-input
                   label=${translate('TARGET')}
                   id="targetElForNonNumericUnit"
@@ -258,7 +256,7 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
                   .pattern="${this.digitsPattern}"
                   auto-validate
                   error-message=${translate('VALID_TARGET_ERR')}
-                  ?readonly="${this.readonly}"                  
+                  ?readonly="${this.readonly}"
                   @value-changed="${({detail}: CustomEvent) => {
                     this.indicator.target.v = detail.value;
                     this._targetChanged(this.indicator.target.v);
@@ -375,36 +373,37 @@ class NonClusterIndicator extends IndicatorsCommonMixin(LitElement) {
           >
           </etools-textarea>
         </div>
-      <div class="col-12 layout-horizontal last-item">
-        <etools-dropdown-multi
-          id="locationsDropdw"
-          label=${translate(translatesMap.locations)}
-          placeholder="&#8212;"
-          .selectedValues="${this.indicator.locations}"
-          .options="${this.locationOptions}"
-          option-label="name"
-          option-value="id"
-          required
-          auto-validate
-          error-message=${translate('LOCATIONS_ERR')}
-          fit-into="etools-dialog"
-          ?readonly="${this.readonly}"
-          trigger-value-change-event
-          @etools-selected-items-changed="${({detail}: CustomEvent) => {
-            const newIds = detail.selectedItems.map((i: any) => i.id);
-            this.indicator.locations = newIds;
-          }}"
-        >
-        </etools-dropdown-multi>
-        <div class="all-locations">
-          <etools-button
-            variant="text"
-            ?hidden="${this.readonly}"
-            @click="${this._addAllLocations}"
-            title=${translate('ADD_ALL_LOCATIONS')}
+        <div class="col-12 layout-horizontal last-item">
+          <etools-dropdown-multi
+            id="locationsDropdw"
+            label=${translate(translatesMap.locations)}
+            placeholder="&#8212;"
+            .selectedValues="${this.indicator.locations}"
+            .options="${this.locationOptions}"
+            option-label="name"
+            option-value="id"
+            required
+            auto-validate
+            error-message=${translate('LOCATIONS_ERR')}
+            fit-into="etools-dialog"
+            ?readonly="${this.readonly}"
+            trigger-value-change-event
+            @etools-selected-items-changed="${({detail}: CustomEvent) => {
+              const newIds = detail.selectedItems.map((i: any) => i.id);
+              this.indicator.locations = newIds;
+            }}"
           >
-            ${translate('ADD_ALL')}
-          </etools-button>
+          </etools-dropdown-multi>
+          <div class="all-locations">
+            <etools-button
+              variant="text"
+              ?hidden="${this.readonly}"
+              @click="${this._addAllLocations}"
+              title=${translate('ADD_ALL_LOCATIONS')}
+            >
+              ${translate('ADD_ALL')}
+            </etools-button>
+          </div>
         </div>
       </div>
     `;

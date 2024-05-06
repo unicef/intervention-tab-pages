@@ -74,22 +74,22 @@ export class GroupedLocationsDialog extends LitElement {
         cancel-btn-text=${translate('GENERAL.CANCEL')}
         @close="${() => this.onClose()}"
       >
-      <div class="row">
-       <div class="col-12">
-        <etools-dropdown
-          id="adminLevelsDropdw"
-          label=${translate('GROUP_LOCATIONS_BY')}
-          .selected="${this.adminLevel}"
-          placeholder="&#8212;"
-          .options="${this.adminLevels}"
-          option-label="name"
-          option-value="name"
-          trigger-value-change-event
-          @etools-selected-item-changed="${this.adminLevelChanged}"
-        >
-        </etools-dropdown>
-       </div>
-      </div>
+        <div class="row">
+          <div class="col-12">
+            <etools-dropdown
+              id="adminLevelsDropdw"
+              label=${translate('GROUP_LOCATIONS_BY')}
+              .selected="${this.adminLevel}"
+              placeholder="&#8212;"
+              .options="${this.adminLevels}"
+              option-label="name"
+              option-value="name"
+              trigger-value-change-event
+              @etools-selected-item-changed="${this.adminLevelChanged}"
+            >
+            </etools-dropdown>
+          </div>
+        </div>
         ${this._renderMessage(this.message)} ${this._renderGrouping(this.groupedLocations, this.interventionLocations)}
       </etools-dialog>
     `;

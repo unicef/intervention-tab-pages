@@ -92,30 +92,30 @@ export class CpOutputDialog extends LitElement {
         <div class="row">
           ${!this.cpOutputId || this.canChangeCPOutput
             ? html`
-              <div class="col-12">
-                <etools-dropdown
-                  class="validate-input"
-                  @etools-selected-item-changed="${({detail}: CustomEvent) =>
-                    this.onCpOutputSelected(detail.selectedItem && detail.selectedItem.id)}"
-                  ?trigger-value-change-event="${!this.loadingInProcess}"
-                  .selected="${this.selectedCpOutput}"
-                  label=${translate('CP_OUTPUT')}
-                  placeholder="&#8212;"
-                  .options="${this.cpOutputs}"
-                  option-label="name"
-                  option-value="id"
-                  allow-outside-scroll
-                  dynamic-align
-                  required
-                  ?invalid="${this.errors.cp_output}"
-                  .errorMessage="${this.errors.cp_output && this.errors.cp_output[0]}"
-                  @focus="${() => this.resetFieldError('cp_output')}"
-                  @click="${() => this.resetFieldError('cp_output')}"
-                ></etools-dropdown>
-              </div>
+                <div class="col-12">
+                  <etools-dropdown
+                    class="validate-input"
+                    @etools-selected-item-changed="${({detail}: CustomEvent) =>
+                      this.onCpOutputSelected(detail.selectedItem && detail.selectedItem.id)}"
+                    ?trigger-value-change-event="${!this.loadingInProcess}"
+                    .selected="${this.selectedCpOutput}"
+                    label=${translate('CP_OUTPUT')}
+                    placeholder="&#8212;"
+                    .options="${this.cpOutputs}"
+                    option-label="name"
+                    option-value="id"
+                    allow-outside-scroll
+                    dynamic-align
+                    required
+                    ?invalid="${this.errors.cp_output}"
+                    .errorMessage="${this.errors.cp_output && this.errors.cp_output[0]}"
+                    @focus="${() => this.resetFieldError('cp_output')}"
+                    @click="${() => this.resetFieldError('cp_output')}"
+                  ></etools-dropdown>
+                </div>
               `
             : html``}
-            <div class="col-12">
+          <div class="col-12">
             <etools-dropdown-multi
               class="validate-input disabled-as-readonly"
               @etools-selected-items-changed="${({detail}: CustomEvent) =>

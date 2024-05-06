@@ -98,7 +98,7 @@ export class AttachmentsList extends CommentsMixin(LitElement) {
                 (attachment) => html`
                   <etools-data-table-row
                     .lowResolutionLayout="${this.lowResolutionLayout}"
-                    secondary-bg-on-hover                                     
+                    secondary-bg-on-hover
                     ?hidden="${!attachment.active && !this.showInvalid}"
                   >
                     <div slot="row-data" class="p-relative layout-horizontal editable-row">
