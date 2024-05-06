@@ -32,28 +32,33 @@ export class CpOutputDialog extends LitElement {
   cpOutputName!: string;
   resultLinkId!: number;
   interventionId!: number;
+  canChangeCPOutput = false;
 
   set dialogData(data: any) {
     if (!data) {
       return;
     }
-    const {cpOutputs, resultLink, interventionId}: any = data;
+
+    const {cpOutputs, resultLink, interventionId, canChangeCpOp}: any = data;
     if (resultLink) {
       this.cpOutputId = resultLink.cp_output;
-      this.selectedCpOutput = resultLink.cp_output;
+      this.selectedCpOutput = Number(resultLink.cp_output);
       this.cpOutputName = resultLink.cp_output_name;
       this.selectedIndicators = [...(resultLink.ram_indicators || [])];
       this.resultLinkId = resultLink.id;
     }
     this.interventionId = interventionId;
     this.cpOutputs = cpOutputs;
+    this.canChangeCPOutput = canChangeCpOp;
     this.loadRamIndicators(this.cpOutputId);
   }
 
   get dialogTitle(): string {
     let title = '';
     if (this.cpOutputName) {
-      title = getTranslation('INDICATORS_FOR_CP_OUTPUT') + this.cpOutputName;
+      title = this.canChangeCPOutput
+        ? getTranslation('EDIT_CP_OUTPUT')
+        : getTranslation('INDICATORS_FOR_CP_OUTPUT') + this.cpOutputName;
     } else {
       title = getTranslation('ADD_CP_OUTPUT');
     }
@@ -85,7 +90,7 @@ export class CpOutputDialog extends LitElement {
         cancel-btn-text=${translate('GENERAL.CANCEL')}
       >
         <div class="row">
-          ${!this.cpOutputId
+          ${!this.cpOutputId || this.canChangeCPOutput
             ? html`
               <div class="col-12">
                 <etools-dropdown
@@ -144,8 +149,11 @@ export class CpOutputDialog extends LitElement {
   }
 
   onCpOutputSelected(id: number) {
-    this.selectedCpOutput = id;
-    this.loadRamIndicators(id);
+    if (this.selectedCpOutput !== Number(id)) {
+      this.selectedCpOutput = Number(id);
+      this.selectedIndicators = [];
+      this.loadRamIndicators(id);
+    }
   }
 
   resetFieldError(field: string) {
@@ -173,7 +181,7 @@ export class CpOutputDialog extends LitElement {
         });
     const method = this.cpOutputId ? 'PATCH' : 'POST';
     const body: GenericObject<any> = {ram_indicators: this.selectedIndicators};
-    if (!this.cpOutputId) {
+    if (!this.cpOutputId || this.cpOutputId !== this.selectedCpOutput) {
       body.cp_output = this.selectedCpOutput;
     }
     sendRequest({

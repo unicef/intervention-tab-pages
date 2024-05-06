@@ -230,7 +230,7 @@ export class DocumentDetailsElement extends CommentsMixin(ComponentBaseMixin(Lit
           </etools-checkbox>
         </div>
 
-        <div class="col-12 padding-v">
+        <div class="col-12 padding-v" ?hidden="${!this.data.has_activities_involving_children}">
           <etools-checkbox
             ?checked="${this.data.has_activities_involving_children}"
             ?disabled="${this.isReadonly(this.editMode, this.permissions.edit.has_activities_involving_children)}"

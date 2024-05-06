@@ -10,8 +10,10 @@ export const reportingRequirementsListStyles = css`
   }
 
   :host([with-scroll]) {
-    max-height: 351px;
+    max-height: 500px;
     overflow-y: auto;
+    height: auto;
+    min-height: 300px;
   }
 
   .col-data.index-col,

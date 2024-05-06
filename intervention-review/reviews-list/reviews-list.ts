@@ -35,7 +35,7 @@ export class ReviewsList extends connectStore(LitElement) {
           padding-inline-end: 16px;
         }
         .answer {
-          font-size: 14px;
+          font-size: var(--etools-font-size-14, 14px);
           margin-bottom: 10px;
         }
         .answer:last-child {

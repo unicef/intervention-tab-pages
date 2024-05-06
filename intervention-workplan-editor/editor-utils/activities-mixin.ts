@@ -31,9 +31,10 @@ import {
   _canDelete
 } from '../../common/mixins/results-structure-common';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
+import MatomoMixin from '@unicef-polymer/etools-piwik-analytics/matomo-mixin';
 
 export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T) {
-  class ActivitiesClass extends ActivityItemsMixin(TruncateMixin(baseClass)) {
+  class ActivitiesClass extends ActivityItemsMixin(TruncateMixin(MatomoMixin(baseClass))) {
     @property({type: Array})
     originalResultStructureDetails!: ExpectedResultExtended[];
 
@@ -283,7 +284,8 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
                       id="btnSave-Activity"
                       variant="primary"
                       ?hidden="${!(activity.inEditMode || activity.itemsInEditMode)}"
-                      @click="${() => this.saveActivity(activity, pdOutput.id, this.intervention.id!)}"
+                      @click="${(e: any) => this.saveActivity(activity, pdOutput.id, this.intervention.id!, e)}"
+                      tracker="WorkplanEditor Save Activity"
                       >${translate('GENERAL.SAVE')}</etools-button
                     >
                     <etools-icon-button
@@ -388,13 +390,21 @@ export function ActivitiesMixin<T extends Constructor<LitElement>>(baseClass: T)
     }
 
     // @ts-ignore
-    saveActivity(activity: InterventionActivityExtended, pdOutputId: number, interventionId: number) {
+    saveActivity(
+      activity: InterventionActivityExtended,
+      pdOutputId: number,
+      interventionId: number,
+      event?: CustomEvent
+    ) {
       if (!this.validateActivity(activity) || !this.validateActivityItems(activity)) {
         this.requestUpdate();
         fireEvent(this, 'toast', {
           text: getTranslation('FIX_VALIDATION_ERRORS')
         });
         return;
+      }
+      if (event) {
+        this.trackAnalytics(event);
       }
       fireEvent(this, 'global-loading', {
         active: true,

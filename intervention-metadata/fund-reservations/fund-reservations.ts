@@ -68,7 +68,7 @@ export class FundReservations extends CommentsMixin(ContentPanelMixin(FrNumbersC
 
         .fr-number {
           padding: 8px 12px;
-          font-size: 16px;
+          font-size: var(--etools-font-size-16, 16px);
           box-sizing: border-box;
         }
 

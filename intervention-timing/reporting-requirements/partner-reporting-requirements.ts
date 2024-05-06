@@ -73,7 +73,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
           height: 48px;
           padding-inline-start: 24px;
           padding-inline-end: 24px;
-          font-size: 14px;
+          font-size: var(--etools-font-size-14, 14px);
           font-weight: bold;
           text-transform: capitalize;
           cursor: pointer;
@@ -90,7 +90,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
           color: var(--secondary-text-color);
           padding-inline-start: 24px;
           padding-inline-end: 24px;
-          font-size: 14px;
+          font-size: var(--etools-font-size-14, 14px);
           font-weight: bold;
           text-transform: capitalize;
         }

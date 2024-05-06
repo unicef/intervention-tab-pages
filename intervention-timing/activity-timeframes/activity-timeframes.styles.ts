@@ -80,19 +80,19 @@ export const ActivityTimeframesStyles: CSSResult = css`
   .year,
   .frame-name {
     font-weight: 500;
-    font-size: 16px;
+    font-size: var(--etools-font-size-16, 16px);
     line-height: 22px;
     color: var(--primary-text-color);
   }
   .no-activities,
   .frame-dates {
-    font-size: 12px;
+    font-size: var(--etools-font-size-12, 12px);
     line-height: 16px;
     color: var(--primary-text-color);
   }
   .activity-name {
     font-weight: 500;
-    font-size: 12px;
+    font-size: var(--etools-font-size-12, 12px);
     line-height: 20px;
     color: var(--primary-text-color);
   }

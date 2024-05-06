@@ -101,7 +101,7 @@ export class TimeIntervals extends LitElement {
           border-radius: 4px;
           background-color: #a3a3a3;
           font-family: Roboto;
-          font-size: 12px;
+          font-size: var(--etools-font-size-12, 12px);
           font-weight: 500;
           color: #ffffff;
           box-sizing: border-box;
@@ -112,7 +112,7 @@ export class TimeIntervals extends LitElement {
         .invalid {
           color: var(--error-color);
           padding: 4px 0;
-          font-size: 12px;
+          font-size: var(--etools-font-size-12, 12px);
         }
         etools-icon {
           color: var(--primary-color);

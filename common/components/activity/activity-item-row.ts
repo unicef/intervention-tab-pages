@@ -18,7 +18,7 @@ export class ActivityItemRow extends ActivitiesCommonMixin(LitElement) {
       ActivityItemsTableStyles,
       css`
         etools-icon {
-          --etools-icon-font-size: 14px;
+          --etools-icon-font-size: var(--etools-font-size-14, 14px);
           color: var(--secondary-text-color);
           cursor: pointer;
           position: relative;

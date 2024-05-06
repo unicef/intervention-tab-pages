@@ -59,7 +59,7 @@ export class IndicatorDialog extends IndicatorDialogTabsMixin(SaveIndicatorMixin
           color: var(--secondary-text-color);
           padding: 8px 0;
           font-weight: 500;
-          font-size: 16px !important;
+          font-size: var(--etools-font-size-16, 16px) !important;
         }
 
         a {

@@ -438,19 +438,24 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
   }
 
   openCpOutputDialog(resultLink?: ExpectedResult): void {
+    const canChangeCpOp =
+      !this.intervention.in_amendment && ['draft', 'development'].includes(this.intervention.status);
     openDialog({
       dialog: 'cp-output-dialog',
       dialogData: {
         resultLink,
-        cpOutputs: this.filterOutAlreadySelectedAndByCPStructure(),
-        interventionId: this.interventionId
+        cpOutputs: this.filterOutAlreadySelectedAndByCPStructure(canChangeCpOp),
+        interventionId: this.interventionId,
+        canChangeCpOp: canChangeCpOp
       }
     });
     this.openContentPanel();
   }
 
-  filterOutAlreadySelectedAndByCPStructure() {
-    const alreadyUsedCpOs = new Set(this.resultLinks.map(({cp_output}: ExpectedResult) => cp_output));
+  filterOutAlreadySelectedAndByCPStructure(canChangeCpOp: boolean) {
+    const alreadyUsedCpOs = canChangeCpOp
+      ? new Set()
+      : new Set(this.resultLinks.map(({cp_output}: ExpectedResult) => cp_output));
     const cpStructures = this.intervention.country_programmes?.map((c: string) => Number(c));
 
     return this.cpOutputs.filter(({id, country_programme}: CpOutput) => {
@@ -577,7 +582,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         .pd-title {
           padding-block: 8px 0;
           padding-inline: 22px 42px;
-          font-size: 16px;
+          font-size: var(--etools-font-size-16, 16px);
           font-weight: 500;
           line-height: 19px;
         }
@@ -652,12 +657,12 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
           margin-inline-start: 12px;
         }
         .total-result b {
-          font-size: 22px;
+          font-size: var(--etools-font-size-22, 22px);
           font-weight: 900;
           line-height: 23px;
         }
         .total-result .heading {
-          font-size: 14px;
+          font-size: var(--etools-font-size-14, 14px);
           margin-inline-end: 10px;
           line-height: 23px;
         }
@@ -683,7 +688,7 @@ export class ResultsStructure extends CommentsMixin(ContentPanelMixin(LitElement
         }
         .count {
           display: flex;
-          font-size: 14px;
+          font-size: var(--etools-font-size-14, 14px);
           font-weight: 400;
           line-height: 16px;
           padding: 6px 0 4px;

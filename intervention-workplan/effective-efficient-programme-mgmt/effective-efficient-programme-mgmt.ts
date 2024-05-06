@@ -52,7 +52,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         ${dataTableStylesLit} :host {
           display: block;
           margin-bottom: 24px;
-          --etools-table-col-font-size: 16px;
+          --etools-table-col-font-size: var(--etools-font-size-16, 16px);
         }
 
         etools-table {
@@ -75,7 +75,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         }
         .col-data,
         .row-details-content {
-          font-size: 16px;
+          font-size: var(--etools-font-size-16, 16px);
         }
         etools-data-table-row .actions {
           visibility: hidden;
@@ -85,7 +85,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
           visibility: visible;
         }
         etools-data-table-row .actions etools-icon-button {
-          --etools-icon-font-size: 24px;
+          --etools-icon-font-size: var(--etools-font-size-24, 24px);
           padding: 0;
         }
         etools-data-table-row *[slot='row-data'] {
@@ -93,7 +93,7 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
           margin-bottom: 0px;
         }
         .text-right {
-          place-content: end;
+          place-content: end !important;
         }
         .padding-top-6 {
           padding-top: 6px;

@@ -75,19 +75,19 @@ export class CommentsGroup extends LitElement {
           border-radius: 50%;
           background-color: #009688;
           margin-inline-end: 12px;
-          font-size: 18px;
+          font-size: var(--etools-font-size-18, 18px);
           font-weight: 500;
           line-height: 21px;
           color: #ffffff;
         }
         .description,
         .title {
-          font-size: 16px;
+          font-size: var(--etools-font-size-16, 16px);
           line-height: 19px;
           color: #212121;
         }
         .date {
-          font-size: 14px;
+          font-size: var(--etools-font-size-14, 14px);
           line-height: 16px;
           color: #979797;
         }

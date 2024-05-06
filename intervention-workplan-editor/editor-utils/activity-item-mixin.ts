@@ -314,7 +314,12 @@ export function ActivityItemsMixin<T extends Constructor<LitElement>>(baseClass:
       </tbody>`;
     }
 
-    saveActivity!: (activity: InterventionActivityExtended, pdOutputId: number, interventionId: number) => void;
+    saveActivity!: (
+      activity: InterventionActivityExtended,
+      pdOutputId: number,
+      interventionId: number,
+      e?: CustomEvent
+    ) => void;
     cancelActivity!: (
       activities: Partial<InterventionActivityExtended>[],
       activity: InterventionActivityExtended,

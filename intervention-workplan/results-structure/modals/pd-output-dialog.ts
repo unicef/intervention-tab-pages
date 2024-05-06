@@ -54,7 +54,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
         .unassociated-warning {
           display: flex;
           flex-direction: column;
-          font-size: 13px;
+          font-size: var(--etools-font-size-13, 13px);
           align-items: flex-start;
           padding: 12px 22px;
           background: #ffaa0eb8;

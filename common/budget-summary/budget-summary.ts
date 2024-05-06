@@ -61,18 +61,18 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
         }
         .amt-data .label {
           font-weight: 400;
-          font-size: 14px;
+          font-size: var(--etools-font-size-14, 14px);
           line-height: 16px;
           white-space: nowrap;
         }
         .amt-data .input-label {
           align-items: flex-end;
-          font-size: 24px;
+          font-size: var(--etools-font-size-24, 24px);
           font-weight: 900;
           line-height: 28px;
         }
         .amt-data .input-label span {
-          font-size: 16px;
+          font-size: var(--etools-font-size-16, 16px);
           font-weight: 400;
           line-height: 25px;
           margin-inline-end: 6px;
@@ -88,14 +88,19 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
           margin-inline-start: 4px;
         }
         .amt-data .input-label span {
-          font-size: 12px;
+          font-size: var(--etools-font-size-12, 12px);
           line-height: 20px;
           margin-inline-end: 2px;
         }
         .amt-data .input-label {
-          font-size: 18px;
+          font-size: var(--etools-font-size-18, 18px);
           line-height: 24px;
         }
+        .icon-wrapper {
+          flex-wrap: nowrap;
+          padding-top: 0 !important;
+        }
+      }
       `
     ];
   }
@@ -159,7 +164,10 @@ export class BudgetSummaryEl extends CommentsMixin(FrNumbersConsistencyMixin(Lit
         </div>
 
         <div class="data-column">
-          <label class="label">${translate('PRGM_EFFECTIVENESS')}</label>
+          <div class="icon-wrapper">
+            <label class="label">${translate('PRGM_EFFECTIVENESS')}</label>
+            <info-icon-tooltip .tooltipText="${translate('PRGM_EFFECTIVENESS_TOOLTIP')}"></info-icon-tooltip>
+          </div>
           <div class="input-label" ?empty="${this.isEmpty(this.budgetSummary.programme_effectiveness)}">
             ${this.roundPercentage(this.budgetSummary.programme_effectiveness)}
           </div>

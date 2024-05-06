@@ -71,7 +71,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         :host {
           display: block;
           margin-bottom: 24px;
-          --etools-table-col-font-size: 16px;
+          --etools-table-col-font-size: var(--etools-font-size-16, 16px);
         }
         .headerLabel {
           padding-inline-end: 4px;
@@ -93,8 +93,9 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         etools-icon-button[name='file-upload'] {
           color: var(--primary-text-color);
         }
-        etools-content-panel::part(ecp-header) {
-          --ecp-header-height: auto;
+        #iit-ger {
+          --iit-margin: 8px 0 8px -15px;
+          --iit-icon-size: 24px;
         }
       </style>
 
@@ -103,10 +104,14 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
         panel-title=${translate(translatesMap.supply_items)}
         comment-element="supply-agreement"
       >
-
-        <div slot="after-title">
-            <span class="afterTitle">
-            <label class="label font-bold headerLabel">${translate('TOTAL_SUPPLY_BUDGET')} </label>
+        ${this.supply_items?.length && this.permissions.edit.supply_items
+          ? html` <div slot="after-title">
+              <info-icon-tooltip id="iit-ger" .tooltipText="${this.getUploadHelpText()}"></info-icon-tooltip>
+            </div>`
+          : ``}
+        <div slot="panel-btns">
+          <span class="mr-20">
+            <label class="label font-bold pad-right">${translate('TOTAL_SUPPLY_BUDGET')} </label>
             <label class="font-bold-12"
               >${this.intervention.planned_budget.currency}
               ${displayCurrencyAmount(this.intervention.planned_budget.total_supply!, '0.00')}</label
@@ -279,14 +284,16 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
       ${customStyles}`;
   }
 
+  getUploadHelpText() {
+    const link1 = 'https://supply.unicef.org/all-materials.html';
+    const link2 = 'https://unpartnerportalcso.zendesk.com/hc/en-us/articles/12669187044631-Creating-a-supply-plan';
+    return getTranslation('UPLOAD_SUPPLY_HELPER')
+      .replace('{0}', `<a target='_blank' href=${link1}>${link1}</a>`)
+      .replace('{1}', `<a target='_blank' href=${link2}>${getTranslation('GUIDE')}</a>`);
+  }
   getUploadHelpElement() {
-    const link = 'https://supply.unicef.org/all-materials.html';
     const paragraph = document.createElement('p');
-    paragraph.classList.add('h-padding');
-    paragraph.innerHTML = getTranslation('UPLOAD_SUPPLY_HELPER').replace(
-      '{0}',
-      `<a target='_blank' href=${link}>${link}</a>`
-    );
+    paragraph.innerHTML = this.getUploadHelpText();
     return paragraph;
   }
 

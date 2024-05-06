@@ -213,7 +213,7 @@ export class DisplayControls extends LitElement {
           border-radius: 8px;
           color: #009688;
           font-weight: 500;
-          font-size: 14px;
+          font-size: var(--etools-font-size-14, 14px);
           line-height: 16px;
           text-decoration: none;
           box-sizing: border-box;

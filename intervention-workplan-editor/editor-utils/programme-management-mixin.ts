@@ -26,11 +26,12 @@ import {
 import {getTotalCash, getTotalCashFormatted} from '../../common/components/activity/get-total.helper';
 import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
+import MatomoMixin from '@unicef-polymer/etools-piwik-analytics/matomo-mixin';
 
 // import {ManagementBudgetItem} from '@unicef-polymer/etools-types';
 
 export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(baseClass: T) {
-  class ProgrammeManagementClass extends ProgrammeManagementItemMixin(TruncateMixin(baseClass)) {
+  class ProgrammeManagementClass extends ProgrammeManagementItemMixin(TruncateMixin(MatomoMixin(baseClass))) {
     // @ts-ignore
     @property({type: Array})
     formattedProgrammeManagement: any[] = [];
@@ -208,7 +209,8 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
                       variant="primary"
                       id="btnSave-ProgrammeManagement"
                       ?hidden="${!(item.inEditMode || item.itemsInEditMode)}"
-                      @click="${() => this.saveProgrammeManagement(item, this.intervention.id!)}"
+                      @click="${(e: any) => this.saveProgrammeManagement(e, item, this.intervention.id!)}"
+                      tracker="WorkplanEditor Save ProgrammeManagement"
                       >${translate('GENERAL.SAVE')}</etools-button
                     >
                     <etools-icon-button
@@ -331,7 +333,11 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
     }
 
     // @ts-ignore
-    saveProgrammeManagement(programmeManagement: ProgrammeManagementRowExtended, interventionId: number) {
+    saveProgrammeManagement(
+      e: CustomEvent,
+      programmeManagement: ProgrammeManagementRowExtended,
+      interventionId: number
+    ) {
       if (!this.validateProgrammeManagement(programmeManagement) || !this.validateActivityItems(programmeManagement)) {
         this.requestUpdate();
         fireEvent(this, 'toast', {
@@ -343,7 +349,7 @@ export function ProgrammeManagementMixin<T extends Constructor<LitElement>>(base
         active: true,
         loadingSource: this.localName
       });
-
+      this.trackAnalytics(e);
       const programmeManagementToSave = cloneDeep(programmeManagement);
       if (programmeManagementToSave.items?.length) {
         // Let backend calculate these

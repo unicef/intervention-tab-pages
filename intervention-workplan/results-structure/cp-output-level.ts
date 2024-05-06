@@ -154,7 +154,7 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
         :host div.outputs-count {
           padding: 0 0 9px;
           font-family: Roboto;
-          font-size: 14px;
+          font-size: var(--etools-font-size-14, 14px);
           font-weight: 400;
           line-height: 16px;
           color: #212121;

@@ -49,11 +49,12 @@ import '@unicef-polymer/etools-unicef/src/etools-button/etools-button';
 import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
 import '@shoelace-style/shoelace/dist/components/tooltip/tooltip.js';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
+import MatomoMixin from '@unicef-polymer/etools-piwik-analytics/matomo-mixin';
 
 // @ts-ignore
 @customElement('editor-table')
 export class EditorTable extends CommentsMixin(
-  ProgrammeManagementMixin(ActivitiesMixin(ActivitiesFocusMixin(ArrowsNavigationMixin(LitElement))))
+  ProgrammeManagementMixin(ActivitiesMixin(ActivitiesFocusMixin(ArrowsNavigationMixin(MatomoMixin(LitElement)))))
 ) {
   static get styles() {
     return [EditorTableStyles, EditorTableArrowKeysStyles, EditorHoverStyles, ...super.styles];
@@ -403,8 +404,9 @@ export class EditorTable extends CommentsMixin(
                         <etools-button
                           id="btnSave"
                           variant="primary"
-                          @click="${() => this.savePdOutput(pdOutput, result)}"
+                          @click="${(e: any) => this.savePdOutput(e, pdOutput, result)}"
                           ?hidden="${!pdOutput.inEditMode}"
+                          tracker="WorkplanEditor Save PdOutput"
                           >${translate('GENERAL.SAVE')}</etools-button
                         >
                         <etools-icon-button
@@ -623,7 +625,7 @@ export class EditorTable extends CommentsMixin(
     }
   }
 
-  savePdOutput(pdOutput: ResultLinkLowerResultExtended, cpOutput: ExpectedResult) {
+  savePdOutput(e: CustomEvent, pdOutput: ResultLinkLowerResultExtended, cpOutput: ExpectedResult) {
     const cpOutputId: number | null = cpOutput.cp_output || this.unassignedPDMap.get(pdOutput.id) || null;
     if (!this.validatePdOutput(pdOutput, cpOutputId)) {
       this.requestUpdate();
@@ -635,6 +637,7 @@ export class EditorTable extends CommentsMixin(
       loadingSource: this.localName
     });
 
+    this.trackAnalytics(e);
     const endpoint: RequestEndpoint = pdOutput.id
       ? getEndpoint(interventionEndpoints.pdOutputDetails, {pd_id: pdOutput.id, intervention_id: this.interventionId})
       : getEndpoint(interventionEndpoints.createPdOutput, {intervention_id: this.interventionId});
