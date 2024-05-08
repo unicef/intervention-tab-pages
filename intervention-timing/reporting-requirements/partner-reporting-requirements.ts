@@ -57,7 +57,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
 
         .reporting-req-data {
           border-inline-start: 1px solid var(--darker-divider-color);
-          width: 100%;
+          flex: 1 1 0%;
         }
 
         .nav-menu {
@@ -125,11 +125,13 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
             box-sizing: border-box;
             border-bottom: 1px solid var(--darker-divider-color);
           }
+          .nav-menu-item {
+            width: 100%;
+          }
           .d-flex {
             flex-wrap: wrap;
           }
           .reporting-req-data {
-            width: 100%;
             border-inline-start: none;
           }
         }

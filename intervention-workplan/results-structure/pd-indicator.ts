@@ -2,7 +2,7 @@ import {LitElement, html, TemplateResult, css} from 'lit';
 import {property, customElement, query} from 'lit/decorators.js';
 import '@unicef-polymer/etools-unicef/src/etools-data-table/etools-data-table';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {gridLayoutStylesLit} from '@unicef-polymer/etools-modules-common/dist/styles/grid-layout-styles-lit';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {ResultStructureStyles} from './styles/results-structure.styles';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {CommentElementMeta, CommentsMixin} from '../../common/components/comments/comments-mixin';
@@ -51,7 +51,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
       >
         <div class="main-info" style="padding-inline-end:10%">
           <!--    Indicator name    -->
-          <div class="flex-1 left-align layout-vertical start-aligned">
+          <div class="left-align layout-vertical start-aligned">
             <div class="name layout-horizontal">
               ${getIndicatorDisplayType(this.indicator.indicator)} ${this.addInactivePrefix(this.indicator)}
               ${(this.indicator.indicator ? this.indicator.indicator.title : this.indicator.cluster_indicator_title) ||
@@ -68,12 +68,12 @@ export class PdIndicator extends CommentsMixin(LitElement) {
             </div>
           </div>
           <!--    Baseline    -->
-          <div class="flex-1 secondary-cell right">
+          <div class="secondary-cell right">
             ${this._displayBaselineOrTarget(this.indicator.baseline, this.indicator)}
           </div>
 
           <!--    Target    -->
-          <div class="flex-1 secondary-cell right">
+          <div class="secondary-cell right">
             ${this._displayBaselineOrTarget(this.indicator.target, this.indicator)}
           </div>
 
@@ -259,7 +259,7 @@ export class PdIndicator extends CommentsMixin(LitElement) {
   // language=css
   static get styles() {
     return [
-      gridLayoutStylesLit,
+      layoutStyles,
       ResultStructureStyles,
       ActivitiesAndIndicatorsStyles,
       css`

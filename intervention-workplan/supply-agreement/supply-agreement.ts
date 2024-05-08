@@ -97,6 +97,9 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           --iit-margin: 8px 0 8px -15px;
           --iit-icon-size: 24px;
         }
+        etools-content-panel::part(ecp-header) {
+          --ecp-header-height: auto;
+        }
       </style>
 
       <etools-content-panel
@@ -291,6 +294,7 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
   }
   getUploadHelpElement() {
     const paragraph = document.createElement('p');
+    paragraph.classList.add('h-padding');
     paragraph.innerHTML = this.getUploadHelpText();
     return paragraph;
   }

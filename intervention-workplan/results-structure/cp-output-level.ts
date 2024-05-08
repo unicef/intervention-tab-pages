@@ -39,14 +39,14 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
                   <!--      If PD is associated with CP Output      -->
                   ${this.resultLink.cp_output
                     ? html`
-                        <div class="flex-1 flex-fix">
+                        <div class="flex-fix">
                           <div class="heading">${translate('COUNTRY_PROGRAME_OUTPUT')}</div>
                           <div class="data">
                             <b>${this.resultLink.code} - </b>&nbsp;${this.resultLink.cp_output_name}
                           </div>
                         </div>
 
-                        <div class="flex-1 flex-fix" ?hidden="${!this.showIndicators}">
+                        <div class="flex-fix" ?hidden="${!this.showIndicators}">
                           <div class="heading">${translate('RAM_INDICATORS')}</div>
                           <div class="data">
                             <ul id="ram-list">
@@ -85,7 +85,7 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
                       `
                     : html`
                         <!--      If PD is unassociated with CP Output      -->
-                        <div class="flex-1 flex-fix data alert">${translate('UNASSOCIATED_TO_CP_OUTPUT')}</div>
+                        <div class="flex-fix data alert">${translate('UNASSOCIATED_TO_CP_OUTPUT')}</div>
                       `}
                 </div>
                 <div class="outputs-count"><b>${this.resultLink.ll_results.length}</b> ${translate('PD_OUTPUT_S')}</div>
@@ -185,6 +185,11 @@ export class CpOutputLevel extends TruncateMixin(LitElement) {
         }
         .editable-row:hover .hover-block {
           opacity: 1;
+        }
+        .flex-fix {
+          min-width: 0px;
+          min-height: 0px;
+          width: 100%;
         }
         @media (max-width: 576px) {
           .cp-output-row {
