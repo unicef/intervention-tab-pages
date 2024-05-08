@@ -30,7 +30,6 @@ export class InterventionMonitoringActivities extends connectStore(LitElement) {
         <monitoring-visits-list
           .interventionId="${this.intervention?.id}"
           .partnerId="${this.intervention?.partner_id}"
-          showTpmVisits
         >
         </monitoring-visits-list>
       </etools-content-panel>
