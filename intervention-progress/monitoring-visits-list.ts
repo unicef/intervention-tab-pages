@@ -43,7 +43,7 @@ export class MonitoringVisitsList extends LitElement {
         <div ?hidden="${!this.monitoringActivities.length}">
           <etools-data-table-header
             id="listHeader"
-            label="Showing ${this.monitoringActivities.length} results"
+            label="${translate('SHOWING_RESULTS', {count: this.monitoringActivities.length})}"
             no-collapse
           >
             <etools-data-table-column class="col-3" field="reference_number"
