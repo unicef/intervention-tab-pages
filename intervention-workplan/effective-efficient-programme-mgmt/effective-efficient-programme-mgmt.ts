@@ -98,9 +98,6 @@ export class EffectiveAndEfficientProgrammeManagement extends CommentsMixin(Comp
         .padding-top-6 {
           padding-top: 6px;
         }
-        etools-content-panel::part(ecp-header) {
-          --ecp-header-height: auto;
-        }
       </style>
 
       <etools-media-query

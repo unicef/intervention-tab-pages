@@ -63,9 +63,6 @@ export class NonFinancialContributionElement extends CommentsMixin(ComponentBase
         .row {
           padding-bottom: 16px;
         }
-        etools-content-panel::part(ecp-header) {
-          --ecp-header-height: auto;
-        }
       </style>
 
       <etools-content-panel

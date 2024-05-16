@@ -321,54 +321,67 @@ export class ProgrammaticVisits extends CommentsMixin(ComponentBaseMixin(Repeata
               </etools-dropdown>
             </div>
 
-            <div class="col-12 layout-horizontal layout-wrap pl-48">
-              <pv-quarter
-                qIndex="1"
-                .item="${item}"
-                .currentCountry="${this.currentCountry}"
-                .allSites="${this.allSites}"
-                ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
-                ?required="${item.year && this.editMode}"
-              ></pv-quarter>
-              <div class="separator"></div>
-              <pv-quarter
-                qIndex="2"
-                .item="${item}"
-                .currentCountry="${this.currentCountry}"
-                .allSites="${this.allSites}"
-                ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
-                ?required="${item.year && this.editMode}"
-              ></pv-quarter>
-              <div class="separator"></div>
-              <pv-quarter
-                qIndex="3"
-                .item="${item}"
-                .currentCountry="${this.currentCountry}"
-                .allSites="${this.allSites}"
-                ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
-                ?required="${item.year && this.editMode}"
-              ></pv-quarter>
-              <div class="separator"></div>
-              <pv-quarter
-                qIndex="4"
-                .item="${item}"
-                .currentCountry="${this.currentCountry}"
-                .allSites="${this.allSites}"
-                ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
-                ?required="${item.year && this.editMode}"
-              ></pv-quarter>
-              <div class="separator"></div>
-              <div class="col-1 totalContainer bgColor">
-                <div class="total-lbl">${translate('GENERAL.TOTAL_C')} ${item.year}</div>
-                <div>
-                  ${this._getTotal(
-                    item.programmatic_q1,
-                    item.programmatic_q2,
-                    item.programmatic_q3,
-                    item.programmatic_q4
-                  )}
+            <div class="col-12 row layout-wrap">
+              <div class="col-10 row pl-48">
+                <div class="col layout-horizontal">
+                  <pv-quarter
+                    qIndex="1"
+                    .item="${item}"
+                    .currentCountry="${this.currentCountry}"
+                    .allSites="${this.allSites}"
+                    ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
+                    ?required="${item.year && this.editMode}"
+                  ></pv-quarter>
+                  <div class="separator"></div>
                 </div>
-                <div>${translate('VISITS')}</div>
+
+                <div class="col layout-horizontal">
+                  <pv-quarter
+                    qIndex="2"
+                    .item="${item}"
+                    .currentCountry="${this.currentCountry}"
+                    .allSites="${this.allSites}"
+                    ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
+                    ?required="${item.year && this.editMode}"
+                  ></pv-quarter>
+                  <div class="separator"></div>
+                </div>
+                <div class="col layout-horizontal">
+                  <pv-quarter
+                    qIndex="3"
+                    .item="${item}"
+                    .currentCountry="${this.currentCountry}"
+                    .allSites="${this.allSites}"
+                    ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
+                    ?required="${item.year && this.editMode}"
+                  ></pv-quarter>
+                  <div class="separator"></div>
+                </div>
+                <div class="col layout-horizontal">
+                  <pv-quarter
+                    qIndex="4"
+                    .item="${item}"
+                    .currentCountry="${this.currentCountry}"
+                    .allSites="${this.allSites}"
+                    ?readonly="${this.isReadonly(this.editMode, this.permissions?.edit.planned_visits)}"
+                    ?required="${item.year && this.editMode}"
+                  ></pv-quarter>
+                  <div class="separator"></div>
+                </div>
+              </div>
+              <div class="col-2 layout-horizontal">
+                <div class="col-1 totalContainer bgColor">
+                  <div class="total-lbl">${translate('GENERAL.TOTAL_C')} ${item.year}</div>
+                  <div>
+                    ${this._getTotal(
+                      item.programmatic_q1,
+                      item.programmatic_q2,
+                      item.programmatic_q3,
+                      item.programmatic_q4
+                    )}
+                  </div>
+                  <div>${translate('VISITS')}</div>
+                </div>
               </div>
               <div
                 class="col flex-c"

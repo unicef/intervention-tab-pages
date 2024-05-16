@@ -47,6 +47,7 @@ import {
 import {interventionEndpoints} from '../utils/intervention-endpoints';
 import {getIndicatorDisplayType} from '../utils/utils';
 import dayjs from 'dayjs';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 
 /**
  * @customElement
@@ -63,7 +64,7 @@ export class InterventionResultsReported extends connectStore(
   UtilsMixin(CommonMixin(EndpointsLitMixin(EtoolsCurrency(LitElement))))
 ) {
   static get styles() {
-    return [contentSectionStylesLit, gridLayoutStylesLit, elevationStyles, frWarningsStyles];
+    return [contentSectionStylesLit, gridLayoutStylesLit, elevationStyles, frWarningsStyles, layoutStyles];
   }
   render() {
     return html`
@@ -164,8 +165,8 @@ export class InterventionResultsReported extends connectStore(
       </style>
 
       <div id="progress-summary" class="content-section paper-material elevation" elevation="1">
-        <div class="row-h">
-          <div class="layout-vertical col-4">
+        <div class="row">
+          <div class="layout-vertical col-md-4 col-12">
             <etools-input
               readonly
               placeholder="—"
@@ -175,8 +176,8 @@ export class InterventionResultsReported extends connectStore(
             </etools-input>
             <etools-progress-bar value="${this.pdProgress}" noDecimals></etools-progress-bar>
           </div>
-          <div class="layout-vertical col-5">
-            <div class="layout-horizontal" id="cash-progress">
+          <div class="layout-vertical col-md-5 col-12">
+            <div class="row" id="cash-progress">
               <etools-info-tooltip
                 class="fr-nr-warn col-6"
                 custom-icon
@@ -232,7 +233,7 @@ export class InterventionResultsReported extends connectStore(
                 </etools-info-tooltip>`
               : ``}
           </div>
-          <div class="col col-3">
+          <div class="col-md-3 col-12">
             <etools-input
               readonly
               placeholder="—"

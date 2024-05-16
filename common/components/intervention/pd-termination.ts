@@ -57,8 +57,9 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
         ?disable-dismiss-btn="${this.uploadInProgress}"
         ?show-spinner="${this.savingInProcess}"
       >
-        <div class="row-h flex-c">
+        <div class="row">
           <datepicker-lite
+            class="col-12"
             id="terminationDate"
             label="${translate('TERMINATION_DATE')}"
             .value="${this.termination.date}"
@@ -72,8 +73,9 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
           >
           </datepicker-lite>
         </div>
-        <div class="row-h flex-c">
+        <div class="row">
           <etools-upload
+            class="col-12"
             id="terminationNotice"
             label="${translate('TERMINATION_NOTICE')}"
             accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,.txt"
@@ -85,8 +87,9 @@ export class PdTermination extends ComponentBaseMixin(EnvironmentFlagsMixin(LitE
             error-message="${translate('TERMINATION_NOTICE_FILE_IS_REQUIRED')}"
           >
         </div>
-        <div class="row-h flex-c">
+        <div class="row">
           <etools-warn-message-lit
+            class="col-12"
             .messages="${this.warnMessages}"
           >
           </etools-warn-message-lit>

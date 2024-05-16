@@ -62,7 +62,7 @@ export class PartnerReportingRequirements extends connectStore(LitElement) {
 
         .nav-menu {
           background: var(--primary-background-color);
-          min-width: 290px;
+          min-width: 320px;
           margin-top: 9px;
           margin-bottom: 8px;
         }

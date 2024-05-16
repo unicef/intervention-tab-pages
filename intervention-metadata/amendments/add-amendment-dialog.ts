@@ -55,9 +55,10 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
         ?show-spinner="${this.savingInProcess}"
       >
         ${this.renderKindDropdown()}
-        <div class="row-h flex-c">
+        <div class="row">
           <!-- Amendment Type -->
           <etools-dropdown-multi
+            class="col-12"
             id="amendment-types"
             label="${translate('AMENDMENT_TYPES')}"
             placeholder="&#8212;"
@@ -77,12 +78,13 @@ export class AddAmendmentDialog extends ComponentBaseMixin(LitElement) {
           >
           </etools-dropdown-multi>
         </div>
-        <div class="row-h flex-c" ?hidden="${!this.data.types || !this.data.types!.length}">
-          <etools-warn-message-lit .messages="${this.warnMessages}"></etools-warn-message-lit>
+        <div class="row" ?hidden="${!this.data.types || !this.data.types!.length}">
+          <etools-warn-message-lit class="col-12" .messages="${this.warnMessages}"></etools-warn-message-lit>
         </div>
         </div>
-        <div class="row-h" ?hidden="${!this.showOtherInput}">
+        <div class="row" ?hidden="${!this.showOtherInput}">
           <etools-input
+            class="col-12"
             id="other"
             placeholder="&#8212;"
             label="${translate('OTHER')}"

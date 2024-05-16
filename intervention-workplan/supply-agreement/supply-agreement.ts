@@ -97,6 +97,9 @@ export class FollowUpPage extends CommentsMixin(ComponentBaseMixin(LitElement)) 
           --iit-margin: 8px 0 8px -15px;
           --iit-icon-size: 24px;
         }
+        etools-table {
+          padding-top: 0 !important;
+        }
       </style>
 
       <etools-content-panel
